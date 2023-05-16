@@ -4,25 +4,29 @@ abstract class HomeEvent extends Equatable {
   const HomeEvent();
 }
 
-class DeviceConnected extends HomeEvent {
-  const DeviceConnected();
+class DeviceChanged extends HomeEvent {
+  const DeviceChanged(
+    this.scanReport,
+  );
+
+  final ScanReport scanReport;
+
+  @override
+  List<Object?> get props => [
+        scanReport,
+      ];
+}
+
+class ScanClosed extends HomeEvent {
+  const ScanClosed();
 
   @override
   List<Object?> get props => [];
 }
 
-class DeviceChanged extends HomeEvent {
-  const DeviceChanged(
-    this.found,
-    this.device,
-  );
-
-  final bool found;
-  final DiscoveredDevice device;
+class DeviceRefreshed extends HomeEvent {
+  const DeviceRefreshed();
 
   @override
-  List<Object?> get props => [
-        found,
-        device,
-      ];
+  List<Object?> get props => [];
 }

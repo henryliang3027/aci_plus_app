@@ -1,10 +1,10 @@
 {
-    "information": "information",
+    "information": "Information",
     "@information": {
       "description": "information"
     },
 
-    "setting": "setting",
+    "setting": "Setting",
     "@setting": {
       "description": "setting"
     }
