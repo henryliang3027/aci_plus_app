@@ -7,5 +7,25 @@
     "setting": "Setting",
     "@setting": {
       "description": "setting"
+    },
+
+    "dialogTitleError": "Error",
+    "@setting": {
+      "description": "dialog_title error"
+    },
+
+    "dialogTitleSuccess": "Success",
+    "@setting": {
+      "description": "dialog_title success"
+    },
+
+    "dialogMaessageDeviceNotFound": "Device not found.",
+    "@setting": {
+      "description": "Device not found."
+    },
+
+    "dialogMaessageBluetoothDisabled": "Bluetooth is disabled.",
+    "@setting": {
+      "description": "Bluetooth is disabled."
     }
 }

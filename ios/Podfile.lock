@@ -1,4 +1,6 @@
 PODS:
+  - bluetooth_enable_fork (0.1.4):
+    - Flutter
   - Flutter (1.0.0)
   - permission_handler_apple (9.0.4):
     - Flutter
@@ -10,6 +12,7 @@ PODS:
   - SwiftProtobuf (1.21.0)
 
 DEPENDENCIES:
+  - bluetooth_enable_fork (from `.symlinks/plugins/bluetooth_enable_fork/ios`)
   - Flutter (from `Flutter`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - reactive_ble_mobile (from `.symlinks/plugins/reactive_ble_mobile/ios`)
@@ -20,6 +23,8 @@ SPEC REPOS:
     - SwiftProtobuf
 
 EXTERNAL SOURCES:
+  bluetooth_enable_fork:
+    :path: ".symlinks/plugins/bluetooth_enable_fork/ios"
   Flutter:
     :path: Flutter
   permission_handler_apple:
@@ -28,6 +33,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/reactive_ble_mobile/ios"
 
 SPEC CHECKSUMS:
+  bluetooth_enable_fork: 73b8ca6e67230a9baa04010cd5c1e824e00d2797
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   Protobuf: 43e3764cdf3609fdd00417649561565703437fdc

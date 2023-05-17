@@ -8,7 +8,8 @@ class SettingForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.setting),
+        title: Text(AppLocalizations.of(context).setting),
+        centerTitle: true,
       ),
       body: Column(
         children: const [

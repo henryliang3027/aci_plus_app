@@ -14,84 +14,64 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required DsimRepository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const HomeState()) {
-    on<DeviceChanged>(_onDeviceChanged);
+    on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
 
-    _scanStreamSubscription =
-        _dsimRepository.scannedDevices.listen((scanReport) async {
-      add(DeviceChanged(scanReport));
-
-      await _dsimRepository.closeScanStream();
-      await _scanStreamSubscription?.cancel();
-      _scanStreamSubscription = null;
-    });
-
-    Future.delayed(const Duration(seconds: 3), () async {
-      await _dsimRepository.closeScanStream();
-      await _scanStreamSubscription?.cancel();
-      _scanStreamSubscription = null;
-      if (state.device == null) {
-        add(
-          const DeviceChanged(
-            ScanReport(
-              scanStatus: ScanStatus.failure,
-            ),
-          ),
-        );
-      } else {
-        _dsimRepository.connectDevice(state.device!);
-      }
-    });
+    _scanStreamSubscription = _dsimRepository.scannedDevices.listen(
+      (scanReport) async {
+        add(DiscoveredDeviceChanged(scanReport));
+      },
+    );
   }
 
   final DsimRepository _dsimRepository;
   late StreamSubscription<ScanReport>? _scanStreamSubscription;
 
-  void _onDeviceChanged(
-    DeviceChanged event,
+  Future<void> _onDiscoveredDeviceChanged(
+    DiscoveredDeviceChanged event,
     Emitter<HomeState> emit,
-  ) {
+  ) async {
     switch (event.scanReport.scanStatus) {
       case ScanStatus.success:
         emit(state.copyWith(
           status: FormStatus.requestSuccess,
           device: event.scanReport.discoveredDevice,
         ));
+        _dsimRepository.connectDevice(state.device!);
         break;
       case ScanStatus.failure:
         emit(state.copyWith(
-          status: FormStatus.requestFailure,
-          device: null,
-        ));
+            status: FormStatus.requestFailure,
+            device: null,
+            errorMassage: 'Device not found.'));
+        break;
+      case ScanStatus.disable:
+        emit(state.copyWith(
+            status: FormStatus.requestFailure,
+            device: null,
+            errorMassage: 'Bluetooth is disabled.'));
         break;
     }
+
+    await _dsimRepository.closeScanStream();
+    await _scanStreamSubscription?.cancel();
+    _scanStreamSubscription = null;
   }
 
-  void _onDeviceRefreshed(
+  Future<void> _onDeviceRefreshed(
     DeviceRefreshed event,
     Emitter<HomeState> emit,
-  ) {
+  ) async {
+    emit(state.copyWith(
+      status: FormStatus.requestInProgress,
+      device: null,
+    ));
+
+    await _dsimRepository.closeConnectionStream();
+
     _scanStreamSubscription =
         _dsimRepository.scannedDevices.listen((scanReport) async {
-      add(DeviceChanged(scanReport));
-
-      await _scanStreamSubscription?.cancel();
-    });
-
-    Future.delayed(const Duration(seconds: 3), () async {
-      await _scanStreamSubscription?.cancel();
-      _dsimRepository.closeScanStream();
-      if (state.device == null) {
-        add(
-          const DeviceChanged(
-            ScanReport(
-              scanStatus: ScanStatus.failure,
-            ),
-          ),
-        );
-      } else {
-        //_dsimRepository.connectDevice(state.device!);
-      }
+      add(DiscoveredDeviceChanged(scanReport));
     });
   }
 }

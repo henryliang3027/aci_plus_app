@@ -1,10 +1,6 @@
-import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
-import 'package:dsim_app/information/views/information_form.dart';
 import 'package:dsim_app/information/views/information_page.dart';
 import 'package:dsim_app/setting/views/setting_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class HomeForm extends StatefulWidget {
   const HomeForm({super.key});
@@ -50,8 +46,6 @@ class _HomeFormState extends State<HomeForm> {
               tooltip: '',
             ),
           ],
-          //if current page is account which is not list in bottom navigation bar, make all items grey color
-          //assign a useless 0 as currentIndex for account page
           currentIndex: _sclectedIndex,
           selectedItemColor: Theme.of(context).primaryColor,
           unselectedItemColor: Theme.of(context).hintColor,

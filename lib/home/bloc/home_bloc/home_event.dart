@@ -4,8 +4,8 @@ abstract class HomeEvent extends Equatable {
   const HomeEvent();
 }
 
-class DeviceChanged extends HomeEvent {
-  const DeviceChanged(
+class DiscoveredDeviceChanged extends HomeEvent {
+  const DiscoveredDeviceChanged(
     this.scanReport,
   );
 

@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 
 enum ScanStatus {
   success,
   failure,
+  disable,
 }
 
 class ScanReport {
@@ -23,12 +23,11 @@ class ScanReport {
 class DsimRepository {
   DsimRepository() : _ble = FlutterReactiveBle();
   final FlutterReactiveBle _ble;
-
+  final scanDuration = 3; // sec
   late StreamController<ScanReport> _scanReportStreamController;
-
-  late StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
-  late StreamSubscription<DiscoveredDevice>?
-      _discoveredDeviceStreamSubscription;
+  StreamSubscription<DiscoveredDevice>? _discoveredDeviceStreamSubscription;
+  StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
+  StreamSubscription<List<int>>? _characteristicStreamSubscription;
 
   final _name1 = 'ACI03170078';
   final _name2 = 'ACI01160006';
@@ -39,10 +38,12 @@ class DsimRepository {
   Stream<ScanReport> get scannedDevices async* {
     bool isPermissionGranted = await requestPermission();
     if (isPermissionGranted) {
+      await BluetoothEnable.enableBluetooth;
       _scanReportStreamController = StreamController<ScanReport>();
       _discoveredDeviceStreamSubscription =
           _ble.scanForDevices(withServices: []).listen((device) {
         if (device.name.startsWith(_name1)) {
+          print('Find $_name1');
           if (!_scanReportStreamController.isClosed) {
             _scanReportStreamController.add(
               ScanReport(
@@ -52,11 +53,29 @@ class DsimRepository {
             );
           }
         }
+      }, onError: (_) {
+        _scanReportStreamController.add(
+          const ScanReport(
+            scanStatus: ScanStatus.disable,
+            discoveredDevice: null,
+          ),
+        );
       });
-      yield* _scanReportStreamController.stream;
+      yield* _scanReportStreamController.stream.timeout(
+          Duration(
+            seconds: scanDuration,
+          ), onTimeout: (sink) {
+        print('Stop Scanning');
+        _scanReportStreamController.add(
+          const ScanReport(
+            scanStatus: ScanStatus.failure,
+            discoveredDevice: null,
+          ),
+        );
+      });
     } else {
       yield const ScanReport(
-        scanStatus: ScanStatus.success,
+        scanStatus: ScanStatus.failure,
         discoveredDevice: null,
       );
     }
@@ -65,13 +84,16 @@ class DsimRepository {
   Future<void> closeScanStream() async {
     print('closeScanStream');
     _scanReportStreamController.close();
-    _discoveredDeviceStreamSubscription?.cancel();
+    await _discoveredDeviceStreamSubscription?.cancel();
     _discoveredDeviceStreamSubscription = null;
   }
 
   Future<void> closeConnectionStream() async {
     print('closeConnectionStream');
-    _connectionStreamSubscription?.cancel();
+
+    await _characteristicStreamSubscription?.cancel();
+    _characteristicStreamSubscription = null;
+    await _connectionStreamSubscription?.cancel();
     _connectionStreamSubscription = null;
   }
 
@@ -102,19 +124,23 @@ class DsimRepository {
           deviceId: discoveredDevice.id,
         );
 
-        _ble.subscribeToCharacteristic(characteristic).listen((data) {
+        _characteristicStreamSubscription =
+            _ble.subscribeToCharacteristic(characteristic).listen((data) {
           print(data);
         });
 
-        _ble
-            .writeCharacteristicWithResponse(characteristic, value: _req00Cmd)
-            .then((_) async {
-          print('write done');
+        _ble.writeCharacteristicWithoutResponse(characteristic,
+            value: _req00Cmd);
 
-          // final bytes = await _ble.readCharacteristic(characteristic);
+        // _ble
+        //     .writeCharacteristicWithResponse(characteristic, value: _req00Cmd)
+        //     .then((_) async {
+        //   print('write done');
 
-          // print(bytes);
-        });
+        //   // final bytes = await _ble.readCharacteristic(characteristic);
+
+        //   // print(bytes);
+        // });
       }
     }, onError: (error) {
       print('Error: $error');
