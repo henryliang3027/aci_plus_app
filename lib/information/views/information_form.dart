@@ -18,7 +18,7 @@ class InformationForm extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              AppLocalizations.of(context)!.dialogTitleError,
+              AppLocalizations.of(context).dialogTitleError,
               style: const TextStyle(
                 color: CustomStyle.customRed,
               ),
@@ -64,6 +64,7 @@ class InformationForm extends StatelessWidget {
         body: Column(
           children: const [
             _ConnectionCard(),
+            _BasicCard(),
           ],
         ),
       ),
@@ -131,25 +132,126 @@ class _ConnectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget connectionText({
+      required String title,
+      required String content,
+    }) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            Text(
+              content,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Connection',
+                AppLocalizations.of(context).connection,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Bluetooth'),
-                  Text(
-                    state.device != null ? state.device!.name : '',
-                  ),
-                ],
+              const SizedBox(
+                height: 10.0,
+              ),
+              connectionText(
+                title: AppLocalizations.of(context).bluetooth,
+                content: state.device != null ? state.device!.name : '',
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _BasicCard extends StatelessWidget {
+  const _BasicCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget basicText({
+      required String title,
+      required String content,
+    }) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            Text(
+              content,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppLocalizations.of(context).basic,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              basicText(
+                title: AppLocalizations.of(context).typeNo,
+                content: state.typeNo,
+              ),
+              basicText(
+                title: AppLocalizations.of(context).partNo,
+                content: state.partNo,
+              ),
+              basicText(
+                title: AppLocalizations.of(context).location,
+                content: state.location,
+              ),
+              basicText(
+                title: AppLocalizations.of(context).dsimMode,
+                content: state.dsimMode,
+              ),
+              basicText(
+                title: AppLocalizations.of(context).currentPilot,
+                content: state.currentPilot,
+              ),
+              basicText(
+                title: AppLocalizations.of(context).logInterval,
+                content: state.logInterval,
               ),
             ],
           ),

@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:dsim_app/core/command.dart';
+import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
@@ -21,7 +23,9 @@ class ScanReport {
 }
 
 class DsimRepository {
-  DsimRepository() : _ble = FlutterReactiveBle();
+  DsimRepository() : _ble = FlutterReactiveBle() {
+    _calculateCRCs();
+  }
   final FlutterReactiveBle _ble;
   final scanDuration = 3; // sec
   late StreamController<ScanReport> _scanReportStreamController;
@@ -33,7 +37,6 @@ class DsimRepository {
   final _name2 = 'ACI01160006';
   final _serviceId = 'ffe0';
   final _characteristicId = 'ffe1';
-  final _req00Cmd = [0xB0, 0x03, 0x00, 0x00, 0x00, 0x06, 0xDE, 0x29]; //0
 
   Stream<ScanReport> get scannedDevices async* {
     bool isPermissionGranted = await requestPermission();
@@ -43,7 +46,6 @@ class DsimRepository {
       _discoveredDeviceStreamSubscription =
           _ble.scanForDevices(withServices: []).listen((device) {
         if (device.name.startsWith(_name1)) {
-          print('Find $_name1');
           if (!_scanReportStreamController.isClosed) {
             _scanReportStreamController.add(
               ScanReport(
@@ -98,6 +100,7 @@ class DsimRepository {
   }
 
   void connectDevice(DiscoveredDevice discoveredDevice) {
+    print('connect to ${discoveredDevice.name}, ${discoveredDevice.id}');
     _connectionStreamSubscription = _ble
         .connectToDevice(
             id: discoveredDevice.id,
@@ -118,33 +121,58 @@ class DsimRepository {
           print('characteristics: ${deviceService.characteristics}');
         }
 
-        final characteristic = QualifiedCharacteristic(
+        final qualifiedCharacteristic = QualifiedCharacteristic(
           serviceId: Uuid.parse(_serviceId),
           characteristicId: Uuid.parse(_characteristicId),
           deviceId: discoveredDevice.id,
         );
 
-        _characteristicStreamSubscription =
-            _ble.subscribeToCharacteristic(characteristic).listen((data) {
+        _characteristicStreamSubscription = _ble
+            .subscribeToCharacteristic(qualifiedCharacteristic)
+            .listen((data) {
+          print('-----data received-----');
           print(data);
+
+          List<int> rawData = data;
+          String strData = '';
+          strData = rawData.map((e) => String.fromCharCode(e)).join('');
+          print(strData);
         });
 
-        _ble.writeCharacteristicWithoutResponse(characteristic,
-            value: _req00Cmd);
-
-        // _ble
-        //     .writeCharacteristicWithResponse(characteristic, value: _req00Cmd)
-        //     .then((_) async {
-        //   print('write done');
-
-        //   // final bytes = await _ble.readCharacteristic(characteristic);
-
-        //   // print(bytes);
-        // });
+        _writeCommands(qualifiedCharacteristic);
       }
     }, onError: (error) {
       print('Error: $error');
     });
+  }
+
+  Future<void> _writeCommands(
+    QualifiedCharacteristic qualifiedCharacteristic,
+  ) async {
+    await _ble.writeCharacteristicWithoutResponse(
+      qualifiedCharacteristic,
+      value: Command.req00Cmd,
+    );
+
+    // await _ble.writeCharacteristicWithoutResponse(
+    //   qualifiedCharacteristic,
+    //   value: Command.req01Cmd,
+    // );
+
+    // await _ble.writeCharacteristicWithoutResponse(
+    //   qualifiedCharacteristic,
+    //   value: Command.req02Cmd,
+    // );
+  }
+
+  void _calculateCRCs() {
+    CRC16.calculateCRC16(command: Command.req00Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.req01Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.req02Cmd, usDataLength: 6);
+    print('decrypted command');
+    print(Command.req00Cmd);
+    print(Command.req01Cmd);
+    print(Command.req02Cmd);
   }
 
   Future<bool> requestPermission() async {
