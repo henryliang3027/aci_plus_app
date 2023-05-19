@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
@@ -16,9 +17,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         super(const HomeState()) {
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
+    on<DeviceConnectionChanged>(_onDeviceConnectionChanged);
+    on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
 
     _scanStreamSubscription = _dsimRepository.scannedDevices.listen(
-      (scanReport) async {
+      (scanReport) {
         add(DiscoveredDeviceChanged(scanReport));
       },
     );
@@ -26,6 +29,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   final DsimRepository _dsimRepository;
   late StreamSubscription<ScanReport>? _scanStreamSubscription;
+  late StreamSubscription<ConnectionReport>? _connectionStreamSubscription;
+  late StreamSubscription<Map<String, String>>?
+      _characteristicDataStreamSubscription;
+
+  final Map<String, String> _characteristicDataMap = {};
 
   Future<void> _onDiscoveredDeviceChanged(
     DiscoveredDeviceChanged event,
@@ -37,7 +45,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           status: FormStatus.requestSuccess,
           device: event.scanReport.discoveredDevice,
         ));
-        _dsimRepository.connectDevice(state.device!);
+        // _dsimRepository.connectDevice(state.device!);
+
+        _connectionStreamSubscription =
+            _dsimRepository.connectionStateReport.listen((connectionReport) {
+          add(DeviceConnectionChanged(connectionReport));
+        });
+        // _getCharacteristicData();
         break;
       case ScanStatus.failure:
         emit(state.copyWith(
@@ -56,6 +70,61 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     await _dsimRepository.closeScanStream();
     await _scanStreamSubscription?.cancel();
     _scanStreamSubscription = null;
+  }
+
+  void _onDeviceConnectionChanged(
+    DeviceConnectionChanged event,
+    Emitter<HomeState> emit,
+  ) {
+    switch (event.connectionReport.connectionState) {
+      case DeviceConnectionState.connecting:
+        emit(state.copyWith(
+          status: FormStatus.requestSuccess,
+          connectionStatus: FormStatus.requestInProgress,
+        ));
+        break;
+      case DeviceConnectionState.connected:
+        emit(state.copyWith(
+          status: FormStatus.requestSuccess,
+          connectionStatus: FormStatus.requestSuccess,
+        ));
+
+        _characteristicDataStreamSubscription =
+            _dsimRepository.characteristicData.listen(
+          (data) {
+            print(data);
+
+            _characteristicDataMap.addEntries(data.entries);
+          },
+          onDone: () {
+            add(const DeviceCharacteristicChanged());
+          },
+        );
+
+        break;
+      case DeviceConnectionState.disconnecting:
+        emit(state.copyWith(
+          status: FormStatus.requestSuccess,
+          connectionStatus: FormStatus.requestFailure,
+        ));
+        break;
+      case DeviceConnectionState.disconnected:
+        emit(state.copyWith(
+          status: FormStatus.requestSuccess,
+          connectionStatus: FormStatus.requestFailure,
+        ));
+        break;
+    }
+  }
+
+  void _onDeviceCharacteristicChanged(
+    DeviceCharacteristicChanged event,
+    Emitter<HomeState> emit,
+  ) {
+    emit(state.copyWith(
+      typeNo: _characteristicDataMap['typeNo'],
+      partNo: _characteristicDataMap['partNo'],
+    ));
   }
 
   Future<void> _onDeviceRefreshed(

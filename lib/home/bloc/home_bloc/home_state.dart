@@ -3,6 +3,7 @@ part of 'home_bloc.dart';
 class HomeState extends Equatable {
   const HomeState({
     this.status = FormStatus.none,
+    this.connectionStatus = FormStatus.none,
     this.device,
     this.typeNo = '',
     this.partNo = '',
@@ -14,6 +15,7 @@ class HomeState extends Equatable {
   });
 
   final FormStatus status;
+  final FormStatus connectionStatus;
   final DiscoveredDevice? device;
   final String typeNo;
   final String partNo;
@@ -25,6 +27,7 @@ class HomeState extends Equatable {
 
   HomeState copyWith({
     FormStatus? status,
+    FormStatus? connectionStatus,
     DiscoveredDevice? device,
     String? typeNo,
     String? partNo,
@@ -36,6 +39,7 @@ class HomeState extends Equatable {
   }) {
     return HomeState(
       status: status ?? this.status,
+      connectionStatus: connectionStatus ?? this.connectionStatus,
       device: device ?? this.device,
       typeNo: typeNo ?? this.typeNo,
       partNo: partNo ?? this.partNo,
@@ -50,6 +54,7 @@ class HomeState extends Equatable {
   @override
   List<Object?> get props => [
         status,
+        connectionStatus,
         device,
         typeNo,
         partNo,

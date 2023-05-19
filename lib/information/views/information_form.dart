@@ -80,9 +80,25 @@ class _DeviceStatus extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.status.isRequestSuccess) {
-          return const Icon(
-            Icons.bluetooth_connected_outlined,
-          );
+          if (state.connectionStatus.isRequestSuccess) {
+            return const Icon(
+              Icons.bluetooth_connected_outlined,
+            );
+          } else if (state.connectionStatus.isRequestFailure) {
+            return const Icon(
+              Icons.nearby_error,
+            );
+          } else {
+            return const Center(
+              child: SizedBox(
+                width: 20.0,
+                height: 20.0,
+                child: CircularProgressIndicator(
+                  color: Colors.amber,
+                ),
+              ),
+            );
+          }
         } else if (state.status.isRequestFailure) {
           return const Icon(
             Icons.nearby_error_outlined,

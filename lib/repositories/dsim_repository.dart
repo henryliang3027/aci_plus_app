@@ -22,6 +22,16 @@ class ScanReport {
   final DiscoveredDevice? discoveredDevice;
 }
 
+class ConnectionReport {
+  const ConnectionReport({
+    required this.connectionState,
+    this.errorMessage = '',
+  });
+
+  final DeviceConnectionState connectionState;
+  final String errorMessage;
+}
+
 class DsimRepository {
   DsimRepository() : _ble = FlutterReactiveBle() {
     _calculateCRCs();
@@ -29,14 +39,25 @@ class DsimRepository {
   final FlutterReactiveBle _ble;
   final scanDuration = 3; // sec
   late StreamController<ScanReport> _scanReportStreamController;
+  StreamController<ConnectionReport> _connectionReportStreamController =
+      StreamController<ConnectionReport>();
+  StreamController<Map<String, String>> _characteristicDataStreamController =
+      StreamController<Map<String, String>>();
   StreamSubscription<DiscoveredDevice>? _discoveredDeviceStreamSubscription;
   StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
   StreamSubscription<List<int>>? _characteristicStreamSubscription;
 
   final _name1 = 'ACI03170078';
   final _name2 = 'ACI01160006';
+  final _aciPrefix = 'ACI';
   final _serviceId = 'ffe0';
   final _characteristicId = 'ffe1';
+  final List<List<int>> _commandCollection = [];
+  int _commandIndex = 0;
+  final _characteristicDataKey = [
+    'typeNo',
+    'partNo',
+  ];
 
   Stream<ScanReport> get scannedDevices async* {
     bool isPermissionGranted = await requestPermission();
@@ -45,7 +66,7 @@ class DsimRepository {
       _scanReportStreamController = StreamController<ScanReport>();
       _discoveredDeviceStreamSubscription =
           _ble.scanForDevices(withServices: []).listen((device) {
-        if (device.name.startsWith(_name1)) {
+        if (device.name.startsWith(_aciPrefix)) {
           if (!_scanReportStreamController.isClosed) {
             _scanReportStreamController.add(
               ScanReport(
@@ -53,6 +74,7 @@ class DsimRepository {
                 discoveredDevice: device,
               ),
             );
+            _connectDevice(device);
           }
         }
       }, onError: (_) {
@@ -83,6 +105,14 @@ class DsimRepository {
     }
   }
 
+  Stream<ConnectionReport> get connectionStateReport async* {
+    yield* _connectionReportStreamController.stream;
+  }
+
+  Stream<Map<String, String>> get characteristicData async* {
+    yield* _characteristicDataStreamController.stream;
+  }
+
   Future<void> closeScanStream() async {
     print('closeScanStream');
     _scanReportStreamController.close();
@@ -91,16 +121,25 @@ class DsimRepository {
   }
 
   Future<void> closeConnectionStream() async {
-    print('closeConnectionStream');
+    print('close _characteristicStreamSubscription');
 
     await _characteristicStreamSubscription?.cancel();
     _characteristicStreamSubscription = null;
+
+    // add delay to solve the following exception on ios
+    // Error unsubscribing from notifications:
+    // PlatformException(reactive_ble_mobile.PluginError:7, The operation couldn’t be completed.
+    // (reactive_ble_mobile.PluginError error 7.), {}, null)
+    await Future.delayed(const Duration(milliseconds: 1));
+
+    print('close _connectionStreamSubscription');
     await _connectionStreamSubscription?.cancel();
     _connectionStreamSubscription = null;
   }
 
-  void connectDevice(DiscoveredDevice discoveredDevice) {
+  void _connectDevice(DiscoveredDevice discoveredDevice) {
     print('connect to ${discoveredDevice.name}, ${discoveredDevice.id}');
+    _connectionReportStreamController = StreamController<ConnectionReport>();
     _connectionStreamSubscription = _ble
         .connectToDevice(
             id: discoveredDevice.id,
@@ -108,18 +147,14 @@ class DsimRepository {
               seconds: 10,
             ))
         .listen((connectionStateUpdate) async {
+      _connectionReportStreamController.add(ConnectionReport(
+          connectionState: connectionStateUpdate.connectionState));
+
       if (connectionStateUpdate.connectionState ==
           DeviceConnectionState.connected) {
-        List<DiscoveredService> deviceServices = await _ble.discoverServices(
-          discoveredDevice.id,
-        );
-
-        for (DiscoveredService deviceService in deviceServices) {
-          print('-----------------');
-          print('service id: ${deviceService.serviceId}');
-          print('characteristicIds: ${deviceService.characteristicIds}');
-          print('characteristics: ${deviceService.characteristics}');
-        }
+        // initialize _characteristicDataStreamController
+        _characteristicDataStreamController =
+            StreamController<Map<String, String>>();
 
         final qualifiedCharacteristic = QualifiedCharacteristic(
           serviceId: Uuid.parse(_serviceId),
@@ -129,50 +164,73 @@ class DsimRepository {
 
         _characteristicStreamSubscription = _ble
             .subscribeToCharacteristic(qualifiedCharacteristic)
-            .listen((data) {
+            .listen((data) async {
           print('-----data received-----');
           print(data);
 
           List<int> rawData = data;
-          String strData = '';
-          strData = rawData.map((e) => String.fromCharCode(e)).join('');
-          print(strData);
+          String strData = parseRawData(rawData);
+          _characteristicDataStreamController
+              .add({_characteristicDataKey[_commandIndex]: strData});
+
+          _commandIndex += 1;
+
+          if (_commandIndex < _commandCollection.length) {
+            await _ble.writeCharacteristicWithoutResponse(
+              qualifiedCharacteristic,
+              value: _commandCollection[_commandIndex],
+            );
+          } else {
+            _characteristicDataStreamController.close();
+          }
         });
 
-        _writeCommands(qualifiedCharacteristic);
+        // start to write first command
+        _commandIndex = 0;
+        await _ble.writeCharacteristicWithoutResponse(
+          qualifiedCharacteristic,
+          value: _commandCollection[_commandIndex],
+        );
       }
     }, onError: (error) {
       print('Error: $error');
+      _connectionReportStreamController.add(ConnectionReport(
+        connectionState: DeviceConnectionState.disconnected,
+        errorMessage: error,
+      ));
     });
   }
 
-  Future<void> _writeCommands(
-    QualifiedCharacteristic qualifiedCharacteristic,
-  ) async {
-    await _ble.writeCharacteristicWithoutResponse(
-      qualifiedCharacteristic,
-      value: Command.req00Cmd,
-    );
+  String parseRawData(List<int> rawData) {
+    switch (_commandIndex) {
+      case 0:
+        String typeNo = '';
+        for (int i = 3; i < 15; i++) {
+          typeNo += String.fromCharCode(rawData[i]);
+        }
+        return typeNo;
+      case 1:
+        String partNo = 'DSIM';
+        for (int i = 3; i < 14; i++) {
+          partNo += String.fromCharCode(rawData[i]);
+        }
+        return partNo;
 
-    // await _ble.writeCharacteristicWithoutResponse(
-    //   qualifiedCharacteristic,
-    //   value: Command.req01Cmd,
-    // );
-
-    // await _ble.writeCharacteristicWithoutResponse(
-    //   qualifiedCharacteristic,
-    //   value: Command.req02Cmd,
-    // );
+      default:
+        return '';
+    }
   }
 
   void _calculateCRCs() {
     CRC16.calculateCRC16(command: Command.req00Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command.req01Cmd, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.req02Cmd, usDataLength: 6);
-    print('decrypted command');
-    print(Command.req00Cmd);
-    print(Command.req01Cmd);
-    print(Command.req02Cmd);
+    _commandCollection.addAll([
+      Command.req00Cmd,
+      Command.req01Cmd,
+    ]);
+
+    print(_commandCollection[0]);
+    print(_commandCollection[1]);
   }
 
   Future<bool> requestPermission() async {
