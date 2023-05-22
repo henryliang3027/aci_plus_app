@@ -231,6 +231,46 @@ class _BasicCard extends StatelessWidget {
       );
     }
 
+    Widget basicTextMultipleLine({
+      required String title,
+      required String content,
+    }) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Flexible(
+                  child: Text(
+                    content,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
         child: Padding(
@@ -253,7 +293,7 @@ class _BasicCard extends StatelessWidget {
                 title: AppLocalizations.of(context).partNo,
                 content: state.partNo,
               ),
-              basicText(
+              basicTextMultipleLine(
                 title: AppLocalizations.of(context).location,
                 content: state.location,
               ),

@@ -57,7 +57,11 @@ class DsimRepository {
   final _characteristicDataKey = [
     'typeNo',
     'partNo',
+    'location',
+    'dsimMode',
   ];
+
+  String _tempAddress = '';
 
   Stream<ScanReport> get scannedDevices async* {
     bool isPermissionGranted = await requestPermission();
@@ -169,9 +173,8 @@ class DsimRepository {
           print(data);
 
           List<int> rawData = data;
-          String strData = parseRawData(rawData);
-          _characteristicDataStreamController
-              .add({_characteristicDataKey[_commandIndex]: strData});
+          String strData = _parseRawData(rawData);
+          _generateCharacteristicData(strData);
 
           _commandIndex += 1;
 
@@ -201,7 +204,7 @@ class DsimRepository {
     });
   }
 
-  String parseRawData(List<int> rawData) {
+  String _parseRawData(List<int> rawData) {
     switch (_commandIndex) {
       case 0:
         String typeNo = '';
@@ -215,22 +218,88 @@ class DsimRepository {
           partNo += String.fromCharCode(rawData[i]);
         }
         return partNo;
+      case 2: // location1
+        for (int i = 3; i < 15; i++) {
+          _tempAddress += String.fromCharCode(rawData[i]);
+        }
+        print('2: $_tempAddress');
+        return '';
+      case 3: // location2
+        for (int i = 3; i < 15; i++) {
+          _tempAddress += String.fromCharCode(rawData[i]);
+        }
+        print('3: $_tempAddress');
+        return '';
+      case 4: // location3
+        for (int i = 3; i < 15; i++) {
+          _tempAddress += String.fromCharCode(rawData[i]);
+        }
+        print('4: $_tempAddress');
+        return '';
+      case 5: // location4 4 bytes, total 40 bytes
+        for (int i = 3; i < 7; i++) {
+          if (rawData[i] != 0 && rawData[i] != 32) {
+            // 32 is space
+            _tempAddress += String.fromCharCode(rawData[i]);
+          }
+        }
+        print('5: $_tempAddress');
+        return _tempAddress;
 
       default:
         return '';
     }
   }
 
+  void _generateCharacteristicData(String strData) {
+    switch (_commandIndex) {
+      case 0:
+        _characteristicDataStreamController
+            .add({_characteristicDataKey[0]: strData});
+        break;
+      case 1:
+        _characteristicDataStreamController
+            .add({_characteristicDataKey[1]: strData});
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+      case 4:
+        break;
+      case 5:
+        _characteristicDataStreamController
+            .add({_characteristicDataKey[2]: strData});
+        _tempAddress = '';
+        break;
+      default:
+        break;
+    }
+  }
+
   void _calculateCRCs() {
     CRC16.calculateCRC16(command: Command.req00Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command.req01Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.location1, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.location2, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.location3, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.location4, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.req0DCmd, usDataLength: 6);
     _commandCollection.addAll([
       Command.req00Cmd,
       Command.req01Cmd,
+      Command.location1,
+      Command.location2,
+      Command.location3,
+      Command.location4,
     ]);
 
     print(_commandCollection[0]);
     print(_commandCollection[1]);
+    print(_commandCollection[2]);
+    print(_commandCollection[3]);
+    print(_commandCollection[4]);
+    print(_commandCollection[5]);
   }
 
   Future<bool> requestPermission() async {

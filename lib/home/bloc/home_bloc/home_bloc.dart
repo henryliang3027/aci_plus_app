@@ -122,9 +122,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) {
     emit(state.copyWith(
-      typeNo: _characteristicDataMap['typeNo'],
-      partNo: _characteristicDataMap['partNo'],
-    ));
+        typeNo: _characteristicDataMap['typeNo'],
+        partNo: _characteristicDataMap['partNo'],
+        location: _characteristicDataMap['location']));
   }
 
   Future<void> _onDeviceRefreshed(
