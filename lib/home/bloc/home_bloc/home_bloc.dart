@@ -30,10 +30,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final DsimRepository _dsimRepository;
   late StreamSubscription<ScanReport>? _scanStreamSubscription;
   late StreamSubscription<ConnectionReport>? _connectionStreamSubscription;
-  late StreamSubscription<Map<String, String>>?
+  late StreamSubscription<Map<DataKey, String>>?
       _characteristicDataStreamSubscription;
 
-  final Map<String, String> _characteristicDataMap = {};
+  final Map<DataKey, String> _characteristicDataMap = {};
 
   Future<void> _onDiscoveredDeviceChanged(
     DiscoveredDeviceChanged event,
@@ -122,9 +122,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) {
     emit(state.copyWith(
-        typeNo: _characteristicDataMap['typeNo'],
-        partNo: _characteristicDataMap['partNo'],
-        location: _characteristicDataMap['location']));
+        typeNo: _characteristicDataMap[DataKey.typeNo],
+        partNo: _characteristicDataMap[DataKey.partNo],
+        serialNumber: _characteristicDataMap[DataKey.serialNumber],
+        softwareVersion: _characteristicDataMap[DataKey.softwareVersion],
+        location: _characteristicDataMap[DataKey.location],
+        dsimMode: _characteristicDataMap[DataKey.dsimMode],
+        currentPilot: _characteristicDataMap[DataKey.currentPilot],
+        logInterval: _characteristicDataMap[DataKey.logInterval]));
   }
 
   Future<void> _onDeviceRefreshed(

@@ -61,11 +61,14 @@ class InformationForm extends StatelessWidget {
           leading: const _DeviceStatus(),
           actions: const [_DeviceRefresh()],
         ),
-        body: Column(
-          children: const [
-            _ConnectionCard(),
-            _BasicCard(),
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: const [
+              _ConnectionCard(),
+              _BasicCard(),
+              _AlarmCard(),
+            ],
+          ),
         ),
       ),
     );
@@ -87,6 +90,7 @@ class _DeviceStatus extends StatelessWidget {
           } else if (state.connectionStatus.isRequestFailure) {
             return const Icon(
               Icons.nearby_error,
+              color: Colors.amber,
             );
           } else {
             return const Center(
@@ -259,6 +263,7 @@ class _BasicCard extends StatelessWidget {
                 Flexible(
                   child: Text(
                     content,
+                    textAlign: TextAlign.end,
                     style: const TextStyle(
                       fontSize: 16,
                     ),
@@ -308,6 +313,84 @@ class _BasicCard extends StatelessWidget {
               basicText(
                 title: AppLocalizations.of(context).logInterval,
                 content: state.logInterval,
+              ),
+              basicText(
+                title: AppLocalizations.of(context).serialNumber,
+                content: state.serialNumber,
+              ),
+              basicText(
+                title: AppLocalizations.of(context).softwareVersion,
+                content: state.softwareVersion,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AlarmCard extends StatelessWidget {
+  const _AlarmCard({super.key});
+
+  Widget _alarmItem({
+    required IconData iconData,
+    required Color iconColor,
+    required String title,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Icon(
+            iconData,
+            color: iconColor,
+          ),
+          const SizedBox(
+            width: 10.0,
+          ),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppLocalizations.of(context).alarm,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              _alarmItem(
+                iconData: Icons.circle,
+                iconColor: Colors.green,
+                title: AppLocalizations.of(context).rfPilotLevel,
+              ),
+              _alarmItem(
+                iconData: Icons.circle,
+                iconColor: Colors.green,
+                title: AppLocalizations.of(context).temperature,
+              ),
+              _alarmItem(
+                iconData: Icons.circle,
+                iconColor: Colors.green,
+                title: AppLocalizations.of(context).powerSupply,
               ),
             ],
           ),

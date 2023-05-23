@@ -11,6 +11,8 @@ class HomeState extends Equatable {
     this.dsimMode = '',
     this.currentPilot = '',
     this.logInterval = '',
+    this.serialNumber = '',
+    this.softwareVersion = '',
     this.errorMassage = '',
   });
 
@@ -23,6 +25,8 @@ class HomeState extends Equatable {
   final String dsimMode;
   final String currentPilot;
   final String logInterval;
+  final String serialNumber;
+  final String softwareVersion;
   final String errorMassage;
 
   HomeState copyWith({
@@ -35,6 +39,8 @@ class HomeState extends Equatable {
     String? dsimMode,
     String? currentPilot,
     String? logInterval,
+    String? serialNumber,
+    String? softwareVersion,
     String? errorMassage,
   }) {
     return HomeState(
@@ -47,6 +53,8 @@ class HomeState extends Equatable {
       dsimMode: dsimMode ?? this.dsimMode,
       currentPilot: currentPilot ?? this.currentPilot,
       logInterval: logInterval ?? this.logInterval,
+      serialNumber: serialNumber ?? this.serialNumber,
+      softwareVersion: softwareVersion ?? this.softwareVersion,
       errorMassage: errorMassage ?? this.errorMassage,
     );
   }
@@ -62,6 +70,8 @@ class HomeState extends Equatable {
         dsimMode,
         currentPilot,
         logInterval,
+        serialNumber,
+        softwareVersion,
         errorMassage,
       ];
 }

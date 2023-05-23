@@ -6,10 +6,27 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 
+enum DataKey {
+  typeNo,
+  partNo,
+  serialNumber,
+  softwareVersion,
+  location,
+  dsimMode,
+  currentPilot,
+  logInterval,
+}
+
 enum ScanStatus {
   success,
   failure,
   disable,
+}
+
+enum Alarm {
+  success,
+  danger,
+  medium,
 }
 
 class ScanReport {
@@ -41,8 +58,8 @@ class DsimRepository {
   late StreamController<ScanReport> _scanReportStreamController;
   StreamController<ConnectionReport> _connectionReportStreamController =
       StreamController<ConnectionReport>();
-  StreamController<Map<String, String>> _characteristicDataStreamController =
-      StreamController<Map<String, String>>();
+  StreamController<Map<DataKey, String>> _characteristicDataStreamController =
+      StreamController<Map<DataKey, String>>();
   StreamSubscription<DiscoveredDevice>? _discoveredDeviceStreamSubscription;
   StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
   StreamSubscription<List<int>>? _characteristicStreamSubscription;
@@ -54,16 +71,22 @@ class DsimRepository {
   final _characteristicId = 'ffe1';
   final List<List<int>> _commandCollection = [];
   int _commandIndex = 0;
-  final _characteristicDataKey = [
-    'typeNo',
-    'partNo',
-    'location',
-    'dsimMode',
-  ];
 
-  String _tempAddress = '';
+  String _tempLocation = '';
+  int _basicModeID = 0;
+  String _basicCurrentPilot = '';
+  int _basicCurrentPilotMode = 0;
+  int _currentSettingMode = 0;
+  int _alarmR = 0;
+  int _alarmT = 0;
+  int _alarmP = 0;
+  String _basicInterval = '';
 
   Stream<ScanReport> get scannedDevices async* {
+    // close connection before start scanning new device,
+    // it is to solve device is not successfully disconnected after the app is closed
+    await closeConnectionStream();
+
     bool isPermissionGranted = await requestPermission();
     if (isPermissionGranted) {
       await BluetoothEnable.enableBluetooth;
@@ -113,7 +136,7 @@ class DsimRepository {
     yield* _connectionReportStreamController.stream;
   }
 
-  Stream<Map<String, String>> get characteristicData async* {
+  Stream<Map<DataKey, String>> get characteristicData async* {
     yield* _characteristicDataStreamController.stream;
   }
 
@@ -158,7 +181,7 @@ class DsimRepository {
           DeviceConnectionState.connected) {
         // initialize _characteristicDataStreamController
         _characteristicDataStreamController =
-            StreamController<Map<String, String>>();
+            StreamController<Map<DataKey, String>>();
 
         final qualifiedCharacteristic = QualifiedCharacteristic(
           serviceId: Uuid.parse(_serviceId),
@@ -173,8 +196,8 @@ class DsimRepository {
           print(data);
 
           List<int> rawData = data;
-          String strData = _parseRawData(rawData);
-          _generateCharacteristicData(strData);
+          _parseRawData(rawData);
+          // _generateCharacteristicData(strData);
 
           _commandIndex += 1;
 
@@ -204,73 +227,156 @@ class DsimRepository {
     });
   }
 
-  String _parseRawData(List<int> rawData) {
+  void _parseRawData(List<int> rawData) {
     switch (_commandIndex) {
       case 0:
         String typeNo = '';
         for (int i = 3; i < 15; i++) {
           typeNo += String.fromCharCode(rawData[i]);
         }
-        return typeNo;
+        _characteristicDataStreamController.add({DataKey.typeNo: typeNo});
+        break;
       case 1:
         String partNo = 'DSIM';
         for (int i = 3; i < 14; i++) {
           partNo += String.fromCharCode(rawData[i]);
         }
-        return partNo;
-      case 2: // location1
+        _characteristicDataStreamController.add({DataKey.partNo: partNo});
+        break;
+      case 2:
+        String serialNumber = '';
         for (int i = 3; i < 15; i++) {
-          _tempAddress += String.fromCharCode(rawData[i]);
+          serialNumber += String.fromCharCode(rawData[i]);
         }
-        print('2: $_tempAddress');
-        return '';
-      case 3: // location2
+        _characteristicDataStreamController
+            .add({DataKey.serialNumber: serialNumber});
+        break;
+      case 3:
+        int number = rawData[10]; // hardware status 4 bytes last bute
+        _alarmR = (number & 0x01) + (number & 0x02);
+        _alarmT = (number & 0x40) + (number & 0x80);
+        _alarmP = (number & 0x10) + (number & 0x20);
+
+        _basicInterval = rawData[13].toString(); //time interval
+        _basicInterval += " minutes";
+
+        String softwareVersion = '';
+        for (int i = 3; i < 6; i++) {
+          softwareVersion += String.fromCharCode(rawData[i]);
+        }
+
+        _characteristicDataStreamController
+            .add({DataKey.logInterval: _basicInterval});
+
+        _characteristicDataStreamController
+            .add({DataKey.softwareVersion: softwareVersion});
+        break;
+      case 4:
+        _currentSettingMode = rawData[3];
+        _basicCurrentPilot = rawData[7].toString();
+        _basicCurrentPilotMode = rawData[8];
+        break;
+
+      case 5:
+        String dsimMode = '';
+        String currentPilot = '';
+        String alarmRColor = '';
+        switch (rawData[3]) //working mode
+        {
+          case 1:
+            {
+              _basicModeID = 1;
+              dsimMode = "Align";
+              break;
+            }
+          case 2:
+            {
+              _basicModeID = 2;
+              dsimMode = "AGC";
+              break;
+            }
+          case 3:
+            {
+              _basicModeID = 3;
+              dsimMode = "TGC";
+              break;
+            }
+          case 4:
+            {
+              _basicModeID = 4;
+              dsimMode = "MGC";
+              break;
+            }
+        }
+
+        if (rawData[3] > 2) {
+          // medium
+          alarmRColor = 'midium';
+        } else {
+          if (_alarmR > 0) {
+            // danger
+            alarmRColor = 'danger';
+          } else {
+            // success
+            alarmRColor = 'success';
+          }
+          if (rawData[3] == 3) {
+            if (_currentSettingMode == 1 || _currentSettingMode == 2) {
+              // danger
+              alarmRColor = 'danger';
+            }
+          }
+        }
+
+        if (alarmRColor == 'danger') {
+          currentPilot = 'Loss';
+        } else {
+          currentPilot = _basicCurrentPilot;
+          if (_basicCurrentPilotMode == 1) {
+            currentPilot += ' IRC';
+          } else {
+            currentPilot += ' DIG';
+          }
+        }
+
+        _characteristicDataStreamController.add({DataKey.dsimMode: dsimMode});
+        _characteristicDataStreamController
+            .add({DataKey.currentPilot: currentPilot});
+        break;
+      case 6:
+        break;
+      case 7:
+        break;
+      case 8:
+        break;
+      case 9:
         for (int i = 3; i < 15; i++) {
-          _tempAddress += String.fromCharCode(rawData[i]);
+          _tempLocation += String.fromCharCode(rawData[i]);
         }
-        print('3: $_tempAddress');
-        return '';
-      case 4: // location3
+        break;
+      case 10: // location2
         for (int i = 3; i < 15; i++) {
-          _tempAddress += String.fromCharCode(rawData[i]);
+          _tempLocation += String.fromCharCode(rawData[i]);
         }
-        print('4: $_tempAddress');
-        return '';
-      case 5: // location4 4 bytes, total 40 bytes
+        break;
+      case 11: // location3
+        for (int i = 3; i < 15; i++) {
+          _tempLocation += String.fromCharCode(rawData[i]);
+        }
+        break;
+      case 12: // location1
         for (int i = 3; i < 7; i++) {
           if (rawData[i] != 0 && rawData[i] != 32) {
             // 32 is space
-            _tempAddress += String.fromCharCode(rawData[i]);
+            _tempLocation += String.fromCharCode(rawData[i]);
           }
         }
-        print('5: $_tempAddress');
-        return _tempAddress;
+        _characteristicDataStreamController
+            .add({DataKey.location: _tempLocation});
 
-      default:
-        return '';
-    }
-  }
-
-  void _generateCharacteristicData(String strData) {
-    switch (_commandIndex) {
-      case 0:
-        _characteristicDataStreamController
-            .add({_characteristicDataKey[0]: strData});
+        _tempLocation = '';
         break;
-      case 1:
-        _characteristicDataStreamController
-            .add({_characteristicDataKey[1]: strData});
-        break;
-      case 2:
-        break;
-      case 3:
-        break;
-      case 4:
-        break;
-      case 5:
-        _characteristicDataStreamController
-            .add({_characteristicDataKey[2]: strData});
-        _tempAddress = '';
+      case 13:
         break;
       default:
         break;
@@ -280,26 +386,42 @@ class DsimRepository {
   void _calculateCRCs() {
     CRC16.calculateCRC16(command: Command.req00Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command.req01Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.req02Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.req03Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.req04Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.req05Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.req06Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.req07Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.req08Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command.location1, usDataLength: 6);
     CRC16.calculateCRC16(command: Command.location2, usDataLength: 6);
     CRC16.calculateCRC16(command: Command.location3, usDataLength: 6);
     CRC16.calculateCRC16(command: Command.location4, usDataLength: 6);
     CRC16.calculateCRC16(command: Command.req0DCmd, usDataLength: 6);
+
     _commandCollection.addAll([
       Command.req00Cmd,
       Command.req01Cmd,
+      Command.req02Cmd,
+      Command.req03Cmd,
+      Command.req04Cmd,
+      Command.req05Cmd,
+      Command.req06Cmd,
+      Command.req07Cmd,
+      Command.req08Cmd,
       Command.location1,
       Command.location2,
       Command.location3,
       Command.location4,
+      Command.req0DCmd,
     ]);
 
-    print(_commandCollection[0]);
-    print(_commandCollection[1]);
-    print(_commandCollection[2]);
-    print(_commandCollection[3]);
-    print(_commandCollection[4]);
-    print(_commandCollection[5]);
+    // print(_commandCollection[0]);
+    // print(_commandCollection[1]);
+    // print(_commandCollection[2]);
+    // print(_commandCollection[3]);
+    // print(_commandCollection[4]);
+    // print(_commandCollection[5]);
   }
 
   Future<bool> requestPermission() async {
