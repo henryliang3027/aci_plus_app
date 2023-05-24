@@ -67,6 +67,9 @@ class InformationForm extends StatelessWidget {
               _ConnectionCard(),
               _BasicCard(),
               _AlarmCard(),
+              _AttenuationCard(),
+              _TemperatureCard(),
+              _PowerSupplyCard(),
             ],
           ),
         ),
@@ -152,32 +155,6 @@ class _ConnectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget connectionText({
-      required String title,
-      required String content,
-    }) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
-            ),
-            Text(
-              content,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
         child: Padding(
@@ -192,7 +169,7 @@ class _ConnectionCard extends StatelessWidget {
               const SizedBox(
                 height: 10.0,
               ),
-              connectionText(
+              itemText(
                 title: AppLocalizations.of(context).bluetooth,
                 content: state.device != null ? state.device!.name : '',
               ),
@@ -209,73 +186,6 @@ class _BasicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget basicText({
-      required String title,
-      required String content,
-    }) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
-            ),
-            Text(
-              content,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    Widget basicTextMultipleLine({
-      required String title,
-      required String content,
-    }) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Flexible(
-                  child: Text(
-                    content,
-                    textAlign: TextAlign.end,
-                    style: const TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-    }
-
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
         child: Padding(
@@ -290,35 +200,35 @@ class _BasicCard extends StatelessWidget {
               const SizedBox(
                 height: 10.0,
               ),
-              basicText(
+              itemText(
                 title: AppLocalizations.of(context).typeNo,
                 content: state.typeNo,
               ),
-              basicText(
+              itemText(
                 title: AppLocalizations.of(context).partNo,
                 content: state.partNo,
               ),
-              basicTextMultipleLine(
+              itemMultipleLineText(
                 title: AppLocalizations.of(context).location,
                 content: state.location,
               ),
-              basicText(
+              itemText(
                 title: AppLocalizations.of(context).dsimMode,
                 content: state.dsimMode,
               ),
-              basicText(
+              itemText(
                 title: AppLocalizations.of(context).currentPilot,
                 content: state.currentPilot,
               ),
-              basicText(
+              itemText(
                 title: AppLocalizations.of(context).logInterval,
                 content: state.logInterval,
               ),
-              basicText(
+              itemText(
                 title: AppLocalizations.of(context).serialNumber,
                 content: state.serialNumber,
               ),
-              basicText(
+              itemText(
                 title: AppLocalizations.of(context).softwareVersion,
                 content: state.softwareVersion,
               ),
@@ -333,10 +243,10 @@ class _BasicCard extends StatelessWidget {
 class _AlarmCard extends StatelessWidget {
   const _AlarmCard({super.key});
 
-  Widget _alarmItem({
+  Widget alarmItem({
     required IconData iconData,
-    required Color iconColor,
     required String title,
+    Color? iconColor,
   }) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -377,19 +287,19 @@ class _AlarmCard extends StatelessWidget {
               const SizedBox(
                 height: 10.0,
               ),
-              _alarmItem(
+              alarmItem(
                 iconData: Icons.circle,
-                iconColor: Colors.green,
+                iconColor: CustomStyle.alarmColor[state.alarmRServerity],
                 title: AppLocalizations.of(context).rfPilotLevel,
               ),
-              _alarmItem(
+              alarmItem(
                 iconData: Icons.circle,
-                iconColor: Colors.green,
+                iconColor: CustomStyle.alarmColor[state.alarmTServerity],
                 title: AppLocalizations.of(context).temperature,
               ),
-              _alarmItem(
+              alarmItem(
                 iconData: Icons.circle,
-                iconColor: Colors.green,
+                iconColor: CustomStyle.alarmColor[state.alarmPServerity],
                 title: AppLocalizations.of(context).powerSupply,
               ),
             ],
@@ -398,4 +308,258 @@ class _AlarmCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class _AttenuationCard extends StatelessWidget {
+  const _AttenuationCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${AppLocalizations.of(context).attenuation} ${AppLocalizations.of(context).range}',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(
+                height: 30.0,
+              ),
+              Text(
+                AppLocalizations.of(context).range,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              itemText(
+                title: AppLocalizations.of(context).currentAttenuation,
+                content: state.currentAttenuation,
+              ),
+              itemText(
+                title: AppLocalizations.of(context).minAttenuation,
+                content: state.minAttenuation,
+              ),
+              itemText(
+                title: AppLocalizations.of(context).normalAttenuation,
+                content: state.normalAttenuation,
+              ),
+              itemText(
+                title: AppLocalizations.of(context).maxAttenuation,
+                content: state.maxAttenuation,
+              ),
+              const SizedBox(
+                height: 26.0,
+              ),
+              Text(
+                AppLocalizations.of(context).historicalAttenuation,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              itemText(
+                title: AppLocalizations.of(context).historicalMinAttenuation,
+                content: state.historicalMinAttenuation,
+              ),
+              itemText(
+                title: AppLocalizations.of(context).historicalMaxAttenuation,
+                content: state.historicalMaxAttenuation,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TemperatureCard extends StatelessWidget {
+  const _TemperatureCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppLocalizations.of(context).temperatureFC,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              itemText(
+                title: AppLocalizations.of(context).currentTemperature,
+                content: state.currentTemperature,
+              ),
+              itemText(
+                title: AppLocalizations.of(context).minTemperature,
+                content: state.minTemperature,
+              ),
+              itemText(
+                title: AppLocalizations.of(context).maxTemperature,
+                content: state.maxTemperature,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PowerSupplyCard extends StatelessWidget {
+  const _PowerSupplyCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppLocalizations.of(context).powerSupplyVDC,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(
+                height: 30.0,
+              ),
+              Text(
+                AppLocalizations.of(context).voltageLevel,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              itemText(
+                title: AppLocalizations.of(context).currentVoltage,
+                content: state.currentVoltage,
+              ),
+              itemText(
+                title: AppLocalizations.of(context).minVoltage,
+                content: state.minVoltage,
+              ),
+              itemText(
+                title: AppLocalizations.of(context).maxVoltage,
+                content: state.maxVoltage,
+              ),
+              const SizedBox(
+                height: 26.0,
+              ),
+              Text(
+                AppLocalizations.of(context).voltageRipple,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              itemText(
+                title: AppLocalizations.of(context).currentVoltageRipple,
+                content: state.currentVoltageRipple,
+              ),
+              itemText(
+                title: AppLocalizations.of(context).minVoltageRipple,
+                content: state.minVoltageRipple,
+              ),
+              itemText(
+                title: AppLocalizations.of(context).maxVoltageRipple,
+                content: state.maxVoltageRipple,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+Widget itemText({
+  required String title,
+  required String content,
+}) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 16,
+          ),
+        ),
+        Text(
+          content,
+          style: const TextStyle(
+            fontSize: 16,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget itemMultipleLineText({
+  required String title,
+  required String content,
+}) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Flexible(
+              child: Text(
+                content,
+                textAlign: TextAlign.end,
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }

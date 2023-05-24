@@ -122,14 +122,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) {
     emit(state.copyWith(
-        typeNo: _characteristicDataMap[DataKey.typeNo],
-        partNo: _characteristicDataMap[DataKey.partNo],
-        serialNumber: _characteristicDataMap[DataKey.serialNumber],
-        softwareVersion: _characteristicDataMap[DataKey.softwareVersion],
-        location: _characteristicDataMap[DataKey.location],
-        dsimMode: _characteristicDataMap[DataKey.dsimMode],
-        currentPilot: _characteristicDataMap[DataKey.currentPilot],
-        logInterval: _characteristicDataMap[DataKey.logInterval]));
+      typeNo: _characteristicDataMap[DataKey.typeNo],
+      partNo: _characteristicDataMap[DataKey.partNo],
+      serialNumber: _characteristicDataMap[DataKey.serialNumber],
+      softwareVersion: _characteristicDataMap[DataKey.softwareVersion],
+      location: _characteristicDataMap[DataKey.location],
+      dsimMode: _characteristicDataMap[DataKey.dsimMode],
+      currentPilot: _characteristicDataMap[DataKey.currentPilot],
+      logInterval: _characteristicDataMap[DataKey.logInterval],
+      alarmRServerity: _characteristicDataMap[DataKey.alarmRServerity],
+      alarmTServerity: _characteristicDataMap[DataKey.alarmTServertity],
+      alarmPServerity: _characteristicDataMap[DataKey.alarmPServerity],
+      currentAttenuation: _characteristicDataMap[DataKey.currentAttenuation],
+      minAttenuation: _characteristicDataMap[DataKey.minAttenuation],
+      normalAttenuation: _characteristicDataMap[DataKey.normalAttenuation],
+      maxAttenuation: _characteristicDataMap[DataKey.maxAttenuation],
+      currentTemperature: _characteristicDataMap[DataKey.currentTemperature],
+      currentVoltage: _characteristicDataMap[DataKey.currentVoltage],
+      currentVoltageRipple:
+          _characteristicDataMap[DataKey.currentVoltageRipple],
+    ));
   }
 
   Future<void> _onDeviceRefreshed(

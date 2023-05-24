@@ -16,6 +16,7 @@
     "serialNumber": "S/N",
     "softwareVersion": "S/W",
     "attenuation": "Attenuation",
+    "range": "Range",
     "currentAttenuation": "Current Position",
     "minAttenuation": "Minimum(cold)",
     "normalAttenuation": "Center",

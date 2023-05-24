@@ -16,6 +16,7 @@
     "serialNumber": "序號",
     "softwareVersion": "軟體版本",
     "attenuation": "衰減值",
+    "range": "範圍",
     "currentAttenuation": "目前衰減值",
     "minAttenuation": "最小衰減值",
     "normalAttenuation": "常温衰減值",

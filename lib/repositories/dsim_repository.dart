@@ -15,6 +15,24 @@ enum DataKey {
   dsimMode,
   currentPilot,
   logInterval,
+  alarmRServerity,
+  alarmTServertity,
+  alarmPServerity,
+  currentAttenuation,
+  minAttenuation,
+  normalAttenuation,
+  maxAttenuation,
+  historicalMinAttenuation,
+  historicalMaxAttenuation,
+  currentTemperature,
+  minTemperature,
+  maxTemperature,
+  currentVoltage,
+  minVoltage,
+  maxVoltage,
+  currentVoltageRipple,
+  minVoltageRipple,
+  maxVoltageRipple,
 }
 
 enum ScanStatus {
@@ -87,7 +105,7 @@ class DsimRepository {
     // it is to solve device is not successfully disconnected after the app is closed
     await closeConnectionStream();
 
-    bool isPermissionGranted = await requestPermission();
+    bool isPermissionGranted = await _requestPermission();
     if (isPermissionGranted) {
       await BluetoothEnable.enableBluetooth;
       _scanReportStreamController = StreamController<ScanReport>();
@@ -253,8 +271,14 @@ class DsimRepository {
         break;
       case 3:
         int number = rawData[10]; // hardware status 4 bytes last bute
+
+        // bit 0: RF detect Max, bit 1 : RF detect Min
         _alarmR = (number & 0x01) + (number & 0x02);
+
+        // bit 6: Temperature Max, bit 1 : Temperature Min
         _alarmT = (number & 0x40) + (number & 0x80);
+
+        // bit 4: Voltage 24v Max, bit 5 : Voltage 24v Min
         _alarmP = (number & 0x10) + (number & 0x20);
 
         _basicInterval = rawData[13].toString(); //time interval
@@ -272,15 +296,29 @@ class DsimRepository {
             .add({DataKey.softwareVersion: softwareVersion});
         break;
       case 4:
+        //MGC Value 2Bytes
+        int currentAttenuator = rawData[4] * 256 + rawData[5];
+
         _currentSettingMode = rawData[3];
         _basicCurrentPilot = rawData[7].toString();
         _basicCurrentPilotMode = rawData[8];
+
+        _characteristicDataStreamController
+            .add({DataKey.currentAttenuation: currentAttenuator.toString()});
+        _characteristicDataStreamController.add({DataKey.minAttenuation: '0'});
+        _characteristicDataStreamController
+            .add({DataKey.maxAttenuation: '4095'});
         break;
 
       case 5:
         String dsimMode = '';
         String currentPilot = '';
-        String alarmRColor = '';
+        Alarm alarmRServerity = Alarm.medium;
+        Alarm alarmTServerity = Alarm.medium;
+        Alarm alarmPServerity = Alarm.medium;
+        double currentTemperatureC;
+        double currentTemperatureF;
+        double current24V;
         switch (rawData[3]) //working mode
         {
           case 1:
@@ -311,24 +349,24 @@ class DsimRepository {
 
         if (rawData[3] > 2) {
           // medium
-          alarmRColor = 'midium';
+          alarmRServerity = Alarm.medium;
         } else {
           if (_alarmR > 0) {
             // danger
-            alarmRColor = 'danger';
+            alarmRServerity = Alarm.danger;
           } else {
             // success
-            alarmRColor = 'success';
+            alarmRServerity = Alarm.success;
           }
           if (rawData[3] == 3) {
             if (_currentSettingMode == 1 || _currentSettingMode == 2) {
               // danger
-              alarmRColor = 'danger';
+              alarmRServerity = Alarm.danger;
             }
           }
         }
 
-        if (alarmRColor == 'danger') {
+        if (alarmRServerity == Alarm.danger) {
           currentPilot = 'Loss';
         } else {
           currentPilot = _basicCurrentPilot;
@@ -339,11 +377,42 @@ class DsimRepository {
           }
         }
 
+        alarmTServerity = _alarmT > 0 ? Alarm.danger : Alarm.success;
+        alarmPServerity = _alarmP > 0 ? Alarm.danger : Alarm.success;
+
+        //Temperature
+        currentTemperatureC = (rawData[10] * 256 + rawData[11]) / 10;
+        currentTemperatureF = _convertToFahrenheit(currentTemperatureC);
+        String currentTemperatureFC =
+            '${currentTemperatureF.toStringAsFixed(1)}/$currentTemperatureC';
+
+        //24V
+        current24V = (rawData[8] * 256 + rawData[9]) / 10;
+
         _characteristicDataStreamController.add({DataKey.dsimMode: dsimMode});
         _characteristicDataStreamController
             .add({DataKey.currentPilot: currentPilot});
+        _characteristicDataStreamController
+            .add({DataKey.alarmRServerity: alarmRServerity.name});
+        _characteristicDataStreamController
+            .add({DataKey.alarmTServertity: alarmTServerity.name});
+        _characteristicDataStreamController
+            .add({DataKey.alarmPServerity: alarmPServerity.name});
+        _characteristicDataStreamController
+            .add({DataKey.currentTemperature: currentTemperatureFC});
+        _characteristicDataStreamController
+            .add({DataKey.currentVoltage: current24V.toString()});
+
         break;
       case 6:
+        int centerAttenuation = rawData[11] * 256 + rawData[12];
+        int currentVoltageRipple = rawData[9] * 256 + rawData[10]; //24VR
+
+        _characteristicDataStreamController
+            .add({DataKey.normalAttenuation: centerAttenuation.toString()});
+        _characteristicDataStreamController.add(
+            {DataKey.currentVoltageRipple: currentVoltageRipple.toString()});
+
         break;
       case 7:
         break;
@@ -424,7 +493,12 @@ class DsimRepository {
     // print(_commandCollection[5]);
   }
 
-  Future<bool> requestPermission() async {
+  double _convertToFahrenheit(double celcius) {
+    double fahrenheit = (celcius * 1.8) + 32;
+    return fahrenheit;
+  }
+
+  Future<bool> _requestPermission() async {
     if (Platform.isAndroid) {
       Map<Permission, PermissionStatus> statuses = await [
         Permission.bluetoothConnect,
