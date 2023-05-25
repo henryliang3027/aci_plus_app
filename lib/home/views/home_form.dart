@@ -59,7 +59,6 @@ class _HomeFormState extends State<HomeForm> {
                 ),
                 curve: Curves.linear,
               );
-              print(_sclectedIndex);
             });
           },
         ));
