@@ -47,6 +47,22 @@ enum Alarm {
   medium,
 }
 
+class Log {
+  const Log({
+    required this.time,
+    required this.temperature,
+    required this.attenuation,
+    required this.voltage,
+    required this.voltageRipple,
+  });
+
+  final int time;
+  final double temperature;
+  final int attenuation;
+  final double voltage;
+  final int voltageRipple;
+}
+
 class ScanReport {
   const ScanReport({
     required this.scanStatus,
@@ -99,6 +115,9 @@ class DsimRepository {
   int _alarmT = 0;
   int _alarmP = 0;
   String _basicInterval = '';
+  List<int> _rawLog = [];
+  int _totalBytesPerCommand = 261;
+  List<Log> _logs = [];
 
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
@@ -158,6 +177,11 @@ class DsimRepository {
     yield* _characteristicDataStreamController.stream;
   }
 
+  void clearCache() {
+    _logs.clear();
+    _rawLog.clear();
+  }
+
   Future<void> closeScanStream() async {
     print('closeScanStream');
     _scanReportStreamController.close();
@@ -210,22 +234,47 @@ class DsimRepository {
         _characteristicStreamSubscription = _ble
             .subscribeToCharacteristic(qualifiedCharacteristic)
             .listen((data) async {
-          print('-----data received-----');
+          bool writeNextCommand = false;
+          print('-----# ${_commandIndex} data received-----');
           print(data);
 
           List<int> rawData = data;
-          _parseRawData(rawData);
-          // _generateCharacteristicData(strData);
 
-          _commandIndex += 1;
-
-          if (_commandIndex < _commandCollection.length) {
-            await _ble.writeCharacteristicWithoutResponse(
-              qualifiedCharacteristic,
-              value: _commandCollection[_commandIndex],
-            );
+          if (_commandIndex <= 13) {
+            _parseRawData(rawData);
+            writeNextCommand = true;
           } else {
-            _characteristicDataStreamController.close();
+            _rawLog.addAll(rawData);
+            if (_rawLog.length == _totalBytesPerCommand) {
+              // print('${_rawLog[259]}, ${_rawLog[260]}');
+              // CRC16.calculateCRC16(command: _rawLog, usDataLength: 259);
+              // print('${_rawLog[259]}, ${_rawLog[260]}');
+
+              _rawLog.removeRange(_rawLog.length - 2, _rawLog.length);
+              _rawLog.removeRange(0, 3);
+              _parseLog();
+              _rawLog.clear();
+              writeNextCommand = true;
+              // print(_rawLogs);
+            }
+          }
+
+          if (writeNextCommand) {
+            if (_commandIndex + 1 < _commandCollection.length) {
+              _commandIndex += 1;
+              await _ble.writeCharacteristicWithoutResponse(
+                qualifiedCharacteristic,
+                value: _commandCollection[_commandIndex],
+              );
+            } else {
+              print('logs length: ${_logs.length}');
+              for (Log log in _logs) {
+                print(
+                    '${log.time}, ${log.temperature}, ${log.attenuation}, ${log.voltage}, ${log.voltageRipple}');
+              }
+
+              _characteristicDataStreamController.close();
+            }
           }
         });
 
@@ -245,6 +294,91 @@ class DsimRepository {
     });
   }
 
+  void _parseLog() {
+    for (var i = 0; i < 16; i++) {
+      int time = _rawLog[i * 16] * 256 + _rawLog[i * 16 + 1];
+      double temperature =
+          (_rawLog[i * 16 + 2] * 256 + _rawLog[i * 16 + 3]) / 10;
+      int attenuation = _rawLog[i * 16 + 4] * 256 + _rawLog[i * 16 + 5];
+      double voltage = (_rawLog[i * 16 + 8] * 256 + _rawLog[i * 16 + 9]) / 10;
+      int voltageRipple = _rawLog[i * 16 + 10] * 256 + _rawLog[i * 16 + 11];
+
+      _logs.add(Log(
+          time: time,
+          temperature: temperature,
+          attenuation: attenuation,
+          voltage: voltage,
+          voltageRipple: voltageRipple));
+    }
+
+    if (_commandIndex == 29) {
+      // get min temperature
+      double minTemperature = _logs
+          .map((log) => log.temperature)
+          .reduce((min, current) => min < current ? min : current);
+
+      // get max temperature
+      double maxTemperature = _logs
+          .map((log) => log.temperature)
+          .reduce((max, current) => max > current ? max : current);
+
+      // get min attenuation
+      int historicalMinAttenuation = _logs
+          .map((log) => log.attenuation)
+          .reduce((min, current) => min < current ? min : current);
+
+      // get max attenuation
+      int historicalMaxAttenuation = _logs
+          .map((log) => log.attenuation)
+          .reduce((max, current) => max > current ? max : current);
+
+      // get min voltage
+      double minVoltage = _logs
+          .map((log) => log.voltage)
+          .reduce((min, current) => min < current ? min : current);
+
+      // get max voltage
+      double maxVoltage = _logs
+          .map((log) => log.voltage)
+          .reduce((max, current) => max > current ? max : current);
+
+      // get min voltage ripple
+      int minVoltageRipple = _logs
+          .map((log) => log.voltageRipple)
+          .reduce((min, current) => min < current ? min : current);
+
+      // get max voltage ripple
+      int maxVoltageRipple = _logs
+          .map((log) => log.voltageRipple)
+          .reduce((max, current) => max > current ? max : current);
+
+      String minTemperatureFC =
+          '${_convertToFahrenheit(minTemperature).toStringAsFixed(1)}/${minTemperature.toString()}';
+
+      String maxTemperatureFC =
+          '${_convertToFahrenheit(maxTemperature).toStringAsFixed(1)}/${maxTemperature.toString()}';
+
+      _characteristicDataStreamController
+          .add({DataKey.minTemperature: minTemperatureFC});
+      _characteristicDataStreamController
+          .add({DataKey.maxTemperature: maxTemperatureFC});
+      _characteristicDataStreamController.add({
+        DataKey.historicalMinAttenuation: historicalMinAttenuation.toString()
+      });
+      _characteristicDataStreamController.add({
+        DataKey.historicalMaxAttenuation: historicalMaxAttenuation.toString()
+      });
+      _characteristicDataStreamController
+          .add({DataKey.minVoltage: minVoltage.toString()});
+      _characteristicDataStreamController
+          .add({DataKey.maxVoltage: maxVoltage.toString()});
+      _characteristicDataStreamController
+          .add({DataKey.minVoltageRipple: minVoltageRipple.toString()});
+      _characteristicDataStreamController
+          .add({DataKey.maxVoltageRipple: maxVoltageRipple.toString()});
+    }
+  }
+
   void _parseRawData(List<int> rawData) {
     switch (_commandIndex) {
       case 0:
@@ -252,13 +386,15 @@ class DsimRepository {
         for (int i = 3; i < 15; i++) {
           typeNo += String.fromCharCode(rawData[i]);
         }
+        typeNo = typeNo.trim();
         _characteristicDataStreamController.add({DataKey.typeNo: typeNo});
         break;
       case 1:
         String partNo = 'DSIM';
-        for (int i = 3; i < 14; i++) {
+        for (int i = 3; i < 15; i++) {
           partNo += String.fromCharCode(rawData[i]);
         }
+        partNo = partNo.trim();
         _characteristicDataStreamController.add({DataKey.partNo: partNo});
         break;
       case 2:
@@ -415,8 +551,10 @@ class DsimRepository {
 
         break;
       case 7:
+        // no logic
         break;
       case 8:
+        // no logic
         break;
       case 9:
         for (int i = 3; i < 15; i++) {
@@ -447,6 +585,38 @@ class DsimRepository {
         break;
       case 13:
         break;
+      case 14:
+        break;
+      case 15:
+        break;
+      case 16:
+        break;
+      case 17:
+        break;
+      case 18:
+        break;
+      case 19:
+        break;
+      case 20:
+        break;
+      case 21:
+        break;
+      case 22:
+        break;
+      case 23:
+        break;
+      case 24:
+        break;
+      case 25:
+        break;
+      case 26:
+        break;
+      case 27:
+        break;
+      case 28:
+        break;
+      case 29:
+        break;
       default:
         break;
     }
@@ -467,6 +637,30 @@ class DsimRepository {
     CRC16.calculateCRC16(command: Command.location3, usDataLength: 6);
     CRC16.calculateCRC16(command: Command.location4, usDataLength: 6);
     CRC16.calculateCRC16(command: Command.req0DCmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataE8, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataE9, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataEA, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataEB, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataEC, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataED, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataEE, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataEF, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF0, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF1, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF2, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF3, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF4, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF5, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF6, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF7, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF8, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF9, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataFA, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataFB, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataFC, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataFD, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataFE, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataFF, usDataLength: 6);
 
     _commandCollection.addAll([
       Command.req00Cmd,
@@ -483,14 +677,31 @@ class DsimRepository {
       Command.location3,
       Command.location4,
       Command.req0DCmd,
+      Command.ddataE8, // #14
+      Command.ddataE9,
+      Command.ddataEA,
+      Command.ddataEB,
+      Command.ddataEC,
+      Command.ddataED,
+      Command.ddataEE,
+      Command.ddataEF,
+      Command.ddataF0,
+      Command.ddataF1,
+      Command.ddataF2,
+      Command.ddataF3,
+      Command.ddataF4,
+      Command.ddataF5,
+      Command.ddataF6,
+      Command.ddataF7, // #29
+      // Command.ddataF8,
+      // Command.ddataF9,
+      // Command.ddataFA,
+      // Command.ddataFB,
+      // Command.ddataFC,
+      // Command.ddataFD,
+      // Command.ddataFE,
+      // Command.ddataFF,
     ]);
-
-    // print(_commandCollection[0]);
-    // print(_commandCollection[1]);
-    // print(_commandCollection[2]);
-    // print(_commandCollection[3]);
-    // print(_commandCollection[4]);
-    // print(_commandCollection[5]);
   }
 
   double _convertToFahrenheit(double celcius) {

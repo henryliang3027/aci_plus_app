@@ -137,10 +137,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       minAttenuation: _characteristicDataMap[DataKey.minAttenuation],
       normalAttenuation: _characteristicDataMap[DataKey.normalAttenuation],
       maxAttenuation: _characteristicDataMap[DataKey.maxAttenuation],
+      historicalMinAttenuation:
+          _characteristicDataMap[DataKey.historicalMinAttenuation],
+      historicalMaxAttenuation:
+          _characteristicDataMap[DataKey.historicalMaxAttenuation],
       currentTemperature: _characteristicDataMap[DataKey.currentTemperature],
+      minTemperature: _characteristicDataMap[DataKey.minTemperature],
+      maxTemperature: _characteristicDataMap[DataKey.maxTemperature],
       currentVoltage: _characteristicDataMap[DataKey.currentVoltage],
+      minVoltage: _characteristicDataMap[DataKey.minVoltage],
+      maxVoltage: _characteristicDataMap[DataKey.maxVoltage],
       currentVoltageRipple:
           _characteristicDataMap[DataKey.currentVoltageRipple],
+      minVoltageRipple: _characteristicDataMap[DataKey.minVoltageRipple],
+      maxVoltageRipple: _characteristicDataMap[DataKey.maxVoltageRipple],
     ));
   }
 
@@ -153,6 +163,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       device: null,
     ));
 
+    _dsimRepository.clearCache();
     await _dsimRepository.closeConnectionStream();
 
     _scanStreamSubscription =
