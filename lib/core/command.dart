@@ -1,3 +1,32 @@
+enum DataKey {
+  typeNo,
+  partNo,
+  serialNumber,
+  softwareVersion,
+  location,
+  dsimMode,
+  currentPilot,
+  logInterval,
+  alarmRServerity,
+  alarmTServerity,
+  alarmPServerity,
+  currentAttenuation,
+  minAttenuation,
+  normalAttenuation,
+  maxAttenuation,
+  historicalMinAttenuation,
+  historicalMaxAttenuation,
+  currentTemperature,
+  minTemperature,
+  maxTemperature,
+  currentVoltage,
+  minVoltage,
+  maxVoltage,
+  currentVoltageRipple,
+  minVoltageRipple,
+  maxVoltageRipple,
+}
+
 class Command {
   // 0xDE, 0x29
   static List<int> req00Cmd = [0xB0, 0x03, 0x00, 0x00, 0x00, 0x06, 0, 0]; //0

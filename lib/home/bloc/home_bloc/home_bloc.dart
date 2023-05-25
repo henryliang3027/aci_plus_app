@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -94,11 +95,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           (data) {
             print(data);
 
-            _characteristicDataMap.addEntries(data.entries);
+            add(DeviceCharacteristicChanged(data.entries.first));
           },
-          onDone: () {
-            add(const DeviceCharacteristicChanged());
-          },
+          onDone: () {},
         );
 
         break;
@@ -121,36 +120,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     DeviceCharacteristicChanged event,
     Emitter<HomeState> emit,
   ) {
+    Map<DataKey, String> newCharacteristicData = {};
+    newCharacteristicData.addEntries(state.characteristicData.entries);
+    newCharacteristicData[event.dataMapEntry.key] = event.dataMapEntry.value;
     emit(state.copyWith(
-      typeNo: _characteristicDataMap[DataKey.typeNo],
-      partNo: _characteristicDataMap[DataKey.partNo],
-      serialNumber: _characteristicDataMap[DataKey.serialNumber],
-      softwareVersion: _characteristicDataMap[DataKey.softwareVersion],
-      location: _characteristicDataMap[DataKey.location],
-      dsimMode: _characteristicDataMap[DataKey.dsimMode],
-      currentPilot: _characteristicDataMap[DataKey.currentPilot],
-      logInterval: _characteristicDataMap[DataKey.logInterval],
-      alarmRServerity: _characteristicDataMap[DataKey.alarmRServerity],
-      alarmTServerity: _characteristicDataMap[DataKey.alarmTServertity],
-      alarmPServerity: _characteristicDataMap[DataKey.alarmPServerity],
-      currentAttenuation: _characteristicDataMap[DataKey.currentAttenuation],
-      minAttenuation: _characteristicDataMap[DataKey.minAttenuation],
-      normalAttenuation: _characteristicDataMap[DataKey.normalAttenuation],
-      maxAttenuation: _characteristicDataMap[DataKey.maxAttenuation],
-      historicalMinAttenuation:
-          _characteristicDataMap[DataKey.historicalMinAttenuation],
-      historicalMaxAttenuation:
-          _characteristicDataMap[DataKey.historicalMaxAttenuation],
-      currentTemperature: _characteristicDataMap[DataKey.currentTemperature],
-      minTemperature: _characteristicDataMap[DataKey.minTemperature],
-      maxTemperature: _characteristicDataMap[DataKey.maxTemperature],
-      currentVoltage: _characteristicDataMap[DataKey.currentVoltage],
-      minVoltage: _characteristicDataMap[DataKey.minVoltage],
-      maxVoltage: _characteristicDataMap[DataKey.maxVoltage],
-      currentVoltageRipple:
-          _characteristicDataMap[DataKey.currentVoltageRipple],
-      minVoltageRipple: _characteristicDataMap[DataKey.minVoltageRipple],
-      maxVoltageRipple: _characteristicDataMap[DataKey.maxVoltageRipple],
+      characteristicData: newCharacteristicData,
     ));
   }
 
@@ -161,6 +135,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(
       status: FormStatus.requestInProgress,
       device: null,
+      characteristicData: const {},
     ));
 
     _dsimRepository.clearCache();

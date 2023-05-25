@@ -27,9 +27,14 @@ class DeviceConnectionChanged extends HomeEvent {
 }
 
 class DeviceCharacteristicChanged extends HomeEvent {
-  const DeviceCharacteristicChanged();
+  const DeviceCharacteristicChanged(this.dataMapEntry);
+
+  final MapEntry<DataKey, String> dataMapEntry;
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        dataMapEntry,
+      ];
 }
 
 class ScanClosed extends HomeEvent {

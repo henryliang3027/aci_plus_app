@@ -6,35 +6,6 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 
-enum DataKey {
-  typeNo,
-  partNo,
-  serialNumber,
-  softwareVersion,
-  location,
-  dsimMode,
-  currentPilot,
-  logInterval,
-  alarmRServerity,
-  alarmTServertity,
-  alarmPServerity,
-  currentAttenuation,
-  minAttenuation,
-  normalAttenuation,
-  maxAttenuation,
-  historicalMinAttenuation,
-  historicalMaxAttenuation,
-  currentTemperature,
-  minTemperature,
-  maxTemperature,
-  currentVoltage,
-  minVoltage,
-  maxVoltage,
-  currentVoltageRipple,
-  minVoltageRipple,
-  maxVoltageRipple,
-}
-
 enum ScanStatus {
   success,
   failure,
@@ -531,7 +502,7 @@ class DsimRepository {
         _characteristicDataStreamController
             .add({DataKey.alarmRServerity: alarmRServerity.name});
         _characteristicDataStreamController
-            .add({DataKey.alarmTServertity: alarmTServerity.name});
+            .add({DataKey.alarmTServerity: alarmTServerity.name});
         _characteristicDataStreamController
             .add({DataKey.alarmPServerity: alarmPServerity.name});
         _characteristicDataStreamController

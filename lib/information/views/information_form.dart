@@ -1,3 +1,4 @@
+import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/message_localization.dart';
@@ -202,35 +203,36 @@ class _BasicCard extends StatelessWidget {
               ),
               itemText(
                 title: AppLocalizations.of(context).typeNo,
-                content: state.typeNo,
+                content: state.characteristicData[DataKey.typeNo] ?? '',
               ),
               itemText(
                 title: AppLocalizations.of(context).partNo,
-                content: state.partNo,
+                content: state.characteristicData[DataKey.partNo] ?? '',
               ),
               itemMultipleLineText(
                 title: AppLocalizations.of(context).location,
-                content: state.location,
+                content: state.characteristicData[DataKey.location] ?? '',
               ),
               itemText(
                 title: AppLocalizations.of(context).dsimMode,
-                content: state.dsimMode,
+                content: state.characteristicData[DataKey.dsimMode] ?? '',
               ),
               itemText(
                 title: AppLocalizations.of(context).currentPilot,
-                content: state.currentPilot,
+                content: state.characteristicData[DataKey.currentPilot] ?? '',
               ),
               itemText(
                 title: AppLocalizations.of(context).logInterval,
-                content: state.logInterval,
+                content: state.characteristicData[DataKey.logInterval] ?? '',
               ),
               itemText(
                 title: AppLocalizations.of(context).serialNumber,
-                content: state.serialNumber,
+                content: state.characteristicData[DataKey.serialNumber] ?? '',
               ),
               itemText(
                 title: AppLocalizations.of(context).softwareVersion,
-                content: state.softwareVersion,
+                content:
+                    state.characteristicData[DataKey.softwareVersion] ?? '',
               ),
             ],
           ),
@@ -289,17 +291,20 @@ class _AlarmCard extends StatelessWidget {
               ),
               alarmItem(
                 iconData: Icons.circle,
-                iconColor: CustomStyle.alarmColor[state.alarmRServerity],
+                iconColor: CustomStyle.alarmColor[
+                    state.characteristicData[DataKey.alarmRServerity] ?? ''],
                 title: AppLocalizations.of(context).rfPilotLevel,
               ),
               alarmItem(
                 iconData: Icons.circle,
-                iconColor: CustomStyle.alarmColor[state.alarmTServerity],
+                iconColor: CustomStyle.alarmColor[
+                    state.characteristicData[DataKey.alarmTServerity] ?? ''],
                 title: AppLocalizations.of(context).temperature,
               ),
               alarmItem(
                 iconData: Icons.circle,
-                iconColor: CustomStyle.alarmColor[state.alarmPServerity],
+                iconColor: CustomStyle.alarmColor[
+                    state.characteristicData[DataKey.alarmPServerity] ?? ''],
                 title: AppLocalizations.of(context).powerSupply,
               ),
             ],
@@ -340,21 +345,23 @@ class _AttenuationCard extends StatelessWidget {
                 height: 10.0,
               ),
               itemText(
-                title: AppLocalizations.of(context).currentAttenuation,
-                content: state.currentAttenuation,
-              ),
+                  title: AppLocalizations.of(context).currentAttenuation,
+                  content:
+                      state.characteristicData[DataKey.currentAttenuation] ??
+                          ''),
               itemText(
-                title: AppLocalizations.of(context).minAttenuation,
-                content: state.minAttenuation,
-              ),
+                  title: AppLocalizations.of(context).minAttenuation,
+                  content:
+                      state.characteristicData[DataKey.minAttenuation] ?? ''),
               itemText(
-                title: AppLocalizations.of(context).normalAttenuation,
-                content: state.normalAttenuation,
-              ),
+                  title: AppLocalizations.of(context).normalAttenuation,
+                  content:
+                      state.characteristicData[DataKey.normalAttenuation] ??
+                          ''),
               itemText(
-                title: AppLocalizations.of(context).maxAttenuation,
-                content: state.maxAttenuation,
-              ),
+                  title: AppLocalizations.of(context).maxAttenuation,
+                  content:
+                      state.characteristicData[DataKey.maxAttenuation] ?? ''),
               const SizedBox(
                 height: 26.0,
               ),
@@ -369,13 +376,15 @@ class _AttenuationCard extends StatelessWidget {
                 height: 10.0,
               ),
               itemText(
-                title: AppLocalizations.of(context).historicalMinAttenuation,
-                content: state.historicalMinAttenuation,
-              ),
+                  title: AppLocalizations.of(context).historicalMinAttenuation,
+                  content: state.characteristicData[
+                          DataKey.historicalMinAttenuation] ??
+                      ''),
               itemText(
-                title: AppLocalizations.of(context).historicalMaxAttenuation,
-                content: state.historicalMaxAttenuation,
-              ),
+                  title: AppLocalizations.of(context).historicalMaxAttenuation,
+                  content: state.characteristicData[
+                          DataKey.historicalMaxAttenuation] ??
+                      ''),
             ],
           ),
         ),
@@ -404,17 +413,18 @@ class _TemperatureCard extends StatelessWidget {
                 height: 10.0,
               ),
               itemText(
-                title: AppLocalizations.of(context).currentTemperature,
-                content: state.currentTemperature,
-              ),
+                  title: AppLocalizations.of(context).currentTemperature,
+                  content:
+                      state.characteristicData[DataKey.currentTemperature] ??
+                          ''),
               itemText(
-                title: AppLocalizations.of(context).minTemperature,
-                content: state.minTemperature,
-              ),
+                  title: AppLocalizations.of(context).minTemperature,
+                  content:
+                      state.characteristicData[DataKey.minTemperature] ?? ''),
               itemText(
-                title: AppLocalizations.of(context).maxTemperature,
-                content: state.maxTemperature,
-              ),
+                  title: AppLocalizations.of(context).maxTemperature,
+                  content:
+                      state.characteristicData[DataKey.maxTemperature] ?? ''),
             ],
           ),
         ),
@@ -453,17 +463,15 @@ class _PowerSupplyCard extends StatelessWidget {
                 height: 10.0,
               ),
               itemText(
-                title: AppLocalizations.of(context).currentVoltage,
-                content: state.currentVoltage,
-              ),
+                  title: AppLocalizations.of(context).currentVoltage,
+                  content:
+                      state.characteristicData[DataKey.currentVoltage] ?? ''),
               itemText(
-                title: AppLocalizations.of(context).minVoltage,
-                content: state.minVoltage,
-              ),
+                  title: AppLocalizations.of(context).minVoltage,
+                  content: state.characteristicData[DataKey.minVoltage] ?? ''),
               itemText(
-                title: AppLocalizations.of(context).maxVoltage,
-                content: state.maxVoltage,
-              ),
+                  title: AppLocalizations.of(context).maxVoltage,
+                  content: state.characteristicData[DataKey.maxVoltage] ?? ''),
               const SizedBox(
                 height: 26.0,
               ),
@@ -478,17 +486,18 @@ class _PowerSupplyCard extends StatelessWidget {
                 height: 10.0,
               ),
               itemText(
-                title: AppLocalizations.of(context).currentVoltageRipple,
-                content: state.currentVoltageRipple,
-              ),
+                  title: AppLocalizations.of(context).currentVoltageRipple,
+                  content:
+                      state.characteristicData[DataKey.currentVoltageRipple] ??
+                          ''),
               itemText(
-                title: AppLocalizations.of(context).minVoltageRipple,
-                content: state.minVoltageRipple,
-              ),
+                  title: AppLocalizations.of(context).minVoltageRipple,
+                  content:
+                      state.characteristicData[DataKey.minVoltageRipple] ?? ''),
               itemText(
-                title: AppLocalizations.of(context).maxVoltageRipple,
-                content: state.maxVoltageRipple,
-              ),
+                  title: AppLocalizations.of(context).maxVoltageRipple,
+                  content:
+                      state.characteristicData[DataKey.maxVoltageRipple] ?? ''),
             ],
           ),
         ),
@@ -512,12 +521,14 @@ Widget itemText({
             fontSize: 16,
           ),
         ),
-        Text(
-          content,
-          style: const TextStyle(
-            fontSize: 16,
-          ),
-        ),
+        content == ''
+            ? const CircularProgressIndicator()
+            : Text(
+                content,
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
+              ),
       ],
     ),
   );
@@ -548,15 +559,17 @@ Widget itemMultipleLineText({
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Flexible(
-              child: Text(
-                content,
-                textAlign: TextAlign.end,
-                style: const TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-            ),
+            content == ''
+                ? const CircularProgressIndicator()
+                : Flexible(
+                    child: Text(
+                      content,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
           ],
         ),
       ],
