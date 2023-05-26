@@ -6,9 +6,9 @@ String getMessageLocalization({
   required BuildContext context,
 }) {
   if (msg == 'Device not found.') {
-    return AppLocalizations.of(context)!.dialogMaessageDeviceNotFound;
+    return AppLocalizations.of(context).dialogMaessageDeviceNotFound;
   } else if (msg == 'Bluetooth is disabled.') {
-    return AppLocalizations.of(context)!.dialogMaessageBluetoothDisabled;
+    return AppLocalizations.of(context).dialogMaessageBluetoothDisabled;
   } else {
     return msg;
   }

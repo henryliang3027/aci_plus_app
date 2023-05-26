@@ -6,8 +6,21 @@ abstract class SettingEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class DeviceDataRequested extends SettingEvent {
-  const DeviceDataRequested();
+class LocationChanged extends SettingEvent {
+  const LocationChanged(
+    this.location,
+  );
+
+  final String location;
+
+  @override
+  List<Object> get props => [
+        location,
+      ];
+}
+
+class LocationSubmitted extends SettingEvent {
+  const LocationSubmitted();
 
   @override
   List<Object> get props => [];

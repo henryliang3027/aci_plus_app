@@ -206,8 +206,8 @@ class DsimRepository {
             .subscribeToCharacteristic(qualifiedCharacteristic)
             .listen((data) async {
           bool writeNextCommand = false;
-          print('-----# ${_commandIndex} data received-----');
-          print(data);
+          // print('-----# ${_commandIndex} data received-----');
+          // print(data);
 
           List<int> rawData = data;
 
@@ -238,11 +238,11 @@ class DsimRepository {
                 value: _commandCollection[_commandIndex],
               );
             } else {
-              print('logs length: ${_logs.length}');
-              for (Log log in _logs) {
-                print(
-                    '${log.time}, ${log.temperature}, ${log.attenuation}, ${log.voltage}, ${log.voltageRipple}');
-              }
+              // print('logs length: ${_logs.length}');
+              // for (Log log in _logs) {
+              //   print(
+              //       '${log.time}, ${log.temperature}, ${log.attenuation}, ${log.voltage}, ${log.voltageRipple}');
+              // }
 
               _characteristicDataStreamController.close();
             }
@@ -465,11 +465,11 @@ class DsimRepository {
             // success
             alarmRServerity = Alarm.success;
           }
-          if (rawData[3] == 3) {
-            if (_currentSettingMode == 1 || _currentSettingMode == 2) {
-              // danger
-              alarmRServerity = Alarm.danger;
-            }
+        }
+        if (rawData[3] == 3) {
+          if (_currentSettingMode == 1 || _currentSettingMode == 2) {
+            // danger
+            alarmRServerity = Alarm.danger;
           }
         }
 

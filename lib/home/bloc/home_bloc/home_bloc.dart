@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/form_status.dart';
@@ -33,8 +32,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   late StreamSubscription<ConnectionReport>? _connectionStreamSubscription;
   late StreamSubscription<Map<DataKey, String>>?
       _characteristicDataStreamSubscription;
-
-  final Map<DataKey, String> _characteristicDataMap = {};
 
   Future<void> _onDiscoveredDeviceChanged(
     DiscoveredDeviceChanged event,
@@ -93,8 +90,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         _characteristicDataStreamSubscription =
             _dsimRepository.characteristicData.listen(
           (data) {
-            print(data);
-
             add(DeviceCharacteristicChanged(data.entries.first));
           },
           onDone: () {},
@@ -140,6 +135,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     _dsimRepository.clearCache();
     await _dsimRepository.closeConnectionStream();
+    await _connectionStreamSubscription?.cancel();
+    _connectionStreamSubscription = null;
+    await _characteristicDataStreamSubscription?.cancel();
+    _characteristicDataStreamSubscription = null;
 
     _scanStreamSubscription =
         _dsimRepository.scannedDevices.listen((scanReport) async {
