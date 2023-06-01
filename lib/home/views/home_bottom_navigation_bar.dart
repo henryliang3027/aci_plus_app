@@ -12,36 +12,47 @@ class HomeBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _onBottomItemTapped(int index) {
-      pageController.jumpToPage(
-        index,
-      );
-    }
-
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       showSelectedLabels: false,
       showUnselectedLabels: false,
       items: const [
         BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: 'Setting',
+          tooltip: '',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.memory_outlined),
+          label: 'Status',
+          tooltip: '',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.info),
           label: 'Information',
           tooltip: '',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: 'Setting',
+          icon: Icon(Icons.area_chart_sharp),
+          label: 'Chart',
+          tooltip: '',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.contact_support),
+          label: 'About',
           tooltip: '',
         ),
       ],
       //if current page is account which is not list in bottom navigation bar, make all items grey color
       //assign a useless 0 as currentIndex for account page
       currentIndex: selectedIndex,
-      selectedItemColor: selectedIndex >= 5
-          ? Theme.of(context).hintColor
-          : Theme.of(context).primaryColor,
+      selectedItemColor: Theme.of(context).primaryColor,
       unselectedItemColor: Theme.of(context).hintColor,
-      onTap: _onBottomItemTapped,
+      onTap: (int index) {
+        pageController.jumpToPage(
+          index,
+        );
+      },
     );
   }
 }

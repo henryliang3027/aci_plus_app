@@ -323,16 +323,24 @@ class DsimRepository {
           .map((log) => log.voltageRipple)
           .reduce((max, current) => max > current ? max : current);
 
-      String minTemperatureFC =
-          '${_convertToFahrenheit(minTemperature).toStringAsFixed(1)}/${minTemperature.toString()}';
+      String minTemperatureF =
+          _convertToFahrenheit(minTemperature).toStringAsFixed(1);
 
-      String maxTemperatureFC =
-          '${_convertToFahrenheit(maxTemperature).toStringAsFixed(1)}/${maxTemperature.toString()}';
+      String maxTemperatureF =
+          _convertToFahrenheit(maxTemperature).toStringAsFixed(1);
+
+      String minTemperatureC = minTemperature.toString();
+
+      String maxTemperatureC = maxTemperature.toString();
 
       _characteristicDataStreamController
-          .add({DataKey.minTemperature: minTemperatureFC});
+          .add({DataKey.minTemperatureF: minTemperatureF});
       _characteristicDataStreamController
-          .add({DataKey.maxTemperature: maxTemperatureFC});
+          .add({DataKey.maxTemperatureF: maxTemperatureF});
+      _characteristicDataStreamController
+          .add({DataKey.minTemperatureC: minTemperatureC});
+      _characteristicDataStreamController
+          .add({DataKey.maxTemperatureC: maxTemperatureC});
       _characteristicDataStreamController.add({
         DataKey.historicalMinAttenuation: historicalMinAttenuation.toString()
       });
@@ -490,8 +498,8 @@ class DsimRepository {
         //Temperature
         currentTemperatureC = (rawData[10] * 256 + rawData[11]) / 10;
         currentTemperatureF = _convertToFahrenheit(currentTemperatureC);
-        String currentTemperatureFC =
-            '${currentTemperatureF.toStringAsFixed(1)}/$currentTemperatureC';
+        String strCurrentTemperatureF = currentTemperatureF.toStringAsFixed(1);
+        String strCurrentTemperatureC = currentTemperatureC.toString();
 
         //24V
         current24V = (rawData[8] * 256 + rawData[9]) / 10;
@@ -506,7 +514,9 @@ class DsimRepository {
         _characteristicDataStreamController
             .add({DataKey.alarmPServerity: alarmPServerity.name});
         _characteristicDataStreamController
-            .add({DataKey.currentTemperature: currentTemperatureFC});
+            .add({DataKey.currentTemperatureF: strCurrentTemperatureF});
+        _characteristicDataStreamController
+            .add({DataKey.currentTemperatureC: strCurrentTemperatureC});
         _characteristicDataStreamController
             .add({DataKey.currentVoltage: current24V.toString()});
 

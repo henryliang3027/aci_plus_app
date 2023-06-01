@@ -8,8 +8,28 @@ part 'setting_state.dart';
 
 class SettingBloc extends Bloc<SettingEvent, SettingState> {
   SettingBloc() : super(const SettingState()) {
+    on<GraphViewToggled>(_onGraphViewToggled);
+    on<ListViewToggled>(_onListViewToggled);
     on<LocationChanged>(_onLocationChanged);
     on<LocationSubmitted>(_onLocationSubmitted);
+  }
+
+  void _onGraphViewToggled(
+    GraphViewToggled event,
+    Emitter<SettingState> emit,
+  ) {
+    emit(state.copyWith(
+      isGraphType: true,
+    ));
+  }
+
+  void _onListViewToggled(
+    ListViewToggled event,
+    Emitter<SettingState> emit,
+  ) {
+    emit(state.copyWith(
+      isGraphType: false,
+    ));
   }
 
   void _onLocationChanged(

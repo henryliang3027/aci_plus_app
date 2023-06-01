@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class InformationForm extends StatelessWidget {
-  const InformationForm({super.key});
+class StatusForm extends StatelessWidget {
+  const StatusForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class InformationForm extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).information),
+          title: Text(AppLocalizations.of(context).status),
           centerTitle: true,
           leading: const _DeviceStatus(),
           actions: const [_DeviceRefresh()],
@@ -65,9 +65,10 @@ class InformationForm extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: const [
-              _ConnectionCard(),
-              _BasicCard(),
-              _AlarmCard(),
+              _InfoCard(),
+              _AttenuationCard(),
+              _TemperatureCard(),
+              _PowerSupplyCard(),
             ],
           ),
         ),
@@ -148,8 +149,8 @@ class _DeviceRefresh extends StatelessWidget {
   }
 }
 
-class _ConnectionCard extends StatelessWidget {
-  const _ConnectionCard({super.key});
+class _InfoCard extends StatelessWidget {
+  const _InfoCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -161,139 +162,20 @@ class _ConnectionCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                AppLocalizations.of(context).connection,
+                AppLocalizations.of(context).information,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(
                 height: 10.0,
               ),
               itemText(
-                title: AppLocalizations.of(context).bluetooth,
-                content: state.device != null ? state.device!.name : '',
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _BasicCard extends StatelessWidget {
-  const _BasicCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                AppLocalizations.of(context).basic,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 10.0,
+                title: AppLocalizations.of(context).serialNumber,
+                content: state.characteristicData[DataKey.serialNumber] ?? '',
               ),
               itemText(
-                title: AppLocalizations.of(context).typeNo,
-                content: state.characteristicData[DataKey.typeNo] ?? '',
-              ),
-              itemText(
-                title: AppLocalizations.of(context).partNo,
-                content: state.characteristicData[DataKey.partNo] ?? '',
-              ),
-              itemMultipleLineText(
-                title: AppLocalizations.of(context).location,
-                content: state.characteristicData[DataKey.location] ?? '',
-              ),
-              itemText(
-                title: AppLocalizations.of(context).dsimMode,
-                content: state.characteristicData[DataKey.dsimMode] ?? '',
-              ),
-              itemText(
-                title: AppLocalizations.of(context).currentPilot,
-                content: state.characteristicData[DataKey.currentPilot] ?? '',
-              ),
-              itemText(
-                title: AppLocalizations.of(context).logInterval,
-                content: state.characteristicData[DataKey.logInterval] ?? '',
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _AlarmCard extends StatelessWidget {
-  const _AlarmCard({super.key});
-
-  Widget alarmItem({
-    required IconData iconData,
-    required String title,
-    Color? iconColor,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Icon(
-            iconData,
-            color: iconColor,
-          ),
-          const SizedBox(
-            width: 10.0,
-          ),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                AppLocalizations.of(context).alarm,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              alarmItem(
-                iconData: Icons.circle,
-                iconColor: CustomStyle.alarmColor[
-                    state.characteristicData[DataKey.alarmRServerity] ?? ''],
-                title: AppLocalizations.of(context).rfPilotLevel,
-              ),
-              alarmItem(
-                iconData: Icons.circle,
-                iconColor: CustomStyle.alarmColor[
-                    state.characteristicData[DataKey.alarmTServerity] ?? ''],
-                title: AppLocalizations.of(context).temperature,
-              ),
-              alarmItem(
-                iconData: Icons.circle,
-                iconColor: CustomStyle.alarmColor[
-                    state.characteristicData[DataKey.alarmPServerity] ?? ''],
-                title: AppLocalizations.of(context).powerSupply,
+                title: AppLocalizations.of(context).softwareVersion,
+                content:
+                    state.characteristicData[DataKey.softwareVersion] ?? '',
               ),
             ],
           ),
@@ -373,6 +255,176 @@ class _AttenuationCard extends StatelessWidget {
                   content: state.characteristicData[
                           DataKey.historicalMaxAttenuation] ??
                       ''),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TemperatureCard extends StatelessWidget {
+  const _TemperatureCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget itemBlock({required String title, required String content}) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                content == ''
+                    ? const CircularProgressIndicator()
+                    : Text(
+                        content,
+                        style: const TextStyle(
+                          fontSize: 36,
+                        ),
+                      ),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context).temperatureFC,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  Material(
+                    color: Colors.transparent,
+                    elevation: 2.0,
+                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                    child: InkWell(
+                      child: Ink(
+                        width: 46.0,
+                        height: 46.0,
+                        decoration: const BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0))),
+                        child: const Center(
+                          child: Text(
+                            'ºF',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      onTap: () {},
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 16.0,
+              ),
+              itemBlock(
+                  title: AppLocalizations.of(context).currentTemperature,
+                  content:
+                      state.characteristicData[DataKey.currentTemperatureF] ??
+                          ''),
+              itemBlock(
+                  title: AppLocalizations.of(context).minTemperature,
+                  content:
+                      state.characteristicData[DataKey.minTemperatureF] ?? ''),
+              itemBlock(
+                  title: AppLocalizations.of(context).maxTemperature,
+                  content:
+                      state.characteristicData[DataKey.maxTemperatureF] ?? ''),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PowerSupplyCard extends StatelessWidget {
+  const _PowerSupplyCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppLocalizations.of(context).powerSupplyVDC,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(
+                height: 30.0,
+              ),
+              Text(
+                AppLocalizations.of(context).voltageLevel,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              itemText(
+                  title: AppLocalizations.of(context).currentVoltage,
+                  content:
+                      state.characteristicData[DataKey.currentVoltage] ?? ''),
+              itemText(
+                  title: AppLocalizations.of(context).minVoltage,
+                  content: state.characteristicData[DataKey.minVoltage] ?? ''),
+              itemText(
+                  title: AppLocalizations.of(context).maxVoltage,
+                  content: state.characteristicData[DataKey.maxVoltage] ?? ''),
+              const SizedBox(
+                height: 26.0,
+              ),
+              Text(
+                AppLocalizations.of(context).voltageRipple,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              itemText(
+                  title: AppLocalizations.of(context).currentVoltageRipple,
+                  content:
+                      state.characteristicData[DataKey.currentVoltageRipple] ??
+                          ''),
+              itemText(
+                  title: AppLocalizations.of(context).minVoltageRipple,
+                  content:
+                      state.characteristicData[DataKey.minVoltageRipple] ?? ''),
+              itemText(
+                  title: AppLocalizations.of(context).maxVoltageRipple,
+                  content:
+                      state.characteristicData[DataKey.maxVoltageRipple] ?? ''),
             ],
           ),
         ),

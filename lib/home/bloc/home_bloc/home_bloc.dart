@@ -29,7 +29,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   final DsimRepository _dsimRepository;
   late StreamSubscription<ScanReport>? _scanStreamSubscription;
-  late StreamSubscription<ConnectionReport>? _connectionStreamSubscription;
+  late StreamSubscription<ConnectionReport>?
+      _connectionReportStreamSubscription;
   late StreamSubscription<Map<DataKey, String>>?
       _characteristicDataStreamSubscription;
 
@@ -45,7 +46,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ));
         // _dsimRepository.connectDevice(state.device!);
 
-        _connectionStreamSubscription =
+        _connectionReportStreamSubscription =
             _dsimRepository.connectionStateReport.listen((connectionReport) {
           add(DeviceConnectionChanged(connectionReport));
         });
@@ -134,11 +135,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
 
     _dsimRepository.clearCache();
+    print('cache cleaned');
     await _dsimRepository.closeConnectionStream();
-    await _connectionStreamSubscription?.cancel();
-    _connectionStreamSubscription = null;
-    await _characteristicDataStreamSubscription?.cancel();
-    _characteristicDataStreamSubscription = null;
+    print('connectionStream closed');
+    await _connectionReportStreamSubscription?.cancel();
+    _connectionReportStreamSubscription = null;
+    print('connectionReportStreamSubscription closed');
+
+    if (_characteristicDataStreamSubscription != null) {
+      await _characteristicDataStreamSubscription?.cancel();
+      _characteristicDataStreamSubscription = null;
+      print('_characteristicDataStreamSubscription closed');
+    }
 
     _scanStreamSubscription =
         _dsimRepository.scannedDevices.listen((scanReport) async {
