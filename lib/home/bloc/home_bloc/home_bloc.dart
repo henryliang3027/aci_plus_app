@@ -28,10 +28,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   final DsimRepository _dsimRepository;
-  late StreamSubscription<ScanReport>? _scanStreamSubscription;
-  late StreamSubscription<ConnectionReport>?
-      _connectionReportStreamSubscription;
-  late StreamSubscription<Map<DataKey, String>>?
+  StreamSubscription<ScanReport>? _scanStreamSubscription;
+  StreamSubscription<ConnectionReport>? _connectionReportStreamSubscription;
+  StreamSubscription<Map<DataKey, String>>?
       _characteristicDataStreamSubscription;
 
   Future<void> _onDiscoveredDeviceChanged(
@@ -138,9 +137,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     print('cache cleaned');
     await _dsimRepository.closeConnectionStream();
     print('connectionStream closed');
-    await _connectionReportStreamSubscription?.cancel();
-    _connectionReportStreamSubscription = null;
-    print('connectionReportStreamSubscription closed');
+
+    if (_connectionReportStreamSubscription != null) {
+      await _connectionReportStreamSubscription?.cancel();
+      _connectionReportStreamSubscription = null;
+      print('connectionReportStreamSubscription closed');
+    }
 
     if (_characteristicDataStreamSubscription != null) {
       await _characteristicDataStreamSubscription?.cancel();
