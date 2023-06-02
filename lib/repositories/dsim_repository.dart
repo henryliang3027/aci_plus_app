@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
+import 'package:dsim_app/core/custom_style.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
@@ -331,14 +332,18 @@ class DsimRepository {
           .reduce((max, current) => max > current ? max : current);
 
       String minTemperatureF =
-          _convertToFahrenheit(minTemperature).toStringAsFixed(1);
+          _convertToFahrenheit(minTemperature).toStringAsFixed(1) +
+              CustomStyle.fahrenheitUnit;
 
       String maxTemperatureF =
-          _convertToFahrenheit(maxTemperature).toStringAsFixed(1);
+          _convertToFahrenheit(maxTemperature).toStringAsFixed(1) +
+              CustomStyle.fahrenheitUnit;
 
-      String minTemperatureC = minTemperature.toString();
+      String minTemperatureC =
+          minTemperature.toString() + CustomStyle.celciusUnit;
 
-      String maxTemperatureC = maxTemperature.toString();
+      String maxTemperatureC =
+          maxTemperature.toString() + CustomStyle.celciusUnit;
 
       _characteristicDataStreamController
           .add({DataKey.minTemperatureF: minTemperatureF});
@@ -398,7 +403,7 @@ class DsimRepository {
         // bit 0: RF detect Max, bit 1 : RF detect Min
         _alarmR = (number & 0x01) + (number & 0x02);
 
-        // bit 6: Temperature Max, bit 1 : Temperature Min
+        // bit 6: Temperature Max, bit 7 : Temperature Min
         _alarmT = (number & 0x40) + (number & 0x80);
 
         // bit 4: Voltage 24v Max, bit 5 : Voltage 24v Min
@@ -506,8 +511,10 @@ class DsimRepository {
         //Temperature
         currentTemperatureC = (rawData[10] * 256 + rawData[11]) / 10;
         currentTemperatureF = _convertToFahrenheit(currentTemperatureC);
-        String strCurrentTemperatureF = currentTemperatureF.toStringAsFixed(1);
-        String strCurrentTemperatureC = currentTemperatureC.toString();
+        String strCurrentTemperatureF =
+            currentTemperatureF.toStringAsFixed(1) + CustomStyle.fahrenheitUnit;
+        String strCurrentTemperatureC =
+            currentTemperatureC.toString() + CustomStyle.celciusUnit;
 
         //24V
         current24V = (rawData[8] * 256 + rawData[9]) / 10;

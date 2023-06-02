@@ -22,7 +22,7 @@
     "firmwareVersion": "Versión del firmware",
     "attenuation": "Atenuación",
     "range": "Rango",
-    "currentAttenuation": "Posición actual",
+    "currentAttenuation": "Actual",
     "minAttenuation": "Mínimo",
     "normalAttenuation": "Centrar",
     "maxAttenuation": "Máximo",
