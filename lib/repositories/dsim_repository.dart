@@ -274,12 +274,19 @@ class DsimRepository {
       double voltage = (_rawLog[i * 16 + 8] * 256 + _rawLog[i * 16 + 9]) / 10;
       int voltageRipple = _rawLog[i * 16 + 10] * 256 + _rawLog[i * 16 + 11];
 
-      _logs.add(Log(
-          time: time,
-          temperature: temperature,
-          attenuation: attenuation,
-          voltage: voltage,
-          voltageRipple: voltageRipple));
+      if (time < 0xFFF0) {
+        //# 20210128 做2補數
+        if (temperature > 32767) {
+          temperature = -(65535 - temperature + 1).abs();
+        }
+
+        _logs.add(Log(
+            time: time,
+            temperature: temperature,
+            attenuation: attenuation,
+            voltage: voltage,
+            voltageRipple: voltageRipple));
+      }
     }
 
     if (_commandIndex == 29) {
@@ -381,6 +388,7 @@ class DsimRepository {
         for (int i = 3; i < 15; i++) {
           serialNumber += String.fromCharCode(rawData[i]);
         }
+        serialNumber = serialNumber.trim();
         _characteristicDataStreamController
             .add({DataKey.serialNumber: serialNumber});
         break;
@@ -399,16 +407,16 @@ class DsimRepository {
         _basicInterval = rawData[13].toString(); //time interval
         _basicInterval += " minutes";
 
-        String softwareVersion = '';
+        String firmwareVersion = '';
         for (int i = 3; i < 6; i++) {
-          softwareVersion += String.fromCharCode(rawData[i]);
+          firmwareVersion += String.fromCharCode(rawData[i]);
         }
 
         _characteristicDataStreamController
             .add({DataKey.logInterval: _basicInterval});
 
         _characteristicDataStreamController
-            .add({DataKey.softwareVersion: softwareVersion});
+            .add({DataKey.firmwareVersion: firmwareVersion});
         break;
       case 4:
         //MGC Value 2Bytes

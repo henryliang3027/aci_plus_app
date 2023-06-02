@@ -65,7 +65,7 @@ class StatusForm extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: const [
-              _InfoCard(),
+              _ModuleCard(),
               _AttenuationCard(),
               _TemperatureCard(),
               _PowerSupplyCard(),
@@ -149,8 +149,8 @@ class _DeviceRefresh extends StatelessWidget {
   }
 }
 
-class _InfoCard extends StatelessWidget {
-  const _InfoCard({super.key});
+class _ModuleCard extends StatelessWidget {
+  const _ModuleCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +162,7 @@ class _InfoCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                AppLocalizations.of(context).information,
+                AppLocalizations.of(context).module,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(
@@ -173,9 +173,9 @@ class _InfoCard extends StatelessWidget {
                 content: state.characteristicData[DataKey.serialNumber] ?? '',
               ),
               itemText(
-                title: AppLocalizations.of(context).softwareVersion,
+                title: AppLocalizations.of(context).firmwareVersion,
                 content:
-                    state.characteristicData[DataKey.softwareVersion] ?? '',
+                    state.characteristicData[DataKey.firmwareVersion] ?? '',
               ),
             ],
           ),

@@ -2,7 +2,7 @@ enum DataKey {
   typeNo,
   partNo,
   serialNumber,
-  softwareVersion,
+  firmwareVersion,
   location,
   dsimMode,
   currentPilot,

@@ -136,7 +136,6 @@ class _AboutPageState extends State<AboutPage> {
                           _dsimVersion,
                           style: const TextStyle(
                             color: Colors.white,
-                            decoration: TextDecoration.underline,
                           ),
                         ),
                         onPressed: () async {},
@@ -356,16 +355,6 @@ class _AboutPageState extends State<AboutPage> {
                             height: 26,
                             child: Image(
                               image: AssetImage('assets/ACI.png'),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 20.0,
-                          ),
-                          SizedBox(
-                            height: 20,
-                            child: Image(
-                              image: AssetImage('assets/RICOMS2.png'),
                               fit: BoxFit.cover,
                             ),
                           ),
