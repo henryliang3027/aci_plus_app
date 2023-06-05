@@ -428,14 +428,19 @@ class DsimRepository {
         int currentAttenuator = rawData[4] * 256 + rawData[5];
 
         _currentSettingMode = rawData[3];
+
         _basicCurrentPilot = rawData[7].toString();
         _basicCurrentPilotMode = rawData[8];
+
+        String basicTGCCableLength = rawData[6].toString();
 
         _characteristicDataStreamController
             .add({DataKey.currentAttenuation: currentAttenuator.toString()});
         _characteristicDataStreamController.add({DataKey.minAttenuation: '0'});
         _characteristicDataStreamController
             .add({DataKey.maxAttenuation: '4095'});
+        _characteristicDataStreamController
+            .add({DataKey.tgcCableLength: basicTGCCableLength});
         break;
 
       case 5:

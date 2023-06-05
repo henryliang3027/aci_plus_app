@@ -33,6 +33,32 @@ class LocationChanged extends SettingEvent {
       ];
 }
 
+class TGCCableLengthChanged extends SettingEvent {
+  const TGCCableLengthChanged(
+    this.tgcCableLength,
+  );
+
+  final String tgcCableLength;
+
+  @override
+  List<Object> get props => [
+        tgcCableLength,
+      ];
+}
+
+class LogIntervalChanged extends SettingEvent {
+  const LogIntervalChanged(
+    this.logIntervalId,
+  );
+
+  final int logIntervalId;
+
+  @override
+  List<Object> get props => [
+        logIntervalId,
+      ];
+}
+
 class LocationSubmitted extends SettingEvent {
   const LocationSubmitted();
 

@@ -1,5 +1,10 @@
 {
     "setting": "Ajuste",
+    "tgcCableLength" : " TGC longitud del cable",
+    "agcPrepAttenuator" : "AGC PREP atenuador",
+    "userPilot": "Piloto de usuario",
+    "userPilot2": "Piloto de usuario 2",
+    "workingMode": "Modo de trabajo",
     "status": "estado",
     "information": "Información",
     "monitoringChart": "gráfico de seguimiento",

@@ -28,6 +28,7 @@ enum DataKey {
   currentVoltageRipple,
   minVoltageRipple,
   maxVoltageRipple,
+  tgcCableLength,
 }
 
 class Command {

@@ -12,6 +12,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     on<ListViewToggled>(_onListViewToggled);
     on<LocationChanged>(_onLocationChanged);
     on<LocationSubmitted>(_onLocationSubmitted);
+    on<TGCCableLengthChanged>(_onTGCCableLengthChanged);
+    on<LogIntervalChanged>(_onLogIntervalChanged);
   }
 
   void _onGraphViewToggled(
@@ -40,6 +42,32 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
 
     emit(state.copyWith(
       location: location,
+    ));
+  }
+
+  void _onTGCCableLengthChanged(
+    TGCCableLengthChanged event,
+    Emitter<SettingState> emit,
+  ) {
+    Map<String, bool> newSelectedTGCCableLength = {
+      '9': false,
+      '18': false,
+      '27': false,
+    };
+
+    newSelectedTGCCableLength[event.tgcCableLength] = true;
+
+    emit(state.copyWith(
+      selectedTGCCableLength: newSelectedTGCCableLength,
+    ));
+  }
+
+  void _onLogIntervalChanged(
+    LogIntervalChanged event,
+    Emitter<SettingState> emit,
+  ) {
+    emit(state.copyWith(
+      logIntervalId: event.logIntervalId,
     ));
   }
 
