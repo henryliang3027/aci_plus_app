@@ -5,7 +5,7 @@ part 'status_event.dart';
 part 'status_state.dart';
 
 class StatusBloc extends Bloc<StatusEvent, StatusState> {
-  StatusBloc() : super(StatusState()) {
+  StatusBloc() : super(const StatusState()) {
     on<TemperatureUnitChanged>(_onTemperatureUnitChanged);
   }
 
@@ -16,31 +16,5 @@ class StatusBloc extends Bloc<StatusEvent, StatusState> {
     emit(state.copyWith(
       temperatureUnit: event.temperatureUnit,
     ));
-    // switch (event.temperatureUnit) {
-    //   case TemperatureUnit.fahrenheit:
-    //     emit(state.copyWith(
-    //       temperatureUnit: event.temperatureUnit,
-    //       currentTemperature: currentTemperatureF,
-    //       maxTemperature: maxTemperatureF,
-    //       minTemperature: minTemperatureF,
-    //     ));
-    //     break;
-    //   case TemperatureUnit.celsius:
-    //     emit(state.copyWith(
-    //       temperatureUnit: event.temperatureUnit,
-    //       currentTemperature: currentTemperatureC,
-    //       maxTemperature: maxTemperatureC,
-    //       minTemperature: minTemperatureC,
-    //     ));
-    //     break;
-    //   default:
-    //     emit(state.copyWith(
-    //       temperatureUnit: event.temperatureUnit,
-    //       currentTemperature: currentTemperatureF,
-    //       maxTemperature: maxTemperatureF,
-    //       minTemperature: minTemperatureF,
-    //     ));
-    //     break;
-    // }
   }
 }

@@ -10,21 +10,34 @@ class SettingState extends Equatable {
       '18': false,
       '27': false,
     },
+    this.selectedWorkingMode = const {
+      'MGC': false,
+      'AGC': false,
+      'TGC': false,
+    },
     this.logIntervalId = 1,
+    this.pilotCode = '',
+    this.pilotChannel = '',
   });
 
   final FormStatus status;
   final Location location;
   final bool isGraphType;
   final Map<String, bool> selectedTGCCableLength;
+  final Map<String, bool> selectedWorkingMode;
   final int logIntervalId;
+  final String pilotCode;
+  final String pilotChannel;
 
   SettingState copyWith({
     FormStatus? status,
     Location? location,
     bool? isGraphType,
     Map<String, bool>? selectedTGCCableLength,
+    Map<String, bool>? selectedWorkingMode,
     int? logIntervalId,
+    String? pilotCode,
+    String? pilotChannel,
   }) {
     return SettingState(
       status: status ?? this.status,
@@ -32,7 +45,10 @@ class SettingState extends Equatable {
       isGraphType: isGraphType ?? this.isGraphType,
       selectedTGCCableLength:
           selectedTGCCableLength ?? this.selectedTGCCableLength,
+      selectedWorkingMode: selectedWorkingMode ?? this.selectedWorkingMode,
       logIntervalId: logIntervalId ?? this.logIntervalId,
+      pilotCode: pilotCode ?? this.pilotCode,
+      pilotChannel: pilotChannel ?? this.pilotChannel,
     );
   }
 
@@ -42,6 +58,9 @@ class SettingState extends Equatable {
         location,
         isGraphType,
         selectedTGCCableLength,
+        selectedWorkingMode,
         logIntervalId,
+        pilotCode,
+        pilotChannel,
       ];
 }

@@ -6,6 +6,7 @@ enum DataKey {
   location,
   dsimMode,
   currentPilot,
+  currentPilotMode,
   logInterval,
   alarmRServerity,
   alarmTServerity,

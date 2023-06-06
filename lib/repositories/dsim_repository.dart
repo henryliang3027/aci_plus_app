@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:dsim_app/core/custom_style.dart';
+import 'package:dsim_app/core/pilot_channel.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
@@ -410,7 +411,6 @@ class DsimRepository {
         _alarmP = (number & 0x10) + (number & 0x20);
 
         _basicInterval = rawData[13].toString(); //time interval
-        _basicInterval += " minutes";
 
         String firmwareVersion = '';
         for (int i = 3; i < 6; i++) {
@@ -452,6 +452,7 @@ class DsimRepository {
         double currentTemperatureC;
         double currentTemperatureF;
         double current24V;
+        String pilotMode = '';
         switch (rawData[3]) //working mode
         {
           case 1:
@@ -504,9 +505,11 @@ class DsimRepository {
         } else {
           currentPilot = _basicCurrentPilot;
           if (_basicCurrentPilotMode == 1) {
-            currentPilot += ' IRC';
+            // currentPilot += ' IRC';
+            pilotMode = 'IRC';
           } else {
-            currentPilot += ' DIG';
+            // currentPilot += ' DIG';
+            pilotMode = 'DIG';
           }
         }
 
@@ -527,6 +530,8 @@ class DsimRepository {
         _characteristicDataStreamController.add({DataKey.dsimMode: dsimMode});
         _characteristicDataStreamController
             .add({DataKey.currentPilot: currentPilot});
+        _characteristicDataStreamController
+            .add({DataKey.currentPilotMode: pilotMode});
         _characteristicDataStreamController
             .add({DataKey.alarmRServerity: alarmRServerity.name});
         _characteristicDataStreamController

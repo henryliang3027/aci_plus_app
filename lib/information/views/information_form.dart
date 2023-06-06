@@ -220,7 +220,8 @@ class _BasicCard extends StatelessWidget {
               ),
               itemText(
                 title: AppLocalizations.of(context).logInterval,
-                content: state.characteristicData[DataKey.logInterval] ?? '',
+                content:
+                    '${state.characteristicData[DataKey.logInterval] ?? ''} minutes',
               ),
             ],
           ),

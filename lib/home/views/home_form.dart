@@ -30,6 +30,7 @@ class _HomeFormState extends State<HomeForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
         children: const [
           SettingPage(),

@@ -1,6 +1,3 @@
-import 'package:dsim_app/core/command.dart';
-import 'package:dsim_app/core/custom_style.dart';
-import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:dsim_app/setting/views/setting_graph_view.dart';
 import 'package:dsim_app/setting/views/setting_list_view.dart';
@@ -9,10 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingForm extends StatelessWidget {
-  SettingForm({super.key});
-
-  final TextEditingController _locationTextEditingController =
-      TextEditingController();
+  const SettingForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +28,12 @@ class _ViewLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingBloc, SettingState>(builder: (context, state) {
-      return state.isGraphType ? SettingGraphView() : SettingListView();
-    });
+    return BlocBuilder<SettingBloc, SettingState>(
+        buildWhen: (previous, current) =>
+            previous.isGraphType != current.isGraphType,
+        builder: (context, state) {
+          return state.isGraphType ? SettingGraphView() : SettingListView();
+        });
   }
 }
 
