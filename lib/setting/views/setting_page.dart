@@ -10,7 +10,7 @@ class SettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SettingBloc(),
-      child: SettingForm(),
+      child: const SettingForm(),
     );
   }
 }

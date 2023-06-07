@@ -29,7 +29,7 @@
     "range": "範圍",
     "currentAttenuation": "目前衰減值",
     "minAttenuation": "最小衰減值",
-    "normalAttenuation": "常温衰減值",
+    "centerAttenuation": "常温衰減值",
     "maxAttenuation": "最大衰減值",
     "historicalAttenuation": "歷史記錄",
     "historicalMinAttenuation": "最小衰減值",

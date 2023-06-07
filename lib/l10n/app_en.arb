@@ -29,7 +29,7 @@
     "range": "Range",
     "currentAttenuation": "Current",
     "minAttenuation": "Minimum",
-    "normalAttenuation": "Center",
+    "centerAttenuation": "Center",
     "maxAttenuation": "Maximum",
     "historicalAttenuation": "Position",
     "historicalMinAttenuation": "Minimum",

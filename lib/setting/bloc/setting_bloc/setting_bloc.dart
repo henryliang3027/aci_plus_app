@@ -1,8 +1,10 @@
+import 'dart:js';
+
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/pilot_channel.dart';
 import 'package:dsim_app/setting/model/location.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'setting_event.dart';
@@ -20,6 +22,10 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     on<LogIntervalChanged>(_onLogIntervalChanged);
     on<PilotCodeChanged>(_onPilotCodeChanged);
     on<PilotChannelSearched>(_onPilotChannelSearched);
+    on<AGCPrepAttenuationChanged>(_onAGCPrepAttenuationChanged);
+    on<AGCPrepAttenuationIncreased>(_onAGCPrepAttenuationIncreased);
+    on<AGCPrepAttenuationDecreased>(_onAGCPrepAttenuationDecreased);
+    on<AGCPrepAttenuationCentered>(_onAGCPrepAttenuationCentered);
   }
 
   void _onAllItemInitialized(
@@ -28,28 +34,55 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   ) {
     final Location location = Location.dirty(event.location);
 
-    Map<String, bool> newSelectedTGCCableLength = {
+    final Map<String, bool> newSelectedTGCCableLength = {
       '9': false,
       '18': false,
       '27': false,
     };
 
-    newSelectedTGCCableLength[event.tgcCableLength] = true;
+    if (newSelectedTGCCableLength.containsKey(event.tgcCableLength)) {
+      newSelectedTGCCableLength[event.tgcCableLength] = true;
+    }
 
-    Map<String, bool> newSelectedWorkingMode = {
+    final Map<String, bool> newSelectedWorkingMode = {
       'MGC': false,
       'AGC': false,
       'TGC': false,
     };
 
-    newSelectedWorkingMode[event.workingMode] = true;
+    if (newSelectedWorkingMode.containsKey(event.workingMode)) {
+      newSelectedWorkingMode[event.workingMode] = true;
+    }
+
+    final int maxAttenuation = event.maxAttenuation.isNotEmpty
+        ? int.parse(event.maxAttenuation)
+        : 3000;
+    final int minAttenuation =
+        event.minAttenuation.isNotEmpty ? int.parse(event.minAttenuation) : 0;
+    final int currentAttenuation = event.currentAttenuation.isNotEmpty
+        ? int.parse(event.currentAttenuation)
+        : 0;
+    final int centerAttenuation = event.centerAttenuation.isNotEmpty
+        ? int.parse(event.centerAttenuation)
+        : 0;
 
     emit(state.copyWith(
+      initialValues: [
+        event.location,
+        event.tgcCableLength,
+        event.logIntervalId,
+        event.workingMode,
+        event.currentAttenuation,
+      ],
       location: location,
       selectedTGCCableLength: newSelectedTGCCableLength,
       selectedWorkingMode: newSelectedWorkingMode,
       logIntervalId: event.logIntervalId,
       pilotChannel: event.pilotChannel,
+      maxAttenuation: maxAttenuation,
+      minAttenuation: minAttenuation,
+      currentAttenuation: currentAttenuation,
+      centerAttenuation: centerAttenuation,
     ));
   }
 
@@ -159,8 +192,53 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     ));
   }
 
+  void _onAGCPrepAttenuationChanged(
+    AGCPrepAttenuationChanged event,
+    Emitter<SettingState> emit,
+  ) {
+    emit(state.copyWith(
+      currentAttenuation: event.attenuation,
+    ));
+  }
+
+  void _onAGCPrepAttenuationIncreased(
+    AGCPrepAttenuationIncreased event,
+    Emitter<SettingState> emit,
+  ) {
+    int newAttenuation = state.currentAttenuation + 50 <= state.maxAttenuation
+        ? state.currentAttenuation + 50
+        : state.maxAttenuation;
+    emit(state.copyWith(
+      currentAttenuation: newAttenuation,
+    ));
+  }
+
+  void _onAGCPrepAttenuationDecreased(
+    AGCPrepAttenuationDecreased event,
+    Emitter<SettingState> emit,
+  ) {
+    int newAttenuation = state.currentAttenuation - 50 >= state.minAttenuation
+        ? state.currentAttenuation - 50
+        : state.minAttenuation;
+    emit(state.copyWith(
+      currentAttenuation: newAttenuation,
+    ));
+  }
+
+  void _onAGCPrepAttenuationCentered(
+    AGCPrepAttenuationCentered event,
+    Emitter<SettingState> emit,
+  ) {
+    emit(state.copyWith(
+      currentAttenuation: state.centerAttenuation,
+    ));
+  }
+
   void _onLocationSubmitted(
     LocationSubmitted event,
     Emitter<SettingState> emit,
-  ) {}
+  ) {
+    // 如果目前的 location 與初始的 location 不同, 代表要進行 location 設定
+    if (state.location != state.initialValues[0]) {}
+  }
 }

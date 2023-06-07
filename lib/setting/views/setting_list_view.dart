@@ -8,6 +8,7 @@ import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter/material.dart';
 
 class SettingListView extends StatelessWidget {
   SettingListView({super.key});
@@ -24,11 +25,22 @@ class SettingListView extends StatelessWidget {
       builder: (context, state) {
         if (state.connectionStatus.isRequestSuccess) {
           context.read<SettingBloc>().add(AllItemInitialized(
-                state.characteristicData[DataKey.location] ?? '',
-                state.characteristicData[DataKey.tgcCableLength] ?? '',
-                state.characteristicData[DataKey.dsimMode] ?? '',
-                int.parse(state.characteristicData[DataKey.logInterval] ?? '1'),
-                state.characteristicData[DataKey.currentPilot] ?? '',
+                location: state.characteristicData[DataKey.location] ?? '',
+                tgcCableLength:
+                    state.characteristicData[DataKey.tgcCableLength] ?? '',
+                workingMode: state.characteristicData[DataKey.dsimMode] ?? '',
+                logIntervalId: int.parse(
+                    state.characteristicData[DataKey.logInterval] ?? '1'),
+                pilotChannel:
+                    state.characteristicData[DataKey.currentPilot] ?? '',
+                maxAttenuation:
+                    state.characteristicData[DataKey.maxAttenuation] ?? '',
+                minAttenuation:
+                    state.characteristicData[DataKey.minAttenuation] ?? '',
+                currentAttenuation:
+                    state.characteristicData[DataKey.currentAttenuation] ?? '',
+                centerAttenuation:
+                    state.characteristicData[DataKey.centerAttenuation] ?? '',
               ));
 
           _locationTextEditingController.text =
@@ -67,7 +79,11 @@ class SettingListView extends StatelessWidget {
                   ),
                   _UserPilot(
                     textEditingController: _userPilotTextEditingController,
-                  )
+                  ),
+                  const SizedBox(
+                    height: 40.0,
+                  ),
+                  const _AGCPrepAttenator(),
                 ],
               ),
             ),
@@ -89,6 +105,7 @@ class _Location extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingBloc, SettingState>(
+      buildWhen: (previous, current) => previous.location != current.location,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,13 +167,15 @@ class _TGCCabelLength extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double getWidth() {
-      double padding = WidgetsBinding.instance.window.padding.right == 0
+      double padding = View.of(context).padding.right == 0
           ? 40 // portrait orientation padding
-          : WidgetsBinding.instance.window.padding.right;
+          : View.of(context).padding.right;
       return (MediaQuery.of(context).size.width - padding) / 3;
     }
 
     return BlocBuilder<SettingBloc, SettingState>(
+      buildWhen: (previous, current) =>
+          previous.selectedTGCCableLength != current.selectedTGCCableLength,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,10 +202,12 @@ class _TGCCabelLength extends StatelessWidget {
               },
               textStyle: const TextStyle(fontSize: 18.0),
               borderRadius: const BorderRadius.all(Radius.circular(8)),
-              selectedBorderColor: Colors.blue[700],
-              selectedColor: Colors.white,
-              fillColor: Colors.blue[200],
-              color: Colors.black54,
+              selectedBorderColor:
+                  Theme.of(context).colorScheme.primary, // indigo border color
+              selectedColor:
+                  Theme.of(context).colorScheme.onPrimary, // white text color
+              fillColor: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.secondary,
               constraints: BoxConstraints(
                 minHeight: 40.0,
                 minWidth: getWidth(),
@@ -224,60 +245,65 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingBloc, SettingState>(builder: (context, state) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 16.0,
-            ),
-            child: Text(
-              AppLocalizations.of(context).logInterval,
-              style: const TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          DropdownButtonHideUnderline(
-            child: DropdownButton2(
-                buttonHeight: 40,
-                buttonDecoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey.shade700,
-                  ),
-                  borderRadius: BorderRadius.circular(4.0),
-                  color: Colors.white,
+    return BlocBuilder<SettingBloc, SettingState>(
+        buildWhen: (previous, current) =>
+            previous.logIntervalId != current.logIntervalId,
+        builder: (context, state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
                 ),
-                dropdownMaxHeight: 200,
-                isExpanded: true,
-                icon: const Icon(Icons.keyboard_arrow_down),
-                iconDisabledColor: Colors.grey.shade700,
-                value: state.logIntervalId,
-                items: [
-                  for (String k in types.keys)
-                    DropdownMenuItem(
-                      value: types[k],
-                      child: Text(
-                        k,
-                        textAlign: TextAlign.left,
-                        style: const TextStyle(
-                          fontSize: CustomStyle.sizeXL,
-                          color: Colors.black,
-                        ),
+                child: Text(
+                  AppLocalizations.of(context).logInterval,
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              DropdownButtonHideUnderline(
+                child: DropdownButton2(
+                    buttonHeight: 40,
+                    buttonDecoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey.shade700,
                       ),
-                    )
-                ],
-                onChanged: (int? value) {
-                  if (value != null) {
-                    context.read<SettingBloc>().add(LogIntervalChanged(value));
-                  }
-                }),
-          ),
-        ],
-      );
-    });
+                      borderRadius: BorderRadius.circular(4.0),
+                      color: Colors.white,
+                    ),
+                    dropdownMaxHeight: 200,
+                    isExpanded: true,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    iconDisabledColor: Colors.grey.shade700,
+                    value: state.logIntervalId,
+                    items: [
+                      for (String k in types.keys)
+                        DropdownMenuItem(
+                          value: types[k],
+                          child: Text(
+                            k,
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
+                              fontSize: CustomStyle.sizeXL,
+                              color: Colors.black,
+                            ),
+                          ),
+                        )
+                    ],
+                    onChanged: (int? value) {
+                      if (value != null) {
+                        context
+                            .read<SettingBloc>()
+                            .add(LogIntervalChanged(value));
+                      }
+                    }),
+              ),
+            ],
+          );
+        });
   }
 }
 
@@ -295,13 +321,15 @@ class _WorkingMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double getWidth() {
-      double padding = WidgetsBinding.instance.window.padding.right == 0
+      double padding = View.of(context).padding.right == 0
           ? 40 // portrait orientation padding
-          : WidgetsBinding.instance.window.padding.right;
+          : View.of(context).padding.right;
       return (MediaQuery.of(context).size.width - padding) / 3;
     }
 
     return BlocBuilder<SettingBloc, SettingState>(
+      buildWhen: (previous, current) =>
+          previous.selectedWorkingMode != current.selectedWorkingMode,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -328,10 +356,12 @@ class _WorkingMode extends StatelessWidget {
               },
               textStyle: const TextStyle(fontSize: 18.0),
               borderRadius: const BorderRadius.all(Radius.circular(8)),
-              selectedBorderColor: Colors.blue[700],
-              selectedColor: Colors.white,
-              fillColor: Colors.blue[200],
-              color: Colors.black54,
+              selectedBorderColor:
+                  Theme.of(context).colorScheme.primary, // indigo border color
+              selectedColor:
+                  Theme.of(context).colorScheme.onPrimary, // white text color
+              fillColor: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.secondary,
               constraints: BoxConstraints(
                 minHeight: 40.0,
                 minWidth: getWidth(),
@@ -422,6 +452,99 @@ class _UserPilot extends StatelessWidget {
                   },
                 ),
               ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _AGCPrepAttenator extends StatelessWidget {
+  const _AGCPrepAttenator({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingBloc, SettingState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 16.0,
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    '${AppLocalizations.of(context).agcPrepAttenuator}:',
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    state.currentAttenuation.toString(),
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SliderTheme(
+              data: const SliderThemeData(
+                valueIndicatorColor: Colors.red,
+                showValueIndicator: ShowValueIndicator.always,
+              ),
+              child: Slider(
+                min: state.minAttenuation.toDouble(),
+                max: state.maxAttenuation.toDouble(),
+                divisions: ((state.maxAttenuation - state.minAttenuation) ~/ 50)
+                    .toInt(),
+                value: state.currentAttenuation.toDouble(),
+                onChanged: (attenuation) {
+                  context
+                      .read<SettingBloc>()
+                      .add(AGCPrepAttenuationChanged(attenuation.toInt()));
+                },
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton.filled(
+                  icon: const Icon(
+                    Icons.remove,
+                  ),
+                  onPressed: () {
+                    context
+                        .read<SettingBloc>()
+                        .add(const AGCPrepAttenuationDecreased());
+                  },
+                ),
+                IconButton.filled(
+                  icon: const Icon(
+                    Icons.circle_outlined,
+                  ),
+                  onPressed: () {
+                    context
+                        .read<SettingBloc>()
+                        .add(const AGCPrepAttenuationCentered());
+                  },
+                ),
+                IconButton.filled(
+                  icon: const Icon(
+                    Icons.add,
+                  ),
+                  onPressed: () {
+                    context
+                        .read<SettingBloc>()
+                        .add(const AGCPrepAttenuationIncreased());
+                  },
+                ),
+              ],
             ),
           ],
         );

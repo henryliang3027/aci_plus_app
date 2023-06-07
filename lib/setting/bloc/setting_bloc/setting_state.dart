@@ -2,7 +2,6 @@ part of 'setting_bloc.dart';
 
 class SettingState extends Equatable {
   const SettingState({
-    this.status = FormStatus.none,
     this.location = const Location.pure(),
     this.isGraphType = false,
     this.selectedTGCCableLength = const {
@@ -18,9 +17,14 @@ class SettingState extends Equatable {
     this.logIntervalId = 1,
     this.pilotCode = '',
     this.pilotChannel = '',
+    this.maxAttenuation = 3000,
+    this.minAttenuation = 0,
+    this.currentAttenuation = 0,
+    this.centerAttenuation = 0,
+    this.initialValues = const [],
   });
 
-  final FormStatus status;
+  final List<dynamic> initialValues;
   final Location location;
   final bool isGraphType;
   final Map<String, bool> selectedTGCCableLength;
@@ -28,9 +32,13 @@ class SettingState extends Equatable {
   final int logIntervalId;
   final String pilotCode;
   final String pilotChannel;
+  final int maxAttenuation;
+  final int minAttenuation;
+  final int currentAttenuation;
+  final int centerAttenuation;
 
   SettingState copyWith({
-    FormStatus? status,
+    List<dynamic>? initialValues,
     Location? location,
     bool? isGraphType,
     Map<String, bool>? selectedTGCCableLength,
@@ -38,9 +46,13 @@ class SettingState extends Equatable {
     int? logIntervalId,
     String? pilotCode,
     String? pilotChannel,
+    int? maxAttenuation,
+    int? minAttenuation,
+    int? currentAttenuation,
+    int? centerAttenuation,
   }) {
     return SettingState(
-      status: status ?? this.status,
+      initialValues: initialValues ?? this.initialValues,
       location: location ?? this.location,
       isGraphType: isGraphType ?? this.isGraphType,
       selectedTGCCableLength:
@@ -49,12 +61,16 @@ class SettingState extends Equatable {
       logIntervalId: logIntervalId ?? this.logIntervalId,
       pilotCode: pilotCode ?? this.pilotCode,
       pilotChannel: pilotChannel ?? this.pilotChannel,
+      maxAttenuation: maxAttenuation ?? this.maxAttenuation,
+      minAttenuation: minAttenuation ?? this.minAttenuation,
+      currentAttenuation: currentAttenuation ?? this.currentAttenuation,
+      centerAttenuation: centerAttenuation ?? this.centerAttenuation,
     );
   }
 
   @override
   List<Object?> get props => [
-        status,
+        initialValues,
         location,
         isGraphType,
         selectedTGCCableLength,
@@ -62,5 +78,9 @@ class SettingState extends Equatable {
         logIntervalId,
         pilotCode,
         pilotChannel,
+        maxAttenuation,
+        minAttenuation,
+        currentAttenuation,
+        centerAttenuation,
       ];
 }

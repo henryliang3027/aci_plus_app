@@ -13,7 +13,7 @@ enum DataKey {
   alarmPServerity,
   currentAttenuation,
   minAttenuation,
-  normalAttenuation,
+  centerAttenuation,
   maxAttenuation,
   historicalMinAttenuation,
   historicalMaxAttenuation,

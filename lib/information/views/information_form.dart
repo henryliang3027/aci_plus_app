@@ -62,9 +62,9 @@ class InformationForm extends StatelessWidget {
           leading: const _DeviceStatus(),
           actions: const [_DeviceRefresh()],
         ),
-        body: SingleChildScrollView(
+        body: const SingleChildScrollView(
           child: Column(
-            children: const [
+            children: [
               _ConnectionCard(),
               _BasicCard(),
               _AlarmCard(),
@@ -132,13 +132,13 @@ class _DeviceRefresh extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (!state.status.isRequestInProgress) {
-          return ElevatedButton(
+          return IconButton(
               onPressed: () {
                 context.read<HomeBloc>().add(const DeviceRefreshed());
               },
-              child: const Icon(
+              icon: Icon(
                 Icons.refresh,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
               ));
         } else {
           return Container();
@@ -155,6 +155,8 @@ class _ConnectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -186,6 +188,8 @@ class _BasicCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -266,6 +270,8 @@ class _AlarmCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -296,84 +302,6 @@ class _AlarmCard extends StatelessWidget {
                     state.characteristicData[DataKey.alarmPServerity] ?? ''],
                 title: AppLocalizations.of(context).powerSupply,
               ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _AttenuationCard extends StatelessWidget {
-  const _AttenuationCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '${AppLocalizations.of(context).attenuation} ${AppLocalizations.of(context).range}',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 30.0,
-              ),
-              Text(
-                AppLocalizations.of(context).range,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              itemText(
-                  title: AppLocalizations.of(context).currentAttenuation,
-                  content:
-                      state.characteristicData[DataKey.currentAttenuation] ??
-                          ''),
-              itemText(
-                  title: AppLocalizations.of(context).minAttenuation,
-                  content:
-                      state.characteristicData[DataKey.minAttenuation] ?? ''),
-              itemText(
-                  title: AppLocalizations.of(context).normalAttenuation,
-                  content:
-                      state.characteristicData[DataKey.normalAttenuation] ??
-                          ''),
-              itemText(
-                  title: AppLocalizations.of(context).maxAttenuation,
-                  content:
-                      state.characteristicData[DataKey.maxAttenuation] ?? ''),
-              const SizedBox(
-                height: 26.0,
-              ),
-              Text(
-                AppLocalizations.of(context).historicalAttenuation,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              itemText(
-                  title: AppLocalizations.of(context).historicalMinAttenuation,
-                  content: state.characteristicData[
-                          DataKey.historicalMinAttenuation] ??
-                      ''),
-              itemText(
-                  title: AppLocalizations.of(context).historicalMaxAttenuation,
-                  content: state.characteristicData[
-                          DataKey.historicalMaxAttenuation] ??
-                      ''),
             ],
           ),
         ),

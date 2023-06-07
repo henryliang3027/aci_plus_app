@@ -63,9 +63,9 @@ class StatusForm extends StatelessWidget {
           leading: const _DeviceStatus(),
           actions: const [_DeviceRefresh()],
         ),
-        body: SingleChildScrollView(
+        body: const SingleChildScrollView(
           child: Column(
-            children: const [
+            children: [
               _ModuleCard(),
               _TemperatureCard(),
               _AttenuationCard(),
@@ -134,13 +134,13 @@ class _DeviceRefresh extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (!state.status.isRequestInProgress) {
-          return ElevatedButton(
+          return IconButton(
               onPressed: () {
                 context.read<HomeBloc>().add(const DeviceRefreshed());
               },
-              child: const Icon(
+              icon: Icon(
                 Icons.refresh,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
               ));
         } else {
           return Container();
@@ -157,6 +157,8 @@ class _ModuleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -253,6 +255,8 @@ class _TemperatureCard extends StatelessWidget {
         }
 
         return Card(
+          color: Theme.of(context).colorScheme.onPrimary,
+          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -274,18 +278,18 @@ class _TemperatureCard extends StatelessWidget {
                         child: Ink(
                           width: 46.0,
                           height: 46.0,
-                          decoration: const BoxDecoration(
-                              color: Colors.blue,
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(8.0))),
+                                  const BorderRadius.all(Radius.circular(8.0))),
                           child: Center(
                             child: Text(
                               statusState.temperatureUnit ==
                                       TemperatureUnit.fahrenheit
                                   ? CustomStyle.celciusUnit
                                   : CustomStyle.fahrenheitUnit,
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onPrimary,
                               ),
                             ),
                           ),
@@ -361,12 +365,13 @@ class _AttenuationCard extends StatelessWidget {
     required String title,
     required String currentAttenuationTitle,
     required String currentAttenuation,
-    required String normalAttenuationTitle,
-    required String normalAttenuation,
+    required String centerAttenuationTitle,
+    required String centerAttenuation,
     required String minAttenuationTitle,
     required String minAttenuation,
     required String maxAttenuationTitle,
     required String maxAttenuation,
+    required Color borderColor,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -378,7 +383,7 @@ class _AttenuationCard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: const Color(0xae4b39ef),
+              color: borderColor,
               width: 4.0,
             ),
             borderRadius: BorderRadius.circular(8.0),
@@ -421,8 +426,8 @@ class _AttenuationCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: tile(
-                        title: normalAttenuationTitle,
-                        content: normalAttenuation,
+                        title: centerAttenuationTitle,
+                        content: centerAttenuation,
                       ),
                     ),
                     Expanded(
@@ -447,6 +452,7 @@ class _AttenuationCard extends StatelessWidget {
     required String historicalMinAttenuation,
     required String historicalMaxAttenuationTitle,
     required String historicalMaxAttenuation,
+    required Color borderColor,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -458,7 +464,7 @@ class _AttenuationCard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: const Color(0xffa1deff),
+              color: borderColor,
               width: 4.0,
             ),
             borderRadius: BorderRadius.circular(8.0),
@@ -506,7 +512,8 @@ class _AttenuationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
-        elevation: 0.0,
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -523,16 +530,17 @@ class _AttenuationCard extends StatelessWidget {
                   AppLocalizations.of(context).currentAttenuation,
               currentAttenuation:
                   state.characteristicData[DataKey.currentAttenuation] ?? '',
-              normalAttenuationTitle:
-                  AppLocalizations.of(context).normalAttenuation,
-              normalAttenuation:
-                  state.characteristicData[DataKey.normalAttenuation] ?? '',
+              centerAttenuationTitle:
+                  AppLocalizations.of(context).centerAttenuation,
+              centerAttenuation:
+                  state.characteristicData[DataKey.centerAttenuation] ?? '',
               minAttenuationTitle: AppLocalizations.of(context).minAttenuation,
               minAttenuation:
                   state.characteristicData[DataKey.minAttenuation] ?? '',
               maxAttenuationTitle: AppLocalizations.of(context).maxAttenuation,
               maxAttenuation:
                   state.characteristicData[DataKey.maxAttenuation] ?? '',
+              borderColor: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(
               height: 20.0,
@@ -549,6 +557,7 @@ class _AttenuationCard extends StatelessWidget {
               historicalMaxAttenuation:
                   state.characteristicData[DataKey.historicalMaxAttenuation] ??
                       '',
+              borderColor: Theme.of(context).colorScheme.inversePrimary,
             ),
             const SizedBox(
               height: 30.0,
@@ -597,6 +606,7 @@ class _PowerSupplyCard extends StatelessWidget {
     required String minVoltage,
     required String maxVoltageTitle,
     required String maxVoltage,
+    required Color borderColor,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -608,7 +618,7 @@ class _PowerSupplyCard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: const Color(0xae4b39ef),
+              color: borderColor,
               width: 4.0,
             ),
             borderRadius: BorderRadius.circular(8.0),
@@ -670,6 +680,7 @@ class _PowerSupplyCard extends StatelessWidget {
     required String minVoltageRipple,
     required String maxVoltageRippleTitle,
     required String maxVoltageRipple,
+    required Color borderColor,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -681,7 +692,7 @@ class _PowerSupplyCard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: const Color(0xffa1deff),
+              color: borderColor,
               width: 4.0,
             ),
             borderRadius: BorderRadius.circular(8.0),
@@ -739,7 +750,8 @@ class _PowerSupplyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
-        elevation: 0.0,
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -759,6 +771,7 @@ class _PowerSupplyCard extends StatelessWidget {
               minVoltage: state.characteristicData[DataKey.minVoltage] ?? '',
               maxVoltageTitle: AppLocalizations.of(context).maxVoltage,
               maxVoltage: state.characteristicData[DataKey.maxVoltage] ?? '',
+              borderColor: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(
               height: 20.0,
@@ -777,6 +790,7 @@ class _PowerSupplyCard extends StatelessWidget {
                   AppLocalizations.of(context).maxVoltageRipple,
               maxVoltageRipple:
                   state.characteristicData[DataKey.maxVoltageRipple] ?? '',
+              borderColor: Theme.of(context).colorScheme.inversePrimary,
             ),
             const SizedBox(
               height: 30.0,

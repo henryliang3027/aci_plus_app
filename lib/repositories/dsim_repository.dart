@@ -438,7 +438,7 @@ class DsimRepository {
             .add({DataKey.currentAttenuation: currentAttenuator.toString()});
         _characteristicDataStreamController.add({DataKey.minAttenuation: '0'});
         _characteristicDataStreamController
-            .add({DataKey.maxAttenuation: '4095'});
+            .add({DataKey.maxAttenuation: '3000'});
         _characteristicDataStreamController
             .add({DataKey.tgcCableLength: basicTGCCableLength});
         break;
@@ -551,7 +551,7 @@ class DsimRepository {
         int currentVoltageRipple = rawData[9] * 256 + rawData[10]; //24VR
 
         _characteristicDataStreamController
-            .add({DataKey.normalAttenuation: centerAttenuation.toString()});
+            .add({DataKey.centerAttenuation: centerAttenuation.toString()});
         _characteristicDataStreamController.add(
             {DataKey.currentVoltageRipple: currentVoltageRipple.toString()});
 

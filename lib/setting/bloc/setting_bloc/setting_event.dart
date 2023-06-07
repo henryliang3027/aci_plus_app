@@ -7,20 +7,27 @@ abstract class SettingEvent extends Equatable {
 }
 
 class AllItemInitialized extends SettingEvent {
-  const AllItemInitialized(
-    this.location,
-    this.tgcCableLength,
-    this.workingMode,
-    this.logIntervalId,
-    this.pilotChannel,
-  );
+  const AllItemInitialized({
+    required this.location,
+    required this.tgcCableLength,
+    required this.workingMode,
+    required this.logIntervalId,
+    required this.pilotChannel,
+    required this.maxAttenuation,
+    required this.minAttenuation,
+    required this.currentAttenuation,
+    required this.centerAttenuation,
+  });
 
   final String location;
-
   final String tgcCableLength;
   final String workingMode;
   final int logIntervalId;
   final String pilotChannel;
+  final String maxAttenuation;
+  final String minAttenuation;
+  final String currentAttenuation;
+  final String centerAttenuation;
 
   @override
   List<Object> get props => [
@@ -29,6 +36,10 @@ class AllItemInitialized extends SettingEvent {
         workingMode,
         logIntervalId,
         pilotChannel,
+        maxAttenuation,
+        minAttenuation,
+        currentAttenuation,
+        centerAttenuation,
       ];
 }
 
@@ -113,6 +124,38 @@ class PilotCodeChanged extends SettingEvent {
 
 class PilotChannelSearched extends SettingEvent {
   const PilotChannelSearched();
+
+  @override
+  List<Object> get props => [];
+}
+
+class AGCPrepAttenuationChanged extends SettingEvent {
+  const AGCPrepAttenuationChanged(this.attenuation);
+
+  final int attenuation;
+
+  @override
+  List<Object> get props => [
+        attenuation,
+      ];
+}
+
+class AGCPrepAttenuationIncreased extends SettingEvent {
+  const AGCPrepAttenuationIncreased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class AGCPrepAttenuationDecreased extends SettingEvent {
+  const AGCPrepAttenuationDecreased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class AGCPrepAttenuationCentered extends SettingEvent {
+  const AGCPrepAttenuationCentered();
 
   @override
   List<Object> get props => [];

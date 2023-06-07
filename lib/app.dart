@@ -57,7 +57,16 @@ class _AppView extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.indigo,
+          background: Colors.grey[50],
+        ),
+        appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.white),
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.indigo,
+        ),
+        useMaterial3: true,
       ),
       home: const HomePage(),
     );
