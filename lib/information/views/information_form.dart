@@ -220,7 +220,8 @@ class _BasicCard extends StatelessWidget {
               ),
               itemText(
                 title: AppLocalizations.of(context).currentPilot,
-                content: state.characteristicData[DataKey.currentPilot] ?? '',
+                content:
+                    '${state.characteristicData[DataKey.currentPilot] ?? ''} ${state.characteristicData[DataKey.currentPilotMode] ?? ''}',
               ),
               itemText(
                 title: AppLocalizations.of(context).logInterval,

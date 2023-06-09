@@ -33,6 +33,8 @@ class SettingListView extends StatelessWidget {
                     state.characteristicData[DataKey.logInterval] ?? '1'),
                 pilotChannel:
                     state.characteristicData[DataKey.currentPilot] ?? '',
+                pilotMode:
+                    state.characteristicData[DataKey.currentPilotMode] ?? '',
                 maxAttenuation:
                     state.characteristicData[DataKey.maxAttenuation] ?? '',
                 minAttenuation:
@@ -463,7 +465,7 @@ class _UserPilot extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    state.pilotChannel,
+                    '${state.pilotChannel} ${state.pilotMode}',
                     style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w500,

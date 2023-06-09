@@ -17,6 +17,7 @@ class SettingState extends Equatable {
     this.logIntervalId = 1,
     this.pilotCode = '',
     this.pilotChannel = '',
+    this.pilotMode = '',
     this.maxAttenuation = 3000,
     this.minAttenuation = 0,
     this.currentAttenuation = 0,
@@ -33,6 +34,7 @@ class SettingState extends Equatable {
   final int logIntervalId;
   final String pilotCode;
   final String pilotChannel;
+  final String pilotMode;
   final int maxAttenuation;
   final int minAttenuation;
   final int currentAttenuation;
@@ -48,6 +50,7 @@ class SettingState extends Equatable {
     int? logIntervalId,
     String? pilotCode,
     String? pilotChannel,
+    String? pilotMode,
     int? maxAttenuation,
     int? minAttenuation,
     int? currentAttenuation,
@@ -64,6 +67,7 @@ class SettingState extends Equatable {
       logIntervalId: logIntervalId ?? this.logIntervalId,
       pilotCode: pilotCode ?? this.pilotCode,
       pilotChannel: pilotChannel ?? this.pilotChannel,
+      pilotMode: pilotMode ?? this.pilotMode,
       maxAttenuation: maxAttenuation ?? this.maxAttenuation,
       minAttenuation: minAttenuation ?? this.minAttenuation,
       currentAttenuation: currentAttenuation ?? this.currentAttenuation,
@@ -82,6 +86,7 @@ class SettingState extends Equatable {
         logIntervalId,
         pilotCode,
         pilotChannel,
+        pilotMode,
         maxAttenuation,
         minAttenuation,
         currentAttenuation,

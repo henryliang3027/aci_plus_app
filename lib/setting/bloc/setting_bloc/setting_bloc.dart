@@ -77,6 +77,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       selectedWorkingMode: newSelectedWorkingMode,
       logIntervalId: event.logIntervalId,
       pilotChannel: event.pilotChannel,
+      pilotMode: event.pilotMode,
       maxAttenuation: maxAttenuation,
       minAttenuation: minAttenuation,
       currentAttenuation: currentAttenuation,

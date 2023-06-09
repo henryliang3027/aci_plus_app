@@ -13,6 +13,7 @@ class AllItemInitialized extends SettingEvent {
     required this.workingMode,
     required this.logIntervalId,
     required this.pilotChannel,
+    required this.pilotMode,
     required this.maxAttenuation,
     required this.minAttenuation,
     required this.currentAttenuation,
@@ -24,6 +25,7 @@ class AllItemInitialized extends SettingEvent {
   final String workingMode;
   final int logIntervalId;
   final String pilotChannel;
+  final String pilotMode;
   final String maxAttenuation;
   final String minAttenuation;
   final String currentAttenuation;
@@ -36,6 +38,7 @@ class AllItemInitialized extends SettingEvent {
         workingMode,
         logIntervalId,
         pilotChannel,
+        pilotMode,
         maxAttenuation,
         minAttenuation,
         currentAttenuation,
