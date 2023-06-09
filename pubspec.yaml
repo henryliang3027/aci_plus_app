@@ -46,6 +46,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   bluetooth_enable_fork: ^0.1.6
+  flutter_native_splash: ^2.3.1
+
 
 
 dev_dependencies:
@@ -72,6 +74,12 @@ flutter:
   generate: true
   assets:
     - assets/
+
+  fonts:
+    - family: CustomIcons
+      fonts:
+        - asset: assets/fonts/CustomIcons.ttf
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -103,3 +111,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_native_splash:
+  image: assets/login_background_android.gif
+  color: "#000000"
+  android: true
+  ios: true

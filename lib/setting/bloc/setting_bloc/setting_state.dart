@@ -22,6 +22,7 @@ class SettingState extends Equatable {
     this.currentAttenuation = 0,
     this.centerAttenuation = 0,
     this.initialValues = const [],
+    this.editMode = false,
   });
 
   final List<dynamic> initialValues;
@@ -36,6 +37,7 @@ class SettingState extends Equatable {
   final int minAttenuation;
   final int currentAttenuation;
   final int centerAttenuation;
+  final bool editMode;
 
   SettingState copyWith({
     List<dynamic>? initialValues,
@@ -50,6 +52,7 @@ class SettingState extends Equatable {
     int? minAttenuation,
     int? currentAttenuation,
     int? centerAttenuation,
+    bool? editMode,
   }) {
     return SettingState(
       initialValues: initialValues ?? this.initialValues,
@@ -65,6 +68,7 @@ class SettingState extends Equatable {
       minAttenuation: minAttenuation ?? this.minAttenuation,
       currentAttenuation: currentAttenuation ?? this.currentAttenuation,
       centerAttenuation: centerAttenuation ?? this.centerAttenuation,
+      editMode: editMode ?? this.editMode,
     );
   }
 
@@ -82,5 +86,6 @@ class SettingState extends Equatable {
         minAttenuation,
         currentAttenuation,
         centerAttenuation,
+        editMode,
       ];
 }

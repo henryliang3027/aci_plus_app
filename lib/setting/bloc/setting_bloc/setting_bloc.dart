@@ -1,6 +1,3 @@
-import 'dart:js';
-
-import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/pilot_channel.dart';
 import 'package:dsim_app/setting/model/location.dart';
 import 'package:equatable/equatable.dart';
@@ -26,6 +23,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     on<AGCPrepAttenuationIncreased>(_onAGCPrepAttenuationIncreased);
     on<AGCPrepAttenuationDecreased>(_onAGCPrepAttenuationDecreased);
     on<AGCPrepAttenuationCentered>(_onAGCPrepAttenuationCentered);
+    on<EditModeChanged>(_onEditModeChanged);
   }
 
   void _onAllItemInitialized(
@@ -231,6 +229,15 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   ) {
     emit(state.copyWith(
       currentAttenuation: state.centerAttenuation,
+    ));
+  }
+
+  void _onEditModeChanged(
+    EditModeChanged event,
+    Emitter<SettingState> emit,
+  ) {
+    emit(state.copyWith(
+      editMode: !state.editMode,
     ));
   }
 

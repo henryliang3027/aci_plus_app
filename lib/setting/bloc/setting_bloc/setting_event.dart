@@ -161,6 +161,13 @@ class AGCPrepAttenuationCentered extends SettingEvent {
   List<Object> get props => [];
 }
 
+class EditModeChanged extends SettingEvent {
+  const EditModeChanged();
+
+  @override
+  List<Object> get props => [];
+}
+
 class LocationSubmitted extends SettingEvent {
   const LocationSubmitted();
 

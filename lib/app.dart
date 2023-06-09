@@ -69,6 +69,23 @@ class _AppView extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const HomePage(),
+      // FutureBuilder(
+      //   future: Future.delayed(const Duration(seconds: 0)),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return SizedBox(
+      //         width: double.maxFinite,
+      //         height: double.maxFinite,
+      //         child: Image.asset(
+      //           'assets/login_background_android.gif',
+      //           fit: BoxFit.fill,
+      //         ),
+      //       );
+      //     } else {
+      //       return const HomePage();
+      //     }
+      //   },
+      // ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dsim_app/core/command.dart';
+import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/pilot_channel.dart';
@@ -8,7 +9,6 @@ import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
 
 class SettingListView extends StatelessWidget {
   SettingListView({super.key});
@@ -51,46 +51,111 @@ class SettingListView extends StatelessWidget {
               '';
         }
 
-        return SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(
-                CustomStyle.sizeXL,
-              ),
-              child: Column(
-                children: [
-                  _Location(
-                    textEditingController: _locationTextEditingController,
-                  ),
-                  const SizedBox(
-                    height: 40.0,
-                  ),
-                  const _TGCCabelLength(),
-                  const SizedBox(
-                    height: 40.0,
-                  ),
-                  const _LogIntervalDropDownMenu(),
-                  const SizedBox(
-                    height: 40.0,
-                  ),
-                  const _WorkingMode(),
-                  const SizedBox(
-                    height: 40.0,
-                  ),
-                  _UserPilot(
-                    textEditingController: _userPilotTextEditingController,
-                  ),
-                  const SizedBox(
-                    height: 40.0,
-                  ),
-                  const _AGCPrepAttenator(),
-                ],
+        return Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(
+                  CustomStyle.sizeXL,
+                ),
+                child: Column(
+                  children: [
+                    _Location(
+                      textEditingController: _locationTextEditingController,
+                    ),
+                    const SizedBox(
+                      height: 40.0,
+                    ),
+                    const _TGCCabelLength(),
+                    const SizedBox(
+                      height: 40.0,
+                    ),
+                    const _LogIntervalDropDownMenu(),
+                    const SizedBox(
+                      height: 40.0,
+                    ),
+                    const _WorkingMode(),
+                    const SizedBox(
+                      height: 40.0,
+                    ),
+                    _UserPilot(
+                      textEditingController: _userPilotTextEditingController,
+                    ),
+                    const SizedBox(
+                      height: 40.0,
+                    ),
+                    const _AGCPrepAttenator(),
+                    const SizedBox(
+                      height: 160.0,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
+          floatingActionButton: const _SettingFloatingActionButton(),
         );
       },
     );
+  }
+}
+
+class _SettingFloatingActionButton extends StatelessWidget {
+  const _SettingFloatingActionButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingBloc, SettingState>(
+        buildWhen: (previous, current) => previous.editMode != current.editMode,
+        builder: (context, state) => state.editMode
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FloatingActionButton(
+                    shape: const CircleBorder(
+                      side: BorderSide.none,
+                    ),
+                    backgroundColor:
+                        Theme.of(context).colorScheme.primary.withAlpha(200),
+                    child: Icon(
+                      CustomIcons.cancel,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                    onPressed: () {
+                      context.read<SettingBloc>().add(const EditModeChanged());
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  FloatingActionButton(
+                    shape: const CircleBorder(
+                      side: BorderSide.none,
+                    ),
+                    backgroundColor:
+                        Theme.of(context).colorScheme.primary.withAlpha(200),
+                    child: Icon(
+                      Icons.check,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                    onPressed: () {},
+                  ),
+                ],
+              )
+            : FloatingActionButton(
+                shape: const CircleBorder(
+                  side: BorderSide.none,
+                ),
+                backgroundColor:
+                    Theme.of(context).colorScheme.primary.withAlpha(200),
+                child: Icon(
+                  Icons.edit,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+                onPressed: () {
+                  context.read<SettingBloc>().add(const EditModeChanged());
+                },
+              ));
   }
 }
 
@@ -166,13 +231,6 @@ class _TGCCabelLength extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double getWidth() {
-      double padding = View.of(context).padding.right == 0
-          ? 40 // portrait orientation padding
-          : View.of(context).padding.right;
-      return (MediaQuery.of(context).size.width - padding) / 3;
-    }
-
     return BlocBuilder<SettingBloc, SettingState>(
       buildWhen: (previous, current) =>
           previous.selectedTGCCableLength != current.selectedTGCCableLength,
@@ -192,32 +250,33 @@ class _TGCCabelLength extends StatelessWidget {
                 ),
               ),
             ),
-            ToggleButtons(
-              direction: Axis.horizontal,
-              onPressed: (int index) {
-                print(tgcCableLengthTexts[index]);
-                context
-                    .read<SettingBloc>()
-                    .add(TGCCableLengthChanged(tgcCableLengthTexts[index]));
-              },
-              textStyle: const TextStyle(fontSize: 18.0),
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              selectedBorderColor:
-                  Theme.of(context).colorScheme.primary, // indigo border color
-              selectedColor:
-                  Theme.of(context).colorScheme.onPrimary, // white text color
-              fillColor: Theme.of(context).colorScheme.primary,
-              color: Theme.of(context).colorScheme.secondary,
-              constraints: BoxConstraints(
-                minHeight: 40.0,
-                minWidth: getWidth(),
+            LayoutBuilder(
+              builder: (context, constraints) => ToggleButtons(
+                direction: Axis.horizontal,
+                onPressed: (int index) {
+                  context
+                      .read<SettingBloc>()
+                      .add(TGCCableLengthChanged(tgcCableLengthTexts[index]));
+                },
+                textStyle: const TextStyle(fontSize: 18.0),
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                selectedBorderColor: Theme.of(context)
+                    .colorScheme
+                    .primary, // indigo border color
+                selectedColor:
+                    Theme.of(context).colorScheme.onPrimary, // white text color
+                fillColor: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.secondary,
+                constraints: BoxConstraints.expand(
+                    width: (constraints.maxWidth - 4) /
+                        3), //number 2 is number of toggle buttons
+                isSelected: state.selectedTGCCableLength.values.toList(),
+                children: const <Widget>[
+                  Text('9'),
+                  Text('18'),
+                  Text('27'),
+                ],
               ),
-              isSelected: state.selectedTGCCableLength.values.toList(),
-              children: const <Widget>[
-                Text('9'),
-                Text('18'),
-                Text('27'),
-              ],
             ),
           ],
         );
@@ -320,13 +379,6 @@ class _WorkingMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double getWidth() {
-      double padding = View.of(context).padding.right == 0
-          ? 40 // portrait orientation padding
-          : View.of(context).padding.right;
-      return (MediaQuery.of(context).size.width - padding) / 3;
-    }
-
     return BlocBuilder<SettingBloc, SettingState>(
       buildWhen: (previous, current) =>
           previous.selectedWorkingMode != current.selectedWorkingMode,
@@ -346,32 +398,34 @@ class _WorkingMode extends StatelessWidget {
                 ),
               ),
             ),
-            ToggleButtons(
-              direction: Axis.horizontal,
-              onPressed: (int index) {
-                print(workingModeTexts[index]);
-                context
-                    .read<SettingBloc>()
-                    .add(WorkingModeChanged(workingModeTexts[index]));
-              },
-              textStyle: const TextStyle(fontSize: 18.0),
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              selectedBorderColor:
-                  Theme.of(context).colorScheme.primary, // indigo border color
-              selectedColor:
-                  Theme.of(context).colorScheme.onPrimary, // white text color
-              fillColor: Theme.of(context).colorScheme.primary,
-              color: Theme.of(context).colorScheme.secondary,
-              constraints: BoxConstraints(
-                minHeight: 40.0,
-                minWidth: getWidth(),
+            LayoutBuilder(
+              builder: (context, constraints) => ToggleButtons(
+                direction: Axis.horizontal,
+                onPressed: (int index) {
+                  print(workingModeTexts[index]);
+                  context
+                      .read<SettingBloc>()
+                      .add(WorkingModeChanged(workingModeTexts[index]));
+                },
+                textStyle: const TextStyle(fontSize: 18.0),
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                selectedBorderColor: Theme.of(context)
+                    .colorScheme
+                    .primary, // indigo border color
+                selectedColor:
+                    Theme.of(context).colorScheme.onPrimary, // white text color
+                fillColor: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.secondary,
+                constraints: BoxConstraints.expand(
+                  width: (constraints.maxWidth - 4) / 3,
+                ),
+                isSelected: state.selectedWorkingMode.values.toList(),
+                children: const <Widget>[
+                  Text('MGC'),
+                  Text('AGC'),
+                  Text('TGC'),
+                ],
               ),
-              isSelected: state.selectedWorkingMode.values.toList(),
-              children: const <Widget>[
-                Text('MGC'),
-                Text('AGC'),
-                Text('TGC'),
-              ],
             ),
           ],
         );
