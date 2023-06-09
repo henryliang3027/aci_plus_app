@@ -2,6 +2,8 @@ PODS:
   - bluetooth_enable_fork (0.1.4):
     - Flutter
   - Flutter (1.0.0)
+  - flutter_native_splash (0.0.1):
+    - Flutter
   - permission_handler_apple (9.0.4):
     - Flutter
   - Protobuf (3.23.0)
@@ -14,6 +16,7 @@ PODS:
 DEPENDENCIES:
   - bluetooth_enable_fork (from `.symlinks/plugins/bluetooth_enable_fork/ios`)
   - Flutter (from `Flutter`)
+  - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - reactive_ble_mobile (from `.symlinks/plugins/reactive_ble_mobile/ios`)
 
@@ -27,6 +30,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/bluetooth_enable_fork/ios"
   Flutter:
     :path: Flutter
+  flutter_native_splash:
+    :path: ".symlinks/plugins/flutter_native_splash/ios"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   reactive_ble_mobile:
@@ -35,6 +40,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   bluetooth_enable_fork: 73b8ca6e67230a9baa04010cd5c1e824e00d2797
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   Protobuf: 43e3764cdf3609fdd00417649561565703437fdc
   reactive_ble_mobile: 9ce6723d37ccf701dbffd202d487f23f5de03b4c

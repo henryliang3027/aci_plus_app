@@ -15,16 +15,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required DsimRepository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const HomeState()) {
+    on<SplashStateChanged>(_onSplashStateChanged);
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
     on<DeviceConnectionChanged>(_onDeviceConnectionChanged);
     on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
 
-    _scanStreamSubscription = _dsimRepository.scannedDevices.listen(
-      (scanReport) {
-        add(DiscoveredDeviceChanged(scanReport));
-      },
-    );
+    add(const SplashStateChanged());
   }
 
   final DsimRepository _dsimRepository;
@@ -32,6 +29,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   StreamSubscription<ConnectionReport>? _connectionReportStreamSubscription;
   StreamSubscription<Map<DataKey, String>>?
       _characteristicDataStreamSubscription;
+
+  // 進入首頁時播放動畫，動畫播完後掃描藍芽裝置
+  Future<void> _onSplashStateChanged(
+    SplashStateChanged event,
+    Emitter<HomeState> emit,
+  ) async {
+    await Future.delayed(const Duration(seconds: 5));
+
+    _scanStreamSubscription = _dsimRepository.scannedDevices.listen(
+      (scanReport) {
+        add(DiscoveredDeviceChanged(scanReport));
+      },
+    );
+
+    emit(state.copyWith(
+      showSplash: false,
+    ));
+  }
 
   Future<void> _onDiscoveredDeviceChanged(
     DiscoveredDeviceChanged event,

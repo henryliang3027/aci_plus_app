@@ -111,9 +111,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-
-flutter_native_splash:
-  image: assets/login_background_android.gif
-  color: "#000000"
-  android: true
-  ios: true

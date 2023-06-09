@@ -4,6 +4,7 @@ class HomeState extends Equatable {
   const HomeState({
     this.status = FormStatus.none,
     this.connectionStatus = FormStatus.none,
+    this.showSplash = true,
     this.device,
     this.characteristicData = const {},
     this.errorMassage = '',
@@ -11,6 +12,7 @@ class HomeState extends Equatable {
 
   final FormStatus status;
   final FormStatus connectionStatus;
+  final bool showSplash;
   final DiscoveredDevice? device;
   final Map<DataKey, String> characteristicData;
   final String errorMassage;
@@ -18,6 +20,7 @@ class HomeState extends Equatable {
   HomeState copyWith({
     FormStatus? status,
     FormStatus? connectionStatus,
+    bool? showSplash,
     DiscoveredDevice? device,
     Map<DataKey, String>? characteristicData,
     String? errorMassage,
@@ -25,6 +28,7 @@ class HomeState extends Equatable {
     return HomeState(
       status: status ?? this.status,
       connectionStatus: connectionStatus ?? this.connectionStatus,
+      showSplash: showSplash ?? this.showSplash,
       device: device ?? this.device,
       characteristicData: characteristicData ?? this.characteristicData,
       errorMassage: errorMassage ?? this.errorMassage,
@@ -35,6 +39,7 @@ class HomeState extends Equatable {
   List<Object?> get props => [
         status,
         connectionStatus,
+        showSplash,
         device,
         characteristicData,
         errorMassage,

@@ -68,24 +68,29 @@ class _AppView extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const HomePage(),
-      // FutureBuilder(
-      //   future: Future.delayed(const Duration(seconds: 0)),
-      //   builder: (context, snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.waiting) {
-      //       return SizedBox(
-      //         width: double.maxFinite,
-      //         height: double.maxFinite,
-      //         child: Image.asset(
-      //           'assets/login_background_android.gif',
-      //           fit: BoxFit.fill,
-      //         ),
-      //       );
-      //     } else {
-      //       return const HomePage();
-      //     }
-      //   },
-      // ),
+      home: BlocBuilder<HomeBloc, HomeState>(
+        buildWhen: (previous, current) =>
+            previous.showSplash != current.showSplash,
+        builder: (context, state) {
+          return state.showSplash ? const SplashScreen() : const HomePage();
+        },
+      ),
+    );
+  }
+}
+
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.maxFinite,
+      height: double.maxFinite,
+      child: Image.asset(
+        'assets/splash.gif',
+        fit: BoxFit.fill,
+      ),
     );
   }
 }
