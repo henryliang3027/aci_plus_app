@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:dsim_app/core/custom_style.dart';
-import 'package:dsim_app/core/pilot_channel.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
+import 'package:location/location.dart' as GPS;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 
@@ -76,6 +76,7 @@ class DsimRepository {
   final _aciPrefix = 'ACI';
   final _serviceId = 'ffe0';
   final _characteristicId = 'ffe1';
+
   final List<List<int>> _commandCollection = [];
   int _commandIndex = 0;
 
@@ -91,11 +92,24 @@ class DsimRepository {
   List<int> _rawLog = [];
   int _totalBytesPerCommand = 261;
   List<Log> _logs = [];
+  QualifiedCharacteristic? _qualifiedCharacteristic;
 
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
     // it is to solve device is not successfully disconnected after the app is closed
     await closeConnectionStream();
+
+    GPS.Location location = GPS.Location();
+    bool ison = await location.serviceEnabled();
+    if (!ison) {
+      //if defvice is off
+      bool isturnedon = await location.requestService();
+      if (isturnedon) {
+        print("GPS device is turned ON");
+      } else {
+        print("GPS Device is still OFF");
+      }
+    }
 
     bool isPermissionGranted = await _requestPermission();
     if (isPermissionGranted) {
@@ -114,7 +128,8 @@ class DsimRepository {
             _connectDevice(device);
           }
         }
-      }, onError: (_) {
+      }, onError: (error) {
+        print('Scan Error $error');
         _scanReportStreamController.add(
           const ScanReport(
             scanStatus: ScanStatus.disable,
@@ -135,6 +150,7 @@ class DsimRepository {
         );
       });
     } else {
+      print('bluetooth disable');
       yield const ScanReport(
         scanStatus: ScanStatus.failure,
         discoveredDevice: null,
@@ -198,20 +214,73 @@ class DsimRepository {
         _characteristicDataStreamController =
             StreamController<Map<DataKey, String>>();
 
-        final qualifiedCharacteristic = QualifiedCharacteristic(
+        _qualifiedCharacteristic = QualifiedCharacteristic(
           serviceId: Uuid.parse(_serviceId),
           characteristicId: Uuid.parse(_characteristicId),
           deviceId: discoveredDevice.id,
         );
 
         _characteristicStreamSubscription = _ble
-            .subscribeToCharacteristic(qualifiedCharacteristic)
+            .subscribeToCharacteristic(_qualifiedCharacteristic!)
             .listen((data) async {
           bool writeNextCommand = false;
           // print('-----# ${_commandIndex} data received-----');
           // print(data);
 
           List<int> rawData = data;
+          print(_commandIndex);
+          if (_commandIndex == 30) {
+            if ((rawData[0] == 0xB0) &&
+                (rawData[1] == 0x10) &&
+                (rawData[2] == 0x00) &&
+                (rawData[3] == 0x09) &&
+                (rawData[4] == 0x00) &&
+                (rawData[5] == 0x06)) {
+              print('Location09 Set');
+              _commandIndex = 31;
+              await _ble.writeCharacteristicWithResponse(
+                _qualifiedCharacteristic!,
+                value: Command.setLocACmd,
+              );
+            }
+          } else if (_commandIndex == 31) {
+            if ((rawData[0] == 0xB0) &&
+                (rawData[1] == 0x10) &&
+                (rawData[2] == 0x00) &&
+                (rawData[3] == 0x0A) &&
+                (rawData[4] == 0x00) &&
+                (rawData[5] == 0x06)) {
+              print('Location0A Set');
+              _commandIndex = 32;
+              await _ble.writeCharacteristicWithResponse(
+                _qualifiedCharacteristic!,
+                value: Command.setLocBCmd,
+              );
+            }
+          } else if (_commandIndex == 32) {
+            if ((rawData[0] == 0xB0) &&
+                (rawData[1] == 0x10) &&
+                (rawData[2] == 0x00) &&
+                (rawData[3] == 0x0B) &&
+                (rawData[4] == 0x00) &&
+                (rawData[5] == 0x06)) {
+              print('Location0B Set');
+              _commandIndex = 33;
+              await _ble.writeCharacteristicWithResponse(
+                _qualifiedCharacteristic!,
+                value: Command.setLocCCmd,
+              );
+            }
+          } else if (_commandIndex == 33) {
+            if ((rawData[0] == 0xB0) &&
+                (rawData[1] == 0x10) &&
+                (rawData[2] == 0x00) &&
+                (rawData[3] == 0x0C) &&
+                (rawData[4] == 0x00) &&
+                (rawData[5] == 0x06)) {
+              print('Location0C Set');
+            }
+          }
 
           if (_commandIndex <= 13) {
             _parseRawData(rawData);
@@ -236,7 +305,7 @@ class DsimRepository {
             if (_commandIndex + 1 < _commandCollection.length) {
               _commandIndex += 1;
               await _ble.writeCharacteristicWithoutResponse(
-                qualifiedCharacteristic,
+                _qualifiedCharacteristic!,
                 value: _commandCollection[_commandIndex],
               );
             } else {
@@ -246,7 +315,7 @@ class DsimRepository {
               //       '${log.time}, ${log.temperature}, ${log.attenuation}, ${log.voltage}, ${log.voltageRipple}');
               // }
 
-              _characteristicDataStreamController.close();
+              // _characteristicDataStreamController.close();
             }
           }
         });
@@ -254,7 +323,7 @@ class DsimRepository {
         // start to write first command
         _commandIndex = 0;
         await _ble.writeCharacteristicWithoutResponse(
-          qualifiedCharacteristic,
+          _qualifiedCharacteristic!,
           value: _commandCollection[_commandIndex],
         );
       }
@@ -710,6 +779,80 @@ class DsimRepository {
     ]);
   }
 
+  Future<void> setLocation(String location) async {
+    int newLength = location.length;
+    int imod;
+    int index;
+    for (var i = 0; i < 12; i++) {
+      Command.setLoc9Cmd[7 + i] = 0;
+      Command.setLocACmd[7 + i] = 0;
+      Command.setLocBCmd[7 + i] = 0;
+      Command.setLocCCmd[7 + i] = 0;
+    }
+
+    if (newLength >= 40) newLength = 40;
+
+    imod = newLength % 12;
+    index = (newLength - imod) ~/ 12;
+    if (imod > 0) index += 1;
+    if (imod == 0) imod = 12;
+    if (index == 4) {
+      for (var i = 0; i < 12; i++) {
+        Command.setLoc9Cmd[7 + i] = location.codeUnitAt(i);
+      }
+      for (var i = 12; i < 24; i++) {
+        Command.setLocACmd[7 + i - 12] = location.codeUnitAt(i);
+      }
+      for (var i = 24; i < 36; i++) {
+        Command.setLocBCmd[7 + i - 24] = location.codeUnitAt(i);
+      }
+      if (imod > 4) {
+        imod = 4;
+      }
+      for (var i = 36; i < 36 + imod; i++) {
+        Command.setLocCCmd[7 + i - 36] = location.codeUnitAt(i);
+      }
+    } //4
+    if (index == 3) {
+      for (var i = 0; i < 12; i++) {
+        Command.setLoc9Cmd[7 + i] = location.codeUnitAt(i);
+      }
+
+      for (var i = 12; i < 24; i++) {
+        Command.setLocACmd[7 + i - 12] = location.codeUnitAt(i);
+      }
+      for (var i = 24; i < 24 + imod; i++) {
+        Command.setLocBCmd[7 + i - 24] = location.codeUnitAt(i);
+      }
+    } //3
+    if (index == 2) {
+      for (var i = 0; i < 12; i++) {
+        Command.setLoc9Cmd[7 + i] = location.codeUnitAt(i);
+      }
+      for (var i = 12; i < 12 + imod; i++) {
+        Command.setLocACmd[7 + i - 12] = location.codeUnitAt(i);
+      }
+    } //2
+    if (index == 1) {
+      for (var i = 0; i < imod; i++) {
+        Command.setLoc9Cmd[7 + i] = location.codeUnitAt(i);
+      }
+    } //1
+
+    // _calculateLocationCRCs
+    CRC16.calculateCRC16(command: Command.setLoc9Cmd, usDataLength: 19);
+    CRC16.calculateCRC16(command: Command.setLocACmd, usDataLength: 19);
+    CRC16.calculateCRC16(command: Command.setLocBCmd, usDataLength: 19);
+    CRC16.calculateCRC16(command: Command.setLocCCmd, usDataLength: 19);
+
+    _commandIndex = 30;
+
+    await _ble.writeCharacteristicWithResponse(
+      _qualifiedCharacteristic!,
+      value: Command.setLoc9Cmd,
+    );
+  }
+
   double _convertToFahrenheit(double celcius) {
     double fahrenheit = (celcius * 1.8) + 32;
     return fahrenheit;
@@ -720,6 +863,8 @@ class DsimRepository {
       Map<Permission, PermissionStatus> statuses = await [
         Permission.bluetoothConnect,
         Permission.bluetoothScan,
+        Permission.bluetoothAdvertise,
+        Permission.location,
       ].request();
 
       if (statuses.values.contains(PermissionStatus.granted)) {

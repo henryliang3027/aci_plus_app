@@ -171,8 +171,8 @@ class EditModeChanged extends SettingEvent {
   List<Object> get props => [];
 }
 
-class LocationSubmitted extends SettingEvent {
-  const LocationSubmitted();
+class SettingSubmitted extends SettingEvent {
+  const SettingSubmitted();
 
   @override
   List<Object> get props => [];

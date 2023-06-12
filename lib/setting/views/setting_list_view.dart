@@ -140,7 +140,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       Icons.check,
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<SettingBloc>().add(const SettingSubmitted());
+                    },
                   ),
                 ],
               )

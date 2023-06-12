@@ -39,6 +39,7 @@ dependencies:
   formz: ^0.6.0
   permission_handler: ^10.2.0
   flutter_reactive_ble: ^5.0.3
+  location: ^4.4.0
   equatable: ^2.0.5
   dropdown_button2: ^1.4.0 # custom dropdownButton and dropdownMenuItems
 

@@ -1,4 +1,5 @@
 import 'package:dsim_app/core/pilot_channel.dart';
+import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:dsim_app/setting/model/location.dart';
 import 'package:equatable/equatable.dart';
 
@@ -8,12 +9,14 @@ part 'setting_event.dart';
 part 'setting_state.dart';
 
 class SettingBloc extends Bloc<SettingEvent, SettingState> {
-  SettingBloc() : super(const SettingState()) {
+  SettingBloc({required DsimRepository dsimRepository})
+      : _dsimRepository = dsimRepository,
+        super(const SettingState()) {
     on<AllItemInitialized>(_onAllItemInitialized);
     on<GraphViewToggled>(_onGraphViewToggled);
     on<ListViewToggled>(_onListViewToggled);
     on<LocationChanged>(_onLocationChanged);
-    on<LocationSubmitted>(_onLocationSubmitted);
+    on<SettingSubmitted>(_onSettingSubmitted);
     on<TGCCableLengthChanged>(_onTGCCableLengthChanged);
     on<WorkingModeChanged>(_onWorkingModeChanged);
     on<LogIntervalChanged>(_onLogIntervalChanged);
@@ -25,6 +28,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     on<AGCPrepAttenuationCentered>(_onAGCPrepAttenuationCentered);
     on<EditModeChanged>(_onEditModeChanged);
   }
+
+  final DsimRepository _dsimRepository;
 
   void _onAllItemInitialized(
     AllItemInitialized event,
@@ -242,11 +247,14 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     ));
   }
 
-  void _onLocationSubmitted(
-    LocationSubmitted event,
+  void _onSettingSubmitted(
+    SettingSubmitted event,
     Emitter<SettingState> emit,
   ) {
     // 如果目前的 location 與初始的 location 不同, 代表要進行 location 設定
-    if (state.location != state.initialValues[0]) {}
+    // 23307-66th Avenue South Kent WA98032
+    if (state.location != state.initialValues[0]) {
+      _dsimRepository.setLocation(state.location.value);
+    }
   }
 }

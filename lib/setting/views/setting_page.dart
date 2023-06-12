@@ -1,3 +1,4 @@
+import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:dsim_app/setting/views/setting_form.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,9 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SettingBloc(),
+      create: (context) => SettingBloc(
+        dsimRepository: RepositoryProvider.of<DsimRepository>(context),
+      ),
       child: const SettingForm(),
     );
   }
