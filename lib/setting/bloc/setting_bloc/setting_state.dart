@@ -2,6 +2,7 @@ part of 'setting_bloc.dart';
 
 class SettingState extends Equatable {
   const SettingState({
+    this.initialValues = const [],
     this.location = const Location.pure(),
     this.isGraphType = false,
     this.selectedTGCCableLength = const {
@@ -22,7 +23,6 @@ class SettingState extends Equatable {
     this.minAttenuation = 0,
     this.currentAttenuation = 0,
     this.centerAttenuation = 0,
-    this.initialValues = const [],
     this.editMode = false,
   });
 

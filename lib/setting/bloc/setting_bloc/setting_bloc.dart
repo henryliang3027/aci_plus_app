@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:dsim_app/core/command.dart';
+import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/pilot_channel.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:dsim_app/setting/model/location.dart';
@@ -16,7 +20,6 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     on<GraphViewToggled>(_onGraphViewToggled);
     on<ListViewToggled>(_onListViewToggled);
     on<LocationChanged>(_onLocationChanged);
-    on<SettingSubmitted>(_onSettingSubmitted);
     on<TGCCableLengthChanged>(_onTGCCableLengthChanged);
     on<WorkingModeChanged>(_onWorkingModeChanged);
     on<LogIntervalChanged>(_onLogIntervalChanged);
@@ -27,6 +30,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     on<AGCPrepAttenuationDecreased>(_onAGCPrepAttenuationDecreased);
     on<AGCPrepAttenuationCentered>(_onAGCPrepAttenuationCentered);
     on<EditModeChanged>(_onEditModeChanged);
+    on<SettingSubmitted>(_onSettingSubmitted);
   }
 
   final DsimRepository _dsimRepository;

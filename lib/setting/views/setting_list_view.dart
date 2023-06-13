@@ -21,83 +21,87 @@ class SettingListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        if (state.connectionStatus.isRequestSuccess) {
-          context.read<SettingBloc>().add(AllItemInitialized(
-                location: state.characteristicData[DataKey.location] ?? '',
-                tgcCableLength:
-                    state.characteristicData[DataKey.tgcCableLength] ?? '',
-                workingMode: state.characteristicData[DataKey.dsimMode] ?? '',
-                logIntervalId: int.parse(
-                    state.characteristicData[DataKey.logInterval] ?? '1'),
-                pilotChannel:
-                    state.characteristicData[DataKey.currentPilot] ?? '',
-                pilotMode:
-                    state.characteristicData[DataKey.currentPilotMode] ?? '',
-                maxAttenuation:
-                    state.characteristicData[DataKey.maxAttenuation] ?? '',
-                minAttenuation:
-                    state.characteristicData[DataKey.minAttenuation] ?? '',
-                currentAttenuation:
-                    state.characteristicData[DataKey.currentAttenuation] ?? '',
-                centerAttenuation:
-                    state.characteristicData[DataKey.centerAttenuation] ?? '',
-              ));
+    return BlocListener<SettingBloc, SettingState>(
+      listener: (context, state) {},
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          if (state.connectionStatus.isRequestSuccess) {
+            context.read<SettingBloc>().add(AllItemInitialized(
+                  location: state.characteristicData[DataKey.location] ?? '',
+                  tgcCableLength:
+                      state.characteristicData[DataKey.tgcCableLength] ?? '',
+                  workingMode: state.characteristicData[DataKey.dsimMode] ?? '',
+                  logIntervalId: int.parse(
+                      state.characteristicData[DataKey.logInterval] ?? '1'),
+                  pilotChannel:
+                      state.characteristicData[DataKey.currentPilot] ?? '',
+                  pilotMode:
+                      state.characteristicData[DataKey.currentPilotMode] ?? '',
+                  maxAttenuation:
+                      state.characteristicData[DataKey.maxAttenuation] ?? '',
+                  minAttenuation:
+                      state.characteristicData[DataKey.minAttenuation] ?? '',
+                  currentAttenuation:
+                      state.characteristicData[DataKey.currentAttenuation] ??
+                          '',
+                  centerAttenuation:
+                      state.characteristicData[DataKey.centerAttenuation] ?? '',
+                ));
 
-          _locationTextEditingController.text =
-              state.characteristicData[DataKey.location] ?? '';
+            _locationTextEditingController.text =
+                state.characteristicData[DataKey.location] ?? '';
 
-          _userPilotTextEditingController.text = PilotChannel.channelCode[
-                  state.characteristicData[DataKey.currentPilot] ?? ''] ??
-              '';
-        }
+            _userPilotTextEditingController.text = PilotChannel.channelCode[
+                    state.characteristicData[DataKey.currentPilot] ?? ''] ??
+                '';
+          }
 
-        return Scaffold(
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(
-                  CustomStyle.sizeXL,
-                ),
-                child: Column(
-                  children: [
-                    _Location(
-                      textEditingController: _locationTextEditingController,
-                    ),
-                    const SizedBox(
-                      height: 40.0,
-                    ),
-                    const _TGCCabelLength(),
-                    const SizedBox(
-                      height: 40.0,
-                    ),
-                    const _LogIntervalDropDownMenu(),
-                    const SizedBox(
-                      height: 40.0,
-                    ),
-                    const _WorkingMode(),
-                    const SizedBox(
-                      height: 40.0,
-                    ),
-                    _UserPilot(
-                      textEditingController: _userPilotTextEditingController,
-                    ),
-                    const SizedBox(
-                      height: 40.0,
-                    ),
-                    const _AGCPrepAttenator(),
-                    const SizedBox(
-                      height: 160.0,
-                    ),
-                  ],
+          return Scaffold(
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                    CustomStyle.sizeXL,
+                  ),
+                  child: Column(
+                    children: [
+                      _Location(
+                        textEditingController: _locationTextEditingController,
+                      ),
+                      const SizedBox(
+                        height: 40.0,
+                      ),
+                      const _TGCCabelLength(),
+                      const SizedBox(
+                        height: 40.0,
+                      ),
+                      const _LogIntervalDropDownMenu(),
+                      const SizedBox(
+                        height: 40.0,
+                      ),
+                      const _WorkingMode(),
+                      const SizedBox(
+                        height: 40.0,
+                      ),
+                      _UserPilot(
+                        textEditingController: _userPilotTextEditingController,
+                      ),
+                      const SizedBox(
+                        height: 40.0,
+                      ),
+                      const _AGCPrepAttenator(),
+                      const SizedBox(
+                        height: 160.0,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          floatingActionButton: const _SettingFloatingActionButton(),
-        );
-      },
+            floatingActionButton: const _SettingFloatingActionButton(),
+          );
+        },
+      ),
     );
   }
 }

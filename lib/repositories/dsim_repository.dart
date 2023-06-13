@@ -70,6 +70,7 @@ class DsimRepository {
   StreamSubscription<DiscoveredDevice>? _discoveredDeviceStreamSubscription;
   StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
   StreamSubscription<List<int>>? _characteristicStreamSubscription;
+  late QualifiedCharacteristic _qualifiedCharacteristic;
 
   final _name1 = 'ACI03170078';
   final _name2 = 'ACI01160006';
@@ -92,7 +93,6 @@ class DsimRepository {
   List<int> _rawLog = [];
   int _totalBytesPerCommand = 261;
   List<Log> _logs = [];
-  QualifiedCharacteristic? _qualifiedCharacteristic;
 
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
@@ -221,7 +221,7 @@ class DsimRepository {
         );
 
         _characteristicStreamSubscription = _ble
-            .subscribeToCharacteristic(_qualifiedCharacteristic!)
+            .subscribeToCharacteristic(_qualifiedCharacteristic)
             .listen((data) async {
           bool writeNextCommand = false;
           // print('-----# ${_commandIndex} data received-----');
@@ -239,7 +239,7 @@ class DsimRepository {
               print('Location09 Set');
               _commandIndex = 31;
               await _ble.writeCharacteristicWithResponse(
-                _qualifiedCharacteristic!,
+                _qualifiedCharacteristic,
                 value: Command.setLocACmd,
               );
             }
@@ -253,7 +253,7 @@ class DsimRepository {
               print('Location0A Set');
               _commandIndex = 32;
               await _ble.writeCharacteristicWithResponse(
-                _qualifiedCharacteristic!,
+                _qualifiedCharacteristic,
                 value: Command.setLocBCmd,
               );
             }
@@ -267,7 +267,7 @@ class DsimRepository {
               print('Location0B Set');
               _commandIndex = 33;
               await _ble.writeCharacteristicWithResponse(
-                _qualifiedCharacteristic!,
+                _qualifiedCharacteristic,
                 value: Command.setLocCCmd,
               );
             }
@@ -305,7 +305,7 @@ class DsimRepository {
             if (_commandIndex + 1 < _commandCollection.length) {
               _commandIndex += 1;
               await _ble.writeCharacteristicWithoutResponse(
-                _qualifiedCharacteristic!,
+                _qualifiedCharacteristic,
                 value: _commandCollection[_commandIndex],
               );
             } else {
@@ -323,7 +323,7 @@ class DsimRepository {
         // start to write first command
         _commandIndex = 0;
         await _ble.writeCharacteristicWithoutResponse(
-          _qualifiedCharacteristic!,
+          _qualifiedCharacteristic,
           value: _commandCollection[_commandIndex],
         );
       }
@@ -633,26 +633,38 @@ class DsimRepository {
         break;
       case 9:
         for (int i = 3; i < 15; i++) {
-          _tempLocation += String.fromCharCode(rawData[i]);
-        }
-        break;
-      case 10: // location2
-        for (int i = 3; i < 15; i++) {
-          _tempLocation += String.fromCharCode(rawData[i]);
-        }
-        break;
-      case 11: // location3
-        for (int i = 3; i < 15; i++) {
-          _tempLocation += String.fromCharCode(rawData[i]);
-        }
-        break;
-      case 12: // location1
-        for (int i = 3; i < 7; i++) {
-          if (rawData[i] != 0 && rawData[i] != 32) {
-            // 32 is space
-            _tempLocation += String.fromCharCode(rawData[i]);
+          if (rawData[i] == 0) {
+            break;
           }
+          _tempLocation += String.fromCharCode(rawData[i]);
         }
+        break;
+      case 10:
+        for (int i = 3; i < 15; i++) {
+          if (rawData[i] == 0) {
+            break;
+          }
+          _tempLocation += String.fromCharCode(rawData[i]);
+        }
+        break;
+      case 11:
+        for (int i = 3; i < 15; i++) {
+          if (rawData[i] == 0) {
+            break;
+          }
+          _tempLocation += String.fromCharCode(rawData[i]);
+        }
+        break;
+      case 12:
+        for (int i = 3; i < 7; i++) {
+          // 32 is space
+          if (rawData[i] == 0) {
+            break;
+          }
+
+          _tempLocation += String.fromCharCode(rawData[i]);
+        }
+
         _characteristicDataStreamController
             .add({DataKey.location: _tempLocation});
 
@@ -847,8 +859,9 @@ class DsimRepository {
 
     _commandIndex = 30;
 
+    print('set location');
     await _ble.writeCharacteristicWithResponse(
-      _qualifiedCharacteristic!,
+      _qualifiedCharacteristic,
       value: Command.setLoc9Cmd,
     );
   }
