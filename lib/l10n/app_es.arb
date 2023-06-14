@@ -49,7 +49,7 @@
     "maxVoltageRipple": "Máximo",
 
 
-
+    "dialogTitleProcessing": "Procesando...",
     "dialogTitleError": "Error",
     "dialogTitleSuccess": "éxito",
     "dialogMaessageDeviceNotFound": "Dispositivo no encontrado.",

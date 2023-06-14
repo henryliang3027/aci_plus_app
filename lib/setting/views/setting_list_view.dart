@@ -21,8 +21,100 @@ class SettingListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SettingBloc, SettingState>(
-      listener: (context, state) {},
+    Future<void> _showInProgressDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitleProcessing,
+            ),
+            actionsAlignment: MainAxisAlignment.center,
+            actions: const <Widget>[
+              CircularProgressIndicator(),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<void> _showSuccessDialog(
+      String msg,
+    ) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitleSuccess,
+              style: const TextStyle(color: CustomStyle.customGreen),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                    msg,
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<void> _showFailureDialog(String msg) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitleError,
+              style: const TextStyle(
+                color: CustomStyle.customRed,
+              ),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                    msg,
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    return BlocListener<HomeBloc, HomeState>(
+      listener: (context, state) {
+        bool editMode = context.read<SettingBloc>().state.editMode;
+
+        if (editMode) {
+          _showSuccessDialog('test');
+        }
+      },
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           if (state.connectionStatus.isRequestSuccess) {
@@ -178,7 +270,9 @@ class _Location extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingBloc, SettingState>(
-      buildWhen: (previous, current) => previous.location != current.location,
+      buildWhen: (previous, current) =>
+          previous.location != current.location ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,22 +295,18 @@ class _Location extends StatelessWidget {
               style: const TextStyle(
                 fontSize: CustomStyle.sizeXL,
               ),
+              enabled: state.editMode,
               textInputAction: TextInputAction.done,
               onChanged: (location) {
                 context.read<SettingBloc>().add(LocationChanged(location));
               },
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                contentPadding: const EdgeInsets.all(10.0),
+                contentPadding: EdgeInsets.all(10.0),
                 isDense: true,
                 filled: true,
                 fillColor: Colors.white,
-                labelText: AppLocalizations.of(context).location,
-                labelStyle: TextStyle(
-                  fontSize: CustomStyle.sizeL,
-                  color: Colors.grey.shade400,
-                ),
               ),
             ),
           ],
@@ -241,7 +331,8 @@ class _TGCCabelLength extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingBloc, SettingState>(
       buildWhen: (previous, current) =>
-          previous.selectedTGCCableLength != current.selectedTGCCableLength,
+          previous.selectedTGCCableLength != current.selectedTGCCableLength ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,19 +353,27 @@ class _TGCCabelLength extends StatelessWidget {
               builder: (context, constraints) => ToggleButtons(
                 direction: Axis.horizontal,
                 onPressed: (int index) {
-                  context
-                      .read<SettingBloc>()
-                      .add(TGCCableLengthChanged(tgcCableLengthTexts[index]));
+                  if (state.editMode) {
+                    context
+                        .read<SettingBloc>()
+                        .add(TGCCableLengthChanged(tgcCableLengthTexts[index]));
+                  }
                 },
                 textStyle: const TextStyle(fontSize: 18.0),
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
-                selectedBorderColor: Theme.of(context)
-                    .colorScheme
-                    .primary, // indigo border color
+
+                selectedBorderColor: state.editMode
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context)
+                        .colorScheme
+                        .inversePrimary, // indigo border color
                 selectedColor:
                     Theme.of(context).colorScheme.onPrimary, // white text color
-                fillColor: Theme.of(context).colorScheme.primary,
-                color: Theme.of(context).colorScheme.secondary,
+
+                fillColor: state.editMode
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.inversePrimary, // selected
+                color: Theme.of(context).colorScheme.secondary, // not selected
                 constraints: BoxConstraints.expand(
                     width: (constraints.maxWidth - 4) /
                         3), //number 2 is number of toggle buttons
@@ -314,7 +413,8 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingBloc, SettingState>(
         buildWhen: (previous, current) =>
-            previous.logIntervalId != current.logIntervalId,
+            previous.logIntervalId != current.logIntervalId ||
+            previous.editMode != current.editMode,
         builder: (context, state) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -336,7 +436,8 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
                     buttonHeight: 40,
                     buttonDecoration: BoxDecoration(
                       border: Border.all(
-                        color: Colors.grey.shade700,
+                        color:
+                            state.editMode ? Colors.grey.shade700 : Colors.grey,
                       ),
                       borderRadius: BorderRadius.circular(4.0),
                       color: Colors.white,
@@ -344,7 +445,6 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
                     dropdownMaxHeight: 200,
                     isExpanded: true,
                     icon: const Icon(Icons.keyboard_arrow_down),
-                    iconDisabledColor: Colors.grey.shade700,
                     value: state.logIntervalId,
                     items: [
                       for (String k in types.keys)
@@ -353,20 +453,24 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
                           child: Text(
                             k,
                             textAlign: TextAlign.left,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: CustomStyle.sizeXL,
-                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              color:
+                                  state.editMode ? Colors.black : Colors.grey,
                             ),
                           ),
                         )
                     ],
-                    onChanged: (int? value) {
-                      if (value != null) {
-                        context
-                            .read<SettingBloc>()
-                            .add(LogIntervalChanged(value));
-                      }
-                    }),
+                    onChanged: state.editMode
+                        ? (int? value) {
+                            if (value != null) {
+                              context
+                                  .read<SettingBloc>()
+                                  .add(LogIntervalChanged(value));
+                            }
+                          }
+                        : null),
               ),
             ],
           );
@@ -389,7 +493,8 @@ class _WorkingMode extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingBloc, SettingState>(
       buildWhen: (previous, current) =>
-          previous.selectedWorkingMode != current.selectedWorkingMode,
+          previous.selectedWorkingMode != current.selectedWorkingMode ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -410,20 +515,26 @@ class _WorkingMode extends StatelessWidget {
               builder: (context, constraints) => ToggleButtons(
                 direction: Axis.horizontal,
                 onPressed: (int index) {
-                  print(workingModeTexts[index]);
-                  context
-                      .read<SettingBloc>()
-                      .add(WorkingModeChanged(workingModeTexts[index]));
+                  if (state.editMode) {
+                    context
+                        .read<SettingBloc>()
+                        .add(WorkingModeChanged(workingModeTexts[index]));
+                  }
                 },
                 textStyle: const TextStyle(fontSize: 18.0),
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
-                selectedBorderColor: Theme.of(context)
-                    .colorScheme
-                    .primary, // indigo border color
+                selectedBorderColor: state.editMode
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context)
+                        .colorScheme
+                        .inversePrimary, // indigo border color
                 selectedColor:
                     Theme.of(context).colorScheme.onPrimary, // white text color
-                fillColor: Theme.of(context).colorScheme.primary,
-                color: Theme.of(context).colorScheme.secondary,
+
+                fillColor: state.editMode
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.inversePrimary, // selected
+                color: Theme.of(context).colorScheme.secondary, // not selected
                 constraints: BoxConstraints.expand(
                   width: (constraints.maxWidth - 4) / 3,
                 ),
@@ -486,6 +597,7 @@ class _UserPilot extends StatelessWidget {
               style: const TextStyle(
                 fontSize: CustomStyle.sizeXL,
               ),
+              enabled: state.editMode,
               textInputAction: TextInputAction.done,
               onChanged: (pilotCode) =>
                   context.read<SettingBloc>().add(PilotCodeChanged(pilotCode)),
@@ -566,11 +678,12 @@ class _AGCPrepAttenator extends StatelessWidget {
                 divisions: ((state.maxAttenuation - state.minAttenuation) ~/ 50)
                     .toInt(),
                 value: state.currentAttenuation.toDouble(),
-                onChanged: (attenuation) {
-                  context
-                      .read<SettingBloc>()
-                      .add(AGCPrepAttenuationChanged(attenuation.toInt()));
-                },
+                onChanged: state.editMode
+                    ? (attenuation) {
+                        context.read<SettingBloc>().add(
+                            AGCPrepAttenuationChanged(attenuation.toInt()));
+                      }
+                    : null,
               ),
             ),
             Row(
@@ -580,31 +693,37 @@ class _AGCPrepAttenator extends StatelessWidget {
                   icon: const Icon(
                     Icons.remove,
                   ),
-                  onPressed: () {
-                    context
-                        .read<SettingBloc>()
-                        .add(const AGCPrepAttenuationDecreased());
-                  },
+                  onPressed: state.editMode
+                      ? () {
+                          context
+                              .read<SettingBloc>()
+                              .add(const AGCPrepAttenuationDecreased());
+                        }
+                      : null,
                 ),
                 IconButton.filled(
                   icon: const Icon(
                     Icons.circle_outlined,
                   ),
-                  onPressed: () {
-                    context
-                        .read<SettingBloc>()
-                        .add(const AGCPrepAttenuationCentered());
-                  },
+                  onPressed: state.editMode
+                      ? () {
+                          context
+                              .read<SettingBloc>()
+                              .add(const AGCPrepAttenuationCentered());
+                        }
+                      : null,
                 ),
                 IconButton.filled(
                   icon: const Icon(
                     Icons.add,
                   ),
-                  onPressed: () {
-                    context
-                        .read<SettingBloc>()
-                        .add(const AGCPrepAttenuationIncreased());
-                  },
+                  onPressed: state.editMode
+                      ? () {
+                          context
+                              .read<SettingBloc>()
+                              .add(const AGCPrepAttenuationIncreased());
+                        }
+                      : null,
                 ),
               ],
             ),

@@ -79,7 +79,8 @@ class DsimRepository {
   final _characteristicId = 'ffe1';
 
   final List<List<int>> _commandCollection = [];
-  int _commandIndex = 0;
+  int commandIndex = 0;
+  int endIndex = 29;
 
   String _tempLocation = '';
   int _basicModeID = 0;
@@ -90,9 +91,9 @@ class DsimRepository {
   int _alarmT = 0;
   int _alarmP = 0;
   String _basicInterval = '';
-  List<int> _rawLog = [];
-  int _totalBytesPerCommand = 261;
-  List<Log> _logs = [];
+  final List<int> _rawLog = [];
+  final int _totalBytesPerCommand = 261;
+  final List<Log> _logs = [];
 
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
@@ -169,6 +170,8 @@ class DsimRepository {
   void clearCache() {
     _logs.clear();
     _rawLog.clear();
+    commandIndex = 0;
+    endIndex = 29;
   }
 
   Future<void> closeScanStream() async {
@@ -228,85 +231,34 @@ class DsimRepository {
           // print(data);
 
           List<int> rawData = data;
-          print(_commandIndex);
-          if (_commandIndex == 30) {
-            if ((rawData[0] == 0xB0) &&
-                (rawData[1] == 0x10) &&
-                (rawData[2] == 0x00) &&
-                (rawData[3] == 0x09) &&
-                (rawData[4] == 0x00) &&
-                (rawData[5] == 0x06)) {
-              print('Location09 Set');
-              _commandIndex = 31;
-              await _ble.writeCharacteristicWithResponse(
-                _qualifiedCharacteristic,
-                value: Command.setLocACmd,
-              );
-            }
-          } else if (_commandIndex == 31) {
-            if ((rawData[0] == 0xB0) &&
-                (rawData[1] == 0x10) &&
-                (rawData[2] == 0x00) &&
-                (rawData[3] == 0x0A) &&
-                (rawData[4] == 0x00) &&
-                (rawData[5] == 0x06)) {
-              print('Location0A Set');
-              _commandIndex = 32;
-              await _ble.writeCharacteristicWithResponse(
-                _qualifiedCharacteristic,
-                value: Command.setLocBCmd,
-              );
-            }
-          } else if (_commandIndex == 32) {
-            if ((rawData[0] == 0xB0) &&
-                (rawData[1] == 0x10) &&
-                (rawData[2] == 0x00) &&
-                (rawData[3] == 0x0B) &&
-                (rawData[4] == 0x00) &&
-                (rawData[5] == 0x06)) {
-              print('Location0B Set');
-              _commandIndex = 33;
-              await _ble.writeCharacteristicWithResponse(
-                _qualifiedCharacteristic,
-                value: Command.setLocCCmd,
-              );
-            }
-          } else if (_commandIndex == 33) {
-            if ((rawData[0] == 0xB0) &&
-                (rawData[1] == 0x10) &&
-                (rawData[2] == 0x00) &&
-                (rawData[3] == 0x0C) &&
-                (rawData[4] == 0x00) &&
-                (rawData[5] == 0x06)) {
-              print('Location0C Set');
-            }
-          }
+          print(commandIndex);
 
-          if (_commandIndex <= 13) {
+          if (commandIndex <= 13) {
             _parseRawData(rawData);
-            writeNextCommand = true;
-          } else {
+            if (commandIndex <= endIndex) {
+              writeNextCommand = true;
+            }
+          } else if (commandIndex >= 14 && commandIndex <= 29) {
             _rawLog.addAll(rawData);
+            // 一個 log command 總共會接收 261 bytes, 每一次傳回 16 bytes
             if (_rawLog.length == _totalBytesPerCommand) {
-              // print('${_rawLog[259]}, ${_rawLog[260]}');
-              // CRC16.calculateCRC16(command: _rawLog, usDataLength: 259);
-              // print('${_rawLog[259]}, ${_rawLog[260]}');
-
               _rawLog.removeRange(_rawLog.length - 2, _rawLog.length);
               _rawLog.removeRange(0, 3);
               _parseLog();
               _rawLog.clear();
               writeNextCommand = true;
-              // print(_rawLogs);
             }
+          } else if (commandIndex >= 30 && commandIndex <= 33) {
+            print('setsetset');
+            _parseSetLocation(rawData);
           }
 
           if (writeNextCommand) {
-            if (_commandIndex + 1 < _commandCollection.length) {
-              _commandIndex += 1;
+            if (commandIndex + 1 <= endIndex) {
+              commandIndex += 1;
               await _ble.writeCharacteristicWithoutResponse(
                 _qualifiedCharacteristic,
-                value: _commandCollection[_commandIndex],
+                value: _commandCollection[commandIndex],
               );
             } else {
               // print('logs length: ${_logs.length}');
@@ -321,10 +273,10 @@ class DsimRepository {
         });
 
         // start to write first command
-        _commandIndex = 0;
+        commandIndex = 0;
         await _ble.writeCharacteristicWithoutResponse(
           _qualifiedCharacteristic,
-          value: _commandCollection[_commandIndex],
+          value: _commandCollection[commandIndex],
         );
       }
     }, onError: (error) {
@@ -360,7 +312,7 @@ class DsimRepository {
       }
     }
 
-    if (_commandIndex == 29) {
+    if (commandIndex == 29) {
       // get min temperature
       double minTemperature = _logs
           .map((log) => log.temperature)
@@ -441,7 +393,7 @@ class DsimRepository {
   }
 
   void _parseRawData(List<int> rawData) {
-    switch (_commandIndex) {
+    switch (commandIndex) {
       case 0:
         String typeNo = '';
         for (int i = 3; i < 15; i++) {
@@ -657,11 +609,9 @@ class DsimRepository {
         break;
       case 12:
         for (int i = 3; i < 7; i++) {
-          // 32 is space
           if (rawData[i] == 0) {
             break;
           }
-
           _tempLocation += String.fromCharCode(rawData[i]);
         }
 
@@ -791,6 +741,67 @@ class DsimRepository {
     ]);
   }
 
+  Future<void> _parseSetLocation(List<int> rawData) async {
+    if (commandIndex == 30) {
+      if ((rawData[0] == 0xB0) &&
+          (rawData[1] == 0x10) &&
+          (rawData[2] == 0x00) &&
+          (rawData[3] == 0x09) &&
+          (rawData[4] == 0x00) &&
+          (rawData[5] == 0x06)) {
+        print('Location09 Set');
+        commandIndex = 31;
+        await _ble.writeCharacteristicWithResponse(
+          _qualifiedCharacteristic,
+          value: Command.setLocACmd,
+        );
+      }
+    } else if (commandIndex == 31) {
+      if ((rawData[0] == 0xB0) &&
+          (rawData[1] == 0x10) &&
+          (rawData[2] == 0x00) &&
+          (rawData[3] == 0x0A) &&
+          (rawData[4] == 0x00) &&
+          (rawData[5] == 0x06)) {
+        print('Location0A Set');
+        commandIndex = 32;
+        await _ble.writeCharacteristicWithResponse(
+          _qualifiedCharacteristic,
+          value: Command.setLocBCmd,
+        );
+      }
+    } else if (commandIndex == 32) {
+      if ((rawData[0] == 0xB0) &&
+          (rawData[1] == 0x10) &&
+          (rawData[2] == 0x00) &&
+          (rawData[3] == 0x0B) &&
+          (rawData[4] == 0x00) &&
+          (rawData[5] == 0x06)) {
+        print('Location0B Set');
+        commandIndex = 33;
+        await _ble.writeCharacteristicWithResponse(
+          _qualifiedCharacteristic,
+          value: Command.setLocCCmd,
+        );
+      }
+    } else if (commandIndex == 33) {
+      if ((rawData[0] == 0xB0) &&
+          (rawData[1] == 0x10) &&
+          (rawData[2] == 0x00) &&
+          (rawData[3] == 0x0C) &&
+          (rawData[4] == 0x00) &&
+          (rawData[5] == 0x06)) {
+        print('Location0C Set');
+        commandIndex = 9;
+        endIndex = 12;
+        await _ble.writeCharacteristicWithoutResponse(
+          _qualifiedCharacteristic,
+          value: _commandCollection[commandIndex],
+        );
+      }
+    }
+  }
+
   Future<void> setLocation(String location) async {
     int newLength = location.length;
     int imod;
@@ -857,7 +868,8 @@ class DsimRepository {
     CRC16.calculateCRC16(command: Command.setLocBCmd, usDataLength: 19);
     CRC16.calculateCRC16(command: Command.setLocCCmd, usDataLength: 19);
 
-    _commandIndex = 30;
+    commandIndex = 30;
+    endIndex = 33;
 
     print('set location');
     await _ble.writeCharacteristicWithResponse(

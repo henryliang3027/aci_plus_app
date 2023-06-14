@@ -1,6 +1,5 @@
 import 'package:dsim_app/about/about_page.dart';
 import 'package:dsim_app/chart/view/chart_page.dart';
-import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:dsim_app/information/views/information_page.dart';
 import 'package:dsim_app/setting/views/setting_page.dart';
 import 'package:dsim_app/status/views/status_page.dart';

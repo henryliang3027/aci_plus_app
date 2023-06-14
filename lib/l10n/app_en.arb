@@ -48,7 +48,7 @@
     "minVoltageRipple": "Minimum",
     "maxVoltageRipple": "Maximum",
 
-    
+    "dialogTitleProcessing": "Processing...",
     "dialogTitleError": "Error",
     "dialogTitleSuccess": "Success",
     "dialogMaessageDeviceNotFound": "Device not found.",
@@ -65,5 +65,9 @@
     "websiteDesigner": "Website Designer",
     "frontendBackendEngineer": "Front-end / Back-end Engineer",
     "systemEngineer": "System Engineer"
+
+
+    
+
 
 }

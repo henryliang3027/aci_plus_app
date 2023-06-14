@@ -255,9 +255,13 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     SettingSubmitted event,
     Emitter<SettingState> emit,
   ) {
+    // emit(state.copyWith(
+    //   submissionStatus: SubmissionStatus.submissionInProgress,
+    // ));
+
     // 如果目前的 location 與初始的 location 不同, 代表要進行 location 設定
     // 23307-66th Avenue South Kent WA98032
-    if (state.location != state.initialValues[0]) {
+    if (state.location.value != state.initialValues[0]) {
       _dsimRepository.setLocation(state.location.value);
     }
   }

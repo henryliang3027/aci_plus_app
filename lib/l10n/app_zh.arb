@@ -49,7 +49,7 @@
     "maxVoltageRipple": "最大",
 
 
-
+    "dialogTitleProcessing": "設定中...",
     "dialogTitleError": "錯誤",
     "dialogTitleSuccess": "成功",
     "dialogMaessageDeviceNotFound": "未發現任何裝置",
