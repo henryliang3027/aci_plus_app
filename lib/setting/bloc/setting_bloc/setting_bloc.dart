@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/pilot_channel.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
@@ -30,7 +27,6 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     on<AGCPrepAttenuationDecreased>(_onAGCPrepAttenuationDecreased);
     on<AGCPrepAttenuationCentered>(_onAGCPrepAttenuationCentered);
     on<EditModeChanged>(_onEditModeChanged);
-    on<SettingSubmitted>(_onSettingSubmitted);
   }
 
   final DsimRepository _dsimRepository;
@@ -249,20 +245,5 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     emit(state.copyWith(
       editMode: !state.editMode,
     ));
-  }
-
-  void _onSettingSubmitted(
-    SettingSubmitted event,
-    Emitter<SettingState> emit,
-  ) {
-    // emit(state.copyWith(
-    //   submissionStatus: SubmissionStatus.submissionInProgress,
-    // ));
-
-    // 如果目前的 location 與初始的 location 不同, 代表要進行 location 設定
-    // 23307-66th Avenue South Kent WA98032
-    if (state.location.value != state.initialValues[0]) {
-      _dsimRepository.setLocation(state.location.value);
-    }
   }
 }

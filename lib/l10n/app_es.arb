@@ -54,6 +54,15 @@
     "dialogTitleSuccess": "éxito",
     "dialogMaessageDeviceNotFound": "Dispositivo no encontrado.",
     "dialogMaessageBluetoothDisabled": "Bluetooth está deshabilitado.",
+    "dialogMaessageLogIntervalSettingSuccessful": "conjunto de intervalos de registro.",
+    "dialogMaessageAGCPrepAttenuatorSettingSuccessful": "Juego de atenuadores de preparación AGC.",
+    "dialogMaessageTGCCableLengthSettingSuccessful": "TGC Conjunto de longitud de cable",
+    "dialogMaessageLocationSettingSuccessful": "conjunto de ubicación",
+
+    "dialogMaessageLogIntervalSettingFailed": "La configuración del intervalo de registro falló.",
+    "dialogMaessageAGCPrepAttenuatorSettingFailed": "La configuración del atenuador de preparación de AGC falló.",
+    "dialogMaessageTGCCableLengthSettingFailed": "La configuración de la longitud del cable TGC falló.",
+    "dialogMaessageLocationSettingFailed": "La configuración de la ubicación falló.",
 
     "aboutArticleParagraph1": "Twoway Communications, Inc., founded in October 1992, is Taiwan's largest broadband amplifier and optical workstation equipment corporation, as well as Asia's first HFC ( Hybrid Fiber-Coaxial ) transmission equipment R&D manufacturer that has passed the certification of major North American MSO ( Multiple-System Operators ).",
     "aboutArticleParagraph2": "In 1999, Twoway Group established the American subsidiary \"ACI Communications, Inc.\" and merged the \"Augat\" product line which from the United States, applying the \"ACI\" brand to sell globally. Twoway Group concentrates on R&D and production of high-quality wide-area broadband optical fiber outdoor network equipment, high-performance broadband amplifier products, optical nodes, and head-end optoelectronics equipment. Twoway Group offers a comprehensive selection of high-quality products to deliver the finest services to the worldwide cable television and telecoms sectors.",

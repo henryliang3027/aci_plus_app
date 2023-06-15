@@ -30,6 +30,10 @@ enum DataKey {
   minVoltageRipple,
   maxVoltageRipple,
   tgcCableLength,
+  locationSet, // location setting result
+  tgcCableLengthSet, // tgc cable length setting result
+  logIntervalSet, // log interval setting result
+  dsimModeSet, // DSIM mode setting result
 }
 
 class Command {

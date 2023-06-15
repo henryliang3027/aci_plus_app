@@ -54,6 +54,16 @@
     "dialogMaessageDeviceNotFound": "Device not found.",
     "dialogMaessageBluetoothDisabled": "Bluetooth is disabled.",
 
+    "dialogMaessageLogIntervalSettingSuccessful": "Log interval setting successful.",
+    "dialogMaessageAGCPrepAttenuatorSettingSuccessful": "AGC prep Attenuator setting successful.",
+    "dialogMaessageTGCCableLengthSettingSuccessful": "TGC cable length setting successful.",
+    "dialogMaessageLocationSettingSuccessful": "Location setting successful.",
+
+    "dialogMaessageLogIntervalSettingFailed": "Log interval setting failed.",
+    "dialogMaessageAGCPrepAttenuatorSettingFailed": "AGC prep Attenuator setting failed.",
+    "dialogMaessageTGCCableLengthSettingFailed": "TGC cable length setting failed.",
+    "dialogMaessageLocationSettingFailed": "Location setting failed.",
+
     "aboutArticleParagraph1": "Twoway Communications, Inc., founded in October 1992, is Taiwan's largest broadband amplifier and optical workstation equipment corporation, as well as Asia's first HFC ( Hybrid Fiber-Coaxial ) transmission equipment R&D manufacturer that has passed the certification of major North American MSO ( Multiple-System Operators ).",
     "aboutArticleParagraph2": "In 1999, Twoway Group established the American subsidiary \"ACI Communications, Inc.\" and merged the \"Augat\" product line which from the United States, applying the \"ACI\" brand to sell globally. Twoway Group concentrates on R&D and production of high-quality wide-area broadband optical fiber outdoor network equipment, high-performance broadband amplifier products, optical nodes, and head-end optoelectronics equipment. Twoway Group offers a comprehensive selection of high-quality products to deliver the finest services to the worldwide cable television and telecoms sectors.",
     "aboutArticleParagraph3": "With its advantages in network technology and equipment, and apply years of experience to \"IoT\" artificial Intelligence of Things related solutions, Twoway Group also provides digital convergence and smart value-added services for major telecommunications carriers in response to the wave of digital transformation. Twoway Group promotes the smart cloud platform in various fields, grasp network system integration application services business opportunities, and also expands the business of urban security network system, develops smart monitoring solutions, integrates cable and optical fiber transmission technology, expands smart home, medical care services and new business opportunities in disaster prevention management.",

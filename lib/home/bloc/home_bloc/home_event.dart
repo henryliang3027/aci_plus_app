@@ -44,6 +44,17 @@ class DeviceCharacteristicChanged extends HomeEvent {
       ];
 }
 
+class SettingResultChanged extends HomeEvent {
+  const SettingResultChanged(this.resultDataMapEntry);
+
+  final MapEntry<DataKey, String> resultDataMapEntry;
+
+  @override
+  List<Object?> get props => [
+        resultDataMapEntry,
+      ];
+}
+
 class ScanClosed extends HomeEvent {
   const ScanClosed();
 
@@ -56,4 +67,15 @@ class DeviceRefreshed extends HomeEvent {
 
   @override
   List<Object?> get props => [];
+}
+
+class SettingSubmitted extends HomeEvent {
+  const SettingSubmitted(this.location);
+
+  final String location;
+
+  @override
+  List<Object> get props => [
+        location,
+      ];
 }

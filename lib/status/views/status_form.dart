@@ -52,7 +52,7 @@ class StatusForm extends StatelessWidget {
 
     return BlocListener<HomeBloc, HomeState>(
       listener: (context, state) {
-        if (state.status.isRequestFailure) {
+        if (state.scanStatus.isRequestFailure) {
           showFailureDialog(state.errorMassage);
         }
       },
@@ -85,7 +85,7 @@ class _DeviceStatus extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (state.status.isRequestSuccess) {
+        if (state.scanStatus.isRequestSuccess) {
           if (state.connectionStatus.isRequestSuccess) {
             return const Icon(
               Icons.bluetooth_connected_outlined,
@@ -106,7 +106,7 @@ class _DeviceStatus extends StatelessWidget {
               ),
             );
           }
-        } else if (state.status.isRequestFailure) {
+        } else if (state.scanStatus.isRequestFailure) {
           return const Icon(
             Icons.nearby_error_outlined,
           );
@@ -133,7 +133,7 @@ class _DeviceRefresh extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (!state.status.isRequestInProgress) {
+        if (!state.scanStatus.isRequestInProgress) {
           return IconButton(
               onPressed: () {
                 context.read<HomeBloc>().add(const DeviceRefreshed());

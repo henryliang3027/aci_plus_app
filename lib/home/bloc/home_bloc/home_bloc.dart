@@ -20,6 +20,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DeviceRefreshed>(_onDeviceRefreshed);
     on<DeviceConnectionChanged>(_onDeviceConnectionChanged);
     on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
+    on<SettingResultChanged>(_onSettingResultChanged);
+    on<SettingSubmitted>(_onSettingSubmitted);
 
     add(const SplashStateChanged());
   }
@@ -29,6 +31,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   StreamSubscription<ConnectionReport>? _connectionReportStreamSubscription;
   StreamSubscription<Map<DataKey, String>>?
       _characteristicDataStreamSubscription;
+
+  StreamSubscription<Map<DataKey, String>>? _settingResultStreamSubscription;
 
   // 進入首頁時播放動畫，動畫播完後掃描藍芽裝置
   Future<void> _onSplashStateChanged(
@@ -55,7 +59,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     switch (event.scanReport.scanStatus) {
       case ScanStatus.success:
         emit(state.copyWith(
-          status: FormStatus.requestSuccess,
+          scanStatus: FormStatus.requestSuccess,
           device: event.scanReport.discoveredDevice,
         ));
         // _dsimRepository.connectDevice(state.device!);
@@ -68,13 +72,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         break;
       case ScanStatus.failure:
         emit(state.copyWith(
-            status: FormStatus.requestFailure,
+            scanStatus: FormStatus.requestFailure,
             device: null,
             errorMassage: 'Device not found.'));
         break;
       case ScanStatus.disable:
         emit(state.copyWith(
-            status: FormStatus.requestFailure,
+            scanStatus: FormStatus.requestFailure,
             device: null,
             errorMassage: 'Bluetooth is disabled.'));
         break;
@@ -92,13 +96,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     switch (event.connectionReport.connectionState) {
       case DeviceConnectionState.connecting:
         emit(state.copyWith(
-          status: FormStatus.requestSuccess,
+          scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestInProgress,
         ));
         break;
       case DeviceConnectionState.connected:
         emit(state.copyWith(
-          status: FormStatus.requestSuccess,
+          scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestSuccess,
         ));
 
@@ -110,16 +114,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           onDone: () {},
         );
 
+        _settingResultStreamSubscription = _dsimRepository.settingResult.listen(
+          (data) {
+            add(SettingResultChanged(data.entries.first));
+          },
+          onDone: () {},
+        );
+
         break;
       case DeviceConnectionState.disconnecting:
         emit(state.copyWith(
-          status: FormStatus.requestSuccess,
+          scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestFailure,
         ));
         break;
       case DeviceConnectionState.disconnected:
         emit(state.copyWith(
-          status: FormStatus.requestSuccess,
+          scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestFailure,
         ));
         break;
@@ -134,7 +145,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     newCharacteristicData.addEntries(state.characteristicData.entries);
     newCharacteristicData[event.dataMapEntry.key] = event.dataMapEntry.value;
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       characteristicData: newCharacteristicData,
+    ));
+  }
+
+  void _onSettingResultChanged(
+    SettingResultChanged event,
+    Emitter<HomeState> emit,
+  ) {
+    Map<DataKey, String> newSettingResultData = {};
+    newSettingResultData.addEntries(state.settingResultData.entries);
+    newSettingResultData[event.resultDataMapEntry.key] =
+        event.resultDataMapEntry.value;
+    emit(state.copyWith(
+      settingResultData: newSettingResultData,
     ));
   }
 
@@ -143,7 +168,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     emit(state.copyWith(
-      status: FormStatus.requestInProgress,
+      scanStatus: FormStatus.requestInProgress,
+      connectionStatus: FormStatus.requestInProgress,
       device: null,
       characteristicData: const {},
     ));
@@ -169,5 +195,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         _dsimRepository.scannedDevices.listen((scanReport) async {
       add(DiscoveredDeviceChanged(scanReport));
     });
+  }
+
+  void _onSettingSubmitted(
+    SettingSubmitted event,
+    Emitter<HomeState> emit,
+  ) {
+    Map<DataKey, String> newSettingResultData = {DataKey.locationSet: '-1'};
+    // newSettingResultData.addEntries(state.settingResultData.entries);
+    // newSettingResultData.remove(DataKey.locationSet);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.submissionInProgress,
+      settingResultData: newSettingResultData,
+    ));
+
+    // 23307-66th Avenue South Kent WA98032
+    _dsimRepository.setLocation(event.location);
   }
 }

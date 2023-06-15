@@ -170,10 +170,3 @@ class EditModeChanged extends SettingEvent {
   @override
   List<Object> get props => [];
 }
-
-class SettingSubmitted extends SettingEvent {
-  const SettingSubmitted();
-
-  @override
-  List<Object> get props => [];
-}

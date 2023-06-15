@@ -21,179 +21,84 @@ class SettingListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _showInProgressDialog() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context).dialogTitleProcessing,
-            ),
-            actionsAlignment: MainAxisAlignment.center,
-            actions: const <Widget>[
-              CircularProgressIndicator(),
-            ],
-          );
-        },
-      );
-    }
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.connectionStatus.isRequestSuccess &&
+            !state.submissionStatus.isSubmissionInProgress) {
+          context.read<SettingBloc>().add(AllItemInitialized(
+                location: state.characteristicData[DataKey.location] ?? '',
+                tgcCableLength:
+                    state.characteristicData[DataKey.tgcCableLength] ?? '',
+                workingMode: state.characteristicData[DataKey.dsimMode] ?? '',
+                logIntervalId: int.parse(
+                    state.characteristicData[DataKey.logInterval] ?? '1'),
+                pilotChannel:
+                    state.characteristicData[DataKey.currentPilot] ?? '',
+                pilotMode:
+                    state.characteristicData[DataKey.currentPilotMode] ?? '',
+                maxAttenuation:
+                    state.characteristicData[DataKey.maxAttenuation] ?? '',
+                minAttenuation:
+                    state.characteristicData[DataKey.minAttenuation] ?? '',
+                currentAttenuation:
+                    state.characteristicData[DataKey.currentAttenuation] ?? '',
+                centerAttenuation:
+                    state.characteristicData[DataKey.centerAttenuation] ?? '',
+              ));
 
-    Future<void> _showSuccessDialog(
-      String msg,
-    ) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context).dialogTitleSuccess,
-              style: const TextStyle(color: CustomStyle.customGreen),
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                    msg,
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
+          _locationTextEditingController.text =
+              state.characteristicData[DataKey.location] ?? '';
 
-    Future<void> _showFailureDialog(String msg) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context).dialogTitleError,
-              style: const TextStyle(
-                color: CustomStyle.customRed,
-              ),
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                    msg,
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    return BlocListener<HomeBloc, HomeState>(
-      listener: (context, state) {
-        bool editMode = context.read<SettingBloc>().state.editMode;
-
-        if (editMode) {
-          _showSuccessDialog('test');
+          _userPilotTextEditingController.text = PilotChannel.channelCode[
+                  state.characteristicData[DataKey.currentPilot] ?? ''] ??
+              '';
         }
-      },
-      child: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          if (state.connectionStatus.isRequestSuccess) {
-            context.read<SettingBloc>().add(AllItemInitialized(
-                  location: state.characteristicData[DataKey.location] ?? '',
-                  tgcCableLength:
-                      state.characteristicData[DataKey.tgcCableLength] ?? '',
-                  workingMode: state.characteristicData[DataKey.dsimMode] ?? '',
-                  logIntervalId: int.parse(
-                      state.characteristicData[DataKey.logInterval] ?? '1'),
-                  pilotChannel:
-                      state.characteristicData[DataKey.currentPilot] ?? '',
-                  pilotMode:
-                      state.characteristicData[DataKey.currentPilotMode] ?? '',
-                  maxAttenuation:
-                      state.characteristicData[DataKey.maxAttenuation] ?? '',
-                  minAttenuation:
-                      state.characteristicData[DataKey.minAttenuation] ?? '',
-                  currentAttenuation:
-                      state.characteristicData[DataKey.currentAttenuation] ??
-                          '',
-                  centerAttenuation:
-                      state.characteristicData[DataKey.centerAttenuation] ?? '',
-                ));
 
-            _locationTextEditingController.text =
-                state.characteristicData[DataKey.location] ?? '';
-
-            _userPilotTextEditingController.text = PilotChannel.channelCode[
-                    state.characteristicData[DataKey.currentPilot] ?? ''] ??
-                '';
-          }
-
-          return Scaffold(
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(
-                    CustomStyle.sizeXL,
-                  ),
-                  child: Column(
-                    children: [
-                      _Location(
-                        textEditingController: _locationTextEditingController,
-                      ),
-                      const SizedBox(
-                        height: 40.0,
-                      ),
-                      const _TGCCabelLength(),
-                      const SizedBox(
-                        height: 40.0,
-                      ),
-                      const _LogIntervalDropDownMenu(),
-                      const SizedBox(
-                        height: 40.0,
-                      ),
-                      const _WorkingMode(),
-                      const SizedBox(
-                        height: 40.0,
-                      ),
-                      _UserPilot(
-                        textEditingController: _userPilotTextEditingController,
-                      ),
-                      const SizedBox(
-                        height: 40.0,
-                      ),
-                      const _AGCPrepAttenator(),
-                      const SizedBox(
-                        height: 160.0,
-                      ),
-                    ],
-                  ),
+        return Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(
+                  CustomStyle.sizeXL,
+                ),
+                child: Column(
+                  children: [
+                    _Location(
+                      textEditingController: _locationTextEditingController,
+                    ),
+                    const SizedBox(
+                      height: 40.0,
+                    ),
+                    const _TGCCabelLength(),
+                    const SizedBox(
+                      height: 40.0,
+                    ),
+                    const _LogIntervalDropDownMenu(),
+                    const SizedBox(
+                      height: 40.0,
+                    ),
+                    const _WorkingMode(),
+                    const SizedBox(
+                      height: 40.0,
+                    ),
+                    _UserPilot(
+                      textEditingController: _userPilotTextEditingController,
+                    ),
+                    const SizedBox(
+                      height: 40.0,
+                    ),
+                    const _AGCPrepAttenator(),
+                    const SizedBox(
+                      height: 160.0,
+                    ),
+                  ],
                 ),
               ),
             ),
-            floatingActionButton: const _SettingFloatingActionButton(),
-          );
-        },
-      ),
+          ),
+          floatingActionButton: const _SettingFloatingActionButton(),
+        );
+      },
     );
   }
 }
@@ -204,7 +109,6 @@ class _SettingFloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingBloc, SettingState>(
-        buildWhen: (previous, current) => previous.editMode != current.editMode,
         builder: (context, state) => state.editMode
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -237,7 +141,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
                     onPressed: () {
-                      context.read<SettingBloc>().add(const SettingSubmitted());
+                      context
+                          .read<HomeBloc>()
+                          .add(SettingSubmitted(state.location.value));
                     },
                   ),
                 ],

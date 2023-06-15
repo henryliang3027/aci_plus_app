@@ -2,7 +2,6 @@ part of 'setting_bloc.dart';
 
 class SettingState extends Equatable {
   const SettingState({
-    this.submissionStatus = SubmissionStatus.none,
     this.initialValues = const [],
     this.location = const Location.pure(),
     this.isGraphType = false,
@@ -27,7 +26,6 @@ class SettingState extends Equatable {
     this.editMode = false,
   });
 
-  final SubmissionStatus submissionStatus;
   final List<dynamic> initialValues;
   final Location location;
   final bool isGraphType;
@@ -44,7 +42,6 @@ class SettingState extends Equatable {
   final bool editMode;
 
   SettingState copyWith({
-    SubmissionStatus? submissionStatus,
     List<dynamic>? initialValues,
     Location? location,
     bool? isGraphType,
@@ -61,7 +58,6 @@ class SettingState extends Equatable {
     bool? editMode,
   }) {
     return SettingState(
-      submissionStatus: submissionStatus ?? this.submissionStatus,
       initialValues: initialValues ?? this.initialValues,
       location: location ?? this.location,
       isGraphType: isGraphType ?? this.isGraphType,
@@ -82,7 +78,6 @@ class SettingState extends Equatable {
 
   @override
   List<Object?> get props => [
-        submissionStatus,
         initialValues,
         location,
         isGraphType,

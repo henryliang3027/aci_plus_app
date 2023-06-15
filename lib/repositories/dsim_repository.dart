@@ -67,6 +67,9 @@ class DsimRepository {
       StreamController<ConnectionReport>();
   StreamController<Map<DataKey, String>> _characteristicDataStreamController =
       StreamController<Map<DataKey, String>>();
+  StreamController<Map<DataKey, String>> _settingResultStreamController =
+      StreamController<Map<DataKey, String>>();
+
   StreamSubscription<DiscoveredDevice>? _discoveredDeviceStreamSubscription;
   StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
   StreamSubscription<List<int>>? _characteristicStreamSubscription;
@@ -167,6 +170,10 @@ class DsimRepository {
     yield* _characteristicDataStreamController.stream;
   }
 
+  Stream<Map<DataKey, String>> get settingResult async* {
+    yield* _settingResultStreamController.stream;
+  }
+
   void clearCache() {
     _logs.clear();
     _rawLog.clear();
@@ -215,6 +222,10 @@ class DsimRepository {
           DeviceConnectionState.connected) {
         // initialize _characteristicDataStreamController
         _characteristicDataStreamController =
+            StreamController<Map<DataKey, String>>();
+
+        // initialize _settingResultStreamController
+        _settingResultStreamController =
             StreamController<Map<DataKey, String>>();
 
         _qualifiedCharacteristic = QualifiedCharacteristic(
@@ -755,6 +766,8 @@ class DsimRepository {
           _qualifiedCharacteristic,
           value: Command.setLocACmd,
         );
+      } else {
+        _characteristicDataStreamController.add({DataKey.locationSet: '0'});
       }
     } else if (commandIndex == 31) {
       if ((rawData[0] == 0xB0) &&
@@ -769,6 +782,8 @@ class DsimRepository {
           _qualifiedCharacteristic,
           value: Command.setLocBCmd,
         );
+      } else {
+        _settingResultStreamController.add({DataKey.locationSet: '0'});
       }
     } else if (commandIndex == 32) {
       if ((rawData[0] == 0xB0) &&
@@ -783,6 +798,8 @@ class DsimRepository {
           _qualifiedCharacteristic,
           value: Command.setLocCCmd,
         );
+      } else {
+        _settingResultStreamController.add({DataKey.locationSet: '0'});
       }
     } else if (commandIndex == 33) {
       if ((rawData[0] == 0xB0) &&
@@ -792,6 +809,7 @@ class DsimRepository {
           (rawData[4] == 0x00) &&
           (rawData[5] == 0x06)) {
         print('Location0C Set');
+        _settingResultStreamController.add({DataKey.locationSet: '1'});
         commandIndex = 9;
         endIndex = 12;
         await _ble.writeCharacteristicWithoutResponse(
@@ -799,6 +817,8 @@ class DsimRepository {
           value: _commandCollection[commandIndex],
         );
       }
+    } else {
+      _settingResultStreamController.add({DataKey.locationSet: '0'});
     }
   }
 
