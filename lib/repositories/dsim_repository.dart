@@ -107,8 +107,8 @@ class DsimRepository {
     bool ison = await location.serviceEnabled();
     if (!ison) {
       //if defvice is off
-      bool isturnedon = await location.requestService();
-      if (isturnedon) {
+      bool isTurnedOn = await location.requestService();
+      if (isTurnedOn) {
         print("GPS device is turned ON");
       } else {
         print("GPS Device is still OFF");
@@ -260,8 +260,9 @@ class DsimRepository {
               writeNextCommand = true;
             }
           } else if (commandIndex >= 30 && commandIndex <= 33) {
-            print('setsetset');
             _parseSetLocation(rawData);
+          } else if (commandIndex == 34) {
+            _parseSetTGCCableLength(rawData);
           }
 
           if (writeNextCommand) {
@@ -752,6 +753,19 @@ class DsimRepository {
     ]);
   }
 
+  Future<void> _parseSetTGCCableLength(List<int> rawData) async {
+    if (commandIndex == 34) {
+      if ((rawData[0] == 0xB0) &&
+          (rawData[1] == 0x10) &&
+          (rawData[2] == 0x00) &&
+          (rawData[3] == 0x04) &&
+          (rawData[4] == 0x00) &&
+          (rawData[5] == 0x06)) {
+        print('TGC cable length Set');
+      }
+    }
+  }
+
   Future<void> _parseSetLocation(List<int> rawData) async {
     if (commandIndex == 30) {
       if ((rawData[0] == 0xB0) &&
@@ -762,9 +776,8 @@ class DsimRepository {
           (rawData[5] == 0x06)) {
         print('Location09 Set');
         commandIndex = 31;
-        await _ble.writeCharacteristicWithResponse(
-          _qualifiedCharacteristic,
-          value: Command.setLocACmd,
+        await _writeSetCommandToCharacteristic(
+          Command.setLocACmd,
         );
       } else {
         _characteristicDataStreamController.add({DataKey.locationSet: '0'});
@@ -778,9 +791,8 @@ class DsimRepository {
           (rawData[5] == 0x06)) {
         print('Location0A Set');
         commandIndex = 32;
-        await _ble.writeCharacteristicWithResponse(
-          _qualifiedCharacteristic,
-          value: Command.setLocBCmd,
+        await _writeSetCommandToCharacteristic(
+          Command.setLocBCmd,
         );
       } else {
         _settingResultStreamController.add({DataKey.locationSet: '0'});
@@ -794,9 +806,8 @@ class DsimRepository {
           (rawData[5] == 0x06)) {
         print('Location0B Set');
         commandIndex = 33;
-        await _ble.writeCharacteristicWithResponse(
-          _qualifiedCharacteristic,
-          value: Command.setLocCCmd,
+        await _writeSetCommandToCharacteristic(
+          Command.setLocCCmd,
         );
       } else {
         _settingResultStreamController.add({DataKey.locationSet: '0'});
@@ -892,10 +903,62 @@ class DsimRepository {
     endIndex = 33;
 
     print('set location');
-    await _ble.writeCharacteristicWithResponse(
-      _qualifiedCharacteristic,
-      value: Command.setLoc9Cmd,
+    await _writeSetCommandToCharacteristic(
+      Command.setLoc9Cmd,
     );
+  }
+
+  int getWorkingModeID(String workingMode) {
+    switch (workingMode) {
+      case 'Align':
+        return 1;
+      case 'AGC':
+        return 2;
+      case 'TGC':
+        return 3;
+      case 'MGC':
+        return 4;
+      default:
+        return 2;
+    }
+  }
+
+  Future<void> setTGCCableLength({
+    required String workingMode,
+    required int currentAttenuation,
+    required int tgcCableLength,
+    required int currentPilot,
+    required int logIntervalID,
+  }) async {
+    Command.set04Cmd[7] = getWorkingModeID(workingMode); //3 TGC
+    Command.set04Cmd[8] = currentAttenuation ~/ 256; //MGC Value 2Bytes
+    Command.set04Cmd[9] = currentAttenuation % 256; //MGC Value
+    Command.set04Cmd[10] = tgcCableLength; //TGC Cable length
+    Command.set04Cmd[11] = currentPilot; //AGC Channel 1Byte
+    Command.set04Cmd[12] = _basicCurrentPilotMode; //AGC channel Mode 1 Byte
+    Command.set04Cmd[13] = logIntervalID; //Log Minutes 1Byte
+    Command.set04Cmd[14] = 0x03; //AGC Channel 2 1Byte
+    Command.set04Cmd[15] = 0x02; //AGC Channel 2 Mode 1Byte
+    CRC16.calculateCRC16(command: Command.set04Cmd, usDataLength: 19);
+
+    commandIndex = 34;
+    endIndex = 34;
+    _writeSetCommandToCharacteristic(Command.set04Cmd);
+  } //set04CL
+
+  // iOS 跟  Android 的 set command 方式不一樣
+  Future<void> _writeSetCommandToCharacteristic(List<dynamic> value) async {
+    if (Platform.isAndroid) {
+      await _ble.writeCharacteristicWithResponse(
+        _qualifiedCharacteristic,
+        value: value,
+      );
+    } else if (Platform.isIOS) {
+      await _ble.writeCharacteristicWithoutResponse(
+        _qualifiedCharacteristic,
+        value: value,
+      );
+    } else {}
   }
 
   double _convertToFahrenheit(double celcius) {
