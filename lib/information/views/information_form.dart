@@ -6,6 +6,7 @@ import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InformationForm extends StatelessWidget {
   const InformationForm({super.key});
@@ -173,6 +174,13 @@ class _ConnectionCard extends StatelessWidget {
                 title: AppLocalizations.of(context).bluetooth,
                 content: state.device != null ? state.device!.name : '',
               ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              itemLinkText(
+                title: 'DSIM',
+                content: AppLocalizations.of(context).visitWebsite,
+              ),
             ],
           ),
         ),
@@ -334,6 +342,47 @@ Widget itemText({
                   fontSize: 16,
                 ),
               ),
+      ],
+    ),
+  );
+}
+
+Widget itemLinkText({
+  required String title,
+  required String content,
+}) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 16,
+          ),
+        ),
+        TextButton(
+          style: TextButton.styleFrom(
+            visualDensity:
+                const VisualDensity(vertical: -4.0, horizontal: -4.0),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            padding: const EdgeInsets.all(1.0),
+          ),
+          child: Text(
+            content,
+            style: const TextStyle(
+              fontSize: 16,
+            ),
+          ),
+          onPressed: () async {
+            Uri uri = Uri.parse('http://acicomms.com');
+            launchUrl(
+              uri,
+              mode: LaunchMode.externalApplication,
+            );
+          },
+        ),
       ],
     ),
   );

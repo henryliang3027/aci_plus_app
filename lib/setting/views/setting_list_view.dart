@@ -23,8 +23,7 @@ class SettingListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (state.connectionStatus.isRequestSuccess &&
-            !state.submissionStatus.isSubmissionInProgress) {
+        if (state.connectionStatus.isRequestSuccess) {
           context.read<SettingBloc>().add(AllItemInitialized(
                 location: state.characteristicData[DataKey.location] ?? '',
                 tgcCableLength:
@@ -141,9 +140,27 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
                     onPressed: () {
-                      context
-                          .read<HomeBloc>()
-                          .add(SettingSubmitted(state.location.value));
+                      String tgcCableLength =
+                          state.selectedTGCCableLength.keys.firstWhere(
+                        (k) => state.selectedTGCCableLength[k] == true,
+                      );
+                      String workingMode =
+                          state.selectedWorkingMode.keys.firstWhere(
+                        (k) => state.selectedWorkingMode[k] == true,
+                      );
+
+                      print('$tgcCableLength   $workingMode');
+                      context.read<HomeBloc>().add(
+                            SettingSubmitted(
+                              initialValues: state.initialValues,
+                              location: state.location.value,
+                              tgcCableLength: tgcCableLength,
+                              workingMode: workingMode,
+                              currentAttenuation: state.centerAttenuation,
+                              logIntervalID: state.logIntervalId,
+                              currentPilot: state.pilotChannel,
+                            ),
+                          );
                     },
                   ),
                 ],

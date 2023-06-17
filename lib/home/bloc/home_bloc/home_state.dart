@@ -10,6 +10,7 @@ class HomeState extends Equatable {
     this.characteristicData = const {},
     this.settingResultData = const {
       DataKey.locationSet: '-1',
+      DataKey.tgcCableLengthSet: '-1',
     },
     this.errorMassage = '',
   });

@@ -224,6 +224,100 @@ class _TemperatureCard extends StatelessWidget {
       );
     }
 
+    Widget temperatureBlock({
+      required String currentTemperatureTitle,
+      required String currentTemperature,
+      required String maxTemperatureTitle,
+      required String maxTemperature,
+      required String minTemperatureTitle,
+      required String minTemperature,
+    }) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    currentTemperature == ''
+                        ? const CircularProgressIndicator()
+                        : Text(
+                            currentTemperature,
+                            style: const TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                    Text(
+                      currentTemperatureTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      minTemperature == ''
+                          ? const CircularProgressIndicator()
+                          : Text(
+                              minTemperature,
+                              style: const TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                      Text(
+                        minTemperatureTitle,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      maxTemperature == ''
+                          ? const CircularProgressIndicator()
+                          : Text(
+                              maxTemperature,
+                              style: const TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                      Text(
+                        maxTemperatureTitle,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+
     return Builder(
       builder: (context) {
         final homeState = context.watch<HomeBloc>().state;
@@ -311,17 +405,16 @@ class _TemperatureCard extends StatelessWidget {
                 const SizedBox(
                   height: 16.0,
                 ),
-                itemBlock(
-                  title: AppLocalizations.of(context).currentTemperature,
-                  content: currentTemperature,
-                ),
-                itemBlock(
-                  title: AppLocalizations.of(context).minTemperature,
-                  content: minTemperature,
-                ),
-                itemBlock(
-                  title: AppLocalizations.of(context).maxTemperature,
-                  content: maxTemperature,
+                temperatureBlock(
+                  currentTemperatureTitle:
+                      AppLocalizations.of(context).currentTemperature,
+                  currentTemperature: currentTemperature,
+                  maxTemperatureTitle:
+                      AppLocalizations.of(context).minTemperature,
+                  maxTemperature: minTemperature,
+                  minTemperatureTitle:
+                      AppLocalizations.of(context).maxTemperature,
+                  minTemperature: maxTemperature,
                 ),
               ],
             ),
@@ -335,7 +428,11 @@ class _TemperatureCard extends StatelessWidget {
 class _AttenuationCard extends StatelessWidget {
   const _AttenuationCard({super.key});
 
-  Widget tile({required String title, required String content}) {
+  Widget tile({
+    required String title,
+    required String content,
+    required double fontSize,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
@@ -345,8 +442,8 @@ class _AttenuationCard extends StatelessWidget {
               ? const CircularProgressIndicator()
               : Text(
                   content,
-                  style: const TextStyle(
-                    fontSize: 36,
+                  style: TextStyle(
+                    fontSize: fontSize,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -412,6 +509,7 @@ class _AttenuationCard extends StatelessWidget {
                     tile(
                       title: currentAttenuationTitle,
                       content: currentAttenuation,
+                      fontSize: 40,
                     )
                   ],
                 ),
@@ -422,18 +520,21 @@ class _AttenuationCard extends StatelessWidget {
                       child: tile(
                         title: minAttenuationTitle,
                         content: minAttenuation,
+                        fontSize: 32,
                       ),
                     ),
                     Expanded(
                       child: tile(
                         title: centerAttenuationTitle,
                         content: centerAttenuation,
+                        fontSize: 32,
                       ),
                     ),
                     Expanded(
                       child: tile(
                         title: maxAttenuationTitle,
                         content: maxAttenuation,
+                        fontSize: 32,
                       ),
                     ),
                   ],
@@ -493,10 +594,12 @@ class _AttenuationCard extends StatelessWidget {
                     tile(
                       title: historicalMinAttenuationTitle,
                       content: historicalMinAttenuation,
+                      fontSize: 32,
                     ),
                     tile(
                       title: historicalMaxAttenuationTitle,
                       content: historicalMaxAttenuation,
+                      fontSize: 32,
                     )
                   ],
                 ),
@@ -572,7 +675,11 @@ class _AttenuationCard extends StatelessWidget {
 class _PowerSupplyCard extends StatelessWidget {
   const _PowerSupplyCard({super.key});
 
-  Widget tile({required String title, required String content}) {
+  Widget tile({
+    required String title,
+    required String content,
+    required double fontSize,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
@@ -582,8 +689,8 @@ class _PowerSupplyCard extends StatelessWidget {
               ? const CircularProgressIndicator()
               : Text(
                   content,
-                  style: const TextStyle(
-                    fontSize: 36,
+                  style: TextStyle(
+                    fontSize: fontSize,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -648,18 +755,21 @@ class _PowerSupplyCard extends StatelessWidget {
                       child: tile(
                         title: minVoltageTitle,
                         content: minVoltage,
+                        fontSize: 32,
                       ),
                     ),
                     Expanded(
                       child: tile(
                         title: currentVoltageTitle,
                         content: currentVoltage,
+                        fontSize: 40,
                       ),
                     ),
                     Expanded(
                       child: tile(
                         title: maxVoltageTitle,
                         content: maxVoltage,
+                        fontSize: 32,
                       ),
                     ),
                   ],
@@ -722,18 +832,21 @@ class _PowerSupplyCard extends StatelessWidget {
                       child: tile(
                         title: minVoltageRippleTitle,
                         content: minVoltageRipple,
+                        fontSize: 32,
                       ),
                     ),
                     Expanded(
                       child: tile(
                         title: currentVoltageRippleTitle,
                         content: currentVoltageRipple,
+                        fontSize: 40,
                       ),
                     ),
                     Expanded(
                       child: tile(
                         title: maxVoltageRippleTitle,
                         content: maxVoltageRipple,
+                        fontSize: 32,
                       ),
                     ),
                   ],

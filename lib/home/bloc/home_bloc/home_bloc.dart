@@ -201,9 +201,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     SettingSubmitted event,
     Emitter<HomeState> emit,
   ) {
-    Map<DataKey, String> newSettingResultData = {DataKey.locationSet: '-1'};
-    // newSettingResultData.addEntries(state.settingResultData.entries);
-    // newSettingResultData.remove(DataKey.locationSet);
+    Map<DataKey, String> newSettingResultData = {
+      DataKey.locationSet: '-1',
+      DataKey.tgcCableLengthSet: '-1'
+    };
+
+    // initialValues: [
+    //   event.location,
+    //   event.tgcCableLength,
+    //   event.logIntervalId,
+    //   event.workingMode,
+    //   event.currentAttenuation,
+    // ],
+
+    // 如果設定值跟初始值一樣就不用設定
+    if (event.location == event.initialValues[0]) {
+      newSettingResultData[DataKey.locationSet] = '1';
+    }
+    if (event.tgcCableLength == event.initialValues[1]) {
+      newSettingResultData[DataKey.tgcCableLengthSet] = '1';
+    }
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionInProgress,
@@ -211,6 +228,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
 
     // 23307-66th Avenue South Kent WA98032
-    _dsimRepository.setLocation(event.location);
+
+    // if (newSettingResultData[DataKey.locationSet] == '-1') {
+    //   _dsimRepository.setLocation(event.location);
+    // }
+    if (newSettingResultData[DataKey.tgcCableLengthSet] == '-1') {
+      _dsimRepository.setTGCCableLength(
+        workingMode: event.workingMode,
+        currentAttenuation: event.currentAttenuation,
+        tgcCableLength: int.parse(event.tgcCableLength),
+        currentPilot: int.parse(event.currentPilot),
+        logIntervalID: event.logIntervalID,
+      );
+    }
   }
 }

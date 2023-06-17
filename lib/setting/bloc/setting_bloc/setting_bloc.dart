@@ -202,6 +202,11 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   ) {
     emit(state.copyWith(
       currentAttenuation: event.attenuation,
+      selectedWorkingMode: <String, bool>{
+        'MGC': true,
+        'AGC': false,
+        'TGC': false,
+      },
     ));
   }
 
@@ -214,6 +219,11 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         : state.maxAttenuation;
     emit(state.copyWith(
       currentAttenuation: newAttenuation,
+      selectedWorkingMode: <String, bool>{
+        'MGC': true,
+        'AGC': false,
+        'TGC': false,
+      },
     ));
   }
 
@@ -226,6 +236,11 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         : state.minAttenuation;
     emit(state.copyWith(
       currentAttenuation: newAttenuation,
+      selectedWorkingMode: <String, bool>{
+        'MGC': true,
+        'AGC': false,
+        'TGC': false,
+      },
     ));
   }
 
@@ -235,6 +250,11 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   ) {
     emit(state.copyWith(
       currentAttenuation: state.centerAttenuation,
+      selectedWorkingMode: <String, bool>{
+        'MGC': true,
+        'AGC': false,
+        'TGC': false,
+      },
     ));
   }
 

@@ -761,7 +761,7 @@ class DsimRepository {
           (rawData[3] == 0x04) &&
           (rawData[4] == 0x00) &&
           (rawData[5] == 0x06)) {
-        print('TGC cable length Set');
+        print('set TGC cable length');
       }
     }
   }
@@ -947,7 +947,7 @@ class DsimRepository {
   } //set04CL
 
   // iOS 跟  Android 的 set command 方式不一樣
-  Future<void> _writeSetCommandToCharacteristic(List<dynamic> value) async {
+  Future<void> _writeSetCommandToCharacteristic(List<int> value) async {
     if (Platform.isAndroid) {
       await _ble.writeCharacteristicWithResponse(
         _qualifiedCharacteristic,
