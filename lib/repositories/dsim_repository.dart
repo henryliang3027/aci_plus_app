@@ -36,6 +36,24 @@ class Log {
   final int voltageRipple;
 }
 
+class Event {
+  const Event({
+    required String powerOn,
+    required String powerOff,
+    required String high24V,
+    required String low24V,
+    required String highTemperatureC,
+    required String lowTemperatureC,
+    required String highInputRFPower,
+    required String lowInputRFPower,
+    required String high24VRipple,
+    required String alignLossPilot,
+    required String agcLossPilot,
+    required String controllPlugIn,
+    required String controllPlugOut,
+  });
+}
+
 class ScanReport {
   const ScanReport({
     required this.scanStatus,
@@ -263,6 +281,8 @@ class DsimRepository {
             _parseSetLocation(rawData);
           } else if (commandIndex == 34) {
             _parseSetTGCCableLength(rawData);
+          } else if (commandIndex == 35) {
+            _parseSetLogInterval(rawData);
           }
 
           if (writeNextCommand) {
@@ -726,7 +746,7 @@ class DsimRepository {
       Command.location3,
       Command.location4,
       Command.req0DCmd,
-      Command.ddataE8, // #14
+      Command.ddataE8, // #14 log
       Command.ddataE9,
       Command.ddataEA,
       Command.ddataEB,
@@ -741,15 +761,15 @@ class DsimRepository {
       Command.ddataF4,
       Command.ddataF5,
       Command.ddataF6,
-      Command.ddataF7, // #29
-      // Command.ddataF8,
+      Command.ddataF7, // #29 log
+      // Command.ddataF8, // #30 event
       // Command.ddataF9,
       // Command.ddataFA,
       // Command.ddataFB,
       // Command.ddataFC,
       // Command.ddataFD,
       // Command.ddataFE,
-      // Command.ddataFF,
+      // Command.ddataFF, // #37 event
     ]);
   }
 
@@ -761,7 +781,20 @@ class DsimRepository {
           (rawData[3] == 0x04) &&
           (rawData[4] == 0x00) &&
           (rawData[5] == 0x06)) {
-        print('set TGC cable length');
+        print('set TGC cable length done');
+      }
+    }
+  }
+
+  Future<void> _parseSetLogInterval(List<int> rawData) async {
+    if (commandIndex == 35) {
+      if ((rawData[0] == 0xB0) &&
+          (rawData[1] == 0x10) &&
+          (rawData[2] == 0x00) &&
+          (rawData[3] == 0x04) &&
+          (rawData[4] == 0x00) &&
+          (rawData[5] == 0x06)) {
+        print('set log interval done');
       }
     }
   }
@@ -943,6 +976,18 @@ class DsimRepository {
 
     commandIndex = 34;
     endIndex = 34;
+    _writeSetCommandToCharacteristic(Command.set04Cmd);
+  } //set04CL
+
+  Future<void> setLogInterval({
+    required int logIntervalID,
+  }) async {
+    Command.set04Cmd[7] = 0x08; // 8
+    Command.set04Cmd[13] = logIntervalID; // Log Minutes 1Byte
+    CRC16.calculateCRC16(command: Command.set04Cmd, usDataLength: 19);
+
+    commandIndex = 35;
+    endIndex = 35;
     _writeSetCommandToCharacteristic(Command.set04Cmd);
   } //set04CL
 

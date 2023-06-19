@@ -174,9 +174,6 @@ class _ConnectionCard extends StatelessWidget {
                 title: AppLocalizations.of(context).bluetooth,
                 content: state.device != null ? state.device!.name : '',
               ),
-              const SizedBox(
-                height: 10.0,
-              ),
               itemLinkText(
                 title: 'DSIM',
                 content: AppLocalizations.of(context).visitWebsite,

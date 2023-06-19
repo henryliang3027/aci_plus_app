@@ -203,7 +203,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) {
     Map<DataKey, String> newSettingResultData = {
       DataKey.locationSet: '-1',
-      DataKey.tgcCableLengthSet: '-1'
+      DataKey.tgcCableLengthSet: '-1',
+      DataKey.logIntervalSet: '-1'
     };
 
     // initialValues: [
@@ -222,24 +223,40 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       newSettingResultData[DataKey.tgcCableLengthSet] = '1';
     }
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.submissionInProgress,
-      settingResultData: newSettingResultData,
-    ));
+    if (event.tgcCableLength == event.initialValues[1]) {
+      newSettingResultData[DataKey.tgcCableLengthSet] = '1';
+    }
+
+    // emit(state.copyWith(
+    //   submissionStatus: SubmissionStatus.submissionInProgress,
+    //   settingResultData: newSettingResultData,
+    // ));
 
     // 23307-66th Avenue South Kent WA98032
 
     // if (newSettingResultData[DataKey.locationSet] == '-1') {
     //   _dsimRepository.setLocation(event.location);
     // }
-    if (newSettingResultData[DataKey.tgcCableLengthSet] == '-1') {
-      _dsimRepository.setTGCCableLength(
-        workingMode: event.workingMode,
-        currentAttenuation: event.currentAttenuation,
-        tgcCableLength: int.parse(event.tgcCableLength),
-        currentPilot: int.parse(event.currentPilot),
-        logIntervalID: event.logIntervalID,
-      );
-    }
+    // if (newSettingResultData[DataKey.tgcCableLengthSet] == '-1') {
+    //   _dsimRepository.setTGCCableLength(
+    //     workingMode: event.workingMode,
+    //     currentAttenuation: event.currentAttenuation,
+    //     tgcCableLength: int.parse(event.tgcCableLength),
+    //     currentPilot: int.parse(event.currentPilot),
+    //     logIntervalID: event.logIntervalID,
+    //   );
+    // }
+
+    // _dsimRepository.setLogInterval(
+    //   logIntervalID: event.logIntervalID,
+    // );
+
+    _dsimRepository.setTGCCableLength(
+      workingMode: event.workingMode,
+      currentAttenuation: event.currentAttenuation,
+      tgcCableLength: int.parse(event.tgcCableLength),
+      currentPilot: int.parse(event.currentPilot),
+      logIntervalID: event.logIntervalID,
+    );
   }
 }

@@ -11,6 +11,7 @@ class HomeState extends Equatable {
     this.settingResultData = const {
       DataKey.locationSet: '-1',
       DataKey.tgcCableLengthSet: '-1',
+      DataKey.logIntervalSet: '-1',
     },
     this.errorMassage = '',
   });
