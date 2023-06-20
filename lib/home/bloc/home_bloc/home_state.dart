@@ -5,6 +5,8 @@ class HomeState extends Equatable {
     this.scanStatus = FormStatus.none,
     this.connectionStatus = FormStatus.none,
     this.submissionStatus = SubmissionStatus.none,
+    this.eventRecordsLoadingStatus = FormStatus.none,
+    this.settingParametersLoading = FormStatus.none,
     this.showSplash = true,
     this.device,
     this.characteristicData = const {},
@@ -18,6 +20,8 @@ class HomeState extends Equatable {
 
   final FormStatus scanStatus;
   final FormStatus connectionStatus;
+  final FormStatus eventRecordsLoadingStatus;
+  final FormStatus settingParametersLoading;
   final SubmissionStatus submissionStatus;
   final bool showSplash;
   final DiscoveredDevice? device;
@@ -28,6 +32,8 @@ class HomeState extends Equatable {
   HomeState copyWith({
     FormStatus? scanStatus,
     FormStatus? connectionStatus,
+    FormStatus? eventRecordsLoadingStatus,
+    FormStatus? settingParametersLoading,
     SubmissionStatus? submissionStatus,
     bool? showSplash,
     DiscoveredDevice? device,
@@ -38,6 +44,10 @@ class HomeState extends Equatable {
     return HomeState(
       scanStatus: scanStatus ?? this.scanStatus,
       connectionStatus: connectionStatus ?? this.connectionStatus,
+      eventRecordsLoadingStatus:
+          eventRecordsLoadingStatus ?? this.eventRecordsLoadingStatus,
+      settingParametersLoading:
+          settingParametersLoading ?? this.settingParametersLoading,
       submissionStatus: submissionStatus ?? this.submissionStatus,
       showSplash: showSplash ?? this.showSplash,
       device: device ?? this.device,
@@ -51,6 +61,8 @@ class HomeState extends Equatable {
   List<Object?> get props => [
         scanStatus,
         connectionStatus,
+        eventRecordsLoadingStatus,
+        settingParametersLoading,
         submissionStatus,
         showSplash,
         device,

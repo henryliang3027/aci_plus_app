@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:dsim_app/core/custom_style.dart';
+import 'package:excel/excel.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
+import 'package:intl/intl.dart';
 import 'package:location/location.dart' as GPS;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
@@ -38,20 +40,14 @@ class Log {
 
 class Event {
   const Event({
-    required String powerOn,
-    required String powerOff,
-    required String high24V,
-    required String low24V,
-    required String highTemperatureC,
-    required String lowTemperatureC,
-    required String highInputRFPower,
-    required String lowInputRFPower,
-    required String high24VRipple,
-    required String alignLossPilot,
-    required String agcLossPilot,
-    required String controllPlugIn,
-    required String controllPlugOut,
+    required this.timeStamp,
+    required this.code,
+    required this.parameter,
   });
+
+  final int timeStamp;
+  final int code;
+  final int parameter;
 }
 
 class ScanReport {
@@ -87,6 +83,8 @@ class DsimRepository {
       StreamController<Map<DataKey, String>>();
   StreamController<Map<DataKey, String>> _settingResultStreamController =
       StreamController<Map<DataKey, String>>();
+  StreamController<DataKey> _loadingResultStreamController =
+      StreamController<DataKey>();
 
   StreamSubscription<DiscoveredDevice>? _discoveredDeviceStreamSubscription;
   StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
@@ -101,20 +99,23 @@ class DsimRepository {
 
   final List<List<int>> _commandCollection = [];
   int commandIndex = 0;
-  int endIndex = 29;
+  int endIndex = 37;
 
   String _tempLocation = '';
   int _basicModeID = 0;
   String _basicCurrentPilot = '';
   int _basicCurrentPilotMode = 0;
   int _currentSettingMode = 0;
+  int _nowTimeCount = 0;
   int _alarmR = 0;
   int _alarmT = 0;
   int _alarmP = 0;
   String _basicInterval = '';
   final List<int> _rawLog = [];
-  final int _totalBytesPerCommand = 261;
   final List<Log> _logs = [];
+  final List<int> _rawEvent = [];
+  final List<Event> _events = [];
+  final int _totalBytesPerCommand = 261;
 
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
@@ -192,11 +193,17 @@ class DsimRepository {
     yield* _settingResultStreamController.stream;
   }
 
+  Stream<DataKey> get loadingResult async* {
+    yield* _loadingResultStreamController.stream;
+  }
+
   void clearCache() {
     _logs.clear();
     _rawLog.clear();
+    _events.clear();
+    _rawEvent.clear();
     commandIndex = 0;
-    endIndex = 29;
+    endIndex = 37;
   }
 
   Future<void> closeScanStream() async {
@@ -277,11 +284,21 @@ class DsimRepository {
               _rawLog.clear();
               writeNextCommand = true;
             }
-          } else if (commandIndex >= 30 && commandIndex <= 33) {
+          } else if (commandIndex >= 30 && commandIndex <= 37) {
+            _rawEvent.addAll(rawData);
+            // 一個 event command 總共會接收 261 bytes, 每一次傳回 16 bytes
+            if (_rawEvent.length == _totalBytesPerCommand) {
+              _rawEvent.removeRange(_rawEvent.length - 2, _rawEvent.length);
+              _rawEvent.removeRange(0, 3);
+              _parseEvent();
+              _rawEvent.clear();
+              writeNextCommand = true;
+            }
+          } else if (commandIndex >= 40 && commandIndex <= 43) {
             _parseSetLocation(rawData);
-          } else if (commandIndex == 34) {
+          } else if (commandIndex == 44) {
             _parseSetTGCCableLength(rawData);
-          } else if (commandIndex == 35) {
+          } else if (commandIndex == 45) {
             _parseSetLogInterval(rawData);
           }
 
@@ -318,6 +335,31 @@ class DsimRepository {
         errorMessage: error,
       ));
     });
+  }
+
+  void _parseEvent() {
+    for (int i = 0; i < 16; i++) {
+      int timeStamp = _rawEvent[i * 16] * 256 + _rawEvent[i * 16 + 1];
+      int code = _rawEvent[i * 16 + 2] * 256 + _rawEvent[i * 16 + 3];
+      int parameter = _rawEvent[i * 16 + 4] * 256 + _rawEvent[i * 16 + 5];
+
+      if (_nowTimeCount - timeStamp < 0) {
+        timeStamp = timeStamp + 65520;
+      }
+
+      _events
+          .add(Event(timeStamp: timeStamp, code: code, parameter: parameter));
+    }
+
+    if (commandIndex == 37) {
+      print(_events);
+
+      for (Event event in _events) {
+        print(
+            'timeStamp: ${event.timeStamp}, code: ${event.code}, parameter: ${event.parameter}');
+      }
+      _loadingResultStreamController.add(DataKey.eventRecordsLoadingComplete);
+    }
   }
 
   void _parseLog() {
@@ -464,6 +506,8 @@ class DsimRepository {
         _alarmP = (number & 0x10) + (number & 0x20);
 
         _basicInterval = rawData[13].toString(); //time interval
+
+        _nowTimeCount = rawData[11] * 256 + rawData[12];
 
         String firmwareVersion = '';
         for (int i = 3; i < 6; i++) {
@@ -762,19 +806,19 @@ class DsimRepository {
       Command.ddataF5,
       Command.ddataF6,
       Command.ddataF7, // #29 log
-      // Command.ddataF8, // #30 event
-      // Command.ddataF9,
-      // Command.ddataFA,
-      // Command.ddataFB,
-      // Command.ddataFC,
-      // Command.ddataFD,
-      // Command.ddataFE,
-      // Command.ddataFF, // #37 event
+      Command.ddataF8, // #30 event
+      Command.ddataF9,
+      Command.ddataFA,
+      Command.ddataFB,
+      Command.ddataFC,
+      Command.ddataFD,
+      Command.ddataFE,
+      Command.ddataFF, // #37 event
     ]);
   }
 
   Future<void> _parseSetTGCCableLength(List<int> rawData) async {
-    if (commandIndex == 34) {
+    if (commandIndex == 44) {
       if ((rawData[0] == 0xB0) &&
           (rawData[1] == 0x10) &&
           (rawData[2] == 0x00) &&
@@ -787,7 +831,7 @@ class DsimRepository {
   }
 
   Future<void> _parseSetLogInterval(List<int> rawData) async {
-    if (commandIndex == 35) {
+    if (commandIndex == 45) {
       if ((rawData[0] == 0xB0) &&
           (rawData[1] == 0x10) &&
           (rawData[2] == 0x00) &&
@@ -800,7 +844,7 @@ class DsimRepository {
   }
 
   Future<void> _parseSetLocation(List<int> rawData) async {
-    if (commandIndex == 30) {
+    if (commandIndex == 40) {
       if ((rawData[0] == 0xB0) &&
           (rawData[1] == 0x10) &&
           (rawData[2] == 0x00) &&
@@ -815,7 +859,7 @@ class DsimRepository {
       } else {
         _characteristicDataStreamController.add({DataKey.locationSet: '0'});
       }
-    } else if (commandIndex == 31) {
+    } else if (commandIndex == 41) {
       if ((rawData[0] == 0xB0) &&
           (rawData[1] == 0x10) &&
           (rawData[2] == 0x00) &&
@@ -830,7 +874,7 @@ class DsimRepository {
       } else {
         _settingResultStreamController.add({DataKey.locationSet: '0'});
       }
-    } else if (commandIndex == 32) {
+    } else if (commandIndex == 42) {
       if ((rawData[0] == 0xB0) &&
           (rawData[1] == 0x10) &&
           (rawData[2] == 0x00) &&
@@ -845,7 +889,7 @@ class DsimRepository {
       } else {
         _settingResultStreamController.add({DataKey.locationSet: '0'});
       }
-    } else if (commandIndex == 33) {
+    } else if (commandIndex == 43) {
       if ((rawData[0] == 0xB0) &&
           (rawData[1] == 0x10) &&
           (rawData[2] == 0x00) &&
@@ -932,8 +976,8 @@ class DsimRepository {
     CRC16.calculateCRC16(command: Command.setLocBCmd, usDataLength: 19);
     CRC16.calculateCRC16(command: Command.setLocCCmd, usDataLength: 19);
 
-    commandIndex = 30;
-    endIndex = 33;
+    commandIndex = 40;
+    endIndex = 43;
 
     print('set location');
     await _writeSetCommandToCharacteristic(
@@ -974,8 +1018,8 @@ class DsimRepository {
     Command.set04Cmd[15] = 0x02; //AGC Channel 2 Mode 1Byte
     CRC16.calculateCRC16(command: Command.set04Cmd, usDataLength: 19);
 
-    commandIndex = 34;
-    endIndex = 34;
+    commandIndex = 44;
+    endIndex = 44;
     _writeSetCommandToCharacteristic(Command.set04Cmd);
   } //set04CL
 
@@ -986,8 +1030,8 @@ class DsimRepository {
     Command.set04Cmd[13] = logIntervalID; // Log Minutes 1Byte
     CRC16.calculateCRC16(command: Command.set04Cmd, usDataLength: 19);
 
-    commandIndex = 35;
-    endIndex = 35;
+    commandIndex = 45;
+    endIndex = 45;
     _writeSetCommandToCharacteristic(Command.set04Cmd);
   } //set04CL
 
@@ -1004,6 +1048,96 @@ class DsimRepository {
         value: value,
       );
     } else {}
+  }
+
+  void exportRecords() {
+    Excel excel = Excel.createExcel();
+    List<String> logHeader = [];
+    List<String> eventHeader = [];
+
+    Sheet logSheet = excel['Log'];
+    Sheet eventSheet = excel['Event'];
+
+    logHeader
+      ..add('Power On')
+      ..add('Power Off')
+      ..add('24V High(V)')
+      ..add('24V Low(V)')
+      ..add('Temperature High(C)')
+      ..add('Temperature Low(C)')
+      ..add('Input RF Power High(dBuV)')
+      ..add('Input RF Power Low(dBuV)')
+      ..add('24V Ripple High(mV)')
+      ..add('Align Loss Pilot')
+      ..add('AGC Loss Pilot')
+      ..add('Controll Plug in')
+      ..add('Controll Plug out');
+
+    logSheet.insertRowIterables(logHeader, 0);
+
+    // for () {
+    //   Record record = records[i];
+    //   List<String> row = [];
+    //   String severity = CustomStyle.severityName[record.severity] ?? '';
+    //   String ip = record.ip;
+    //   String group = record.group;
+    //   String model = record.model;
+    //   String name = DisplayStyle.getDeviceDisplayName(record);
+    //   String event = record.event;
+    //   String value = record.value;
+    //   String timeReceived = record.receivedTime;
+    //   String clearTime = record.clearTime;
+    //   String alarmDuration = record.alarmDuration;
+    //   row
+    //     ..add(severity)
+    //     ..add(ip)
+    //     ..add(group)
+    //     ..add(model)
+    //     ..add(name)
+    //     ..add(event)
+    //     ..add(value)
+    //     ..add(timeReceived)
+    //     ..add(clearTime)
+    //     ..add(alarmDuration);
+
+    //   sheet.insertRowIterables(row, i + 1);
+    // }
+
+    // var fileBytes = excel.save();
+
+    // String timeStamp =
+    //     DateFormat('yyyy_MM_dd_HH_mm_ss').format(DateTime.now()).toString();
+    // String filename = 'history_data_$timeStamp.xlsx';
+
+    // if (Platform.isIOS) {
+    //   Directory appDocDir = await getApplicationDocumentsDirectory();
+    //   String appDocPath = appDocDir.path;
+    //   String fullWrittenPath = '$appDocPath/$filename';
+    //   File f = File(fullWrittenPath);
+    //   await f.writeAsBytes(fileBytes!);
+    //   return [
+    //     true,
+    //     'Export history data success',
+    //     fullWrittenPath,
+    //   ];
+    // } else if (Platform.isAndroid) {
+    //   Directory appDocDir = await getApplicationDocumentsDirectory();
+    //   String appDocPath = appDocDir.path;
+    //   String fullWrittenPath = '$appDocPath/$filename';
+    //   File f = File(fullWrittenPath);
+    //   await f.writeAsBytes(fileBytes!);
+
+    //   return [
+    //     true,
+    //     'Export history data success',
+    //     fullWrittenPath,
+    //   ];
+    // } else {
+    //   return [
+    //     false,
+    //     'write file failed, export function not implement on ${Platform.operatingSystem} '
+    //   ];
+    // }
   }
 
   double _convertToFahrenheit(double celcius) {
@@ -1032,4 +1166,117 @@ class DsimRepository {
       return false;
     }
   }
+
+  // List<String> formatEvent(Event event){
+  //     int timeStamp = event.timeStamp;
+  //     int adjustedMillisecond = DateTime.now().millisecond -  - timeStamp * 60000;
+  //     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(adjustedMillisecond);
+  //     String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
+  //     List<String> row = ['','','','','','','','','','','','',''];
+
+  //     switch (event.code) {
+  //       case 0x0000: { //EventCPEstart 0
+  //       row[0] = formattedDateTime;
+  //         if (event.parameter > 0){
+  //           row[0] = '$formattedDateTime@${event.parameter}';
+  //         }
+  //         break;
+  //       }
+  //       case 0x0001: { //EventCPEstop 1
+  //         row[1] = formattedDateTime;
+  //         if (event.parameter > 0){
+  //         row[1] = '$formattedDateTime@${event.parameter}';
+  //         }
+
+  //         break;
+  //       }
+  //       case 0x0002: { //Event24VOver 2
+  //         row[2] = formattedDateTime;
+  //         if (event.parameter > 0){
+  //           row[2] = '$formattedDateTime@${event.parameter / 10}';
+  //         }
+  //         break;
+  //       }
+  //       case 0x0004: { //Event24VLess 3
+  //         row[3] = formattedDateTime;
+  //         if (event.parameter > 0){
+  //           row[3] = '$formattedDateTime@${event.parameter / 10}';
+  //         }
+  //         break;
+  //       }
+  //       case 0x0008: { //EventTemOver 4
+  //         row[4] = formattedDateTime;
+  //         if (event.parameter > 0){
+  //           row[4] = '$formattedDateTime@${event.parameter / 10}';
+  //         }
+  //         break;
+  //       }
+  //       case 0x0010: { //EventTemLess 5
+  //         row[5] = formattedDateTime;
+  //         if (event.parameter > 0){
+  //           row[5] = '$formattedDateTime@${event.parameter / 10}';
+  //         }
+  //         break;
+  //       }
+  //       case 0x0020: { //EventSSIOver 6
+  //         this.csvEvent[count6][6] = timeEvent = timeS;
+  //         if (this.global.eParamTwo[i] > 0)
+  //           this.csvEvent[count6][6] = timeEvent + '@' + this.global.eParamTwo[i].toString();
+  //         console.log('EventSSIOver 6=', this.csvEvent[count6][6]);
+  //         count6++;
+  //         break;
+  //       }
+  //       case 0x0040: { //EventSSILess 7
+  //         this.csvEvent[count7][7] = timeEvent = timeS;
+  //         if (this.global.eParamTwo[i] > 0)
+  //           this.csvEvent[count7][7] = timeEvent + '@' + this.global.eParamTwo[i].toString();
+  //         console.log('EventSSILess 7=', this.csvEvent[count7][7]);
+  //         count7++;
+  //         break;
+  //       }
+  //       case 0x0080: { //Event24VriOv 8
+  //         this.csvEvent[count8][8] = timeEvent = timeS;
+  //         if (this.global.eParamTwo[i] > 0)
+  //           this.csvEvent[count8][8] = timeEvent + '@' + this.global.eParamTwo[i].toString();
+  //         console.log('Event24VriOv 8=', this.csvEvent[count8][8]);
+  //         count8++;
+  //         break;
+  //       }
+  //       case 0x0100: { //EventAlPiLos 9
+  //         this.csvEvent[count9][9] = timeEvent = timeS;
+  //         if (this.global.eParamTwo[i] > 0)
+  //           this.csvEvent[count9][9] = timeEvent + '@' + this.global.eParamTwo[i].toString();
+  //         console.log('EventAlPiLos 9=', this.csvEvent[count9][9]);
+  //         count9++;
+  //         break;
+  //       }
+  //       case 0x0200: { //EventAGPiLos 10
+  //         this.csvEvent[count10][10] = timeEvent = timeS;
+  //         if (this.global.eParamTwo[i] > 0)
+  //           this.csvEvent[count10][10] = timeEvent + '@' + this.global.eParamTwo[i].toString();
+  //         console.log('EventAGPiLos 10=', this.csvEvent[count10][10]);
+  //         count10++;
+  //         break;
+  //       }
+  //       case 0x1000: { //EventCTRPlin 11 used
+  //         this.csvEvent[count11][11] = timeEvent = timeS;
+  //         if (this.global.eParamTwo[i] > 0)
+  //           this.csvEvent[count11][11] = timeEvent + '@' + this.global.eParamTwo[i].toString();
+  //         console.log('EventCTRPlin 11 reused', count11);
+  //         count11++;
+  //         break;
+  //       }
+  //       case 0x2000: { //EventCTRPlout 12 used
+  //         this.csvEvent[count12][12] = timeEvent = timeS;
+  //         if (this.global.eParamTwo[i] > 0)
+  //           this.csvEvent[count12][12] = timeEvent + '@' + this.global.eParamTwo[i].toString();
+  //         console.log('EventCTRPlout 12 reused', count12);
+  //         count12++;
+  //         break;
+  //       }
+  //     }//switch
+
+  //     return row;
+
+  // }
 }

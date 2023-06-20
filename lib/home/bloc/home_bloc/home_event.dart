@@ -55,6 +55,17 @@ class SettingResultChanged extends HomeEvent {
       ];
 }
 
+class LoadingResultChanged extends HomeEvent {
+  const LoadingResultChanged(this.loadingResultDataKey);
+
+  final DataKey loadingResultDataKey;
+
+  @override
+  List<Object?> get props => [
+        loadingResultDataKey,
+      ];
+}
+
 class ScanClosed extends HomeEvent {
   const ScanClosed();
 

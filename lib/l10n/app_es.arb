@@ -49,6 +49,8 @@
     "currentVoltageRipple": "Actual",
     "minVoltageRipple": "Mínimo",
     "maxVoltageRipple": "Máximo",
+    "share": "Compartir",
+    "export": "Exportar",
 
 
     "dialogTitleProcessing": "Procesando...",

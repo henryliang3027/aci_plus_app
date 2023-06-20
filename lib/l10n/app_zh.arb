@@ -49,6 +49,8 @@
     "currentVoltageRipple": "目前",
     "minVoltageRipple": "最小",
     "maxVoltageRipple": "最大",
+    "share": "分享",
+    "export": "匯出",
 
 
     "dialogTitleProcessing": "設定中...",

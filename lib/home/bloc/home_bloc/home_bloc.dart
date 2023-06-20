@@ -20,8 +20,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DeviceRefreshed>(_onDeviceRefreshed);
     on<DeviceConnectionChanged>(_onDeviceConnectionChanged);
     on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
-    on<SettingResultChanged>(_onSettingResultChanged);
+
     on<SettingSubmitted>(_onSettingSubmitted);
+    on<SettingResultChanged>(_onSettingResultChanged);
+    on<LoadingResultChanged>(_onLoadingResultChanged);
 
     add(const SplashStateChanged());
   }
@@ -33,6 +35,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _characteristicDataStreamSubscription;
 
   StreamSubscription<Map<DataKey, String>>? _settingResultStreamSubscription;
+
+  StreamSubscription<DataKey>? _loadingResultStreamSubscription;
 
   // 進入首頁時播放動畫，動畫播完後掃描藍芽裝置
   Future<void> _onSplashStateChanged(
@@ -48,8 +52,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
 
     emit(state.copyWith(
-      showSplash: false,
-    ));
+        showSplash: false,
+        eventRecordsLoadingStatus: FormStatus.requestInProgress,
+        settingParametersLoading: FormStatus.requestInProgress));
   }
 
   Future<void> _onDiscoveredDeviceChanged(
@@ -121,6 +126,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           onDone: () {},
         );
 
+        _loadingResultStreamSubscription =
+            _dsimRepository.loadingResult.listen((data) {
+          add(LoadingResultChanged(data));
+        });
+
         break;
       case DeviceConnectionState.disconnecting:
         emit(state.copyWith(
@@ -163,6 +173,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
   }
 
+  void _onLoadingResultChanged(
+    LoadingResultChanged event,
+    Emitter<HomeState> emit,
+  ) {
+    if (event.loadingResultDataKey == DataKey.eventRecordsLoadingComplete) {
+      emit(state.copyWith(
+        eventRecordsLoadingStatus: FormStatus.requestSuccess,
+      ));
+    } else if (event.loadingResultDataKey ==
+        DataKey.settingParametersLoadingComplete) {
+      emit(state.copyWith(
+        settingParametersLoading: FormStatus.requestSuccess,
+      ));
+    } else {}
+  }
+
   Future<void> _onDeviceRefreshed(
     DeviceRefreshed event,
     Emitter<HomeState> emit,
@@ -170,6 +196,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(
       scanStatus: FormStatus.requestInProgress,
       connectionStatus: FormStatus.requestInProgress,
+      eventRecordsLoadingStatus: FormStatus.requestInProgress,
+      settingParametersLoading: FormStatus.requestInProgress,
       device: null,
       characteristicData: const {},
     ));
