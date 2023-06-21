@@ -3,26 +3,55 @@ import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:open_filex/open_filex.dart';
 
 class ChartForm extends StatelessWidget {
   const ChartForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context).monitoringChart,
+    return BlocListener<HomeBloc, HomeState>(
+      listener: (context, state) {
+        if (state.dataExportStatus.isRequestSuccess) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(
+                  AppLocalizations.of(context)
+                      .dialogMaessageDataExportSuccessful,
+                ),
+                action: SnackBarAction(
+                  label: AppLocalizations.of(context).open,
+                  onPressed: () async {
+                    OpenResult result = await OpenFilex.open(
+                      state.dataExportPath,
+                      type: 'application/vnd.ms-excel',
+                      uti: 'com.microsoft.excel.xls',
+                    );
+
+                    print(result.message);
+                  },
+                ),
+              ),
+            );
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            AppLocalizations.of(context).monitoringChart,
+          ),
+          centerTitle: true,
+          actions: const [
+            _PopupMenu(),
+          ],
         ),
-        centerTitle: true,
-        actions: const [
-          _PopupMenu(),
-        ],
+        body: const Center(
+            child: Icon(
+          Icons.chat_rounded,
+        )),
       ),
-      body: const Center(
-          child: Icon(
-        Icons.chat_rounded,
-      )),
     );
   }
 }
@@ -61,6 +90,7 @@ class _PopupMenu extends StatelessWidget {
                 //     .add(const ForwardOutlinesDeletedModeEnabled());
                 break;
               case Menu.export:
+                context.read<HomeBloc>().add(const DataExported());
                 break;
               default:
                 break;

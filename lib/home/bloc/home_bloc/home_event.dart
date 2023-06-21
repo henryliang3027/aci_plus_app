@@ -80,6 +80,13 @@ class DeviceRefreshed extends HomeEvent {
   List<Object?> get props => [];
 }
 
+class DataExported extends HomeEvent {
+  const DataExported();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class SettingSubmitted extends HomeEvent {
   const SettingSubmitted({
     required this.initialValues,

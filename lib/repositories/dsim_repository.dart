@@ -7,6 +7,7 @@ import 'package:excel/excel.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart' as GPS;
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 
@@ -24,16 +25,18 @@ enum Alarm {
 
 class Log {
   const Log({
-    required this.time,
+    required this.timeStamp,
     required this.temperature,
     required this.attenuation,
+    required this.pilot,
     required this.voltage,
     required this.voltageRipple,
   });
 
-  final int time;
+  final int timeStamp;
   final double temperature;
   final int attenuation;
+  final double pilot;
   final double voltage;
   final int voltageRipple;
 }
@@ -343,9 +346,11 @@ class DsimRepository {
       int code = _rawEvent[i * 16 + 2] * 256 + _rawEvent[i * 16 + 3];
       int parameter = _rawEvent[i * 16 + 4] * 256 + _rawEvent[i * 16 + 5];
 
-      if (_nowTimeCount - timeStamp < 0) {
-        timeStamp = timeStamp + 65520;
+      int timeDiff = _nowTimeCount - timeStamp;
+      if (timeDiff < 0) {
+        timeDiff = timeDiff + 65520;
       }
+      timeStamp = timeDiff;
 
       _events
           .add(Event(timeStamp: timeStamp, code: code, parameter: parameter));
@@ -364,23 +369,31 @@ class DsimRepository {
 
   void _parseLog() {
     for (var i = 0; i < 16; i++) {
-      int time = _rawLog[i * 16] * 256 + _rawLog[i * 16 + 1];
+      int timeStamp = _rawLog[i * 16] * 256 + _rawLog[i * 16 + 1];
       double temperature =
           (_rawLog[i * 16 + 2] * 256 + _rawLog[i * 16 + 3]) / 10;
       int attenuation = _rawLog[i * 16 + 4] * 256 + _rawLog[i * 16 + 5];
+      double pilot = (_rawLog[i * 16 + 6] * 256 + _rawLog[i * 16 + 7]) / 10;
       double voltage = (_rawLog[i * 16 + 8] * 256 + _rawLog[i * 16 + 9]) / 10;
       int voltageRipple = _rawLog[i * 16 + 10] * 256 + _rawLog[i * 16 + 11];
 
-      if (time < 0xFFF0) {
+      if (timeStamp < 0xFFF0) {
         //# 20210128 做2補數
         if (temperature > 32767) {
           temperature = -(65535 - temperature + 1).abs();
         }
 
+        int timeDiff = _nowTimeCount - timeStamp;
+        if (timeDiff < 0) {
+          timeDiff = timeDiff + 65520;
+        }
+        timeStamp = timeDiff;
+
         _logs.add(Log(
-            time: time,
+            timeStamp: timeStamp,
             temperature: temperature,
             attenuation: attenuation,
+            pilot: pilot,
             voltage: voltage,
             voltageRipple: voltageRipple));
       }
@@ -1050,94 +1063,85 @@ class DsimRepository {
     } else {}
   }
 
-  void exportRecords() {
+  Future<dynamic> exportRecords() async {
     Excel excel = Excel.createExcel();
-    List<String> logHeader = [];
-    List<String> eventHeader = [];
+    List<String> logHeader = [
+      'Time',
+      'Temperature(C)',
+      'Attenuator',
+      'Pilot (dBuV)',
+      '24V(V)',
+      '24V Ripple(mV)',
+    ];
+    List<String> eventHeader = [
+      'Power On',
+      'Power Off',
+      '24V High(V)',
+      '24V Low(V)',
+      'Temperature High(C)',
+      'Temperature Low(C)',
+      'Input RF Power High(dBuV)',
+      'Input RF Power Low(dBuV)',
+      '24V Ripple High(mV)',
+      'Align Loss Pilot',
+      'AGC Loss Pilot',
+      'Controll Plug in',
+      'Controll Plug out',
+    ];
 
     Sheet logSheet = excel['Log'];
     Sheet eventSheet = excel['Event'];
 
-    logHeader
-      ..add('Power On')
-      ..add('Power Off')
-      ..add('24V High(V)')
-      ..add('24V Low(V)')
-      ..add('Temperature High(C)')
-      ..add('Temperature Low(C)')
-      ..add('Input RF Power High(dBuV)')
-      ..add('Input RF Power Low(dBuV)')
-      ..add('24V Ripple High(mV)')
-      ..add('Align Loss Pilot')
-      ..add('AGC Loss Pilot')
-      ..add('Controll Plug in')
-      ..add('Controll Plug out');
+    eventSheet.insertRowIterables(eventHeader, 0);
+    for (int i = 0; i < _events.length; i++) {
+      Event event = _events[i];
+      List<String> row = formatEvent(event);
+      eventSheet.insertRowIterables(row, i + 1);
+    }
 
     logSheet.insertRowIterables(logHeader, 0);
+    for (int i = 0; i < _logs.length; i++) {
+      Log log = _logs[i];
+      List<String> row = formatLog(log);
+      logSheet.insertRowIterables(row, i + 1);
+    }
 
-    // for () {
-    //   Record record = records[i];
-    //   List<String> row = [];
-    //   String severity = CustomStyle.severityName[record.severity] ?? '';
-    //   String ip = record.ip;
-    //   String group = record.group;
-    //   String model = record.model;
-    //   String name = DisplayStyle.getDeviceDisplayName(record);
-    //   String event = record.event;
-    //   String value = record.value;
-    //   String timeReceived = record.receivedTime;
-    //   String clearTime = record.clearTime;
-    //   String alarmDuration = record.alarmDuration;
-    //   row
-    //     ..add(severity)
-    //     ..add(ip)
-    //     ..add(group)
-    //     ..add(model)
-    //     ..add(name)
-    //     ..add(event)
-    //     ..add(value)
-    //     ..add(timeReceived)
-    //     ..add(clearTime)
-    //     ..add(alarmDuration);
+    excel.unLink('Sheet1'); // Excel 預設會自動產生 Sheet1, 所以先unlink
+    excel.delete('Sheet1'); // 再刪除 Sheet1
+    excel.link('Log', logSheet);
+    var fileBytes = excel.save();
 
-    //   sheet.insertRowIterables(row, i + 1);
-    // }
+    String timeStamp =
+        DateFormat('yyyy_MM_dd_HH_mm_ss').format(DateTime.now()).toString();
+    String filename = 'data_$timeStamp.xlsx';
 
-    // var fileBytes = excel.save();
+    if (Platform.isIOS) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$filename';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
+      return [
+        true,
+        fullWrittenPath,
+      ];
+    } else if (Platform.isAndroid) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$filename';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
 
-    // String timeStamp =
-    //     DateFormat('yyyy_MM_dd_HH_mm_ss').format(DateTime.now()).toString();
-    // String filename = 'history_data_$timeStamp.xlsx';
-
-    // if (Platform.isIOS) {
-    //   Directory appDocDir = await getApplicationDocumentsDirectory();
-    //   String appDocPath = appDocDir.path;
-    //   String fullWrittenPath = '$appDocPath/$filename';
-    //   File f = File(fullWrittenPath);
-    //   await f.writeAsBytes(fileBytes!);
-    //   return [
-    //     true,
-    //     'Export history data success',
-    //     fullWrittenPath,
-    //   ];
-    // } else if (Platform.isAndroid) {
-    //   Directory appDocDir = await getApplicationDocumentsDirectory();
-    //   String appDocPath = appDocDir.path;
-    //   String fullWrittenPath = '$appDocPath/$filename';
-    //   File f = File(fullWrittenPath);
-    //   await f.writeAsBytes(fileBytes!);
-
-    //   return [
-    //     true,
-    //     'Export history data success',
-    //     fullWrittenPath,
-    //   ];
-    // } else {
-    //   return [
-    //     false,
-    //     'write file failed, export function not implement on ${Platform.operatingSystem} '
-    //   ];
-    // }
+      return [
+        true,
+        fullWrittenPath,
+      ];
+    } else {
+      return [
+        false,
+        'write file failed, export function not implement on ${Platform.operatingSystem} '
+      ];
+    }
   }
 
   double _convertToFahrenheit(double celcius) {
@@ -1167,116 +1171,160 @@ class DsimRepository {
     }
   }
 
-  // List<String> formatEvent(Event event){
-  //     int timeStamp = event.timeStamp;
-  //     int adjustedMillisecond = DateTime.now().millisecond -  - timeStamp * 60000;
-  //     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(adjustedMillisecond);
-  //     String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
-  //     List<String> row = ['','','','','','','','','','','','',''];
+  List<String> formatLog(Log log) {
+    int timeStamp = log.timeStamp;
+    int adjustedMillisecond =
+        DateTime.now().millisecondsSinceEpoch - timeStamp * 60000;
+    DateTime dateTime =
+        DateTime.fromMillisecondsSinceEpoch(adjustedMillisecond);
+    String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
+    String temperatureC = log.temperature.toString();
+    String attenuation = log.attenuation.toString();
+    String pilot = log.pilot.toString();
+    String voltage = log.voltage.toString();
+    String voltageRipple = log.voltageRipple.toString();
+    List<String> row = [
+      formattedDateTime,
+      temperatureC,
+      attenuation,
+      pilot,
+      voltage,
+      voltageRipple
+    ];
 
-  //     switch (event.code) {
-  //       case 0x0000: { //EventCPEstart 0
-  //       row[0] = formattedDateTime;
-  //         if (event.parameter > 0){
-  //           row[0] = '$formattedDateTime@${event.parameter}';
-  //         }
-  //         break;
-  //       }
-  //       case 0x0001: { //EventCPEstop 1
-  //         row[1] = formattedDateTime;
-  //         if (event.parameter > 0){
-  //         row[1] = '$formattedDateTime@${event.parameter}';
-  //         }
+    return row;
+  }
 
-  //         break;
-  //       }
-  //       case 0x0002: { //Event24VOver 2
-  //         row[2] = formattedDateTime;
-  //         if (event.parameter > 0){
-  //           row[2] = '$formattedDateTime@${event.parameter / 10}';
-  //         }
-  //         break;
-  //       }
-  //       case 0x0004: { //Event24VLess 3
-  //         row[3] = formattedDateTime;
-  //         if (event.parameter > 0){
-  //           row[3] = '$formattedDateTime@${event.parameter / 10}';
-  //         }
-  //         break;
-  //       }
-  //       case 0x0008: { //EventTemOver 4
-  //         row[4] = formattedDateTime;
-  //         if (event.parameter > 0){
-  //           row[4] = '$formattedDateTime@${event.parameter / 10}';
-  //         }
-  //         break;
-  //       }
-  //       case 0x0010: { //EventTemLess 5
-  //         row[5] = formattedDateTime;
-  //         if (event.parameter > 0){
-  //           row[5] = '$formattedDateTime@${event.parameter / 10}';
-  //         }
-  //         break;
-  //       }
-  //       case 0x0020: { //EventSSIOver 6
-  //         this.csvEvent[count6][6] = timeEvent = timeS;
-  //         if (this.global.eParamTwo[i] > 0)
-  //           this.csvEvent[count6][6] = timeEvent + '@' + this.global.eParamTwo[i].toString();
-  //         console.log('EventSSIOver 6=', this.csvEvent[count6][6]);
-  //         count6++;
-  //         break;
-  //       }
-  //       case 0x0040: { //EventSSILess 7
-  //         this.csvEvent[count7][7] = timeEvent = timeS;
-  //         if (this.global.eParamTwo[i] > 0)
-  //           this.csvEvent[count7][7] = timeEvent + '@' + this.global.eParamTwo[i].toString();
-  //         console.log('EventSSILess 7=', this.csvEvent[count7][7]);
-  //         count7++;
-  //         break;
-  //       }
-  //       case 0x0080: { //Event24VriOv 8
-  //         this.csvEvent[count8][8] = timeEvent = timeS;
-  //         if (this.global.eParamTwo[i] > 0)
-  //           this.csvEvent[count8][8] = timeEvent + '@' + this.global.eParamTwo[i].toString();
-  //         console.log('Event24VriOv 8=', this.csvEvent[count8][8]);
-  //         count8++;
-  //         break;
-  //       }
-  //       case 0x0100: { //EventAlPiLos 9
-  //         this.csvEvent[count9][9] = timeEvent = timeS;
-  //         if (this.global.eParamTwo[i] > 0)
-  //           this.csvEvent[count9][9] = timeEvent + '@' + this.global.eParamTwo[i].toString();
-  //         console.log('EventAlPiLos 9=', this.csvEvent[count9][9]);
-  //         count9++;
-  //         break;
-  //       }
-  //       case 0x0200: { //EventAGPiLos 10
-  //         this.csvEvent[count10][10] = timeEvent = timeS;
-  //         if (this.global.eParamTwo[i] > 0)
-  //           this.csvEvent[count10][10] = timeEvent + '@' + this.global.eParamTwo[i].toString();
-  //         console.log('EventAGPiLos 10=', this.csvEvent[count10][10]);
-  //         count10++;
-  //         break;
-  //       }
-  //       case 0x1000: { //EventCTRPlin 11 used
-  //         this.csvEvent[count11][11] = timeEvent = timeS;
-  //         if (this.global.eParamTwo[i] > 0)
-  //           this.csvEvent[count11][11] = timeEvent + '@' + this.global.eParamTwo[i].toString();
-  //         console.log('EventCTRPlin 11 reused', count11);
-  //         count11++;
-  //         break;
-  //       }
-  //       case 0x2000: { //EventCTRPlout 12 used
-  //         this.csvEvent[count12][12] = timeEvent = timeS;
-  //         if (this.global.eParamTwo[i] > 0)
-  //           this.csvEvent[count12][12] = timeEvent + '@' + this.global.eParamTwo[i].toString();
-  //         console.log('EventCTRPlout 12 reused', count12);
-  //         count12++;
-  //         break;
-  //       }
-  //     }//switch
+  List<String> formatEvent(Event event) {
+    int timeStamp = event.timeStamp;
+    int adjustedMillisecond =
+        DateTime.now().millisecondsSinceEpoch - timeStamp * 60000;
+    DateTime dateTime =
+        DateTime.fromMillisecondsSinceEpoch(adjustedMillisecond);
+    String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
+    List<String> row = ['', '', '', '', '', '', '', '', '', '', '', '', ''];
 
-  //     return row;
+    switch (event.code) {
+      case 0x0000:
+        {
+          //EventCPEstart 0
+          row[0] = formattedDateTime;
+          if (event.parameter > 0) {
+            row[0] = '$formattedDateTime@${event.parameter}';
+          }
+          break;
+        }
+      case 0x0001:
+        {
+          //EventCPEstop 1
+          row[1] = formattedDateTime;
+          if (event.parameter > 0) {
+            row[1] = '$formattedDateTime@${event.parameter}';
+          }
 
-  // }
+          break;
+        }
+      case 0x0002:
+        {
+          //Event24VOver 2
+          row[2] = formattedDateTime;
+          if (event.parameter > 0) {
+            row[2] = '$formattedDateTime@${event.parameter / 10}';
+          }
+          break;
+        }
+      case 0x0004:
+        {
+          //Event24VLess 3
+          row[3] = formattedDateTime;
+          if (event.parameter > 0) {
+            row[3] = '$formattedDateTime@${event.parameter / 10}';
+          }
+          break;
+        }
+      case 0x0008:
+        {
+          //EventTemOver 4
+          row[4] = formattedDateTime;
+          if (event.parameter > 0) {
+            row[4] = '$formattedDateTime@${event.parameter / 10}';
+          }
+          break;
+        }
+      case 0x0010:
+        {
+          //EventTemLess 5
+          row[5] = formattedDateTime;
+          if (event.parameter > 0) {
+            row[5] = '$formattedDateTime@${event.parameter / 10}';
+          }
+          break;
+        }
+      case 0x0020:
+        {
+          //EventSSIOver 6
+          row[6] = formattedDateTime;
+          if (event.parameter > 0) {
+            row[6] = '$formattedDateTime@$event.parameter';
+          }
+          break;
+        }
+      case 0x0040:
+        {
+          //EventSSILess 7
+          row[7] = formattedDateTime;
+          if (event.parameter > 0) {
+            row[7] = '$formattedDateTime@$event.parameter';
+          }
+          break;
+        }
+      case 0x0080:
+        {
+          //Event24VriOv 8
+          row[8] = formattedDateTime;
+          if (event.parameter > 0) {
+            row[8] = '$formattedDateTime@$event.parameter';
+          }
+          break;
+        }
+      case 0x0100:
+        {
+          //EventAlPiLos 9
+          row[9] = formattedDateTime;
+          if (event.parameter > 0) {
+            row[9] = '$formattedDateTime@$event.parameter';
+          }
+          break;
+        }
+      case 0x0200:
+        {
+          //EventAGPiLos 10
+          row[10] = formattedDateTime;
+          if (event.parameter > 0) {
+            row[10] = '$formattedDateTime@$event.parameter';
+          }
+          break;
+        }
+      case 0x1000:
+        {
+          //EventCTRPlin 11 used
+          row[11] = formattedDateTime;
+          if (event.parameter > 0) {
+            row[11] = '$formattedDateTime@$event.parameter';
+          }
+          break;
+        }
+      case 0x2000:
+        {
+          //EventCTRPlout 12 used
+          row[12] = formattedDateTime;
+          if (event.parameter > 0) {
+            row[12] = '$formattedDateTime@$event.parameter';
+          }
+          break;
+        }
+    } //switch
+
+    return row;
+  }
 }

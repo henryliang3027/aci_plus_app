@@ -45,6 +45,8 @@ dependencies:
   dropdown_button2: ^1.4.0 # custom dropdownButton and dropdownMenuItems
   url_launcher: ^6.1.11 # for launch dsim website
   excel: ^2.0.1
+  path_provider: ^2.0.15
+  open_filex: ^4.3.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

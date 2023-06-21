@@ -24,6 +24,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<SettingSubmitted>(_onSettingSubmitted);
     on<SettingResultChanged>(_onSettingResultChanged);
     on<LoadingResultChanged>(_onLoadingResultChanged);
+    on<DataExported>(_onDataExported);
 
     add(const SplashStateChanged());
   }
@@ -198,6 +199,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       connectionStatus: FormStatus.requestInProgress,
       eventRecordsLoadingStatus: FormStatus.requestInProgress,
       settingParametersLoading: FormStatus.requestInProgress,
+      dataExportStatus: FormStatus.none,
       device: null,
       characteristicData: const {},
     ));
@@ -223,6 +225,29 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         _dsimRepository.scannedDevices.listen((scanReport) async {
       add(DiscoveredDeviceChanged(scanReport));
     });
+  }
+
+  void _onDataExported(
+    DataExported event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(state.copyWith(
+      dataExportStatus: FormStatus.requestInProgress,
+    ));
+
+    final List<dynamic> result = await _dsimRepository.exportRecords();
+
+    if (result[0]) {
+      emit(state.copyWith(
+        dataExportStatus: FormStatus.requestSuccess,
+        dataExportPath: result[1],
+      ));
+    } else {
+      emit(state.copyWith(
+        dataExportStatus: FormStatus.requestFailure,
+        dataExportPath: result[1],
+      ));
+    }
   }
 
   void _onSettingSubmitted(
