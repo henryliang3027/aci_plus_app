@@ -5,6 +5,7 @@ import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
+import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart' as GPS;
 import 'package:path_provider/path_provider.dart';
@@ -25,7 +26,7 @@ enum Alarm {
 
 class Log {
   const Log({
-    required this.timeStamp,
+    required this.dateTime,
     required this.temperature,
     required this.attenuation,
     required this.pilot,
@@ -33,7 +34,7 @@ class Log {
     required this.voltageRipple,
   });
 
-  final int timeStamp;
+  final DateTime dateTime;
   final double temperature;
   final int attenuation;
   final double pilot;
@@ -43,12 +44,12 @@ class Log {
 
 class Event {
   const Event({
-    required this.timeStamp,
+    required this.dateTime,
     required this.code,
     required this.parameter,
   });
 
-  final int timeStamp;
+  final DateTime dateTime;
   final int code;
   final int parameter;
 }
@@ -351,18 +352,16 @@ class DsimRepository {
         timeDiff = timeDiff + 65520;
       }
       timeStamp = timeDiff;
+      final DateTime dateTime = timeStampToDateTime(timeStamp);
 
-      _events
-          .add(Event(timeStamp: timeStamp, code: code, parameter: parameter));
+      _events.add(Event(
+        dateTime: dateTime,
+        code: code,
+        parameter: parameter,
+      ));
     }
 
     if (commandIndex == 37) {
-      print(_events);
-
-      for (Event event in _events) {
-        print(
-            'timeStamp: ${event.timeStamp}, code: ${event.code}, parameter: ${event.parameter}');
-      }
       _loadingResultStreamController.add(DataKey.eventRecordsLoadingComplete);
     }
   }
@@ -389,8 +388,10 @@ class DsimRepository {
         }
         timeStamp = timeDiff;
 
+        final DateTime dateTime = timeStampToDateTime(timeStamp);
+
         _logs.add(Log(
-            timeStamp: timeStamp,
+            dateTime: dateTime,
             temperature: temperature,
             attenuation: attenuation,
             pilot: pilot,
@@ -1172,12 +1173,8 @@ class DsimRepository {
   }
 
   List<String> formatLog(Log log) {
-    int timeStamp = log.timeStamp;
-    int adjustedMillisecond =
-        DateTime.now().millisecondsSinceEpoch - timeStamp * 60000;
-    DateTime dateTime =
-        DateTime.fromMillisecondsSinceEpoch(adjustedMillisecond);
-    String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
+    String formattedDateTime =
+        DateFormat('yyyy-MM-dd HH:mm').format(log.dateTime);
     String temperatureC = log.temperature.toString();
     String attenuation = log.attenuation.toString();
     String pilot = log.pilot.toString();
@@ -1196,12 +1193,8 @@ class DsimRepository {
   }
 
   List<String> formatEvent(Event event) {
-    int timeStamp = event.timeStamp;
-    int adjustedMillisecond =
-        DateTime.now().millisecondsSinceEpoch - timeStamp * 60000;
-    DateTime dateTime =
-        DateTime.fromMillisecondsSinceEpoch(adjustedMillisecond);
-    String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
+    String formattedDateTime =
+        DateFormat('yyyy-MM-dd HH:mm').format(event.dateTime);
     List<String> row = ['', '', '', '', '', '', '', '', '', '', '', '', ''];
 
     switch (event.code) {
@@ -1326,5 +1319,52 @@ class DsimRepository {
     } //switch
 
     return row;
+  }
+
+  DateTime timeStampToDateTime(int timeStamp) {
+    int adjustedMillisecond =
+        DateTime.now().millisecondsSinceEpoch - timeStamp * 60000;
+    DateTime dateTime =
+        DateTime.fromMillisecondsSinceEpoch(adjustedMillisecond);
+
+    return dateTime;
+  }
+
+  List<List<DateValuePair>> getDateValueCollectionOfLogs() {
+    List<DateValuePair> attenuationDataList = [];
+    List<DateValuePair> temperatureDataList = [];
+    List<DateValuePair> pilotDataList = [];
+    List<DateValuePair> voltageDataList = [];
+    List<DateValuePair> voltageRippleDataList = [];
+    for (Log log in _logs) {
+      attenuationDataList.add(DateValuePair(
+        dateTime: log.dateTime,
+        value: log.attenuation.toDouble(),
+      ));
+      temperatureDataList.add(DateValuePair(
+        dateTime: log.dateTime,
+        value: log.temperature.toDouble(),
+      ));
+      pilotDataList.add(DateValuePair(
+        dateTime: log.dateTime,
+        value: log.pilot.toDouble(),
+      ));
+      voltageDataList.add(DateValuePair(
+        dateTime: log.dateTime,
+        value: log.voltage,
+      ));
+      voltageRippleDataList.add(DateValuePair(
+        dateTime: log.dateTime,
+        value: log.voltageRipple.toDouble(),
+      ));
+    }
+
+    return [
+      attenuationDataList,
+      temperatureDataList,
+      pilotDataList,
+      voltageDataList,
+      voltageRippleDataList,
+    ];
   }
 }

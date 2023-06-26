@@ -18,6 +18,7 @@ class HomeState extends Equatable {
     },
     this.errorMassage = '',
     this.dataExportPath = '',
+    this.dateValueCollectionOfLog = const [],
   });
 
   final FormStatus scanStatus;
@@ -32,6 +33,7 @@ class HomeState extends Equatable {
   final Map<DataKey, String> settingResultData;
   final String errorMassage;
   final String dataExportPath;
+  final List<List<DateValuePair>> dateValueCollectionOfLog;
 
   HomeState copyWith({
     FormStatus? scanStatus,
@@ -46,6 +48,7 @@ class HomeState extends Equatable {
     Map<DataKey, String>? settingResultData,
     String? errorMassage,
     String? dataExportPath,
+    List<List<DateValuePair>>? dateValueCollectionOfLog,
   }) {
     return HomeState(
       scanStatus: scanStatus ?? this.scanStatus,
@@ -62,6 +65,8 @@ class HomeState extends Equatable {
       settingResultData: settingResultData ?? this.settingResultData,
       errorMassage: errorMassage ?? this.errorMassage,
       dataExportPath: dataExportPath ?? this.dataExportPath,
+      dateValueCollectionOfLog:
+          dateValueCollectionOfLog ?? this.dateValueCollectionOfLog,
     );
   }
 
@@ -79,5 +84,6 @@ class HomeState extends Equatable {
         settingResultData,
         errorMassage,
         dataExportPath,
+        dateValueCollectionOfLog,
       ];
 }

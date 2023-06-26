@@ -29,6 +29,7 @@ enum DataKey {
   currentVoltageRipple,
   minVoltageRipple,
   maxVoltageRipple,
+  logs,
   tgcCableLength,
   locationSet, // location setting result
   tgcCableLengthSet, // tgc cable length setting result

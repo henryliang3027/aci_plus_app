@@ -20,6 +20,11 @@ class SettingForm extends StatelessWidget {
         ],
       ),
       body: const _ViewLayout(),
+      // Center(
+      //   child: Icon(
+      //     Icons.settings,
+      //   ),
+      // ),
     );
   }
 }

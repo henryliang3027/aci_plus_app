@@ -384,6 +384,8 @@ class _TemperatureCard extends StatelessWidget {
                                   : CustomStyle.fahrenheitUnit,
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.onPrimary,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
@@ -679,6 +681,7 @@ class _PowerSupplyCard extends StatelessWidget {
     required String title,
     required String content,
     required double fontSize,
+    double? fontHeight,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -692,6 +695,7 @@ class _PowerSupplyCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: fontSize,
                     fontWeight: FontWeight.w500,
+                    height: fontHeight,
                   ),
                 ),
           Text(
@@ -746,10 +750,10 @@ class _PowerSupplyCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(
-                  height: 10.0,
+                  height: 6.0,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Expanded(
                       child: tile(
@@ -763,6 +767,7 @@ class _PowerSupplyCard extends StatelessWidget {
                         title: currentVoltageTitle,
                         content: currentVoltage,
                         fontSize: 40,
+                        fontHeight: 1.3,
                       ),
                     ),
                     Expanded(
@@ -823,10 +828,10 @@ class _PowerSupplyCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(
-                  height: 10.0,
+                  height: 8.0,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Expanded(
                       child: tile(
@@ -840,6 +845,7 @@ class _PowerSupplyCard extends StatelessWidget {
                         title: currentVoltageRippleTitle,
                         content: currentVoltageRipple,
                         fontSize: 40,
+                        fontHeight: 1.3,
                       ),
                     ),
                     Expanded(

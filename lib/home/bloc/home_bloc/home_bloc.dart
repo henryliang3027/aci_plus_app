@@ -6,6 +6,7 @@ import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
+import 'package:flutter_speed_chart/speed_chart.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -44,7 +45,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     SplashStateChanged event,
     Emitter<HomeState> emit,
   ) async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 5));
 
     _scanStreamSubscription = _dsimRepository.scannedDevices.listen(
       (scanReport) {
@@ -179,8 +180,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) {
     if (event.loadingResultDataKey == DataKey.eventRecordsLoadingComplete) {
+      List<List<DateValuePair>> dateValueCollectionOfLog =
+          _dsimRepository.getDateValueCollectionOfLogs();
       emit(state.copyWith(
         eventRecordsLoadingStatus: FormStatus.requestSuccess,
+        dateValueCollectionOfLog: dateValueCollectionOfLog,
       ));
     } else if (event.loadingResultDataKey ==
         DataKey.settingParametersLoadingComplete) {
