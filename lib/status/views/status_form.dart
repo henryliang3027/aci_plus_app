@@ -227,10 +227,10 @@ class _TemperatureCard extends StatelessWidget {
     Widget temperatureBlock({
       required String currentTemperatureTitle,
       required String currentTemperature,
-      required String maxTemperatureTitle,
-      required String maxTemperature,
       required String minTemperatureTitle,
       required String minTemperature,
+      required String maxTemperatureTitle,
+      required String maxTemperature,
     }) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -411,12 +411,12 @@ class _TemperatureCard extends StatelessWidget {
                   currentTemperatureTitle:
                       AppLocalizations.of(context).currentTemperature,
                   currentTemperature: currentTemperature,
-                  maxTemperatureTitle:
-                      AppLocalizations.of(context).minTemperature,
-                  maxTemperature: minTemperature,
                   minTemperatureTitle:
+                      AppLocalizations.of(context).minTemperature,
+                  minTemperature: minTemperature,
+                  maxTemperatureTitle:
                       AppLocalizations.of(context).maxTemperature,
-                  minTemperature: maxTemperature,
+                  maxTemperature: maxTemperature,
                 ),
               ],
             ),
