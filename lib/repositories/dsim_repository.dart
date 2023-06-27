@@ -362,6 +362,7 @@ class DsimRepository {
     }
 
     if (commandIndex == 37) {
+      _events.sort((a, b) => a.dateTime.compareTo(b.dateTime));
       _loadingResultStreamController.add(DataKey.eventRecordsLoadingComplete);
     }
   }
@@ -401,6 +402,8 @@ class DsimRepository {
     }
 
     if (commandIndex == 29) {
+      _logs.sort((a, b) => a.dateTime.compareTo(b.dateTime));
+
       // get min temperature
       double minTemperature = _logs
           .map((log) => log.temperature)
@@ -1358,6 +1361,37 @@ class DsimRepository {
         value: log.voltageRipple.toDouble(),
       ));
     }
+
+    print('---att--');
+    for (DateValuePair dateValuePair in attenuationDataList) {
+      print(
+          '{"time": "${DateFormat('yyyy-MM-dd HH:mm:ss').format(dateValuePair.dateTime).toString()}", "value": "${dateValuePair.value}"},');
+    }
+    print('---att--');
+    print('---temp--');
+    for (DateValuePair dateValuePair in temperatureDataList) {
+      print(
+          '{"time": "${DateFormat('yyyy-MM-dd HH:mm:ss').format(dateValuePair.dateTime).toString()}", "value": "${dateValuePair.value}"},');
+    }
+    print('---temp--');
+    print('---pilot--');
+    for (DateValuePair dateValuePair in pilotDataList) {
+      print(
+          '{"time": "${DateFormat('yyyy-MM-dd HH:mm:ss').format(dateValuePair.dateTime).toString()}", "value": "${dateValuePair.value}"},');
+    }
+    print('---pilot--');
+    print('---voltage--');
+    for (DateValuePair dateValuePair in voltageDataList) {
+      print(
+          '{"time": "${DateFormat('yyyy-MM-dd HH:mm:ss').format(dateValuePair.dateTime).toString()}", "value": "${dateValuePair.value}"},');
+    }
+    print('---voltage--');
+    print('---voltageRipple--');
+    for (DateValuePair dateValuePair in voltageRippleDataList) {
+      print(
+          '{"time": "${DateFormat('yyyy-MM-dd HH:mm:ss').format(dateValuePair.dateTime).toString()}", "value": "${dateValuePair.value}"},');
+    }
+    print('---voltageRipple--');
 
     return [
       attenuationDataList,
