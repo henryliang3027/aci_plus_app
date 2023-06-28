@@ -7,6 +7,7 @@ import 'package:dsim_app/core/pilot_channel.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -213,6 +214,7 @@ class _Location extends StatelessWidget {
               ),
             ),
             TextField(
+              //keyboardType: TextInputType.visiblePassword, // 限制只能輸入英文與標點符號
               controller: textEditingController,
               key: const Key('settingForm_locationInput_textField'),
               style: const TextStyle(

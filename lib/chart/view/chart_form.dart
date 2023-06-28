@@ -1,6 +1,6 @@
+import 'package:dsim_app/chart/view/full_screen_chart_form.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -191,6 +191,47 @@ class _logChart extends StatelessWidget {
       ];
     }
 
+    Widget buildChart(List<LineSeries> lineSeriesCollection) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: OutlinedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  FullScreenChartForm.route(
+                    title: '',
+                    lineSeriesCollection: lineSeriesCollection,
+                  ),
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.all(0.0),
+                backgroundColor: Colors.white70,
+                elevation: 0,
+                side: const BorderSide(
+                  width: 1.0,
+                  color: Colors.black,
+                ),
+                visualDensity:
+                    const VisualDensity(horizontal: -4.0, vertical: -3.0),
+              ),
+              child: const Icon(
+                Icons.fullscreen_outlined,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          SpeedLineChart(
+            lineSeriesCollection: lineSeriesCollection,
+            showLegend: true,
+          ),
+        ],
+      );
+    }
+
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.eventRecordsLoadingStatus == FormStatus.requestInProgress) {
@@ -207,20 +248,18 @@ class _logChart extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SpeedLineChart(
-                    lineSeriesCollection: _getChartDataOfLog1(
+                  buildChart(
+                    _getChartDataOfLog1(
                         dateValueCollectionOfLog:
                             state.dateValueCollectionOfLog),
-                    showLegend: true,
                   ),
                   const SizedBox(
                     height: 50.0,
                   ),
-                  SpeedLineChart(
-                    lineSeriesCollection: _getChartDataOfLogVoltage(
+                  buildChart(
+                    _getChartDataOfLogVoltage(
                         dateValueCollectionOfLog:
                             state.dateValueCollectionOfLog),
-                    showLegend: true,
                   ),
                 ],
               ),

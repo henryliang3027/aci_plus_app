@@ -869,7 +869,7 @@ class DsimRepository {
           (rawData[4] == 0x00) &&
           (rawData[5] == 0x06)) {
         print('Location09 Set');
-        commandIndex = 31;
+        commandIndex = 41;
         await _writeSetCommandToCharacteristic(
           Command.setLocACmd,
         );
@@ -884,7 +884,7 @@ class DsimRepository {
           (rawData[4] == 0x00) &&
           (rawData[5] == 0x06)) {
         print('Location0A Set');
-        commandIndex = 32;
+        commandIndex = 42;
         await _writeSetCommandToCharacteristic(
           Command.setLocBCmd,
         );
@@ -899,7 +899,7 @@ class DsimRepository {
           (rawData[4] == 0x00) &&
           (rawData[5] == 0x06)) {
         print('Location0B Set');
-        commandIndex = 33;
+        commandIndex = 43;
         await _writeSetCommandToCharacteristic(
           Command.setLocCCmd,
         );

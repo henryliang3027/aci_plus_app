@@ -45,7 +45,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     SplashStateChanged event,
     Emitter<HomeState> emit,
   ) async {
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 1));
 
     _scanStreamSubscription = _dsimRepository.scannedDevices.listen(
       (scanReport) {
@@ -284,16 +284,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       newSettingResultData[DataKey.tgcCableLengthSet] = '1';
     }
 
-    // emit(state.copyWith(
-    //   submissionStatus: SubmissionStatus.submissionInProgress,
-    //   settingResultData: newSettingResultData,
-    // ));
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.submissionInProgress,
+      settingResultData: newSettingResultData,
+    ));
 
     // 23307-66th Avenue South Kent WA98032
 
-    // if (newSettingResultData[DataKey.locationSet] == '-1') {
-    //   _dsimRepository.setLocation(event.location);
-    // }
+    if (newSettingResultData[DataKey.locationSet] == '-1') {
+      _dsimRepository.setLocation(event.location);
+    }
     // if (newSettingResultData[DataKey.tgcCableLengthSet] == '-1') {
     //   _dsimRepository.setTGCCableLength(
     //     workingMode: event.workingMode,
@@ -308,12 +308,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     //   logIntervalID: event.logIntervalID,
     // );
 
-    _dsimRepository.setTGCCableLength(
-      workingMode: event.workingMode,
-      currentAttenuation: event.currentAttenuation,
-      tgcCableLength: int.parse(event.tgcCableLength),
-      currentPilot: int.parse(event.currentPilot),
-      logIntervalID: event.logIntervalID,
-    );
+    // _dsimRepository.setTGCCableLength(
+    //   workingMode: event.workingMode,
+    //   currentAttenuation: event.currentAttenuation,
+    //   tgcCableLength: int.parse(event.tgcCableLength),
+    //   currentPilot: int.parse(event.currentPilot),
+    //   logIntervalID: event.logIntervalID,
+    // );
   }
 }
