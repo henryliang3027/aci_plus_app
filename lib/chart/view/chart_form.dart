@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ChartForm extends StatelessWidget {
   const ChartForm({super.key});
@@ -37,6 +38,12 @@ class ChartForm extends StatelessWidget {
                 ),
               ),
             );
+        } else if (state.dataShareStatus.isRequestSuccess) {
+          Share.shareXFiles(
+            [XFile(state.dataExportPath)],
+            subject: 'Data',
+            text: 'log and event',
+          );
         }
       },
       child: Scaffold(
@@ -84,9 +91,7 @@ class _PopupMenu extends StatelessWidget {
           onSelected: (Menu item) async {
             switch (item) {
               case Menu.share:
-                // context
-                //     .read<HomeBloc>()
-                //     .add(const ForwardOutlinesDeletedModeEnabled());
+                context.read<HomeBloc>().add(const DataShared());
                 break;
               case Menu.export:
                 context.read<HomeBloc>().add(const DataExported());

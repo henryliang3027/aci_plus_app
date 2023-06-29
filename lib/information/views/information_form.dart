@@ -191,6 +191,17 @@ class _BasicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String getCurrentPilot({
+      required String currentPilot,
+      required String currentPilotMode,
+    }) {
+      if (currentPilot == 'Loss') {
+        return currentPilot;
+      } else {
+        return '$currentPilot $currentPilotMode';
+      }
+    }
+
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
         color: Theme.of(context).colorScheme.onPrimary,
@@ -225,8 +236,12 @@ class _BasicCard extends StatelessWidget {
               ),
               itemText(
                 title: AppLocalizations.of(context).currentPilot,
-                content:
-                    '${state.characteristicData[DataKey.currentPilot] ?? ''} ${state.characteristicData[DataKey.currentPilotMode] ?? ''}',
+                content: getCurrentPilot(
+                    currentPilot:
+                        state.characteristicData[DataKey.currentPilot] ?? '',
+                    currentPilotMode:
+                        state.characteristicData[DataKey.currentPilotMode] ??
+                            ''),
               ),
               itemText(
                 title: AppLocalizations.of(context).logInterval,

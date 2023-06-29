@@ -26,6 +26,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<SettingResultChanged>(_onSettingResultChanged);
     on<LoadingResultChanged>(_onLoadingResultChanged);
     on<DataExported>(_onDataExported);
+    on<DataShared>(_onDataShared);
 
     add(const SplashStateChanged());
   }
@@ -236,6 +237,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     emit(state.copyWith(
+      dataShareStatus: FormStatus.none,
       dataExportStatus: FormStatus.requestInProgress,
     ));
 
@@ -249,6 +251,30 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } else {
       emit(state.copyWith(
         dataExportStatus: FormStatus.requestFailure,
+        dataExportPath: result[1],
+      ));
+    }
+  }
+
+  void _onDataShared(
+    DataShared event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(state.copyWith(
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.requestInProgress,
+    ));
+
+    final List<dynamic> result = await _dsimRepository.exportRecords();
+
+    if (result[0]) {
+      emit(state.copyWith(
+        dataShareStatus: FormStatus.requestSuccess,
+        dataExportPath: result[1],
+      ));
+    } else {
+      emit(state.copyWith(
+        dataShareStatus: FormStatus.requestFailure,
         dataExportPath: result[1],
       ));
     }

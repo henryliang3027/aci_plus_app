@@ -8,6 +8,7 @@ class HomeState extends Equatable {
     this.eventRecordsLoadingStatus = FormStatus.none,
     this.settingParametersLoading = FormStatus.none,
     this.dataExportStatus = FormStatus.none,
+    this.dataShareStatus = FormStatus.none,
     this.showSplash = true,
     this.device,
     this.characteristicData = const {},
@@ -26,6 +27,7 @@ class HomeState extends Equatable {
   final FormStatus eventRecordsLoadingStatus;
   final FormStatus settingParametersLoading;
   final FormStatus dataExportStatus;
+  final FormStatus dataShareStatus;
   final SubmissionStatus submissionStatus;
   final bool showSplash;
   final DiscoveredDevice? device;
@@ -41,6 +43,7 @@ class HomeState extends Equatable {
     FormStatus? eventRecordsLoadingStatus,
     FormStatus? settingParametersLoading,
     FormStatus? dataExportStatus,
+    FormStatus? dataShareStatus,
     SubmissionStatus? submissionStatus,
     bool? showSplash,
     DiscoveredDevice? device,
@@ -58,6 +61,7 @@ class HomeState extends Equatable {
       settingParametersLoading:
           settingParametersLoading ?? this.settingParametersLoading,
       dataExportStatus: dataExportStatus ?? this.dataExportStatus,
+      dataShareStatus: dataShareStatus ?? this.dataShareStatus,
       submissionStatus: submissionStatus ?? this.submissionStatus,
       showSplash: showSplash ?? this.showSplash,
       device: device ?? this.device,
@@ -77,6 +81,7 @@ class HomeState extends Equatable {
         eventRecordsLoadingStatus,
         settingParametersLoading,
         dataExportStatus,
+        dataShareStatus,
         submissionStatus,
         showSplash,
         device,
