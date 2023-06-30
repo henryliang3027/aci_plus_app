@@ -2,6 +2,7 @@ part of 'setting_bloc.dart';
 
 class SettingState extends Equatable {
   const SettingState({
+    this.submissionStatus = SubmissionStatus.none,
     this.initialValues = const [],
     this.location = const Location.pure(),
     this.isGraphType = false,
@@ -24,8 +25,10 @@ class SettingState extends Equatable {
     this.currentAttenuation = 0,
     this.centerAttenuation = 0,
     this.editMode = false,
+    this.isInitialize = false,
   });
 
+  final SubmissionStatus submissionStatus;
   final List<dynamic> initialValues;
   final Location location;
   final bool isGraphType;
@@ -40,8 +43,10 @@ class SettingState extends Equatable {
   final int currentAttenuation;
   final int centerAttenuation;
   final bool editMode;
+  final bool isInitialize;
 
   SettingState copyWith({
+    SubmissionStatus? submissionStatus,
     List<dynamic>? initialValues,
     Location? location,
     bool? isGraphType,
@@ -56,8 +61,10 @@ class SettingState extends Equatable {
     int? currentAttenuation,
     int? centerAttenuation,
     bool? editMode,
+    bool? isInitialize,
   }) {
     return SettingState(
+      submissionStatus: submissionStatus ?? this.submissionStatus,
       initialValues: initialValues ?? this.initialValues,
       location: location ?? this.location,
       isGraphType: isGraphType ?? this.isGraphType,
@@ -73,11 +80,13 @@ class SettingState extends Equatable {
       currentAttenuation: currentAttenuation ?? this.currentAttenuation,
       centerAttenuation: centerAttenuation ?? this.centerAttenuation,
       editMode: editMode ?? this.editMode,
+      isInitialize: isInitialize ?? this.isInitialize,
     );
   }
 
   @override
   List<Object?> get props => [
+        submissionStatus,
         initialValues,
         location,
         isGraphType,
@@ -92,5 +101,6 @@ class SettingState extends Equatable {
         currentAttenuation,
         centerAttenuation,
         editMode,
+        isInitialize,
       ];
 }

@@ -6,44 +6,11 @@ abstract class SettingEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AllItemInitialized extends SettingEvent {
-  const AllItemInitialized({
-    required this.location,
-    required this.tgcCableLength,
-    required this.workingMode,
-    required this.logIntervalId,
-    required this.pilotChannel,
-    required this.pilotMode,
-    required this.maxAttenuation,
-    required this.minAttenuation,
-    required this.currentAttenuation,
-    required this.centerAttenuation,
-  });
-
-  final String location;
-  final String tgcCableLength;
-  final String workingMode;
-  final int logIntervalId;
-  final String pilotChannel;
-  final String pilotMode;
-  final String maxAttenuation;
-  final String minAttenuation;
-  final String currentAttenuation;
-  final String centerAttenuation;
+class Initialized extends SettingEvent {
+  const Initialized();
 
   @override
-  List<Object> get props => [
-        location,
-        tgcCableLength,
-        workingMode,
-        logIntervalId,
-        pilotChannel,
-        pilotMode,
-        maxAttenuation,
-        minAttenuation,
-        currentAttenuation,
-        centerAttenuation,
-      ];
+  List<Object> get props => [];
 }
 
 class GraphViewToggled extends SettingEvent {
@@ -166,6 +133,13 @@ class AGCPrepAttenuationCentered extends SettingEvent {
 
 class EditModeChanged extends SettingEvent {
   const EditModeChanged();
+
+  @override
+  List<Object> get props => [];
+}
+
+class SettingSubmitted extends SettingEvent {
+  const SettingSubmitted();
 
   @override
   List<Object> get props => [];

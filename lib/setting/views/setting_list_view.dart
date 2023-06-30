@@ -1,5 +1,4 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
@@ -7,7 +6,6 @@ import 'package:dsim_app/core/pilot_channel.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -22,83 +20,123 @@ class SettingListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        if (state.connectionStatus.isRequestSuccess) {
-          context.read<SettingBloc>().add(AllItemInitialized(
-                location: state.characteristicData[DataKey.location] ?? '',
-                tgcCableLength:
-                    state.characteristicData[DataKey.tgcCableLength] ?? '',
-                workingMode: state.characteristicData[DataKey.dsimMode] ?? '',
-                logIntervalId: int.parse(
-                    state.characteristicData[DataKey.logInterval] ?? '1'),
-                pilotChannel:
-                    state.characteristicData[DataKey.currentPilot] ?? '',
-                pilotMode:
-                    state.characteristicData[DataKey.currentPilotMode] ?? '',
-                maxAttenuation:
-                    state.characteristicData[DataKey.maxAttenuation] ?? '',
-                minAttenuation:
-                    state.characteristicData[DataKey.minAttenuation] ?? '',
-                currentAttenuation:
-                    state.characteristicData[DataKey.currentAttenuation] ?? '',
-                centerAttenuation:
-                    state.characteristicData[DataKey.centerAttenuation] ?? '',
-              ));
+    Future<void> _showInProgressDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return const AlertDialog(
+            title: Text(
+              // AppLocalizations.of(context)!.dialogTitle_settingUp,
+              'Setting',
+            ),
+            actionsAlignment: MainAxisAlignment.center,
+            actions: <Widget>[
+              CircularProgressIndicator(),
+            ],
+          );
+        },
+      );
+    }
 
-          _locationTextEditingController.text =
-              state.characteristicData[DataKey.location] ?? '';
+    Future<void> _showSuccessDialog(String msg) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              'Success',
+              style: TextStyle(
+                color: CustomStyle.customGreen,
+              ),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(msg),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
 
-          _userPilotTextEditingController.text = PilotChannel.channelCode[
-                  state.characteristicData[DataKey.currentPilot] ?? ''] ??
-              '';
+    return BlocListener<SettingBloc, SettingState>(
+      listener: (context, state) async {
+        if (state.submissionStatus.isSubmissionInProgress) {
+          await _showInProgressDialog();
+        } else if (state.submissionStatus.isSubmissionSuccess) {
+          Navigator.of(context).pop();
+          _showSuccessDialog('success');
+        } else if (state.isInitialize) {
+          _locationTextEditingController.text = state.location.value;
+
+          _userPilotTextEditingController.text =
+              PilotChannel.channelCode[state.pilotCode] ?? '';
         }
+      },
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          if (state.settingParametersLoading.isRequestSuccess) {
+            context.read<SettingBloc>().add(const Initialized());
+          }
 
-        return Scaffold(
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(
-                  CustomStyle.sizeXL,
-                ),
-                child: Column(
-                  children: [
-                    _Location(
-                      textEditingController: _locationTextEditingController,
-                    ),
-                    const SizedBox(
-                      height: 40.0,
-                    ),
-                    const _TGCCabelLength(),
-                    const SizedBox(
-                      height: 40.0,
-                    ),
-                    const _LogIntervalDropDownMenu(),
-                    const SizedBox(
-                      height: 40.0,
-                    ),
-                    const _WorkingMode(),
-                    const SizedBox(
-                      height: 40.0,
-                    ),
-                    _UserPilot(
-                      textEditingController: _userPilotTextEditingController,
-                    ),
-                    const SizedBox(
-                      height: 40.0,
-                    ),
-                    const _AGCPrepAttenator(),
-                    const SizedBox(
-                      height: 160.0,
-                    ),
-                  ],
+          return Scaffold(
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                    CustomStyle.sizeXL,
+                  ),
+                  child: Column(
+                    children: [
+                      _Location(
+                        textEditingController: _locationTextEditingController,
+                      ),
+                      const SizedBox(
+                        height: 40.0,
+                      ),
+                      const _TGCCabelLength(),
+                      const SizedBox(
+                        height: 40.0,
+                      ),
+                      const _LogIntervalDropDownMenu(),
+                      const SizedBox(
+                        height: 40.0,
+                      ),
+                      const _WorkingMode(),
+                      const SizedBox(
+                        height: 40.0,
+                      ),
+                      _UserPilot(
+                        textEditingController: _userPilotTextEditingController,
+                      ),
+                      const SizedBox(
+                        height: 40.0,
+                      ),
+                      const _AGCPrepAttenator(),
+                      const SizedBox(
+                        height: 160.0,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          floatingActionButton: const _SettingFloatingActionButton(),
-        );
-      },
+            floatingActionButton: const _SettingFloatingActionButton(),
+          );
+        },
+      ),
     );
   }
 }
@@ -151,17 +189,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       );
 
                       print('$tgcCableLength   $workingMode');
-                      context.read<HomeBloc>().add(
-                            SettingSubmitted(
-                              initialValues: state.initialValues,
-                              location: state.location.value,
-                              tgcCableLength: tgcCableLength,
-                              workingMode: workingMode,
-                              currentAttenuation: state.centerAttenuation,
-                              logIntervalID: state.logIntervalId,
-                              currentPilot: state.pilotChannel,
-                            ),
-                          );
+                      context.read<SettingBloc>().add(const SettingSubmitted());
                     },
                   ),
                 ],
@@ -214,7 +242,7 @@ class _Location extends StatelessWidget {
               ),
             ),
             TextField(
-              //keyboardType: TextInputType.visiblePassword, // 限制只能輸入英文與標點符號
+              keyboardType: TextInputType.visiblePassword, // 限制只能輸入英文與標點符號
               controller: textEditingController,
               key: const Key('settingForm_locationInput_textField'),
               style: const TextStyle(

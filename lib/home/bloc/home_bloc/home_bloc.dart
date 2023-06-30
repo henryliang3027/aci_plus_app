@@ -22,8 +22,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DeviceConnectionChanged>(_onDeviceConnectionChanged);
     on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
 
-    on<SettingSubmitted>(_onSettingSubmitted);
-    on<SettingResultChanged>(_onSettingResultChanged);
+    // on<SettingSubmitted>(_onSettingSubmitted);
+    // on<SettingResultChanged>(_onSettingResultChanged);
     on<LoadingResultChanged>(_onLoadingResultChanged);
     on<DataExported>(_onDataExported);
     on<DataShared>(_onDataShared);
@@ -163,18 +163,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
   }
 
-  void _onSettingResultChanged(
-    SettingResultChanged event,
-    Emitter<HomeState> emit,
-  ) {
-    Map<DataKey, String> newSettingResultData = {};
-    newSettingResultData.addEntries(state.settingResultData.entries);
-    newSettingResultData[event.resultDataMapEntry.key] =
-        event.resultDataMapEntry.value;
-    emit(state.copyWith(
-      settingResultData: newSettingResultData,
-    ));
-  }
+  // void _onSettingResultChanged(
+  //   SettingResultChanged event,
+  //   Emitter<HomeState> emit,
+  // ) {
+  //   Map<DataKey, String> newSettingResultData = {};
+  //   newSettingResultData.addEntries(state.settingResultData.entries);
+  //   newSettingResultData[event.resultDataMapEntry.key] =
+  //       event.resultDataMapEntry.value;
+  //   emit(state.copyWith(
+  //     settingResultData: newSettingResultData,
+  //   ));
+  // }
 
   void _onLoadingResultChanged(
     LoadingResultChanged event,
@@ -280,66 +280,70 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  void _onSettingSubmitted(
-    SettingSubmitted event,
-    Emitter<HomeState> emit,
-  ) {
-    Map<DataKey, String> newSettingResultData = {
-      DataKey.locationSet: '-1',
-      DataKey.tgcCableLengthSet: '-1',
-      DataKey.logIntervalSet: '-1'
-    };
+  // void _onSettingSubmitted(
+  //   SettingSubmitted event,
+  //   Emitter<HomeState> emit,
+  // ) {
+  //   Map<DataKey, String> newSettingResultData = {
+  //     DataKey.locationSet: '-1',
+  //     DataKey.tgcCableLengthSet: '-1',
+  //     DataKey.logIntervalSet: '-1'
+  //   };
 
-    // initialValues: [
-    //   event.location,
-    //   event.tgcCableLength,
-    //   event.logIntervalId,
-    //   event.workingMode,
-    //   event.currentAttenuation,
-    // ],
+  // initialValues: [
+  //   event.location,
+  //   event.tgcCableLength,
+  //   event.logIntervalId,
+  //   event.workingMode,
+  //   event.currentAttenuation,
+  // ],
 
-    // 如果設定值跟初始值一樣就不用設定
-    if (event.location == event.initialValues[0]) {
-      newSettingResultData[DataKey.locationSet] = '1';
-    }
-    if (event.tgcCableLength == event.initialValues[1]) {
-      newSettingResultData[DataKey.tgcCableLengthSet] = '1';
-    }
+  // 如果設定值跟初始值一樣就不用設定
+  // if (event.location == event.initialValues[0]) {
+  //   newSettingResultData[DataKey.locationSet] = '1';
+  // }
+  // if (event.tgcCableLength == event.initialValues[1]) {
+  //   newSettingResultData[DataKey.tgcCableLengthSet] = '1';
+  // }
 
-    if (event.tgcCableLength == event.initialValues[1]) {
-      newSettingResultData[DataKey.tgcCableLengthSet] = '1';
-    }
+  // if (event.logIntervalID == event.initialValues[2]) {
+  //   newSettingResultData[DataKey.logIntervalSet] = '1';
+  // }
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.submissionInProgress,
-      settingResultData: newSettingResultData,
-    ));
+  // if (event.workingMode == event.initialValues[3]) {
+  //   newSettingResultData[DataKey.dsimModeSet] = '1';
+  // }
 
-    // 23307-66th Avenue South Kent WA98032
+  // emit(state.copyWith(
+  //   submissionStatus: SubmissionStatus.submissionInProgress,
+  //   settingResultData: newSettingResultData,
+  // ));
 
-    if (newSettingResultData[DataKey.locationSet] == '-1') {
-      _dsimRepository.setLocation(event.location);
-    }
-    // if (newSettingResultData[DataKey.tgcCableLengthSet] == '-1') {
-    //   _dsimRepository.setTGCCableLength(
-    //     workingMode: event.workingMode,
-    //     currentAttenuation: event.currentAttenuation,
-    //     tgcCableLength: int.parse(event.tgcCableLength),
-    //     currentPilot: int.parse(event.currentPilot),
-    //     logIntervalID: event.logIntervalID,
-    //   );
-    // }
+  // 23307-66th Avenue South Kent WA98032
 
-    // _dsimRepository.setLogInterval(
-    //   logIntervalID: event.logIntervalID,
-    // );
+  // if (newSettingResultData[DataKey.locationSet] == '-1') {
+  //   _dsimRepository.setLocation(event.location);
+  // }
+  // if (newSettingResultData[DataKey.tgcCableLengthSet] == '-1') {
+  //   _dsimRepository.setTGCCableLength(
+  //     workingMode: event.workingMode,
+  //     currentAttenuation: event.currentAttenuation,
+  //     tgcCableLength: int.parse(event.tgcCableLength),
+  //     currentPilot: int.parse(event.currentPilot),
+  //     logIntervalID: event.logIntervalID,
+  //   );
+  // }
 
-    // _dsimRepository.setTGCCableLength(
-    //   workingMode: event.workingMode,
-    //   currentAttenuation: event.currentAttenuation,
-    //   tgcCableLength: int.parse(event.tgcCableLength),
-    //   currentPilot: int.parse(event.currentPilot),
-    //   logIntervalID: event.logIntervalID,
-    // );
-  }
+  // _dsimRepository.setLogInterval(
+  //   logIntervalID: event.logIntervalID,
+  // );
+
+  // _dsimRepository.setTGCCableLength(
+  //   workingMode: event.workingMode,
+  //   currentAttenuation: event.currentAttenuation,
+  //   tgcCableLength: int.parse(event.tgcCableLength),
+  //   currentPilot: int.parse(event.currentPilot),
+  //   logIntervalID: event.logIntervalID,
+  // );
+  // }
 }

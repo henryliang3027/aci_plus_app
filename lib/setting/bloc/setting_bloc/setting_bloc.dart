@@ -13,7 +13,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   SettingBloc({required DsimRepository dsimRepository})
       : _dsimRepository = dsimRepository,
         super(const SettingState()) {
-    on<AllItemInitialized>(_onAllItemInitialized);
+    on<Initialized>(_onInitialized);
     on<GraphViewToggled>(_onGraphViewToggled);
     on<ListViewToggled>(_onListViewToggled);
     on<LocationChanged>(_onLocationChanged);
@@ -27,15 +27,18 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     on<AGCPrepAttenuationDecreased>(_onAGCPrepAttenuationDecreased);
     on<AGCPrepAttenuationCentered>(_onAGCPrepAttenuationCentered);
     on<EditModeChanged>(_onEditModeChanged);
+    on<SettingSubmitted>(_onSettingSubmitted);
   }
 
   final DsimRepository _dsimRepository;
 
-  void _onAllItemInitialized(
-    AllItemInitialized event,
+  void _onInitialized(
+    Initialized event,
     Emitter<SettingState> emit,
   ) {
-    final Location location = Location.dirty(event.location);
+    SettingData settingData = _dsimRepository.getSettingData();
+
+    final Location location = Location.dirty(settingData.location);
 
     final Map<String, bool> newSelectedTGCCableLength = {
       '9': false,
@@ -43,8 +46,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       '27': false,
     };
 
-    if (newSelectedTGCCableLength.containsKey(event.tgcCableLength)) {
-      newSelectedTGCCableLength[event.tgcCableLength] = true;
+    if (newSelectedTGCCableLength.containsKey(settingData.tgcCableLength)) {
+      newSelectedTGCCableLength[settingData.tgcCableLength] = true;
     }
 
     final Map<String, bool> newSelectedWorkingMode = {
@@ -53,40 +56,43 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       'TGC': false,
     };
 
-    if (newSelectedWorkingMode.containsKey(event.workingMode)) {
-      newSelectedWorkingMode[event.workingMode] = true;
+    if (newSelectedWorkingMode.containsKey(settingData.workingMode)) {
+      newSelectedWorkingMode[settingData.workingMode] = true;
     }
 
-    final int maxAttenuation = event.maxAttenuation.isNotEmpty
-        ? int.parse(event.maxAttenuation)
+    final int maxAttenuation = settingData.maxAttenuation.isNotEmpty
+        ? int.parse(settingData.maxAttenuation)
         : 3000;
-    final int minAttenuation =
-        event.minAttenuation.isNotEmpty ? int.parse(event.minAttenuation) : 0;
-    final int currentAttenuation = event.currentAttenuation.isNotEmpty
-        ? int.parse(event.currentAttenuation)
+    final int minAttenuation = settingData.minAttenuation.isNotEmpty
+        ? int.parse(settingData.minAttenuation)
         : 0;
-    final int centerAttenuation = event.centerAttenuation.isNotEmpty
-        ? int.parse(event.centerAttenuation)
+    final int currentAttenuation = settingData.currentAttenuation.isNotEmpty
+        ? int.parse(settingData.currentAttenuation)
+        : 0;
+    final int centerAttenuation = settingData.centerAttenuation.isNotEmpty
+        ? int.parse(settingData.centerAttenuation)
         : 0;
 
     emit(state.copyWith(
       initialValues: [
-        event.location,
-        event.tgcCableLength,
-        event.logIntervalId,
-        event.workingMode,
-        event.currentAttenuation,
+        settingData.location,
+        settingData.tgcCableLength,
+        settingData.logIntervalId,
+        settingData.workingMode,
+        settingData.currentAttenuation,
       ],
       location: location,
       selectedTGCCableLength: newSelectedTGCCableLength,
       selectedWorkingMode: newSelectedWorkingMode,
-      logIntervalId: event.logIntervalId,
-      pilotChannel: event.pilotChannel,
-      pilotMode: event.pilotMode,
+      logIntervalId: settingData.logIntervalId,
+      pilotChannel: settingData.pilotChannel,
+      pilotMode: settingData.pilotMode,
       maxAttenuation: maxAttenuation,
       minAttenuation: minAttenuation,
       currentAttenuation: currentAttenuation,
       centerAttenuation: centerAttenuation,
+      isInitialize: true,
+      submissionStatus: SubmissionStatus.none,
     ));
   }
 
@@ -95,6 +101,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     Emitter<SettingState> emit,
   ) {
     emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.none,
       isGraphType: true,
     ));
   }
@@ -104,6 +112,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     Emitter<SettingState> emit,
   ) {
     emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.none,
       isGraphType: false,
     ));
   }
@@ -115,6 +125,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     final Location location = Location.dirty(event.location);
 
     emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.none,
       location: location,
     ));
   }
@@ -132,6 +144,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     newSelectedTGCCableLength[event.tgcCableLength] = true;
 
     emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.none,
       selectedTGCCableLength: newSelectedTGCCableLength,
     ));
   }
@@ -149,6 +163,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     newSelectedWorkingMode[event.workingMode] = true;
 
     emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.none,
       selectedWorkingMode: newSelectedWorkingMode,
     ));
   }
@@ -158,6 +174,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     Emitter<SettingState> emit,
   ) {
     emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.none,
       logIntervalId: event.logIntervalId,
     ));
   }
@@ -171,6 +189,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     //   orElse: () => '',
     // );
     emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.none,
       pilotCode: event.pilotCode,
     ));
   }
@@ -192,6 +212,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       orElse: () => '',
     );
     emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.none,
       pilotChannel: pilotChannel,
     ));
   }
@@ -201,6 +223,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     Emitter<SettingState> emit,
   ) {
     emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.none,
       currentAttenuation: event.attenuation,
       selectedWorkingMode: <String, bool>{
         'MGC': true,
@@ -218,6 +242,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         ? state.currentAttenuation + 50
         : state.maxAttenuation;
     emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.none,
       currentAttenuation: newAttenuation,
       selectedWorkingMode: <String, bool>{
         'MGC': true,
@@ -235,6 +261,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         ? state.currentAttenuation - 50
         : state.minAttenuation;
     emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.none,
       currentAttenuation: newAttenuation,
       selectedWorkingMode: <String, bool>{
         'MGC': true,
@@ -249,6 +277,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     Emitter<SettingState> emit,
   ) {
     emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.none,
       currentAttenuation: state.centerAttenuation,
       selectedWorkingMode: <String, bool>{
         'MGC': true,
@@ -263,7 +293,40 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     Emitter<SettingState> emit,
   ) {
     emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.none,
       editMode: !state.editMode,
+    ));
+  }
+
+  void _onSettingSubmitted(
+    SettingSubmitted event,
+    Emitter<SettingState> emit,
+  ) async {
+    emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.submissionInProgress,
+    ));
+
+    String workingMode = state.selectedWorkingMode.keys
+        .firstWhere((k) => state.selectedWorkingMode[k] == true);
+
+    String tgcCableLength = state.selectedTGCCableLength.keys
+        .firstWhere((k) => state.selectedTGCCableLength[k] == true);
+
+    // await Future.delayed(const Duration(seconds: 2));
+
+    _dsimRepository.setParameters(
+      location: state.location.value,
+      workingMode: workingMode,
+      currentAttenuation: state.currentAttenuation,
+      tgcCableLength: tgcCableLength,
+      currentPilot: state.pilotChannel,
+      logIntervalId: state.logIntervalId,
+    );
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.submissionSuccess,
     ));
   }
 }

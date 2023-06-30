@@ -12,11 +12,11 @@ class HomeState extends Equatable {
     this.showSplash = true,
     this.device,
     this.characteristicData = const {},
-    this.settingResultData = const {
-      DataKey.locationSet: '-1',
-      DataKey.tgcCableLengthSet: '-1',
-      DataKey.logIntervalSet: '-1',
-    },
+    // this.settingResultData = const {
+    //   DataKey.locationSet: '-1',
+    //   DataKey.tgcCableLengthSet: '-1',
+    //   DataKey.logIntervalSet: '-1',
+    // },
     this.errorMassage = '',
     this.dataExportPath = '',
     this.dateValueCollectionOfLog = const [],
@@ -32,7 +32,7 @@ class HomeState extends Equatable {
   final bool showSplash;
   final DiscoveredDevice? device;
   final Map<DataKey, String> characteristicData;
-  final Map<DataKey, String> settingResultData;
+  // final Map<DataKey, String> settingResultData;
   final String errorMassage;
   final String dataExportPath;
   final List<List<DateValuePair>> dateValueCollectionOfLog;
@@ -48,7 +48,7 @@ class HomeState extends Equatable {
     bool? showSplash,
     DiscoveredDevice? device,
     Map<DataKey, String>? characteristicData,
-    Map<DataKey, String>? settingResultData,
+    // Map<DataKey, String>? settingResultData,
     String? errorMassage,
     String? dataExportPath,
     List<List<DateValuePair>>? dateValueCollectionOfLog,
@@ -66,7 +66,7 @@ class HomeState extends Equatable {
       showSplash: showSplash ?? this.showSplash,
       device: device ?? this.device,
       characteristicData: characteristicData ?? this.characteristicData,
-      settingResultData: settingResultData ?? this.settingResultData,
+      // settingResultData: settingResultData ?? this.settingResultData,
       errorMassage: errorMassage ?? this.errorMassage,
       dataExportPath: dataExportPath ?? this.dataExportPath,
       dateValueCollectionOfLog:
@@ -86,7 +86,7 @@ class HomeState extends Equatable {
         showSplash,
         device,
         characteristicData,
-        settingResultData,
+        // settingResultData,
         errorMassage,
         dataExportPath,
         dateValueCollectionOfLog,

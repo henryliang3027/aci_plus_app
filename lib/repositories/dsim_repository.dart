@@ -74,6 +74,31 @@ class ConnectionReport {
   final String errorMessage;
 }
 
+class SettingData {
+  const SettingData({
+    required this.location,
+    required this.tgcCableLength,
+    required this.workingMode,
+    required this.logIntervalId,
+    required this.pilotChannel,
+    required this.pilotMode,
+    required this.maxAttenuation,
+    required this.minAttenuation,
+    required this.currentAttenuation,
+    required this.centerAttenuation,
+  });
+  final String location;
+  final String tgcCableLength;
+  final String workingMode;
+  final int logIntervalId;
+  final String pilotChannel;
+  final String pilotMode;
+  final String maxAttenuation;
+  final String minAttenuation;
+  final String currentAttenuation;
+  final String centerAttenuation;
+}
+
 class DsimRepository {
   DsimRepository() : _ble = FlutterReactiveBle() {
     _calculateCRCs();
@@ -120,6 +145,23 @@ class DsimRepository {
   final List<int> _rawEvent = [];
   final List<Event> _events = [];
   final int _totalBytesPerCommand = 261;
+  List<bool> parameterSettingList = [
+    false, // 是否需要設定 location
+    false, // 是否需要設定 tgc cable length
+    false, // 是否需要設定 log interval
+    false, // 是否需要設定 working mode
+  ];
+
+  String _location = '';
+  String _tgcCableLength = '';
+  String _workingMode = '';
+  int _logIntervalId = -1;
+  String _pilotChannel = '';
+  String _pilotMode = '';
+  String _maxAttenuation = '';
+  String _minAttenuation = '';
+  String _currentAttenuation = '';
+  String _centerAttenuation = '';
 
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
@@ -304,6 +346,8 @@ class DsimRepository {
             _parseSetTGCCableLength(rawData);
           } else if (commandIndex == 45) {
             _parseSetLogInterval(rawData);
+          } else if (commandIndex == 46) {
+            _parseSetWorkingMode(rawData);
           }
 
           if (writeNextCommand) {
@@ -364,6 +408,8 @@ class DsimRepository {
     if (commandIndex == 37) {
       _events.sort((a, b) => a.dateTime.compareTo(b.dateTime));
       _loadingResultStreamController.add(DataKey.eventRecordsLoadingComplete);
+      _loadingResultStreamController
+          .add(DataKey.settingParametersLoadingComplete);
     }
   }
 
@@ -536,6 +582,9 @@ class DsimRepository {
 
         _characteristicDataStreamController
             .add({DataKey.firmwareVersion: firmwareVersion});
+
+        // setting data _logIntervalId
+        _logIntervalId = int.parse(_basicInterval);
         break;
       case 4:
         //MGC Value 2Bytes
@@ -555,6 +604,18 @@ class DsimRepository {
             .add({DataKey.maxAttenuation: '3000'});
         _characteristicDataStreamController
             .add({DataKey.tgcCableLength: basicTGCCableLength});
+
+        // setting data _currentAttenuation
+        _currentAttenuation = currentAttenuator.toString();
+
+        // setting data _minAttenuation
+        _minAttenuation = '0';
+
+        // setting data _maxAttenuation
+        _maxAttenuation = '3000';
+
+        // setting data _tgcCableLength
+        _tgcCableLength = basicTGCCableLength;
         break;
 
       case 5:
@@ -659,6 +720,15 @@ class DsimRepository {
         _characteristicDataStreamController
             .add({DataKey.currentVoltage: current24V.toString()});
 
+        // setting data _workingMode
+        _workingMode = dsimMode;
+
+        // setting data _centerAttenuation
+        _pilotChannel = currentPilot;
+
+        // setting data _centerAttenuation
+        _pilotMode = pilotMode;
+
         break;
       case 6:
         int centerAttenuation = rawData[11] * 256 + rawData[12];
@@ -668,6 +738,9 @@ class DsimRepository {
             .add({DataKey.centerAttenuation: centerAttenuation.toString()});
         _characteristicDataStreamController.add(
             {DataKey.currentVoltageRipple: currentVoltageRipple.toString()});
+
+        // setting data _centerAttenuation
+        _centerAttenuation = centerAttenuation.toString();
 
         break;
       case 7:
@@ -711,7 +784,11 @@ class DsimRepository {
         _characteristicDataStreamController
             .add({DataKey.location: _tempLocation});
 
+        // setting data _centerAttenuation
+        _location = _tempLocation;
+
         _tempLocation = '';
+
         break;
       case 13:
         break;
@@ -844,6 +921,7 @@ class DsimRepository {
           (rawData[5] == 0x06)) {
         print('set TGC cable length done');
       }
+      setLogInterval(logIntervalID: _logIntervalId);
     }
   }
 
@@ -856,6 +934,26 @@ class DsimRepository {
           (rawData[4] == 0x00) &&
           (rawData[5] == 0x06)) {
         print('set log interval done');
+      }
+      setWorkingMode(
+        workingMode: _workingMode,
+        currentAttenuation: int.parse(_currentAttenuation),
+        tgcCableLength: int.parse(_tgcCableLength),
+        currentPilot: int.parse(_pilotChannel),
+        logIntervalID: _logIntervalId,
+      );
+    }
+  }
+
+  void _parseSetWorkingMode(List<int> rawData) async {
+    if (commandIndex == 46) {
+      if ((rawData[0] == 0xB0) &&
+          (rawData[1] == 0x10) &&
+          (rawData[2] == 0x00) &&
+          (rawData[3] == 0x04) &&
+          (rawData[4] == 0x00) &&
+          (rawData[5] == 0x06)) {
+        print('set working mode done');
       }
     }
   }
@@ -873,9 +971,7 @@ class DsimRepository {
         await _writeSetCommandToCharacteristic(
           Command.setLocACmd,
         );
-      } else {
-        _characteristicDataStreamController.add({DataKey.locationSet: '0'});
-      }
+      } else {}
     } else if (commandIndex == 41) {
       if ((rawData[0] == 0xB0) &&
           (rawData[1] == 0x10) &&
@@ -888,9 +984,7 @@ class DsimRepository {
         await _writeSetCommandToCharacteristic(
           Command.setLocBCmd,
         );
-      } else {
-        _settingResultStreamController.add({DataKey.locationSet: '0'});
-      }
+      } else {}
     } else if (commandIndex == 42) {
       if ((rawData[0] == 0xB0) &&
           (rawData[1] == 0x10) &&
@@ -903,9 +997,7 @@ class DsimRepository {
         await _writeSetCommandToCharacteristic(
           Command.setLocCCmd,
         );
-      } else {
-        _settingResultStreamController.add({DataKey.locationSet: '0'});
-      }
+      } else {}
     } else if (commandIndex == 43) {
       if ((rawData[0] == 0xB0) &&
           (rawData[1] == 0x10) &&
@@ -914,20 +1006,39 @@ class DsimRepository {
           (rawData[4] == 0x00) &&
           (rawData[5] == 0x06)) {
         print('Location0C Set');
-        _settingResultStreamController.add({DataKey.locationSet: '1'});
-        commandIndex = 9;
-        endIndex = 12;
-        await _ble.writeCharacteristicWithoutResponse(
-          _qualifiedCharacteristic,
-          value: _commandCollection[commandIndex],
+        // commandIndex = 9;
+        // endIndex = 12;
+        // await _ble.writeCharacteristicWithoutResponse(
+        //   _qualifiedCharacteristic,
+        //   value: _commandCollection[commandIndex],
+        // );
+
+        setTGCCableLength(
+          currentAttenuation: int.parse(_currentAttenuation),
+          tgcCableLength: int.parse(_tgcCableLength),
+          currentPilot: int.parse(_pilotChannel),
+          logIntervalId: _logIntervalId,
         );
-      }
-    } else {
-      _settingResultStreamController.add({DataKey.locationSet: '0'});
+      } else {}
     }
   }
 
-  Future<void> setLocation(String location) async {
+  int getWorkingModeID(String workingMode) {
+    switch (workingMode) {
+      case 'Align':
+        return 1;
+      case 'AGC':
+        return 2;
+      case 'TGC':
+        return 3;
+      case 'MGC':
+        return 4;
+      default:
+        return 2;
+    }
+  }
+
+  void setLocation(String location) async {
     int newLength = location.length;
     int imod;
     int index;
@@ -1002,35 +1113,19 @@ class DsimRepository {
     );
   }
 
-  int getWorkingModeID(String workingMode) {
-    switch (workingMode) {
-      case 'Align':
-        return 1;
-      case 'AGC':
-        return 2;
-      case 'TGC':
-        return 3;
-      case 'MGC':
-        return 4;
-      default:
-        return 2;
-    }
-  }
-
-  Future<void> setTGCCableLength({
-    required String workingMode,
+  void setTGCCableLength({
     required int currentAttenuation,
     required int tgcCableLength,
     required int currentPilot,
-    required int logIntervalID,
+    required int logIntervalId,
   }) async {
-    Command.set04Cmd[7] = getWorkingModeID(workingMode); //3 TGC
+    Command.set04Cmd[7] = 3; //3 TGC
     Command.set04Cmd[8] = currentAttenuation ~/ 256; //MGC Value 2Bytes
     Command.set04Cmd[9] = currentAttenuation % 256; //MGC Value
     Command.set04Cmd[10] = tgcCableLength; //TGC Cable length
     Command.set04Cmd[11] = currentPilot; //AGC Channel 1Byte
     Command.set04Cmd[12] = _basicCurrentPilotMode; //AGC channel Mode 1 Byte
-    Command.set04Cmd[13] = logIntervalID; //Log Minutes 1Byte
+    Command.set04Cmd[13] = logIntervalId; //Log Minutes 1Byte
     Command.set04Cmd[14] = 0x03; //AGC Channel 2 1Byte
     Command.set04Cmd[15] = 0x02; //AGC Channel 2 Mode 1Byte
     CRC16.calculateCRC16(command: Command.set04Cmd, usDataLength: 19);
@@ -1040,7 +1135,7 @@ class DsimRepository {
     _writeSetCommandToCharacteristic(Command.set04Cmd);
   } //set04CL
 
-  Future<void> setLogInterval({
+  void setLogInterval({
     required int logIntervalID,
   }) async {
     Command.set04Cmd[7] = 0x08; // 8
@@ -1052,7 +1147,56 @@ class DsimRepository {
     _writeSetCommandToCharacteristic(Command.set04Cmd);
   } //set04CL
 
-  // iOS 跟  Android 的 set command 方式不一樣
+  void setWorkingMode({
+    required String workingMode,
+    required int currentAttenuation,
+    required int tgcCableLength,
+    required int currentPilot,
+    required int logIntervalID,
+  }) {
+    Command.set04Cmd[7] = getWorkingModeID(workingMode);
+    Command.set04Cmd[8] = currentAttenuation ~/ 256; //MGC Value 2Bytes
+    Command.set04Cmd[9] = currentAttenuation % 256; //MGC Value
+    Command.set04Cmd[10] = tgcCableLength; //TGC Cable length
+    Command.set04Cmd[11] = currentPilot; //AGC Channel 1Byte
+    Command.set04Cmd[12] = _basicCurrentPilotMode; //AGC channel Mode 1 Byte
+    Command.set04Cmd[13] = logIntervalID; //Log Minutes 1Byte
+    Command.set04Cmd[14] = 0x03; //AGC Channel 2 1Byte
+    Command.set04Cmd[15] = 0x02; //AGC Channel 2 Mode 1Byte
+    CRC16.calculateCRC16(command: Command.set04Cmd, usDataLength: 19);
+
+    commandIndex = 46;
+    endIndex = 46;
+    _writeSetCommandToCharacteristic(Command.set04Cmd);
+  }
+
+  void setParameters({
+    required String location,
+    required String workingMode,
+    required int currentAttenuation,
+    required String tgcCableLength,
+    required String currentPilot,
+    required int logIntervalId,
+  }) {
+    _location = location;
+    _workingMode = workingMode;
+    _currentAttenuation = currentAttenuation.toString();
+    _tgcCableLength = tgcCableLength;
+    _pilotChannel = currentPilot;
+    _logIntervalId = logIntervalId;
+
+    setLocation(location);
+
+    // setWorkingMode(
+    //   workingMode: _workingMode,
+    //   currentAttenuation: int.parse(_currentAttenuation),
+    //   tgcCableLength: int.parse(_tgcCableLength),
+    //   currentPilot: int.parse(_pilotChannel),
+    //   logIntervalID: _logIntervalId,
+    // );
+  }
+
+  // iOS 跟 Android 的 set command 方式不一樣
   Future<void> _writeSetCommandToCharacteristic(List<int> value) async {
     if (Platform.isAndroid) {
       await _ble.writeCharacteristicWithResponse(
@@ -1261,7 +1405,7 @@ class DsimRepository {
           //EventSSIOver 6
           row[6] = formattedDateTime;
           if (event.parameter > 0) {
-            row[6] = '$formattedDateTime@$event.parameter';
+            row[6] = '$formattedDateTime@${event.parameter}';
           }
           break;
         }
@@ -1270,7 +1414,7 @@ class DsimRepository {
           //EventSSILess 7
           row[7] = formattedDateTime;
           if (event.parameter > 0) {
-            row[7] = '$formattedDateTime@$event.parameter';
+            row[7] = '$formattedDateTime@${event.parameter}';
           }
           break;
         }
@@ -1279,7 +1423,7 @@ class DsimRepository {
           //Event24VriOv 8
           row[8] = formattedDateTime;
           if (event.parameter > 0) {
-            row[8] = '$formattedDateTime@$event.parameter';
+            row[8] = '$formattedDateTime@${event.parameter}';
           }
           break;
         }
@@ -1288,7 +1432,7 @@ class DsimRepository {
           //EventAlPiLos 9
           row[9] = formattedDateTime;
           if (event.parameter > 0) {
-            row[9] = '$formattedDateTime@$event.parameter';
+            row[9] = '$formattedDateTime@${event.parameter}';
           }
           break;
         }
@@ -1297,7 +1441,7 @@ class DsimRepository {
           //EventAGPiLos 10
           row[10] = formattedDateTime;
           if (event.parameter > 0) {
-            row[10] = '$formattedDateTime@$event.parameter';
+            row[10] = '$formattedDateTime@${event.parameter}';
           }
           break;
         }
@@ -1306,7 +1450,7 @@ class DsimRepository {
           //EventCTRPlin 11 used
           row[11] = formattedDateTime;
           if (event.parameter > 0) {
-            row[11] = '$formattedDateTime@$event.parameter';
+            row[11] = '$formattedDateTime@${event.parameter}';
           }
           break;
         }
@@ -1315,7 +1459,7 @@ class DsimRepository {
           //EventCTRPlout 12 used
           row[12] = formattedDateTime;
           if (event.parameter > 0) {
-            row[12] = '$formattedDateTime@$event.parameter';
+            row[12] = '$formattedDateTime@${event.parameter}';
           }
           break;
         }
@@ -1362,36 +1506,36 @@ class DsimRepository {
       ));
     }
 
-    print('---att--');
-    for (DateValuePair dateValuePair in attenuationDataList) {
-      print(
-          '{"time": "${DateFormat('yyyy-MM-dd HH:mm:ss').format(dateValuePair.dateTime).toString()}", "value": "${dateValuePair.value}"},');
-    }
-    print('---att--');
-    print('---temp--');
-    for (DateValuePair dateValuePair in temperatureDataList) {
-      print(
-          '{"time": "${DateFormat('yyyy-MM-dd HH:mm:ss').format(dateValuePair.dateTime).toString()}", "value": "${dateValuePair.value}"},');
-    }
-    print('---temp--');
-    print('---pilot--');
-    for (DateValuePair dateValuePair in pilotDataList) {
-      print(
-          '{"time": "${DateFormat('yyyy-MM-dd HH:mm:ss').format(dateValuePair.dateTime).toString()}", "value": "${dateValuePair.value}"},');
-    }
-    print('---pilot--');
-    print('---voltage--');
-    for (DateValuePair dateValuePair in voltageDataList) {
-      print(
-          '{"time": "${DateFormat('yyyy-MM-dd HH:mm:ss').format(dateValuePair.dateTime).toString()}", "value": "${dateValuePair.value}"},');
-    }
-    print('---voltage--');
-    print('---voltageRipple--');
-    for (DateValuePair dateValuePair in voltageRippleDataList) {
-      print(
-          '{"time": "${DateFormat('yyyy-MM-dd HH:mm:ss').format(dateValuePair.dateTime).toString()}", "value": "${dateValuePair.value}"},');
-    }
-    print('---voltageRipple--');
+    // print('---att--');
+    // for (DateValuePair dateValuePair in attenuationDataList) {
+    //   print(
+    //       '{"time": "${DateFormat('yyyy-MM-dd HH:mm:ss').format(dateValuePair.dateTime).toString()}", "value": "${dateValuePair.value}"},');
+    // }
+    // print('---att--');
+    // print('---temp--');
+    // for (DateValuePair dateValuePair in temperatureDataList) {
+    //   print(
+    //       '{"time": "${DateFormat('yyyy-MM-dd HH:mm:ss').format(dateValuePair.dateTime).toString()}", "value": "${dateValuePair.value}"},');
+    // }
+    // print('---temp--');
+    // print('---pilot--');
+    // for (DateValuePair dateValuePair in pilotDataList) {
+    //   print(
+    //       '{"time": "${DateFormat('yyyy-MM-dd HH:mm:ss').format(dateValuePair.dateTime).toString()}", "value": "${dateValuePair.value}"},');
+    // }
+    // print('---pilot--');
+    // print('---voltage--');
+    // for (DateValuePair dateValuePair in voltageDataList) {
+    //   print(
+    //       '{"time": "${DateFormat('yyyy-MM-dd HH:mm:ss').format(dateValuePair.dateTime).toString()}", "value": "${dateValuePair.value}"},');
+    // }
+    // print('---voltage--');
+    // print('---voltageRipple--');
+    // for (DateValuePair dateValuePair in voltageRippleDataList) {
+    //   print(
+    //       '{"time": "${DateFormat('yyyy-MM-dd HH:mm:ss').format(dateValuePair.dateTime).toString()}", "value": "${dateValuePair.value}"},');
+    // }
+    // print('---voltageRipple--');
 
     return [
       attenuationDataList,
@@ -1400,5 +1544,20 @@ class DsimRepository {
       voltageDataList,
       voltageRippleDataList,
     ];
+  }
+
+  SettingData getSettingData() {
+    return SettingData(
+      location: _location,
+      tgcCableLength: _tgcCableLength,
+      workingMode: _workingMode,
+      logIntervalId: _logIntervalId,
+      pilotChannel: _pilotChannel,
+      pilotMode: _pilotMode,
+      maxAttenuation: _maxAttenuation,
+      minAttenuation: _minAttenuation,
+      currentAttenuation: _currentAttenuation,
+      centerAttenuation: _centerAttenuation,
+    );
   }
 }

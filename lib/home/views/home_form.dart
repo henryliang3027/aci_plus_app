@@ -118,84 +118,64 @@ class _HomeFormState extends State<HomeForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomeBloc, HomeState>(
-      listenWhen: (previous, current) =>
-          previous.settingResultData != current.settingResultData,
-      listener: (context, state) {
-        String? locationSet = state.settingResultData[DataKey.locationSet];
-        print('locationSet= $locationSet');
-        if (locationSet != null) {
-          if (locationSet == '1') {
-            _showSuccessDialog(
-              AppLocalizations.of(context)
-                  .dialogMaessageLocationSettingSuccessful,
-            );
-          } else if (locationSet == '0') {
-            _showFailureDialog(
-              AppLocalizations.of(context).dialogMaessageLocationSettingFailed,
-            );
-          }
-        }
-      },
-      child: Scaffold(
-        body: PageView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: _pageController,
-          children: const [
-            SettingPage(),
-            StatusPage(),
-            InformationPage(),
-            ChartPage(),
-            AboutPage(),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Theme.of(context).colorScheme.onPrimary,
-          type: BottomNavigationBarType.fixed,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Setting',
-              tooltip: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.memory_outlined),
-              label: 'Status',
-              tooltip: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.info),
-              label: 'Information',
-              tooltip: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.area_chart_sharp),
-              label: 'Chart',
-              tooltip: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.contact_support),
-              label: 'About',
-              tooltip: '',
-            ),
-          ],
-          //if current page is account which is not list in bottom navigation bar, make all items grey color
-          //assign a useless 0 as currentIndex for account page
-          currentIndex: _sclectedIndex,
-          selectedItemColor: Theme.of(context).primaryColor,
-          unselectedItemColor: Theme.of(context).hintColor,
-          onTap: (int index) {
-            setState(() {
-              _sclectedIndex = index;
-            });
+    return Scaffold(
+      body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: _pageController,
+        children: const [
+          SettingPage(),
+          StatusPage(),
+          InformationPage(),
+          ChartPage(),
+          AboutPage(),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Setting',
+            tooltip: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.memory_outlined),
+            label: 'Status',
+            tooltip: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.info),
+            label: 'Information',
+            tooltip: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.area_chart_sharp),
+            label: 'Chart',
+            tooltip: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.contact_support),
+            label: 'About',
+            tooltip: '',
+          ),
+        ],
+        //if current page is account which is not list in bottom navigation bar, make all items grey color
+        //assign a useless 0 as currentIndex for account page
+        currentIndex: _sclectedIndex,
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Theme.of(context).hintColor,
+        onTap: (int index) {
+          setState(() {
+            _sclectedIndex = index;
+          });
 
-            _pageController.jumpToPage(
-              index,
-            );
-          },
-        ),
+          _pageController.jumpToPage(
+            index,
+          );
+        },
       ),
     );
   }

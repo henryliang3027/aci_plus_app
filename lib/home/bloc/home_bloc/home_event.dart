@@ -94,33 +94,33 @@ class DataShared extends HomeEvent {
   List<Object?> get props => [];
 }
 
-class SettingSubmitted extends HomeEvent {
-  const SettingSubmitted({
-    required this.initialValues,
-    required this.location,
-    required this.tgcCableLength,
-    required this.workingMode,
-    required this.currentAttenuation,
-    required this.logIntervalID,
-    required this.currentPilot,
-  });
+// class SettingSubmitted extends HomeEvent {
+//   const SettingSubmitted({
+//     required this.initialValues,
+//     required this.location,
+//     required this.tgcCableLength,
+//     required this.workingMode,
+//     required this.currentAttenuation,
+//     required this.logIntervalID,
+//     required this.currentPilot,
+//   });
 
-  final List<dynamic> initialValues;
-  final String location;
-  final String tgcCableLength;
-  final String workingMode;
-  final int currentAttenuation;
-  final int logIntervalID;
-  final String currentPilot;
+//   final List<dynamic> initialValues;
+//   final String location;
+//   final String tgcCableLength;
+//   final String workingMode;
+//   final int currentAttenuation;
+//   final int logIntervalID;
+//   final String currentPilot;
 
-  @override
-  List<Object> get props => [
-        initialValues,
-        location,
-        tgcCableLength,
-        workingMode,
-        currentAttenuation,
-        logIntervalID,
-        currentPilot,
-      ];
-}
+//   @override
+//   List<Object> get props => [
+//         initialValues,
+//         location,
+//         tgcCableLength,
+//         workingMode,
+//         currentAttenuation,
+//         logIntervalID,
+//         currentPilot,
+//       ];
+// }
