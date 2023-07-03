@@ -66,6 +66,12 @@ class InformationForm extends StatelessWidget {
         body: const SingleChildScrollView(
           child: Column(
             children: [
+              // ElevatedButton(
+              //   onPressed: () {
+              //     context.read<HomeBloc>().add(const TypeNoRequested());
+              //   },
+              //   child: Icon(Icons.abc),
+              // ),
               _ConnectionCard(),
               _BasicCard(),
               _AlarmCard(),

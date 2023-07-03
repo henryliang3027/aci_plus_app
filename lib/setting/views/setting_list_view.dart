@@ -10,133 +10,60 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingListView extends StatelessWidget {
-  SettingListView({super.key});
+  SettingListView({
+    super.key,
+    required this.locationTextEditionController,
+    required this.userPilotTextEditingController,
+  });
 
-  final TextEditingController _locationTextEditingController =
-      TextEditingController();
-
-  final TextEditingController _userPilotTextEditingController =
-      TextEditingController();
+  final TextEditingController locationTextEditionController;
+  final TextEditingController userPilotTextEditingController;
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _showInProgressDialog() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return const AlertDialog(
-            title: Text(
-              // AppLocalizations.of(context)!.dialogTitle_settingUp,
-              'Setting',
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(
+              CustomStyle.sizeXL,
             ),
-            actionsAlignment: MainAxisAlignment.center,
-            actions: <Widget>[
-              CircularProgressIndicator(),
-            ],
-          );
-        },
-      );
-    }
-
-    Future<void> _showSuccessDialog(String msg) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text(
-              'Success',
-              style: TextStyle(
-                color: CustomStyle.customGreen,
-              ),
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(msg),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    return BlocListener<SettingBloc, SettingState>(
-      listener: (context, state) async {
-        if (state.submissionStatus.isSubmissionInProgress) {
-          await _showInProgressDialog();
-        } else if (state.submissionStatus.isSubmissionSuccess) {
-          Navigator.of(context).pop();
-          _showSuccessDialog('success');
-        } else if (state.isInitialize) {
-          _locationTextEditingController.text = state.location.value;
-
-          _userPilotTextEditingController.text =
-              PilotChannel.channelCode[state.pilotCode] ?? '';
-        }
-      },
-      child: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          if (state.settingParametersLoading.isRequestSuccess) {
-            context.read<SettingBloc>().add(const Initialized());
-          }
-
-          return Scaffold(
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(
-                    CustomStyle.sizeXL,
-                  ),
-                  child: Column(
-                    children: [
-                      _Location(
-                        textEditingController: _locationTextEditingController,
-                      ),
-                      const SizedBox(
-                        height: 40.0,
-                      ),
-                      const _TGCCabelLength(),
-                      const SizedBox(
-                        height: 40.0,
-                      ),
-                      const _LogIntervalDropDownMenu(),
-                      const SizedBox(
-                        height: 40.0,
-                      ),
-                      const _WorkingMode(),
-                      const SizedBox(
-                        height: 40.0,
-                      ),
-                      _UserPilot(
-                        textEditingController: _userPilotTextEditingController,
-                      ),
-                      const SizedBox(
-                        height: 40.0,
-                      ),
-                      const _AGCPrepAttenator(),
-                      const SizedBox(
-                        height: 160.0,
-                      ),
-                    ],
-                  ),
+            child: Column(
+              children: [
+                _Location(
+                  textEditingController: locationTextEditionController,
                 ),
-              ),
+                const SizedBox(
+                  height: 40.0,
+                ),
+                const _TGCCabelLength(),
+                const SizedBox(
+                  height: 40.0,
+                ),
+                const _LogIntervalDropDownMenu(),
+                const SizedBox(
+                  height: 40.0,
+                ),
+                const _WorkingMode(),
+                const SizedBox(
+                  height: 40.0,
+                ),
+                _UserPilot(
+                  textEditingController: userPilotTextEditingController,
+                ),
+                const SizedBox(
+                  height: 40.0,
+                ),
+                const _AGCPrepAttenator(),
+                const SizedBox(
+                  height: 160.0,
+                ),
+              ],
             ),
-            floatingActionButton: const _SettingFloatingActionButton(),
-          );
-        },
+          ),
+        ),
       ),
+      floatingActionButton: const _SettingFloatingActionButton(),
     );
   }
 }
@@ -172,25 +99,20 @@ class _SettingFloatingActionButton extends StatelessWidget {
                     shape: const CircleBorder(
                       side: BorderSide.none,
                     ),
-                    backgroundColor:
-                        Theme.of(context).colorScheme.primary.withAlpha(200),
+                    backgroundColor: state.enableSubmission
+                        ? Theme.of(context).colorScheme.primary.withAlpha(200)
+                        : Colors.grey.withAlpha(200),
+                    onPressed: state.enableSubmission
+                        ? () {
+                            context
+                                .read<SettingBloc>()
+                                .add(const SettingSubmitted());
+                          }
+                        : null,
                     child: Icon(
                       Icons.check,
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
-                    onPressed: () {
-                      String tgcCableLength =
-                          state.selectedTGCCableLength.keys.firstWhere(
-                        (k) => state.selectedTGCCableLength[k] == true,
-                      );
-                      String workingMode =
-                          state.selectedWorkingMode.keys.firstWhere(
-                        (k) => state.selectedWorkingMode[k] == true,
-                      );
-
-                      print('$tgcCableLength   $workingMode');
-                      context.read<SettingBloc>().add(const SettingSubmitted());
-                    },
                   ),
                 ],
               )
@@ -222,9 +144,6 @@ class _Location extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingBloc, SettingState>(
-      buildWhen: (previous, current) =>
-          previous.location != current.location ||
-          previous.editMode != current.editMode,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

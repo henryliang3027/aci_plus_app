@@ -16,6 +16,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required DsimRepository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const HomeState()) {
+    on<TypeNoRequested>(_onTypeNoRequested); // 測試completer用
     on<SplashStateChanged>(_onSplashStateChanged);
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
@@ -41,6 +42,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   StreamSubscription<DataKey>? _loadingResultStreamSubscription;
 
+  Future<void> _onTypeNoRequested(
+    TypeNoRequested event,
+    Emitter<HomeState> emit,
+  ) async {
+    String typeNo = await _dsimRepository.getInformation();
+
+    print('typeNo: $typeNo');
+  }
+
   // 進入首頁時播放動畫，動畫播完後掃描藍芽裝置
   Future<void> _onSplashStateChanged(
     SplashStateChanged event,
@@ -55,9 +65,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
 
     emit(state.copyWith(
-        showSplash: false,
-        eventRecordsLoadingStatus: FormStatus.requestInProgress,
-        settingParametersLoading: FormStatus.requestInProgress));
+      showSplash: false,
+      eventRecordsLoadingStatus: FormStatus.requestInProgress,
+      settingParametersLoading: FormStatus.requestInProgress,
+    ));
   }
 
   Future<void> _onDiscoveredDeviceChanged(

@@ -101,7 +101,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     Emitter<SettingState> emit,
   ) {
     emit(state.copyWith(
-      isInitialize: false,
+      isInitialize: true,
       submissionStatus: SubmissionStatus.none,
       isGraphType: true,
     ));
@@ -112,7 +112,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     Emitter<SettingState> emit,
   ) {
     emit(state.copyWith(
-      isInitialize: false,
+      isInitialize: true,
       submissionStatus: SubmissionStatus.none,
       isGraphType: false,
     ));
@@ -128,6 +128,14 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       isInitialize: false,
       submissionStatus: SubmissionStatus.none,
       location: location,
+      enableSubmission: _isEnableSubmission(
+        location: location.value,
+        tgcCableLength: _getTgcCableLength(),
+        logIntervalId: state.logIntervalId,
+        workingMode: _getWorkingMode(),
+        pilotChannel: state.pilotChannel,
+        currentAttenuation: state.centerAttenuation,
+      ),
     ));
   }
 
@@ -147,6 +155,33 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       isInitialize: false,
       submissionStatus: SubmissionStatus.none,
       selectedTGCCableLength: newSelectedTGCCableLength,
+      enableSubmission: _isEnableSubmission(
+        location: state.location.value,
+        tgcCableLength: event.tgcCableLength,
+        logIntervalId: state.logIntervalId,
+        workingMode: _getWorkingMode(),
+        pilotChannel: state.pilotChannel,
+        currentAttenuation: state.centerAttenuation,
+      ),
+    ));
+  }
+
+  void _onLogIntervalChanged(
+    LogIntervalChanged event,
+    Emitter<SettingState> emit,
+  ) {
+    emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.none,
+      logIntervalId: event.logIntervalId,
+      enableSubmission: _isEnableSubmission(
+        location: state.location.value,
+        tgcCableLength: _getTgcCableLength(),
+        logIntervalId: event.logIntervalId,
+        workingMode: _getWorkingMode(),
+        pilotChannel: state.pilotChannel,
+        currentAttenuation: state.centerAttenuation,
+      ),
     ));
   }
 
@@ -166,17 +201,14 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       isInitialize: false,
       submissionStatus: SubmissionStatus.none,
       selectedWorkingMode: newSelectedWorkingMode,
-    ));
-  }
-
-  void _onLogIntervalChanged(
-    LogIntervalChanged event,
-    Emitter<SettingState> emit,
-  ) {
-    emit(state.copyWith(
-      isInitialize: false,
-      submissionStatus: SubmissionStatus.none,
-      logIntervalId: event.logIntervalId,
+      enableSubmission: _isEnableSubmission(
+        location: state.location.value,
+        tgcCableLength: _getTgcCableLength(),
+        logIntervalId: state.logIntervalId,
+        workingMode: event.workingMode,
+        pilotChannel: state.pilotChannel,
+        currentAttenuation: state.centerAttenuation,
+      ),
     ));
   }
 
@@ -215,6 +247,14 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       isInitialize: false,
       submissionStatus: SubmissionStatus.none,
       pilotChannel: pilotChannel,
+      enableSubmission: _isEnableSubmission(
+        location: state.location.value,
+        tgcCableLength: _getTgcCableLength(),
+        logIntervalId: state.logIntervalId,
+        workingMode: _getWorkingMode(),
+        pilotChannel: pilotChannel,
+        currentAttenuation: state.centerAttenuation,
+      ),
     ));
   }
 
@@ -231,6 +271,14 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         'AGC': false,
         'TGC': false,
       },
+      enableSubmission: _isEnableSubmission(
+        location: state.location.value,
+        tgcCableLength: _getTgcCableLength(),
+        logIntervalId: state.logIntervalId,
+        workingMode: _getWorkingMode(),
+        pilotChannel: state.pilotChannel,
+        currentAttenuation: state.centerAttenuation,
+      ),
     ));
   }
 
@@ -250,6 +298,14 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         'AGC': false,
         'TGC': false,
       },
+      enableSubmission: _isEnableSubmission(
+        location: state.location.value,
+        tgcCableLength: _getTgcCableLength(),
+        logIntervalId: state.logIntervalId,
+        workingMode: _getWorkingMode(),
+        pilotChannel: state.pilotChannel,
+        currentAttenuation: state.centerAttenuation,
+      ),
     ));
   }
 
@@ -269,6 +325,14 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         'AGC': false,
         'TGC': false,
       },
+      enableSubmission: _isEnableSubmission(
+        location: state.location.value,
+        tgcCableLength: _getTgcCableLength(),
+        logIntervalId: state.logIntervalId,
+        workingMode: _getWorkingMode(),
+        pilotChannel: state.pilotChannel,
+        currentAttenuation: state.centerAttenuation,
+      ),
     ));
   }
 
@@ -285,6 +349,14 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         'AGC': false,
         'TGC': false,
       },
+      enableSubmission: _isEnableSubmission(
+        location: state.location.value,
+        tgcCableLength: _getTgcCableLength(),
+        logIntervalId: state.logIntervalId,
+        workingMode: _getWorkingMode(),
+        pilotChannel: state.pilotChannel,
+        currentAttenuation: state.centerAttenuation,
+      ),
     ));
   }
 
@@ -303,30 +375,103 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     SettingSubmitted event,
     Emitter<SettingState> emit,
   ) async {
+    // initialValues: [
+    //   settingData.location,
+    //   settingData.tgcCableLength,
+    //   settingData.logIntervalId,
+    //   settingData.workingMode,
+    //   settingData.currentAttenuation,
+    // ],
+
     emit(state.copyWith(
       isInitialize: false,
       submissionStatus: SubmissionStatus.submissionInProgress,
     ));
 
-    String workingMode = state.selectedWorkingMode.keys
-        .firstWhere((k) => state.selectedWorkingMode[k] == true);
+    String workingMode = _getWorkingMode();
 
-    String tgcCableLength = state.selectedTGCCableLength.keys
-        .firstWhere((k) => state.selectedTGCCableLength[k] == true);
+    String tgcCableLength = _getTgcCableLength();
+
+    if (state.location.value != state.initialValues[0]) {
+      bool resultOfSettingLocation =
+          await _dsimRepository.setLocation(state.location.value);
+
+      print('resultOfSettingLocation: $resultOfSettingLocation');
+    }
+
+    if (tgcCableLength != state.initialValues[1]) {
+      bool resultOfSettingTGCCableLength =
+          await _dsimRepository.setTGCCableLength(
+        currentAttenuation: state.currentAttenuation,
+        tgcCableLength: tgcCableLength,
+        currentPilot: state.pilotChannel,
+        logIntervalId: state.logIntervalId,
+      );
+
+      print('resultOfSettingTGCCableLength: $resultOfSettingTGCCableLength');
+    }
+
+    if (state.logIntervalId != state.initialValues[2]) {
+      bool resultOfSettingLogInterval = await _dsimRepository.setLogInterval(
+        logIntervalID: state.logIntervalId,
+      );
+    }
+
+    if (workingMode != state.initialValues[3]) {
+      bool resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
+        workingMode: workingMode,
+        currentAttenuation: state.currentAttenuation,
+        tgcCableLength: tgcCableLength,
+        currentPilot: state.pilotChannel,
+        logIntervalId: state.logIntervalId,
+      );
+    }
 
     // await Future.delayed(const Duration(seconds: 2));
 
-    _dsimRepository.setParameters(
-      location: state.location.value,
-      workingMode: workingMode,
-      currentAttenuation: state.currentAttenuation,
-      tgcCableLength: tgcCableLength,
-      currentPilot: state.pilotChannel,
-      logIntervalId: state.logIntervalId,
-    );
+    // String result = await _dsimRepository.setParameters(
+    //   location: state.location.value,
+    //   workingMode: workingMode,
+    //   currentAttenuation: state.currentAttenuation,
+    //   tgcCableLength: tgcCableLength,
+    //   currentPilot: state.pilotChannel,
+    //   logIntervalId: state.logIntervalId,
+    // );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
     ));
+  }
+
+  String _getWorkingMode() {
+    return state.selectedWorkingMode.keys
+        .firstWhere((k) => state.selectedWorkingMode[k] == true);
+  }
+
+  String _getTgcCableLength() {
+    return state.selectedTGCCableLength.keys
+        .firstWhere((k) => state.selectedTGCCableLength[k] == true);
+  }
+
+  bool _isEnableSubmission({
+    required String location,
+    required String tgcCableLength,
+    required int logIntervalId,
+    required String workingMode,
+    required String pilotChannel,
+    required int currentAttenuation,
+  }) {
+    if (pilotChannel != '' &&
+        currentAttenuation.toString() != '' &&
+        (location != state.initialValues[0] ||
+            tgcCableLength != state.initialValues[1] ||
+            logIntervalId != state.initialValues[2] ||
+            workingMode != state.initialValues[3])) {
+      print('true');
+      return true;
+    } else {
+      print('false');
+      return false;
+    }
   }
 }

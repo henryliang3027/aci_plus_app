@@ -25,7 +25,8 @@ class SettingState extends Equatable {
     this.currentAttenuation = 0,
     this.centerAttenuation = 0,
     this.editMode = false,
-    this.isInitialize = false,
+    this.enableSubmission = false,
+    this.isInitialize = true,
   });
 
   final SubmissionStatus submissionStatus;
@@ -43,6 +44,7 @@ class SettingState extends Equatable {
   final int currentAttenuation;
   final int centerAttenuation;
   final bool editMode;
+  final bool enableSubmission;
   final bool isInitialize;
 
   SettingState copyWith({
@@ -61,6 +63,7 @@ class SettingState extends Equatable {
     int? currentAttenuation,
     int? centerAttenuation,
     bool? editMode,
+    bool? enableSubmission,
     bool? isInitialize,
   }) {
     return SettingState(
@@ -80,6 +83,7 @@ class SettingState extends Equatable {
       currentAttenuation: currentAttenuation ?? this.currentAttenuation,
       centerAttenuation: centerAttenuation ?? this.centerAttenuation,
       editMode: editMode ?? this.editMode,
+      enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
     );
   }
@@ -101,6 +105,7 @@ class SettingState extends Equatable {
         currentAttenuation,
         centerAttenuation,
         editMode,
+        enableSubmission,
         isInitialize,
       ];
 }

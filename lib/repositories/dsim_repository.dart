@@ -130,6 +130,9 @@ class DsimRepository {
   int commandIndex = 0;
   int endIndex = 37;
 
+  late Completer<bool> _completer;
+  bool _isSetting = false;
+
   String _tempLocation = '';
   int _basicModeID = 0;
   String _basicCurrentPilot = '';
@@ -385,6 +388,12 @@ class DsimRepository {
     });
   }
 
+  Future<String> getInformation() async {
+    final informationCompleter = Completer<String>();
+
+    return await informationCompleter.future;
+  }
+
   void _parseEvent() {
     for (int i = 0; i < 16; i++) {
       int timeStamp = _rawEvent[i * 16] * 256 + _rawEvent[i * 16 + 1];
@@ -585,6 +594,14 @@ class DsimRepository {
 
         // setting data _logIntervalId
         _logIntervalId = int.parse(_basicInterval);
+
+        // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
+        // setLogInterval function 就會回傳結果給 caller
+        if (_isSetting) {
+          _completer.complete(true);
+          _isSetting = false;
+        }
+
         break;
       case 4:
         //MGC Value 2Bytes
@@ -604,6 +621,13 @@ class DsimRepository {
             .add({DataKey.maxAttenuation: '3000'});
         _characteristicDataStreamController
             .add({DataKey.tgcCableLength: basicTGCCableLength});
+
+        // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
+        // setTGCCableLength function 就會回傳結果給 caller
+        if (_isSetting) {
+          _completer.complete(true);
+          _isSetting = false;
+        }
 
         // setting data _currentAttenuation
         _currentAttenuation = currentAttenuator.toString();
@@ -703,6 +727,14 @@ class DsimRepository {
         current24V = (rawData[8] * 256 + rawData[9]) / 10;
 
         _characteristicDataStreamController.add({DataKey.dsimMode: dsimMode});
+
+        // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
+        // setWorkingMode function 就會回傳結果給 caller
+        if (_isSetting) {
+          _completer.complete(true);
+          _isSetting = false;
+        }
+
         _characteristicDataStreamController
             .add({DataKey.currentPilot: currentPilot});
         _characteristicDataStreamController
@@ -789,14 +821,13 @@ class DsimRepository {
 
         _tempLocation = '';
 
-        break;
-      case 13:
-        break;
-      case 14:
-        break;
-      case 15:
-        break;
-      case 16:
+        // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
+        // setLocation function 就會回傳結果給 caller
+        if (_isSetting) {
+          _completer.complete(true);
+          _isSetting = false;
+        }
+
         break;
       case 17:
         break;
@@ -911,17 +942,23 @@ class DsimRepository {
     ]);
   }
 
-  Future<void> _parseSetTGCCableLength(List<int> rawData) async {
-    if (commandIndex == 44) {
+  void _parseSetWorkingMode(List<int> rawData) async {
+    if (commandIndex == 46) {
       if ((rawData[0] == 0xB0) &&
           (rawData[1] == 0x10) &&
           (rawData[2] == 0x00) &&
           (rawData[3] == 0x04) &&
           (rawData[4] == 0x00) &&
           (rawData[5] == 0x06)) {
-        print('set TGC cable length done');
+        print('set working mode done');
+
+        commandIndex = 5;
+        endIndex = 5;
+        await _ble.writeCharacteristicWithoutResponse(
+          _qualifiedCharacteristic,
+          value: _commandCollection[commandIndex],
+        );
       }
-      setLogInterval(logIntervalID: _logIntervalId);
     }
   }
 
@@ -934,27 +971,43 @@ class DsimRepository {
           (rawData[4] == 0x00) &&
           (rawData[5] == 0x06)) {
         print('set log interval done');
+
+        // setWorkingMode(
+        //   workingMode: _workingMode,
+        //   currentAttenuation: int.parse(_currentAttenuation),
+        //   tgcCableLength: int.parse(_tgcCableLength),
+        //   currentPilot: int.parse(_pilotChannel),
+        //   logIntervalID: _logIntervalId,
+        // );
+
+        commandIndex = 3;
+        endIndex = 3;
+        await _ble.writeCharacteristicWithoutResponse(
+          _qualifiedCharacteristic,
+          value: _commandCollection[commandIndex],
+        );
       }
-      setWorkingMode(
-        workingMode: _workingMode,
-        currentAttenuation: int.parse(_currentAttenuation),
-        tgcCableLength: int.parse(_tgcCableLength),
-        currentPilot: int.parse(_pilotChannel),
-        logIntervalID: _logIntervalId,
-      );
     }
   }
 
-  void _parseSetWorkingMode(List<int> rawData) async {
-    if (commandIndex == 46) {
+  Future<void> _parseSetTGCCableLength(List<int> rawData) async {
+    if (commandIndex == 44) {
       if ((rawData[0] == 0xB0) &&
           (rawData[1] == 0x10) &&
           (rawData[2] == 0x00) &&
           (rawData[3] == 0x04) &&
           (rawData[4] == 0x00) &&
           (rawData[5] == 0x06)) {
-        print('set working mode done');
+        print('set TGC cable length done');
       }
+
+      commandIndex = 4;
+      endIndex = 4;
+      await _ble.writeCharacteristicWithoutResponse(
+        _qualifiedCharacteristic,
+        value: _commandCollection[commandIndex],
+      );
+      // setLogInterval(logIntervalID: _logIntervalId);
     }
   }
 
@@ -1006,19 +1059,20 @@ class DsimRepository {
           (rawData[4] == 0x00) &&
           (rawData[5] == 0x06)) {
         print('Location0C Set');
-        // commandIndex = 9;
-        // endIndex = 12;
-        // await _ble.writeCharacteristicWithoutResponse(
-        //   _qualifiedCharacteristic,
-        //   value: _commandCollection[commandIndex],
-        // );
 
-        setTGCCableLength(
-          currentAttenuation: int.parse(_currentAttenuation),
-          tgcCableLength: int.parse(_tgcCableLength),
-          currentPilot: int.parse(_pilotChannel),
-          logIntervalId: _logIntervalId,
+        commandIndex = 9;
+        endIndex = 12;
+        await _ble.writeCharacteristicWithoutResponse(
+          _qualifiedCharacteristic,
+          value: _commandCollection[commandIndex],
         );
+
+        // setTGCCableLength(
+        //   currentAttenuation: int.parse(_currentAttenuation),
+        //   tgcCableLength: int.parse(_tgcCableLength),
+        //   currentPilot: int.parse(_pilotChannel),
+        //   logIntervalId: _logIntervalId,
+        // );
       } else {}
     }
   }
@@ -1038,7 +1092,9 @@ class DsimRepository {
     }
   }
 
-  void setLocation(String location) async {
+  Future<bool> setLocation(String location) async {
+    _isSetting = true;
+    _completer = Completer<bool>();
     int newLength = location.length;
     int imod;
     int index;
@@ -1111,19 +1167,24 @@ class DsimRepository {
     await _writeSetCommandToCharacteristic(
       Command.setLoc9Cmd,
     );
+
+    return await _completer.future;
   }
 
-  void setTGCCableLength({
+  Future<bool> setTGCCableLength({
     required int currentAttenuation,
-    required int tgcCableLength,
-    required int currentPilot,
+    required String tgcCableLength,
+    required String currentPilot,
     required int logIntervalId,
   }) async {
+    _isSetting = true;
+    _completer = Completer<bool>();
+
     Command.set04Cmd[7] = 3; //3 TGC
     Command.set04Cmd[8] = currentAttenuation ~/ 256; //MGC Value 2Bytes
     Command.set04Cmd[9] = currentAttenuation % 256; //MGC Value
-    Command.set04Cmd[10] = tgcCableLength; //TGC Cable length
-    Command.set04Cmd[11] = currentPilot; //AGC Channel 1Byte
+    Command.set04Cmd[10] = int.parse(tgcCableLength); //TGC Cable length
+    Command.set04Cmd[11] = int.parse(currentPilot); //AGC Channel 1Byte
     Command.set04Cmd[12] = _basicCurrentPilotMode; //AGC channel Mode 1 Byte
     Command.set04Cmd[13] = logIntervalId; //Log Minutes 1Byte
     Command.set04Cmd[14] = 0x03; //AGC Channel 2 1Byte
@@ -1133,11 +1194,15 @@ class DsimRepository {
     commandIndex = 44;
     endIndex = 44;
     _writeSetCommandToCharacteristic(Command.set04Cmd);
+
+    return await _completer.future;
   } //set04CL
 
-  void setLogInterval({
+  Future<bool> setLogInterval({
     required int logIntervalID,
   }) async {
+    _isSetting = true;
+    _completer = Completer<bool>();
     Command.set04Cmd[7] = 0x08; // 8
     Command.set04Cmd[13] = logIntervalID; // Log Minutes 1Byte
     CRC16.calculateCRC16(command: Command.set04Cmd, usDataLength: 19);
@@ -1145,22 +1210,26 @@ class DsimRepository {
     commandIndex = 45;
     endIndex = 45;
     _writeSetCommandToCharacteristic(Command.set04Cmd);
-  } //set04CL
 
-  void setWorkingMode({
+    return await _completer.future;
+  }
+
+  Future<bool> setWorkingMode({
     required String workingMode,
     required int currentAttenuation,
-    required int tgcCableLength,
-    required int currentPilot,
-    required int logIntervalID,
-  }) {
+    required String tgcCableLength,
+    required String currentPilot,
+    required int logIntervalId,
+  }) async {
+    _isSetting = true;
+    _completer = Completer<bool>();
     Command.set04Cmd[7] = getWorkingModeID(workingMode);
     Command.set04Cmd[8] = currentAttenuation ~/ 256; //MGC Value 2Bytes
     Command.set04Cmd[9] = currentAttenuation % 256; //MGC Value
-    Command.set04Cmd[10] = tgcCableLength; //TGC Cable length
-    Command.set04Cmd[11] = currentPilot; //AGC Channel 1Byte
+    Command.set04Cmd[10] = int.parse(tgcCableLength); //TGC Cable length
+    Command.set04Cmd[11] = int.parse(currentPilot); //AGC Channel 1Byte
     Command.set04Cmd[12] = _basicCurrentPilotMode; //AGC channel Mode 1 Byte
-    Command.set04Cmd[13] = logIntervalID; //Log Minutes 1Byte
+    Command.set04Cmd[13] = logIntervalId; //Log Minutes 1Byte
     Command.set04Cmd[14] = 0x03; //AGC Channel 2 1Byte
     Command.set04Cmd[15] = 0x02; //AGC Channel 2 Mode 1Byte
     CRC16.calculateCRC16(command: Command.set04Cmd, usDataLength: 19);
@@ -1168,32 +1237,8 @@ class DsimRepository {
     commandIndex = 46;
     endIndex = 46;
     _writeSetCommandToCharacteristic(Command.set04Cmd);
-  }
 
-  void setParameters({
-    required String location,
-    required String workingMode,
-    required int currentAttenuation,
-    required String tgcCableLength,
-    required String currentPilot,
-    required int logIntervalId,
-  }) {
-    _location = location;
-    _workingMode = workingMode;
-    _currentAttenuation = currentAttenuation.toString();
-    _tgcCableLength = tgcCableLength;
-    _pilotChannel = currentPilot;
-    _logIntervalId = logIntervalId;
-
-    setLocation(location);
-
-    // setWorkingMode(
-    //   workingMode: _workingMode,
-    //   currentAttenuation: int.parse(_currentAttenuation),
-    //   tgcCableLength: int.parse(_tgcCableLength),
-    //   currentPilot: int.parse(_pilotChannel),
-    //   logIntervalID: _logIntervalId,
-    // );
+    return await _completer.future;
   }
 
   // iOS 跟 Android 的 set command 方式不一樣
