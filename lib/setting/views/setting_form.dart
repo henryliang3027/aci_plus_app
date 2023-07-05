@@ -1,3 +1,4 @@
+import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/pilot_channel.dart';
@@ -42,20 +43,22 @@ class _ViewLayout extends StatelessWidget {
   final TextEditingController userPilotTextEditingController =
       TextEditingController();
 
+  final TextEditingController userPilot2TextEditingController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    Future<void> _showInProgressDialog() async {
+    Future<void> showInProgressDialog() async {
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return const AlertDialog(
+          return AlertDialog(
             title: Text(
-              // AppLocalizations.of(context)!.dialogTitle_settingUp,
-              'Setting',
+              AppLocalizations.of(context).dialogTitleProcessing,
             ),
             actionsAlignment: MainAxisAlignment.center,
-            actions: <Widget>[
+            actions: const <Widget>[
               CircularProgressIndicator(),
             ],
           );
@@ -63,23 +66,18 @@ class _ViewLayout extends StatelessWidget {
       );
     }
 
-    Future<void> _showSuccessDialog(String msg) async {
+    Future<void> showResultDialog(List<Row> messageRows) async {
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text(
-              'Success',
-              style: TextStyle(
-                color: CustomStyle.customGreen,
-              ),
+            title: Text(
+              AppLocalizations.of(context).dialogTitleSettingResult,
             ),
             content: SingleChildScrollView(
               child: ListBody(
-                children: <Widget>[
-                  Text(msg),
-                ],
+                children: messageRows,
               ),
             ),
             actions: <Widget>[
@@ -95,13 +93,65 @@ class _ViewLayout extends StatelessWidget {
       );
     }
 
+    String formatResultValue(String boolValue) {
+      return boolValue == 'true'
+          ? AppLocalizations.of(context).dialogMaessageSettingSuccessful
+          : AppLocalizations.of(context).dialogMaessageSettingFailed;
+    }
+
+    String formatResultItem(String item) {
+      if (item == DataKey.location.name) {
+        return AppLocalizations.of(context).dialogMaessageLocationSetting;
+      } else if (item == DataKey.tgcCableLength.name) {
+        return AppLocalizations.of(context).dialogMaessageTGCCableLengthSetting;
+      } else if (item == DataKey.logInterval.name) {
+        return AppLocalizations.of(context).dialogMaessageLogIntervalSetting;
+      } else if (item == DataKey.dsimMode.name) {
+        return AppLocalizations.of(context).dialogMaessageWorkingModeSetting;
+      } else {
+        return '';
+      }
+    }
+
+    Color getResultValueColor(String resultValue) {
+      return resultValue == 'true' ? Colors.green : Colors.red;
+    }
+
+    List<Row> getMessageRows(List<String> settingResultList) {
+      List<Row> rows = [];
+      for (String settingResult in settingResultList) {
+        String item = settingResult.split(',')[0];
+        String value = settingResult.split(',')[1];
+        Color valueColor = getResultValueColor(value);
+
+        rows.add(Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              formatResultItem(item),
+              style: TextStyle(fontSize: 16),
+            ),
+            Text(
+              formatResultValue(value),
+              style: TextStyle(
+                fontSize: 16,
+                color: valueColor,
+              ),
+            )
+          ],
+        ));
+      }
+      return rows;
+    }
+
     return BlocListener<SettingBloc, SettingState>(
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionInProgress) {
-          await _showInProgressDialog();
+          await showInProgressDialog();
         } else if (state.submissionStatus.isSubmissionSuccess) {
           Navigator.of(context).pop();
-          _showSuccessDialog('success');
+          List<Row> rows = getMessageRows(state.settingResult);
+          showResultDialog(rows);
         } else if (state.isInitialize) {
           locationTextEditingController.text = state.location.value;
 
@@ -117,15 +167,43 @@ class _ViewLayout extends StatelessWidget {
             if (settingState.isInitialize) {
               context.read<SettingBloc>().add(const Initialized());
             }
+            return settingState.isGraphType
+                ? SettingGraphView()
+                : SettingListView(
+                    locationTextEditionController:
+                        locationTextEditingController,
+                    userPilotTextEditingController:
+                        userPilotTextEditingController,
+                    userPilot2TextEditingController:
+                        userPilot2TextEditingController,
+                  );
+          } else if (homeState.settingParametersLoading.isRequestFailure) {
+            return Expanded(
+              child: Container(
+                width: double.maxFinite,
+                height: double.maxFinite,
+                color: Colors.white,
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.warning_rounded,
+                      size: 200,
+                      color: Color(0xffffc107),
+                    ),
+                    Text(
+                      'Load Setting failed',
+                    ),
+                    SizedBox(height: 40.0),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
-
-          return settingState.isGraphType
-              ? SettingGraphView()
-              : SettingListView(
-                  locationTextEditionController: locationTextEditingController,
-                  userPilotTextEditingController:
-                      userPilotTextEditingController,
-                );
         },
       ),
     );
@@ -144,7 +222,7 @@ class _ViewAction extends StatelessWidget {
                 context.read<SettingBloc>().add(const ListViewToggled());
               },
               icon: const Icon(
-                Icons.grain_sharp,
+                Icons.list_outlined,
               ),
             )
           : IconButton(
@@ -152,7 +230,7 @@ class _ViewAction extends StatelessWidget {
                 context.read<SettingBloc>().add(const GraphViewToggled());
               },
               icon: const Icon(
-                Icons.list_outlined,
+                Icons.grain_sharp,
               ));
     });
   }

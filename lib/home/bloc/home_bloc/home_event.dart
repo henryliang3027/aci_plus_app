@@ -4,13 +4,6 @@ abstract class HomeEvent extends Equatable {
   const HomeEvent();
 }
 
-class TypeNoRequested extends HomeEvent {
-  const TypeNoRequested();
-
-  @override
-  List<Object?> get props => [];
-}
-
 class SplashStateChanged extends HomeEvent {
   const SplashStateChanged();
 
@@ -48,17 +41,6 @@ class DeviceCharacteristicChanged extends HomeEvent {
   @override
   List<Object?> get props => [
         dataMapEntry,
-      ];
-}
-
-class SettingResultChanged extends HomeEvent {
-  const SettingResultChanged(this.resultDataMapEntry);
-
-  final MapEntry<DataKey, String> resultDataMapEntry;
-
-  @override
-  List<Object?> get props => [
-        resultDataMapEntry,
       ];
 }
 
@@ -100,34 +82,3 @@ class DataShared extends HomeEvent {
   @override
   List<Object?> get props => [];
 }
-
-// class SettingSubmitted extends HomeEvent {
-//   const SettingSubmitted({
-//     required this.initialValues,
-//     required this.location,
-//     required this.tgcCableLength,
-//     required this.workingMode,
-//     required this.currentAttenuation,
-//     required this.logIntervalID,
-//     required this.currentPilot,
-//   });
-
-//   final List<dynamic> initialValues;
-//   final String location;
-//   final String tgcCableLength;
-//   final String workingMode;
-//   final int currentAttenuation;
-//   final int logIntervalID;
-//   final String currentPilot;
-
-//   @override
-//   List<Object> get props => [
-//         initialValues,
-//         location,
-//         tgcCableLength,
-//         workingMode,
-//         currentAttenuation,
-//         logIntervalID,
-//         currentPilot,
-//       ];
-// }

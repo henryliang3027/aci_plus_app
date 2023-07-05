@@ -1,9 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
-import 'package:dsim_app/core/form_status.dart';
-import 'package:dsim_app/core/pilot_channel.dart';
-import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,10 +11,12 @@ class SettingListView extends StatelessWidget {
     super.key,
     required this.locationTextEditionController,
     required this.userPilotTextEditingController,
+    required this.userPilot2TextEditingController,
   });
 
   final TextEditingController locationTextEditionController;
   final TextEditingController userPilotTextEditingController;
+  final TextEditingController userPilot2TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -33,31 +32,16 @@ class SettingListView extends StatelessWidget {
                 _Location(
                   textEditingController: locationTextEditionController,
                 ),
-                const SizedBox(
-                  height: 40.0,
-                ),
                 const _TGCCabelLength(),
-                const SizedBox(
-                  height: 40.0,
-                ),
                 const _LogIntervalDropDownMenu(),
-                const SizedBox(
-                  height: 40.0,
-                ),
                 const _WorkingMode(),
-                const SizedBox(
-                  height: 40.0,
-                ),
                 _UserPilot(
                   textEditingController: userPilotTextEditingController,
                 ),
-                const SizedBox(
-                  height: 40.0,
+                _UserPilot2(
+                  textEditingController: userPilotTextEditingController,
                 ),
                 const _AGCPrepAttenator(),
-                const SizedBox(
-                  height: 160.0,
-                ),
               ],
             ),
           ),
@@ -89,7 +73,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
                     onPressed: () {
-                      context.read<SettingBloc>().add(const EditModeChanged());
+                      context.read<SettingBloc>().add(const EditModeDisabled());
                     },
                   ),
                   const SizedBox(
@@ -127,7 +111,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onPrimary,
                 ),
                 onPressed: () {
-                  context.read<SettingBloc>().add(const EditModeChanged());
+                  context.read<SettingBloc>().add(const EditModeEnabled());
                 },
               ));
   }
@@ -145,43 +129,48 @@ class _Location extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingBloc, SettingState>(
       builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-              ),
-              child: Text(
-                AppLocalizations.of(context).location,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w500,
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 40.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: Text(
+                  AppLocalizations.of(context).location,
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-            ),
-            TextField(
-              keyboardType: TextInputType.visiblePassword, // 限制只能輸入英文與標點符號
-              controller: textEditingController,
-              key: const Key('settingForm_locationInput_textField'),
-              style: const TextStyle(
-                fontSize: CustomStyle.sizeXL,
+              TextField(
+                keyboardType: TextInputType.visiblePassword, // 限制只能輸入英文與標點符號
+                controller: textEditingController,
+                key: const Key('settingForm_locationInput_textField'),
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                ),
+                enabled: state.editMode,
+                textInputAction: TextInputAction.done,
+                onChanged: (location) {
+                  context.read<SettingBloc>().add(LocationChanged(location));
+                },
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  contentPadding: EdgeInsets.all(10.0),
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
               ),
-              enabled: state.editMode,
-              textInputAction: TextInputAction.done,
-              onChanged: (location) {
-                context.read<SettingBloc>().add(LocationChanged(location));
-              },
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                contentPadding: EdgeInsets.all(10.0),
-                isDense: true,
-                filled: true,
-                fillColor: Colors.white,
-              ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
@@ -206,58 +195,66 @@ class _TGCCabelLength extends StatelessWidget {
           previous.selectedTGCCableLength != current.selectedTGCCableLength ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-              ),
-              child: Text(
-                AppLocalizations.of(context).tgcCableLength,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w500,
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 40.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: Text(
+                  AppLocalizations.of(context).tgcCableLength,
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-            ),
-            LayoutBuilder(
-              builder: (context, constraints) => ToggleButtons(
-                direction: Axis.horizontal,
-                onPressed: (int index) {
-                  if (state.editMode) {
-                    context
-                        .read<SettingBloc>()
-                        .add(TGCCableLengthChanged(tgcCableLengthTexts[index]));
-                  }
-                },
-                textStyle: const TextStyle(fontSize: 18.0),
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
+              LayoutBuilder(
+                builder: (context, constraints) => ToggleButtons(
+                  direction: Axis.horizontal,
+                  onPressed: (int index) {
+                    if (state.editMode) {
+                      context.read<SettingBloc>().add(
+                          TGCCableLengthChanged(tgcCableLengthTexts[index]));
+                    }
+                  },
+                  textStyle: const TextStyle(fontSize: 18.0),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
 
-                selectedBorderColor: state.editMode
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context)
-                        .colorScheme
-                        .inversePrimary, // indigo border color
-                selectedColor:
-                    Theme.of(context).colorScheme.onPrimary, // white text color
+                  selectedBorderColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // indigo border color
+                  selectedColor: Theme.of(context)
+                      .colorScheme
+                      .onPrimary, // white text color
 
-                fillColor: state.editMode
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.inversePrimary, // selected
-                color: Theme.of(context).colorScheme.secondary, // not selected
-                constraints: BoxConstraints.expand(
-                    width: (constraints.maxWidth - 4) /
-                        3), //number 2 is number of toggle buttons
-                isSelected: state.selectedTGCCableLength.values.toList(),
-                children: const <Widget>[
-                  Text('9'),
-                  Text('18'),
-                  Text('27'),
-                ],
+                  fillColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // selected
+                  color:
+                      Theme.of(context).colorScheme.secondary, // not selected
+                  constraints: BoxConstraints.expand(
+                      width: (constraints.maxWidth - 4) /
+                          3), //number 2 is number of toggle buttons
+                  isSelected: state.selectedTGCCableLength.values.toList(),
+                  children: const <Widget>[
+                    Text('9'),
+                    Text('18'),
+                    Text('27'),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
@@ -288,63 +285,69 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
             previous.logIntervalId != current.logIntervalId ||
             previous.editMode != current.editMode,
         builder: (context, state) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Text(
-                  AppLocalizations.of(context).logInterval,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
+          return Padding(
+            padding: const EdgeInsets.only(
+              bottom: 40.0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 16.0,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context).logInterval,
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-              DropdownButtonHideUnderline(
-                child: DropdownButton2(
-                    buttonHeight: 40,
-                    buttonDecoration: BoxDecoration(
-                      border: Border.all(
-                        color:
-                            state.editMode ? Colors.grey.shade700 : Colors.grey,
+                DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                      buttonHeight: 40,
+                      buttonDecoration: BoxDecoration(
+                        border: Border.all(
+                          color: state.editMode
+                              ? Colors.grey.shade700
+                              : Colors.grey,
+                        ),
+                        borderRadius: BorderRadius.circular(4.0),
+                        color: Colors.white,
                       ),
-                      borderRadius: BorderRadius.circular(4.0),
-                      color: Colors.white,
-                    ),
-                    dropdownMaxHeight: 200,
-                    isExpanded: true,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    value: state.logIntervalId,
-                    items: [
-                      for (String k in types.keys)
-                        DropdownMenuItem(
-                          value: types[k],
-                          child: Text(
-                            k,
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontSize: CustomStyle.sizeXL,
-                              fontWeight: FontWeight.normal,
-                              color:
-                                  state.editMode ? Colors.black : Colors.grey,
+                      dropdownMaxHeight: 200,
+                      isExpanded: true,
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      value: state.logIntervalId,
+                      items: [
+                        for (String k in types.keys)
+                          DropdownMenuItem(
+                            value: types[k],
+                            child: Text(
+                              k,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: CustomStyle.sizeXL,
+                                fontWeight: FontWeight.normal,
+                                color:
+                                    state.editMode ? Colors.black : Colors.grey,
+                              ),
                             ),
-                          ),
-                        )
-                    ],
-                    onChanged: state.editMode
-                        ? (int? value) {
-                            if (value != null) {
-                              context
-                                  .read<SettingBloc>()
-                                  .add(LogIntervalChanged(value));
+                          )
+                      ],
+                      onChanged: state.editMode
+                          ? (int? value) {
+                              if (value != null) {
+                                context
+                                    .read<SettingBloc>()
+                                    .add(LogIntervalChanged(value));
+                              }
                             }
-                          }
-                        : null),
-              ),
-            ],
+                          : null),
+                ),
+              ],
+            ),
           );
         });
   }
@@ -368,57 +371,66 @@ class _WorkingMode extends StatelessWidget {
           previous.selectedWorkingMode != current.selectedWorkingMode ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-              ),
-              child: Text(
-                AppLocalizations.of(context).workingMode,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w500,
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 40.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: Text(
+                  AppLocalizations.of(context).workingMode,
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-            ),
-            LayoutBuilder(
-              builder: (context, constraints) => ToggleButtons(
-                direction: Axis.horizontal,
-                onPressed: (int index) {
-                  if (state.editMode) {
-                    context
-                        .read<SettingBloc>()
-                        .add(WorkingModeChanged(workingModeTexts[index]));
-                  }
-                },
-                textStyle: const TextStyle(fontSize: 18.0),
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                selectedBorderColor: state.editMode
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context)
-                        .colorScheme
-                        .inversePrimary, // indigo border color
-                selectedColor:
-                    Theme.of(context).colorScheme.onPrimary, // white text color
+              LayoutBuilder(
+                builder: (context, constraints) => ToggleButtons(
+                  direction: Axis.horizontal,
+                  onPressed: (int index) {
+                    if (state.editMode) {
+                      context
+                          .read<SettingBloc>()
+                          .add(WorkingModeChanged(workingModeTexts[index]));
+                    }
+                  },
+                  textStyle: const TextStyle(fontSize: 18.0),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  selectedBorderColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // indigo border color
+                  selectedColor: Theme.of(context)
+                      .colorScheme
+                      .onPrimary, // white text color
 
-                fillColor: state.editMode
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.inversePrimary, // selected
-                color: Theme.of(context).colorScheme.secondary, // not selected
-                constraints: BoxConstraints.expand(
-                  width: (constraints.maxWidth - 4) / 3,
+                  fillColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // selected
+                  color:
+                      Theme.of(context).colorScheme.secondary, // not selected
+                  constraints: BoxConstraints.expand(
+                    width: (constraints.maxWidth - 4) / 3,
+                  ),
+                  isSelected: state.selectedWorkingMode.values.toList(),
+                  children: const <Widget>[
+                    Text('MGC'),
+                    Text('AGC'),
+                    Text('TGC'),
+                  ],
                 ),
-                isSelected: state.selectedWorkingMode.values.toList(),
-                children: const <Widget>[
-                  Text('MGC'),
-                  Text('AGC'),
-                  Text('TGC'),
-                ],
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
@@ -437,70 +449,170 @@ class _UserPilot extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingBloc, SettingState>(
       builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    '${AppLocalizations.of(context).userPilot}:',
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Text(
-                    '${state.pilotChannel} ${state.pilotMode}',
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            TextField(
-              controller: textEditingController,
-              key: const Key('settingForm_userPilotInput_textField'),
-              style: const TextStyle(
-                fontSize: CustomStyle.sizeXL,
-              ),
-              enabled: state.editMode,
-              textInputAction: TextInputAction.done,
-              onChanged: (pilotCode) =>
-                  context.read<SettingBloc>().add(PilotCodeChanged(pilotCode)),
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                contentPadding: const EdgeInsets.all(10.0),
-                isDense: true,
-                filled: true,
-                fillColor: Colors.white,
-                labelText: AppLocalizations.of(context).userPilot,
-                labelStyle: TextStyle(
-                  fontSize: CustomStyle.sizeL,
-                  color: Colors.grey.shade400,
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 40.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
                 ),
-                suffixIconConstraints: const BoxConstraints(
-                    maxHeight: 30, maxWidth: 30, minHeight: 30, minWidth: 30),
-                suffixIcon: IconButton(
-                  iconSize: 22,
-                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0),
-                  icon: const Icon(Icons.search_outlined),
-                  onPressed: () {
-                    context
-                        .read<SettingBloc>()
-                        .add(const PilotChannelSearched());
-                  },
+                child: Row(
+                  children: [
+                    Text(
+                      '${AppLocalizations.of(context).userPilot}: ',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      '${state.pilotChannel} ${state.pilotMode}',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+              TextField(
+                controller: textEditingController,
+                key: const Key('settingForm_userPilotInput_textField'),
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                ),
+                enabled: state.editMode,
+                textInputAction: TextInputAction.done,
+                onChanged: (pilotCode) => context
+                    .read<SettingBloc>()
+                    .add(PilotCodeChanged(pilotCode)),
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  contentPadding: const EdgeInsets.all(10.0),
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
+                  labelText: AppLocalizations.of(context).userPilot,
+                  labelStyle: TextStyle(
+                    fontSize: CustomStyle.sizeL,
+                    color: Colors.grey.shade400,
+                  ),
+                  suffixIconConstraints: const BoxConstraints(
+                      maxHeight: 30, maxWidth: 30, minHeight: 30, minWidth: 30),
+                  suffixIcon: IconButton(
+                    iconSize: 22,
+                    padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0),
+                    icon: const Icon(Icons.search_outlined),
+                    onPressed: () {
+                      context
+                          .read<SettingBloc>()
+                          .add(const PilotChannelSearched());
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
+      },
+    );
+  }
+}
+
+class _UserPilot2 extends StatelessWidget {
+  const _UserPilot2({
+    super.key,
+    required this.textEditingController,
+  });
+
+  final TextEditingController textEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingBloc, SettingState>(
+      builder: (context, state) {
+        return state.hasDualPilot
+            ? Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 40.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 16.0,
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            '${AppLocalizations.of(context).userPilot2}: ',
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            '${state.pilotChannel} ${state.pilotMode}',
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    TextField(
+                      controller: textEditingController,
+                      key: const Key('settingForm_userPilotInput_textField'),
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeXL,
+                      ),
+                      enabled: state.editMode,
+                      textInputAction: TextInputAction.done,
+                      onChanged: (pilotCode) => context
+                          .read<SettingBloc>()
+                          .add(PilotCodeChanged(pilotCode)),
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(4.0))),
+                        contentPadding: const EdgeInsets.all(10.0),
+                        isDense: true,
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: AppLocalizations.of(context).userPilot,
+                        labelStyle: TextStyle(
+                          fontSize: CustomStyle.sizeL,
+                          color: Colors.grey.shade400,
+                        ),
+                        suffixIconConstraints: const BoxConstraints(
+                            maxHeight: 30,
+                            maxWidth: 30,
+                            minHeight: 30,
+                            minWidth: 30),
+                        suffixIcon: IconButton(
+                          iconSize: 22,
+                          padding:
+                              const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0),
+                          icon: const Icon(Icons.search_outlined),
+                          onPressed: () {
+                            context
+                                .read<SettingBloc>()
+                                .add(const PilotChannelSearched());
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : Container();
       },
     );
   }
@@ -513,93 +625,99 @@ class _AGCPrepAttenator extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingBloc, SettingState>(
       builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 200.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      '${AppLocalizations.of(context).agcPrepAttenuator}: ',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      state.currentAttenuation.toString(),
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              child: Row(
+              SliderTheme(
+                data: const SliderThemeData(
+                  valueIndicatorColor: Colors.red,
+                  showValueIndicator: ShowValueIndicator.always,
+                ),
+                child: Slider(
+                  min: state.minAttenuation.toDouble(),
+                  max: state.maxAttenuation.toDouble(),
+                  divisions:
+                      ((state.maxAttenuation - state.minAttenuation) ~/ 50)
+                          .toInt(),
+                  value: state.currentAttenuation.toDouble(),
+                  onChanged: state.editMode
+                      ? (attenuation) {
+                          context.read<SettingBloc>().add(
+                              AGCPrepAttenuationChanged(attenuation.toInt()));
+                        }
+                      : null,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '${AppLocalizations.of(context).agcPrepAttenuator}:',
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500,
+                  IconButton.filled(
+                    icon: const Icon(
+                      Icons.remove,
                     ),
+                    onPressed: state.editMode
+                        ? () {
+                            context
+                                .read<SettingBloc>()
+                                .add(const AGCPrepAttenuationDecreased());
+                          }
+                        : null,
                   ),
-                  Text(
-                    state.currentAttenuation.toString(),
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500,
+                  IconButton.filled(
+                    icon: const Icon(
+                      Icons.circle_outlined,
                     ),
+                    onPressed: state.editMode
+                        ? () {
+                            context
+                                .read<SettingBloc>()
+                                .add(const AGCPrepAttenuationCentered());
+                          }
+                        : null,
+                  ),
+                  IconButton.filled(
+                    icon: const Icon(
+                      Icons.add,
+                    ),
+                    onPressed: state.editMode
+                        ? () {
+                            context
+                                .read<SettingBloc>()
+                                .add(const AGCPrepAttenuationIncreased());
+                          }
+                        : null,
                   ),
                 ],
               ),
-            ),
-            SliderTheme(
-              data: const SliderThemeData(
-                valueIndicatorColor: Colors.red,
-                showValueIndicator: ShowValueIndicator.always,
-              ),
-              child: Slider(
-                min: state.minAttenuation.toDouble(),
-                max: state.maxAttenuation.toDouble(),
-                divisions: ((state.maxAttenuation - state.minAttenuation) ~/ 50)
-                    .toInt(),
-                value: state.currentAttenuation.toDouble(),
-                onChanged: state.editMode
-                    ? (attenuation) {
-                        context.read<SettingBloc>().add(
-                            AGCPrepAttenuationChanged(attenuation.toInt()));
-                      }
-                    : null,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton.filled(
-                  icon: const Icon(
-                    Icons.remove,
-                  ),
-                  onPressed: state.editMode
-                      ? () {
-                          context
-                              .read<SettingBloc>()
-                              .add(const AGCPrepAttenuationDecreased());
-                        }
-                      : null,
-                ),
-                IconButton.filled(
-                  icon: const Icon(
-                    Icons.circle_outlined,
-                  ),
-                  onPressed: state.editMode
-                      ? () {
-                          context
-                              .read<SettingBloc>()
-                              .add(const AGCPrepAttenuationCentered());
-                        }
-                      : null,
-                ),
-                IconButton.filled(
-                  icon: const Icon(
-                    Icons.add,
-                  ),
-                  onPressed: state.editMode
-                      ? () {
-                          context
-                              .read<SettingBloc>()
-                              .add(const AGCPrepAttenuationIncreased());
-                        }
-                      : null,
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         );
       },
     );

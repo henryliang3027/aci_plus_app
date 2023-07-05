@@ -16,15 +16,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required DsimRepository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const HomeState()) {
-    on<TypeNoRequested>(_onTypeNoRequested); // 測試completer用
     on<SplashStateChanged>(_onSplashStateChanged);
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
     on<DeviceConnectionChanged>(_onDeviceConnectionChanged);
     on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
-
-    // on<SettingSubmitted>(_onSettingSubmitted);
-    // on<SettingResultChanged>(_onSettingResultChanged);
     on<LoadingResultChanged>(_onLoadingResultChanged);
     on<DataExported>(_onDataExported);
     on<DataShared>(_onDataShared);
@@ -38,18 +34,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   StreamSubscription<Map<DataKey, String>>?
       _characteristicDataStreamSubscription;
 
-  StreamSubscription<Map<DataKey, String>>? _settingResultStreamSubscription;
-
   StreamSubscription<DataKey>? _loadingResultStreamSubscription;
-
-  Future<void> _onTypeNoRequested(
-    TypeNoRequested event,
-    Emitter<HomeState> emit,
-  ) async {
-    String typeNo = await _dsimRepository.getInformation();
-
-    print('typeNo: $typeNo');
-  }
 
   // 進入首頁時播放動畫，動畫播完後掃描藍芽裝置
   Future<void> _onSplashStateChanged(
@@ -81,13 +66,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           scanStatus: FormStatus.requestSuccess,
           device: event.scanReport.discoveredDevice,
         ));
-        // _dsimRepository.connectDevice(state.device!);
 
         _connectionReportStreamSubscription =
             _dsimRepository.connectionStateReport.listen((connectionReport) {
           add(DeviceConnectionChanged(connectionReport));
         });
-        // _getCharacteristicData();
         break;
       case ScanStatus.failure:
         emit(state.copyWith(
@@ -133,13 +116,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           onDone: () {},
         );
 
-        _settingResultStreamSubscription = _dsimRepository.settingResult.listen(
-          (data) {
-            add(SettingResultChanged(data.entries.first));
-          },
-          onDone: () {},
-        );
-
         _loadingResultStreamSubscription =
             _dsimRepository.loadingResult.listen((data) {
           add(LoadingResultChanged(data));
@@ -169,23 +145,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     newCharacteristicData.addEntries(state.characteristicData.entries);
     newCharacteristicData[event.dataMapEntry.key] = event.dataMapEntry.value;
     emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
       characteristicData: newCharacteristicData,
     ));
   }
-
-  // void _onSettingResultChanged(
-  //   SettingResultChanged event,
-  //   Emitter<HomeState> emit,
-  // ) {
-  //   Map<DataKey, String> newSettingResultData = {};
-  //   newSettingResultData.addEntries(state.settingResultData.entries);
-  //   newSettingResultData[event.resultDataMapEntry.key] =
-  //       event.resultDataMapEntry.value;
-  //   emit(state.copyWith(
-  //     settingResultData: newSettingResultData,
-  //   ));
-  // }
 
   void _onLoadingResultChanged(
     LoadingResultChanged event,
@@ -290,71 +252,4 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ));
     }
   }
-
-  // void _onSettingSubmitted(
-  //   SettingSubmitted event,
-  //   Emitter<HomeState> emit,
-  // ) {
-  //   Map<DataKey, String> newSettingResultData = {
-  //     DataKey.locationSet: '-1',
-  //     DataKey.tgcCableLengthSet: '-1',
-  //     DataKey.logIntervalSet: '-1'
-  //   };
-
-  // initialValues: [
-  //   event.location,
-  //   event.tgcCableLength,
-  //   event.logIntervalId,
-  //   event.workingMode,
-  //   event.currentAttenuation,
-  // ],
-
-  // 如果設定值跟初始值一樣就不用設定
-  // if (event.location == event.initialValues[0]) {
-  //   newSettingResultData[DataKey.locationSet] = '1';
-  // }
-  // if (event.tgcCableLength == event.initialValues[1]) {
-  //   newSettingResultData[DataKey.tgcCableLengthSet] = '1';
-  // }
-
-  // if (event.logIntervalID == event.initialValues[2]) {
-  //   newSettingResultData[DataKey.logIntervalSet] = '1';
-  // }
-
-  // if (event.workingMode == event.initialValues[3]) {
-  //   newSettingResultData[DataKey.dsimModeSet] = '1';
-  // }
-
-  // emit(state.copyWith(
-  //   submissionStatus: SubmissionStatus.submissionInProgress,
-  //   settingResultData: newSettingResultData,
-  // ));
-
-  // 23307-66th Avenue South Kent WA98032
-
-  // if (newSettingResultData[DataKey.locationSet] == '-1') {
-  //   _dsimRepository.setLocation(event.location);
-  // }
-  // if (newSettingResultData[DataKey.tgcCableLengthSet] == '-1') {
-  //   _dsimRepository.setTGCCableLength(
-  //     workingMode: event.workingMode,
-  //     currentAttenuation: event.currentAttenuation,
-  //     tgcCableLength: int.parse(event.tgcCableLength),
-  //     currentPilot: int.parse(event.currentPilot),
-  //     logIntervalID: event.logIntervalID,
-  //   );
-  // }
-
-  // _dsimRepository.setLogInterval(
-  //   logIntervalID: event.logIntervalID,
-  // );
-
-  // _dsimRepository.setTGCCableLength(
-  //   workingMode: event.workingMode,
-  //   currentAttenuation: event.currentAttenuation,
-  //   tgcCableLength: int.parse(event.tgcCableLength),
-  //   currentPilot: int.parse(event.currentPilot),
-  //   logIntervalID: event.logIntervalID,
-  // );
-  // }
 }

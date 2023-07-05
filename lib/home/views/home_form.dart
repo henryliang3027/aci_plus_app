@@ -1,13 +1,10 @@
 import 'package:dsim_app/about/about_page.dart';
 import 'package:dsim_app/chart/view/chart_page.dart';
-import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
-import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/information/views/information_page.dart';
 import 'package:dsim_app/setting/views/setting_page.dart';
 import 'package:dsim_app/status/views/status_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeForm extends StatefulWidget {

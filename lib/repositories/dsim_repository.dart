@@ -86,6 +86,7 @@ class SettingData {
     required this.minAttenuation,
     required this.currentAttenuation,
     required this.centerAttenuation,
+    required this.hasDualPilot,
   });
   final String location;
   final String tgcCableLength;
@@ -97,6 +98,7 @@ class SettingData {
   final String minAttenuation;
   final String currentAttenuation;
   final String centerAttenuation;
+  final bool hasDualPilot;
 }
 
 class DsimRepository {
@@ -104,13 +106,12 @@ class DsimRepository {
     _calculateCRCs();
   }
   final FlutterReactiveBle _ble;
-  final scanDuration = 3; // sec
+  final _scanDuration = 3; // sec
+  final _connectionTimeout = 10; //sec
   late StreamController<ScanReport> _scanReportStreamController;
   StreamController<ConnectionReport> _connectionReportStreamController =
       StreamController<ConnectionReport>();
   StreamController<Map<DataKey, String>> _characteristicDataStreamController =
-      StreamController<Map<DataKey, String>>();
-  StreamController<Map<DataKey, String>> _settingResultStreamController =
       StreamController<Map<DataKey, String>>();
   StreamController<DataKey> _loadingResultStreamController =
       StreamController<DataKey>();
@@ -130,11 +131,10 @@ class DsimRepository {
   int commandIndex = 0;
   int endIndex = 37;
 
-  late Completer<bool> _completer;
+  late Completer<dynamic> _completer;
   bool _isSetting = false;
 
   String _tempLocation = '';
-  int _basicModeID = 0;
   String _basicCurrentPilot = '';
   int _basicCurrentPilotMode = 0;
   int _currentSettingMode = 0;
@@ -148,13 +148,8 @@ class DsimRepository {
   final List<int> _rawEvent = [];
   final List<Event> _events = [];
   final int _totalBytesPerCommand = 261;
-  List<bool> parameterSettingList = [
-    false, // 是否需要設定 location
-    false, // 是否需要設定 tgc cable length
-    false, // 是否需要設定 log interval
-    false, // 是否需要設定 working mode
-  ];
 
+  // 給 setting page 用
   String _location = '';
   String _tgcCableLength = '';
   String _workingMode = '';
@@ -165,6 +160,12 @@ class DsimRepository {
   String _minAttenuation = '';
   String _currentAttenuation = '';
   String _centerAttenuation = '';
+
+  // 記錄欲設定的 workingModeId
+  int _workingModeId = 0;
+  final int _agcWorkingModeSettingDuration = 30;
+
+  bool _hasDualPilot = false;
 
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
@@ -211,7 +212,7 @@ class DsimRepository {
       });
       yield* _scanReportStreamController.stream.timeout(
           Duration(
-            seconds: scanDuration,
+            seconds: _scanDuration,
           ), onTimeout: (sink) {
         print('Stop Scanning');
         _scanReportStreamController.add(
@@ -238,10 +239,6 @@ class DsimRepository {
     yield* _characteristicDataStreamController.stream;
   }
 
-  Stream<Map<DataKey, String>> get settingResult async* {
-    yield* _settingResultStreamController.stream;
-  }
-
   Stream<DataKey> get loadingResult async* {
     yield* _loadingResultStreamController.stream;
   }
@@ -251,6 +248,7 @@ class DsimRepository {
     _rawLog.clear();
     _events.clear();
     _rawEvent.clear();
+    _hasDualPilot = false;
     commandIndex = 0;
     endIndex = 37;
   }
@@ -285,8 +283,8 @@ class DsimRepository {
     _connectionStreamSubscription = _ble
         .connectToDevice(
             id: discoveredDevice.id,
-            connectionTimeout: const Duration(
-              seconds: 10,
+            connectionTimeout: Duration(
+              seconds: _connectionTimeout,
             ))
         .listen((connectionStateUpdate) async {
       _connectionReportStreamController.add(ConnectionReport(
@@ -296,10 +294,6 @@ class DsimRepository {
           DeviceConnectionState.connected) {
         // initialize _characteristicDataStreamController
         _characteristicDataStreamController =
-            StreamController<Map<DataKey, String>>();
-
-        // initialize _settingResultStreamController
-        _settingResultStreamController =
             StreamController<Map<DataKey, String>>();
 
         _qualifiedCharacteristic = QualifiedCharacteristic(
@@ -553,7 +547,13 @@ class DsimRepository {
         for (int i = 3; i < 15; i++) {
           partNo += String.fromCharCode(rawData[i]);
         }
+
         partNo = partNo.trim();
+
+        // 如果是 dual, 會有兩的 pilot channel
+        if (partNo.startsWith('DSIM-CG')) {
+          _hasDualPilot = true;
+        }
         _characteristicDataStreamController.add({DataKey.partNo: partNo});
         break;
       case 2:
@@ -598,7 +598,7 @@ class DsimRepository {
         // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
         // setLogInterval function 就會回傳結果給 caller
         if (_isSetting) {
-          _completer.complete(true);
+          _completer.complete(_logIntervalId);
           _isSetting = false;
         }
 
@@ -612,7 +612,7 @@ class DsimRepository {
         _basicCurrentPilot = rawData[7].toString();
         _basicCurrentPilotMode = rawData[8];
 
-        String basicTGCCableLength = rawData[6].toString();
+        String tgcCableLength = rawData[6].toString();
 
         _characteristicDataStreamController
             .add({DataKey.currentAttenuation: currentAttenuator.toString()});
@@ -620,12 +620,12 @@ class DsimRepository {
         _characteristicDataStreamController
             .add({DataKey.maxAttenuation: '3000'});
         _characteristicDataStreamController
-            .add({DataKey.tgcCableLength: basicTGCCableLength});
+            .add({DataKey.tgcCableLength: tgcCableLength});
 
         // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
         // setTGCCableLength function 就會回傳結果給 caller
         if (_isSetting) {
-          _completer.complete(true);
+          _completer.complete(tgcCableLength);
           _isSetting = false;
         }
 
@@ -639,7 +639,7 @@ class DsimRepository {
         _maxAttenuation = '3000';
 
         // setting data _tgcCableLength
-        _tgcCableLength = basicTGCCableLength;
+        _tgcCableLength = tgcCableLength;
         break;
 
       case 5:
@@ -656,25 +656,25 @@ class DsimRepository {
         {
           case 1:
             {
-              _basicModeID = 1;
+              // _basicModeID = 1;
               dsimMode = "Align";
               break;
             }
           case 2:
             {
-              _basicModeID = 2;
+              // _basicModeID = 2;
               dsimMode = "AGC";
               break;
             }
           case 3:
             {
-              _basicModeID = 3;
+              // _basicModeID = 3;
               dsimMode = "TGC";
               break;
             }
           case 4:
             {
-              _basicModeID = 4;
+              // _basicModeID = 4;
               dsimMode = "MGC";
               break;
             }
@@ -731,7 +731,7 @@ class DsimRepository {
         // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
         // setWorkingMode function 就會回傳結果給 caller
         if (_isSetting) {
-          _completer.complete(true);
+          _completer.complete(dsimMode);
           _isSetting = false;
         }
 
@@ -824,36 +824,10 @@ class DsimRepository {
         // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
         // setLocation function 就會回傳結果給 caller
         if (_isSetting) {
-          _completer.complete(true);
+          _completer.complete(_location);
           _isSetting = false;
         }
 
-        break;
-      case 17:
-        break;
-      case 18:
-        break;
-      case 19:
-        break;
-      case 20:
-        break;
-      case 21:
-        break;
-      case 22:
-        break;
-      case 23:
-        break;
-      case 24:
-        break;
-      case 25:
-        break;
-      case 26:
-        break;
-      case 27:
-        break;
-      case 28:
-        break;
-      case 29:
         break;
       default:
         break;
@@ -951,6 +925,12 @@ class DsimRepository {
           (rawData[4] == 0x00) &&
           (rawData[5] == 0x06)) {
         print('set working mode done');
+
+        // 如果 _workingModeId == 1 也就是 AGC, 則等待30秒後再讀回資料
+        if (_workingModeId == 1) {
+          await Future.delayed(
+              Duration(seconds: _agcWorkingModeSettingDuration));
+        }
 
         commandIndex = 5;
         endIndex = 5;
@@ -1077,24 +1057,9 @@ class DsimRepository {
     }
   }
 
-  int getWorkingModeID(String workingMode) {
-    switch (workingMode) {
-      case 'Align':
-        return 1;
-      case 'AGC':
-        return 2;
-      case 'TGC':
-        return 3;
-      case 'MGC':
-        return 4;
-      default:
-        return 2;
-    }
-  }
-
   Future<bool> setLocation(String location) async {
     _isSetting = true;
-    _completer = Completer<bool>();
+    _completer = Completer<dynamic>();
     int newLength = location.length;
     int imod;
     int index;
@@ -1154,7 +1119,7 @@ class DsimRepository {
       }
     } //1
 
-    // _calculateLocationCRCs
+    // calculateLocationCRCs
     CRC16.calculateCRC16(command: Command.setLoc9Cmd, usDataLength: 19);
     CRC16.calculateCRC16(command: Command.setLocACmd, usDataLength: 19);
     CRC16.calculateCRC16(command: Command.setLocBCmd, usDataLength: 19);
@@ -1168,7 +1133,14 @@ class DsimRepository {
       Command.setLoc9Cmd,
     );
 
-    return await _completer.future;
+    // 設定後重新讀取 location 來比對是否設定成功
+    String newLocation = await _completer.future;
+
+    if (newLocation == location) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Future<bool> setTGCCableLength({
@@ -1178,7 +1150,7 @@ class DsimRepository {
     required int logIntervalId,
   }) async {
     _isSetting = true;
-    _completer = Completer<bool>();
+    _completer = Completer<dynamic>();
 
     Command.set04Cmd[7] = 3; //3 TGC
     Command.set04Cmd[8] = currentAttenuation ~/ 256; //MGC Value 2Bytes
@@ -1195,23 +1167,37 @@ class DsimRepository {
     endIndex = 44;
     _writeSetCommandToCharacteristic(Command.set04Cmd);
 
-    return await _completer.future;
-  } //set04CL
+    // 設定後重新讀取 tgc cable length 來比對是否設定成功
+    String newTgcCableLength = await _completer.future;
+
+    if (newTgcCableLength == tgcCableLength) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   Future<bool> setLogInterval({
-    required int logIntervalID,
+    required int logIntervalId,
   }) async {
     _isSetting = true;
-    _completer = Completer<bool>();
+    _completer = Completer<dynamic>();
     Command.set04Cmd[7] = 0x08; // 8
-    Command.set04Cmd[13] = logIntervalID; // Log Minutes 1Byte
+    Command.set04Cmd[13] = logIntervalId; // Log Minutes 1Byte
     CRC16.calculateCRC16(command: Command.set04Cmd, usDataLength: 19);
 
     commandIndex = 45;
     endIndex = 45;
     _writeSetCommandToCharacteristic(Command.set04Cmd);
 
-    return await _completer.future;
+    // 設定後重新讀取 log interval 來比對是否設定成功
+    int newLogIntervalId = await _completer.future;
+
+    if (newLogIntervalId == logIntervalId) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Future<bool> setWorkingMode({
@@ -1222,8 +1208,9 @@ class DsimRepository {
     required int logIntervalId,
   }) async {
     _isSetting = true;
-    _completer = Completer<bool>();
-    Command.set04Cmd[7] = getWorkingModeID(workingMode);
+    _completer = Completer<dynamic>();
+    _workingModeId = getWorkingModeId(workingMode);
+    Command.set04Cmd[7] = _workingModeId;
     Command.set04Cmd[8] = currentAttenuation ~/ 256; //MGC Value 2Bytes
     Command.set04Cmd[9] = currentAttenuation % 256; //MGC Value
     Command.set04Cmd[10] = int.parse(tgcCableLength); //TGC Cable length
@@ -1238,7 +1225,27 @@ class DsimRepository {
     endIndex = 46;
     _writeSetCommandToCharacteristic(Command.set04Cmd);
 
-    return await _completer.future;
+    // 設定後重新讀取 working mode 來比對是否設定成功
+    String newWorkingMode = await _completer.future;
+
+    if (newWorkingMode == workingMode) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  int getWorkingModeId(String workingMode) {
+    switch (workingMode) {
+      case 'AGC':
+        return 1;
+      case 'TGC':
+        return 3;
+      case 'MGC':
+        return 4;
+      default:
+        return 1;
+    }
   }
 
   // iOS 跟 Android 的 set command 方式不一樣
@@ -1603,6 +1610,7 @@ class DsimRepository {
       minAttenuation: _minAttenuation,
       currentAttenuation: _currentAttenuation,
       centerAttenuation: _centerAttenuation,
+      hasDualPilot: _hasDualPilot,
     );
   }
 }

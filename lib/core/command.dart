@@ -31,10 +31,6 @@ enum DataKey {
   maxVoltageRipple,
   logs,
   tgcCableLength,
-  locationSet, // location setting result
-  tgcCableLengthSet, // tgc cable length setting result
-  logIntervalSet, // log interval setting result
-  dsimModeSet, // DSIM mode setting result
   settingParametersLoadingComplete, // indicate setting page's parameter loading complete
   eventRecordsLoadingComplete, // indicate event recorde loading complete
 }

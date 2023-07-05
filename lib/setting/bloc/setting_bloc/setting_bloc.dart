@@ -1,3 +1,4 @@
+import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/pilot_channel.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
@@ -26,7 +27,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     on<AGCPrepAttenuationIncreased>(_onAGCPrepAttenuationIncreased);
     on<AGCPrepAttenuationDecreased>(_onAGCPrepAttenuationDecreased);
     on<AGCPrepAttenuationCentered>(_onAGCPrepAttenuationCentered);
-    on<EditModeChanged>(_onEditModeChanged);
+    on<EditModeEnabled>(_onEditModeEnabled);
+    on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
@@ -91,6 +93,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       minAttenuation: minAttenuation,
       currentAttenuation: currentAttenuation,
       centerAttenuation: centerAttenuation,
+      hasDualPilot: settingData.hasDualPilot,
       isInitialize: true,
       submissionStatus: SubmissionStatus.none,
     ));
@@ -360,14 +363,25 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     ));
   }
 
-  void _onEditModeChanged(
-    EditModeChanged event,
+  void _onEditModeEnabled(
+    EditModeEnabled event,
     Emitter<SettingState> emit,
   ) {
     emit(state.copyWith(
-      isInitialize: false,
       submissionStatus: SubmissionStatus.none,
-      editMode: !state.editMode,
+      isInitialize: false,
+      editMode: true,
+    ));
+  }
+
+  void _onEditModeDisabled(
+    EditModeDisabled event,
+    Emitter<SettingState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      isInitialize: true,
+      editMode: false,
     ));
   }
 
@@ -389,14 +403,14 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     ));
 
     String workingMode = _getWorkingMode();
-
     String tgcCableLength = _getTgcCableLength();
+    List<String> settingResult = [];
 
     if (state.location.value != state.initialValues[0]) {
       bool resultOfSettingLocation =
           await _dsimRepository.setLocation(state.location.value);
 
-      print('resultOfSettingLocation: $resultOfSettingLocation');
+      settingResult.add('${DataKey.location.name},$resultOfSettingLocation');
     }
 
     if (tgcCableLength != state.initialValues[1]) {
@@ -408,13 +422,17 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         logIntervalId: state.logIntervalId,
       );
 
-      print('resultOfSettingTGCCableLength: $resultOfSettingTGCCableLength');
+      settingResult
+          .add('${DataKey.tgcCableLength.name},$resultOfSettingTGCCableLength');
     }
 
     if (state.logIntervalId != state.initialValues[2]) {
       bool resultOfSettingLogInterval = await _dsimRepository.setLogInterval(
-        logIntervalID: state.logIntervalId,
+        logIntervalId: state.logIntervalId,
       );
+
+      settingResult
+          .add('${DataKey.logInterval.name},$resultOfSettingLogInterval');
     }
 
     if (workingMode != state.initialValues[3]) {
@@ -425,21 +443,16 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         currentPilot: state.pilotChannel,
         logIntervalId: state.logIntervalId,
       );
+
+      settingResult.add('${DataKey.dsimMode.name},$resultOfSettingWorkingMode');
     }
 
-    // await Future.delayed(const Duration(seconds: 2));
-
-    // String result = await _dsimRepository.setParameters(
-    //   location: state.location.value,
-    //   workingMode: workingMode,
-    //   currentAttenuation: state.currentAttenuation,
-    //   tgcCableLength: tgcCableLength,
-    //   currentPilot: state.pilotChannel,
-    //   logIntervalId: state.logIntervalId,
-    // );
-
     emit(state.copyWith(
+      isInitialize: true,
       submissionStatus: SubmissionStatus.submissionSuccess,
+      settingResult: settingResult,
+      enableSubmission: false,
+      editMode: false,
     ));
   }
 

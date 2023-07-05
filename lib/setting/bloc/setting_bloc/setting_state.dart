@@ -24,9 +24,11 @@ class SettingState extends Equatable {
     this.minAttenuation = 0,
     this.currentAttenuation = 0,
     this.centerAttenuation = 0,
+    this.hasDualPilot = false,
     this.editMode = false,
     this.enableSubmission = false,
     this.isInitialize = true,
+    this.settingResult = const [],
   });
 
   final SubmissionStatus submissionStatus;
@@ -43,9 +45,11 @@ class SettingState extends Equatable {
   final int minAttenuation;
   final int currentAttenuation;
   final int centerAttenuation;
+  final bool hasDualPilot;
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
+  final List<String> settingResult;
 
   SettingState copyWith({
     SubmissionStatus? submissionStatus,
@@ -62,9 +66,11 @@ class SettingState extends Equatable {
     int? minAttenuation,
     int? currentAttenuation,
     int? centerAttenuation,
+    bool? hasDualPilot,
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
+    List<String>? settingResult,
   }) {
     return SettingState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
@@ -82,9 +88,11 @@ class SettingState extends Equatable {
       minAttenuation: minAttenuation ?? this.minAttenuation,
       currentAttenuation: currentAttenuation ?? this.currentAttenuation,
       centerAttenuation: centerAttenuation ?? this.centerAttenuation,
+      hasDualPilot: hasDualPilot ?? this.hasDualPilot,
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
+      settingResult: settingResult ?? this.settingResult,
     );
   }
 
@@ -104,8 +112,10 @@ class SettingState extends Equatable {
         minAttenuation,
         currentAttenuation,
         centerAttenuation,
+        hasDualPilot,
         editMode,
         enableSubmission,
         isInitialize,
+        settingResult,
       ];
 }
