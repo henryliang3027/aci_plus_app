@@ -99,6 +99,26 @@ class PilotChannelSearched extends SettingEvent {
   List<Object> get props => [];
 }
 
+class Pilot2CodeChanged extends SettingEvent {
+  const Pilot2CodeChanged(
+    this.pilot2Code,
+  );
+
+  final String pilot2Code;
+
+  @override
+  List<Object> get props => [
+        pilot2Code,
+      ];
+}
+
+class Pilot2ChannelSearched extends SettingEvent {
+  const Pilot2ChannelSearched();
+
+  @override
+  List<Object> get props => [];
+}
+
 class AGCPrepAttenuationChanged extends SettingEvent {
   const AGCPrepAttenuationChanged(this.attenuation);
 

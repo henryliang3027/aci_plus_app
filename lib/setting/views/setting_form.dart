@@ -66,7 +66,7 @@ class _ViewLayout extends StatelessWidget {
       );
     }
 
-    Future<void> showResultDialog(List<Row> messageRows) async {
+    Future<void> showResultDialog(List<Widget> messageRows) async {
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
@@ -117,28 +117,33 @@ class _ViewLayout extends StatelessWidget {
       return resultValue == 'true' ? Colors.green : Colors.red;
     }
 
-    List<Row> getMessageRows(List<String> settingResultList) {
-      List<Row> rows = [];
+    List<Widget> getMessageRows(List<String> settingResultList) {
+      List<Widget> rows = [];
       for (String settingResult in settingResultList) {
         String item = settingResult.split(',')[0];
         String value = settingResult.split(',')[1];
         Color valueColor = getResultValueColor(value);
 
-        rows.add(Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              formatResultItem(item),
-              style: TextStyle(fontSize: 16),
-            ),
-            Text(
-              formatResultValue(value),
-              style: TextStyle(
-                fontSize: 16,
-                color: valueColor,
+        rows.add(Padding(
+          padding: const EdgeInsets.only(
+            bottom: 8.0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                formatResultItem(item),
+                style: const TextStyle(fontSize: 16),
               ),
-            )
-          ],
+              Text(
+                formatResultValue(value),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: valueColor,
+                ),
+              )
+            ],
+          ),
         ));
       }
       return rows;
@@ -150,13 +155,13 @@ class _ViewLayout extends StatelessWidget {
           await showInProgressDialog();
         } else if (state.submissionStatus.isSubmissionSuccess) {
           Navigator.of(context).pop();
-          List<Row> rows = getMessageRows(state.settingResult);
+          List<Widget> rows = getMessageRows(state.settingResult);
           showResultDialog(rows);
         } else if (state.isInitialize) {
           locationTextEditingController.text = state.location.value;
 
-          userPilotTextEditingController.text =
-              PilotChannel.channelCode[state.pilotCode] ?? '';
+          userPilotTextEditingController.text = state.pilotCode;
+          userPilot2TextEditingController.text = state.pilot2Code;
         }
       },
       child: Builder(

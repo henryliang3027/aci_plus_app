@@ -39,7 +39,7 @@ class SettingListView extends StatelessWidget {
                   textEditingController: userPilotTextEditingController,
                 ),
                 _UserPilot2(
-                  textEditingController: userPilotTextEditingController,
+                  textEditingController: userPilot2TextEditingController,
                 ),
                 const _AGCPrepAttenator(),
               ],
@@ -558,7 +558,7 @@ class _UserPilot2 extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '${state.pilotChannel} ${state.pilotMode}',
+                            '${state.pilot2Channel} ${state.pilot2Mode}',
                             style: const TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.w500,
@@ -577,7 +577,7 @@ class _UserPilot2 extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       onChanged: (pilotCode) => context
                           .read<SettingBloc>()
-                          .add(PilotCodeChanged(pilotCode)),
+                          .add(Pilot2CodeChanged(pilotCode)),
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(
                             borderRadius:
@@ -604,7 +604,7 @@ class _UserPilot2 extends StatelessWidget {
                           onPressed: () {
                             context
                                 .read<SettingBloc>()
-                                .add(const PilotChannelSearched());
+                                .add(const Pilot2ChannelSearched());
                           },
                         ),
                       ),
