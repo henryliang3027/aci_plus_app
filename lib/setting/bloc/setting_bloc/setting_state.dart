@@ -17,12 +17,14 @@ class SettingState extends Equatable {
       'TGC': false,
     },
     this.logIntervalId = 1,
+    this.pilotChannelStatus = FormStatus.none,
     this.pilotChannel = '',
     this.pilotMode = '', // IRC or DIG
-    this.pilotCode = '',
+    this.pilotCode = const PilotCode.pure(),
+    this.pilot2ChannelStatus = FormStatus.none,
     this.pilot2Channel = '',
     this.pilot2Mode = '', // IRC or DIG
-    this.pilot2Code = '',
+    this.pilot2Code = const PilotCode.pure(),
     this.maxAttenuation = 3000,
     this.minAttenuation = 0,
     this.currentAttenuation = 0,
@@ -41,12 +43,14 @@ class SettingState extends Equatable {
   final Map<String, bool> selectedTGCCableLength;
   final Map<String, bool> selectedWorkingMode;
   final int logIntervalId;
+  final FormStatus pilotChannelStatus;
   final String pilotChannel;
   final String pilotMode;
-  final String pilotCode;
+  final PilotCode pilotCode;
+  final FormStatus pilot2ChannelStatus;
   final String pilot2Channel;
   final String pilot2Mode;
-  final String pilot2Code;
+  final PilotCode pilot2Code;
   final int maxAttenuation;
   final int minAttenuation;
   final int currentAttenuation;
@@ -65,12 +69,14 @@ class SettingState extends Equatable {
     Map<String, bool>? selectedTGCCableLength,
     Map<String, bool>? selectedWorkingMode,
     int? logIntervalId,
+    FormStatus? pilotChannelStatus,
     String? pilotChannel,
     String? pilotMode,
-    String? pilotCode,
+    PilotCode? pilotCode,
+    FormStatus? pilot2ChannelStatus,
     String? pilot2Channel,
     String? pilot2Mode,
-    String? pilot2Code,
+    PilotCode? pilot2Code,
     int? maxAttenuation,
     int? minAttenuation,
     int? currentAttenuation,
@@ -90,9 +96,11 @@ class SettingState extends Equatable {
           selectedTGCCableLength ?? this.selectedTGCCableLength,
       selectedWorkingMode: selectedWorkingMode ?? this.selectedWorkingMode,
       logIntervalId: logIntervalId ?? this.logIntervalId,
+      pilotChannelStatus: pilotChannelStatus ?? this.pilotChannelStatus,
       pilotChannel: pilotChannel ?? this.pilotChannel,
       pilotMode: pilotMode ?? this.pilotMode,
       pilotCode: pilotCode ?? this.pilotCode,
+      pilot2ChannelStatus: pilot2ChannelStatus ?? this.pilot2ChannelStatus,
       pilot2Channel: pilot2Channel ?? this.pilot2Channel,
       pilot2Mode: pilot2Mode ?? this.pilot2Mode,
       pilot2Code: pilot2Code ?? this.pilot2Code,
@@ -117,9 +125,11 @@ class SettingState extends Equatable {
         selectedTGCCableLength,
         selectedWorkingMode,
         logIntervalId,
+        pilotChannelStatus,
         pilotChannel,
         pilotMode,
         pilotCode,
+        pilot2ChannelStatus,
         pilot2Channel,
         pilot2Mode,
         pilot2Code,

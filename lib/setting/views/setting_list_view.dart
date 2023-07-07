@@ -160,6 +160,7 @@ class _Location extends StatelessWidget {
                 onChanged: (location) {
                   context.read<SettingBloc>().add(LocationChanged(location));
                 },
+                maxLength: 40,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(4.0))),
@@ -514,6 +515,11 @@ class _UserPilot extends StatelessWidget {
                           .add(const PilotChannelSearched());
                     },
                   ),
+                  errorMaxLines: 2,
+                  errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
+                  errorText: state.pilotCode.isNotValid
+                      ? AppLocalizations.of(context).pilotCodeFormatError
+                      : null,
                 ),
               ),
             ],
@@ -607,6 +613,12 @@ class _UserPilot2 extends StatelessWidget {
                                 .add(const Pilot2ChannelSearched());
                           },
                         ),
+                        errorMaxLines: 2,
+                        errorStyle:
+                            const TextStyle(fontSize: CustomStyle.sizeS),
+                        errorText: state.pilot2Code.isNotValid
+                            ? AppLocalizations.of(context).pilotCodeFormatError
+                            : null,
                       ),
                     ),
                   ],

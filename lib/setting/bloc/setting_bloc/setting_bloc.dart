@@ -3,6 +3,7 @@ import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/pilot_channel.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:dsim_app/setting/model/location.dart';
+import 'package:dsim_app/setting/model/pilot_code.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,6 +78,12 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         ? int.parse(settingData.centerAttenuation)
         : 0;
 
+    final PilotCode pilotCode = PilotCode.dirty(settingData.pilotCode);
+    final PilotCode pilot2Code = PilotCode.dirty(settingData.pilot2Code);
+    final List<String>? pilot = _getPilotChannelAndMode(settingData.pilotCode);
+    final List<String>? pilot2 =
+        _getPilotChannelAndMode(settingData.pilot2Code);
+
     emit(state.copyWith(
       initialValues: [
         settingData.location,
@@ -89,12 +96,12 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       selectedTGCCableLength: newSelectedTGCCableLength,
       selectedWorkingMode: newSelectedWorkingMode,
       logIntervalId: settingData.logIntervalId,
-      pilotChannel: _getPilotChannel(settingData.pilotCode),
-      pilotMode: _getPilotMode(settingData.pilotCode),
-      pilotCode: settingData.pilotCode,
-      pilot2Channel: _getPilotChannel(settingData.pilot2Code),
-      pilot2Mode: _getPilotMode(settingData.pilot2Code),
-      pilot2Code: settingData.pilot2Code,
+      pilotChannel: pilot != null ? pilot[0] : '',
+      pilotMode: pilot != null ? pilot[1] : '',
+      pilotCode: pilotCode,
+      pilot2Channel: pilot2 != null ? pilot2[0] : '',
+      pilot2Mode: pilot2 != null ? pilot2[1] : '',
+      pilot2Code: pilot2Code,
       maxAttenuation: maxAttenuation,
       minAttenuation: minAttenuation,
       currentAttenuation: currentAttenuation,
@@ -201,31 +208,52 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     }
   }
 
-  String _getPilotChannel(String pilotCode) {
-    String adjustedPilotCode = pilotCode;
-    if (adjustedPilotCode.isNotEmpty) {
+  List<String>? _getPilotChannelAndMode(String pilotCode) {
+    if (pilotCode.substring(pilotCode.length - 1) != '@' &&
+        pilotCode.substring(pilotCode.length - 1) != 'A') {
+      return null;
+    } else {
+      String pilotMode = '';
+      String adjustedPilotCode = pilotCode;
+      if (pilotCode.substring(pilotCode.length - 1) == '@') {
+        pilotMode = 'IRC';
+      } else if (pilotCode.substring(pilotCode.length - 1) == 'A') {
+        pilotMode = 'DIG';
+      } else {
+        pilotMode = '';
+      }
+
       if (adjustedPilotCode.substring(adjustedPilotCode.length - 1) == '@') {
         adjustedPilotCode =
             '${adjustedPilotCode.substring(0, adjustedPilotCode.length - 1)}A';
       }
+
+      String pilotChannel = PilotChannel.channelCode.keys.firstWhere(
+        (k) => PilotChannel.channelCode[k] == adjustedPilotCode,
+        orElse: () => '',
+      );
+
+      if (pilotChannel == '') {
+        return null;
+      } else {
+        return [
+          pilotChannel,
+          pilotMode,
+        ];
+      }
     }
-
-    String pilotChannel = PilotChannel.channelCode.keys.firstWhere(
-      (k) => PilotChannel.channelCode[k] == adjustedPilotCode,
-      orElse: () => '',
-    );
-
-    return pilotChannel;
   }
 
   void _onPilotCodeChanged(
     PilotCodeChanged event,
     Emitter<SettingState> emit,
   ) {
+    final PilotCode pilotCode = PilotCode.dirty(event.pilotCode);
+
     emit(state.copyWith(
       isInitialize: false,
       submissionStatus: SubmissionStatus.none,
-      pilotCode: event.pilotCode,
+      pilotCode: pilotCode,
     ));
   }
 
@@ -233,33 +261,49 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     PilotChannelSearched event,
     Emitter<SettingState> emit,
   ) async {
-    String pilotChannel = _getPilotChannel(state.pilotCode);
-    String pilotMode = _getPilotMode(state.pilotCode);
-
-    await _dsimRepository.writePilotCode(state.pilotCode);
-
-    bool enableSubmission = state.pilotCode.isNotEmpty &&
-        state.pilot2Code.isNotEmpty &&
-        state.pilotChannel.isNotEmpty &&
-        state.pilot2Channel.isNotEmpty;
-
     emit(state.copyWith(
-      isInitialize: false,
-      submissionStatus: SubmissionStatus.none,
-      pilotChannel: pilotChannel,
-      pilotMode: pilotMode,
-      enableSubmission: enableSubmission,
+      pilotChannelStatus: FormStatus.requestInProgress,
     ));
+
+    List<String>? pilot = _getPilotChannelAndMode(state.pilotCode.value);
+
+    if (pilot == null) {
+      emit(state.copyWith(
+        isInitialize: false,
+        submissionStatus: SubmissionStatus.none,
+        pilotChannelStatus: FormStatus.requestFailure,
+        enableSubmission: false,
+      ));
+    } else {
+      String pilotChannel = pilot[0];
+      String pilotMode = pilot[1];
+      await _dsimRepository.writePilotCode(state.pilotCode.value);
+
+      bool enableSubmission = state.pilotCode.value.isNotEmpty &&
+          state.pilot2Code.value.isNotEmpty &&
+          state.pilotChannel.isNotEmpty &&
+          state.pilot2Channel.isNotEmpty;
+
+      emit(state.copyWith(
+        isInitialize: false,
+        submissionStatus: SubmissionStatus.none,
+        pilotChannel: pilotChannel,
+        pilotMode: pilotMode,
+        enableSubmission: enableSubmission,
+      ));
+    }
   }
 
   void _onPilot2CodeChanged(
     Pilot2CodeChanged event,
     Emitter<SettingState> emit,
   ) {
+    final PilotCode pilot2Code = PilotCode.dirty(event.pilot2Code);
+
     emit(state.copyWith(
       isInitialize: false,
       submissionStatus: SubmissionStatus.none,
-      pilot2Code: event.pilot2Code,
+      pilot2Code: pilot2Code,
     ));
   }
 
@@ -267,23 +311,37 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     Pilot2ChannelSearched event,
     Emitter<SettingState> emit,
   ) async {
-    String pilot2Channel = _getPilotChannel(state.pilot2Code);
-    String pilot2Mode = _getPilotMode(state.pilot2Code);
-
-    await _dsimRepository.writePilot2Code(state.pilot2Code);
-
-    bool enableSubmission = state.pilotCode.isNotEmpty &&
-        state.pilot2Code.isNotEmpty &&
-        state.pilotChannel.isNotEmpty &&
-        pilot2Channel.isNotEmpty;
-
     emit(state.copyWith(
-      isInitialize: false,
-      submissionStatus: SubmissionStatus.none,
-      pilot2Channel: pilot2Channel,
-      pilot2Mode: pilot2Mode,
-      enableSubmission: enableSubmission,
+      pilot2ChannelStatus: FormStatus.requestInProgress,
     ));
+
+    List<String>? pilot = _getPilotChannelAndMode(state.pilot2Code.value);
+
+    if (pilot == null) {
+      emit(state.copyWith(
+        isInitialize: false,
+        submissionStatus: SubmissionStatus.none,
+        pilot2ChannelStatus: FormStatus.requestFailure,
+        enableSubmission: false,
+      ));
+    } else {
+      String pilot2Channel = pilot[0];
+      String pilot2Mode = pilot[1];
+      await _dsimRepository.writePilot2Code(state.pilot2Code.value);
+
+      bool enableSubmission = state.pilotCode.value.isNotEmpty &&
+          state.pilot2Code.value.isNotEmpty &&
+          state.pilotChannel.isNotEmpty &&
+          state.pilot2Channel.isNotEmpty;
+
+      emit(state.copyWith(
+        isInitialize: false,
+        submissionStatus: SubmissionStatus.none,
+        pilotChannel: pilot2Channel,
+        pilotMode: pilot2Mode,
+        enableSubmission: enableSubmission,
+      ));
+    }
   }
 
   void _onAGCPrepAttenuationChanged(

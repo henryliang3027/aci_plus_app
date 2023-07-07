@@ -53,6 +53,7 @@
     "export": "匯出",
     "open": "開啟",
 
+    "pilotCodeFormatError": "格式不正確",
 
     "dialogTitleProcessing": "設定中...",
     "dialogTitleError": "錯誤",
@@ -66,6 +67,8 @@
     "dialogMaessageWorkingModeSetting": "工作模式設定",
     "dialogMaessageSettingSuccessful": "成功",
     "dialogMaessageSettingFailed": "失敗",
+    "dialogMaessagePilotSearchFailed": "找不到此導航頻率，請輸入正確的代碼",
+    
 
     "dialogMaessageDataExportSuccessful": "資料匯出成功",
 

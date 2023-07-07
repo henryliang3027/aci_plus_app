@@ -53,6 +53,7 @@
     "export": "Export",
     "open": "Open",
 
+    "pilotCodeFormatError": "Invalid pilot code",
 
     "dialogTitleProcessing": "Setting up...",
     "dialogTitleError": "Error",
@@ -67,6 +68,7 @@
     "dialogMaessageWorkingModeSetting": "Working mode setting",
     "dialogMaessageSettingSuccessful": "OK",
     "dialogMaessageSettingFailed": "Fail",
+    "dialogMaessagePilotSearchFailed": "Pilot not found, Please type correct code.",
 
     "dialogMaessageDataExportSuccessful": "Data export successful.",
 

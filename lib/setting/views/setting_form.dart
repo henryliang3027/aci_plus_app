@@ -93,6 +93,41 @@ class _ViewLayout extends StatelessWidget {
       );
     }
 
+    Future<void> showPilotSearchFailedDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitleError,
+              style: const TextStyle(
+                color: CustomStyle.customRed,
+              ),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: [
+                  Text(
+                    AppLocalizations.of(context)
+                        .dialogMaessagePilotSearchFailed,
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
           ? AppLocalizations.of(context).dialogMaessageSettingSuccessful
@@ -160,8 +195,12 @@ class _ViewLayout extends StatelessWidget {
         } else if (state.isInitialize) {
           locationTextEditingController.text = state.location.value;
 
-          userPilotTextEditingController.text = state.pilotCode;
-          userPilot2TextEditingController.text = state.pilot2Code;
+          userPilotTextEditingController.text = state.pilotCode.value;
+          userPilot2TextEditingController.text = state.pilot2Code.value;
+        } else if (state.pilotChannelStatus.isRequestFailure) {
+          showPilotSearchFailedDialog();
+        } else if (state.pilot2ChannelStatus.isRequestFailure) {
+          showPilotSearchFailedDialog();
         }
       },
       child: Builder(

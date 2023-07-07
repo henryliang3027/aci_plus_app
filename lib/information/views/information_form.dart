@@ -388,7 +388,8 @@ Widget itemLinkText({
             ),
           ),
           onPressed: () async {
-            Uri uri = Uri.parse('http://acicomms.com');
+            Uri uri =
+                Uri.parse('http://acicomms.com/support/aci-dsim-setup-videos');
             launchUrl(
               uri,
               mode: LaunchMode.externalApplication,

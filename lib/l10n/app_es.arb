@@ -53,6 +53,8 @@
     "export": "Exportar",
     "open": "Abierto",
 
+    "pilotCodeFormatError": "Código de piloto no válido",
+
     "dialogTitleProcessing": "configurando...",
     "dialogTitleError": "Error",
     "dialogTitleSuccess": "éxito",
@@ -65,6 +67,7 @@
     "dialogMaessageWorkingModeSetting": "Configuración del modo de trabajo",
     "dialogMaessageSettingSuccessful": "Bueno",
     "dialogMaessageSettingFailed": "Fallar",
+    "dialogMaessagePilotSearchFailed": "Piloto no encontrado,Escriba el código correcto.",
 
     "dialogMaessageDataExportSuccessful": "Exportación de datos exitosa.",
 
