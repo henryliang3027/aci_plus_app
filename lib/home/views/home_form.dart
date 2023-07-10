@@ -1,11 +1,9 @@
 import 'package:dsim_app/about/about_page.dart';
 import 'package:dsim_app/chart/view/chart_page.dart';
-import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/information/views/information_page.dart';
 import 'package:dsim_app/setting/views/setting_page.dart';
 import 'package:dsim_app/status/views/status_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeForm extends StatefulWidget {
   const HomeForm({super.key});
@@ -24,92 +22,6 @@ class _HomeFormState extends State<HomeForm> {
     _sclectedIndex = 2;
     _pageController = PageController(
       initialPage: _sclectedIndex,
-    );
-  }
-
-  Future<void> _showInProgressDialog() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            AppLocalizations.of(context).dialogTitleProcessing,
-          ),
-          actionsAlignment: MainAxisAlignment.center,
-          actions: const <Widget>[
-            CircularProgressIndicator(),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _showSuccessDialog(
-    String msg,
-  ) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            AppLocalizations.of(context).dialogTitleSuccess,
-            style: const TextStyle(color: CustomStyle.customGreen),
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(
-                  msg,
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop(); // pop dialog
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _showFailureDialog(String msg) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            AppLocalizations.of(context).dialogTitleError,
-            style: const TextStyle(
-              color: CustomStyle.customRed,
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(
-                  msg,
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop(); // pop dialog
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 

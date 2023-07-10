@@ -22,7 +22,7 @@ class ChartForm extends StatelessWidget {
               SnackBar(
                 content: Text(
                   AppLocalizations.of(context)
-                      .dialogMaessageDataExportSuccessful,
+                      .dialogMessageDataExportSuccessful,
                 ),
                 action: SnackBarAction(
                   label: AppLocalizations.of(context).open,

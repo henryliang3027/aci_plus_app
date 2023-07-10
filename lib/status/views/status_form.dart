@@ -172,10 +172,14 @@ class _ModuleCard extends StatelessWidget {
                 height: 10.0,
               ),
               itemText(
+                scanStatus: state.scanStatus,
+                connectionStatus: state.connectionStatus,
                 title: AppLocalizations.of(context).serialNumber,
                 content: state.characteristicData[DataKey.serialNumber] ?? '',
               ),
               itemText(
+                scanStatus: state.scanStatus,
+                connectionStatus: state.connectionStatus,
                 title: AppLocalizations.of(context).firmwareVersion,
                 content:
                     state.characteristicData[DataKey.firmwareVersion] ?? '',
@@ -193,38 +197,38 @@ class _TemperatureCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget itemBlock({required String title, required String content}) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                content == ''
-                    ? const CircularProgressIndicator()
-                    : Text(
-                        content,
-                        style: const TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
+    Widget getContent({
+      required FormStatus scanStatus,
+      required FormStatus connectionStatus,
+      required String content,
+      required double fontSize,
+    }) {
+      if (scanStatus == FormStatus.requestInProgress ||
+          connectionStatus == FormStatus.requestInProgress) {
+        return const CircularProgressIndicator();
+      } else if (scanStatus == FormStatus.requestFailure ||
+          connectionStatus == FormStatus.requestFailure) {
+        return Text(
+          'N/A',
+          style: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.w500,
+          ),
+        );
+      } else {
+        return Text(
+          content,
+          style: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.w500,
+          ),
+        );
+      }
     }
 
     Widget temperatureBlock({
+      required FormStatus scanStatus,
+      required FormStatus connectionStatus,
       required String currentTemperatureTitle,
       required String currentTemperature,
       required String minTemperatureTitle,
@@ -242,15 +246,12 @@ class _TemperatureCard extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    currentTemperature == ''
-                        ? const CircularProgressIndicator()
-                        : Text(
-                            currentTemperature,
-                            style: const TextStyle(
-                              fontSize: 40,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                    getContent(
+                      scanStatus: scanStatus,
+                      connectionStatus: connectionStatus,
+                      content: currentTemperature,
+                      fontSize: 40,
+                    ),
                     Text(
                       currentTemperatureTitle,
                       style: const TextStyle(
@@ -271,15 +272,12 @@ class _TemperatureCard extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      minTemperature == ''
-                          ? const CircularProgressIndicator()
-                          : Text(
-                              minTemperature,
-                              style: const TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
+                      getContent(
+                        scanStatus: scanStatus,
+                        connectionStatus: connectionStatus,
+                        content: minTemperature,
+                        fontSize: 32,
+                      ),
                       Text(
                         minTemperatureTitle,
                         style: const TextStyle(
@@ -293,15 +291,12 @@ class _TemperatureCard extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      maxTemperature == ''
-                          ? const CircularProgressIndicator()
-                          : Text(
-                              maxTemperature,
-                              style: const TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
+                      getContent(
+                        scanStatus: scanStatus,
+                        connectionStatus: connectionStatus,
+                        content: maxTemperature,
+                        fontSize: 32,
+                      ),
                       Text(
                         maxTemperatureTitle,
                         style: const TextStyle(
@@ -326,26 +321,20 @@ class _TemperatureCard extends StatelessWidget {
         String maxTemperature = '';
         String minTemperature = '';
 
-        if (homeState.connectionStatus == FormStatus.requestInProgress) {
-          currentTemperature = '';
-          maxTemperature = '';
-          minTemperature = '';
+        if (statusState.temperatureUnit == TemperatureUnit.celsius) {
+          currentTemperature =
+              homeState.characteristicData[DataKey.currentTemperatureC] ?? '';
+          maxTemperature =
+              homeState.characteristicData[DataKey.maxTemperatureC] ?? '';
+          minTemperature =
+              homeState.characteristicData[DataKey.minTemperatureC] ?? '';
         } else {
-          if (statusState.temperatureUnit == TemperatureUnit.celsius) {
-            currentTemperature =
-                homeState.characteristicData[DataKey.currentTemperatureC] ?? '';
-            maxTemperature =
-                homeState.characteristicData[DataKey.maxTemperatureC] ?? '';
-            minTemperature =
-                homeState.characteristicData[DataKey.minTemperatureC] ?? '';
-          } else {
-            currentTemperature =
-                homeState.characteristicData[DataKey.currentTemperatureF] ?? '';
-            maxTemperature =
-                homeState.characteristicData[DataKey.maxTemperatureF] ?? '';
-            minTemperature =
-                homeState.characteristicData[DataKey.minTemperatureF] ?? '';
-          }
+          currentTemperature =
+              homeState.characteristicData[DataKey.currentTemperatureF] ?? '';
+          maxTemperature =
+              homeState.characteristicData[DataKey.maxTemperatureF] ?? '';
+          minTemperature =
+              homeState.characteristicData[DataKey.minTemperatureF] ?? '';
         }
 
         return Card(
@@ -408,6 +397,8 @@ class _TemperatureCard extends StatelessWidget {
                   height: 16.0,
                 ),
                 temperatureBlock(
+                  scanStatus: homeState.scanStatus,
+                  connectionStatus: homeState.connectionStatus,
                   currentTemperatureTitle:
                       AppLocalizations.of(context).currentTemperature,
                   currentTemperature: currentTemperature,
@@ -430,7 +421,38 @@ class _TemperatureCard extends StatelessWidget {
 class _AttenuationCard extends StatelessWidget {
   const _AttenuationCard({super.key});
 
+  Widget getContent({
+    required FormStatus scanStatus,
+    required FormStatus connectionStatus,
+    required String content,
+    required double fontSize,
+  }) {
+    if (scanStatus == FormStatus.requestInProgress ||
+        connectionStatus == FormStatus.requestInProgress) {
+      return const CircularProgressIndicator();
+    } else if (scanStatus == FormStatus.requestFailure ||
+        connectionStatus == FormStatus.requestFailure) {
+      return Text(
+        'N/A',
+        style: TextStyle(
+          fontSize: fontSize,
+          fontWeight: FontWeight.w500,
+        ),
+      );
+    } else {
+      return Text(
+        content,
+        style: TextStyle(
+          fontSize: fontSize,
+          fontWeight: FontWeight.w500,
+        ),
+      );
+    }
+  }
+
   Widget tile({
+    required FormStatus scanStatus,
+    required FormStatus connectionStatus,
     required String title,
     required String content,
     required double fontSize,
@@ -440,15 +462,12 @@ class _AttenuationCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          content == ''
-              ? const CircularProgressIndicator()
-              : Text(
-                  content,
-                  style: TextStyle(
-                    fontSize: fontSize,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+          getContent(
+            scanStatus: scanStatus,
+            connectionStatus: connectionStatus,
+            content: content,
+            fontSize: fontSize,
+          ),
           Text(
             title,
             style: const TextStyle(
@@ -461,6 +480,8 @@ class _AttenuationCard extends StatelessWidget {
   }
 
   Widget rangeBlock({
+    required FormStatus scanStatus,
+    required FormStatus connectionStatus,
     required String title,
     required String currentAttenuationTitle,
     required String currentAttenuation,
@@ -509,6 +530,8 @@ class _AttenuationCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     tile(
+                      scanStatus: scanStatus,
+                      connectionStatus: connectionStatus,
                       title: currentAttenuationTitle,
                       content: currentAttenuation,
                       fontSize: 40,
@@ -520,6 +543,8 @@ class _AttenuationCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: tile(
+                        scanStatus: scanStatus,
+                        connectionStatus: connectionStatus,
                         title: minAttenuationTitle,
                         content: minAttenuation,
                         fontSize: 32,
@@ -527,6 +552,8 @@ class _AttenuationCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: tile(
+                        scanStatus: scanStatus,
+                        connectionStatus: connectionStatus,
                         title: centerAttenuationTitle,
                         content: centerAttenuation,
                         fontSize: 32,
@@ -534,6 +561,8 @@ class _AttenuationCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: tile(
+                        scanStatus: scanStatus,
+                        connectionStatus: connectionStatus,
                         title: maxAttenuationTitle,
                         content: maxAttenuation,
                         fontSize: 32,
@@ -550,6 +579,8 @@ class _AttenuationCard extends StatelessWidget {
   }
 
   Widget historicalBlock({
+    required FormStatus scanStatus,
+    required FormStatus connectionStatus,
     required String title,
     required String historicalMinAttenuationTitle,
     required String historicalMinAttenuation,
@@ -594,11 +625,15 @@ class _AttenuationCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     tile(
+                      scanStatus: scanStatus,
+                      connectionStatus: connectionStatus,
                       title: historicalMinAttenuationTitle,
                       content: historicalMinAttenuation,
                       fontSize: 32,
                     ),
                     tile(
+                      scanStatus: scanStatus,
+                      connectionStatus: connectionStatus,
                       title: historicalMaxAttenuationTitle,
                       content: historicalMaxAttenuation,
                       fontSize: 32,
@@ -630,6 +665,8 @@ class _AttenuationCard extends StatelessWidget {
               ),
             ),
             rangeBlock(
+              scanStatus: state.scanStatus,
+              connectionStatus: state.connectionStatus,
               title: AppLocalizations.of(context).range,
               currentAttenuationTitle:
                   AppLocalizations.of(context).currentAttenuation,
@@ -651,6 +688,8 @@ class _AttenuationCard extends StatelessWidget {
               height: 20.0,
             ),
             historicalBlock(
+              scanStatus: state.scanStatus,
+              connectionStatus: state.connectionStatus,
               title: AppLocalizations.of(context).historicalAttenuation,
               historicalMinAttenuationTitle:
                   AppLocalizations.of(context).historicalMinAttenuation,
@@ -677,7 +716,38 @@ class _AttenuationCard extends StatelessWidget {
 class _PowerSupplyCard extends StatelessWidget {
   const _PowerSupplyCard({super.key});
 
+  Widget getContent({
+    required FormStatus scanStatus,
+    required FormStatus connectionStatus,
+    required String content,
+    required double fontSize,
+  }) {
+    if (scanStatus == FormStatus.requestInProgress ||
+        connectionStatus == FormStatus.requestInProgress) {
+      return const CircularProgressIndicator();
+    } else if (scanStatus == FormStatus.requestFailure ||
+        connectionStatus == FormStatus.requestFailure) {
+      return Text(
+        'N/A',
+        style: TextStyle(
+          fontSize: fontSize,
+          fontWeight: FontWeight.w500,
+        ),
+      );
+    } else {
+      return Text(
+        content,
+        style: TextStyle(
+          fontSize: fontSize,
+          fontWeight: FontWeight.w500,
+        ),
+      );
+    }
+  }
+
   Widget tile({
+    required FormStatus scanStatus,
+    required FormStatus connectionStatus,
     required String title,
     required String content,
     required double fontSize,
@@ -688,16 +758,12 @@ class _PowerSupplyCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          content == ''
-              ? const CircularProgressIndicator()
-              : Text(
-                  content,
-                  style: TextStyle(
-                    fontSize: fontSize,
-                    fontWeight: FontWeight.w500,
-                    height: fontHeight,
-                  ),
-                ),
+          getContent(
+            scanStatus: scanStatus,
+            connectionStatus: connectionStatus,
+            content: content,
+            fontSize: fontSize,
+          ),
           Text(
             title,
             style: const TextStyle(
@@ -710,6 +776,8 @@ class _PowerSupplyCard extends StatelessWidget {
   }
 
   Widget voltageBlock({
+    required FormStatus scanStatus,
+    required FormStatus connectionStatus,
     required String title,
     required String currentVoltageTitle,
     required String currentVoltage,
@@ -757,6 +825,8 @@ class _PowerSupplyCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: tile(
+                        scanStatus: scanStatus,
+                        connectionStatus: connectionStatus,
                         title: minVoltageTitle,
                         content: minVoltage,
                         fontSize: 32,
@@ -764,6 +834,8 @@ class _PowerSupplyCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: tile(
+                        scanStatus: scanStatus,
+                        connectionStatus: connectionStatus,
                         title: currentVoltageTitle,
                         content: currentVoltage,
                         fontSize: 40,
@@ -772,6 +844,8 @@ class _PowerSupplyCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: tile(
+                        scanStatus: scanStatus,
+                        connectionStatus: connectionStatus,
                         title: maxVoltageTitle,
                         content: maxVoltage,
                         fontSize: 32,
@@ -788,6 +862,8 @@ class _PowerSupplyCard extends StatelessWidget {
   }
 
   Widget voltageRippleBlock({
+    required FormStatus scanStatus,
+    required FormStatus connectionStatus,
     required String title,
     required String currentVoltageRippleTitle,
     required String currentVoltageRipple,
@@ -835,6 +911,8 @@ class _PowerSupplyCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: tile(
+                        scanStatus: scanStatus,
+                        connectionStatus: connectionStatus,
                         title: minVoltageRippleTitle,
                         content: minVoltageRipple,
                         fontSize: 32,
@@ -842,6 +920,8 @@ class _PowerSupplyCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: tile(
+                        scanStatus: scanStatus,
+                        connectionStatus: connectionStatus,
                         title: currentVoltageRippleTitle,
                         content: currentVoltageRipple,
                         fontSize: 40,
@@ -850,6 +930,8 @@ class _PowerSupplyCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: tile(
+                        scanStatus: scanStatus,
+                        connectionStatus: connectionStatus,
                         title: maxVoltageRippleTitle,
                         content: maxVoltageRipple,
                         fontSize: 32,
@@ -882,6 +964,8 @@ class _PowerSupplyCard extends StatelessWidget {
               ),
             ),
             voltageBlock(
+              scanStatus: state.scanStatus,
+              connectionStatus: state.connectionStatus,
               title: AppLocalizations.of(context).voltageLevel,
               currentVoltageTitle: AppLocalizations.of(context).currentVoltage,
               currentVoltage:
@@ -896,6 +980,8 @@ class _PowerSupplyCard extends StatelessWidget {
               height: 20.0,
             ),
             voltageRippleBlock(
+              scanStatus: state.scanStatus,
+              connectionStatus: state.connectionStatus,
               title: AppLocalizations.of(context).voltageRipple,
               currentVoltageRippleTitle:
                   AppLocalizations.of(context).currentVoltageRipple,
@@ -922,9 +1008,33 @@ class _PowerSupplyCard extends StatelessWidget {
 }
 
 Widget itemText({
+  required FormStatus scanStatus,
+  required FormStatus connectionStatus,
   required String title,
   required String content,
 }) {
+  Widget getContent() {
+    if (scanStatus == FormStatus.requestInProgress ||
+        connectionStatus == FormStatus.requestInProgress) {
+      return const CircularProgressIndicator();
+    } else if (scanStatus == FormStatus.requestFailure ||
+        connectionStatus == FormStatus.requestFailure) {
+      return const Text(
+        'N/A',
+        style: TextStyle(
+          fontSize: 16,
+        ),
+      );
+    } else {
+      return Text(
+        content,
+        style: const TextStyle(
+          fontSize: 16,
+        ),
+      );
+    }
+  }
+
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Row(
@@ -936,14 +1046,7 @@ Widget itemText({
             fontSize: 16,
           ),
         ),
-        content == ''
-            ? const CircularProgressIndicator()
-            : Text(
-                content,
-                style: const TextStyle(
-                  fontSize: 16,
-                ),
-              ),
+        getContent(),
       ],
     ),
   );

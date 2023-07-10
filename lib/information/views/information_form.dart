@@ -171,6 +171,8 @@ class _ConnectionCard extends StatelessWidget {
                 height: 10.0,
               ),
               itemText(
+                scanStatus: state.scanStatus,
+                connectionStatus: state.connectionStatus,
                 title: AppLocalizations.of(context).bluetooth,
                 content: state.device != null ? state.device!.name : '',
               ),
@@ -202,8 +204,10 @@ class _BasicCard extends StatelessWidget {
       }
     }
 
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) => Card(
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      bool isInProgress = state.scanStatus == FormStatus.requestInProgress ||
+          state.connectionStatus == FormStatus.requestInProgress;
+      return Card(
         color: Theme.of(context).colorScheme.onPrimary,
         surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Padding(
@@ -219,22 +223,32 @@ class _BasicCard extends StatelessWidget {
                 height: 10.0,
               ),
               itemText(
+                scanStatus: state.scanStatus,
+                connectionStatus: state.connectionStatus,
                 title: AppLocalizations.of(context).typeNo,
                 content: state.characteristicData[DataKey.typeNo] ?? '',
               ),
               itemText(
+                scanStatus: state.scanStatus,
+                connectionStatus: state.connectionStatus,
                 title: AppLocalizations.of(context).partNo,
                 content: state.characteristicData[DataKey.partNo] ?? '',
               ),
               itemMultipleLineText(
+                scanStatus: state.scanStatus,
+                connectionStatus: state.connectionStatus,
                 title: AppLocalizations.of(context).location,
                 content: state.characteristicData[DataKey.location] ?? '',
               ),
               itemText(
+                scanStatus: state.scanStatus,
+                connectionStatus: state.connectionStatus,
                 title: AppLocalizations.of(context).dsimMode,
                 content: state.characteristicData[DataKey.dsimMode] ?? '',
               ),
               itemText(
+                scanStatus: state.scanStatus,
+                connectionStatus: state.connectionStatus,
                 title: AppLocalizations.of(context).currentPilot,
                 content: getCurrentPilot(
                     currentPilot:
@@ -244,6 +258,8 @@ class _BasicCard extends StatelessWidget {
                             ''),
               ),
               itemText(
+                scanStatus: state.scanStatus,
+                connectionStatus: state.connectionStatus,
                 title: AppLocalizations.of(context).logInterval,
                 content:
                     '${state.characteristicData[DataKey.logInterval] ?? ''} minutes',
@@ -251,8 +267,8 @@ class _BasicCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
@@ -308,20 +324,23 @@ class _AlarmCard extends StatelessWidget {
               alarmItem(
                 iconData: Icons.circle,
                 iconColor: CustomStyle.alarmColor[
-                    state.characteristicData[DataKey.alarmRServerity] ?? ''],
-                title: AppLocalizations.of(context).rfPilotLevel,
+                    state.characteristicData[DataKey.alarmRServerity] ??
+                        'default'],
+                title: AppLocalizations.of(context).rfPilotLevelAlarm,
               ),
               alarmItem(
                 iconData: Icons.circle,
                 iconColor: CustomStyle.alarmColor[
-                    state.characteristicData[DataKey.alarmTServerity] ?? ''],
-                title: AppLocalizations.of(context).temperature,
+                    state.characteristicData[DataKey.alarmTServerity] ??
+                        'default'],
+                title: AppLocalizations.of(context).temperatureAlarm,
               ),
               alarmItem(
                 iconData: Icons.circle,
                 iconColor: CustomStyle.alarmColor[
-                    state.characteristicData[DataKey.alarmPServerity] ?? ''],
-                title: AppLocalizations.of(context).powerSupply,
+                    state.characteristicData[DataKey.alarmPServerity] ??
+                        'default'],
+                title: AppLocalizations.of(context).powerSupplyAlarm,
               ),
             ],
           ),
@@ -332,9 +351,33 @@ class _AlarmCard extends StatelessWidget {
 }
 
 Widget itemText({
+  required FormStatus scanStatus,
+  required FormStatus connectionStatus,
   required String title,
   required String content,
 }) {
+  Widget getContent() {
+    if (scanStatus == FormStatus.requestInProgress ||
+        connectionStatus == FormStatus.requestInProgress) {
+      return const CircularProgressIndicator();
+    } else if (scanStatus == FormStatus.requestFailure ||
+        connectionStatus == FormStatus.requestFailure) {
+      return const Text(
+        'N/A',
+        style: TextStyle(
+          fontSize: 16,
+        ),
+      );
+    } else {
+      return Text(
+        content,
+        style: const TextStyle(
+          fontSize: 16,
+        ),
+      );
+    }
+  }
+
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Row(
@@ -346,14 +389,68 @@ Widget itemText({
             fontSize: 16,
           ),
         ),
-        content == ''
-            ? const CircularProgressIndicator()
-            : Text(
-                content,
-                style: const TextStyle(
-                  fontSize: 16,
-                ),
+        getContent(),
+      ],
+    ),
+  );
+}
+
+Widget itemMultipleLineText({
+  required FormStatus scanStatus,
+  required FormStatus connectionStatus,
+  required String title,
+  required String content,
+}) {
+  Widget getContent() {
+    if (scanStatus == FormStatus.requestInProgress ||
+        connectionStatus == FormStatus.requestInProgress) {
+      return const CircularProgressIndicator();
+    } else if (scanStatus == FormStatus.requestFailure ||
+        connectionStatus == FormStatus.requestFailure) {
+      return const Flexible(
+        child: Text(
+          'N/A',
+          style: TextStyle(
+            fontSize: 16,
+          ),
+        ),
+      );
+    } else {
+      return Flexible(
+        child: Text(
+          content,
+          style: const TextStyle(
+            fontSize: 16,
+          ),
+        ),
+      );
+    }
+  }
+
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
               ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            getContent(),
+          ],
+        ),
       ],
     ),
   );
@@ -395,49 +492,6 @@ Widget itemLinkText({
               mode: LaunchMode.externalApplication,
             );
           },
-        ),
-      ],
-    ),
-  );
-}
-
-Widget itemMultipleLineText({
-  required String title,
-  required String content,
-}) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            content == ''
-                ? const CircularProgressIndicator()
-                : Flexible(
-                    child: Text(
-                      content,
-                      textAlign: TextAlign.end,
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-          ],
         ),
       ],
     ),

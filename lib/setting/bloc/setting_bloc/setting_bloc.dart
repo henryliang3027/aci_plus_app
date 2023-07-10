@@ -109,6 +109,11 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       hasDualPilot: settingData.hasDualPilot,
       isInitialize: true,
       submissionStatus: SubmissionStatus.none,
+      pilotChannelStatus:
+          pilot != null ? FormStatus.requestSuccess : FormStatus.requestFailure,
+      pilot2ChannelStatus: pilot2 != null
+          ? FormStatus.requestSuccess
+          : FormStatus.requestFailure,
     ));
   }
 
@@ -120,6 +125,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       isInitialize: true,
       submissionStatus: SubmissionStatus.none,
       isGraphType: true,
+      editMode: false,
+      enableSubmission: false,
     ));
   }
 
@@ -131,6 +138,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       isInitialize: true,
       submissionStatus: SubmissionStatus.none,
       isGraphType: false,
+      editMode: false,
+      enableSubmission: false,
     ));
   }
 
@@ -144,7 +153,12 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       isInitialize: false,
       submissionStatus: SubmissionStatus.none,
       location: location,
-      enableSubmission: location.value != state.initialValues[0],
+      enableSubmission: _isEnabledSubmission(
+        location: event.location,
+        tgcCableLength: _getTgcCableLength(),
+        logIntervalId: state.logIntervalId,
+        workingMode: _getWorkingMode(),
+      ),
     ));
   }
 
@@ -164,7 +178,12 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       isInitialize: false,
       submissionStatus: SubmissionStatus.none,
       selectedTGCCableLength: newSelectedTGCCableLength,
-      enableSubmission: event.tgcCableLength != state.initialValues[1],
+      enableSubmission: _isEnabledSubmission(
+        location: state.location.value,
+        tgcCableLength: event.tgcCableLength,
+        logIntervalId: state.logIntervalId,
+        workingMode: _getWorkingMode(),
+      ),
     ));
   }
 
@@ -176,7 +195,12 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       isInitialize: false,
       submissionStatus: SubmissionStatus.none,
       logIntervalId: event.logIntervalId,
-      enableSubmission: event.logIntervalId != state.initialValues[2],
+      enableSubmission: _isEnabledSubmission(
+        location: state.location.value,
+        tgcCableLength: _getTgcCableLength(),
+        logIntervalId: event.logIntervalId,
+        workingMode: _getWorkingMode(),
+      ),
     ));
   }
 
@@ -196,50 +220,51 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       isInitialize: false,
       submissionStatus: SubmissionStatus.none,
       selectedWorkingMode: newSelectedWorkingMode,
-      enableSubmission: event.workingMode != state.initialValues[3],
+      enableSubmission: _isEnabledSubmission(
+        location: state.location.value,
+        tgcCableLength: _getTgcCableLength(),
+        logIntervalId: state.logIntervalId,
+        workingMode: event.workingMode,
+      ),
     ));
   }
 
-  String _getPilotMode(String pilotCode) {
-    if (pilotCode.substring(pilotCode.length - 1) == '@') {
-      return 'IRC';
-    } else {
-      return 'DIG';
-    }
-  }
-
   List<String>? _getPilotChannelAndMode(String pilotCode) {
-    if (pilotCode.substring(pilotCode.length - 1) != '@' &&
-        pilotCode.substring(pilotCode.length - 1) != 'A') {
+    if (pilotCode.isEmpty) {
       return null;
     } else {
-      String pilotMode = '';
-      String adjustedPilotCode = pilotCode;
-      if (pilotCode.substring(pilotCode.length - 1) == '@') {
-        pilotMode = 'IRC';
-      } else if (pilotCode.substring(pilotCode.length - 1) == 'A') {
-        pilotMode = 'DIG';
-      } else {
-        pilotMode = '';
-      }
-
-      if (adjustedPilotCode.substring(adjustedPilotCode.length - 1) == '@') {
-        adjustedPilotCode =
-            '${adjustedPilotCode.substring(0, adjustedPilotCode.length - 1)}A';
-      }
-
-      String pilotChannel = PilotChannel.channelCode.keys.firstWhere(
-        (k) => PilotChannel.channelCode[k] == adjustedPilotCode,
-        orElse: () => '',
-      );
-
-      if (pilotChannel == '') {
+      if (pilotCode.substring(pilotCode.length - 1) != '@' &&
+          pilotCode.substring(pilotCode.length - 1) != 'A') {
+        // 如果最後一個字不是 A 也不是 @, return null
         return null;
       } else {
-        return [
-          pilotChannel,
-          pilotMode,
-        ];
+        String pilotMode = '';
+        String adjustedPilotCode = pilotCode;
+        if (pilotCode.substring(pilotCode.length - 1) == '@') {
+          pilotMode = 'IRC';
+        } else {
+          pilotMode = 'DIG';
+        }
+
+        // 把最後一個字替換成 A 並查表
+        if (adjustedPilotCode.substring(adjustedPilotCode.length - 1) == '@') {
+          adjustedPilotCode =
+              '${adjustedPilotCode.substring(0, adjustedPilotCode.length - 1)}A';
+        }
+
+        String pilotChannel = PilotChannel.channelCode.keys.firstWhere(
+          (k) => PilotChannel.channelCode[k] == adjustedPilotCode,
+          orElse: () => '',
+        );
+
+        if (pilotChannel == '') {
+          return null;
+        } else {
+          return [
+            pilotChannel,
+            pilotMode,
+          ];
+        }
       }
     }
   }
@@ -253,6 +278,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     emit(state.copyWith(
       isInitialize: false,
       submissionStatus: SubmissionStatus.none,
+      pilotChannelStatus: FormStatus.none,
+      pilot2ChannelStatus: FormStatus.none,
       pilotCode: pilotCode,
     ));
   }
@@ -262,8 +289,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     Emitter<SettingState> emit,
   ) async {
     emit(state.copyWith(
-      pilotChannelStatus: FormStatus.requestInProgress,
-    ));
+        pilotChannelStatus: FormStatus.requestInProgress,
+        pilot2ChannelStatus: FormStatus.none));
 
     List<String>? pilot = _getPilotChannelAndMode(state.pilotCode.value);
 
@@ -272,6 +299,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         isInitialize: false,
         submissionStatus: SubmissionStatus.none,
         pilotChannelStatus: FormStatus.requestFailure,
+        pilotChannel: 'N/A',
+        pilotMode: '',
         enableSubmission: false,
       ));
     } else {
@@ -289,6 +318,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         submissionStatus: SubmissionStatus.none,
         pilotChannel: pilotChannel,
         pilotMode: pilotMode,
+        pilotChannelStatus: FormStatus.requestSuccess,
         enableSubmission: enableSubmission,
       ));
     }
@@ -303,6 +333,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     emit(state.copyWith(
       isInitialize: false,
       submissionStatus: SubmissionStatus.none,
+      pilotChannelStatus: FormStatus.none,
+      pilot2ChannelStatus: FormStatus.none,
       pilot2Code: pilot2Code,
     ));
   }
@@ -313,6 +345,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   ) async {
     emit(state.copyWith(
       pilot2ChannelStatus: FormStatus.requestInProgress,
+      pilotChannelStatus: FormStatus.none,
     ));
 
     List<String>? pilot = _getPilotChannelAndMode(state.pilot2Code.value);
@@ -322,6 +355,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         isInitialize: false,
         submissionStatus: SubmissionStatus.none,
         pilot2ChannelStatus: FormStatus.requestFailure,
+        pilot2Channel: 'N/A',
+        pilot2Mode: '',
         enableSubmission: false,
       ));
     } else {
@@ -337,8 +372,9 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       emit(state.copyWith(
         isInitialize: false,
         submissionStatus: SubmissionStatus.none,
-        pilotChannel: pilot2Channel,
-        pilotMode: pilot2Mode,
+        pilot2Channel: pilot2Channel,
+        pilot2Mode: pilot2Mode,
+        pilot2ChannelStatus: FormStatus.requestSuccess,
         enableSubmission: enableSubmission,
       ));
     }
@@ -368,6 +404,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     int newAttenuation = state.currentAttenuation + 50 <= state.maxAttenuation
         ? state.currentAttenuation + 50
         : state.maxAttenuation;
+
     emit(state.copyWith(
       isInitialize: false,
       submissionStatus: SubmissionStatus.none,
@@ -388,6 +425,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     int newAttenuation = state.currentAttenuation - 50 >= state.minAttenuation
         ? state.currentAttenuation - 50
         : state.minAttenuation;
+
     emit(state.copyWith(
       isInitialize: false,
       submissionStatus: SubmissionStatus.none,
@@ -538,5 +576,27 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   String _getTgcCableLength() {
     return state.selectedTGCCableLength.keys
         .firstWhere((k) => state.selectedTGCCableLength[k] == true);
+  }
+
+  bool _isEnabledSubmission({
+    required String location,
+    required String tgcCableLength,
+    required int logIntervalId,
+    required String workingMode,
+  }) {
+    if (location != state.initialValues[0] ||
+        tgcCableLength != state.initialValues[1] ||
+        logIntervalId != state.initialValues[2] ||
+        (workingMode != state.initialValues[3] &&
+            state.pilotCode.isValid &&
+            state.pilot2Code.isValid &&
+            state.pilotChannelStatus == FormStatus.requestSuccess &&
+            state.pilot2ChannelStatus == FormStatus.requestSuccess)) {
+      print('true');
+      return true;
+    } else {
+      print('false');
+      return false;
+    }
   }
 }

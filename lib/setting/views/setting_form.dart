@@ -1,7 +1,6 @@
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
-import 'package:dsim_app/core/pilot_channel.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:dsim_app/setting/views/setting_graph_view.dart';
@@ -109,8 +108,7 @@ class _ViewLayout extends StatelessWidget {
               child: ListBody(
                 children: [
                   Text(
-                    AppLocalizations.of(context)
-                        .dialogMaessagePilotSearchFailed,
+                    AppLocalizations.of(context).dialogMessagePilotSearchFailed,
                   ),
                 ],
               ),
@@ -130,19 +128,19 @@ class _ViewLayout extends StatelessWidget {
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
-          ? AppLocalizations.of(context).dialogMaessageSettingSuccessful
-          : AppLocalizations.of(context).dialogMaessageSettingFailed;
+          ? AppLocalizations.of(context).dialogMessageSettingSuccessful
+          : AppLocalizations.of(context).dialogMessageSettingFailed;
     }
 
     String formatResultItem(String item) {
       if (item == DataKey.location.name) {
-        return AppLocalizations.of(context).dialogMaessageLocationSetting;
+        return AppLocalizations.of(context).dialogMessageLocationSetting;
       } else if (item == DataKey.tgcCableLength.name) {
-        return AppLocalizations.of(context).dialogMaessageTGCCableLengthSetting;
+        return AppLocalizations.of(context).dialogMessageTGCCableLengthSetting;
       } else if (item == DataKey.logInterval.name) {
-        return AppLocalizations.of(context).dialogMaessageLogIntervalSetting;
+        return AppLocalizations.of(context).dialogMessageLogIntervalSetting;
       } else if (item == DataKey.dsimMode.name) {
-        return AppLocalizations.of(context).dialogMaessageWorkingModeSetting;
+        return AppLocalizations.of(context).dialogMessageWorkingModeSetting;
       } else {
         return '';
       }

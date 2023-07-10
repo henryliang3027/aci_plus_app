@@ -158,8 +158,7 @@ class DsimRepository {
   String _tgcCableLength = '';
   String _workingMode = '';
   int _logIntervalId = -1;
-  String _pilotCode = '';
-  String _pilot2Code = '';
+
   String _maxAttenuation = '';
   String _minAttenuation = '';
   String _currentAttenuation = '';
@@ -170,6 +169,9 @@ class DsimRepository {
   final int _agcWorkingModeSettingDuration = 30;
 
   bool _hasDualPilot = false;
+
+  final int _commandExecutionTimeout = 10; // s
+  final int _agcWorkingModeSettingTimeout = 40; // s
 
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
@@ -1138,11 +1140,16 @@ class DsimRepository {
     );
 
     // 設定後重新讀取 location 來比對是否設定成功
-    String newLocation = await _completer.future;
+    try {
+      String newLocation = await _completer.future
+          .timeout(Duration(seconds: _commandExecutionTimeout));
 
-    if (newLocation == location) {
-      return true;
-    } else {
+      if (newLocation == location) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
       return false;
     }
   }
@@ -1173,11 +1180,15 @@ class DsimRepository {
     _writeSetCommandToCharacteristic(Command.set04Cmd);
 
     // 設定後重新讀取 tgc cable length 來比對是否設定成功
-    String newTgcCableLength = await _completer.future;
-
-    if (newTgcCableLength == tgcCableLength) {
-      return true;
-    } else {
+    try {
+      String newTgcCableLength = await _completer.future
+          .timeout(Duration(seconds: _commandExecutionTimeout));
+      if (newTgcCableLength == tgcCableLength) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
       return false;
     }
   }
@@ -1196,11 +1207,16 @@ class DsimRepository {
     _writeSetCommandToCharacteristic(Command.set04Cmd);
 
     // 設定後重新讀取 log interval 來比對是否設定成功
-    int newLogIntervalId = await _completer.future;
+    try {
+      int newLogIntervalId = await _completer.future
+          .timeout(Duration(seconds: _commandExecutionTimeout));
 
-    if (newLogIntervalId == logIntervalId) {
-      return true;
-    } else {
+      if (newLogIntervalId == logIntervalId) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
       return false;
     }
   }

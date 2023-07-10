@@ -51,6 +51,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     emit(state.copyWith(
       showSplash: false,
+      scanStatus: FormStatus.requestInProgress,
+      connectionStatus: FormStatus.requestInProgress,
       eventRecordsLoadingStatus: FormStatus.requestInProgress,
       settingParametersLoading: FormStatus.requestInProgress,
     ));
@@ -75,12 +77,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       case ScanStatus.failure:
         emit(state.copyWith(
             scanStatus: FormStatus.requestFailure,
+            connectionStatus: FormStatus.requestFailure,
             device: null,
             errorMassage: 'Device not found.'));
         break;
       case ScanStatus.disable:
         emit(state.copyWith(
             scanStatus: FormStatus.requestFailure,
+            connectionStatus: FormStatus.requestFailure,
             device: null,
             errorMassage: 'Bluetooth is disabled.'));
         break;

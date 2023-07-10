@@ -18,5 +18,6 @@ class CustomStyle {
     'success': Color(0xff28a745), //success
     'danger': Color(0xffdc3545), //danger
     'medium': Color(0xff6c757d), //medium
+    'default': Color(0xff6c757d), //default
   };
 }

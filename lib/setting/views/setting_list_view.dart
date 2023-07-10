@@ -168,6 +168,7 @@ class _Location extends StatelessWidget {
                   isDense: true,
                   filled: true,
                   fillColor: Colors.white,
+                  counterText: '',
                 ),
               ),
             ],
@@ -503,11 +504,11 @@ class _UserPilot extends StatelessWidget {
                     fontSize: CustomStyle.sizeL,
                     color: Colors.grey.shade400,
                   ),
-                  suffixIconConstraints: const BoxConstraints(
-                      maxHeight: 30, maxWidth: 30, minHeight: 30, minWidth: 30),
+                  // suffixIconConstraints: const BoxConstraints(
+                  //     maxHeight: 30, maxWidth: 30, minHeight: 30, minWidth: 30),
                   suffixIcon: IconButton(
-                    iconSize: 22,
-                    padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0),
+                    iconSize: 26,
+                    // padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0),
                     icon: const Icon(Icons.search_outlined),
                     onPressed: () {
                       context
@@ -597,15 +598,15 @@ class _UserPilot2 extends StatelessWidget {
                           fontSize: CustomStyle.sizeL,
                           color: Colors.grey.shade400,
                         ),
-                        suffixIconConstraints: const BoxConstraints(
-                            maxHeight: 30,
-                            maxWidth: 30,
-                            minHeight: 30,
-                            minWidth: 30),
+                        // suffixIconConstraints: const BoxConstraints(
+                        //     maxHeight: 30,
+                        //     maxWidth: 30,
+                        //     minHeight: 30,
+                        //     minWidth: 30),
                         suffixIcon: IconButton(
-                          iconSize: 22,
-                          padding:
-                              const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0),
+                          iconSize: 26,
+                          // padding:
+                          //     const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0),
                           icon: const Icon(Icons.search_outlined),
                           onPressed: () {
                             context
