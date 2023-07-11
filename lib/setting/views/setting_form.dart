@@ -139,7 +139,7 @@ class _ViewLayout extends StatelessWidget {
         return AppLocalizations.of(context).dialogMessageTGCCableLengthSetting;
       } else if (item == DataKey.logInterval.name) {
         return AppLocalizations.of(context).dialogMessageLogIntervalSetting;
-      } else if (item == DataKey.dsimMode.name) {
+      } else if (item == DataKey.workingMode.name) {
         return AppLocalizations.of(context).dialogMessageWorkingModeSetting;
       } else {
         return '';
@@ -205,7 +205,7 @@ class _ViewLayout extends StatelessWidget {
         builder: (context) {
           final homeState = context.watch<HomeBloc>().state;
           final settingState = context.watch<SettingBloc>().state;
-          if (homeState.settingParametersLoading.isRequestSuccess) {
+          if (homeState.loadingStatus.isRequestSuccess) {
             if (settingState.isInitialize) {
               context.read<SettingBloc>().add(const Initialized());
             }
@@ -219,7 +219,7 @@ class _ViewLayout extends StatelessWidget {
                     userPilot2TextEditingController:
                         userPilot2TextEditingController,
                   );
-          } else if (homeState.settingParametersLoading.isRequestFailure) {
+          } else if (homeState.loadingStatus.isRequestFailure) {
             return Expanded(
               child: Container(
                 width: double.maxFinite,

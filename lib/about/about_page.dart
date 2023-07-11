@@ -82,11 +82,15 @@ class _AboutPageState extends State<AboutPage> {
       return false;
     }
 
-    Widget _buildParagraph(String paragraph) {
+    Widget _buildParagraph({
+      required String paragraph,
+      double fontSize = 16,
+    }) {
       return Padding(
         padding: const EdgeInsets.only(top: 30, bottom: 0, left: 30, right: 30),
         child: Text(
           paragraph,
+          style: TextStyle(fontSize: fontSize),
         ),
       );
     }
@@ -146,21 +150,39 @@ class _AboutPageState extends State<AboutPage> {
           ),
           SliverToBoxAdapter(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildParagraph(
-                  AppLocalizations.of(context)!.aboutArticleParagraph1,
+                  paragraph:
+                      AppLocalizations.of(context).aboutArticleParagraph1,
                 ),
                 _buildParagraph(
-                  AppLocalizations.of(context)!.aboutArticleParagraph2,
+                  paragraph:
+                      AppLocalizations.of(context).aboutArticleParagraph2,
                 ),
                 _buildParagraph(
-                  AppLocalizations.of(context)!.aboutArticleParagraph3,
+                  paragraph:
+                      AppLocalizations.of(context).aboutArticleParagraph3,
                 ),
                 _buildParagraph(
-                  AppLocalizations.of(context)!.aboutArticleParagraph4,
+                  paragraph:
+                      AppLocalizations.of(context).aboutArticleParagraph4,
                 ),
                 _buildParagraph(
-                  AppLocalizations.of(context)!.aboutArticleParagraph5,
+                  paragraph:
+                      AppLocalizations.of(context).aboutArticleParagraph5,
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                _buildParagraph(
+                  paragraph:
+                      AppLocalizations.of(context).aboutArticleDigitalTeamTitle,
+                  fontSize: 20,
+                ),
+                _buildParagraph(
+                  paragraph: AppLocalizations.of(context)
+                      .aboutArticleDigitalTeamParagraph,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -315,7 +337,7 @@ class _AboutPageState extends State<AboutPage> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 40.0,
                 ),
                 Container(
@@ -338,9 +360,9 @@ class _AboutPageState extends State<AboutPage> {
                       Expanded(
                         child: Container(),
                       ),
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           SizedBox(
                             height: 26,
                             child: Image(
@@ -355,6 +377,16 @@ class _AboutPageState extends State<AboutPage> {
                             height: 26,
                             child: Image(
                               image: AssetImage('assets/ACI.png'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20.0,
+                          ),
+                          SizedBox(
+                            height: 26,
+                            child: Image(
+                              image: AssetImage('assets/ACI+.png'),
                               fit: BoxFit.cover,
                             ),
                           ),

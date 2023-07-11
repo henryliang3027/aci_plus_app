@@ -18,10 +18,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         super(const HomeState()) {
     on<SplashStateChanged>(_onSplashStateChanged);
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
+    on<DataRequested>(_onDataRequested);
+    on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
     on<DeviceConnectionChanged>(_onDeviceConnectionChanged);
-    on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
-    on<LoadingResultChanged>(_onLoadingResultChanged);
     on<DataExported>(_onDataExported);
     on<DataShared>(_onDataShared);
 
@@ -34,14 +34,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   StreamSubscription<Map<DataKey, String>>?
       _characteristicDataStreamSubscription;
 
-  StreamSubscription<DataKey>? _loadingResultStreamSubscription;
-
   // 進入首頁時播放動畫，動畫播完後掃描藍芽裝置
   Future<void> _onSplashStateChanged(
     SplashStateChanged event,
     Emitter<HomeState> emit,
   ) async {
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(milliseconds: 2500));
 
     _scanStreamSubscription = _dsimRepository.scannedDevices.listen(
       (scanReport) {
@@ -53,8 +51,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       showSplash: false,
       scanStatus: FormStatus.requestInProgress,
       connectionStatus: FormStatus.requestInProgress,
-      eventRecordsLoadingStatus: FormStatus.requestInProgress,
-      settingParametersLoading: FormStatus.requestInProgress,
+      loadingStatus: FormStatus.requestInProgress,
     ));
   }
 
@@ -78,6 +75,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
             scanStatus: FormStatus.requestFailure,
             connectionStatus: FormStatus.requestFailure,
+            loadingStatus: FormStatus.requestFailure,
             device: null,
             errorMassage: 'Device not found.'));
         break;
@@ -85,6 +83,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
             scanStatus: FormStatus.requestFailure,
             connectionStatus: FormStatus.requestFailure,
+            loadingStatus: FormStatus.requestFailure,
             device: null,
             errorMassage: 'Bluetooth is disabled.'));
         break;
@@ -112,6 +111,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           connectionStatus: FormStatus.requestSuccess,
         ));
 
+        add(const DataRequested());
+
         _characteristicDataStreamSubscription =
             _dsimRepository.characteristicData.listen(
           (data) {
@@ -120,22 +121,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           onDone: () {},
         );
 
-        _loadingResultStreamSubscription =
-            _dsimRepository.loadingResult.listen((data) {
-          add(LoadingResultChanged(data));
-        });
+        // _loadingResultStreamSubscription =
+        //     _dsimRepository.loadingResult.listen((data) {
+        //   add(LoadingResultChanged(data));
+        // });
 
         break;
       case DeviceConnectionState.disconnecting:
         emit(state.copyWith(
           scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestFailure,
+          loadingStatus: FormStatus.requestFailure,
         ));
         break;
       case DeviceConnectionState.disconnected:
         emit(state.copyWith(
           scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestFailure,
+          loadingStatus: FormStatus.requestFailure,
         ));
         break;
     }
@@ -153,23 +156,95 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
   }
 
-  void _onLoadingResultChanged(
-    LoadingResultChanged event,
+  Future<void> _onDataRequested(
+    DataRequested event,
     Emitter<HomeState> emit,
-  ) {
-    if (event.loadingResultDataKey == DataKey.eventRecordsLoadingComplete) {
-      List<List<DateValuePair>> dateValueCollectionOfLog =
-          _dsimRepository.getDateValueCollectionOfLogs();
-      emit(state.copyWith(
-        eventRecordsLoadingStatus: FormStatus.requestSuccess,
-        dateValueCollectionOfLog: dateValueCollectionOfLog,
-      ));
-    } else if (event.loadingResultDataKey ==
-        DataKey.settingParametersLoadingComplete) {
-      emit(state.copyWith(
-        settingParametersLoading: FormStatus.requestSuccess,
-      ));
-    } else {}
+  ) async {
+    Map<DataKey, String> characteristicData = {};
+
+    emit(state.copyWith(
+      loadingStatus: FormStatus.requestInProgress,
+      characteristicData: characteristicData,
+    ));
+
+    List<Function> requestCommands = [
+      _dsimRepository.requestCommand0,
+      _dsimRepository.requestCommand1,
+      _dsimRepository.requestCommand2,
+      _dsimRepository.requestCommand3,
+      _dsimRepository.requestCommand4,
+      _dsimRepository.requestCommand5,
+      _dsimRepository.requestCommand6,
+      _dsimRepository.requestCommand9To12,
+    ];
+
+    for (int i = 0; i < requestCommands.length; i++) {
+      List<dynamic> result = await requestCommands[i]();
+
+      if (result[0]) {
+        if (i == 0) {
+          characteristicData[DataKey.typeNo] = result[1];
+          emit(state.copyWith(
+            characteristicData: characteristicData,
+          ));
+        } else if (i == 1) {
+          characteristicData[DataKey.partNo] = result[1];
+          emit(state.copyWith(
+            characteristicData: characteristicData,
+          ));
+        } else if (i == 2) {
+          characteristicData[DataKey.serialNumber] = result[1];
+          emit(state.copyWith(
+            characteristicData: characteristicData,
+          ));
+        } else if (i == 3) {
+          characteristicData[DataKey.logInterval] = result[1];
+          characteristicData[DataKey.firmwareVersion] = result[2];
+          emit(state.copyWith(
+            characteristicData: characteristicData,
+          ));
+        } else if (i == 4) {
+          characteristicData[DataKey.currentAttenuation] = result[1];
+          characteristicData[DataKey.minAttenuation] = result[2];
+          characteristicData[DataKey.maxAttenuation] = result[3];
+          characteristicData[DataKey.tgcCableLength] = result[4];
+          emit(state.copyWith(
+            characteristicData: characteristicData,
+          ));
+        } else if (i == 5) {
+          characteristicData[DataKey.workingMode] = result[1];
+          characteristicData[DataKey.currentPilot] = result[2];
+          characteristicData[DataKey.currentPilotMode] = result[3];
+          characteristicData[DataKey.alarmRServerity] = result[4];
+          characteristicData[DataKey.alarmTServerity] = result[5];
+          characteristicData[DataKey.alarmPServerity] = result[6];
+          characteristicData[DataKey.currentTemperatureF] = result[7];
+          characteristicData[DataKey.currentTemperatureC] = result[8];
+          characteristicData[DataKey.currentVoltage] = result[9];
+          emit(state.copyWith(
+            characteristicData: characteristicData,
+          ));
+        } else if (i == 6) {
+          characteristicData[DataKey.centerAttenuation] = result[1];
+          characteristicData[DataKey.currentVoltageRipple] = result[2];
+          emit(state.copyWith(
+            characteristicData: characteristicData,
+          ));
+        } else if (i == 7) {
+          characteristicData[DataKey.location] = result[1];
+          emit(state.copyWith(
+            loadingStatus: FormStatus.requestSuccess,
+            characteristicData: characteristicData,
+          ));
+        }
+      } else {
+        emit(state.copyWith(
+          loadingStatus: FormStatus.requestFailure,
+          characteristicData: characteristicData,
+        ));
+        break;
+      }
+    }
   }
 
   Future<void> _onDeviceRefreshed(
@@ -179,8 +254,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(
       scanStatus: FormStatus.requestInProgress,
       connectionStatus: FormStatus.requestInProgress,
-      eventRecordsLoadingStatus: FormStatus.requestInProgress,
-      settingParametersLoading: FormStatus.requestInProgress,
+      loadingStatus: FormStatus.requestInProgress,
       dataExportStatus: FormStatus.none,
       device: null,
       characteristicData: const {},

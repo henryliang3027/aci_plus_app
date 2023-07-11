@@ -44,15 +44,11 @@ class DeviceCharacteristicChanged extends HomeEvent {
       ];
 }
 
-class LoadingResultChanged extends HomeEvent {
-  const LoadingResultChanged(this.loadingResultDataKey);
-
-  final DataKey loadingResultDataKey;
+class DataRequested extends HomeEvent {
+  const DataRequested();
 
   @override
-  List<Object?> get props => [
-        loadingResultDataKey,
-      ];
+  List<Object?> get props => [];
 }
 
 class ScanClosed extends HomeEvent {

@@ -173,6 +173,8 @@ class DsimRepository {
   final int _commandExecutionTimeout = 10; // s
   final int _agcWorkingModeSettingTimeout = 40; // s
 
+  List<int> _testList = [];
+
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
     // it is to solve device is not successfully disconnected after the app is closed
@@ -250,6 +252,7 @@ class DsimRepository {
   }
 
   void clearCache() {
+    _testList.clear();
     _logs.clear();
     _rawLog.clear();
     _events.clear();
@@ -311,7 +314,7 @@ class DsimRepository {
         _characteristicStreamSubscription = _ble
             .subscribeToCharacteristic(_qualifiedCharacteristic)
             .listen((data) async {
-          bool writeNextCommand = false;
+          // bool writeNextCommand = false;
           // print('-----# ${_commandIndex} data received-----');
           // print(data);
 
@@ -320,9 +323,9 @@ class DsimRepository {
 
           if (commandIndex <= 13) {
             _parseRawData(rawData);
-            if (commandIndex <= endIndex) {
-              writeNextCommand = true;
-            }
+            // if (commandIndex <= endIndex) {
+            //   writeNextCommand = true;
+            // }
           } else if (commandIndex >= 14 && commandIndex <= 29) {
             _rawLog.addAll(rawData);
             // 一個 log command 總共會接收 261 bytes, 每一次傳回 16 bytes
@@ -331,7 +334,7 @@ class DsimRepository {
               _rawLog.removeRange(0, 3);
               _parseLog();
               _rawLog.clear();
-              writeNextCommand = true;
+              // writeNextCommand = true;
             }
           } else if (commandIndex >= 30 && commandIndex <= 37) {
             _rawEvent.addAll(rawData);
@@ -341,7 +344,7 @@ class DsimRepository {
               _rawEvent.removeRange(0, 3);
               _parseEvent();
               _rawEvent.clear();
-              writeNextCommand = true;
+              // writeNextCommand = true;
             }
           } else if (commandIndex >= 40 && commandIndex <= 43) {
             _parseSetLocation(rawData);
@@ -353,31 +356,31 @@ class DsimRepository {
             _parseSetWorkingMode(rawData);
           }
 
-          if (writeNextCommand) {
-            if (commandIndex + 1 <= endIndex) {
-              commandIndex += 1;
-              await _ble.writeCharacteristicWithoutResponse(
-                _qualifiedCharacteristic,
-                value: _commandCollection[commandIndex],
-              );
-            } else {
-              // print('logs length: ${_logs.length}');
-              // for (Log log in _logs) {
-              //   print(
-              //       '${log.time}, ${log.temperature}, ${log.attenuation}, ${log.voltage}, ${log.voltageRipple}');
-              // }
+          // if (writeNextCommand) {
+          //   if (commandIndex + 1 <= endIndex) {
+          //     commandIndex += 1;
+          //     await _ble.writeCharacteristicWithoutResponse(
+          //       _qualifiedCharacteristic,
+          //       value: _commandCollection[commandIndex],
+          //     );
+          //   } else {
+          //     // print('logs length: ${_logs.length}');
+          //     // for (Log log in _logs) {
+          //     //   print(
+          //     //       '${log.time}, ${log.temperature}, ${log.attenuation}, ${log.voltage}, ${log.voltageRipple}');
+          //     // }
 
-              // _characteristicDataStreamController.close();
-            }
-          }
+          //     // _characteristicDataStreamController.close();
+          //   }
+          // }
         });
 
         // start to write first command
-        commandIndex = 0;
-        await _ble.writeCharacteristicWithoutResponse(
-          _qualifiedCharacteristic,
-          value: _commandCollection[commandIndex],
-        );
+        // commandIndex = 0;
+        // await _ble.writeCharacteristicWithoutResponse(
+        //   _qualifiedCharacteristic,
+        //   value: _commandCollection[commandIndex],
+        // );
       }
     }, onError: (error) {
       print('Error: $error');
@@ -541,12 +544,21 @@ class DsimRepository {
   void _parseRawData(List<int> rawData) {
     switch (commandIndex) {
       case 0:
-        String typeNo = '';
-        for (int i = 3; i < 15; i++) {
-          typeNo += String.fromCharCode(rawData[i]);
-        }
-        typeNo = typeNo.trim();
-        _characteristicDataStreamController.add({DataKey.typeNo: typeNo});
+        _testList.addAll(rawData);
+        print(_testList.length);
+        print(_testList[_testList.length - 1]);
+
+        // if (_testList.length == _totalBytesPerCommand) {
+        //   print(_testList);
+        // }
+        // String typeNo = '';
+        // for (int i = 3; i < 15; i++) {
+        //   typeNo += String.fromCharCode(rawData[i]);
+        // }
+        // typeNo = typeNo.trim();
+        // // _characteristicDataStreamController.add({DataKey.typeNo: typeNo});
+
+        // _completer.complete(typeNo);
         break;
       case 1:
         String partNo = 'DSIM';
@@ -560,7 +572,9 @@ class DsimRepository {
         if (partNo.startsWith('DSIM-CG')) {
           _hasDualPilot = true;
         }
-        _characteristicDataStreamController.add({DataKey.partNo: partNo});
+        // _characteristicDataStreamController.add({DataKey.partNo: partNo});
+
+        _completer.complete(partNo);
         break;
       case 2:
         String serialNumber = '';
@@ -568,8 +582,10 @@ class DsimRepository {
           serialNumber += String.fromCharCode(rawData[i]);
         }
         serialNumber = serialNumber.trim();
-        _characteristicDataStreamController
-            .add({DataKey.serialNumber: serialNumber});
+        // _characteristicDataStreamController
+        //     .add({DataKey.serialNumber: serialNumber});
+
+        _completer.complete(serialNumber);
         break;
       case 3:
         int number = rawData[10]; // hardware status 4 bytes last bute
@@ -592,11 +608,11 @@ class DsimRepository {
           firmwareVersion += String.fromCharCode(rawData[i]);
         }
 
-        _characteristicDataStreamController
-            .add({DataKey.logInterval: _basicInterval});
+        // _characteristicDataStreamController
+        //     .add({DataKey.logInterval: _basicInterval});
 
-        _characteristicDataStreamController
-            .add({DataKey.firmwareVersion: firmwareVersion});
+        // _characteristicDataStreamController
+        //     .add({DataKey.firmwareVersion: firmwareVersion});
 
         // setting data _logIntervalId
         _logIntervalId = int.parse(_basicInterval);
@@ -606,6 +622,8 @@ class DsimRepository {
         if (_isSettingLogInterval) {
           _completer.complete(_logIntervalId);
           _isSettingLogInterval = false;
+        } else {
+          _completer.complete((_basicInterval, firmwareVersion));
         }
 
         break;
@@ -633,6 +651,9 @@ class DsimRepository {
         if (_isSettingTGCCableLength) {
           _completer.complete(tgcCableLength);
           _isSettingTGCCableLength = false;
+        } else {
+          _completer.complete(
+              (currentAttenuator.toString(), '0', '3000', tgcCableLength));
         }
 
         // setting data _currentAttenuation
@@ -649,7 +670,7 @@ class DsimRepository {
         break;
 
       case 5:
-        String dsimMode = '';
+        String workingMode = '';
         String currentPilot = '';
         Alarm alarmRServerity = Alarm.medium;
         Alarm alarmTServerity = Alarm.medium;
@@ -663,25 +684,25 @@ class DsimRepository {
           case 1:
             {
               // _basicModeID = 1;
-              dsimMode = "Align";
+              workingMode = "Align";
               break;
             }
           case 2:
             {
               // _basicModeID = 2;
-              dsimMode = "AGC";
+              workingMode = "AGC";
               break;
             }
           case 3:
             {
               // _basicModeID = 3;
-              dsimMode = "TGC";
+              workingMode = "TGC";
               break;
             }
           case 4:
             {
               // _basicModeID = 4;
-              dsimMode = "MGC";
+              workingMode = "MGC";
               break;
             }
         }
@@ -732,34 +753,47 @@ class DsimRepository {
         //24V
         current24V = (rawData[8] * 256 + rawData[9]) / 10;
 
-        _characteristicDataStreamController.add({DataKey.dsimMode: dsimMode});
+        // _characteristicDataStreamController
+        //     .add({DataKey.workingMode: workingMode});
+
+        // _characteristicDataStreamController
+        //     .add({DataKey.currentPilot: currentPilot});
+        // _characteristicDataStreamController
+        //     .add({DataKey.currentPilotMode: pilotMode});
+        // _characteristicDataStreamController
+        //     .add({DataKey.alarmRServerity: alarmRServerity.name});
+        // _characteristicDataStreamController
+        //     .add({DataKey.alarmTServerity: alarmTServerity.name});
+        // _characteristicDataStreamController
+        //     .add({DataKey.alarmPServerity: alarmPServerity.name});
+        // _characteristicDataStreamController
+        //     .add({DataKey.currentTemperatureF: strCurrentTemperatureF});
+        // _characteristicDataStreamController
+        //     .add({DataKey.currentTemperatureC: strCurrentTemperatureC});
+        // _characteristicDataStreamController
+        //     .add({DataKey.currentVoltage: current24V.toString()});
 
         // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
         // setWorkingMode function 就會回傳結果給 caller
         if (_isSettingWorkingMode) {
-          _completer.complete(dsimMode);
+          _completer.complete(workingMode);
           _isSettingWorkingMode = false;
+        } else {
+          _completer.complete((
+            workingMode,
+            currentPilot,
+            pilotMode,
+            alarmRServerity.name,
+            alarmTServerity.name,
+            alarmPServerity.name,
+            strCurrentTemperatureF,
+            strCurrentTemperatureC,
+            current24V.toString(),
+          ));
         }
 
-        _characteristicDataStreamController
-            .add({DataKey.currentPilot: currentPilot});
-        _characteristicDataStreamController
-            .add({DataKey.currentPilotMode: pilotMode});
-        _characteristicDataStreamController
-            .add({DataKey.alarmRServerity: alarmRServerity.name});
-        _characteristicDataStreamController
-            .add({DataKey.alarmTServerity: alarmTServerity.name});
-        _characteristicDataStreamController
-            .add({DataKey.alarmPServerity: alarmPServerity.name});
-        _characteristicDataStreamController
-            .add({DataKey.currentTemperatureF: strCurrentTemperatureF});
-        _characteristicDataStreamController
-            .add({DataKey.currentTemperatureC: strCurrentTemperatureC});
-        _characteristicDataStreamController
-            .add({DataKey.currentVoltage: current24V.toString()});
-
         // setting data _workingMode
-        _workingMode = dsimMode;
+        _workingMode = workingMode;
 
         // setting data _centerAttenuation
         // _pilotChannel = currentPilot;
@@ -780,6 +814,9 @@ class DsimRepository {
         // setting data _centerAttenuation
         _centerAttenuation = centerAttenuation.toString();
 
+        _completer.complete(
+            (centerAttenuation.toString(), currentVoltageRipple.toString()));
+
         break;
       case 7:
         // no logic
@@ -788,51 +825,61 @@ class DsimRepository {
         // no logic
         break;
       case 9:
+        String partOfLocation = '';
         for (int i = 3; i < 15; i++) {
           if (rawData[i] == 0) {
             break;
           }
-          _tempLocation += String.fromCharCode(rawData[i]);
+          partOfLocation += String.fromCharCode(rawData[i]);
         }
+        _completer.complete(partOfLocation);
         break;
       case 10:
+        String partOfLocation = '';
         for (int i = 3; i < 15; i++) {
           if (rawData[i] == 0) {
             break;
           }
-          _tempLocation += String.fromCharCode(rawData[i]);
+          partOfLocation += String.fromCharCode(rawData[i]);
         }
+        _completer.complete(partOfLocation);
         break;
       case 11:
+        String partOfLocation = '';
         for (int i = 3; i < 15; i++) {
           if (rawData[i] == 0) {
             break;
           }
-          _tempLocation += String.fromCharCode(rawData[i]);
+          partOfLocation += String.fromCharCode(rawData[i]);
         }
+        _completer.complete(partOfLocation);
         break;
       case 12:
+        String partOfLocation = '';
         for (int i = 3; i < 7; i++) {
           if (rawData[i] == 0) {
             break;
           }
-          _tempLocation += String.fromCharCode(rawData[i]);
+          partOfLocation += String.fromCharCode(rawData[i]);
         }
 
-        _characteristicDataStreamController
-            .add({DataKey.location: _tempLocation});
+        // _characteristicDataStreamController
+        //     .add({DataKey.location: _tempLocation});
 
         // setting data _centerAttenuation
-        _location = _tempLocation;
+        // _location = _tempLocation;
 
         _tempLocation = '';
+        _completer.complete(partOfLocation);
 
         // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
         // setLocation function 就會回傳結果給 caller
-        if (_isSettingLocation) {
-          _completer.complete(_location);
-          _isSettingLocation = false;
-        }
+        // if (_isSettingLocation) {
+        //   _completer.complete(_location);
+        //   _isSettingLocation = false;
+        // } else {
+        //   _completer.complete(partOfLocation);
+        // }
 
         break;
       default:
@@ -840,15 +887,241 @@ class DsimRepository {
     }
   }
 
+  Future<dynamic> requestCommand0() async {
+    commandIndex = 0;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 0');
+    await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+
+    try {
+      String typeNo = await _completer.future
+          .timeout(Duration(seconds: _commandExecutionTimeout));
+
+      return [true, typeNo];
+    } catch (e) {
+      return [false, ''];
+    }
+  }
+
+  Future<dynamic> requestCommand1() async {
+    commandIndex = 1;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1');
+    await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+
+    try {
+      String partNo = await _completer.future
+          .timeout(Duration(seconds: _commandExecutionTimeout));
+
+      return [true, partNo];
+    } catch (e) {
+      return [false, ''];
+    }
+  }
+
+  Future<dynamic> requestCommand2() async {
+    commandIndex = 2;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 2');
+    await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+
+    try {
+      String serialNumber = await _completer.future
+          .timeout(Duration(seconds: _commandExecutionTimeout));
+
+      return [true, serialNumber];
+    } catch (e) {
+      return [false, ''];
+    }
+  }
+
+  Future<dynamic> requestCommand3() async {
+    commandIndex = 3;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 3');
+    await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+
+    try {
+      var (String basicInterval, String firmwareVersion) = await _completer
+          .future
+          .timeout(Duration(seconds: _commandExecutionTimeout));
+
+      return [true, basicInterval, firmwareVersion];
+    } catch (e) {
+      return [false, '', ''];
+    }
+  }
+
+  Future<dynamic> requestCommand4() async {
+    commandIndex = 4;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 4');
+    await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+
+    try {
+      var (
+        String currentAttenuation,
+        String minAttenuation,
+        String maxAttenuation,
+        String tgcCableLength
+      ) = await _completer.future
+          .timeout(Duration(seconds: _commandExecutionTimeout));
+
+      return [
+        true,
+        currentAttenuation,
+        minAttenuation,
+        maxAttenuation,
+        tgcCableLength,
+      ];
+    } catch (e) {
+      return [
+        false,
+        '',
+        '',
+        '',
+        '',
+      ];
+    }
+  }
+
+  Future<dynamic> requestCommand5() async {
+    commandIndex = 5;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 5');
+    await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+
+    try {
+      var (
+        String workingMode,
+        String currentPilot,
+        String pilotMode,
+        String alarmRServerity,
+        String alarmTServerity,
+        String alarmPServerity,
+        String strCurrentTemperatureF,
+        String strCurrentTemperatureC,
+        String current24V,
+      ) = await _completer.future
+          .timeout(Duration(seconds: _commandExecutionTimeout));
+
+      return [
+        true,
+        workingMode,
+        currentPilot,
+        pilotMode,
+        alarmRServerity,
+        alarmTServerity,
+        alarmPServerity,
+        strCurrentTemperatureF,
+        strCurrentTemperatureC,
+        current24V,
+      ];
+    } catch (e) {
+      return [
+        false,
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ];
+    }
+  }
+
+  Future<dynamic> requestCommand6() async {
+    commandIndex = 6;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 6');
+    await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+
+    try {
+      var (
+        String centerAttenuation,
+        String currentVoltageRipple,
+      ) = await _completer.future
+          .timeout(Duration(seconds: _commandExecutionTimeout));
+
+      return [
+        true,
+        centerAttenuation,
+        currentVoltageRipple,
+      ];
+    } catch (e) {
+      return [
+        false,
+        '',
+        '',
+      ];
+    }
+  }
+
+  Future requestCommand9To12() async {
+    String loc = '';
+    for (int i = 9; i <= 12; i++) {
+      commandIndex = i;
+      _completer = Completer<dynamic>();
+
+      print('get data from request command $i');
+      await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+
+      // 設定後重新讀取 location 來比對是否設定成功
+      try {
+        String partOfLocation = await _completer.future
+            .timeout(Duration(seconds: _commandExecutionTimeout));
+
+        loc += partOfLocation;
+
+        print('$i $loc, $partOfLocation');
+
+        if (commandIndex == 12) {
+          _location = loc;
+          return [true, loc];
+        }
+      } catch (e) {
+        return [false, ''];
+      }
+    }
+  }
+
   void _calculateCRCs() {
+    // 機型(typeNo)
     CRC16.calculateCRC16(command: Command.req00Cmd, usDataLength: 6);
+
+    // 型號(partNo)
     CRC16.calculateCRC16(command: Command.req01Cmd, usDataLength: 6);
+
+    // serialNumber
     CRC16.calculateCRC16(command: Command.req02Cmd, usDataLength: 6);
+
+    // firmware, logInterval
     CRC16.calculateCRC16(command: Command.req03Cmd, usDataLength: 6);
+
+    // currentAttenuation, minAttenuation, maxAttenuation, tgcCableLength
     CRC16.calculateCRC16(command: Command.req04Cmd, usDataLength: 6);
+
+    // workingMode, currentPilot, currentPilotMode, alarmRServerity, alarmTServerity,
+    // alarmPServerity, currentTemperatureF, currentTemperatureC, currentVoltage
     CRC16.calculateCRC16(command: Command.req05Cmd, usDataLength: 6);
+
+    // centerAttenuation, currentVoltageRipple
     CRC16.calculateCRC16(command: Command.req06Cmd, usDataLength: 6);
+
+    // none
     CRC16.calculateCRC16(command: Command.req07Cmd, usDataLength: 6);
+
+    // none
     CRC16.calculateCRC16(command: Command.req08Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command.location1, usDataLength: 6);
     CRC16.calculateCRC16(command: Command.location2, usDataLength: 6);
@@ -881,8 +1154,10 @@ class DsimRepository {
     CRC16.calculateCRC16(command: Command.ddataFF, usDataLength: 6);
 
     _commandCollection.addAll([
-      Command.req00Cmd,
-      Command.req01Cmd,
+      Command.req000Cmd,
+      Command.req001Cmd,
+      // Command.req00Cmd,
+      // Command.req01Cmd,
       Command.req02Cmd,
       Command.req03Cmd,
       Command.req04Cmd,
@@ -1046,12 +1321,14 @@ class DsimRepository {
           (rawData[5] == 0x06)) {
         print('Location0C Set');
 
-        commandIndex = 9;
-        endIndex = 12;
-        await _ble.writeCharacteristicWithoutResponse(
-          _qualifiedCharacteristic,
-          value: _commandCollection[commandIndex],
-        );
+        _completer.complete(true);
+
+        // commandIndex = 9;
+        // endIndex = 12;
+        // await _ble.writeCharacteristicWithoutResponse(
+        //   _qualifiedCharacteristic,
+        //   value: _commandCollection[commandIndex],
+        // );
 
         // setTGCCableLength(
         //   currentAttenuation: int.parse(_currentAttenuation),
@@ -1141,11 +1418,24 @@ class DsimRepository {
 
     // 設定後重新讀取 location 來比對是否設定成功
     try {
-      String newLocation = await _completer.future
+      bool isDone = await _completer.future
           .timeout(Duration(seconds: _commandExecutionTimeout));
 
-      if (newLocation == location) {
-        return true;
+      if (isDone) {
+        List<dynamic> resultOfGetLocation = await requestCommand9To12();
+
+        if (resultOfGetLocation[0]) {
+          if (location == resultOfGetLocation[1]) {
+            _characteristicDataStreamController
+                .add({DataKey.location: resultOfGetLocation[1]});
+            _location = resultOfGetLocation[1];
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
       } else {
         return false;
       }

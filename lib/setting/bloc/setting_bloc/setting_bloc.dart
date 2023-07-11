@@ -556,7 +556,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         );
       }
 
-      settingResult.add('${DataKey.dsimMode.name},$resultOfSettingWorkingMode');
+      settingResult
+          .add('${DataKey.workingMode.name},$resultOfSettingWorkingMode');
     }
 
     emit(state.copyWith(

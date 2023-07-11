@@ -4,8 +4,7 @@ class HomeState extends Equatable {
   const HomeState({
     this.scanStatus = FormStatus.none,
     this.connectionStatus = FormStatus.none,
-    this.eventRecordsLoadingStatus = FormStatus.none,
-    this.settingParametersLoading = FormStatus.none,
+    this.loadingStatus = FormStatus.none,
     this.dataExportStatus = FormStatus.none,
     this.dataShareStatus = FormStatus.none,
     this.showSplash = true,
@@ -18,8 +17,7 @@ class HomeState extends Equatable {
 
   final FormStatus scanStatus;
   final FormStatus connectionStatus;
-  final FormStatus eventRecordsLoadingStatus;
-  final FormStatus settingParametersLoading;
+  final FormStatus loadingStatus;
   final FormStatus dataExportStatus;
   final FormStatus dataShareStatus;
   final bool showSplash;
@@ -32,8 +30,7 @@ class HomeState extends Equatable {
   HomeState copyWith({
     FormStatus? scanStatus,
     FormStatus? connectionStatus,
-    FormStatus? eventRecordsLoadingStatus,
-    FormStatus? settingParametersLoading,
+    FormStatus? loadingStatus,
     FormStatus? dataExportStatus,
     FormStatus? dataShareStatus,
     bool? showSplash,
@@ -46,10 +43,7 @@ class HomeState extends Equatable {
     return HomeState(
       scanStatus: scanStatus ?? this.scanStatus,
       connectionStatus: connectionStatus ?? this.connectionStatus,
-      eventRecordsLoadingStatus:
-          eventRecordsLoadingStatus ?? this.eventRecordsLoadingStatus,
-      settingParametersLoading:
-          settingParametersLoading ?? this.settingParametersLoading,
+      loadingStatus: loadingStatus ?? this.loadingStatus,
       dataExportStatus: dataExportStatus ?? this.dataExportStatus,
       dataShareStatus: dataShareStatus ?? this.dataShareStatus,
       showSplash: showSplash ?? this.showSplash,
@@ -66,8 +60,7 @@ class HomeState extends Equatable {
   List<Object?> get props => [
         scanStatus,
         connectionStatus,
-        eventRecordsLoadingStatus,
-        settingParametersLoading,
+        loadingStatus,
         dataExportStatus,
         dataShareStatus,
         showSplash,

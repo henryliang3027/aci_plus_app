@@ -4,7 +4,7 @@ enum DataKey {
   serialNumber,
   firmwareVersion,
   location,
-  dsimMode,
+  workingMode,
   currentPilot,
   currentPilotMode,
   logInterval,
@@ -36,6 +36,26 @@ enum DataKey {
 }
 
 class Command {
+  static List<int> req000Cmd = [
+    0xB0,
+    0x03,
+    0xAA,
+    0x00,
+    0x00,
+    0x80,
+    0x7E,
+    0x53
+  ]; //0
+  static List<int> req001Cmd = [
+    0xB0,
+    0x03,
+    0xAB,
+    0x00,
+    0x00,
+    0x80,
+    0x7F,
+    0xAF
+  ]; //1
   // 0xDE, 0x29
   static List<int> req00Cmd = [0xB0, 0x03, 0x00, 0x00, 0x00, 0x06, 0, 0]; //0
   static List<int> req01Cmd = [0xB0, 0x03, 0x00, 0x01, 0x00, 0x06, 0, 0]; //1

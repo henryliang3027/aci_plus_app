@@ -70,7 +70,7 @@ class _PopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      if (state.eventRecordsLoadingStatus == FormStatus.requestInProgress) {
+      if (state.loadingStatus == FormStatus.requestInProgress) {
         return const Padding(
           padding: EdgeInsets.only(right: 20.0),
           child: SizedBox(
@@ -239,7 +239,7 @@ class _logChart extends StatelessWidget {
 
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (state.eventRecordsLoadingStatus == FormStatus.requestInProgress) {
+        if (state.loadingStatus == FormStatus.requestInProgress) {
           return const Padding(
             padding: EdgeInsets.only(right: 20.0),
             child: Center(
