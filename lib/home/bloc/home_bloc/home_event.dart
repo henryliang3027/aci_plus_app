@@ -44,6 +44,22 @@ class DeviceCharacteristicChanged extends HomeEvent {
       ];
 }
 
+// test baud rate
+class BaudRateTestRequested extends HomeEvent {
+  const BaudRateTestRequested();
+
+  @override
+  List<Object?> get props => [];
+}
+
+// test baud rate
+class BaudRateTest2Requested extends HomeEvent {
+  const BaudRateTest2Requested();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class DataRequested extends HomeEvent {
   const DataRequested();
 

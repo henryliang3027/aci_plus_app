@@ -25,6 +25,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DataExported>(_onDataExported);
     on<DataShared>(_onDataShared);
 
+    on<BaudRateTestRequested>(_onBaudRateTestRequested);
+    on<BaudRateTest2Requested>(_onBaudRateTest2Requested);
+
     add(const SplashStateChanged());
   }
 
@@ -75,15 +78,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
             scanStatus: FormStatus.requestFailure,
             connectionStatus: FormStatus.requestFailure,
-            loadingStatus: FormStatus.requestFailure,
+            // loadingStatus: FormStatus.requestFailure,
             device: null,
             errorMassage: 'Device not found.'));
         break;
       case ScanStatus.disable:
         emit(state.copyWith(
             scanStatus: FormStatus.requestFailure,
-            connectionStatus: FormStatus.requestFailure,
-            loadingStatus: FormStatus.requestFailure,
             device: null,
             errorMassage: 'Bluetooth is disabled.'));
         break;
@@ -131,14 +132,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestFailure,
-          loadingStatus: FormStatus.requestFailure,
+          // loadingStatus: FormStatus.requestFailure,
         ));
         break;
       case DeviceConnectionState.disconnected:
         emit(state.copyWith(
           scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestFailure,
-          loadingStatus: FormStatus.requestFailure,
+          // loadingStatus: FormStatus.requestFailure,
         ));
         break;
     }
@@ -156,6 +157,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
   }
 
+  Future<void> _onBaudRateTestRequested(
+    BaudRateTestRequested event,
+    Emitter<HomeState> emit,
+  ) async {
+    List<int> data = await _dsimRepository.requestCommandTest1();
+
+    // print('result: ${data.length}, ${data[data.length - 1]}');
+  }
+
+  Future<void> _onBaudRateTest2Requested(
+    BaudRateTest2Requested event,
+    Emitter<HomeState> emit,
+  ) async {
+    List<int> data = await _dsimRepository.requestCommandTest2();
+
+    // print('result: ${data.length}, ${data[data.length - 1]}');
+  }
+
   Future<void> _onDataRequested(
     DataRequested event,
     Emitter<HomeState> emit,
@@ -168,14 +187,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
 
     List<Function> requestCommands = [
-      _dsimRepository.requestCommand0,
-      _dsimRepository.requestCommand1,
-      _dsimRepository.requestCommand2,
-      _dsimRepository.requestCommand3,
-      _dsimRepository.requestCommand4,
-      _dsimRepository.requestCommand5,
-      _dsimRepository.requestCommand6,
-      _dsimRepository.requestCommand9To12,
+      // _dsimRepository.requestCommand0,
+      // _dsimRepository.requestCommand1,
+      // _dsimRepository.requestCommand2,
+      // _dsimRepository.requestCommand3,
+      // _dsimRepository.requestCommand4,
+      // _dsimRepository.requestCommand5,
+      // _dsimRepository.requestCommand6,
+      // _dsimRepository.requestCommand9To12,
+      // _dsimRepository.requestCommand14To29,
+      // _dsimRepository.requestCommand30To37,
     ];
 
     for (int i = 0; i < requestCommands.length; i++) {
@@ -233,8 +254,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         } else if (i == 7) {
           characteristicData[DataKey.location] = result[1];
           emit(state.copyWith(
+            characteristicData: characteristicData,
+          ));
+        } else if (i == 8) {
+          characteristicData[DataKey.minTemperatureF] = result[1];
+          characteristicData[DataKey.maxTemperatureF] = result[2];
+          characteristicData[DataKey.minTemperatureC] = result[3];
+          characteristicData[DataKey.maxTemperatureC] = result[4];
+          characteristicData[DataKey.historicalMinAttenuation] = result[5];
+          characteristicData[DataKey.historicalMaxAttenuation] = result[6];
+          characteristicData[DataKey.minVoltage] = result[7];
+          characteristicData[DataKey.maxVoltage] = result[8];
+          characteristicData[DataKey.minVoltageRipple] = result[9];
+          characteristicData[DataKey.maxVoltageRipple] = result[10];
+
+          List<List<DateValuePair>> dateValueCollectionOfLog =
+              _dsimRepository.getDateValueCollectionOfLogs();
+
+          emit(state.copyWith(
             loadingStatus: FormStatus.requestSuccess,
             characteristicData: characteristicData,
+            dateValueCollectionOfLog: dateValueCollectionOfLog,
           ));
         }
       } else {

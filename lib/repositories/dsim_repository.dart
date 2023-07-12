@@ -122,6 +122,9 @@ class DsimRepository {
   StreamSubscription<List<int>>? _characteristicStreamSubscription;
   late QualifiedCharacteristic _qualifiedCharacteristic;
 
+  List<int> _dataList1 = [];
+  List<int> _dataList2 = [];
+
   final _name1 = 'ACI03170078';
   final _name2 = 'ACI01160006';
   final _aciPrefix = 'ACI';
@@ -171,9 +174,8 @@ class DsimRepository {
   bool _hasDualPilot = false;
 
   final int _commandExecutionTimeout = 10; // s
+  final int _logGettingTimeout = 20; // s
   final int _agcWorkingModeSettingTimeout = 40; // s
-
-  List<int> _testList = [];
 
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
@@ -252,7 +254,7 @@ class DsimRepository {
   }
 
   void clearCache() {
-    _testList.clear();
+    _completer = Completer<dynamic>();
     _logs.clear();
     _rawLog.clear();
     _events.clear();
@@ -320,8 +322,16 @@ class DsimRepository {
 
           List<int> rawData = data;
           print(commandIndex);
+          // _dataList2.addAll(rawData);
+          // print('${_dataList2.length}, ${_dataList2[_dataList2.length - 1]}');
 
-          if (commandIndex <= 13) {
+          if (commandIndex == -1) {
+            _dataList1.addAll(rawData);
+            print('${_dataList1.length}, ${_dataList1[_dataList1.length - 1]}');
+          } else if (commandIndex == -2) {
+            _dataList2.addAll(rawData);
+            print('${_dataList2.length}, ${_dataList2[_dataList2.length - 1]}');
+          } else if (commandIndex <= 13) {
             _parseRawData(rawData);
             // if (commandIndex <= endIndex) {
             //   writeNextCommand = true;
@@ -391,12 +401,6 @@ class DsimRepository {
     });
   }
 
-  Future<String> getInformation() async {
-    final informationCompleter = Completer<String>();
-
-    return await informationCompleter.future;
-  }
-
   void _parseEvent() {
     for (int i = 0; i < 16; i++) {
       int timeStamp = _rawEvent[i * 16] * 256 + _rawEvent[i * 16 + 1];
@@ -426,40 +430,43 @@ class DsimRepository {
   }
 
   void _parseLog() {
-    for (var i = 0; i < 16; i++) {
-      int timeStamp = _rawLog[i * 16] * 256 + _rawLog[i * 16 + 1];
-      double temperature =
-          (_rawLog[i * 16 + 2] * 256 + _rawLog[i * 16 + 3]) / 10;
-      int attenuation = _rawLog[i * 16 + 4] * 256 + _rawLog[i * 16 + 5];
-      double pilot = (_rawLog[i * 16 + 6] * 256 + _rawLog[i * 16 + 7]) / 10;
-      double voltage = (_rawLog[i * 16 + 8] * 256 + _rawLog[i * 16 + 9]) / 10;
-      int voltageRipple = _rawLog[i * 16 + 10] * 256 + _rawLog[i * 16 + 11];
+    if (commandIndex < 29) {
+      for (var i = 0; i < 16; i++) {
+        int timeStamp = _rawLog[i * 16] * 256 + _rawLog[i * 16 + 1];
+        double temperature =
+            (_rawLog[i * 16 + 2] * 256 + _rawLog[i * 16 + 3]) / 10;
+        int attenuation = _rawLog[i * 16 + 4] * 256 + _rawLog[i * 16 + 5];
+        double pilot = (_rawLog[i * 16 + 6] * 256 + _rawLog[i * 16 + 7]) / 10;
+        double voltage = (_rawLog[i * 16 + 8] * 256 + _rawLog[i * 16 + 9]) / 10;
+        int voltageRipple = _rawLog[i * 16 + 10] * 256 + _rawLog[i * 16 + 11];
 
-      if (timeStamp < 0xFFF0) {
-        //# 20210128 做2補數
-        if (temperature > 32767) {
-          temperature = -(65535 - temperature + 1).abs();
+        if (timeStamp < 0xFFF0) {
+          //# 20210128 做2補數
+          if (temperature > 32767) {
+            temperature = -(65535 - temperature + 1).abs();
+          }
+
+          int timeDiff = _nowTimeCount - timeStamp;
+          if (timeDiff < 0) {
+            timeDiff = timeDiff + 65520;
+          }
+          timeStamp = timeDiff;
+
+          final DateTime dateTime = timeStampToDateTime(timeStamp);
+
+          _logs.add(Log(
+              dateTime: dateTime,
+              temperature: temperature,
+              attenuation: attenuation,
+              pilot: pilot,
+              voltage: voltage,
+              voltageRipple: voltageRipple));
         }
-
-        int timeDiff = _nowTimeCount - timeStamp;
-        if (timeDiff < 0) {
-          timeDiff = timeDiff + 65520;
-        }
-        timeStamp = timeDiff;
-
-        final DateTime dateTime = timeStampToDateTime(timeStamp);
-
-        _logs.add(Log(
-            dateTime: dateTime,
-            temperature: temperature,
-            attenuation: attenuation,
-            pilot: pilot,
-            voltage: voltage,
-            voltageRipple: voltageRipple));
       }
-    }
-
-    if (commandIndex == 29) {
+      if (!_completer.isCompleted) {
+        _completer.complete(true);
+      }
+    } else {
       _logs.sort((a, b) => a.dateTime.compareTo(b.dateTime));
 
       // get min temperature
@@ -516,49 +523,58 @@ class DsimRepository {
       String maxTemperatureC =
           maxTemperature.toString() + CustomStyle.celciusUnit;
 
-      _characteristicDataStreamController
-          .add({DataKey.minTemperatureF: minTemperatureF});
-      _characteristicDataStreamController
-          .add({DataKey.maxTemperatureF: maxTemperatureF});
-      _characteristicDataStreamController
-          .add({DataKey.minTemperatureC: minTemperatureC});
-      _characteristicDataStreamController
-          .add({DataKey.maxTemperatureC: maxTemperatureC});
-      _characteristicDataStreamController.add({
-        DataKey.historicalMinAttenuation: historicalMinAttenuation.toString()
-      });
-      _characteristicDataStreamController.add({
-        DataKey.historicalMaxAttenuation: historicalMaxAttenuation.toString()
-      });
-      _characteristicDataStreamController
-          .add({DataKey.minVoltage: minVoltage.toString()});
-      _characteristicDataStreamController
-          .add({DataKey.maxVoltage: maxVoltage.toString()});
-      _characteristicDataStreamController
-          .add({DataKey.minVoltageRipple: minVoltageRipple.toString()});
-      _characteristicDataStreamController
-          .add({DataKey.maxVoltageRipple: maxVoltageRipple.toString()});
+      // _characteristicDataStreamController
+      //     .add({DataKey.minTemperatureF: minTemperatureF});
+      // _characteristicDataStreamController
+      //     .add({DataKey.maxTemperatureF: maxTemperatureF});
+      // _characteristicDataStreamController
+      //     .add({DataKey.minTemperatureC: minTemperatureC});
+      // _characteristicDataStreamController
+      //     .add({DataKey.maxTemperatureC: maxTemperatureC});
+      // _characteristicDataStreamController.add({
+      //   DataKey.historicalMinAttenuation: historicalMinAttenuation.toString()
+      // });
+      // _characteristicDataStreamController.add({
+      //   DataKey.historicalMaxAttenuation: historicalMaxAttenuation.toString()
+      // });
+      // _characteristicDataStreamController
+      //     .add({DataKey.minVoltage: minVoltage.toString()});
+      // _characteristicDataStreamController
+      //     .add({DataKey.maxVoltage: maxVoltage.toString()});
+      // _characteristicDataStreamController
+      //     .add({DataKey.minVoltageRipple: minVoltageRipple.toString()});
+      // _characteristicDataStreamController
+      //     .add({DataKey.maxVoltageRipple: maxVoltageRipple.toString()});
+
+      _completer.complete((
+        minTemperatureF,
+        maxTemperatureF,
+        minTemperatureC,
+        maxTemperatureC,
+        historicalMinAttenuation.toString(),
+        historicalMaxAttenuation.toString(),
+        minVoltage.toString(),
+        maxVoltage.toString(),
+        minVoltageRipple.toString(),
+        maxVoltageRipple.toString(),
+      ));
     }
   }
 
   void _parseRawData(List<int> rawData) {
     switch (commandIndex) {
       case 0:
-        _testList.addAll(rawData);
-        print(_testList.length);
-        print(_testList[_testList.length - 1]);
+        String typeNo = '';
+        for (int i = 3; i < 15; i++) {
+          typeNo += String.fromCharCode(rawData[i]);
+        }
+        typeNo = typeNo.trim();
+        // _characteristicDataStreamController.add({DataKey.typeNo: typeNo});
 
-        // if (_testList.length == _totalBytesPerCommand) {
-        //   print(_testList);
-        // }
-        // String typeNo = '';
-        // for (int i = 3; i < 15; i++) {
-        //   typeNo += String.fromCharCode(rawData[i]);
-        // }
-        // typeNo = typeNo.trim();
-        // // _characteristicDataStreamController.add({DataKey.typeNo: typeNo});
+        if (!_completer.isCompleted) {
+          _completer.complete(typeNo);
+        }
 
-        // _completer.complete(typeNo);
         break;
       case 1:
         String partNo = 'DSIM';
@@ -574,7 +590,9 @@ class DsimRepository {
         }
         // _characteristicDataStreamController.add({DataKey.partNo: partNo});
 
-        _completer.complete(partNo);
+        if (!_completer.isCompleted) {
+          _completer.complete(partNo);
+        }
         break;
       case 2:
         String serialNumber = '';
@@ -585,7 +603,10 @@ class DsimRepository {
         // _characteristicDataStreamController
         //     .add({DataKey.serialNumber: serialNumber});
 
-        _completer.complete(serialNumber);
+        if (!_completer.isCompleted) {
+          _completer.complete(serialNumber);
+        }
+
         break;
       case 3:
         int number = rawData[10]; // hardware status 4 bytes last bute
@@ -619,10 +640,12 @@ class DsimRepository {
 
         // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
         // setLogInterval function 就會回傳結果給 caller
-        if (_isSettingLogInterval) {
-          _completer.complete(_logIntervalId);
-          _isSettingLogInterval = false;
-        } else {
+        // if (_isSettingLogInterval) {
+        //   _completer.complete(_logIntervalId);
+        //   _isSettingLogInterval = false;
+        // } else {}
+
+        if (!_completer.isCompleted) {
           _completer.complete((_basicInterval, firmwareVersion));
         }
 
@@ -648,12 +671,21 @@ class DsimRepository {
 
         // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
         // setTGCCableLength function 就會回傳結果給 caller
-        if (_isSettingTGCCableLength) {
-          _completer.complete(tgcCableLength);
-          _isSettingTGCCableLength = false;
-        } else {
-          _completer.complete(
-              (currentAttenuator.toString(), '0', '3000', tgcCableLength));
+        // if (_isSettingTGCCableLength) {
+        //   _completer.complete(tgcCableLength);
+        //   _isSettingTGCCableLength = false;
+        // } else {
+        //   _completer.complete(
+        //       (currentAttenuator.toString(), '0', '3000', tgcCableLength));
+        // }
+
+        if (!_completer.isCompleted) {
+          _completer.complete((
+            currentAttenuator.toString(),
+            '0',
+            '3000',
+            tgcCableLength,
+          ));
         }
 
         // setting data _currentAttenuation
@@ -775,22 +807,34 @@ class DsimRepository {
 
         // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
         // setWorkingMode function 就會回傳結果給 caller
-        if (_isSettingWorkingMode) {
-          _completer.complete(workingMode);
-          _isSettingWorkingMode = false;
-        } else {
-          _completer.complete((
-            workingMode,
-            currentPilot,
-            pilotMode,
-            alarmRServerity.name,
-            alarmTServerity.name,
-            alarmPServerity.name,
-            strCurrentTemperatureF,
-            strCurrentTemperatureC,
-            current24V.toString(),
-          ));
-        }
+        // if (_isSettingWorkingMode) {
+        //   _completer.complete(workingMode);
+        //   _isSettingWorkingMode = false;
+        // } else {
+        //   _completer.complete((
+        //     workingMode,
+        //     currentPilot,
+        //     pilotMode,
+        //     alarmRServerity.name,
+        //     alarmTServerity.name,
+        //     alarmPServerity.name,
+        //     strCurrentTemperatureF,
+        //     strCurrentTemperatureC,
+        //     current24V.toString(),
+        //   ));
+        // }
+
+        _completer.complete((
+          workingMode,
+          currentPilot,
+          pilotMode,
+          alarmRServerity.name,
+          alarmTServerity.name,
+          alarmPServerity.name,
+          strCurrentTemperatureF,
+          strCurrentTemperatureC,
+          current24V.toString(),
+        ));
 
         // setting data _workingMode
         _workingMode = workingMode;
@@ -814,8 +858,10 @@ class DsimRepository {
         // setting data _centerAttenuation
         _centerAttenuation = centerAttenuation.toString();
 
-        _completer.complete(
-            (centerAttenuation.toString(), currentVoltageRipple.toString()));
+        if (!_completer.isCompleted) {
+          _completer.complete(
+              (centerAttenuation.toString(), currentVoltageRipple.toString()));
+        }
 
         break;
       case 7:
@@ -832,7 +878,9 @@ class DsimRepository {
           }
           partOfLocation += String.fromCharCode(rawData[i]);
         }
-        _completer.complete(partOfLocation);
+        if (!_completer.isCompleted) {
+          _completer.complete(partOfLocation);
+        }
         break;
       case 10:
         String partOfLocation = '';
@@ -842,7 +890,9 @@ class DsimRepository {
           }
           partOfLocation += String.fromCharCode(rawData[i]);
         }
-        _completer.complete(partOfLocation);
+        if (!_completer.isCompleted) {
+          _completer.complete(partOfLocation);
+        }
         break;
       case 11:
         String partOfLocation = '';
@@ -852,7 +902,9 @@ class DsimRepository {
           }
           partOfLocation += String.fromCharCode(rawData[i]);
         }
-        _completer.complete(partOfLocation);
+        if (!_completer.isCompleted) {
+          _completer.complete(partOfLocation);
+        }
         break;
       case 12:
         String partOfLocation = '';
@@ -870,7 +922,10 @@ class DsimRepository {
         // _location = _tempLocation;
 
         _tempLocation = '';
-        _completer.complete(partOfLocation);
+
+        if (!_completer.isCompleted) {
+          _completer.complete(partOfLocation);
+        }
 
         // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
         // setLocation function 就會回傳結果給 caller
@@ -887,6 +942,48 @@ class DsimRepository {
     }
   }
 
+  Future<dynamic> requestCommandTest1() async {
+    _dataList1.clear();
+    commandIndex = -1;
+    _completer = Completer<dynamic>();
+    List<int> cmd1 = [0xB0, 0x03, 0xAA, 0x00, 0x00, 0x80, 0x7E, 0x53];
+    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 0x00, 0x80, 0x7F, 0xAF];
+
+    print('get data from request command -1');
+    await _writeSetCommandToCharacteristic(cmd1);
+
+    // setTimeout(Duration(seconds: 0));
+
+    try {
+      String test = await _completer.future;
+
+      return [true, test];
+    } catch (e) {
+      return [false, ''];
+    }
+  }
+
+  Future<dynamic> requestCommandTest2() async {
+    _dataList2.clear();
+    commandIndex = -2;
+    _completer = Completer<dynamic>();
+    List<int> cmd1 = [0xB0, 0x03, 0xAA, 0x00, 0x00, 0x80, 0x7E, 0x53];
+    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 0x00, 0x80, 0x7F, 0xAF];
+
+    print('get data from request command -2');
+    await _writeSetCommandToCharacteristic(cmd2);
+
+    // setTimeout(Duration(seconds: 0));
+
+    try {
+      String test = await _completer.future;
+
+      return [true, test];
+    } catch (e) {
+      return [false, ''];
+    }
+  }
+
   Future<dynamic> requestCommand0() async {
     commandIndex = 0;
     _completer = Completer<dynamic>();
@@ -894,9 +991,10 @@ class DsimRepository {
     print('get data from request command 0');
     await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
 
+    // setTimeout(Duration(seconds: 0));
+
     try {
-      String typeNo = await _completer.future
-          .timeout(Duration(seconds: _commandExecutionTimeout));
+      String typeNo = await _completer.future;
 
       return [true, typeNo];
     } catch (e) {
@@ -910,6 +1008,7 @@ class DsimRepository {
 
     print('get data from request command 1');
     await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    // setTimeout(Duration(seconds: _commandExecutionTimeout));
 
     try {
       String partNo = await _completer.future
@@ -927,6 +1026,7 @@ class DsimRepository {
 
     print('get data from request command 2');
     await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    // setTimeout(Duration(seconds: _commandExecutionTimeout));
 
     try {
       String serialNumber = await _completer.future
@@ -944,6 +1044,7 @@ class DsimRepository {
 
     print('get data from request command 3');
     await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    // setTimeout(Duration(seconds: _commandExecutionTimeout));
 
     try {
       var (String basicInterval, String firmwareVersion) = await _completer
@@ -962,6 +1063,7 @@ class DsimRepository {
 
     print('get data from request command 4');
     await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    // setTimeout(Duration(seconds: _commandExecutionTimeout));
 
     try {
       var (
@@ -996,6 +1098,7 @@ class DsimRepository {
 
     print('get data from request command 5');
     await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    // setTimeout(Duration(seconds: _commandExecutionTimeout));
 
     try {
       var (
@@ -1045,6 +1148,7 @@ class DsimRepository {
 
     print('get data from request command 6');
     await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    // setTimeout(Duration(seconds: _commandExecutionTimeout));
 
     try {
       var (
@@ -1067,6 +1171,7 @@ class DsimRepository {
     }
   }
 
+  // location
   Future requestCommand9To12() async {
     String loc = '';
     for (int i = 9; i <= 12; i++) {
@@ -1075,6 +1180,7 @@ class DsimRepository {
 
       print('get data from request command $i');
       await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+      // setTimeout(Duration(seconds: _commandExecutionTimeout));
 
       // 設定後重新讀取 location 來比對是否設定成功
       try {
@@ -1091,6 +1197,112 @@ class DsimRepository {
         }
       } catch (e) {
         return [false, ''];
+      }
+    }
+  }
+
+  Future requestCommand14To29() async {
+    for (int i = 14; i <= 29; i++) {
+      commandIndex = i;
+      _completer = Completer<dynamic>();
+
+      print('get data from request command $i');
+      await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+      setTimeout(Duration(seconds: _commandExecutionTimeout));
+
+      if (commandIndex == 29) {
+        try {
+          var (
+            minTemperatureF,
+            maxTemperatureF,
+            minTemperatureC,
+            maxTemperatureC,
+            historicalMinAttenuation,
+            historicalMaxAttenuation,
+            minVoltage,
+            maxVoltage,
+            minVoltageRipple,
+            maxVoltageRipple,
+          ) = await _completer.future;
+
+          return [
+            true,
+            minTemperatureF,
+            maxTemperatureF,
+            minTemperatureC,
+            maxTemperatureC,
+            historicalMinAttenuation,
+            historicalMaxAttenuation,
+            minVoltage,
+            maxVoltage,
+            minVoltageRipple,
+            maxVoltageRipple,
+          ];
+        } catch (e) {
+          return [false, '', '', '', '', '', '', '', '', '', ''];
+        }
+      } else {
+        try {
+          bool isDone = await _completer.future;
+          if (!isDone) {
+            return [false, '', '', '', '', '', '', '', '', '', ''];
+          }
+        } catch (e) {
+          return [false, '', '', '', '', '', '', '', '', '', ''];
+        }
+      }
+    }
+  }
+
+  Future requestCommand30To37() async {
+    for (int i = 30; i <= 37; i++) {
+      commandIndex = i;
+      _completer = Completer<dynamic>();
+
+      print('get data from request command $i');
+      await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+      setTimeout(Duration(seconds: _commandExecutionTimeout));
+
+      if (commandIndex == 29) {
+        try {
+          var (
+            minTemperatureF,
+            maxTemperatureF,
+            minTemperatureC,
+            maxTemperatureC,
+            historicalMinAttenuation,
+            historicalMaxAttenuation,
+            minVoltage,
+            maxVoltage,
+            minVoltageRipple,
+            maxVoltageRipple,
+          ) = await _completer.future;
+
+          return [
+            true,
+            minTemperatureF,
+            maxTemperatureF,
+            minTemperatureC,
+            maxTemperatureC,
+            historicalMinAttenuation,
+            historicalMaxAttenuation,
+            minVoltage,
+            maxVoltage,
+            minVoltageRipple,
+            maxVoltageRipple,
+          ];
+        } catch (e) {
+          return [false, '', '', '', '', '', '', '', '', '', ''];
+        }
+      } else {
+        try {
+          bool isDone = await _completer.future;
+          if (!isDone) {
+            return [false, '', '', '', '', '', '', '', '', '', ''];
+          }
+        } catch (e) {
+          return [false, '', '', '', '', '', '', '', '', '', ''];
+        }
       }
     }
   }
@@ -1154,10 +1366,8 @@ class DsimRepository {
     CRC16.calculateCRC16(command: Command.ddataFF, usDataLength: 6);
 
     _commandCollection.addAll([
-      Command.req000Cmd,
-      Command.req001Cmd,
-      // Command.req00Cmd,
-      // Command.req01Cmd,
+      Command.req00Cmd,
+      Command.req01Cmd,
       Command.req02Cmd,
       Command.req03Cmd,
       Command.req04Cmd,
@@ -1935,6 +2145,14 @@ class DsimRepository {
       voltageDataList,
       voltageRippleDataList,
     ];
+  }
+
+  void setTimeout(Duration duration) {
+    Timer(duration, () {
+      if (!_completer.isCompleted) {
+        _completer.completeError('Timeout occurred');
+      }
+    });
   }
 
   Future<void> writePilotCode(String pilotCode) async {
