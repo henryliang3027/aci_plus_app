@@ -136,12 +136,7 @@ class DsimRepository {
   int endIndex = 37;
 
   late Completer<dynamic> _completer;
-  bool _isSettingLocation = false;
-  bool _isSettingTGCCableLength = false;
-  bool _isSettingLogInterval = false;
-  bool _isSettingWorkingMode = false;
 
-  String _tempLocation = '';
   String _basicCurrentPilot = '';
   int _basicCurrentPilotMode = 0;
   int _currentSettingMode = 0;
@@ -176,6 +171,7 @@ class DsimRepository {
   final int _commandExecutionTimeout = 10; // s
   final int _logGettingTimeout = 20; // s
   final int _agcWorkingModeSettingTimeout = 40; // s
+  Timer? _timeoutTimer;
 
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
@@ -255,6 +251,7 @@ class DsimRepository {
 
   void clearCache() {
     _completer = Completer<dynamic>();
+    cancelTimeout(name: 'set timeout from clearCache');
     _logs.clear();
     _rawLog.clear();
     _events.clear();
@@ -316,10 +313,6 @@ class DsimRepository {
         _characteristicStreamSubscription = _ble
             .subscribeToCharacteristic(_qualifiedCharacteristic)
             .listen((data) async {
-          // bool writeNextCommand = false;
-          // print('-----# ${_commandIndex} data received-----');
-          // print(data);
-
           List<int> rawData = data;
           print(commandIndex);
           // _dataList2.addAll(rawData);
@@ -365,32 +358,7 @@ class DsimRepository {
           } else if (commandIndex == 46) {
             _parseSetWorkingMode(rawData);
           }
-
-          // if (writeNextCommand) {
-          //   if (commandIndex + 1 <= endIndex) {
-          //     commandIndex += 1;
-          //     await _ble.writeCharacteristicWithoutResponse(
-          //       _qualifiedCharacteristic,
-          //       value: _commandCollection[commandIndex],
-          //     );
-          //   } else {
-          //     // print('logs length: ${_logs.length}');
-          //     // for (Log log in _logs) {
-          //     //   print(
-          //     //       '${log.time}, ${log.temperature}, ${log.attenuation}, ${log.voltage}, ${log.voltageRipple}');
-          //     // }
-
-          //     // _characteristicDataStreamController.close();
-          //   }
-          // }
         });
-
-        // start to write first command
-        // commandIndex = 0;
-        // await _ble.writeCharacteristicWithoutResponse(
-        //   _qualifiedCharacteristic,
-        //   value: _commandCollection[commandIndex],
-        // );
       }
     }, onError: (error) {
       print('Error: $error');
@@ -423,9 +391,14 @@ class DsimRepository {
 
     if (commandIndex == 37) {
       _events.sort((a, b) => a.dateTime.compareTo(b.dateTime));
-      _loadingResultStreamController.add(DataKey.eventRecordsLoadingComplete);
-      _loadingResultStreamController
-          .add(DataKey.settingParametersLoadingComplete);
+
+      // _loadingResultStreamController.add(DataKey.eventRecordsLoadingComplete);
+      // _loadingResultStreamController
+      //     .add(DataKey.settingParametersLoadingComplete);
+    }
+
+    if (!_completer.isCompleted) {
+      _completer.complete(true);
     }
   }
 
@@ -523,41 +496,20 @@ class DsimRepository {
       String maxTemperatureC =
           maxTemperature.toString() + CustomStyle.celciusUnit;
 
-      // _characteristicDataStreamController
-      //     .add({DataKey.minTemperatureF: minTemperatureF});
-      // _characteristicDataStreamController
-      //     .add({DataKey.maxTemperatureF: maxTemperatureF});
-      // _characteristicDataStreamController
-      //     .add({DataKey.minTemperatureC: minTemperatureC});
-      // _characteristicDataStreamController
-      //     .add({DataKey.maxTemperatureC: maxTemperatureC});
-      // _characteristicDataStreamController.add({
-      //   DataKey.historicalMinAttenuation: historicalMinAttenuation.toString()
-      // });
-      // _characteristicDataStreamController.add({
-      //   DataKey.historicalMaxAttenuation: historicalMaxAttenuation.toString()
-      // });
-      // _characteristicDataStreamController
-      //     .add({DataKey.minVoltage: minVoltage.toString()});
-      // _characteristicDataStreamController
-      //     .add({DataKey.maxVoltage: maxVoltage.toString()});
-      // _characteristicDataStreamController
-      //     .add({DataKey.minVoltageRipple: minVoltageRipple.toString()});
-      // _characteristicDataStreamController
-      //     .add({DataKey.maxVoltageRipple: maxVoltageRipple.toString()});
-
-      _completer.complete((
-        minTemperatureF,
-        maxTemperatureF,
-        minTemperatureC,
-        maxTemperatureC,
-        historicalMinAttenuation.toString(),
-        historicalMaxAttenuation.toString(),
-        minVoltage.toString(),
-        maxVoltage.toString(),
-        minVoltageRipple.toString(),
-        maxVoltageRipple.toString(),
-      ));
+      if (!_completer.isCompleted) {
+        _completer.complete((
+          minTemperatureF,
+          maxTemperatureF,
+          minTemperatureC,
+          maxTemperatureC,
+          historicalMinAttenuation.toString(),
+          historicalMaxAttenuation.toString(),
+          minVoltage.toString(),
+          maxVoltage.toString(),
+          minVoltageRipple.toString(),
+          maxVoltageRipple.toString(),
+        ));
+      }
     }
   }
 
@@ -569,7 +521,6 @@ class DsimRepository {
           typeNo += String.fromCharCode(rawData[i]);
         }
         typeNo = typeNo.trim();
-        // _characteristicDataStreamController.add({DataKey.typeNo: typeNo});
 
         if (!_completer.isCompleted) {
           _completer.complete(typeNo);
@@ -588,7 +539,6 @@ class DsimRepository {
         if (partNo.startsWith('DSIM-CG')) {
           _hasDualPilot = true;
         }
-        // _characteristicDataStreamController.add({DataKey.partNo: partNo});
 
         if (!_completer.isCompleted) {
           _completer.complete(partNo);
@@ -600,8 +550,6 @@ class DsimRepository {
           serialNumber += String.fromCharCode(rawData[i]);
         }
         serialNumber = serialNumber.trim();
-        // _characteristicDataStreamController
-        //     .add({DataKey.serialNumber: serialNumber});
 
         if (!_completer.isCompleted) {
           _completer.complete(serialNumber);
@@ -629,21 +577,7 @@ class DsimRepository {
           firmwareVersion += String.fromCharCode(rawData[i]);
         }
 
-        // _characteristicDataStreamController
-        //     .add({DataKey.logInterval: _basicInterval});
-
-        // _characteristicDataStreamController
-        //     .add({DataKey.firmwareVersion: firmwareVersion});
-
-        // setting data _logIntervalId
         _logIntervalId = int.parse(_basicInterval);
-
-        // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
-        // setLogInterval function 就會回傳結果給 caller
-        // if (_isSettingLogInterval) {
-        //   _completer.complete(_logIntervalId);
-        //   _isSettingLogInterval = false;
-        // } else {}
 
         if (!_completer.isCompleted) {
           _completer.complete((_basicInterval, firmwareVersion));
@@ -661,33 +595,6 @@ class DsimRepository {
 
         String tgcCableLength = rawData[6].toString();
 
-        _characteristicDataStreamController
-            .add({DataKey.currentAttenuation: currentAttenuator.toString()});
-        _characteristicDataStreamController.add({DataKey.minAttenuation: '0'});
-        _characteristicDataStreamController
-            .add({DataKey.maxAttenuation: '3000'});
-        _characteristicDataStreamController
-            .add({DataKey.tgcCableLength: tgcCableLength});
-
-        // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
-        // setTGCCableLength function 就會回傳結果給 caller
-        // if (_isSettingTGCCableLength) {
-        //   _completer.complete(tgcCableLength);
-        //   _isSettingTGCCableLength = false;
-        // } else {
-        //   _completer.complete(
-        //       (currentAttenuator.toString(), '0', '3000', tgcCableLength));
-        // }
-
-        if (!_completer.isCompleted) {
-          _completer.complete((
-            currentAttenuator.toString(),
-            '0',
-            '3000',
-            tgcCableLength,
-          ));
-        }
-
         // setting data _currentAttenuation
         _currentAttenuation = currentAttenuator.toString();
 
@@ -699,6 +606,15 @@ class DsimRepository {
 
         // setting data _tgcCableLength
         _tgcCableLength = tgcCableLength;
+
+        if (!_completer.isCompleted) {
+          _completer.complete((
+            currentAttenuator.toString(),
+            '0',
+            '3000',
+            tgcCableLength,
+          ));
+        }
         break;
 
       case 5:
@@ -785,75 +701,27 @@ class DsimRepository {
         //24V
         current24V = (rawData[8] * 256 + rawData[9]) / 10;
 
-        // _characteristicDataStreamController
-        //     .add({DataKey.workingMode: workingMode});
-
-        // _characteristicDataStreamController
-        //     .add({DataKey.currentPilot: currentPilot});
-        // _characteristicDataStreamController
-        //     .add({DataKey.currentPilotMode: pilotMode});
-        // _characteristicDataStreamController
-        //     .add({DataKey.alarmRServerity: alarmRServerity.name});
-        // _characteristicDataStreamController
-        //     .add({DataKey.alarmTServerity: alarmTServerity.name});
-        // _characteristicDataStreamController
-        //     .add({DataKey.alarmPServerity: alarmPServerity.name});
-        // _characteristicDataStreamController
-        //     .add({DataKey.currentTemperatureF: strCurrentTemperatureF});
-        // _characteristicDataStreamController
-        //     .add({DataKey.currentTemperatureC: strCurrentTemperatureC});
-        // _characteristicDataStreamController
-        //     .add({DataKey.currentVoltage: current24V.toString()});
-
-        // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
-        // setWorkingMode function 就會回傳結果給 caller
-        // if (_isSettingWorkingMode) {
-        //   _completer.complete(workingMode);
-        //   _isSettingWorkingMode = false;
-        // } else {
-        //   _completer.complete((
-        //     workingMode,
-        //     currentPilot,
-        //     pilotMode,
-        //     alarmRServerity.name,
-        //     alarmTServerity.name,
-        //     alarmPServerity.name,
-        //     strCurrentTemperatureF,
-        //     strCurrentTemperatureC,
-        //     current24V.toString(),
-        //   ));
-        // }
-
-        _completer.complete((
-          workingMode,
-          currentPilot,
-          pilotMode,
-          alarmRServerity.name,
-          alarmTServerity.name,
-          alarmPServerity.name,
-          strCurrentTemperatureF,
-          strCurrentTemperatureC,
-          current24V.toString(),
-        ));
+        if (!_completer.isCompleted) {
+          _completer.complete((
+            workingMode,
+            currentPilot,
+            pilotMode,
+            alarmRServerity.name,
+            alarmTServerity.name,
+            alarmPServerity.name,
+            strCurrentTemperatureF,
+            strCurrentTemperatureC,
+            current24V.toString(),
+          ));
+        }
 
         // setting data _workingMode
         _workingMode = workingMode;
-
-        // setting data _centerAttenuation
-        // _pilotChannel = currentPilot;
-
-        // setting data _centerAttenuation
-        // _pilotMode = pilotMode;
 
         break;
       case 6:
         int centerAttenuation = rawData[11] * 256 + rawData[12];
         int currentVoltageRipple = rawData[9] * 256 + rawData[10]; //24VR
-
-        _characteristicDataStreamController
-            .add({DataKey.centerAttenuation: centerAttenuation.toString()});
-        _characteristicDataStreamController.add(
-            {DataKey.currentVoltageRipple: currentVoltageRipple.toString()});
 
         // setting data _centerAttenuation
         _centerAttenuation = centerAttenuation.toString();
@@ -915,26 +783,9 @@ class DsimRepository {
           partOfLocation += String.fromCharCode(rawData[i]);
         }
 
-        // _characteristicDataStreamController
-        //     .add({DataKey.location: _tempLocation});
-
-        // setting data _centerAttenuation
-        // _location = _tempLocation;
-
-        _tempLocation = '';
-
         if (!_completer.isCompleted) {
           _completer.complete(partOfLocation);
         }
-
-        // _isSetting 為 true 時, _completer 的 complete 可以回傳 true
-        // setLocation function 就會回傳結果給 caller
-        // if (_isSettingLocation) {
-        //   _completer.complete(_location);
-        //   _isSettingLocation = false;
-        // } else {
-        //   _completer.complete(partOfLocation);
-        // }
 
         break;
       default:
@@ -990,11 +841,12 @@ class DsimRepository {
 
     print('get data from request command 0');
     await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
-
-    // setTimeout(Duration(seconds: 0));
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd0');
 
     try {
       String typeNo = await _completer.future;
+      cancelTimeout(name: 'cmd0');
 
       return [true, typeNo];
     } catch (e) {
@@ -1008,11 +860,12 @@ class DsimRepository {
 
     print('get data from request command 1');
     await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
-    // setTimeout(Duration(seconds: _commandExecutionTimeout));
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd1');
 
     try {
-      String partNo = await _completer.future
-          .timeout(Duration(seconds: _commandExecutionTimeout));
+      String partNo = await _completer.future;
+      cancelTimeout(name: 'cmd1');
 
       return [true, partNo];
     } catch (e) {
@@ -1026,11 +879,12 @@ class DsimRepository {
 
     print('get data from request command 2');
     await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
-    // setTimeout(Duration(seconds: _commandExecutionTimeout));
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd2');
 
     try {
-      String serialNumber = await _completer.future
-          .timeout(Duration(seconds: _commandExecutionTimeout));
+      String serialNumber = await _completer.future;
+      cancelTimeout(name: 'cmd2');
 
       return [true, serialNumber];
     } catch (e) {
@@ -1044,12 +898,14 @@ class DsimRepository {
 
     print('get data from request command 3');
     await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
-    // setTimeout(Duration(seconds: _commandExecutionTimeout));
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd3');
 
     try {
-      var (String basicInterval, String firmwareVersion) = await _completer
-          .future
-          .timeout(Duration(seconds: _commandExecutionTimeout));
+      var (String basicInterval, String firmwareVersion) =
+          await _completer.future;
+
+      cancelTimeout(name: 'cmd3');
 
       return [true, basicInterval, firmwareVersion];
     } catch (e) {
@@ -1063,7 +919,8 @@ class DsimRepository {
 
     print('get data from request command 4');
     await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
-    // setTimeout(Duration(seconds: _commandExecutionTimeout));
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd4');
 
     try {
       var (
@@ -1071,8 +928,9 @@ class DsimRepository {
         String minAttenuation,
         String maxAttenuation,
         String tgcCableLength
-      ) = await _completer.future
-          .timeout(Duration(seconds: _commandExecutionTimeout));
+      ) = await _completer.future;
+
+      cancelTimeout(name: 'cmd4');
 
       return [
         true,
@@ -1098,7 +956,8 @@ class DsimRepository {
 
     print('get data from request command 5');
     await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
-    // setTimeout(Duration(seconds: _commandExecutionTimeout));
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd5');
 
     try {
       var (
@@ -1111,8 +970,9 @@ class DsimRepository {
         String strCurrentTemperatureF,
         String strCurrentTemperatureC,
         String current24V,
-      ) = await _completer.future
-          .timeout(Duration(seconds: _commandExecutionTimeout));
+      ) = await _completer.future;
+
+      cancelTimeout(name: 'cmd5');
 
       return [
         true,
@@ -1148,14 +1008,16 @@ class DsimRepository {
 
     print('get data from request command 6');
     await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
-    // setTimeout(Duration(seconds: _commandExecutionTimeout));
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd6');
 
     try {
       var (
         String centerAttenuation,
         String currentVoltageRipple,
-      ) = await _completer.future
-          .timeout(Duration(seconds: _commandExecutionTimeout));
+      ) = await _completer.future;
+
+      cancelTimeout(name: 'cmd6');
 
       return [
         true,
@@ -1180,12 +1042,15 @@ class DsimRepository {
 
       print('get data from request command $i');
       await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
-      // setTimeout(Duration(seconds: _commandExecutionTimeout));
+      setTimeout(
+          duration: Duration(seconds: _commandExecutionTimeout),
+          name: 'cmd9 to 12');
 
       // 設定後重新讀取 location 來比對是否設定成功
       try {
-        String partOfLocation = await _completer.future
-            .timeout(Duration(seconds: _commandExecutionTimeout));
+        String partOfLocation = await _completer.future;
+
+        cancelTimeout(name: 'cmd$i');
 
         loc += partOfLocation;
 
@@ -1208,7 +1073,9 @@ class DsimRepository {
 
       print('get data from request command $i');
       await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
-      setTimeout(Duration(seconds: _commandExecutionTimeout));
+      setTimeout(
+          duration: Duration(seconds: _commandExecutionTimeout),
+          name: 'cmd14 to 29');
 
       if (commandIndex == 29) {
         try {
@@ -1224,6 +1091,8 @@ class DsimRepository {
             minVoltageRipple,
             maxVoltageRipple,
           ) = await _completer.future;
+
+          cancelTimeout(name: 'cmd$i');
 
           return [
             true,
@@ -1244,6 +1113,7 @@ class DsimRepository {
       } else {
         try {
           bool isDone = await _completer.future;
+          cancelTimeout(name: 'cmd$i');
           if (!isDone) {
             return [false, '', '', '', '', '', '', '', '', '', ''];
           }
@@ -1261,50 +1131,22 @@ class DsimRepository {
 
       print('get data from request command $i');
       await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
-      setTimeout(Duration(seconds: _commandExecutionTimeout));
+      setTimeout(
+          duration: Duration(seconds: _commandExecutionTimeout),
+          name: 'cmd30 to 37');
 
-      if (commandIndex == 29) {
-        try {
-          var (
-            minTemperatureF,
-            maxTemperatureF,
-            minTemperatureC,
-            maxTemperatureC,
-            historicalMinAttenuation,
-            historicalMaxAttenuation,
-            minVoltage,
-            maxVoltage,
-            minVoltageRipple,
-            maxVoltageRipple,
-          ) = await _completer.future;
-
-          return [
-            true,
-            minTemperatureF,
-            maxTemperatureF,
-            minTemperatureC,
-            maxTemperatureC,
-            historicalMinAttenuation,
-            historicalMaxAttenuation,
-            minVoltage,
-            maxVoltage,
-            minVoltageRipple,
-            maxVoltageRipple,
-          ];
-        } catch (e) {
-          return [false, '', '', '', '', '', '', '', '', '', ''];
+      try {
+        bool isGettingChunkDone = await _completer.future;
+        cancelTimeout(name: 'cmd$i');
+        if (!isGettingChunkDone) {
+          return [false];
         }
-      } else {
-        try {
-          bool isDone = await _completer.future;
-          if (!isDone) {
-            return [false, '', '', '', '', '', '', '', '', '', ''];
-          }
-        } catch (e) {
-          return [false, '', '', '', '', '', '', '', '', '', ''];
-        }
+      } catch (e) {
+        return [false];
       }
     }
+
+    return [true];
   }
 
   void _calculateCRCs() {
@@ -1423,12 +1265,9 @@ class DsimRepository {
               Duration(seconds: _agcWorkingModeSettingDuration));
         }
 
-        commandIndex = 4;
-        endIndex = 5;
-        await _ble.writeCharacteristicWithoutResponse(
-          _qualifiedCharacteristic,
-          value: _commandCollection[commandIndex],
-        );
+        if (!_completer.isCompleted) {
+          _completer.complete(true);
+        }
       }
     }
   }
@@ -1443,20 +1282,9 @@ class DsimRepository {
           (rawData[5] == 0x06)) {
         print('set log interval done');
 
-        // setWorkingMode(
-        //   workingMode: _workingMode,
-        //   currentAttenuation: int.parse(_currentAttenuation),
-        //   tgcCableLength: int.parse(_tgcCableLength),
-        //   currentPilot: int.parse(_pilotChannel),
-        //   logIntervalID: _logIntervalId,
-        // );
-
-        commandIndex = 3;
-        endIndex = 3;
-        await _ble.writeCharacteristicWithoutResponse(
-          _qualifiedCharacteristic,
-          value: _commandCollection[commandIndex],
-        );
+        if (!_completer.isCompleted) {
+          _completer.complete(true);
+        }
       }
     }
   }
@@ -1472,13 +1300,9 @@ class DsimRepository {
         print('set TGC cable length done');
       }
 
-      commandIndex = 4;
-      endIndex = 4;
-      await _ble.writeCharacteristicWithoutResponse(
-        _qualifiedCharacteristic,
-        value: _commandCollection[commandIndex],
-      );
-      // setLogInterval(logIntervalID: _logIntervalId);
+      if (!_completer.isCompleted) {
+        _completer.complete(true);
+      }
     }
   }
 
@@ -1531,27 +1355,14 @@ class DsimRepository {
           (rawData[5] == 0x06)) {
         print('Location0C Set');
 
-        _completer.complete(true);
-
-        // commandIndex = 9;
-        // endIndex = 12;
-        // await _ble.writeCharacteristicWithoutResponse(
-        //   _qualifiedCharacteristic,
-        //   value: _commandCollection[commandIndex],
-        // );
-
-        // setTGCCableLength(
-        //   currentAttenuation: int.parse(_currentAttenuation),
-        //   tgcCableLength: int.parse(_tgcCableLength),
-        //   currentPilot: int.parse(_pilotChannel),
-        //   logIntervalId: _logIntervalId,
-        // );
+        if (!_completer.isCompleted) {
+          _completer.complete(true);
+        }
       } else {}
     }
   }
 
   Future<bool> setLocation(String location) async {
-    _isSettingLocation = true;
     _completer = Completer<dynamic>();
     int newLength = location.length;
     int imod;
@@ -1628,8 +1439,10 @@ class DsimRepository {
 
     // 設定後重新讀取 location 來比對是否設定成功
     try {
-      bool isDone = await _completer.future
-          .timeout(Duration(seconds: _commandExecutionTimeout));
+      bool isDone = await _completer.future;
+      setTimeout(
+          duration: Duration(seconds: _commandExecutionTimeout),
+          name: 'cmd set location');
 
       if (isDone) {
         List<dynamic> resultOfGetLocation = await requestCommand9To12();
@@ -1661,7 +1474,6 @@ class DsimRepository {
     required String pilotMode,
     required int logIntervalId,
   }) async {
-    _isSettingTGCCableLength = true;
     _completer = Completer<dynamic>();
 
     Command.set04Cmd[7] = 3; //3 TGC
@@ -1678,13 +1490,30 @@ class DsimRepository {
     commandIndex = 44;
     endIndex = 44;
     _writeSetCommandToCharacteristic(Command.set04Cmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: 'cmd set tgc cable length');
 
     // 設定後重新讀取 tgc cable length 來比對是否設定成功
     try {
-      String newTgcCableLength = await _completer.future
-          .timeout(Duration(seconds: _commandExecutionTimeout));
-      if (newTgcCableLength == tgcCableLength) {
-        return true;
+      bool isDone = await _completer.future;
+      cancelTimeout(name: 'cmd set tgc cable length');
+
+      if (isDone) {
+        List<dynamic> result = await requestCommand4();
+
+        if (result[0]) {
+          if (tgcCableLength == result[4]) {
+            // _characteristicDataStreamController
+            //     .add({DataKey.tgcCableLength: resultOfGetTGCCableLength[1]});
+            _tgcCableLength = result[4];
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
@@ -1696,7 +1525,6 @@ class DsimRepository {
   Future<bool> setLogInterval({
     required int logIntervalId,
   }) async {
-    _isSettingLogInterval = true;
     _completer = Completer<dynamic>();
     Command.set04Cmd[7] = 0x08; // 8
     Command.set04Cmd[13] = logIntervalId; // Log Minutes 1Byte
@@ -1705,14 +1533,30 @@ class DsimRepository {
     commandIndex = 45;
     endIndex = 45;
     _writeSetCommandToCharacteristic(Command.set04Cmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: 'set log interval');
 
     // 設定後重新讀取 log interval 來比對是否設定成功
     try {
-      int newLogIntervalId = await _completer.future
-          .timeout(Duration(seconds: _commandExecutionTimeout));
+      bool isDone = await _completer.future;
+      cancelTimeout(name: 'set log interval');
 
-      if (newLogIntervalId == logIntervalId) {
-        return true;
+      if (isDone) {
+        List<dynamic> result = await requestCommand3();
+
+        if (result[0]) {
+          if (logIntervalId.toString() == result[1]) {
+            _characteristicDataStreamController
+                .add({DataKey.logInterval: result[1]});
+            _logIntervalId = int.parse(result[1]);
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
@@ -1731,7 +1575,6 @@ class DsimRepository {
     String pilot2Mode = '',
     required int logIntervalId,
   }) async {
-    _isSettingWorkingMode = true;
     _completer = Completer<dynamic>();
     _workingModeId = _getWorkingModeId(workingMode);
 
@@ -1765,13 +1608,40 @@ class DsimRepository {
     commandIndex = 46;
     endIndex = 46;
     _writeSetCommandToCharacteristic(Command.set04Cmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: 'set working mode');
 
     // 設定後重新讀取 working mode 來比對是否設定成功
-    String newWorkingMode = await _completer.future;
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: 'set working mode');
 
-    if (newWorkingMode == workingMode) {
-      return true;
-    } else {
+      if (isDone) {
+        List<dynamic> result = await requestCommand5();
+
+        if (result[0]) {
+          if (workingMode == result[1]) {
+            _characteristicDataStreamController
+                .add({DataKey.workingMode: result[1]});
+            _characteristicDataStreamController
+                .add({DataKey.currentPilot: result[2]});
+            _characteristicDataStreamController
+                .add({DataKey.currentPilotMode: result[3]});
+            _workingMode = result[1];
+            // _basicCurrentPilot = result[2];
+            // _basicCurrentPilotMode = result[3];
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } catch (e) {
       return false;
     }
   }
@@ -2147,12 +2017,22 @@ class DsimRepository {
     ];
   }
 
-  void setTimeout(Duration duration) {
-    Timer(duration, () {
+  void setTimeout({required Duration duration, required String name}) {
+    _timeoutTimer = Timer(duration, () {
+      print('$name: ${_timeoutTimer!.tick.toString()}');
       if (!_completer.isCompleted) {
         _completer.completeError('Timeout occurred');
+        print('$name Timeout occurred');
       }
     });
+  }
+
+  void cancelTimeout({required String name}) {
+    if (_timeoutTimer != null) {
+      _timeoutTimer!.cancel();
+    }
+
+    print('$name completed');
   }
 
   Future<void> writePilotCode(String pilotCode) async {

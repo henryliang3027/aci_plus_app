@@ -220,27 +220,19 @@ class _ViewLayout extends StatelessWidget {
                         userPilot2TextEditingController,
                   );
           } else if (homeState.loadingStatus.isRequestFailure) {
-            return Expanded(
-              child: Container(
-                width: double.maxFinite,
-                height: double.maxFinite,
-                color: Colors.white,
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.warning_rounded,
-                      size: 200,
-                      color: Color(0xffffc107),
-                    ),
-                    Text(
-                      'Load Setting failed',
-                    ),
-                    SizedBox(height: 40.0),
-                  ],
-                ),
-              ),
-            );
+            // return Center(
+            //   child: Icon(Icons.abc),
+            // );
+            return settingState.isGraphType
+                ? SettingGraphView()
+                : SettingListView(
+                    locationTextEditionController:
+                        locationTextEditingController,
+                    userPilotTextEditingController:
+                        userPilotTextEditingController,
+                    userPilot2TextEditingController:
+                        userPilot2TextEditingController,
+                  );
           } else {
             return const Center(
               child: CircularProgressIndicator(),

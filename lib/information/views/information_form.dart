@@ -137,7 +137,7 @@ class _DeviceRefresh extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (!state.scanStatus.isRequestInProgress) {
+        if (!state.connectionStatus.isRequestInProgress) {
           return IconButton(
               onPressed: () {
                 context.read<HomeBloc>().add(const DeviceRefreshed());
@@ -430,31 +430,42 @@ class _AlarmCard extends StatelessWidget {
   }
 }
 
+Widget getContent({
+  required FormStatus loadingStatus,
+  required String content,
+  double fontSize = 16,
+}) {
+  if (loadingStatus == FormStatus.requestInProgress) {
+    return content.isEmpty
+        ? const CircularProgressIndicator()
+        : Text(
+            content,
+            style: TextStyle(
+              fontSize: fontSize,
+            ),
+          );
+  } else if (loadingStatus == FormStatus.requestFailure) {
+    return Text(
+      'N/A',
+      style: TextStyle(
+        fontSize: fontSize,
+      ),
+    );
+  } else {
+    return Text(
+      content,
+      style: TextStyle(
+        fontSize: fontSize,
+      ),
+    );
+  }
+}
+
 Widget itemText({
   required FormStatus loadingStatus,
   required String title,
   required String content,
 }) {
-  Widget getContent() {
-    if (loadingStatus == FormStatus.requestInProgress) {
-      return const CircularProgressIndicator();
-    } else if (loadingStatus == FormStatus.requestFailure) {
-      return const Text(
-        'N/A',
-        style: TextStyle(
-          fontSize: 16,
-        ),
-      );
-    } else {
-      return Text(
-        content,
-        style: const TextStyle(
-          fontSize: 16,
-        ),
-      );
-    }
-  }
-
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Row(
@@ -466,7 +477,12 @@ Widget itemText({
             fontSize: 16,
           ),
         ),
-        getContent(),
+        const SizedBox(
+          width: 30.0,
+        ),
+        Flexible(
+          child: getContent(loadingStatus: loadingStatus, content: content),
+        ),
       ],
     ),
   );
@@ -477,30 +493,6 @@ Widget itemMultipleLineText({
   required String title,
   required String content,
 }) {
-  Widget getContent() {
-    if (loadingStatus == FormStatus.requestInProgress) {
-      return const CircularProgressIndicator();
-    } else if (loadingStatus == FormStatus.requestFailure) {
-      return const Flexible(
-        child: Text(
-          'N/A',
-          style: TextStyle(
-            fontSize: 16,
-          ),
-        ),
-      );
-    } else {
-      return Flexible(
-        child: Text(
-          content,
-          style: const TextStyle(
-            fontSize: 16,
-          ),
-        ),
-      );
-    }
-  }
-
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Column(
@@ -522,7 +514,12 @@ Widget itemMultipleLineText({
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            getContent(),
+            Flexible(
+              child: getContent(
+                loadingStatus: loadingStatus,
+                content: content,
+              ),
+            ),
           ],
         ),
       ],
