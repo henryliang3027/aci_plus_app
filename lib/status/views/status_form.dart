@@ -281,8 +281,8 @@ class _TemperatureCard extends StatelessWidget {
 
     return Builder(
       builder: (context) {
-        final homeState = context.watch<HomeBloc>().state;
-        final statusState = context.watch<StatusBloc>().state;
+        final HomeState homeState = context.watch<HomeBloc>().state;
+        final StatusState statusState = context.watch<StatusBloc>().state;
         String currentTemperature = '';
         String maxTemperature = '';
         String minTemperature = '';

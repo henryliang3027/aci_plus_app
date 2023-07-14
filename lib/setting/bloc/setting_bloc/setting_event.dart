@@ -7,10 +7,12 @@ abstract class SettingEvent extends Equatable {
 }
 
 class Initialized extends SettingEvent {
-  const Initialized();
+  const Initialized(this.editable);
+
+  final bool editable;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [editable];
 }
 
 class GraphViewToggled extends SettingEvent {

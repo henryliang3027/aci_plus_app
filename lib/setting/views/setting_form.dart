@@ -207,7 +207,7 @@ class _ViewLayout extends StatelessWidget {
           final settingState = context.watch<SettingBloc>().state;
           if (homeState.loadingStatus.isRequestSuccess) {
             if (settingState.isInitialize) {
-              context.read<SettingBloc>().add(const Initialized());
+              context.read<SettingBloc>().add(const Initialized(true));
             }
             return settingState.isGraphType
                 ? SettingGraphView()
@@ -220,9 +220,9 @@ class _ViewLayout extends StatelessWidget {
                         userPilot2TextEditingController,
                   );
           } else if (homeState.loadingStatus.isRequestFailure) {
-            // return Center(
-            //   child: Icon(Icons.abc),
-            // );
+            if (settingState.isInitialize) {
+              context.read<SettingBloc>().add(const Initialized(false));
+            }
             return settingState.isGraphType
                 ? SettingGraphView()
                 : SettingListView(

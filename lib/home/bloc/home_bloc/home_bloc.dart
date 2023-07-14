@@ -185,16 +185,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
 
     List<Function> requestCommands = [
-      _dsimRepository.requestCommand0,
-      _dsimRepository.requestCommand1,
-      _dsimRepository.requestCommand2,
-      _dsimRepository.requestCommand3,
-      _dsimRepository.requestCommand4,
-      _dsimRepository.requestCommand5,
-      _dsimRepository.requestCommand6,
-      _dsimRepository.requestCommand9To12,
-      _dsimRepository.requestCommand14To29,
-      _dsimRepository.requestCommand30To37,
+      // _dsimRepository.requestCommand0,
+      // _dsimRepository.requestCommand1,
+      // _dsimRepository.requestCommand2,
+      // _dsimRepository.requestCommand3,
+      // _dsimRepository.requestCommand4,
+      // _dsimRepository.requestCommand5,
+      // _dsimRepository.requestCommand6,
+      // _dsimRepository.requestCommand9To12,
+      // _dsimRepository.requestCommand14To29,
+      // _dsimRepository.requestCommand30To37,
     ];
 
     for (int i = 0; i < requestCommands.length; i++) {
@@ -290,9 +290,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               _dsimRepository.getDateValueCollectionOfLogs();
 
           emit(state.copyWith(
-            loadingStatus: FormStatus.requestSuccess,
             characteristicData: newCharacteristicData,
             dateValueCollectionOfLog: dateValueCollectionOfLog,
+          ));
+        } else if (i == 9) {
+          // 取得 event 資料完成
+          emit(state.copyWith(
+            loadingStatus: FormStatus.requestSuccess,
           ));
         }
       } else {

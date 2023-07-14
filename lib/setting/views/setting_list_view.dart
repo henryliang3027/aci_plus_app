@@ -1,6 +1,8 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
+import 'package:dsim_app/core/form_status.dart';
+import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,63 +59,89 @@ class _SettingFloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingBloc, SettingState>(
-        builder: (context, state) => state.editMode
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  FloatingActionButton(
-                    shape: const CircleBorder(
-                      side: BorderSide.none,
-                    ),
-                    backgroundColor:
-                        Theme.of(context).colorScheme.primary.withAlpha(200),
-                    child: Icon(
-                      CustomIcons.cancel,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                    onPressed: () {
-                      context.read<SettingBloc>().add(const EditModeDisabled());
-                    },
+    Widget getEditTools({
+      required bool editMode,
+      required bool enableSubmission,
+    }) {
+      return editMode
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  shape: const CircleBorder(
+                    side: BorderSide.none,
                   ),
-                  const SizedBox(
-                    height: 10.0,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.primary.withAlpha(200),
+                  child: Icon(
+                    CustomIcons.cancel,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
-                  FloatingActionButton(
-                    shape: const CircleBorder(
-                      side: BorderSide.none,
-                    ),
-                    backgroundColor: state.enableSubmission
-                        ? Theme.of(context).colorScheme.primary.withAlpha(200)
-                        : Colors.grey.withAlpha(200),
-                    onPressed: state.enableSubmission
-                        ? () {
-                            context
-                                .read<SettingBloc>()
-                                .add(const SettingSubmitted());
-                          }
-                        : null,
-                    child: Icon(
-                      Icons.check,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                  ),
-                ],
-              )
-            : FloatingActionButton(
-                shape: const CircleBorder(
-                  side: BorderSide.none,
+                  onPressed: () {
+                    context.read<SettingBloc>().add(const EditModeDisabled());
+                  },
                 ),
-                backgroundColor:
-                    Theme.of(context).colorScheme.primary.withAlpha(200),
-                child: Icon(
-                  Icons.edit,
-                  color: Theme.of(context).colorScheme.onPrimary,
+                const SizedBox(
+                  height: 10.0,
                 ),
-                onPressed: () {
-                  context.read<SettingBloc>().add(const EditModeEnabled());
-                },
-              ));
+                FloatingActionButton(
+                  shape: const CircleBorder(
+                    side: BorderSide.none,
+                  ),
+                  backgroundColor: enableSubmission
+                      ? Theme.of(context).colorScheme.primary.withAlpha(200)
+                      : Colors.grey.withAlpha(200),
+                  onPressed: enableSubmission
+                      ? () {
+                          context
+                              .read<SettingBloc>()
+                              .add(const SettingSubmitted());
+                        }
+                      : null,
+                  child: Icon(
+                    Icons.check,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
+              ],
+            )
+          : FloatingActionButton(
+              shape: const CircleBorder(
+                side: BorderSide.none,
+              ),
+              backgroundColor:
+                  Theme.of(context).colorScheme.primary.withAlpha(200),
+              child: Icon(
+                Icons.edit,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              onPressed: () {
+                context.read<SettingBloc>().add(const EditModeEnabled());
+              },
+            );
+    }
+
+    bool getEditable(FormStatus loadingStatus) {
+      if (loadingStatus.isRequestSuccess) {
+        return true;
+      } else if (loadingStatus.isRequestFailure) {
+        return false;
+      } else {
+        return false;
+      }
+    }
+
+    return BlocBuilder<SettingBloc, SettingState>(builder: (context, state) {
+      final FormStatus loadingStatus =
+          context.read<HomeBloc>().state.loadingStatus;
+      bool editable = getEditable(loadingStatus);
+      return editable
+          ? getEditTools(
+              editMode: state.editMode,
+              enableSubmission: state.enableSubmission,
+            )
+          : Container();
+    });
   }
 }
 

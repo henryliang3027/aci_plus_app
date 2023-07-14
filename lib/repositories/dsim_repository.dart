@@ -172,6 +172,7 @@ class DsimRepository {
   final int _logGettingTimeout = 20; // s
   final int _agcWorkingModeSettingTimeout = 40; // s
   Timer? _timeoutTimer;
+  // Stopwatch _stopwatch = Stopwatch();
 
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
@@ -211,7 +212,7 @@ class DsimRepository {
         print('Scan Error $error');
         _scanReportStreamController.add(
           const ScanReport(
-            scanStatus: ScanStatus.disable,
+            scanStatus: ScanStatus.failure,
             discoveredDevice: null,
           ),
         );
@@ -231,7 +232,7 @@ class DsimRepository {
     } else {
       print('bluetooth disable');
       yield const ScanReport(
-        scanStatus: ScanStatus.failure,
+        scanStatus: ScanStatus.disable,
         discoveredDevice: null,
       );
     }
@@ -290,75 +291,98 @@ class DsimRepository {
     _connectionReportStreamController = StreamController<ConnectionReport>();
     _connectionStreamSubscription = _ble
         .connectToDevice(
-            id: discoveredDevice.id,
-            connectionTimeout: Duration(
-              seconds: _connectionTimeout,
-            ))
+      id: discoveredDevice.id,
+      connectionTimeout: Duration(
+        seconds: _connectionTimeout,
+      ),
+    )
         .listen((connectionStateUpdate) async {
       _connectionReportStreamController.add(ConnectionReport(
           connectionState: connectionStateUpdate.connectionState));
 
-      if (connectionStateUpdate.connectionState ==
-          DeviceConnectionState.connected) {
-        // initialize _characteristicDataStreamController
-        _characteristicDataStreamController =
-            StreamController<Map<DataKey, String>>();
+      switch (connectionStateUpdate.connectionState) {
+        case DeviceConnectionState.connecting:
+          break;
+        case DeviceConnectionState.connected:
+          // initialize _characteristicDataStreamController
+          _characteristicDataStreamController =
+              StreamController<Map<DataKey, String>>();
 
-        _qualifiedCharacteristic = QualifiedCharacteristic(
-          serviceId: Uuid.parse(_serviceId),
-          characteristicId: Uuid.parse(_characteristicId),
-          deviceId: discoveredDevice.id,
-        );
+          _qualifiedCharacteristic = QualifiedCharacteristic(
+            serviceId: Uuid.parse(_serviceId),
+            characteristicId: Uuid.parse(_characteristicId),
+            deviceId: discoveredDevice.id,
+          );
 
-        _characteristicStreamSubscription = _ble
-            .subscribeToCharacteristic(_qualifiedCharacteristic)
-            .listen((data) async {
-          List<int> rawData = data;
-          print(commandIndex);
-          // _dataList2.addAll(rawData);
-          // print('${_dataList2.length}, ${_dataList2[_dataList2.length - 1]}');
+          _characteristicStreamSubscription = _ble
+              .subscribeToCharacteristic(_qualifiedCharacteristic)
+              .listen((data) async {
+            List<int> rawData = data;
+            print(commandIndex);
+            // print(
+            //     'doSomething() executed in ${_stopwatch.elapsed.inMilliseconds}');
+            // _stopwatch.stop();
+            // _dataList2.addAll(rawData);
+            // print('${_dataList2.length}, ${_dataList2[_dataList2.length - 1]}');
 
-          if (commandIndex == -1) {
-            _dataList1.addAll(rawData);
-            print('${_dataList1.length}, ${_dataList1[_dataList1.length - 1]}');
-          } else if (commandIndex == -2) {
-            _dataList2.addAll(rawData);
-            print('${_dataList2.length}, ${_dataList2[_dataList2.length - 1]}');
-          } else if (commandIndex <= 13) {
-            _parseRawData(rawData);
-            // if (commandIndex <= endIndex) {
-            //   writeNextCommand = true;
-            // }
-          } else if (commandIndex >= 14 && commandIndex <= 29) {
-            _rawLog.addAll(rawData);
-            // 一個 log command 總共會接收 261 bytes, 每一次傳回 16 bytes
-            if (_rawLog.length == _totalBytesPerCommand) {
-              _rawLog.removeRange(_rawLog.length - 2, _rawLog.length);
-              _rawLog.removeRange(0, 3);
-              _parseLog();
-              _rawLog.clear();
-              // writeNextCommand = true;
+            if (commandIndex == -1) {
+              _dataList1.addAll(rawData);
+              print(
+                  '${_dataList1.length}, ${_dataList1[_dataList1.length - 1]}, : $rawData');
+            } else if (commandIndex == -2) {
+              _dataList2.addAll(rawData);
+              print(
+                  '${_dataList2.length}, ${_dataList2[_dataList2.length - 1]}, : $rawData');
+            } else if (commandIndex <= 13) {
+              _parseRawData(rawData);
+              // if (commandIndex <= endIndex) {
+              //   writeNextCommand = true;
+              // }
+            } else if (commandIndex >= 14 && commandIndex <= 29) {
+              _rawLog.addAll(rawData);
+              // 一個 log command 總共會接收 261 bytes, 每一次傳回 16 bytes
+              if (_rawLog.length == _totalBytesPerCommand) {
+                _rawLog.removeRange(_rawLog.length - 2, _rawLog.length);
+                _rawLog.removeRange(0, 3);
+                _parseLog();
+                _rawLog.clear();
+                // writeNextCommand = true;
+              }
+            } else if (commandIndex >= 30 && commandIndex <= 37) {
+              _rawEvent.addAll(rawData);
+              // 一個 event command 總共會接收 261 bytes, 每一次傳回 16 bytes
+              if (_rawEvent.length == _totalBytesPerCommand) {
+                _rawEvent.removeRange(_rawEvent.length - 2, _rawEvent.length);
+                _rawEvent.removeRange(0, 3);
+                _parseEvent();
+                _rawEvent.clear();
+                // writeNextCommand = true;
+              }
+            } else if (commandIndex >= 40 && commandIndex <= 43) {
+              _parseSetLocation(rawData);
+            } else if (commandIndex == 44) {
+              _parseSetTGCCableLength(rawData);
+            } else if (commandIndex == 45) {
+              _parseSetLogInterval(rawData);
+            } else if (commandIndex == 46) {
+              _parseSetWorkingMode(rawData);
             }
-          } else if (commandIndex >= 30 && commandIndex <= 37) {
-            _rawEvent.addAll(rawData);
-            // 一個 event command 總共會接收 261 bytes, 每一次傳回 16 bytes
-            if (_rawEvent.length == _totalBytesPerCommand) {
-              _rawEvent.removeRange(_rawEvent.length - 2, _rawEvent.length);
-              _rawEvent.removeRange(0, 3);
-              _parseEvent();
-              _rawEvent.clear();
-              // writeNextCommand = true;
-            }
-          } else if (commandIndex >= 40 && commandIndex <= 43) {
-            _parseSetLocation(rawData);
-          } else if (commandIndex == 44) {
-            _parseSetTGCCableLength(rawData);
-          } else if (commandIndex == 45) {
-            _parseSetLogInterval(rawData);
-          } else if (commandIndex == 46) {
-            _parseSetWorkingMode(rawData);
-          }
-        });
+          });
+          break;
+        case DeviceConnectionState.disconnecting:
+          _connectionReportStreamController.add(const ConnectionReport(
+            connectionState: DeviceConnectionState.disconnected,
+            errorMessage: 'disconnecting',
+          ));
+          break;
+        case DeviceConnectionState.disconnected:
+          _connectionReportStreamController.add(const ConnectionReport(
+            connectionState: DeviceConnectionState.disconnected,
+            errorMessage: 'disconnected',
+          ));
+          break;
+        default:
+          break;
       }
     }, onError: (error) {
       print('Error: $error');
@@ -403,6 +427,8 @@ class DsimRepository {
   }
 
   void _parseLog() {
+    // Stopwatch swatch = Stopwatch();
+    // swatch.start();
     if (commandIndex < 29) {
       for (var i = 0; i < 16; i++) {
         int timeStamp = _rawLog[i * 16] * 256 + _rawLog[i * 16 + 1];
@@ -511,6 +537,7 @@ class DsimRepository {
         ));
       }
     }
+    // print('parse log executed in ${swatch.elapsed.inMilliseconds}');
   }
 
   void _parseRawData(List<int> rawData) {
@@ -798,7 +825,7 @@ class DsimRepository {
     commandIndex = -1;
     _completer = Completer<dynamic>();
     List<int> cmd1 = [0xB0, 0x03, 0xAA, 0x00, 0x00, 0x80, 0x7E, 0x53];
-    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 0x00, 0x80, 0x7F, 0xAF];
+    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 200, 100, 0x00, 0x00];
 
     print('get data from request command -1');
     await _writeSetCommandToCharacteristic(cmd1);
@@ -819,7 +846,9 @@ class DsimRepository {
     commandIndex = -2;
     _completer = Completer<dynamic>();
     List<int> cmd1 = [0xB0, 0x03, 0xAA, 0x00, 0x00, 0x80, 0x7E, 0x53];
-    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 0x00, 0x80, 0x7F, 0xAF];
+    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 200, 190, 0x00, 0x00];
+    CRC16.calculateCRC16(command: cmd2, usDataLength: 6);
+    // List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 0x00, 0x80, 0x7F, 0xAF];
 
     print('get data from request command -2');
     await _writeSetCommandToCharacteristic(cmd2);
@@ -840,6 +869,7 @@ class DsimRepository {
     _completer = Completer<dynamic>();
 
     print('get data from request command 0');
+
     await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd0');
@@ -1072,6 +1102,8 @@ class DsimRepository {
       _completer = Completer<dynamic>();
 
       print('get data from request command $i');
+      // _stopwatch.reset();
+      // _stopwatch.start();
       await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
       setTimeout(
           duration: Duration(seconds: _commandExecutionTimeout),
@@ -1147,106 +1179,6 @@ class DsimRepository {
     }
 
     return [true];
-  }
-
-  void _calculateCRCs() {
-    // 機型(typeNo)
-    CRC16.calculateCRC16(command: Command.req00Cmd, usDataLength: 6);
-
-    // 型號(partNo)
-    CRC16.calculateCRC16(command: Command.req01Cmd, usDataLength: 6);
-
-    // serialNumber
-    CRC16.calculateCRC16(command: Command.req02Cmd, usDataLength: 6);
-
-    // firmware, logInterval
-    CRC16.calculateCRC16(command: Command.req03Cmd, usDataLength: 6);
-
-    // currentAttenuation, minAttenuation, maxAttenuation, tgcCableLength
-    CRC16.calculateCRC16(command: Command.req04Cmd, usDataLength: 6);
-
-    // workingMode, currentPilot, currentPilotMode, alarmRServerity, alarmTServerity,
-    // alarmPServerity, currentTemperatureF, currentTemperatureC, currentVoltage
-    CRC16.calculateCRC16(command: Command.req05Cmd, usDataLength: 6);
-
-    // centerAttenuation, currentVoltageRipple
-    CRC16.calculateCRC16(command: Command.req06Cmd, usDataLength: 6);
-
-    // none
-    CRC16.calculateCRC16(command: Command.req07Cmd, usDataLength: 6);
-
-    // none
-    CRC16.calculateCRC16(command: Command.req08Cmd, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.location1, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.location2, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.location3, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.location4, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.req0DCmd, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataE8, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataE9, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataEA, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataEB, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataEC, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataED, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataEE, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataEF, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataF0, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataF1, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataF2, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataF3, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataF4, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataF5, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataF6, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataF7, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataF8, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataF9, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataFA, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataFB, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataFC, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataFD, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataFE, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command.ddataFF, usDataLength: 6);
-
-    _commandCollection.addAll([
-      Command.req00Cmd,
-      Command.req01Cmd,
-      Command.req02Cmd,
-      Command.req03Cmd,
-      Command.req04Cmd,
-      Command.req05Cmd,
-      Command.req06Cmd,
-      Command.req07Cmd,
-      Command.req08Cmd,
-      Command.location1,
-      Command.location2,
-      Command.location3,
-      Command.location4,
-      Command.req0DCmd,
-      Command.ddataE8, // #14 log
-      Command.ddataE9,
-      Command.ddataEA,
-      Command.ddataEB,
-      Command.ddataEC,
-      Command.ddataED,
-      Command.ddataEE,
-      Command.ddataEF,
-      Command.ddataF0,
-      Command.ddataF1,
-      Command.ddataF2,
-      Command.ddataF3,
-      Command.ddataF4,
-      Command.ddataF5,
-      Command.ddataF6,
-      Command.ddataF7, // #29 log
-      Command.ddataF8, // #30 event
-      Command.ddataF9,
-      Command.ddataFA,
-      Command.ddataFB,
-      Command.ddataFC,
-      Command.ddataFD,
-      Command.ddataFE,
-      Command.ddataFF, // #37 event
-    ]);
   }
 
   void _parseSetWorkingMode(List<int> rawData) async {
@@ -2074,5 +2006,112 @@ class DsimRepository {
       centerAttenuation: _centerAttenuation,
       hasDualPilot: _hasDualPilot,
     );
+  }
+
+  void _calculateCRCs() {
+    // 機型(typeNo)
+    CRC16.calculateCRC16(command: Command.req00Cmd, usDataLength: 6);
+
+    // 型號(partNo)
+    CRC16.calculateCRC16(command: Command.req01Cmd, usDataLength: 6);
+
+    // serialNumber
+    CRC16.calculateCRC16(command: Command.req02Cmd, usDataLength: 6);
+
+    // firmware, logInterval
+    CRC16.calculateCRC16(command: Command.req03Cmd, usDataLength: 6);
+
+    // currentAttenuation, minAttenuation, maxAttenuation, tgcCableLength
+    CRC16.calculateCRC16(command: Command.req04Cmd, usDataLength: 6);
+
+    // workingMode, currentPilot, currentPilotMode, alarmRServerity, alarmTServerity,
+    // alarmPServerity, currentTemperatureF, currentTemperatureC, currentVoltage
+    CRC16.calculateCRC16(command: Command.req05Cmd, usDataLength: 6);
+
+    // centerAttenuation, currentVoltageRipple
+    CRC16.calculateCRC16(command: Command.req06Cmd, usDataLength: 6);
+
+    // none
+    CRC16.calculateCRC16(command: Command.req07Cmd, usDataLength: 6);
+
+    // none
+    CRC16.calculateCRC16(command: Command.req08Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.location1, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.location2, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.location3, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.location4, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.req0DCmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataE8, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataE9, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataEA, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataEB, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataEC, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataED, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataEE, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataEF, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF0, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF1, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF2, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF3, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF4, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF5, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF6, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF7, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF8, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataF9, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataFA, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataFB, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataFC, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataFD, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataFE, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command.ddataFF, usDataLength: 6);
+
+    _commandCollection.addAll([
+      Command.req00Cmd,
+      Command.req01Cmd,
+      Command.req02Cmd,
+      Command.req03Cmd,
+      Command.req04Cmd,
+      Command.req05Cmd,
+      Command.req06Cmd,
+      Command.req07Cmd,
+      Command.req08Cmd,
+      Command.location1,
+      Command.location2,
+      Command.location3,
+      Command.location4,
+      Command.req0DCmd,
+      Command.ddataE8, // #14 log
+      Command.ddataE9,
+      Command.ddataEA,
+      Command.ddataEB,
+      Command.ddataEC,
+      Command.ddataED,
+      Command.ddataEE,
+      Command.ddataEF,
+      Command.ddataF0,
+      Command.ddataF1,
+      Command.ddataF2,
+      Command.ddataF3,
+      Command.ddataF4,
+      Command.ddataF5,
+      Command.ddataF6,
+      Command.ddataF7, // #29 log
+      Command.ddataF8, // #30 event
+      Command.ddataF9,
+      Command.ddataFA,
+      Command.ddataFB,
+      Command.ddataFC,
+      Command.ddataFD,
+      Command.ddataFE,
+      Command.ddataFF, // #37 event
+    ]);
+
+    // for (List<int> command in _commandCollection) {
+    //   List<String> hex = [
+    //     for (int num in command) ...[num.toRadixString(16)]
+    //   ];
+    //   print('${_commandCollection.indexOf(command)}: $hex}');
+    // }
   }
 }

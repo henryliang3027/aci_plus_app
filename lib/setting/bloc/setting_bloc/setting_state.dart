@@ -30,6 +30,7 @@ class SettingState extends Equatable {
     this.currentAttenuation = 0,
     this.centerAttenuation = 0,
     this.hasDualPilot = false,
+    this.editable = false,
     this.editMode = false,
     this.enableSubmission = false,
     this.isInitialize = true,
@@ -56,6 +57,7 @@ class SettingState extends Equatable {
   final int currentAttenuation;
   final int centerAttenuation;
   final bool hasDualPilot;
+  final bool editable;
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
@@ -82,6 +84,7 @@ class SettingState extends Equatable {
     int? currentAttenuation,
     int? centerAttenuation,
     bool? hasDualPilot,
+    bool? editable,
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
@@ -109,6 +112,7 @@ class SettingState extends Equatable {
       currentAttenuation: currentAttenuation ?? this.currentAttenuation,
       centerAttenuation: centerAttenuation ?? this.centerAttenuation,
       hasDualPilot: hasDualPilot ?? this.hasDualPilot,
+      editable: editable ?? this.editable,
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
@@ -138,6 +142,7 @@ class SettingState extends Equatable {
         currentAttenuation,
         centerAttenuation,
         hasDualPilot,
+        editable,
         editMode,
         enableSubmission,
         isInitialize,

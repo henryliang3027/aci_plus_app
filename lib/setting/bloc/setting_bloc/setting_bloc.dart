@@ -42,7 +42,6 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     Emitter<SettingState> emit,
   ) async {
     SettingData settingData = await _dsimRepository.getSettingData();
-
     final Location location = Location.dirty(settingData.location);
 
     final Map<String, bool> newSelectedTGCCableLength = {
@@ -84,37 +83,44 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     final List<String>? pilot2 =
         _getPilotChannelAndMode(settingData.pilot2Code);
 
-    emit(state.copyWith(
-      initialValues: [
-        settingData.location,
-        settingData.tgcCableLength,
-        settingData.logIntervalId,
-        settingData.workingMode,
-        settingData.currentAttenuation,
-      ],
-      location: location,
-      selectedTGCCableLength: newSelectedTGCCableLength,
-      selectedWorkingMode: newSelectedWorkingMode,
-      logIntervalId: settingData.logIntervalId,
-      pilotChannel: pilot != null ? pilot[0] : '',
-      pilotMode: pilot != null ? pilot[1] : '',
-      pilotCode: pilotCode,
-      pilot2Channel: pilot2 != null ? pilot2[0] : '',
-      pilot2Mode: pilot2 != null ? pilot2[1] : '',
-      pilot2Code: pilot2Code,
-      maxAttenuation: maxAttenuation,
-      minAttenuation: minAttenuation,
-      currentAttenuation: currentAttenuation,
-      centerAttenuation: centerAttenuation,
-      hasDualPilot: settingData.hasDualPilot,
-      isInitialize: true,
-      submissionStatus: SubmissionStatus.none,
-      pilotChannelStatus:
-          pilot != null ? FormStatus.requestSuccess : FormStatus.requestFailure,
-      pilot2ChannelStatus: pilot2 != null
-          ? FormStatus.requestSuccess
-          : FormStatus.requestFailure,
-    ));
+    if (event.editable) {
+      emit(state.copyWith(
+        initialValues: [
+          settingData.location,
+          settingData.tgcCableLength,
+          settingData.logIntervalId,
+          settingData.workingMode,
+          settingData.currentAttenuation,
+        ],
+        location: location,
+        selectedTGCCableLength: newSelectedTGCCableLength,
+        selectedWorkingMode: newSelectedWorkingMode,
+        logIntervalId: settingData.logIntervalId,
+        pilotChannel: pilot != null ? pilot[0] : '',
+        pilotMode: pilot != null ? pilot[1] : '',
+        pilotCode: pilotCode,
+        pilot2Channel: pilot2 != null ? pilot2[0] : '',
+        pilot2Mode: pilot2 != null ? pilot2[1] : '',
+        pilot2Code: pilot2Code,
+        maxAttenuation: maxAttenuation,
+        minAttenuation: minAttenuation,
+        currentAttenuation: currentAttenuation,
+        centerAttenuation: centerAttenuation,
+        hasDualPilot: settingData.hasDualPilot,
+        isInitialize: true,
+        submissionStatus: SubmissionStatus.none,
+        pilotChannelStatus: pilot != null
+            ? FormStatus.requestSuccess
+            : FormStatus.requestFailure,
+        pilot2ChannelStatus: pilot2 != null
+            ? FormStatus.requestSuccess
+            : FormStatus.requestFailure,
+      ));
+    } else {
+      emit(state.copyWith(
+        editable: false,
+      ));
+    }
   }
 
   void _onGraphViewToggled(
