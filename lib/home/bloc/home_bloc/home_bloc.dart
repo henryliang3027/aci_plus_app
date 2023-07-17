@@ -171,6 +171,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     List<int> data = await _dsimRepository.requestCommandTest2();
+    // _dsimRepository.requestCommand14To29();
 
     // print('result: ${data.length}, ${data[data.length - 1]}');
   }

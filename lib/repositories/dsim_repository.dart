@@ -304,6 +304,8 @@ class DsimRepository {
         case DeviceConnectionState.connecting:
           break;
         case DeviceConnectionState.connected:
+          final mtu =
+              await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 247);
           // initialize _characteristicDataStreamController
           _characteristicDataStreamController =
               StreamController<Map<DataKey, String>>();
@@ -429,39 +431,41 @@ class DsimRepository {
   void _parseLog() {
     // Stopwatch swatch = Stopwatch();
     // swatch.start();
-    if (commandIndex < 29) {
-      for (var i = 0; i < 16; i++) {
-        int timeStamp = _rawLog[i * 16] * 256 + _rawLog[i * 16 + 1];
-        double temperature =
-            (_rawLog[i * 16 + 2] * 256 + _rawLog[i * 16 + 3]) / 10;
-        int attenuation = _rawLog[i * 16 + 4] * 256 + _rawLog[i * 16 + 5];
-        double pilot = (_rawLog[i * 16 + 6] * 256 + _rawLog[i * 16 + 7]) / 10;
-        double voltage = (_rawLog[i * 16 + 8] * 256 + _rawLog[i * 16 + 9]) / 10;
-        int voltageRipple = _rawLog[i * 16 + 10] * 256 + _rawLog[i * 16 + 11];
 
-        if (timeStamp < 0xFFF0) {
-          //# 20210128 做2補數
-          if (temperature > 32767) {
-            temperature = -(65535 - temperature + 1).abs();
-          }
+    for (var i = 0; i < 16; i++) {
+      int timeStamp = _rawLog[i * 16] * 256 + _rawLog[i * 16 + 1];
+      double temperature =
+          (_rawLog[i * 16 + 2] * 256 + _rawLog[i * 16 + 3]) / 10;
+      int attenuation = _rawLog[i * 16 + 4] * 256 + _rawLog[i * 16 + 5];
+      double pilot = (_rawLog[i * 16 + 6] * 256 + _rawLog[i * 16 + 7]) / 10;
+      double voltage = (_rawLog[i * 16 + 8] * 256 + _rawLog[i * 16 + 9]) / 10;
+      int voltageRipple = _rawLog[i * 16 + 10] * 256 + _rawLog[i * 16 + 11];
 
-          int timeDiff = _nowTimeCount - timeStamp;
-          if (timeDiff < 0) {
-            timeDiff = timeDiff + 65520;
-          }
-          timeStamp = timeDiff;
-
-          final DateTime dateTime = timeStampToDateTime(timeStamp);
-
-          _logs.add(Log(
-              dateTime: dateTime,
-              temperature: temperature,
-              attenuation: attenuation,
-              pilot: pilot,
-              voltage: voltage,
-              voltageRipple: voltageRipple));
+      if (timeStamp < 0xFFF0) {
+        //# 20210128 做2補數
+        if (temperature > 32767) {
+          temperature = -(65535 - temperature + 1).abs();
         }
+
+        int timeDiff = _nowTimeCount - timeStamp;
+        if (timeDiff < 0) {
+          timeDiff = timeDiff + 65520;
+        }
+        timeStamp = timeDiff;
+
+        final DateTime dateTime = timeStampToDateTime(timeStamp);
+
+        _logs.add(Log(
+            dateTime: dateTime,
+            temperature: temperature,
+            attenuation: attenuation,
+            pilot: pilot,
+            voltage: voltage,
+            voltageRipple: voltageRipple));
       }
+    }
+
+    if (commandIndex < 29) {
       if (!_completer.isCompleted) {
         _completer.complete(true);
       }
@@ -824,8 +828,9 @@ class DsimRepository {
     _dataList1.clear();
     commandIndex = -1;
     _completer = Completer<dynamic>();
-    List<int> cmd1 = [0xB0, 0x03, 0xAA, 0x00, 0x00, 0x80, 0x7E, 0x53];
-    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 200, 100, 0x00, 0x00];
+    List<int> cmd1 = [0xB0, 0x03, 0xAA, 0x00, 12, 255, 0x00, 0x00];
+    // List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 244, 50, 0x00, 0x00];
+    CRC16.calculateCRC16(command: cmd1, usDataLength: 6);
 
     print('get data from request command -1');
     await _writeSetCommandToCharacteristic(cmd1);
@@ -845,8 +850,8 @@ class DsimRepository {
     _dataList2.clear();
     commandIndex = -2;
     _completer = Completer<dynamic>();
-    List<int> cmd1 = [0xB0, 0x03, 0xAA, 0x00, 0x00, 0x80, 0x7E, 0x53];
-    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 200, 190, 0x00, 0x00];
+    // List<int> cmd1 = [0xB0, 0x03, 0xAA, 0x00, 0x00, 0x80, 0x7E, 0x53];
+    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 48, 50, 0x00, 0x00];
     CRC16.calculateCRC16(command: cmd2, usDataLength: 6);
     // List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 0x00, 0x80, 0x7F, 0xAF];
 
@@ -1644,11 +1649,11 @@ class DsimRepository {
     Sheet eventSheet = excel['Event'];
 
     eventSheet.insertRowIterables(eventHeader, 0);
-    for (int i = 0; i < _events.length; i++) {
-      Event event = _events[i];
-      List<String> row = formatEvent(event);
-      eventSheet.insertRowIterables(row, i + 1);
-    }
+    // for (int i = 0; i < _events.length; i++) {
+    //   Event event = _events[i];
+    //   List<String> row = formatEvent(event);
+    //   eventSheet.insertRowIterables(row, i + 1);
+    // }
 
     logSheet.insertRowIterables(logHeader, 0);
     for (int i = 0; i < _logs.length; i++) {
@@ -1742,134 +1747,150 @@ class DsimRepository {
     return row;
   }
 
-  List<String> formatEvent(Event event) {
-    String formattedDateTime =
-        DateFormat('yyyy-MM-dd HH:mm').format(event.dateTime);
-    List<String> row = ['', '', '', '', '', '', '', '', '', '', '', '', ''];
+  // List<String> formatEvent() {
+  //   List<String> powerOn = ['Power on'];
+  //   List<String> powerOff = ['Power Off'];
+  //   List<String> voltageHigh = ['24V High(V)'];
+  //   List<String> voltageLow = ['24V Low(V)'];
+  //   List<String> temperatureHigh = ['Temperature High(C)'];
+  //   List<String> temperatureLow = ['Temperature Low(C)'];
+  //   List<String> inputRFPowerHigh = ['Input RF Power High(dBuV)'];
+  //   List<String> inputRFPowerLow = ['Input RF Power Low(dBuV)'];
+  //   List<String> voltageRippleHigh = ['24V Ripple High(mV)'];
+  //   List<String> alignLossPilot = ['Align Loss Pilot'];
+  //   List<String> agcLossPilot = ['AGC Loss Pilot'];
+  //   List<String> controllPlugIn = ['Controll Plug in'];
+  //   List<String> controllPlugOut = ['Controll Plug out'];
 
-    switch (event.code) {
-      case 0x0000:
-        {
-          //EventCPEstart 0
-          row[0] = formattedDateTime;
-          if (event.parameter > 0) {
-            row[0] = '$formattedDateTime@${event.parameter}';
-          }
-          break;
-        }
-      case 0x0001:
-        {
-          //EventCPEstop 1
-          row[1] = formattedDateTime;
-          if (event.parameter > 0) {
-            row[1] = '$formattedDateTime@${event.parameter}';
-          }
+  //   for (Event event in _events) {
+  //     String formattedDateTime =
+  //         DateFormat('yyyy-MM-dd HH:mm').format(event.dateTime);
+  //     List<String> row = ['', '', '', '', '', '', '', '', '', '', '', '', ''];
 
-          break;
-        }
-      case 0x0002:
-        {
-          //Event24VOver 2
-          row[2] = formattedDateTime;
-          if (event.parameter > 0) {
-            row[2] = '$formattedDateTime@${event.parameter / 10}';
-          }
-          break;
-        }
-      case 0x0004:
-        {
-          //Event24VLess 3
-          row[3] = formattedDateTime;
-          if (event.parameter > 0) {
-            row[3] = '$formattedDateTime@${event.parameter / 10}';
-          }
-          break;
-        }
-      case 0x0008:
-        {
-          //EventTemOver 4
-          row[4] = formattedDateTime;
-          if (event.parameter > 0) {
-            row[4] = '$formattedDateTime@${event.parameter / 10}';
-          }
-          break;
-        }
-      case 0x0010:
-        {
-          //EventTemLess 5
-          row[5] = formattedDateTime;
-          if (event.parameter > 0) {
-            row[5] = '$formattedDateTime@${event.parameter / 10}';
-          }
-          break;
-        }
-      case 0x0020:
-        {
-          //EventSSIOver 6
-          row[6] = formattedDateTime;
-          if (event.parameter > 0) {
-            row[6] = '$formattedDateTime@${event.parameter}';
-          }
-          break;
-        }
-      case 0x0040:
-        {
-          //EventSSILess 7
-          row[7] = formattedDateTime;
-          if (event.parameter > 0) {
-            row[7] = '$formattedDateTime@${event.parameter}';
-          }
-          break;
-        }
-      case 0x0080:
-        {
-          //Event24VriOv 8
-          row[8] = formattedDateTime;
-          if (event.parameter > 0) {
-            row[8] = '$formattedDateTime@${event.parameter}';
-          }
-          break;
-        }
-      case 0x0100:
-        {
-          //EventAlPiLos 9
-          row[9] = formattedDateTime;
-          if (event.parameter > 0) {
-            row[9] = '$formattedDateTime@${event.parameter}';
-          }
-          break;
-        }
-      case 0x0200:
-        {
-          //EventAGPiLos 10
-          row[10] = formattedDateTime;
-          if (event.parameter > 0) {
-            row[10] = '$formattedDateTime@${event.parameter}';
-          }
-          break;
-        }
-      case 0x1000:
-        {
-          //EventCTRPlin 11 used
-          row[11] = formattedDateTime;
-          if (event.parameter > 0) {
-            row[11] = '$formattedDateTime@${event.parameter}';
-          }
-          break;
-        }
-      case 0x2000:
-        {
-          //EventCTRPlout 12 used
-          row[12] = formattedDateTime;
-          if (event.parameter > 0) {
-            row[12] = '$formattedDateTime@${event.parameter}';
-          }
-          break;
-        }
-    } //switch
+  //     switch (event.code) {
+  //       case 0x0000:
+  //         {
+  //           //EventCPEstart 0
+  //           row[0] = formattedDateTime;
+  //           if (event.parameter > 0) {
+  //             row[0] = '$formattedDateTime@${event.parameter}';
+  //           }
+  //           break;
+  //         }
+  //       case 0x0001:
+  //         {
+  //           //EventCPEstop 1
+  //           row[1] = formattedDateTime;
+  //           if (event.parameter > 0) {
+  //             row[1] = '$formattedDateTime@${event.parameter}';
+  //           }
 
-    return row;
-  }
+  //           break;
+  //         }
+  //       case 0x0002:
+  //         {
+  //           //Event24VOver 2
+  //           row[2] = formattedDateTime;
+  //           if (event.parameter > 0) {
+  //             row[2] = '$formattedDateTime@${event.parameter / 10}';
+  //           }
+  //           break;
+  //         }
+  //       case 0x0004:
+  //         {
+  //           //Event24VLess 3
+  //           row[3] = formattedDateTime;
+  //           if (event.parameter > 0) {
+  //             row[3] = '$formattedDateTime@${event.parameter / 10}';
+  //           }
+  //           break;
+  //         }
+  //       case 0x0008:
+  //         {
+  //           //EventTemOver 4
+  //           row[4] = formattedDateTime;
+  //           if (event.parameter > 0) {
+  //             row[4] = '$formattedDateTime@${event.parameter / 10}';
+  //           }
+  //           break;
+  //         }
+  //       case 0x0010:
+  //         {
+  //           //EventTemLess 5
+  //           row[5] = formattedDateTime;
+  //           if (event.parameter > 0) {
+  //             row[5] = '$formattedDateTime@${event.parameter / 10}';
+  //           }
+  //           break;
+  //         }
+  //       case 0x0020:
+  //         {
+  //           //EventSSIOver 6
+  //           row[6] = formattedDateTime;
+  //           if (event.parameter > 0) {
+  //             row[6] = '$formattedDateTime@${event.parameter}';
+  //           }
+  //           break;
+  //         }
+  //       case 0x0040:
+  //         {
+  //           //EventSSILess 7
+  //           row[7] = formattedDateTime;
+  //           if (event.parameter > 0) {
+  //             row[7] = '$formattedDateTime@${event.parameter}';
+  //           }
+  //           break;
+  //         }
+  //       case 0x0080:
+  //         {
+  //           //Event24VriOv 8
+  //           row[8] = formattedDateTime;
+  //           if (event.parameter > 0) {
+  //             row[8] = '$formattedDateTime@${event.parameter}';
+  //           }
+  //           break;
+  //         }
+  //       case 0x0100:
+  //         {
+  //           //EventAlPiLos 9
+  //           row[9] = formattedDateTime;
+  //           if (event.parameter > 0) {
+  //             row[9] = '$formattedDateTime@${event.parameter}';
+  //           }
+  //           break;
+  //         }
+  //       case 0x0200:
+  //         {
+  //           //EventAGPiLos 10
+  //           row[10] = formattedDateTime;
+  //           if (event.parameter > 0) {
+  //             row[10] = '$formattedDateTime@${event.parameter}';
+  //           }
+  //           break;
+  //         }
+  //       case 0x1000:
+  //         {
+  //           //EventCTRPlin 11 used
+  //           row[11] = formattedDateTime;
+  //           if (event.parameter > 0) {
+  //             row[11] = '$formattedDateTime@${event.parameter}';
+  //           }
+  //           break;
+  //         }
+  //       case 0x2000:
+  //         {
+  //           //EventCTRPlout 12 used
+  //           row[12] = formattedDateTime;
+  //           if (event.parameter > 0) {
+  //             row[12] = '$formattedDateTime@${event.parameter}';
+  //           }
+  //           break;
+  //         }
+  //     } //switch
+  //   }
+
+  //   // return row;
+  // }
 
   DateTime timeStampToDateTime(int timeStamp) {
     int adjustedMillisecond =
