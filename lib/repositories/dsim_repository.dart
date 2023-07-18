@@ -304,9 +304,9 @@ class DsimRepository {
         case DeviceConnectionState.connecting:
           break;
         case DeviceConnectionState.connected:
-          // final mtu =
-          //     await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 247);
-          // print('Negotiated MTU: $mtu');
+          final mtu =
+              await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 247);
+          print('Negotiated MTU: $mtu');
 
           // initialize _characteristicDataStreamController
           _characteristicDataStreamController =
@@ -342,7 +342,9 @@ class DsimRepository {
               print(
                   '${_dataList2.length}, ${_dataList2[_dataList2.length - 1]}, : $rawData');
 
-              if (_dataList2.length == 65536) {}
+              if (_dataList2.length == 65536) {
+                List<int> verifiedList = List.from(_dataList2);
+              }
             } else if (commandIndex <= 13) {
               _parseRawData(rawData);
               // if (commandIndex <= endIndex) {
