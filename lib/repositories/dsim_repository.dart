@@ -1658,12 +1658,14 @@ class DsimRepository {
     Sheet logSheet = excel['Log'];
     Sheet eventSheet = excel['Event'];
 
-    eventSheet.insertRowIterables(eventHeader, 0);
+    // eventSheet.insertRowIterables(eventHeader, 0);
     // for (int i = 0; i < _events.length; i++) {
     //   Event event = _events[i];
     //   List<String> row = formatEvent(event);
     //   eventSheet.insertRowIterables(row, i + 1);
     // }
+
+    // eventSheet.insertColumn(colIndex)
 
     logSheet.insertRowIterables(logHeader, 0);
     for (int i = 0; i < _logs.length; i++) {

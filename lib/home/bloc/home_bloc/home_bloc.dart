@@ -66,6 +66,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       case ScanStatus.success:
         emit(state.copyWith(
           scanStatus: FormStatus.requestSuccess,
+          connectionStatus: FormStatus.requestInProgress,
+          loadingStatus: FormStatus.none,
           device: event.scanReport.discoveredDevice,
         ));
 
@@ -77,14 +79,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       case ScanStatus.failure:
         emit(state.copyWith(
             scanStatus: FormStatus.requestFailure,
-            connectionStatus: FormStatus.requestFailure,
-            loadingStatus: FormStatus.requestFailure,
+            connectionStatus: FormStatus.none,
+            loadingStatus: FormStatus.none,
             device: null,
             errorMassage: 'Device not found.'));
         break;
       case ScanStatus.disable:
         emit(state.copyWith(
             scanStatus: FormStatus.requestFailure,
+            connectionStatus: FormStatus.none,
+            loadingStatus: FormStatus.none,
             device: null,
             errorMassage: 'Bluetooth is disabled.'));
         break;
@@ -104,12 +108,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestInProgress,
+          loadingStatus: FormStatus.requestInProgress,
         ));
         break;
       case DeviceConnectionState.connected:
         emit(state.copyWith(
           scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestSuccess,
+          loadingStatus: FormStatus.requestInProgress,
         ));
 
         add(const DataRequested());
@@ -132,14 +138,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestFailure,
-          // loadingStatus: FormStatus.requestFailure,
+          loadingStatus: FormStatus.none,
         ));
         break;
       case DeviceConnectionState.disconnected:
         emit(state.copyWith(
           scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestFailure,
-          loadingStatus: FormStatus.requestFailure,
+          loadingStatus: FormStatus.none,
         ));
         break;
     }
@@ -180,11 +186,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     DataRequested event,
     Emitter<HomeState> emit,
   ) async {
-    emit(state.copyWith(
-      loadingStatus: FormStatus.requestInProgress,
-      characteristicData: {},
-    ));
-
     List<Function> requestCommands = [
       _dsimRepository.requestCommand0,
       _dsimRepository.requestCommand1,
