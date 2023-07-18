@@ -70,7 +70,7 @@ class InformationForm extends StatelessWidget {
         body: const SingleChildScrollView(
           child: Column(
             children: [
-              _TestCard(),
+              // _TestCard(),
               _ConnectionCard(),
               _BasicCard(),
               _AlarmCard(),

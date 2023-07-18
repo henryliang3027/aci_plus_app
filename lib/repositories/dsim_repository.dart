@@ -172,7 +172,7 @@ class DsimRepository {
   final int _logGettingTimeout = 20; // s
   final int _agcWorkingModeSettingTimeout = 40; // s
   Timer? _timeoutTimer;
-  // Stopwatch _stopwatch = Stopwatch();
+  Stopwatch _stopwatch = Stopwatch();
 
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
@@ -304,8 +304,10 @@ class DsimRepository {
         case DeviceConnectionState.connecting:
           break;
         case DeviceConnectionState.connected:
-          final mtu =
-              await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 247);
+          // final mtu =
+          //     await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 247);
+          // print('Negotiated MTU: $mtu');
+
           // initialize _characteristicDataStreamController
           _characteristicDataStreamController =
               StreamController<Map<DataKey, String>>();
@@ -316,13 +318,17 @@ class DsimRepository {
             deviceId: discoveredDevice.id,
           );
 
+          // final mtu =
+          //     await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 247);
+          // print('Negotiated MTU: $mtu');
+
           _characteristicStreamSubscription = _ble
               .subscribeToCharacteristic(_qualifiedCharacteristic)
               .listen((data) async {
             List<int> rawData = data;
             print(commandIndex);
-            // print(
-            //     'doSomething() executed in ${_stopwatch.elapsed.inMilliseconds}');
+            print(
+                'doSomething() executed in ${_stopwatch.elapsed.inMilliseconds}');
             // _stopwatch.stop();
             // _dataList2.addAll(rawData);
             // print('${_dataList2.length}, ${_dataList2[_dataList2.length - 1]}');
@@ -335,6 +341,8 @@ class DsimRepository {
               _dataList2.addAll(rawData);
               print(
                   '${_dataList2.length}, ${_dataList2[_dataList2.length - 1]}, : $rawData');
+
+              if (_dataList2.length == 65536) {}
             } else if (commandIndex <= 13) {
               _parseRawData(rawData);
               // if (commandIndex <= endIndex) {
@@ -847,11 +855,13 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommandTest2() async {
+    _stopwatch.reset();
+    _stopwatch.start();
     _dataList2.clear();
     commandIndex = -2;
     _completer = Completer<dynamic>();
     // List<int> cmd1 = [0xB0, 0x03, 0xAA, 0x00, 0x00, 0x80, 0x7E, 0x53];
-    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 48, 50, 0x00, 0x00];
+    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 244, 22, 0x00, 0x00];
     CRC16.calculateCRC16(command: cmd2, usDataLength: 6);
     // List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 0x00, 0x80, 0x7F, 0xAF];
 

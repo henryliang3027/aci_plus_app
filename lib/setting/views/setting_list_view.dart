@@ -335,7 +335,7 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
                   ),
                 ),
                 DropdownButtonHideUnderline(
-                  child: DropdownButton2(
+                  child: DropdownButton2<int?>(
                       buttonHeight: 40,
                       buttonDecoration: BoxDecoration(
                         border: Border.all(
@@ -349,7 +349,8 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
                       dropdownMaxHeight: 200,
                       isExpanded: true,
                       icon: const Icon(Icons.keyboard_arrow_down),
-                      value: state.logIntervalId,
+                      value:
+                          state.logIntervalId == 0 ? null : state.logIntervalId,
                       items: [
                         for (String k in types.keys)
                           DropdownMenuItem(

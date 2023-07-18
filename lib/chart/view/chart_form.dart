@@ -207,7 +207,7 @@ class _logChart extends StatelessWidget {
                 Navigator.push(
                   context,
                   FullScreenChartForm.route(
-                    title: '',
+                    title: AppLocalizations.of(context).monitoringChart,
                     lineSeriesCollection: lineSeriesCollection,
                   ),
                 );

@@ -576,13 +576,16 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   }
 
   String _getWorkingMode() {
-    return state.selectedWorkingMode.keys
-        .firstWhere((k) => state.selectedWorkingMode[k] == true);
+    return state.selectedWorkingMode.keys.firstWhere(
+      (k) => state.selectedWorkingMode[k] == true,
+      orElse: () => '',
+    );
   }
 
   String _getTgcCableLength() {
-    return state.selectedTGCCableLength.keys
-        .firstWhere((k) => state.selectedTGCCableLength[k] == true);
+    return state.selectedTGCCableLength.keys.firstWhere(
+        (k) => state.selectedTGCCableLength[k] == true,
+        orElse: () => '');
   }
 
   bool _isEnabledSubmission({
