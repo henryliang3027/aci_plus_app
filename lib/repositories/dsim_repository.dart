@@ -1659,11 +1659,11 @@ class DsimRepository {
     Sheet eventSheet = excel['Event'];
 
     eventSheet.insertRowIterables(eventHeader, 0);
-    // for (int i = 0; i < _events.length; i++) {
-    //   Event event = _events[i];
-    //   List<String> row = formatEvent(event);
-    //   eventSheet.insertRowIterables(row, i + 1);
-    // }
+    List<List<String>> eventContent = formatEvent();
+    for (int i = 0; i < eventContent.length; i++) {
+      List<String> row = eventContent[i];
+      eventSheet.insertRowIterables(row, i + 1);
+    }
 
     logSheet.insertRowIterables(logHeader, 0);
     for (int i = 0; i < _logs.length; i++) {
@@ -1757,150 +1757,197 @@ class DsimRepository {
     return row;
   }
 
-  // List<String> formatEvent() {
-  //   List<String> powerOn = ['Power on'];
-  //   List<String> powerOff = ['Power Off'];
-  //   List<String> voltageHigh = ['24V High(V)'];
-  //   List<String> voltageLow = ['24V Low(V)'];
-  //   List<String> temperatureHigh = ['Temperature High(C)'];
-  //   List<String> temperatureLow = ['Temperature Low(C)'];
-  //   List<String> inputRFPowerHigh = ['Input RF Power High(dBuV)'];
-  //   List<String> inputRFPowerLow = ['Input RF Power Low(dBuV)'];
-  //   List<String> voltageRippleHigh = ['24V Ripple High(mV)'];
-  //   List<String> alignLossPilot = ['Align Loss Pilot'];
-  //   List<String> agcLossPilot = ['AGC Loss Pilot'];
-  //   List<String> controllPlugIn = ['Controll Plug in'];
-  //   List<String> controllPlugOut = ['Controll Plug out'];
+  List<List<String>> formatEvent() {
+    List<int> counts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<List<String>> csvContent = List<List<String>>.generate(
+      128,
+      (index) => List<String>.generate(
+        13,
+        (index) => '',
+        growable: false,
+      ),
+      growable: false,
+    );
 
-  //   for (Event event in _events) {
-  //     String formattedDateTime =
-  //         DateFormat('yyyy-MM-dd HH:mm').format(event.dateTime);
-  //     List<String> row = ['', '', '', '', '', '', '', '', '', '', '', '', ''];
+    for (Event event in _events) {
+      String formattedDateTime =
+          DateFormat('yyyy-MM-dd HH:mm').format(event.dateTime);
 
-  //     switch (event.code) {
-  //       case 0x0000:
-  //         {
-  //           //EventCPEstart 0
-  //           row[0] = formattedDateTime;
-  //           if (event.parameter > 0) {
-  //             row[0] = '$formattedDateTime@${event.parameter}';
-  //           }
-  //           break;
-  //         }
-  //       case 0x0001:
-  //         {
-  //           //EventCPEstop 1
-  //           row[1] = formattedDateTime;
-  //           if (event.parameter > 0) {
-  //             row[1] = '$formattedDateTime@${event.parameter}';
-  //           }
+      switch (event.code) {
+        case 0x0000:
+          {
+            //EventCPEstart 0
+            int index = 0;
+            if (event.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event.parameter}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 0x0001:
+          {
+            //EventCPEstop 1
+            int index = 1;
+            if (event.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event.parameter}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 0x0002:
+          {
+            //Event24VOver 2
+            int index = 2;
+            if (event.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 0x0004:
+          {
+            //Event24VLess 3
+            int index = 3;
+            if (event.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 0x0008:
+          {
+            //EventTemOver 4
+            int index = 4;
+            if (event.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 0x0010:
+          {
+            //EventTemLess 5
+            int index = 5;
+            if (event.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 0x0020:
+          {
+            //EventSSIOver 6
+            int index = 6;
+            if (event.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event.parameter}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 0x0040:
+          {
+            //EventSSILess 7
+            int index = 7;
+            if (event.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event.parameter}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 0x0080:
+          {
+            //Event24VriOv 8
+            int index = 8;
+            if (event.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event.parameter}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 0x0100:
+          {
+            //EventAlPiLos 9
+            int index = 9;
+            if (event.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event.parameter}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 0x0200:
+          {
+            //EventAGPiLos 10
+            int index = 10;
+            if (event.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event.parameter}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 0x1000:
+          {
+            //EventCTRPlin 11 used
+            int index = 11;
+            if (event.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event.parameter}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 0x2000:
+          {
+            //EventCTRPlout 12 used
+            int index = 12;
+            if (event.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event.parameter}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+      } //switch
+    }
 
-  //           break;
-  //         }
-  //       case 0x0002:
-  //         {
-  //           //Event24VOver 2
-  //           row[2] = formattedDateTime;
-  //           if (event.parameter > 0) {
-  //             row[2] = '$formattedDateTime@${event.parameter / 10}';
-  //           }
-  //           break;
-  //         }
-  //       case 0x0004:
-  //         {
-  //           //Event24VLess 3
-  //           row[3] = formattedDateTime;
-  //           if (event.parameter > 0) {
-  //             row[3] = '$formattedDateTime@${event.parameter / 10}';
-  //           }
-  //           break;
-  //         }
-  //       case 0x0008:
-  //         {
-  //           //EventTemOver 4
-  //           row[4] = formattedDateTime;
-  //           if (event.parameter > 0) {
-  //             row[4] = '$formattedDateTime@${event.parameter / 10}';
-  //           }
-  //           break;
-  //         }
-  //       case 0x0010:
-  //         {
-  //           //EventTemLess 5
-  //           row[5] = formattedDateTime;
-  //           if (event.parameter > 0) {
-  //             row[5] = '$formattedDateTime@${event.parameter / 10}';
-  //           }
-  //           break;
-  //         }
-  //       case 0x0020:
-  //         {
-  //           //EventSSIOver 6
-  //           row[6] = formattedDateTime;
-  //           if (event.parameter > 0) {
-  //             row[6] = '$formattedDateTime@${event.parameter}';
-  //           }
-  //           break;
-  //         }
-  //       case 0x0040:
-  //         {
-  //           //EventSSILess 7
-  //           row[7] = formattedDateTime;
-  //           if (event.parameter > 0) {
-  //             row[7] = '$formattedDateTime@${event.parameter}';
-  //           }
-  //           break;
-  //         }
-  //       case 0x0080:
-  //         {
-  //           //Event24VriOv 8
-  //           row[8] = formattedDateTime;
-  //           if (event.parameter > 0) {
-  //             row[8] = '$formattedDateTime@${event.parameter}';
-  //           }
-  //           break;
-  //         }
-  //       case 0x0100:
-  //         {
-  //           //EventAlPiLos 9
-  //           row[9] = formattedDateTime;
-  //           if (event.parameter > 0) {
-  //             row[9] = '$formattedDateTime@${event.parameter}';
-  //           }
-  //           break;
-  //         }
-  //       case 0x0200:
-  //         {
-  //           //EventAGPiLos 10
-  //           row[10] = formattedDateTime;
-  //           if (event.parameter > 0) {
-  //             row[10] = '$formattedDateTime@${event.parameter}';
-  //           }
-  //           break;
-  //         }
-  //       case 0x1000:
-  //         {
-  //           //EventCTRPlin 11 used
-  //           row[11] = formattedDateTime;
-  //           if (event.parameter > 0) {
-  //             row[11] = '$formattedDateTime@${event.parameter}';
-  //           }
-  //           break;
-  //         }
-  //       case 0x2000:
-  //         {
-  //           //EventCTRPlout 12 used
-  //           row[12] = formattedDateTime;
-  //           if (event.parameter > 0) {
-  //             row[12] = '$formattedDateTime@${event.parameter}';
-  //           }
-  //           break;
-  //         }
-  //     } //switch
-  //   }
-
-  //   // return row;
-  // }
+    return csvContent;
+  }
 
   DateTime timeStampToDateTime(int timeStamp) {
     int adjustedMillisecond =
