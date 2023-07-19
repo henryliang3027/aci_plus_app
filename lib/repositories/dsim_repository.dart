@@ -297,9 +297,6 @@ class DsimRepository {
       ),
     )
         .listen((connectionStateUpdate) async {
-      _connectionReportStreamController.add(ConnectionReport(
-          connectionState: connectionStateUpdate.connectionState));
-
       switch (connectionStateUpdate.connectionState) {
         case DeviceConnectionState.connecting:
           break;
@@ -327,8 +324,8 @@ class DsimRepository {
               .listen((data) async {
             List<int> rawData = data;
             print(commandIndex);
-            print(
-                'doSomething() executed in ${_stopwatch.elapsed.inMilliseconds}');
+            // print(
+            //     'doSomething() executed in ${_stopwatch.elapsed.inMilliseconds}');
             // _stopwatch.stop();
             // _dataList2.addAll(rawData);
             // print('${_dataList2.length}, ${_dataList2[_dataList2.length - 1]}');
@@ -380,6 +377,8 @@ class DsimRepository {
               _parseSetWorkingMode(rawData);
             }
           });
+          _connectionReportStreamController.add(const ConnectionReport(
+              connectionState: DeviceConnectionState.connected));
           break;
         case DeviceConnectionState.disconnecting:
           _connectionReportStreamController.add(const ConnectionReport(
