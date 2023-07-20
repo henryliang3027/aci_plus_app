@@ -79,6 +79,8 @@
     "dialogTitleSettingResult": "Result",
     "dialogMessageDeviceNotFound": "Device not found.",
     "dialogMessageBluetoothDisabled": "Bluetooth is disabled.",
+    "dialogMessageConnectionFailure": "Device connection failed",
+    "dialogMessageLoadingDataFailure": "Data loading failed",
     "dialogMessageLocationSetting": "Location setting",
     "dialogMessageTGCCableLengthSetting": "TGC cable length setting",
     "dialogMessageLogIntervalSetting": "Log interval setting",

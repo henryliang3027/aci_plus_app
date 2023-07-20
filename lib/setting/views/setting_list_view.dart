@@ -1,4 +1,5 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
@@ -11,45 +12,200 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class SettingListView extends StatelessWidget {
   SettingListView({
     super.key,
-    required this.locationTextEditionController,
-    required this.userPilotTextEditingController,
-    required this.userPilot2TextEditingController,
   });
 
-  final TextEditingController locationTextEditionController;
-  final TextEditingController userPilotTextEditingController;
-  final TextEditingController userPilot2TextEditingController;
+  final TextEditingController locationTextEditingController =
+      TextEditingController();
+  final TextEditingController userPilotTextEditingController =
+      TextEditingController();
+  final TextEditingController userPilot2TextEditingController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(
-              CustomStyle.sizeXL,
+    Future<void> showInProgressDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitleProcessing,
             ),
-            child: Column(
-              children: [
-                _Location(
-                  textEditingController: locationTextEditionController,
+            actionsAlignment: MainAxisAlignment.center,
+            actions: const <Widget>[
+              CircularProgressIndicator(),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<void> showResultDialog(List<Widget> messageRows) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitleSettingResult,
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: messageRows,
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<void> showPilotSearchFailedDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitleError,
+              style: const TextStyle(
+                color: CustomStyle.customRed,
+              ),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: [
+                  Text(
+                    AppLocalizations.of(context).dialogMessagePilotSearchFailed,
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    String formatResultValue(String boolValue) {
+      return boolValue == 'true'
+          ? AppLocalizations.of(context).dialogMessageSettingSuccessful
+          : AppLocalizations.of(context).dialogMessageSettingFailed;
+    }
+
+    String formatResultItem(String item) {
+      if (item == DataKey.location.name) {
+        return AppLocalizations.of(context).dialogMessageLocationSetting;
+      } else if (item == DataKey.tgcCableLength.name) {
+        return AppLocalizations.of(context).dialogMessageTGCCableLengthSetting;
+      } else if (item == DataKey.logInterval.name) {
+        return AppLocalizations.of(context).dialogMessageLogIntervalSetting;
+      } else if (item == DataKey.workingMode.name) {
+        return AppLocalizations.of(context).dialogMessageWorkingModeSetting;
+      } else {
+        return '';
+      }
+    }
+
+    Color getResultValueColor(String resultValue) {
+      return resultValue == 'true' ? Colors.green : Colors.red;
+    }
+
+    List<Widget> getMessageRows(List<String> settingResultList) {
+      List<Widget> rows = [];
+      for (String settingResult in settingResultList) {
+        String item = settingResult.split(',')[0];
+        String value = settingResult.split(',')[1];
+        Color valueColor = getResultValueColor(value);
+
+        rows.add(Padding(
+          padding: const EdgeInsets.only(
+            bottom: 8.0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                formatResultItem(item),
+                style: const TextStyle(fontSize: 16),
+              ),
+              Text(
+                formatResultValue(value),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: valueColor,
                 ),
-                const _TGCCabelLength(),
-                const _LogIntervalDropDownMenu(),
-                const _WorkingMode(),
-                _UserPilot(
-                  textEditingController: userPilotTextEditingController,
-                ),
-                _UserPilot2(
-                  textEditingController: userPilot2TextEditingController,
-                ),
-                const _AGCPrepAttenator(),
-              ],
+              )
+            ],
+          ),
+        ));
+      }
+      return rows;
+    }
+
+    return BlocListener<SettingBloc, SettingState>(
+      listener: (context, state) async {
+        if (state.submissionStatus.isSubmissionInProgress) {
+          await showInProgressDialog();
+        } else if (state.submissionStatus.isSubmissionSuccess) {
+          Navigator.of(context).pop();
+          List<Widget> rows = getMessageRows(state.settingResult);
+          showResultDialog(rows);
+        } else if (state.isInitialize) {
+          locationTextEditingController.text = state.location.value;
+
+          userPilotTextEditingController.text = state.pilotCode.value;
+          userPilot2TextEditingController.text = state.pilot2Code.value;
+        } else if (state.pilotChannelStatus.isRequestFailure) {
+          showPilotSearchFailedDialog();
+        } else if (state.pilot2ChannelStatus.isRequestFailure) {
+          showPilotSearchFailedDialog();
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(
+                CustomStyle.sizeXL,
+              ),
+              child: Column(
+                children: [
+                  _Location(
+                    textEditingController: locationTextEditingController,
+                  ),
+                  const _TGCCabelLength(),
+                  const _LogIntervalDropDownMenu(),
+                  const _WorkingMode(),
+                  _UserPilot(
+                    textEditingController: userPilotTextEditingController,
+                  ),
+                  _UserPilot2(
+                    textEditingController: userPilot2TextEditingController,
+                  ),
+                  const _AGCPrepAttenator(),
+                ],
+              ),
             ),
           ),
         ),
+        floatingActionButton: const _SettingFloatingActionButton(),
       ),
-      floatingActionButton: const _SettingFloatingActionButton(),
     );
   }
 }

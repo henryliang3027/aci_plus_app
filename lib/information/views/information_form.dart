@@ -55,9 +55,9 @@ class InformationForm extends StatelessWidget {
         if (state.scanStatus.isRequestFailure) {
           showFailureDialog(state.errorMassage);
         } else if (state.connectionStatus.isRequestFailure) {
-          showFailureDialog('connection failed');
+          showFailureDialog(state.errorMassage);
         } else if (state.loadingStatus.isRequestFailure) {
-          showFailureDialog('Loading data failed');
+          showFailureDialog(state.errorMassage);
         }
       },
       child: Scaffold(
@@ -285,10 +285,22 @@ class _BasicCard extends StatelessWidget {
       required String currentPilot,
       required String currentPilotMode,
     }) {
-      if (currentPilot == 'Loss') {
+      if (currentPilot.isEmpty) {
+        return '';
+      } else if (currentPilot == 'Loss') {
         return currentPilot;
+      } else if (currentPilotMode.isEmpty) {
+        return '';
       } else {
         return '$currentPilot $currentPilotMode';
+      }
+    }
+
+    String getCurrentLogInterval(String logInterval) {
+      if (logInterval.isEmpty) {
+        return '';
+      } else {
+        return '$logInterval minute';
       }
     }
 
@@ -341,8 +353,8 @@ class _BasicCard extends StatelessWidget {
               itemText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context).logInterval,
-                content:
-                    '${state.characteristicData[DataKey.logInterval] ?? ''} minutes',
+                content: getCurrentLogInterval(
+                    state.characteristicData[DataKey.logInterval] ?? ''),
               ),
             ],
           ),
@@ -444,16 +456,16 @@ Widget getContent({
               fontSize: fontSize,
             ),
           );
-  } else if (loadingStatus == FormStatus.requestFailure) {
+  } else if (loadingStatus == FormStatus.requestSuccess) {
     return Text(
-      'N/A',
+      content,
       style: TextStyle(
         fontSize: fontSize,
       ),
     );
   } else {
     return Text(
-      content,
+      content.isEmpty ? 'N/A' : content,
       style: TextStyle(
         fontSize: fontSize,
       ),

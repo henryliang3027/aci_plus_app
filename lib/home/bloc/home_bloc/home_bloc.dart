@@ -101,10 +101,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) {
     switch (event.connectionReport.connectionState) {
       case DeviceConnectionState.connecting:
-        emit(state.copyWith(
-          scanStatus: FormStatus.requestSuccess,
-          connectionStatus: FormStatus.requestInProgress,
-        ));
+        // emit(state.copyWith(
+        //   scanStatus: FormStatus.requestSuccess,
+        //   connectionStatus: FormStatus.requestInProgress,
+        // ));
         break;
       case DeviceConnectionState.connected:
         emit(state.copyWith(
@@ -129,17 +129,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
         break;
       case DeviceConnectionState.disconnecting:
-        emit(state.copyWith(
-          scanStatus: FormStatus.requestSuccess,
-          connectionStatus: FormStatus.requestFailure,
-          // loadingStatus: FormStatus.requestFailure,
-        ));
+        // emit(state.copyWith(
+        //   scanStatus: FormStatus.requestSuccess,
+        //   connectionStatus: FormStatus.requestFailure,
+        //   // loadingStatus: FormStatus.requestFailure,
+        // ));
         break;
       case DeviceConnectionState.disconnected:
         emit(state.copyWith(
           scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestFailure,
-          loadingStatus: FormStatus.requestFailure,
+          loadingStatus: FormStatus.none,
+          errorMassage: 'Device connection failed',
         ));
         break;
     }
@@ -304,6 +305,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           loadingStatus: FormStatus.requestFailure,
           characteristicData: state.characteristicData,
+          errorMassage: 'Data loading failed',
         ));
         break;
       }
@@ -340,10 +342,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       print('_characteristicDataStreamSubscription closed');
     }
 
-    _scanStreamSubscription =
-        _dsimRepository.scannedDevices.listen((scanReport) async {
-      add(DiscoveredDeviceChanged(scanReport));
-    });
+    if (state.device != null) {
+      _dsimRepository.connectToDevice(state.device!);
+
+      _connectionReportStreamSubscription =
+          _dsimRepository.connectionStateReport.listen((connectionReport) {
+        add(DeviceConnectionChanged(connectionReport));
+      });
+    } else {
+      _scanStreamSubscription =
+          _dsimRepository.scannedDevices.listen((scanReport) async {
+        add(DiscoveredDeviceChanged(scanReport));
+      });
+    }
   }
 
   void _onDataExported(

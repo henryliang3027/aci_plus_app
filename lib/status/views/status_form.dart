@@ -54,6 +54,10 @@ class StatusForm extends StatelessWidget {
       listener: (context, state) {
         if (state.scanStatus.isRequestFailure) {
           showFailureDialog(state.errorMassage);
+        } else if (state.connectionStatus.isRequestFailure) {
+          showFailureDialog(state.errorMassage);
+        } else if (state.loadingStatus.isRequestFailure) {
+          showFailureDialog(state.errorMassage);
         }
       },
       child: Scaffold(
@@ -905,20 +909,18 @@ Widget getContent({
               fontSize: fontSize,
             ),
           );
-  } else if (loadingStatus == FormStatus.requestFailure) {
-    return Text(
-      'N/A',
-      style: TextStyle(
-        fontSize: fontSize,
-        fontWeight: FontWeight.w500,
-      ),
-    );
-  } else {
+  } else if (loadingStatus == FormStatus.requestSuccess) {
     return Text(
       content,
       style: TextStyle(
         fontSize: fontSize,
-        fontWeight: FontWeight.w500,
+      ),
+    );
+  } else {
+    return Text(
+      content.isEmpty ? 'N/A' : content,
+      style: TextStyle(
+        fontSize: fontSize,
       ),
     );
   }

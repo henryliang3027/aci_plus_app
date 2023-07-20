@@ -125,8 +125,7 @@ class DsimRepository {
   List<int> _dataList1 = [];
   List<int> _dataList2 = [];
 
-  final _name1 = 'ACI03170078';
-  final _name2 = 'ACI01160006';
+  String _currentName = '';
   final _aciPrefix = 'ACI';
   final _serviceId = 'ffe0';
   final _characteristicId = 'ffe1';
@@ -177,7 +176,7 @@ class DsimRepository {
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
     // it is to solve device is not successfully disconnected after the app is closed
-    await closeConnectionStream();
+    // await closeConnectionStream();
 
     GPS.Location location = GPS.Location();
     bool ison = await location.serviceEnabled();
@@ -205,7 +204,7 @@ class DsimRepository {
                 discoveredDevice: device,
               ),
             );
-            _connectDevice(device);
+            connectToDevice(device);
           }
         }
       }, onError: (error) {
@@ -279,14 +278,14 @@ class DsimRepository {
     // Error unsubscribing from notifications:
     // PlatformException(reactive_ble_mobile.PluginError:7, The operation couldn’t be completed.
     // (reactive_ble_mobile.PluginError error 7.), {}, null)
-    await Future.delayed(const Duration(milliseconds: 1));
+    await Future.delayed(const Duration(milliseconds: 100));
 
     print('close _connectionStreamSubscription');
     await _connectionStreamSubscription?.cancel();
     _connectionStreamSubscription = null;
   }
 
-  void _connectDevice(DiscoveredDevice discoveredDevice) {
+  void connectToDevice(DiscoveredDevice discoveredDevice) {
     print('connect to ${discoveredDevice.name}, ${discoveredDevice.id}');
     _connectionReportStreamController = StreamController<ConnectionReport>();
     _connectionStreamSubscription = _ble

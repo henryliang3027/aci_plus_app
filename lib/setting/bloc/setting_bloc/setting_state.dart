@@ -16,7 +16,7 @@ class SettingState extends Equatable {
       'AGC': false,
       'TGC': false,
     },
-    this.logIntervalId = 1,
+    this.logIntervalId = 0,
     this.pilotChannelStatus = FormStatus.none,
     this.pilotChannel = '',
     this.pilotMode = '', // IRC or DIG

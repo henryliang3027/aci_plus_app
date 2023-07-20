@@ -9,6 +9,10 @@ String getMessageLocalization({
     return AppLocalizations.of(context).dialogMessageDeviceNotFound;
   } else if (msg == 'Bluetooth is disabled.') {
     return AppLocalizations.of(context).dialogMessageBluetoothDisabled;
+  } else if (msg == 'Device connection failed') {
+    return AppLocalizations.of(context).dialogMessageConnectionFailure;
+  } else if (msg == 'Data loading failed') {
+    return AppLocalizations.of(context).dialogMessageLoadingDataFailure;
   } else {
     return msg;
   }
