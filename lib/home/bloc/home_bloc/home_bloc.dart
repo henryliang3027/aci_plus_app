@@ -167,8 +167,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     BaudRateTestRequested event,
     Emitter<HomeState> emit,
   ) async {
-    List<int> data = await _dsimRepository.requestCommand0();
-
+    var data = await _dsimRepository.requestCommandTest1();
+    print(data);
+    for (int i = 0; i < 10; i++) {
+      print(data[i]);
+    }
     // print('result: ${data.length}, ${data[data.length - 1]}');
   }
 
@@ -176,7 +179,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     BaudRateTest2Requested event,
     Emitter<HomeState> emit,
   ) async {
-    List<int> data = await _dsimRepository.requestCommandTest2();
+    List data = await _dsimRepository.requestCommandTest2();
+    print(data);
+
+    for (int i = 0; i < 10; i++) {
+      print(data[i]);
+    }
     // _dsimRepository.requestCommand14To29();
 
     // print('result: ${data.length}, ${data[data.length - 1]}');
@@ -187,16 +195,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     List<Function> requestCommands = [
-      _dsimRepository.requestCommand0,
-      _dsimRepository.requestCommand1,
-      _dsimRepository.requestCommand2,
-      _dsimRepository.requestCommand3,
-      _dsimRepository.requestCommand4,
-      _dsimRepository.requestCommand5,
-      _dsimRepository.requestCommand6,
-      _dsimRepository.requestCommand9To12,
-      _dsimRepository.requestCommand14To29,
-      _dsimRepository.requestCommand30To37,
+      // _dsimRepository.requestCommand0,
+      // _dsimRepository.requestCommand1,
+      // _dsimRepository.requestCommand2,
+      // _dsimRepository.requestCommand3,
+      // _dsimRepository.requestCommand4,
+      // _dsimRepository.requestCommand5,
+      // _dsimRepository.requestCommand6,
+      // _dsimRepository.requestCommand9To12,
+      // _dsimRepository.requestCommand14To29,
+      // _dsimRepository.requestCommand30To37,
     ];
 
     for (int i = 0; i < requestCommands.length; i++) {

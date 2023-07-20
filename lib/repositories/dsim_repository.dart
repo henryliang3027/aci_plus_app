@@ -124,6 +124,7 @@ class DsimRepository {
 
   List<int> _dataList1 = [];
   List<int> _dataList2 = [];
+  List<String> _result = [];
 
   final _name1 = 'ACI03170078';
   final _name2 = 'ACI01160006';
@@ -173,6 +174,7 @@ class DsimRepository {
   final int _agcWorkingModeSettingTimeout = 40; // s
   Timer? _timeoutTimer;
   Stopwatch _stopwatch = Stopwatch();
+  Stopwatch _totalMeasurementStopwatch = Stopwatch();
 
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
@@ -302,7 +304,7 @@ class DsimRepository {
           break;
         case DeviceConnectionState.connected:
           final mtu =
-              await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 247);
+              await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 23);
           print('Negotiated MTU: $mtu');
 
           // initialize _characteristicDataStreamController
@@ -323,7 +325,7 @@ class DsimRepository {
               .subscribeToCharacteristic(_qualifiedCharacteristic)
               .listen((data) async {
             List<int> rawData = data;
-            print(commandIndex);
+            print('current cmd: $commandIndex: $data');
             // print(
             //     'doSomething() executed in ${_stopwatch.elapsed.inMilliseconds}');
             // _stopwatch.stop();
@@ -334,6 +336,22 @@ class DsimRepository {
               _dataList1.addAll(rawData);
               print(
                   '${_dataList1.length}, ${_dataList1[_dataList1.length - 1]}, : $rawData');
+
+              if (_dataList1.length == 244) {
+                List<int> verifiedList = List.from(_dataList1);
+                CRC16.calculateCRC16(command: verifiedList, usDataLength: 242);
+
+                print('${verifiedList[242]}, ${verifiedList[243]}');
+
+                if (verifiedList[242] == _dataList1[242] &&
+                    verifiedList[243] == _dataList1[243]) {
+                  _result.add('${_stopwatch.elapsed.inMilliseconds}');
+                } else {
+                  _result.add('${_stopwatch.elapsed.inMilliseconds}: false');
+                }
+
+                _completer.complete(_result);
+              }
             } else if (commandIndex == -2) {
               _dataList2.addAll(rawData);
               print(
@@ -341,6 +359,19 @@ class DsimRepository {
 
               if (_dataList2.length == 65536) {
                 List<int> verifiedList = List.from(_dataList2);
+                CRC16.calculateCRC16(
+                    command: verifiedList, usDataLength: 65534);
+
+                print('${verifiedList[65534]}, ${verifiedList[65535]}');
+
+                if (verifiedList[65534] == _dataList2[65534] &&
+                    verifiedList[65535] == _dataList2[65535]) {
+                  _result.add('${_stopwatch.elapsed.inMilliseconds}');
+                } else {
+                  _result.add('${_stopwatch.elapsed.inMilliseconds}: false');
+                }
+
+                _completer.complete(_result);
               }
             } else if (commandIndex <= 13) {
               _parseRawData(rawData);
@@ -834,50 +865,51 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommandTest1() async {
-    _dataList1.clear();
-    commandIndex = -1;
-    _completer = Completer<dynamic>();
-    List<int> cmd1 = [0xB0, 0x03, 0xAA, 0x00, 12, 255, 0x00, 0x00];
-    // List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 244, 50, 0x00, 0x00];
+    List<int> cmd1 = [0xB0, 0x03, 0xAA, 0x00, 244, 0, 0x00, 0x00];
     CRC16.calculateCRC16(command: cmd1, usDataLength: 6);
+    commandIndex = -1;
+    _result.clear();
+    _totalMeasurementStopwatch.reset();
+    _totalMeasurementStopwatch.start();
+    for (int i = 0; i < 268; i++) {
+      _stopwatch.reset();
+      _stopwatch.start();
+      _dataList1.clear();
+      _completer = Completer<dynamic>();
+      print('get data from request command -1');
+      await _writeSetCommandToCharacteristic(cmd1);
 
-    print('get data from request command -1');
-    await _writeSetCommandToCharacteristic(cmd1);
+      var test = await _completer.future;
 
-    // setTimeout(Duration(seconds: 0));
-
-    try {
-      String test = await _completer.future;
-
-      return [true, test];
-    } catch (e) {
-      return [false, ''];
+      print('index $i finished');
+      // await Future.delayed(const Duration(seconds: 1));
     }
+    print('total: ${_totalMeasurementStopwatch.elapsed.inMilliseconds}');
+    _totalMeasurementStopwatch.stop();
+
+    return _result;
   }
 
   Future<dynamic> requestCommandTest2() async {
-    _stopwatch.reset();
-    _stopwatch.start();
-    _dataList2.clear();
-    commandIndex = -2;
-    _completer = Completer<dynamic>();
-    // List<int> cmd1 = [0xB0, 0x03, 0xAA, 0x00, 0x00, 0x80, 0x7E, 0x53];
-    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 244, 22, 0x00, 0x00];
+    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 244, 25, 0x00, 0x00];
     CRC16.calculateCRC16(command: cmd2, usDataLength: 6);
-    // List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 0x00, 0x80, 0x7F, 0xAF];
+    commandIndex = -2;
+    _result.clear();
+    for (int i = 0; i < 10; i++) {
+      _stopwatch.reset();
+      _stopwatch.start();
+      _dataList2.clear();
+      _completer = Completer<dynamic>();
+      print('get data from request command -2');
+      await _writeSetCommandToCharacteristic(cmd2);
 
-    print('get data from request command -2');
-    await _writeSetCommandToCharacteristic(cmd2);
+      var test = await _completer.future;
 
-    // setTimeout(Duration(seconds: 0));
-
-    try {
-      String test = await _completer.future;
-
-      return [true, test];
-    } catch (e) {
-      return [false, ''];
+      print('index $i finished');
+      // await Future.delayed(const Duration(seconds: 1));
     }
+
+    return _result;
   }
 
   Future<dynamic> requestCommand0() async {
