@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:dsim_app/core/custom_style.dart';
@@ -304,7 +305,7 @@ class DsimRepository {
           break;
         case DeviceConnectionState.connected:
           final mtu =
-              await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 23);
+              await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 185);
           print('Negotiated MTU: $mtu');
 
           // initialize _characteristicDataStreamController
@@ -641,7 +642,27 @@ class DsimRepository {
 
         _basicInterval = rawData[13].toString(); //time interval
 
+        Stopwatch s1 = Stopwatch();
+        Stopwatch s2 = Stopwatch();
+
+        s1.start();
+
         _nowTimeCount = rawData[11] * 256 + rawData[12];
+
+        s1.stop();
+
+        print(s1.elapsed.inMicroseconds);
+
+        List<int> bytes = [rawData[11], rawData[12]];
+
+        var blob = ByteData.sublistView(Uint8List.fromList(bytes));
+
+        s2.start();
+        int r2 = blob.getUint16(0, Endian.big);
+        s2.stop();
+
+        print(
+            'time: ${s1.elapsed.inMicroseconds}, ${s2.elapsed.inMicroseconds}');
 
         String firmwareVersion = '';
         for (int i = 3; i < 6; i++) {
@@ -900,6 +921,7 @@ class DsimRepository {
       _stopwatch.start();
       _dataList2.clear();
       _completer = Completer<dynamic>();
+      // await Future.delayed(Duration(milliseconds: 25));
       print('get data from request command -2');
       await _writeSetCommandToCharacteristic(cmd2);
 
