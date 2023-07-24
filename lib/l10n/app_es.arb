@@ -55,6 +55,7 @@
 
 
     "monitoringChart": "Gráfico de Monitoreo",
+    "reconnect": "Reconectar",
     "share": "Compartir",
     "export": "Exportar",
     "open": "Abrir",
@@ -79,8 +80,8 @@
     "dialogTitleSettingResult": "Resultado",
     "dialogMessageDeviceNotFound": "Dispositivo no encontrado.",
     "dialogMessageBluetoothDisabled": "Bluetooth está deshabilitado.",
-    "dialogMessageConnectionFailure": "La descarga de datos falló",
-    "dialogMessageLoadingDataFailure": "La descarga de datos falló",
+    "dialogMessageConnectionFailure": "Fallo en la conexión del dispositivo",
+    "dialogMessageLoadingDataFailure": "Fallo en la carga de datos",
     "dialogMessageLocationSetting": "Ajuste ubicación",
     "dialogMessageTGCCableLengthSetting": "Ajuste longitud cable TGC",
     "dialogMessageLogIntervalSetting": "Ajuste intervalo registro",

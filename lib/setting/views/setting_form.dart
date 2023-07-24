@@ -1,10 +1,8 @@
-import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/message_localization.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
-import 'package:dsim_app/setting/views/setting_graph_view.dart';
 import 'package:dsim_app/setting/views/setting_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -142,41 +140,32 @@ class _ViewLayout extends StatelessWidget {
       );
     }
 
-    return BlocListener<HomeBloc, HomeState>(
-      listener: (context, state) async {
-        if (state.scanStatus.isRequestFailure) {
-          showFailureDialog(state.errorMassage);
-        } else if (state.connectionStatus.isRequestFailure) {
-          showFailureDialog(state.errorMassage);
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        // final homeState = context.watch<HomeBloc>().state;
+        // // final settingState = context.watch<SettingBloc>().state;
+        // print(homeState.loadingStatus);
+
+        if (state.loadingStatus.isRequestSuccess) {
+          context.read<SettingBloc>().add(const Initialized(true));
+
+          return SettingListView();
         } else if (state.loadingStatus.isRequestFailure) {
-          showFailureDialog(state.errorMassage);
+          context.read<SettingBloc>().add(const Initialized(false));
+
+          return SettingListView();
+        } else if (state.scanStatus.isRequestFailure) {
+          context.read<SettingBloc>().add(const Initialized(false));
+          return SettingListView();
+        } else if (state.connectionStatus.isRequestFailure) {
+          context.read<SettingBloc>().add(const Initialized(false));
+          return SettingListView();
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         }
       },
-      child: Builder(
-        builder: (context) {
-          final homeState = context.watch<HomeBloc>().state;
-          // final settingState = context.watch<SettingBloc>().state;
-          if (homeState.loadingStatus.isRequestSuccess) {
-            context.read<SettingBloc>().add(const Initialized(true));
-
-            return SettingListView();
-          } else if (homeState.loadingStatus.isRequestFailure) {
-            context.read<SettingBloc>().add(const Initialized(false));
-
-            return SettingListView();
-          } else if (homeState.scanStatus.isRequestFailure) {
-            context.read<SettingBloc>().add(const Initialized(false));
-            return SettingListView();
-          } else if (homeState.connectionStatus.isRequestFailure) {
-            context.read<SettingBloc>().add(const Initialized(false));
-            return SettingListView();
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
     );
   }
 }

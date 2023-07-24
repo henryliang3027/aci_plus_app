@@ -1,4 +1,5 @@
 import 'package:dsim_app/chart/view/full_screen_chart_form.dart';
+import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
@@ -41,8 +42,9 @@ class ChartForm extends StatelessWidget {
         } else if (state.dataShareStatus.isRequestSuccess) {
           Share.shareXFiles(
             [XFile(state.dataExportPath)],
-            subject: 'Data',
-            text: 'log and event',
+            subject: state.exportFileName,
+            text:
+                '${state.characteristicData[DataKey.partNo]} / ${state.characteristicData[DataKey.location]}',
           );
         }
       },
@@ -52,17 +54,66 @@ class ChartForm extends StatelessWidget {
             AppLocalizations.of(context).monitoringChart,
           ),
           centerTitle: true,
+          leading: const _DeviceStatus(),
           actions: const [
             _PopupMenu(),
           ],
         ),
-        body: const _logChart(),
+        body: const _LogChart(),
       ),
     );
   }
 }
 
-enum Menu { share, export }
+class _DeviceStatus extends StatelessWidget {
+  const _DeviceStatus({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.scanStatus.isRequestSuccess) {
+          if (state.connectionStatus.isRequestSuccess) {
+            return const Icon(
+              Icons.bluetooth_connected_outlined,
+            );
+          } else if (state.connectionStatus.isRequestFailure) {
+            return const Icon(
+              Icons.nearby_error,
+              color: Colors.amber,
+            );
+          } else {
+            return const Center(
+              child: SizedBox(
+                width: 20.0,
+                height: 20.0,
+                child: CircularProgressIndicator(
+                  color: Colors.amber,
+                ),
+              ),
+            );
+          }
+        } else if (state.scanStatus.isRequestFailure) {
+          return const Icon(
+            Icons.nearby_error_outlined,
+          );
+        } else {
+          return const Center(
+            child: SizedBox(
+              width: 20.0,
+              height: 20.0,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+}
+
+enum Menu { refresh, share, export }
 
 class _PopupMenu extends StatelessWidget {
   const _PopupMenu({Key? key}) : super(key: key);
@@ -81,6 +132,8 @@ class _PopupMenu extends StatelessWidget {
             ),
           ),
         );
+      } else if (state.loadingStatus == FormStatus.requestFailure) {
+        return Container();
       } else {
         return PopupMenuButton<Menu>(
           icon: const Icon(
@@ -90,6 +143,8 @@ class _PopupMenu extends StatelessWidget {
           tooltip: '',
           onSelected: (Menu item) async {
             switch (item) {
+              case Menu.refresh:
+                context.read<HomeBloc>().add(const DeviceRefreshed());
               case Menu.share:
                 context.read<HomeBloc>().add(const DataShared());
                 break;
@@ -101,6 +156,24 @@ class _PopupMenu extends StatelessWidget {
             }
           },
           itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
+            PopupMenuItem<Menu>(
+              value: Menu.refresh,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.refresh,
+                    size: 20.0,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(AppLocalizations.of(context).reconnect),
+                ],
+              ),
+            ),
             PopupMenuItem<Menu>(
               value: Menu.share,
               child: Row(
@@ -144,12 +217,12 @@ class _PopupMenu extends StatelessWidget {
   }
 }
 
-class _logChart extends StatelessWidget {
-  const _logChart({super.key});
+class _LogChart extends StatelessWidget {
+  const _LogChart({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<LineSeries> _getChartDataOfLog1({
+    List<LineSeries> getChartDataOfLog1({
       required List<List<DateValuePair>> dateValueCollectionOfLog,
     }) {
       LineSeries attenuationLineSeries = LineSeries(
@@ -176,7 +249,7 @@ class _logChart extends StatelessWidget {
       ];
     }
 
-    List<LineSeries> _getChartDataOfLogVoltage({
+    List<LineSeries> getChartDataOfLogVoltage({
       required List<List<DateValuePair>> dateValueCollectionOfLog,
     }) {
       LineSeries voltageLineSeries = LineSeries(
@@ -188,6 +261,49 @@ class _logChart extends StatelessWidget {
         name: '24V Ripple',
         dataList: dateValueCollectionOfLog[4],
         color: const Color(0xff249689),
+      );
+
+      return [
+        voltageLineSeries,
+        voltageRippleLineSeries,
+      ];
+    }
+
+    List<LineSeries> getEmptyChartDataOfLog1() {
+      LineSeries attenuationLineSeries = const LineSeries(
+        name: 'Attenuation',
+        dataList: [],
+        color: Color(0xffff5963),
+      );
+      LineSeries temperatureLineSeries = LineSeries(
+        name: 'Temperature',
+        dataList: [],
+        color: Theme.of(context).colorScheme.primary,
+      );
+
+      LineSeries pilotLineSeries = const LineSeries(
+        name: 'Pilot',
+        dataList: [],
+        color: Color(0xff249689),
+      );
+
+      return [
+        attenuationLineSeries,
+        temperatureLineSeries,
+        pilotLineSeries,
+      ];
+    }
+
+    List<LineSeries> getEmptyChartDataOfLogVoltage() {
+      LineSeries voltageLineSeries = LineSeries(
+        name: '24V',
+        dataList: [],
+        color: Theme.of(context).colorScheme.primary,
+      );
+      LineSeries voltageRippleLineSeries = const LineSeries(
+        name: '24V Ripple',
+        dataList: [],
+        color: Color(0xff249689),
       );
 
       return [
@@ -237,6 +353,79 @@ class _logChart extends StatelessWidget {
       );
     }
 
+    Widget buildEmptyLog1Chart() {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: OutlinedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  FullScreenChartForm.route(
+                    title: AppLocalizations.of(context).monitoringChart,
+                    lineSeriesCollection: [
+                      const LineSeries(
+                        name: 'Attenuation',
+                        dataList: [],
+                        color: Color(0xffff5963),
+                      ),
+                      LineSeries(
+                        name: 'Temperature',
+                        dataList: [],
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const LineSeries(
+                        name: 'Pilot',
+                        dataList: [],
+                        color: Color(0xff249689),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.all(0.0),
+                backgroundColor: Colors.white70,
+                elevation: 0,
+                side: const BorderSide(
+                  width: 1.0,
+                  color: Colors.black,
+                ),
+                visualDensity:
+                    const VisualDensity(horizontal: -4.0, vertical: -3.0),
+              ),
+              child: const Icon(
+                Icons.fullscreen_outlined,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          SpeedLineChart(
+            lineSeriesCollection: [
+              const LineSeries(
+                name: 'Attenuation',
+                dataList: [],
+                color: Color(0xffff5963),
+              ),
+              LineSeries(
+                name: 'Temperature',
+                dataList: [],
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const LineSeries(
+                name: 'Pilot',
+                dataList: [],
+                color: Color(0xff249689),
+              ),
+            ],
+            showLegend: true,
+          ),
+        ],
+      );
+    }
+
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.loadingStatus == FormStatus.requestInProgress) {
@@ -246,7 +435,7 @@ class _logChart extends StatelessWidget {
               child: CircularProgressIndicator(),
             ),
           );
-        } else {
+        } else if (state.loadingStatus == FormStatus.requestSuccess) {
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 30.0),
@@ -254,7 +443,7 @@ class _logChart extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   buildChart(
-                    _getChartDataOfLog1(
+                    getChartDataOfLog1(
                         dateValueCollectionOfLog:
                             state.dateValueCollectionOfLog),
                   ),
@@ -262,9 +451,32 @@ class _logChart extends StatelessWidget {
                     height: 50.0,
                   ),
                   buildChart(
-                    _getChartDataOfLogVoltage(
+                    getChartDataOfLogVoltage(
                         dateValueCollectionOfLog:
                             state.dateValueCollectionOfLog),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return SingleChildScrollView(
+            // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+            // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+            key: const Key('ChartForm_Empty_Chart'),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  buildChart(
+                    getEmptyChartDataOfLog1(),
+                  ),
+                  const SizedBox(
+                    height: 50.0,
+                  ),
+                  buildChart(
+                    getEmptyChartDataOfLogVoltage(),
                   ),
                 ],
               ),

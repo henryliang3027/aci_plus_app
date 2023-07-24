@@ -395,12 +395,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (result[0]) {
       emit(state.copyWith(
         dataShareStatus: FormStatus.requestSuccess,
-        dataExportPath: result[1],
+        exportFileName: result[1],
+        dataExportPath: result[2],
       ));
     } else {
       emit(state.copyWith(
         dataShareStatus: FormStatus.requestFailure,
-        dataExportPath: result[1],
+        exportFileName: result[1],
+        dataExportPath: result[2],
       ));
     }
   }

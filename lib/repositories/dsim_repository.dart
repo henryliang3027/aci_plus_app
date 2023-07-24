@@ -125,7 +125,6 @@ class DsimRepository {
   List<int> _dataList1 = [];
   List<int> _dataList2 = [];
 
-  String _currentName = '';
   final _aciPrefix = 'ACI';
   final _serviceId = 'ffe0';
   final _characteristicId = 'ffe1';
@@ -1681,12 +1680,13 @@ class DsimRepository {
 
     String timeStamp =
         DateFormat('yyyy_MM_dd_HH_mm_ss').format(DateTime.now()).toString();
-    String filename = 'data_$timeStamp.xlsx';
+    String filename = 'log_and_event_$timeStamp';
+    String extension = '.xlsx';
 
     if (Platform.isIOS) {
       Directory appDocDir = await getApplicationDocumentsDirectory();
       String appDocPath = appDocDir.path;
-      String fullWrittenPath = '$appDocPath/$filename';
+      String fullWrittenPath = '$appDocPath/$filename$extension';
       File f = File(fullWrittenPath);
       await f.writeAsBytes(fileBytes!);
       return [
@@ -1696,17 +1696,19 @@ class DsimRepository {
     } else if (Platform.isAndroid) {
       Directory appDocDir = await getApplicationDocumentsDirectory();
       String appDocPath = appDocDir.path;
-      String fullWrittenPath = '$appDocPath/$filename';
+      String fullWrittenPath = '$appDocPath/$filename$extension';
       File f = File(fullWrittenPath);
       await f.writeAsBytes(fileBytes!);
 
       return [
         true,
+        filename,
         fullWrittenPath,
       ];
     } else {
       return [
         false,
+        '',
         'write file failed, export function not implement on ${Platform.operatingSystem} '
       ];
     }

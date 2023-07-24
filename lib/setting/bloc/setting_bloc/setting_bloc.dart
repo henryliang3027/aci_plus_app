@@ -84,6 +84,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         _getPilotChannelAndMode(settingData.pilot2Code);
 
     if (event.editable) {
+      print('location:  $location');
       emit(state.copyWith(
         initialValues: [
           settingData.location,
@@ -134,6 +135,12 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       editMode: false,
       enableSubmission: false,
     ));
+
+    // emit(state.copyWith(
+    //   submissionStatus: SubmissionStatus.none,
+    //   isInitialize: false,
+    //   editMode: true,
+    // ));
   }
 
   void _onListViewToggled(

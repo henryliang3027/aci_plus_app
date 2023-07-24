@@ -13,69 +13,21 @@ class InformationForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> showFailureDialog(String msg) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context).dialogTitleError,
-              style: const TextStyle(
-                color: CustomStyle.customRed,
-              ),
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                    getMessageLocalization(
-                      msg: msg,
-                      context: context,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    return BlocListener<HomeBloc, HomeState>(
-      listener: (context, state) {
-        if (state.scanStatus.isRequestFailure) {
-          showFailureDialog(state.errorMassage);
-        } else if (state.connectionStatus.isRequestFailure) {
-          showFailureDialog(state.errorMassage);
-        } else if (state.loadingStatus.isRequestFailure) {
-          showFailureDialog(state.errorMassage);
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context).information),
-          centerTitle: true,
-          leading: const _DeviceStatus(),
-          actions: const [_DeviceRefresh()],
-        ),
-        body: const SingleChildScrollView(
-          child: Column(
-            children: [
-              // _TestCard(),
-              _ConnectionCard(),
-              _BasicCard(),
-              _AlarmCard(),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context).information),
+        centerTitle: true,
+        leading: const _DeviceStatus(),
+        actions: const [_DeviceRefresh()],
+      ),
+      body: const SingleChildScrollView(
+        child: Column(
+          children: [
+            // _TestCard(),
+            _ConnectionCard(),
+            _BasicCard(),
+            _AlarmCard(),
+          ],
         ),
       ),
     );

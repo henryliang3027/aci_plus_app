@@ -261,19 +261,40 @@ class _SettingFloatingActionButton extends StatelessWidget {
                 ),
               ],
             )
-          : FloatingActionButton(
-              shape: const CircleBorder(
-                side: BorderSide.none,
-              ),
-              backgroundColor:
-                  Theme.of(context).colorScheme.primary.withAlpha(200),
-              child: Icon(
-                Icons.edit,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-              onPressed: () {
-                context.read<SettingBloc>().add(const EditModeEnabled());
-              },
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  shape: const CircleBorder(
+                    side: BorderSide.none,
+                  ),
+                  backgroundColor: Colors.grey.withAlpha(200),
+                  child: Icon(
+                    Icons.grain_sharp,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                  onPressed: () {
+                    context.read<SettingBloc>().add(const GraphViewToggled());
+                  },
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                FloatingActionButton(
+                  shape: const CircleBorder(
+                    side: BorderSide.none,
+                  ),
+                  backgroundColor:
+                      Theme.of(context).colorScheme.primary.withAlpha(200),
+                  child: Icon(
+                    Icons.edit,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                  onPressed: () {
+                    context.read<SettingBloc>().add(const EditModeEnabled());
+                  },
+                ),
+              ],
             );
     }
 
@@ -313,6 +334,7 @@ class _Location extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingBloc, SettingState>(
       builder: (context, state) {
+        print('_Location: ${textEditingController.text}');
         return Padding(
           padding: const EdgeInsets.only(
             bottom: 40.0,
