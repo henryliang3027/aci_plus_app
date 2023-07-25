@@ -305,7 +305,7 @@ class DsimRepository {
           break;
         case DeviceConnectionState.connected:
           final mtu =
-              await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 185);
+              await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 244);
           print('Negotiated MTU: $mtu');
 
           // initialize _characteristicDataStreamController
