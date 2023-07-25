@@ -401,12 +401,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (result[0]) {
       emit(state.copyWith(
         dataExportStatus: FormStatus.requestSuccess,
-        dataExportPath: result[1],
+        dataExportPath: result[2],
       ));
     } else {
       emit(state.copyWith(
         dataExportStatus: FormStatus.requestFailure,
-        dataExportPath: result[1],
+        dataExportPath: result[2],
       ));
     }
   }

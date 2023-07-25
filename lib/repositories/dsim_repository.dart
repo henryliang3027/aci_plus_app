@@ -1708,6 +1708,7 @@ class DsimRepository {
       await f.writeAsBytes(fileBytes!);
       return [
         true,
+        filename,
         fullWrittenPath,
       ];
     } else if (Platform.isAndroid) {
