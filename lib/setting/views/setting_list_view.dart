@@ -274,7 +274,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
                   onPressed: () {
-                    context.read<SettingBloc>().add(const GraphViewToggled());
+                    // context.read<SettingBloc>().add(const GraphViewToggled());
                   },
                 ),
                 const SizedBox(

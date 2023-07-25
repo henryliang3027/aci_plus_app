@@ -3,6 +3,7 @@ import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/message_localization.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
+import 'package:dsim_app/setting/views/setting_graph_view.dart';
 import 'package:dsim_app/setting/views/setting_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -148,11 +149,9 @@ class _ViewLayout extends StatelessWidget {
 
         if (state.loadingStatus.isRequestSuccess) {
           context.read<SettingBloc>().add(const Initialized(true));
-
           return SettingListView();
         } else if (state.loadingStatus.isRequestFailure) {
           context.read<SettingBloc>().add(const Initialized(false));
-
           return SettingListView();
         } else if (state.scanStatus.isRequestFailure) {
           context.read<SettingBloc>().add(const Initialized(false));
@@ -164,6 +163,29 @@ class _ViewLayout extends StatelessWidget {
           return const Center(
             child: CircularProgressIndicator(),
           );
+        }
+      },
+    );
+  }
+}
+
+class _Layout extends StatelessWidget {
+  const _Layout({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingBloc, SettingState>(
+      buildWhen: (previous, current) =>
+          previous.isGraphType != current.isGraphType ||
+          previous.isInitialize != current.isInitialize,
+      builder: (context, state) {
+        if (state.isGraphType) {
+          return SettingGraphView();
+        } else {
+          context.read<SettingBloc>().add(const Initialized(true));
+          return SettingListView();
         }
       },
     );

@@ -129,7 +129,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     Emitter<SettingState> emit,
   ) {
     emit(state.copyWith(
-      isInitialize: true,
+      isInitialize: false,
       submissionStatus: SubmissionStatus.none,
       isGraphType: true,
       editMode: false,
@@ -148,7 +148,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     Emitter<SettingState> emit,
   ) {
     emit(state.copyWith(
-      isInitialize: true,
+      isInitialize: false,
       submissionStatus: SubmissionStatus.none,
       isGraphType: false,
       editMode: false,
