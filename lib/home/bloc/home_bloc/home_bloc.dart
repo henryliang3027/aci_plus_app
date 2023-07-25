@@ -277,19 +277,49 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         } else if (i == 8) {
           Map<DataKey, String> newCharacteristicData = {};
           newCharacteristicData.addEntries(state.characteristicData.entries);
-          newCharacteristicData[DataKey.minTemperatureF] = result[1];
-          newCharacteristicData[DataKey.maxTemperatureF] = result[2];
-          newCharacteristicData[DataKey.minTemperatureC] = result[3];
-          newCharacteristicData[DataKey.maxTemperatureC] = result[4];
-          newCharacteristicData[DataKey.historicalMinAttenuation] = result[5];
-          newCharacteristicData[DataKey.historicalMaxAttenuation] = result[6];
-          newCharacteristicData[DataKey.minVoltage] = result[7];
-          newCharacteristicData[DataKey.maxVoltage] = result[8];
-          newCharacteristicData[DataKey.minVoltageRipple] = result[9];
-          newCharacteristicData[DataKey.maxVoltageRipple] = result[10];
 
           List<List<DateValuePair>> dateValueCollectionOfLog =
               _dsimRepository.getDateValueCollectionOfLogs();
+
+          List<DateValuePair> allValues = dateValueCollectionOfLog
+              .expand(
+                (dateValuePair) => dateValuePair,
+              )
+              .toList();
+
+          if (allValues.isNotEmpty) {
+            newCharacteristicData[DataKey.minTemperatureF] = result[1];
+            newCharacteristicData[DataKey.maxTemperatureF] = result[2];
+            newCharacteristicData[DataKey.minTemperatureC] = result[3];
+            newCharacteristicData[DataKey.maxTemperatureC] = result[4];
+            newCharacteristicData[DataKey.historicalMinAttenuation] = result[5];
+            newCharacteristicData[DataKey.historicalMaxAttenuation] = result[6];
+            newCharacteristicData[DataKey.minVoltage] = result[7];
+            newCharacteristicData[DataKey.maxVoltage] = result[8];
+            newCharacteristicData[DataKey.minVoltageRipple] = result[9];
+            newCharacteristicData[DataKey.maxVoltageRipple] = result[10];
+          } else {
+            newCharacteristicData[DataKey.minTemperatureF] =
+                newCharacteristicData[DataKey.currentTemperatureF] ?? '';
+            newCharacteristicData[DataKey.maxTemperatureF] =
+                newCharacteristicData[DataKey.currentTemperatureF] ?? '';
+            newCharacteristicData[DataKey.minTemperatureC] =
+                newCharacteristicData[DataKey.currentTemperatureC] ?? '';
+            newCharacteristicData[DataKey.maxTemperatureC] =
+                newCharacteristicData[DataKey.currentTemperatureC] ?? '';
+            newCharacteristicData[DataKey.historicalMinAttenuation] =
+                newCharacteristicData[DataKey.currentAttenuation] ?? '';
+            newCharacteristicData[DataKey.historicalMaxAttenuation] =
+                newCharacteristicData[DataKey.currentAttenuation] ?? '';
+            newCharacteristicData[DataKey.minVoltage] =
+                newCharacteristicData[DataKey.currentVoltage] ?? '';
+            newCharacteristicData[DataKey.maxVoltage] =
+                newCharacteristicData[DataKey.currentVoltage] ?? '';
+            newCharacteristicData[DataKey.minVoltageRipple] =
+                newCharacteristicData[DataKey.currentVoltageRipple] ?? '';
+            newCharacteristicData[DataKey.maxVoltageRipple] =
+                newCharacteristicData[DataKey.currentVoltageRipple] ?? '';
+          }
 
           emit(state.copyWith(
             characteristicData: newCharacteristicData,

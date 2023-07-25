@@ -157,8 +157,8 @@ class DsimRepository {
 
   String _maxAttenuation = '';
   String _minAttenuation = '';
-  String _currentAttenuation = '';
   String _centerAttenuation = '';
+  String _currentAttenuation = '';
 
   // 記錄欲設定的 workingModeId
   int _workingModeId = 0;
@@ -481,75 +481,92 @@ class DsimRepository {
         _completer.complete(true);
       }
     } else {
-      _logs.sort((a, b) => a.dateTime.compareTo(b.dateTime));
+      if (_logs.isNotEmpty) {
+        _logs.sort((a, b) => a.dateTime.compareTo(b.dateTime));
 
-      // get min temperature
-      double minTemperature = _logs
-          .map((log) => log.temperature)
-          .reduce((min, current) => min < current ? min : current);
+        // get min temperature
+        double minTemperature = _logs
+            .map((log) => log.temperature)
+            .reduce((min, current) => min < current ? min : current);
 
-      // get max temperature
-      double maxTemperature = _logs
-          .map((log) => log.temperature)
-          .reduce((max, current) => max > current ? max : current);
+        // get max temperature
+        double maxTemperature = _logs
+            .map((log) => log.temperature)
+            .reduce((max, current) => max > current ? max : current);
 
-      // get min attenuation
-      int historicalMinAttenuation = _logs
-          .map((log) => log.attenuation)
-          .reduce((min, current) => min < current ? min : current);
+        // get min attenuation
+        int historicalMinAttenuation = _logs
+            .map((log) => log.attenuation)
+            .reduce((min, current) => min < current ? min : current);
 
-      // get max attenuation
-      int historicalMaxAttenuation = _logs
-          .map((log) => log.attenuation)
-          .reduce((max, current) => max > current ? max : current);
+        // get max attenuation
+        int historicalMaxAttenuation = _logs
+            .map((log) => log.attenuation)
+            .reduce((max, current) => max > current ? max : current);
 
-      // get min voltage
-      double minVoltage = _logs
-          .map((log) => log.voltage)
-          .reduce((min, current) => min < current ? min : current);
+        // get min voltage
+        double minVoltage = _logs
+            .map((log) => log.voltage)
+            .reduce((min, current) => min < current ? min : current);
 
-      // get max voltage
-      double maxVoltage = _logs
-          .map((log) => log.voltage)
-          .reduce((max, current) => max > current ? max : current);
+        // get max voltage
+        double maxVoltage = _logs
+            .map((log) => log.voltage)
+            .reduce((max, current) => max > current ? max : current);
 
-      // get min voltage ripple
-      int minVoltageRipple = _logs
-          .map((log) => log.voltageRipple)
-          .reduce((min, current) => min < current ? min : current);
+        // get min voltage ripple
+        int minVoltageRipple = _logs
+            .map((log) => log.voltageRipple)
+            .reduce((min, current) => min < current ? min : current);
 
-      // get max voltage ripple
-      int maxVoltageRipple = _logs
-          .map((log) => log.voltageRipple)
-          .reduce((max, current) => max > current ? max : current);
+        // get max voltage ripple
+        int maxVoltageRipple = _logs
+            .map((log) => log.voltageRipple)
+            .reduce((max, current) => max > current ? max : current);
 
-      String minTemperatureF =
-          _convertToFahrenheit(minTemperature).toStringAsFixed(1) +
-              CustomStyle.fahrenheitUnit;
+        String minTemperatureF =
+            _convertToFahrenheit(minTemperature).toStringAsFixed(1) +
+                CustomStyle.fahrenheitUnit;
 
-      String maxTemperatureF =
-          _convertToFahrenheit(maxTemperature).toStringAsFixed(1) +
-              CustomStyle.fahrenheitUnit;
+        String maxTemperatureF =
+            _convertToFahrenheit(maxTemperature).toStringAsFixed(1) +
+                CustomStyle.fahrenheitUnit;
 
-      String minTemperatureC =
-          minTemperature.toString() + CustomStyle.celciusUnit;
+        String minTemperatureC =
+            minTemperature.toString() + CustomStyle.celciusUnit;
 
-      String maxTemperatureC =
-          maxTemperature.toString() + CustomStyle.celciusUnit;
+        String maxTemperatureC =
+            maxTemperature.toString() + CustomStyle.celciusUnit;
 
-      if (!_completer.isCompleted) {
-        _completer.complete((
-          minTemperatureF,
-          maxTemperatureF,
-          minTemperatureC,
-          maxTemperatureC,
-          historicalMinAttenuation.toString(),
-          historicalMaxAttenuation.toString(),
-          minVoltage.toString(),
-          maxVoltage.toString(),
-          minVoltageRipple.toString(),
-          maxVoltageRipple.toString(),
-        ));
+        if (!_completer.isCompleted) {
+          _completer.complete((
+            minTemperatureF,
+            maxTemperatureF,
+            minTemperatureC,
+            maxTemperatureC,
+            historicalMinAttenuation.toString(),
+            historicalMaxAttenuation.toString(),
+            minVoltage.toString(),
+            maxVoltage.toString(),
+            minVoltageRipple.toString(),
+            maxVoltageRipple.toString(),
+          ));
+        }
+      } else {
+        if (!_completer.isCompleted) {
+          _completer.complete((
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+          ));
+        }
       }
     }
     // print('parse log executed in ${swatch.elapsed.inMilliseconds}');
