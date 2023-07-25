@@ -305,7 +305,7 @@ class DsimRepository {
           break;
         case DeviceConnectionState.connected:
           final mtu =
-              await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 244);
+              await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 247);
           print('Negotiated MTU: $mtu');
 
           // initialize _characteristicDataStreamController
@@ -358,15 +358,15 @@ class DsimRepository {
               print(
                   '${_dataList2.length}, ${_dataList2[_dataList2.length - 1]}, : $rawData');
 
-              if (_dataList2.length == 65536) {
+              if (_dataList2.length == 16384) {
                 List<int> verifiedList = List.from(_dataList2);
                 CRC16.calculateCRC16(
-                    command: verifiedList, usDataLength: 65534);
+                    command: verifiedList, usDataLength: 16382);
 
-                print('${verifiedList[65534]}, ${verifiedList[65535]}');
+                print('${verifiedList[16382]}, ${verifiedList[16383]}');
 
-                if (verifiedList[65534] == _dataList2[65534] &&
-                    verifiedList[65535] == _dataList2[65535]) {
+                if (verifiedList[16382] == _dataList2[16382] &&
+                    verifiedList[16383] == _dataList2[16383]) {
                   _result.add('${_stopwatch.elapsed.inMilliseconds}');
                 } else {
                   _result.add('${_stopwatch.elapsed.inMilliseconds}: false');
@@ -912,24 +912,30 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommandTest2() async {
-    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 244, 25, 0x00, 0x00];
+    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 244, 59, 0x00, 0x00];
     CRC16.calculateCRC16(command: cmd2, usDataLength: 6);
     commandIndex = -2;
     _result.clear();
+    Stopwatch totalStopWatch = Stopwatch();
+    totalStopWatch.start();
     for (int i = 0; i < 10; i++) {
       _stopwatch.reset();
       _stopwatch.start();
       _dataList2.clear();
       _completer = Completer<dynamic>();
-      // await Future.delayed(Duration(milliseconds: 25));
+
       print('get data from request command -2');
       await _writeSetCommandToCharacteristic(cmd2);
 
       var test = await _completer.future;
 
       print('index $i finished');
+      await Future.delayed(const Duration(milliseconds: 25));
+      print('index $i delayed');
       // await Future.delayed(const Duration(seconds: 1));
     }
+    totalStopWatch.stop();
+    print('total time elapsed: ${totalStopWatch.elapsedMilliseconds}');
 
     return _result;
   }
