@@ -338,14 +338,14 @@ class DsimRepository {
               print(
                   '${_dataList1.length}, ${_dataList1[_dataList1.length - 1]}, : $rawData');
 
-              if (_dataList1.length == 244) {
+              if (_dataList1.length == 261) {
                 List<int> verifiedList = List.from(_dataList1);
-                CRC16.calculateCRC16(command: verifiedList, usDataLength: 242);
+                CRC16.calculateCRC16(command: verifiedList, usDataLength: 259);
 
-                print('${verifiedList[242]}, ${verifiedList[243]}');
+                print('${verifiedList[259]}, ${verifiedList[260]}');
 
-                if (verifiedList[242] == _dataList1[242] &&
-                    verifiedList[243] == _dataList1[243]) {
+                if (verifiedList[259] == _dataList1[259] &&
+                    verifiedList[260] == _dataList1[260]) {
                   _result.add('${_stopwatch.elapsed.inMilliseconds}');
                 } else {
                   _result.add('${_stopwatch.elapsed.inMilliseconds}: false');
@@ -886,13 +886,13 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommandTest1() async {
-    List<int> cmd1 = [0xB0, 0x03, 0xAA, 0x00, 244, 0, 0x00, 0x00];
+    List<int> cmd1 = [0xB0, 0x03, 0xAA, 0x00, 244, 25, 0x00, 0x00];
     CRC16.calculateCRC16(command: cmd1, usDataLength: 6);
     commandIndex = -1;
     _result.clear();
     _totalMeasurementStopwatch.reset();
     _totalMeasurementStopwatch.start();
-    for (int i = 0; i < 268; i++) {
+    for (int i = 0; i < 1; i++) {
       _stopwatch.reset();
       _stopwatch.start();
       _dataList1.clear();

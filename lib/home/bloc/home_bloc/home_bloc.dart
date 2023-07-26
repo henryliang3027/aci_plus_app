@@ -167,7 +167,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     BaudRateTestRequested event,
     Emitter<HomeState> emit,
   ) async {
-    var data = await _dsimRepository.requestCommand3();
+    var data = await _dsimRepository.requestCommand0();
     print(data);
     // for (int i = 0; i < 10; i++) {
     //   print(data[i]);
