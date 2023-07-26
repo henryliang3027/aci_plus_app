@@ -229,17 +229,23 @@ class _LogChart extends StatelessWidget {
         name: 'Attenuation',
         dataList: dateValueCollectionOfLog[0],
         color: const Color(0xffff5963),
+        minYAxisValue: 0.0,
+        maxYAxisValue: 4000.0,
       );
       LineSeries temperatureLineSeries = LineSeries(
         name: 'Temperature',
         dataList: dateValueCollectionOfLog[1],
         color: Theme.of(context).colorScheme.primary,
+        minYAxisValue: -20.0,
+        maxYAxisValue: 200.0,
       );
 
       LineSeries pilotLineSeries = LineSeries(
         name: 'Pilot',
         dataList: dateValueCollectionOfLog[2],
         color: const Color(0xff249689),
+        // minYAxisValue: 20.0,
+        // maxYAxisValue: 100.0,
       );
 
       return [
@@ -256,54 +262,15 @@ class _LogChart extends StatelessWidget {
         name: '24V',
         dataList: dateValueCollectionOfLog[3],
         color: Theme.of(context).colorScheme.primary,
+        minYAxisValue: 0.0,
+        maxYAxisValue: 40.0,
       );
       LineSeries voltageRippleLineSeries = LineSeries(
         name: '24V Ripple',
         dataList: dateValueCollectionOfLog[4],
         color: const Color(0xff249689),
-      );
-
-      return [
-        voltageLineSeries,
-        voltageRippleLineSeries,
-      ];
-    }
-
-    List<LineSeries> getEmptyChartDataOfLog1() {
-      LineSeries attenuationLineSeries = const LineSeries(
-        name: 'Attenuation',
-        dataList: [],
-        color: Color(0xffff5963),
-      );
-      LineSeries temperatureLineSeries = LineSeries(
-        name: 'Temperature',
-        dataList: [],
-        color: Theme.of(context).colorScheme.primary,
-      );
-
-      LineSeries pilotLineSeries = const LineSeries(
-        name: 'Pilot',
-        dataList: [],
-        color: Color(0xff249689),
-      );
-
-      return [
-        attenuationLineSeries,
-        temperatureLineSeries,
-        pilotLineSeries,
-      ];
-    }
-
-    List<LineSeries> getEmptyChartDataOfLogVoltage() {
-      LineSeries voltageLineSeries = LineSeries(
-        name: '24V',
-        dataList: [],
-        color: Theme.of(context).colorScheme.primary,
-      );
-      LineSeries voltageRippleLineSeries = const LineSeries(
-        name: '24V Ripple',
-        dataList: [],
-        color: Color(0xff249689),
+        minYAxisValue: 0.0,
+        maxYAxisValue: 400.0,
       );
 
       return [
@@ -353,79 +320,6 @@ class _LogChart extends StatelessWidget {
       );
     }
 
-    Widget buildEmptyLog1Chart() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: OutlinedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  FullScreenChartForm.route(
-                    title: AppLocalizations.of(context).monitoringChart,
-                    lineSeriesCollection: [
-                      const LineSeries(
-                        name: 'Attenuation',
-                        dataList: [],
-                        color: Color(0xffff5963),
-                      ),
-                      LineSeries(
-                        name: 'Temperature',
-                        dataList: [],
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      const LineSeries(
-                        name: 'Pilot',
-                        dataList: [],
-                        color: Color(0xff249689),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.all(0.0),
-                backgroundColor: Colors.white70,
-                elevation: 0,
-                side: const BorderSide(
-                  width: 1.0,
-                  color: Colors.black,
-                ),
-                visualDensity:
-                    const VisualDensity(horizontal: -4.0, vertical: -3.0),
-              ),
-              child: const Icon(
-                Icons.fullscreen_outlined,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          SpeedLineChart(
-            lineSeriesCollection: [
-              const LineSeries(
-                name: 'Attenuation',
-                dataList: [],
-                color: Color(0xffff5963),
-              ),
-              LineSeries(
-                name: 'Temperature',
-                dataList: [],
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              const LineSeries(
-                name: 'Pilot',
-                dataList: [],
-                color: Color(0xff249689),
-              ),
-            ],
-            showLegend: true,
-          ),
-        ],
-      );
-    }
-
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.loadingStatus == FormStatus.requestInProgress) {
@@ -437,6 +331,9 @@ class _LogChart extends StatelessWidget {
           );
         } else if (state.loadingStatus == FormStatus.requestSuccess) {
           return SingleChildScrollView(
+            // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+            // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+            key: const Key('ChartForm_Chart'),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 30.0),
               child: Column(
@@ -460,6 +357,13 @@ class _LogChart extends StatelessWidget {
             ),
           );
         } else {
+          List<List<DateValuePair>> emptyDateValueCollection = [
+            [],
+            [],
+            [],
+            [],
+            [],
+          ];
           return SingleChildScrollView(
             // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
             // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
@@ -470,13 +374,15 @@ class _LogChart extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   buildChart(
-                    getEmptyChartDataOfLog1(),
+                    getChartDataOfLog1(
+                        dateValueCollectionOfLog: emptyDateValueCollection),
                   ),
                   const SizedBox(
                     height: 50.0,
                   ),
                   buildChart(
-                    getEmptyChartDataOfLogVoltage(),
+                    getChartDataOfLogVoltage(
+                        dateValueCollectionOfLog: emptyDateValueCollection),
                   ),
                 ],
               ),

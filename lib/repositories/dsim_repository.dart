@@ -1469,8 +1469,8 @@ class DsimRepository {
 
         if (result[0]) {
           if (tgcCableLength == result[4]) {
-            // _characteristicDataStreamController
-            //     .add({DataKey.tgcCableLength: resultOfGetTGCCableLength[1]});
+            _characteristicDataStreamController
+                .add({DataKey.tgcCableLength: result[4]});
             _tgcCableLength = result[4];
             return true;
           } else {

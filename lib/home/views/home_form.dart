@@ -33,6 +33,40 @@ class _HomeFormState extends State<HomeForm> {
 
   @override
   Widget build(BuildContext context) {
+    Future<bool?> showExitAppDialog({
+      required BuildContext context,
+    }) async {
+      return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitle_AskBeforeExitApp,
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context).cancel,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(false); // pop dialog
+                },
+              ),
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context).exit,
+                  style: const TextStyle(color: CustomStyle.customRed),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     Future<void> showFailureDialog(String msg) async {
       return showDialog<void>(
         context: context,
@@ -80,64 +114,70 @@ class _HomeFormState extends State<HomeForm> {
           showFailureDialog(state.errorMassage);
         }
       },
-      child: Scaffold(
-        body: PageView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: _pageController,
-          children: const [
-            SettingPage(),
-            StatusPage(),
-            InformationPage(),
-            ChartPage(),
-            AboutPage(),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Theme.of(context).colorScheme.onPrimary,
-          type: BottomNavigationBarType.fixed,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Setting',
-              tooltip: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.memory_outlined),
-              label: 'Status',
-              tooltip: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.info),
-              label: 'Information',
-              tooltip: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.area_chart_sharp),
-              label: 'Chart',
-              tooltip: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.contact_support),
-              label: 'About',
-              tooltip: '',
-            ),
-          ],
-          //if current page is account which is not list in bottom navigation bar, make all items grey color
-          //assign a useless 0 as currentIndex for account page
-          currentIndex: _sclectedIndex,
-          selectedItemColor: Theme.of(context).primaryColor,
-          unselectedItemColor: Theme.of(context).hintColor,
-          onTap: (int index) {
-            setState(() {
-              _sclectedIndex = index;
-            });
+      child: WillPopScope(
+        onWillPop: () async {
+          bool? isExit = await showExitAppDialog(context: context);
+          return isExit ?? false;
+        },
+        child: Scaffold(
+          body: PageView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: _pageController,
+            children: const [
+              SettingPage(),
+              StatusPage(),
+              InformationPage(),
+              ChartPage(),
+              AboutPage(),
+            ],
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Theme.of(context).colorScheme.onPrimary,
+            type: BottomNavigationBarType.fixed,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: 'Setting',
+                tooltip: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.memory_outlined),
+                label: 'Status',
+                tooltip: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.info),
+                label: 'Information',
+                tooltip: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.area_chart_sharp),
+                label: 'Chart',
+                tooltip: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.contact_support),
+                label: 'About',
+                tooltip: '',
+              ),
+            ],
+            //if current page is account which is not list in bottom navigation bar, make all items grey color
+            //assign a useless 0 as currentIndex for account page
+            currentIndex: _sclectedIndex,
+            selectedItemColor: Theme.of(context).primaryColor,
+            unselectedItemColor: Theme.of(context).hintColor,
+            onTap: (int index) {
+              setState(() {
+                _sclectedIndex = index;
+              });
 
-            _pageController.jumpToPage(
-              index,
-            );
-          },
+              _pageController.jumpToPage(
+                index,
+              );
+            },
+          ),
         ),
       ),
     );

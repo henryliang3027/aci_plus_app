@@ -60,6 +60,9 @@
     "export": "匯出",
     "open": "開啟",
 
+
+    "cancel": "取消",
+    "exit": "離開",
     
     "aboutUs": "關於我們",
     "aboutArticleParagraph1": "達運光電股份有限公司 (Twoway Communications, Inc.) 成立於 1992 年 10 月，為台灣第一大寬頻放大器及光工作站設備商，也是亞洲唯一通過北美主要 MSO (多系統業者, Multiple-System Operators) 認證之 HFC (混合光纖同軸, Hybrid Fiber-Coaxial) 傳輸設備之研發製造商。",
@@ -74,7 +77,7 @@
     "frontendBackendEngineer": "程式設計師",
     "systemEngineer": "系統工程師",
     
-
+    "dialogTitle_AskBeforeExitApp": "您確定要退出應用程式嗎？",
     "dialogTitleProcessing": "設定中...",
     "dialogTitleError": "錯誤",
     "dialogTitleSettingResult": "結果",
