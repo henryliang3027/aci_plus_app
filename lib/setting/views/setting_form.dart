@@ -2,7 +2,10 @@ import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/message_localization.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
+import 'package:dsim_app/setting/bloc/setting_graph_view_bloc/setting_graph_view_bloc.dart';
+import 'package:dsim_app/setting/bloc/setting_list_view_bloc/setting_list_view_bloc.dart';
 import 'package:dsim_app/setting/views/setting_graph_view.dart';
 import 'package:dsim_app/setting/views/setting_list_view.dart';
 import 'package:flutter/material.dart';
@@ -143,22 +146,22 @@ class _ViewLayout extends StatelessWidget {
 
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        // final homeState = context.watch<HomeBloc>().state;
-        // // final settingState = context.watch<SettingBloc>().state;
-        // print(homeState.loadingStatus);
-
         if (state.loadingStatus.isRequestSuccess) {
-          context.read<SettingBloc>().add(const Initialized(true));
-          return SettingListView();
+          return const _Layout(
+            isInitialized: true,
+          );
         } else if (state.loadingStatus.isRequestFailure) {
-          context.read<SettingBloc>().add(const Initialized(false));
-          return SettingListView();
+          return const _Layout(
+            isInitialized: false,
+          );
         } else if (state.scanStatus.isRequestFailure) {
-          context.read<SettingBloc>().add(const Initialized(false));
-          return SettingListView();
+          return const _Layout(
+            isInitialized: false,
+          );
         } else if (state.connectionStatus.isRequestFailure) {
-          context.read<SettingBloc>().add(const Initialized(false));
-          return SettingListView();
+          return const _Layout(
+            isInitialized: false,
+          );
         } else {
           return const Center(
             child: CircularProgressIndicator(),
@@ -172,20 +175,33 @@ class _ViewLayout extends StatelessWidget {
 class _Layout extends StatelessWidget {
   const _Layout({
     super.key,
+    required this.isInitialized,
   });
+
+  final bool isInitialized;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingBloc, SettingState>(
       buildWhen: (previous, current) =>
-          previous.isGraphType != current.isGraphType ||
-          previous.isInitialize != current.isInitialize,
+          previous.isGraphType != current.isGraphType,
       builder: (context, state) {
         if (state.isGraphType) {
-          return SettingGraphView();
+          return BlocProvider(
+            create: (context) => SettingGraphViewBloc(
+              dsimRepository: RepositoryProvider.of<DsimRepository>(context),
+              isInitialized: isInitialized,
+            ),
+            child: SettingGraphView(),
+          );
         } else {
-          context.read<SettingBloc>().add(const Initialized(true));
-          return SettingListView();
+          return BlocProvider(
+            create: (context) => SettingListViewBloc(
+              dsimRepository: RepositoryProvider.of<DsimRepository>(context),
+              isInitialized: isInitialized,
+            ),
+            child: SettingListView(),
+          );
         }
       },
     );

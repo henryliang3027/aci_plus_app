@@ -5,6 +5,7 @@ import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
+import 'package:dsim_app/setting/bloc/setting_list_view_bloc/setting_list_view_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -47,6 +48,10 @@ class SettingListView extends StatelessWidget {
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
+            contentPadding: const EdgeInsets.all(16.0),
+            titlePadding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 0.0),
+            buttonPadding: const EdgeInsets.all(0.0),
+            actionsPadding: const EdgeInsets.all(16.0),
             title: Text(
               AppLocalizations.of(context).dialogTitleSettingResult,
             ),
@@ -158,7 +163,7 @@ class SettingListView extends StatelessWidget {
       return rows;
     }
 
-    return BlocListener<SettingBloc, SettingState>(
+    return BlocListener<SettingListViewBloc, SettingListViewState>(
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionInProgress) {
           await showInProgressDialog();
@@ -234,7 +239,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
                   onPressed: () {
-                    context.read<SettingBloc>().add(const EditModeDisabled());
+                    context
+                        .read<SettingListViewBloc>()
+                        .add(const EditModeDisabled());
                   },
                 ),
                 const SizedBox(
@@ -250,7 +257,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   onPressed: enableSubmission
                       ? () {
                           context
-                              .read<SettingBloc>()
+                              .read<SettingListViewBloc>()
                               .add(const SettingSubmitted());
                         }
                       : null,
@@ -274,7 +281,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
                   onPressed: () {
-                    // context.read<SettingBloc>().add(const GraphViewToggled());
+                    context.read<SettingBloc>().add(const GraphViewToggled());
                   },
                 ),
                 const SizedBox(
@@ -291,7 +298,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
                   onPressed: () {
-                    context.read<SettingBloc>().add(const EditModeEnabled());
+                    context
+                        .read<SettingListViewBloc>()
+                        .add(const EditModeEnabled());
                   },
                 ),
               ],
@@ -308,7 +317,8 @@ class _SettingFloatingActionButton extends StatelessWidget {
       }
     }
 
-    return BlocBuilder<SettingBloc, SettingState>(builder: (context, state) {
+    return BlocBuilder<SettingListViewBloc, SettingListViewState>(
+        builder: (context, state) {
       final FormStatus loadingStatus =
           context.read<HomeBloc>().state.loadingStatus;
       bool editable = getEditable(loadingStatus);
@@ -332,7 +342,7 @@ class _Location extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingBloc, SettingState>(
+    return BlocBuilder<SettingListViewBloc, SettingListViewState>(
       builder: (context, state) {
         print('_Location: ${textEditingController.text}');
         return Padding(
@@ -364,7 +374,9 @@ class _Location extends StatelessWidget {
                 enabled: state.editMode,
                 textInputAction: TextInputAction.done,
                 onChanged: (location) {
-                  context.read<SettingBloc>().add(LocationChanged(location));
+                  context
+                      .read<SettingListViewBloc>()
+                      .add(LocationChanged(location));
                 },
                 maxLength: 40,
                 decoration: const InputDecoration(
@@ -398,7 +410,7 @@ class _TGCCabelLength extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingBloc, SettingState>(
+    return BlocBuilder<SettingListViewBloc, SettingListViewState>(
       buildWhen: (previous, current) =>
           previous.selectedTGCCableLength != current.selectedTGCCableLength ||
           previous.editMode != current.editMode,
@@ -427,7 +439,7 @@ class _TGCCabelLength extends StatelessWidget {
                   direction: Axis.horizontal,
                   onPressed: (int index) {
                     if (state.editMode) {
-                      context.read<SettingBloc>().add(
+                      context.read<SettingListViewBloc>().add(
                           TGCCableLengthChanged(tgcCableLengthTexts[index]));
                     }
                   },
@@ -488,7 +500,7 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingBloc, SettingState>(
+    return BlocBuilder<SettingListViewBloc, SettingListViewState>(
         buildWhen: (previous, current) =>
             previous.logIntervalId != current.logIntervalId ||
             previous.editMode != current.editMode,
@@ -549,7 +561,7 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
                           ? (int? value) {
                               if (value != null) {
                                 context
-                                    .read<SettingBloc>()
+                                    .read<SettingListViewBloc>()
                                     .add(LogIntervalChanged(value));
                               }
                             }
@@ -575,7 +587,7 @@ class _WorkingMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingBloc, SettingState>(
+    return BlocBuilder<SettingListViewBloc, SettingListViewState>(
       buildWhen: (previous, current) =>
           previous.selectedWorkingMode != current.selectedWorkingMode ||
           previous.editMode != current.editMode,
@@ -605,7 +617,7 @@ class _WorkingMode extends StatelessWidget {
                   onPressed: (int index) {
                     if (state.editMode) {
                       context
-                          .read<SettingBloc>()
+                          .read<SettingListViewBloc>()
                           .add(WorkingModeChanged(workingModeTexts[index]));
                     }
                   },
@@ -656,7 +668,7 @@ class _UserPilot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingBloc, SettingState>(
+    return BlocBuilder<SettingListViewBloc, SettingListViewState>(
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(
@@ -697,7 +709,7 @@ class _UserPilot extends StatelessWidget {
                 enabled: state.editMode,
                 textInputAction: TextInputAction.done,
                 onChanged: (pilotCode) => context
-                    .read<SettingBloc>()
+                    .read<SettingListViewBloc>()
                     .add(PilotCodeChanged(pilotCode)),
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(
@@ -719,7 +731,7 @@ class _UserPilot extends StatelessWidget {
                     icon: const Icon(Icons.search_outlined),
                     onPressed: () {
                       context
-                          .read<SettingBloc>()
+                          .read<SettingListViewBloc>()
                           .add(const PilotChannelSearched());
                     },
                   ),
@@ -748,7 +760,7 @@ class _UserPilot2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingBloc, SettingState>(
+    return BlocBuilder<SettingListViewBloc, SettingListViewState>(
       builder: (context, state) {
         return state.hasDualPilot
             ? Padding(
@@ -790,7 +802,7 @@ class _UserPilot2 extends StatelessWidget {
                       enabled: state.editMode,
                       textInputAction: TextInputAction.done,
                       onChanged: (pilotCode) => context
-                          .read<SettingBloc>()
+                          .read<SettingListViewBloc>()
                           .add(Pilot2CodeChanged(pilotCode)),
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(
@@ -817,7 +829,7 @@ class _UserPilot2 extends StatelessWidget {
                           icon: const Icon(Icons.search_outlined),
                           onPressed: () {
                             context
-                                .read<SettingBloc>()
+                                .read<SettingListViewBloc>()
                                 .add(const Pilot2ChannelSearched());
                           },
                         ),
@@ -843,7 +855,7 @@ class _AGCPrepAttenator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingBloc, SettingState>(
+    return BlocBuilder<SettingListViewBloc, SettingListViewState>(
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(
@@ -889,7 +901,7 @@ class _AGCPrepAttenator extends StatelessWidget {
                   value: state.currentAttenuation.toDouble(),
                   onChanged: state.editMode
                       ? (attenuation) {
-                          context.read<SettingBloc>().add(
+                          context.read<SettingListViewBloc>().add(
                               AGCPrepAttenuationChanged(attenuation.toInt()));
                         }
                       : null,
@@ -905,7 +917,7 @@ class _AGCPrepAttenator extends StatelessWidget {
                     onPressed: state.editMode
                         ? () {
                             context
-                                .read<SettingBloc>()
+                                .read<SettingListViewBloc>()
                                 .add(const AGCPrepAttenuationDecreased());
                           }
                         : null,
@@ -917,7 +929,7 @@ class _AGCPrepAttenator extends StatelessWidget {
                     onPressed: state.editMode
                         ? () {
                             context
-                                .read<SettingBloc>()
+                                .read<SettingListViewBloc>()
                                 .add(const AGCPrepAttenuationCentered());
                           }
                         : null,
@@ -929,7 +941,7 @@ class _AGCPrepAttenator extends StatelessWidget {
                     onPressed: state.editMode
                         ? () {
                             context
-                                .read<SettingBloc>()
+                                .read<SettingListViewBloc>()
                                 .add(const AGCPrepAttenuationIncreased());
                           }
                         : null,
