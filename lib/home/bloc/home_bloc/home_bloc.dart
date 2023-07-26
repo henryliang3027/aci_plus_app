@@ -204,7 +204,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       if (result[0]) {
         if (i == 0) {
-          // 因為 state 是 immutable, 所以要創一個新的 map, copy 就有的 element, 加上新的 element,
+          // 因為 state 是 immutable, 所以要創一個新的 map, copy 原來的 element, 加上新的 element,
           // emit 的 state 才算新的, 才會觸發 bloc builder
           Map<DataKey, String> newCharacteristicData = {};
           newCharacteristicData[DataKey.typeNo] = result[1];
