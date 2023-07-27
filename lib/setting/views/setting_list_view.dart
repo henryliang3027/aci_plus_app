@@ -281,7 +281,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
                   onPressed: () {
-                    context.read<SettingBloc>().add(const GraphViewToggled());
+                    // context.read<SettingBloc>().add(const GraphViewToggled());
                   },
                 ),
                 const SizedBox(
@@ -317,15 +317,16 @@ class _SettingFloatingActionButton extends StatelessWidget {
       }
     }
 
-    return BlocBuilder<SettingListViewBloc, SettingListViewState>(
-        builder: (context, state) {
-      final FormStatus loadingStatus =
-          context.read<HomeBloc>().state.loadingStatus;
-      bool editable = getEditable(loadingStatus);
+    return Builder(builder: (context) {
+      final HomeState homeState = context.watch<HomeBloc>().state;
+      final SettingListViewState settingListViewState =
+          context.watch<SettingListViewBloc>().state;
+
+      bool editable = getEditable(homeState.loadingStatus);
       return editable
           ? getEditTools(
-              editMode: state.editMode,
-              enableSubmission: state.enableSubmission,
+              editMode: settingListViewState.editMode,
+              enableSubmission: settingListViewState.enableSubmission,
             )
           : Container();
     });
