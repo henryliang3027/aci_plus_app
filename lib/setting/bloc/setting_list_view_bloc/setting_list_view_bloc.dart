@@ -275,6 +275,7 @@ class SettingListViewBloc
     Emitter<SettingListViewState> emit,
   ) async {
     emit(state.copyWith(
+        isInitialize: false,
         pilotChannelStatus: FormStatus.requestInProgress,
         pilot2ChannelStatus: FormStatus.none));
 
@@ -282,7 +283,6 @@ class SettingListViewBloc
 
     if (pilot == null) {
       emit(state.copyWith(
-        isInitialize: false,
         submissionStatus: SubmissionStatus.none,
         pilotChannelStatus: FormStatus.requestFailure,
         pilotChannel: 'N/A',
@@ -300,7 +300,6 @@ class SettingListViewBloc
           state.pilot2Channel.isNotEmpty;
 
       emit(state.copyWith(
-        isInitialize: false,
         submissionStatus: SubmissionStatus.none,
         pilotChannel: pilotChannel,
         pilotMode: pilotMode,
@@ -330,6 +329,7 @@ class SettingListViewBloc
     Emitter<SettingListViewState> emit,
   ) async {
     emit(state.copyWith(
+      isInitialize: false,
       pilot2ChannelStatus: FormStatus.requestInProgress,
       pilotChannelStatus: FormStatus.none,
     ));
@@ -338,7 +338,6 @@ class SettingListViewBloc
 
     if (pilot == null) {
       emit(state.copyWith(
-        isInitialize: false,
         submissionStatus: SubmissionStatus.none,
         pilot2ChannelStatus: FormStatus.requestFailure,
         pilot2Channel: 'N/A',
@@ -356,7 +355,6 @@ class SettingListViewBloc
           state.pilot2Channel.isNotEmpty;
 
       emit(state.copyWith(
-        isInitialize: false,
         submissionStatus: SubmissionStatus.none,
         pilot2Channel: pilot2Channel,
         pilot2Mode: pilot2Mode,
@@ -460,7 +458,7 @@ class SettingListViewBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      isInitialize: true,
+      isInitialize: false,
       editMode: false,
       enableSubmission: false,
     ));
@@ -478,6 +476,9 @@ class SettingListViewBloc
     //   settingData.currentAttenuation,
     // ],
 
+    List<dynamic> initialValues = [];
+    initialValues.addAll(state.initialValues);
+
     emit(state.copyWith(
       isInitialize: false,
       submissionStatus: SubmissionStatus.submissionInProgress,
@@ -492,6 +493,10 @@ class SettingListViewBloc
           await _dsimRepository.setLocation(state.location.value);
 
       settingResult.add('${DataKey.location.name},$resultOfSettingLocation');
+
+      if (resultOfSettingLocation) {
+        initialValues[0] = state.location.value;
+      }
     }
 
     if (tgcCableLength != state.initialValues[1]) {
@@ -506,6 +511,10 @@ class SettingListViewBloc
 
       settingResult
           .add('${DataKey.tgcCableLength.name},$resultOfSettingTGCCableLength');
+
+      if (resultOfSettingTGCCableLength) {
+        initialValues[1] = tgcCableLength;
+      }
     }
 
     if (state.logIntervalId != state.initialValues[2]) {
@@ -515,6 +524,10 @@ class SettingListViewBloc
 
       settingResult
           .add('${DataKey.logInterval.name},$resultOfSettingLogInterval');
+
+      if (resultOfSettingLogInterval) {
+        initialValues[2] = state.logIntervalId;
+      }
     }
 
     if (workingMode != state.initialValues[3] ||
@@ -544,10 +557,16 @@ class SettingListViewBloc
 
       settingResult
           .add('${DataKey.workingMode.name},$resultOfSettingWorkingMode');
+
+      if (resultOfSettingWorkingMode) {
+        initialValues[3] = workingMode;
+        initialValues[4] = workingMode;
+      }
     }
 
     emit(state.copyWith(
-      isInitialize: true,
+      isInitialize: false,
+      initialValues: initialValues,
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
       enableSubmission: false,

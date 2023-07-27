@@ -1,3 +1,4 @@
+import 'package:dsim_app/chart/chart/chart_bloc/chart_bloc.dart';
 import 'package:dsim_app/chart/view/full_screen_chart_form.dart';
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/form_status.dart';
@@ -14,7 +15,7 @@ class ChartForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomeBloc, HomeState>(
+    return BlocListener<ChartBloc, ChartState>(
       listener: (context, state) {
         if (state.dataExportStatus.isRequestSuccess) {
           ScaffoldMessenger.of(context)
@@ -40,11 +41,18 @@ class ChartForm extends StatelessWidget {
               ),
             );
         } else if (state.dataShareStatus.isRequestSuccess) {
+          String partNo = context
+              .read<HomeBloc>()
+              .state
+              .characteristicData[DataKey.partNo]!;
+          String location = context
+              .read<HomeBloc>()
+              .state
+              .characteristicData[DataKey.location]!;
           Share.shareXFiles(
             [XFile(state.dataExportPath)],
             subject: state.exportFileName,
-            text:
-                '${state.characteristicData[DataKey.partNo]} / ${state.characteristicData[DataKey.location]}',
+            text: '$partNo / $location',
           );
         }
       },
@@ -146,10 +154,10 @@ class _PopupMenu extends StatelessWidget {
               case Menu.refresh:
                 context.read<HomeBloc>().add(const DeviceRefreshed());
               case Menu.share:
-                context.read<HomeBloc>().add(const DataShared());
+                context.read<ChartBloc>().add(const DataShared());
                 break;
               case Menu.export:
-                context.read<HomeBloc>().add(const DataExported());
+                context.read<ChartBloc>().add(const DataExported());
                 break;
               default:
                 break;

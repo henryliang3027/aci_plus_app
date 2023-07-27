@@ -154,7 +154,6 @@ class DsimRepository {
   String _tgcCableLength = '';
   String _workingMode = '';
   int _logIntervalId = -1;
-
   String _maxAttenuation = '';
   String _minAttenuation = '';
   String _centerAttenuation = '';
@@ -616,7 +615,7 @@ class DsimRepository {
 
         break;
       case 3:
-        int number = rawData[10]; // hardware status 4 bytes last bute
+        int number = rawData[10]; // hardware status 4 bytes last byte
 
         // bit 0: RF detect Max, bit 1 : RF detect Min
         _alarmR = (number & 0x01) + (number & 0x02);
@@ -1593,9 +1592,10 @@ class DsimRepository {
                 .add({DataKey.currentPilot: result[2]});
             _characteristicDataStreamController
                 .add({DataKey.currentPilotMode: result[3]});
+
             _workingMode = result[1];
-            // _basicCurrentPilot = result[2];
-            // _basicCurrentPilotMode = result[3];
+            _currentAttenuation = currentAttenuation.toString();
+
             return true;
           } else {
             return false;

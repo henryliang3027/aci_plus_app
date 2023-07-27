@@ -22,8 +22,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
     on<DeviceConnectionChanged>(_onDeviceConnectionChanged);
-    on<DataExported>(_onDataExported);
-    on<DataShared>(_onDataShared);
+    // on<DataExported>(_onDataExported);
+    // on<DataShared>(_onDataShared);
 
     on<BaudRateTestRequested>(_onBaudRateTestRequested);
     on<BaudRateTest2Requested>(_onBaudRateTest2Requested);
@@ -387,53 +387,53 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  void _onDataExported(
-    DataExported event,
-    Emitter<HomeState> emit,
-  ) async {
-    emit(state.copyWith(
-      dataShareStatus: FormStatus.none,
-      dataExportStatus: FormStatus.requestInProgress,
-    ));
+  // void _onDataExported(
+  //   DataExported event,
+  //   Emitter<HomeState> emit,
+  // ) async {
+  //   emit(state.copyWith(
+  //     dataShareStatus: FormStatus.none,
+  //     dataExportStatus: FormStatus.requestInProgress,
+  //   ));
 
-    final List<dynamic> result = await _dsimRepository.exportRecords();
+  //   final List<dynamic> result = await _dsimRepository.exportRecords();
 
-    if (result[0]) {
-      emit(state.copyWith(
-        dataExportStatus: FormStatus.requestSuccess,
-        dataExportPath: result[2],
-      ));
-    } else {
-      emit(state.copyWith(
-        dataExportStatus: FormStatus.requestFailure,
-        dataExportPath: result[2],
-      ));
-    }
-  }
+  //   if (result[0]) {
+  //     emit(state.copyWith(
+  //       dataExportStatus: FormStatus.requestSuccess,
+  //       dataExportPath: result[2],
+  //     ));
+  //   } else {
+  //     emit(state.copyWith(
+  //       dataExportStatus: FormStatus.requestFailure,
+  //       dataExportPath: result[2],
+  //     ));
+  //   }
+  // }
 
-  void _onDataShared(
-    DataShared event,
-    Emitter<HomeState> emit,
-  ) async {
-    emit(state.copyWith(
-      dataExportStatus: FormStatus.none,
-      dataShareStatus: FormStatus.requestInProgress,
-    ));
+  // void _onDataShared(
+  //   DataShared event,
+  //   Emitter<HomeState> emit,
+  // ) async {
+  //   emit(state.copyWith(
+  //     dataExportStatus: FormStatus.none,
+  //     dataShareStatus: FormStatus.requestInProgress,
+  //   ));
 
-    final List<dynamic> result = await _dsimRepository.exportRecords();
+  //   final List<dynamic> result = await _dsimRepository.exportRecords();
 
-    if (result[0]) {
-      emit(state.copyWith(
-        dataShareStatus: FormStatus.requestSuccess,
-        exportFileName: result[1],
-        dataExportPath: result[2],
-      ));
-    } else {
-      emit(state.copyWith(
-        dataShareStatus: FormStatus.requestFailure,
-        exportFileName: result[1],
-        dataExportPath: result[2],
-      ));
-    }
-  }
+  //   if (result[0]) {
+  //     emit(state.copyWith(
+  //       dataShareStatus: FormStatus.requestSuccess,
+  //       exportFileName: result[1],
+  //       dataExportPath: result[2],
+  //     ));
+  //   } else {
+  //     emit(state.copyWith(
+  //       dataShareStatus: FormStatus.requestFailure,
+  //       exportFileName: result[1],
+  //       dataExportPath: result[2],
+  //     ));
+  //   }
+  // }
 }
