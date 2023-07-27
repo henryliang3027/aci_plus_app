@@ -317,6 +317,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
       }
     }
 
+    // 同時 watch homeState 和 settingListViewState的變化
+    // homeState 失去藍芽連線時會變更為不可編輯
+    // settingListViewState 管理編輯模式或是觀看模式
     return Builder(builder: (context) {
       final HomeState homeState = context.watch<HomeBloc>().state;
       final SettingListViewState settingListViewState =
