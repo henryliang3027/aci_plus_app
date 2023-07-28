@@ -2,6 +2,8 @@ import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:dsim_app/information/bloc/information_bloc/information_bloc.dart';
+import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -348,8 +350,12 @@ class _AlarmCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) => Card(
+    Widget buildAlarmCard({
+      required String alarmRSeverity,
+      required String alarmTSeverity,
+      required String alarmPSeverity,
+    }) {
+      return Card(
         color: Theme.of(context).colorScheme.onPrimary,
         surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Padding(
@@ -366,30 +372,73 @@ class _AlarmCard extends StatelessWidget {
               ),
               alarmItem(
                 iconData: Icons.circle,
-                iconColor: CustomStyle.alarmColor[
-                    state.characteristicData[DataKey.alarmRServerity] ??
-                        'default'],
+                // iconColor: CustomStyle.alarmColor[
+                //     state.characteristicData[DataKey.alarmRServerity] ??
+                //         'default'],
+                iconColor: CustomStyle.alarmColor[alarmRSeverity],
                 title: AppLocalizations.of(context).rfPilotLevelAlarm,
               ),
               alarmItem(
                 iconData: Icons.circle,
-                iconColor: CustomStyle.alarmColor[
-                    state.characteristicData[DataKey.alarmTServerity] ??
-                        'default'],
+                // iconColor: CustomStyle.alarmColor[
+                //     state.characteristicData[DataKey.alarmTServerity] ??
+                //         'default'],
+                iconColor: CustomStyle.alarmColor[alarmTSeverity],
                 title: AppLocalizations.of(context).temperatureAlarm,
               ),
               alarmItem(
                 iconData: Icons.circle,
-                iconColor: CustomStyle.alarmColor[
-                    state.characteristicData[DataKey.alarmPServerity] ??
-                        'default'],
+                // iconColor: CustomStyle.alarmColor[
+                //     state.characteristicData[DataKey.alarmPServerity] ??
+                //         'default'],
+                iconColor: CustomStyle.alarmColor[alarmPSeverity],
                 title: AppLocalizations.of(context).powerSupplyAlarm,
               ),
             ],
           ),
         ),
-      ),
-    );
+      );
+    }
+
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      print('rebuild');
+
+      String alarmRSeverity =
+          state.characteristicData[DataKey.alarmRServerity] ?? 'default';
+      String alarmTSeverity =
+          state.characteristicData[DataKey.alarmTServerity] ?? 'default';
+      String alarmPSeverity =
+          state.characteristicData[DataKey.alarmPServerity] ?? 'default';
+
+      if (state.loadingStatus.isRequestSuccess) {
+        // informationState 的 alarmRSeverity, alarmTSeverity, alarmPSeverity 還是 'default' 時代表還沒有觸發定期讀取資料, 這時候用 homeState 讀到的值來顯示
+        // 觸發定期更新後就持續顯示 informationState 的值
+        return BlocProvider(
+          create: (context) => InformationBloc(
+              dsimRepository: RepositoryProvider.of<DsimRepository>(context)),
+          child: BlocBuilder<InformationBloc, InformationState>(
+            builder: (context, informationState) => buildAlarmCard(
+              alarmRSeverity: informationState.alarmRSeverity == 'default'
+                  ? alarmRSeverity
+                  : informationState.alarmRSeverity,
+              alarmTSeverity: informationState.alarmTSeverity == 'default'
+                  ? alarmTSeverity
+                  : informationState.alarmTSeverity,
+              alarmPSeverity: informationState.alarmPSeverity == 'default'
+                  ? alarmPSeverity
+                  : informationState.alarmPSeverity,
+            ),
+          ),
+        );
+      } else {
+        // homeState formStatus failure or inProgress 時都用 homeState 讀到的值來顯示
+        return buildAlarmCard(
+          alarmRSeverity: alarmRSeverity,
+          alarmTSeverity: alarmTSeverity,
+          alarmPSeverity: alarmPSeverity,
+        );
+      }
+    });
   }
 }
 

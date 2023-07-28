@@ -6,8 +6,8 @@ abstract class InformationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class DeviceRefreshed extends InformationEvent {
-  const DeviceRefreshed();
+class AlarmUpdated extends InformationEvent {
+  const AlarmUpdated();
 
   @override
   List<Object> get props => [];
