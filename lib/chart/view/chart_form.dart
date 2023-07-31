@@ -130,15 +130,90 @@ class _PopupMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       if (state.loadingStatus == FormStatus.requestInProgress) {
-        return const Padding(
-          padding: EdgeInsets.only(right: 20.0),
-          child: SizedBox(
-            width: 20.0,
-            height: 20.0,
-            child: CircularProgressIndicator(
-              color: Colors.white,
-            ),
+        return PopupMenuButton<Menu>(
+          icon: const Icon(
+            Icons.more_vert_outlined,
+            color: Colors.white,
           ),
+          tooltip: '',
+          onSelected: (Menu item) async {
+            switch (item) {
+              case Menu.refresh:
+                context.read<HomeBloc>().add(const DeviceRefreshed());
+              case Menu.share:
+                break;
+              case Menu.export:
+                break;
+              default:
+                break;
+            }
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
+            PopupMenuItem<Menu>(
+              value: Menu.refresh,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.refresh,
+                    size: 20.0,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(AppLocalizations.of(context).reconnect),
+                ],
+              ),
+            ),
+            PopupMenuItem<Menu>(
+              value: Menu.share,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.share,
+                    size: 20.0,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(
+                    AppLocalizations.of(context).share,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            PopupMenuItem<Menu>(
+              value: Menu.export,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.download,
+                    size: 20.0,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(
+                    AppLocalizations.of(context).export,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         );
       } else if (state.loadingStatus == FormStatus.requestFailure) {
         return Container();
@@ -331,12 +406,57 @@ class _LogChart extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.loadingStatus == FormStatus.requestInProgress) {
-          return const Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
+          List<List<DateValuePair>> emptyDateValueCollection = [
+            [],
+            [],
+            [],
+            [],
+            [],
+          ];
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              SingleChildScrollView(
+                // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+                // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+                key: const Key('ChartForm_Empty_Chart'),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 30.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      buildChart(
+                        getChartDataOfLog1(
+                            dateValueCollectionOfLog: emptyDateValueCollection),
+                      ),
+                      const SizedBox(
+                        height: 50.0,
+                      ),
+                      buildChart(
+                        getChartDataOfLogVoltage(
+                            dateValueCollectionOfLog: emptyDateValueCollection),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(70, 158, 158, 158),
+                ),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            ],
           );
+
+          // return const Padding(
+          //   padding: EdgeInsets.only(right: 20.0),
+          //   child: Center(
+          //     child: CircularProgressIndicator(),
+          //   ),
+          // );
         } else if (state.loadingStatus == FormStatus.requestSuccess) {
           return SingleChildScrollView(
             // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料

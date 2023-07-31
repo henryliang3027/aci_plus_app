@@ -153,7 +153,7 @@ class DsimRepository {
   String _location = '';
   String _tgcCableLength = '';
   String _workingMode = '';
-  int _logIntervalId = -1;
+  int _logIntervalId = 0;
   String _maxAttenuation = '';
   String _minAttenuation = '';
   String _centerAttenuation = '';

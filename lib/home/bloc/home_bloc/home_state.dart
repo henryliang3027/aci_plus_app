@@ -11,8 +11,6 @@ class HomeState extends Equatable {
     this.device,
     this.characteristicData = const {},
     this.errorMassage = '',
-    // this.dataExportPath = '',
-    // this.exportFileName = '',
     this.dateValueCollectionOfLog = const [],
   });
 
@@ -25,8 +23,6 @@ class HomeState extends Equatable {
   final DiscoveredDevice? device;
   final Map<DataKey, String> characteristicData;
   final String errorMassage;
-  // final String dataExportPath;
-  // final String exportFileName;
   final List<List<DateValuePair>> dateValueCollectionOfLog;
 
   HomeState copyWith({
@@ -39,8 +35,6 @@ class HomeState extends Equatable {
     DiscoveredDevice? device,
     Map<DataKey, String>? characteristicData,
     String? errorMassage,
-    // String? dataExportPath,
-    // String? exportFileName,
     List<List<DateValuePair>>? dateValueCollectionOfLog,
   }) {
     return HomeState(
@@ -53,8 +47,6 @@ class HomeState extends Equatable {
       device: device ?? this.device,
       characteristicData: characteristicData ?? this.characteristicData,
       errorMassage: errorMassage ?? this.errorMassage,
-      // dataExportPath: dataExportPath ?? this.dataExportPath,
-      // exportFileName: exportFileName ?? this.exportFileName,
       dateValueCollectionOfLog:
           dateValueCollectionOfLog ?? this.dateValueCollectionOfLog,
     );
@@ -71,8 +63,6 @@ class HomeState extends Equatable {
         device,
         characteristicData,
         errorMassage,
-        // dataExportPath,
-        // exportFileName,
         dateValueCollectionOfLog,
       ];
 }

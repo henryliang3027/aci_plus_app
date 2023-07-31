@@ -380,16 +380,16 @@ class _AboutPageState extends State<AboutPage> {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          SizedBox(
-                            width: 20.0,
-                          ),
-                          SizedBox(
-                            height: 26,
-                            child: Image(
-                              image: AssetImage('assets/ACI+.png'),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                          // SizedBox(
+                          //   width: 20.0,
+                          // ),
+                          // SizedBox(
+                          //   height: 26,
+                          //   child: Image(
+                          //     image: AssetImage('assets/ACI+.png'),
+                          //     fit: BoxFit.cover,
+                          //   ),
+                          // ),
                         ],
                       ),
                       const SizedBox(

@@ -11,11 +11,33 @@ class ChartBloc extends Bloc<ChartEvent, ChartState> {
     required DsimRepository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const ChartState()) {
+    on<EventRequested>(_onEventRequested);
     on<DataExported>(_onDataExported);
     on<DataShared>(_onDataShared);
   }
 
   final DsimRepository _dsimRepository;
+
+  void _onEventRequested(
+    EventRequested event,
+    Emitter<ChartState> emit,
+  ) async {
+    emit(state.copyWith(
+      eventRequestStatus: FormStatus.requestInProgress,
+    ));
+
+    final List<dynamic> result = await _dsimRepository.requestCommand30To37();
+
+    if (result[0]) {
+      emit(state.copyWith(
+        eventRequestStatus: FormStatus.requestSuccess,
+      ));
+    } else {
+      emit(state.copyWith(
+        eventRequestStatus: FormStatus.requestFailure,
+      ));
+    }
+  }
 
   void _onDataExported(
     DataExported event,

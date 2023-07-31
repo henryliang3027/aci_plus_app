@@ -196,7 +196,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _dsimRepository.requestCommand6,
       _dsimRepository.requestCommand9To12,
       _dsimRepository.requestCommand14To29,
-      _dsimRepository.requestCommand30To37,
+      // _dsimRepository.requestCommand30To37,
     ];
 
     for (int i = 0; i < requestCommands.length; i++) {
@@ -322,14 +322,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           }
 
           emit(state.copyWith(
+            loadingStatus: FormStatus.requestSuccess,
             characteristicData: newCharacteristicData,
             dateValueCollectionOfLog: dateValueCollectionOfLog,
           ));
         } else if (i == 9) {
           // 取得 event 資料完成
-          emit(state.copyWith(
-            loadingStatus: FormStatus.requestSuccess,
-          ));
+          // emit(state.copyWith(
+          //   loadingStatus: FormStatus.requestSuccess,
+          // ));
         }
       } else {
         emit(state.copyWith(
