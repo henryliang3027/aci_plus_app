@@ -108,15 +108,12 @@ class DsimRepository {
   }
   final FlutterReactiveBle _ble;
   final _scanDuration = 3; // sec
-  final _connectionTimeout = 10; //sec
+  final _connectionTimeout = 3; //sec
   late StreamController<ScanReport> _scanReportStreamController;
   StreamController<ConnectionReport> _connectionReportStreamController =
       StreamController<ConnectionReport>();
   StreamController<Map<DataKey, String>> _characteristicDataStreamController =
       StreamController<Map<DataKey, String>>();
-  StreamController<DataKey> _loadingResultStreamController =
-      StreamController<DataKey>();
-
   StreamSubscription<DiscoveredDevice>? _discoveredDeviceStreamSubscription;
   StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
   StreamSubscription<List<int>>? _characteristicStreamSubscription;
@@ -171,26 +168,32 @@ class DsimRepository {
   Timer? _timeoutTimer;
   Stopwatch _stopwatch = Stopwatch();
 
+  Future<void> checkBluetoothEnabled() async {
+    await GPS.Location().requestService();
+    await BluetoothEnable.enableBluetooth;
+  }
+
   Stream<ScanReport> get scannedDevices async* {
     // close connection before start scanning new device,
     // it is to solve device is not successfully disconnected after the app is closed
     // await closeConnectionStream();
 
-    GPS.Location location = GPS.Location();
-    bool ison = await location.serviceEnabled();
-    if (!ison) {
-      //if defvice is off
-      bool isTurnedOn = await location.requestService();
-      if (isTurnedOn) {
-        print("GPS device is turned ON");
-      } else {
-        print("GPS Device is still OFF");
-      }
-    }
+    // GPS.Location location = GPS.Location();
+    // bool ison = await location.serviceEnabled();
+    // if (!ison) {
+    //   //if defvice is off
+    //   bool isTurnedOn = await location.requestService();
+    //   if (isTurnedOn) {
+    //     print("GPS device is turned ON");
+    //   } else {
+    //     print("GPS Device is still OFF");
+    //   }
+    // }
+
+    await checkBluetoothEnabled();
 
     bool isPermissionGranted = await _requestPermission();
     if (isPermissionGranted) {
-      await BluetoothEnable.enableBluetooth;
       _scanReportStreamController = StreamController<ScanReport>();
       _discoveredDeviceStreamSubscription =
           _ble.scanForDevices(withServices: []).listen((device) {
@@ -243,10 +246,6 @@ class DsimRepository {
     yield* _characteristicDataStreamController.stream;
   }
 
-  Stream<DataKey> get loadingResult async* {
-    yield* _loadingResultStreamController.stream;
-  }
-
   void clearCache() {
     _completer = Completer<dynamic>();
     cancelTimeout(name: 'set timeout from clearCache');
@@ -283,7 +282,7 @@ class DsimRepository {
     _connectionStreamSubscription = null;
   }
 
-  void connectToDevice(DiscoveredDevice discoveredDevice) {
+  Future<void> connectToDevice(DiscoveredDevice discoveredDevice) async {
     print('connect to ${discoveredDevice.name}, ${discoveredDevice.id}');
     _connectionReportStreamController = StreamController<ConnectionReport>();
     _connectionStreamSubscription = _ble
@@ -294,6 +293,7 @@ class DsimRepository {
       ),
     )
         .listen((connectionStateUpdate) async {
+      print('connectionStateUpdateXXXXXX: $connectionStateUpdate');
       switch (connectionStateUpdate.connectionState) {
         case DeviceConnectionState.connecting:
           break;
@@ -382,11 +382,11 @@ class DsimRepository {
 
           break;
         case DeviceConnectionState.disconnecting:
-          _connectionReportStreamController.add(const ConnectionReport(
-            connectionState: DeviceConnectionState.disconnected,
-            errorMessage: 'disconnecting',
-          ));
-          break;
+        // _connectionReportStreamController.add(const ConnectionReport(
+        //   connectionState: DeviceConnectionState.disconnected,
+        //   errorMessage: 'disconnecting',
+        // ));
+        // break;
         case DeviceConnectionState.disconnected:
           _connectionReportStreamController.add(const ConnectionReport(
             connectionState: DeviceConnectionState.disconnected,
@@ -427,10 +427,6 @@ class DsimRepository {
 
     if (commandIndex == 37) {
       _events.sort((a, b) => a.dateTime.compareTo(b.dateTime));
-
-      // _loadingResultStreamController.add(DataKey.eventRecordsLoadingComplete);
-      // _loadingResultStreamController
-      //     .add(DataKey.settingParametersLoadingComplete);
     }
 
     if (!_completer.isCompleted) {
@@ -901,7 +897,7 @@ class DsimRepository {
 
     print('get data from request command 0');
 
-    await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd0');
 
@@ -920,7 +916,7 @@ class DsimRepository {
     _completer = Completer<dynamic>();
 
     print('get data from request command 1');
-    await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd1');
 
@@ -939,7 +935,7 @@ class DsimRepository {
     _completer = Completer<dynamic>();
 
     print('get data from request command 2');
-    await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd2');
 
@@ -958,7 +954,7 @@ class DsimRepository {
     _completer = Completer<dynamic>();
 
     print('get data from request command 3');
-    await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd3');
 
@@ -979,7 +975,7 @@ class DsimRepository {
     _completer = Completer<dynamic>();
 
     print('get data from request command 4');
-    await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd4');
 
@@ -1016,7 +1012,7 @@ class DsimRepository {
     _completer = Completer<dynamic>();
 
     print('get data from request command 5');
-    await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd5');
 
@@ -1068,7 +1064,7 @@ class DsimRepository {
     _completer = Completer<dynamic>();
 
     print('get data from request command 6');
-    await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd6');
 
@@ -1102,7 +1098,7 @@ class DsimRepository {
       _completer = Completer<dynamic>();
 
       print('get data from request command $i');
-      await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+      _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
       setTimeout(
           duration: Duration(seconds: _commandExecutionTimeout),
           name: 'cmd9 to 12');
@@ -1135,7 +1131,7 @@ class DsimRepository {
       print('get data from request command $i');
       // _stopwatch.reset();
       // _stopwatch.start();
-      await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+      _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
       setTimeout(
           duration: Duration(seconds: _commandExecutionTimeout),
           name: 'cmd14 to 29');
@@ -1194,7 +1190,7 @@ class DsimRepository {
       _completer = Completer<dynamic>();
 
       print('get data from request command $i');
-      await _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+      _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
       setTimeout(
           duration: Duration(seconds: _commandExecutionTimeout),
           name: 'cmd30 to 37');
@@ -1280,7 +1276,7 @@ class DsimRepository {
           (rawData[5] == 0x06)) {
         print('Location09 Set');
         commandIndex = 41;
-        await _writeSetCommandToCharacteristic(
+        _writeSetCommandToCharacteristic(
           Command.setLocACmd,
         );
       } else {}
@@ -1293,7 +1289,7 @@ class DsimRepository {
           (rawData[5] == 0x06)) {
         print('Location0A Set');
         commandIndex = 42;
-        await _writeSetCommandToCharacteristic(
+        _writeSetCommandToCharacteristic(
           Command.setLocBCmd,
         );
       } else {}
@@ -1306,7 +1302,7 @@ class DsimRepository {
           (rawData[5] == 0x06)) {
         print('Location0B Set');
         commandIndex = 43;
-        await _writeSetCommandToCharacteristic(
+        _writeSetCommandToCharacteristic(
           Command.setLocCCmd,
         );
       } else {}
@@ -1397,16 +1393,17 @@ class DsimRepository {
     endIndex = 43;
 
     print('set location');
-    await _writeSetCommandToCharacteristic(
+    _writeSetCommandToCharacteristic(
       Command.setLoc9Cmd,
     );
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: 'cmd set location');
 
     // 設定後重新讀取 location 來比對是否設定成功
     try {
       bool isDone = await _completer.future;
-      setTimeout(
-          duration: Duration(seconds: _commandExecutionTimeout),
-          name: 'cmd set location');
+      cancelTimeout(name: 'cmd set location');
 
       if (isDone) {
         List<dynamic> resultOfGetLocation = await requestCommand9To12();
@@ -1499,12 +1496,12 @@ class DsimRepository {
     _writeSetCommandToCharacteristic(Command.set04Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
-        name: 'set log interval');
+        name: 'cmd set log interval');
 
     // 設定後重新讀取 log interval 來比對是否設定成功
     try {
       bool isDone = await _completer.future;
-      cancelTimeout(name: 'set log interval');
+      cancelTimeout(name: 'cmd set log interval');
 
       if (isDone) {
         List<dynamic> result = await requestCommand3();
@@ -1574,12 +1571,12 @@ class DsimRepository {
     _writeSetCommandToCharacteristic(Command.set04Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
-        name: 'set working mode');
+        name: 'cmd set working mode');
 
     // 設定後重新讀取 working mode 來比對是否設定成功
     try {
       bool isDone = await _completer.future;
-      cancelTimeout(name: 'set working mode');
+      cancelTimeout(name: 'cmd set working mode');
 
       if (isDone) {
         List<dynamic> result = await requestCommand5();
@@ -2064,7 +2061,7 @@ class DsimRepository {
       _timeoutTimer!.cancel();
     }
 
-    print('$name completed');
+    print('$name completed (timeout canceled)');
   }
 
   Future<void> writePilotCode(String pilotCode) async {

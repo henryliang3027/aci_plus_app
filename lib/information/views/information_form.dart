@@ -401,8 +401,6 @@ class _AlarmCard extends StatelessWidget {
     }
 
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      print('rebuild');
-
       String alarmRSeverity =
           state.characteristicData[DataKey.alarmRServerity] ?? 'default';
       String alarmTSeverity =

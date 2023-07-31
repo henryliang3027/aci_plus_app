@@ -146,21 +146,37 @@ class _ViewLayout extends StatelessWidget {
 
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (state.loadingStatus.isRequestSuccess) {
+        if (state.loadingStatus.isRequestInProgress) {
+          context.read<SettingListViewBloc>().add(const Initialized(true));
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              SettingListView(),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(70, 158, 158, 158),
+                ),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ],
+          );
+        } else if (state.loadingStatus.isRequestSuccess) {
           return const _Layout(
-            isInitialized: true,
+            isLoadData: true,
           );
         } else if (state.loadingStatus.isRequestFailure) {
           return const _Layout(
-            isInitialized: false,
+            isLoadData: false,
           );
         } else if (state.scanStatus.isRequestFailure) {
           return const _Layout(
-            isInitialized: false,
+            isLoadData: false,
           );
         } else if (state.connectionStatus.isRequestFailure) {
           return const _Layout(
-            isInitialized: false,
+            isLoadData: false,
           );
         } else {
           return const Center(
@@ -175,10 +191,10 @@ class _ViewLayout extends StatelessWidget {
 class _Layout extends StatelessWidget {
   const _Layout({
     super.key,
-    required this.isInitialized,
+    required this.isLoadData,
   });
 
-  final bool isInitialized;
+  final bool isLoadData;
 
   @override
   Widget build(BuildContext context) {
@@ -187,21 +203,10 @@ class _Layout extends StatelessWidget {
           previous.isGraphType != current.isGraphType,
       builder: (context, state) {
         if (state.isGraphType) {
-          return BlocProvider(
-            create: (context) => SettingGraphViewBloc(
-              dsimRepository: RepositoryProvider.of<DsimRepository>(context),
-              isInitialized: isInitialized,
-            ),
-            child: SettingGraphView(),
-          );
+          return SettingGraphView();
         } else {
-          return BlocProvider(
-            create: (context) => SettingListViewBloc(
-              dsimRepository: RepositoryProvider.of<DsimRepository>(context),
-              isInitialized: isInitialized,
-            ),
-            child: SettingListView(),
-          );
+          context.read<SettingListViewBloc>().add(Initialized(isLoadData));
+          return SettingListView();
         }
       },
     );

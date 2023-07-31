@@ -7,10 +7,12 @@ abstract class SettingListViewEvent extends Equatable {
 }
 
 class Initialized extends SettingListViewEvent {
-  const Initialized();
+  const Initialized(this.isLoadData);
+
+  final bool isLoadData;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [isLoadData];
 }
 
 class LocationChanged extends SettingListViewEvent {

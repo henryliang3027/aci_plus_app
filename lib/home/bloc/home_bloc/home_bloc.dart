@@ -394,6 +394,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       print('_characteristicDataStreamSubscription closed');
     }
 
+    // _scanStreamSubscription =
+    //     _dsimRepository.scannedDevices.listen((scanReport) async {
+    //   add(DiscoveredDeviceChanged(scanReport));
+    // });
+
     if (state.device != null) {
       _dsimRepository.connectToDevice(state.device!);
 

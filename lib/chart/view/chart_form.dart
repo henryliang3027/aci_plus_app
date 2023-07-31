@@ -269,16 +269,16 @@ class _LogChart extends StatelessWidget {
         name: 'Temperature',
         dataList: dateValueCollectionOfLog[1],
         color: Theme.of(context).colorScheme.primary,
-        minYAxisValue: -20.0,
-        maxYAxisValue: 200.0,
+        minYAxisValue: -30.0,
+        maxYAxisValue: 100.0,
       );
 
       LineSeries pilotLineSeries = LineSeries(
         name: 'Pilot',
         dataList: dateValueCollectionOfLog[2],
         color: const Color(0xff249689),
-        // minYAxisValue: 20.0,
-        // maxYAxisValue: 100.0,
+        minYAxisValue: 0.0,
+        maxYAxisValue: 300.0,
       );
 
       return [
