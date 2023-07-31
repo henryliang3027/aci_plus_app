@@ -2,7 +2,7 @@ part of 'chart_bloc.dart';
 
 class ChartState extends Equatable {
   const ChartState({
-    this.eventRequestStatus = FormStatus.none,
+    // this.eventRequestStatus = FormStatus.none,
     this.dataExportStatus = FormStatus.none,
     this.dataShareStatus = FormStatus.none,
     this.exportFileName = '',
@@ -10,7 +10,7 @@ class ChartState extends Equatable {
     this.errorMessage = '',
   });
 
-  final FormStatus eventRequestStatus;
+  // final FormStatus eventRequestStatus;
   final FormStatus dataExportStatus;
   final FormStatus dataShareStatus;
   final String exportFileName;
@@ -18,7 +18,7 @@ class ChartState extends Equatable {
   final String errorMessage;
 
   ChartState copyWith({
-    FormStatus? eventRequestStatus,
+    // FormStatus? eventRequestStatus,
     FormStatus? dataExportStatus,
     FormStatus? dataShareStatus,
     String? exportFileName,
@@ -26,7 +26,7 @@ class ChartState extends Equatable {
     String? errorMessage,
   }) {
     return ChartState(
-      eventRequestStatus: eventRequestStatus ?? this.eventRequestStatus,
+      // eventRequestStatus: eventRequestStatus ?? this.eventRequestStatus,
       dataExportStatus: dataExportStatus ?? this.dataExportStatus,
       dataShareStatus: dataShareStatus ?? this.dataExportStatus,
       exportFileName: exportFileName ?? this.exportFileName,
@@ -37,7 +37,7 @@ class ChartState extends Equatable {
 
   @override
   List<Object?> get props => [
-        eventRequestStatus,
+        // eventRequestStatus,
         dataExportStatus,
         dataShareStatus,
         exportFileName,

@@ -5,6 +5,7 @@ class HomeState extends Equatable {
     this.scanStatus = FormStatus.none,
     this.connectionStatus = FormStatus.none,
     this.loadingStatus = FormStatus.none,
+    this.eventLoadingStatus = FormStatus.none,
     this.dataExportStatus = FormStatus.none,
     this.dataShareStatus = FormStatus.none,
     this.showSplash = true,
@@ -17,6 +18,7 @@ class HomeState extends Equatable {
   final FormStatus scanStatus;
   final FormStatus connectionStatus;
   final FormStatus loadingStatus;
+  final FormStatus eventLoadingStatus;
   final FormStatus dataExportStatus;
   final FormStatus dataShareStatus;
   final bool showSplash;
@@ -29,6 +31,7 @@ class HomeState extends Equatable {
     FormStatus? scanStatus,
     FormStatus? connectionStatus,
     FormStatus? loadingStatus,
+    FormStatus? eventLoadingStatus,
     FormStatus? dataExportStatus,
     FormStatus? dataShareStatus,
     bool? showSplash,
@@ -41,6 +44,7 @@ class HomeState extends Equatable {
       scanStatus: scanStatus ?? this.scanStatus,
       connectionStatus: connectionStatus ?? this.connectionStatus,
       loadingStatus: loadingStatus ?? this.loadingStatus,
+      eventLoadingStatus: eventLoadingStatus ?? this.eventLoadingStatus,
       dataExportStatus: dataExportStatus ?? this.dataExportStatus,
       dataShareStatus: dataShareStatus ?? this.dataShareStatus,
       showSplash: showSplash ?? this.showSplash,
@@ -57,6 +61,7 @@ class HomeState extends Equatable {
         scanStatus,
         connectionStatus,
         loadingStatus,
+        eventLoadingStatus,
         dataExportStatus,
         dataShareStatus,
         showSplash,

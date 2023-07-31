@@ -130,171 +130,121 @@ class _PopupMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       if (state.loadingStatus == FormStatus.requestInProgress) {
-        return PopupMenuButton<Menu>(
-          icon: const Icon(
-            Icons.more_vert_outlined,
-            color: Colors.white,
-          ),
-          tooltip: '',
-          onSelected: (Menu item) async {
-            switch (item) {
-              case Menu.refresh:
-                context.read<HomeBloc>().add(const DeviceRefreshed());
-              case Menu.share:
-                break;
-              case Menu.export:
-                break;
-              default:
-                break;
-            }
-          },
-          itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
-            PopupMenuItem<Menu>(
-              value: Menu.refresh,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.refresh,
-                    size: 20.0,
-                    color: Colors.black,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(AppLocalizations.of(context).reconnect),
-                ],
-              ),
-            ),
-            PopupMenuItem<Menu>(
-              value: Menu.share,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.share,
-                    size: 20.0,
-                    color: Colors.grey,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(
-                    AppLocalizations.of(context).share,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            PopupMenuItem<Menu>(
-              value: Menu.export,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.download,
-                    size: 20.0,
-                    color: Colors.grey,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(
-                    AppLocalizations.of(context).export,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        );
+        return IconButton(
+            onPressed: () {
+              context.read<HomeBloc>().add(const DeviceRefreshed());
+            },
+            icon: Icon(
+              Icons.refresh,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ));
       } else if (state.loadingStatus == FormStatus.requestFailure) {
-        return Container();
+        return IconButton(
+            onPressed: () {
+              context.read<HomeBloc>().add(const DeviceRefreshed());
+            },
+            icon: Icon(
+              Icons.refresh,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ));
       } else {
-        return PopupMenuButton<Menu>(
-          icon: const Icon(
-            Icons.more_vert_outlined,
-            color: Colors.white,
-          ),
-          tooltip: '',
-          onSelected: (Menu item) async {
-            switch (item) {
-              case Menu.refresh:
+        if (state.eventLoadingStatus.isRequestInProgress) {
+          return IconButton(
+              onPressed: () {
                 context.read<HomeBloc>().add(const DeviceRefreshed());
-              case Menu.share:
-                context.read<ChartBloc>().add(const DataShared());
-                break;
-              case Menu.export:
-                context.read<ChartBloc>().add(const DataExported());
-                break;
-              default:
-                break;
-            }
-          },
-          itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
-            PopupMenuItem<Menu>(
-              value: Menu.refresh,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.refresh,
-                    size: 20.0,
-                    color: Colors.black,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(AppLocalizations.of(context).reconnect),
-                ],
-              ),
+              },
+              icon: Icon(
+                Icons.refresh,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ));
+        } else if (state.eventLoadingStatus.isRequestFailure) {
+          return IconButton(
+              onPressed: () {
+                context.read<HomeBloc>().add(const DeviceRefreshed());
+              },
+              icon: Icon(
+                Icons.refresh,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ));
+        } else {
+          return PopupMenuButton<Menu>(
+            icon: const Icon(
+              Icons.more_vert_outlined,
+              color: Colors.white,
             ),
-            PopupMenuItem<Menu>(
-              value: Menu.share,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.share,
-                    size: 20.0,
-                    color: Colors.black,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(AppLocalizations.of(context).share),
-                ],
+            tooltip: '',
+            onSelected: (Menu item) async {
+              switch (item) {
+                case Menu.refresh:
+                  context.read<HomeBloc>().add(const DeviceRefreshed());
+                case Menu.share:
+                  context.read<ChartBloc>().add(const DataShared());
+                  break;
+                case Menu.export:
+                  context.read<ChartBloc>().add(const DataExported());
+                  break;
+                default:
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
+              PopupMenuItem<Menu>(
+                value: Menu.refresh,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.refresh,
+                      size: 20.0,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    Text(AppLocalizations.of(context).reconnect),
+                  ],
+                ),
               ),
-            ),
-            PopupMenuItem<Menu>(
-              value: Menu.export,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.download,
-                    size: 20.0,
-                    color: Colors.black,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(AppLocalizations.of(context).export),
-                ],
+              PopupMenuItem<Menu>(
+                value: Menu.share,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.share,
+                      size: 20.0,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    Text(AppLocalizations.of(context).share),
+                  ],
+                ),
               ),
-            ),
-          ],
-        );
+              PopupMenuItem<Menu>(
+                value: Menu.export,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.download,
+                      size: 20.0,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    Text(AppLocalizations.of(context).export),
+                  ],
+                ),
+              ),
+            ],
+          );
+        }
       }
     });
   }
@@ -403,96 +353,18 @@ class _LogChart extends StatelessWidget {
       );
     }
 
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        if (state.loadingStatus == FormStatus.requestInProgress) {
-          List<List<DateValuePair>> emptyDateValueCollection = [
-            [],
-            [],
-            [],
-            [],
-            [],
-          ];
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              SingleChildScrollView(
-                // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
-                // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-                key: const Key('ChartForm_Empty_Chart'),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      buildChart(
-                        getChartDataOfLog1(
-                            dateValueCollectionOfLog: emptyDateValueCollection),
-                      ),
-                      const SizedBox(
-                        height: 50.0,
-                      ),
-                      buildChart(
-                        getChartDataOfLogVoltage(
-                            dateValueCollectionOfLog: emptyDateValueCollection),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(70, 158, 158, 158),
-                ),
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              )
-            ],
-          );
-
-          // return const Padding(
-          //   padding: EdgeInsets.only(right: 20.0),
-          //   child: Center(
-          //     child: CircularProgressIndicator(),
-          //   ),
-          // );
-        } else if (state.loadingStatus == FormStatus.requestSuccess) {
-          return SingleChildScrollView(
-            // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
-            // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-            key: const Key('ChartForm_Chart'),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  buildChart(
-                    getChartDataOfLog1(
-                        dateValueCollectionOfLog:
-                            state.dateValueCollectionOfLog),
-                  ),
-                  const SizedBox(
-                    height: 50.0,
-                  ),
-                  buildChart(
-                    getChartDataOfLogVoltage(
-                        dateValueCollectionOfLog:
-                            state.dateValueCollectionOfLog),
-                  ),
-                ],
-              ),
-            ),
-          );
-        } else {
-          List<List<DateValuePair>> emptyDateValueCollection = [
-            [],
-            [],
-            [],
-            [],
-            [],
-          ];
-          return SingleChildScrollView(
+    Widget buildLoadingFormWithEmptyChart() {
+      List<List<DateValuePair>> emptyDateValueCollection = [
+        [],
+        [],
+        [],
+        [],
+        [],
+      ];
+      return Stack(
+        alignment: Alignment.center,
+        children: [
+          SingleChildScrollView(
             // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
             // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
             key: const Key('ChartForm_Empty_Chart'),
@@ -515,7 +387,95 @@ class _LogChart extends StatelessWidget {
                 ],
               ),
             ),
-          );
+          ),
+          Container(
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(70, 158, 158, 158),
+            ),
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          )
+        ],
+      );
+    }
+
+    Widget buildEmptyChart() {
+      List<List<DateValuePair>> emptyDateValueCollection = [
+        [],
+        [],
+        [],
+        [],
+        [],
+      ];
+      return SingleChildScrollView(
+        // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+        // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+        key: const Key('ChartForm_Empty_Chart'),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              buildChart(
+                getChartDataOfLog1(
+                    dateValueCollectionOfLog: emptyDateValueCollection),
+              ),
+              const SizedBox(
+                height: 50.0,
+              ),
+              buildChart(
+                getChartDataOfLogVoltage(
+                    dateValueCollectionOfLog: emptyDateValueCollection),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.loadingStatus == FormStatus.requestInProgress) {
+          return buildLoadingFormWithEmptyChart();
+        } else if (state.loadingStatus == FormStatus.requestSuccess) {
+          if (state.eventLoadingStatus.isNone) {
+            context.read<HomeBloc>().add(const EventRequested());
+            return buildLoadingFormWithEmptyChart();
+          } else if (state.eventLoadingStatus.isRequestInProgress) {
+            return buildLoadingFormWithEmptyChart();
+          } else if (state.loadingStatus.isRequestFailure) {
+            return buildEmptyChart();
+          } else {
+            return SingleChildScrollView(
+              // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+              // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+              key: const Key('ChartForm_Chart'),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    buildChart(
+                      getChartDataOfLog1(
+                          dateValueCollectionOfLog:
+                              state.dateValueCollectionOfLog),
+                    ),
+                    const SizedBox(
+                      height: 50.0,
+                    ),
+                    buildChart(
+                      getChartDataOfLogVoltage(
+                          dateValueCollectionOfLog:
+                              state.dateValueCollectionOfLog),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+        } else {
+          return buildEmptyChart();
         }
       },
     );

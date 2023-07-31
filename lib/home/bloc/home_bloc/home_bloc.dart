@@ -19,12 +19,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<SplashStateChanged>(_onSplashStateChanged);
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
     on<DataRequested>(_onDataRequested);
+    on<EventRequested>(_onEventRequested);
     on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
     on<DeviceConnectionChanged>(_onDeviceConnectionChanged);
-    // on<DataExported>(_onDataExported);
-    // on<DataShared>(_onDataShared);
-
     on<BaudRateTestRequested>(_onBaudRateTestRequested);
     on<BaudRateTest2Requested>(_onBaudRateTest2Requested);
 
@@ -343,6 +341,28 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
+  Future<void> _onEventRequested(
+    EventRequested event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(state.copyWith(
+      eventLoadingStatus: FormStatus.requestInProgress,
+    ));
+
+    List<dynamic> result = await _dsimRepository.requestCommand30To37();
+
+    if (result[0]) {
+      // 取得 event 資料完成
+      emit(state.copyWith(
+        eventLoadingStatus: FormStatus.requestSuccess,
+      ));
+    } else {
+      emit(state.copyWith(
+        eventLoadingStatus: FormStatus.requestFailure,
+      ));
+    }
+  }
+
   Future<void> _onDeviceRefreshed(
     DeviceRefreshed event,
     Emitter<HomeState> emit,
@@ -351,6 +371,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       scanStatus: FormStatus.requestInProgress,
       connectionStatus: FormStatus.requestInProgress,
       loadingStatus: FormStatus.requestInProgress,
+      eventLoadingStatus: FormStatus.none,
       dataExportStatus: FormStatus.none,
       device: null,
       characteristicData: const {},

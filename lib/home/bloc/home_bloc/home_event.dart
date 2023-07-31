@@ -67,6 +67,13 @@ class DataRequested extends HomeEvent {
   List<Object?> get props => [];
 }
 
+class EventRequested extends HomeEvent {
+  const EventRequested();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class ScanClosed extends HomeEvent {
   const ScanClosed();
 
@@ -80,17 +87,3 @@ class DeviceRefreshed extends HomeEvent {
   @override
   List<Object?> get props => [];
 }
-
-// class DataExported extends HomeEvent {
-//   const DataExported();
-
-//   @override
-//   List<Object?> get props => [];
-// }
-
-// class DataShared extends HomeEvent {
-//   const DataShared();
-
-//   @override
-//   List<Object?> get props => [];
-// }
