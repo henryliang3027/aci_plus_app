@@ -129,35 +129,86 @@ class _PopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      if (state.loadingStatus == FormStatus.requestInProgress) {
-        return IconButton(
-            onPressed: () {
-              context.read<HomeBloc>().add(const DeviceRefreshed());
-            },
-            icon: Icon(
-              Icons.refresh,
-              color: Theme.of(context).colorScheme.onPrimary,
-            ));
-      } else if (state.loadingStatus == FormStatus.requestFailure) {
-        return IconButton(
-            onPressed: () {
-              context.read<HomeBloc>().add(const DeviceRefreshed());
-            },
-            icon: Icon(
-              Icons.refresh,
-              color: Theme.of(context).colorScheme.onPrimary,
-            ));
-      } else {
-        if (state.eventLoadingStatus.isRequestInProgress) {
-          return IconButton(
-              onPressed: () {
+      if (state.eventLoadingStatus.isRequestSuccess) {
+        return PopupMenuButton<Menu>(
+          icon: const Icon(
+            Icons.more_vert_outlined,
+            color: Colors.white,
+          ),
+          tooltip: '',
+          onSelected: (Menu item) async {
+            switch (item) {
+              case Menu.refresh:
                 context.read<HomeBloc>().add(const DeviceRefreshed());
-              },
-              icon: Icon(
-                Icons.refresh,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ));
-        } else if (state.eventLoadingStatus.isRequestFailure) {
+              case Menu.share:
+                context.read<ChartBloc>().add(const DataShared());
+                break;
+              case Menu.export:
+                context.read<ChartBloc>().add(const DataExported());
+                break;
+              default:
+                break;
+            }
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
+            PopupMenuItem<Menu>(
+              value: Menu.refresh,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.refresh,
+                    size: 20.0,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(AppLocalizations.of(context).reconnect),
+                ],
+              ),
+            ),
+            PopupMenuItem<Menu>(
+              value: Menu.share,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.share,
+                    size: 20.0,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(AppLocalizations.of(context).share),
+                ],
+              ),
+            ),
+            PopupMenuItem<Menu>(
+              value: Menu.export,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.download,
+                    size: 20.0,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(AppLocalizations.of(context).export),
+                ],
+              ),
+            ),
+          ],
+        );
+      } else {
+        if (!state.connectionStatus.isRequestInProgress) {
           return IconButton(
               onPressed: () {
                 context.read<HomeBloc>().add(const DeviceRefreshed());
@@ -167,83 +218,7 @@ class _PopupMenu extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onPrimary,
               ));
         } else {
-          return PopupMenuButton<Menu>(
-            icon: const Icon(
-              Icons.more_vert_outlined,
-              color: Colors.white,
-            ),
-            tooltip: '',
-            onSelected: (Menu item) async {
-              switch (item) {
-                case Menu.refresh:
-                  context.read<HomeBloc>().add(const DeviceRefreshed());
-                case Menu.share:
-                  context.read<ChartBloc>().add(const DataShared());
-                  break;
-                case Menu.export:
-                  context.read<ChartBloc>().add(const DataExported());
-                  break;
-                default:
-                  break;
-              }
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
-              PopupMenuItem<Menu>(
-                value: Menu.refresh,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.refresh,
-                      size: 20.0,
-                      color: Colors.black,
-                    ),
-                    const SizedBox(
-                      width: 10.0,
-                    ),
-                    Text(AppLocalizations.of(context).reconnect),
-                  ],
-                ),
-              ),
-              PopupMenuItem<Menu>(
-                value: Menu.share,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.share,
-                      size: 20.0,
-                      color: Colors.black,
-                    ),
-                    const SizedBox(
-                      width: 10.0,
-                    ),
-                    Text(AppLocalizations.of(context).share),
-                  ],
-                ),
-              ),
-              PopupMenuItem<Menu>(
-                value: Menu.export,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.download,
-                      size: 20.0,
-                      color: Colors.black,
-                    ),
-                    const SizedBox(
-                      width: 10.0,
-                    ),
-                    Text(AppLocalizations.of(context).export),
-                  ],
-                ),
-              ),
-            ],
-          );
+          return Container();
         }
       }
     });

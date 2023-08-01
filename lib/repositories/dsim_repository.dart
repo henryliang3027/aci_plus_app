@@ -174,24 +174,7 @@ class DsimRepository {
   }
 
   Stream<ScanReport> get scannedDevices async* {
-    // close connection before start scanning new device,
-    // it is to solve device is not successfully disconnected after the app is closed
-    // await closeConnectionStream();
-
-    // GPS.Location location = GPS.Location();
-    // bool ison = await location.serviceEnabled();
-    // if (!ison) {
-    //   //if defvice is off
-    //   bool isTurnedOn = await location.requestService();
-    //   if (isTurnedOn) {
-    //     print("GPS device is turned ON");
-    //   } else {
-    //     print("GPS Device is still OFF");
-    //   }
-    // }
-
     await checkBluetoothEnabled();
-
     bool isPermissionGranted = await _requestPermission();
     if (isPermissionGranted) {
       _scanReportStreamController = StreamController<ScanReport>();
@@ -205,7 +188,6 @@ class DsimRepository {
                 discoveredDevice: device,
               ),
             );
-            connectToDevice(device);
           }
         }
       }, onError: (error) {
@@ -254,6 +236,17 @@ class DsimRepository {
     _events.clear();
     _rawEvent.clear();
     _hasDualPilot = false;
+
+    // clear setting form data
+    _location = '';
+    _tgcCableLength = '';
+    _workingMode = '';
+    _logIntervalId = 0;
+    _maxAttenuation = '';
+    _minAttenuation = '';
+    _centerAttenuation = '';
+    _currentAttenuation = '';
+
     commandIndex = 0;
     endIndex = 37;
   }
@@ -279,6 +272,7 @@ class DsimRepository {
 
     print('close _connectionStreamSubscription');
     await _connectionStreamSubscription?.cancel();
+    await Future.delayed(const Duration(milliseconds: 1000));
     _connectionStreamSubscription = null;
   }
 
@@ -374,8 +368,6 @@ class DsimRepository {
             }
           });
 
-          // await Future.delayed(
-          //     const Duration(milliseconds: 200)); // 設定mtu 後要 delay 才能傳輸資料
           _connectionReportStreamController.add(const ConnectionReport(
             connectionState: DeviceConnectionState.connected,
           ));

@@ -42,6 +42,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     await Future.delayed(const Duration(milliseconds: 2500));
 
+    await _dsimRepository.checkBluetoothEnabled();
+
     _scanStreamSubscription = _dsimRepository.scannedDevices.listen(
       (scanReport) {
         add(DiscoveredDeviceChanged(scanReport));
@@ -71,6 +73,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             _dsimRepository.connectionStateReport.listen((connectionReport) {
           add(DeviceConnectionChanged(connectionReport));
         });
+
+        _dsimRepository.connectToDevice(event.scanReport.discoveredDevice!);
         break;
       case ScanStatus.failure:
         emit(state.copyWith(
@@ -112,6 +116,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
         add(const DataRequested());
 
+        //當設定頁面設定資料時, 用來更新Information page 對應的資料欄位
         _characteristicDataStreamSubscription =
             _dsimRepository.characteristicData.listen(
           (data) {
@@ -398,6 +403,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     //     _dsimRepository.scannedDevices.listen((scanReport) async {
     //   add(DiscoveredDeviceChanged(scanReport));
     // });
+
+    await _dsimRepository.checkBluetoothEnabled();
 
     if (state.device != null) {
       _dsimRepository.connectToDevice(state.device!);
