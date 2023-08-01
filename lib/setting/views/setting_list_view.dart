@@ -4,6 +4,7 @@ import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_list_view_bloc/setting_list_view_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -172,7 +173,6 @@ class SettingListView extends StatelessWidget {
           showResultDialog(rows);
         } else if (state.isInitialize) {
           locationTextEditingController.text = state.location.value;
-
           userPilotTextEditingController.text = state.pilotCode.value;
           userPilot2TextEditingController.text = state.pilot2Code.value;
         } else if (state.pilotChannelStatus.isRequestFailure) {
@@ -181,34 +181,46 @@ class SettingListView extends StatelessWidget {
           showPilotSearchFailedDialog();
         }
       },
-      child: Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(
-                CustomStyle.sizeXL,
-              ),
-              child: Column(
-                children: [
-                  _Location(
-                    textEditingController: locationTextEditingController,
+      child: BlocBuilder<SettingBloc, SettingState>(
+        builder: (context, state) {
+          SettingListViewState settingListViewState =
+              context.read<SettingListViewBloc>().state;
+          locationTextEditingController.text =
+              settingListViewState.location.value;
+          userPilotTextEditingController.text =
+              settingListViewState.pilotCode.value;
+          userPilot2TextEditingController.text =
+              settingListViewState.pilot2Code.value;
+          return Scaffold(
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                    CustomStyle.sizeXL,
                   ),
-                  const _TGCCabelLength(),
-                  const _LogIntervalDropDownMenu(),
-                  const _WorkingMode(),
-                  _UserPilot(
-                    textEditingController: userPilotTextEditingController,
+                  child: Column(
+                    children: [
+                      _Location(
+                        textEditingController: locationTextEditingController,
+                      ),
+                      const _TGCCabelLength(),
+                      const _LogIntervalDropDownMenu(),
+                      const _WorkingMode(),
+                      _UserPilot(
+                        textEditingController: userPilotTextEditingController,
+                      ),
+                      _UserPilot2(
+                        textEditingController: userPilot2TextEditingController,
+                      ),
+                      const _AGCPrepAttenator(),
+                    ],
                   ),
-                  _UserPilot2(
-                    textEditingController: userPilot2TextEditingController,
-                  ),
-                  const _AGCPrepAttenator(),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-        floatingActionButton: const _SettingFloatingActionButton(),
+            floatingActionButton: const _SettingFloatingActionButton(),
+          );
+        },
       ),
     );
   }
@@ -280,7 +292,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
                   onPressed: () {
-                    // context.read<SettingBloc>().add(const GraphViewToggled());
+                    context.read<SettingBloc>().add(const GraphViewToggled());
                   },
                 ),
                 const SizedBox(

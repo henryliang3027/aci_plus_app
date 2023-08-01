@@ -15,9 +15,9 @@ class SettingListViewBloc
     extends Bloc<SettingListViewEvent, SettingListViewState> {
   SettingListViewBloc({
     required DsimRepository dsimRepository,
-    required bool isInitialized,
+    // required bool isInitialized,
   })  : _dsimRepository = dsimRepository,
-        _isInitialized = isInitialized,
+        // _isInitialized = isInitialized,
         super(const SettingListViewState()) {
     on<Initialized>(_onInitialized);
     on<LocationChanged>(_onLocationChanged);
@@ -36,11 +36,11 @@ class SettingListViewBloc
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
 
-    add(const Initialized());
+    // add(const Initialized());
   }
 
   final DsimRepository _dsimRepository;
-  final bool _isInitialized;
+  // final bool _isInitialized;
 
   Future<void> _onInitialized(
     Initialized event,
@@ -88,7 +88,7 @@ class SettingListViewBloc
     final List<String>? pilot2 =
         _getPilotChannelAndMode(settingData.pilot2Code);
 
-    if (_isInitialized) {
+    if (event.isLoadData) {
       print('location:  $location');
       emit(state.copyWith(
         initialValues: [
@@ -124,7 +124,30 @@ class SettingListViewBloc
       ));
     } else {
       emit(state.copyWith(
+        initialValues: const [],
+        location: const Location.pure(),
+        selectedTGCCableLength: const {
+          '9': false,
+          '18': false,
+          '27': false,
+        },
+        selectedWorkingMode: const {
+          'MGC': false,
+          'AGC': false,
+          'TGC': false,
+        },
+        logIntervalId: 0,
+        pilotChannelStatus: FormStatus.none,
+        pilotChannel: '',
+        pilotMode: '', // IRC or DIG
+        pilotCode: const PilotCode.pure(),
+        pilot2ChannelStatus: FormStatus.none,
+        pilot2Channel: '',
+        pilot2Mode: '', // IRC or DIG
+        pilot2Code: const PilotCode.pure(),
         editable: false,
+        editMode: false,
+        enableSubmission: false,
       ));
     }
   }
