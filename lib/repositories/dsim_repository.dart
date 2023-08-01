@@ -174,6 +174,7 @@ class DsimRepository {
   }
 
   Stream<ScanReport> get scannedDevices async* {
+    await checkBluetoothEnabled();
     bool isPermissionGranted = await _requestPermission();
     if (isPermissionGranted) {
       _scanReportStreamController = StreamController<ScanReport>();
