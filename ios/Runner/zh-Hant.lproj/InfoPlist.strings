@@ -5,5 +5,5 @@
   Created by Henry.Liang on 2023/5/11.
   
 */
-NSBluetoothAlwaysUsageDescription = "DSIM App 需要使用藍芽連線與傳輸資料";
-NSBluetoothPeripheralUsageDescription = "DSIM App 需要使用藍芽連線與傳輸資料";
+NSBluetoothAlwaysUsageDescription = "ACI+ 需要使用藍芽連線與傳輸資料";
+NSBluetoothPeripheralUsageDescription = "ACI+ 需要使用藍芽連線與傳輸資料";
