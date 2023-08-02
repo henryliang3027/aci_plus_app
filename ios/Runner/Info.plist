@@ -27,9 +27,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>NSBluetoothAlwaysUsageDescription</string>
+	<string>BluetoothAlwaysUsageDescription</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>NSBluetoothPeripheralUsageDescription</string>
+	<string>BluetoothPeripheralUsageDescription</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -55,9 +55,7 @@
 	<string>LocationAlwaysUsageDescription</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>LocationWhenInUseUsageDescription</string>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>BluetoothAlwaysUsageDescription</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>BluetoothPeripheralUsageDescription</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>LocationAlwaysAndWhenInUseUsageDescription</string>
 </dict>
 </plist>

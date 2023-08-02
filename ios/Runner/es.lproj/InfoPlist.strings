@@ -7,5 +7,6 @@
 */
 LocationAlwaysUsageDescription = "ACI+ necesita tu consentimiento para habilitar la función de ubicación.";
 LocationWhenInUseUsageDescription = "ACI+ necesita tu consentimiento para habilitar la función de ubicación.";
+LocationAlwaysAndWhenInUseUsageDescription= "ACI+ necesita tu consentimiento para habilitar la función de ubicación.";
 BluetoothAlwaysUsageDescription = "ACI+ utiliza Bluetooth para encontrar, conectar y transferir datos entre diferentes dispositivos.";
 BluetoothPeripheralUsageDescription = "ACI+ utiliza Bluetooth para encontrar, conectar y transferir datos entre diferentes dispositivos.";

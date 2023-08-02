@@ -5,7 +5,9 @@
   Created by Henry.Liang on 2023/5/11.
   
 */
+
 LocationAlwaysUsageDescription = "ACI+ needs your consent to enable location function.";
 LocationWhenInUseUsageDescription = "ACI+ needs your consent to enable location function.";
+LocationAlwaysAndWhenInUseUsageDescription = "ACI+ needs your consent to enable location function.";
 BluetoothAlwaysUsageDescription = "ACI+ uses bluetooth to find, connect and transfer data between different devices.";
 BluetoothPeripheralUsageDescription = "ACI+ uses bluetooth to find, connect and transfer data between different device.s";

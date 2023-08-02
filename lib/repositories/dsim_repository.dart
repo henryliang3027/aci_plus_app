@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:dsim_app/core/custom_style.dart';
+import 'package:dsim_app/core/shared_preference_key.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
@@ -2062,25 +2063,31 @@ class DsimRepository {
     print('$name completed (timeout canceled)');
   }
 
-  Future<void> writePilotCode(String pilotCode) async {
+  Future<bool> writePilotCode(String pilotCode) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('pilotCode', pilotCode);
+    bool result =
+        await prefs.setString(SharedPreferenceKey.pilotCode.name, pilotCode);
+    return result;
   }
 
-  Future<void> writePilot2Code(String pilot2Code) async {
+  Future<bool> writePilot2Code(String pilot2Code) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('pilot2Code', pilot2Code);
+    bool result =
+        await prefs.setString(SharedPreferenceKey.pilot2Code.name, pilot2Code);
+    return result;
   }
 
   Future<String> readPilotCode() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String pilotCode = prefs.getString('pilotCode') ?? 'GG<@';
+    String pilotCode =
+        prefs.getString(SharedPreferenceKey.pilotCode.name) ?? 'GG<@';
     return pilotCode;
   }
 
   Future<String> readPilot2Code() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String pilot2Code = prefs.getString('pilot2Code') ?? 'C<A';
+    String pilot2Code =
+        prefs.getString(SharedPreferenceKey.pilot2Code.name) ?? 'C<A';
     return pilot2Code;
   }
 

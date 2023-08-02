@@ -3,6 +3,7 @@ import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
+import 'package:dsim_app/core/shared_preference_key.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_list_view_bloc/setting_list_view_bloc.dart';
@@ -122,6 +123,10 @@ class SettingListView extends StatelessWidget {
         return AppLocalizations.of(context).dialogMessageLogIntervalSetting;
       } else if (item == DataKey.workingMode.name) {
         return AppLocalizations.of(context).dialogMessageWorkingModeSetting;
+      } else if (item == SharedPreferenceKey.pilotCode.name) {
+        return AppLocalizations.of(context).dialogMessageSaveUserPilot;
+      } else if (item == SharedPreferenceKey.pilot2Code.name) {
+        return AppLocalizations.of(context).dialogMessageSaveUserPilot2;
       } else {
         return '';
       }

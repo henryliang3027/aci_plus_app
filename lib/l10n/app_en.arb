@@ -90,6 +90,8 @@
     "dialogMessageTGCCableLengthSetting": "TGC cable length setting",
     "dialogMessageLogIntervalSetting": "Log interval setting",
     "dialogMessageWorkingModeSetting": "Working mode setting",
+    "dialogMessageSaveUserPilot": "Save user pilot",
+    "dialogMessageSaveUserPilot2": "Save User Pilot2",
     "dialogMessageSettingSuccessful": "OK",
     "dialogMessageSettingFailed": "Fail",
     "dialogMessagePilotSearchFailed": "Pilot not found, Please type correct code.",

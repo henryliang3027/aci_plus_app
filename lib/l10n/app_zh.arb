@@ -90,6 +90,8 @@
     "dialogMessageTGCCableLengthSetting": "TGC纜線衰減值設定",
     "dialogMessageLogIntervalSetting": "記錄間隔設定",
     "dialogMessageWorkingModeSetting": "工作模式設定",
+    "dialogMessageSaveUserPilot": "儲存導航頻率",
+    "dialogMessageSaveUserPilot2": "儲存導航頻率2",
     "dialogMessageSettingSuccessful": "成功",
     "dialogMessageSettingFailed": "失敗",
     "dialogMessagePilotSearchFailed": "找不到此導航頻率，請輸入正確的代碼",

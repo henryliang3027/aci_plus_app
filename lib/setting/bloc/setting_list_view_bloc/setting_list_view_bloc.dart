@@ -1,6 +1,7 @@
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/pilot_channel.dart';
+import 'package:dsim_app/core/shared_preference_key.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:dsim_app/setting/model/location.dart';
 import 'package:dsim_app/setting/model/pilot_code.dart';
@@ -665,11 +666,17 @@ class SettingListViewBloc
     }
 
     if (pilotChannelAndMode != state.initialValues[4]) {
-      await _dsimRepository.writePilotCode(state.pilotCode.value);
+      bool resultOfWritePilotCode =
+          await _dsimRepository.writePilotCode(state.pilotCode.value);
+      settingResult
+          .add('${SharedPreferenceKey.pilotCode.name},$resultOfWritePilotCode');
     }
 
     if (pilot2ChannelAndMode != state.initialValues[5]) {
-      await _dsimRepository.writePilot2Code(state.pilot2Code.value);
+      bool resultOfWritePilot2Code =
+          await _dsimRepository.writePilot2Code(state.pilot2Code.value);
+      settingResult.add(
+          '${SharedPreferenceKey.pilot2Code.name},$resultOfWritePilot2Code');
     }
 
     emit(state.copyWith(

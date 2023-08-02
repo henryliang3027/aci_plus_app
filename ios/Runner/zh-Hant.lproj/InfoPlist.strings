@@ -7,5 +7,6 @@
 */
 LocationAlwaysUsageDescription = "ACI+ 需要需要您的允許才能啟用定位功能";
 LocationWhenInUseUsageDescription = "ACI+ 需要需要您的允許才能啟用定位功能";
+LocationAlwaysAndWhenInUseUsageDescription = "ACI+ 需要需要您的允許才能啟用定位功能";
 BluetoothAlwaysUsageDescription = "ACI+ 需要使用藍芽連線與傳輸資料";
 BluetoothPeripheralUsageDescription = "ACI+ 需要使用藍芽連線與傳輸資料";
