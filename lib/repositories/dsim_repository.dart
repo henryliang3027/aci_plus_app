@@ -1453,13 +1453,19 @@ class DsimRepository {
       cancelTimeout(name: 'cmd set tgc cable length');
 
       if (isDone) {
-        List<dynamic> result = await requestCommand4();
+        List<dynamic> resultOfCommand4 = await requestCommand4();
+        List<dynamic> resultOfCommand5 = await requestCommand5();
 
-        if (result[0]) {
-          if (tgcCableLength == result[4]) {
+        if (resultOfCommand4[0] && resultOfCommand5[0]) {
+          if (tgcCableLength == resultOfCommand4[4]) {
             _characteristicDataStreamController
-                .add({DataKey.tgcCableLength: result[4]});
-            _tgcCableLength = result[4];
+                .add({DataKey.tgcCableLength: resultOfCommand4[4]});
+
+            _characteristicDataStreamController
+                .add({DataKey.workingMode: resultOfCommand5[1]});
+
+            _tgcCableLength = resultOfCommand4[4];
+            _workingMode = resultOfCommand5[1];
             return true;
           } else {
             return false;

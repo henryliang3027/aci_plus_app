@@ -21,7 +21,6 @@ class SettingPage extends StatelessWidget {
         BlocProvider(
           create: (context) => SettingGraphViewBloc(
             dsimRepository: RepositoryProvider.of<DsimRepository>(context),
-            isInitialized: true,
           ),
         ),
         BlocProvider(

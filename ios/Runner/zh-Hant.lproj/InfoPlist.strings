@@ -5,5 +5,7 @@
   Created by Henry.Liang on 2023/5/11.
   
 */
-NSBluetoothAlwaysUsageDescription = "ACI+ 需要使用藍芽連線與傳輸資料";
-NSBluetoothPeripheralUsageDescription = "ACI+ 需要使用藍芽連線與傳輸資料";
+LocationAlwaysUsageDescription = "ACI+ 需要需要您的允許才能啟用定位功能";
+LocationWhenInUseUsageDescription = "ACI+ 需要需要您的允許才能啟用定位功能";
+BluetoothAlwaysUsageDescription = "ACI+ 需要使用藍芽連線與傳輸資料";
+BluetoothPeripheralUsageDescription = "ACI+ 需要使用藍芽連線與傳輸資料";

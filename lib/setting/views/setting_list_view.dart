@@ -171,6 +171,10 @@ class SettingListView extends StatelessWidget {
           Navigator.of(context).pop();
           List<Widget> rows = getMessageRows(state.settingResult);
           showResultDialog(rows);
+
+          // 設定完成後不論成功或失敗都重新載入初始設定值
+          // 這樣可以達到設定 tgc cable length 完成時, working mode 跟著更新為 tgc mode
+          context.read<SettingListViewBloc>().add(const Initialized(true));
         } else if (state.isInitialize) {
           locationTextEditingController.text = state.location.value;
           userPilotTextEditingController.text = state.pilotCode.value;
@@ -253,6 +257,11 @@ class _SettingFloatingActionButton extends StatelessWidget {
                     context
                         .read<SettingListViewBloc>()
                         .add(const EditModeDisabled());
+
+                    // 重新載入初始設定值
+                    context
+                        .read<SettingListViewBloc>()
+                        .add(const Initialized(true));
                   },
                 ),
                 const SizedBox(

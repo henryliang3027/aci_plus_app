@@ -5,5 +5,7 @@
   Created by Henry.Liang on 2023/5/11.
   
 */
-NSBluetoothAlwaysUsageDescription = "ACI+ uses bluetooth to find, connect and transfer data between different devices";
-NSBluetoothAlwaysUsageDescription = "ACI+ uses bluetooth to find, connect and transfer data between different devices";
+LocationAlwaysUsageDescription = "ACI+ necesita tu consentimiento para habilitar la función de ubicación.";
+LocationWhenInUseUsageDescription = "ACI+ necesita tu consentimiento para habilitar la función de ubicación.";
+BluetoothAlwaysUsageDescription = "ACI+ utiliza Bluetooth para encontrar, conectar y transferir datos entre diferentes dispositivos.";
+BluetoothPeripheralUsageDescription = "ACI+ utiliza Bluetooth para encontrar, conectar y transferir datos entre diferentes dispositivos.";

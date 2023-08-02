@@ -15,9 +15,7 @@ class SettingListViewBloc
     extends Bloc<SettingListViewEvent, SettingListViewState> {
   SettingListViewBloc({
     required DsimRepository dsimRepository,
-    // required bool isInitialized,
   })  : _dsimRepository = dsimRepository,
-        // _isInitialized = isInitialized,
         super(const SettingListViewState()) {
     on<Initialized>(_onInitialized);
     on<LocationChanged>(_onLocationChanged);
@@ -35,12 +33,84 @@ class SettingListViewBloc
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
-
-    // add(const Initialized());
   }
 
   final DsimRepository _dsimRepository;
-  // final bool _isInitialized;
+
+  String _getSelectedWorkingMode() {
+    return state.selectedWorkingMode.keys.firstWhere(
+      (k) => state.selectedWorkingMode[k] == true,
+      orElse: () => '',
+    );
+  }
+
+  String _getSelectedTgcCableLength() {
+    return state.selectedTGCCableLength.keys.firstWhere(
+        (k) => state.selectedTGCCableLength[k] == true,
+        orElse: () => '');
+  }
+
+  bool _isEnabledSubmission({
+    required String location,
+    required String tgcCableLength,
+    required int logIntervalId,
+    required String workingMode,
+    required String pilotChannelAndMode,
+    required String pilot2ChannelAndMode,
+    required String currentAttenuation,
+  }) {
+    if (location != state.initialValues[0] ||
+        tgcCableLength != state.initialValues[1] ||
+        logIntervalId != state.initialValues[2] ||
+        workingMode != state.initialValues[3] ||
+        pilotChannelAndMode != state.initialValues[4] ||
+        pilot2ChannelAndMode != state.initialValues[5] ||
+        currentAttenuation != state.initialValues[6]) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  List<String>? _getPilotChannelAndMode(String pilotCode) {
+    if (pilotCode.isEmpty) {
+      return null;
+    } else {
+      if (pilotCode.substring(pilotCode.length - 1) != '@' &&
+          pilotCode.substring(pilotCode.length - 1) != 'A') {
+        // 如果最後一個字不是 A 也不是 @, return null
+        return null;
+      } else {
+        String pilotMode = '';
+        String adjustedPilotCode = pilotCode;
+        if (pilotCode.substring(pilotCode.length - 1) == '@') {
+          pilotMode = 'IRC';
+        } else {
+          pilotMode = 'DIG';
+        }
+
+        // 把最後一個字替換成 A 並查表
+        if (adjustedPilotCode.substring(adjustedPilotCode.length - 1) == '@') {
+          adjustedPilotCode =
+              '${adjustedPilotCode.substring(0, adjustedPilotCode.length - 1)}A';
+        }
+
+        String pilotChannel = PilotChannel.channelCode.keys.firstWhere(
+          (k) => PilotChannel.channelCode[k] == adjustedPilotCode,
+          orElse: () => '',
+        );
+
+        if (pilotChannel == '') {
+          return null;
+        } else {
+          return [
+            pilotChannel,
+            pilotMode,
+          ];
+        }
+      }
+    }
+  }
 
   Future<void> _onInitialized(
     Initialized event,
@@ -88,6 +158,12 @@ class SettingListViewBloc
     final List<String>? pilot2 =
         _getPilotChannelAndMode(settingData.pilot2Code);
 
+    final String pilotChannelAndMode =
+        pilot != null ? '${pilot[0]} ${pilot[1]}' : '';
+
+    final String pilot2ChannelAndMode =
+        pilot2 != null ? '${pilot2[0]} ${pilot2[1]}' : '';
+
     if (event.isLoadData) {
       print('location:  $location');
       emit(state.copyWith(
@@ -96,6 +172,8 @@ class SettingListViewBloc
           settingData.tgcCableLength,
           settingData.logIntervalId,
           settingData.workingMode,
+          pilotChannelAndMode,
+          pilot2ChannelAndMode,
           settingData.currentAttenuation,
         ],
         location: location,
@@ -164,9 +242,12 @@ class SettingListViewBloc
       location: location,
       enableSubmission: _isEnabledSubmission(
         location: event.location,
-        tgcCableLength: _getTgcCableLength(),
+        tgcCableLength: _getSelectedTgcCableLength(),
         logIntervalId: state.logIntervalId,
-        workingMode: _getWorkingMode(),
+        workingMode: _getSelectedWorkingMode(),
+        pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
+        pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
+        currentAttenuation: state.currentAttenuation.toString(),
       ),
     ));
   }
@@ -191,7 +272,10 @@ class SettingListViewBloc
         location: state.location.value,
         tgcCableLength: event.tgcCableLength,
         logIntervalId: state.logIntervalId,
-        workingMode: _getWorkingMode(),
+        workingMode: _getSelectedWorkingMode(),
+        pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
+        pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
+        currentAttenuation: state.currentAttenuation.toString(),
       ),
     ));
   }
@@ -206,9 +290,12 @@ class SettingListViewBloc
       logIntervalId: event.logIntervalId,
       enableSubmission: _isEnabledSubmission(
         location: state.location.value,
-        tgcCableLength: _getTgcCableLength(),
+        tgcCableLength: _getSelectedTgcCableLength(),
         logIntervalId: event.logIntervalId,
-        workingMode: _getWorkingMode(),
+        workingMode: _getSelectedWorkingMode(),
+        pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
+        pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
+        currentAttenuation: state.currentAttenuation.toString(),
       ),
     ));
   }
@@ -231,51 +318,14 @@ class SettingListViewBloc
       selectedWorkingMode: newSelectedWorkingMode,
       enableSubmission: _isEnabledSubmission(
         location: state.location.value,
-        tgcCableLength: _getTgcCableLength(),
+        tgcCableLength: _getSelectedTgcCableLength(),
         logIntervalId: state.logIntervalId,
         workingMode: event.workingMode,
+        pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
+        pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
+        currentAttenuation: state.currentAttenuation.toString(),
       ),
     ));
-  }
-
-  List<String>? _getPilotChannelAndMode(String pilotCode) {
-    if (pilotCode.isEmpty) {
-      return null;
-    } else {
-      if (pilotCode.substring(pilotCode.length - 1) != '@' &&
-          pilotCode.substring(pilotCode.length - 1) != 'A') {
-        // 如果最後一個字不是 A 也不是 @, return null
-        return null;
-      } else {
-        String pilotMode = '';
-        String adjustedPilotCode = pilotCode;
-        if (pilotCode.substring(pilotCode.length - 1) == '@') {
-          pilotMode = 'IRC';
-        } else {
-          pilotMode = 'DIG';
-        }
-
-        // 把最後一個字替換成 A 並查表
-        if (adjustedPilotCode.substring(adjustedPilotCode.length - 1) == '@') {
-          adjustedPilotCode =
-              '${adjustedPilotCode.substring(0, adjustedPilotCode.length - 1)}A';
-        }
-
-        String pilotChannel = PilotChannel.channelCode.keys.firstWhere(
-          (k) => PilotChannel.channelCode[k] == adjustedPilotCode,
-          orElse: () => '',
-        );
-
-        if (pilotChannel == '') {
-          return null;
-        } else {
-          return [
-            pilotChannel,
-            pilotMode,
-          ];
-        }
-      }
-    }
   }
 
   void _onPilotCodeChanged(
@@ -315,19 +365,27 @@ class SettingListViewBloc
     } else {
       String pilotChannel = pilot[0];
       String pilotMode = pilot[1];
-      await _dsimRepository.writePilotCode(state.pilotCode.value);
+      // await _dsimRepository.writePilotCode(state.pilotCode.value);
 
-      bool enableSubmission = state.pilotCode.value.isNotEmpty &&
-          state.pilot2Code.value.isNotEmpty &&
-          state.pilotChannel.isNotEmpty &&
-          state.pilot2Channel.isNotEmpty;
+      // bool enableSubmission = state.pilotCode.value.isNotEmpty &&
+      //     state.pilot2Code.value.isNotEmpty &&
+      //     state.pilotChannel.isNotEmpty &&
+      //     state.pilot2Channel.isNotEmpty;
 
       emit(state.copyWith(
         submissionStatus: SubmissionStatus.none,
         pilotChannel: pilotChannel,
         pilotMode: pilotMode,
         pilotChannelStatus: FormStatus.requestSuccess,
-        enableSubmission: enableSubmission,
+        enableSubmission: _isEnabledSubmission(
+          location: state.location.value,
+          tgcCableLength: _getSelectedTgcCableLength(),
+          logIntervalId: state.logIntervalId,
+          workingMode: _getSelectedWorkingMode(),
+          pilotChannelAndMode: '$pilotChannel $pilotMode',
+          pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
+          currentAttenuation: state.currentAttenuation.toString(),
+        ),
       ));
     }
   }
@@ -370,19 +428,27 @@ class SettingListViewBloc
     } else {
       String pilot2Channel = pilot[0];
       String pilot2Mode = pilot[1];
-      await _dsimRepository.writePilot2Code(state.pilot2Code.value);
+      // await _dsimRepository.writePilot2Code(state.pilot2Code.value);
 
-      bool enableSubmission = state.pilotCode.value.isNotEmpty &&
-          state.pilot2Code.value.isNotEmpty &&
-          state.pilotChannel.isNotEmpty &&
-          state.pilot2Channel.isNotEmpty;
+      // bool enableSubmission = state.pilotCode.value.isNotEmpty &&
+      //     state.pilot2Code.value.isNotEmpty &&
+      //     state.pilotChannel.isNotEmpty &&
+      //     state.pilot2Channel.isNotEmpty;
 
       emit(state.copyWith(
         submissionStatus: SubmissionStatus.none,
         pilot2Channel: pilot2Channel,
         pilot2Mode: pilot2Mode,
         pilot2ChannelStatus: FormStatus.requestSuccess,
-        enableSubmission: enableSubmission,
+        enableSubmission: _isEnabledSubmission(
+          location: state.location.value,
+          tgcCableLength: _getSelectedTgcCableLength(),
+          logIntervalId: state.logIntervalId,
+          workingMode: _getSelectedWorkingMode(),
+          pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
+          pilot2ChannelAndMode: '$pilot2Channel $pilot2Mode',
+          currentAttenuation: state.currentAttenuation.toString(),
+        ),
       ));
     }
   }
@@ -400,7 +466,16 @@ class SettingListViewBloc
         'AGC': false,
         'TGC': false,
       },
-      enableSubmission: event.attenuation.toString() != state.initialValues[4],
+      // enableSubmission: event.attenuation.toString() != state.initialValues[4],
+      enableSubmission: _isEnabledSubmission(
+        location: state.location.value,
+        tgcCableLength: _getSelectedTgcCableLength(),
+        logIntervalId: state.logIntervalId,
+        workingMode: _getSelectedWorkingMode(),
+        pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
+        pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
+        currentAttenuation: event.attenuation.toString(),
+      ),
     ));
   }
 
@@ -421,7 +496,16 @@ class SettingListViewBloc
         'AGC': false,
         'TGC': false,
       },
-      enableSubmission: newAttenuation.toString() != state.initialValues[4],
+      // enableSubmission: newAttenuation.toString() != state.initialValues[4],
+      enableSubmission: _isEnabledSubmission(
+        location: state.location.value,
+        tgcCableLength: _getSelectedTgcCableLength(),
+        logIntervalId: state.logIntervalId,
+        workingMode: _getSelectedWorkingMode(),
+        pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
+        pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
+        currentAttenuation: newAttenuation.toString(),
+      ),
     ));
   }
 
@@ -442,7 +526,16 @@ class SettingListViewBloc
         'AGC': false,
         'TGC': false,
       },
-      enableSubmission: newAttenuation.toString() != state.initialValues[4],
+      // enableSubmission: newAttenuation.toString() != state.initialValues[4],
+      enableSubmission: _isEnabledSubmission(
+        location: state.location.value,
+        tgcCableLength: _getSelectedTgcCableLength(),
+        logIntervalId: state.logIntervalId,
+        workingMode: _getSelectedWorkingMode(),
+        pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
+        pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
+        currentAttenuation: newAttenuation.toString(),
+      ),
     ));
   }
 
@@ -459,8 +552,17 @@ class SettingListViewBloc
         'AGC': false,
         'TGC': false,
       },
-      enableSubmission:
-          state.centerAttenuation.toString() != state.initialValues[4],
+      // enableSubmission:
+      //     state.centerAttenuation.toString() != state.initialValues[4],
+      enableSubmission: _isEnabledSubmission(
+        location: state.location.value,
+        tgcCableLength: _getSelectedTgcCableLength(),
+        logIntervalId: state.logIntervalId,
+        workingMode: _getSelectedWorkingMode(),
+        pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
+        pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
+        currentAttenuation: state.centerAttenuation.toString(),
+      ),
     ));
   }
 
@@ -491,24 +593,16 @@ class SettingListViewBloc
     SettingSubmitted event,
     Emitter<SettingListViewState> emit,
   ) async {
-    // initialValues: [
-    //   settingData.location,
-    //   settingData.tgcCableLength,
-    //   settingData.logIntervalId,
-    //   settingData.workingMode,
-    //   settingData.currentAttenuation,
-    // ],
-
-    List<dynamic> initialValues = [];
-    initialValues.addAll(state.initialValues);
-
     emit(state.copyWith(
       isInitialize: false,
       submissionStatus: SubmissionStatus.submissionInProgress,
     ));
 
-    String workingMode = _getWorkingMode();
-    String tgcCableLength = _getTgcCableLength();
+    String workingMode = _getSelectedWorkingMode();
+    String tgcCableLength = _getSelectedTgcCableLength();
+    String pilotChannelAndMode = '${state.pilotChannel} ${state.pilotMode}';
+    String pilot2ChannelAndMode = '${state.pilot2Channel} ${state.pilot2Mode}';
+
     List<String> settingResult = [];
 
     if (state.location.value != state.initialValues[0]) {
@@ -516,10 +610,6 @@ class SettingListViewBloc
           await _dsimRepository.setLocation(state.location.value);
 
       settingResult.add('${DataKey.location.name},$resultOfSettingLocation');
-
-      if (resultOfSettingLocation) {
-        initialValues[0] = state.location.value;
-      }
     }
 
     if (tgcCableLength != state.initialValues[1]) {
@@ -534,10 +624,6 @@ class SettingListViewBloc
 
       settingResult
           .add('${DataKey.tgcCableLength.name},$resultOfSettingTGCCableLength');
-
-      if (resultOfSettingTGCCableLength) {
-        initialValues[1] = tgcCableLength;
-      }
     }
 
     if (state.logIntervalId != state.initialValues[2]) {
@@ -547,14 +633,10 @@ class SettingListViewBloc
 
       settingResult
           .add('${DataKey.logInterval.name},$resultOfSettingLogInterval');
-
-      if (resultOfSettingLogInterval) {
-        initialValues[2] = state.logIntervalId;
-      }
     }
 
     if (workingMode != state.initialValues[3] ||
-        state.currentAttenuation.toString() != state.initialValues[4]) {
+        state.currentAttenuation.toString() != state.initialValues[6]) {
       bool resultOfSettingWorkingMode = false;
       if (state.hasDualPilot) {
         resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
@@ -580,55 +662,22 @@ class SettingListViewBloc
 
       settingResult
           .add('${DataKey.workingMode.name},$resultOfSettingWorkingMode');
+    }
 
-      if (resultOfSettingWorkingMode) {
-        initialValues[3] = workingMode;
-        initialValues[4] = workingMode;
-      }
+    if (pilotChannelAndMode != state.initialValues[4]) {
+      await _dsimRepository.writePilotCode(state.pilotCode.value);
+    }
+
+    if (pilot2ChannelAndMode != state.initialValues[5]) {
+      await _dsimRepository.writePilot2Code(state.pilot2Code.value);
     }
 
     emit(state.copyWith(
       isInitialize: false,
-      initialValues: initialValues,
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
       enableSubmission: false,
       editMode: false,
     ));
-  }
-
-  String _getWorkingMode() {
-    return state.selectedWorkingMode.keys.firstWhere(
-      (k) => state.selectedWorkingMode[k] == true,
-      orElse: () => '',
-    );
-  }
-
-  String _getTgcCableLength() {
-    return state.selectedTGCCableLength.keys.firstWhere(
-        (k) => state.selectedTGCCableLength[k] == true,
-        orElse: () => '');
-  }
-
-  bool _isEnabledSubmission({
-    required String location,
-    required String tgcCableLength,
-    required int logIntervalId,
-    required String workingMode,
-  }) {
-    if (location != state.initialValues[0] ||
-        tgcCableLength != state.initialValues[1] ||
-        logIntervalId != state.initialValues[2] ||
-        (workingMode != state.initialValues[3] &&
-            state.pilotCode.isValid &&
-            state.pilot2Code.isValid &&
-            state.pilotChannelStatus == FormStatus.requestSuccess &&
-            state.pilot2ChannelStatus == FormStatus.requestSuccess)) {
-      print('true');
-      return true;
-    } else {
-      print('false');
-      return false;
-    }
   }
 }
