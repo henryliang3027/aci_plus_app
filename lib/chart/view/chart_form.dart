@@ -22,6 +22,7 @@ class ChartForm extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
+                duration: const Duration(seconds: 30),
                 content: Text(
                   AppLocalizations.of(context)
                       .dialogMessageDataExportSuccessful,
@@ -34,8 +35,6 @@ class ChartForm extends StatelessWidget {
                       type: 'application/vnd.ms-excel',
                       uti: 'com.microsoft.excel.xls',
                     );
-
-                    print(result.message);
                   },
                 ),
               ),
@@ -49,10 +48,15 @@ class ChartForm extends StatelessWidget {
               .read<HomeBloc>()
               .state
               .characteristicData[DataKey.location]!;
+
+          double width = MediaQuery.of(context).size.width;
+          double height = MediaQuery.of(context).size.height;
           Share.shareXFiles(
             [XFile(state.dataExportPath)],
             subject: state.exportFileName,
             text: '$partNo / $location',
+            sharePositionOrigin:
+                Rect.fromLTWH(0.0, height / 2, width, height / 2),
           );
         }
       },
