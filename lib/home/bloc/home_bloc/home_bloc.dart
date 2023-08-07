@@ -198,142 +198,181 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _dsimRepository.requestCommand5,
       _dsimRepository.requestCommand6,
       _dsimRepository.requestCommand9To12,
-      _dsimRepository.requestCommand14To29,
+
+      for (int i = 0; i <= 16; i++) ...[
+        _dsimRepository.requestCommandForLogChunk
+      ]
+      // _dsimRepository.requestCommand14To29,
       // _dsimRepository.requestCommand30To37,
     ];
 
     for (int i = 0; i < requestCommands.length; i++) {
-      List<dynamic> result = await requestCommands[i]();
-
+      List<dynamic> result = [];
+      if (i >= 8) {
+        result = await requestCommands[i](i + 6);
+      } else {
+        result = await requestCommands[i]();
+      }
       if (result[0]) {
-        if (i == 0) {
-          // 因為 state 是 immutable, 所以要創一個新的 map, copy 原來的 element, 加上新的 element,
-          // emit 的 state 才算新的, 才會觸發 bloc builder
-          Map<DataKey, String> newCharacteristicData = {};
-          newCharacteristicData[DataKey.typeNo] = result[1];
-          emit(state.copyWith(
-            characteristicData: newCharacteristicData,
-          ));
-        } else if (i == 1) {
-          Map<DataKey, String> newCharacteristicData = {};
-          newCharacteristicData.addEntries(state.characteristicData.entries);
-          newCharacteristicData[DataKey.partNo] = result[1];
+        switch (i) {
+          case 0:
+            // 因為 state 是 immutable, 所以要創一個新的 map, copy 原來的 element, 加上新的 element,
+            // emit 的 state 才算新的, 才會觸發 bloc builder
+            Map<DataKey, String> newCharacteristicData = {};
+            newCharacteristicData[DataKey.typeNo] = result[1];
+            emit(state.copyWith(
+              characteristicData: newCharacteristicData,
+            ));
+            break;
+          case 1:
+            Map<DataKey, String> newCharacteristicData = {};
+            newCharacteristicData.addEntries(state.characteristicData.entries);
+            newCharacteristicData[DataKey.partNo] = result[1];
 
-          emit(state.copyWith(
-            characteristicData: newCharacteristicData,
-          ));
-        } else if (i == 2) {
-          Map<DataKey, String> newCharacteristicData = {};
-          newCharacteristicData.addEntries(state.characteristicData.entries);
-          newCharacteristicData[DataKey.serialNumber] = result[1];
-          emit(state.copyWith(
-            characteristicData: newCharacteristicData,
-          ));
-        } else if (i == 3) {
-          Map<DataKey, String> newCharacteristicData = {};
-          newCharacteristicData.addEntries(state.characteristicData.entries);
-          newCharacteristicData[DataKey.logInterval] = result[1];
-          newCharacteristicData[DataKey.firmwareVersion] = result[2];
-          emit(state.copyWith(
-            characteristicData: newCharacteristicData,
-          ));
-        } else if (i == 4) {
-          Map<DataKey, String> newCharacteristicData = {};
-          newCharacteristicData.addEntries(state.characteristicData.entries);
-          newCharacteristicData[DataKey.currentAttenuation] = result[1];
-          newCharacteristicData[DataKey.minAttenuation] = result[2];
-          newCharacteristicData[DataKey.maxAttenuation] = result[3];
-          newCharacteristicData[DataKey.tgcCableLength] = result[4];
-          emit(state.copyWith(
-            characteristicData: newCharacteristicData,
-          ));
-        } else if (i == 5) {
-          Map<DataKey, String> newCharacteristicData = {};
-          newCharacteristicData.addEntries(state.characteristicData.entries);
-          newCharacteristicData[DataKey.workingMode] = result[1];
-          newCharacteristicData[DataKey.currentPilot] = result[2];
-          newCharacteristicData[DataKey.currentPilotMode] = result[3];
-          newCharacteristicData[DataKey.alarmRServerity] = result[4];
-          newCharacteristicData[DataKey.alarmTServerity] = result[5];
-          newCharacteristicData[DataKey.alarmPServerity] = result[6];
-          newCharacteristicData[DataKey.currentTemperatureF] = result[7];
-          newCharacteristicData[DataKey.currentTemperatureC] = result[8];
-          newCharacteristicData[DataKey.currentVoltage] = result[9];
-          emit(state.copyWith(
-            characteristicData: newCharacteristicData,
-          ));
-        } else if (i == 6) {
-          Map<DataKey, String> newCharacteristicData = {};
-          newCharacteristicData.addEntries(state.characteristicData.entries);
-          newCharacteristicData[DataKey.centerAttenuation] = result[1];
-          newCharacteristicData[DataKey.currentVoltageRipple] = result[2];
-          emit(state.copyWith(
-            characteristicData: newCharacteristicData,
-          ));
-        } else if (i == 7) {
-          Map<DataKey, String> newCharacteristicData = {};
-          newCharacteristicData.addEntries(state.characteristicData.entries);
-          newCharacteristicData[DataKey.location] = result[1];
-          emit(state.copyWith(
-            characteristicData: newCharacteristicData,
-          ));
-        } else if (i == 8) {
-          Map<DataKey, String> newCharacteristicData = {};
-          newCharacteristicData.addEntries(state.characteristicData.entries);
+            emit(state.copyWith(
+              characteristicData: newCharacteristicData,
+            ));
+            break;
+          case 2:
+            Map<DataKey, String> newCharacteristicData = {};
+            newCharacteristicData.addEntries(state.characteristicData.entries);
+            newCharacteristicData[DataKey.serialNumber] = result[1];
+            emit(state.copyWith(
+              characteristicData: newCharacteristicData,
+            ));
+            break;
+          case 3:
+            Map<DataKey, String> newCharacteristicData = {};
+            newCharacteristicData.addEntries(state.characteristicData.entries);
+            newCharacteristicData[DataKey.logInterval] = result[1];
+            newCharacteristicData[DataKey.firmwareVersion] = result[2];
+            emit(state.copyWith(
+              characteristicData: newCharacteristicData,
+            ));
+            break;
+          case 4:
+            Map<DataKey, String> newCharacteristicData = {};
+            newCharacteristicData.addEntries(state.characteristicData.entries);
+            newCharacteristicData[DataKey.currentAttenuation] = result[1];
+            newCharacteristicData[DataKey.minAttenuation] = result[2];
+            newCharacteristicData[DataKey.maxAttenuation] = result[3];
+            newCharacteristicData[DataKey.tgcCableLength] = result[4];
+            emit(state.copyWith(
+              characteristicData: newCharacteristicData,
+            ));
+            break;
+          case 5:
+            Map<DataKey, String> newCharacteristicData = {};
+            newCharacteristicData.addEntries(state.characteristicData.entries);
+            newCharacteristicData[DataKey.workingMode] = result[1];
+            newCharacteristicData[DataKey.currentPilot] = result[2];
+            newCharacteristicData[DataKey.currentPilotMode] = result[3];
+            newCharacteristicData[DataKey.alarmRServerity] = result[4];
+            newCharacteristicData[DataKey.alarmTServerity] = result[5];
+            newCharacteristicData[DataKey.alarmPServerity] = result[6];
+            newCharacteristicData[DataKey.currentTemperatureF] = result[7];
+            newCharacteristicData[DataKey.currentTemperatureC] = result[8];
+            newCharacteristicData[DataKey.currentVoltage] = result[9];
+            emit(state.copyWith(
+              characteristicData: newCharacteristicData,
+            ));
+            break;
+          case 6:
+            Map<DataKey, String> newCharacteristicData = {};
+            newCharacteristicData.addEntries(state.characteristicData.entries);
+            newCharacteristicData[DataKey.centerAttenuation] = result[1];
+            newCharacteristicData[DataKey.currentVoltageRipple] = result[2];
+            emit(state.copyWith(
+              characteristicData: newCharacteristicData,
+            ));
+            break;
+          case 7:
+            Map<DataKey, String> newCharacteristicData = {};
+            newCharacteristicData.addEntries(state.characteristicData.entries);
+            newCharacteristicData[DataKey.location] = result[1];
+            emit(state.copyWith(
+              characteristicData: newCharacteristicData,
+            ));
+            break;
+          case 8:
+          case 9:
+          case 10:
+          case 11:
+          case 12:
+          case 13:
+          case 14:
+          case 15:
+          case 16:
+          case 17:
+          case 18:
+          case 19:
+          case 20:
+          case 21:
+          case 22:
+            Map<DataKey, String> newCharacteristicData = {};
+            newCharacteristicData.addEntries(state.characteristicData.entries);
+            List<List<DateValuePair>> dateValueCollectionOfLog =
+                _dsimRepository.getDateValueCollectionOfLogs();
 
-          List<List<DateValuePair>> dateValueCollectionOfLog =
-              _dsimRepository.getDateValueCollectionOfLogs();
+            emit(state.copyWith(
+              dateValueCollectionOfLog: dateValueCollectionOfLog,
+            ));
+            break;
+          case 23:
+            Map<DataKey, String> newCharacteristicData = {};
+            newCharacteristicData.addEntries(state.characteristicData.entries);
 
-          List<DateValuePair> allValues = dateValueCollectionOfLog
-              .expand(
-                (dateValuePair) => dateValuePair,
-              )
-              .toList();
+            List<List<DateValuePair>> dateValueCollectionOfLog =
+                _dsimRepository.getDateValueCollectionOfLogs();
 
-          if (allValues.isNotEmpty) {
-            newCharacteristicData[DataKey.minTemperatureF] = result[1];
-            newCharacteristicData[DataKey.maxTemperatureF] = result[2];
-            newCharacteristicData[DataKey.minTemperatureC] = result[3];
-            newCharacteristicData[DataKey.maxTemperatureC] = result[4];
-            newCharacteristicData[DataKey.historicalMinAttenuation] = result[5];
-            newCharacteristicData[DataKey.historicalMaxAttenuation] = result[6];
-            newCharacteristicData[DataKey.minVoltage] = result[7];
-            newCharacteristicData[DataKey.maxVoltage] = result[8];
-            newCharacteristicData[DataKey.minVoltageRipple] = result[9];
-            newCharacteristicData[DataKey.maxVoltageRipple] = result[10];
-          } else {
-            newCharacteristicData[DataKey.minTemperatureF] =
-                newCharacteristicData[DataKey.currentTemperatureF] ?? '';
-            newCharacteristicData[DataKey.maxTemperatureF] =
-                newCharacteristicData[DataKey.currentTemperatureF] ?? '';
-            newCharacteristicData[DataKey.minTemperatureC] =
-                newCharacteristicData[DataKey.currentTemperatureC] ?? '';
-            newCharacteristicData[DataKey.maxTemperatureC] =
-                newCharacteristicData[DataKey.currentTemperatureC] ?? '';
-            newCharacteristicData[DataKey.historicalMinAttenuation] =
-                newCharacteristicData[DataKey.currentAttenuation] ?? '';
-            newCharacteristicData[DataKey.historicalMaxAttenuation] =
-                newCharacteristicData[DataKey.currentAttenuation] ?? '';
-            newCharacteristicData[DataKey.minVoltage] =
-                newCharacteristicData[DataKey.currentVoltage] ?? '';
-            newCharacteristicData[DataKey.maxVoltage] =
-                newCharacteristicData[DataKey.currentVoltage] ?? '';
-            newCharacteristicData[DataKey.minVoltageRipple] =
-                newCharacteristicData[DataKey.currentVoltageRipple] ?? '';
-            newCharacteristicData[DataKey.maxVoltageRipple] =
-                newCharacteristicData[DataKey.currentVoltageRipple] ?? '';
-          }
+            List<DateValuePair> allValues = dateValueCollectionOfLog
+                .expand(
+                  (dateValuePair) => dateValuePair,
+                )
+                .toList();
 
-          emit(state.copyWith(
-            loadingStatus: FormStatus.requestSuccess,
-            characteristicData: newCharacteristicData,
-            dateValueCollectionOfLog: dateValueCollectionOfLog,
-          ));
-        } else if (i == 9) {
-          // 取得 event 資料完成
-          // emit(state.copyWith(
-          //   loadingStatus: FormStatus.requestSuccess,
-          // ));
+            if (allValues.isNotEmpty) {
+              newCharacteristicData[DataKey.minTemperatureF] = result[1];
+              newCharacteristicData[DataKey.maxTemperatureF] = result[2];
+              newCharacteristicData[DataKey.minTemperatureC] = result[3];
+              newCharacteristicData[DataKey.maxTemperatureC] = result[4];
+              newCharacteristicData[DataKey.historicalMinAttenuation] =
+                  result[5];
+              newCharacteristicData[DataKey.historicalMaxAttenuation] =
+                  result[6];
+              newCharacteristicData[DataKey.minVoltage] = result[7];
+              newCharacteristicData[DataKey.maxVoltage] = result[8];
+              newCharacteristicData[DataKey.minVoltageRipple] = result[9];
+              newCharacteristicData[DataKey.maxVoltageRipple] = result[10];
+            } else {
+              newCharacteristicData[DataKey.minTemperatureF] =
+                  newCharacteristicData[DataKey.currentTemperatureF] ?? '';
+              newCharacteristicData[DataKey.maxTemperatureF] =
+                  newCharacteristicData[DataKey.currentTemperatureF] ?? '';
+              newCharacteristicData[DataKey.minTemperatureC] =
+                  newCharacteristicData[DataKey.currentTemperatureC] ?? '';
+              newCharacteristicData[DataKey.maxTemperatureC] =
+                  newCharacteristicData[DataKey.currentTemperatureC] ?? '';
+              newCharacteristicData[DataKey.historicalMinAttenuation] =
+                  newCharacteristicData[DataKey.currentAttenuation] ?? '';
+              newCharacteristicData[DataKey.historicalMaxAttenuation] =
+                  newCharacteristicData[DataKey.currentAttenuation] ?? '';
+              newCharacteristicData[DataKey.minVoltage] =
+                  newCharacteristicData[DataKey.currentVoltage] ?? '';
+              newCharacteristicData[DataKey.maxVoltage] =
+                  newCharacteristicData[DataKey.currentVoltage] ?? '';
+              newCharacteristicData[DataKey.minVoltageRipple] =
+                  newCharacteristicData[DataKey.currentVoltageRipple] ?? '';
+              newCharacteristicData[DataKey.maxVoltageRipple] =
+                  newCharacteristicData[DataKey.currentVoltageRipple] ?? '';
+            }
+
+            emit(state.copyWith(
+              loadingStatus: FormStatus.requestSuccess,
+              characteristicData: newCharacteristicData,
+              dateValueCollectionOfLog: dateValueCollectionOfLog,
+            ));
+            break;
         }
       } else {
         emit(state.copyWith(
@@ -343,6 +382,145 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ));
         break;
       }
+
+      // if (result[0]) {
+      //   if (i == 0) {
+      //     // 因為 state 是 immutable, 所以要創一個新的 map, copy 原來的 element, 加上新的 element,
+      //     // emit 的 state 才算新的, 才會觸發 bloc builder
+      //     Map<DataKey, String> newCharacteristicData = {};
+      //     newCharacteristicData[DataKey.typeNo] = result[1];
+      //     emit(state.copyWith(
+      //       characteristicData: newCharacteristicData,
+      //     ));
+      //   } else if (i == 1) {
+      //     Map<DataKey, String> newCharacteristicData = {};
+      //     newCharacteristicData.addEntries(state.characteristicData.entries);
+      //     newCharacteristicData[DataKey.partNo] = result[1];
+
+      //     emit(state.copyWith(
+      //       characteristicData: newCharacteristicData,
+      //     ));
+      //   } else if (i == 2) {
+      //     Map<DataKey, String> newCharacteristicData = {};
+      //     newCharacteristicData.addEntries(state.characteristicData.entries);
+      //     newCharacteristicData[DataKey.serialNumber] = result[1];
+      //     emit(state.copyWith(
+      //       characteristicData: newCharacteristicData,
+      //     ));
+      //   } else if (i == 3) {
+      //     Map<DataKey, String> newCharacteristicData = {};
+      //     newCharacteristicData.addEntries(state.characteristicData.entries);
+      //     newCharacteristicData[DataKey.logInterval] = result[1];
+      //     newCharacteristicData[DataKey.firmwareVersion] = result[2];
+      //     emit(state.copyWith(
+      //       characteristicData: newCharacteristicData,
+      //     ));
+      //   } else if (i == 4) {
+      //     Map<DataKey, String> newCharacteristicData = {};
+      //     newCharacteristicData.addEntries(state.characteristicData.entries);
+      //     newCharacteristicData[DataKey.currentAttenuation] = result[1];
+      //     newCharacteristicData[DataKey.minAttenuation] = result[2];
+      //     newCharacteristicData[DataKey.maxAttenuation] = result[3];
+      //     newCharacteristicData[DataKey.tgcCableLength] = result[4];
+      //     emit(state.copyWith(
+      //       characteristicData: newCharacteristicData,
+      //     ));
+      //   } else if (i == 5) {
+      //     Map<DataKey, String> newCharacteristicData = {};
+      //     newCharacteristicData.addEntries(state.characteristicData.entries);
+      //     newCharacteristicData[DataKey.workingMode] = result[1];
+      //     newCharacteristicData[DataKey.currentPilot] = result[2];
+      //     newCharacteristicData[DataKey.currentPilotMode] = result[3];
+      //     newCharacteristicData[DataKey.alarmRServerity] = result[4];
+      //     newCharacteristicData[DataKey.alarmTServerity] = result[5];
+      //     newCharacteristicData[DataKey.alarmPServerity] = result[6];
+      //     newCharacteristicData[DataKey.currentTemperatureF] = result[7];
+      //     newCharacteristicData[DataKey.currentTemperatureC] = result[8];
+      //     newCharacteristicData[DataKey.currentVoltage] = result[9];
+      //     emit(state.copyWith(
+      //       characteristicData: newCharacteristicData,
+      //     ));
+      //   } else if (i == 6) {
+      //     Map<DataKey, String> newCharacteristicData = {};
+      //     newCharacteristicData.addEntries(state.characteristicData.entries);
+      //     newCharacteristicData[DataKey.centerAttenuation] = result[1];
+      //     newCharacteristicData[DataKey.currentVoltageRipple] = result[2];
+      //     emit(state.copyWith(
+      //       characteristicData: newCharacteristicData,
+      //     ));
+      //   } else if (i == 7) {
+      //     Map<DataKey, String> newCharacteristicData = {};
+      //     newCharacteristicData.addEntries(state.characteristicData.entries);
+      //     newCharacteristicData[DataKey.location] = result[1];
+      //     emit(state.copyWith(
+      //       characteristicData: newCharacteristicData,
+      //     ));
+      //   } else if (i == 8) {
+      //     Map<DataKey, String> newCharacteristicData = {};
+      //     newCharacteristicData.addEntries(state.characteristicData.entries);
+
+      //     List<List<DateValuePair>> dateValueCollectionOfLog =
+      //         _dsimRepository.getDateValueCollectionOfLogs();
+
+      //     List<DateValuePair> allValues = dateValueCollectionOfLog
+      //         .expand(
+      //           (dateValuePair) => dateValuePair,
+      //         )
+      //         .toList();
+
+      //     if (allValues.isNotEmpty) {
+      //       newCharacteristicData[DataKey.minTemperatureF] = result[1];
+      //       newCharacteristicData[DataKey.maxTemperatureF] = result[2];
+      //       newCharacteristicData[DataKey.minTemperatureC] = result[3];
+      //       newCharacteristicData[DataKey.maxTemperatureC] = result[4];
+      //       newCharacteristicData[DataKey.historicalMinAttenuation] = result[5];
+      //       newCharacteristicData[DataKey.historicalMaxAttenuation] = result[6];
+      //       newCharacteristicData[DataKey.minVoltage] = result[7];
+      //       newCharacteristicData[DataKey.maxVoltage] = result[8];
+      //       newCharacteristicData[DataKey.minVoltageRipple] = result[9];
+      //       newCharacteristicData[DataKey.maxVoltageRipple] = result[10];
+      //     } else {
+      //       newCharacteristicData[DataKey.minTemperatureF] =
+      //           newCharacteristicData[DataKey.currentTemperatureF] ?? '';
+      //       newCharacteristicData[DataKey.maxTemperatureF] =
+      //           newCharacteristicData[DataKey.currentTemperatureF] ?? '';
+      //       newCharacteristicData[DataKey.minTemperatureC] =
+      //           newCharacteristicData[DataKey.currentTemperatureC] ?? '';
+      //       newCharacteristicData[DataKey.maxTemperatureC] =
+      //           newCharacteristicData[DataKey.currentTemperatureC] ?? '';
+      //       newCharacteristicData[DataKey.historicalMinAttenuation] =
+      //           newCharacteristicData[DataKey.currentAttenuation] ?? '';
+      //       newCharacteristicData[DataKey.historicalMaxAttenuation] =
+      //           newCharacteristicData[DataKey.currentAttenuation] ?? '';
+      //       newCharacteristicData[DataKey.minVoltage] =
+      //           newCharacteristicData[DataKey.currentVoltage] ?? '';
+      //       newCharacteristicData[DataKey.maxVoltage] =
+      //           newCharacteristicData[DataKey.currentVoltage] ?? '';
+      //       newCharacteristicData[DataKey.minVoltageRipple] =
+      //           newCharacteristicData[DataKey.currentVoltageRipple] ?? '';
+      //       newCharacteristicData[DataKey.maxVoltageRipple] =
+      //           newCharacteristicData[DataKey.currentVoltageRipple] ?? '';
+      //     }
+
+      //     emit(state.copyWith(
+      //       loadingStatus: FormStatus.requestSuccess,
+      //       characteristicData: newCharacteristicData,
+      //       dateValueCollectionOfLog: dateValueCollectionOfLog,
+      //     ));
+      //   } else if (i == 9) {
+      //     // 取得 event 資料完成
+      //     // emit(state.copyWith(
+      //     //   loadingStatus: FormStatus.requestSuccess,
+      //     // ));
+      //   }
+      // } else {
+      //   emit(state.copyWith(
+      //     loadingStatus: FormStatus.requestFailure,
+      //     characteristicData: state.characteristicData,
+      //     errorMassage: 'Data loading failed',
+      //   ));
+      //   break;
+      // }
     }
   }
 

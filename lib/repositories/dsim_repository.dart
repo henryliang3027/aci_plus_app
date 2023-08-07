@@ -1116,6 +1116,67 @@ class DsimRepository {
     }
   }
 
+  Future requestCommandForLogChunk(int chunkIndex) async {
+    commandIndex = chunkIndex;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command $chunkIndex');
+    // _stopwatch.reset();
+    // _stopwatch.start();
+    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: 'cmd14 to 29');
+
+    if (commandIndex == 29) {
+      try {
+        var (
+          minTemperatureF,
+          maxTemperatureF,
+          minTemperatureC,
+          maxTemperatureC,
+          historicalMinAttenuation,
+          historicalMaxAttenuation,
+          minVoltage,
+          maxVoltage,
+          minVoltageRipple,
+          maxVoltageRipple,
+        ) = await _completer.future;
+
+        cancelTimeout(name: 'cmd$chunkIndex');
+
+        return [
+          true,
+          minTemperatureF,
+          maxTemperatureF,
+          minTemperatureC,
+          maxTemperatureC,
+          historicalMinAttenuation,
+          historicalMaxAttenuation,
+          minVoltage,
+          maxVoltage,
+          minVoltageRipple,
+          maxVoltageRipple,
+        ];
+      } catch (e) {
+        return [false, '', '', '', '', '', '', '', '', '', ''];
+      }
+    } else {
+      try {
+        bool isDone = await _completer.future;
+        print('cmd$chunkIndex done');
+        cancelTimeout(name: 'cmd$chunkIndex');
+        if (!isDone) {
+          return [false, '', '', '', '', '', '', '', '', '', ''];
+        } else {
+          return [true, '', '', '', '', '', '', '', '', '', ''];
+        }
+      } catch (e) {
+        return [false, '', '', '', '', '', '', '', '', '', ''];
+      }
+    }
+  }
+
   Future requestCommand14To29() async {
     for (int i = 14; i <= 29; i++) {
       commandIndex = i;
