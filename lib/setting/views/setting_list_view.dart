@@ -386,7 +386,7 @@ class _Location extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  AppLocalizations.of(context).location,
+                  '${AppLocalizations.of(context).location}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -456,7 +456,7 @@ class _TGCCabelLength extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  AppLocalizations.of(context).tgcCableLength,
+                  '${AppLocalizations.of(context).tgcCableLength}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -546,7 +546,7 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
                     bottom: 16.0,
                   ),
                   child: Text(
-                    AppLocalizations.of(context).logInterval,
+                    '${AppLocalizations.of(context).logInterval}:',
                     style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w500,
@@ -633,7 +633,7 @@ class _WorkingMode extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  AppLocalizations.of(context).workingMode,
+                  '${AppLocalizations.of(context).workingMode}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,

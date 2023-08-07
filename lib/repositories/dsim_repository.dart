@@ -1327,7 +1327,12 @@ class DsimRepository {
       Command.setLocCCmd[7 + i] = 0;
     }
 
-    if (newLength >= 40) newLength = 40;
+    for (int unit in location.codeUnits) {
+      //如果超出 ascii 的範圍則回傳 false
+      if (unit > 255) {
+        return false;
+      }
+    }
 
     imod = newLength % 12;
     index = (newLength - imod) ~/ 12;
