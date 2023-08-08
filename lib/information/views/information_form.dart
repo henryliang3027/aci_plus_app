@@ -24,7 +24,6 @@ class InformationForm extends StatelessWidget {
       body: const SingleChildScrollView(
         child: Column(
           children: [
-            // _TestCard(),
             _ConnectionCard(),
             _BasicCard(),
             _AlarmCard(),
@@ -103,40 +102,6 @@ class _DeviceRefresh extends StatelessWidget {
           return Container();
         }
       },
-    );
-  }
-}
-
-class _TestCard extends StatelessWidget {
-  const _TestCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  context.read<HomeBloc>().add(const BaudRateTestRequested());
-                },
-                child: Icon(Icons.telegram),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  context.read<HomeBloc>().add(const BaudRateTest2Requested());
-                },
-                child: Icon(Icons.telegram),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

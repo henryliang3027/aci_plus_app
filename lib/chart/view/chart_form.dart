@@ -73,7 +73,7 @@ class ChartForm extends StatelessWidget {
             _PopupMenu(),
           ],
         ),
-        body: const _LogChart(),
+        body: const _LogChartView(),
       ),
     );
   }
@@ -231,8 +231,8 @@ class _PopupMenu extends StatelessWidget {
   }
 }
 
-class _LogChart extends StatelessWidget {
-  const _LogChart({super.key});
+class _LogChartView extends StatelessWidget {
+  const _LogChartView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -334,7 +334,54 @@ class _LogChart extends StatelessWidget {
       );
     }
 
-    Widget buildLoadingFormWithEmptyChart() {
+    // Widget buildLoadingFormWithEmptyChart() {
+    //   List<List<DateValuePair>> emptyDateValueCollection = [
+    //     [],
+    //     [],
+    //     [],
+    //     [],
+    //     [],
+    //   ];
+    //   List<LineSeries> log1Data = getChartDataOfLog1(
+    //       dateValueCollectionOfLog: emptyDateValueCollection);
+    //   List<LineSeries> logVoltage = getChartDataOfLogVoltage(
+    //       dateValueCollectionOfLog: emptyDateValueCollection);
+
+    //   return Stack(
+    //     alignment: Alignment.center,
+    //     children: [
+    //       SingleChildScrollView(
+    //         // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+    //         // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+    //         key: const Key('ChartForm_Empty_Chart'),
+    //         child: Padding(
+    //           padding: const EdgeInsets.symmetric(vertical: 30.0),
+    //           child: Column(
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             children: <Widget>[
+    //               buildChart(log1Data),
+    //               const SizedBox(
+    //                 height: 50.0,
+    //               ),
+    //               buildChart(logVoltage),
+    //             ],
+    //           ),
+    //         ),
+    //       ),
+    //       Container(
+    //         decoration: const BoxDecoration(
+    //           color: Color.fromARGB(70, 158, 158, 158),
+    //         ),
+    //         child: const Center(
+    //           child: CircularProgressIndicator(),
+    //         ),
+    //       )
+    //     ],
+    //   );
+    // }
+
+    Widget buildLoadingFormWithProgressiveChartView(
+        List<List<DateValuePair>> dateValueCollectionOfLog) {
       List<List<DateValuePair>> emptyDateValueCollection = [
         [],
         [],
@@ -342,29 +389,38 @@ class _LogChart extends StatelessWidget {
         [],
         [],
       ];
+      String intValue = Random().nextInt(100).toString();
+      List<LineSeries> log1Data = [];
+      List<LineSeries> logVoltage = [];
+      if (dateValueCollectionOfLog.isEmpty) {
+        log1Data = getChartDataOfLog1(
+            dateValueCollectionOfLog: emptyDateValueCollection);
+        logVoltage = getChartDataOfLogVoltage(
+            dateValueCollectionOfLog: emptyDateValueCollection);
+      } else {
+        log1Data = getChartDataOfLog1(
+            dateValueCollectionOfLog: dateValueCollectionOfLog);
+        logVoltage = getChartDataOfLogVoltage(
+            dateValueCollectionOfLog: dateValueCollectionOfLog);
+      }
+
       return Stack(
         alignment: Alignment.center,
         children: [
           SingleChildScrollView(
             // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
             // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-            key: const Key('ChartForm_Empty_Chart'),
+            key: Key('ChartForm_${intValue}_Chart'),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 30.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  buildChart(
-                    getChartDataOfLog1(
-                        dateValueCollectionOfLog: emptyDateValueCollection),
-                  ),
+                  buildChart(log1Data),
                   const SizedBox(
                     height: 50.0,
                   ),
-                  buildChart(
-                    getChartDataOfLogVoltage(
-                        dateValueCollectionOfLog: emptyDateValueCollection),
-                  ),
+                  buildChart(logVoltage),
                 ],
               ),
             ),
@@ -381,7 +437,7 @@ class _LogChart extends StatelessWidget {
       );
     }
 
-    Widget buildEmptyChart() {
+    Widget buildEmptyChartView() {
       List<List<DateValuePair>> emptyDateValueCollection = [
         [],
         [],
@@ -389,6 +445,11 @@ class _LogChart extends StatelessWidget {
         [],
         [],
       ];
+      List<LineSeries> log1Data = getChartDataOfLog1(
+          dateValueCollectionOfLog: emptyDateValueCollection);
+      List<LineSeries> logVoltage = getChartDataOfLogVoltage(
+          dateValueCollectionOfLog: emptyDateValueCollection);
+
       return SingleChildScrollView(
         // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
         // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
@@ -398,17 +459,11 @@ class _LogChart extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              buildChart(
-                getChartDataOfLog1(
-                    dateValueCollectionOfLog: emptyDateValueCollection),
-              ),
+              buildChart(log1Data),
               const SizedBox(
                 height: 50.0,
               ),
-              buildChart(
-                getChartDataOfLogVoltage(
-                    dateValueCollectionOfLog: emptyDateValueCollection),
-              ),
+              buildChart(logVoltage),
             ],
           ),
         ),
@@ -418,56 +473,11 @@ class _LogChart extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.loadingStatus == FormStatus.requestInProgress) {
-          List<List<DateValuePair>> emptyDateValueCollection = [
-            [],
-            [],
-            [],
-            [],
-            [],
-          ];
-
-          String intValue = Random().nextInt(100).toString();
           return Stack(
             alignment: Alignment.center,
             children: [
-              SingleChildScrollView(
-                // 設定不同的 key, 讓 chart 可以 rebuild 並繪製空的資料
-                // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-                key: Key('ChartForm_${intValue}_Chart'),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      state.dateValueCollectionOfLog.isEmpty
-                          ? buildChart(
-                              getChartDataOfLog1(
-                                  dateValueCollectionOfLog:
-                                      emptyDateValueCollection),
-                            )
-                          : buildChart(
-                              getChartDataOfLog1(
-                                  dateValueCollectionOfLog:
-                                      state.dateValueCollectionOfLog),
-                            ),
-                      const SizedBox(
-                        height: 50.0,
-                      ),
-                      state.dateValueCollectionOfLog.isEmpty
-                          ? buildChart(
-                              getChartDataOfLogVoltage(
-                                  dateValueCollectionOfLog:
-                                      emptyDateValueCollection),
-                            )
-                          : buildChart(
-                              getChartDataOfLogVoltage(
-                                  dateValueCollectionOfLog:
-                                      state.dateValueCollectionOfLog),
-                            ),
-                    ],
-                  ),
-                ),
-              ),
+              buildLoadingFormWithProgressiveChartView(
+                  state.dateValueCollectionOfLog),
               Container(
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(70, 158, 158, 158),
@@ -478,67 +488,14 @@ class _LogChart extends StatelessWidget {
               )
             ],
           );
-          // return buildLoadingFormWithEmptyChart();
-          // return state.dateValueCollectionOfLog.isEmpty
-          //     ? buildLoadingFormWithEmptyChart()
-          //     : SingleChildScrollView(
-          //         // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
-          //         // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-          //         key: const Key('ChartForm_Chart'),
-          //         child: Padding(
-          //           padding: const EdgeInsets.symmetric(vertical: 30.0),
-          //           child: Column(
-          //             mainAxisAlignment: MainAxisAlignment.center,
-          //             children: <Widget>[
-          //               buildChart(
-          //                 getChartDataOfLog1(
-          //                     dateValueCollectionOfLog:
-          //                         state.dateValueCollectionOfLog),
-          //               ),
-          //               const SizedBox(
-          //                 height: 50.0,
-          //               ),
-          //               buildChart(
-          //                 getChartDataOfLogVoltage(
-          //                     dateValueCollectionOfLog:
-          //                         state.dateValueCollectionOfLog),
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //       );
         } else if (state.loadingStatus == FormStatus.requestSuccess) {
           if (state.eventLoadingStatus.isNone) {
             context.read<HomeBloc>().add(const EventRequested());
             return Stack(
               alignment: Alignment.center,
               children: [
-                SingleChildScrollView(
-                  // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
-                  // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-                  key: const Key('ChartForm_Chart'),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 30.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        buildChart(
-                          getChartDataOfLog1(
-                              dateValueCollectionOfLog:
-                                  state.dateValueCollectionOfLog),
-                        ),
-                        const SizedBox(
-                          height: 50.0,
-                        ),
-                        buildChart(
-                          getChartDataOfLogVoltage(
-                              dateValueCollectionOfLog:
-                                  state.dateValueCollectionOfLog),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                buildLoadingFormWithProgressiveChartView(
+                    state.dateValueCollectionOfLog),
                 Container(
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(70, 158, 158, 158),
@@ -553,32 +510,8 @@ class _LogChart extends StatelessWidget {
             return Stack(
               alignment: Alignment.center,
               children: [
-                SingleChildScrollView(
-                  // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
-                  // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-                  key: const Key('ChartForm_Chart'),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 30.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        buildChart(
-                          getChartDataOfLog1(
-                              dateValueCollectionOfLog:
-                                  state.dateValueCollectionOfLog),
-                        ),
-                        const SizedBox(
-                          height: 50.0,
-                        ),
-                        buildChart(
-                          getChartDataOfLogVoltage(
-                              dateValueCollectionOfLog:
-                                  state.dateValueCollectionOfLog),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                buildLoadingFormWithProgressiveChartView(
+                    state.dateValueCollectionOfLog),
                 Container(
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(70, 158, 158, 158),
@@ -590,7 +523,7 @@ class _LogChart extends StatelessWidget {
               ],
             );
           } else if (state.loadingStatus.isRequestFailure) {
-            return buildEmptyChart();
+            return buildEmptyChartView();
           } else {
             return SingleChildScrollView(
               // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
@@ -620,7 +553,7 @@ class _LogChart extends StatelessWidget {
             );
           }
         } else {
-          return buildEmptyChart();
+          return buildEmptyChartView();
         }
       },
     );

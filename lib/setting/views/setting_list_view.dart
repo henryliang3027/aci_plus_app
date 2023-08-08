@@ -394,7 +394,6 @@ class _Location extends StatelessWidget {
                 ),
               ),
               TextField(
-                keyboardType: TextInputType.visiblePassword, // 限制只能輸入英文與標點符號
                 controller: textEditingController,
                 key: const Key('settingForm_locationInput_textField'),
                 style: const TextStyle(

@@ -840,50 +840,6 @@ class DsimRepository {
     }
   }
 
-  Future<dynamic> requestCommandTest1() async {
-    _dataList1.clear();
-    commandIndex = -1;
-    _completer = Completer<dynamic>();
-    List<int> cmd1 = [0xB0, 0x03, 0xAA, 0x00, 12, 255, 0x00, 0x00];
-    CRC16.calculateCRC16(command: cmd1, usDataLength: 6);
-
-    print('get data from request command -1');
-    await _writeSetCommandToCharacteristic(cmd1);
-
-    // setTimeout(Duration(seconds: 0));
-
-    try {
-      String test = await _completer.future;
-
-      return [true, test];
-    } catch (e) {
-      return [false, ''];
-    }
-  }
-
-  Future<dynamic> requestCommandTest2() async {
-    _stopwatch.reset();
-    _stopwatch.start();
-    _dataList2.clear();
-    commandIndex = -2;
-    _completer = Completer<dynamic>();
-    List<int> cmd2 = [0xB0, 0x03, 0xAB, 0x00, 244, 22, 0x00, 0x00];
-    CRC16.calculateCRC16(command: cmd2, usDataLength: 6);
-
-    print('get data from request command -2');
-    await _writeSetCommandToCharacteristic(cmd2);
-
-    // setTimeout(Duration(seconds: 0));
-
-    try {
-      String test = await _completer.future;
-
-      return [true, test];
-    } catch (e) {
-      return [false, ''];
-    }
-  }
-
   Future<dynamic> requestCommand0() async {
     commandIndex = 0;
     _completer = Completer<dynamic>();
