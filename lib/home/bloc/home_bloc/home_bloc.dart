@@ -23,8 +23,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
     on<DeviceConnectionChanged>(_onDeviceConnectionChanged);
-    on<BaudRateTestRequested>(_onBaudRateTestRequested);
-    on<BaudRateTest2Requested>(_onBaudRateTest2Requested);
 
     add(const SplashStateChanged());
   }
@@ -161,25 +159,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
   }
 
-  Future<void> _onBaudRateTestRequested(
-    BaudRateTestRequested event,
-    Emitter<HomeState> emit,
-  ) async {
-    var data = await _dsimRepository.requestCommand0();
-
-    print('result: $data');
-  }
-
-  Future<void> _onBaudRateTest2Requested(
-    BaudRateTest2Requested event,
-    Emitter<HomeState> emit,
-  ) async {
-    var data = await _dsimRepository.requestCommandTest2();
-    // _dsimRepository.requestCommand14To29();
-
-    // print('result: ${data.length}, ${data[data.length - 1]}');
-  }
-
   Future<void> _onDataRequested(
     DataRequested event,
     Emitter<HomeState> emit,
@@ -199,7 +178,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _dsimRepository.requestCommand6,
       _dsimRepository.requestCommand9To12,
 
-      for (int i = 0; i <= 16; i++) ...[
+      for (int i = 0; i < 16; i++) ...[
         _dsimRepository.requestCommandForLogChunk
       ]
       // _dsimRepository.requestCommand14To29,
@@ -309,6 +288,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           case 20:
           case 21:
           case 22:
+            // request log command 14 ~ 29
             Map<DataKey, String> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             List<List<DateValuePair>> dateValueCollectionOfLog =
@@ -382,145 +362,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ));
         break;
       }
-
-      // if (result[0]) {
-      //   if (i == 0) {
-      //     // 因為 state 是 immutable, 所以要創一個新的 map, copy 原來的 element, 加上新的 element,
-      //     // emit 的 state 才算新的, 才會觸發 bloc builder
-      //     Map<DataKey, String> newCharacteristicData = {};
-      //     newCharacteristicData[DataKey.typeNo] = result[1];
-      //     emit(state.copyWith(
-      //       characteristicData: newCharacteristicData,
-      //     ));
-      //   } else if (i == 1) {
-      //     Map<DataKey, String> newCharacteristicData = {};
-      //     newCharacteristicData.addEntries(state.characteristicData.entries);
-      //     newCharacteristicData[DataKey.partNo] = result[1];
-
-      //     emit(state.copyWith(
-      //       characteristicData: newCharacteristicData,
-      //     ));
-      //   } else if (i == 2) {
-      //     Map<DataKey, String> newCharacteristicData = {};
-      //     newCharacteristicData.addEntries(state.characteristicData.entries);
-      //     newCharacteristicData[DataKey.serialNumber] = result[1];
-      //     emit(state.copyWith(
-      //       characteristicData: newCharacteristicData,
-      //     ));
-      //   } else if (i == 3) {
-      //     Map<DataKey, String> newCharacteristicData = {};
-      //     newCharacteristicData.addEntries(state.characteristicData.entries);
-      //     newCharacteristicData[DataKey.logInterval] = result[1];
-      //     newCharacteristicData[DataKey.firmwareVersion] = result[2];
-      //     emit(state.copyWith(
-      //       characteristicData: newCharacteristicData,
-      //     ));
-      //   } else if (i == 4) {
-      //     Map<DataKey, String> newCharacteristicData = {};
-      //     newCharacteristicData.addEntries(state.characteristicData.entries);
-      //     newCharacteristicData[DataKey.currentAttenuation] = result[1];
-      //     newCharacteristicData[DataKey.minAttenuation] = result[2];
-      //     newCharacteristicData[DataKey.maxAttenuation] = result[3];
-      //     newCharacteristicData[DataKey.tgcCableLength] = result[4];
-      //     emit(state.copyWith(
-      //       characteristicData: newCharacteristicData,
-      //     ));
-      //   } else if (i == 5) {
-      //     Map<DataKey, String> newCharacteristicData = {};
-      //     newCharacteristicData.addEntries(state.characteristicData.entries);
-      //     newCharacteristicData[DataKey.workingMode] = result[1];
-      //     newCharacteristicData[DataKey.currentPilot] = result[2];
-      //     newCharacteristicData[DataKey.currentPilotMode] = result[3];
-      //     newCharacteristicData[DataKey.alarmRServerity] = result[4];
-      //     newCharacteristicData[DataKey.alarmTServerity] = result[5];
-      //     newCharacteristicData[DataKey.alarmPServerity] = result[6];
-      //     newCharacteristicData[DataKey.currentTemperatureF] = result[7];
-      //     newCharacteristicData[DataKey.currentTemperatureC] = result[8];
-      //     newCharacteristicData[DataKey.currentVoltage] = result[9];
-      //     emit(state.copyWith(
-      //       characteristicData: newCharacteristicData,
-      //     ));
-      //   } else if (i == 6) {
-      //     Map<DataKey, String> newCharacteristicData = {};
-      //     newCharacteristicData.addEntries(state.characteristicData.entries);
-      //     newCharacteristicData[DataKey.centerAttenuation] = result[1];
-      //     newCharacteristicData[DataKey.currentVoltageRipple] = result[2];
-      //     emit(state.copyWith(
-      //       characteristicData: newCharacteristicData,
-      //     ));
-      //   } else if (i == 7) {
-      //     Map<DataKey, String> newCharacteristicData = {};
-      //     newCharacteristicData.addEntries(state.characteristicData.entries);
-      //     newCharacteristicData[DataKey.location] = result[1];
-      //     emit(state.copyWith(
-      //       characteristicData: newCharacteristicData,
-      //     ));
-      //   } else if (i == 8) {
-      //     Map<DataKey, String> newCharacteristicData = {};
-      //     newCharacteristicData.addEntries(state.characteristicData.entries);
-
-      //     List<List<DateValuePair>> dateValueCollectionOfLog =
-      //         _dsimRepository.getDateValueCollectionOfLogs();
-
-      //     List<DateValuePair> allValues = dateValueCollectionOfLog
-      //         .expand(
-      //           (dateValuePair) => dateValuePair,
-      //         )
-      //         .toList();
-
-      //     if (allValues.isNotEmpty) {
-      //       newCharacteristicData[DataKey.minTemperatureF] = result[1];
-      //       newCharacteristicData[DataKey.maxTemperatureF] = result[2];
-      //       newCharacteristicData[DataKey.minTemperatureC] = result[3];
-      //       newCharacteristicData[DataKey.maxTemperatureC] = result[4];
-      //       newCharacteristicData[DataKey.historicalMinAttenuation] = result[5];
-      //       newCharacteristicData[DataKey.historicalMaxAttenuation] = result[6];
-      //       newCharacteristicData[DataKey.minVoltage] = result[7];
-      //       newCharacteristicData[DataKey.maxVoltage] = result[8];
-      //       newCharacteristicData[DataKey.minVoltageRipple] = result[9];
-      //       newCharacteristicData[DataKey.maxVoltageRipple] = result[10];
-      //     } else {
-      //       newCharacteristicData[DataKey.minTemperatureF] =
-      //           newCharacteristicData[DataKey.currentTemperatureF] ?? '';
-      //       newCharacteristicData[DataKey.maxTemperatureF] =
-      //           newCharacteristicData[DataKey.currentTemperatureF] ?? '';
-      //       newCharacteristicData[DataKey.minTemperatureC] =
-      //           newCharacteristicData[DataKey.currentTemperatureC] ?? '';
-      //       newCharacteristicData[DataKey.maxTemperatureC] =
-      //           newCharacteristicData[DataKey.currentTemperatureC] ?? '';
-      //       newCharacteristicData[DataKey.historicalMinAttenuation] =
-      //           newCharacteristicData[DataKey.currentAttenuation] ?? '';
-      //       newCharacteristicData[DataKey.historicalMaxAttenuation] =
-      //           newCharacteristicData[DataKey.currentAttenuation] ?? '';
-      //       newCharacteristicData[DataKey.minVoltage] =
-      //           newCharacteristicData[DataKey.currentVoltage] ?? '';
-      //       newCharacteristicData[DataKey.maxVoltage] =
-      //           newCharacteristicData[DataKey.currentVoltage] ?? '';
-      //       newCharacteristicData[DataKey.minVoltageRipple] =
-      //           newCharacteristicData[DataKey.currentVoltageRipple] ?? '';
-      //       newCharacteristicData[DataKey.maxVoltageRipple] =
-      //           newCharacteristicData[DataKey.currentVoltageRipple] ?? '';
-      //     }
-
-      //     emit(state.copyWith(
-      //       loadingStatus: FormStatus.requestSuccess,
-      //       characteristicData: newCharacteristicData,
-      //       dateValueCollectionOfLog: dateValueCollectionOfLog,
-      //     ));
-      //   } else if (i == 9) {
-      //     // 取得 event 資料完成
-      //     // emit(state.copyWith(
-      //     //   loadingStatus: FormStatus.requestSuccess,
-      //     // ));
-      //   }
-      // } else {
-      //   emit(state.copyWith(
-      //     loadingStatus: FormStatus.requestFailure,
-      //     characteristicData: state.characteristicData,
-      //     errorMassage: 'Data loading failed',
-      //   ));
-      //   break;
-      // }
     }
   }
 
@@ -558,6 +399,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       dataExportStatus: FormStatus.none,
       device: null,
       characteristicData: const {},
+      dateValueCollectionOfLog: const [],
     ));
 
     _dsimRepository.clearCache();
