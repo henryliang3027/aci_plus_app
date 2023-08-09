@@ -274,6 +274,12 @@ class DsimRepository {
     _connectionStreamSubscription = null;
   }
 
+  Future<int> requestMTU({required String deviceId, required int mtu}) async {
+    final negotiatedMtu = await _ble.requestMtu(deviceId: deviceId, mtu: mtu);
+
+    return negotiatedMtu;
+  }
+
   Future<void> connectToDevice(DiscoveredDevice discoveredDevice) async {
     print('connect to ${discoveredDevice.name}, ${discoveredDevice.id}');
     _connectionReportStreamController = StreamController<ConnectionReport>();

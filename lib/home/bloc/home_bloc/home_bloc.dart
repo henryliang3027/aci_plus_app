@@ -95,10 +95,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     _scanStreamSubscription = null;
   }
 
-  void _onDeviceConnectionChanged(
+  Future<void> _onDeviceConnectionChanged(
     DeviceConnectionChanged event,
     Emitter<HomeState> emit,
-  ) {
+  ) async {
     switch (event.connectionReport.connectionState) {
       case DeviceConnectionState.connecting:
         // emit(state.copyWith(
@@ -107,26 +107,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         // ));
         break;
       case DeviceConnectionState.connected:
+        int mtu = await _dsimRepository.requestMTU(
+            deviceId: state.device!.id, mtu: 247);
+
         emit(state.copyWith(
           scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestSuccess,
+          mtu: mtu,
         ));
 
-        add(const DataRequested());
+        if (mtu == 20 || mtu == 23) {
+          add(const DataRequested());
 
-        //當設定頁面設定資料時, 用來更新Information page 對應的資料欄位
-        _characteristicDataStreamSubscription =
-            _dsimRepository.characteristicData.listen(
-          (data) {
-            add(DeviceCharacteristicChanged(data.entries.first));
-          },
-          onDone: () {},
-        );
-
-        // _loadingResultStreamSubscription =
-        //     _dsimRepository.loadingResult.listen((data) {
-        //   add(LoadingResultChanged(data));
-        // });
+          //當設定頁面設定資料時, 用來更新Information page 對應的資料欄位
+          _characteristicDataStreamSubscription =
+              _dsimRepository.characteristicData.listen(
+            (data) {
+              add(DeviceCharacteristicChanged(data.entries.first));
+            },
+            onDone: () {},
+          );
+        } else {}
 
         break;
       case DeviceConnectionState.disconnecting:

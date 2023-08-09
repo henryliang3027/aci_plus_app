@@ -35,6 +35,9 @@
     "minVoltageRipple": "Minimum",
     "maxVoltageRipple": "Maximum",
 
+    "mfgDate": "MFG Date",
+    "coordinates": "Coordinates",
+
     
     "information": "Information",
     "connection": "Connection",

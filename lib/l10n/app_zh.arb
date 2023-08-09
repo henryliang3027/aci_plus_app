@@ -35,6 +35,9 @@
     "minVoltageRipple": "最小",
     "maxVoltageRipple": "最大",
 
+    "mfgDate": "MFG 日期",
+    "coordinates": "座標",
+
 
     "information": "資訊",
     "connection": "連接裝置",

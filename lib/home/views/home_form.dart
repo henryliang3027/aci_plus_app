@@ -4,6 +4,7 @@ import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/message_localization.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:dsim_app/information/views/information18_page.dart';
 import 'package:dsim_app/information/views/information_page.dart';
 import 'package:dsim_app/setting/views/setting_page.dart';
 import 'package:dsim_app/status/views/status_page.dart';
@@ -104,6 +105,26 @@ class _HomeFormState extends State<HomeForm> {
       );
     }
 
+    List<Widget> buildPages(int mtu) {
+      if (mtu == 20 || mtu == 23) {
+        return const [
+          SettingPage(),
+          StatusPage(),
+          InformationPage(),
+          ChartPage(),
+          AboutPage(),
+        ];
+      } else {
+        return const [
+          SettingPage(),
+          StatusPage(),
+          Information18Page(),
+          ChartPage(),
+          AboutPage(),
+        ];
+      }
+    }
+
     return BlocListener<HomeBloc, HomeState>(
       listener: (context, state) {
         if (state.scanStatus.isRequestFailure) {
@@ -120,16 +141,13 @@ class _HomeFormState extends State<HomeForm> {
           return isExit ?? false;
         },
         child: Scaffold(
-          body: PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: _pageController,
-            children: const [
-              SettingPage(),
-              StatusPage(),
-              InformationPage(),
-              ChartPage(),
-              AboutPage(),
-            ],
+          body: BlocBuilder<HomeBloc, HomeState>(
+            buildWhen: (previous, current) => previous.mtu != current.mtu,
+            builder: (context, state) => PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: _pageController,
+              children: buildPages(context.read<HomeBloc>().state.mtu),
+            ),
           ),
           bottomNavigationBar: BottomNavigationBar(
             backgroundColor: Theme.of(context).colorScheme.onPrimary,
