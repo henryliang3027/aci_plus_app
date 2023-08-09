@@ -5,8 +5,8 @@
   Created by Henry.Liang on 2023/5/11.
   
 */
-NSBluetoothAlwaysUsageDescription = "ACI+ App uses bluetooth to find, connect and transfer data between different devices";
-NSBluetoothAlwaysUsageDescription = "ACI+ App uses bluetooth to find, connect and transfer data between different devices";
-NSLocationAlwaysAndWhenInUseUsageDescription = "ACI+ App wants your consent to use location";
-NSLocationAlwaysUsageDescription = "ACI+ App wants your consent to use location";
-NSLocationWhenInUseUsageDescription = "ACI+ App wants your consent to use location";
+NSBluetoothAlwaysUsageDescription = "La aplicación ACI+ utiliza Bluetooth para buscar, conectar y transferir datos entre diferentes dispositivos.";
+NSBluetoothAlwaysUsageDescription = "La aplicación ACI+ utiliza Bluetooth para buscar, conectar y transferir datos entre diferentes dispositivos.";
+NSLocationAlwaysAndWhenInUseUsageDescription = "La aplicación ACI+ desea tu consentimiento para utilizar la ubicación.";
+NSLocationAlwaysUsageDescription = "La aplicación ACI+ desea tu consentimiento para utilizar la ubicación.";
+NSLocationWhenInUseUsageDescription = "La aplicación ACI+ desea tu consentimiento para utilizar la ubicación.";

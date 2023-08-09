@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<false/>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -24,14 +24,18 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>ACI+ App uses bluetooth to find, connect and transfer data between different devices</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>ACI+ App uses bluetooth to find, connect and transfer data between different devices</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>ACI+ needs your consent to enable location function.</string>
+	<string>ACI+ App wants your consent to use location</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string></string>
+	<string>ACI+ App wants your consent to use location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>ACI+ App wants your consent to use location</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
