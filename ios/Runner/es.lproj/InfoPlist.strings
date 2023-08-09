@@ -5,8 +5,8 @@
   Created by Henry.Liang on 2023/5/11.
   
 */
-LocationAlwaysUsageDescription = "ACI+ necesita tu consentimiento para habilitar la función de ubicación.";
-LocationWhenInUseUsageDescription = "ACI+ necesita tu consentimiento para habilitar la función de ubicación.";
-LocationAlwaysAndWhenInUseUsageDescription= "ACI+ necesita tu consentimiento para habilitar la función de ubicación.";
-BluetoothAlwaysUsageDescription = "ACI+ utiliza Bluetooth para encontrar, conectar y transferir datos entre diferentes dispositivos.";
-BluetoothPeripheralUsageDescription = "ACI+ utiliza Bluetooth para encontrar, conectar y transferir datos entre diferentes dispositivos.";
+NSBluetoothAlwaysUsageDescription = "ACI+ App uses bluetooth to find, connect and transfer data between different devices";
+NSBluetoothAlwaysUsageDescription = "ACI+ App uses bluetooth to find, connect and transfer data between different devices";
+NSLocationAlwaysAndWhenInUseUsageDescription = "ACI+ App wants your consent to use location";
+NSLocationAlwaysUsageDescription = "ACI+ App wants your consent to use location";
+NSLocationWhenInUseUsageDescription = "ACI+ App wants your consent to use location";
