@@ -296,22 +296,22 @@ class _SettingFloatingActionButton extends StatelessWidget {
           : Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                FloatingActionButton(
-                  shape: const CircleBorder(
-                    side: BorderSide.none,
-                  ),
-                  backgroundColor: Colors.grey.withAlpha(200),
-                  child: Icon(
-                    Icons.grain_sharp,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                  onPressed: () {
-                    context.read<SettingBloc>().add(const GraphViewToggled());
-                  },
-                ),
-                const SizedBox(
-                  height: 10.0,
-                ),
+                // FloatingActionButton(
+                //   shape: const CircleBorder(
+                //     side: BorderSide.none,
+                //   ),
+                //   backgroundColor: Colors.grey.withAlpha(200),
+                //   child: Icon(
+                //     Icons.grain_sharp,
+                //     color: Theme.of(context).colorScheme.onPrimary,
+                //   ),
+                //   onPressed: () {
+                //     context.read<SettingBloc>().add(const GraphViewToggled());
+                //   },
+                // ),
+                // const SizedBox(
+                //   height: 10.0,
+                // ),
                 FloatingActionButton(
                   shape: const CircleBorder(
                     side: BorderSide.none,

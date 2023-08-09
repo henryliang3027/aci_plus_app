@@ -120,9 +120,6 @@ class DsimRepository {
   StreamSubscription<List<int>>? _characteristicStreamSubscription;
   late QualifiedCharacteristic _qualifiedCharacteristic;
 
-  List<int> _dataList1 = [];
-  List<int> _dataList2 = [];
-
   final _aciPrefix = 'ACI';
   final _serviceId = 'ffe0';
   final _characteristicId = 'ffe1';
@@ -317,27 +314,9 @@ class DsimRepository {
             List<int> rawData = data;
             print(commandIndex);
             print('data length: ${rawData.length}');
-            // print(
-            //     'doSomething() executed in ${_stopwatch.elapsed.inMilliseconds}');
-            // _stopwatch.stop();
-            // _dataList2.addAll(rawData);
-            // print('${_dataList2.length}, ${_dataList2[_dataList2.length - 1]}');
 
-            if (commandIndex == -1) {
-              _dataList1.addAll(rawData);
-              print(
-                  '${_dataList1.length}, ${_dataList1[_dataList1.length - 1]}, : $rawData');
-            } else if (commandIndex == -2) {
-              _dataList2.addAll(rawData);
-              print(
-                  '${_dataList2.length}, ${_dataList2[_dataList2.length - 1]}, : $rawData');
-
-              if (_dataList2.length == 65536) {}
-            } else if (commandIndex <= 13) {
+            if (commandIndex <= 13) {
               _parseRawData(rawData);
-              // if (commandIndex <= endIndex) {
-              //   writeNextCommand = true;
-              // }
             } else if (commandIndex >= 14 && commandIndex <= 29) {
               _rawLog.addAll(rawData);
               // 一個 log command 總共會接收 261 bytes, 每一次傳回 16 bytes
@@ -346,7 +325,6 @@ class DsimRepository {
                 _rawLog.removeRange(0, 3);
                 _parseLog();
                 _rawLog.clear();
-                // writeNextCommand = true;
               }
             } else if (commandIndex >= 30 && commandIndex <= 37) {
               _rawEvent.addAll(rawData);
@@ -356,7 +334,6 @@ class DsimRepository {
                 _rawEvent.removeRange(0, 3);
                 _parseEvent();
                 _rawEvent.clear();
-                // writeNextCommand = true;
               }
             } else if (commandIndex >= 40 && commandIndex <= 43) {
               _parseSetLocation(rawData);
