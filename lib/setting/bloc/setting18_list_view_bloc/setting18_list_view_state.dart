@@ -1,7 +1,7 @@
-part of 'setting_list_view18_bloc.dart';
+part of 'setting18_list_view_bloc.dart';
 
-class SettingListView18State extends Equatable {
-  const SettingListView18State({
+class Setting18ListViewState extends Equatable {
+  const Setting18ListViewState({
     this.submissionStatus = SubmissionStatus.none,
     this.splitOption = '',
     this.firstChannelLoading = '',
@@ -15,14 +15,14 @@ class SettingListView18State extends Equatable {
   final String lastChannelLoading;
   final String pilotFrequency;
 
-  SettingListView18State copyWith({
+  Setting18ListViewState copyWith({
     SubmissionStatus? submissionStatus,
     String? splitOption,
     String? firstChannelLoading,
     String? lastChannelLoading,
     String? pilotFrequency,
   }) {
-    return SettingListView18State(
+    return Setting18ListViewState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
       splitOption: splitOption ?? this.splitOption,
       firstChannelLoading: firstChannelLoading ?? this.firstChannelLoading,

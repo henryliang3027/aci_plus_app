@@ -1,16 +1,16 @@
-part of 'setting_graph_view18_bloc.dart';
+part of 'setting18_graph_view_bloc.dart';
 
-class SettingGraphView18State extends Equatable {
-  const SettingGraphView18State({
+class Setting18GraphViewState extends Equatable {
+  const Setting18GraphViewState({
     this.submissionStatus = SubmissionStatus.none,
   });
 
   final SubmissionStatus submissionStatus;
 
-  SettingGraphView18State copyWith({
+  Setting18GraphViewState copyWith({
     SubmissionStatus? submissionStatus,
   }) {
-    return SettingGraphView18State(
+    return Setting18GraphViewState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
     );
   }
