@@ -6,6 +6,7 @@ import 'package:dsim_app/core/message_localization.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/information/views/information18_page.dart';
 import 'package:dsim_app/information/views/information_page.dart';
+import 'package:dsim_app/setting/views/setting18_page.dart';
 import 'package:dsim_app/setting/views/setting_page.dart';
 import 'package:dsim_app/status/views/status18_page.dart';
 import 'package:dsim_app/status/views/status_page.dart';
@@ -119,7 +120,7 @@ class _HomeFormState extends State<HomeForm> {
       } else {
         // 適用 1.8G 的頁面
         return const [
-          SettingPage(),
+          Setting18Page(),
           Status18Page(),
           Information18Page(),
           ChartPage(),

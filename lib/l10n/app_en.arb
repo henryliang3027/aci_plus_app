@@ -7,6 +7,10 @@
     "workingMode": "Working Mode",
     "pilotCodeFormatError": "Invalid pilot code",
 
+    "configure": "Configure",
+    "threshold": "Threshold",
+    "control": "Control",
+
     
     "status": "Status",
     "module": "Module",

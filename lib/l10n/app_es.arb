@@ -7,6 +7,10 @@
     "workingMode": "Modo de trabajo",
     "pilotCodeFormatError": "Código de piloto no válido",
 
+    "configure": "Configurar",
+    "threshold": "Umbral",
+    "control": "Control",
+
 
     "status": "estado",
     "module": "Módulo",
