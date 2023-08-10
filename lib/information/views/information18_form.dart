@@ -346,7 +346,7 @@ class _AlarmCard extends StatelessWidget {
                 //     state.characteristicData[DataKey.alarmRServerity] ??
                 //         'default'],
                 iconColor: CustomStyle.alarmColor[alarmUSeverity],
-                title: AppLocalizations.of(context).rfPilotLevelAlarm,
+                title: AppLocalizations.of(context).unitStatusAlarm,
               ),
               alarmItem(
                 iconData: Icons.circle,

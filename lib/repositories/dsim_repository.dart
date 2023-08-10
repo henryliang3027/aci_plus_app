@@ -1573,9 +1573,17 @@ class DsimRepository {
     commandIndex = 46;
     endIndex = 46;
     _writeSetCommandToCharacteristic(Command.set04Cmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: 'cmd set working mode');
+
+    if (_workingModeId == 1) {
+      // AGC
+      setTimeout(
+          duration: Duration(seconds: _agcWorkingModeSettingTimeout),
+          name: 'cmd set working mode');
+    } else {
+      setTimeout(
+          duration: Duration(seconds: _commandExecutionTimeout),
+          name: 'cmd set working mode');
+    }
 
     // 設定後重新讀取 working mode 來比對是否設定成功
     try {

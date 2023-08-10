@@ -7,6 +7,7 @@ import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/information/views/information18_page.dart';
 import 'package:dsim_app/information/views/information_page.dart';
 import 'package:dsim_app/setting/views/setting_page.dart';
+import 'package:dsim_app/status/views/status18_page.dart';
 import 'package:dsim_app/status/views/status_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -107,6 +108,7 @@ class _HomeFormState extends State<HomeForm> {
 
     List<Widget> buildPages(int mtu) {
       if (mtu == 20 || mtu == 23) {
+        // 適用 1G/1.2G 的頁面
         return const [
           SettingPage(),
           StatusPage(),
@@ -115,9 +117,10 @@ class _HomeFormState extends State<HomeForm> {
           AboutPage(),
         ];
       } else {
+        // 適用 1.8G 的頁面
         return const [
           SettingPage(),
-          StatusPage(),
+          Status18Page(),
           Information18Page(),
           ChartPage(),
           AboutPage(),

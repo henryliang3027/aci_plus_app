@@ -55,6 +55,7 @@
     "rfPilotLevelAlarm": "RF Pilot Level",
     "temperatureAlarm": "Temperature",
     "powerSupplyAlarm": "Power Supply",
+    "unitStatusAlarm": "Unit Status",
 
 
     "monitoringChart": "Monitoring Chart",

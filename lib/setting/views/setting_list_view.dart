@@ -933,6 +933,11 @@ class _AGCPrepAttenator extends StatelessWidget {
                               AGCPrepAttenuationChanged(attenuation.toInt()));
                         }
                       : null,
+                  // onChangeEnd: state.editMode
+                  //     ? (attenuation) {
+                  //         print(attenuation);
+                  //       }
+                  //     : null,
                 ),
               ),
               Row(

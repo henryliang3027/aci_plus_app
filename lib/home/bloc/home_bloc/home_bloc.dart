@@ -127,7 +127,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             },
             onDone: () {},
           );
-        } else {}
+        } else {
+          emit(state.copyWith(
+            scanStatus: FormStatus.requestSuccess,
+            connectionStatus: FormStatus.requestSuccess,
+            loadingStatus: FormStatus.requestFailure,
+            mtu: mtu,
+          ));
+        }
 
         break;
       case DeviceConnectionState.disconnecting:

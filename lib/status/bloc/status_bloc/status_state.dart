@@ -1,10 +1,5 @@
 part of 'status_bloc.dart';
 
-enum TemperatureUnit {
-  fahrenheit,
-  celsius,
-}
-
 class StatusState extends Equatable {
   const StatusState({
     this.temperatureUnit = TemperatureUnit.fahrenheit,

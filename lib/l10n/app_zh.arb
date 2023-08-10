@@ -55,6 +55,7 @@
     "rfPilotLevelAlarm": "RF導頻位準警示",
     "temperatureAlarm": "溫度警示",
     "powerSupplyAlarm": "電源警示",
+    "unitStatusAlarm": "Unit Status",
 
     
     "monitoringChart": "監控圖表",
