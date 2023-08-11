@@ -19,6 +19,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<SplashStateChanged>(_onSplashStateChanged);
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
     on<DataRequested>(_onDataRequested);
+    on<Data18Requested>(_onData18Requested);
     on<EventRequested>(_onEventRequested);
     on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
@@ -128,12 +129,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             onDone: () {},
           );
         } else {
-          emit(state.copyWith(
-            scanStatus: FormStatus.requestSuccess,
-            connectionStatus: FormStatus.requestSuccess,
-            loadingStatus: FormStatus.requestFailure,
-            mtu: mtu,
-          ));
+          add(const Data18Requested());
         }
 
         break;
@@ -369,6 +365,46 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           errorMassage: 'Data loading failed',
         ));
         break;
+      }
+    }
+  }
+
+  Future<void> _onData18Requested(
+    Data18Requested event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(state.copyWith(
+      loadingStatus: FormStatus.requestInProgress,
+      characteristicData: {},
+    ));
+
+    List<Function> requestCommands = [
+      _dsimRepository.requestCommand1p8G0,
+    ];
+
+    for (int i = 0; i < requestCommands.length; i++) {
+      List<dynamic> result = [];
+
+      result = await requestCommands[i]();
+
+      if (result[0]) {
+        switch (i) {
+          case 0:
+            // 因為 state 是 immutable, 所以要創一個新的 map, copy 原來的 element, 加上新的 element,
+            // emit 的 state 才算新的, 才會觸發 bloc builder
+            Map<DataKey, String> newCharacteristicData = {};
+            newCharacteristicData[DataKey.typeNo] = result[1];
+            newCharacteristicData[DataKey.partNo] = result[2];
+            newCharacteristicData[DataKey.serialNumber] = result[3];
+            newCharacteristicData[DataKey.firmwareVersion] = result[4];
+            newCharacteristicData[DataKey.mfgDate] = result[5];
+            newCharacteristicData[DataKey.coordinates] = result[6];
+            emit(state.copyWith(
+              loadingStatus: FormStatus.requestSuccess,
+              characteristicData: newCharacteristicData,
+            ));
+            break;
+        }
       }
     }
   }

@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:dsim_app/core/command.dart';
+import 'package:dsim_app/core/command18.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/shared_preference_key.dart';
+import 'package:dsim_app/repositories/dsim18_parser.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
@@ -104,7 +106,9 @@ class SettingData {
 }
 
 class DsimRepository {
-  DsimRepository() : _ble = FlutterReactiveBle() {
+  DsimRepository()
+      : _ble = FlutterReactiveBle(),
+        _dsim18parser = Dsim18Parser() {
     _calculateCRCs();
   }
   final FlutterReactiveBle _ble;
@@ -165,6 +169,8 @@ class DsimRepository {
   final int _agcWorkingModeSettingTimeout = 40; // s
   Timer? _timeoutTimer;
   Stopwatch _stopwatch = Stopwatch();
+
+  Dsim18Parser _dsim18parser;
 
   Future<void> checkBluetoothEnabled() async {
     await GPS.Location().requestService();
@@ -349,6 +355,11 @@ class DsimRepository {
               _parseSetLogInterval(rawData);
             } else if (commandIndex == 46) {
               _parseSetWorkingMode(rawData);
+            } else if (commandIndex == 180) {
+              _dsim18parser.parseRawData(
+                  commandIndex: commandIndex,
+                  rawData: rawData,
+                  completer: _completer);
             }
           });
 
@@ -820,6 +831,50 @@ class DsimRepository {
         break;
       default:
         break;
+    }
+  }
+
+  Future<dynamic> requestCommand1p8G0() async {
+    commandIndex = 180;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G0');
+
+    _writeSetCommandToCharacteristic(_dsim18parser.command18Collection[0]);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: 'cmd1p8G0');
+
+    try {
+      var (
+        partName,
+        partNo,
+        serialNumber,
+        firmwareVersion,
+        mfgDate,
+        coordinate
+      ) = await _completer.future;
+      cancelTimeout(name: '1p8G0');
+
+      return [
+        true,
+        partName,
+        partNo,
+        serialNumber,
+        firmwareVersion,
+        mfgDate,
+        coordinate,
+      ];
+    } catch (e) {
+      return [
+        false,
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ];
     }
   }
 

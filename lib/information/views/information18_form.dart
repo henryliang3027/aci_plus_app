@@ -1,3 +1,4 @@
+import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
@@ -240,44 +241,38 @@ class _BasicCard extends StatelessWidget {
               itemText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context).typeNo,
-                content: 'BLE 1.8G',
-                // content: state.characteristicData[DataKey.typeNo] ?? '',
+                content: state.characteristicData[DataKey.typeNo] ?? '',
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context).partNo,
-                content: 'P1A14X0-0X0G',
-                // content: state.characteristicData[DataKey.partNo] ?? '',
+                content: state.characteristicData[DataKey.partNo] ?? '',
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context).mfgDate,
-                content: '08/08/2023',
-                // content: state.characteristicData[DataKey.partNo] ?? '',
+                content: state.characteristicData[DataKey.mfgDate] ?? '',
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context).firmwareVersion,
-                content: 'A',
-                // content: state.characteristicData[DataKey.partNo] ?? '',
+                content:
+                    state.characteristicData[DataKey.firmwareVersion] ?? '',
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context).serialNumber,
-                content: '12345678',
-                // content: state.characteristicData[DataKey.partNo] ?? '',
+                content: state.characteristicData[DataKey.serialNumber] ?? '',
               ),
               itemMultipleLineText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context).location,
-                content: '23307 66th Avenue South Kent WA98032',
-                // content: state.characteristicData[DataKey.location] ?? '',
+                content: state.characteristicData[DataKey.location] ?? '',
               ),
               itemMultipleLineText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context).coordinates,
-                content: '47.34534345345345, -122.254564456467',
-                // content: state.characteristicData[DataKey.location] ?? '',
+                content: state.characteristicData[DataKey.coordinates] ?? '',
               ),
             ],
           ),

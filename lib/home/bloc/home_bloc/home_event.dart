@@ -51,6 +51,13 @@ class DataRequested extends HomeEvent {
   List<Object?> get props => [];
 }
 
+class Data18Requested extends HomeEvent {
+  const Data18Requested();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class EventRequested extends HomeEvent {
   const EventRequested();
 
