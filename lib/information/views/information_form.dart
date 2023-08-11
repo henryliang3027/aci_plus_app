@@ -241,7 +241,7 @@ class _BasicCard extends StatelessWidget {
               itemText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context).typeNo,
-                content: state.characteristicData[DataKey.typeNo] ?? '',
+                content: state.characteristicData[DataKey.partName] ?? '',
               ),
               itemText(
                 loadingStatus: state.loadingStatus,

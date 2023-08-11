@@ -1,5 +1,5 @@
 enum DataKey {
-  typeNo,
+  partName,
   partNo,
   serialNumber,
   firmwareVersion,

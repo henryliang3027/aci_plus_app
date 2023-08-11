@@ -202,7 +202,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             // 因為 state 是 immutable, 所以要創一個新的 map, copy 原來的 element, 加上新的 element,
             // emit 的 state 才算新的, 才會觸發 bloc builder
             Map<DataKey, String> newCharacteristicData = {};
-            newCharacteristicData[DataKey.typeNo] = result[1];
+            newCharacteristicData[DataKey.partName] = result[1];
             emit(state.copyWith(
               characteristicData: newCharacteristicData,
             ));
@@ -380,6 +380,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     List<Function> requestCommands = [
       _dsimRepository.requestCommand1p8G0,
+      _dsimRepository.requestCommand1p8G1,
     ];
 
     for (int i = 0; i < requestCommands.length; i++) {
@@ -393,16 +394,35 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             // 因為 state 是 immutable, 所以要創一個新的 map, copy 原來的 element, 加上新的 element,
             // emit 的 state 才算新的, 才會觸發 bloc builder
             Map<DataKey, String> newCharacteristicData = {};
-            newCharacteristicData[DataKey.typeNo] = result[1];
+            newCharacteristicData[DataKey.partName] = result[1];
             newCharacteristicData[DataKey.partNo] = result[2];
             newCharacteristicData[DataKey.serialNumber] = result[3];
             newCharacteristicData[DataKey.firmwareVersion] = result[4];
             newCharacteristicData[DataKey.mfgDate] = result[5];
             newCharacteristicData[DataKey.coordinates] = result[6];
             emit(state.copyWith(
+              // loadingStatus: FormStatus.requestSuccess,
+              characteristicData: newCharacteristicData,
+            ));
+            break;
+          case 1:
+            // 因為 state 是 immutable, 所以要創一個新的 map, copy 原來的 element, 加上新的 element,
+            // emit 的 state 才算新的, 才會觸發 bloc builder
+            Map<DataKey, String> newCharacteristicData = {};
+            newCharacteristicData.addEntries(state.characteristicData.entries);
+            newCharacteristicData[DataKey.minTemperatureC] = result[1];
+            newCharacteristicData[DataKey.maxTemperatureC] = result[2];
+            newCharacteristicData[DataKey.minTemperatureF] = result[3];
+            newCharacteristicData[DataKey.maxTemperatureF] = result[4];
+            newCharacteristicData[DataKey.minVoltage] = result[5];
+            newCharacteristicData[DataKey.maxVoltage] = result[6];
+            newCharacteristicData[DataKey.location] = result[7];
+            emit(state.copyWith(
               loadingStatus: FormStatus.requestSuccess,
               characteristicData: newCharacteristicData,
             ));
+            break;
+          default:
             break;
         }
       }

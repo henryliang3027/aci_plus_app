@@ -360,6 +360,11 @@ class DsimRepository {
                   commandIndex: commandIndex,
                   rawData: rawData,
                   completer: _completer);
+            } else if (commandIndex == 181) {
+              _dsim18parser.parseRawData(
+                  commandIndex: commandIndex,
+                  rawData: rawData,
+                  completer: _completer);
             }
           });
 
@@ -840,7 +845,8 @@ class DsimRepository {
 
     print('get data from request command 1p8G0');
 
-    _writeSetCommandToCharacteristic(_dsim18parser.command18Collection[0]);
+    _writeSetCommandToCharacteristic(
+        _dsim18parser.command18Collection[commandIndex - 180]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: 'cmd1p8G0');
@@ -868,6 +874,54 @@ class DsimRepository {
     } catch (e) {
       return [
         false,
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ];
+    }
+  }
+
+  Future<dynamic> requestCommand1p8G1() async {
+    commandIndex = 181;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G1');
+
+    _writeSetCommandToCharacteristic(
+        _dsim18parser.command18Collection[commandIndex - 180]);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: 'cmd1p8G1');
+
+    try {
+      var (
+        minTemperatureC,
+        maxTemperatureC,
+        minTemperatureF,
+        maxTemperatureF,
+        minVoltage,
+        maxVoltage,
+        location,
+      ) = await _completer.future;
+      cancelTimeout(name: '1p8G1');
+
+      return [
+        true,
+        minTemperatureC,
+        maxTemperatureC,
+        minTemperatureF,
+        maxTemperatureF,
+        minVoltage,
+        maxVoltage,
+        location,
+      ];
+    } catch (e) {
+      return [
+        false,
+        '',
         '',
         '',
         '',
