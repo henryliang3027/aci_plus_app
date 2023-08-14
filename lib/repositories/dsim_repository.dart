@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:dsim_app/core/command.dart';
-import 'package:dsim_app/core/command18.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/shared_preference_key.dart';
