@@ -5,13 +5,13 @@ import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting18_list_view_bloc/setting18_list_view_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:dsim_app/setting/views/setting18_graph_view.dart';
-import 'package:dsim_app/setting/views/setting18_list_view.dart';
+import 'package:dsim_app/setting/views/setting18_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SettingForm extends StatelessWidget {
-  const SettingForm({super.key});
+class Setting18Form extends StatelessWidget {
+  const Setting18Form({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +149,7 @@ class _ViewLayout extends StatelessWidget {
           return Stack(
             alignment: Alignment.center,
             children: [
-              Setting18ListView(),
+              const Setting18TabBar(),
               Container(
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(70, 158, 158, 158),
@@ -204,7 +204,7 @@ class _Layout extends StatelessWidget {
           return Setting18GraphView();
         } else {
           context.read<Setting18ListViewBloc>().add(Initialized(isLoadData));
-          return Setting18ListView();
+          return Setting18TabBar();
         }
       },
     );

@@ -381,6 +381,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List<Function> requestCommands = [
       _dsimRepository.requestCommand1p8G0,
       _dsimRepository.requestCommand1p8G1,
+      _dsimRepository.requestCommand1p8G2,
     ];
 
     for (int i = 0; i < requestCommands.length; i++) {
@@ -418,6 +419,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             newCharacteristicData[DataKey.maxVoltage] = result[6];
             newCharacteristicData[DataKey.location] = result[7];
             emit(state.copyWith(
+              characteristicData: newCharacteristicData,
+            ));
+            break;
+          case 2:
+            Map<DataKey, String> newCharacteristicData = {};
+            newCharacteristicData.addEntries(state.characteristicData.entries);
+            newCharacteristicData[DataKey.currentTemperatureC] = result[1];
+            newCharacteristicData[DataKey.currentTemperatureF] = result[2];
+            newCharacteristicData[DataKey.currentVoltage] = result[3];
+            emit(state.copyWith(
               loadingStatus: FormStatus.requestSuccess,
               characteristicData: newCharacteristicData,
             ));
@@ -425,6 +436,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           default:
             break;
         }
+      } else {
+        emit(state.copyWith(
+          loadingStatus: FormStatus.requestFailure,
+          characteristicData: state.characteristicData,
+          errorMassage: 'Data loading failed',
+        ));
+        break;
       }
     }
   }

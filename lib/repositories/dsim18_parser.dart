@@ -92,8 +92,9 @@ class Dsim18Parser {
 
         double maxTemperature =
             rawMaxTemperatureCByteData.getInt16(0, Endian.little) / 10;
-        maxTemperatureC = maxTemperature.toString();
-        maxTemperatureF = _convertToFahrenheit(maxTemperature).toString();
+        maxTemperatureC = maxTemperature.toStringAsFixed(1);
+        maxTemperatureF =
+            _convertToFahrenheit(maxTemperature).toStringAsFixed(1);
 
         // 解析 minTemperatureC, minTemperatureF
         List<int> rawMinTemperatureC = rawData.sublist(5, 7);
@@ -102,8 +103,9 @@ class Dsim18Parser {
 
         double minTemperature =
             rawMinTemperatureCByteData.getInt16(0, Endian.little) / 10;
-        minTemperatureC = minTemperature.toString();
-        minTemperatureF = _convertToFahrenheit(minTemperature).toString();
+        minTemperatureC = minTemperature.toStringAsFixed(1);
+        minTemperatureF =
+            _convertToFahrenheit(minTemperature).toStringAsFixed(1);
 
         // 解析 maxVoltage, minVoltage
         List<int> rawMaxVoltage = rawData.sublist(7, 9);
@@ -135,6 +137,65 @@ class Dsim18Parser {
             location,
           ));
         }
+        break;
+      case 182:
+        String currentTemperatureC = '';
+        String currentTemperatureF = '';
+        String currentVoltage = '';
+        String currentRFInputTotalPower = '';
+        String currentRFOutputTotalPower = '';
+
+        // 解析 currentTemperatureC, currentTemperatureC
+        List<int> rawCurrentTemperatureC = rawData.sublist(4, 6);
+        ByteData rawCurrentTemperatureCByteData =
+            ByteData.sublistView(Uint8List.fromList(rawCurrentTemperatureC));
+
+        double currentTemperature =
+            rawCurrentTemperatureCByteData.getInt16(0, Endian.little) / 10;
+
+        currentTemperatureC = currentTemperature.toStringAsFixed(1);
+        currentTemperatureF =
+            _convertToFahrenheit(currentTemperature).toStringAsFixed(1);
+
+        // 解析 currentVoltage
+        List<int> rawCurrentVoltage = rawData.sublist(6, 8);
+        ByteData rawCurrentVoltageByteData =
+            ByteData.sublistView(Uint8List.fromList(rawCurrentVoltage));
+
+        currentVoltage =
+            (rawCurrentVoltageByteData.getInt16(0, Endian.little) / 10)
+                .toStringAsFixed(1);
+
+        // 解析 currentRFInputTotalPower
+        List<int> rawCurrentRFInputTotalPower = rawData.sublist(18, 20);
+        ByteData rawCurrentRFInputTotalPowerByteData = ByteData.sublistView(
+            Uint8List.fromList(rawCurrentRFInputTotalPower));
+
+        currentRFInputTotalPower =
+            (rawCurrentRFInputTotalPowerByteData.getInt16(0, Endian.little) /
+                    10)
+                .toStringAsFixed(1);
+
+        // 解析 currentRFOutputTotalPower
+        List<int> rawCurrentRFOutputTotalPower = rawData.sublist(20, 22);
+        ByteData rawCurrentRFOutputTotalPowerByteData = ByteData.sublistView(
+            Uint8List.fromList(rawCurrentRFOutputTotalPower));
+
+        currentRFOutputTotalPower =
+            (rawCurrentRFOutputTotalPowerByteData.getInt16(0, Endian.little) /
+                    10)
+                .toStringAsFixed(1);
+
+        if (!completer.isCompleted) {
+          completer.complete((
+            currentTemperatureC,
+            currentTemperatureF,
+            currentVoltage,
+            currentRFInputTotalPower,
+            currentRFOutputTotalPower,
+          ));
+        }
+        break;
 
       default:
         break;
@@ -149,8 +210,10 @@ class Dsim18Parser {
   void calculate18CRCs() {
     CRC16.calculateCRC16(command: Command18.req00Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.req01Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.req02Cmd, usDataLength: 6);
 
     _command18Collection.add(Command18.req00Cmd);
     _command18Collection.add(Command18.req01Cmd);
+    _command18Collection.add(Command18.req02Cmd);
   }
 }

@@ -354,12 +354,7 @@ class DsimRepository {
               _parseSetLogInterval(rawData);
             } else if (commandIndex == 46) {
               _parseSetWorkingMode(rawData);
-            } else if (commandIndex == 180) {
-              _dsim18parser.parseRawData(
-                  commandIndex: commandIndex,
-                  rawData: rawData,
-                  completer: _completer);
-            } else if (commandIndex == 181) {
+            } else if (commandIndex >= 180) {
               _dsim18parser.parseRawData(
                   commandIndex: commandIndex,
                   rawData: rawData,
@@ -922,6 +917,48 @@ class DsimRepository {
         false,
         '',
         '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ];
+    }
+  }
+
+  Future<dynamic> requestCommand1p8G2() async {
+    commandIndex = 182;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G2');
+
+    _writeSetCommandToCharacteristic(
+        _dsim18parser.command18Collection[commandIndex - 180]);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: 'cmd1p8G2');
+
+    try {
+      var (
+        currentTemperatureC,
+        currentTemperatureF,
+        currentVoltage,
+        currentRFInputTotalPower,
+        currentRFOutputTotalPower,
+      ) = await _completer.future;
+      cancelTimeout(name: '1p8G2');
+
+      return [
+        true,
+        currentTemperatureC,
+        currentTemperatureF,
+        currentVoltage,
+        currentRFInputTotalPower,
+        currentRFOutputTotalPower,
+      ];
+    } catch (e) {
+      return [
+        false,
         '',
         '',
         '',

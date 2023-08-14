@@ -10,6 +10,17 @@
     "configure": "Configure",
     "threshold": "Threshold",
     "control": "Control",
+    "splitOption": "Split Options",
+    "firstChannelLoading": "First Channel Loading",
+    "lastChannelLoading": "Last Channel Loading",
+    "frequency": "Freq. (MHz)",
+    "level": "Level (dBmV)",
+    "pilotFrequencySelect": "Pilot Frequency Select",
+    "pilotFrequency1": "Pilot Frequency 1",
+    "pilotFrequency2": "Pilot Frequency 2",
+    "fwdAgcMode": "FWD AGC Mode",
+    "autoLevelControl": "Auto Level Control",
+
 
     
     "status": "Status",

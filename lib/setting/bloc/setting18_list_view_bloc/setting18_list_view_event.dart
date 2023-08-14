@@ -15,3 +15,24 @@ class Initialized extends Setting18ListViewEvent {
   @override
   List<Object> get props => [isLoadData];
 }
+
+class EditModeEnabled extends Setting18ListViewEvent {
+  const EditModeEnabled();
+
+  @override
+  List<Object> get props => [];
+}
+
+class EditModeDisabled extends Setting18ListViewEvent {
+  const EditModeDisabled();
+
+  @override
+  List<Object> get props => [];
+}
+
+class SettingSubmitted extends Setting18ListViewEvent {
+  const SettingSubmitted();
+
+  @override
+  List<Object> get props => [];
+}

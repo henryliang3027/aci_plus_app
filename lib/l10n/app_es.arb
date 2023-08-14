@@ -10,6 +10,16 @@
     "configure": "Configurar",
     "threshold": "Umbral",
     "control": "Control",
+    "splitOption": "Opciones Divididas",
+    "firstChannelLoading": "Cargando Primer Canal",
+    "lastChannelLoading": "Cargando Último Canal",
+    "frequency": "Frecuencia (MHz)",
+    "level": "Nivel (dBmV)",
+    "pilotFrequencySelect": "Selección Frecuencia Piloto",
+    "pilotFrequency1": "Frecuencia Piloto 1",
+    "pilotFrequency2": "Frecuencia Piloto 2",
+    "fwdAgcMode": "FWD AGC Modo",
+    "autoLevelControl": "Automático Nivel Control",
 
 
     "status": "estado",

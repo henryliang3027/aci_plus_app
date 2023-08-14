@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Setting18ListView extends StatelessWidget {
-  const Setting18ListView({super.key});
+class Setting18ControlView extends StatelessWidget {
+  const Setting18ControlView({super.key});
 
   @override
   Widget build(BuildContext context) {

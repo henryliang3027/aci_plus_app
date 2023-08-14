@@ -12,9 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingListView extends StatelessWidget {
-  SettingListView({
-    super.key,
-  });
+  SettingListView({super.key});
 
   final TextEditingController locationTextEditingController =
       TextEditingController();
