@@ -58,6 +58,17 @@ class Setting18ConfigureView extends StatelessWidget {
                         textEditingController:
                             lastChannelLoadingLevelTextEditingController,
                       ),
+                      const _PilotFrequencyMode(),
+                      _PilotFrequency1(
+                        textEditingController:
+                            pilotFrequency1TextEditingController,
+                      ),
+                      _PilotFrequency2(
+                        textEditingController:
+                            pilotFrequency2TextEditingController,
+                      ),
+                      const _FwdAGCMode(),
+                      const _AutoLevelControl(),
                     ],
                   ),
                 ),
@@ -399,6 +410,420 @@ class _LastChannelLoadingLevel extends StatelessWidget {
                   filled: true,
                   fillColor: Colors.white,
                   counterText: '',
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _PilotFrequencyMode extends StatelessWidget {
+  const _PilotFrequencyMode({
+    super.key,
+  });
+
+  final List<String> pilotFrequencyModeTexts = const [
+    'Auto',
+    'Manual',
+    'Test',
+  ];
+
+  List<bool> _getSelectionState(String selectedPilotFrequencyMode) {
+    Map<String, bool> pilotFrequencyModeMap = {
+      'Auto': false,
+      'Manual': false,
+      'Test': false,
+    };
+
+    if (pilotFrequencyModeMap.containsKey(selectedPilotFrequencyMode)) {
+      pilotFrequencyModeMap[selectedPilotFrequencyMode] = true;
+    }
+
+    return pilotFrequencyModeMap.values.toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+      buildWhen: (previous, current) =>
+          previous.pilotFrequencyMode != current.pilotFrequencyMode ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 40.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: Text(
+                  '${AppLocalizations.of(context).pilotFrequencySelect}:',
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              LayoutBuilder(
+                builder: (context, constraints) => ToggleButtons(
+                  direction: Axis.horizontal,
+                  onPressed: (int index) {
+                    if (state.editMode) {
+                      context.read<Setting18ListViewBloc>().add(
+                          PilotFrequencyModeChanged(
+                              pilotFrequencyModeTexts[index]));
+                    }
+                  },
+                  textStyle: const TextStyle(fontSize: 18.0),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  selectedBorderColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // indigo border color
+                  selectedColor: Theme.of(context)
+                      .colorScheme
+                      .onPrimary, // white text color
+
+                  fillColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // selected
+                  color:
+                      Theme.of(context).colorScheme.secondary, // not selected
+                  constraints: BoxConstraints.expand(
+                    width: (constraints.maxWidth - 4) /
+                        pilotFrequencyModeTexts.length,
+                  ),
+                  isSelected: _getSelectionState(state.pilotFrequencyMode),
+                  children: <Widget>[
+                    for (String text in pilotFrequencyModeTexts) ...[
+                      Text(text)
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _PilotFrequency1 extends StatelessWidget {
+  const _PilotFrequency1({
+    super.key,
+    required this.textEditingController,
+  });
+
+  final TextEditingController textEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 40.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: Text(
+                  '${AppLocalizations.of(context).pilotFrequency1}:',
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              TextField(
+                controller: textEditingController,
+                key: const Key('setting18Form_pilotFrequency1Input_textField'),
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                ),
+                enabled: state.editMode,
+                textInputAction: TextInputAction.done,
+                onChanged: (location) {
+                  // context
+                  //     .read<Setting18ListViewBloc>()
+                  //     .add(LocationChanged(location));
+                },
+                maxLength: 40,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  contentPadding: EdgeInsets.all(10.0),
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
+                  counterText: '',
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _PilotFrequency2 extends StatelessWidget {
+  const _PilotFrequency2({
+    super.key,
+    required this.textEditingController,
+  });
+
+  final TextEditingController textEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 40.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: Text(
+                  '${AppLocalizations.of(context).pilotFrequency2}:',
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              TextField(
+                controller: textEditingController,
+                key: const Key('setting18Form_pilotFrequency2Input_textField'),
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                ),
+                enabled: state.editMode,
+                textInputAction: TextInputAction.done,
+                onChanged: (location) {
+                  // context
+                  //     .read<Setting18ListViewBloc>()
+                  //     .add(LocationChanged(location));
+                },
+                maxLength: 40,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  contentPadding: EdgeInsets.all(10.0),
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
+                  counterText: '',
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _FwdAGCMode extends StatelessWidget {
+  const _FwdAGCMode({
+    super.key,
+  });
+
+  final List<String> fwdAGCModeTexts = const [
+    'ON',
+    'OFF',
+  ];
+
+  List<bool> _getSelectionState(String selectedFwdAGCMode) {
+    Map<String, bool> fwdAGCModeMap = {
+      'ON': false,
+      'OFF': false,
+    };
+
+    if (fwdAGCModeMap.containsKey(selectedFwdAGCMode)) {
+      fwdAGCModeMap[selectedFwdAGCMode] = true;
+    }
+
+    return fwdAGCModeMap.values.toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+      buildWhen: (previous, current) =>
+          previous.fwdAGCMode != current.fwdAGCMode ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 40.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: Text(
+                  '${AppLocalizations.of(context).fwdAGCMode}:',
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              LayoutBuilder(
+                builder: (context, constraints) => ToggleButtons(
+                  direction: Axis.horizontal,
+                  onPressed: (int index) {
+                    if (state.editMode) {
+                      context
+                          .read<Setting18ListViewBloc>()
+                          .add(FwdAGCModeChanged(fwdAGCModeTexts[index]));
+                    }
+                  },
+                  textStyle: const TextStyle(fontSize: 18.0),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  selectedBorderColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // indigo border color
+                  selectedColor: Theme.of(context)
+                      .colorScheme
+                      .onPrimary, // white text color
+
+                  fillColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // selected
+                  color:
+                      Theme.of(context).colorScheme.secondary, // not selected
+                  constraints: BoxConstraints.expand(
+                    width: (constraints.maxWidth - 4) / fwdAGCModeTexts.length,
+                  ),
+                  isSelected: _getSelectionState(state.fwdAGCMode),
+                  children: <Widget>[
+                    for (String text in fwdAGCModeTexts) ...[Text(text)],
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _AutoLevelControl extends StatelessWidget {
+  const _AutoLevelControl({
+    super.key,
+  });
+
+  final List<String> autoLevelControlTexts = const [
+    'ON',
+    'OFF',
+  ];
+
+  List<bool> _getSelectionState(String selectedAutoLevelControl) {
+    Map<String, bool> autoLevelControlMap = {
+      'ON': false,
+      'OFF': false,
+    };
+
+    if (autoLevelControlMap.containsKey(selectedAutoLevelControl)) {
+      autoLevelControlMap[selectedAutoLevelControl] = true;
+    }
+
+    return autoLevelControlMap.values.toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+      buildWhen: (previous, current) =>
+          previous.autoLevelControl != current.autoLevelControl ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 40.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: Text(
+                  '${AppLocalizations.of(context).autoLevelControl}:',
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              LayoutBuilder(
+                builder: (context, constraints) => ToggleButtons(
+                  direction: Axis.horizontal,
+                  onPressed: (int index) {
+                    if (state.editMode) {
+                      context.read<Setting18ListViewBloc>().add(
+                          AutoLevelControlChanged(
+                              autoLevelControlTexts[index]));
+                    }
+                  },
+                  textStyle: const TextStyle(fontSize: 18.0),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  selectedBorderColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // indigo border color
+                  selectedColor: Theme.of(context)
+                      .colorScheme
+                      .onPrimary, // white text color
+
+                  fillColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // selected
+                  color:
+                      Theme.of(context).colorScheme.secondary, // not selected
+                  constraints: BoxConstraints.expand(
+                    width: (constraints.maxWidth - 4) /
+                        autoLevelControlTexts.length,
+                  ),
+                  isSelected: _getSelectionState(state.autoLevelControl),
+                  children: <Widget>[
+                    for (String text in autoLevelControlTexts) ...[Text(text)],
+                  ],
                 ),
               ),
             ],

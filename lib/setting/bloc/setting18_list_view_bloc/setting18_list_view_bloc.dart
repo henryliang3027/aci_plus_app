@@ -12,6 +12,18 @@ class Setting18ListViewBloc
       : _dsimRepository = dsimRepository,
         super(const Setting18ListViewState()) {
     on<Initialized>(_onInitialized);
+    on<SplitOptionChanged>(_onSplitOptionChanged);
+    on<FirstChannelLoadingFrequencyChanged>(
+        _onFirstChannelLoadingFrequencyChanged);
+    on<FirstChannelLoadingLevelChanged>(_onFirstChannelLoadingLevelChanged);
+    on<LastChannelLoadingFrequencyChanged>(
+        _onLastChannelLoadingFrequencyChanged);
+    on<LastChannelLoadingLevelChanged>(_onLastChannelLoadingLevelChanged);
+    on<PilotFrequencyModeChanged>(_onPilotFrequencyModeChanged);
+    on<PilotFrequency1Changed>(_onPilotFrequency1Changed);
+    on<PilotFrequency2Changed>(_onPilotFrequency2Changed);
+    on<FwdAGCModeChanged>(_onFwdAGCModeChanged);
+    on<AutoLevelControlChanged>(_onAutoLevelControlChanged);
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
@@ -23,6 +35,96 @@ class Setting18ListViewBloc
     Initialized event,
     Emitter<Setting18ListViewState> emit,
   ) async {}
+
+  void _onSplitOptionChanged(
+    SplitOptionChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      splitOption: event.splitOption,
+    ));
+  }
+
+  void _onFirstChannelLoadingFrequencyChanged(
+    FirstChannelLoadingFrequencyChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
+    ));
+  }
+
+  void _onFirstChannelLoadingLevelChanged(
+    FirstChannelLoadingLevelChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      firstChannelLoadingLevel: event.firstChannelLoadingLevel,
+    ));
+  }
+
+  void _onLastChannelLoadingFrequencyChanged(
+    LastChannelLoadingFrequencyChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
+    ));
+  }
+
+  void _onLastChannelLoadingLevelChanged(
+    LastChannelLoadingLevelChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      lastChannelLoadingLevel: event.lastChannelLoadingLevel,
+    ));
+  }
+
+  void _onPilotFrequencyModeChanged(
+    PilotFrequencyModeChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      pilotFrequencyMode: event.pilotFrequencyMode,
+    ));
+  }
+
+  void _onPilotFrequency1Changed(
+    PilotFrequency1Changed event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      pilotFrequency1: event.pilotFrequency1,
+    ));
+  }
+
+  void _onPilotFrequency2Changed(
+    PilotFrequency2Changed event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      pilotFrequency2: event.pilotFrequency2,
+    ));
+  }
+
+  void _onFwdAGCModeChanged(
+    FwdAGCModeChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      fwdAGCMode: event.fwdAGCMode,
+    ));
+  }
+
+  void _onAutoLevelControlChanged(
+    AutoLevelControlChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      autoLevelControl: event.autoLevelControl,
+    ));
+  }
 
   void _onEditModeEnabled(
     EditModeEnabled event,
