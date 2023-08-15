@@ -22,6 +22,7 @@
     "autoLevelControl": "Automático Nivel Control",
     "forwardControlParameters": "Forward Control Parameters",
     "returnControlParameters": "Return Control Parameters",
+    "alarmControlParameters": "Alarm Control Parameters",
     "fwdInputAttenuation": "FWD Input Attenuation",
     "fwdInputEQ": "FWD Input EQ",
     "rtnInputAttenuation2": "RTN Input Attenuation 2",

@@ -36,16 +36,20 @@ class Setting18ControlView extends StatelessWidget {
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.all(
+                  padding: const EdgeInsets.all(
                     CustomStyle.sizeXL,
                   ),
                   child: Column(
                     children: [
                       _ControlTitle(
+                        title:
+                            AppLocalizations.of(context).alarmControlParameters,
+                      ),
+                      _AlarmControl(),
+                      _ControlTitle(
                         title: AppLocalizations.of(context)
                             .forwardControlParameters,
                       ),
-
                       const _FwdInputAttenuation(),
                       const _FwdInputEQ(),
                       _ControlTitle(
@@ -60,28 +64,6 @@ class Setting18ControlView extends StatelessWidget {
                       const _RtnIngressSetting2(),
                       const _RtnIngressSetting3(),
                       const _RtnIngressSetting4(),
-                      // _FwdInputEQ(
-                      //   textEditingController: fwdInputEQTextEditingController,
-                      // ),
-                      // _LastChannelLoadingFrequency(
-                      //   textEditingController:
-                      //       lastChannelLoadingFrequencyTextEditingController,
-                      // ),
-                      // _LastChannelLoadingLevel(
-                      //   textEditingController:
-                      //       lastChannelLoadingLevelTextEditingController,
-                      // ),
-                      // const _PilotFrequencyMode(),
-                      // _PilotFrequency1(
-                      //   textEditingController:
-                      //       pilotFrequency1TextEditingController,
-                      // ),
-                      // _PilotFrequency2(
-                      //   textEditingController:
-                      //       pilotFrequency2TextEditingController,
-                      // ),
-                      // const _FwdAGCMode(),
-                      // const _AutoLevelControl(),
                     ],
                   ),
                 ),
@@ -175,6 +157,36 @@ class _ControlTitle extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _AlarmControl extends StatelessWidget {
+  const _AlarmControl({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: 20,
+            ),
+            Text('Enable'),
+            Text('Min'),
+            Text('Max'),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Temperature'),
+            Checkbox(value: true, onChanged: (bool? value) {}),
+          ],
+        ),
+      ],
     );
   }
 }
