@@ -66,6 +66,7 @@ class _AppView extends StatelessWidget {
           foregroundColor: Colors.white,
           backgroundColor: Colors.indigo,
         ),
+
         useMaterial3: true,
       ),
       home: BlocBuilder<HomeBloc, HomeState>(

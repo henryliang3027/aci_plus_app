@@ -20,6 +20,19 @@
     "pilotFrequency2": "Frecuencia Piloto 2",
     "fwdAGCMode": "FWD AGC Modo",
     "autoLevelControl": "Automático Nivel Control",
+    "forwardControlParameters": "Forward Control Parameters",
+    "returnControlParameters": "Return Control Parameters",
+    "fwdInputAttenuation": "FWD Input Attenuation",
+    "fwdInputEQ": "FWD Input EQ",
+    "rtnInputAttenuation2": "RTN Input Attenuation 2",
+    "rtnInputAttenuation3": "RTN Input Attenuation 3",
+    "rtnInputAttenuation4": "RTN Input Attenuation 4",
+    "rtnOutputLevelAttenuation": "RTN Output Level Attenuation",
+    "rtnOutputEQ": "RTN Output EQ",
+    "rtnIngressSetting2": "RTN Ingress Setting 2",
+    "rtnIngressSetting3": "RTN Ingress Setting 3",
+    "rtnIngressSetting4": "RTN Ingress Setting 4",
+
 
 
     "status": "estado",
