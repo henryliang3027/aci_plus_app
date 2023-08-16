@@ -13,6 +13,18 @@ class Setting18ListViewState extends Equatable {
     this.pilotFrequency2 = '',
     this.fwdAGCMode = '',
     this.autoLevelControl = '',
+    this.enableTemperatureAlarm = false,
+    this.minTemperature = '',
+    this.maxTemperature = '',
+    this.enableVoltageAlarm = false,
+    this.minVoltage = '',
+    this.maxVoltage = '',
+    this.enableRFInputPowerAlarm = false,
+    this.enableRFOutputPowerAlarm = false,
+    this.enablePilotFrequency1Alarm = false,
+    this.enablePilotFrequency2Alarm = false,
+    this.enableFirstChannelOutputLevelAlarm = false,
+    this.enableLastChannelOutputLevelAlarm = false,
     this.fwdInputAttenuation = 0.0,
     this.fwdInputEQ = 0.0,
     this.rtnInputAttenuation2 = 0.0,
@@ -39,6 +51,18 @@ class Setting18ListViewState extends Equatable {
   final String pilotFrequency2;
   final String fwdAGCMode;
   final String autoLevelControl;
+  final bool enableTemperatureAlarm;
+  final String minTemperature;
+  final String maxTemperature;
+  final bool enableVoltageAlarm;
+  final String minVoltage;
+  final String maxVoltage;
+  final bool enableRFInputPowerAlarm;
+  final bool enableRFOutputPowerAlarm;
+  final bool enablePilotFrequency1Alarm;
+  final bool enablePilotFrequency2Alarm;
+  final bool enableFirstChannelOutputLevelAlarm;
+  final bool enableLastChannelOutputLevelAlarm;
   final double fwdInputAttenuation;
   final double fwdInputEQ;
   final double rtnInputAttenuation2;
@@ -65,6 +89,18 @@ class Setting18ListViewState extends Equatable {
     String? pilotFrequency2,
     String? fwdAGCMode,
     String? autoLevelControl,
+    bool? enableTemperatureAlarm,
+    String? minTemperature,
+    String? maxTemperature,
+    bool? enableVoltageAlarm,
+    String? minVoltage,
+    String? maxVoltage,
+    bool? enableRFInputPowerAlarm,
+    bool? enableRFOutputPowerAlarm,
+    bool? enablePilotFrequency1Alarm,
+    bool? enablePilotFrequency2Alarm,
+    bool? enableFirstChannelOutputLevelAlarm,
+    bool? enableLastChannelOutputLevelAlarm,
     double? fwdInputAttenuation,
     double? fwdInputEQ,
     double? rtnInputAttenuation2,
@@ -95,6 +131,25 @@ class Setting18ListViewState extends Equatable {
       pilotFrequency2: pilotFrequency2 ?? this.pilotFrequency2,
       fwdAGCMode: fwdAGCMode ?? this.fwdAGCMode,
       autoLevelControl: autoLevelControl ?? this.autoLevelControl,
+      enableTemperatureAlarm:
+          enableTemperatureAlarm ?? this.enableTemperatureAlarm,
+      minTemperature: minTemperature ?? this.minTemperature,
+      maxTemperature: maxTemperature ?? this.maxTemperature,
+      enableVoltageAlarm: enableVoltageAlarm ?? this.enableVoltageAlarm,
+      minVoltage: minVoltage ?? this.minVoltage,
+      maxVoltage: maxVoltage ?? this.maxVoltage,
+      enableRFInputPowerAlarm:
+          enableRFInputPowerAlarm ?? this.enableRFInputPowerAlarm,
+      enableRFOutputPowerAlarm:
+          enableRFOutputPowerAlarm ?? this.enableRFOutputPowerAlarm,
+      enablePilotFrequency1Alarm:
+          enablePilotFrequency1Alarm ?? this.enablePilotFrequency1Alarm,
+      enablePilotFrequency2Alarm:
+          enablePilotFrequency2Alarm ?? this.enablePilotFrequency2Alarm,
+      enableFirstChannelOutputLevelAlarm: enableFirstChannelOutputLevelAlarm ??
+          this.enableFirstChannelOutputLevelAlarm,
+      enableLastChannelOutputLevelAlarm: enableLastChannelOutputLevelAlarm ??
+          this.enableLastChannelOutputLevelAlarm,
       fwdInputAttenuation: fwdInputAttenuation ?? this.fwdInputAttenuation,
       fwdInputEQ: fwdInputEQ ?? this.fwdInputEQ,
       rtnInputAttenuation2: rtnInputAttenuation2 ?? this.rtnInputAttenuation2,
@@ -125,6 +180,18 @@ class Setting18ListViewState extends Equatable {
         pilotFrequency2,
         fwdAGCMode,
         autoLevelControl,
+        enableTemperatureAlarm,
+        minTemperature,
+        maxTemperature,
+        enableVoltageAlarm,
+        minVoltage,
+        maxVoltage,
+        enableRFInputPowerAlarm,
+        enableRFOutputPowerAlarm,
+        enablePilotFrequency1Alarm,
+        enablePilotFrequency2Alarm,
+        enableFirstChannelOutputLevelAlarm,
+        enableLastChannelOutputLevelAlarm,
         fwdInputAttenuation,
         fwdInputEQ,
         rtnInputAttenuation2,

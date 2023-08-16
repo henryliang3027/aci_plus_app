@@ -106,6 +106,116 @@ class AutoLevelControlChanged extends Setting18ListViewEvent {
   List<Object> get props => [autoLevelControl];
 }
 
+class TemperatureAlarmChanged extends Setting18ListViewEvent {
+  const TemperatureAlarmChanged(this.enableTemperatureAlarm);
+
+  final bool enableTemperatureAlarm;
+
+  @override
+  List<Object> get props => [enableTemperatureAlarm];
+}
+
+class MinTemperatureChanged extends Setting18ListViewEvent {
+  const MinTemperatureChanged(this.minTemperature);
+
+  final String minTemperature;
+
+  @override
+  List<Object> get props => [minTemperature];
+}
+
+class MaxTemperatureChanged extends Setting18ListViewEvent {
+  const MaxTemperatureChanged(this.maxTemperature);
+
+  final String maxTemperature;
+
+  @override
+  List<Object> get props => [maxTemperature];
+}
+
+class VoltageAlarmChanged extends Setting18ListViewEvent {
+  const VoltageAlarmChanged(this.enableVoltageAlarm);
+
+  final bool enableVoltageAlarm;
+
+  @override
+  List<Object> get props => [enableVoltageAlarm];
+}
+
+class MinVoltageChanged extends Setting18ListViewEvent {
+  const MinVoltageChanged(this.minVoltage);
+
+  final String minVoltage;
+
+  @override
+  List<Object> get props => [minVoltage];
+}
+
+class MaxVoltageChanged extends Setting18ListViewEvent {
+  const MaxVoltageChanged(this.maxVoltage);
+
+  final String maxVoltage;
+
+  @override
+  List<Object> get props => [maxVoltage];
+}
+
+class RFInputPowerAlarmChanged extends Setting18ListViewEvent {
+  const RFInputPowerAlarmChanged(this.enableRFInputPowerAlarm);
+
+  final bool enableRFInputPowerAlarm;
+
+  @override
+  List<Object> get props => [enableRFInputPowerAlarm];
+}
+
+class RFOutputPowerAlarmChanged extends Setting18ListViewEvent {
+  const RFOutputPowerAlarmChanged(this.enableRFOutputPowerAlarm);
+
+  final bool enableRFOutputPowerAlarm;
+
+  @override
+  List<Object> get props => [enableRFOutputPowerAlarm];
+}
+
+class PilotFrequency1AlarmChanged extends Setting18ListViewEvent {
+  const PilotFrequency1AlarmChanged(this.enablePilotFrequency1Alarm);
+
+  final bool enablePilotFrequency1Alarm;
+
+  @override
+  List<Object> get props => [enablePilotFrequency1Alarm];
+}
+
+class PilotFrequency2AlarmChanged extends Setting18ListViewEvent {
+  const PilotFrequency2AlarmChanged(this.enablePilotFrequency2Alarm);
+
+  final bool enablePilotFrequency2Alarm;
+
+  @override
+  List<Object> get props => [enablePilotFrequency2Alarm];
+}
+
+class FirstChannelOutputLevelAlarmChanged extends Setting18ListViewEvent {
+  const FirstChannelOutputLevelAlarmChanged(
+      this.enableFirstChannelOutputLevelAlarm);
+
+  final bool enableFirstChannelOutputLevelAlarm;
+
+  @override
+  List<Object> get props => [enableFirstChannelOutputLevelAlarm];
+}
+
+class LastChannelOutputLevelAlarmChanged extends Setting18ListViewEvent {
+  const LastChannelOutputLevelAlarmChanged(
+      this.enableLastChannelOutputLevelAlarm);
+
+  final bool enableLastChannelOutputLevelAlarm;
+
+  @override
+  List<Object> get props => [enableLastChannelOutputLevelAlarm];
+}
+
 class FwdInputAttenuationChanged extends Setting18ListViewEvent {
   const FwdInputAttenuationChanged(this.fwdInputAttenuation);
 

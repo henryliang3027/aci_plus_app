@@ -24,6 +24,20 @@ class Setting18ListViewBloc
     on<PilotFrequency2Changed>(_onPilotFrequency2Changed);
     on<FwdAGCModeChanged>(_onFwdAGCModeChanged);
     on<AutoLevelControlChanged>(_onAutoLevelControlChanged);
+    on<TemperatureAlarmChanged>(_onTemperatureAlarmChanged);
+    on<MinTemperatureChanged>(_onMinTemperatureChanged);
+    on<MaxTemperatureChanged>(_onMaxTemperatureChanged);
+    on<VoltageAlarmChanged>(_onVoltageAlarmChanged);
+    on<MinVoltageChanged>(_onMinVoltageChanged);
+    on<MaxVoltageChanged>(_onMaxVoltageChanged);
+    on<RFInputPowerAlarmChanged>(_onRFInputPowerAlarmChanged);
+    on<RFOutputPowerAlarmChanged>(_onRFOutputPowerAlarmChanged);
+    on<PilotFrequency1AlarmChanged>(_onPilotFrequency1AlarmChanged);
+    on<PilotFrequency2AlarmChanged>(_onPilotFrequency2AlarmChanged);
+    on<FirstChannelOutputLevelAlarmChanged>(
+        _onFirstChannelOutputLevelAlarmChanged);
+    on<LastChannelOutputLevelAlarmChanged>(
+        _onLastChannelOutputLevelAlarmChanged);
     on<FwdInputAttenuationChanged>(_onFwdInputAttenuationChanged);
     on<FwdInputEQChanged>(_onFwdInputEQChanged);
     on<RtnInputAttenuation2Changed>(_onRtnInputAttenuation2Changed);
@@ -133,6 +147,116 @@ class Setting18ListViewBloc
   ) {
     emit(state.copyWith(
       autoLevelControl: event.autoLevelControl,
+    ));
+  }
+
+  void _onTemperatureAlarmChanged(
+    TemperatureAlarmChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      enableTemperatureAlarm: event.enableTemperatureAlarm,
+    ));
+  }
+
+  void _onMinTemperatureChanged(
+    MinTemperatureChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      minTemperature: event.minTemperature,
+    ));
+  }
+
+  void _onMaxTemperatureChanged(
+    MaxTemperatureChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      maxTemperature: event.maxTemperature,
+    ));
+  }
+
+  void _onVoltageAlarmChanged(
+    VoltageAlarmChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      enableVoltageAlarm: event.enableVoltageAlarm,
+    ));
+  }
+
+  void _onMinVoltageChanged(
+    MinVoltageChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      minVoltage: event.minVoltage,
+    ));
+  }
+
+  void _onMaxVoltageChanged(
+    MaxVoltageChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      maxVoltage: event.maxVoltage,
+    ));
+  }
+
+  void _onRFInputPowerAlarmChanged(
+    RFInputPowerAlarmChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      enableRFInputPowerAlarm: event.enableRFInputPowerAlarm,
+    ));
+  }
+
+  void _onRFOutputPowerAlarmChanged(
+    RFOutputPowerAlarmChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      enableRFOutputPowerAlarm: event.enableRFOutputPowerAlarm,
+    ));
+  }
+
+  void _onPilotFrequency1AlarmChanged(
+    PilotFrequency1AlarmChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      enablePilotFrequency1Alarm: event.enablePilotFrequency1Alarm,
+    ));
+  }
+
+  void _onPilotFrequency2AlarmChanged(
+    PilotFrequency2AlarmChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      enablePilotFrequency2Alarm: event.enablePilotFrequency2Alarm,
+    ));
+  }
+
+  void _onFirstChannelOutputLevelAlarmChanged(
+    FirstChannelOutputLevelAlarmChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      enableFirstChannelOutputLevelAlarm:
+          event.enableFirstChannelOutputLevelAlarm,
+    ));
+  }
+
+  void _onLastChannelOutputLevelAlarmChanged(
+    LastChannelOutputLevelAlarmChanged event,
+    Emitter<Setting18ListViewState> emit,
+  ) {
+    emit(state.copyWith(
+      enableLastChannelOutputLevelAlarm:
+          event.enableLastChannelOutputLevelAlarm,
     ));
   }
 

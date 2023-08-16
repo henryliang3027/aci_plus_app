@@ -78,112 +78,119 @@ class _TemperatureAlarmControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MaterialStateProperty<Icon?> thumbIcon =
-        MaterialStateProperty.resolveWith<Icon?>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected)) {
-          return const Icon(Icons.check);
-        }
-        return const Icon(Icons.close);
-      },
-    );
-
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: 16.0,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Text(
-                  AppLocalizations.of(context).temperatureFC,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
+    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 16.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      AppLocalizations.of(context).temperatureFC,
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Switch(
+                      thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return const Icon(Icons.check);
+                          }
+                          return const Icon(Icons.close);
+                        },
+                      ),
+                      value: state.enableTemperatureAlarm,
+                      onChanged: (bool value) {
+                        context
+                            .read<Setting18ListViewBloc>()
+                            .add(TemperatureAlarmChanged(value));
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 2,
+                  child: TextField(
+                    controller: minTemperatureTextEditingController,
+                    key: const Key(
+                        'setting18Form_minTemperatureInput_textField'),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                    ),
+                    enabled: true,
+                    textInputAction: TextInputAction.done,
+                    onChanged: (location) {
+                      // context
+                      //     .read<Setting18ListViewBloc>()
+                      //     .add(LocationChanged(location));
+                    },
+                    maxLength: 40,
+                    decoration: const InputDecoration(
+                      label: Text('Min'),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: EdgeInsets.all(8.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor: Colors.white,
+                      counterText: '',
+                    ),
                   ),
                 ),
-              ),
-              Flexible(
-                child: Switch(
-                  thumbIcon: thumbIcon,
-                  value: true,
-                  onChanged: (bool value) {},
+                SizedBox(
+                  width: 20,
                 ),
-              ),
-            ],
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              flex: 2,
-              child: TextField(
-                controller: minTemperatureTextEditingController,
-                key: const Key('setting18Form_minTemperatureInput_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
+                Flexible(
+                  flex: 2,
+                  child: TextField(
+                    controller: maxTemperatureTextEditingController,
+                    key: const Key(
+                        'setting18Form_maxTemperatureInput_textField'),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                    ),
+                    enabled: true,
+                    textInputAction: TextInputAction.done,
+                    onChanged: (location) {
+                      // context
+                      //     .read<Setting18ListViewBloc>()
+                      //     .add(LocationChanged(location));
+                    },
+                    maxLength: 40,
+                    decoration: const InputDecoration(
+                      label: Text('Max'),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: EdgeInsets.all(8.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor: Colors.white,
+                      counterText: '',
+                    ),
+                  ),
                 ),
-                enabled: true,
-                textInputAction: TextInputAction.done,
-                onChanged: (location) {
-                  // context
-                  //     .read<Setting18ListViewBloc>()
-                  //     .add(LocationChanged(location));
-                },
-                maxLength: 40,
-                decoration: const InputDecoration(
-                  label: Text('Min'),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(8.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.white,
-                  counterText: '',
-                ),
-              ),
+              ],
             ),
             SizedBox(
-              width: 20,
-            ),
-            Flexible(
-              flex: 2,
-              child: TextField(
-                controller: maxTemperatureTextEditingController,
-                key: const Key('setting18Form_maxTemperatureInput_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                ),
-                enabled: true,
-                textInputAction: TextInputAction.done,
-                onChanged: (location) {
-                  // context
-                  //     .read<Setting18ListViewBloc>()
-                  //     .add(LocationChanged(location));
-                },
-                maxLength: 40,
-                decoration: const InputDecoration(
-                  label: Text('Max'),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(8.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.white,
-                  counterText: '',
-                ),
-              ),
+              height: 40,
             ),
           ],
-        ),
-        SizedBox(
-          height: 40,
-        ),
-      ],
+        );
+      },
     );
   }
 }
@@ -200,112 +207,117 @@ class _VoltageAlarmControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MaterialStateProperty<Icon?> thumbIcon =
-        MaterialStateProperty.resolveWith<Icon?>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected)) {
-          return const Icon(Icons.check);
-        }
-        return const Icon(Icons.close);
-      },
-    );
-
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: 16.0,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Text(
-                  AppLocalizations.of(context).voltageLevel,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
+    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 16.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      AppLocalizations.of(context).voltageLevel,
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Switch(
+                      thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return const Icon(Icons.check);
+                          }
+                          return const Icon(Icons.close);
+                        },
+                      ),
+                      value: state.enableVoltageAlarm,
+                      onChanged: (bool value) {
+                        context
+                            .read<Setting18ListViewBloc>()
+                            .add(VoltageAlarmChanged(value));
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 2,
+                  child: TextField(
+                    controller: minVoltageTextEditingController,
+                    key: const Key('setting18Form_minVoltageInput_textField'),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                    ),
+                    enabled: true,
+                    textInputAction: TextInputAction.done,
+                    onChanged: (location) {
+                      // context
+                      //     .read<Setting18ListViewBloc>()
+                      //     .add(LocationChanged(location));
+                    },
+                    maxLength: 40,
+                    decoration: const InputDecoration(
+                      label: Text('Min'),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: EdgeInsets.all(8.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor: Colors.white,
+                      counterText: '',
+                    ),
                   ),
                 ),
-              ),
-              Flexible(
-                child: Switch(
-                  thumbIcon: thumbIcon,
-                  value: true,
-                  onChanged: (bool value) {},
+                SizedBox(
+                  width: 20,
                 ),
-              ),
-            ],
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              flex: 2,
-              child: TextField(
-                controller: minVoltageTextEditingController,
-                key: const Key('setting18Form_minVoltageInput_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
+                Flexible(
+                  flex: 2,
+                  child: TextField(
+                    controller: maxVoltageTextEditingController,
+                    key: const Key('setting18Form_maxVoltageInput_textField'),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                    ),
+                    enabled: true,
+                    textInputAction: TextInputAction.done,
+                    onChanged: (location) {
+                      // context
+                      //     .read<Setting18ListViewBloc>()
+                      //     .add(LocationChanged(location));
+                    },
+                    maxLength: 40,
+                    decoration: const InputDecoration(
+                      label: Text('Max'),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: EdgeInsets.all(8.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor: Colors.white,
+                      counterText: '',
+                    ),
+                  ),
                 ),
-                enabled: true,
-                textInputAction: TextInputAction.done,
-                onChanged: (location) {
-                  // context
-                  //     .read<Setting18ListViewBloc>()
-                  //     .add(LocationChanged(location));
-                },
-                maxLength: 40,
-                decoration: const InputDecoration(
-                  label: Text('Min'),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(8.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.white,
-                  counterText: '',
-                ),
-              ),
+              ],
             ),
             SizedBox(
-              width: 20,
-            ),
-            Flexible(
-              flex: 2,
-              child: TextField(
-                controller: maxVoltageTextEditingController,
-                key: const Key('setting18Form_maxVoltageInput_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                ),
-                enabled: true,
-                textInputAction: TextInputAction.done,
-                onChanged: (location) {
-                  // context
-                  //     .read<Setting18ListViewBloc>()
-                  //     .add(LocationChanged(location));
-                },
-                maxLength: 40,
-                decoration: const InputDecoration(
-                  label: Text('Max'),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(8.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.white,
-                  counterText: '',
-                ),
-              ),
+              height: 40,
             ),
           ],
-        ),
-        SizedBox(
-          height: 40,
-        ),
-      ],
+        );
+      },
     );
   }
 }
@@ -344,8 +356,12 @@ class _RFInputPowerAlarmControl extends StatelessWidget {
                       return const Icon(Icons.close);
                     },
                   ),
-                  value: true,
-                  onChanged: (bool value) {},
+                  value: state.enableRFInputPowerAlarm,
+                  onChanged: (bool value) {
+                    context
+                        .read<Setting18ListViewBloc>()
+                        .add(RFInputPowerAlarmChanged(value));
+                  },
                 ),
               ),
             ],
@@ -390,8 +406,12 @@ class _RFOutputPowerAlarmControl extends StatelessWidget {
                       return const Icon(Icons.close);
                     },
                   ),
-                  value: true,
-                  onChanged: (bool value) {},
+                  value: state.enableRFOutputPowerAlarm,
+                  onChanged: (bool value) {
+                    context
+                        .read<Setting18ListViewBloc>()
+                        .add(RFOutputPowerAlarmChanged(value));
+                  },
                 ),
               ),
             ],
@@ -436,8 +456,12 @@ class _PilotFrequency1AlarmControl extends StatelessWidget {
                       return const Icon(Icons.close);
                     },
                   ),
-                  value: true,
-                  onChanged: (bool value) {},
+                  value: state.enablePilotFrequency1Alarm,
+                  onChanged: (bool value) {
+                    context
+                        .read<Setting18ListViewBloc>()
+                        .add(PilotFrequency1AlarmChanged(value));
+                  },
                 ),
               ),
             ],
@@ -482,8 +506,12 @@ class _PilotFrequency2AlarmControl extends StatelessWidget {
                       return const Icon(Icons.close);
                     },
                   ),
-                  value: true,
-                  onChanged: (bool value) {},
+                  value: state.enablePilotFrequency2Alarm,
+                  onChanged: (bool value) {
+                    context
+                        .read<Setting18ListViewBloc>()
+                        .add(PilotFrequency2AlarmChanged(value));
+                  },
                 ),
               ),
             ],
@@ -529,8 +557,12 @@ class _FirstChannelOutputLevelAlarmControl extends StatelessWidget {
                       return const Icon(Icons.close);
                     },
                   ),
-                  value: true,
-                  onChanged: (bool value) {},
+                  value: state.enableFirstChannelOutputLevelAlarm,
+                  onChanged: (bool value) {
+                    context
+                        .read<Setting18ListViewBloc>()
+                        .add(FirstChannelOutputLevelAlarmChanged(value));
+                  },
                 ),
               ),
             ],
@@ -576,8 +608,12 @@ class _LastChannelOutputLevelAlarmControl extends StatelessWidget {
                       return const Icon(Icons.close);
                     },
                   ),
-                  value: true,
-                  onChanged: (bool value) {},
+                  value: state.enableLastChannelOutputLevelAlarm,
+                  onChanged: (bool value) {
+                    context
+                        .read<Setting18ListViewBloc>()
+                        .add(LastChannelOutputLevelAlarmChanged(value));
+                  },
                 ),
               ),
             ],
