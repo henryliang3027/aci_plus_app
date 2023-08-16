@@ -13,6 +13,11 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
   })  : _dsimRepository = dsimRepository,
         super(const Information18State()) {
     on<AlarmUpdated>(_onAlarmUpdated);
+
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      print('alarm trigger timer: ${timer.tick}');
+      add(const AlarmUpdated());
+    });
   }
 
   late final Timer _timer;
@@ -22,23 +27,25 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     AlarmUpdated event,
     Emitter<Information18State> emit,
   ) async {
-    //讓 _dsimRepository 裡面的 _alarmR _alarmT_ alarmp 重新取得資料
+    List<dynamic> result = await _dsimRepository.requestCommand1p8GAlarm();
 
-    // await _dsimRepository.requestCommand3();
+    if (result[0]) {
+      String alarmUServerity = result[1];
+      String alarmTServerity = result[2];
+      String alarmPServerity = result[3];
 
-    // List<dynamic> resultOfRequestCommand5 =
-    //     await _dsimRepository.requestCommand5();
+      emit(state.copyWith(
+        alarmUSeverity: alarmUServerity,
+        alarmTSeverity: alarmTServerity,
+        alarmPSeverity: alarmPServerity,
+      ));
+    }
+  }
 
-    // if (resultOfRequestCommand5[0]) {
-    //   String alarmRServerity = resultOfRequestCommand5[4];
-    //   String alarmTServerity = resultOfRequestCommand5[5];
-    //   String alarmPServerity = resultOfRequestCommand5[6];
-
-    //   emit(state.copyWith(
-    //     alarmUSeverity: alarmRServerity,
-    //     alarmTSeverity: alarmTServerity,
-    //     alarmPSeverity: alarmPServerity,
-    //   ));
-    // }
+  @override
+  Future<void> close() {
+    _timer.cancel();
+    print('alarm trigger timer is canceled');
+    return super.close();
   }
 }

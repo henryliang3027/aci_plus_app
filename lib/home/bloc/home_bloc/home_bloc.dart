@@ -250,9 +250,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             newCharacteristicData[DataKey.workingMode] = result[1];
             newCharacteristicData[DataKey.currentPilot] = result[2];
             newCharacteristicData[DataKey.currentPilotMode] = result[3];
-            newCharacteristicData[DataKey.alarmRServerity] = result[4];
-            newCharacteristicData[DataKey.alarmTServerity] = result[5];
-            newCharacteristicData[DataKey.alarmPServerity] = result[6];
+            newCharacteristicData[DataKey.alarmRSeverity] = result[4];
+            newCharacteristicData[DataKey.alarmTSeverity] = result[5];
+            newCharacteristicData[DataKey.alarmPSeverity] = result[6];
             newCharacteristicData[DataKey.currentTemperatureF] = result[7];
             newCharacteristicData[DataKey.currentTemperatureC] = result[8];
             newCharacteristicData[DataKey.currentVoltage] = result[9];
@@ -382,12 +382,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _dsimRepository.requestCommand1p8G0,
       _dsimRepository.requestCommand1p8G1,
       _dsimRepository.requestCommand1p8G2,
+      // for (int i = 0; i < 1; i++) ...[
+      //   _dsimRepository.requestCommand1p8GForLogChunk,
+      // ]
     ];
 
     for (int i = 0; i < requestCommands.length; i++) {
       List<dynamic> result = [];
 
-      result = await requestCommands[i]();
+      if (i <= 2) {
+        result = await requestCommands[i]();
+      } else {
+        result = await requestCommands[i](i + 180);
+      }
 
       if (result[0]) {
         switch (i) {
@@ -425,9 +432,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           case 2:
             Map<DataKey, String> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
-            newCharacteristicData[DataKey.currentTemperatureC] = result[1];
-            newCharacteristicData[DataKey.currentTemperatureF] = result[2];
-            newCharacteristicData[DataKey.currentVoltage] = result[3];
+            newCharacteristicData[DataKey.alarmUSeverity] = result[1];
+            newCharacteristicData[DataKey.alarmTSeverity] = result[2];
+            newCharacteristicData[DataKey.alarmPSeverity] = result[3];
+            newCharacteristicData[DataKey.currentTemperatureC] = result[4];
+            newCharacteristicData[DataKey.currentTemperatureF] = result[5];
+            newCharacteristicData[DataKey.currentVoltage] = result[6];
             emit(state.copyWith(
               loadingStatus: FormStatus.requestSuccess,
               characteristicData: newCharacteristicData,

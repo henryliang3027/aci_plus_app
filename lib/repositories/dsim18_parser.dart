@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:dsim_app/core/command18.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
+import 'package:dsim_app/repositories/dsim_repository.dart';
 
 class Dsim18Parser {
   Dsim18Parser() {
@@ -139,11 +140,23 @@ class Dsim18Parser {
         }
         break;
       case 182:
+        Alarm alarmUSeverity = Alarm.medium;
+        Alarm alarmTServerity = Alarm.medium;
+        Alarm alarmPServerity = Alarm.medium;
         String currentTemperatureC = '';
         String currentTemperatureF = '';
         String currentVoltage = '';
         String currentRFInputTotalPower = '';
         String currentRFOutputTotalPower = '';
+
+        int unitStatus = rawData[3];
+        alarmUSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
+
+        int temperatureStatus = rawData[128];
+        alarmTServerity = temperatureStatus == 1 ? Alarm.danger : Alarm.success;
+
+        int powerStatus = rawData[129];
+        alarmPServerity = powerStatus == 1 ? Alarm.danger : Alarm.success;
 
         // 解析 currentTemperatureC, currentTemperatureC
         List<int> rawCurrentTemperatureC = rawData.sublist(4, 6);
@@ -188,6 +201,9 @@ class Dsim18Parser {
 
         if (!completer.isCompleted) {
           completer.complete((
+            alarmUSeverity.name,
+            alarmTServerity.name,
+            alarmPServerity.name,
             currentTemperatureC,
             currentTemperatureF,
             currentVoltage,
@@ -196,7 +212,36 @@ class Dsim18Parser {
           ));
         }
         break;
+      case 183:
+        print('${rawData.length}');
+        print('${rawData}');
+        break;
+      case 184:
+        break;
+      case 185:
+        // 給 定期更新 information page 的 alarm 用
+        Alarm alarmUSeverity = Alarm.medium;
+        Alarm alarmTServerity = Alarm.medium;
+        Alarm alarmPServerity = Alarm.medium;
 
+        int unitStatus = rawData[3];
+        alarmUSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
+
+        int temperatureStatus = rawData[128];
+        alarmTServerity = temperatureStatus == 1 ? Alarm.danger : Alarm.success;
+
+        int powerStatus = rawData[129];
+        alarmPServerity = powerStatus == 1 ? Alarm.danger : Alarm.success;
+
+        if (!completer.isCompleted) {
+          completer.complete((
+            alarmUSeverity.name,
+            alarmTServerity.name,
+            alarmPServerity.name,
+          ));
+        }
+
+        break;
       default:
         break;
     }
@@ -211,9 +256,29 @@ class Dsim18Parser {
     CRC16.calculateCRC16(command: Command18.req00Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.req01Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.req02Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqLog00Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqLog01Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqLog02Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqLog03Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqLog04Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqLog05Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqLog06Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqLog07Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqLog08Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqLog09Cmd, usDataLength: 6);
 
     _command18Collection.add(Command18.req00Cmd);
     _command18Collection.add(Command18.req01Cmd);
     _command18Collection.add(Command18.req02Cmd);
+    _command18Collection.add(Command18.reqLog00Cmd);
+    _command18Collection.add(Command18.reqLog01Cmd);
+    _command18Collection.add(Command18.reqLog02Cmd);
+    _command18Collection.add(Command18.reqLog03Cmd);
+    _command18Collection.add(Command18.reqLog04Cmd);
+    _command18Collection.add(Command18.reqLog05Cmd);
+    _command18Collection.add(Command18.reqLog06Cmd);
+    _command18Collection.add(Command18.reqLog07Cmd);
+    _command18Collection.add(Command18.reqLog08Cmd);
+    _command18Collection.add(Command18.reqLog09Cmd);
   }
 }

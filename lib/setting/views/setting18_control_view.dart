@@ -11,20 +11,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class Setting18ControlView extends StatelessWidget {
   Setting18ControlView({super.key});
 
-  // final TextEditingController fwdInputAttenuationTextEditingController =
-  //     TextEditingController();
-  // final TextEditingController fwdInputEQTextEditingController =
-  //     TextEditingController();
-  // final TextEditingController fwdOutputEQTextEditingController =
-  //     TextEditingController();
-  // final TextEditingController rtnInputAttenuationTextEditingController =
-  //     TextEditingController();
-  // final TextEditingController rtnInputAttenuation2TextEditingController =
-  //     TextEditingController();
-  // final TextEditingController rtnInputAttenuation3TextEditingController =
-  //     TextEditingController();
-  // final TextEditingController rtnInputAttenuation4TextEditingController =
-  //     TextEditingController();
+  final TextEditingController minTemperatureTextEditingController =
+      TextEditingController();
+  final TextEditingController maxTemperatureTextEditingController =
+      TextEditingController();
+  final TextEditingController minVoltageTextEditingController =
+      TextEditingController();
+  final TextEditingController maxVoltageTextEditingController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +36,14 @@ class Setting18ControlView extends StatelessWidget {
                   child: Column(
                     children: [
                       _ControlTitle(
-                        title:
-                            AppLocalizations.of(context).alarmControlParameters,
-                      ),
-                      _AlarmControl(),
-                      _ControlTitle(
                         title: AppLocalizations.of(context)
                             .forwardControlParameters,
                       ),
                       const _FwdInputAttenuation(),
                       const _FwdInputEQ(),
+                      SizedBox(
+                        height: 20,
+                      ),
                       _ControlTitle(
                         title: AppLocalizations.of(context)
                             .returnControlParameters,
@@ -157,36 +149,6 @@ class _ControlTitle extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _AlarmControl extends StatelessWidget {
-  const _AlarmControl({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: 20,
-            ),
-            Text('Enable'),
-            Text('Min'),
-            Text('Max'),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('Temperature'),
-            Checkbox(value: true, onChanged: (bool? value) {}),
-          ],
-        ),
-      ],
     );
   }
 }

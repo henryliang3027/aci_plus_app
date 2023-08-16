@@ -660,9 +660,9 @@ class DsimRepository {
       case 5:
         String workingMode = '';
         String currentPilot = '';
-        Alarm alarmRServerity = Alarm.medium;
-        Alarm alarmTServerity = Alarm.medium;
-        Alarm alarmPServerity = Alarm.medium;
+        Alarm alarmRSeverity = Alarm.medium;
+        Alarm alarmTSeverity = Alarm.medium;
+        Alarm alarmPSeverity = Alarm.medium;
         double currentTemperatureC;
         double currentTemperatureF;
         double current24V;
@@ -697,24 +697,24 @@ class DsimRepository {
 
         if (rawData[3] > 2) {
           // medium
-          alarmRServerity = Alarm.medium;
+          alarmRSeverity = Alarm.medium;
         } else {
           if (_alarmR > 0) {
             // danger
-            alarmRServerity = Alarm.danger;
+            alarmRSeverity = Alarm.danger;
           } else {
             // success
-            alarmRServerity = Alarm.success;
+            alarmRSeverity = Alarm.success;
           }
         }
         if (rawData[3] == 3) {
           if (_currentSettingMode == 1 || _currentSettingMode == 2) {
             // danger
-            alarmRServerity = Alarm.danger;
+            alarmRSeverity = Alarm.danger;
           }
         }
 
-        if (alarmRServerity == Alarm.danger) {
+        if (alarmRSeverity == Alarm.danger) {
           currentPilot = 'Loss';
         } else {
           currentPilot = _basicCurrentPilot;
@@ -727,8 +727,8 @@ class DsimRepository {
           }
         }
 
-        alarmTServerity = _alarmT > 0 ? Alarm.danger : Alarm.success;
-        alarmPServerity = _alarmP > 0 ? Alarm.danger : Alarm.success;
+        alarmTSeverity = _alarmT > 0 ? Alarm.danger : Alarm.success;
+        alarmPSeverity = _alarmP > 0 ? Alarm.danger : Alarm.success;
 
         //Temperature
         currentTemperatureC = (rawData[10] * 256 + rawData[11]) / 10;
@@ -746,9 +746,9 @@ class DsimRepository {
             workingMode,
             currentPilot,
             pilotMode,
-            alarmRServerity.name,
-            alarmTServerity.name,
-            alarmPServerity.name,
+            alarmRSeverity.name,
+            alarmTSeverity.name,
+            alarmPSeverity.name,
             strCurrentTemperatureF,
             strCurrentTemperatureC,
             current24V.toString(),
@@ -940,6 +940,9 @@ class DsimRepository {
 
     try {
       var (
+        alarmUSeverity,
+        alarmTServerity,
+        alarmPServerity,
         currentTemperatureC,
         currentTemperatureF,
         currentVoltage,
@@ -950,6 +953,9 @@ class DsimRepository {
 
       return [
         true,
+        alarmUSeverity,
+        alarmTServerity,
+        alarmPServerity,
         currentTemperatureC,
         currentTemperatureF,
         currentVoltage,
@@ -961,6 +967,86 @@ class DsimRepository {
         false,
         '',
         '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ];
+    }
+  }
+
+  Future<dynamic> requestCommand1p8GForLogChunk(int chunkIndex) async {
+    commandIndex = chunkIndex;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8GForLogChunk');
+
+    _writeSetCommandToCharacteristic(
+        _dsim18parser.command18Collection[commandIndex - 180]);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8GForLogChunk');
+
+    try {
+      var (
+        historicalMinTemperatureC,
+        historicalMaxTemperatureC,
+        historicalMinTemperatureF,
+        historicalMaxTemperatureF,
+        historicalMinVoltage,
+        historicalMaxVoltage,
+      ) = await _completer.future;
+      cancelTimeout(name: '1p8GForLogChunk');
+
+      return [
+        true,
+        historicalMinTemperatureC,
+        historicalMaxTemperatureC,
+        historicalMinTemperatureF,
+        historicalMaxTemperatureF,
+        historicalMinVoltage,
+        historicalMaxVoltage,
+      ];
+    } catch (e) {
+      return [
+        false,
+        '',
+        '',
+        '',
+      ];
+    }
+  }
+
+  Future<dynamic> requestCommand1p8GAlarm() async {
+    commandIndex = 185;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G_Alarm');
+
+    _writeSetCommandToCharacteristic(_dsim18parser.command18Collection[2]);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G_Alarm');
+
+    try {
+      var (
+        alarmUSeverity,
+        alarmTServerity,
+        alarmPServerity,
+      ) = await _completer.future;
+      cancelTimeout(name: '1p8G_Alarm');
+
+      return [
+        true,
+        alarmUSeverity,
+        alarmTServerity,
+        alarmPServerity,
+      ];
+    } catch (e) {
+      return [
+        false,
         '',
         '',
         '',
@@ -1098,9 +1184,9 @@ class DsimRepository {
         String workingMode,
         String currentPilot,
         String pilotMode,
-        String alarmRServerity,
-        String alarmTServerity,
-        String alarmPServerity,
+        String alarmRSeverity,
+        String alarmTSeverity,
+        String alarmPSeverity,
         String strCurrentTemperatureF,
         String strCurrentTemperatureC,
         String current24V,
@@ -1113,9 +1199,9 @@ class DsimRepository {
         workingMode,
         currentPilot,
         pilotMode,
-        alarmRServerity,
-        alarmTServerity,
-        alarmPServerity,
+        alarmRSeverity,
+        alarmTSeverity,
+        alarmPSeverity,
         strCurrentTemperatureF,
         strCurrentTemperatureC,
         current24V,

@@ -337,25 +337,16 @@ class _AlarmCard extends StatelessWidget {
               ),
               alarmItem(
                 iconData: Icons.circle,
-                // iconColor: CustomStyle.alarmColor[
-                //     state.characteristicData[DataKey.alarmRServerity] ??
-                //         'default'],
                 iconColor: CustomStyle.alarmColor[alarmUSeverity],
                 title: AppLocalizations.of(context).unitStatusAlarm,
               ),
               alarmItem(
                 iconData: Icons.circle,
-                // iconColor: CustomStyle.alarmColor[
-                //     state.characteristicData[DataKey.alarmTServerity] ??
-                //         'default'],
                 iconColor: CustomStyle.alarmColor[alarmTSeverity],
                 title: AppLocalizations.of(context).temperatureAlarm,
               ),
               alarmItem(
                 iconData: Icons.circle,
-                // iconColor: CustomStyle.alarmColor[
-                //     state.characteristicData[DataKey.alarmPServerity] ??
-                //         'default'],
                 iconColor: CustomStyle.alarmColor[alarmPSeverity],
                 title: AppLocalizations.of(context).powerSupplyAlarm,
               ),
@@ -366,16 +357,12 @@ class _AlarmCard extends StatelessWidget {
     }
 
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      // String alarmRSeverity =
-      //     state.characteristicData[DataKey.alarmRServerity] ?? 'default';
-      // String alarmTSeverity =
-      //     state.characteristicData[DataKey.alarmTServerity] ?? 'default';
-      // String alarmPSeverity =
-      //     state.characteristicData[DataKey.alarmPServerity] ?? 'default';
-
-      String alarmUSeverity = 'default';
-      String alarmTSeverity = 'default';
-      String alarmPSeverity = 'default';
+      String alarmUSeverity =
+          state.characteristicData[DataKey.alarmUSeverity] ?? 'default';
+      String alarmTSeverity =
+          state.characteristicData[DataKey.alarmTSeverity] ?? 'default';
+      String alarmPSeverity =
+          state.characteristicData[DataKey.alarmPSeverity] ?? 'default';
 
       if (state.loadingStatus.isRequestSuccess) {
         // informationState 的 alarmRSeverity, alarmTSeverity, alarmPSeverity 還是 'default' 時代表還沒有觸發定期讀取資料, 這時候用 homeState 讀到的值來顯示
@@ -496,7 +483,7 @@ Widget itemMultipleLineText({
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const SizedBox(
-              width: 60,
+              width: 30,
             ),
             Flexible(
               child: RichText(

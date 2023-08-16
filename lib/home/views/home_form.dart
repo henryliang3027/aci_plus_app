@@ -1,4 +1,5 @@
 import 'package:dsim_app/about/about_page.dart';
+import 'package:dsim_app/chart/view/chart18_page.dart';
 import 'package:dsim_app/chart/view/chart_page.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
@@ -123,7 +124,7 @@ class _HomeFormState extends State<HomeForm> {
           Setting18Page(),
           Status18Page(),
           Information18Page(),
-          ChartPage(),
+          Chart18Page(),
           AboutPage(),
         ];
       }
