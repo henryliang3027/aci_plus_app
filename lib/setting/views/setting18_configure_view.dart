@@ -42,20 +42,16 @@ class Setting18ConfigureView extends StatelessWidget {
                   child: Column(
                     children: [
                       const _SplitOptionDropDownMenu(),
-                      _FirstChannelLoadingFrequency(
-                        textEditingController:
+                      _FirstChannelLoading(
+                        firstChannelLoadingFrequencyTextEditingController:
                             firstChannelLoadingFrequencyTextEditingController,
-                      ),
-                      _FirstChannelLoadingLevel(
-                        textEditingController:
+                        firstChannelLoadingLevelTextEditingController:
                             firstChannelLoadingLevelTextEditingController,
                       ),
-                      _LastChannelLoadingFrequency(
-                        textEditingController:
+                      _LastChannelLoading(
+                        lastChannelLoadingFrequencyTextEditingController:
                             lastChannelLoadingFrequencyTextEditingController,
-                      ),
-                      _LastChannelLoadingLevel(
-                        textEditingController:
+                        lastChannelLoadingLevelTextEditingController:
                             lastChannelLoadingLevelTextEditingController,
                       ),
                       const _PilotFrequencyMode(),
@@ -69,6 +65,9 @@ class Setting18ConfigureView extends StatelessWidget {
                       ),
                       const _FwdAGCMode(),
                       const _AutoLevelControl(),
+                      const SizedBox(
+                        height: 120,
+                      ),
                     ],
                   ),
                 ),
@@ -151,9 +150,9 @@ class _SplitOptionDropDownMenu extends StatelessWidget {
                       onChanged: state.editMode
                           ? (String? value) {
                               if (value != null) {
-                                // context
-                                //     .read<SettingListViewBloc>()
-                                //     .add(LogIntervalChanged(value));
+                                context
+                                    .read<Setting18ListViewBloc>()
+                                    .add(SplitOptionChanged(value));
                               }
                             }
                           : null),
@@ -162,6 +161,241 @@ class _SplitOptionDropDownMenu extends StatelessWidget {
             ),
           );
         });
+  }
+}
+
+class _FirstChannelLoading extends StatelessWidget {
+  const _FirstChannelLoading({
+    super.key,
+    required this.firstChannelLoadingFrequencyTextEditingController,
+    required this.firstChannelLoadingLevelTextEditingController,
+  });
+
+  final TextEditingController firstChannelLoadingFrequencyTextEditingController;
+  final TextEditingController firstChannelLoadingLevelTextEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 16.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      AppLocalizations.of(context).firstChannelLoading,
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 16.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    flex: 2,
+                    child: TextField(
+                      controller:
+                          firstChannelLoadingFrequencyTextEditingController,
+                      key: const Key(
+                          'setting18Form_firstChannelLoadingFrequencyInput_textField'),
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeXL,
+                      ),
+                      enabled: state.editMode,
+                      textInputAction: TextInputAction.done,
+                      onChanged: (firstChannelLoadingFrequency) {
+                        context.read<Setting18ListViewBloc>().add(
+                            MaxTemperatureChanged(
+                                firstChannelLoadingFrequency));
+                      },
+                      maxLength: 40,
+                      decoration: InputDecoration(
+                        label: Text(AppLocalizations.of(context).frequency),
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(4.0))),
+                        contentPadding: const EdgeInsets.all(8.0),
+                        isDense: true,
+                        filled: true,
+                        fillColor: Colors.white,
+                        counterText: '',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: TextField(
+                      controller: firstChannelLoadingLevelTextEditingController,
+                      key: const Key(
+                          'setting18Form_firstChannelLoadingLevelInput_textField'),
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeXL,
+                      ),
+                      enabled: state.editMode,
+                      textInputAction: TextInputAction.done,
+                      onChanged: (firstChannelLoadingLevel) {
+                        context.read<Setting18ListViewBloc>().add(
+                            MinTemperatureChanged(firstChannelLoadingLevel));
+                      },
+                      maxLength: 40,
+                      decoration: InputDecoration(
+                        label: Text(AppLocalizations.of(context).level),
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(4.0))),
+                        contentPadding: const EdgeInsets.all(8.0),
+                        isDense: true,
+                        filled: true,
+                        fillColor: Colors.white,
+                        counterText: '',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _LastChannelLoading extends StatelessWidget {
+  const _LastChannelLoading({
+    super.key,
+    required this.lastChannelLoadingFrequencyTextEditingController,
+    required this.lastChannelLoadingLevelTextEditingController,
+  });
+
+  final TextEditingController lastChannelLoadingFrequencyTextEditingController;
+  final TextEditingController lastChannelLoadingLevelTextEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 16.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      AppLocalizations.of(context).lastChannelLoading,
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 16.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    flex: 2,
+                    child: TextField(
+                      controller:
+                          lastChannelLoadingFrequencyTextEditingController,
+                      key: const Key(
+                          'setting18Form_lastChannelLoadingFrequencyInput_textField'),
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeXL,
+                      ),
+                      enabled: state.editMode,
+                      textInputAction: TextInputAction.done,
+                      onChanged: (lastChannelLoadingFrequency) {
+                        context.read<Setting18ListViewBloc>().add(
+                            MaxTemperatureChanged(lastChannelLoadingFrequency));
+                      },
+                      maxLength: 40,
+                      decoration: InputDecoration(
+                        label: Text(AppLocalizations.of(context).frequency),
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(4.0))),
+                        contentPadding: const EdgeInsets.all(8.0),
+                        isDense: true,
+                        filled: true,
+                        fillColor: Colors.white,
+                        counterText: '',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: TextField(
+                      controller: lastChannelLoadingLevelTextEditingController,
+                      key: const Key(
+                          'setting18Form_lastChannelLoadingLevelInput_textField'),
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeXL,
+                      ),
+                      enabled: state.editMode,
+                      textInputAction: TextInputAction.done,
+                      onChanged: (lastChannelLoadingLevel) {
+                        context.read<Setting18ListViewBloc>().add(
+                            MinTemperatureChanged(lastChannelLoadingLevel));
+                      },
+                      maxLength: 40,
+                      decoration: InputDecoration(
+                        label: Text(AppLocalizations.of(context).level),
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(4.0))),
+                        contentPadding: const EdgeInsets.all(8.0),
+                        isDense: true,
+                        filled: true,
+                        fillColor: Colors.white,
+                        counterText: '',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 

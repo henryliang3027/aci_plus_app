@@ -41,7 +41,7 @@ class Setting18ControlView extends StatelessWidget {
                       ),
                       const _FwdInputAttenuation(),
                       const _FwdInputEQ(),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       _ControlTitle(
@@ -56,6 +56,9 @@ class Setting18ControlView extends StatelessWidget {
                       const _RtnIngressSetting2(),
                       const _RtnIngressSetting3(),
                       const _RtnIngressSetting4(),
+                      const SizedBox(
+                        height: 120,
+                      ),
                     ],
                   ),
                 ),
