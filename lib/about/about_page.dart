@@ -25,7 +25,7 @@ class _AboutPageState extends State<AboutPage> {
 
   @override
   Widget build(BuildContext context) {
-    double _horizontalTitlePadding() {
+    double horizontalTitlePadding() {
       const kBasePadding = 40.0;
       const kMultiplier = 4.5;
 
@@ -48,7 +48,7 @@ class _AboutPageState extends State<AboutPage> {
       return kBasePadding;
     }
 
-    double _getTitleFontSize() {
+    double getTitleFontSize() {
       const defaultSize = 30.0;
 
       if (_scrollController.hasClients) {
@@ -69,7 +69,7 @@ class _AboutPageState extends State<AboutPage> {
       return defaultSize;
     }
 
-    bool _isCenterTitle() {
+    bool isCenterTitle() {
       if (_scrollController.hasClients) {
         if (_scrollController.offset > (_kExpandedHeight - kToolbarHeight)) {
           // In case 0% of the expanded height is viewed
@@ -82,7 +82,7 @@ class _AboutPageState extends State<AboutPage> {
       return false;
     }
 
-    Widget _buildParagraph({
+    Widget buildParagraph({
       required String paragraph,
       double fontSize = 16,
     }) {
@@ -104,16 +104,16 @@ class _AboutPageState extends State<AboutPage> {
             expandedHeight: _kExpandedHeight,
             flexibleSpace: FlexibleSpaceBar(
                 titlePadding: EdgeInsets.fromLTRB(
-                  _horizontalTitlePadding(),
+                  horizontalTitlePadding(),
                   10.0,
                   0.0,
                   10.0,
                 ),
-                centerTitle: _isCenterTitle(),
+                centerTitle: isCenterTitle(),
                 title: Text(
                   AppLocalizations.of(context).aboutUs,
                   style: TextStyle(
-                    fontSize: _getTitleFontSize(),
+                    fontSize: getTitleFontSize(),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -152,35 +152,35 @@ class _AboutPageState extends State<AboutPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildParagraph(
+                buildParagraph(
                   paragraph:
                       AppLocalizations.of(context).aboutArticleParagraph1,
                 ),
-                _buildParagraph(
+                buildParagraph(
                   paragraph:
                       AppLocalizations.of(context).aboutArticleParagraph2,
                 ),
-                _buildParagraph(
+                buildParagraph(
                   paragraph:
                       AppLocalizations.of(context).aboutArticleParagraph3,
                 ),
-                _buildParagraph(
+                buildParagraph(
                   paragraph:
                       AppLocalizations.of(context).aboutArticleParagraph4,
                 ),
-                _buildParagraph(
+                buildParagraph(
                   paragraph:
                       AppLocalizations.of(context).aboutArticleParagraph5,
                 ),
                 const SizedBox(
                   height: 30,
                 ),
-                _buildParagraph(
+                buildParagraph(
                   paragraph:
                       AppLocalizations.of(context).aboutArticleDigitalTeamTitle,
                   fontSize: 20,
                 ),
-                _buildParagraph(
+                buildParagraph(
                   paragraph: AppLocalizations.of(context)
                       .aboutArticleDigitalTeamParagraph,
                 ),
@@ -213,7 +213,7 @@ class _AboutPageState extends State<AboutPage> {
                               ),
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.projectManager,
+                              AppLocalizations.of(context).projectManager,
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -243,7 +243,7 @@ class _AboutPageState extends State<AboutPage> {
                               ),
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.websiteDesigner,
+                              AppLocalizations.of(context).websiteDesigner,
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -289,7 +289,7 @@ class _AboutPageState extends State<AboutPage> {
                               ),
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!
+                              AppLocalizations.of(context)
                                   .frontendBackendEngineer,
                               textAlign: TextAlign.center,
                             ),
@@ -320,7 +320,7 @@ class _AboutPageState extends State<AboutPage> {
                               ),
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.systemEngineer,
+                              AppLocalizations.of(context).systemEngineer,
                               textAlign: TextAlign.center,
                             ),
                           ),

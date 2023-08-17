@@ -164,12 +164,10 @@ class DsimRepository {
   bool _hasDualPilot = false;
 
   final int _commandExecutionTimeout = 10; // s
-  final int _logGettingTimeout = 20; // s
   final int _agcWorkingModeSettingTimeout = 40; // s
   Timer? _timeoutTimer;
-  Stopwatch _stopwatch = Stopwatch();
 
-  Dsim18Parser _dsim18parser;
+  final Dsim18Parser _dsim18parser;
 
   Future<void> checkBluetoothEnabled() async {
     await GPS.Location().requestService();

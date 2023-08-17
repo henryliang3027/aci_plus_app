@@ -1,6 +1,3 @@
-import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
-import 'package:dsim_app/core/form_status.dart';
-import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:dsim_app/setting/views/circuit_painter.dart';
 import 'package:flutter/material.dart';
