@@ -436,6 +436,7 @@ class DsimRepository {
         if (temperature > 32767) {
           temperature = -(65535 - temperature + 1).abs();
         }
+        print('$_nowTimeCount: $timeStamp');
 
         int timeDiff = _nowTimeCount - timeStamp;
         if (timeDiff < 0) {

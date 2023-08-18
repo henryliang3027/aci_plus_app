@@ -37,7 +37,6 @@ class _AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: const <Locale>[
         Locale('en'),
@@ -89,8 +88,11 @@ class SplashScreen extends StatelessWidget {
       width: double.maxFinite,
       height: double.maxFinite,
       child: Image.asset(
-        'assets/splash2.gif',
+        'assets/sp.gif',
         fit: BoxFit.fill,
+        // errorBuilder: (context, error, stackTrace) {
+        //   return Container();
+        // },
       ),
     );
   }
