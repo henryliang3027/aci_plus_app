@@ -88,7 +88,7 @@ class SplashScreen extends StatelessWidget {
       width: double.maxFinite,
       height: double.maxFinite,
       child: Image.asset(
-        'assets/sp.gif',
+        'assets/splash.gif',
         fit: BoxFit.fill,
         // errorBuilder: (context, error, stackTrace) {
         //   return Container();

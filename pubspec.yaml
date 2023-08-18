@@ -49,6 +49,7 @@ dependencies:
   open_filex: ^4.3.1
   share_plus: ^7.0.2
   shared_preferences: ^2.2.0 # for persist two pilotCodes
+  assets_audio_player: ^3.1.0
 
   flutter_speed_chart: 
     path: /Users/henry.liang/projects/flutter_speed_chart
@@ -86,6 +87,7 @@ flutter:
   generate: true
   assets:
     - assets/
+    - assets/audios/
 
   fonts:
     - family: CustomIcons

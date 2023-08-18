@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:dsim_app/core/command.dart';
+import 'package:dsim_app/core/command18.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/shared_preference_key.dart';
@@ -289,9 +291,6 @@ class DsimRepository {
     _connectionStreamSubscription = _ble
         .connectToDevice(
       id: discoveredDevice.id,
-      connectionTimeout: Duration(
-        seconds: _connectionTimeout,
-      ),
     )
         .listen((connectionStateUpdate) async {
       print('connectionStateUpdateXXXXXX: $connectionStateUpdate');
@@ -358,6 +357,11 @@ class DsimRepository {
                   rawData: rawData,
                   completer: _completer);
             }
+          }, onError: (error) {
+            _connectionReportStreamController.add(const ConnectionReport(
+              connectionState: DeviceConnectionState.disconnected,
+              errorMessage: 'disconnected',
+            ));
           });
 
           _connectionReportStreamController.add(const ConnectionReport(
@@ -384,7 +388,7 @@ class DsimRepository {
       print('Error: $error');
       _connectionReportStreamController.add(ConnectionReport(
         connectionState: DeviceConnectionState.disconnected,
-        errorMessage: error,
+        errorMessage: 'disconnected',
       ));
     });
   }
@@ -976,6 +980,7 @@ class DsimRepository {
     }
   }
 
+  // commandIndex range from 183 to 192;
   Future<dynamic> requestCommand1p8GForLogChunk(int chunkIndex) async {
     commandIndex = chunkIndex;
     _completer = Completer<dynamic>();
@@ -1019,7 +1024,7 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommand1p8GAlarm() async {
-    commandIndex = 185;
+    commandIndex = 204;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G_Alarm');
@@ -1050,6 +1055,71 @@ class DsimRepository {
         '',
         '',
       ];
+    }
+  }
+
+  Future<dynamic> set1p8GMaxTemperature(String temperature) async {
+    commandIndex = 300;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int max = (double.parse(temperature) * 10).toInt();
+
+    List<int> bytes = [];
+
+    // Convert the integer to bytes
+    while (max > 0) {
+      bytes.insert(0, max & 0xFF); // Mask with 0xFF to get the lowest byte
+      max >>= 8; // Shift the value right by 8 bits
+    }
+
+    Command18.setMaxTemperatureCmd[7] = bytes[0];
+    Command18.setMaxTemperatureCmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setMaxTemperatureCmd,
+      usDataLength: Command18.setMaxTemperatureCmd.length,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setMaxTemperatureCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GMinTemperature(String temperature) async {
+    commandIndex = 301;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    CRC16.calculateCRC16(
+      command: Command18.setMinTemperatureCmd,
+      usDataLength: Command18.setMinTemperatureCmd.length,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setMinTemperatureCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+
+      return isDone;
+    } catch (e) {
+      return false;
     }
   }
 
@@ -1873,17 +1943,24 @@ class DsimRepository {
 
   // iOS 跟 Android 的 set command 方式不一樣
   Future<void> _writeSetCommandToCharacteristic(List<int> value) async {
-    if (Platform.isAndroid) {
-      await _ble.writeCharacteristicWithResponse(
-        _qualifiedCharacteristic,
-        value: value,
-      );
-    } else if (Platform.isIOS) {
-      await _ble.writeCharacteristicWithoutResponse(
-        _qualifiedCharacteristic,
-        value: value,
-      );
-    } else {}
+    try {
+      if (Platform.isAndroid) {
+        await _ble.writeCharacteristicWithResponse(
+          _qualifiedCharacteristic,
+          value: value,
+        );
+      } else if (Platform.isIOS) {
+        await _ble.writeCharacteristicWithoutResponse(
+          _qualifiedCharacteristic,
+          value: value,
+        );
+      } else {}
+    } catch (e) {
+      if (!_completer.isCompleted) {
+        _completer.completeError('Write command failed');
+        print('Write command failed');
+      }
+    }
   }
 
   Future<dynamic> exportRecords() async {

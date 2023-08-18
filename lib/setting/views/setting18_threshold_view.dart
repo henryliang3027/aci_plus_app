@@ -1,3 +1,4 @@
+import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
@@ -26,6 +27,15 @@ class Setting18ThresholdView extends StatelessWidget {
       listener: (context, state) {},
       child: BlocBuilder<SettingBloc, SettingState>(
         builder: (context, state) {
+          HomeState homeState = context.read<HomeBloc>().state;
+          String minTemperature =
+              homeState.characteristicData[DataKey.minTemperatureC] ?? '';
+          String maxTemperature =
+              homeState.characteristicData[DataKey.maxTemperatureC] ?? '';
+          String minVoltage =
+              homeState.characteristicData[DataKey.minVoltage] ?? '';
+          String maxVoltage =
+              homeState.characteristicData[DataKey.maxVoltage] ?? '';
           return Scaffold(
             body: SafeArea(
               child: SingleChildScrollView(
@@ -37,15 +47,17 @@ class Setting18ThresholdView extends StatelessWidget {
                     children: [
                       _TemperatureAlarmControl(
                         minTemperatureTextEditingController:
-                            minTemperatureTextEditingController,
+                            minTemperatureTextEditingController
+                              ..text = minTemperature,
                         maxTemperatureTextEditingController:
-                            maxTemperatureTextEditingController,
+                            maxTemperatureTextEditingController
+                              ..text = maxTemperature,
                       ),
                       _VoltageAlarmControl(
                         minVoltageTextEditingController:
-                            minVoltageTextEditingController,
+                            minVoltageTextEditingController..text = minVoltage,
                         maxVoltageTextEditingController:
-                            maxVoltageTextEditingController,
+                            maxVoltageTextEditingController..text = maxVoltage,
                       ),
                       const _RFInputPowerAlarmControl(),
                       const _RFOutputPowerAlarmControl(),

@@ -7,6 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -34,12 +35,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   StreamSubscription<Map<DataKey, String>>?
       _characteristicDataStreamSubscription;
 
+  final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer();
+
   // 進入首頁時播放動畫，動畫播完後掃描藍芽裝置
   Future<void> _onSplashStateChanged(
     SplashStateChanged event,
     Emitter<HomeState> emit,
   ) async {
-    await Future.delayed(const Duration(milliseconds: 2500));
+    await _assetsAudioPlayer.open(
+      Audio("assets/audios/splash_sound_final.mp3"),
+      autoStart: false,
+    );
+    _assetsAudioPlayer.play();
+    await Future.delayed(const Duration(milliseconds: 1800));
 
     await _dsimRepository.checkBluetoothEnabled();
 

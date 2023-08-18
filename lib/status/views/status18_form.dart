@@ -105,51 +105,165 @@ class _DeviceRefresh extends StatelessWidget {
   }
 }
 
-class _ModuleCard extends StatelessWidget {
-  const _ModuleCard({super.key});
+// class _ModuleCard extends StatelessWidget {
+//   const _ModuleCard({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                AppLocalizations.of(context).module,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              itemText(
-                loadingStatus: state.loadingStatus,
-                title: AppLocalizations.of(context).serialNumber,
-                content: state.characteristicData[DataKey.serialNumber] ?? '',
-              ),
-              itemText(
-                loadingStatus: state.loadingStatus,
-                title: AppLocalizations.of(context).firmwareVersion,
-                content:
-                    state.characteristicData[DataKey.firmwareVersion] ?? '',
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<HomeBloc, HomeState>(
+//       builder: (context, state) => Card(
+//         color: Theme.of(context).colorScheme.onPrimary,
+//         surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+//         child: Padding(
+//           padding: const EdgeInsets.all(16.0),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Text(
+//                 AppLocalizations.of(context).module,
+//                 style: Theme.of(context).textTheme.titleLarge,
+//               ),
+//               const SizedBox(
+//                 height: 10.0,
+//               ),
+//               itemText(
+//                 loadingStatus: state.loadingStatus,
+//                 title: AppLocalizations.of(context).serialNumber,
+//                 content: state.characteristicData[DataKey.serialNumber] ?? '',
+//               ),
+//               itemText(
+//                 loadingStatus: state.loadingStatus,
+//                 title: AppLocalizations.of(context).firmwareVersion,
+//                 content:
+//                     state.characteristicData[DataKey.firmwareVersion] ?? '',
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class _TemperatureCard extends StatelessWidget {
   const _TemperatureCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Color currentTemperatureColor({
+      required String minTemperature,
+      required String maxTemperature,
+      required String currentTemperature,
+    }) {
+      double min = double.parse(minTemperature);
+      double max = double.parse(maxTemperature);
+      double current = double.parse(currentTemperature);
+
+      return current >= min && current <= max
+          ? CustomStyle.alarmColor['success']!
+          : CustomStyle.alarmColor['danger']!;
+    }
+
+    Widget getCurrentTemperature({
+      required FormStatus loadingStatus,
+      required String minTemperature,
+      required String maxTemperature,
+      required String currentTemperature,
+      double fontSize = 16,
+    }) {
+      if (loadingStatus == FormStatus.requestInProgress) {
+        return currentTemperature.isEmpty
+            ? const CircularProgressIndicator()
+            : Text(
+                currentTemperature,
+                style: TextStyle(
+                  fontSize: fontSize,
+                ),
+              );
+      } else if (loadingStatus == FormStatus.requestSuccess) {
+        return Text(
+          currentTemperature,
+          style: TextStyle(
+            fontSize: fontSize,
+            color: currentTemperatureColor(
+              minTemperature: minTemperature,
+              maxTemperature: maxTemperature,
+              currentTemperature: currentTemperature,
+            ),
+          ),
+        );
+      } else {
+        return Text(
+          currentTemperature.isEmpty ? 'N/A' : currentTemperature,
+          style: TextStyle(
+            fontSize: fontSize,
+          ),
+        );
+      }
+    }
+
+    Widget getMinTemperature({
+      required FormStatus loadingStatus,
+      required String minTemperature,
+      double fontSize = 16,
+    }) {
+      if (loadingStatus == FormStatus.requestInProgress) {
+        return minTemperature.isEmpty
+            ? const CircularProgressIndicator()
+            : Text(
+                minTemperature,
+                style: TextStyle(
+                  fontSize: fontSize,
+                ),
+              );
+      } else if (loadingStatus == FormStatus.requestSuccess) {
+        return Text(
+          minTemperature,
+          style: TextStyle(
+            fontSize: fontSize,
+          ),
+        );
+      } else {
+        return Text(
+          minTemperature.isEmpty ? 'N/A' : minTemperature,
+          style: TextStyle(
+            fontSize: fontSize,
+          ),
+        );
+      }
+    }
+
+    Widget getMaxTemperature({
+      required FormStatus loadingStatus,
+      required String maxTemperature,
+      double fontSize = 16,
+    }) {
+      if (loadingStatus == FormStatus.requestInProgress) {
+        return maxTemperature.isEmpty
+            ? const CircularProgressIndicator()
+            : Text(
+                maxTemperature,
+                style: TextStyle(
+                  fontSize: fontSize,
+                ),
+              );
+      } else if (loadingStatus == FormStatus.requestSuccess) {
+        return Text(
+          maxTemperature,
+          style: TextStyle(
+            fontSize: fontSize,
+          ),
+        );
+      } else {
+        return Text(
+          maxTemperature.isEmpty ? 'N/A' : maxTemperature,
+          style: TextStyle(
+            fontSize: fontSize,
+          ),
+        );
+      }
+    }
+
     Widget temperatureBlock({
       required FormStatus loadingStatus,
       required FormStatus connectionStatus,
@@ -170,9 +284,11 @@ class _TemperatureCard extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    getContent(
+                    getCurrentTemperature(
                       loadingStatus: loadingStatus,
-                      content: currentTemperature,
+                      minTemperature: minTemperature,
+                      maxTemperature: maxTemperature,
+                      currentTemperature: currentTemperature,
                       fontSize: 40,
                     ),
                     Text(
@@ -195,9 +311,9 @@ class _TemperatureCard extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      getContent(
+                      getMinTemperature(
                         loadingStatus: loadingStatus,
-                        content: minTemperature,
+                        minTemperature: 'N/A',
                         fontSize: 32,
                       ),
                       Text(
@@ -213,9 +329,9 @@ class _TemperatureCard extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      getContent(
+                      getMaxTemperature(
                         loadingStatus: loadingStatus,
-                        content: maxTemperature,
+                        maxTemperature: 'N/A',
                         fontSize: 32,
                       ),
                       Text(
@@ -342,32 +458,148 @@ class _TemperatureCard extends StatelessWidget {
 class _PowerSupplyCard extends StatelessWidget {
   const _PowerSupplyCard({super.key});
 
-  Widget tile({
-    required FormStatus loadingStatus,
-    required String title,
-    required String content,
-    required double fontSize,
-    double? fontHeight,
+  // Widget tile({
+  //   required FormStatus loadingStatus,
+  //   required String title,
+  //   required String content,
+  //   required double fontSize,
+  //   Color color = Colors.black,
+  //   double? fontHeight,
+  // }) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 16.0),
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: [
+  //         getContent(
+  //           loadingStatus: loadingStatus,
+  //           content: content,
+  //           color: color,
+  //           fontSize: fontSize,
+  //         ),
+  //         Text(
+  //           title,
+  //           style: const TextStyle(
+  //             fontSize: 16,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  Color currentVoltageColor({
+    required String minVoltage,
+    required String maxVoltage,
+    required String currentVoltage,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          getContent(
-            loadingStatus: loadingStatus,
-            content: content,
-            fontSize: fontSize,
+    double min = double.parse(minVoltage);
+    double max = double.parse(maxVoltage);
+    double current = double.parse(currentVoltage);
+
+    return current >= min && current <= max
+        ? CustomStyle.alarmColor['success']!
+        : CustomStyle.alarmColor['danger']!;
+  }
+
+  Widget getCurrentVoltage({
+    required FormStatus loadingStatus,
+    required String minVoltage,
+    required String maxVoltage,
+    required String currentVoltage,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return currentVoltage.isEmpty
+          ? const CircularProgressIndicator()
+          : Text(
+              currentVoltage,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        currentVoltage,
+        style: TextStyle(
+          fontSize: fontSize,
+          color: currentVoltageColor(
+            minVoltage: minVoltage,
+            maxVoltage: maxVoltage,
+            currentVoltage: currentVoltage,
           ),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-            ),
-          ),
-        ],
-      ),
-    );
+        ),
+      );
+    } else {
+      return Text(
+        currentVoltage.isEmpty ? 'N/A' : currentVoltage,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget getMinVoltage({
+    required FormStatus loadingStatus,
+    required String minVoltage,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return minVoltage.isEmpty
+          ? const CircularProgressIndicator()
+          : Text(
+              minVoltage,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        minVoltage,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    } else {
+      return Text(
+        minVoltage.isEmpty ? 'N/A' : minVoltage,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget getMaxVoltage({
+    required FormStatus loadingStatus,
+    required String maxVoltage,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return maxVoltage.isEmpty
+          ? const CircularProgressIndicator()
+          : Text(
+              maxVoltage,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        maxVoltage,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    } else {
+      return Text(
+        maxVoltage.isEmpty ? 'N/A' : maxVoltage,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
   }
 
   Widget voltageBlock({
@@ -383,34 +615,65 @@ class _PowerSupplyCard extends StatelessWidget {
   }) {
     return Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
+          vertical: 16.0,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Expanded(
-              child: tile(
-                loadingStatus: loadingStatus,
-                title: minVoltageTitle,
-                content: minVoltage,
-                fontSize: 32,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  getMinVoltage(
+                    loadingStatus: loadingStatus,
+                    minVoltage: 'N/A',
+                    fontSize: 32,
+                  ),
+                  Text(
+                    minVoltageTitle,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
               ),
             ),
             Expanded(
-              child: tile(
-                loadingStatus: loadingStatus,
-                title: currentVoltageTitle,
-                content: currentVoltage,
-                fontSize: 40,
-                fontHeight: 1.3,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  getCurrentVoltage(
+                    loadingStatus: loadingStatus,
+                    minVoltage: minVoltage,
+                    maxVoltage: maxVoltage,
+                    currentVoltage: currentVoltage,
+                    fontSize: 40,
+                  ),
+                  Text(
+                    currentVoltageTitle,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
               ),
             ),
             Expanded(
-              child: tile(
-                loadingStatus: loadingStatus,
-                title: maxVoltageTitle,
-                content: maxVoltage,
-                fontSize: 32,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  getMaxVoltage(
+                    loadingStatus: loadingStatus,
+                    maxVoltage: 'N/A',
+                    fontSize: 32,
+                  ),
+                  Text(
+                    maxVoltageTitle,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -455,60 +718,62 @@ class _PowerSupplyCard extends StatelessWidget {
   }
 }
 
-Widget getContent({
-  required FormStatus loadingStatus,
-  required String content,
-  double fontSize = 16,
-}) {
-  if (loadingStatus == FormStatus.requestInProgress) {
-    return content.isEmpty
-        ? const CircularProgressIndicator()
-        : Text(
-            content,
-            style: TextStyle(
-              fontSize: fontSize,
-            ),
-          );
-  } else if (loadingStatus == FormStatus.requestSuccess) {
-    return Text(
-      content,
-      style: TextStyle(
-        fontSize: fontSize,
-      ),
-    );
-  } else {
-    return Text(
-      content.isEmpty ? 'N/A' : content,
-      style: TextStyle(
-        fontSize: fontSize,
-      ),
-    );
-  }
-}
+// Widget getContent({
+//   required FormStatus loadingStatus,
+//   required String content,
+//   Color color = Colors.black,
+//   double fontSize = 16,
+// }) {
+//   if (loadingStatus == FormStatus.requestInProgress) {
+//     return content.isEmpty
+//         ? const CircularProgressIndicator()
+//         : Text(
+//             content,
+//             style: TextStyle(
+//               fontSize: fontSize,
+//             ),
+//           );
+//   } else if (loadingStatus == FormStatus.requestSuccess) {
+//     return Text(
+//       content,
+//       style: TextStyle(
+//         fontSize: fontSize,
+//         color: color,
+//       ),
+//     );
+//   } else {
+//     return Text(
+//       content.isEmpty ? 'N/A' : content,
+//       style: TextStyle(
+//         fontSize: fontSize,
+//       ),
+//     );
+//   }
+// }
 
-Widget itemText({
-  required FormStatus loadingStatus,
-  required String title,
-  required String content,
-}) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 16,
-          ),
-        ),
-        const SizedBox(
-          width: 30.0,
-        ),
-        Flexible(
-          child: getContent(loadingStatus: loadingStatus, content: content),
-        ),
-      ],
-    ),
-  );
-}
+// Widget itemText({
+//   required FormStatus loadingStatus,
+//   required String title,
+//   required String content,
+// }) {
+//   return Padding(
+//     padding: const EdgeInsets.all(8.0),
+//     child: Row(
+//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//       children: [
+//         Text(
+//           title,
+//           style: const TextStyle(
+//             fontSize: 16,
+//           ),
+//         ),
+//         const SizedBox(
+//           width: 30.0,
+//         ),
+//         Flexible(
+//           child: getContent(loadingStatus: loadingStatus, content: content),
+//         ),
+//       ],
+//     ),
+//   );
+// }

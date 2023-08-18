@@ -213,12 +213,31 @@ class Dsim18Parser {
         }
         break;
       case 183:
+      case 184:
+      case 185:
+      case 186:
+      case 187:
+      case 188:
+      case 189:
+      case 190:
+      case 191:
+      case 192:
         print('${rawData.length}');
         print('${rawData}');
         break;
-      case 184:
+      case 193:
+      case 194:
+      case 195:
+      case 196:
+      case 197:
+      case 198:
+      case 199:
+      case 200:
+      case 201:
+      case 202:
+      case 203:
         break;
-      case 185:
+      case 204:
         // 給 定期更新 information page 的 alarm 用
         Alarm alarmUSeverity = Alarm.medium;
         Alarm alarmTServerity = Alarm.medium;
@@ -242,6 +261,10 @@ class Dsim18Parser {
         }
 
         break;
+      case 300:
+        if (!completer.isCompleted) {
+          completer.complete((true));
+        }
       default:
         break;
     }
