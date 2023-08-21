@@ -125,7 +125,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           mtu: mtu,
         ));
 
-        if (mtu == 20 || mtu == 23) {
+        if (mtu == 244 || mtu == 247) {
+          add(const Data18Requested());
+
+          _characteristicDataStreamSubscription =
+              _dsimRepository.characteristicData.listen(
+            (data) {
+              add(DeviceCharacteristicChanged(data.entries.first));
+            },
+            onDone: () {},
+          );
+        } else {
           add(const DataRequested());
 
           //當設定頁面設定資料時, 用來更新Information page 對應的資料欄位
@@ -136,8 +146,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             },
             onDone: () {},
           );
-        } else {
-          add(const Data18Requested());
         }
 
         break;

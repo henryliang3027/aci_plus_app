@@ -3,8 +3,7 @@ import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:dsim_app/setting/bloc/setting18_list_view_bloc/setting18_list_view_bloc.dart';
-import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
+import 'package:dsim_app/setting/bloc/setting18_threshold/setting18_threshold_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -23,59 +22,126 @@ class Setting18ThresholdView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<Setting18ListViewBloc, Setting18ListViewState>(
-      listener: (context, state) {},
-      child: BlocBuilder<SettingBloc, SettingState>(
-        builder: (context, state) {
-          HomeState homeState = context.read<HomeBloc>().state;
-          String minTemperature =
-              homeState.characteristicData[DataKey.minTemperatureC] ?? '';
-          String maxTemperature =
-              homeState.characteristicData[DataKey.maxTemperatureC] ?? '';
-          String minVoltage =
-              homeState.characteristicData[DataKey.minVoltage] ?? '';
-          String maxVoltage =
-              homeState.characteristicData[DataKey.maxVoltage] ?? '';
-          return Scaffold(
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(
-                    CustomStyle.sizeXL,
-                  ),
-                  child: Column(
-                    children: [
-                      _TemperatureAlarmControl(
-                        minTemperatureTextEditingController:
-                            minTemperatureTextEditingController
-                              ..text = minTemperature,
-                        maxTemperatureTextEditingController:
-                            maxTemperatureTextEditingController
-                              ..text = maxTemperature,
-                      ),
-                      _VoltageAlarmControl(
-                        minVoltageTextEditingController:
-                            minVoltageTextEditingController..text = minVoltage,
-                        maxVoltageTextEditingController:
-                            maxVoltageTextEditingController..text = maxVoltage,
-                      ),
-                      const _RFInputPowerAlarmControl(),
-                      const _RFOutputPowerAlarmControl(),
-                      const _PilotFrequency1AlarmControl(),
-                      const _PilotFrequency2AlarmControl(),
-                      const _FirstChannelOutputLevelAlarmControl(),
-                      const _LastChannelOutputLevelAlarmControl(),
-                      const SizedBox(
-                        height: 120,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+    HomeState homeState = context.read<HomeBloc>().state;
+    String minTemperature =
+        homeState.characteristicData[DataKey.minTemperatureC] ?? '';
+    String maxTemperature =
+        homeState.characteristicData[DataKey.maxTemperatureC] ?? '';
+    String minVoltage = homeState.characteristicData[DataKey.minVoltage] ?? '';
+    String maxVoltage = homeState.characteristicData[DataKey.maxVoltage] ?? '';
+
+    context.read<Setting18ThresholdBloc>().add(Initialized(
+          enableTemperatureAlarm: false,
+          minTemperature: minTemperature,
+          maxTemperature: maxTemperature,
+          enableVoltageAlarm: false,
+          minVoltage: minVoltage,
+          maxVoltage: maxVoltage,
+          enableRFInputPowerAlarm: false,
+          enableRFOutputPowerAlarm: false,
+          enablePilotFrequency1Alarm: false,
+          enablePilotFrequency2Alarm: false,
+          enableFirstChannelOutputLevelAlarm: false,
+          enableLastChannelOutputLevelAlarm: false,
+        ));
+
+    Future<void> showInProgressDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitleProcessing,
             ),
-            floatingActionButton: const _SettingFloatingActionButton(),
+            actionsAlignment: MainAxisAlignment.center,
+            actions: const <Widget>[
+              CircularProgressIndicator(),
+            ],
           );
         },
+      );
+    }
+
+    Future<void> showResultDialog(List<Widget> messageRows) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            contentPadding: const EdgeInsets.all(16.0),
+            titlePadding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 0.0),
+            buttonPadding: const EdgeInsets.all(0.0),
+            actionsPadding: const EdgeInsets.all(16.0),
+            title: Text(
+              AppLocalizations.of(context).dialogTitleSettingResult,
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: messageRows,
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    return BlocListener<Setting18ThresholdBloc, Setting18ThresholdState>(
+      listener: (context, state) async {
+        if (state.submissionStatus.isSubmissionInProgress) {
+          await showInProgressDialog();
+        } else if (state.submissionStatus.isSubmissionSuccess) {
+          if (ModalRoute.of(context)?.isCurrent != true) {
+            Navigator.of(context).pop();
+          }
+        } else {}
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(
+                CustomStyle.sizeXL,
+              ),
+              child: Column(
+                children: [
+                  _TemperatureAlarmControl(
+                    minTemperatureTextEditingController:
+                        minTemperatureTextEditingController
+                          ..text = minTemperature,
+                    maxTemperatureTextEditingController:
+                        maxTemperatureTextEditingController
+                          ..text = maxTemperature,
+                  ),
+                  _VoltageAlarmControl(
+                    minVoltageTextEditingController:
+                        minVoltageTextEditingController..text = minVoltage,
+                    maxVoltageTextEditingController:
+                        maxVoltageTextEditingController..text = maxVoltage,
+                  ),
+                  const _RFInputPowerAlarmControl(),
+                  const _RFOutputPowerAlarmControl(),
+                  const _PilotFrequency1AlarmControl(),
+                  const _PilotFrequency2AlarmControl(),
+                  const _FirstChannelOutputLevelAlarmControl(),
+                  const _LastChannelOutputLevelAlarmControl(),
+                  const SizedBox(
+                    height: 120,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        floatingActionButton: const _SettingFloatingActionButton(),
       ),
     );
   }
@@ -93,7 +159,7 @@ class _TemperatureAlarmControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
       builder: (context, state) {
         return Column(
           children: [
@@ -127,7 +193,7 @@ class _TemperatureAlarmControl extends StatelessWidget {
                       onChanged: state.editMode
                           ? (bool value) {
                               context
-                                  .read<Setting18ListViewBloc>()
+                                  .read<Setting18ThresholdBloc>()
                                   .add(TemperatureAlarmChanged(value));
                             }
                           : null,
@@ -154,10 +220,10 @@ class _TemperatureAlarmControl extends StatelessWidget {
                       ),
                       enabled: state.editMode,
                       textInputAction: TextInputAction.done,
-                      onChanged: (maxTemperature) {
+                      onChanged: (minTemperature) {
                         context
-                            .read<Setting18ListViewBloc>()
-                            .add(MaxTemperatureChanged(maxTemperature));
+                            .read<Setting18ThresholdBloc>()
+                            .add(MinTemperatureChanged(minTemperature));
                       },
                       maxLength: 40,
                       decoration: InputDecoration(
@@ -188,10 +254,10 @@ class _TemperatureAlarmControl extends StatelessWidget {
                       ),
                       enabled: state.editMode,
                       textInputAction: TextInputAction.done,
-                      onChanged: (minTemperature) {
+                      onChanged: (maxTemperature) {
                         context
-                            .read<Setting18ListViewBloc>()
-                            .add(MinTemperatureChanged(minTemperature));
+                            .read<Setting18ThresholdBloc>()
+                            .add(MaxTemperatureChanged(maxTemperature));
                       },
                       maxLength: 40,
                       decoration: InputDecoration(
@@ -233,7 +299,7 @@ class _VoltageAlarmControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
       builder: (context, state) {
         return Column(
           children: [
@@ -267,7 +333,7 @@ class _VoltageAlarmControl extends StatelessWidget {
                       onChanged: state.editMode
                           ? (bool value) {
                               context
-                                  .read<Setting18ListViewBloc>()
+                                  .read<Setting18ThresholdBloc>()
                                   .add(VoltageAlarmChanged(value));
                             }
                           : null,
@@ -291,7 +357,7 @@ class _VoltageAlarmControl extends StatelessWidget {
                     textInputAction: TextInputAction.done,
                     onChanged: (minVoltage) {
                       context
-                          .read<Setting18ListViewBloc>()
+                          .read<Setting18ThresholdBloc>()
                           .add(MinVoltageChanged(minVoltage));
                     },
                     maxLength: 40,
@@ -322,7 +388,7 @@ class _VoltageAlarmControl extends StatelessWidget {
                     textInputAction: TextInputAction.done,
                     onChanged: (maxVoltage) {
                       context
-                          .read<Setting18ListViewBloc>()
+                          .read<Setting18ThresholdBloc>()
                           .add(MaxVoltageChanged(maxVoltage));
                     },
                     maxLength: 40,
@@ -398,7 +464,7 @@ class _RFInputPowerAlarmControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
         builder: (context, state) {
       return controlParameterSwitch(
         context: context,
@@ -407,7 +473,7 @@ class _RFInputPowerAlarmControl extends StatelessWidget {
         value: state.enableRFInputPowerAlarm,
         onChanged: (bool value) {
           context
-              .read<Setting18ListViewBloc>()
+              .read<Setting18ThresholdBloc>()
               .add(RFInputPowerAlarmChanged(value));
         },
       );
@@ -420,7 +486,7 @@ class _RFOutputPowerAlarmControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
       builder: (context, state) {
         return controlParameterSwitch(
           context: context,
@@ -429,7 +495,7 @@ class _RFOutputPowerAlarmControl extends StatelessWidget {
           value: state.enableRFOutputPowerAlarm,
           onChanged: (bool value) {
             context
-                .read<Setting18ListViewBloc>()
+                .read<Setting18ThresholdBloc>()
                 .add(RFOutputPowerAlarmChanged(value));
           },
         );
@@ -443,7 +509,7 @@ class _PilotFrequency1AlarmControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
       builder: (context, state) {
         return controlParameterSwitch(
           context: context,
@@ -452,7 +518,7 @@ class _PilotFrequency1AlarmControl extends StatelessWidget {
           value: state.enablePilotFrequency1Alarm,
           onChanged: (bool value) {
             context
-                .read<Setting18ListViewBloc>()
+                .read<Setting18ThresholdBloc>()
                 .add(PilotFrequency1AlarmChanged(value));
           },
         );
@@ -466,7 +532,7 @@ class _PilotFrequency2AlarmControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
       builder: (context, state) {
         return controlParameterSwitch(
           context: context,
@@ -475,7 +541,7 @@ class _PilotFrequency2AlarmControl extends StatelessWidget {
           value: state.enablePilotFrequency2Alarm,
           onChanged: (bool value) {
             context
-                .read<Setting18ListViewBloc>()
+                .read<Setting18ThresholdBloc>()
                 .add(PilotFrequency2AlarmChanged(value));
           },
         );
@@ -489,7 +555,7 @@ class _FirstChannelOutputLevelAlarmControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
       builder: (context, state) {
         return controlParameterSwitch(
           context: context,
@@ -498,7 +564,7 @@ class _FirstChannelOutputLevelAlarmControl extends StatelessWidget {
           value: state.enableFirstChannelOutputLevelAlarm,
           onChanged: (bool value) {
             context
-                .read<Setting18ListViewBloc>()
+                .read<Setting18ThresholdBloc>()
                 .add(FirstChannelOutputLevelAlarmChanged(value));
           },
         );
@@ -512,7 +578,7 @@ class _LastChannelOutputLevelAlarmControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
       builder: (context, state) {
         return controlParameterSwitch(
           context: context,
@@ -521,7 +587,7 @@ class _LastChannelOutputLevelAlarmControl extends StatelessWidget {
           value: state.enableLastChannelOutputLevelAlarm,
           onChanged: (bool value) {
             context
-                .read<Setting18ListViewBloc>()
+                .read<Setting18ThresholdBloc>()
                 .add(LastChannelOutputLevelAlarmChanged(value));
           },
         );
@@ -555,7 +621,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   ),
                   onPressed: () {
                     context
-                        .read<Setting18ListViewBloc>()
+                        .read<Setting18ThresholdBloc>()
                         .add(const EditModeDisabled());
 
                     // 重新載入初始設定值
@@ -576,9 +642,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       : Colors.grey.withAlpha(200),
                   onPressed: enableSubmission
                       ? () {
-                          // context
-                          //     .read<SettingListViewBloc>()
-                          //     .add(const SettingSubmitted());
+                          context
+                              .read<Setting18ThresholdBloc>()
+                              .add(const SettingSubmitted());
                         }
                       : null,
                   child: Icon(
@@ -619,7 +685,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   ),
                   onPressed: () {
                     context
-                        .read<Setting18ListViewBloc>()
+                        .read<Setting18ThresholdBloc>()
                         .add(const EditModeEnabled());
                   },
                 ),
@@ -642,14 +708,14 @@ class _SettingFloatingActionButton extends StatelessWidget {
     // settingListViewState 管理編輯模式或是觀看模式
     return Builder(builder: (context) {
       final HomeState homeState = context.watch<HomeBloc>().state;
-      final Setting18ListViewState setting18ListViewState =
-          context.watch<Setting18ListViewBloc>().state;
+      final Setting18ThresholdState setting18thresholdState =
+          context.watch<Setting18ThresholdBloc>().state;
 
       bool editable = getEditable(homeState.loadingStatus);
       return editable
           ? getEditTools(
-              editMode: setting18ListViewState.editMode,
-              enableSubmission: setting18ListViewState.enableSubmission,
+              editMode: setting18thresholdState.editMode,
+              enableSubmission: setting18thresholdState.enableSubmission,
             )
           : Container();
     });

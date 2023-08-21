@@ -3,7 +3,7 @@ import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:dsim_app/setting/bloc/setting18_list_view_bloc/setting18_list_view_bloc.dart';
+import 'package:dsim_app/setting/bloc/setting18_configure/setting18_configure_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,54 +28,48 @@ class Setting18ConfigureView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocListener<Setting18ConfigureBloc, Setting18ConfigureState>(
       listener: (context, state) {},
-      child: BlocBuilder<SettingBloc, SettingState>(
-        builder: (context, state) {
-          return Scaffold(
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(
-                    CustomStyle.sizeXL,
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(
+                CustomStyle.sizeXL,
+              ),
+              child: Column(
+                children: [
+                  const _SplitOptionDropDownMenu(),
+                  _FirstChannelLoading(
+                    firstChannelLoadingFrequencyTextEditingController:
+                        firstChannelLoadingFrequencyTextEditingController,
+                    firstChannelLoadingLevelTextEditingController:
+                        firstChannelLoadingLevelTextEditingController,
                   ),
-                  child: Column(
-                    children: [
-                      const _SplitOptionDropDownMenu(),
-                      _FirstChannelLoading(
-                        firstChannelLoadingFrequencyTextEditingController:
-                            firstChannelLoadingFrequencyTextEditingController,
-                        firstChannelLoadingLevelTextEditingController:
-                            firstChannelLoadingLevelTextEditingController,
-                      ),
-                      _LastChannelLoading(
-                        lastChannelLoadingFrequencyTextEditingController:
-                            lastChannelLoadingFrequencyTextEditingController,
-                        lastChannelLoadingLevelTextEditingController:
-                            lastChannelLoadingLevelTextEditingController,
-                      ),
-                      const _PilotFrequencyMode(),
-                      _PilotFrequency1(
-                        textEditingController:
-                            pilotFrequency1TextEditingController,
-                      ),
-                      _PilotFrequency2(
-                        textEditingController:
-                            pilotFrequency2TextEditingController,
-                      ),
-                      const _FwdAGCMode(),
-                      const _AutoLevelControl(),
-                      const SizedBox(
-                        height: 120,
-                      ),
-                    ],
+                  _LastChannelLoading(
+                    lastChannelLoadingFrequencyTextEditingController:
+                        lastChannelLoadingFrequencyTextEditingController,
+                    lastChannelLoadingLevelTextEditingController:
+                        lastChannelLoadingLevelTextEditingController,
                   ),
-                ),
+                  const _PilotFrequencyMode(),
+                  _PilotFrequency1(
+                    textEditingController: pilotFrequency1TextEditingController,
+                  ),
+                  _PilotFrequency2(
+                    textEditingController: pilotFrequency2TextEditingController,
+                  ),
+                  const _FwdAGCMode(),
+                  const _AutoLevelControl(),
+                  const SizedBox(
+                    height: 120,
+                  ),
+                ],
               ),
             ),
-            floatingActionButton: _SettingFloatingActionButton(),
-          );
-        },
+          ),
+        ),
+        floatingActionButton: _SettingFloatingActionButton(),
       ),
     );
   }
@@ -91,7 +85,7 @@ class _SplitOptionDropDownMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
         buildWhen: (previous, current) =>
             previous.splitOption != current.splitOption ||
             previous.editMode != current.editMode,
@@ -151,7 +145,7 @@ class _SplitOptionDropDownMenu extends StatelessWidget {
                           ? (String? value) {
                               if (value != null) {
                                 context
-                                    .read<Setting18ListViewBloc>()
+                                    .read<Setting18ConfigureBloc>()
                                     .add(SplitOptionChanged(value));
                               }
                             }
@@ -176,7 +170,7 @@ class _FirstChannelLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
         return Column(
           children: [
@@ -219,8 +213,8 @@ class _FirstChannelLoading extends StatelessWidget {
                       enabled: state.editMode,
                       textInputAction: TextInputAction.done,
                       onChanged: (firstChannelLoadingFrequency) {
-                        context.read<Setting18ListViewBloc>().add(
-                            MaxTemperatureChanged(
+                        context.read<Setting18ConfigureBloc>().add(
+                            FirstChannelLoadingFrequencyChanged(
                                 firstChannelLoadingFrequency));
                       },
                       maxLength: 40,
@@ -252,8 +246,9 @@ class _FirstChannelLoading extends StatelessWidget {
                       enabled: state.editMode,
                       textInputAction: TextInputAction.done,
                       onChanged: (firstChannelLoadingLevel) {
-                        context.read<Setting18ListViewBloc>().add(
-                            MinTemperatureChanged(firstChannelLoadingLevel));
+                        context.read<Setting18ConfigureBloc>().add(
+                            FirstChannelLoadingLevelChanged(
+                                firstChannelLoadingLevel));
                       },
                       maxLength: 40,
                       decoration: InputDecoration(
@@ -294,7 +289,7 @@ class _LastChannelLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
         return Column(
           children: [
@@ -337,8 +332,9 @@ class _LastChannelLoading extends StatelessWidget {
                       enabled: state.editMode,
                       textInputAction: TextInputAction.done,
                       onChanged: (lastChannelLoadingFrequency) {
-                        context.read<Setting18ListViewBloc>().add(
-                            MaxTemperatureChanged(lastChannelLoadingFrequency));
+                        context.read<Setting18ConfigureBloc>().add(
+                            LastChannelLoadingFrequencyChanged(
+                                lastChannelLoadingFrequency));
                       },
                       maxLength: 40,
                       decoration: InputDecoration(
@@ -369,8 +365,9 @@ class _LastChannelLoading extends StatelessWidget {
                       enabled: state.editMode,
                       textInputAction: TextInputAction.done,
                       onChanged: (lastChannelLoadingLevel) {
-                        context.read<Setting18ListViewBloc>().add(
-                            MinTemperatureChanged(lastChannelLoadingLevel));
+                        context.read<Setting18ConfigureBloc>().add(
+                            LastChannelLoadingLevelChanged(
+                                lastChannelLoadingLevel));
                       },
                       maxLength: 40,
                       decoration: InputDecoration(
@@ -409,7 +406,7 @@ class _FirstChannelLoadingFrequency extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(
@@ -441,7 +438,7 @@ class _FirstChannelLoadingFrequency extends StatelessWidget {
                 textInputAction: TextInputAction.done,
                 onChanged: (location) {
                   // context
-                  //     .read<Setting18ListViewBloc>()
+                  //     .read<Setting18ConfigureBloc>()
                   //     .add(LocationChanged(location));
                 },
                 maxLength: 40,
@@ -473,7 +470,7 @@ class _FirstChannelLoadingLevel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(
@@ -505,7 +502,7 @@ class _FirstChannelLoadingLevel extends StatelessWidget {
                 textInputAction: TextInputAction.done,
                 onChanged: (location) {
                   // context
-                  //     .read<Setting18ListViewBloc>()
+                  //     .read<Setting18ConfigureBloc>()
                   //     .add(LocationChanged(location));
                 },
                 maxLength: 40,
@@ -537,7 +534,7 @@ class _LastChannelLoadingFrequency extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(
@@ -569,7 +566,7 @@ class _LastChannelLoadingFrequency extends StatelessWidget {
                 textInputAction: TextInputAction.done,
                 onChanged: (location) {
                   // context
-                  //     .read<Setting18ListViewBloc>()
+                  //     .read<Setting18ConfigureBloc>()
                   //     .add(LocationChanged(location));
                 },
                 maxLength: 40,
@@ -601,7 +598,7 @@ class _LastChannelLoadingLevel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(
@@ -632,7 +629,7 @@ class _LastChannelLoadingLevel extends StatelessWidget {
                 textInputAction: TextInputAction.done,
                 onChanged: (location) {
                   // context
-                  //     .read<Setting18ListViewBloc>()
+                  //     .read<Setting18ConfigureBloc>()
                   //     .add(LocationChanged(location));
                 },
                 maxLength: 40,
@@ -681,7 +678,7 @@ class _PilotFrequencyMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       buildWhen: (previous, current) =>
           previous.pilotFrequencyMode != current.pilotFrequencyMode ||
           previous.editMode != current.editMode,
@@ -710,7 +707,7 @@ class _PilotFrequencyMode extends StatelessWidget {
                   direction: Axis.horizontal,
                   onPressed: (int index) {
                     if (state.editMode) {
-                      context.read<Setting18ListViewBloc>().add(
+                      context.read<Setting18ConfigureBloc>().add(
                           PilotFrequencyModeChanged(
                               pilotFrequencyModeTexts[index]));
                     }
@@ -763,7 +760,7 @@ class _PilotFrequency1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(
@@ -794,7 +791,7 @@ class _PilotFrequency1 extends StatelessWidget {
                 textInputAction: TextInputAction.done,
                 onChanged: (location) {
                   // context
-                  //     .read<Setting18ListViewBloc>()
+                  //     .read<Setting18ConfigureBloc>()
                   //     .add(LocationChanged(location));
                 },
                 maxLength: 40,
@@ -826,7 +823,7 @@ class _PilotFrequency2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(
@@ -857,7 +854,7 @@ class _PilotFrequency2 extends StatelessWidget {
                 textInputAction: TextInputAction.done,
                 onChanged: (location) {
                   // context
-                  //     .read<Setting18ListViewBloc>()
+                  //     .read<Setting18ConfigureBloc>()
                   //     .add(LocationChanged(location));
                 },
                 maxLength: 40,
@@ -904,7 +901,7 @@ class _FwdAGCMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       buildWhen: (previous, current) =>
           previous.fwdAGCMode != current.fwdAGCMode ||
           previous.editMode != current.editMode,
@@ -934,7 +931,7 @@ class _FwdAGCMode extends StatelessWidget {
                   onPressed: (int index) {
                     if (state.editMode) {
                       context
-                          .read<Setting18ListViewBloc>()
+                          .read<Setting18ConfigureBloc>()
                           .add(FwdAGCModeChanged(fwdAGCModeTexts[index]));
                     }
                   },
@@ -998,7 +995,7 @@ class _AutoLevelControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       buildWhen: (previous, current) =>
           previous.autoLevelControl != current.autoLevelControl ||
           previous.editMode != current.editMode,
@@ -1027,7 +1024,7 @@ class _AutoLevelControl extends StatelessWidget {
                   direction: Axis.horizontal,
                   onPressed: (int index) {
                     if (state.editMode) {
-                      context.read<Setting18ListViewBloc>().add(
+                      context.read<Setting18ConfigureBloc>().add(
                           AutoLevelControlChanged(
                               autoLevelControlTexts[index]));
                     }
@@ -1093,7 +1090,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   ),
                   onPressed: () {
                     context
-                        .read<Setting18ListViewBloc>()
+                        .read<Setting18ConfigureBloc>()
                         .add(const EditModeDisabled());
 
                     // 重新載入初始設定值
@@ -1157,7 +1154,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   ),
                   onPressed: () {
                     context
-                        .read<Setting18ListViewBloc>()
+                        .read<Setting18ConfigureBloc>()
                         .add(const EditModeEnabled());
                   },
                 ),
@@ -1180,8 +1177,8 @@ class _SettingFloatingActionButton extends StatelessWidget {
     // settingListViewState 管理編輯模式或是觀看模式
     return Builder(builder: (context) {
       final HomeState homeState = context.watch<HomeBloc>().state;
-      final Setting18ListViewState setting18ListViewState =
-          context.watch<Setting18ListViewBloc>().state;
+      final Setting18ConfigureState setting18ListViewState =
+          context.watch<Setting18ConfigureBloc>().state;
 
       bool editable = getEditable(homeState.loadingStatus);
       return editable

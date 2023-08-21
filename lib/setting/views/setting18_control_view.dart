@@ -2,7 +2,7 @@ import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:dsim_app/setting/bloc/setting18_list_view_bloc/setting18_list_view_bloc.dart';
+import 'package:dsim_app/setting/bloc/setting18_control/setting18_control_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,51 +22,46 @@ class Setting18ControlView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocListener<Setting18ControlBloc, Setting18ControlState>(
       listener: (context, state) {},
-      child: BlocBuilder<SettingBloc, SettingState>(
-        builder: (context, state) {
-          return Scaffold(
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(
-                    CustomStyle.sizeXL,
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(
+                CustomStyle.sizeXL,
+              ),
+              child: Column(
+                children: [
+                  _ControlTitle(
+                    title:
+                        AppLocalizations.of(context).forwardControlParameters,
                   ),
-                  child: Column(
-                    children: [
-                      _ControlTitle(
-                        title: AppLocalizations.of(context)
-                            .forwardControlParameters,
-                      ),
-                      const _FwdInputAttenuation(),
-                      const _FwdInputEQ(),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      _ControlTitle(
-                        title: AppLocalizations.of(context)
-                            .returnControlParameters,
-                      ),
-                      const _RtnInputAttenuation2(),
-                      const _RtnInputAttenuation3(),
-                      const _RtnInputAttenuation4(),
-                      const _RtnOutputLevelAttenuation(),
-                      const _RtnOutputEQ(),
-                      const _RtnIngressSetting2(),
-                      const _RtnIngressSetting3(),
-                      const _RtnIngressSetting4(),
-                      const SizedBox(
-                        height: 120,
-                      ),
-                    ],
+                  const _FwdInputAttenuation(),
+                  const _FwdInputEQ(),
+                  const SizedBox(
+                    height: 20,
                   ),
-                ),
+                  _ControlTitle(
+                    title: AppLocalizations.of(context).returnControlParameters,
+                  ),
+                  const _RtnInputAttenuation2(),
+                  const _RtnInputAttenuation3(),
+                  const _RtnInputAttenuation4(),
+                  const _RtnOutputLevelAttenuation(),
+                  const _RtnOutputEQ(),
+                  const _RtnIngressSetting2(),
+                  const _RtnIngressSetting3(),
+                  const _RtnIngressSetting4(),
+                  const SizedBox(
+                    height: 120,
+                  ),
+                ],
               ),
             ),
-            floatingActionButton: _SettingFloatingActionButton(),
-          );
-        },
+          ),
+        ),
+        floatingActionButton: _SettingFloatingActionButton(),
       ),
     );
   }
@@ -161,7 +156,7 @@ class _FwdInputAttenuation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         return controlParameterSlider(
           context: context,
@@ -173,7 +168,7 @@ class _FwdInputAttenuation extends StatelessWidget {
           currentValue: state.fwdInputAttenuation,
           onChanged: (fwdInputAttenuation) {
             context
-                .read<Setting18ListViewBloc>()
+                .read<Setting18ControlBloc>()
                 .add(FwdInputAttenuationChanged(fwdInputAttenuation));
           },
         );
@@ -187,7 +182,7 @@ class _FwdInputEQ extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         return controlParameterSlider(
           context: context,
@@ -199,7 +194,7 @@ class _FwdInputEQ extends StatelessWidget {
           currentValue: state.fwdInputEQ,
           onChanged: (fwdInputEQ) {
             context
-                .read<Setting18ListViewBloc>()
+                .read<Setting18ControlBloc>()
                 .add(FwdInputEQChanged(fwdInputEQ));
           },
         );
@@ -213,7 +208,7 @@ class _RtnInputAttenuation2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         return controlParameterSlider(
           context: context,
@@ -225,7 +220,7 @@ class _RtnInputAttenuation2 extends StatelessWidget {
           currentValue: state.rtnInputAttenuation2,
           onChanged: (rtnInputAttenuation) {
             context
-                .read<Setting18ListViewBloc>()
+                .read<Setting18ControlBloc>()
                 .add(RtnInputAttenuation2Changed(rtnInputAttenuation));
           },
         );
@@ -239,7 +234,7 @@ class _RtnInputAttenuation3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         return controlParameterSlider(
           context: context,
@@ -251,7 +246,7 @@ class _RtnInputAttenuation3 extends StatelessWidget {
           currentValue: state.rtnInputAttenuation3,
           onChanged: (rtnInputAttenuation) {
             context
-                .read<Setting18ListViewBloc>()
+                .read<Setting18ControlBloc>()
                 .add(RtnInputAttenuation3Changed(rtnInputAttenuation));
           },
         );
@@ -265,7 +260,7 @@ class _RtnInputAttenuation4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         return controlParameterSlider(
           context: context,
@@ -277,7 +272,7 @@ class _RtnInputAttenuation4 extends StatelessWidget {
           currentValue: state.rtnInputAttenuation4,
           onChanged: (rtnInputAttenuation) {
             context
-                .read<Setting18ListViewBloc>()
+                .read<Setting18ControlBloc>()
                 .add(RtnInputAttenuation4Changed(rtnInputAttenuation));
           },
         );
@@ -291,7 +286,7 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         return controlParameterSlider(
           context: context,
@@ -303,7 +298,7 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
           currentValue: state.rtnOutputLevelAttenuation,
           onChanged: (rtnInputAttenuation) {
             context
-                .read<Setting18ListViewBloc>()
+                .read<Setting18ControlBloc>()
                 .add(RtnOutputLevelAttenuationChanged(rtnInputAttenuation));
           },
         );
@@ -317,7 +312,7 @@ class _RtnOutputEQ extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         return controlParameterSlider(
           context: context,
@@ -329,7 +324,7 @@ class _RtnOutputEQ extends StatelessWidget {
           currentValue: state.rtnOutputEQ,
           onChanged: (rtnOutputEQ) {
             context
-                .read<Setting18ListViewBloc>()
+                .read<Setting18ControlBloc>()
                 .add(RtnOutputEQChanged(rtnOutputEQ));
           },
         );
@@ -367,7 +362,7 @@ class _RtnIngressSetting2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       buildWhen: (previous, current) =>
           previous.rtnIngressSetting2 != current.rtnIngressSetting2 ||
           previous.editMode != current.editMode,
@@ -396,7 +391,7 @@ class _RtnIngressSetting2 extends StatelessWidget {
                   direction: Axis.horizontal,
                   onPressed: (int index) {
                     if (state.editMode) {
-                      context.read<Setting18ListViewBloc>().add(
+                      context.read<Setting18ControlBloc>().add(
                           RtnIngressSetting2Changed(rtnIngressTexts[index]));
                     }
                   },
@@ -464,7 +459,7 @@ class _RtnIngressSetting3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       buildWhen: (previous, current) =>
           previous.rtnIngressSetting3 != current.rtnIngressSetting3 ||
           previous.editMode != current.editMode,
@@ -493,7 +488,7 @@ class _RtnIngressSetting3 extends StatelessWidget {
                   direction: Axis.horizontal,
                   onPressed: (int index) {
                     if (state.editMode) {
-                      context.read<Setting18ListViewBloc>().add(
+                      context.read<Setting18ControlBloc>().add(
                           RtnIngressSetting3Changed(rtnIngressTexts[index]));
                     }
                   },
@@ -561,7 +556,7 @@ class _RtnIngressSetting4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       buildWhen: (previous, current) =>
           previous.rtnIngressSetting4 != current.rtnIngressSetting4 ||
           previous.editMode != current.editMode,
@@ -590,7 +585,7 @@ class _RtnIngressSetting4 extends StatelessWidget {
                   direction: Axis.horizontal,
                   onPressed: (int index) {
                     if (state.editMode) {
-                      context.read<Setting18ListViewBloc>().add(
+                      context.read<Setting18ControlBloc>().add(
                           RtnIngressSetting4Changed(rtnIngressTexts[index]));
                     }
                   },
@@ -639,7 +634,7 @@ class _RtnIngressSetting4 extends StatelessWidget {
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+//     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
 //       builder: (context, state) {
 //         return Padding(
 //           padding: const EdgeInsets.only(
@@ -671,7 +666,7 @@ class _RtnIngressSetting4 extends StatelessWidget {
 //                 textInputAction: TextInputAction.done,
 //                 onChanged: (location) {
 //                   // context
-//                   //     .read<Setting18ListViewBloc>()
+//                   //     .read<Setting18ControlBloc>()
 //                   //     .add(LocationChanged(location));
 //                 },
 //                 maxLength: 40,
@@ -703,7 +698,7 @@ class _RtnIngressSetting4 extends StatelessWidget {
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return BlocBuilder<Setting18ListViewBloc, Setting18ListViewState>(
+//     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
 //       builder: (context, state) {
 //         return Padding(
 //           padding: const EdgeInsets.only(
@@ -734,7 +729,7 @@ class _RtnIngressSetting4 extends StatelessWidget {
 //                 textInputAction: TextInputAction.done,
 //                 onChanged: (location) {
 //                   // context
-//                   //     .read<Setting18ListViewBloc>()
+//                   //     .read<Setting18ControlBloc>()
 //                   //     .add(LocationChanged(location));
 //                 },
 //                 maxLength: 40,
@@ -781,7 +776,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   ),
                   onPressed: () {
                     context
-                        .read<Setting18ListViewBloc>()
+                        .read<Setting18ControlBloc>()
                         .add(const EditModeDisabled());
 
                     // 重新載入初始設定值
@@ -845,7 +840,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   ),
                   onPressed: () {
                     context
-                        .read<Setting18ListViewBloc>()
+                        .read<Setting18ControlBloc>()
                         .add(const EditModeEnabled());
                   },
                 ),
@@ -868,8 +863,8 @@ class _SettingFloatingActionButton extends StatelessWidget {
     // settingListViewState 管理編輯模式或是觀看模式
     return Builder(builder: (context) {
       final HomeState homeState = context.watch<HomeBloc>().state;
-      final Setting18ListViewState setting18ListViewState =
-          context.watch<Setting18ListViewBloc>().state;
+      final Setting18ControlState setting18ListViewState =
+          context.watch<Setting18ControlBloc>().state;
 
       bool editable = getEditable(homeState.loadingStatus);
       return editable

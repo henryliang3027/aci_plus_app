@@ -1064,22 +1064,21 @@ class DsimRepository {
 
     print('get data from request command 1p8G$commandIndex');
 
-    int max = (double.parse(temperature) * 10).toInt();
+    double dMaxTemperature = double.parse(temperature);
 
-    List<int> bytes = [];
+    int max = (dMaxTemperature * 10).toInt();
 
     // Convert the integer to bytes
-    while (max > 0) {
-      bytes.insert(0, max & 0xFF); // Mask with 0xFF to get the lowest byte
-      max >>= 8; // Shift the value right by 8 bits
-    }
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, max, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
 
     Command18.setMaxTemperatureCmd[7] = bytes[0];
     Command18.setMaxTemperatureCmd[8] = bytes[1];
 
     CRC16.calculateCRC16(
       command: Command18.setMaxTemperatureCmd,
-      usDataLength: Command18.setMaxTemperatureCmd.length,
+      usDataLength: Command18.setMaxTemperatureCmd.length - 2,
     );
 
     _writeSetCommandToCharacteristic(Command18.setMaxTemperatureCmd);
@@ -1090,6 +1089,17 @@ class DsimRepository {
     try {
       bool isDone = await _completer.future;
       cancelTimeout(name: '1p8G$commandIndex');
+
+      if (isDone) {
+        double temperatureF = _convertToFahrenheit(dMaxTemperature);
+        String strTemperatureF = temperatureF.toStringAsFixed(1);
+
+        _characteristicDataStreamController
+            .add({DataKey.maxTemperatureC: temperature});
+
+        _characteristicDataStreamController
+            .add({DataKey.maxTemperatureF: strTemperatureF});
+      }
 
       return isDone;
     } catch (e) {
@@ -1103,9 +1113,21 @@ class DsimRepository {
 
     print('get data from request command 1p8G$commandIndex');
 
+    double dMinTemperature = double.parse(temperature);
+
+    int min = (dMinTemperature * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, min, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setMinTemperatureCmd[7] = bytes[0];
+    Command18.setMinTemperatureCmd[8] = bytes[1];
+
     CRC16.calculateCRC16(
       command: Command18.setMinTemperatureCmd,
-      usDataLength: Command18.setMinTemperatureCmd.length,
+      usDataLength: Command18.setMinTemperatureCmd.length - 2,
     );
 
     _writeSetCommandToCharacteristic(Command18.setMinTemperatureCmd);
@@ -1116,6 +1138,101 @@ class DsimRepository {
     try {
       bool isDone = await _completer.future;
       cancelTimeout(name: '1p8G$commandIndex');
+
+      if (isDone) {
+        double temperatureF = _convertToFahrenheit(dMinTemperature);
+        String strTemperatureF = temperatureF.toStringAsFixed(1);
+
+        _characteristicDataStreamController
+            .add({DataKey.minTemperatureC: temperature});
+
+        _characteristicDataStreamController
+            .add({DataKey.minTemperatureF: strTemperatureF});
+      }
+
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GMaxVoltage(String valtage) async {
+    commandIndex = 302;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    double dMaxVoltage = double.parse(valtage);
+
+    int max = (dMaxVoltage * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, max, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setMaxVoltageCmd[7] = bytes[0];
+    Command18.setMaxVoltageCmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setMaxVoltageCmd,
+      usDataLength: Command18.setMaxVoltageCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setMaxVoltageCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+
+      if (isDone) {
+        _characteristicDataStreamController.add({DataKey.maxVoltage: valtage});
+      }
+
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GMinVoltage(String valtage) async {
+    commandIndex = 303;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    double dMinVoltage = double.parse(valtage);
+
+    int min = (dMinVoltage * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, min, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setMinVoltageCmd[7] = bytes[0];
+    Command18.setMinVoltageCmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setMinVoltageCmd,
+      usDataLength: Command18.setMinVoltageCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setMinVoltageCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+
+      if (isDone) {
+        _characteristicDataStreamController.add({DataKey.minVoltage: valtage});
+      }
 
       return isDone;
     } catch (e) {

@@ -5,6 +5,7 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -12,19 +13,16 @@ import 'package:dsim_app/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    List<int> ra = [0xB0, 0x10, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00];
+    List<int> rb = [0xB0, 0x10, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00];
+    List<int> rc = [0xB0, 0x10, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00];
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    CRC16.calculateCRC16(command: ra, usDataLength: 6);
+    CRC16.calculateCRC16(command: rb, usDataLength: 6);
+    CRC16.calculateCRC16(command: rc, usDataLength: 6);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(ra, [0xB0, 0x10, 0x00, 0x00, 0x00, 0x01, 0x1A, 0x28]);
+    expect(rb, [0xB0, 0x10, 0x00, 0x00, 0x00, 0x02, 0x5A, 0x29]);
+    expect(rc, [0xB0, 0x10, 0x00, 0x00, 0x00, 0x03, 0x9B, 0xE9]);
   });
 }

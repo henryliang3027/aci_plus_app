@@ -319,7 +319,7 @@ class _TemperatureCard extends StatelessWidget {
                       getMinTemperature(
                         loadingStatus: loadingStatus,
                         minTemperature: 'N/A',
-                        unit: unit,
+                        unit: '',
                         fontSize: 32,
                       ),
                       Text(
@@ -338,7 +338,7 @@ class _TemperatureCard extends StatelessWidget {
                       getMaxTemperature(
                         loadingStatus: loadingStatus,
                         maxTemperature: 'N/A',
-                        unit: unit,
+                        unit: '',
                         fontSize: 32,
                       ),
                       Text(

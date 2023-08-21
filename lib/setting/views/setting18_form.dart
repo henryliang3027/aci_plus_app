@@ -2,7 +2,6 @@ import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/message_localization.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:dsim_app/setting/bloc/setting18_list_view_bloc/setting18_list_view_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:dsim_app/setting/views/setting18_graph_view.dart';
 import 'package:dsim_app/setting/views/setting18_tab_bar.dart';
@@ -145,7 +144,6 @@ class _ViewLayout extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.loadingStatus.isRequestInProgress) {
-          context.read<Setting18ListViewBloc>().add(const Initialized(true));
           return Stack(
             alignment: Alignment.center,
             children: [
@@ -161,21 +159,13 @@ class _ViewLayout extends StatelessWidget {
             ],
           );
         } else if (state.loadingStatus.isRequestSuccess) {
-          return const _Layout(
-            isLoadData: true,
-          );
+          return const _Layout();
         } else if (state.loadingStatus.isRequestFailure) {
-          return const _Layout(
-            isLoadData: false,
-          );
+          return const _Layout();
         } else if (state.scanStatus.isRequestFailure) {
-          return const _Layout(
-            isLoadData: false,
-          );
+          return const _Layout();
         } else if (state.connectionStatus.isRequestFailure) {
-          return const _Layout(
-            isLoadData: false,
-          );
+          return const _Layout();
         } else {
           return const Center(
             child: CircularProgressIndicator(),
@@ -189,10 +179,7 @@ class _ViewLayout extends StatelessWidget {
 class _Layout extends StatelessWidget {
   const _Layout({
     super.key,
-    required this.isLoadData,
   });
-
-  final bool isLoadData;
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +190,6 @@ class _Layout extends StatelessWidget {
         if (state.isGraphType) {
           return Setting18GraphView();
         } else {
-          context.read<Setting18ListViewBloc>().add(Initialized(isLoadData));
           return Setting18TabBar();
         }
       },
