@@ -169,6 +169,7 @@ class _TemperatureCard extends StatelessWidget {
       required String minTemperature,
       required String maxTemperature,
       required String currentTemperature,
+      required String unit,
       double fontSize = 16,
     }) {
       if (loadingStatus == FormStatus.requestInProgress) {
@@ -182,7 +183,7 @@ class _TemperatureCard extends StatelessWidget {
               );
       } else if (loadingStatus == FormStatus.requestSuccess) {
         return Text(
-          currentTemperature,
+          '$currentTemperature $unit',
           style: TextStyle(
             fontSize: fontSize,
             color: currentTemperatureColor(
@@ -205,6 +206,7 @@ class _TemperatureCard extends StatelessWidget {
     Widget getMinTemperature({
       required FormStatus loadingStatus,
       required String minTemperature,
+      required String unit,
       double fontSize = 16,
     }) {
       if (loadingStatus == FormStatus.requestInProgress) {
@@ -218,7 +220,7 @@ class _TemperatureCard extends StatelessWidget {
               );
       } else if (loadingStatus == FormStatus.requestSuccess) {
         return Text(
-          minTemperature,
+          '$minTemperature $unit',
           style: TextStyle(
             fontSize: fontSize,
           ),
@@ -236,6 +238,7 @@ class _TemperatureCard extends StatelessWidget {
     Widget getMaxTemperature({
       required FormStatus loadingStatus,
       required String maxTemperature,
+      required String unit,
       double fontSize = 16,
     }) {
       if (loadingStatus == FormStatus.requestInProgress) {
@@ -249,7 +252,7 @@ class _TemperatureCard extends StatelessWidget {
               );
       } else if (loadingStatus == FormStatus.requestSuccess) {
         return Text(
-          maxTemperature,
+          '$maxTemperature $unit',
           style: TextStyle(
             fontSize: fontSize,
           ),
@@ -273,6 +276,7 @@ class _TemperatureCard extends StatelessWidget {
       required String minTemperature,
       required String maxTemperatureTitle,
       required String maxTemperature,
+      required String unit,
     }) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -289,6 +293,7 @@ class _TemperatureCard extends StatelessWidget {
                       minTemperature: minTemperature,
                       maxTemperature: maxTemperature,
                       currentTemperature: currentTemperature,
+                      unit: unit,
                       fontSize: 40,
                     ),
                     Text(
@@ -314,6 +319,7 @@ class _TemperatureCard extends StatelessWidget {
                       getMinTemperature(
                         loadingStatus: loadingStatus,
                         minTemperature: 'N/A',
+                        unit: unit,
                         fontSize: 32,
                       ),
                       Text(
@@ -332,6 +338,7 @@ class _TemperatureCard extends StatelessWidget {
                       getMaxTemperature(
                         loadingStatus: loadingStatus,
                         maxTemperature: 'N/A',
+                        unit: unit,
                         fontSize: 32,
                       ),
                       Text(
@@ -445,6 +452,9 @@ class _TemperatureCard extends StatelessWidget {
                   maxTemperatureTitle:
                       AppLocalizations.of(context).maxTemperature,
                   maxTemperature: maxTemperature,
+                  unit: status18State.temperatureUnit == TemperatureUnit.celsius
+                      ? CustomStyle.celciusUnit
+                      : CustomStyle.fahrenheitUnit,
                 ),
               ],
             ),
