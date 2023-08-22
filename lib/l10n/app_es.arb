@@ -20,8 +20,6 @@
     "pilotFrequency2": "Piloto Freq. 2",
     "fwdAGCMode": "FWD AGC Modo",
     "autoLevelControl": "Automático Nivel Control",
-    "maxTemperature": "Máximo",
-    "minTemperature": "Mínimo",
     "rfInputPower": "RF Entrada Potencia",
     "rfOutputPower": "RF Salida Potencia",
     "pilotFrequency1Status": "Piloto Freq. 1 Estado",
@@ -92,7 +90,7 @@
     "rfPilotLevelAlarm": "Nivel Piloto de RF",
     "temperatureAlarm": "Temperatura",
     "powerSupplyAlarm": "Fuente de alimentación",
-    "unitStatusAlarm": "Unit Status",
+    "unitStatusAlarm": "Unidad Estado",
 
 
     "monitoringChart": "Gráfico de Monitoreo",
@@ -136,6 +134,13 @@
     "dialogMessageWorkingModeSetting": "Ajuste modo trabajo",
     "dialogMessageSaveUserPilot": "Guardar piloto de usuario",
     "dialogMessageSaveUserPilot2": "Guardar piloto de usuario 2",
+
+    "dialogMessageMaxTemperatureSetting": "Ajuste máximo temperatura",
+    "dialogMessageMinTemperatureSetting": "Ajuste mínimo temperatura",
+    "dialogMessageMaxVoltageSetting": "Ajuste máximo voltaje",
+    "dialogMessageMinVoltageSetting": "Ajuste mínimo voltaje",
+    "dialogMessageCoordinatesSetting": "Ajuste coordenada",
+
     "dialogMessageSettingSuccessful": "Exitoso",
     "dialogMessageSettingFailed": "Fallido",
     "dialogMessagePilotSearchFailed": "Piloto no encontrado, Favor de insertar el código correcto.",

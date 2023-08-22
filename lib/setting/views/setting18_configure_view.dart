@@ -1,10 +1,10 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting18_configure/setting18_configure_bloc.dart';
-import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -12,6 +12,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class Setting18ConfigureView extends StatelessWidget {
   Setting18ConfigureView({super.key});
 
+  final TextEditingController locationTextEditingController =
+      TextEditingController();
+  final TextEditingController coordinateTextEditingController =
+      TextEditingController();
   final TextEditingController
       firstChannelLoadingFrequencyTextEditingController =
       TextEditingController();
@@ -28,8 +32,127 @@ class Setting18ConfigureView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeState homeState = context.watch<HomeBloc>().state;
+    String location = homeState.characteristicData[DataKey.location] ?? '';
+    String coordinates =
+        homeState.characteristicData[DataKey.coordinates] ?? '';
+
+    context.read<Setting18ConfigureBloc>().add(Initialized(
+          location: location,
+          coordinates: coordinates,
+        ));
+
+    Future<void> showInProgressDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitleProcessing,
+            ),
+            actionsAlignment: MainAxisAlignment.center,
+            actions: const <Widget>[
+              CircularProgressIndicator(),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<void> showResultDialog(List<Widget> messageRows) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            contentPadding: const EdgeInsets.all(16.0),
+            titlePadding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 0.0),
+            buttonPadding: const EdgeInsets.all(0.0),
+            actionsPadding: const EdgeInsets.all(16.0),
+            title: Text(
+              AppLocalizations.of(context).dialogTitleSettingResult,
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: messageRows,
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    String formatResultValue(String boolValue) {
+      return boolValue == 'true'
+          ? AppLocalizations.of(context).dialogMessageSettingSuccessful
+          : AppLocalizations.of(context).dialogMessageSettingFailed;
+    }
+
+    String formatResultItem(String item) {
+      if (item == DataKey.location.name) {
+        return AppLocalizations.of(context).dialogMessageLocationSetting;
+      } else if (item == DataKey.coordinates.name) {
+        return AppLocalizations.of(context).dialogMessageCoordinatesSetting;
+      } else {
+        return '';
+      }
+    }
+
+    Color getResultValueColor(String resultValue) {
+      return resultValue == 'true' ? Colors.green : Colors.red;
+    }
+
+    List<Widget> getMessageRows(List<String> settingResultList) {
+      List<Widget> rows = [];
+      for (String settingResult in settingResultList) {
+        String item = settingResult.split(',')[0];
+        String value = settingResult.split(',')[1];
+        Color valueColor = getResultValueColor(value);
+
+        rows.add(Padding(
+          padding: const EdgeInsets.only(
+            bottom: 8.0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                formatResultItem(item),
+                style: const TextStyle(fontSize: 16),
+              ),
+              Text(
+                formatResultValue(value),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: valueColor,
+                ),
+              )
+            ],
+          ),
+        ));
+      }
+      return rows;
+    }
+
     return BlocListener<Setting18ConfigureBloc, Setting18ConfigureState>(
-      listener: (context, state) {},
+      listener: (context, state) async {
+        if (state.submissionStatus.isSubmissionInProgress) {
+          await showInProgressDialog();
+        } else if (state.submissionStatus.isSubmissionSuccess) {
+          Navigator.of(context).pop();
+          List<Widget> rows = getMessageRows(state.settingResult);
+          showResultDialog(rows);
+        } else {}
+      },
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
@@ -39,6 +162,14 @@ class Setting18ConfigureView extends StatelessWidget {
               ),
               child: Column(
                 children: [
+                  _Location(
+                    textEditingController: locationTextEditingController
+                      ..text = location,
+                  ),
+                  _Coordinates(
+                    textEditingController: coordinateTextEditingController
+                      ..text = coordinates,
+                  ),
                   const _SplitOptionDropDownMenu(),
                   _FirstChannelLoading(
                     firstChannelLoadingFrequencyTextEditingController:
@@ -69,8 +200,134 @@ class Setting18ConfigureView extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: _SettingFloatingActionButton(),
+        floatingActionButton: const _SettingFloatingActionButton(),
       ),
+    );
+  }
+}
+
+class _Location extends StatelessWidget {
+  const _Location({
+    super.key,
+    required this.textEditingController,
+  });
+
+  final TextEditingController textEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 40.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: Text(
+                  '${AppLocalizations.of(context).location}:',
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              TextField(
+                controller: textEditingController,
+                key: const Key('setting18Form_locationInput_textField'),
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                ),
+                enabled: state.editMode,
+                textInputAction: TextInputAction.done,
+                onChanged: (location) {
+                  // context
+                  //     .read<Setting18ConfigureBloc>()
+                  //     .add(LocationChanged(location));
+                },
+                maxLength: 48,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  contentPadding: EdgeInsets.all(10.0),
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
+                  counterText: '',
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _Coordinates extends StatelessWidget {
+  const _Coordinates({
+    super.key,
+    required this.textEditingController,
+  });
+
+  final TextEditingController textEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 40.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: Text(
+                  '${AppLocalizations.of(context).coordinates}:',
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              TextField(
+                controller: textEditingController,
+                key: const Key('setting18Form_coordinatesInput_textField'),
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                ),
+                enabled: state.editMode,
+                textInputAction: TextInputAction.done,
+                onChanged: (location) {
+                  // context
+                  //     .read<Setting18ConfigureBloc>()
+                  //     .add(LocationChanged(location));
+                },
+                maxLength: 39,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  contentPadding: EdgeInsets.all(10.0),
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
+                  counterText: '',
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -390,261 +647,6 @@ class _LastChannelLoading extends StatelessWidget {
               height: 20,
             ),
           ],
-        );
-      },
-    );
-  }
-}
-
-class _FirstChannelLoadingFrequency extends StatelessWidget {
-  const _FirstChannelLoadingFrequency({
-    super.key,
-    required this.textEditingController,
-  });
-
-  final TextEditingController textEditingController;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context).firstChannelLoading} ${AppLocalizations.of(context).frequency}:',
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              TextField(
-                controller: textEditingController,
-                key: const Key(
-                    'setting18Form_firstLoadingFrequencyInput_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                ),
-                enabled: state.editMode,
-                textInputAction: TextInputAction.done,
-                onChanged: (location) {
-                  // context
-                  //     .read<Setting18ConfigureBloc>()
-                  //     .add(LocationChanged(location));
-                },
-                maxLength: 40,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(10.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.white,
-                  counterText: '',
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _FirstChannelLoadingLevel extends StatelessWidget {
-  const _FirstChannelLoadingLevel({
-    super.key,
-    required this.textEditingController,
-  });
-
-  final TextEditingController textEditingController;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context).firstChannelLoading} ${AppLocalizations.of(context).level}:',
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              TextField(
-                controller: textEditingController,
-                key:
-                    const Key('setting18Form_firstLoadingLevelInput_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                ),
-                enabled: state.editMode,
-                textInputAction: TextInputAction.done,
-                onChanged: (location) {
-                  // context
-                  //     .read<Setting18ConfigureBloc>()
-                  //     .add(LocationChanged(location));
-                },
-                maxLength: 40,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(10.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.white,
-                  counterText: '',
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _LastChannelLoadingFrequency extends StatelessWidget {
-  const _LastChannelLoadingFrequency({
-    super.key,
-    required this.textEditingController,
-  });
-
-  final TextEditingController textEditingController;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context).lastChannelLoading} ${AppLocalizations.of(context).frequency}:',
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              TextField(
-                controller: textEditingController,
-                key: const Key(
-                    'setting18Form_lastLoadingFrequencyInput_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                ),
-                enabled: state.editMode,
-                textInputAction: TextInputAction.done,
-                onChanged: (location) {
-                  // context
-                  //     .read<Setting18ConfigureBloc>()
-                  //     .add(LocationChanged(location));
-                },
-                maxLength: 40,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(10.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.white,
-                  counterText: '',
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _LastChannelLoadingLevel extends StatelessWidget {
-  const _LastChannelLoadingLevel({
-    super.key,
-    required this.textEditingController,
-  });
-
-  final TextEditingController textEditingController;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context).lastChannelLoading} ${AppLocalizations.of(context).level}:',
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              TextField(
-                controller: textEditingController,
-                key: const Key('setting18Form_lastLoadingLevelInput_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                ),
-                enabled: state.editMode,
-                textInputAction: TextInputAction.done,
-                onChanged: (location) {
-                  // context
-                  //     .read<Setting18ConfigureBloc>()
-                  //     .add(LocationChanged(location));
-                },
-                maxLength: 40,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(10.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.white,
-                  counterText: '',
-                ),
-              ),
-            ],
-          ),
         );
       },
     );

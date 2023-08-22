@@ -22,7 +22,7 @@ class Setting18ThresholdView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomeState homeState = context.read<HomeBloc>().state;
+    HomeState homeState = context.watch<HomeBloc>().state;
     String minTemperature =
         homeState.characteristicData[DataKey.minTemperatureC] ?? '';
     String maxTemperature =
@@ -85,13 +85,69 @@ class Setting18ThresholdView extends StatelessWidget {
               TextButton(
                 child: const Text('OK'),
                 onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
+                  Navigator.of(context).pop(true); // pop dialog
                 },
               ),
             ],
           );
         },
       );
+    }
+
+    String formatResultValue(String boolValue) {
+      return boolValue == 'true'
+          ? AppLocalizations.of(context).dialogMessageSettingSuccessful
+          : AppLocalizations.of(context).dialogMessageSettingFailed;
+    }
+
+    String formatResultItem(String item) {
+      if (item == DataKey.maxTemperatureC.name) {
+        return AppLocalizations.of(context).dialogMessageMaxTemperatureSetting;
+      } else if (item == DataKey.minTemperatureC.name) {
+        return AppLocalizations.of(context).dialogMessageMinTemperatureSetting;
+      } else if (item == DataKey.maxVoltage.name) {
+        return AppLocalizations.of(context).dialogMessageMaxVoltageSetting;
+      } else if (item == DataKey.minVoltage.name) {
+        return AppLocalizations.of(context).dialogMessageMinVoltageSetting;
+      } else {
+        return '';
+      }
+    }
+
+    Color getResultValueColor(String resultValue) {
+      return resultValue == 'true' ? Colors.green : Colors.red;
+    }
+
+    List<Widget> getMessageRows(List<String> settingResultList) {
+      List<Widget> rows = [];
+      for (String settingResult in settingResultList) {
+        String item = settingResult.split(',')[0];
+        String value = settingResult.split(',')[1];
+        Color valueColor = getResultValueColor(value);
+
+        rows.add(Padding(
+          padding: const EdgeInsets.only(
+            bottom: 8.0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                formatResultItem(item),
+                style: const TextStyle(fontSize: 16),
+              ),
+              Text(
+                formatResultValue(value),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: valueColor,
+                ),
+              )
+            ],
+          ),
+        ));
+      }
+      return rows;
     }
 
     return BlocListener<Setting18ThresholdBloc, Setting18ThresholdState>(
@@ -102,6 +158,8 @@ class Setting18ThresholdView extends StatelessWidget {
           if (ModalRoute.of(context)?.isCurrent != true) {
             Navigator.of(context).pop();
           }
+          List<Widget> rows = getMessageRows(state.settingResult);
+          showResultDialog(rows);
         } else {}
       },
       child: Scaffold(

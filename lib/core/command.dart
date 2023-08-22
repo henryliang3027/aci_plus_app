@@ -40,6 +40,9 @@ enum DataKey {
   maxVoltageRipple,
   logs,
   tgcCableLength,
+  splitOption,
+  fwdAgcMode,
+  autoLevelControl,
   settingParametersLoadingComplete, // indicate setting page's parameter loading complete
   eventRecordsLoadingComplete, // indicate event recorde loading complete
 }

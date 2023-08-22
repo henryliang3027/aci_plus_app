@@ -1,3 +1,4 @@
+import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -74,6 +75,7 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
         enableTemperatureAlarm: event.enableTemperatureAlarm,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: event.enableTemperatureAlarm,
@@ -98,6 +100,7 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
         minTemperature: event.minTemperature,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
@@ -122,6 +125,7 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
         maxTemperature: event.maxTemperature,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
@@ -146,6 +150,7 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
         enableVoltageAlarm: event.enableVoltageAlarm,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
@@ -170,6 +175,7 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
         minVoltage: event.minVoltage,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
@@ -194,6 +200,7 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
         maxVoltage: event.maxVoltage,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
@@ -218,6 +225,7 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
         enableRFInputPowerAlarm: event.enableRFInputPowerAlarm,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
@@ -242,6 +250,7 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
         enableRFOutputPowerAlarm: event.enableRFOutputPowerAlarm,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
@@ -266,6 +275,7 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
         enablePilotFrequency1Alarm: event.enablePilotFrequency1Alarm,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
@@ -290,6 +300,7 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
         enablePilotFrequency2Alarm: event.enablePilotFrequency2Alarm,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
@@ -314,6 +325,7 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
         enableFirstChannelOutputLevelAlarm:
             event.enableFirstChannelOutputLevelAlarm,
         enableSubmission: _isEnabledSubmission(
@@ -339,6 +351,7 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
         enableLastChannelOutputLevelAlarm:
             event.enableLastChannelOutputLevelAlarm,
         enableSubmission: _isEnabledSubmission(
@@ -423,28 +436,45 @@ class Setting18ThresholdBloc
       submissionStatus: SubmissionStatus.submissionInProgress,
     ));
 
+    List<String> settingResult = [];
+
     if (state.minTemperature != state.initialValues[1]) {
       bool resultOfSetMinTemperature =
           await _dsimRepository.set1p8GMinTemperature(state.minTemperature);
+
+      settingResult
+          .add('${DataKey.minTemperatureC.name},$resultOfSetMinTemperature');
     }
 
     if (state.maxTemperature != state.initialValues[2]) {
       bool resultOfSetMaxTemperature =
           await _dsimRepository.set1p8GMaxTemperature(state.maxTemperature);
+
+      settingResult
+          .add('${DataKey.maxTemperatureC.name},$resultOfSetMaxTemperature');
     }
 
     if (state.minVoltage != state.initialValues[4]) {
       bool resultOfSetMinVoltage =
           await _dsimRepository.set1p8GMinVoltage(state.minVoltage);
+
+      settingResult.add('${DataKey.minVoltage.name},$resultOfSetMinVoltage');
     }
 
     if (state.maxVoltage != state.initialValues[5]) {
       bool resultOfSetMaxVoltage =
           await _dsimRepository.set1p8GMaxVoltage(state.maxVoltage);
+
+      settingResult.add('${DataKey.maxVoltage.name},$resultOfSetMaxVoltage');
     }
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
+      settingResult: settingResult,
+      enableSubmission: false,
+      editMode: false,
     ));
+
+    await _dsimRepository.updateCharacteristics();
   }
 }

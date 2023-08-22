@@ -148,6 +148,9 @@ class Dsim18Parser {
         String currentVoltage = '';
         String currentRFInputTotalPower = '';
         String currentRFOutputTotalPower = '';
+        int splitOption = 0;
+        int forwardAgcMode = 0;
+        int autoLevelControl = 0;
 
         int unitStatus = rawData[3];
         alarmUSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
@@ -199,6 +202,15 @@ class Dsim18Parser {
                     10)
                 .toStringAsFixed(1);
 
+        // 解析 splitOption
+        splitOption = rawData[25];
+
+        // 解析 forwardAgcMode
+        forwardAgcMode = rawData[27];
+
+        // 解析 autoLevelControl
+        autoLevelControl = rawData[28];
+
         if (!completer.isCompleted) {
           completer.complete((
             alarmUSeverity.name,
@@ -209,6 +221,9 @@ class Dsim18Parser {
             currentVoltage,
             currentRFInputTotalPower,
             currentRFOutputTotalPower,
+            splitOption,
+            forwardAgcMode,
+            autoLevelControl,
           ));
         }
         break;
@@ -262,24 +277,10 @@ class Dsim18Parser {
 
         break;
       case 300:
-        if (!completer.isCompleted) {
-          bool result = _parseSettingResult(rawData);
-          completer.complete(result);
-        }
-        break;
       case 301:
-        if (!completer.isCompleted) {
-          bool result = _parseSettingResult(rawData);
-          completer.complete(result);
-        }
-        break;
       case 302:
-        if (!completer.isCompleted) {
-          bool result = _parseSettingResult(rawData);
-          completer.complete(result);
-        }
-        break;
       case 303:
+      case 304:
         if (!completer.isCompleted) {
           bool result = _parseSettingResult(rawData);
           completer.complete(result);

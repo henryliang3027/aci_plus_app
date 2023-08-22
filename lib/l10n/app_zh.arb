@@ -20,8 +20,6 @@
     "pilotFrequency2": "Pilot Freq. 2",
     "fwdAGCMode": "FWD AGC Mode",
     "autoLevelControl": "Auto Level Control",
-    "maxTemperature": "Maximum",
-    "minTemperature": "Minimum",
     "rfInputPower": "RF Input Power",
     "rfOutputPower": "RF Output Power",
     "pilotFrequency1Status": "Pilot Freq. 1 Status",
@@ -134,6 +132,13 @@
     "dialogMessageWorkingModeSetting": "工作模式設定",
     "dialogMessageSaveUserPilot": "儲存導航頻率",
     "dialogMessageSaveUserPilot2": "儲存導航頻率2",
+
+    "dialogMessageMaxTemperatureSetting": "最高溫設定",
+    "dialogMessageMinTemperatureSetting": "最低溫設定",
+    "dialogMessageMaxVoltageSetting": "最高電壓設定",
+    "dialogMessageMinVoltageSetting": "最低電壓設定",
+    "dialogMessageCoordinatesSetting": "座標設定",
+
     "dialogMessageSettingSuccessful": "成功",
     "dialogMessageSettingFailed": "失敗",
     "dialogMessagePilotSearchFailed": "找不到此導航頻率，請輸入正確的代碼",

@@ -454,6 +454,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             newCharacteristicData[DataKey.currentTemperatureC] = result[4];
             newCharacteristicData[DataKey.currentTemperatureF] = result[5];
             newCharacteristicData[DataKey.currentVoltage] = result[6];
+            // newCharacteristicData[DataKey.currentRFInputTotalPower] = result[7];
+            // newCharacteristicData[DataKey.currentRFOutputTotalPower] = result[8];
+            newCharacteristicData[DataKey.splitOption] = result[9];
+            newCharacteristicData[DataKey.fwdAgcMode] = result[10];
+            newCharacteristicData[DataKey.autoLevelControl] = result[11];
+
             emit(state.copyWith(
               loadingStatus: FormStatus.requestSuccess,
               characteristicData: newCharacteristicData,

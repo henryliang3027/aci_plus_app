@@ -12,6 +12,8 @@ class Setting18ConfigureBloc
       : _dsimRepository = dsimRepository,
         super(const Setting18ConfigureState()) {
     on<Initialized>(_onInitialized);
+    on<LocationChanged>(_onLocationChanged);
+    on<CoordinatesChanged>(_onCoordinatesChanged);
     on<SplitOptionChanged>(_onSplitOptionChanged);
     on<FirstChannelLoadingFrequencyChanged>(
         _onFirstChannelLoadingFrequencyChanged);
@@ -34,14 +36,86 @@ class Setting18ConfigureBloc
   Future<void> _onInitialized(
     Initialized event,
     Emitter<Setting18ConfigureState> emit,
-  ) async {}
+  ) async {
+    emit(state.copyWith(
+      location: event.location,
+      coordinates: event.coordinates,
+      initialValues: [
+        event.location,
+        event.coordinates,
+      ],
+    ));
+  }
+
+  void _onLocationChanged(
+    LocationChanged event,
+    Emitter<Setting18ConfigureState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      location: event.location,
+      enableSubmission: _isEnabledSubmission(
+        location: event.location,
+        coordinates: state.coordinates,
+        splitOption: state.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+        fwdAGCMode: state.fwdAGCMode,
+        autoLevelControl: state.autoLevelControl,
+      ),
+    ));
+  }
+
+  void _onCoordinatesChanged(
+    CoordinatesChanged event,
+    Emitter<Setting18ConfigureState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      location: event.coordinates,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: event.coordinates,
+        splitOption: state.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+        fwdAGCMode: state.fwdAGCMode,
+        autoLevelControl: state.autoLevelControl,
+      ),
+    ));
+  }
 
   void _onSplitOptionChanged(
     SplitOptionChanged event,
     Emitter<Setting18ConfigureState> emit,
   ) {
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       splitOption: event.splitOption,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        splitOption: event.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+        fwdAGCMode: state.fwdAGCMode,
+        autoLevelControl: state.autoLevelControl,
+      ),
     ));
   }
 
@@ -50,7 +124,22 @@ class Setting18ConfigureBloc
     Emitter<Setting18ConfigureState> emit,
   ) {
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        splitOption: state.splitOption,
+        firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+        fwdAGCMode: state.fwdAGCMode,
+        autoLevelControl: state.autoLevelControl,
+      ),
     ));
   }
 
@@ -59,7 +148,22 @@ class Setting18ConfigureBloc
     Emitter<Setting18ConfigureState> emit,
   ) {
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       firstChannelLoadingLevel: event.firstChannelLoadingLevel,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        splitOption: state.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: event.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+        fwdAGCMode: state.fwdAGCMode,
+        autoLevelControl: state.autoLevelControl,
+      ),
     ));
   }
 
@@ -68,7 +172,22 @@ class Setting18ConfigureBloc
     Emitter<Setting18ConfigureState> emit,
   ) {
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        splitOption: state.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+        fwdAGCMode: state.fwdAGCMode,
+        autoLevelControl: state.autoLevelControl,
+      ),
     ));
   }
 
@@ -77,7 +196,22 @@ class Setting18ConfigureBloc
     Emitter<Setting18ConfigureState> emit,
   ) {
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       lastChannelLoadingLevel: event.lastChannelLoadingLevel,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        splitOption: state.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: event.lastChannelLoadingLevel,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+        fwdAGCMode: state.fwdAGCMode,
+        autoLevelControl: state.autoLevelControl,
+      ),
     ));
   }
 
@@ -86,7 +220,22 @@ class Setting18ConfigureBloc
     Emitter<Setting18ConfigureState> emit,
   ) {
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       pilotFrequencyMode: event.pilotFrequencyMode,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        splitOption: state.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequencyMode: event.pilotFrequencyMode,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+        fwdAGCMode: state.fwdAGCMode,
+        autoLevelControl: state.autoLevelControl,
+      ),
     ));
   }
 
@@ -95,7 +244,22 @@ class Setting18ConfigureBloc
     Emitter<Setting18ConfigureState> emit,
   ) {
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       pilotFrequency1: event.pilotFrequency1,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        splitOption: state.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        pilotFrequency1: event.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+        fwdAGCMode: state.fwdAGCMode,
+        autoLevelControl: state.autoLevelControl,
+      ),
     ));
   }
 
@@ -104,7 +268,22 @@ class Setting18ConfigureBloc
     Emitter<Setting18ConfigureState> emit,
   ) {
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       pilotFrequency2: event.pilotFrequency2,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        splitOption: state.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: event.pilotFrequency2,
+        fwdAGCMode: state.fwdAGCMode,
+        autoLevelControl: state.autoLevelControl,
+      ),
     ));
   }
 
@@ -113,7 +292,22 @@ class Setting18ConfigureBloc
     Emitter<Setting18ConfigureState> emit,
   ) {
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       fwdAGCMode: event.fwdAGCMode,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        splitOption: state.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+        fwdAGCMode: event.fwdAGCMode,
+        autoLevelControl: state.autoLevelControl,
+      ),
     ));
   }
 
@@ -122,7 +316,22 @@ class Setting18ConfigureBloc
     Emitter<Setting18ConfigureState> emit,
   ) {
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       autoLevelControl: event.autoLevelControl,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        splitOption: state.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+        fwdAGCMode: state.fwdAGCMode,
+        autoLevelControl: event.autoLevelControl,
+      ),
     ));
   }
 
@@ -149,6 +358,38 @@ class Setting18ConfigureBloc
     ));
   }
 
+  bool _isEnabledSubmission({
+    required String location,
+    required String coordinates,
+    required String splitOption,
+    required String firstChannelLoadingFrequency,
+    required String firstChannelLoadingLevel,
+    required String lastChannelLoadingFrequency,
+    required String lastChannelLoadingLevel,
+    required String pilotFrequencyMode,
+    required String pilotFrequency1,
+    required String pilotFrequency2,
+    required String fwdAGCMode,
+    required String autoLevelControl,
+  }) {
+    if (location != state.initialValues[0] ||
+        coordinates != state.initialValues[1] ||
+        splitOption != state.initialValues[2] ||
+        firstChannelLoadingFrequency != state.initialValues[3] ||
+        firstChannelLoadingLevel != state.initialValues[4] ||
+        lastChannelLoadingFrequency != state.initialValues[5] ||
+        lastChannelLoadingLevel != state.initialValues[6] ||
+        pilotFrequencyMode != state.initialValues[7] ||
+        pilotFrequency1 != state.initialValues[8] ||
+        pilotFrequency2 != state.initialValues[9] ||
+        fwdAGCMode != state.initialValues[10] ||
+        autoLevelControl != state.initialValues[11]) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   void _onSettingSubmitted(
     SettingSubmitted event,
     Emitter<Setting18ConfigureState> emit,
@@ -157,5 +398,7 @@ class Setting18ConfigureBloc
       isInitialize: false,
       submissionStatus: SubmissionStatus.submissionInProgress,
     ));
+
+    if (state.location != state.initialValues[0]) {}
   }
 }

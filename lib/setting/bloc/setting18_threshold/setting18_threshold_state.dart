@@ -19,6 +19,7 @@ class Setting18ThresholdState extends Equatable {
     this.enableSubmission = false,
     this.isInitialize = true,
     this.initialValues = const [],
+    this.settingResult = const [],
   });
 
   final SubmissionStatus submissionStatus;
@@ -39,6 +40,7 @@ class Setting18ThresholdState extends Equatable {
   final bool enableSubmission;
   final bool isInitialize;
   final List<dynamic> initialValues;
+  final List<String> settingResult;
 
   Setting18ThresholdState copyWith({
     SubmissionStatus? submissionStatus,
@@ -58,6 +60,7 @@ class Setting18ThresholdState extends Equatable {
     bool? enableSubmission,
     bool? isInitialize,
     List<dynamic>? initialValues,
+    List<String>? settingResult,
   }) {
     return Setting18ThresholdState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
@@ -84,6 +87,7 @@ class Setting18ThresholdState extends Equatable {
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
       initialValues: initialValues ?? this.initialValues,
+      settingResult: settingResult ?? this.settingResult,
     );
   }
 
@@ -106,5 +110,6 @@ class Setting18ThresholdState extends Equatable {
         enableSubmission,
         isInitialize,
         initialValues,
+        settingResult,
       ];
 }

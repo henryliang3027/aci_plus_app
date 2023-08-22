@@ -3,6 +3,8 @@ part of 'setting18_configure_bloc.dart';
 class Setting18ConfigureState extends Equatable {
   const Setting18ConfigureState({
     this.submissionStatus = SubmissionStatus.none,
+    this.location = '',
+    this.coordinates = '',
     this.splitOption = '1',
     this.firstChannelLoadingFrequency = '',
     this.firstChannelLoadingLevel = '',
@@ -16,9 +18,13 @@ class Setting18ConfigureState extends Equatable {
     this.editMode = false,
     this.enableSubmission = false,
     this.isInitialize = true,
+    this.initialValues = const [],
+    this.settingResult = const [],
   });
 
   final SubmissionStatus submissionStatus;
+  final String location;
+  final String coordinates;
   final String splitOption;
   final String firstChannelLoadingFrequency;
   final String firstChannelLoadingLevel;
@@ -32,9 +38,13 @@ class Setting18ConfigureState extends Equatable {
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
+  final List<dynamic> initialValues;
+  final List<String> settingResult;
 
   Setting18ConfigureState copyWith({
     SubmissionStatus? submissionStatus,
+    String? location,
+    String? coordinates,
     String? splitOption,
     String? firstChannelLoadingFrequency,
     String? firstChannelLoadingLevel,
@@ -48,9 +58,13 @@ class Setting18ConfigureState extends Equatable {
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
+    List<dynamic>? initialValues,
+    List<String>? settingResult,
   }) {
     return Setting18ConfigureState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
+      location: location ?? this.location,
+      coordinates: coordinates ?? this.coordinates,
       splitOption: splitOption ?? this.splitOption,
       firstChannelLoadingFrequency:
           firstChannelLoadingFrequency ?? this.firstChannelLoadingFrequency,
@@ -68,12 +82,16 @@ class Setting18ConfigureState extends Equatable {
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
+      initialValues: initialValues ?? this.initialValues,
+      settingResult: settingResult ?? this.settingResult,
     );
   }
 
   @override
   List<Object> get props => [
         submissionStatus,
+        location,
+        coordinates,
         splitOption,
         firstChannelLoadingFrequency,
         firstChannelLoadingLevel,
@@ -87,5 +105,7 @@ class Setting18ConfigureState extends Equatable {
         editMode,
         enableSubmission,
         isInitialize,
+        initialValues,
+        settingResult,
       ];
 }

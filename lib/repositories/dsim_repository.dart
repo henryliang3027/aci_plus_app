@@ -1089,18 +1089,6 @@ class DsimRepository {
     try {
       bool isDone = await _completer.future;
       cancelTimeout(name: '1p8G$commandIndex');
-
-      if (isDone) {
-        double temperatureF = _convertToFahrenheit(dMaxTemperature);
-        String strTemperatureF = temperatureF.toStringAsFixed(1);
-
-        _characteristicDataStreamController
-            .add({DataKey.maxTemperatureC: temperature});
-
-        _characteristicDataStreamController
-            .add({DataKey.maxTemperatureF: strTemperatureF});
-      }
-
       return isDone;
     } catch (e) {
       return false;
@@ -1138,18 +1126,6 @@ class DsimRepository {
     try {
       bool isDone = await _completer.future;
       cancelTimeout(name: '1p8G$commandIndex');
-
-      if (isDone) {
-        double temperatureF = _convertToFahrenheit(dMinTemperature);
-        String strTemperatureF = temperatureF.toStringAsFixed(1);
-
-        _characteristicDataStreamController
-            .add({DataKey.minTemperatureC: temperature});
-
-        _characteristicDataStreamController
-            .add({DataKey.minTemperatureF: strTemperatureF});
-      }
-
       return isDone;
     } catch (e) {
       return false;
@@ -1187,11 +1163,6 @@ class DsimRepository {
     try {
       bool isDone = await _completer.future;
       cancelTimeout(name: '1p8G$commandIndex');
-
-      if (isDone) {
-        _characteristicDataStreamController.add({DataKey.maxVoltage: valtage});
-      }
-
       return isDone;
     } catch (e) {
       return false;
@@ -1229,14 +1200,97 @@ class DsimRepository {
     try {
       bool isDone = await _completer.future;
       cancelTimeout(name: '1p8G$commandIndex');
-
-      if (isDone) {
-        _characteristicDataStreamController.add({DataKey.minVoltage: valtage});
-      }
-
       return isDone;
     } catch (e) {
       return false;
+    }
+  }
+
+  Future<dynamic> set1p8GLocation(String location) async {
+    commandIndex = 304;
+    _completer = Completer<dynamic>();
+
+    List<int> locationBytes = [];
+
+    print('get data from request command 1p8G$commandIndex');
+
+    for (int code in location.codeUnits) {
+      // Create a ByteData object with a length of 2 bytes
+      ByteData byteData = ByteData(2);
+
+      // Set the Unicode code unit in the byte array
+      byteData.setInt16(0, code, Endian.little);
+
+      // Convert the ByteData to a Uint8List
+      Uint8List bytes = Uint8List.view(byteData.buffer);
+
+      locationBytes.addAll(bytes);
+    }
+
+    for (int i = 0; i < locationBytes.length; i++) {
+      Command18.setLocationCmd[i + 7] = locationBytes[i];
+    }
+
+    CRC16.calculateCRC16(
+      command: Command18.setLocationCmd,
+      usDataLength: Command18.setLocationCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setLocationCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<void> updateCharacteristics() async {
+    List<dynamic> resultOf1p8G0 = await requestCommand1p8G0();
+
+    if (resultOf1p8G0[0]) {
+      _characteristicDataStreamController
+          .add({DataKey.coordinates: resultOf1p8G0[6]});
+    }
+
+    List<dynamic> resultOf1p8G1 = await requestCommand1p8G1();
+
+    if (resultOf1p8G1[0]) {
+      _characteristicDataStreamController
+          .add({DataKey.minTemperatureC: resultOf1p8G1[1]});
+      _characteristicDataStreamController
+          .add({DataKey.maxTemperatureC: resultOf1p8G1[2]});
+      _characteristicDataStreamController
+          .add({DataKey.minTemperatureF: resultOf1p8G1[3]});
+      _characteristicDataStreamController
+          .add({DataKey.maxTemperatureF: resultOf1p8G1[4]});
+      _characteristicDataStreamController
+          .add({DataKey.minVoltage: resultOf1p8G1[5]});
+      _characteristicDataStreamController
+          .add({DataKey.maxVoltage: resultOf1p8G1[6]});
+      _characteristicDataStreamController
+          .add({DataKey.location: resultOf1p8G1[7]});
+    }
+
+    List<dynamic> resultOf1p8G2 = await requestCommand1p8G2();
+    if (resultOf1p8G2[0]) {
+      _characteristicDataStreamController
+          .add({DataKey.alarmUSeverity: resultOf1p8G2[1]});
+      _characteristicDataStreamController
+          .add({DataKey.alarmTSeverity: resultOf1p8G2[2]});
+      _characteristicDataStreamController
+          .add({DataKey.alarmPSeverity: resultOf1p8G2[3]});
+      _characteristicDataStreamController
+          .add({DataKey.currentTemperatureC: resultOf1p8G2[4]});
+      _characteristicDataStreamController
+          .add({DataKey.currentTemperatureF: resultOf1p8G2[5]});
+      _characteristicDataStreamController
+          .add({DataKey.currentVoltage: resultOf1p8G2[6]});
     }
   }
 

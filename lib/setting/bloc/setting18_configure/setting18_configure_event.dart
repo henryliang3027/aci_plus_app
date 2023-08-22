@@ -8,12 +8,37 @@ class Setting18ConfigureEvent extends Equatable {
 }
 
 class Initialized extends Setting18ConfigureEvent {
-  const Initialized(this.isLoadData);
+  const Initialized({
+    required this.location,
+    required this.coordinates,
+  });
 
-  final bool isLoadData;
+  final String location;
+  final String coordinates;
 
   @override
-  List<Object> get props => [isLoadData];
+  List<Object> get props => [
+        location,
+        coordinates,
+      ];
+}
+
+class LocationChanged extends Setting18ConfigureEvent {
+  const LocationChanged(this.location);
+
+  final String location;
+
+  @override
+  List<Object> get props => [location];
+}
+
+class CoordinatesChanged extends Setting18ConfigureEvent {
+  const CoordinatesChanged(this.coordinates);
+
+  final String coordinates;
+
+  @override
+  List<Object> get props => [coordinates];
 }
 
 class SplitOptionChanged extends Setting18ConfigureEvent {
