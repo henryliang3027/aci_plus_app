@@ -49,7 +49,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     _assetsAudioPlayer.play();
     await Future.delayed(const Duration(milliseconds: 1800));
 
-    await _dsimRepository.checkBluetoothEnabled();
+    // await _dsimRepository.checkBluetoothEnabled();
 
     _scanStreamSubscription = _dsimRepository.scannedDevices.listen(
       (scanReport) {
@@ -454,8 +454,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             newCharacteristicData[DataKey.currentTemperatureC] = result[4];
             newCharacteristicData[DataKey.currentTemperatureF] = result[5];
             newCharacteristicData[DataKey.currentVoltage] = result[6];
-            // newCharacteristicData[DataKey.currentRFInputTotalPower] = result[7];
-            // newCharacteristicData[DataKey.currentRFOutputTotalPower] = result[8];
+            newCharacteristicData[DataKey.currentRFInputTotalPower] = result[7];
+            newCharacteristicData[DataKey.currentRFOutputTotalPower] =
+                result[8];
             newCharacteristicData[DataKey.splitOption] = result[9];
             newCharacteristicData[DataKey.fwdAgcMode] = result[10];
             newCharacteristicData[DataKey.autoLevelControl] = result[11];
@@ -538,7 +539,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     //   add(DiscoveredDeviceChanged(scanReport));
     // });
 
-    await _dsimRepository.checkBluetoothEnabled();
+    // await _dsimRepository.checkBluetoothEnabled();
 
     if (state.device != null) {
       _dsimRepository.connectToDevice(state.device!);

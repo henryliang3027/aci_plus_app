@@ -36,10 +36,25 @@ class Setting18ConfigureView extends StatelessWidget {
     String location = homeState.characteristicData[DataKey.location] ?? '';
     String coordinates =
         homeState.characteristicData[DataKey.coordinates] ?? '';
+    String splitOption =
+        homeState.characteristicData[DataKey.splitOption] ?? '';
+    String fwdAgcMode = homeState.characteristicData[DataKey.fwdAgcMode] ?? '';
+    String autoLevelControl =
+        homeState.characteristicData[DataKey.autoLevelControl] ?? '';
 
     context.read<Setting18ConfigureBloc>().add(Initialized(
           location: location,
           coordinates: coordinates,
+          splitOption: splitOption,
+          firstChannelLoadingFrequency: '',
+          firstChannelLoadingLevel: '',
+          lastChannelLoadingFrequency: '',
+          lastChannelLoadingLevel: '',
+          pilotFrequencyMode: '',
+          pilotFrequency1: '',
+          pilotFrequency2: '',
+          fwdAGCMode: fwdAgcMode,
+          autoLevelControl: autoLevelControl,
         ));
 
     Future<void> showInProgressDialog() async {
@@ -246,9 +261,9 @@ class _Location extends StatelessWidget {
                 enabled: state.editMode,
                 textInputAction: TextInputAction.done,
                 onChanged: (location) {
-                  // context
-                  //     .read<Setting18ConfigureBloc>()
-                  //     .add(LocationChanged(location));
+                  context
+                      .read<Setting18ConfigureBloc>()
+                      .add(LocationChanged(location));
                 },
                 maxLength: 48,
                 decoration: const InputDecoration(
@@ -308,10 +323,10 @@ class _Coordinates extends StatelessWidget {
                 ),
                 enabled: state.editMode,
                 textInputAction: TextInputAction.done,
-                onChanged: (location) {
-                  // context
-                  //     .read<Setting18ConfigureBloc>()
-                  //     .add(LocationChanged(location));
+                onChanged: (coordinate) {
+                  context
+                      .read<Setting18ConfigureBloc>()
+                      .add(CoordinatesChanged(coordinate));
                 },
                 maxLength: 39,
                 decoration: const InputDecoration(
@@ -1113,9 +1128,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       : Colors.grey.withAlpha(200),
                   onPressed: enableSubmission
                       ? () {
-                          // context
-                          //     .read<SettingListViewBloc>()
-                          //     .add(const SettingSubmitted());
+                          context
+                              .read<Setting18ConfigureBloc>()
+                              .add(const SettingSubmitted());
                         }
                       : null,
                   child: Icon(

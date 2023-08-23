@@ -1,3 +1,4 @@
+import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -43,6 +44,16 @@ class Setting18ConfigureBloc
       initialValues: [
         event.location,
         event.coordinates,
+        event.splitOption,
+        event.firstChannelLoadingFrequency,
+        event.firstChannelLoadingLevel,
+        event.lastChannelLoadingFrequency,
+        event.lastChannelLoadingLevel,
+        event.pilotFrequencyMode,
+        event.pilotFrequency1,
+        event.pilotFrequency2,
+        event.fwdAGCMode,
+        event.autoLevelControl,
       ],
     ));
   }
@@ -399,6 +410,22 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.submissionInProgress,
     ));
 
-    if (state.location != state.initialValues[0]) {}
+    List<String> settingResult = [];
+
+    if (state.location != state.initialValues[0]) {
+      bool resultOfSetLocation =
+          await _dsimRepository.set1p8GLocation(state.location);
+
+      settingResult.add('${DataKey.location.name},$resultOfSetLocation');
+    }
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.submissionSuccess,
+      settingResult: settingResult,
+      enableSubmission: false,
+      editMode: false,
+    ));
+
+    await _dsimRepository.updateCharacteristics();
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dsim_app/core/command18.dart';
@@ -122,9 +123,34 @@ class Dsim18Parser {
             .toStringAsFixed(1);
 
         // 解析 location
-        for (int i = 54; i <= 149; i++) {
-          location += String.fromCharCode(rawData[i]);
+        // for (int i = 54; i < 150; i++) {
+        //   location += String.fromCharCode(rawData[i]);
+        // }
+        // location = location.trim();
+
+        String output = '';
+        print('read length: ${rawData.length}');
+
+        for (int i = 0; i < rawData.length; i++) {
+          // print(Command18.setLocationCmd[i].toRadixString(16));
+          output += rawData[i].toRadixString(16) + ' ';
         }
+
+        print(output);
+
+        for (int i = 54; i < 150; i += 2) {
+          Uint8List bytes = Uint8List.fromList([rawData[i], rawData[i + 1]]);
+
+          // Extract the bytes and create the Unicode code point
+          int lowerByte = bytes[0];
+          int upperByte = bytes[1];
+          int unicodeCodePoint = (upperByte << 8) | lowerByte;
+
+          // Convert the Unicode code point to a string
+          String chineseCharacter = String.fromCharCode(unicodeCodePoint);
+          location += chineseCharacter;
+        }
+
         location = location.trim();
 
         if (!completer.isCompleted) {
@@ -148,9 +174,9 @@ class Dsim18Parser {
         String currentVoltage = '';
         String currentRFInputTotalPower = '';
         String currentRFOutputTotalPower = '';
-        int splitOption = 0;
-        int forwardAgcMode = 0;
-        int autoLevelControl = 0;
+        String splitOption = '';
+        String forwardAgcMode = '';
+        String autoLevelControl = '';
 
         int unitStatus = rawData[3];
         alarmUSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
@@ -203,13 +229,13 @@ class Dsim18Parser {
                 .toStringAsFixed(1);
 
         // 解析 splitOption
-        splitOption = rawData[25];
+        splitOption = rawData[25].toString();
 
         // 解析 forwardAgcMode
-        forwardAgcMode = rawData[27];
+        forwardAgcMode = rawData[27].toString();
 
         // 解析 autoLevelControl
-        autoLevelControl = rawData[28];
+        autoLevelControl = rawData[28].toString();
 
         if (!completer.isCompleted) {
           completer.complete((

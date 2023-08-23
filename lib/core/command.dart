@@ -41,6 +41,8 @@ enum DataKey {
   logs,
   tgcCableLength,
   splitOption,
+  currentRFInputTotalPower,
+  currentRFOutputTotalPower,
   fwdAgcMode,
   autoLevelControl,
   settingParametersLoadingComplete, // indicate setting page's parameter loading complete

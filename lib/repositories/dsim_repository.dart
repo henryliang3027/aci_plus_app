@@ -291,6 +291,7 @@ class DsimRepository {
     _connectionStreamSubscription = _ble
         .connectToDevice(
       id: discoveredDevice.id,
+      connectionTimeout: Duration(seconds: _connectionTimeout),
     )
         .listen((connectionStateUpdate) async {
       print('connectionStateUpdateXXXXXX: $connectionStateUpdate');
@@ -358,10 +359,7 @@ class DsimRepository {
                   completer: _completer);
             }
           }, onError: (error) {
-            _connectionReportStreamController.add(const ConnectionReport(
-              connectionState: DeviceConnectionState.disconnected,
-              errorMessage: 'disconnected',
-            ));
+            print('lisetn to Characteristic failed');
           });
 
           _connectionReportStreamController.add(const ConnectionReport(
@@ -386,7 +384,7 @@ class DsimRepository {
       }
     }, onError: (error) {
       print('Error: $error');
-      _connectionReportStreamController.add(ConnectionReport(
+      _connectionReportStreamController.add(const ConnectionReport(
         connectionState: DeviceConnectionState.disconnected,
         errorMessage: 'disconnected',
       ));
@@ -951,6 +949,9 @@ class DsimRepository {
         currentVoltage,
         currentRFInputTotalPower,
         currentRFOutputTotalPower,
+        splitOption,
+        fwdAgcMode,
+        autoLevelControl,
       ) = await _completer.future;
       cancelTimeout(name: '1p8G2');
 
@@ -964,10 +965,16 @@ class DsimRepository {
         currentVoltage,
         currentRFInputTotalPower,
         currentRFOutputTotalPower,
+        splitOption,
+        fwdAgcMode,
+        autoLevelControl,
       ];
     } catch (e) {
       return [
         false,
+        '',
+        '',
+        '',
         '',
         '',
         '',
@@ -1230,6 +1237,20 @@ class DsimRepository {
     for (int i = 0; i < locationBytes.length; i++) {
       Command18.setLocationCmd[i + 7] = locationBytes[i];
     }
+
+    for (int i = locationBytes.length; i < 96; i += 2) {
+      Command18.setLocationCmd[i + 7] = 0x20;
+      Command18.setLocationCmd[i + 8] = 0x00;
+    }
+
+    String output = '';
+    print('length: ${Command18.setLocationCmd.length}');
+    for (int i = 0; i < Command18.setLocationCmd.length; i++) {
+      // print(Command18.setLocationCmd[i].toRadixString(16));
+      output += Command18.setLocationCmd[i].toRadixString(16) + ' ';
+    }
+
+    print(output);
 
     CRC16.calculateCRC16(
       command: Command18.setLocationCmd,
