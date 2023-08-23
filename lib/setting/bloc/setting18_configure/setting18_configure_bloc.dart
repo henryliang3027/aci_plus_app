@@ -88,7 +88,7 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      location: event.coordinates,
+      coordinates: event.coordinates,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: event.coordinates,
@@ -417,6 +417,13 @@ class Setting18ConfigureBloc
           await _dsimRepository.set1p8GLocation(state.location);
 
       settingResult.add('${DataKey.location.name},$resultOfSetLocation');
+    }
+
+    if (state.coordinates != state.initialValues[1]) {
+      bool resultOfSetCoordinates =
+          await _dsimRepository.set1p8GCoordinates(state.coordinates);
+
+      settingResult.add('${DataKey.coordinates.name},$resultOfSetCoordinates');
     }
 
     emit(state.copyWith(

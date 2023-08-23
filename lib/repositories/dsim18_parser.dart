@@ -61,9 +61,14 @@ class Dsim18Parser {
         String day = rawData[70].toString().padLeft(2, '0');
         mfgDate = '$year/$month/$day';
 
+        String output = '';
         for (int i = 72; i <= 110; i++) {
           coordinate += String.fromCharCode(rawData[i]);
+
+          output += rawData[i].toRadixString(16).padLeft(2, '0x0') + ' ';
         }
+        print('read coordinates: $output');
+
         coordinate = coordinate.trim();
 
         if (!completer.isCompleted) {
@@ -128,15 +133,15 @@ class Dsim18Parser {
         // }
         // location = location.trim();
 
-        String output = '';
-        print('read length: ${rawData.length}');
+        // String output = '';
+        // print('read length: ${rawData.length}');
 
-        for (int i = 0; i < rawData.length; i++) {
-          // print(Command18.setLocationCmd[i].toRadixString(16));
-          output += rawData[i].toRadixString(16) + ' ';
-        }
+        // for (int i = 0; i < rawData.length; i++) {
+        //   // print(Command18.setLocationCmd[i].toRadixString(16));
+        //   output += rawData[i].toRadixString(16) + ' ';
+        // }
 
-        print(output);
+        // print(output);
 
         for (int i = 54; i < 150; i += 2) {
           Uint8List bytes = Uint8List.fromList([rawData[i], rawData[i + 1]]);
@@ -307,6 +312,7 @@ class Dsim18Parser {
       case 302:
       case 303:
       case 304:
+      case 305:
         if (!completer.isCompleted) {
           bool result = _parseSettingResult(rawData);
           completer.complete(result);

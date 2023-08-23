@@ -1243,14 +1243,14 @@ class DsimRepository {
       Command18.setLocationCmd[i + 8] = 0x00;
     }
 
-    String output = '';
-    print('length: ${Command18.setLocationCmd.length}');
-    for (int i = 0; i < Command18.setLocationCmd.length; i++) {
-      // print(Command18.setLocationCmd[i].toRadixString(16));
-      output += Command18.setLocationCmd[i].toRadixString(16) + ' ';
-    }
+    // String output = '';
+    // print('length: ${Command18.setLocationCmd.length}');
+    // for (int i = 0; i < Command18.setLocationCmd.length; i++) {
+    //   // print(Command18.setLocationCmd[i].toRadixString(16));
+    //   output += Command18.setLocationCmd[i].toRadixString(16) + ' ';
+    // }
 
-    print(output);
+    // print(output);
 
     CRC16.calculateCRC16(
       command: Command18.setLocationCmd,
@@ -1258,6 +1258,43 @@ class DsimRepository {
     );
 
     _writeSetCommandToCharacteristic(Command18.setLocationCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GCoordinates(String coordinates) async {
+    commandIndex = 305;
+    _completer = Completer<dynamic>();
+
+    List<int> coordinatesBytes = [];
+
+    print('get data from request command 1p8G$commandIndex');
+
+    coordinatesBytes = coordinates.codeUnits;
+
+    for (int i = 0; i < coordinatesBytes.length; i++) {
+      Command18.setCoordinatesCmd[i + 7] = coordinatesBytes[i];
+    }
+
+    for (int i = coordinatesBytes.length; i < 39; i++) {
+      Command18.setCoordinatesCmd[i + 7] = 0x20;
+    }
+
+    CRC16.calculateCRC16(
+      command: Command18.setCoordinatesCmd,
+      usDataLength: Command18.setCoordinatesCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setCoordinatesCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
