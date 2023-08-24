@@ -21,6 +21,7 @@ class Initialized extends Setting18ConfigureEvent {
     required this.pilotFrequency2,
     required this.fwdAGCMode,
     required this.autoLevelControl,
+    required this.logInterval,
   });
 
   final String location;
@@ -35,6 +36,7 @@ class Initialized extends Setting18ConfigureEvent {
   final String pilotFrequency2;
   final String fwdAGCMode;
   final String autoLevelControl;
+  final String logInterval;
 
   @override
   List<Object> get props => [
@@ -50,6 +52,7 @@ class Initialized extends Setting18ConfigureEvent {
         pilotFrequency2,
         fwdAGCMode,
         autoLevelControl,
+        logInterval,
       ];
 }
 
@@ -159,6 +162,15 @@ class AutoLevelControlChanged extends Setting18ConfigureEvent {
 
   @override
   List<Object> get props => [autoLevelControl];
+}
+
+class LogIntervalChanged extends Setting18ConfigureEvent {
+  const LogIntervalChanged(this.logInterval);
+
+  final String logInterval;
+
+  @override
+  List<Object> get props => [logInterval];
 }
 
 class EditModeEnabled extends Setting18ConfigureEvent {

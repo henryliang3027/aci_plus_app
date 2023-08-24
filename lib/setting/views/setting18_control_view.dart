@@ -112,11 +112,6 @@ Widget controlParameterSlider({
             divisions: 150,
             value: currentValue,
             onChanged: editMode ? onChanged : null,
-            // onChangeEnd: state.editMode
-            //     ? (attenuation) {
-            //         print(attenuation);
-            //       }
-            //     : null,
           ),
         ),
       ],

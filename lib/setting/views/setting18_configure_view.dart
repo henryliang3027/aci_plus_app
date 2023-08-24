@@ -41,6 +41,8 @@ class Setting18ConfigureView extends StatelessWidget {
     String fwdAgcMode = homeState.characteristicData[DataKey.fwdAgcMode] ?? '';
     String autoLevelControl =
         homeState.characteristicData[DataKey.autoLevelControl] ?? '';
+    String logInterval =
+        homeState.characteristicData[DataKey.logInterval] ?? '';
 
     context.read<Setting18ConfigureBloc>().add(Initialized(
           location: location,
@@ -55,6 +57,7 @@ class Setting18ConfigureView extends StatelessWidget {
           pilotFrequency2: '',
           fwdAGCMode: fwdAgcMode,
           autoLevelControl: autoLevelControl,
+          logInterval: logInterval,
         ));
 
     Future<void> showInProgressDialog() async {
@@ -207,6 +210,7 @@ class Setting18ConfigureView extends StatelessWidget {
                   ),
                   const _FwdAGCMode(),
                   const _AutoLevelControl(),
+                  const _LogInterval(),
                   const SizedBox(
                     height: 120,
                   ),
@@ -1072,6 +1076,68 @@ class _AutoLevelControl extends StatelessWidget {
                   children: <Widget>[
                     for (String text in autoLevelControlTexts) ...[Text(text)],
                   ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _LogInterval extends StatelessWidget {
+  const _LogInterval({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
+      buildWhen: (previous, current) =>
+          previous.logInterval != current.logInterval ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 30.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '${AppLocalizations.of(context).logInterval}: ${state.logInterval}',
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SliderTheme(
+                data: const SliderThemeData(
+                  valueIndicatorColor: Colors.red,
+                  showValueIndicator: ShowValueIndicator.always,
+                ),
+                child: Slider(
+                  min: 0.0,
+                  max: 60.0,
+                  divisions: 60,
+                  value: double.parse(state.logInterval),
+                  onChanged: state.editMode
+                      ? (double logInterval) {
+                          context.read<Setting18ConfigureBloc>().add(
+                              LogIntervalChanged(
+                                  logInterval.toStringAsFixed(0)));
+                        }
+                      : null,
                 ),
               ),
             ],

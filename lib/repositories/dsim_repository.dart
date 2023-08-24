@@ -8,7 +8,6 @@ import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/shared_preference_key.dart';
 import 'package:dsim_app/repositories/dsim18_parser.dart';
 import 'package:excel/excel.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
@@ -117,7 +116,6 @@ class DsimRepository {
   final _scanTimeout = 3; // sec
   final _connectionTimeout = 30; //sec
   late StreamController<ScanReport> _scanReportStreamController;
-
   StreamController<ConnectionReport> _connectionReportStreamController =
       StreamController<ConnectionReport>();
   StreamController<Map<DataKey, String>> _characteristicDataStreamController =

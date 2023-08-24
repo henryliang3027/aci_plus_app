@@ -15,6 +15,7 @@ class Setting18ConfigureState extends Equatable {
     this.pilotFrequency2 = '',
     this.fwdAGCMode = '',
     this.autoLevelControl = '',
+    this.logInterval = '30',
     this.editMode = false,
     this.enableSubmission = false,
     this.isInitialize = true,
@@ -35,6 +36,7 @@ class Setting18ConfigureState extends Equatable {
   final String pilotFrequency2;
   final String fwdAGCMode;
   final String autoLevelControl;
+  final String logInterval;
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
@@ -55,6 +57,7 @@ class Setting18ConfigureState extends Equatable {
     String? pilotFrequency2,
     String? fwdAGCMode,
     String? autoLevelControl,
+    String? logInterval,
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
@@ -79,6 +82,7 @@ class Setting18ConfigureState extends Equatable {
       pilotFrequency2: pilotFrequency2 ?? this.pilotFrequency2,
       fwdAGCMode: fwdAGCMode ?? this.fwdAGCMode,
       autoLevelControl: autoLevelControl ?? this.autoLevelControl,
+      logInterval: logInterval ?? this.logInterval,
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
@@ -102,6 +106,7 @@ class Setting18ConfigureState extends Equatable {
         pilotFrequency2,
         fwdAGCMode,
         autoLevelControl,
+        logInterval,
         editMode,
         enableSubmission,
         isInitialize,

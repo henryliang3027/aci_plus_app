@@ -27,6 +27,7 @@ class Setting18ConfigureBloc
     on<PilotFrequency2Changed>(_onPilotFrequency2Changed);
     on<FwdAGCModeChanged>(_onFwdAGCModeChanged);
     on<AutoLevelControlChanged>(_onAutoLevelControlChanged);
+    on<LogIntervalChanged>(_onLogIntervalChanged);
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
@@ -78,6 +79,7 @@ class Setting18ConfigureBloc
         pilotFrequency2: state.pilotFrequency2,
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
+        logInterval: state.logInterval,
       ),
     ));
   }
@@ -102,6 +104,7 @@ class Setting18ConfigureBloc
         pilotFrequency2: state.pilotFrequency2,
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
+        logInterval: state.logInterval,
       ),
     ));
   }
@@ -126,6 +129,7 @@ class Setting18ConfigureBloc
         pilotFrequency2: state.pilotFrequency2,
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
+        logInterval: state.logInterval,
       ),
     ));
   }
@@ -150,6 +154,7 @@ class Setting18ConfigureBloc
         pilotFrequency2: state.pilotFrequency2,
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
+        logInterval: state.logInterval,
       ),
     ));
   }
@@ -174,6 +179,7 @@ class Setting18ConfigureBloc
         pilotFrequency2: state.pilotFrequency2,
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
+        logInterval: state.logInterval,
       ),
     ));
   }
@@ -198,6 +204,7 @@ class Setting18ConfigureBloc
         pilotFrequency2: state.pilotFrequency2,
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
+        logInterval: state.logInterval,
       ),
     ));
   }
@@ -222,6 +229,7 @@ class Setting18ConfigureBloc
         pilotFrequency2: state.pilotFrequency2,
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
+        logInterval: state.logInterval,
       ),
     ));
   }
@@ -246,6 +254,7 @@ class Setting18ConfigureBloc
         pilotFrequency2: state.pilotFrequency2,
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
+        logInterval: state.logInterval,
       ),
     ));
   }
@@ -270,6 +279,7 @@ class Setting18ConfigureBloc
         pilotFrequency2: state.pilotFrequency2,
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
+        logInterval: state.logInterval,
       ),
     ));
   }
@@ -294,6 +304,7 @@ class Setting18ConfigureBloc
         pilotFrequency2: event.pilotFrequency2,
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
+        logInterval: state.logInterval,
       ),
     ));
   }
@@ -318,6 +329,7 @@ class Setting18ConfigureBloc
         pilotFrequency2: state.pilotFrequency2,
         fwdAGCMode: event.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
+        logInterval: state.logInterval,
       ),
     ));
   }
@@ -342,6 +354,32 @@ class Setting18ConfigureBloc
         pilotFrequency2: state.pilotFrequency2,
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: event.autoLevelControl,
+        logInterval: state.logInterval,
+      ),
+    ));
+  }
+
+  void _onLogIntervalChanged(
+    LogIntervalChanged event,
+    Emitter<Setting18ConfigureState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      logInterval: event.logInterval,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        splitOption: state.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+        fwdAGCMode: state.fwdAGCMode,
+        autoLevelControl: state.autoLevelControl,
+        logInterval: event.logInterval,
       ),
     ));
   }
@@ -382,6 +420,7 @@ class Setting18ConfigureBloc
     required String pilotFrequency2,
     required String fwdAGCMode,
     required String autoLevelControl,
+    required String logInterval,
   }) {
     if (location != state.initialValues[0] ||
         coordinates != state.initialValues[1] ||
@@ -394,7 +433,8 @@ class Setting18ConfigureBloc
         pilotFrequency1 != state.initialValues[8] ||
         pilotFrequency2 != state.initialValues[9] ||
         fwdAGCMode != state.initialValues[10] ||
-        autoLevelControl != state.initialValues[11]) {
+        autoLevelControl != state.initialValues[11] ||
+        logInterval != state.initialValues[12]) {
       return true;
     } else {
       return false;
