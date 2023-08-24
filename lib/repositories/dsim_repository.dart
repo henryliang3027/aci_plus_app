@@ -183,7 +183,7 @@ class DsimRepository {
     if (isPermissionGranted) {
       _scanReportStreamController = StreamController<ScanReport>();
 
-      print('start scan timer');
+      // 設定 scan timeout
       Timer scanTimer = Timer(Duration(seconds: _scanTimeout), () async {
         _scanReportStreamController.add(
           const ScanReport(
@@ -191,8 +191,6 @@ class DsimRepository {
             discoveredDevice: null,
           ),
         );
-
-        print('Close scan');
 
         await closeScanStream();
       });
