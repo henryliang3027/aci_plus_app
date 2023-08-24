@@ -49,13 +49,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // _assetsAudioPlayer.play();
     await Future.delayed(const Duration(milliseconds: 1800));
 
-    // await _dsimRepository.checkBluetoothEnabled();
-
-    _scanStreamSubscription = _dsimRepository.scannedDevices.listen(
+    _scanStreamSubscription = _dsimRepository.scanReport.listen(
       (scanReport) {
         add(DiscoveredDeviceChanged(scanReport));
       },
     );
+
+    // _dsimRepository.scanDevices();
 
     emit(state.copyWith(
       showSplash: false,
@@ -100,8 +100,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     await _dsimRepository.closeScanStream();
-    await _scanStreamSubscription?.cancel();
-    _scanStreamSubscription = null;
+
+    if (_scanStreamSubscription != null) {
+      await _scanStreamSubscription?.cancel();
+      _scanStreamSubscription = null;
+      print('_scanStreamSubscription closed');
+    }
   }
 
   Future<void> _onDeviceConnectionChanged(
@@ -126,6 +130,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ));
 
         if (mtu == 244 || mtu == 247) {
+          print('244 _characteristicDataStreamSubscription');
           add(const Data18Requested());
 
           _characteristicDataStreamSubscription =
@@ -136,6 +141,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             onDone: () {},
           );
         } else {
+          print('20 _characteristicDataStreamSubscription');
           add(const DataRequested());
 
           //當設定頁面設定資料時, 用來更新Information page 對應的資料欄位
@@ -525,7 +531,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (_connectionReportStreamSubscription != null) {
       await _connectionReportStreamSubscription?.cancel();
       _connectionReportStreamSubscription = null;
-      print('connectionReportStreamSubscription closed');
+      print('_connectionReportStreamSubscription closed');
     }
 
     if (_characteristicDataStreamSubscription != null) {
@@ -534,26 +540,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       print('_characteristicDataStreamSubscription closed');
     }
 
-    // _scanStreamSubscription =
-    //     _dsimRepository.scannedDevices.listen((scanReport) async {
-    //   add(DiscoveredDeviceChanged(scanReport));
-    // });
-
-    // await _dsimRepository.checkBluetoothEnabled();
-
-    if (state.device != null) {
-      _dsimRepository.connectToDevice(state.device!);
-
-      _connectionReportStreamSubscription =
-          _dsimRepository.connectionStateReport.listen((connectionReport) {
-        add(DeviceConnectionChanged(connectionReport));
-      });
-    } else {
-      _scanStreamSubscription =
-          _dsimRepository.scannedDevices.listen((scanReport) async {
+    _scanStreamSubscription = _dsimRepository.scanReport.listen(
+      (scanReport) {
         add(DiscoveredDeviceChanged(scanReport));
-      });
-    }
+      },
+    );
+
+    // _dsimRepository.scanDevices();
   }
 
   // void _onDataExported(

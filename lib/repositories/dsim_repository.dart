@@ -8,6 +8,7 @@ import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/shared_preference_key.dart';
 import 'package:dsim_app/repositories/dsim18_parser.dart';
 import 'package:excel/excel.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
@@ -113,9 +114,10 @@ class DsimRepository {
     _calculateCRCs();
   }
   final FlutterReactiveBle _ble;
-  final _scanDuration = 3; // sec
-  final _connectionTimeout = 3; //sec
+  final _scanTimeout = 3; // sec
+  final _connectionTimeout = 30; //sec
   late StreamController<ScanReport> _scanReportStreamController;
+
   StreamController<ConnectionReport> _connectionReportStreamController =
       StreamController<ConnectionReport>();
   StreamController<Map<DataKey, String>> _characteristicDataStreamController =
@@ -176,15 +178,33 @@ class DsimRepository {
     await BluetoothEnable.enableBluetooth;
   }
 
-  Stream<ScanReport> get scannedDevices async* {
+  Stream<ScanReport> get scanReport async* {
     await checkBluetoothEnabled();
+
     bool isPermissionGranted = await _requestPermission();
     if (isPermissionGranted) {
       _scanReportStreamController = StreamController<ScanReport>();
+
+      print('start scan timer');
+      Timer scanTimer = Timer(Duration(seconds: _scanTimeout), () async {
+        _scanReportStreamController.add(
+          const ScanReport(
+            scanStatus: ScanStatus.failure,
+            discoveredDevice: null,
+          ),
+        );
+
+        print('Close scan');
+
+        await closeScanStream();
+      });
+
       _discoveredDeviceStreamSubscription =
           _ble.scanForDevices(withServices: []).listen((device) {
         if (device.name.startsWith(_aciPrefix)) {
           if (!_scanReportStreamController.isClosed) {
+            scanTimer.cancel();
+            print('Device: ${device.name}');
             _scanReportStreamController.add(
               ScanReport(
                 scanStatus: ScanStatus.success,
@@ -202,25 +222,15 @@ class DsimRepository {
           ),
         );
       });
-      yield* _scanReportStreamController.stream.timeout(
-          Duration(
-            seconds: _scanDuration,
-          ), onTimeout: (sink) {
-        print('Stop Scanning');
-        _scanReportStreamController.add(
-          const ScanReport(
-            scanStatus: ScanStatus.failure,
-            discoveredDevice: null,
-          ),
-        );
-      });
     } else {
       print('bluetooth disable');
-      yield const ScanReport(
+      _scanReportStreamController.add(const ScanReport(
         scanStatus: ScanStatus.disable,
         discoveredDevice: null,
-      );
+      ));
     }
+
+    yield* _scanReportStreamController.stream;
   }
 
   Stream<ConnectionReport> get connectionStateReport async* {
@@ -256,13 +266,29 @@ class DsimRepository {
 
   Future<void> closeScanStream() async {
     print('closeScanStream');
-    _scanReportStreamController.close();
+
+    if (_scanReportStreamController.isClosed) {
+      await _scanReportStreamController.close();
+    }
+
     await _discoveredDeviceStreamSubscription?.cancel();
     _discoveredDeviceStreamSubscription = null;
   }
 
   Future<void> closeConnectionStream() async {
     print('close _characteristicStreamSubscription');
+
+    if (_connectionReportStreamController.hasListener) {
+      if (!_connectionReportStreamController.isClosed) {
+        await _connectionReportStreamController.close();
+      }
+    }
+
+    if (_characteristicDataStreamController.hasListener) {
+      if (!_characteristicDataStreamController.isClosed) {
+        await _characteristicDataStreamController.close();
+      }
+    }
 
     await _characteristicStreamSubscription?.cancel();
     _characteristicStreamSubscription = null;
@@ -275,7 +301,7 @@ class DsimRepository {
 
     print('close _connectionStreamSubscription');
     await _connectionStreamSubscription?.cancel();
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 2000));
     _connectionStreamSubscription = null;
   }
 
@@ -286,12 +312,21 @@ class DsimRepository {
   }
 
   Future<void> connectToDevice(DiscoveredDevice discoveredDevice) async {
-    print('connect to ${discoveredDevice.name}, ${discoveredDevice.id}');
+    Timer connectionTimer =
+        Timer(Duration(seconds: _connectionTimeout), () async {
+      _connectionReportStreamController.add(const ConnectionReport(
+        connectionState: DeviceConnectionState.disconnected,
+        errorMessage: 'disconnected',
+      ));
+
+      await closeScanStream();
+      await closeConnectionStream();
+    });
+
     _connectionReportStreamController = StreamController<ConnectionReport>();
     _connectionStreamSubscription = _ble
         .connectToDevice(
       id: discoveredDevice.id,
-      connectionTimeout: Duration(seconds: _connectionTimeout),
     )
         .listen((connectionStateUpdate) async {
       print('connectionStateUpdateXXXXXX: $connectionStateUpdate');
@@ -299,11 +334,8 @@ class DsimRepository {
         case DeviceConnectionState.connecting:
           break;
         case DeviceConnectionState.connected:
-          // final mtu =
-          //     await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 247);
-          // print('Negotiated MTU: $mtu');
+          connectionTimer.cancel();
 
-          // initialize _characteristicDataStreamController
           _characteristicDataStreamController =
               StreamController<Map<DataKey, String>>();
 
@@ -312,10 +344,6 @@ class DsimRepository {
             characteristicId: Uuid.parse(_characteristicId),
             deviceId: discoveredDevice.id,
           );
-
-          // final mtu =
-          //     await _ble.requestMtu(deviceId: discoveredDevice.id, mtu: 247);
-          // print('Negotiated MTU: $mtu');
 
           _characteristicStreamSubscription = _ble
               .subscribeToCharacteristic(_qualifiedCharacteristic)
