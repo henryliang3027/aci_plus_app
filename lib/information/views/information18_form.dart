@@ -1,4 +1,4 @@
-import 'package:dsim_app/core/command.dart';
+import 'package:dsim_app/core/characteristic_data.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';

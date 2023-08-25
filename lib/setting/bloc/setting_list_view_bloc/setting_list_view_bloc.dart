@@ -1,7 +1,8 @@
-import 'package:dsim_app/core/command.dart';
+import 'package:dsim_app/core/characteristic_data.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/pilot_channel.dart';
 import 'package:dsim_app/core/shared_preference_key.dart';
+import 'package:dsim_app/repositories/dsim_parser.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:dsim_app/setting/model/location.dart';
 import 'package:dsim_app/setting/model/pilot_code.dart';

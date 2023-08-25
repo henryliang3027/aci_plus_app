@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dsim_app/core/command.dart';
+import 'package:dsim_app/core/characteristic_data.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:equatable/equatable.dart';

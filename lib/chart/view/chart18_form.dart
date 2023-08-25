@@ -1,6 +1,6 @@
 import 'package:dsim_app/chart/chart/chart18_bloc/chart18_bloc.dart';
 import 'package:dsim_app/chart/view/chart18_tab_bar.dart';
-import 'package:dsim_app/core/command.dart';
+import 'package:dsim_app/core/characteristic_data.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
