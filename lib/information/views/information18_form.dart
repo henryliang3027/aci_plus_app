@@ -183,7 +183,7 @@ class _ConnectionCard extends StatelessWidget {
                 name: state.device != null ? state.device!.name : '',
               ),
               itemLinkText(
-                title: 'DSIM',
+                title: AppLocalizations.of(context).amplifier,
                 content: AppLocalizations.of(context).visitWebsite,
               ),
             ],
@@ -480,25 +480,26 @@ Widget itemMultipleLineText({
           height: 10,
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            const SizedBox(
-              width: 30,
-            ),
+            // const SizedBox(
+            //   width: 30,
+            // ),
             Flexible(
               child: RichText(
-                  text: WidgetSpan(
-                child:
-                    getContent(loadingStatus: loadingStatus, content: content),
-                // Text(
-                //   content,
-                //   textAlign: TextAlign.right,
-                //   // textDirection: TextDirection.rtl,
-                //   style: TextStyle(
-                //     fontSize: 16,
-                //   ),
-                // ),
-              )),
+                text: WidgetSpan(
+                  child: getContent(
+                      loadingStatus: loadingStatus, content: content),
+                  // Text(
+                  //   content,
+                  //   textAlign: TextAlign.right,
+                  //   // textDirection: TextDirection.rtl,
+                  //   style: TextStyle(
+                  //     fontSize: 16,
+                  //   ),
+                  // ),
+                ),
+              ),
             )
           ],
         )
@@ -536,8 +537,7 @@ Widget itemLinkText({
             ),
           ),
           onPressed: () async {
-            Uri uri =
-                Uri.parse('http://acicomms.com/support/aci-dsim-setup-videos');
+            Uri uri = Uri.parse('http://acicomms.com/products/line-amplifier');
             launchUrl(
               uri,
               mode: LaunchMode.externalApplication,

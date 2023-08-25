@@ -7,12 +7,12 @@
     "workingMode": "Modo de trabajo",
     "pilotCodeFormatError": "Código de piloto no válido",
 
-    "configure": "Configurar",
+    "configuration": "Configuración",
     "threshold": "Umbral",
     "control": "Control",
     "splitOption": "Opciones Divididas",
-    "firstChannelLoading": "Cargando Primer Canal",
-    "lastChannelLoading": "Cargando Último Canal",
+    "fwdFirstLoading": "Avance Primero Cargando",
+    "fwdLastLoading": "Avance Último Cargando",
     "frequency": "Frecuencia (MHz)",
     "level": "Nivel (dBmV)",
     "pilotFrequencySelect": "Selección Frecuencia Piloto",
@@ -91,6 +91,8 @@
     "temperatureAlarm": "Temperatura",
     "powerSupplyAlarm": "Fuente de alimentación",
     "unitStatusAlarm": "Unidad Estado",
+
+    "amplifier": "Amplificador",
 
 
     "monitoringChart": "Gráfico de Monitoreo",

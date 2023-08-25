@@ -7,12 +7,12 @@
     "workingMode": "Working Mode",
     "pilotCodeFormatError": "Invalid pilot code",
 
-    "configure": "Configure",
+    "configuration": "Configuration",
     "threshold": "Threshold",
     "control": "Control",
     "splitOption": "Split Options",
-    "firstChannelLoading": "First Channel Loading",
-    "lastChannelLoading": "Last Channel Loading",
+    "fwdFirstLoading": "FWD First Loading",
+    "fwdLastLoading": "FWD Last Loading",
     "frequency": "Freq. (MHz)",
     "level": "Level (dBmV)",
     "pilotFrequencySelect": "Pilot Frequency Select",
@@ -89,6 +89,8 @@
     "temperatureAlarm": "Temperature",
     "powerSupplyAlarm": "Power Supply",
     "unitStatusAlarm": "Unit Status",
+
+    "amplifier": "Amplifier",
 
 
     "monitoringChart": "Monitoring Chart",

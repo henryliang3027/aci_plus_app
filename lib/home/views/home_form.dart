@@ -109,22 +109,22 @@ class _HomeFormState extends State<HomeForm> {
     }
 
     List<Widget> buildPages(int mtu) {
-      if (mtu == 244 || mtu == 247) {
-        // 適用 1.8G 的頁面
-        return const [
-          Setting18Page(),
-          Status18Page(),
-          Information18Page(),
-          Chart18Page(),
-          AboutPage(),
-        ];
-      } else {
+      if (mtu == 20 || mtu == 23) {
         // 適用 1G/1.2G 的頁面
         return const [
           SettingPage(),
           StatusPage(),
           InformationPage(),
           ChartPage(),
+          AboutPage(),
+        ];
+      } else {
+        // 適用 1.8G 的頁面
+        return const [
+          Setting18Page(),
+          Status18Page(),
+          Information18Page(),
+          Chart18Page(),
           AboutPage(),
         ];
       }

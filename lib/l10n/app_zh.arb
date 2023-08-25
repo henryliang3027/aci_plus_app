@@ -7,12 +7,12 @@
     "workingMode": "工作模式",
     "pilotCodeFormatError": "格式不正確",
 
-    "configure": "組態",
-    "threshold": "範圍",
+    "configuration": "組態",
+    "threshold": "告警範圍",
     "control": "控制",
     "splitOption": "Split Options",
-    "firstChannelLoading": "First Channel Loading",
-    "lastChannelLoading": "Last Channel Loading",
+    "fwdFirstLoading": "FWD First Loading",
+    "fwdLastLoading": "FWD Last Loading",
     "frequency": "Freq. (MHz)",
     "level": "Level (dBmV)",
     "pilotFrequencySelect": "Pilot Frequency Select",
@@ -89,6 +89,8 @@
     "temperatureAlarm": "溫度警示",
     "powerSupplyAlarm": "電源警示",
     "unitStatusAlarm": "設備狀態",
+
+    "amplifier": "放大器",
 
     
     "monitoringChart": "監控圖表",
