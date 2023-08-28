@@ -53,8 +53,8 @@ class _DeviceStatus extends StatelessWidget {
           } else {
             return const Center(
               child: SizedBox(
-                width: 20.0,
-                height: 20.0,
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
                 child: CircularProgressIndicator(
                   color: Colors.amber,
                 ),
@@ -68,8 +68,8 @@ class _DeviceStatus extends StatelessWidget {
         } else {
           return const Center(
             child: SizedBox(
-              width: 20.0,
-              height: 20.0,
+              width: CustomStyle.diameter,
+              height: CustomStyle.diameter,
               child: CircularProgressIndicator(
                 color: Colors.white,
               ),
@@ -174,7 +174,13 @@ class _TemperatureCard extends StatelessWidget {
     }) {
       if (loadingStatus == FormStatus.requestInProgress) {
         return currentTemperature.isEmpty
-            ? const CircularProgressIndicator()
+            ? const Center(
+                child: SizedBox(
+                  width: CustomStyle.diameter,
+                  height: CustomStyle.diameter,
+                  child: CircularProgressIndicator(),
+                ),
+              )
             : Text(
                 currentTemperature,
                 style: TextStyle(
@@ -211,7 +217,13 @@ class _TemperatureCard extends StatelessWidget {
     }) {
       if (loadingStatus == FormStatus.requestInProgress) {
         return minTemperature.isEmpty
-            ? const CircularProgressIndicator()
+            ? const Center(
+                child: SizedBox(
+                  width: CustomStyle.diameter,
+                  height: CustomStyle.diameter,
+                  child: CircularProgressIndicator(),
+                ),
+              )
             : Text(
                 minTemperature,
                 style: TextStyle(
@@ -243,7 +255,13 @@ class _TemperatureCard extends StatelessWidget {
     }) {
       if (loadingStatus == FormStatus.requestInProgress) {
         return maxTemperature.isEmpty
-            ? const CircularProgressIndicator()
+            ? const Center(
+                child: SizedBox(
+                  width: CustomStyle.diameter,
+                  height: CustomStyle.diameter,
+                  child: CircularProgressIndicator(),
+                ),
+              )
             : Text(
                 maxTemperature,
                 style: TextStyle(
@@ -521,7 +539,13 @@ class _PowerSupplyCard extends StatelessWidget {
   }) {
     if (loadingStatus == FormStatus.requestInProgress) {
       return currentVoltage.isEmpty
-          ? const CircularProgressIndicator()
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
           : Text(
               currentVoltage,
               style: TextStyle(
@@ -557,7 +581,13 @@ class _PowerSupplyCard extends StatelessWidget {
   }) {
     if (loadingStatus == FormStatus.requestInProgress) {
       return minVoltage.isEmpty
-          ? const CircularProgressIndicator()
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
           : Text(
               minVoltage,
               style: TextStyle(
@@ -588,7 +618,13 @@ class _PowerSupplyCard extends StatelessWidget {
   }) {
     if (loadingStatus == FormStatus.requestInProgress) {
       return maxVoltage.isEmpty
-          ? const CircularProgressIndicator()
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
           : Text(
               maxVoltage,
               style: TextStyle(

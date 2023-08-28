@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dsim_app/chart/view/full_screen_chart_form.dart';
+import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
@@ -168,7 +169,11 @@ class _LogChartView extends StatelessWidget {
               color: Color.fromARGB(70, 158, 158, 158),
             ),
             child: const Center(
-              child: CircularProgressIndicator(),
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
             ),
           )
         ],
@@ -187,9 +192,13 @@ class _LogChartView extends StatelessWidget {
                 color: Color.fromARGB(70, 158, 158, 158),
               ),
               child: const Center(
-                child: CircularProgressIndicator(),
+                child: SizedBox(
+                  width: CustomStyle.diameter,
+                  height: CustomStyle.diameter,
+                  child: CircularProgressIndicator(),
+                ),
               ),
-            )
+            ),
           ],
         );
       } else if (state.loadingStatus == FormStatus.requestSuccess) {

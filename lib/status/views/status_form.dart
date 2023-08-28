@@ -54,8 +54,8 @@ class _DeviceStatus extends StatelessWidget {
           } else {
             return const Center(
               child: SizedBox(
-                width: 20.0,
-                height: 20.0,
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
                 child: CircularProgressIndicator(
                   color: Colors.amber,
                 ),
@@ -69,8 +69,8 @@ class _DeviceStatus extends StatelessWidget {
         } else {
           return const Center(
             child: SizedBox(
-              width: 20.0,
-              height: 20.0,
+              width: CustomStyle.diameter,
+              height: CustomStyle.diameter,
               child: CircularProgressIndicator(
                 color: Colors.white,
               ),
@@ -854,7 +854,13 @@ Widget getContent({
 }) {
   if (loadingStatus == FormStatus.requestInProgress) {
     return content.isEmpty
-        ? const CircularProgressIndicator()
+        ? const Center(
+            child: SizedBox(
+              width: CustomStyle.diameter,
+              height: CustomStyle.diameter,
+              child: CircularProgressIndicator(),
+            ),
+          )
         : Text(
             content,
             style: TextStyle(

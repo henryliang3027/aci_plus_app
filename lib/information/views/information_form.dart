@@ -54,8 +54,8 @@ class _DeviceStatus extends StatelessWidget {
           } else {
             return const Center(
               child: SizedBox(
-                width: 20.0,
-                height: 20.0,
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
                 child: CircularProgressIndicator(
                   color: Colors.amber,
                 ),
@@ -69,8 +69,8 @@ class _DeviceStatus extends StatelessWidget {
         } else {
           return const Center(
             child: SizedBox(
-              width: 20.0,
-              height: 20.0,
+              width: CustomStyle.diameter,
+              height: CustomStyle.diameter,
               child: CircularProgressIndicator(
                 color: Colors.white,
               ),
@@ -115,7 +115,11 @@ class _ConnectionCard extends StatelessWidget {
     required String name,
   }) {
     if (scanStatus == FormStatus.requestInProgress) {
-      return const CircularProgressIndicator();
+      return const SizedBox(
+        width: CustomStyle.diameter,
+        height: CustomStyle.diameter,
+        child: CircularProgressIndicator(),
+      );
     } else if (scanStatus == FormStatus.requestFailure) {
       return const Text(
         'N/A',
@@ -177,14 +181,14 @@ class _ConnectionCard extends StatelessWidget {
               const SizedBox(
                 height: 10.0,
               ),
+              itemLinkText(
+                title: '',
+                content: AppLocalizations.of(context).visitWebsite,
+              ),
               bluetoothText(
                 scanStatus: state.scanStatus,
                 title: AppLocalizations.of(context).bluetooth,
                 name: state.device != null ? state.device!.name : '',
-              ),
-              itemLinkText(
-                title: 'DSIM',
-                content: AppLocalizations.of(context).visitWebsite,
               ),
             ],
           ),
@@ -412,7 +416,11 @@ Widget getContent({
 }) {
   if (loadingStatus == FormStatus.requestInProgress) {
     return content.isEmpty
-        ? const CircularProgressIndicator()
+        ? const SizedBox(
+            width: CustomStyle.diameter,
+            height: CustomStyle.diameter,
+            child: CircularProgressIndicator(),
+          )
         : Text(
             content,
             style: TextStyle(
@@ -529,6 +537,7 @@ Widget itemLinkText({
             style: const TextStyle(
               fontSize: 16,
             ),
+            textAlign: TextAlign.end,
           ),
           onPressed: () async {
             Uri uri =

@@ -47,8 +47,8 @@ class _DeviceStatus extends StatelessWidget {
           } else {
             return const Center(
               child: SizedBox(
-                width: 20.0,
-                height: 20.0,
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
                 child: CircularProgressIndicator(
                   color: Colors.amber,
                 ),
@@ -62,8 +62,8 @@ class _DeviceStatus extends StatelessWidget {
         } else {
           return const Center(
             child: SizedBox(
-              width: 20.0,
-              height: 20.0,
+              width: CustomStyle.diameter,
+              height: CustomStyle.diameter,
               child: CircularProgressIndicator(
                 color: Colors.white,
               ),
@@ -153,7 +153,11 @@ class _ViewLayout extends StatelessWidget {
                   color: Color.fromARGB(70, 158, 158, 158),
                 ),
                 child: const Center(
-                  child: CircularProgressIndicator(),
+                  child: SizedBox(
+                    width: CustomStyle.diameter,
+                    height: CustomStyle.diameter,
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               ),
             ],
@@ -168,7 +172,11 @@ class _ViewLayout extends StatelessWidget {
           return const _Layout();
         } else {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: SizedBox(
+              width: CustomStyle.diameter,
+              height: CustomStyle.diameter,
+              child: CircularProgressIndicator(),
+            ),
           );
         }
       },

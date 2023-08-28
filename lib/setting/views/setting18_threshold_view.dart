@@ -56,7 +56,13 @@ class Setting18ThresholdView extends StatelessWidget {
             ),
             actionsAlignment: MainAxisAlignment.center,
             actions: const <Widget>[
-              CircularProgressIndicator(),
+              Center(
+                child: SizedBox(
+                  width: CustomStyle.diameter,
+                  height: CustomStyle.diameter,
+                  child: CircularProgressIndicator(),
+                ),
+              ),
             ],
           );
         },

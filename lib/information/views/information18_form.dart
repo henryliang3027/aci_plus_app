@@ -54,8 +54,8 @@ class _DeviceStatus extends StatelessWidget {
           } else {
             return const Center(
               child: SizedBox(
-                width: 26.0,
-                height: 20.0,
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
                 child: CircularProgressIndicator(
                   color: Colors.amber,
                 ),
@@ -69,8 +69,8 @@ class _DeviceStatus extends StatelessWidget {
         } else {
           return const Center(
             child: SizedBox(
-              width: 20.0,
-              height: 20.0,
+              width: CustomStyle.diameter,
+              height: CustomStyle.diameter,
               child: CircularProgressIndicator(
                 color: Colors.white,
               ),
@@ -116,8 +116,8 @@ class _ConnectionCard extends StatelessWidget {
   }) {
     if (scanStatus == FormStatus.requestInProgress) {
       return const SizedBox(
-        width: 20,
-        height: 20,
+        width: CustomStyle.diameter,
+        height: CustomStyle.diameter,
         child: CircularProgressIndicator(),
       );
     } else if (scanStatus == FormStatus.requestFailure) {
@@ -181,14 +181,14 @@ class _ConnectionCard extends StatelessWidget {
               const SizedBox(
                 height: 10.0,
               ),
+              itemLinkText(
+                title: '',
+                content: AppLocalizations.of(context).visitWebsite,
+              ),
               bluetoothText(
                 scanStatus: state.scanStatus,
                 title: AppLocalizations.of(context).bluetooth,
                 name: state.device != null ? state.device!.name : '',
-              ),
-              itemLinkText(
-                title: AppLocalizations.of(context).amplifier,
-                content: AppLocalizations.of(context).visitWebsite,
               ),
             ],
           ),
@@ -408,8 +408,8 @@ Widget getContent({
   if (loadingStatus == FormStatus.requestInProgress) {
     return content.isEmpty
         ? const SizedBox(
-            width: 20,
-            height: 20,
+            width: CustomStyle.diameter,
+            height: CustomStyle.diameter,
             child: CircularProgressIndicator(),
           )
         : Text(
@@ -523,7 +523,7 @@ Widget itemLinkText({
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Text(
           title,
@@ -543,6 +543,7 @@ Widget itemLinkText({
             style: const TextStyle(
               fontSize: 16,
             ),
+            textAlign: TextAlign.end,
           ),
           onPressed: () async {
             Uri uri = Uri.parse('http://acicomms.com/products/line-amplifier');

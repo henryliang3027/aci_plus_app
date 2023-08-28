@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:dsim_app/chart/chart/chart_bloc/chart_bloc.dart';
 import 'package:dsim_app/chart/view/full_screen_chart_form.dart';
 import 'package:dsim_app/core/command.dart';
+import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
@@ -99,8 +100,8 @@ class _DeviceStatus extends StatelessWidget {
           } else {
             return const Center(
               child: SizedBox(
-                width: 20.0,
-                height: 20.0,
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
                 child: CircularProgressIndicator(
                   color: Colors.amber,
                 ),
@@ -114,8 +115,8 @@ class _DeviceStatus extends StatelessWidget {
         } else {
           return const Center(
             child: SizedBox(
-              width: 20.0,
-              height: 20.0,
+              width: CustomStyle.diameter,
+              height: CustomStyle.diameter,
               child: CircularProgressIndicator(
                 color: Colors.white,
               ),
@@ -430,7 +431,11 @@ class _LogChartView extends StatelessWidget {
               color: Color.fromARGB(70, 158, 158, 158),
             ),
             child: const Center(
-              child: CircularProgressIndicator(),
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
             ),
           )
         ],
@@ -483,7 +488,11 @@ class _LogChartView extends StatelessWidget {
                   color: Color.fromARGB(70, 158, 158, 158),
                 ),
                 child: const Center(
-                  child: CircularProgressIndicator(),
+                  child: SizedBox(
+                    width: CustomStyle.diameter,
+                    height: CustomStyle.diameter,
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               )
             ],
@@ -501,7 +510,11 @@ class _LogChartView extends StatelessWidget {
                     color: Color.fromARGB(70, 158, 158, 158),
                   ),
                   child: const Center(
-                    child: CircularProgressIndicator(),
+                    child: SizedBox(
+                      width: CustomStyle.diameter,
+                      height: CustomStyle.diameter,
+                      child: CircularProgressIndicator(),
+                    ),
                   ),
                 )
               ],
@@ -517,7 +530,11 @@ class _LogChartView extends StatelessWidget {
                     color: Color.fromARGB(70, 158, 158, 158),
                   ),
                   child: const Center(
-                    child: CircularProgressIndicator(),
+                    child: SizedBox(
+                      width: CustomStyle.diameter,
+                      height: CustomStyle.diameter,
+                      child: CircularProgressIndicator(),
+                    ),
                   ),
                 )
               ],

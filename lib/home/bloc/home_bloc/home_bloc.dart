@@ -47,7 +47,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     //   autoStart: false,
     // );
     // _assetsAudioPlayer.play();
-    await Future.delayed(const Duration(milliseconds: 5000));
+    await Future.delayed(const Duration(milliseconds: 3000));
 
     _scanStreamSubscription = _dsimRepository.scanReport.listen(
       (scanReport) {

@@ -1,11 +1,6 @@
-import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
-import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:dsim_app/information/bloc/information18_bloc/information18_bloc.dart';
-import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -30,6 +25,41 @@ class SplashView extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Setting',
+            tooltip: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.memory_outlined),
+            label: 'Status',
+            tooltip: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.info),
+            label: 'Information',
+            tooltip: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.area_chart_sharp),
+            label: 'Chart',
+            tooltip: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.contact_support),
+            label: 'About',
+            tooltip: '',
+          ),
+        ],
+        currentIndex: 2,
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Theme.of(context).hintColor,
+      ),
     );
   }
 }
@@ -39,8 +69,14 @@ class _DeviceStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Icon(
-      Icons.nearby_error_outlined,
+    return const Center(
+      child: SizedBox(
+        width: CustomStyle.diameter,
+        height: CustomStyle.diameter,
+        child: CircularProgressIndicator(
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }
@@ -63,7 +99,11 @@ class _ConnectionCard extends StatelessWidget {
     required String name,
   }) {
     if (scanStatus == FormStatus.requestInProgress) {
-      return const CircularProgressIndicator();
+      return const SizedBox(
+        width: CustomStyle.diameter,
+        height: CustomStyle.diameter,
+        child: CircularProgressIndicator(),
+      );
     } else if (scanStatus == FormStatus.requestFailure) {
       return const Text(
         'N/A',
@@ -98,7 +138,7 @@ class _ConnectionCard extends StatelessWidget {
             ),
           ),
           getBluetoothName(
-            scanStatus: FormStatus.requestFailure,
+            scanStatus: FormStatus.requestInProgress,
             title: title,
             name: name,
           ),
@@ -124,14 +164,14 @@ class _ConnectionCard extends StatelessWidget {
             const SizedBox(
               height: 10.0,
             ),
+            itemLinkText(
+              title: '',
+              content: AppLocalizations.of(context).visitWebsite,
+            ),
             bluetoothText(
-              scanStatus: FormStatus.requestFailure,
+              scanStatus: FormStatus.requestInProgress,
               title: AppLocalizations.of(context).bluetooth,
               name: '',
-            ),
-            itemLinkText(
-              title: AppLocalizations.of(context).amplifier,
-              content: AppLocalizations.of(context).visitWebsite,
             ),
           ],
         ),
@@ -161,37 +201,37 @@ class _BasicCard extends StatelessWidget {
               height: 10.0,
             ),
             itemText(
-              loadingStatus: FormStatus.requestFailure,
+              loadingStatus: FormStatus.requestInProgress,
               title: AppLocalizations.of(context).typeNo,
               content: '',
             ),
             itemText(
-              loadingStatus: FormStatus.requestFailure,
+              loadingStatus: FormStatus.requestInProgress,
               title: AppLocalizations.of(context).partNo,
               content: '',
             ),
             itemText(
-              loadingStatus: FormStatus.requestFailure,
+              loadingStatus: FormStatus.requestInProgress,
               title: AppLocalizations.of(context).mfgDate,
               content: '',
             ),
             itemText(
-              loadingStatus: FormStatus.requestFailure,
+              loadingStatus: FormStatus.requestInProgress,
               title: AppLocalizations.of(context).firmwareVersion,
               content: '',
             ),
             itemText(
-              loadingStatus: FormStatus.requestFailure,
+              loadingStatus: FormStatus.requestInProgress,
               title: AppLocalizations.of(context).serialNumber,
               content: '',
             ),
             itemMultipleLineText(
-              loadingStatus: FormStatus.requestFailure,
+              loadingStatus: FormStatus.requestInProgress,
               title: AppLocalizations.of(context).location,
               content: '',
             ),
             itemMultipleLineText(
-              loadingStatus: FormStatus.requestFailure,
+              loadingStatus: FormStatus.requestInProgress,
               title: AppLocalizations.of(context).coordinates,
               content: '',
             ),
@@ -291,7 +331,11 @@ Widget getContent({
 }) {
   if (loadingStatus == FormStatus.requestInProgress) {
     return content.isEmpty
-        ? const CircularProgressIndicator()
+        ? const SizedBox(
+            width: CustomStyle.diameter,
+            height: CustomStyle.diameter,
+            child: CircularProgressIndicator(),
+          )
         : Text(
             content,
             textAlign: TextAlign.right,
