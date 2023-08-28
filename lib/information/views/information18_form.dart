@@ -54,7 +54,7 @@ class _DeviceStatus extends StatelessWidget {
           } else {
             return const Center(
               child: SizedBox(
-                width: 20.0,
+                width: 26.0,
                 height: 20.0,
                 child: CircularProgressIndicator(
                   color: Colors.amber,
@@ -115,7 +115,11 @@ class _ConnectionCard extends StatelessWidget {
     required String name,
   }) {
     if (scanStatus == FormStatus.requestInProgress) {
-      return const CircularProgressIndicator();
+      return const SizedBox(
+        width: 20,
+        height: 20,
+        child: CircularProgressIndicator(),
+      );
     } else if (scanStatus == FormStatus.requestFailure) {
       return const Text(
         'N/A',
@@ -403,7 +407,11 @@ Widget getContent({
 }) {
   if (loadingStatus == FormStatus.requestInProgress) {
     return content.isEmpty
-        ? const CircularProgressIndicator()
+        ? const SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(),
+          )
         : Text(
             content,
             textAlign: TextAlign.right,
