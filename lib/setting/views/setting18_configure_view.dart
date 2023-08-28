@@ -465,7 +465,7 @@ class _FirstChannelLoading extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      AppLocalizations.of(context).fwdFirstLoading,
+                      '${AppLocalizations.of(context).fwdFirstLoading}:',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
@@ -584,7 +584,7 @@ class _LastChannelLoading extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      AppLocalizations.of(context).fwdLastLoading,
+                      '${AppLocalizations.of(context).fwdLastLoading}:',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
