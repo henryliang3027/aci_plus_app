@@ -222,7 +222,7 @@ class _BasicCard extends StatelessWidget {
       if (logInterval.isEmpty) {
         return '';
       } else {
-        return '$logInterval minute';
+        return '$logInterval ${AppLocalizations.of(context).minute}';
       }
     }
 

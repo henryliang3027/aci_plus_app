@@ -33,7 +33,7 @@ class Setting18TabBar extends StatelessWidget {
                 tabs: [
                   Tab(
                     child: SizedBox(
-                      width: 90,
+                      width: 110,
                       child: Center(
                         child: Text(
                           AppLocalizations.of(context).configuration,
@@ -43,7 +43,7 @@ class Setting18TabBar extends StatelessWidget {
                   ),
                   Tab(
                     child: SizedBox(
-                      width: 90,
+                      width: 110,
                       child: Center(
                         child: Text(
                           AppLocalizations.of(context).threshold,
@@ -53,7 +53,7 @@ class Setting18TabBar extends StatelessWidget {
                   ),
                   Tab(
                     child: SizedBox(
-                      width: 90,
+                      width: 110,
                       child: Center(
                         child: Text(
                           AppLocalizations.of(context).control,
@@ -67,7 +67,7 @@ class Setting18TabBar extends StatelessWidget {
           ),
           const Expanded(
             child: TabBarView(
-              physics: NeverScrollableScrollPhysics(),
+              // physics: NeverScrollableScrollPhysics(),
               children: [
                 Setting18ConfigurePage(),
                 Setting18ThresholdPage(),

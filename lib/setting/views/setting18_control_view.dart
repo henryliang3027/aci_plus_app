@@ -3,7 +3,6 @@ import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting18_control/setting18_control_bloc.dart';
-import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -105,6 +104,7 @@ Widget controlParameterSlider({
           data: const SliderThemeData(
             valueIndicatorColor: Colors.red,
             showValueIndicator: ShowValueIndicator.always,
+            overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
           ),
           child: Slider(
             min: 0.0,
@@ -112,6 +112,39 @@ Widget controlParameterSlider({
             divisions: 150,
             value: currentValue,
             onChanged: editMode ? onChanged : null,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(
+              2,
+              (index) => Column(
+                children: [
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    height: 16,
+                    child: VerticalDivider(
+                      indent: 0,
+                      thickness: 1.2,
+                      color: Colors.grey.shade300,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    height: 22,
+                    child: Text(
+                      '${(List.from([0, 15])[index]).toStringAsFixed(0)}',
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeM,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ],

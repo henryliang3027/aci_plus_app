@@ -624,7 +624,7 @@ class _FirstChannelOutputLevelAlarmControl extends StatelessWidget {
         return controlParameterSwitch(
           context: context,
           editMode: state.editMode,
-          title: AppLocalizations.of(context).firstChannelOutputLevel,
+          title: AppLocalizations.of(context).startFrequencyLoading,
           value: state.enableFirstChannelOutputLevelAlarm,
           onChanged: (bool value) {
             context
@@ -647,7 +647,7 @@ class _LastChannelOutputLevelAlarmControl extends StatelessWidget {
         return controlParameterSwitch(
           context: context,
           editMode: state.editMode,
-          title: AppLocalizations.of(context).lastChannelOutputLevel,
+          title: AppLocalizations.of(context).stopFrequencyLoading,
           value: state.enableLastChannelOutputLevelAlarm,
           onChanged: (bool value) {
             context

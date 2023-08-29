@@ -171,16 +171,28 @@ class DsimRepository {
 
   final Dsim18Parser _dsim18parser;
 
-  Future<void> checkBluetoothEnabled() async {
-    await GPS.Location().requestService();
-    await BluetoothEnable.enableBluetooth;
+  Future<bool> checkBluetoothEnabled() async {
+    // 要求定位與藍芽存取權
+    bool isPermissionGranted = await _requestPermission();
+
+    // 偵測定位是否有打開, 如果沒有打開會跳出提示訊息
+    bool resultOfEnableGPS = await GPS.Location().requestService();
+
+    // 偵測藍芽是否有打開, 如果沒有打開會跳出提示訊息
+    String resultStrOfEnableBluetooth = await BluetoothEnable.enableBluetooth;
+    bool resultOfEnableBluetooth =
+        resultStrOfEnableBluetooth == 'true' ? true : false;
+
+    if (isPermissionGranted && resultOfEnableGPS && resultOfEnableBluetooth) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Stream<ScanReport> get scanReport async* {
-    await checkBluetoothEnabled();
-
-    bool isPermissionGranted = await _requestPermission();
-    if (isPermissionGranted) {
+    bool isGranted = await checkBluetoothEnabled();
+    if (isGranted) {
       _scanReportStreamController = StreamController<ScanReport>();
 
       // 設定 scan timeout

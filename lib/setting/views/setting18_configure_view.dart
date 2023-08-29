@@ -465,7 +465,7 @@ class _FirstChannelLoading extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      '${AppLocalizations.of(context).fwdFirstLoading}:',
+                      '${AppLocalizations.of(context).startFrequency}:',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
@@ -584,7 +584,7 @@ class _LastChannelLoading extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      '${AppLocalizations.of(context).fwdLastLoading}:',
+                      '${AppLocalizations.of(context).stopFrequency}:',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
@@ -763,9 +763,9 @@ class _PilotFrequencyMode extends StatelessWidget {
                   ),
                   isSelected: _getSelectionState(state.pilotFrequencyMode),
                   children: <Widget>[
-                    for (String text in pilotFrequencyModeTexts) ...[
-                      Text(text)
-                    ],
+                    Text(AppLocalizations.of(context).pilotFrequencyFull),
+                    Text(AppLocalizations.of(context).pilotFrequencyManual),
+                    Text(AppLocalizations.of(context).pilotFrequencyScan),
                   ],
                 ),
               ),
@@ -945,7 +945,7 @@ class _FwdAGCMode extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).fwdAGCMode}:',
+                  '${AppLocalizations.of(context).agcMode}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -985,7 +985,8 @@ class _FwdAGCMode extends StatelessWidget {
                   ),
                   isSelected: _getSelectionState(state.fwdAGCMode),
                   children: <Widget>[
-                    for (String text in fwdAGCModeTexts) ...[Text(text)],
+                    Text(AppLocalizations.of(context).on),
+                    Text(AppLocalizations.of(context).off),
                   ],
                 ),
               ),
@@ -1039,7 +1040,7 @@ class _AutoLevelControl extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).autoLevelControl}:',
+                  '${AppLocalizations.of(context).alcMode}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -1080,7 +1081,8 @@ class _AutoLevelControl extends StatelessWidget {
                   ),
                   isSelected: _getSelectionState(state.autoLevelControl),
                   children: <Widget>[
-                    for (String text in autoLevelControlTexts) ...[Text(text)],
+                    Text(AppLocalizations.of(context).on),
+                    Text(AppLocalizations.of(context).off),
                   ],
                 ),
               ),
@@ -1097,6 +1099,23 @@ class _LogInterval extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> _buildTickLabels() {
+      List<Widget> tickLabels = [];
+      for (int i = 0; i <= 10; i++) {
+        double tickValue = 0 + i * ((60 - 0) / 10);
+        tickLabels.add(
+          Positioned(
+            left: i / 10 * (60 - 0) * 10,
+            child: Text(
+              tickValue.toStringAsFixed(2), // Adjust decimal places as needed
+              style: TextStyle(fontSize: 12),
+            ),
+          ),
+        );
+      }
+      return tickLabels;
+    }
+
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       buildWhen: (previous, current) =>
           previous.logInterval != current.logInterval ||
@@ -1117,7 +1136,7 @@ class _LogInterval extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        '${AppLocalizations.of(context).logInterval}: ${state.logInterval}',
+                        '${AppLocalizations.of(context).logInterval}: ${state.logInterval} ${AppLocalizations.of(context).minute}',
                         style: const TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.w500,
@@ -1131,6 +1150,8 @@ class _LogInterval extends StatelessWidget {
                 data: const SliderThemeData(
                   valueIndicatorColor: Colors.red,
                   showValueIndicator: ShowValueIndicator.always,
+                  // trackShape: CustomTrackShape(),
+                  overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
                 ),
                 child: Slider(
                   min: 0.0,
@@ -1146,11 +1167,63 @@ class _LogInterval extends StatelessWidget {
                       : null,
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(
+                    2,
+                    (index) => Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.bottomCenter,
+                          height: 16,
+                          child: VerticalDivider(
+                            indent: 0,
+                            thickness: 1.2,
+                            color: Colors.grey.shade300,
+                          ),
+                        ),
+                        Container(
+                            alignment: Alignment.bottomCenter,
+                            height: 22,
+                            child: Text(
+                              '${(List.from([
+                                    0,
+                                    60
+                                  ])[index]).toStringAsFixed(0)}',
+                              style: const TextStyle(
+                                fontSize: CustomStyle.sizeM,
+                              ),
+                              textAlign: TextAlign.center,
+                            )),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         );
       },
     );
+  }
+}
+
+class CustomTrackShape extends RoundedRectSliderTrackShape {
+  Rect getPreferredRect({
+    required RenderBox parentBox,
+    Offset offset = Offset.zero,
+    required SliderThemeData sliderTheme,
+    bool isEnabled = false,
+    bool isDiscrete = false,
+  }) {
+    final double trackHeight = sliderTheme.trackHeight!;
+    final double trackLeft = offset.dx;
+    final double trackTop =
+        offset.dy + (parentBox.size.height - trackHeight) / 2;
+    final double trackWidth = parentBox.size.width;
+    return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
   }
 }
 
