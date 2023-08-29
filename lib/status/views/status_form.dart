@@ -235,6 +235,24 @@ class _TemperatureCard extends StatelessWidget {
       );
     }
 
+    const List<TemperatureUnit> temperatureUnitTexts = [
+      TemperatureUnit.fahrenheit,
+      TemperatureUnit.celsius,
+    ];
+
+    List<bool> getSelectionState(TemperatureUnit temperatureUnit) {
+      Map<TemperatureUnit, bool> selectedTemperatureUnitMap = {
+        TemperatureUnit.fahrenheit: false,
+        TemperatureUnit.celsius: false,
+      };
+
+      if (selectedTemperatureUnitMap.containsKey(temperatureUnit)) {
+        selectedTemperatureUnitMap[temperatureUnit] = true;
+      }
+
+      return selectedTemperatureUnitMap.values.toList();
+    }
+
     return Builder(
       builder: (context) {
         final HomeState homeState = context.watch<HomeBloc>().state;
@@ -270,47 +288,45 @@ class _TemperatureCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      AppLocalizations.of(context).temperatureFC,
-                      style: Theme.of(context).textTheme.titleLarge,
+                    Flexible(
+                      child: Text(
+                        AppLocalizations.of(context).temperatureFC,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
                     ),
-                    Material(
-                      color: Colors.transparent,
-                      elevation: 2.0,
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(8.0)),
-                      child: InkWell(
-                        child: Ink(
-                          width: 46.0,
-                          height: 46.0,
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(8.0))),
-                          child: Center(
-                            child: Text(
-                              statusState.temperatureUnit ==
-                                      TemperatureUnit.fahrenheit
-                                  ? CustomStyle.celciusUnit
-                                  : CustomStyle.fahrenheitUnit,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
+                    Flexible(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) => ToggleButtons(
+                          direction: Axis.horizontal,
+                          onPressed: (int index) {
+                            context.read<StatusBloc>().add(
+                                TemperatureUnitChanged(
+                                    temperatureUnitTexts[index]));
+                          },
+                          textStyle: const TextStyle(fontSize: 18.0),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
+                          selectedBorderColor:
+                              Theme.of(context).colorScheme.primary,
+
+                          selectedColor: Theme.of(context)
+                              .colorScheme
+                              .onPrimary, // white text color
+
+                          fillColor:
+                              Theme.of(context).colorScheme.primary, // selected
+                          color: Theme.of(context)
+                              .colorScheme
+                              .secondary, // not selected
+                          constraints: BoxConstraints.expand(
+                              width: (constraints.maxWidth / 2 - 4) / 2),
+                          isSelected:
+                              getSelectionState(statusState.temperatureUnit),
+                          children: const <Widget>[
+                            Text(CustomStyle.fahrenheitUnit),
+                            Text(CustomStyle.celciusUnit),
+                          ],
                         ),
-                        onTap: () {
-                          TemperatureUnit targetUnit =
-                              statusState.temperatureUnit ==
-                                      TemperatureUnit.fahrenheit
-                                  ? TemperatureUnit.celsius
-                                  : TemperatureUnit.fahrenheit;
-                          context
-                              .read<StatusBloc>()
-                              .add(TemperatureUnitChanged(targetUnit));
-                        },
                       ),
                     ),
                   ],

@@ -373,7 +373,7 @@ class _RtnIngressSetting2 extends StatelessWidget {
     'Open',
   ];
 
-  List<bool> _getSelectionState(String selectedrtnIngress) {
+  List<bool> getSelectionState(String selectedrtnIngress) {
     Map<String, bool> selectedrtnIngressMap = {
       '0': false,
       '-3': false,
@@ -444,7 +444,7 @@ class _RtnIngressSetting2 extends StatelessWidget {
                   constraints: BoxConstraints.expand(
                     width: (constraints.maxWidth - 6) / rtnIngressTexts.length,
                   ),
-                  isSelected: _getSelectionState(state.rtnIngressSetting2),
+                  isSelected: getSelectionState(state.rtnIngressSetting2),
                   children: <Widget>[
                     const Text('0'),
                     const Text('-3'),
@@ -473,7 +473,7 @@ class _RtnIngressSetting3 extends StatelessWidget {
     'Open',
   ];
 
-  List<bool> _getSelectionState(String selectedrtnIngress) {
+  List<bool> getSelectionState(String selectedrtnIngress) {
     Map<String, bool> selectedrtnIngressMap = {
       '0': false,
       '-3': false,
@@ -544,7 +544,7 @@ class _RtnIngressSetting3 extends StatelessWidget {
                   constraints: BoxConstraints.expand(
                     width: (constraints.maxWidth - 6) / rtnIngressTexts.length,
                   ),
-                  isSelected: _getSelectionState(state.rtnIngressSetting3),
+                  isSelected: getSelectionState(state.rtnIngressSetting3),
                   children: <Widget>[
                     const Text('0'),
                     const Text('-3'),
@@ -573,7 +573,7 @@ class _RtnIngressSetting4 extends StatelessWidget {
     'Open',
   ];
 
-  List<bool> _getSelectionState(String selectedrtnIngress) {
+  List<bool> getSelectionState(String selectedrtnIngress) {
     Map<String, bool> selectedrtnIngressMap = {
       '0': false,
       '-3': false,
@@ -644,7 +644,7 @@ class _RtnIngressSetting4 extends StatelessWidget {
                   constraints: BoxConstraints.expand(
                     width: (constraints.maxWidth - 6) / rtnIngressTexts.length,
                   ),
-                  isSelected: _getSelectionState(state.rtnIngressSetting4),
+                  isSelected: getSelectionState(state.rtnIngressSetting4),
                   children: <Widget>[
                     const Text('0'),
                     const Text('-3'),

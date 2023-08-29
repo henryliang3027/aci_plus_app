@@ -718,7 +718,7 @@ class _PilotFrequencyMode extends StatelessWidget {
     'Test',
   ];
 
-  List<bool> _getSelectionState(String selectedPilotFrequencyMode) {
+  List<bool> getSelectionState(String selectedPilotFrequencyMode) {
     Map<String, bool> pilotFrequencyModeMap = {
       'Auto': false,
       'Manual': false,
@@ -790,7 +790,7 @@ class _PilotFrequencyMode extends StatelessWidget {
                     width: (constraints.maxWidth - 4) /
                         pilotFrequencyModeTexts.length,
                   ),
-                  isSelected: _getSelectionState(state.pilotFrequencyMode),
+                  isSelected: getSelectionState(state.pilotFrequencyMode),
                   children: <Widget>[
                     Text(AppLocalizations.of(context).pilotFrequencyFull),
                     Text(AppLocalizations.of(context).pilotFrequencyManual),
@@ -942,7 +942,7 @@ class _FwdAGCMode extends StatelessWidget {
     'OFF',
   ];
 
-  List<bool> _getSelectionState(String selectedFwdAGCMode) {
+  List<bool> getSelectionState(String selectedFwdAGCMode) {
     Map<String, bool> fwdAGCModeMap = {
       'ON': false,
       'OFF': false,
@@ -1012,7 +1012,7 @@ class _FwdAGCMode extends StatelessWidget {
                   constraints: BoxConstraints.expand(
                     width: (constraints.maxWidth - 4) / fwdAGCModeTexts.length,
                   ),
-                  isSelected: _getSelectionState(state.fwdAGCMode),
+                  isSelected: getSelectionState(state.fwdAGCMode),
                   children: <Widget>[
                     Text(AppLocalizations.of(context).on),
                     Text(AppLocalizations.of(context).off),
@@ -1037,7 +1037,7 @@ class _AutoLevelControl extends StatelessWidget {
     'OFF',
   ];
 
-  List<bool> _getSelectionState(String selectedAutoLevelControl) {
+  List<bool> getSelectionState(String selectedAutoLevelControl) {
     Map<String, bool> autoLevelControlMap = {
       'ON': false,
       'OFF': false,
@@ -1108,7 +1108,7 @@ class _AutoLevelControl extends StatelessWidget {
                     width: (constraints.maxWidth - 4) /
                         autoLevelControlTexts.length,
                   ),
-                  isSelected: _getSelectionState(state.autoLevelControl),
+                  isSelected: getSelectionState(state.autoLevelControl),
                   children: <Widget>[
                     Text(AppLocalizations.of(context).on),
                     Text(AppLocalizations.of(context).off),
