@@ -94,6 +94,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       case ScanStatus.disable:
         emit(state.copyWith(
             scanStatus: FormStatus.requestFailure,
+            connectionStatus: FormStatus.requestFailure,
+            loadingStatus: FormStatus.requestFailure,
             device: null,
             errorMassage: 'Bluetooth is disabled.'));
         break;

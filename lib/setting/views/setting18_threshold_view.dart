@@ -191,6 +191,9 @@ class Setting18ThresholdView extends StatelessWidget {
                     maxVoltageTextEditingController:
                         maxVoltageTextEditingController..text = maxVoltage,
                   ),
+                  _ClusterTitle(
+                    title: AppLocalizations.of(context).forwardSetting,
+                  ),
                   const _RFInputPowerAlarmControl(),
                   const _RFOutputPowerAlarmControl(),
                   const _PilotFrequency1AlarmControl(),
@@ -206,6 +209,33 @@ class Setting18ThresholdView extends StatelessWidget {
           ),
         ),
         floatingActionButton: const _SettingFloatingActionButton(),
+      ),
+    );
+  }
+}
+
+class _ClusterTitle extends StatelessWidget {
+  const _ClusterTitle({super.key, required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -437,7 +467,7 @@ class _VoltageAlarmControl extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
                 Flexible(
@@ -470,8 +500,8 @@ class _VoltageAlarmControl extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
-              height: 40,
+            const SizedBox(
+              height: 60,
             ),
           ],
         );
@@ -506,6 +536,7 @@ Widget controlParameterSwitch({
         ),
         Flexible(
           child: Switch(
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
               (Set<MaterialState> states) {
                 if (states.contains(MaterialState.selected)) {

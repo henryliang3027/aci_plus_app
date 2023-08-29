@@ -195,6 +195,8 @@ class Setting18ConfigureView extends StatelessWidget {
                       ..text = coordinates,
                   ),
                   const _SplitOptionDropDownMenu(),
+                  _ClusterTitle(
+                      title: AppLocalizations.of(context).forwardSetting),
                   _FirstChannelLoading(
                     firstChannelLoadingFrequencyTextEditingController:
                         firstChannelLoadingFrequencyTextEditingController,
@@ -226,6 +228,33 @@ class Setting18ConfigureView extends StatelessWidget {
           ),
         ),
         floatingActionButton: const _SettingFloatingActionButton(),
+      ),
+    );
+  }
+}
+
+class _ClusterTitle extends StatelessWidget {
+  const _ClusterTitle({super.key, required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -374,7 +403,7 @@ class _SplitOptionDropDownMenu extends StatelessWidget {
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.only(
-              bottom: 40.0,
+              bottom: 60.0,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -669,7 +698,7 @@ class _LastChannelLoading extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 60,
             ),
           ],
         );

@@ -175,16 +175,20 @@ class DsimRepository {
     // 要求定位與藍芽存取權
     bool isPermissionGranted = await _requestPermission();
 
-    // 偵測定位是否有打開, 如果沒有打開會跳出提示訊息
-    bool resultOfEnableGPS = await GPS.Location().requestService();
+    if (isPermissionGranted) {
+      // 偵測定位是否有打開, 如果沒有打開會跳出提示訊息
+      bool resultOfEnableGPS = await GPS.Location().requestService();
 
-    // 偵測藍芽是否有打開, 如果沒有打開會跳出提示訊息
-    String resultStrOfEnableBluetooth = await BluetoothEnable.enableBluetooth;
-    bool resultOfEnableBluetooth =
-        resultStrOfEnableBluetooth == 'true' ? true : false;
+      // 偵測藍芽是否有打開, 如果沒有打開會跳出提示訊息
+      String resultStrOfEnableBluetooth = await BluetoothEnable.enableBluetooth;
+      bool resultOfEnableBluetooth =
+          resultStrOfEnableBluetooth == 'true' ? true : false;
 
-    if (isPermissionGranted && resultOfEnableGPS && resultOfEnableBluetooth) {
-      return true;
+      if (resultOfEnableGPS && resultOfEnableBluetooth) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
@@ -192,9 +196,8 @@ class DsimRepository {
 
   Stream<ScanReport> get scanReport async* {
     bool isGranted = await checkBluetoothEnabled();
+    _scanReportStreamController = StreamController<ScanReport>();
     if (isGranted) {
-      _scanReportStreamController = StreamController<ScanReport>();
-
       // 設定 scan timeout
       Timer scanTimer = Timer(Duration(seconds: _scanTimeout), () async {
         _scanReportStreamController.add(
@@ -232,10 +235,12 @@ class DsimRepository {
       });
     } else {
       print('bluetooth disable');
-      _scanReportStreamController.add(const ScanReport(
-        scanStatus: ScanStatus.disable,
-        discoveredDevice: null,
-      ));
+      _scanReportStreamController.add(
+        const ScanReport(
+          scanStatus: ScanStatus.disable,
+          discoveredDevice: null,
+        ),
+      );
     }
 
     yield* _scanReportStreamController.stream;
@@ -2327,10 +2332,11 @@ class DsimRepository {
         Permission.location,
       ].request();
 
-      if (statuses.values.contains(PermissionStatus.granted)) {
-        return true;
-      } else {
+      // 所有權限都允許, 才return true
+      if (statuses.values.contains(PermissionStatus.denied)) {
         return false;
+      } else {
+        return true;
       }
     } else if (Platform.isIOS) {
       return true;

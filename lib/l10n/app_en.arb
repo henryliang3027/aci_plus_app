@@ -46,6 +46,7 @@
     "rtnIngressSetting2": "Ingress Setting 2",
     "rtnIngressSetting3": "Ingress Setting 3",
     "rtnIngressSetting4": "Ingress Setting 4",
+    "ingressOpen": "Open",
 
     
     "status": "Status",
@@ -107,8 +108,8 @@
     "export": "Export",
     "open": "Open",
 
-    "dataLog": "Data Log",
-    "oneGRFLevel": "1G RF Level",
+    "dataLog": "Device Log",
+    "oneGRFLevel": "RF Level",
 
 
     "cancel": "Cancel",

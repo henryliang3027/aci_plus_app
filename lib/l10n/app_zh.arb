@@ -46,6 +46,7 @@
     "rtnIngressSetting2": "Port 2 訊號通過量",
     "rtnIngressSetting3": "Port 3 訊號通過量",
     "rtnIngressSetting4": "Port 4 訊號通過量",
+    "ingressOpen": "斷開",
 
 
     "status": "狀態",
@@ -107,8 +108,8 @@
     "export": "匯出",
     "open": "開啟",
 
-    "dataLog": "Data Log",
-    "oneGRFLevel": "1G RF Level",
+    "dataLog": "設備紀錄",
+    "oneGRFLevel": "訊號強度",
 
 
     "cancel": "取消",

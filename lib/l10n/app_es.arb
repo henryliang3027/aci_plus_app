@@ -46,6 +46,7 @@
     "rtnIngressSetting2": "Ingreso Configuración 2",
     "rtnIngressSetting3": "Ingreso Configuración 3",
     "rtnIngressSetting4": "Ingreso Configuración 4",
+    "ingressOpen": "abierto",
 
 
 
@@ -109,8 +110,8 @@
     "export": "Exportar",
     "open": "Abrir",
 
-    "dataLog": "Datos Registro",
-    "oneGRFLevel": "1G RF Nivel",
+    "dataLog": "Dispositivo Registro",
+    "oneGRFLevel": "RF Nivel",
 
 
     "cancel": "Cancelar",

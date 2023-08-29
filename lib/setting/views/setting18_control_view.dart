@@ -32,16 +32,16 @@ class Setting18ControlView extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  _ControlTitle(
+                  _ClusterTitle(
                     title:
                         AppLocalizations.of(context).forwardControlParameters,
                   ),
                   const _FwdInputAttenuation(),
                   const _FwdInputEQ(),
                   const SizedBox(
-                    height: 20,
+                    height: 30,
                   ),
-                  _ControlTitle(
+                  _ClusterTitle(
                     title: AppLocalizations.of(context).returnControlParameters,
                   ),
                   const _RtnInputAttenuation2(),
@@ -152,8 +152,8 @@ Widget controlParameterSlider({
   );
 }
 
-class _ControlTitle extends StatelessWidget {
-  const _ControlTitle({super.key, required this.title});
+class _ClusterTitle extends StatelessWidget {
+  const _ClusterTitle({super.key, required this.title});
 
   final String title;
 
@@ -446,7 +446,10 @@ class _RtnIngressSetting2 extends StatelessWidget {
                   ),
                   isSelected: _getSelectionState(state.rtnIngressSetting2),
                   children: <Widget>[
-                    for (String text in rtnIngressTexts) ...[Text(text)],
+                    const Text('0'),
+                    const Text('-3'),
+                    const Text('-6'),
+                    Text(AppLocalizations.of(context).ingressOpen),
                   ],
                 ),
               ),
@@ -543,7 +546,10 @@ class _RtnIngressSetting3 extends StatelessWidget {
                   ),
                   isSelected: _getSelectionState(state.rtnIngressSetting3),
                   children: <Widget>[
-                    for (String text in rtnIngressTexts) ...[Text(text)],
+                    const Text('0'),
+                    const Text('-3'),
+                    const Text('-6'),
+                    Text(AppLocalizations.of(context).ingressOpen),
                   ],
                 ),
               ),
@@ -640,7 +646,10 @@ class _RtnIngressSetting4 extends StatelessWidget {
                   ),
                   isSelected: _getSelectionState(state.rtnIngressSetting4),
                   children: <Widget>[
-                    for (String text in rtnIngressTexts) ...[Text(text)],
+                    const Text('0'),
+                    const Text('-3'),
+                    const Text('-6'),
+                    Text(AppLocalizations.of(context).ingressOpen),
                   ],
                 ),
               ),
@@ -651,133 +660,6 @@ class _RtnIngressSetting4 extends StatelessWidget {
     );
   }
 }
-
-// class _FwdInputAttenuation extends StatelessWidget {
-//   const _FwdInputAttenuation({
-//     super.key,
-//     required this.textEditingController,
-//   });
-
-//   final TextEditingController textEditingController;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
-//       builder: (context, state) {
-//         return Padding(
-//           padding: const EdgeInsets.only(
-//             bottom: 40.0,
-//           ),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Padding(
-//                 padding: const EdgeInsets.only(
-//                   bottom: 16.0,
-//                 ),
-//                 child: Text(
-//                   '${AppLocalizations.of(context).fwdInputAttenuation}:',
-//                   style: const TextStyle(
-//                     fontSize: 16.0,
-//                     fontWeight: FontWeight.w500,
-//                   ),
-//                 ),
-//               ),
-//               TextField(
-//                 controller: textEditingController,
-//                 key: const Key(
-//                     'setting18Form_fwdInputAttenuationInput_textField'),
-//                 style: const TextStyle(
-//                   fontSize: CustomStyle.sizeXL,
-//                 ),
-//                 enabled: state.editMode,
-//                 textInputAction: TextInputAction.done,
-//                 onChanged: (location) {
-//                   // context
-//                   //     .read<Setting18ControlBloc>()
-//                   //     .add(LocationChanged(location));
-//                 },
-//                 maxLength: 40,
-//                 decoration: const InputDecoration(
-//                   border: OutlineInputBorder(
-//                       borderRadius: BorderRadius.all(Radius.circular(4.0))),
-//                   contentPadding: EdgeInsets.all(10.0),
-//                   isDense: true,
-//                   filled: true,
-//                   fillColor: Colors.white,
-//                   counterText: '',
-//                 ),
-//               ),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
-
-// class _FwdInputEQ extends StatelessWidget {
-//   const _FwdInputEQ({
-//     super.key,
-//     required this.textEditingController,
-//   });
-
-//   final TextEditingController textEditingController;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
-//       builder: (context, state) {
-//         return Padding(
-//           padding: const EdgeInsets.only(
-//             bottom: 40.0,
-//           ),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Padding(
-//                 padding: const EdgeInsets.only(
-//                   bottom: 16.0,
-//                 ),
-//                 child: Text(
-//                   '${AppLocalizations.of(context).fwdInputEQ}:',
-//                   style: const TextStyle(
-//                     fontSize: 16.0,
-//                     fontWeight: FontWeight.w500,
-//                   ),
-//                 ),
-//               ),
-//               TextField(
-//                 controller: textEditingController,
-//                 key: const Key('setting18Form_fwdInputEQInput_textField'),
-//                 style: const TextStyle(
-//                   fontSize: CustomStyle.sizeXL,
-//                 ),
-//                 enabled: state.editMode,
-//                 textInputAction: TextInputAction.done,
-//                 onChanged: (location) {
-//                   // context
-//                   //     .read<Setting18ControlBloc>()
-//                   //     .add(LocationChanged(location));
-//                 },
-//                 maxLength: 40,
-//                 decoration: const InputDecoration(
-//                   border: OutlineInputBorder(
-//                       borderRadius: BorderRadius.all(Radius.circular(4.0))),
-//                   contentPadding: EdgeInsets.all(10.0),
-//                   isDense: true,
-//                   filled: true,
-//                   fillColor: Colors.white,
-//                   counterText: '',
-//                 ),
-//               ),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
 
 class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({super.key});
