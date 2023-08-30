@@ -1,6 +1,7 @@
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
+import 'package:dsim_app/repositories/unit_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,8 +10,9 @@ part 'setting18_configure_state.dart';
 
 class Setting18ConfigureBloc
     extends Bloc<Setting18ConfigureEvent, Setting18ConfigureState> {
-  Setting18ConfigureBloc({required DsimRepository dsimRepository})
-      : _dsimRepository = dsimRepository,
+  Setting18ConfigureBloc({
+    required DsimRepository dsimRepository,
+  })  : _dsimRepository = dsimRepository,
         super(const Setting18ConfigureState()) {
     on<Initialized>(_onInitialized);
     on<LocationChanged>(_onLocationChanged);

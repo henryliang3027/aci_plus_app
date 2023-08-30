@@ -1,6 +1,7 @@
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
+import 'package:dsim_app/repositories/unit_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,8 +10,11 @@ part 'setting18_threshold_state.dart';
 
 class Setting18ThresholdBloc
     extends Bloc<Setting18ThresholdEvent, Setting18ThresholdState> {
-  Setting18ThresholdBloc({required DsimRepository dsimRepository})
-      : _dsimRepository = dsimRepository,
+  Setting18ThresholdBloc({
+    required DsimRepository dsimRepository,
+    required UnitRepository unitRepository,
+  })  : _dsimRepository = dsimRepository,
+        _unitRepository = unitRepository,
         super(const Setting18ThresholdState()) {
     on<Initialized>(_onInitialized);
     on<TemperatureAlarmChanged>(_onTemperatureAlarmChanged);
@@ -33,15 +37,28 @@ class Setting18ThresholdBloc
   }
 
   final DsimRepository _dsimRepository;
+  final UnitRepository _unitRepository;
 
   Future<void> _onInitialized(
     Initialized event,
     Emitter<Setting18ThresholdState> emit,
   ) async {
+    String minTemperature = '';
+    String maxTemperature = '';
+
+    if (_unitRepository.temperatureUnit == TemperatureUnit.celsius) {
+      minTemperature = event.minTemperature;
+      maxTemperature = event.maxTemperature;
+    } else {
+      minTemperature = event.minTemperatureF;
+      maxTemperature = event.maxTemperatureF;
+    }
+
     emit(state.copyWith(
       enableTemperatureAlarm: event.enableTemperatureAlarm,
-      minTemperature: event.minTemperature,
-      maxTemperature: event.maxTemperature,
+      minTemperature: minTemperature,
+      maxTemperature: maxTemperature,
+      temperatureUnit: _unitRepository.temperatureUnit,
       enableVoltageAlarm: event.enableVoltageAlarm,
       minVoltage: event.minVoltage,
       maxVoltage: event.maxVoltage,
@@ -53,10 +70,11 @@ class Setting18ThresholdBloc
           event.enableFirstChannelOutputLevelAlarm,
       enableLastChannelOutputLevelAlarm:
           event.enableLastChannelOutputLevelAlarm,
+      isInitialize: true,
       initialValues: [
         event.enableTemperatureAlarm,
-        event.minTemperature,
-        event.maxTemperature,
+        minTemperature,
+        maxTemperature,
         event.enableVoltageAlarm,
         event.minVoltage,
         event.maxVoltage,
@@ -77,6 +95,7 @@ class Setting18ThresholdBloc
     emit(state.copyWith(
         submissionStatus: SubmissionStatus.none,
         enableTemperatureAlarm: event.enableTemperatureAlarm,
+        isInitialize: false,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: event.enableTemperatureAlarm,
           minTemperature: state.minTemperature,
@@ -102,6 +121,7 @@ class Setting18ThresholdBloc
     emit(state.copyWith(
         submissionStatus: SubmissionStatus.none,
         minTemperature: event.minTemperature,
+        isInitialize: false,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
           minTemperature: event.minTemperature,
@@ -127,6 +147,7 @@ class Setting18ThresholdBloc
     emit(state.copyWith(
         submissionStatus: SubmissionStatus.none,
         maxTemperature: event.maxTemperature,
+        isInitialize: false,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
           minTemperature: state.minTemperature,
@@ -152,6 +173,7 @@ class Setting18ThresholdBloc
     emit(state.copyWith(
         submissionStatus: SubmissionStatus.none,
         enableVoltageAlarm: event.enableVoltageAlarm,
+        isInitialize: false,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
           minTemperature: state.minTemperature,
@@ -177,6 +199,7 @@ class Setting18ThresholdBloc
     emit(state.copyWith(
         submissionStatus: SubmissionStatus.none,
         minVoltage: event.minVoltage,
+        isInitialize: false,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
           minTemperature: state.minTemperature,
@@ -202,6 +225,7 @@ class Setting18ThresholdBloc
     emit(state.copyWith(
         submissionStatus: SubmissionStatus.none,
         maxVoltage: event.maxVoltage,
+        isInitialize: false,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
           minTemperature: state.minTemperature,
@@ -227,6 +251,7 @@ class Setting18ThresholdBloc
     emit(state.copyWith(
         submissionStatus: SubmissionStatus.none,
         enableRFInputPowerAlarm: event.enableRFInputPowerAlarm,
+        isInitialize: false,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
           minTemperature: state.minTemperature,
@@ -252,6 +277,7 @@ class Setting18ThresholdBloc
     emit(state.copyWith(
         submissionStatus: SubmissionStatus.none,
         enableRFOutputPowerAlarm: event.enableRFOutputPowerAlarm,
+        isInitialize: false,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
           minTemperature: state.minTemperature,
@@ -277,6 +303,7 @@ class Setting18ThresholdBloc
     emit(state.copyWith(
         submissionStatus: SubmissionStatus.none,
         enablePilotFrequency1Alarm: event.enablePilotFrequency1Alarm,
+        isInitialize: false,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
           minTemperature: state.minTemperature,
@@ -302,6 +329,7 @@ class Setting18ThresholdBloc
     emit(state.copyWith(
         submissionStatus: SubmissionStatus.none,
         enablePilotFrequency2Alarm: event.enablePilotFrequency2Alarm,
+        isInitialize: false,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
           minTemperature: state.minTemperature,
@@ -328,6 +356,7 @@ class Setting18ThresholdBloc
         submissionStatus: SubmissionStatus.none,
         enableFirstChannelOutputLevelAlarm:
             event.enableFirstChannelOutputLevelAlarm,
+        isInitialize: false,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
           minTemperature: state.minTemperature,
@@ -354,6 +383,7 @@ class Setting18ThresholdBloc
         submissionStatus: SubmissionStatus.none,
         enableLastChannelOutputLevelAlarm:
             event.enableLastChannelOutputLevelAlarm,
+        isInitialize: false,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
           minTemperature: state.minTemperature,
@@ -439,16 +469,30 @@ class Setting18ThresholdBloc
     List<String> settingResult = [];
 
     if (state.minTemperature != state.initialValues[1]) {
+      String minTemperature = state.minTemperature;
+      if (state.temperatureUnit == TemperatureUnit.fahrenheit) {
+        minTemperature = _unitRepository
+            .convertStrFahrenheitToCelcius(minTemperature)
+            .toStringAsFixed(1);
+      }
+
       bool resultOfSetMinTemperature =
-          await _dsimRepository.set1p8GMinTemperature(state.minTemperature);
+          await _dsimRepository.set1p8GMinTemperature(minTemperature);
 
       settingResult
           .add('${DataKey.minTemperatureC.name},$resultOfSetMinTemperature');
     }
 
     if (state.maxTemperature != state.initialValues[2]) {
+      String maxTemperature = state.maxTemperature;
+      if (state.temperatureUnit == TemperatureUnit.fahrenheit) {
+        maxTemperature = _unitRepository
+            .convertStrFahrenheitToCelcius(maxTemperature)
+            .toStringAsFixed(1);
+      }
+
       bool resultOfSetMaxTemperature =
-          await _dsimRepository.set1p8GMaxTemperature(state.maxTemperature);
+          await _dsimRepository.set1p8GMaxTemperature(maxTemperature);
 
       settingResult
           .add('${DataKey.maxTemperatureC.name},$resultOfSetMaxTemperature');

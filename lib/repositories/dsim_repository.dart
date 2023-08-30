@@ -7,6 +7,7 @@ import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/shared_preference_key.dart';
 import 'package:dsim_app/repositories/dsim18_parser.dart';
+import 'package:dsim_app/repositories/unit_converter.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
@@ -109,7 +110,8 @@ class SettingData {
 class DsimRepository {
   DsimRepository()
       : _ble = FlutterReactiveBle(),
-        _dsim18parser = Dsim18Parser() {
+        _dsim18parser = Dsim18Parser(),
+        _unitConverter = UnitConverter() {
     _calculateCRCs();
   }
   final FlutterReactiveBle _ble;
@@ -170,6 +172,7 @@ class DsimRepository {
   Timer? _timeoutTimer;
 
   final Dsim18Parser _dsim18parser;
+  final UnitConverter _unitConverter;
 
   Future<bool> checkBluetoothEnabled() async {
     // 要求定位與藍芽存取權
@@ -547,13 +550,15 @@ class DsimRepository {
             .map((log) => log.voltageRipple)
             .reduce((max, current) => max > current ? max : current);
 
-        String minTemperatureF =
-            _convertToFahrenheit(minTemperature).toStringAsFixed(1) +
-                CustomStyle.fahrenheitUnit;
+        String minTemperatureF = _unitConverter
+                .converCelciusToFahrenheit(minTemperature)
+                .toStringAsFixed(1) +
+            CustomStyle.fahrenheitUnit;
 
-        String maxTemperatureF =
-            _convertToFahrenheit(maxTemperature).toStringAsFixed(1) +
-                CustomStyle.fahrenheitUnit;
+        String maxTemperatureF = _unitConverter
+                .converCelciusToFahrenheit(maxTemperature)
+                .toStringAsFixed(1) +
+            CustomStyle.fahrenheitUnit;
 
         String minTemperatureC =
             minTemperature.toString() + CustomStyle.celciusUnit;
@@ -774,7 +779,8 @@ class DsimRepository {
 
         //Temperature
         currentTemperatureC = (rawData[10] * 256 + rawData[11]) / 10;
-        currentTemperatureF = _convertToFahrenheit(currentTemperatureC);
+        currentTemperatureF =
+            _unitConverter.converCelciusToFahrenheit(currentTemperatureC);
         String strCurrentTemperatureF =
             currentTemperatureF.toStringAsFixed(1) + CustomStyle.fahrenheitUnit;
         String strCurrentTemperatureC =
@@ -2316,11 +2322,6 @@ class DsimRepository {
         'write file failed, export function not implement on ${Platform.operatingSystem} '
       ];
     }
-  }
-
-  double _convertToFahrenheit(double celcius) {
-    double fahrenheit = (celcius * 1.8) + 32;
-    return fahrenheit;
   }
 
   Future<bool> _requestPermission() async {

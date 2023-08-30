@@ -12,6 +12,8 @@ class Initialized extends Setting18ThresholdEvent {
     required this.enableTemperatureAlarm,
     required this.minTemperature,
     required this.maxTemperature,
+    required this.minTemperatureF,
+    required this.maxTemperatureF,
     required this.enableVoltageAlarm,
     required this.minVoltage,
     required this.maxVoltage,
@@ -26,6 +28,8 @@ class Initialized extends Setting18ThresholdEvent {
   final bool enableTemperatureAlarm;
   final String minTemperature;
   final String maxTemperature;
+  final String minTemperatureF;
+  final String maxTemperatureF;
   final bool enableVoltageAlarm;
   final String minVoltage;
   final String maxVoltage;
@@ -41,6 +45,8 @@ class Initialized extends Setting18ThresholdEvent {
         enableTemperatureAlarm,
         minTemperature,
         maxTemperature,
+        minTemperatureF,
+        maxTemperatureF,
         enableVoltageAlarm,
         minVoltage,
         maxVoltage,

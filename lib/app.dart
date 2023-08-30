@@ -1,6 +1,7 @@
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/home/views/home_page.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
+import 'package:dsim_app/repositories/unit_repository.dart';
 import 'package:dsim_app/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,9 +11,11 @@ class App extends StatelessWidget {
   const App({
     super.key,
     required this.dsimRepository,
+    required this.unitRepository,
   });
 
   final DsimRepository dsimRepository;
+  final UnitRepository unitRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +23,9 @@ class App extends StatelessWidget {
       providers: [
         RepositoryProvider<DsimRepository>(
           create: (context) => dsimRepository,
+        ),
+        RepositoryProvider<UnitRepository>(
+          create: (context) => unitRepository,
         )
       ],
       child: BlocProvider(

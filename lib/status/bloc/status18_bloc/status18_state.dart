@@ -1,7 +1,7 @@
 part of 'status18_bloc.dart';
 
 class Status18State extends Equatable {
-  const Status18State({this.temperatureUnit = TemperatureUnit.fahrenheit});
+  const Status18State({required this.temperatureUnit});
 
   final TemperatureUnit temperatureUnit;
 

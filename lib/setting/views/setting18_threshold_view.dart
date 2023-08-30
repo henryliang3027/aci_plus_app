@@ -3,6 +3,7 @@ import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:dsim_app/repositories/unit_repository.dart';
 import 'package:dsim_app/setting/bloc/setting18_threshold/setting18_threshold_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,6 +28,10 @@ class Setting18ThresholdView extends StatelessWidget {
         homeState.characteristicData[DataKey.minTemperatureC] ?? '';
     String maxTemperature =
         homeState.characteristicData[DataKey.maxTemperatureC] ?? '';
+    String minTemperatureF =
+        homeState.characteristicData[DataKey.minTemperatureF] ?? '';
+    String maxTemperatureF =
+        homeState.characteristicData[DataKey.maxTemperatureF] ?? '';
     String minVoltage = homeState.characteristicData[DataKey.minVoltage] ?? '';
     String maxVoltage = homeState.characteristicData[DataKey.maxVoltage] ?? '';
 
@@ -34,6 +39,8 @@ class Setting18ThresholdView extends StatelessWidget {
           enableTemperatureAlarm: false,
           minTemperature: minTemperature,
           maxTemperature: maxTemperature,
+          minTemperatureF: minTemperatureF,
+          maxTemperatureF: maxTemperatureF,
           enableVoltageAlarm: false,
           minVoltage: minVoltage,
           maxVoltage: maxVoltage,
@@ -166,7 +173,14 @@ class Setting18ThresholdView extends StatelessWidget {
           }
           List<Widget> rows = getMessageRows(state.settingResult);
           showResultDialog(rows);
-        } else {}
+        }
+
+        if (state.isInitialize) {
+          minTemperatureTextEditingController.text = state.minTemperature;
+          maxTemperatureTextEditingController.text = state.maxTemperature;
+          minVoltageTextEditingController.text = state.minVoltage;
+          maxVoltageTextEditingController.text = state.maxVoltage;
+        }
       },
       child: Scaffold(
         body: SafeArea(
@@ -179,17 +193,15 @@ class Setting18ThresholdView extends StatelessWidget {
                 children: [
                   _TemperatureAlarmControl(
                     minTemperatureTextEditingController:
-                        minTemperatureTextEditingController
-                          ..text = minTemperature,
+                        minTemperatureTextEditingController,
                     maxTemperatureTextEditingController:
-                        maxTemperatureTextEditingController
-                          ..text = maxTemperature,
+                        maxTemperatureTextEditingController,
                   ),
                   _VoltageAlarmControl(
                     minVoltageTextEditingController:
-                        minVoltageTextEditingController..text = minVoltage,
+                        minVoltageTextEditingController,
                     maxVoltageTextEditingController:
-                        maxVoltageTextEditingController..text = maxVoltage,
+                        maxVoltageTextEditingController,
                   ),
                   _ClusterTitle(
                     title: AppLocalizations.of(context).forwardSetting,
@@ -253,6 +265,14 @@ class _TemperatureAlarmControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String getTemperatureUnit(TemperatureUnit temperatureUnit) {
+      if (temperatureUnit == TemperatureUnit.celsius) {
+        return CustomStyle.celciusUnit;
+      } else {
+        return CustomStyle.fahrenheitUnit;
+      }
+    }
+
     return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
       builder: (context, state) {
         return Column(
@@ -321,8 +341,8 @@ class _TemperatureAlarmControl extends StatelessWidget {
                       },
                       maxLength: 40,
                       decoration: InputDecoration(
-                        label:
-                            Text(AppLocalizations.of(context).minTemperature),
+                        label: Text(
+                            '${AppLocalizations.of(context).minTemperature}(${getTemperatureUnit(state.temperatureUnit)})'),
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0))),
@@ -355,8 +375,8 @@ class _TemperatureAlarmControl extends StatelessWidget {
                       },
                       maxLength: 40,
                       decoration: InputDecoration(
-                        label:
-                            Text(AppLocalizations.of(context).maxTemperature),
+                        label: Text(
+                            '${AppLocalizations.of(context).maxTemperature}(${getTemperatureUnit(state.temperatureUnit)})'),
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0))),

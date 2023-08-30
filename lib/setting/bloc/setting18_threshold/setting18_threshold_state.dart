@@ -6,6 +6,7 @@ class Setting18ThresholdState extends Equatable {
     this.enableTemperatureAlarm = false,
     this.minTemperature = '',
     this.maxTemperature = '',
+    this.temperatureUnit = TemperatureUnit.fahrenheit,
     this.enableVoltageAlarm = false,
     this.minVoltage = '',
     this.maxVoltage = '',
@@ -27,6 +28,7 @@ class Setting18ThresholdState extends Equatable {
   final bool enableTemperatureAlarm;
   final String minTemperature;
   final String maxTemperature;
+  final TemperatureUnit temperatureUnit;
   final bool enableVoltageAlarm;
   final String minVoltage;
   final String maxVoltage;
@@ -47,6 +49,7 @@ class Setting18ThresholdState extends Equatable {
     bool? enableTemperatureAlarm,
     String? minTemperature,
     String? maxTemperature,
+    TemperatureUnit? temperatureUnit,
     bool? enableVoltageAlarm,
     String? minVoltage,
     String? maxVoltage,
@@ -68,6 +71,7 @@ class Setting18ThresholdState extends Equatable {
           enableTemperatureAlarm ?? this.enableTemperatureAlarm,
       minTemperature: minTemperature ?? this.minTemperature,
       maxTemperature: maxTemperature ?? this.maxTemperature,
+      temperatureUnit: temperatureUnit ?? this.temperatureUnit,
       enableVoltageAlarm: enableVoltageAlarm ?? this.enableVoltageAlarm,
       minVoltage: minVoltage ?? this.minVoltage,
       maxVoltage: maxVoltage ?? this.maxVoltage,
@@ -97,6 +101,7 @@ class Setting18ThresholdState extends Equatable {
         enableTemperatureAlarm,
         minTemperature,
         maxTemperature,
+        temperatureUnit,
         enableVoltageAlarm,
         minVoltage,
         maxVoltage,
