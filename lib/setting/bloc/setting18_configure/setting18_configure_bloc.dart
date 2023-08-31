@@ -1,7 +1,6 @@
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
-import 'package:dsim_app/repositories/unit_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,6 +43,18 @@ class Setting18ConfigureBloc
     emit(state.copyWith(
       location: event.location,
       coordinates: event.coordinates,
+      splitOption: event.splitOption,
+      firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
+      firstChannelLoadingLevel: event.firstChannelLoadingLevel,
+      lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
+      lastChannelLoadingLevel: event.lastChannelLoadingLevel,
+      pilotFrequencyMode: event.pilotFrequencyMode,
+      pilotFrequency1: event.pilotFrequency1,
+      pilotFrequency2: event.pilotFrequency2,
+      fwdAGCMode: event.fwdAGCMode,
+      autoLevelControl: event.autoLevelControl,
+      logInterval: event.logInterval,
+      isInitialize: true,
       initialValues: [
         event.location,
         event.coordinates,
@@ -57,6 +68,7 @@ class Setting18ConfigureBloc
         event.pilotFrequency2,
         event.fwdAGCMode,
         event.autoLevelControl,
+        event.logInterval,
       ],
     ));
   }
@@ -403,9 +415,22 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      isInitialize: false,
+      isInitialize: true,
       editMode: false,
       enableSubmission: false,
+      location: state.initialValues[0],
+      coordinates: state.initialValues[1],
+      splitOption: state.initialValues[2],
+      firstChannelLoadingFrequency: state.initialValues[3],
+      firstChannelLoadingLevel: state.initialValues[4],
+      lastChannelLoadingFrequency: state.initialValues[5],
+      lastChannelLoadingLevel: state.initialValues[6],
+      pilotFrequencyMode: state.initialValues[7],
+      pilotFrequency1: state.initialValues[8],
+      pilotFrequency2: state.initialValues[9],
+      fwdAGCMode: state.initialValues[10],
+      autoLevelControl: state.initialValues[11],
+      logInterval: state.initialValues[12],
     ));
   }
 

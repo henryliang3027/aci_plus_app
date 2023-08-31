@@ -419,9 +419,22 @@ class Setting18ThresholdBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      isInitialize: false,
+      isInitialize: true,
       editMode: false,
       enableSubmission: false,
+      enableTemperatureAlarm: state.initialValues[0],
+      minTemperature: state.initialValues[1],
+      maxTemperature: state.initialValues[2],
+      temperatureUnit: _unitRepository.temperatureUnit,
+      enableVoltageAlarm: state.initialValues[3],
+      minVoltage: state.initialValues[4],
+      maxVoltage: state.initialValues[5],
+      enableRFInputPowerAlarm: state.initialValues[6],
+      enableRFOutputPowerAlarm: state.initialValues[7],
+      enablePilotFrequency1Alarm: state.initialValues[8],
+      enablePilotFrequency2Alarm: state.initialValues[9],
+      enableFirstChannelOutputLevelAlarm: state.initialValues[10],
+      enableLastChannelOutputLevelAlarm: state.initialValues[11],
     ));
   }
 

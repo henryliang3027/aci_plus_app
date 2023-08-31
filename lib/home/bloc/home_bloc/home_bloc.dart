@@ -122,8 +122,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         // ));
         break;
       case DeviceConnectionState.connected:
-        int mtu = await _dsimRepository.requestMTU(
-            deviceId: state.device!.id, mtu: 247);
+        int mtu = await _dsimRepository.requestMTU(deviceId: state.device!.id);
 
         emit(state.copyWith(
           scanStatus: FormStatus.requestSuccess,

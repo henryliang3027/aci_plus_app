@@ -175,7 +175,22 @@ class Setting18ConfigureView extends StatelessWidget {
           Navigator.of(context).pop();
           List<Widget> rows = getMessageRows(state.settingResult);
           showResultDialog(rows);
-        } else {}
+        }
+
+        if (state.isInitialize) {
+          locationTextEditingController.text = state.location;
+          coordinateTextEditingController.text = state.coordinates;
+          firstChannelLoadingFrequencyTextEditingController.text =
+              state.firstChannelLoadingFrequency;
+          firstChannelLoadingLevelTextEditingController.text =
+              state.firstChannelLoadingLevel;
+          lastChannelLoadingFrequencyTextEditingController.text =
+              state.lastChannelLoadingFrequency;
+          lastChannelLoadingLevelTextEditingController.text =
+              state.lastChannelLoadingLevel;
+          pilotFrequency1TextEditingController.text = state.pilotFrequency1;
+          pilotFrequency2TextEditingController.text = state.pilotFrequency2;
+        }
       },
       child: Scaffold(
         body: SafeArea(
@@ -187,12 +202,10 @@ class Setting18ConfigureView extends StatelessWidget {
               child: Column(
                 children: [
                   _Location(
-                    textEditingController: locationTextEditingController
-                      ..text = location,
+                    textEditingController: locationTextEditingController,
                   ),
                   _Coordinates(
-                    textEditingController: coordinateTextEditingController
-                      ..text = coordinates,
+                    textEditingController: coordinateTextEditingController,
                   ),
                   const _SplitOptionDropDownMenu(),
                   _ClusterTitle(
@@ -390,8 +403,8 @@ class _SplitOptionDropDownMenu extends StatelessWidget {
   const _SplitOptionDropDownMenu({super.key});
 
   final Map<String, String> types = const {
-    '204/258 MHz': '1',
-    '396/492 MHz': '2',
+    '204/258 MHz': '0',
+    '396/492 MHz': '1',
   };
 
   @override
@@ -435,7 +448,8 @@ class _SplitOptionDropDownMenu extends StatelessWidget {
                       dropdownMaxHeight: 200,
                       isExpanded: true,
                       icon: const Icon(Icons.keyboard_arrow_down),
-                      value: state.splitOption == '' ? null : state.splitOption,
+                      value:
+                          state.splitOption == '0' ? null : state.splitOption,
                       items: [
                         for (String k in types.keys)
                           DropdownMenuItem(
@@ -1128,21 +1142,12 @@ class _LogInterval extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _buildTickLabels() {
-      List<Widget> tickLabels = [];
-      for (int i = 0; i <= 10; i++) {
-        double tickValue = 0 + i * ((60 - 0) / 10);
-        tickLabels.add(
-          Positioned(
-            left: i / 10 * (60 - 0) * 10,
-            child: Text(
-              tickValue.toStringAsFixed(2), // Adjust decimal places as needed
-              style: TextStyle(fontSize: 12),
-            ),
-          ),
-        );
+    double getValue(String logInterval) {
+      if (logInterval.isNotEmpty) {
+        return double.parse(logInterval);
+      } else {
+        return 0.0;
       }
-      return tickLabels;
     }
 
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
@@ -1186,7 +1191,7 @@ class _LogInterval extends StatelessWidget {
                   min: 0.0,
                   max: 60.0,
                   divisions: 60,
-                  value: double.parse(state.logInterval),
+                  value: getValue(state.logInterval),
                   onChanged: state.editMode
                       ? (double logInterval) {
                           context.read<Setting18ConfigureBloc>().add(
@@ -1284,10 +1289,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
                         .read<Setting18ConfigureBloc>()
                         .add(const EditModeDisabled());
 
-                    // 重新載入初始設定值
-                    // context
-                    //     .read<SettingListViewBloc>()
-                    //     .add(const Initialized(true));
+                    FocusScopeNode currentFocus = FocusScope.of(context);
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.focusedChild?.unfocus();
+                    }
                   },
                 ),
                 const SizedBox(

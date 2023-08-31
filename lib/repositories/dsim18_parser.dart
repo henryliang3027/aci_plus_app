@@ -61,13 +61,9 @@ class Dsim18Parser {
         String day = rawData[70].toString().padLeft(2, '0');
         mfgDate = '$year/$month/$day';
 
-        String output = '';
         for (int i = 72; i <= 110; i++) {
           coordinate += String.fromCharCode(rawData[i]);
-
-          output += rawData[i].toRadixString(16).padLeft(2, '0x0') + ' ';
         }
-        print('read coordinates: $output');
 
         coordinate = coordinate.trim();
 

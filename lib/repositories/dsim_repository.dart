@@ -321,10 +321,45 @@ class DsimRepository {
     _connectionStreamSubscription = null;
   }
 
-  Future<int> requestMTU({required String deviceId, required int mtu}) async {
+  // 透過 1G/1.2G/1.8G 同樣的基本指令, 來取得回傳資料的長度
+  Future<dynamic> _requestDataLength() async {
+    commandIndex = -1;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 0');
+
+    _writeSetCommandToCharacteristic(_commandCollection[0]);
+    setTimeout(duration: const Duration(seconds: 1), name: 'cmd0');
+
+    try {
+      int length = await _completer.future;
+      cancelTimeout(name: 'cmd0');
+
+      return [true, length];
+    } catch (e) {
+      return [false];
+    }
+  }
+
+  Future<int> requestMTU({
+    required String deviceId,
+    int mtu = 247,
+  }) async {
     final negotiatedMtu = await _ble.requestMtu(deviceId: deviceId, mtu: mtu);
 
-    return negotiatedMtu;
+    // 設定 mtu = 247
+    List<dynamic> response = await _requestDataLength();
+    if (response[0]) {
+      // 1G/1.2G data length = 17
+      if (response[1] == 17) {
+        return 23;
+      } else {
+        // 1.8G data length = 181
+        return 244;
+      }
+    } else {
+      return 244;
+    }
   }
 
   Future<void> connectToDevice(DiscoveredDevice discoveredDevice) async {
@@ -602,6 +637,10 @@ class DsimRepository {
 
   void _parseRawData(List<int> rawData) {
     switch (commandIndex) {
+      case -1:
+        if (!_completer.isCompleted) {
+          _completer.complete(rawData.length);
+        }
       case 0:
         String typeNo = '';
         for (int i = 3; i < 15; i++) {

@@ -8,16 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Setting18ControlView extends StatelessWidget {
-  Setting18ControlView({super.key});
-
-  final TextEditingController minTemperatureTextEditingController =
-      TextEditingController();
-  final TextEditingController maxTemperatureTextEditingController =
-      TextEditingController();
-  final TextEditingController minVoltageTextEditingController =
-      TextEditingController();
-  final TextEditingController maxVoltageTextEditingController =
-      TextEditingController();
+  const Setting18ControlView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +51,7 @@ class Setting18ControlView extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: _SettingFloatingActionButton(),
+        floatingActionButton: const _SettingFloatingActionButton(),
       ),
     );
   }

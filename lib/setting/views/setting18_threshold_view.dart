@@ -739,10 +739,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
                         .read<Setting18ThresholdBloc>()
                         .add(const EditModeDisabled());
 
-                    // 重新載入初始設定值
-                    // context
-                    //     .read<SettingListViewBloc>()
-                    //     .add(const Initialized(true));
+                    FocusScopeNode currentFocus = FocusScope.of(context);
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.focusedChild?.unfocus();
+                    }
                   },
                 ),
                 const SizedBox(
