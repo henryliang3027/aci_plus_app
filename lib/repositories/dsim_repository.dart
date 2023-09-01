@@ -985,7 +985,24 @@ class DsimRepository {
         maxTemperatureF,
         minVoltage,
         maxVoltage,
+        ingressSetting2,
+        ingressSetting3,
+        ingressSetting4,
+        pilotFrequency1StatusAlarm,
+        pilotFrequency2StatusAlarm,
+        temperatureAlarm,
+        voltageAlarm,
+        inputPowerAlarm,
+        outputPowerAlarm,
         location,
+        logInterval,
+        inputEqualizer,
+        inputAttenuation,
+        inputAttenuation2,
+        inputAttenuation3,
+        inputAttenuation4,
+        outputEqualizer,
+        outputAttenuation,
       ) = await _completer.future;
       cancelTimeout(name: '1p8G1');
 
@@ -997,11 +1014,45 @@ class DsimRepository {
         maxTemperatureF,
         minVoltage,
         maxVoltage,
+        ingressSetting2,
+        ingressSetting3,
+        ingressSetting4,
+        pilotFrequency1StatusAlarm,
+        pilotFrequency2StatusAlarm,
+        temperatureAlarm,
+        voltageAlarm,
+        inputPowerAlarm,
+        outputPowerAlarm,
         location,
+        logInterval,
+        inputEqualizer,
+        inputAttenuation,
+        inputAttenuation2,
+        inputAttenuation3,
+        inputAttenuation4,
+        outputEqualizer,
+        outputAttenuation,
       ];
     } catch (e) {
       return [
         false,
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
         '',
         '',
         '',
@@ -1418,7 +1469,7 @@ class DsimRepository {
       _characteristicDataStreamController
           .add({DataKey.maxVoltage: resultOf1p8G1[6]});
       _characteristicDataStreamController
-          .add({DataKey.location: resultOf1p8G1[7]});
+          .add({DataKey.location: resultOf1p8G1[16]});
     }
 
     List<dynamic> resultOf1p8G2 = await requestCommand1p8G2();

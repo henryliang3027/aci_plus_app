@@ -45,8 +45,22 @@ enum DataKey {
   currentRFOutputTotalPower,
   fwdAgcMode,
   autoLevelControl,
-  settingParametersLoadingComplete, // indicate setting page's parameter loading complete
-  eventRecordsLoadingComplete, // indicate event recorde loading complete
+  ingressSetting2,
+  ingressSetting3,
+  ingressSetting4,
+  pilotFrequency1StatusAlarm,
+  pilotFrequency2StatusAlarm,
+  temperatureAlarm,
+  voltageAlarm,
+  inputPowerAlarm,
+  outputPowerAlarm,
+  inputEqualizer,
+  inputAttenuation,
+  inputAttenuation2,
+  inputAttenuation3,
+  inputAttenuation4,
+  outputEqualizer,
+  outputAttenuation,
 }
 
 class Command {

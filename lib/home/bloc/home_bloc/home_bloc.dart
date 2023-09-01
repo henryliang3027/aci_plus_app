@@ -447,7 +447,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             newCharacteristicData[DataKey.maxTemperatureF] = result[4];
             newCharacteristicData[DataKey.minVoltage] = result[5];
             newCharacteristicData[DataKey.maxVoltage] = result[6];
-            newCharacteristicData[DataKey.location] = result[7];
+            newCharacteristicData[DataKey.location] = result[16];
             emit(state.copyWith(
               characteristicData: newCharacteristicData,
             ));

@@ -86,7 +86,24 @@ class Dsim18Parser {
         String minTemperatureF = '';
         String maxVoltage = '';
         String minVoltage = '';
+        String ingressSetting2 = '';
+        String ingressSetting3 = '';
+        String ingressSetting4 = '';
+        String pilotFrequency1StatusAlarm = '';
+        String pilotFrequency2StatusAlarm = '';
+        String temperatureAlarm = '';
+        String voltageAlarm = '';
+        String inputPowerAlarm = '';
+        String outputPowerAlarm = '';
+        String inputAttenuation = '';
+        String inputEqualizer = '';
+        String inputAttenuation2 = '';
+        String inputAttenuation3 = '';
+        String inputAttenuation4 = '';
+        String outputAttenuation = '';
+        String outputEqualizer = '';
         String location = '';
+        String logInterval = '';
 
         // 解析 maxTemperatureC, maxTemperatureF
         List<int> rawMaxTemperatureC = rawData.sublist(3, 5);
@@ -123,22 +140,34 @@ class Dsim18Parser {
         minVoltage = (rawMinVoltageByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
 
-        // 解析 location
-        // for (int i = 54; i < 150; i++) {
-        //   location += String.fromCharCode(rawData[i]);
-        // }
-        // location = location.trim();
+        // 解析 ingress setting 2
+        ingressSetting2 = rawData[19].toString();
 
-        // String output = '';
-        // print('read length: ${rawData.length}');
+        // 解析 ingress setting 3
+        ingressSetting3 = rawData[20].toString();
 
-        // for (int i = 0; i < rawData.length; i++) {
-        //   // print(Command18.setLocationCmd[i].toRadixString(16));
-        //   output += rawData[i].toRadixString(16) + ' ';
-        // }
+        // 解析 ingress setting 4
+        ingressSetting4 = rawData[21].toString();
 
-        // print(output);
+        // 解析 pilot frequency 1 status alarm
+        pilotFrequency1StatusAlarm = rawData[43].toString();
 
+        // 解析 pilot frequency 2 status alarm
+        pilotFrequency2StatusAlarm = rawData[44].toString();
+
+        // 解析 temperature alarm
+        temperatureAlarm = rawData[45].toString();
+
+        // 解析 voltage alarm
+        voltageAlarm = rawData[46].toString();
+
+        // 解析 input porwer alarm (對應 24V ripple)
+        inputPowerAlarm = rawData[52].toString();
+
+        // 解析 output power alarm
+        outputPowerAlarm = rawData[53].toString();
+
+        // 使用 unicode 解析 location
         for (int i = 54; i < 150; i += 2) {
           Uint8List bytes = Uint8List.fromList([rawData[i], rawData[i + 1]]);
 
@@ -154,6 +183,58 @@ class Dsim18Parser {
 
         location = location.trim();
 
+        // 解析 logInterval
+        logInterval = rawData[150].toString();
+
+        // 解析 inputAttenuation (0x94 DS VVA1 Set dB)
+        List<int> rawInputAttenuation = rawData.sublist(151, 153);
+        ByteData rawInputAttenuationByteData =
+            ByteData.sublistView(Uint8List.fromList(rawInputAttenuation));
+        inputAttenuation =
+            rawInputAttenuationByteData.getInt16(0, Endian.little).toString();
+
+        // 解析 inputEqualizer (0x96 DS Slope1 Set dB)
+        List<int> rawInputEqualizer = rawData.sublist(153, 155);
+        ByteData rawInputEqualizerByteData =
+            ByteData.sublistView(Uint8List.fromList(rawInputEqualizer));
+        inputEqualizer =
+            rawInputEqualizerByteData.getInt16(0, Endian.little).toString();
+
+        // 解析 inputAttenuation2 (0x9C US VCA1 Set dB)
+        List<int> rawInputAttenuation2 = rawData.sublist(159, 161);
+        ByteData rawInputAttenuation2ByteData =
+            ByteData.sublistView(Uint8List.fromList(rawInputAttenuation2));
+        inputAttenuation2 =
+            rawInputAttenuation2ByteData.getInt16(0, Endian.little).toString();
+
+        // 解析 outputEqualizer (0x9E US E-REQ Set dB)
+        List<int> rawOutputEqualizer = rawData.sublist(161, 163);
+        ByteData rawOutputEqualizerByteData =
+            ByteData.sublistView(Uint8List.fromList(rawOutputEqualizer));
+        outputEqualizer =
+            rawOutputEqualizerByteData.getInt16(0, Endian.little).toString();
+
+        // 解析 outputAttenuation (0xA4 US VCA2 Set dB)
+        List<int> rawOutputAttenuation = rawData.sublist(167, 169);
+        ByteData rawOutputAttenuationByteData =
+            ByteData.sublistView(Uint8List.fromList(rawOutputAttenuation));
+        outputAttenuation =
+            rawOutputAttenuationByteData.getInt16(0, Endian.little).toString();
+
+        // 解析 inputAttenuation3 (0xA6 US VCA3 Set dB)
+        List<int> rawInputAttenuation3 = rawData.sublist(169, 171);
+        ByteData rawInputAttenuation3ByteData =
+            ByteData.sublistView(Uint8List.fromList(rawInputAttenuation3));
+        inputAttenuation3 =
+            rawInputAttenuation3ByteData.getInt16(0, Endian.little).toString();
+
+        // 解析 inputAttenuation4 (0xA8 US VCA4 Set dB)
+        List<int> rawInputAttenuation4 = rawData.sublist(171, 173);
+        ByteData rawInputAttenuation4ByteData =
+            ByteData.sublistView(Uint8List.fromList(rawInputAttenuation4));
+        inputAttenuation4 =
+            rawInputAttenuation4ByteData.getInt16(0, Endian.little).toString();
+
         if (!completer.isCompleted) {
           completer.complete((
             minTemperatureC,
@@ -162,7 +243,24 @@ class Dsim18Parser {
             maxTemperatureF,
             minVoltage,
             maxVoltage,
+            ingressSetting2,
+            ingressSetting3,
+            ingressSetting4,
+            pilotFrequency1StatusAlarm,
+            pilotFrequency2StatusAlarm,
+            temperatureAlarm,
+            voltageAlarm,
+            inputPowerAlarm,
+            outputPowerAlarm,
             location,
+            logInterval,
+            inputEqualizer,
+            inputAttenuation,
+            inputAttenuation2,
+            inputAttenuation3,
+            inputAttenuation4,
+            outputEqualizer,
+            outputAttenuation,
           ));
         }
         break;
