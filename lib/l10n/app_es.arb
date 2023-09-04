@@ -12,7 +12,7 @@
     "control": "Control",
     
     "splitOption": "Opciones Divididas",
-    "forwardSetting": "Avance configuración",
+    "forwardSetting": "Adelante configuración",
     "startFrequency": "Inicio Frecuencia",
     "stopFrequency": "Parar Frecuencia",
     "frequency": "Frecuencia (MHz)",
@@ -35,7 +35,6 @@
     "stopFrequencyLoading": " Parar Frecuencia Cargando",
     "forwardControlParameters": "Adelante Control Parámetros",
     "returnControlParameters": "Retorno Control Parámetros",
-    "alarmControlParameters": "Alarma Control Parámetros",
     "fwdInputAttenuation": "Entrada Atenuación",
     "fwdInputEQ": "Entrada Ecualizador",
     "rtnInputAttenuation2": "Entrada Atenuación 2",
@@ -46,7 +45,7 @@
     "rtnIngressSetting2": "Ingreso Configuración 2",
     "rtnIngressSetting3": "Ingreso Configuración 3",
     "rtnIngressSetting4": "Ingreso Configuración 4",
-    "ingressOpen": "abierto",
+    "ingressOpen": "Abierto",
 
 
 
@@ -111,7 +110,7 @@
     "open": "Abrir",
 
     "dataLog": "Dispositivo Registro",
-    "oneGRFLevel": "RF Nivel",
+    "rfLevel": "RF Nivel",
 
 
     "cancel": "Cancelar",
@@ -131,7 +130,7 @@
     "frontendBackendEngineer": "Ingeniero Front-end/Back-end",
     "systemEngineer": "Ingeniero de Sistemas",
 
-    "dialogTitle_AskBeforeExitApp": "¿Quieres salir de la aplicación?",
+    "dialogTitleAskBeforeExitApp": "¿Quieres salir de la aplicación?",
     "dialogTitleProcessing": "configurando...",
     "dialogTitleError": "Error",
     "dialogTitleSettingResult": "Resultado",

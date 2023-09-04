@@ -23,7 +23,7 @@ class StatusForm extends StatelessWidget {
       body: const SingleChildScrollView(
         child: Column(
           children: [
-            _ModuleCard(),
+            // _ModuleCard(),
             _TemperatureCard(),
             _AttenuationCard(),
             _PowerSupplyCard(),

@@ -1445,6 +1445,35 @@ class DsimRepository {
     }
   }
 
+  Future<dynamic> set1p8GLogInterval(String logInterval) async {
+    commandIndex = 335;
+    _completer = Completer<dynamic>();
+
+    int interval = int.parse(logInterval);
+
+    print('get data from request command 1p8G$commandIndex');
+
+    Command18.setLogIntervalCmd[7] = interval;
+
+    CRC16.calculateCRC16(
+      command: Command18.setLogIntervalCmd,
+      usDataLength: Command18.setLogIntervalCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setLogIntervalCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<void> updateCharacteristics() async {
     List<dynamic> resultOf1p8G0 = await requestCommand1p8G0();
 
@@ -1469,7 +1498,41 @@ class DsimRepository {
       _characteristicDataStreamController
           .add({DataKey.maxVoltage: resultOf1p8G1[6]});
       _characteristicDataStreamController
+          .add({DataKey.ingressSetting2: resultOf1p8G1[7]});
+      _characteristicDataStreamController
+          .add({DataKey.ingressSetting3: resultOf1p8G1[8]});
+      _characteristicDataStreamController
+          .add({DataKey.ingressSetting4: resultOf1p8G1[9]});
+      _characteristicDataStreamController
+          .add({DataKey.pilotFrequency1StatusAlarm: resultOf1p8G1[10]});
+      _characteristicDataStreamController
+          .add({DataKey.pilotFrequency2StatusAlarm: resultOf1p8G1[11]});
+      _characteristicDataStreamController
+          .add({DataKey.temperatureAlarm: resultOf1p8G1[12]});
+      _characteristicDataStreamController
+          .add({DataKey.voltageAlarm: resultOf1p8G1[13]});
+      _characteristicDataStreamController
+          .add({DataKey.inputPowerAlarm: resultOf1p8G1[14]});
+      _characteristicDataStreamController
+          .add({DataKey.outputPowerAlarm: resultOf1p8G1[15]});
+      _characteristicDataStreamController
           .add({DataKey.location: resultOf1p8G1[16]});
+      _characteristicDataStreamController
+          .add({DataKey.logInterval: resultOf1p8G1[17]});
+      _characteristicDataStreamController
+          .add({DataKey.inputEqualizer: resultOf1p8G1[18]});
+      _characteristicDataStreamController
+          .add({DataKey.inputAttenuation: resultOf1p8G1[19]});
+      _characteristicDataStreamController
+          .add({DataKey.inputAttenuation2: resultOf1p8G1[20]});
+      _characteristicDataStreamController
+          .add({DataKey.inputAttenuation3: resultOf1p8G1[21]});
+      _characteristicDataStreamController
+          .add({DataKey.inputAttenuation4: resultOf1p8G1[22]});
+      _characteristicDataStreamController
+          .add({DataKey.outputEqualizer: resultOf1p8G1[23]});
+      _characteristicDataStreamController
+          .add({DataKey.outputAttenuation: resultOf1p8G1[24]});
     }
 
     List<dynamic> resultOf1p8G2 = await requestCommand1p8G2();

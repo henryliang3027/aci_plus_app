@@ -35,7 +35,6 @@
     "stopFrequencyLoading": "截止頻率強度",
     "forwardControlParameters": "下行控制參數",
     "returnControlParameters": "上行控制參數",
-    "alarmControlParameters": "Alarm Control Parameters",
     "fwdInputAttenuation": "輸入強度衰減量",
     "fwdInputEQ": "輸入等化器",
     "rtnInputAttenuation2": "Port 2 輸入衰減量",
@@ -109,7 +108,7 @@
     "open": "開啟",
 
     "dataLog": "設備紀錄",
-    "oneGRFLevel": "訊號強度",
+    "rfLevel": "訊號強度",
 
 
     "cancel": "取消",
@@ -128,7 +127,7 @@
     "frontendBackendEngineer": "程式設計師",
     "systemEngineer": "系統工程師",
     
-    "dialogTitle_AskBeforeExitApp": "您確定要退出應用程式嗎？",
+    "dialogTitleAskBeforeExitApp": "您確定要退出應用程式嗎？",
     "dialogTitleProcessing": "設定中...",
     "dialogTitleError": "錯誤",
     "dialogTitleSettingResult": "結果",

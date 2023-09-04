@@ -45,7 +45,7 @@ class Chart18TabBar extends StatelessWidget {
                       width: 130,
                       child: Center(
                         child: Text(
-                          AppLocalizations.of(context).oneGRFLevel,
+                          AppLocalizations.of(context).rfLevel,
                         ),
                       ),
                     ),

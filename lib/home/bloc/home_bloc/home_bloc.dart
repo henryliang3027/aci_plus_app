@@ -447,7 +447,32 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             newCharacteristicData[DataKey.maxTemperatureF] = result[4];
             newCharacteristicData[DataKey.minVoltage] = result[5];
             newCharacteristicData[DataKey.maxVoltage] = result[6];
+            newCharacteristicData[DataKey.ingressSetting2] = result[7];
+            newCharacteristicData[DataKey.ingressSetting3] = result[8];
+            newCharacteristicData[DataKey.ingressSetting4] = result[9];
+            newCharacteristicData[DataKey.pilotFrequency1StatusAlarm] =
+                result[10];
+            newCharacteristicData[DataKey.pilotFrequency2StatusAlarm] =
+                result[11];
+            newCharacteristicData[DataKey.temperatureAlarm] = result[12];
+            newCharacteristicData[DataKey.voltageAlarm] = result[13];
+            newCharacteristicData[DataKey.inputPowerAlarm] = result[14];
+            newCharacteristicData[DataKey.outputPowerAlarm] = result[15];
             newCharacteristicData[DataKey.location] = result[16];
+            newCharacteristicData[DataKey.logInterval] = result[17];
+            newCharacteristicData[DataKey.inputEqualizer] = result[18];
+            newCharacteristicData[DataKey.inputAttenuation] = result[19];
+            newCharacteristicData[DataKey.inputAttenuation2] = result[20];
+            newCharacteristicData[DataKey.inputAttenuation3] = result[21];
+            newCharacteristicData[DataKey.inputAttenuation4] = result[22];
+            newCharacteristicData[DataKey.outputEqualizer] = result[23];
+            newCharacteristicData[DataKey.outputAttenuation] = result[24];
+
+            // 如果讀取到 0 分鐘, 則自動設定為 30 分鐘
+            if (result[17] == '0') {
+              await _dsimRepository.set1p8GLogInterval('30');
+            }
+
             emit(state.copyWith(
               characteristicData: newCharacteristicData,
             ));

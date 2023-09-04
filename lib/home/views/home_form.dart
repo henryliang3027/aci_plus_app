@@ -45,7 +45,7 @@ class _HomeFormState extends State<HomeForm> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              AppLocalizations.of(context).dialogTitle_AskBeforeExitApp,
+              AppLocalizations.of(context).dialogTitleAskBeforeExitApp,
             ),
             actions: <Widget>[
               TextButton(

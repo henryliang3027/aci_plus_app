@@ -126,6 +126,8 @@ class Setting18ConfigureView extends StatelessWidget {
         return AppLocalizations.of(context).dialogMessageLocationSetting;
       } else if (item == DataKey.coordinates.name) {
         return AppLocalizations.of(context).dialogMessageCoordinatesSetting;
+      } else if (item == DataKey.logInterval.name) {
+        return AppLocalizations.of(context).dialogMessageLogIntervalSetting;
       } else {
         return '';
       }

@@ -252,6 +252,23 @@ class _BasicCard extends StatelessWidget {
                 title: AppLocalizations.of(context).partNo,
                 content: state.characteristicData[DataKey.partNo] ?? '',
               ),
+              itemText(
+                loadingStatus: state.loadingStatus,
+                title: AppLocalizations.of(context).serialNumber,
+                content: state.characteristicData[DataKey.serialNumber] ?? '',
+              ),
+              itemText(
+                loadingStatus: state.loadingStatus,
+                title: AppLocalizations.of(context).firmwareVersion,
+                content:
+                    state.characteristicData[DataKey.firmwareVersion] ?? '',
+              ),
+              itemText(
+                loadingStatus: state.loadingStatus,
+                title: AppLocalizations.of(context).logInterval,
+                content: getCurrentLogInterval(
+                    state.characteristicData[DataKey.logInterval] ?? ''),
+              ),
               itemMultipleLineText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context).location,
@@ -271,12 +288,6 @@ class _BasicCard extends StatelessWidget {
                     currentPilotMode:
                         state.characteristicData[DataKey.currentPilotMode] ??
                             ''),
-              ),
-              itemText(
-                loadingStatus: state.loadingStatus,
-                title: AppLocalizations.of(context).logInterval,
-                content: getCurrentLogInterval(
-                    state.characteristicData[DataKey.logInterval] ?? ''),
               ),
             ],
           ),

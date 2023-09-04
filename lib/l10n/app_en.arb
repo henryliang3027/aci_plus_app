@@ -35,7 +35,6 @@
     "stopFrequencyLoading": "Stop Frequency Loading",
     "forwardControlParameters": "Forward Control Parameters",
     "returnControlParameters": "Return Control Parameters",
-    "alarmControlParameters": "Alarm Control Parameters",
     "fwdInputAttenuation": "Input Attenuation",
     "fwdInputEQ": "Input Equalizer",
     "rtnInputAttenuation2": "Input Attenuation 2",
@@ -109,7 +108,7 @@
     "open": "Open",
 
     "dataLog": "Device Log",
-    "oneGRFLevel": "RF Level",
+    "rfLevel": "RF Level",
 
 
     "cancel": "Cancel",
@@ -129,7 +128,7 @@
     "frontendBackendEngineer": "Front-end / Back-end Engineer",
     "systemEngineer": "System Engineer",
     
-    "dialogTitle_AskBeforeExitApp": "Do you want to exit the app ?",
+    "dialogTitleAskBeforeExitApp": "Do you want to exit the app ?",
     "dialogTitleProcessing": "Setting up...",
     "dialogTitleError": "Error",
     "dialogTitleSettingResult": "Result",

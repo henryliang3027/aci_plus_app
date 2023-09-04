@@ -212,7 +212,7 @@ class _BasicCard extends StatelessWidget {
             ),
             itemText(
               loadingStatus: FormStatus.requestInProgress,
-              title: AppLocalizations.of(context).mfgDate,
+              title: AppLocalizations.of(context).serialNumber,
               content: '',
             ),
             itemText(
@@ -222,7 +222,7 @@ class _BasicCard extends StatelessWidget {
             ),
             itemText(
               loadingStatus: FormStatus.requestInProgress,
-              title: AppLocalizations.of(context).serialNumber,
+              title: AppLocalizations.of(context).logInterval,
               content: '',
             ),
             itemMultipleLineText(
@@ -233,6 +233,11 @@ class _BasicCard extends StatelessWidget {
             itemMultipleLineText(
               loadingStatus: FormStatus.requestInProgress,
               title: AppLocalizations.of(context).coordinates,
+              content: '',
+            ),
+            itemText(
+              loadingStatus: FormStatus.requestInProgress,
+              title: AppLocalizations.of(context).mfgDate,
               content: '',
             ),
           ],

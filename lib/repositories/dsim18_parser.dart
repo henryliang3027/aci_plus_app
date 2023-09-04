@@ -407,11 +407,13 @@ class Dsim18Parser {
       case 303:
       case 304:
       case 305:
+      case 335:
         if (!completer.isCompleted) {
           bool result = _parseSettingResult(rawData);
           completer.complete(result);
         }
         break;
+
       default:
         break;
     }

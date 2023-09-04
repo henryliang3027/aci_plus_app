@@ -493,6 +493,13 @@ class Setting18ConfigureBloc
       settingResult.add('${DataKey.coordinates.name},$resultOfSetCoordinates');
     }
 
+    if (state.logInterval != state.initialValues[12]) {
+      bool resultOfSetLogInterval =
+          await _dsimRepository.set1p8GLogInterval(state.logInterval);
+
+      settingResult.add('${DataKey.logInterval.name},$resultOfSetLogInterval');
+    }
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
