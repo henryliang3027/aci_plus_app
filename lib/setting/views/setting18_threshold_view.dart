@@ -426,7 +426,7 @@ class _VoltageAlarmControl extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      AppLocalizations.of(context).voltageLevel,
+                      '${AppLocalizations.of(context).voltageLevel} (${CustomStyle.volt})',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,

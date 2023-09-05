@@ -14,6 +14,8 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
         super(const Information18State()) {
     on<AlarmUpdated>(_onAlarmUpdated);
 
+    add(const AlarmUpdated());
+
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       print('alarm trigger timer: ${timer.tick}');
       add(const AlarmUpdated());

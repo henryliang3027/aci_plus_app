@@ -26,6 +26,8 @@ class Status18Form extends StatelessWidget {
             // _ModuleCard(),
             _TemperatureCard(),
             _PowerSupplyCard(),
+            _VoltageRippleCard(),
+            _RFOutputPowerCard(),
           ],
         ),
       ),
@@ -469,46 +471,6 @@ class _TemperatureCard extends StatelessWidget {
                         ),
                       ),
                     ),
-
-                    // Material(
-                    //   color: Colors.transparent,
-                    //   elevation: 2.0,
-                    //   borderRadius:
-                    //       const BorderRadius.all(Radius.circular(8.0)),
-                    //   child: InkWell(
-                    //     child: Ink(
-                    //       width: 46.0,
-                    //       height: 46.0,
-                    //       decoration: BoxDecoration(
-                    //           color: Theme.of(context).colorScheme.primary,
-                    //           borderRadius:
-                    //               const BorderRadius.all(Radius.circular(8.0))),
-                    //       child: Center(
-                    //         child: Text(
-                    //           status18State.temperatureUnit ==
-                    //                   TemperatureUnit.fahrenheit
-                    //               ? CustomStyle.celciusUnit
-                    //               : CustomStyle.fahrenheitUnit,
-                    //           style: TextStyle(
-                    //             color: Theme.of(context).colorScheme.onPrimary,
-                    //             fontSize: 18.0,
-                    //             fontWeight: FontWeight.w500,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     onTap: () {
-                    //       TemperatureUnit targetUnit =
-                    //           status18State.temperatureUnit ==
-                    //                   TemperatureUnit.fahrenheit
-                    //               ? TemperatureUnit.celsius
-                    //               : TemperatureUnit.fahrenheit;
-                    //       context
-                    //           .read<Status18Bloc>()
-                    //           .add(TemperatureUnitChanged(targetUnit));
-                    //     },
-                    //   ),
-                    // ),
                   ],
                 ),
                 const SizedBox(
@@ -541,36 +503,6 @@ class _TemperatureCard extends StatelessWidget {
 
 class _PowerSupplyCard extends StatelessWidget {
   const _PowerSupplyCard({super.key});
-
-  // Widget tile({
-  //   required FormStatus loadingStatus,
-  //   required String title,
-  //   required String content,
-  //   required double fontSize,
-  //   Color color = Colors.black,
-  //   double? fontHeight,
-  // }) {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(vertical: 16.0),
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [
-  //         getContent(
-  //           loadingStatus: loadingStatus,
-  //           content: content,
-  //           color: color,
-  //           fontSize: fontSize,
-  //         ),
-  //         Text(
-  //           title,
-  //           style: const TextStyle(
-  //             fontSize: 16,
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   Color currentVoltageColor({
     required String minVoltage,
@@ -706,7 +638,6 @@ class _PowerSupplyCard extends StatelessWidget {
 
   Widget voltageBlock({
     required FormStatus loadingStatus,
-    required String title,
     required String currentVoltageTitle,
     required String currentVoltage,
     required String minVoltageTitle,
@@ -794,13 +725,12 @@ class _PowerSupplyCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                AppLocalizations.of(context).voltageLevel,
+                '${AppLocalizations.of(context).voltageLevel} (${CustomStyle.volt})',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             voltageBlock(
               loadingStatus: state.loadingStatus,
-              title: AppLocalizations.of(context).voltageLevel,
               currentVoltageTitle: AppLocalizations.of(context).currentVoltage,
               currentVoltage:
                   state.characteristicData[DataKey.currentVoltage] ?? '',
@@ -820,62 +750,508 @@ class _PowerSupplyCard extends StatelessWidget {
   }
 }
 
-// Widget getContent({
-//   required FormStatus loadingStatus,
-//   required String content,
-//   Color color = Colors.black,
-//   double fontSize = 16,
-// }) {
-//   if (loadingStatus == FormStatus.requestInProgress) {
-//     return content.isEmpty
-//         ? const CircularProgressIndicator()
-//         : Text(
-//             content,
-//             style: TextStyle(
-//               fontSize: fontSize,
-//             ),
-//           );
-//   } else if (loadingStatus == FormStatus.requestSuccess) {
-//     return Text(
-//       content,
-//       style: TextStyle(
-//         fontSize: fontSize,
-//         color: color,
-//       ),
-//     );
-//   } else {
-//     return Text(
-//       content.isEmpty ? 'N/A' : content,
-//       style: TextStyle(
-//         fontSize: fontSize,
-//       ),
-//     );
-//   }
-// }
+class _VoltageRippleCard extends StatelessWidget {
+  const _VoltageRippleCard({super.key});
 
-// Widget itemText({
-//   required FormStatus loadingStatus,
-//   required String title,
-//   required String content,
-// }) {
-//   return Padding(
-//     padding: const EdgeInsets.all(8.0),
-//     child: Row(
-//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//       children: [
-//         Text(
-//           title,
-//           style: const TextStyle(
-//             fontSize: 16,
-//           ),
-//         ),
-//         const SizedBox(
-//           width: 30.0,
-//         ),
-//         Flexible(
-//           child: getContent(loadingStatus: loadingStatus, content: content),
-//         ),
-//       ],
-//     ),
-//   );
-// }
+  Color currentVoltageRippleColor({
+    required String minVoltageRipple,
+    required String maxVoltageRipple,
+    required String currentVoltageRipple,
+  }) {
+    double min = double.parse(minVoltageRipple);
+    double max = double.parse(maxVoltageRipple);
+    double current = double.parse(currentVoltageRipple);
+
+    return current >= min && current <= max
+        ? CustomStyle.alarmColor['success']!
+        : CustomStyle.alarmColor['danger']!;
+  }
+
+  Widget getCurrentVoltageRipple({
+    required FormStatus loadingStatus,
+    required String minVoltageRipple,
+    required String maxVoltageRipple,
+    required String currentVoltageRipple,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return currentVoltageRipple.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              currentVoltageRipple,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        currentVoltageRipple,
+        style: TextStyle(
+          fontSize: fontSize,
+          color: currentVoltageRippleColor(
+            minVoltageRipple: minVoltageRipple,
+            maxVoltageRipple: maxVoltageRipple,
+            currentVoltageRipple: currentVoltageRipple,
+          ),
+        ),
+      );
+    } else {
+      return Text(
+        currentVoltageRipple.isEmpty ? 'N/A' : currentVoltageRipple,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget getMinVoltageRipple({
+    required FormStatus loadingStatus,
+    required String minVoltageRipple,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return minVoltageRipple.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              minVoltageRipple,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        minVoltageRipple,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    } else {
+      return Text(
+        minVoltageRipple.isEmpty ? 'N/A' : minVoltageRipple,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget getMaxVoltageRipple({
+    required FormStatus loadingStatus,
+    required String maxVoltageRipple,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return maxVoltageRipple.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              maxVoltageRipple,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        maxVoltageRipple,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    } else {
+      return Text(
+        maxVoltageRipple.isEmpty ? 'N/A' : maxVoltageRipple,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget voltageRippleBlock({
+    required FormStatus loadingStatus,
+    required String currentVoltageRippleTitle,
+    required String currentVoltageRipple,
+    required String minVoltageRippleTitle,
+    required String minVoltageRipple,
+    required String maxVoltageRippleTitle,
+    required String maxVoltageRipple,
+    required Color borderColor,
+  }) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 16.0,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  getMinVoltageRipple(
+                    loadingStatus: loadingStatus,
+                    minVoltageRipple: 'N/A',
+                    fontSize: 32,
+                  ),
+                  Text(
+                    minVoltageRippleTitle,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  getCurrentVoltageRipple(
+                    loadingStatus: loadingStatus,
+                    minVoltageRipple: minVoltageRipple,
+                    maxVoltageRipple: maxVoltageRipple,
+                    currentVoltageRipple: currentVoltageRipple,
+                    fontSize: 40,
+                  ),
+                  Text(
+                    currentVoltageRippleTitle,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  getMaxVoltageRipple(
+                    loadingStatus: loadingStatus,
+                    maxVoltageRipple: 'N/A',
+                    fontSize: 32,
+                  ),
+                  Text(
+                    maxVoltageRippleTitle,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) => Card(
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
+              child: Text(
+                '${AppLocalizations.of(context).voltageRipple} (${CustomStyle.volt})',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            voltageRippleBlock(
+              loadingStatus: state.loadingStatus,
+              currentVoltageRippleTitle:
+                  AppLocalizations.of(context).currentVoltageRipple,
+              currentVoltageRipple:
+                  state.characteristicData[DataKey.currentVoltageRipple] ?? '',
+              minVoltageRippleTitle: AppLocalizations.of(context).minVoltage,
+              minVoltageRipple:
+                  state.characteristicData[DataKey.minVoltageRipple] ?? '',
+              maxVoltageRippleTitle:
+                  AppLocalizations.of(context).maxVoltageRipple,
+              maxVoltageRipple:
+                  state.characteristicData[DataKey.maxVoltageRipple] ?? '',
+              borderColor: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _RFOutputPowerCard extends StatelessWidget {
+  const _RFOutputPowerCard({super.key});
+
+  Color currentRFOutputPowerColor({
+    required String minRFOutputPower,
+    required String maxRFOutputPower,
+    required String currentRFOutputPower,
+  }) {
+    double min = double.parse(minRFOutputPower);
+    double max = double.parse(maxRFOutputPower);
+    double current = double.parse(currentRFOutputPower);
+
+    return current >= min && current <= max
+        ? CustomStyle.alarmColor['success']!
+        : CustomStyle.alarmColor['danger']!;
+  }
+
+  Widget getCurrentRFOutputPower({
+    required FormStatus loadingStatus,
+    required String minRFOutputPower,
+    required String maxRFOutputPower,
+    required String currentRFOutputPower,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return currentRFOutputPower.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              currentRFOutputPower,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        currentRFOutputPower,
+        style: TextStyle(
+          fontSize: fontSize,
+          color: currentRFOutputPowerColor(
+            minRFOutputPower: minRFOutputPower,
+            maxRFOutputPower: maxRFOutputPower,
+            currentRFOutputPower: currentRFOutputPower,
+          ),
+        ),
+      );
+    } else {
+      return Text(
+        currentRFOutputPower.isEmpty ? 'N/A' : currentRFOutputPower,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget getMinRFOutputPower({
+    required FormStatus loadingStatus,
+    required String minRFOutputPower,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return minRFOutputPower.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              minRFOutputPower,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        minRFOutputPower,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    } else {
+      return Text(
+        minRFOutputPower.isEmpty ? 'N/A' : minRFOutputPower,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget getMaxRFOutputPower({
+    required FormStatus loadingStatus,
+    required String maxRFOutputPower,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return maxRFOutputPower.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              maxRFOutputPower,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        maxRFOutputPower,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    } else {
+      return Text(
+        maxRFOutputPower.isEmpty ? 'N/A' : maxRFOutputPower,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget rfOutputPowerBlock({
+    required FormStatus loadingStatus,
+    required String currentRFOutputPowerTitle,
+    required String currentRFOutputPower,
+    required String minRFOutputPowerTitle,
+    required String minRFOutputPower,
+    required String maxRFOutputPowerTitle,
+    required String maxRFOutputPower,
+    required Color borderColor,
+  }) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 16.0,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  getMinRFOutputPower(
+                    loadingStatus: loadingStatus,
+                    minRFOutputPower: 'N/A',
+                    fontSize: 32,
+                  ),
+                  Text(
+                    minRFOutputPowerTitle,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  getCurrentRFOutputPower(
+                    loadingStatus: loadingStatus,
+                    minRFOutputPower: minRFOutputPower,
+                    maxRFOutputPower: maxRFOutputPower,
+                    currentRFOutputPower: currentRFOutputPower,
+                    fontSize: 40,
+                  ),
+                  Text(
+                    currentRFOutputPowerTitle,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  getMaxRFOutputPower(
+                    loadingStatus: loadingStatus,
+                    maxRFOutputPower: 'N/A',
+                    fontSize: 32,
+                  ),
+                  Text(
+                    maxRFOutputPowerTitle,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) => Card(
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
+              child: Text(
+                AppLocalizations.of(context).rfOutputPower,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            rfOutputPowerBlock(
+              loadingStatus: state.loadingStatus,
+              currentRFOutputPowerTitle:
+                  AppLocalizations.of(context).currentRFOutputPower,
+              currentRFOutputPower:
+                  state.characteristicData[DataKey.currentRFOutputPower] ?? '',
+              minRFOutputPowerTitle: AppLocalizations.of(context).minVoltage,
+              minRFOutputPower:
+                  state.characteristicData[DataKey.minRFOutputPower] ?? '',
+              maxRFOutputPowerTitle:
+                  AppLocalizations.of(context).maxRFOutputPower,
+              maxRFOutputPower:
+                  state.characteristicData[DataKey.maxRFOutputPower] ?? '',
+              borderColor: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

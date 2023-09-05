@@ -86,6 +86,10 @@ class Dsim18Parser {
         String minTemperatureF = '';
         String maxVoltage = '';
         String minVoltage = '';
+        String maxVoltageRipple = '';
+        String minVoltageRipple = '';
+        String maxRFOutputPower = '';
+        String minRFOutputPower = '';
         String ingressSetting2 = '';
         String ingressSetting3 = '';
         String ingressSetting4 = '';
@@ -139,6 +143,38 @@ class Dsim18Parser {
             ByteData.sublistView(Uint8List.fromList(rawMinVoltage));
         minVoltage = (rawMinVoltageByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
+
+        // 解析 maxVoltageRipple
+        List<int> rawMaxVoltageRipple = rawData.sublist(11, 13);
+        ByteData rawMaxVoltageRippleByteData =
+            ByteData.sublistView(Uint8List.fromList(rawMaxVoltageRipple));
+        maxVoltageRipple =
+            (rawMaxVoltageRippleByteData.getInt16(0, Endian.little) / 10)
+                .toStringAsFixed(1);
+
+        // 解析 minVoltageRipple
+        List<int> rawMinVoltageRipple = rawData.sublist(13, 15);
+        ByteData rawMinVoltageRippleByteData =
+            ByteData.sublistView(Uint8List.fromList(rawMinVoltageRipple));
+        minVoltageRipple =
+            (rawMinVoltageRippleByteData.getInt16(0, Endian.little) / 10)
+                .toStringAsFixed(1);
+
+        // 解析 maxRFOutputTotalPower
+        List<int> rawMaxRFOutputTotalPower = rawData.sublist(15, 17);
+        ByteData rawMaxRFOutputTotalPowerByteData =
+            ByteData.sublistView(Uint8List.fromList(rawMaxRFOutputTotalPower));
+        maxRFOutputPower =
+            (rawMaxRFOutputTotalPowerByteData.getInt16(0, Endian.little) / 10)
+                .toStringAsFixed(1);
+
+        // 解析 minRFOutputTotalPower
+        List<int> rawMinRFOutputTotalPower = rawData.sublist(17, 19);
+        ByteData rawMinRFOutputTotalPowerByteData =
+            ByteData.sublistView(Uint8List.fromList(rawMinRFOutputTotalPower));
+        minRFOutputPower =
+            (rawMinRFOutputTotalPowerByteData.getInt16(0, Endian.little) / 10)
+                .toStringAsFixed(1);
 
         // 解析 ingress setting 2
         ingressSetting2 = rawData[19].toString();
@@ -243,6 +279,10 @@ class Dsim18Parser {
             maxTemperatureF,
             minVoltage,
             maxVoltage,
+            maxVoltageRipple,
+            minVoltageRipple,
+            maxRFOutputPower,
+            minRFOutputPower,
             ingressSetting2,
             ingressSetting3,
             ingressSetting4,
@@ -271,11 +311,10 @@ class Dsim18Parser {
         String currentTemperatureC = '';
         String currentTemperatureF = '';
         String currentVoltage = '';
-        String currentRFInputTotalPower = '';
-        String currentRFOutputTotalPower = '';
+        String currentVoltageRipple = '';
+        String currentRFInputPower = '';
+        String currentRFOutputPower = '';
         String splitOption = '';
-        String forwardAgcMode = '';
-        String autoLevelControl = '';
 
         int unitStatus = rawData[3];
         alarmUSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
@@ -307,34 +346,35 @@ class Dsim18Parser {
             (rawCurrentVoltageByteData.getInt16(0, Endian.little) / 10)
                 .toStringAsFixed(1);
 
-        // 解析 currentRFInputTotalPower
-        List<int> rawCurrentRFInputTotalPower = rawData.sublist(18, 20);
-        ByteData rawCurrentRFInputTotalPowerByteData = ByteData.sublistView(
-            Uint8List.fromList(rawCurrentRFInputTotalPower));
+        // 解析 currentVoltageRipple
+        List<int> rawCurrentVoltageRipple = rawData.sublist(8, 10);
+        ByteData rawCurrentVoltageRippleByteData =
+            ByteData.sublistView(Uint8List.fromList(rawCurrentVoltageRipple));
 
-        currentRFInputTotalPower =
-            (rawCurrentRFInputTotalPowerByteData.getInt16(0, Endian.little) /
-                    10)
+        currentVoltageRipple =
+            (rawCurrentVoltageRippleByteData.getInt16(0, Endian.little) / 10)
                 .toStringAsFixed(1);
 
-        // 解析 currentRFOutputTotalPower
-        List<int> rawCurrentRFOutputTotalPower = rawData.sublist(20, 22);
-        ByteData rawCurrentRFOutputTotalPowerByteData = ByteData.sublistView(
-            Uint8List.fromList(rawCurrentRFOutputTotalPower));
+        // 解析 currentRFInputPower
+        List<int> rawCurrentRFInputPower = rawData.sublist(18, 20);
+        ByteData rawCurrentRFInputPowerByteData =
+            ByteData.sublistView(Uint8List.fromList(rawCurrentRFInputPower));
 
-        currentRFOutputTotalPower =
-            (rawCurrentRFOutputTotalPowerByteData.getInt16(0, Endian.little) /
-                    10)
+        currentRFInputPower =
+            (rawCurrentRFInputPowerByteData.getInt16(0, Endian.little) / 10)
+                .toStringAsFixed(1);
+
+        // 解析 currentRFOutputPower
+        List<int> rawCurrentRFOutputPower = rawData.sublist(20, 22);
+        ByteData rawCurrentRFOutputPowerByteData =
+            ByteData.sublistView(Uint8List.fromList(rawCurrentRFOutputPower));
+
+        currentRFOutputPower =
+            (rawCurrentRFOutputPowerByteData.getInt16(0, Endian.little) / 10)
                 .toStringAsFixed(1);
 
         // 解析 splitOption
         splitOption = rawData[25].toString();
-
-        // 解析 forwardAgcMode
-        forwardAgcMode = rawData[27].toString();
-
-        // 解析 autoLevelControl
-        autoLevelControl = rawData[28].toString();
 
         if (!completer.isCompleted) {
           completer.complete((
@@ -344,11 +384,10 @@ class Dsim18Parser {
             currentTemperatureC,
             currentTemperatureF,
             currentVoltage,
-            currentRFInputTotalPower,
-            currentRFOutputTotalPower,
+            currentVoltageRipple,
+            currentRFInputPower,
+            currentRFOutputPower,
             splitOption,
-            forwardAgcMode,
-            autoLevelControl,
           ));
         }
         break;

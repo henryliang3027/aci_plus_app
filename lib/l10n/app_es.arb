@@ -67,18 +67,23 @@
     "minTemperature": "Mínimo",
     "maxTemperature": "Máximo",
     "powerSupplyVDC": "Fuente de alimentación VDC",
-    "voltageLevel": "Nivel de voltaje(V)",
+    "voltageLevel": "Nivel de voltaje",
     "currentVoltage": "Actual",
     "minVoltage": "Mínimo",
     "maxVoltage": "Máximo",
-    "voltageRipple": "Ondulación de voltaje(mV)",
+    "voltageRipple": "Ondulación de voltaje",
     "currentVoltageRipple": "Actual",
     "minVoltageRipple": "Mínimo",
     "maxVoltageRipple": "Máximo",
 
     "mfgDate": "MFG Fecha",
     "coordinates": "Coordenadas",
-    
+    "currentRFInputPower": "Actual",
+    "minRFInputPower": "Mínimo",
+    "maxRFInputPower": "Máximo",
+    "currentRFOutputPower": "Actual",
+    "minRFOutputPower": "Mínimo",
+    "maxRFOutputPower": "Máximo",
 
 
     "information": "Información",

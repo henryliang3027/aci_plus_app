@@ -447,26 +447,30 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             newCharacteristicData[DataKey.maxTemperatureF] = result[4];
             newCharacteristicData[DataKey.minVoltage] = result[5];
             newCharacteristicData[DataKey.maxVoltage] = result[6];
-            newCharacteristicData[DataKey.ingressSetting2] = result[7];
-            newCharacteristicData[DataKey.ingressSetting3] = result[8];
-            newCharacteristicData[DataKey.ingressSetting4] = result[9];
+            newCharacteristicData[DataKey.minVoltageRipple] = result[7];
+            newCharacteristicData[DataKey.maxVoltageRipple] = result[8];
+            newCharacteristicData[DataKey.minRFOutputPower] = result[9];
+            newCharacteristicData[DataKey.maxRFOutputPower] = result[10];
+            newCharacteristicData[DataKey.ingressSetting2] = result[11];
+            newCharacteristicData[DataKey.ingressSetting3] = result[12];
+            newCharacteristicData[DataKey.ingressSetting4] = result[13];
             newCharacteristicData[DataKey.pilotFrequency1StatusAlarm] =
-                result[10];
+                result[14];
             newCharacteristicData[DataKey.pilotFrequency2StatusAlarm] =
-                result[11];
-            newCharacteristicData[DataKey.temperatureAlarm] = result[12];
-            newCharacteristicData[DataKey.voltageAlarm] = result[13];
-            newCharacteristicData[DataKey.inputPowerAlarm] = result[14];
-            newCharacteristicData[DataKey.outputPowerAlarm] = result[15];
-            newCharacteristicData[DataKey.location] = result[16];
-            newCharacteristicData[DataKey.logInterval] = result[17];
-            newCharacteristicData[DataKey.inputEqualizer] = result[18];
-            newCharacteristicData[DataKey.inputAttenuation] = result[19];
-            newCharacteristicData[DataKey.inputAttenuation2] = result[20];
-            newCharacteristicData[DataKey.inputAttenuation3] = result[21];
-            newCharacteristicData[DataKey.inputAttenuation4] = result[22];
-            newCharacteristicData[DataKey.outputEqualizer] = result[23];
-            newCharacteristicData[DataKey.outputAttenuation] = result[24];
+                result[15];
+            newCharacteristicData[DataKey.temperatureAlarm] = result[16];
+            newCharacteristicData[DataKey.voltageAlarm] = result[17];
+            newCharacteristicData[DataKey.inputPowerAlarm] = result[18];
+            newCharacteristicData[DataKey.outputPowerAlarm] = result[19];
+            newCharacteristicData[DataKey.location] = result[20];
+            newCharacteristicData[DataKey.logInterval] = result[21];
+            newCharacteristicData[DataKey.inputEqualizer] = result[22];
+            newCharacteristicData[DataKey.inputAttenuation] = result[23];
+            newCharacteristicData[DataKey.inputAttenuation2] = result[24];
+            newCharacteristicData[DataKey.inputAttenuation3] = result[25];
+            newCharacteristicData[DataKey.inputAttenuation4] = result[26];
+            newCharacteristicData[DataKey.outputEqualizer] = result[27];
+            newCharacteristicData[DataKey.outputAttenuation] = result[28];
 
             // 如果讀取到 0 分鐘, 則自動設定為 30 分鐘
             if (result[17] == '0') {
@@ -486,12 +490,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             newCharacteristicData[DataKey.currentTemperatureC] = result[4];
             newCharacteristicData[DataKey.currentTemperatureF] = result[5];
             newCharacteristicData[DataKey.currentVoltage] = result[6];
-            newCharacteristicData[DataKey.currentRFInputTotalPower] = result[7];
-            newCharacteristicData[DataKey.currentRFOutputTotalPower] =
-                result[8];
-            newCharacteristicData[DataKey.splitOption] = result[9];
-            newCharacteristicData[DataKey.fwdAgcMode] = result[10];
-            newCharacteristicData[DataKey.autoLevelControl] = result[11];
+            newCharacteristicData[DataKey.currentVoltageRipple] = result[7];
+            newCharacteristicData[DataKey.currentRFInputPower] = result[8];
+            newCharacteristicData[DataKey.currentRFOutputPower] = result[9];
+            newCharacteristicData[DataKey.splitOption] = result[10];
 
             emit(state.copyWith(
               loadingStatus: FormStatus.requestSuccess,

@@ -823,7 +823,8 @@ class _PowerSupplyCard extends StatelessWidget {
             ),
             voltageBlock(
               loadingStatus: state.loadingStatus,
-              title: AppLocalizations.of(context).voltageLevel,
+              title:
+                  '${AppLocalizations.of(context).voltageLevel} (${CustomStyle.volt})',
               currentVoltageTitle: AppLocalizations.of(context).currentVoltage,
               currentVoltage:
                   state.characteristicData[DataKey.currentVoltage] ?? '',
@@ -838,7 +839,8 @@ class _PowerSupplyCard extends StatelessWidget {
             ),
             voltageRippleBlock(
               loadingStatus: state.loadingStatus,
-              title: AppLocalizations.of(context).voltageRipple,
+              title:
+                  '${AppLocalizations.of(context).voltageRipple} (${CustomStyle.milliVolt})',
               currentVoltageRippleTitle:
                   AppLocalizations.of(context).currentVoltageRipple,
               currentVoltageRipple:

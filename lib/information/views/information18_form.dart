@@ -382,15 +382,9 @@ class _AlarmCard extends StatelessWidget {
               dsimRepository: RepositoryProvider.of<DsimRepository>(context)),
           child: BlocBuilder<Information18Bloc, Information18State>(
             builder: (context, informationState) => buildAlarmCard(
-              alarmUSeverity: informationState.alarmUSeverity == 'default'
-                  ? alarmUSeverity
-                  : informationState.alarmUSeverity,
-              alarmTSeverity: informationState.alarmTSeverity == 'default'
-                  ? alarmTSeverity
-                  : informationState.alarmTSeverity,
-              alarmPSeverity: informationState.alarmPSeverity == 'default'
-                  ? alarmPSeverity
-                  : informationState.alarmPSeverity,
+              alarmUSeverity: informationState.alarmUSeverity,
+              alarmTSeverity: informationState.alarmTSeverity,
+              alarmPSeverity: informationState.alarmPSeverity,
             ),
           ),
         );

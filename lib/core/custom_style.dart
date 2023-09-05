@@ -16,6 +16,8 @@ class CustomStyle {
 
   static const String fahrenheitUnit = 'ºF';
   static const String celciusUnit = 'ºC';
+  static const String milliVolt = 'mV';
+  static const String volt = 'V';
 
   static const Map<String, Color> alarmColor = {
     'success': Color(0xff28a745), //success
