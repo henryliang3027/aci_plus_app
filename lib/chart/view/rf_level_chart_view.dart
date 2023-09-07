@@ -167,6 +167,13 @@ class _ChartView extends StatelessWidget {
                   getChartDataOfRFLevel(
                       dateValueCollectionOfLog: state.dateValueCollectionOfLog),
                 ),
+                const SizedBox(
+                  height: 50.0,
+                ),
+                buildChart(
+                  getChartDataOfRFLevel(
+                      dateValueCollectionOfLog: state.dateValueCollectionOfLog),
+                ),
               ],
             ),
           ),
@@ -181,6 +188,13 @@ class _ChartView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                buildChart(
+                  getChartDataOfRFLevel(
+                      dateValueCollectionOfLog: state.dateValueCollectionOfLog),
+                ),
+                const SizedBox(
+                  height: 50.0,
+                ),
                 buildChart(
                   getChartDataOfRFLevel(
                       dateValueCollectionOfLog: state.dateValueCollectionOfLog),

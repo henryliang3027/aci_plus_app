@@ -59,11 +59,11 @@ class _LogChartView extends StatelessWidget {
       required List<List<ValuePair>> dateValueCollectionOfLog,
     }) {
       LineSeries temperatureLineSeries = LineSeries(
-        name: 'Temperature',
+        name: '24V Ripple',
         dataList: [],
         color: Theme.of(context).colorScheme.primary,
-        minYAxisValue: -30.0,
-        maxYAxisValue: 100.0,
+        minYAxisValue: 0.0,
+        maxYAxisValue: 500.0,
       );
       LineSeries voltageLineSeries = const LineSeries(
         name: '24V',
