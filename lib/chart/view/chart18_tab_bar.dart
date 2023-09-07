@@ -1,5 +1,5 @@
 import 'package:dsim_app/chart/view/data_log_chart_view.dart';
-import 'package:dsim_app/chart/view/one_g_rf_level_chart_view.dart';
+import 'package:dsim_app/chart/view/rf_level_chart_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -59,7 +59,7 @@ class Chart18TabBar extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               children: [
                 DataLogChartView(),
-                OneGRFLevelChartView(),
+                RFLevelChartView(),
               ],
             ),
           ),

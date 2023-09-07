@@ -94,16 +94,25 @@ class SplashScreen extends StatelessWidget {
     return Stack(
       children: [
         const SplashView(),
-        SizedBox(
-          width: double.maxFinite,
-          height: double.maxFinite,
-          child: Image.asset(
-            'assets/splash.gif',
-            fit: BoxFit.fill,
-            // errorBuilder: (context, error, stackTrace) {
-            //   return Container();
-            // },
-          ),
+        Image.asset(
+          'assets/splash.gif',
+          fit: BoxFit.fill,
+          frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+            if (frame != null) {
+              if (frame == 36) {
+                context.read<HomeBloc>().add(const SplashStateChanged());
+              }
+              return SizedBox(
+                width: double.maxFinite,
+                height: double.maxFinite,
+                child: child,
+              );
+            } else {
+              return Container(
+                color: Theme.of(context).colorScheme.onPrimary,
+              );
+            }
+          },
         ),
       ],
     );

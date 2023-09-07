@@ -28,7 +28,7 @@ class HomeState extends Equatable {
   final DiscoveredDevice? device;
   final Map<DataKey, String> characteristicData;
   final String errorMassage;
-  final List<List<DateValuePair>> dateValueCollectionOfLog;
+  final List<List<ValuePair>> dateValueCollectionOfLog;
 
   HomeState copyWith({
     FormStatus? scanStatus,
@@ -42,7 +42,7 @@ class HomeState extends Equatable {
     DiscoveredDevice? device,
     Map<DataKey, String>? characteristicData,
     String? errorMassage,
-    List<List<DateValuePair>>? dateValueCollectionOfLog,
+    List<List<ValuePair>>? dateValueCollectionOfLog,
   }) {
     return HomeState(
       scanStatus: scanStatus ?? this.scanStatus,

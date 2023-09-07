@@ -2746,32 +2746,32 @@ class DsimRepository {
     return dateTime;
   }
 
-  List<List<DateValuePair>> getDateValueCollectionOfLogs() {
-    List<DateValuePair> attenuationDataList = [];
-    List<DateValuePair> temperatureDataList = [];
-    List<DateValuePair> pilotDataList = [];
-    List<DateValuePair> voltageDataList = [];
-    List<DateValuePair> voltageRippleDataList = [];
+  List<List<ValuePair>> getDateValueCollectionOfLogs() {
+    List<ValuePair> attenuationDataList = [];
+    List<ValuePair> temperatureDataList = [];
+    List<ValuePair> pilotDataList = [];
+    List<ValuePair> voltageDataList = [];
+    List<ValuePair> voltageRippleDataList = [];
     for (Log log in _logs) {
-      attenuationDataList.add(DateValuePair(
-        dateTime: log.dateTime,
-        value: log.attenuation.toDouble(),
+      attenuationDataList.add(ValuePair(
+        x: log.dateTime,
+        y: log.attenuation.toDouble(),
       ));
-      temperatureDataList.add(DateValuePair(
-        dateTime: log.dateTime,
-        value: log.temperature.toDouble(),
+      temperatureDataList.add(ValuePair(
+        x: log.dateTime,
+        y: log.temperature.toDouble(),
       ));
-      pilotDataList.add(DateValuePair(
-        dateTime: log.dateTime,
-        value: log.pilot.toDouble(),
+      pilotDataList.add(ValuePair(
+        x: log.dateTime,
+        y: log.pilot.toDouble(),
       ));
-      voltageDataList.add(DateValuePair(
-        dateTime: log.dateTime,
-        value: log.voltage,
+      voltageDataList.add(ValuePair(
+        x: log.dateTime,
+        y: log.voltage,
       ));
-      voltageRippleDataList.add(DateValuePair(
-        dateTime: log.dateTime,
-        value: log.voltageRipple.toDouble(),
+      voltageRippleDataList.add(ValuePair(
+        x: log.dateTime,
+        y: log.voltageRipple.toDouble(),
       ));
     }
 

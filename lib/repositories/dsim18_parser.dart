@@ -15,6 +15,13 @@ class Dsim18Parser {
 
   List<List<int>> get command18Collection => _command18Collection;
 
+  // 刪除所有 Null character (0x00), 頭尾空白 character
+  String _trimString(String s) {
+    s = s.replaceAll('\x00', '');
+    s = s.trim();
+    return s;
+  }
+
   void parseRawData({
     required int commandIndex,
     required List<int> rawData,
@@ -33,25 +40,25 @@ class Dsim18Parser {
         for (int i = 3; i <= 22; i++) {
           partName += String.fromCharCode(rawData[i]);
         }
-        partName = partName.trim();
+        partName = _trimString(partName);
 
         // 解析 partNo
         for (int i = 23; i <= 42; i++) {
           partNo += String.fromCharCode(rawData[i]);
         }
-        partNo = partNo.trim();
+        partNo = _trimString(partNo);
 
         // 解析 serialNumber
         for (int i = 43; i <= 62; i++) {
           serialNumber += String.fromCharCode(rawData[i]);
         }
-        serialNumber = serialNumber.trim();
+        serialNumber = _trimString(serialNumber);
 
         // 解析 firmwareVersion
         for (int i = 63; i <= 66; i++) {
           firmwareVersion += String.fromCharCode(rawData[i]);
         }
-        firmwareVersion = firmwareVersion.trim();
+        firmwareVersion = _trimString(firmwareVersion);
 
         // 解析 mfgDate
         List<int> rawYear = rawData.sublist(67, 69);
@@ -64,8 +71,7 @@ class Dsim18Parser {
         for (int i = 72; i <= 110; i++) {
           coordinate += String.fromCharCode(rawData[i]);
         }
-
-        coordinate = coordinate.trim();
+        coordinate = _trimString(coordinate);
 
         if (!completer.isCompleted) {
           completer.complete((
@@ -217,7 +223,7 @@ class Dsim18Parser {
           location += chineseCharacter;
         }
 
-        location = location.trim();
+        location = _trimString(location);
 
         // 解析 logInterval
         logInterval = rawData[150].toString();

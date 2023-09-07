@@ -238,7 +238,7 @@ class _LogChartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<LineSeries> getChartDataOfLog1({
-      required List<List<DateValuePair>> dateValueCollectionOfLog,
+      required List<List<ValuePair>> dateValueCollectionOfLog,
     }) {
       LineSeries attenuationLineSeries = LineSeries(
         name: 'Attenuation',
@@ -271,7 +271,7 @@ class _LogChartView extends StatelessWidget {
     }
 
     List<LineSeries> getChartDataOfLogVoltage({
-      required List<List<DateValuePair>> dateValueCollectionOfLog,
+      required List<List<ValuePair>> dateValueCollectionOfLog,
     }) {
       LineSeries voltageLineSeries = LineSeries(
         name: '24V',
@@ -382,8 +382,8 @@ class _LogChartView extends StatelessWidget {
     // }
 
     Widget buildLoadingFormWithProgressiveChartView(
-        List<List<DateValuePair>> dateValueCollectionOfLog) {
-      List<List<DateValuePair>> emptyDateValueCollection = [
+        List<List<ValuePair>> dateValueCollectionOfLog) {
+      List<List<ValuePair>> emptyDateValueCollection = [
         [],
         [],
         [],
@@ -443,7 +443,7 @@ class _LogChartView extends StatelessWidget {
     }
 
     Widget buildEmptyChartView() {
-      List<List<DateValuePair>> emptyDateValueCollection = [
+      List<List<ValuePair>> emptyDateValueCollection = [
         [],
         [],
         [],

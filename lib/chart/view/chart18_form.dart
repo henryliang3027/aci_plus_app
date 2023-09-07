@@ -133,7 +133,7 @@ class _PopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      if (state.eventLoadingStatus.isRequestSuccess) {
+      if (state.loadingStatus.isRequestSuccess) {
         return PopupMenuButton<Menu>(
           icon: const Icon(
             Icons.more_vert_outlined,

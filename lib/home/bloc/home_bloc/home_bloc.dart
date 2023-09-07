@@ -25,8 +25,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
     on<DeviceConnectionChanged>(_onDeviceConnectionChanged);
-
-    add(const SplashStateChanged());
   }
 
   final DsimRepository _dsimRepository;
@@ -47,7 +45,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     //   autoStart: false,
     // );
     // _assetsAudioPlayer.play();
-    await Future.delayed(const Duration(milliseconds: 3000));
+    // await Future.delayed(const Duration(milliseconds: 6000));
 
     _scanStreamSubscription = _dsimRepository.scanReport.listen(
       (scanReport) {
@@ -318,7 +316,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             // request log command 14 ~ 29
             Map<DataKey, String> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
-            List<List<DateValuePair>> dateValueCollectionOfLog =
+            List<List<ValuePair>> dateValueCollectionOfLog =
                 _dsimRepository.getDateValueCollectionOfLogs();
 
             emit(state.copyWith(
@@ -329,10 +327,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             Map<DataKey, String> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
 
-            List<List<DateValuePair>> dateValueCollectionOfLog =
+            List<List<ValuePair>> dateValueCollectionOfLog =
                 _dsimRepository.getDateValueCollectionOfLogs();
 
-            List<DateValuePair> allValues = dateValueCollectionOfLog
+            List<ValuePair> allValues = dateValueCollectionOfLog
                 .expand(
                   (dateValuePair) => dateValuePair,
                 )

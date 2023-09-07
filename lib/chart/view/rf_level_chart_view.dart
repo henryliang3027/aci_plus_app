@@ -9,8 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class OneGRFLevelChartView extends StatelessWidget {
-  const OneGRFLevelChartView({super.key});
+class RFLevelChartView extends StatelessWidget {
+  const RFLevelChartView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +24,10 @@ class _ChartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<LineSeries> getChartDataOfRFLevel({
-      required List<List<DateValuePair>> dateValueCollectionOfLog,
+      required List<List<ValuePair>> dateValueCollectionOfLog,
     }) {
       LineSeries rfLevelLineSeries = LineSeries(
-        name: '1G RF Level',
+        name: 'RF Level',
         dataList: [],
         color: Theme.of(context).colorScheme.primary,
         minYAxisValue: -30.0,
@@ -81,8 +81,8 @@ class _ChartView extends StatelessWidget {
     }
 
     Widget buildLoadingFormWithProgressiveChartView(
-        List<List<DateValuePair>> dateValueCollectionOfLog) {
-      List<List<DateValuePair>> emptyDateValueCollection = [
+        List<List<ValuePair>> dateValueCollectionOfLog) {
+      List<List<ValuePair>> emptyDateValueCollection = [
         [],
         [],
         [],
