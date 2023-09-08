@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
@@ -23,8 +25,12 @@ class Setting18ThresholdBloc
     on<VoltageAlarmChanged>(_onVoltageAlarmChanged);
     on<MinVoltageChanged>(_onMinVoltageChanged);
     on<MaxVoltageChanged>(_onMaxVoltageChanged);
-    on<RFInputPowerAlarmChanged>(_onRFInputPowerAlarmChanged);
+    on<VoltageRippleAlarmChanged>(_onVoltageRippleAlarmChanged);
+    on<MinVoltageRippleChanged>(_onMinVoltageRippleChanged);
+    on<MaxVoltageRippleChanged>(_onMaxVoltageRippleChanged);
     on<RFOutputPowerAlarmChanged>(_onRFOutputPowerAlarmChanged);
+    on<MinRFOutputPowerChanged>(_onMinRFOutputPowerChanged);
+    on<MaxRFOutputPowerChanged>(_onMaxRFOutputPowerChanged);
     on<PilotFrequency1AlarmChanged>(_onPilotFrequency1AlarmChanged);
     on<PilotFrequency2AlarmChanged>(_onPilotFrequency2AlarmChanged);
     on<FirstChannelOutputLevelAlarmChanged>(
@@ -62,8 +68,12 @@ class Setting18ThresholdBloc
       enableVoltageAlarm: event.enableVoltageAlarm,
       minVoltage: event.minVoltage,
       maxVoltage: event.maxVoltage,
-      enableRFInputPowerAlarm: event.enableRFInputPowerAlarm,
+      enableVoltageRippleAlarm: event.enableVoltageRippleAlarm,
+      minVoltageRipple: event.minVoltageRipple,
+      maxVoltageRipple: event.maxVoltageRipple,
       enableRFOutputPowerAlarm: event.enableRFOutputPowerAlarm,
+      minRFOutputPower: event.minRFOutputPower,
+      maxRFOutputPower: event.maxRFOutputPower,
       enablePilotFrequency1Alarm: event.enablePilotFrequency1Alarm,
       enablePilotFrequency2Alarm: event.enablePilotFrequency2Alarm,
       enableFirstChannelOutputLevelAlarm:
@@ -78,8 +88,12 @@ class Setting18ThresholdBloc
         event.enableVoltageAlarm,
         event.minVoltage,
         event.maxVoltage,
-        event.enableRFInputPowerAlarm,
+        event.enableVoltageRippleAlarm,
+        event.minVoltageRipple,
+        event.maxVoltageRipple,
         event.enableRFOutputPowerAlarm,
+        event.minRFOutputPower,
+        event.maxRFOutputPower,
         event.enablePilotFrequency1Alarm,
         event.enablePilotFrequency2Alarm,
         event.enableFirstChannelOutputLevelAlarm,
@@ -103,8 +117,12 @@ class Setting18ThresholdBloc
           enableVoltageAlarm: state.enableVoltageAlarm,
           minVoltage: state.minVoltage,
           maxVoltage: state.maxVoltage,
-          enableRFInputPowerAlarm: state.enableRFInputPowerAlarm,
+          enableVoltageRippleAlarm: state.enableVoltageRippleAlarm,
+          minVoltageRipple: state.minVoltageRipple,
+          maxVoltageRipple: state.maxVoltageRipple,
           enableRFOutputPowerAlarm: state.enableRFOutputPowerAlarm,
+          minRFOutputPower: state.minRFOutputPower,
+          maxRFOutputPower: state.maxRFOutputPower,
           enablePilotFrequency1Alarm: state.enablePilotFrequency1Alarm,
           enablePilotFrequency2Alarm: state.enablePilotFrequency2Alarm,
           enableFirstChannelOutputLevelAlarm:
@@ -129,8 +147,12 @@ class Setting18ThresholdBloc
           enableVoltageAlarm: state.enableVoltageAlarm,
           minVoltage: state.minVoltage,
           maxVoltage: state.maxVoltage,
-          enableRFInputPowerAlarm: state.enableRFInputPowerAlarm,
+          enableVoltageRippleAlarm: state.enableVoltageRippleAlarm,
+          minVoltageRipple: state.minVoltageRipple,
+          maxVoltageRipple: state.maxVoltageRipple,
           enableRFOutputPowerAlarm: state.enableRFOutputPowerAlarm,
+          minRFOutputPower: state.minRFOutputPower,
+          maxRFOutputPower: state.maxRFOutputPower,
           enablePilotFrequency1Alarm: state.enablePilotFrequency1Alarm,
           enablePilotFrequency2Alarm: state.enablePilotFrequency2Alarm,
           enableFirstChannelOutputLevelAlarm:
@@ -155,8 +177,12 @@ class Setting18ThresholdBloc
           enableVoltageAlarm: state.enableVoltageAlarm,
           minVoltage: state.minVoltage,
           maxVoltage: state.maxVoltage,
-          enableRFInputPowerAlarm: state.enableRFInputPowerAlarm,
+          enableVoltageRippleAlarm: state.enableVoltageRippleAlarm,
+          minVoltageRipple: state.minVoltageRipple,
+          maxVoltageRipple: state.maxVoltageRipple,
           enableRFOutputPowerAlarm: state.enableRFOutputPowerAlarm,
+          minRFOutputPower: state.minRFOutputPower,
+          maxRFOutputPower: state.maxRFOutputPower,
           enablePilotFrequency1Alarm: state.enablePilotFrequency1Alarm,
           enablePilotFrequency2Alarm: state.enablePilotFrequency2Alarm,
           enableFirstChannelOutputLevelAlarm:
@@ -181,8 +207,12 @@ class Setting18ThresholdBloc
           enableVoltageAlarm: event.enableVoltageAlarm,
           minVoltage: state.minVoltage,
           maxVoltage: state.maxVoltage,
-          enableRFInputPowerAlarm: state.enableRFInputPowerAlarm,
+          enableVoltageRippleAlarm: state.enableVoltageRippleAlarm,
+          minVoltageRipple: state.minVoltageRipple,
+          maxVoltageRipple: state.maxVoltageRipple,
           enableRFOutputPowerAlarm: state.enableRFOutputPowerAlarm,
+          minRFOutputPower: state.minRFOutputPower,
+          maxRFOutputPower: state.maxRFOutputPower,
           enablePilotFrequency1Alarm: state.enablePilotFrequency1Alarm,
           enablePilotFrequency2Alarm: state.enablePilotFrequency2Alarm,
           enableFirstChannelOutputLevelAlarm:
@@ -207,8 +237,12 @@ class Setting18ThresholdBloc
           enableVoltageAlarm: state.enableVoltageAlarm,
           minVoltage: event.minVoltage,
           maxVoltage: state.maxVoltage,
-          enableRFInputPowerAlarm: state.enableRFInputPowerAlarm,
+          enableVoltageRippleAlarm: state.enableVoltageRippleAlarm,
+          minVoltageRipple: state.minVoltageRipple,
+          maxVoltageRipple: state.maxVoltageRipple,
           enableRFOutputPowerAlarm: state.enableRFOutputPowerAlarm,
+          minRFOutputPower: state.minRFOutputPower,
+          maxRFOutputPower: state.maxRFOutputPower,
           enablePilotFrequency1Alarm: state.enablePilotFrequency1Alarm,
           enablePilotFrequency2Alarm: state.enablePilotFrequency2Alarm,
           enableFirstChannelOutputLevelAlarm:
@@ -233,8 +267,12 @@ class Setting18ThresholdBloc
           enableVoltageAlarm: state.enableVoltageAlarm,
           minVoltage: state.minVoltage,
           maxVoltage: event.maxVoltage,
-          enableRFInputPowerAlarm: state.enableRFInputPowerAlarm,
+          enableVoltageRippleAlarm: state.enableVoltageRippleAlarm,
+          minVoltageRipple: state.minVoltageRipple,
+          maxVoltageRipple: state.maxVoltageRipple,
           enableRFOutputPowerAlarm: state.enableRFOutputPowerAlarm,
+          minRFOutputPower: state.minRFOutputPower,
+          maxRFOutputPower: state.maxRFOutputPower,
           enablePilotFrequency1Alarm: state.enablePilotFrequency1Alarm,
           enablePilotFrequency2Alarm: state.enablePilotFrequency2Alarm,
           enableFirstChannelOutputLevelAlarm:
@@ -244,13 +282,13 @@ class Setting18ThresholdBloc
         )));
   }
 
-  void _onRFInputPowerAlarmChanged(
-    RFInputPowerAlarmChanged event,
+  void _onVoltageRippleAlarmChanged(
+    VoltageRippleAlarmChanged event,
     Emitter<Setting18ThresholdState> emit,
   ) {
     emit(state.copyWith(
         submissionStatus: SubmissionStatus.none,
-        enableRFInputPowerAlarm: event.enableRFInputPowerAlarm,
+        enableVoltageRippleAlarm: event.enableVoltageRippleAlarm,
         isInitialize: false,
         enableSubmission: _isEnabledSubmission(
           enableTemperatureAlarm: state.enableTemperatureAlarm,
@@ -259,8 +297,72 @@ class Setting18ThresholdBloc
           enableVoltageAlarm: state.enableVoltageAlarm,
           minVoltage: state.minVoltage,
           maxVoltage: state.maxVoltage,
-          enableRFInputPowerAlarm: event.enableRFInputPowerAlarm,
+          enableVoltageRippleAlarm: event.enableVoltageRippleAlarm,
+          minVoltageRipple: state.minVoltageRipple,
+          maxVoltageRipple: state.maxVoltageRipple,
           enableRFOutputPowerAlarm: state.enableRFOutputPowerAlarm,
+          minRFOutputPower: state.minRFOutputPower,
+          maxRFOutputPower: state.maxRFOutputPower,
+          enablePilotFrequency1Alarm: state.enablePilotFrequency1Alarm,
+          enablePilotFrequency2Alarm: state.enablePilotFrequency2Alarm,
+          enableFirstChannelOutputLevelAlarm:
+              state.enableFirstChannelOutputLevelAlarm,
+          enableLastChannelOutputLevelAlarm:
+              state.enableLastChannelOutputLevelAlarm,
+        )));
+  }
+
+  void _onMinVoltageRippleChanged(
+    MinVoltageRippleChanged event,
+    Emitter<Setting18ThresholdState> emit,
+  ) {
+    emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
+        minVoltageRipple: event.minVoltageRipple,
+        isInitialize: false,
+        enableSubmission: _isEnabledSubmission(
+          enableTemperatureAlarm: state.enableTemperatureAlarm,
+          minTemperature: state.minTemperature,
+          maxTemperature: state.maxTemperature,
+          enableVoltageAlarm: state.enableVoltageAlarm,
+          minVoltage: state.minVoltage,
+          maxVoltage: state.maxVoltage,
+          enableVoltageRippleAlarm: state.enableVoltageRippleAlarm,
+          minVoltageRipple: event.minVoltageRipple,
+          maxVoltageRipple: state.maxVoltageRipple,
+          enableRFOutputPowerAlarm: state.enableRFOutputPowerAlarm,
+          minRFOutputPower: state.minRFOutputPower,
+          maxRFOutputPower: state.maxRFOutputPower,
+          enablePilotFrequency1Alarm: state.enablePilotFrequency1Alarm,
+          enablePilotFrequency2Alarm: state.enablePilotFrequency2Alarm,
+          enableFirstChannelOutputLevelAlarm:
+              state.enableFirstChannelOutputLevelAlarm,
+          enableLastChannelOutputLevelAlarm:
+              state.enableLastChannelOutputLevelAlarm,
+        )));
+  }
+
+  void _onMaxVoltageRippleChanged(
+    MaxVoltageRippleChanged event,
+    Emitter<Setting18ThresholdState> emit,
+  ) {
+    emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
+        maxVoltageRipple: event.maxVoltageRipple,
+        isInitialize: false,
+        enableSubmission: _isEnabledSubmission(
+          enableTemperatureAlarm: state.enableTemperatureAlarm,
+          minTemperature: state.minTemperature,
+          maxTemperature: state.maxTemperature,
+          enableVoltageAlarm: state.enableVoltageAlarm,
+          minVoltage: state.minVoltage,
+          maxVoltage: state.maxVoltage,
+          enableVoltageRippleAlarm: state.enableVoltageRippleAlarm,
+          minVoltageRipple: state.minVoltageRipple,
+          maxVoltageRipple: event.maxVoltageRipple,
+          enableRFOutputPowerAlarm: state.enableRFOutputPowerAlarm,
+          minRFOutputPower: state.minRFOutputPower,
+          maxRFOutputPower: state.maxRFOutputPower,
           enablePilotFrequency1Alarm: state.enablePilotFrequency1Alarm,
           enablePilotFrequency2Alarm: state.enablePilotFrequency2Alarm,
           enableFirstChannelOutputLevelAlarm:
@@ -285,8 +387,72 @@ class Setting18ThresholdBloc
           enableVoltageAlarm: state.enableVoltageAlarm,
           minVoltage: state.minVoltage,
           maxVoltage: state.maxVoltage,
-          enableRFInputPowerAlarm: state.enableRFInputPowerAlarm,
+          enableVoltageRippleAlarm: state.enableVoltageRippleAlarm,
+          minVoltageRipple: state.minVoltageRipple,
+          maxVoltageRipple: state.maxVoltageRipple,
           enableRFOutputPowerAlarm: event.enableRFOutputPowerAlarm,
+          minRFOutputPower: state.minRFOutputPower,
+          maxRFOutputPower: state.maxRFOutputPower,
+          enablePilotFrequency1Alarm: state.enablePilotFrequency1Alarm,
+          enablePilotFrequency2Alarm: state.enablePilotFrequency2Alarm,
+          enableFirstChannelOutputLevelAlarm:
+              state.enableFirstChannelOutputLevelAlarm,
+          enableLastChannelOutputLevelAlarm:
+              state.enableLastChannelOutputLevelAlarm,
+        )));
+  }
+
+  void _onMinRFOutputPowerChanged(
+    MinRFOutputPowerChanged event,
+    Emitter<Setting18ThresholdState> emit,
+  ) {
+    emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
+        minRFOutputPower: event.minRFOutputPower,
+        isInitialize: false,
+        enableSubmission: _isEnabledSubmission(
+          enableTemperatureAlarm: state.enableTemperatureAlarm,
+          minTemperature: state.minTemperature,
+          maxTemperature: state.maxTemperature,
+          enableVoltageAlarm: state.enableVoltageAlarm,
+          minVoltage: state.minVoltage,
+          maxVoltage: state.maxVoltage,
+          enableVoltageRippleAlarm: state.enableVoltageRippleAlarm,
+          minVoltageRipple: state.minVoltageRipple,
+          maxVoltageRipple: state.maxVoltageRipple,
+          enableRFOutputPowerAlarm: state.enableRFOutputPowerAlarm,
+          minRFOutputPower: event.minRFOutputPower,
+          maxRFOutputPower: state.maxRFOutputPower,
+          enablePilotFrequency1Alarm: state.enablePilotFrequency1Alarm,
+          enablePilotFrequency2Alarm: state.enablePilotFrequency2Alarm,
+          enableFirstChannelOutputLevelAlarm:
+              state.enableFirstChannelOutputLevelAlarm,
+          enableLastChannelOutputLevelAlarm:
+              state.enableLastChannelOutputLevelAlarm,
+        )));
+  }
+
+  void _onMaxRFOutputPowerChanged(
+    MaxRFOutputPowerChanged event,
+    Emitter<Setting18ThresholdState> emit,
+  ) {
+    emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
+        maxRFOutputPower: event.maxRFOutputPower,
+        isInitialize: false,
+        enableSubmission: _isEnabledSubmission(
+          enableTemperatureAlarm: state.enableTemperatureAlarm,
+          minTemperature: state.minTemperature,
+          maxTemperature: state.maxTemperature,
+          enableVoltageAlarm: state.enableVoltageAlarm,
+          minVoltage: state.minVoltage,
+          maxVoltage: state.maxVoltage,
+          enableVoltageRippleAlarm: state.enableVoltageRippleAlarm,
+          minVoltageRipple: state.minVoltageRipple,
+          maxVoltageRipple: state.maxVoltageRipple,
+          enableRFOutputPowerAlarm: state.enableRFOutputPowerAlarm,
+          minRFOutputPower: state.minRFOutputPower,
+          maxRFOutputPower: event.maxRFOutputPower,
           enablePilotFrequency1Alarm: state.enablePilotFrequency1Alarm,
           enablePilotFrequency2Alarm: state.enablePilotFrequency2Alarm,
           enableFirstChannelOutputLevelAlarm:
@@ -311,8 +477,12 @@ class Setting18ThresholdBloc
           enableVoltageAlarm: state.enableVoltageAlarm,
           minVoltage: state.minVoltage,
           maxVoltage: state.maxVoltage,
-          enableRFInputPowerAlarm: state.enableRFInputPowerAlarm,
+          enableVoltageRippleAlarm: state.enableVoltageRippleAlarm,
+          minVoltageRipple: state.minVoltageRipple,
+          maxVoltageRipple: state.maxVoltageRipple,
           enableRFOutputPowerAlarm: state.enableRFOutputPowerAlarm,
+          minRFOutputPower: state.minRFOutputPower,
+          maxRFOutputPower: state.maxRFOutputPower,
           enablePilotFrequency1Alarm: event.enablePilotFrequency1Alarm,
           enablePilotFrequency2Alarm: state.enablePilotFrequency2Alarm,
           enableFirstChannelOutputLevelAlarm:
@@ -337,8 +507,12 @@ class Setting18ThresholdBloc
           enableVoltageAlarm: state.enableVoltageAlarm,
           minVoltage: state.minVoltage,
           maxVoltage: state.maxVoltage,
-          enableRFInputPowerAlarm: state.enableRFInputPowerAlarm,
+          enableVoltageRippleAlarm: state.enableVoltageRippleAlarm,
+          minVoltageRipple: state.minVoltageRipple,
+          maxVoltageRipple: state.maxVoltageRipple,
           enableRFOutputPowerAlarm: state.enableRFOutputPowerAlarm,
+          minRFOutputPower: state.minRFOutputPower,
+          maxRFOutputPower: state.maxRFOutputPower,
           enablePilotFrequency1Alarm: state.enablePilotFrequency1Alarm,
           enablePilotFrequency2Alarm: event.enablePilotFrequency2Alarm,
           enableFirstChannelOutputLevelAlarm:
@@ -364,8 +538,12 @@ class Setting18ThresholdBloc
           enableVoltageAlarm: state.enableVoltageAlarm,
           minVoltage: state.minVoltage,
           maxVoltage: state.maxVoltage,
-          enableRFInputPowerAlarm: state.enableRFInputPowerAlarm,
+          enableVoltageRippleAlarm: state.enableVoltageRippleAlarm,
+          minVoltageRipple: state.minVoltageRipple,
+          maxVoltageRipple: state.maxVoltageRipple,
           enableRFOutputPowerAlarm: state.enableRFOutputPowerAlarm,
+          minRFOutputPower: state.minRFOutputPower,
+          maxRFOutputPower: state.maxRFOutputPower,
           enablePilotFrequency1Alarm: state.enablePilotFrequency1Alarm,
           enablePilotFrequency2Alarm: state.enablePilotFrequency2Alarm,
           enableFirstChannelOutputLevelAlarm:
@@ -391,8 +569,12 @@ class Setting18ThresholdBloc
           enableVoltageAlarm: state.enableVoltageAlarm,
           minVoltage: state.minVoltage,
           maxVoltage: state.maxVoltage,
-          enableRFInputPowerAlarm: state.enableRFInputPowerAlarm,
+          enableVoltageRippleAlarm: state.enableVoltageRippleAlarm,
+          minVoltageRipple: state.minVoltageRipple,
+          maxVoltageRipple: state.maxVoltageRipple,
           enableRFOutputPowerAlarm: state.enableRFOutputPowerAlarm,
+          minRFOutputPower: state.minRFOutputPower,
+          maxRFOutputPower: state.maxRFOutputPower,
           enablePilotFrequency1Alarm: state.enablePilotFrequency1Alarm,
           enablePilotFrequency2Alarm: state.enablePilotFrequency2Alarm,
           enableFirstChannelOutputLevelAlarm:
@@ -429,12 +611,16 @@ class Setting18ThresholdBloc
       enableVoltageAlarm: state.initialValues[3],
       minVoltage: state.initialValues[4],
       maxVoltage: state.initialValues[5],
-      enableRFInputPowerAlarm: state.initialValues[6],
-      enableRFOutputPowerAlarm: state.initialValues[7],
-      enablePilotFrequency1Alarm: state.initialValues[8],
-      enablePilotFrequency2Alarm: state.initialValues[9],
-      enableFirstChannelOutputLevelAlarm: state.initialValues[10],
-      enableLastChannelOutputLevelAlarm: state.initialValues[11],
+      enableVoltageRippleAlarm: state.initialValues[6],
+      minVoltageRipple: state.initialValues[7],
+      maxVoltageRipple: state.initialValues[8],
+      enableRFOutputPowerAlarm: state.initialValues[9],
+      minRFOutputPower: state.initialValues[10],
+      maxRFOutputPower: state.initialValues[11],
+      enablePilotFrequency1Alarm: state.initialValues[12],
+      enablePilotFrequency2Alarm: state.initialValues[13],
+      enableFirstChannelOutputLevelAlarm: state.initialValues[14],
+      enableLastChannelOutputLevelAlarm: state.initialValues[15],
     ));
   }
 
@@ -445,8 +631,12 @@ class Setting18ThresholdBloc
     required bool enableVoltageAlarm,
     required String minVoltage,
     required String maxVoltage,
-    required bool enableRFInputPowerAlarm,
+    required bool enableVoltageRippleAlarm,
+    required String minVoltageRipple,
+    required String maxVoltageRipple,
     required bool enableRFOutputPowerAlarm,
+    required String minRFOutputPower,
+    required String maxRFOutputPower,
     required bool enablePilotFrequency1Alarm,
     required bool enablePilotFrequency2Alarm,
     required bool enableFirstChannelOutputLevelAlarm,
@@ -458,12 +648,16 @@ class Setting18ThresholdBloc
         enableVoltageAlarm != state.initialValues[3] ||
         minVoltage != state.initialValues[4] ||
         maxVoltage != state.initialValues[5] ||
-        enableRFInputPowerAlarm != state.initialValues[6] ||
-        enableRFOutputPowerAlarm != state.initialValues[7] ||
-        enablePilotFrequency1Alarm != state.initialValues[8] ||
-        enablePilotFrequency2Alarm != state.initialValues[9] ||
-        enableFirstChannelOutputLevelAlarm != state.initialValues[10] ||
-        enableLastChannelOutputLevelAlarm != state.initialValues[11]) {
+        enableVoltageRippleAlarm != state.initialValues[6] ||
+        minVoltageRipple != state.initialValues[7] ||
+        maxVoltageRipple != state.initialValues[8] ||
+        enableRFOutputPowerAlarm != state.initialValues[9] ||
+        minRFOutputPower != state.initialValues[10] ||
+        maxRFOutputPower != state.initialValues[11] ||
+        enablePilotFrequency1Alarm != state.initialValues[12] ||
+        enablePilotFrequency2Alarm != state.initialValues[13] ||
+        enableFirstChannelOutputLevelAlarm != state.initialValues[14] ||
+        enableLastChannelOutputLevelAlarm != state.initialValues[15]) {
       return true;
     } else {
       return false;

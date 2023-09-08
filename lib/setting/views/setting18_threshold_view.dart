@@ -21,6 +21,16 @@ class Setting18ThresholdView extends StatelessWidget {
   final TextEditingController maxVoltageTextEditingController =
       TextEditingController();
 
+  final TextEditingController minVoltageRippleTextEditingController =
+      TextEditingController();
+  final TextEditingController maxVoltageRippleTextEditingController =
+      TextEditingController();
+
+  final TextEditingController minRFOutputPowerTextEditingController =
+      TextEditingController();
+  final TextEditingController maxRFOutputPowerTextEditingController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
@@ -34,6 +44,22 @@ class Setting18ThresholdView extends StatelessWidget {
         homeState.characteristicData[DataKey.maxTemperatureF] ?? '';
     String minVoltage = homeState.characteristicData[DataKey.minVoltage] ?? '';
     String maxVoltage = homeState.characteristicData[DataKey.maxVoltage] ?? '';
+    String strEnableVoltageRippleAlarm =
+        homeState.characteristicData[DataKey.voltageRippleAlarmEnable] ?? '';
+    bool enableVoltageRippleAlarm =
+        strEnableVoltageRippleAlarm == '1' ? false : true;
+    String minVoltageRipple =
+        homeState.characteristicData[DataKey.minVoltageRipple] ?? '';
+    String maxVoltageRipple =
+        homeState.characteristicData[DataKey.maxVoltageRipple] ?? '';
+    String strEnableRFOutputPowerAlarm =
+        homeState.characteristicData[DataKey.rfOutputPowerAlarmEnable] ?? '';
+    bool enableRFOutputPowerAlarm =
+        strEnableRFOutputPowerAlarm == '1' ? false : true;
+    String minRFOutputPower =
+        homeState.characteristicData[DataKey.minRFOutputPower] ?? '';
+    String maxRFOutputPower =
+        homeState.characteristicData[DataKey.maxRFOutputPower] ?? '';
 
     context.read<Setting18ThresholdBloc>().add(Initialized(
           enableTemperatureAlarm: false,
@@ -44,8 +70,12 @@ class Setting18ThresholdView extends StatelessWidget {
           enableVoltageAlarm: false,
           minVoltage: minVoltage,
           maxVoltage: maxVoltage,
-          enableRFInputPowerAlarm: false,
-          enableRFOutputPowerAlarm: false,
+          enableVoltageRippleAlarm: enableVoltageRippleAlarm,
+          minVoltageRipple: minVoltageRipple,
+          maxVoltageRipple: maxVoltageRipple,
+          enableRFOutputPowerAlarm: enableRFOutputPowerAlarm,
+          minRFOutputPower: minRFOutputPower,
+          maxRFOutputPower: maxRFOutputPower,
           enablePilotFrequency1Alarm: false,
           enablePilotFrequency2Alarm: false,
           enableFirstChannelOutputLevelAlarm: false,
@@ -180,6 +210,10 @@ class Setting18ThresholdView extends StatelessWidget {
           maxTemperatureTextEditingController.text = state.maxTemperature;
           minVoltageTextEditingController.text = state.minVoltage;
           maxVoltageTextEditingController.text = state.maxVoltage;
+          minVoltageRippleTextEditingController.text = state.minVoltageRipple;
+          maxVoltageRippleTextEditingController.text = state.maxVoltageRipple;
+          minRFOutputPowerTextEditingController.text = state.minRFOutputPower;
+          maxRFOutputPowerTextEditingController.text = state.maxRFOutputPower;
         }
       },
       child: Scaffold(
@@ -203,11 +237,21 @@ class Setting18ThresholdView extends StatelessWidget {
                     maxVoltageTextEditingController:
                         maxVoltageTextEditingController,
                   ),
+                  _VoltageRippleAlarmControl(
+                    minVoltageRippleTextEditingController:
+                        minVoltageRippleTextEditingController,
+                    maxVoltageRippleTextEditingController:
+                        maxVoltageRippleTextEditingController,
+                  ),
+                  _RFOutputPowerAlarmControl(
+                    minRFOutputPowerTextEditingController:
+                        minRFOutputPowerTextEditingController,
+                    maxRFOutputPowerTextEditingController:
+                        maxRFOutputPowerTextEditingController,
+                  ),
                   _ClusterTitle(
                     title: AppLocalizations.of(context).forwardSetting,
                   ),
-                  const _RFInputPowerAlarmControl(),
-                  const _RFOutputPowerAlarmControl(),
                   const _PilotFrequency1AlarmControl(),
                   const _PilotFrequency2AlarmControl(),
                   const _FirstChannelOutputLevelAlarmControl(),
@@ -456,23 +500,299 @@ class _VoltageAlarmControl extends StatelessWidget {
                 ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 16.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    flex: 2,
+                    child: TextField(
+                      controller: minVoltageTextEditingController,
+                      key: const Key('setting18Form_minVoltageInput_textField'),
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeXL,
+                      ),
+                      enabled: state.editMode,
+                      textInputAction: TextInputAction.done,
+                      onChanged: (minVoltage) {
+                        context
+                            .read<Setting18ThresholdBloc>()
+                            .add(MinVoltageChanged(minVoltage));
+                      },
+                      maxLength: 40,
+                      decoration: InputDecoration(
+                        label: Text(AppLocalizations.of(context).minVoltage),
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(4.0))),
+                        contentPadding: EdgeInsets.all(8.0),
+                        isDense: true,
+                        filled: true,
+                        fillColor: Colors.white,
+                        counterText: '',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: TextField(
+                      controller: maxVoltageTextEditingController,
+                      key: const Key('setting18Form_maxVoltageInput_textField'),
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeXL,
+                      ),
+                      enabled: state.editMode,
+                      textInputAction: TextInputAction.done,
+                      onChanged: (maxVoltage) {
+                        context
+                            .read<Setting18ThresholdBloc>()
+                            .add(MaxVoltageChanged(maxVoltage));
+                      },
+                      maxLength: 40,
+                      decoration: InputDecoration(
+                        label: Text(AppLocalizations.of(context).maxVoltage),
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(4.0))),
+                        contentPadding: EdgeInsets.all(8.0),
+                        isDense: true,
+                        filled: true,
+                        fillColor: Colors.white,
+                        counterText: '',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _VoltageRippleAlarmControl extends StatelessWidget {
+  const _VoltageRippleAlarmControl({
+    super.key,
+    required this.minVoltageRippleTextEditingController,
+    required this.maxVoltageRippleTextEditingController,
+  });
+
+  final TextEditingController minVoltageRippleTextEditingController;
+  final TextEditingController maxVoltageRippleTextEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 16.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      '${AppLocalizations.of(context).voltageRipple} (${CustomStyle.milliVolt})',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Switch(
+                      thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return const Icon(Icons.check);
+                          }
+                          return const Icon(Icons.close);
+                        },
+                      ),
+                      value: state.enableVoltageRippleAlarm,
+                      onChanged: state.editMode
+                          ? (bool value) {
+                              context
+                                  .read<Setting18ThresholdBloc>()
+                                  .add(VoltageRippleAlarmChanged(value));
+                            }
+                          : null,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 16.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    flex: 2,
+                    child: TextField(
+                      controller: minVoltageRippleTextEditingController,
+                      key: const Key(
+                          'setting18Form_minVoltageRippleInput_textField'),
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeXL,
+                      ),
+                      enabled: state.editMode,
+                      textInputAction: TextInputAction.done,
+                      onChanged: (minVoltageRipple) {
+                        context
+                            .read<Setting18ThresholdBloc>()
+                            .add(MinVoltageRippleChanged(minVoltageRipple));
+                      },
+                      maxLength: 40,
+                      decoration: InputDecoration(
+                        label:
+                            Text(AppLocalizations.of(context).minVoltageRipple),
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(4.0))),
+                        contentPadding: EdgeInsets.all(8.0),
+                        isDense: true,
+                        filled: true,
+                        fillColor: Colors.white,
+                        counterText: '',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: TextField(
+                      controller: maxVoltageRippleTextEditingController,
+                      key: const Key(
+                          'setting18Form_maxVoltageRippleInput_textField'),
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeXL,
+                      ),
+                      enabled: state.editMode,
+                      textInputAction: TextInputAction.done,
+                      onChanged: (maxVoltageRipple) {
+                        context
+                            .read<Setting18ThresholdBloc>()
+                            .add(MaxVoltageRippleChanged(maxVoltageRipple));
+                      },
+                      maxLength: 40,
+                      decoration: InputDecoration(
+                        label:
+                            Text(AppLocalizations.of(context).maxVoltageRipple),
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(4.0))),
+                        contentPadding: EdgeInsets.all(8.0),
+                        isDense: true,
+                        filled: true,
+                        fillColor: Colors.white,
+                        counterText: '',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _RFOutputPowerAlarmControl extends StatelessWidget {
+  const _RFOutputPowerAlarmControl({
+    super.key,
+    required this.minRFOutputPowerTextEditingController,
+    required this.maxRFOutputPowerTextEditingController,
+  });
+
+  final TextEditingController minRFOutputPowerTextEditingController;
+  final TextEditingController maxRFOutputPowerTextEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 16.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      AppLocalizations.of(context).rfOutputPower,
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Switch(
+                      thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return const Icon(Icons.check);
+                          }
+                          return const Icon(Icons.close);
+                        },
+                      ),
+                      value: state.enableRFOutputPowerAlarm,
+                      onChanged: state.editMode
+                          ? (bool value) {
+                              context
+                                  .read<Setting18ThresholdBloc>()
+                                  .add(RFOutputPowerAlarmChanged(value));
+                            }
+                          : null,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
                   flex: 2,
                   child: TextField(
-                    controller: minVoltageTextEditingController,
-                    key: const Key('setting18Form_minVoltageInput_textField'),
+                    controller: minRFOutputPowerTextEditingController,
+                    key: const Key('setting18Form_minRFOutputPower_textField'),
                     style: const TextStyle(
                       fontSize: CustomStyle.sizeXL,
                     ),
                     enabled: state.editMode,
                     textInputAction: TextInputAction.done,
-                    onChanged: (minVoltage) {
+                    onChanged: (minRFOutputPower) {
                       context
                           .read<Setting18ThresholdBloc>()
-                          .add(MinVoltageChanged(minVoltage));
+                          .add(MinRFOutputPowerChanged(minRFOutputPower));
                     },
                     maxLength: 40,
                     decoration: InputDecoration(
@@ -493,17 +813,17 @@ class _VoltageAlarmControl extends StatelessWidget {
                 Flexible(
                   flex: 2,
                   child: TextField(
-                    controller: maxVoltageTextEditingController,
-                    key: const Key('setting18Form_maxVoltageInput_textField'),
+                    controller: maxRFOutputPowerTextEditingController,
+                    key: const Key('setting18Form_maxRFOutputPower_textField'),
                     style: const TextStyle(
                       fontSize: CustomStyle.sizeXL,
                     ),
                     enabled: state.editMode,
                     textInputAction: TextInputAction.done,
-                    onChanged: (maxVoltage) {
+                    onChanged: (maxRFOutputPower) {
                       context
                           .read<Setting18ThresholdBloc>()
-                          .add(MaxVoltageChanged(maxVoltage));
+                          .add(MaxRFOutputPowerChanged(maxRFOutputPower));
                     },
                     maxLength: 40,
                     decoration: InputDecoration(
@@ -572,51 +892,6 @@ Widget controlParameterSwitch({
       ],
     ),
   );
-}
-
-class _RFInputPowerAlarmControl extends StatelessWidget {
-  const _RFInputPowerAlarmControl({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
-        builder: (context, state) {
-      return controlParameterSwitch(
-        context: context,
-        editMode: state.editMode,
-        title: AppLocalizations.of(context).rfInputPower,
-        value: state.enableRFInputPowerAlarm,
-        onChanged: (bool value) {
-          context
-              .read<Setting18ThresholdBloc>()
-              .add(RFInputPowerAlarmChanged(value));
-        },
-      );
-    });
-  }
-}
-
-class _RFOutputPowerAlarmControl extends StatelessWidget {
-  const _RFOutputPowerAlarmControl({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
-      builder: (context, state) {
-        return controlParameterSwitch(
-          context: context,
-          editMode: state.editMode,
-          title: AppLocalizations.of(context).rfOutputPower,
-          value: state.enableRFOutputPowerAlarm,
-          onChanged: (bool value) {
-            context
-                .read<Setting18ThresholdBloc>()
-                .add(RFOutputPowerAlarmChanged(value));
-          },
-        );
-      },
-    );
-  }
 }
 
 class _PilotFrequency1AlarmControl extends StatelessWidget {

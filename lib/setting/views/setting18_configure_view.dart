@@ -405,8 +405,8 @@ class _SplitOptionDropDownMenu extends StatelessWidget {
   const _SplitOptionDropDownMenu({super.key});
 
   final Map<String, String> types = const {
-    '204/258 MHz': '0',
-    '396/492 MHz': '1',
+    '204/258 MHz': '1',
+    '396/492 MHz': '2',
   };
 
   @override
@@ -450,8 +450,9 @@ class _SplitOptionDropDownMenu extends StatelessWidget {
                       dropdownMaxHeight: 200,
                       isExpanded: true,
                       icon: const Icon(Icons.keyboard_arrow_down),
-                      value:
-                          state.splitOption == '0' ? null : state.splitOption,
+                      value: state.splitOption == '0' || state.splitOption == ''
+                          ? null
+                          : state.splitOption,
                       items: [
                         for (String k in types.keys)
                           DropdownMenuItem(

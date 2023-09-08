@@ -102,7 +102,7 @@
     "rfPilotLevelAlarm": "Nivel Piloto de RF",
     "temperatureAlarm": "Temperatura",
     "powerSupplyAlarm": "Fuente de alimentación",
-    "unitStatusAlarm": "Unidad Estado",
+    "unitStatusAlarm": "Estado del dispositivo ",
 
     "amplifier": "Amplificador",
     "minute": "Minuto(s)",

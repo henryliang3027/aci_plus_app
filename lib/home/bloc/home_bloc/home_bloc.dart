@@ -452,23 +452,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             newCharacteristicData[DataKey.ingressSetting2] = result[11];
             newCharacteristicData[DataKey.ingressSetting3] = result[12];
             newCharacteristicData[DataKey.ingressSetting4] = result[13];
-            newCharacteristicData[DataKey.pilotFrequency1StatusAlarm] =
-                result[14];
-            newCharacteristicData[DataKey.pilotFrequency2StatusAlarm] =
+            newCharacteristicData[DataKey.splitOption] = result[14];
+            newCharacteristicData[DataKey.pilotFrequency1AlarmEnable] =
                 result[15];
-            newCharacteristicData[DataKey.temperatureAlarm] = result[16];
-            newCharacteristicData[DataKey.voltageAlarm] = result[17];
-            newCharacteristicData[DataKey.inputPowerAlarm] = result[18];
-            newCharacteristicData[DataKey.outputPowerAlarm] = result[19];
-            newCharacteristicData[DataKey.location] = result[20];
-            newCharacteristicData[DataKey.logInterval] = result[21];
-            newCharacteristicData[DataKey.inputEqualizer] = result[22];
-            newCharacteristicData[DataKey.inputAttenuation] = result[23];
-            newCharacteristicData[DataKey.inputAttenuation2] = result[24];
-            newCharacteristicData[DataKey.inputAttenuation3] = result[25];
-            newCharacteristicData[DataKey.inputAttenuation4] = result[26];
-            newCharacteristicData[DataKey.outputEqualizer] = result[27];
-            newCharacteristicData[DataKey.outputAttenuation] = result[28];
+            newCharacteristicData[DataKey.pilotFrequency2AlarmEnable] =
+                result[16];
+            newCharacteristicData[DataKey.temperatureAlarmEnable] = result[17];
+            newCharacteristicData[DataKey.voltageAlarmEnable] = result[18];
+            newCharacteristicData[DataKey.splitOptionAlarmEnable] = result[19];
+            newCharacteristicData[DataKey.voltageRippleAlarmEnable] =
+                result[20];
+            newCharacteristicData[DataKey.rfOutputPowerAlarmEnable] =
+                result[21];
+            newCharacteristicData[DataKey.location] = result[22];
+            newCharacteristicData[DataKey.logInterval] = result[23];
+            newCharacteristicData[DataKey.inputEqualizer] = result[24];
+            newCharacteristicData[DataKey.inputAttenuation] = result[25];
+            newCharacteristicData[DataKey.inputAttenuation2] = result[26];
+            newCharacteristicData[DataKey.inputAttenuation3] = result[27];
+            newCharacteristicData[DataKey.inputAttenuation4] = result[28];
+            newCharacteristicData[DataKey.outputEqualizer] = result[29];
+            newCharacteristicData[DataKey.outputAttenuation] = result[30];
 
             // 如果讀取到 0 分鐘, 則自動設定為 30 分鐘
             if (result[17] == '0') {
@@ -491,7 +495,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             newCharacteristicData[DataKey.currentVoltageRipple] = result[7];
             newCharacteristicData[DataKey.currentRFInputPower] = result[8];
             newCharacteristicData[DataKey.currentRFOutputPower] = result[9];
-            newCharacteristicData[DataKey.splitOption] = result[10];
+            // newCharacteristicData[DataKey.splitOption] = result[10];
 
             emit(state.copyWith(
               loadingStatus: FormStatus.requestSuccess,

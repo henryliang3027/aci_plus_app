@@ -17,8 +17,12 @@ class Initialized extends Setting18ThresholdEvent {
     required this.enableVoltageAlarm,
     required this.minVoltage,
     required this.maxVoltage,
-    required this.enableRFInputPowerAlarm,
+    required this.enableVoltageRippleAlarm,
+    required this.minVoltageRipple,
+    required this.maxVoltageRipple,
     required this.enableRFOutputPowerAlarm,
+    required this.minRFOutputPower,
+    required this.maxRFOutputPower,
     required this.enablePilotFrequency1Alarm,
     required this.enablePilotFrequency2Alarm,
     required this.enableFirstChannelOutputLevelAlarm,
@@ -33,8 +37,12 @@ class Initialized extends Setting18ThresholdEvent {
   final bool enableVoltageAlarm;
   final String minVoltage;
   final String maxVoltage;
-  final bool enableRFInputPowerAlarm;
+  final bool enableVoltageRippleAlarm;
+  final String minVoltageRipple;
+  final String maxVoltageRipple;
   final bool enableRFOutputPowerAlarm;
+  final String minRFOutputPower;
+  final String maxRFOutputPower;
   final bool enablePilotFrequency1Alarm;
   final bool enablePilotFrequency2Alarm;
   final bool enableFirstChannelOutputLevelAlarm;
@@ -50,8 +58,12 @@ class Initialized extends Setting18ThresholdEvent {
         enableVoltageAlarm,
         minVoltage,
         maxVoltage,
-        enableRFInputPowerAlarm,
+        enableVoltageRippleAlarm,
+        minVoltageRipple,
+        maxVoltageRipple,
         enableRFOutputPowerAlarm,
+        minRFOutputPower,
+        maxRFOutputPower,
         enablePilotFrequency1Alarm,
         enablePilotFrequency2Alarm,
         enableFirstChannelOutputLevelAlarm,
@@ -113,13 +125,31 @@ class MaxVoltageChanged extends Setting18ThresholdEvent {
   List<Object> get props => [maxVoltage];
 }
 
-class RFInputPowerAlarmChanged extends Setting18ThresholdEvent {
-  const RFInputPowerAlarmChanged(this.enableRFInputPowerAlarm);
+class VoltageRippleAlarmChanged extends Setting18ThresholdEvent {
+  const VoltageRippleAlarmChanged(this.enableVoltageRippleAlarm);
 
-  final bool enableRFInputPowerAlarm;
+  final bool enableVoltageRippleAlarm;
 
   @override
-  List<Object> get props => [enableRFInputPowerAlarm];
+  List<Object> get props => [enableVoltageRippleAlarm];
+}
+
+class MinVoltageRippleChanged extends Setting18ThresholdEvent {
+  const MinVoltageRippleChanged(this.minVoltageRipple);
+
+  final String minVoltageRipple;
+
+  @override
+  List<Object> get props => [minVoltageRipple];
+}
+
+class MaxVoltageRippleChanged extends Setting18ThresholdEvent {
+  const MaxVoltageRippleChanged(this.maxVoltageRipple);
+
+  final String maxVoltageRipple;
+
+  @override
+  List<Object> get props => [maxVoltageRipple];
 }
 
 class RFOutputPowerAlarmChanged extends Setting18ThresholdEvent {
@@ -129,6 +159,24 @@ class RFOutputPowerAlarmChanged extends Setting18ThresholdEvent {
 
   @override
   List<Object> get props => [enableRFOutputPowerAlarm];
+}
+
+class MinRFOutputPowerChanged extends Setting18ThresholdEvent {
+  const MinRFOutputPowerChanged(this.minRFOutputPower);
+
+  final String minRFOutputPower;
+
+  @override
+  List<Object> get props => [minRFOutputPower];
+}
+
+class MaxRFOutputPowerChanged extends Setting18ThresholdEvent {
+  const MaxRFOutputPowerChanged(this.maxRFOutputPower);
+
+  final String maxRFOutputPower;
+
+  @override
+  List<Object> get props => [maxRFOutputPower];
 }
 
 class PilotFrequency1AlarmChanged extends Setting18ThresholdEvent {

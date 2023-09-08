@@ -99,12 +99,14 @@ class Dsim18Parser {
         String ingressSetting2 = '';
         String ingressSetting3 = '';
         String ingressSetting4 = '';
-        String pilotFrequency1StatusAlarm = '';
-        String pilotFrequency2StatusAlarm = '';
-        String temperatureAlarm = '';
-        String voltageAlarm = '';
-        String inputPowerAlarm = '';
-        String outputPowerAlarm = '';
+        String splitOption = '';
+        String pilotFrequency1AlarmEnable = '';
+        String pilotFrequency2AlarmEnable = '';
+        String temperatureAlarmEnable = '';
+        String voltageAlarmEnable = '';
+        String splitOptionAlarmEnable = '';
+        String voltageRippleAlarmEnable = '';
+        String outputPowerAlarmEnable = '';
         String inputAttenuation = '';
         String inputEqualizer = '';
         String inputAttenuation2 = '';
@@ -191,23 +193,29 @@ class Dsim18Parser {
         // 解析 ingress setting 4
         ingressSetting4 = rawData[21].toString();
 
-        // 解析 pilot frequency 1 status alarm
-        pilotFrequency1StatusAlarm = rawData[43].toString();
+        // 解析 splitOption
+        splitOption = rawData[25].toString();
 
-        // 解析 pilot frequency 2 status alarm
-        pilotFrequency2StatusAlarm = rawData[44].toString();
+        // 解析 pilotFrequency1AlarmEnable
+        pilotFrequency1AlarmEnable = rawData[43].toString();
 
-        // 解析 temperature alarm
-        temperatureAlarm = rawData[45].toString();
+        // 解析 pilotFrequency2AlarmEnable
+        pilotFrequency2AlarmEnable = rawData[44].toString();
 
-        // 解析 voltage alarm
-        voltageAlarm = rawData[46].toString();
+        // 解析 temperatureAlarmEnable
+        temperatureAlarmEnable = rawData[45].toString();
 
-        // 解析 input porwer alarm (對應 24V ripple)
-        inputPowerAlarm = rawData[52].toString();
+        // 解析 voltageAlarmEnable
+        voltageAlarmEnable = rawData[46].toString();
 
-        // 解析 output power alarm
-        outputPowerAlarm = rawData[53].toString();
+        // 解析 splitOptionAlarmEnable
+        splitOptionAlarmEnable = rawData[51].toString();
+
+        // 解析 voltageRippleAlarmEnable
+        voltageRippleAlarmEnable = rawData[52].toString();
+
+        // 解析 outputPowerAlarmEnable
+        outputPowerAlarmEnable = rawData[53].toString();
 
         // 使用 unicode 解析 location
         for (int i = 54; i < 150; i += 2) {
@@ -292,12 +300,14 @@ class Dsim18Parser {
             ingressSetting2,
             ingressSetting3,
             ingressSetting4,
-            pilotFrequency1StatusAlarm,
-            pilotFrequency2StatusAlarm,
-            temperatureAlarm,
-            voltageAlarm,
-            inputPowerAlarm,
-            outputPowerAlarm,
+            splitOption,
+            pilotFrequency1AlarmEnable,
+            pilotFrequency2AlarmEnable,
+            temperatureAlarmEnable,
+            voltageAlarmEnable,
+            splitOptionAlarmEnable,
+            voltageRippleAlarmEnable,
+            outputPowerAlarmEnable,
             location,
             logInterval,
             inputEqualizer,
@@ -320,7 +330,9 @@ class Dsim18Parser {
         String currentVoltageRipple = '';
         String currentRFInputPower = '';
         String currentRFOutputPower = '';
-        String splitOption = '';
+        Alarm splitOptionAlarmSeverity = Alarm.medium;
+        Alarm voltageRippleAlarmSeverity = Alarm.medium;
+        Alarm outputPowerAlarmSeverity = Alarm.medium;
 
         int unitStatus = rawData[3];
         alarmUSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
@@ -379,8 +391,20 @@ class Dsim18Parser {
             (rawCurrentRFOutputPowerByteData.getInt16(0, Endian.little) / 10)
                 .toStringAsFixed(1);
 
-        // 解析 splitOption
-        splitOption = rawData[25].toString();
+        // 解析 splitOptionStatusAlarm
+        int splitOptionStatus = rawData[134];
+        splitOptionAlarmSeverity =
+            splitOptionStatus == 1 ? Alarm.danger : Alarm.success;
+
+        // 解析 voltageRippleStatusAlarm
+        int voltageRippleStatus = rawData[135];
+        voltageRippleAlarmSeverity =
+            voltageRippleStatus == 1 ? Alarm.danger : Alarm.success;
+
+        // 解析 voltageRippleStatusAlarm
+        int outputPowerStatus = rawData[136];
+        outputPowerAlarmSeverity =
+            outputPowerStatus == 1 ? Alarm.danger : Alarm.success;
 
         if (!completer.isCompleted) {
           completer.complete((
@@ -393,7 +417,9 @@ class Dsim18Parser {
             currentVoltageRipple,
             currentRFInputPower,
             currentRFOutputPower,
-            splitOption,
+            splitOptionAlarmSeverity,
+            voltageRippleAlarmSeverity,
+            outputPowerAlarmSeverity,
           ));
         }
         break;

@@ -985,19 +985,21 @@ class DsimRepository {
         maxTemperatureF,
         minVoltage,
         maxVoltage,
-        maxVoltageRipple,
         minVoltageRipple,
-        maxRFOutputPower,
+        maxVoltageRipple,
         minRFOutputPower,
+        maxRFOutputPower,
         ingressSetting2,
         ingressSetting3,
         ingressSetting4,
-        pilotFrequency1StatusAlarm,
-        pilotFrequency2StatusAlarm,
-        temperatureAlarm,
-        voltageAlarm,
-        inputPowerAlarm,
-        outputPowerAlarm,
+        splitOption,
+        pilotFrequency1AlarmEnable,
+        pilotFrequency2AlarmEnable,
+        temperatureAlarmEnable,
+        voltageAlarmEnable,
+        splitOptionAlarmEnable,
+        voltageRippleAlarmEnable,
+        rfOutputPowerAlarmEnable,
         location,
         logInterval,
         inputEqualizer,
@@ -1018,19 +1020,21 @@ class DsimRepository {
         maxTemperatureF,
         minVoltage,
         maxVoltage,
-        maxVoltageRipple,
         minVoltageRipple,
-        maxRFOutputPower,
+        maxVoltageRipple,
         minRFOutputPower,
+        maxRFOutputPower,
         ingressSetting2,
         ingressSetting3,
         ingressSetting4,
-        pilotFrequency1StatusAlarm,
-        pilotFrequency2StatusAlarm,
-        temperatureAlarm,
-        voltageAlarm,
-        inputPowerAlarm,
-        outputPowerAlarm,
+        splitOption,
+        pilotFrequency1AlarmEnable,
+        pilotFrequency2AlarmEnable,
+        temperatureAlarmEnable,
+        voltageAlarmEnable,
+        splitOptionAlarmEnable,
+        voltageRippleAlarmEnable,
+        rfOutputPowerAlarmEnable,
         location,
         logInterval,
         inputEqualizer,
@@ -1044,6 +1048,8 @@ class DsimRepository {
     } catch (e) {
       return [
         false,
+        '',
+        '',
         '',
         '',
         '',
@@ -1099,7 +1105,9 @@ class DsimRepository {
         currentVoltageRipple,
         currentRFInputPower,
         currentRFOutputPower,
-        splitOption,
+        splitOptionAlarmSeverity,
+        voltageRippleAlarmSeverity,
+        outputPowerAlarmSeverity,
       ) = await _completer.future;
       cancelTimeout(name: '1p8G2');
 
@@ -1114,11 +1122,15 @@ class DsimRepository {
         currentVoltageRipple,
         currentRFInputPower,
         currentRFOutputPower,
-        splitOption,
+        splitOptionAlarmSeverity,
+        voltageRippleAlarmSeverity,
+        outputPowerAlarmSeverity,
       ];
     } catch (e) {
       return [
         false,
+        '',
+        '',
         '',
         '',
         '',
@@ -1507,13 +1519,13 @@ class DsimRepository {
       _characteristicDataStreamController
           .add({DataKey.maxVoltage: resultOf1p8G1[6]});
       _characteristicDataStreamController
-          .add({DataKey.maxVoltageRipple: resultOf1p8G1[7]});
+          .add({DataKey.minVoltageRipple: resultOf1p8G1[7]});
       _characteristicDataStreamController
-          .add({DataKey.minVoltageRipple: resultOf1p8G1[8]});
+          .add({DataKey.maxVoltageRipple: resultOf1p8G1[8]});
       _characteristicDataStreamController
-          .add({DataKey.maxRFOutputPower: resultOf1p8G1[9]});
+          .add({DataKey.minRFOutputPower: resultOf1p8G1[9]});
       _characteristicDataStreamController
-          .add({DataKey.minRFOutputPower: resultOf1p8G1[10]});
+          .add({DataKey.maxRFOutputPower: resultOf1p8G1[10]});
       _characteristicDataStreamController
           .add({DataKey.ingressSetting2: resultOf1p8G1[11]});
       _characteristicDataStreamController
@@ -1521,35 +1533,39 @@ class DsimRepository {
       _characteristicDataStreamController
           .add({DataKey.ingressSetting4: resultOf1p8G1[13]});
       _characteristicDataStreamController
-          .add({DataKey.pilotFrequency1StatusAlarm: resultOf1p8G1[14]});
+          .add({DataKey.splitOption: resultOf1p8G1[14]});
       _characteristicDataStreamController
-          .add({DataKey.pilotFrequency2StatusAlarm: resultOf1p8G1[15]});
+          .add({DataKey.pilotFrequency1AlarmEnable: resultOf1p8G1[15]});
       _characteristicDataStreamController
-          .add({DataKey.temperatureAlarm: resultOf1p8G1[16]});
+          .add({DataKey.pilotFrequency2AlarmEnable: resultOf1p8G1[16]});
       _characteristicDataStreamController
-          .add({DataKey.voltageAlarm: resultOf1p8G1[17]});
+          .add({DataKey.temperatureAlarmEnable: resultOf1p8G1[17]});
       _characteristicDataStreamController
-          .add({DataKey.inputPowerAlarm: resultOf1p8G1[18]});
+          .add({DataKey.voltageAlarmEnable: resultOf1p8G1[18]});
       _characteristicDataStreamController
-          .add({DataKey.outputPowerAlarm: resultOf1p8G1[19]});
+          .add({DataKey.splitOptionAlarmEnable: resultOf1p8G1[19]});
       _characteristicDataStreamController
-          .add({DataKey.location: resultOf1p8G1[20]});
+          .add({DataKey.voltageRippleAlarmEnable: resultOf1p8G1[20]});
       _characteristicDataStreamController
-          .add({DataKey.logInterval: resultOf1p8G1[21]});
+          .add({DataKey.rfOutputPowerAlarmEnable: resultOf1p8G1[21]});
       _characteristicDataStreamController
-          .add({DataKey.inputEqualizer: resultOf1p8G1[22]});
+          .add({DataKey.location: resultOf1p8G1[22]});
       _characteristicDataStreamController
-          .add({DataKey.inputAttenuation: resultOf1p8G1[23]});
+          .add({DataKey.logInterval: resultOf1p8G1[23]});
       _characteristicDataStreamController
-          .add({DataKey.inputAttenuation2: resultOf1p8G1[24]});
+          .add({DataKey.inputEqualizer: resultOf1p8G1[24]});
       _characteristicDataStreamController
-          .add({DataKey.inputAttenuation3: resultOf1p8G1[25]});
+          .add({DataKey.inputAttenuation: resultOf1p8G1[25]});
       _characteristicDataStreamController
-          .add({DataKey.inputAttenuation4: resultOf1p8G1[26]});
+          .add({DataKey.inputAttenuation2: resultOf1p8G1[26]});
       _characteristicDataStreamController
-          .add({DataKey.outputEqualizer: resultOf1p8G1[27]});
+          .add({DataKey.inputAttenuation3: resultOf1p8G1[27]});
       _characteristicDataStreamController
-          .add({DataKey.outputAttenuation: resultOf1p8G1[28]});
+          .add({DataKey.inputAttenuation4: resultOf1p8G1[28]});
+      _characteristicDataStreamController
+          .add({DataKey.outputEqualizer: resultOf1p8G1[29]});
+      _characteristicDataStreamController
+          .add({DataKey.outputAttenuation: resultOf1p8G1[30]});
     }
 
     List<dynamic> resultOf1p8G2 = await requestCommand1p8G2();
@@ -1573,7 +1589,11 @@ class DsimRepository {
       _characteristicDataStreamController
           .add({DataKey.currentRFOutputPower: resultOf1p8G2[9]});
       _characteristicDataStreamController
-          .add({DataKey.splitOption: resultOf1p8G2[10]});
+          .add({DataKey.splitOptionAlarmSeverity: resultOf1p8G2[10]});
+      _characteristicDataStreamController
+          .add({DataKey.voltageRippleAlarmSeverity: resultOf1p8G2[11]});
+      _characteristicDataStreamController
+          .add({DataKey.outputPowerAlarmSeverity: resultOf1p8G2[12]});
     }
   }
 
