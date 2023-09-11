@@ -44,42 +44,57 @@ class Setting18ThresholdView extends StatelessWidget {
         homeState.characteristicData[DataKey.maxTemperatureF] ?? '';
     String minVoltage = homeState.characteristicData[DataKey.minVoltage] ?? '';
     String maxVoltage = homeState.characteristicData[DataKey.maxVoltage] ?? '';
-    String strEnableVoltageRippleAlarm =
-        homeState.characteristicData[DataKey.voltageRippleAlarmEnable] ?? '';
-    bool enableVoltageRippleAlarm =
-        strEnableVoltageRippleAlarm == '1' ? false : true;
     String minVoltageRipple =
         homeState.characteristicData[DataKey.minVoltageRipple] ?? '';
     String maxVoltageRipple =
         homeState.characteristicData[DataKey.maxVoltageRipple] ?? '';
-    String strEnableRFOutputPowerAlarm =
-        homeState.characteristicData[DataKey.rfOutputPowerAlarmEnable] ?? '';
-    bool enableRFOutputPowerAlarm =
-        strEnableRFOutputPowerAlarm == '1' ? false : true;
     String minRFOutputPower =
         homeState.characteristicData[DataKey.minRFOutputPower] ?? '';
     String maxRFOutputPower =
         homeState.characteristicData[DataKey.maxRFOutputPower] ?? '';
 
+    String strTemperatureAlarmState =
+        homeState.characteristicData[DataKey.temperatureAlarmState] ?? '';
+    bool temperatureAlarmState = strTemperatureAlarmState == '1' ? false : true;
+    String strVoltageAlarmState =
+        homeState.characteristicData[DataKey.voltageAlarmState] ?? '';
+    bool voltageAlarmState = strVoltageAlarmState == '1' ? false : true;
+    String strVoltageRippleAlarmState =
+        homeState.characteristicData[DataKey.voltageRippleAlarmState] ?? '';
+    bool voltageRippleAlarmState =
+        strVoltageRippleAlarmState == '1' ? false : true;
+    String strRFOutputPowerAlarmState =
+        homeState.characteristicData[DataKey.rfOutputPowerAlarmState] ?? '';
+    bool rfOutputPowerAlarmState =
+        strRFOutputPowerAlarmState == '1' ? false : true;
+    String strPilotFrequency1AlarmState =
+        homeState.characteristicData[DataKey.pilotFrequency1AlarmState] ?? '';
+    bool pilotFrequency1AlarmState =
+        strPilotFrequency1AlarmState == '1' ? false : true;
+    String strPilotFrequency2AlarmState =
+        homeState.characteristicData[DataKey.pilotFrequency2AlarmState] ?? '';
+    bool pilotFrequency2AlarmState =
+        strPilotFrequency2AlarmState == '1' ? false : true;
+
     context.read<Setting18ThresholdBloc>().add(Initialized(
-          enableTemperatureAlarm: false,
+          temperatureAlarmState: temperatureAlarmState,
           minTemperature: minTemperature,
           maxTemperature: maxTemperature,
           minTemperatureF: minTemperatureF,
           maxTemperatureF: maxTemperatureF,
-          enableVoltageAlarm: false,
+          voltageAlarmState: voltageAlarmState,
           minVoltage: minVoltage,
           maxVoltage: maxVoltage,
-          enableVoltageRippleAlarm: enableVoltageRippleAlarm,
+          voltageRippleAlarmState: voltageRippleAlarmState,
           minVoltageRipple: minVoltageRipple,
           maxVoltageRipple: maxVoltageRipple,
-          enableRFOutputPowerAlarm: enableRFOutputPowerAlarm,
+          rfOutputPowerAlarmState: rfOutputPowerAlarmState,
           minRFOutputPower: minRFOutputPower,
           maxRFOutputPower: maxRFOutputPower,
-          enablePilotFrequency1Alarm: false,
-          enablePilotFrequency2Alarm: false,
-          enableFirstChannelOutputLevelAlarm: false,
-          enableLastChannelOutputLevelAlarm: false,
+          pilotFrequency1AlarmState: pilotFrequency1AlarmState,
+          pilotFrequency2AlarmState: pilotFrequency2AlarmState,
+          firstChannelOutputLevelAlarmState: false,
+          lastChannelOutputLevelAlarmState: false,
         ));
 
     Future<void> showInProgressDialog() async {
@@ -152,6 +167,36 @@ class Setting18ThresholdView extends StatelessWidget {
         return AppLocalizations.of(context).dialogMessageMaxVoltageSetting;
       } else if (item == DataKey.minVoltage.name) {
         return AppLocalizations.of(context).dialogMessageMinVoltageSetting;
+      } else if (item == DataKey.maxVoltageRipple.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageMaxVoltageRippleSetting;
+      } else if (item == DataKey.minVoltageRipple.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageMinVoltageRippleSetting;
+      } else if (item == DataKey.maxRFOutputPower.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageMaxRFOutputPowerSetting;
+      } else if (item == DataKey.minRFOutputPower.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageMinRFOutputPowerSetting;
+      } else if (item == DataKey.temperatureAlarmState.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageTemperatureAlarmStateSetting;
+      } else if (item == DataKey.voltageAlarmState.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageVoltageAlarmStateSetting;
+      } else if (item == DataKey.voltageRippleAlarmState.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageVoltageRippleAlarmStateSetting;
+      } else if (item == DataKey.rfOutputPowerAlarmState.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageRFOutputPowerAlarmStateSetting;
+      } else if (item == DataKey.pilotFrequency1AlarmState.name) {
+        return AppLocalizations.of(context)
+            .dialogMessagePilotFrequency1AlarmStateSetting;
+      } else if (item == DataKey.pilotFrequency2AlarmState.name) {
+        return AppLocalizations.of(context)
+            .dialogMessagePilotFrequency2AlarmStateSetting;
       } else {
         return '';
       }
@@ -347,7 +392,7 @@ class _TemperatureAlarmControl extends StatelessWidget {
                           return const Icon(Icons.close);
                         },
                       ),
-                      value: state.enableTemperatureAlarm,
+                      value: state.temperatureAlarmState,
                       onChanged: state.editMode
                           ? (bool value) {
                               context
@@ -487,7 +532,7 @@ class _VoltageAlarmControl extends StatelessWidget {
                           return const Icon(Icons.close);
                         },
                       ),
-                      value: state.enableVoltageAlarm,
+                      value: state.voltageAlarmState,
                       onChanged: state.editMode
                           ? (bool value) {
                               context
@@ -606,7 +651,7 @@ class _VoltageRippleAlarmControl extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      '${AppLocalizations.of(context).voltageRipple} (${CustomStyle.milliVolt})',
+                      '${AppLocalizations.of(context).voltageRipple} (${CustomStyle.volt})',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
@@ -623,7 +668,7 @@ class _VoltageRippleAlarmControl extends StatelessWidget {
                           return const Icon(Icons.close);
                         },
                       ),
-                      value: state.enableVoltageRippleAlarm,
+                      value: state.voltageRippleAlarmState,
                       onChanged: state.editMode
                           ? (bool value) {
                               context
@@ -746,7 +791,7 @@ class _RFOutputPowerAlarmControl extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      AppLocalizations.of(context).rfOutputPower,
+                      '${AppLocalizations.of(context).rfOutputPower} (${CustomStyle.dBmV})',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
@@ -763,7 +808,7 @@ class _RFOutputPowerAlarmControl extends StatelessWidget {
                           return const Icon(Icons.close);
                         },
                       ),
-                      value: state.enableRFOutputPowerAlarm,
+                      value: state.rfOutputPowerAlarmState,
                       onChanged: state.editMode
                           ? (bool value) {
                               context
@@ -905,7 +950,7 @@ class _PilotFrequency1AlarmControl extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title: AppLocalizations.of(context).pilotFrequency1Status,
-          value: state.enablePilotFrequency1Alarm,
+          value: state.pilotFrequency1AlarmState,
           onChanged: (bool value) {
             context
                 .read<Setting18ThresholdBloc>()
@@ -928,7 +973,7 @@ class _PilotFrequency2AlarmControl extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title: AppLocalizations.of(context).pilotFrequency2Status,
-          value: state.enablePilotFrequency2Alarm,
+          value: state.pilotFrequency2AlarmState,
           onChanged: (bool value) {
             context
                 .read<Setting18ThresholdBloc>()
@@ -949,9 +994,9 @@ class _FirstChannelOutputLevelAlarmControl extends StatelessWidget {
       builder: (context, state) {
         return controlParameterSwitch(
           context: context,
-          editMode: state.editMode,
+          editMode: false,
           title: AppLocalizations.of(context).startFrequencyLoading,
-          value: state.enableFirstChannelOutputLevelAlarm,
+          value: state.firstChannelOutputLevelAlarmState,
           onChanged: (bool value) {
             context
                 .read<Setting18ThresholdBloc>()
@@ -972,9 +1017,9 @@ class _LastChannelOutputLevelAlarmControl extends StatelessWidget {
       builder: (context, state) {
         return controlParameterSwitch(
           context: context,
-          editMode: state.editMode,
+          editMode: false,
           title: AppLocalizations.of(context).stopFrequencyLoading,
-          value: state.enableLastChannelOutputLevelAlarm,
+          value: state.lastChannelOutputLevelAlarmState,
           onChanged: (bool value) {
             context
                 .read<Setting18ThresholdBloc>()

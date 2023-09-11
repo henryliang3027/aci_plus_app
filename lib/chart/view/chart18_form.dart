@@ -125,7 +125,12 @@ class _DeviceStatus extends StatelessWidget {
   }
 }
 
-enum Menu { refresh, share, export }
+enum Menu {
+  refresh,
+  share,
+  export,
+  downloadAll,
+}
 
 class _PopupMenu extends StatelessWidget {
   const _PopupMenu({Key? key}) : super(key: key);
@@ -150,6 +155,8 @@ class _PopupMenu extends StatelessWidget {
               case Menu.export:
                 // context.read<ChartBloc>().add(const DataExported());
                 break;
+              case Menu.downloadAll:
+              // context.read<ChartBloc>().add(const DataExported());
               default:
                 break;
             }
@@ -206,6 +213,24 @@ class _PopupMenu extends StatelessWidget {
                     width: 10.0,
                   ),
                   Text(AppLocalizations.of(context).export),
+                ],
+              ),
+            ),
+            PopupMenuItem<Menu>(
+              value: Menu.downloadAll,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.cloud_download_outlined,
+                    size: 20.0,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(AppLocalizations.of(context).downloadAll),
                 ],
               ),
             ),

@@ -34,13 +34,13 @@ class DeviceConnectionChanged extends HomeEvent {
 }
 
 class DeviceCharacteristicChanged extends HomeEvent {
-  const DeviceCharacteristicChanged(this.dataMapEntry);
+  const DeviceCharacteristicChanged(this.dataMap);
 
-  final MapEntry<DataKey, String> dataMapEntry;
+  final Map<DataKey, String> dataMap;
 
   @override
   List<Object?> get props => [
-        dataMapEntry,
+        dataMap,
       ];
 }
 

@@ -110,6 +110,7 @@
     "reconnect": "Reconnect",
     "share": "Share",
     "export": "Export",
+    "downloadAll": "Download All",
     "open": "Open",
 
     "dataLog": "Device Log",
@@ -152,6 +153,17 @@
     "dialogMessageMinTemperatureSetting": "Min temperature setting",
     "dialogMessageMaxVoltageSetting": "Max voltage setting",
     "dialogMessageMinVoltageSetting": "Min voltage setting",
+    "dialogMessageMaxVoltageRippleSetting": "Max voltage ripple setting",
+    "dialogMessageMinVoltageRippleSetting": "Min voltage ripple setting",
+    "dialogMessageMaxRFOutputPowerSetting": "Max output power setting",
+    "dialogMessageMinRFOutputPowerSetting": "Min output power setting",
+    "dialogMessageTemperatureAlarmStateSetting": "Temperature alarm setting",
+    "dialogMessageVoltageAlarmStateSetting": "Voltage alarm setting",
+    "dialogMessageVoltageRippleAlarmStateSetting": "Voltage ripple alarm setting",
+    "dialogMessageRFOutputPowerAlarmStateSetting": "Output power alarm setting",
+    "dialogMessagePilotFrequency1AlarmStateSetting": "Pilot Frequency 1 alarm setting",
+    "dialogMessagePilotFrequency2AlarmStateSetting": "Pilot Frequency 2 alarm setting",
+    "dialogMessageSplitOptionSetting": "Split option setting",
     "dialogMessageCoordinatesSetting": "Coordinates setting",
 
 

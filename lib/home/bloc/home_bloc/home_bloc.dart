@@ -135,7 +135,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           _characteristicDataStreamSubscription =
               _dsimRepository.characteristicData.listen(
             (data) {
-              add(DeviceCharacteristicChanged(data.entries.first));
+              add(DeviceCharacteristicChanged(data));
             },
             onDone: () {},
           );
@@ -147,7 +147,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           _characteristicDataStreamSubscription =
               _dsimRepository.characteristicData.listen(
             (data) {
-              add(DeviceCharacteristicChanged(data.entries.first));
+              add(DeviceCharacteristicChanged(data));
             },
             onDone: () {},
           );
@@ -178,7 +178,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) {
     Map<DataKey, String> newCharacteristicData = {};
     newCharacteristicData.addEntries(state.characteristicData.entries);
-    newCharacteristicData[event.dataMapEntry.key] = event.dataMapEntry.value;
+    newCharacteristicData.addEntries(event.dataMap.entries);
     emit(state.copyWith(
       characteristicData: newCharacteristicData,
     ));
@@ -410,6 +410,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     for (int i = 0; i < requestCommands.length; i++) {
       List<dynamic> result = [];
+      // result = await requestCommands[i](183);
 
       if (i <= 2) {
         result = await requestCommands[i]();
@@ -453,17 +454,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             newCharacteristicData[DataKey.ingressSetting3] = result[12];
             newCharacteristicData[DataKey.ingressSetting4] = result[13];
             newCharacteristicData[DataKey.splitOption] = result[14];
-            newCharacteristicData[DataKey.pilotFrequency1AlarmEnable] =
+            newCharacteristicData[DataKey.pilotFrequency1AlarmState] =
                 result[15];
-            newCharacteristicData[DataKey.pilotFrequency2AlarmEnable] =
+            newCharacteristicData[DataKey.pilotFrequency2AlarmState] =
                 result[16];
-            newCharacteristicData[DataKey.temperatureAlarmEnable] = result[17];
-            newCharacteristicData[DataKey.voltageAlarmEnable] = result[18];
-            newCharacteristicData[DataKey.splitOptionAlarmEnable] = result[19];
-            newCharacteristicData[DataKey.voltageRippleAlarmEnable] =
-                result[20];
-            newCharacteristicData[DataKey.rfOutputPowerAlarmEnable] =
-                result[21];
+            newCharacteristicData[DataKey.temperatureAlarmState] = result[17];
+            newCharacteristicData[DataKey.voltageAlarmState] = result[18];
+            newCharacteristicData[DataKey.splitOptionAlarmState] = result[19];
+            newCharacteristicData[DataKey.voltageRippleAlarmState] = result[20];
+            newCharacteristicData[DataKey.rfOutputPowerAlarmState] = result[21];
             newCharacteristicData[DataKey.location] = result[22];
             newCharacteristicData[DataKey.logInterval] = result[23];
             newCharacteristicData[DataKey.inputEqualizer] = result[24];

@@ -1371,8 +1371,392 @@ class DsimRepository {
     }
   }
 
-  Future<dynamic> set1p8GLocation(String location) async {
+  Future<dynamic> set1p8GMaxVoltageRipple(String valtageRipple) async {
     commandIndex = 304;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    double dMaxVoltageRipple = double.parse(valtageRipple);
+
+    int max = (dMaxVoltageRipple * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, max, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setMaxVoltageRippleCmd[7] = bytes[0];
+    Command18.setMaxVoltageRippleCmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setMaxVoltageRippleCmd,
+      usDataLength: Command18.setMaxVoltageRippleCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setMaxVoltageRippleCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GMinVoltageRipple(String valtageRipple) async {
+    commandIndex = 305;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    double dMinVoltageRipple = double.parse(valtageRipple);
+
+    int min = (dMinVoltageRipple * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, min, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setMinVoltageRippleCmd[7] = bytes[0];
+    Command18.setMinVoltageRippleCmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setMinVoltageRippleCmd,
+      usDataLength: Command18.setMinVoltageRippleCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setMinVoltageRippleCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GMaxRFOutputPower(String outputPower) async {
+    commandIndex = 306;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    double dMaxOutputPower = double.parse(outputPower);
+
+    int min = (dMaxOutputPower * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, min, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setMaxOutputPowerCmd[7] = bytes[0];
+    Command18.setMaxOutputPowerCmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setMaxOutputPowerCmd,
+      usDataLength: Command18.setMaxOutputPowerCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setMaxOutputPowerCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GMinRFOutputPower(String outputPower) async {
+    commandIndex = 306;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    double dMinOutputPower = double.parse(outputPower);
+
+    int min = (dMinOutputPower * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, min, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setMinOutputPowerCmd[7] = bytes[0];
+    Command18.setMinOutputPowerCmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setMinOutputPowerCmd,
+      usDataLength: Command18.setMinOutputPowerCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setMinOutputPowerCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GSplitOption(String splitOption) async {
+    commandIndex = 306;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int splitOptionNumber = int.parse(splitOption);
+
+    Command18.setSplitOptionCmd[7] = splitOptionNumber;
+
+    CRC16.calculateCRC16(
+      command: Command18.setSplitOptionCmd,
+      usDataLength: Command18.setSplitOptionCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setSplitOptionCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> setOutputPilotLowFrequencyAlarmState(String isEnable) async {
+    commandIndex = 327;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int isEnableNumber = int.parse(isEnable);
+
+    Command18.setOutputPilotLowFrequencyAlarmStateCmd[7] = isEnableNumber;
+
+    CRC16.calculateCRC16(
+      command: Command18.setOutputPilotLowFrequencyAlarmStateCmd,
+      usDataLength:
+          Command18.setOutputPilotLowFrequencyAlarmStateCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(
+        Command18.setOutputPilotLowFrequencyAlarmStateCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> setOutputPilotHighFrequencyAlarmState(String isEnable) async {
+    commandIndex = 328;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int isEnableNumber = int.parse(isEnable);
+
+    Command18.setOutputPilotHighFrequencyAlarmStateCmd[7] = isEnableNumber;
+
+    CRC16.calculateCRC16(
+      command: Command18.setOutputPilotHighFrequencyAlarmStateCmd,
+      usDataLength:
+          Command18.setOutputPilotHighFrequencyAlarmStateCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(
+        Command18.setOutputPilotHighFrequencyAlarmStateCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GTemperatureAlarmState(String isEnable) async {
+    commandIndex = 329;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int isEnableNumber = int.parse(isEnable);
+
+    Command18.setTemperatureAlarmStateCmd[7] = isEnableNumber;
+
+    CRC16.calculateCRC16(
+      command: Command18.setTemperatureAlarmStateCmd,
+      usDataLength: Command18.setTemperatureAlarmStateCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setTemperatureAlarmStateCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GVoltageAlarmState(String isEnable) async {
+    commandIndex = 330;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int isEnableNumber = int.parse(isEnable);
+
+    Command18.setVoltageAlarmStateCmd[7] = isEnableNumber;
+
+    CRC16.calculateCRC16(
+      command: Command18.setVoltageAlarmStateCmd,
+      usDataLength: Command18.setVoltageAlarmStateCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setVoltageAlarmStateCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GDFUAlarmState(String isEnable) async {
+    commandIndex = 335;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int isEnableNumber = int.parse(isEnable);
+
+    Command18.setDFUAlarmStateCmd[7] = isEnableNumber;
+
+    CRC16.calculateCRC16(
+      command: Command18.setDFUAlarmStateCmd,
+      usDataLength: Command18.setDFUAlarmStateCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setDFUAlarmStateCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GVoltageRippleAlarmState(String isEnable) async {
+    commandIndex = 336;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int isEnableNumber = int.parse(isEnable);
+
+    Command18.setVoltageRippleAlarmStateCmd[7] = isEnableNumber;
+
+    CRC16.calculateCRC16(
+      command: Command18.setVoltageRippleAlarmStateCmd,
+      usDataLength: Command18.setVoltageRippleAlarmStateCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setVoltageRippleAlarmStateCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GRFOutputPowerAlarmState(String isEnable) async {
+    commandIndex = 337;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int isEnableNumber = int.parse(isEnable);
+
+    Command18.setRFOutputPowerAlarmStateCmd[7] = isEnableNumber;
+
+    CRC16.calculateCRC16(
+      command: Command18.setRFOutputPowerAlarmStateCmd,
+      usDataLength: Command18.setRFOutputPowerAlarmStateCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setRFOutputPowerAlarmStateCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GLocation(String location) async {
+    commandIndex = 337;
     _completer = Completer<dynamic>();
 
     List<int> locationBytes = [];
@@ -1430,7 +1814,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GCoordinates(String coordinates) async {
-    commandIndex = 305;
+    commandIndex = 352;
     _completer = Completer<dynamic>();
 
     List<int> coordinatesBytes = [];
@@ -1467,7 +1851,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GLogInterval(String logInterval) async {
-    commandIndex = 335;
+    commandIndex = 338;
     _completer = Completer<dynamic>();
 
     int interval = int.parse(logInterval);
@@ -1506,94 +1890,56 @@ class DsimRepository {
     List<dynamic> resultOf1p8G1 = await requestCommand1p8G1();
 
     if (resultOf1p8G1[0]) {
-      _characteristicDataStreamController
-          .add({DataKey.minTemperatureC: resultOf1p8G1[1]});
-      _characteristicDataStreamController
-          .add({DataKey.maxTemperatureC: resultOf1p8G1[2]});
-      _characteristicDataStreamController
-          .add({DataKey.minTemperatureF: resultOf1p8G1[3]});
-      _characteristicDataStreamController
-          .add({DataKey.maxTemperatureF: resultOf1p8G1[4]});
-      _characteristicDataStreamController
-          .add({DataKey.minVoltage: resultOf1p8G1[5]});
-      _characteristicDataStreamController
-          .add({DataKey.maxVoltage: resultOf1p8G1[6]});
-      _characteristicDataStreamController
-          .add({DataKey.minVoltageRipple: resultOf1p8G1[7]});
-      _characteristicDataStreamController
-          .add({DataKey.maxVoltageRipple: resultOf1p8G1[8]});
-      _characteristicDataStreamController
-          .add({DataKey.minRFOutputPower: resultOf1p8G1[9]});
-      _characteristicDataStreamController
-          .add({DataKey.maxRFOutputPower: resultOf1p8G1[10]});
-      _characteristicDataStreamController
-          .add({DataKey.ingressSetting2: resultOf1p8G1[11]});
-      _characteristicDataStreamController
-          .add({DataKey.ingressSetting3: resultOf1p8G1[12]});
-      _characteristicDataStreamController
-          .add({DataKey.ingressSetting4: resultOf1p8G1[13]});
-      _characteristicDataStreamController
-          .add({DataKey.splitOption: resultOf1p8G1[14]});
-      _characteristicDataStreamController
-          .add({DataKey.pilotFrequency1AlarmEnable: resultOf1p8G1[15]});
-      _characteristicDataStreamController
-          .add({DataKey.pilotFrequency2AlarmEnable: resultOf1p8G1[16]});
-      _characteristicDataStreamController
-          .add({DataKey.temperatureAlarmEnable: resultOf1p8G1[17]});
-      _characteristicDataStreamController
-          .add({DataKey.voltageAlarmEnable: resultOf1p8G1[18]});
-      _characteristicDataStreamController
-          .add({DataKey.splitOptionAlarmEnable: resultOf1p8G1[19]});
-      _characteristicDataStreamController
-          .add({DataKey.voltageRippleAlarmEnable: resultOf1p8G1[20]});
-      _characteristicDataStreamController
-          .add({DataKey.rfOutputPowerAlarmEnable: resultOf1p8G1[21]});
-      _characteristicDataStreamController
-          .add({DataKey.location: resultOf1p8G1[22]});
-      _characteristicDataStreamController
-          .add({DataKey.logInterval: resultOf1p8G1[23]});
-      _characteristicDataStreamController
-          .add({DataKey.inputEqualizer: resultOf1p8G1[24]});
-      _characteristicDataStreamController
-          .add({DataKey.inputAttenuation: resultOf1p8G1[25]});
-      _characteristicDataStreamController
-          .add({DataKey.inputAttenuation2: resultOf1p8G1[26]});
-      _characteristicDataStreamController
-          .add({DataKey.inputAttenuation3: resultOf1p8G1[27]});
-      _characteristicDataStreamController
-          .add({DataKey.inputAttenuation4: resultOf1p8G1[28]});
-      _characteristicDataStreamController
-          .add({DataKey.outputEqualizer: resultOf1p8G1[29]});
-      _characteristicDataStreamController
-          .add({DataKey.outputAttenuation: resultOf1p8G1[30]});
+      _characteristicDataStreamController.add({
+        DataKey.minTemperatureC: resultOf1p8G1[1],
+        DataKey.maxTemperatureC: resultOf1p8G1[2],
+        DataKey.minTemperatureF: resultOf1p8G1[3],
+        DataKey.maxTemperatureF: resultOf1p8G1[4],
+        DataKey.minVoltage: resultOf1p8G1[5],
+        DataKey.maxVoltage: resultOf1p8G1[6],
+        DataKey.minVoltageRipple: resultOf1p8G1[7],
+        DataKey.maxVoltageRipple: resultOf1p8G1[8],
+        DataKey.minRFOutputPower: resultOf1p8G1[9],
+        DataKey.maxRFOutputPower: resultOf1p8G1[10],
+        DataKey.ingressSetting2: resultOf1p8G1[11],
+        DataKey.ingressSetting3: resultOf1p8G1[12],
+        DataKey.ingressSetting4: resultOf1p8G1[13],
+        DataKey.splitOption: resultOf1p8G1[14],
+        DataKey.pilotFrequency1AlarmState: resultOf1p8G1[15],
+        DataKey.pilotFrequency2AlarmState: resultOf1p8G1[16],
+        DataKey.temperatureAlarmState: resultOf1p8G1[17],
+        DataKey.voltageAlarmState: resultOf1p8G1[18],
+        DataKey.splitOptionAlarmState: resultOf1p8G1[19],
+        DataKey.voltageRippleAlarmState: resultOf1p8G1[20],
+        DataKey.rfOutputPowerAlarmState: resultOf1p8G1[21],
+        DataKey.location: resultOf1p8G1[22],
+        DataKey.logInterval: resultOf1p8G1[23],
+        DataKey.inputEqualizer: resultOf1p8G1[24],
+        DataKey.inputAttenuation: resultOf1p8G1[25],
+        DataKey.inputAttenuation2: resultOf1p8G1[26],
+        DataKey.inputAttenuation3: resultOf1p8G1[27],
+        DataKey.inputAttenuation4: resultOf1p8G1[28],
+        DataKey.outputEqualizer: resultOf1p8G1[29],
+        DataKey.outputAttenuation: resultOf1p8G1[30],
+      });
     }
 
     List<dynamic> resultOf1p8G2 = await requestCommand1p8G2();
     if (resultOf1p8G2[0]) {
-      _characteristicDataStreamController
-          .add({DataKey.alarmUSeverity: resultOf1p8G2[1]});
-      _characteristicDataStreamController
-          .add({DataKey.alarmTSeverity: resultOf1p8G2[2]});
-      _characteristicDataStreamController
-          .add({DataKey.alarmPSeverity: resultOf1p8G2[3]});
-      _characteristicDataStreamController
-          .add({DataKey.currentTemperatureC: resultOf1p8G2[4]});
-      _characteristicDataStreamController
-          .add({DataKey.currentTemperatureF: resultOf1p8G2[5]});
-      _characteristicDataStreamController
-          .add({DataKey.currentVoltage: resultOf1p8G2[6]});
-      _characteristicDataStreamController
-          .add({DataKey.currentVoltageRipple: resultOf1p8G2[7]});
-      _characteristicDataStreamController
-          .add({DataKey.currentRFInputPower: resultOf1p8G2[8]});
-      _characteristicDataStreamController
-          .add({DataKey.currentRFOutputPower: resultOf1p8G2[9]});
-      _characteristicDataStreamController
-          .add({DataKey.splitOptionAlarmSeverity: resultOf1p8G2[10]});
-      _characteristicDataStreamController
-          .add({DataKey.voltageRippleAlarmSeverity: resultOf1p8G2[11]});
-      _characteristicDataStreamController
-          .add({DataKey.outputPowerAlarmSeverity: resultOf1p8G2[12]});
+      _characteristicDataStreamController.add({
+        DataKey.alarmUSeverity: resultOf1p8G2[1],
+        DataKey.alarmTSeverity: resultOf1p8G2[2],
+        DataKey.alarmPSeverity: resultOf1p8G2[3],
+        DataKey.currentTemperatureC: resultOf1p8G2[4],
+        DataKey.currentTemperatureF: resultOf1p8G2[5],
+        DataKey.currentVoltage: resultOf1p8G2[6],
+        DataKey.currentVoltageRipple: resultOf1p8G2[7],
+        DataKey.currentRFInputPower: resultOf1p8G2[8],
+        DataKey.currentRFOutputPower: resultOf1p8G2[9],
+        DataKey.splitOptionAlarmSeverity: resultOf1p8G2[10],
+        DataKey.voltageRippleAlarmSeverity: resultOf1p8G2[11],
+        DataKey.outputPowerAlarmSeverity: resultOf1p8G2[12],
+      });
     }
   }
 

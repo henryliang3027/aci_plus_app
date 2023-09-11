@@ -100,13 +100,13 @@ class Dsim18Parser {
         String ingressSetting3 = '';
         String ingressSetting4 = '';
         String splitOption = '';
-        String pilotFrequency1AlarmEnable = '';
-        String pilotFrequency2AlarmEnable = '';
-        String temperatureAlarmEnable = '';
-        String voltageAlarmEnable = '';
-        String splitOptionAlarmEnable = '';
-        String voltageRippleAlarmEnable = '';
-        String outputPowerAlarmEnable = '';
+        String pilotFrequency1AlarmState = '';
+        String pilotFrequency2AlarmState = '';
+        String temperatureAlarmState = '';
+        String voltageAlarmState = '';
+        String splitOptionAlarmState = '';
+        String voltageRippleAlarmState = '';
+        String outputPowerAlarmState = '';
         String inputAttenuation = '';
         String inputEqualizer = '';
         String inputAttenuation2 = '';
@@ -196,26 +196,26 @@ class Dsim18Parser {
         // 解析 splitOption
         splitOption = rawData[25].toString();
 
-        // 解析 pilotFrequency1AlarmEnable
-        pilotFrequency1AlarmEnable = rawData[43].toString();
+        // 解析 pilotFrequency1AlarmState
+        pilotFrequency1AlarmState = rawData[43].toString();
 
-        // 解析 pilotFrequency2AlarmEnable
-        pilotFrequency2AlarmEnable = rawData[44].toString();
+        // 解析 pilotFrequency2AlarmState
+        pilotFrequency2AlarmState = rawData[44].toString();
 
-        // 解析 temperatureAlarmEnable
-        temperatureAlarmEnable = rawData[45].toString();
+        // 解析 temperatureAlarmState
+        temperatureAlarmState = rawData[45].toString();
 
-        // 解析 voltageAlarmEnable
-        voltageAlarmEnable = rawData[46].toString();
+        // 解析 voltageAlarmState
+        voltageAlarmState = rawData[46].toString();
 
-        // 解析 splitOptionAlarmEnable
-        splitOptionAlarmEnable = rawData[51].toString();
+        // 解析 splitOptionAlarmState
+        splitOptionAlarmState = rawData[51].toString();
 
-        // 解析 voltageRippleAlarmEnable
-        voltageRippleAlarmEnable = rawData[52].toString();
+        // 解析 voltageRippleAlarmState
+        voltageRippleAlarmState = rawData[52].toString();
 
-        // 解析 outputPowerAlarmEnable
-        outputPowerAlarmEnable = rawData[53].toString();
+        // 解析 outputPowerAlarmState
+        outputPowerAlarmState = rawData[53].toString();
 
         // 使用 unicode 解析 location
         for (int i = 54; i < 150; i += 2) {
@@ -293,21 +293,21 @@ class Dsim18Parser {
             maxTemperatureF,
             minVoltage,
             maxVoltage,
-            maxVoltageRipple,
             minVoltageRipple,
-            maxRFOutputPower,
+            maxVoltageRipple,
             minRFOutputPower,
+            maxRFOutputPower,
             ingressSetting2,
             ingressSetting3,
             ingressSetting4,
             splitOption,
-            pilotFrequency1AlarmEnable,
-            pilotFrequency2AlarmEnable,
-            temperatureAlarmEnable,
-            voltageAlarmEnable,
-            splitOptionAlarmEnable,
-            voltageRippleAlarmEnable,
-            outputPowerAlarmEnable,
+            pilotFrequency1AlarmState,
+            pilotFrequency2AlarmState,
+            temperatureAlarmState,
+            voltageAlarmState,
+            splitOptionAlarmState,
+            voltageRippleAlarmState,
+            outputPowerAlarmState,
             location,
             logInterval,
             inputEqualizer,
@@ -417,9 +417,9 @@ class Dsim18Parser {
             currentVoltageRipple,
             currentRFInputPower,
             currentRFOutputPower,
-            splitOptionAlarmSeverity,
-            voltageRippleAlarmSeverity,
-            outputPowerAlarmSeverity,
+            splitOptionAlarmSeverity.name,
+            voltageRippleAlarmSeverity.name,
+            outputPowerAlarmSeverity.name,
           ));
         }
         break;
@@ -478,7 +478,53 @@ class Dsim18Parser {
       case 303:
       case 304:
       case 305:
+      case 306:
+      case 307:
+      case 308:
+      case 309:
+      case 310:
+      case 311:
+      case 312:
+      case 313:
+      case 314:
+      case 315:
+      case 316:
+      case 317:
+      case 318:
+      case 319:
+      case 320:
+      case 321:
+      case 322:
+      case 323:
+      case 324:
+      case 325:
+      case 326:
+      case 327:
+      case 328:
+      case 329:
+      case 330:
+      case 331:
+      case 332:
+      case 333:
+      case 334:
       case 335:
+      case 336:
+      case 337:
+      case 338:
+      case 339:
+      case 340:
+      case 341:
+      case 342:
+      case 343:
+      case 344:
+      case 345:
+      case 346:
+      case 347:
+      case 348:
+      case 349:
+      case 350:
+      case 351:
+      case 352:
         if (!completer.isCompleted) {
           bool result = _parseSettingResult(rawData);
           completer.complete(result);

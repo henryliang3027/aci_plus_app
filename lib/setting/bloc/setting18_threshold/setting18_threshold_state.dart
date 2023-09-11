@@ -3,23 +3,23 @@ part of 'setting18_threshold_bloc.dart';
 class Setting18ThresholdState extends Equatable {
   const Setting18ThresholdState({
     this.submissionStatus = SubmissionStatus.none,
-    this.enableTemperatureAlarm = false,
+    this.temperatureAlarmState = false,
     this.minTemperature = '',
     this.maxTemperature = '',
     this.temperatureUnit = TemperatureUnit.fahrenheit,
-    this.enableVoltageAlarm = false,
+    this.voltageAlarmState = false,
     this.minVoltage = '',
     this.maxVoltage = '',
-    this.enableVoltageRippleAlarm = false,
+    this.voltageRippleAlarmState = false,
     this.minVoltageRipple = '',
     this.maxVoltageRipple = '',
-    this.enableRFOutputPowerAlarm = false,
+    this.rfOutputPowerAlarmState = false,
     this.minRFOutputPower = '',
     this.maxRFOutputPower = '',
-    this.enablePilotFrequency1Alarm = false,
-    this.enablePilotFrequency2Alarm = false,
-    this.enableFirstChannelOutputLevelAlarm = false,
-    this.enableLastChannelOutputLevelAlarm = false,
+    this.pilotFrequency1AlarmState = false,
+    this.pilotFrequency2AlarmState = false,
+    this.firstChannelOutputLevelAlarmState = false,
+    this.lastChannelOutputLevelAlarmState = false,
     this.editMode = false,
     this.enableSubmission = false,
     this.isInitialize = true,
@@ -29,23 +29,23 @@ class Setting18ThresholdState extends Equatable {
 
   final SubmissionStatus submissionStatus;
 
-  final bool enableTemperatureAlarm;
+  final bool temperatureAlarmState;
   final String minTemperature;
   final String maxTemperature;
   final TemperatureUnit temperatureUnit;
-  final bool enableVoltageAlarm;
+  final bool voltageAlarmState;
   final String minVoltage;
   final String maxVoltage;
-  final bool enableVoltageRippleAlarm;
+  final bool voltageRippleAlarmState;
   final String minVoltageRipple;
   final String maxVoltageRipple;
-  final bool enableRFOutputPowerAlarm;
+  final bool rfOutputPowerAlarmState;
   final String minRFOutputPower;
   final String maxRFOutputPower;
-  final bool enablePilotFrequency1Alarm;
-  final bool enablePilotFrequency2Alarm;
-  final bool enableFirstChannelOutputLevelAlarm;
-  final bool enableLastChannelOutputLevelAlarm;
+  final bool pilotFrequency1AlarmState;
+  final bool pilotFrequency2AlarmState;
+  final bool firstChannelOutputLevelAlarmState;
+  final bool lastChannelOutputLevelAlarmState;
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
@@ -54,23 +54,23 @@ class Setting18ThresholdState extends Equatable {
 
   Setting18ThresholdState copyWith({
     SubmissionStatus? submissionStatus,
-    bool? enableTemperatureAlarm,
+    bool? temperatureAlarmState,
     String? minTemperature,
     String? maxTemperature,
     TemperatureUnit? temperatureUnit,
-    bool? enableVoltageAlarm,
+    bool? voltageAlarmState,
     String? minVoltage,
     String? maxVoltage,
-    bool? enableVoltageRippleAlarm,
+    bool? voltageRippleAlarmState,
     String? minVoltageRipple,
     String? maxVoltageRipple,
-    bool? enableRFOutputPowerAlarm,
+    bool? rfOutputPowerAlarmState,
     String? minRFOutputPower,
     String? maxRFOutputPower,
-    bool? enablePilotFrequency1Alarm,
-    bool? enablePilotFrequency2Alarm,
-    bool? enableFirstChannelOutputLevelAlarm,
-    bool? enableLastChannelOutputLevelAlarm,
+    bool? pilotFrequency1AlarmState,
+    bool? pilotFrequency2AlarmState,
+    bool? firstChannelOutputLevelAlarmState,
+    bool? lastChannelOutputLevelAlarmState,
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
@@ -79,30 +79,30 @@ class Setting18ThresholdState extends Equatable {
   }) {
     return Setting18ThresholdState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
-      enableTemperatureAlarm:
-          enableTemperatureAlarm ?? this.enableTemperatureAlarm,
+      temperatureAlarmState:
+          temperatureAlarmState ?? this.temperatureAlarmState,
       minTemperature: minTemperature ?? this.minTemperature,
       maxTemperature: maxTemperature ?? this.maxTemperature,
       temperatureUnit: temperatureUnit ?? this.temperatureUnit,
-      enableVoltageAlarm: enableVoltageAlarm ?? this.enableVoltageAlarm,
+      voltageAlarmState: voltageAlarmState ?? this.voltageAlarmState,
       minVoltage: minVoltage ?? this.minVoltage,
       maxVoltage: maxVoltage ?? this.maxVoltage,
-      enableVoltageRippleAlarm:
-          enableVoltageRippleAlarm ?? this.enableVoltageRippleAlarm,
+      voltageRippleAlarmState:
+          voltageRippleAlarmState ?? this.voltageRippleAlarmState,
       minVoltageRipple: minVoltageRipple ?? this.minVoltageRipple,
       maxVoltageRipple: maxVoltageRipple ?? this.maxVoltageRipple,
-      enableRFOutputPowerAlarm:
-          enableRFOutputPowerAlarm ?? this.enableRFOutputPowerAlarm,
+      rfOutputPowerAlarmState:
+          rfOutputPowerAlarmState ?? this.rfOutputPowerAlarmState,
       minRFOutputPower: minRFOutputPower ?? this.minRFOutputPower,
       maxRFOutputPower: maxRFOutputPower ?? this.maxRFOutputPower,
-      enablePilotFrequency1Alarm:
-          enablePilotFrequency1Alarm ?? this.enablePilotFrequency1Alarm,
-      enablePilotFrequency2Alarm:
-          enablePilotFrequency2Alarm ?? this.enablePilotFrequency2Alarm,
-      enableFirstChannelOutputLevelAlarm: enableFirstChannelOutputLevelAlarm ??
-          this.enableFirstChannelOutputLevelAlarm,
-      enableLastChannelOutputLevelAlarm: enableLastChannelOutputLevelAlarm ??
-          this.enableLastChannelOutputLevelAlarm,
+      pilotFrequency1AlarmState:
+          pilotFrequency1AlarmState ?? this.pilotFrequency1AlarmState,
+      pilotFrequency2AlarmState:
+          pilotFrequency2AlarmState ?? this.pilotFrequency2AlarmState,
+      firstChannelOutputLevelAlarmState: firstChannelOutputLevelAlarmState ??
+          this.firstChannelOutputLevelAlarmState,
+      lastChannelOutputLevelAlarmState: lastChannelOutputLevelAlarmState ??
+          this.lastChannelOutputLevelAlarmState,
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
@@ -114,23 +114,23 @@ class Setting18ThresholdState extends Equatable {
   @override
   List<Object> get props => [
         submissionStatus,
-        enableTemperatureAlarm,
+        temperatureAlarmState,
         minTemperature,
         maxTemperature,
         temperatureUnit,
-        enableVoltageAlarm,
+        voltageAlarmState,
         minVoltage,
         maxVoltage,
-        enableVoltageRippleAlarm,
+        voltageRippleAlarmState,
         minVoltageRipple,
         maxVoltageRipple,
-        enableRFOutputPowerAlarm,
+        rfOutputPowerAlarmState,
         minRFOutputPower,
         maxRFOutputPower,
-        enablePilotFrequency1Alarm,
-        enablePilotFrequency2Alarm,
-        enableFirstChannelOutputLevelAlarm,
-        enableLastChannelOutputLevelAlarm,
+        pilotFrequency1AlarmState,
+        pilotFrequency2AlarmState,
+        firstChannelOutputLevelAlarmState,
+        lastChannelOutputLevelAlarmState,
         editMode,
         enableSubmission,
         isInitialize,

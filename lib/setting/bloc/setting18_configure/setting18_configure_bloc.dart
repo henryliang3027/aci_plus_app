@@ -493,6 +493,13 @@ class Setting18ConfigureBloc
       settingResult.add('${DataKey.coordinates.name},$resultOfSetCoordinates');
     }
 
+    if (state.splitOption != state.initialValues[1]) {
+      bool resultOfSetSplitOption =
+          await _dsimRepository.set1p8GCoordinates(state.splitOption);
+
+      settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
+    }
+
     if (state.logInterval != state.initialValues[12]) {
       bool resultOfSetLogInterval =
           await _dsimRepository.set1p8GLogInterval(state.logInterval);

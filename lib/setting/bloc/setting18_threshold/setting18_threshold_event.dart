@@ -9,75 +9,75 @@ sealed class Setting18ThresholdEvent extends Equatable {
 
 class Initialized extends Setting18ThresholdEvent {
   const Initialized({
-    required this.enableTemperatureAlarm,
+    required this.temperatureAlarmState,
     required this.minTemperature,
     required this.maxTemperature,
     required this.minTemperatureF,
     required this.maxTemperatureF,
-    required this.enableVoltageAlarm,
+    required this.voltageAlarmState,
     required this.minVoltage,
     required this.maxVoltage,
-    required this.enableVoltageRippleAlarm,
+    required this.voltageRippleAlarmState,
     required this.minVoltageRipple,
     required this.maxVoltageRipple,
-    required this.enableRFOutputPowerAlarm,
+    required this.rfOutputPowerAlarmState,
     required this.minRFOutputPower,
     required this.maxRFOutputPower,
-    required this.enablePilotFrequency1Alarm,
-    required this.enablePilotFrequency2Alarm,
-    required this.enableFirstChannelOutputLevelAlarm,
-    required this.enableLastChannelOutputLevelAlarm,
+    required this.pilotFrequency1AlarmState,
+    required this.pilotFrequency2AlarmState,
+    required this.firstChannelOutputLevelAlarmState,
+    required this.lastChannelOutputLevelAlarmState,
   });
 
-  final bool enableTemperatureAlarm;
+  final bool temperatureAlarmState;
   final String minTemperature;
   final String maxTemperature;
   final String minTemperatureF;
   final String maxTemperatureF;
-  final bool enableVoltageAlarm;
+  final bool voltageAlarmState;
   final String minVoltage;
   final String maxVoltage;
-  final bool enableVoltageRippleAlarm;
+  final bool voltageRippleAlarmState;
   final String minVoltageRipple;
   final String maxVoltageRipple;
-  final bool enableRFOutputPowerAlarm;
+  final bool rfOutputPowerAlarmState;
   final String minRFOutputPower;
   final String maxRFOutputPower;
-  final bool enablePilotFrequency1Alarm;
-  final bool enablePilotFrequency2Alarm;
-  final bool enableFirstChannelOutputLevelAlarm;
-  final bool enableLastChannelOutputLevelAlarm;
+  final bool pilotFrequency1AlarmState;
+  final bool pilotFrequency2AlarmState;
+  final bool firstChannelOutputLevelAlarmState;
+  final bool lastChannelOutputLevelAlarmState;
 
   @override
   List<Object> get props => [
-        enableTemperatureAlarm,
+        temperatureAlarmState,
         minTemperature,
         maxTemperature,
         minTemperatureF,
         maxTemperatureF,
-        enableVoltageAlarm,
+        voltageAlarmState,
         minVoltage,
         maxVoltage,
-        enableVoltageRippleAlarm,
+        voltageRippleAlarmState,
         minVoltageRipple,
         maxVoltageRipple,
-        enableRFOutputPowerAlarm,
+        rfOutputPowerAlarmState,
         minRFOutputPower,
         maxRFOutputPower,
-        enablePilotFrequency1Alarm,
-        enablePilotFrequency2Alarm,
-        enableFirstChannelOutputLevelAlarm,
-        enableLastChannelOutputLevelAlarm,
+        pilotFrequency1AlarmState,
+        pilotFrequency2AlarmState,
+        firstChannelOutputLevelAlarmState,
+        lastChannelOutputLevelAlarmState,
       ];
 }
 
 class TemperatureAlarmChanged extends Setting18ThresholdEvent {
-  const TemperatureAlarmChanged(this.enableTemperatureAlarm);
+  const TemperatureAlarmChanged(this.temperatureAlarmState);
 
-  final bool enableTemperatureAlarm;
+  final bool temperatureAlarmState;
 
   @override
-  List<Object> get props => [enableTemperatureAlarm];
+  List<Object> get props => [temperatureAlarmState];
 }
 
 class MinTemperatureChanged extends Setting18ThresholdEvent {
@@ -99,12 +99,12 @@ class MaxTemperatureChanged extends Setting18ThresholdEvent {
 }
 
 class VoltageAlarmChanged extends Setting18ThresholdEvent {
-  const VoltageAlarmChanged(this.enableVoltageAlarm);
+  const VoltageAlarmChanged(this.voltageAlarmState);
 
-  final bool enableVoltageAlarm;
+  final bool voltageAlarmState;
 
   @override
-  List<Object> get props => [enableVoltageAlarm];
+  List<Object> get props => [voltageAlarmState];
 }
 
 class MinVoltageChanged extends Setting18ThresholdEvent {
@@ -126,12 +126,12 @@ class MaxVoltageChanged extends Setting18ThresholdEvent {
 }
 
 class VoltageRippleAlarmChanged extends Setting18ThresholdEvent {
-  const VoltageRippleAlarmChanged(this.enableVoltageRippleAlarm);
+  const VoltageRippleAlarmChanged(this.voltageRippleAlarmState);
 
-  final bool enableVoltageRippleAlarm;
+  final bool voltageRippleAlarmState;
 
   @override
-  List<Object> get props => [enableVoltageRippleAlarm];
+  List<Object> get props => [voltageRippleAlarmState];
 }
 
 class MinVoltageRippleChanged extends Setting18ThresholdEvent {
@@ -153,12 +153,12 @@ class MaxVoltageRippleChanged extends Setting18ThresholdEvent {
 }
 
 class RFOutputPowerAlarmChanged extends Setting18ThresholdEvent {
-  const RFOutputPowerAlarmChanged(this.enableRFOutputPowerAlarm);
+  const RFOutputPowerAlarmChanged(this.rfOutputPowerAlarmState);
 
-  final bool enableRFOutputPowerAlarm;
+  final bool rfOutputPowerAlarmState;
 
   @override
-  List<Object> get props => [enableRFOutputPowerAlarm];
+  List<Object> get props => [rfOutputPowerAlarmState];
 }
 
 class MinRFOutputPowerChanged extends Setting18ThresholdEvent {
@@ -180,41 +180,41 @@ class MaxRFOutputPowerChanged extends Setting18ThresholdEvent {
 }
 
 class PilotFrequency1AlarmChanged extends Setting18ThresholdEvent {
-  const PilotFrequency1AlarmChanged(this.enablePilotFrequency1Alarm);
+  const PilotFrequency1AlarmChanged(this.pilotFrequency1AlarmState);
 
-  final bool enablePilotFrequency1Alarm;
+  final bool pilotFrequency1AlarmState;
 
   @override
-  List<Object> get props => [enablePilotFrequency1Alarm];
+  List<Object> get props => [pilotFrequency1AlarmState];
 }
 
 class PilotFrequency2AlarmChanged extends Setting18ThresholdEvent {
-  const PilotFrequency2AlarmChanged(this.enablePilotFrequency2Alarm);
+  const PilotFrequency2AlarmChanged(this.pilotFrequency2AlarmState);
 
-  final bool enablePilotFrequency2Alarm;
+  final bool pilotFrequency2AlarmState;
 
   @override
-  List<Object> get props => [enablePilotFrequency2Alarm];
+  List<Object> get props => [pilotFrequency2AlarmState];
 }
 
 class FirstChannelOutputLevelAlarmChanged extends Setting18ThresholdEvent {
   const FirstChannelOutputLevelAlarmChanged(
-      this.enableFirstChannelOutputLevelAlarm);
+      this.firstChannelOutputLevelAlarmState);
 
-  final bool enableFirstChannelOutputLevelAlarm;
+  final bool firstChannelOutputLevelAlarmState;
 
   @override
-  List<Object> get props => [enableFirstChannelOutputLevelAlarm];
+  List<Object> get props => [firstChannelOutputLevelAlarmState];
 }
 
 class LastChannelOutputLevelAlarmChanged extends Setting18ThresholdEvent {
   const LastChannelOutputLevelAlarmChanged(
-      this.enableLastChannelOutputLevelAlarm);
+      this.lastChannelOutputLevelAlarmState);
 
-  final bool enableLastChannelOutputLevelAlarm;
+  final bool lastChannelOutputLevelAlarmState;
 
   @override
-  List<Object> get props => [enableLastChannelOutputLevelAlarm];
+  List<Object> get props => [lastChannelOutputLevelAlarmState];
 }
 
 class EditModeEnabled extends Setting18ThresholdEvent {
