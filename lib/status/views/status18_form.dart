@@ -998,7 +998,7 @@ class _VoltageRippleCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                '${AppLocalizations.of(context).voltageRipple} (${CustomStyle.volt})',
+                '${AppLocalizations.of(context).voltageRipple} (${CustomStyle.milliVolt})',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),

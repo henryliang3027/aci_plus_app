@@ -101,6 +101,15 @@ class Dsim18Parser {
         String ingressSetting3 = '';
         String ingressSetting4 = '';
         String splitOption = '';
+        String pilotFrequencyMode = '';
+        String agcMode = '';
+        String alcMode = '';
+        String firstChannelLoadingFrequency = '';
+        String lastChannelLoadingFrequency = '';
+        String firstChannelLoadingLevel = '';
+        String lastChannelLoadingLevel = '';
+        String pilotFrequency1 = '';
+        String pilotFrequency2 = '';
         String pilotFrequency1AlarmState = '';
         String pilotFrequency2AlarmState = '';
         String temperatureAlarmState = '';
@@ -157,17 +166,17 @@ class Dsim18Parser {
         List<int> rawMaxVoltageRipple = rawData.sublist(11, 13);
         ByteData rawMaxVoltageRippleByteData =
             ByteData.sublistView(Uint8List.fromList(rawMaxVoltageRipple));
-        maxVoltageRipple =
-            (rawMaxVoltageRippleByteData.getInt16(0, Endian.little) / 10)
-                .toStringAsFixed(1);
+        maxVoltageRipple = rawMaxVoltageRippleByteData
+            .getInt16(0, Endian.little)
+            .toStringAsFixed(1);
 
         // 解析 minVoltageRipple
         List<int> rawMinVoltageRipple = rawData.sublist(13, 15);
         ByteData rawMinVoltageRippleByteData =
             ByteData.sublistView(Uint8List.fromList(rawMinVoltageRipple));
-        minVoltageRipple =
-            (rawMinVoltageRippleByteData.getInt16(0, Endian.little) / 10)
-                .toStringAsFixed(1);
+        minVoltageRipple = rawMinVoltageRippleByteData
+            .getInt16(0, Endian.little)
+            .toStringAsFixed(1);
 
         // 解析 maxRFOutputTotalPower
         List<int> rawMaxRFOutputTotalPower = rawData.sublist(15, 17);
@@ -196,6 +205,63 @@ class Dsim18Parser {
 
         // 解析 splitOption
         splitOption = rawData[25].toString();
+
+        // 解析 pilotFrequencyMode
+        pilotFrequencyMode = rawData[26].toString();
+
+        // 解析 agcMode
+        agcMode = rawData[27].toString();
+
+        // 解析 alcMode
+        alcMode = rawData[28].toString();
+
+        // 解析 firstChannelLoadingFrequency
+        List<int> rawFirstChannelLoadingFrequency = rawData.sublist(29, 31);
+        ByteData rawFirstChannelLoadingFrequencyByteData = ByteData.sublistView(
+            Uint8List.fromList(rawFirstChannelLoadingFrequency));
+        firstChannelLoadingFrequency = rawFirstChannelLoadingFrequencyByteData
+            .getInt16(0, Endian.little)
+            .toStringAsFixed(1);
+
+        // 解析 firstChannelLoadingFrequency
+        List<int> rawLastChannelLoadingFrequency = rawData.sublist(31, 33);
+        ByteData rawLastChannelLoadingFrequencyByteData = ByteData.sublistView(
+            Uint8List.fromList(rawLastChannelLoadingFrequency));
+        lastChannelLoadingFrequency = rawLastChannelLoadingFrequencyByteData
+            .getInt16(0, Endian.little)
+            .toStringAsFixed(1);
+
+        // 解析 firstChannelLoadingLevel
+        List<int> rawFirstChannelLoadingLevel = rawData.sublist(33, 35);
+        ByteData rawFirstChannelLoadingLevelByteData = ByteData.sublistView(
+            Uint8List.fromList(rawFirstChannelLoadingLevel));
+        firstChannelLoadingLevel = rawFirstChannelLoadingLevelByteData
+            .getInt16(0, Endian.little)
+            .toStringAsFixed(1);
+
+        // 解析 firstChannelLoadingLevel
+        List<int> rawLastChannelLoadingLevel = rawData.sublist(35, 37);
+        ByteData rawLastChannelLoadingLevelByteData = ByteData.sublistView(
+            Uint8List.fromList(rawLastChannelLoadingLevel));
+        lastChannelLoadingLevel = rawLastChannelLoadingLevelByteData
+            .getInt16(0, Endian.little)
+            .toStringAsFixed(1);
+
+        // 解析 pilotFrequency1
+        List<int> rawPilotFrequency1 = rawData.sublist(37, 39);
+        ByteData rawPilotFrequency1ByteData =
+            ByteData.sublistView(Uint8List.fromList(rawPilotFrequency1));
+        pilotFrequency1 = rawPilotFrequency1ByteData
+            .getInt16(0, Endian.little)
+            .toStringAsFixed(1);
+
+        // 解析 pilotFrequency2
+        List<int> rawPilotFrequency2 = rawData.sublist(39, 41);
+        ByteData rawPilotFrequency2ByteData =
+            ByteData.sublistView(Uint8List.fromList(rawPilotFrequency2));
+        pilotFrequency2 = rawPilotFrequency2ByteData
+            .getInt16(0, Endian.little)
+            .toStringAsFixed(1);
 
         // 解析 pilotFrequency1AlarmState
         pilotFrequency1AlarmState = rawData[43].toString();
@@ -303,6 +369,15 @@ class Dsim18Parser {
             ingressSetting3,
             ingressSetting4,
             splitOption,
+            pilotFrequencyMode,
+            agcMode,
+            alcMode,
+            firstChannelLoadingFrequency,
+            lastChannelLoadingFrequency,
+            firstChannelLoadingLevel,
+            lastChannelLoadingLevel,
+            pilotFrequency1,
+            pilotFrequency2,
             pilotFrequency1AlarmState,
             pilotFrequency2AlarmState,
             temperatureAlarmState,
@@ -371,9 +446,9 @@ class Dsim18Parser {
         ByteData rawCurrentVoltageRippleByteData =
             ByteData.sublistView(Uint8List.fromList(rawCurrentVoltageRipple));
 
-        currentVoltageRipple =
-            (rawCurrentVoltageRippleByteData.getInt16(0, Endian.little) / 10)
-                .toStringAsFixed(1);
+        currentVoltageRipple = rawCurrentVoltageRippleByteData
+            .getInt16(0, Endian.little)
+            .toStringAsFixed(1);
 
         // 解析 currentRFInputPower
         List<int> rawCurrentRFInputPower = rawData.sublist(18, 20);

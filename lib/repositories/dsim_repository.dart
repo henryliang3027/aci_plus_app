@@ -945,22 +945,18 @@ class DsimRepository {
 
       return [
         true,
-        partName,
-        partNo,
-        serialNumber,
-        firmwareVersion,
-        mfgDate,
-        coordinate,
+        <DataKey, String>{
+          DataKey.partName: partName,
+          DataKey.partNo: partNo,
+          DataKey.serialNumber: serialNumber,
+          DataKey.firmwareVersion: firmwareVersion,
+          DataKey.mfgDate: mfgDate,
+          DataKey.coordinates: coordinate,
+        },
       ];
     } catch (e) {
       return [
         false,
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
       ];
     }
   }
@@ -993,13 +989,22 @@ class DsimRepository {
         ingressSetting3,
         ingressSetting4,
         splitOption,
-        pilotFrequency1AlarmEnable,
-        pilotFrequency2AlarmEnable,
-        temperatureAlarmEnable,
-        voltageAlarmEnable,
-        splitOptionAlarmEnable,
-        voltageRippleAlarmEnable,
-        rfOutputPowerAlarmEnable,
+        pilotFrequencyMode,
+        agcMode,
+        alcMode,
+        firstChannelLoadingFrequency,
+        lastChannelLoadingFrequency,
+        firstChannelLoadingLevel,
+        lastChannelLoadingLevel,
+        pilotFrequency1,
+        pilotFrequency2,
+        pilotFrequency1AlarmState,
+        pilotFrequency2AlarmState,
+        temperatureAlarmState,
+        voltageAlarmState,
+        splitOptionAlarmState,
+        voltageRippleAlarmState,
+        rfOutputPowerAlarmState,
         location,
         logInterval,
         inputEqualizer,
@@ -1014,70 +1019,51 @@ class DsimRepository {
 
       return [
         true,
-        minTemperatureC,
-        maxTemperatureC,
-        minTemperatureF,
-        maxTemperatureF,
-        minVoltage,
-        maxVoltage,
-        minVoltageRipple,
-        maxVoltageRipple,
-        minRFOutputPower,
-        maxRFOutputPower,
-        ingressSetting2,
-        ingressSetting3,
-        ingressSetting4,
-        splitOption,
-        pilotFrequency1AlarmEnable,
-        pilotFrequency2AlarmEnable,
-        temperatureAlarmEnable,
-        voltageAlarmEnable,
-        splitOptionAlarmEnable,
-        voltageRippleAlarmEnable,
-        rfOutputPowerAlarmEnable,
-        location,
-        logInterval,
-        inputEqualizer,
-        inputAttenuation,
-        inputAttenuation2,
-        inputAttenuation3,
-        inputAttenuation4,
-        outputEqualizer,
-        outputAttenuation,
+        <DataKey, String>{
+          DataKey.minTemperatureC: minTemperatureC,
+          DataKey.maxTemperatureC: maxTemperatureC,
+          DataKey.minTemperatureF: minTemperatureF,
+          DataKey.maxTemperatureF: maxTemperatureF,
+          DataKey.minVoltage: minVoltage,
+          DataKey.maxVoltage: maxVoltage,
+          DataKey.minVoltageRipple: minVoltageRipple,
+          DataKey.maxVoltageRipple: maxVoltageRipple,
+          DataKey.minRFOutputPower: minRFOutputPower,
+          DataKey.maxRFOutputPower: maxRFOutputPower,
+          DataKey.ingressSetting2: ingressSetting2,
+          DataKey.ingressSetting3: ingressSetting3,
+          DataKey.ingressSetting4: ingressSetting4,
+          DataKey.splitOption: splitOption,
+          DataKey.pilotFrequencyMode: pilotFrequencyMode,
+          DataKey.agcMode: agcMode,
+          DataKey.alcMode: alcMode,
+          DataKey.firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+          DataKey.lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+          DataKey.firstChannelLoadingLevel: firstChannelLoadingLevel,
+          DataKey.lastChannelLoadingLevel: lastChannelLoadingLevel,
+          DataKey.pilotFrequency1: pilotFrequency1,
+          DataKey.pilotFrequency2: pilotFrequency2,
+          DataKey.pilotFrequency1AlarmState: pilotFrequency1AlarmState,
+          DataKey.pilotFrequency2AlarmState: pilotFrequency2AlarmState,
+          DataKey.temperatureAlarmState: temperatureAlarmState,
+          DataKey.voltageAlarmState: voltageAlarmState,
+          DataKey.splitOptionAlarmState: splitOptionAlarmState,
+          DataKey.voltageRippleAlarmState: voltageRippleAlarmState,
+          DataKey.rfOutputPowerAlarmState: rfOutputPowerAlarmState,
+          DataKey.location: location,
+          DataKey.logInterval: logInterval,
+          DataKey.inputEqualizer: inputEqualizer,
+          DataKey.inputAttenuation: inputAttenuation,
+          DataKey.inputAttenuation2: inputAttenuation2,
+          DataKey.inputAttenuation3: inputAttenuation3,
+          DataKey.inputAttenuation4: inputAttenuation4,
+          DataKey.outputEqualizer: outputEqualizer,
+          DataKey.outputAttenuation: outputAttenuation,
+        }
       ];
     } catch (e) {
       return [
         false,
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
       ];
     }
   }
@@ -1113,34 +1099,24 @@ class DsimRepository {
 
       return [
         true,
-        alarmUSeverity,
-        alarmTServerity,
-        alarmPServerity,
-        currentTemperatureC,
-        currentTemperatureF,
-        currentVoltage,
-        currentVoltageRipple,
-        currentRFInputPower,
-        currentRFOutputPower,
-        splitOptionAlarmSeverity,
-        voltageRippleAlarmSeverity,
-        outputPowerAlarmSeverity,
+        <DataKey, String>{
+          DataKey.alarmUSeverity: alarmUSeverity,
+          DataKey.alarmTSeverity: alarmTServerity,
+          DataKey.alarmPSeverity: alarmPServerity,
+          DataKey.currentTemperatureC: currentTemperatureC,
+          DataKey.currentTemperatureF: currentTemperatureF,
+          DataKey.currentVoltage: currentVoltage,
+          DataKey.currentVoltageRipple: currentVoltageRipple,
+          DataKey.currentRFInputPower: currentRFInputPower,
+          DataKey.currentRFOutputPower: currentRFOutputPower,
+          DataKey.splitOptionAlarmSeverity: splitOptionAlarmSeverity,
+          DataKey.voltageRippleAlarmSeverity: voltageRippleAlarmSeverity,
+          DataKey.outputPowerAlarmSeverity: outputPowerAlarmSeverity,
+        }
       ];
     } catch (e) {
       return [
         false,
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
       ];
     }
   }
@@ -1380,7 +1356,7 @@ class DsimRepository {
 
     double dMaxVoltageRipple = double.parse(valtageRipple);
 
-    int max = (dMaxVoltageRipple * 10).toInt();
+    int max = dMaxVoltageRipple.toInt();
 
     // Convert the integer to bytes
     ByteData byteData = ByteData(2);
@@ -1417,7 +1393,7 @@ class DsimRepository {
 
     double dMinVoltageRipple = double.parse(valtageRipple);
 
-    int min = (dMinVoltageRipple * 10).toInt();
+    int min = dMinVoltageRipple.toInt();
 
     // Convert the integer to bytes
     ByteData byteData = ByteData(2);
@@ -1885,62 +1861,20 @@ class DsimRepository {
 
     if (resultOf1p8G0[0]) {
       _characteristicDataStreamController
-          .add({DataKey.coordinates: resultOf1p8G0[6]});
+          .add(Map<DataKey, String>.from(resultOf1p8G0[1]));
     }
 
     List<dynamic> resultOf1p8G1 = await requestCommand1p8G1();
 
     if (resultOf1p8G1[0]) {
-      _characteristicDataStreamController.add({
-        DataKey.minTemperatureC: resultOf1p8G1[1],
-        DataKey.maxTemperatureC: resultOf1p8G1[2],
-        DataKey.minTemperatureF: resultOf1p8G1[3],
-        DataKey.maxTemperatureF: resultOf1p8G1[4],
-        DataKey.minVoltage: resultOf1p8G1[5],
-        DataKey.maxVoltage: resultOf1p8G1[6],
-        DataKey.minVoltageRipple: resultOf1p8G1[7],
-        DataKey.maxVoltageRipple: resultOf1p8G1[8],
-        DataKey.minRFOutputPower: resultOf1p8G1[9],
-        DataKey.maxRFOutputPower: resultOf1p8G1[10],
-        DataKey.ingressSetting2: resultOf1p8G1[11],
-        DataKey.ingressSetting3: resultOf1p8G1[12],
-        DataKey.ingressSetting4: resultOf1p8G1[13],
-        DataKey.splitOption: resultOf1p8G1[14],
-        DataKey.pilotFrequency1AlarmState: resultOf1p8G1[15],
-        DataKey.pilotFrequency2AlarmState: resultOf1p8G1[16],
-        DataKey.temperatureAlarmState: resultOf1p8G1[17],
-        DataKey.voltageAlarmState: resultOf1p8G1[18],
-        DataKey.splitOptionAlarmState: resultOf1p8G1[19],
-        DataKey.voltageRippleAlarmState: resultOf1p8G1[20],
-        DataKey.rfOutputPowerAlarmState: resultOf1p8G1[21],
-        DataKey.location: resultOf1p8G1[22],
-        DataKey.logInterval: resultOf1p8G1[23],
-        DataKey.inputEqualizer: resultOf1p8G1[24],
-        DataKey.inputAttenuation: resultOf1p8G1[25],
-        DataKey.inputAttenuation2: resultOf1p8G1[26],
-        DataKey.inputAttenuation3: resultOf1p8G1[27],
-        DataKey.inputAttenuation4: resultOf1p8G1[28],
-        DataKey.outputEqualizer: resultOf1p8G1[29],
-        DataKey.outputAttenuation: resultOf1p8G1[30],
-      });
+      _characteristicDataStreamController
+          .add(Map<DataKey, String>.from(resultOf1p8G1[1]));
     }
 
     List<dynamic> resultOf1p8G2 = await requestCommand1p8G2();
     if (resultOf1p8G2[0]) {
-      _characteristicDataStreamController.add({
-        DataKey.alarmUSeverity: resultOf1p8G2[1],
-        DataKey.alarmTSeverity: resultOf1p8G2[2],
-        DataKey.alarmPSeverity: resultOf1p8G2[3],
-        DataKey.currentTemperatureC: resultOf1p8G2[4],
-        DataKey.currentTemperatureF: resultOf1p8G2[5],
-        DataKey.currentVoltage: resultOf1p8G2[6],
-        DataKey.currentVoltageRipple: resultOf1p8G2[7],
-        DataKey.currentRFInputPower: resultOf1p8G2[8],
-        DataKey.currentRFOutputPower: resultOf1p8G2[9],
-        DataKey.splitOptionAlarmSeverity: resultOf1p8G2[10],
-        DataKey.voltageRippleAlarmSeverity: resultOf1p8G2[11],
-        DataKey.outputPowerAlarmSeverity: resultOf1p8G2[12],
-      });
+      _characteristicDataStreamController
+          .add(Map<DataKey, String>.from(resultOf1p8G2[1]));
     }
   }
 

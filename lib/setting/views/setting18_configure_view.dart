@@ -38,9 +38,9 @@ class Setting18ConfigureView extends StatelessWidget {
         homeState.characteristicData[DataKey.coordinates] ?? '';
     String splitOption =
         homeState.characteristicData[DataKey.splitOption] ?? '';
-    String fwdAgcMode = homeState.characteristicData[DataKey.fwdAgcMode] ?? '';
+    String fwdAgcMode = homeState.characteristicData[DataKey.agcMode] ?? '';
     String autoLevelControl =
-        homeState.characteristicData[DataKey.autoLevelControl] ?? '';
+        homeState.characteristicData[DataKey.alcMode] ?? '';
     String logInterval =
         homeState.characteristicData[DataKey.logInterval] ?? '';
 
@@ -1193,7 +1193,7 @@ class _LogInterval extends StatelessWidget {
                   overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
                 ),
                 child: Slider(
-                  min: 0.0,
+                  min: 1.0,
                   max: 60.0,
                   divisions: 60,
                   value: getValue(state.logInterval),
@@ -1228,7 +1228,7 @@ class _LogInterval extends StatelessWidget {
                             height: 22,
                             child: Text(
                               '${(List.from([
-                                    0,
+                                    1,
                                     60
                                   ])[index]).toStringAsFixed(0)}',
                               style: const TextStyle(

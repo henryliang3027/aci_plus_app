@@ -651,7 +651,7 @@ class _VoltageRippleAlarmControl extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      '${AppLocalizations.of(context).voltageRipple} (${CustomStyle.volt})',
+                      '${AppLocalizations.of(context).voltageRipple} (${CustomStyle.milliVolt})',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,

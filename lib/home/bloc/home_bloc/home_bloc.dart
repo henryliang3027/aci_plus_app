@@ -423,13 +423,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           case 0:
             // 因為 state 是 immutable, 所以要創一個新的 map, copy 原來的 element, 加上新的 element,
             // emit 的 state 才算新的, 才會觸發 bloc builder
-            Map<DataKey, String> newCharacteristicData = {};
-            newCharacteristicData[DataKey.partName] = result[1];
-            newCharacteristicData[DataKey.partNo] = result[2];
-            newCharacteristicData[DataKey.serialNumber] = result[3];
-            newCharacteristicData[DataKey.firmwareVersion] = result[4];
-            newCharacteristicData[DataKey.mfgDate] = result[5];
-            newCharacteristicData[DataKey.coordinates] = result[6];
+
+            Map<DataKey, String> newCharacteristicData =
+                Map<DataKey, String>.from(result[1]);
             emit(state.copyWith(
               // loadingStatus: FormStatus.requestSuccess,
               characteristicData: newCharacteristicData,
@@ -438,63 +434,30 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           case 1:
             // 因為 state 是 immutable, 所以要創一個新的 map, copy 原來的 element, 加上新的 element,
             // emit 的 state 才算新的, 才會觸發 bloc builder
-            Map<DataKey, String> newCharacteristicData = {};
-            newCharacteristicData.addEntries(state.characteristicData.entries);
-            newCharacteristicData[DataKey.minTemperatureC] = result[1];
-            newCharacteristicData[DataKey.maxTemperatureC] = result[2];
-            newCharacteristicData[DataKey.minTemperatureF] = result[3];
-            newCharacteristicData[DataKey.maxTemperatureF] = result[4];
-            newCharacteristicData[DataKey.minVoltage] = result[5];
-            newCharacteristicData[DataKey.maxVoltage] = result[6];
-            newCharacteristicData[DataKey.minVoltageRipple] = result[7];
-            newCharacteristicData[DataKey.maxVoltageRipple] = result[8];
-            newCharacteristicData[DataKey.minRFOutputPower] = result[9];
-            newCharacteristicData[DataKey.maxRFOutputPower] = result[10];
-            newCharacteristicData[DataKey.ingressSetting2] = result[11];
-            newCharacteristicData[DataKey.ingressSetting3] = result[12];
-            newCharacteristicData[DataKey.ingressSetting4] = result[13];
-            newCharacteristicData[DataKey.splitOption] = result[14];
-            newCharacteristicData[DataKey.pilotFrequency1AlarmState] =
-                result[15];
-            newCharacteristicData[DataKey.pilotFrequency2AlarmState] =
-                result[16];
-            newCharacteristicData[DataKey.temperatureAlarmState] = result[17];
-            newCharacteristicData[DataKey.voltageAlarmState] = result[18];
-            newCharacteristicData[DataKey.splitOptionAlarmState] = result[19];
-            newCharacteristicData[DataKey.voltageRippleAlarmState] = result[20];
-            newCharacteristicData[DataKey.rfOutputPowerAlarmState] = result[21];
-            newCharacteristicData[DataKey.location] = result[22];
-            newCharacteristicData[DataKey.logInterval] = result[23];
-            newCharacteristicData[DataKey.inputEqualizer] = result[24];
-            newCharacteristicData[DataKey.inputAttenuation] = result[25];
-            newCharacteristicData[DataKey.inputAttenuation2] = result[26];
-            newCharacteristicData[DataKey.inputAttenuation3] = result[27];
-            newCharacteristicData[DataKey.inputAttenuation4] = result[28];
-            newCharacteristicData[DataKey.outputEqualizer] = result[29];
-            newCharacteristicData[DataKey.outputAttenuation] = result[30];
+
+            Map<DataKey, String> newCharacteristicData =
+                Map<DataKey, String>.from(state.characteristicData);
+
+            newCharacteristicData.addAll(result[1]);
 
             // 如果讀取到 0 分鐘, 則自動設定為 30 分鐘
-            // if (result[17] == '0') {
-            //   await _dsimRepository.set1p8GLogInterval('30');
-            // }
+            if (result[1][DataKey.logInterval] == '0') {
+              await _dsimRepository.set1p8GLogInterval('30');
+              List<dynamic> resultOf1p8G1 =
+                  await _dsimRepository.requestCommand1p8G1();
+              newCharacteristicData[DataKey.logInterval] =
+                  resultOf1p8G1[1][DataKey.logInterval];
+            }
 
             emit(state.copyWith(
               characteristicData: newCharacteristicData,
             ));
             break;
           case 2:
-            Map<DataKey, String> newCharacteristicData = {};
-            newCharacteristicData.addEntries(state.characteristicData.entries);
-            newCharacteristicData[DataKey.alarmUSeverity] = result[1];
-            newCharacteristicData[DataKey.alarmTSeverity] = result[2];
-            newCharacteristicData[DataKey.alarmPSeverity] = result[3];
-            newCharacteristicData[DataKey.currentTemperatureC] = result[4];
-            newCharacteristicData[DataKey.currentTemperatureF] = result[5];
-            newCharacteristicData[DataKey.currentVoltage] = result[6];
-            newCharacteristicData[DataKey.currentVoltageRipple] = result[7];
-            newCharacteristicData[DataKey.currentRFInputPower] = result[8];
-            newCharacteristicData[DataKey.currentRFOutputPower] = result[9];
-            // newCharacteristicData[DataKey.splitOption] = result[10];
+            Map<DataKey, String> newCharacteristicData =
+                Map<DataKey, String>.from(state.characteristicData);
+
+            newCharacteristicData.addAll(result[1]);
 
             emit(state.copyWith(
               loadingStatus: FormStatus.requestSuccess,
