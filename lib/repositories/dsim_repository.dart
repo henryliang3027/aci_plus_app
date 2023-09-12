@@ -1146,8 +1146,9 @@ class DsimRepository {
   }
 
   // commandIndex range from 183 to 192;
+  // chunkIndex range from 0 to 9;
   Future<dynamic> requestCommand1p8GForLogChunk(int chunkIndex) async {
-    commandIndex = chunkIndex;
+    commandIndex = chunkIndex + 183;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8GForLogChunk');

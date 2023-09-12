@@ -493,9 +493,9 @@ class Setting18ConfigureBloc
       settingResult.add('${DataKey.coordinates.name},$resultOfSetCoordinates');
     }
 
-    if (state.splitOption != state.initialValues[1]) {
+    if (state.splitOption != state.initialValues[2]) {
       bool resultOfSetSplitOption =
-          await _dsimRepository.set1p8GCoordinates(state.splitOption);
+          await _dsimRepository.set1p8GSplitOption(state.splitOption);
 
       settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
     }

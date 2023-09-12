@@ -647,70 +647,82 @@ class _PowerSupplyCard extends StatelessWidget {
     required Color borderColor,
   }) {
     return Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 16.0,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  getMinVoltage(
-                    loadingStatus: loadingStatus,
-                    minVoltage: 'N/A',
-                    fontSize: 32,
-                  ),
-                  Text(
-                    minVoltageTitle,
-                    style: const TextStyle(
-                      fontSize: 16,
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getCurrentVoltage(
+                      loadingStatus: loadingStatus,
+                      minVoltage: minVoltage,
+                      maxVoltage: maxVoltage,
+                      currentVoltage: currentVoltage,
+                      fontSize: 40,
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  getCurrentVoltage(
-                    loadingStatus: loadingStatus,
-                    minVoltage: minVoltage,
-                    maxVoltage: maxVoltage,
-                    currentVoltage: currentVoltage,
-                    fontSize: 40,
-                  ),
-                  Text(
-                    currentVoltageTitle,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    Text(
+                      currentVoltageTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  getMaxVoltage(
-                    loadingStatus: loadingStatus,
-                    maxVoltage: 'N/A',
-                    fontSize: 32,
-                  ),
-                  Text(
-                    maxVoltageTitle,
-                    style: const TextStyle(
-                      fontSize: 16,
+            ],
+          ),
+          const SizedBox(
+            height: 20.0,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getMinVoltage(
+                      loadingStatus: loadingStatus,
+                      minVoltage: 'N/A',
+                      fontSize: 32,
                     ),
-                  ),
-                ],
+                    Text(
+                      minVoltageTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ));
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getMaxVoltage(
+                      loadingStatus: loadingStatus,
+                      maxVoltage: 'N/A',
+                      fontSize: 32,
+                    ),
+                    Text(
+                      maxVoltageTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -896,70 +908,82 @@ class _VoltageRippleCard extends StatelessWidget {
     required Color borderColor,
   }) {
     return Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 16.0,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  getMinVoltageRipple(
-                    loadingStatus: loadingStatus,
-                    minVoltageRipple: 'N/A',
-                    fontSize: 32,
-                  ),
-                  Text(
-                    minVoltageRippleTitle,
-                    style: const TextStyle(
-                      fontSize: 16,
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getCurrentVoltageRipple(
+                      loadingStatus: loadingStatus,
+                      minVoltageRipple: minVoltageRipple,
+                      maxVoltageRipple: maxVoltageRipple,
+                      currentVoltageRipple: currentVoltageRipple,
+                      fontSize: 40,
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  getCurrentVoltageRipple(
-                    loadingStatus: loadingStatus,
-                    minVoltageRipple: minVoltageRipple,
-                    maxVoltageRipple: maxVoltageRipple,
-                    currentVoltageRipple: currentVoltageRipple,
-                    fontSize: 40,
-                  ),
-                  Text(
-                    currentVoltageRippleTitle,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    Text(
+                      currentVoltageRippleTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  getMaxVoltageRipple(
-                    loadingStatus: loadingStatus,
-                    maxVoltageRipple: 'N/A',
-                    fontSize: 32,
-                  ),
-                  Text(
-                    maxVoltageRippleTitle,
-                    style: const TextStyle(
-                      fontSize: 16,
+            ],
+          ),
+          const SizedBox(
+            height: 20.0,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getMinVoltageRipple(
+                      loadingStatus: loadingStatus,
+                      minVoltageRipple: 'N/A',
+                      fontSize: 32,
                     ),
-                  ),
-                ],
+                    Text(
+                      minVoltageRippleTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ));
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getMaxVoltageRipple(
+                      loadingStatus: loadingStatus,
+                      maxVoltageRipple: 'N/A',
+                      fontSize: 32,
+                    ),
+                    Text(
+                      maxVoltageRippleTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 
   @override
@@ -1149,70 +1173,82 @@ class _RFOutputPowerCard extends StatelessWidget {
     required Color borderColor,
   }) {
     return Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 16.0,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  getMinRFOutputPower(
-                    loadingStatus: loadingStatus,
-                    minRFOutputPower: 'N/A',
-                    fontSize: 32,
-                  ),
-                  Text(
-                    minRFOutputPowerTitle,
-                    style: const TextStyle(
-                      fontSize: 16,
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getCurrentRFOutputPower(
+                      loadingStatus: loadingStatus,
+                      minRFOutputPower: minRFOutputPower,
+                      maxRFOutputPower: maxRFOutputPower,
+                      currentRFOutputPower: currentRFOutputPower,
+                      fontSize: 40,
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  getCurrentRFOutputPower(
-                    loadingStatus: loadingStatus,
-                    minRFOutputPower: minRFOutputPower,
-                    maxRFOutputPower: maxRFOutputPower,
-                    currentRFOutputPower: currentRFOutputPower,
-                    fontSize: 40,
-                  ),
-                  Text(
-                    currentRFOutputPowerTitle,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    Text(
+                      currentRFOutputPowerTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  getMaxRFOutputPower(
-                    loadingStatus: loadingStatus,
-                    maxRFOutputPower: 'N/A',
-                    fontSize: 32,
-                  ),
-                  Text(
-                    maxRFOutputPowerTitle,
-                    style: const TextStyle(
-                      fontSize: 16,
+            ],
+          ),
+          const SizedBox(
+            height: 20.0,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getMinRFOutputPower(
+                      loadingStatus: loadingStatus,
+                      minRFOutputPower: 'N/A',
+                      fontSize: 32,
                     ),
-                  ),
-                ],
+                    Text(
+                      minRFOutputPowerTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ));
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getMaxRFOutputPower(
+                      loadingStatus: loadingStatus,
+                      maxRFOutputPower: 'N/A',
+                      fontSize: 32,
+                    ),
+                    Text(
+                      maxRFOutputPowerTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 
   @override
@@ -1227,7 +1263,7 @@ class _RFOutputPowerCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                AppLocalizations.of(context).rfOutputPower,
+                '${AppLocalizations.of(context).rfOutputPower} (${CustomStyle.dBmV})',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),

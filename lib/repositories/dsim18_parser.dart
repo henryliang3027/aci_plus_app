@@ -12,6 +12,7 @@ class Dsim18Parser {
   }
 
   final List<List<int>> _command18Collection = [];
+  List<int> _rawLogs = [];
 
   List<List<int>> get command18Collection => _command18Collection;
 
@@ -235,6 +236,7 @@ class Dsim18Parser {
 
         // 解析 logInterval
         logInterval = rawData[150].toString();
+        print('LOG interval: $logInterval');
 
         // 解析 inputAttenuation (0x94 DS VVA1 Set dB)
         List<int> rawInputAttenuation = rawData.sublist(151, 153);
@@ -433,8 +435,14 @@ class Dsim18Parser {
       case 190:
       case 191:
       case 192:
-        print('${rawData.length}');
-        print('${rawData}');
+        _rawLogs.addAll(rawData);
+        print('${_rawLogs.length}');
+
+        if (_rawLogs.length == 16389) {
+          print(_rawLogs);
+          _rawLogs.clear();
+        }
+
         break;
       case 193:
       case 194:

@@ -410,7 +410,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     for (int i = 0; i < requestCommands.length; i++) {
       List<dynamic> result = [];
-      // result = await requestCommands[i](183);
+      // result = await requestCommands[i](192);
 
       if (i <= 2) {
         result = await requestCommands[i]();
@@ -474,9 +474,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             newCharacteristicData[DataKey.outputAttenuation] = result[30];
 
             // 如果讀取到 0 分鐘, 則自動設定為 30 分鐘
-            if (result[17] == '0') {
-              await _dsimRepository.set1p8GLogInterval('30');
-            }
+            // if (result[17] == '0') {
+            //   await _dsimRepository.set1p8GLogInterval('30');
+            // }
 
             emit(state.copyWith(
               characteristicData: newCharacteristicData,

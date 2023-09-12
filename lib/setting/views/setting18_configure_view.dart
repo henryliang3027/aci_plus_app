@@ -408,7 +408,7 @@ class _SplitOptionDropDownMenu extends StatelessWidget {
 
   final Map<String, String> types = const {
     '204/258 MHz': '1',
-    '396/492 MHz': '2',
+    // '396/492 MHz': '2',
   };
 
   @override

@@ -13,6 +13,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
         super(const Chart18State()) {
     on<DataExported>(_onDataExported);
     on<DataShared>(_onDataShared);
+    on<MoreDataRequested>(_onMoreDataRequested);
   }
 
   final DsimRepository _dsimRepository;
@@ -65,5 +66,12 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     //     dataExportPath: result[2],
     //   ));
     // }
+  }
+
+  Future<void> _onMoreDataRequested(
+    MoreDataRequested event,
+    Emitter<Chart18State> emit,
+  ) async {
+    await _dsimRepository.requestCommand1p8GForLogChunk(event.chunkIndex);
   }
 }
