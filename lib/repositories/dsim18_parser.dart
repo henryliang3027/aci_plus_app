@@ -6,6 +6,24 @@ import 'package:dsim_app/core/command18.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 
+class Log1p8G {
+  const Log1p8G({
+    required this.dateTime,
+    required this.temperature,
+    required this.voltage,
+    required this.rfOutputLowPilot,
+    required this.rfOutputHighPilot,
+    required this.voltageRipple,
+  });
+
+  final DateTime dateTime;
+  final double temperature;
+  final double voltage;
+  final double rfOutputLowPilot;
+  final double rfOutputHighPilot;
+  final int voltageRipple;
+}
+
 class Dsim18Parser {
   Dsim18Parser() {
     calculate18CRCs();
@@ -13,6 +31,7 @@ class Dsim18Parser {
 
   final List<List<int>> _command18Collection = [];
   List<int> _rawLogs = [];
+  List<Log1p8G> _logs = [];
 
   List<List<int>> get command18Collection => _command18Collection;
 
@@ -514,7 +533,10 @@ class Dsim18Parser {
         print('${_rawLogs.length}');
 
         if (_rawLogs.length == 16389) {
+          _rawLogs.removeRange(_rawLogs.length - 2, _rawLogs.length);
+          _rawLogs.removeRange(0, 3);
           print(_rawLogs);
+          _parse1p8GLog(_rawLogs);
           _rawLogs.clear();
         }
 
@@ -617,6 +639,66 @@ class Dsim18Parser {
       default:
         break;
     }
+  }
+
+  List<Log1p8G> _parse1p8GLog(List<int> rawData) {
+    List<Log1p8G> logChunks = [];
+    for (var i = 0; i < 1024; i++) {
+      // 解析 strDateTime
+      List<int> rawYear = rawData.sublist(i * 16, i * 16 + 2);
+      ByteData rawYearByteData =
+          ByteData.sublistView(Uint8List.fromList(rawYear));
+      String strYear =
+          rawYearByteData.getInt16(0, Endian.little).toStringAsFixed(1);
+
+      String strMonth = rawData[2].toString().padLeft(2, '0');
+      String strDate = rawData[3].toString().padLeft(2, '0');
+      String strHour = rawData[4].toString().padLeft(2, '0');
+      String strMinute = rawData[5].toString().padLeft(2, '0');
+
+      List<int> rawTemperature = rawData.sublist(i * 16 + 6, i * 16 + 8);
+      ByteData rawTemperatureByteData =
+          ByteData.sublistView(Uint8List.fromList(rawTemperature));
+      double temperature =
+          rawTemperatureByteData.getInt16(0, Endian.little) / 10;
+
+      List<int> rawVoltage = rawData.sublist(i * 16 + 8, i * 16 + 10);
+      ByteData rawVoltageByteData =
+          ByteData.sublistView(Uint8List.fromList(rawVoltage));
+      double voltage = rawVoltageByteData.getInt16(0, Endian.little) / 10;
+
+      List<int> rawRFOutputLowPilot = rawData.sublist(i * 16 + 10, i * 16 + 12);
+      ByteData rawRFOutputLowPilotByteData =
+          ByteData.sublistView(Uint8List.fromList(rawRFOutputLowPilot));
+      double rfOutputLowPilot =
+          rawRFOutputLowPilotByteData.getInt16(0, Endian.little) / 10;
+
+      List<int> rawRFOutputHighPilot =
+          rawData.sublist(i * 16 + 12, i * 16 + 14);
+      ByteData rawRFOutputHighPilotByteData =
+          ByteData.sublistView(Uint8List.fromList(rawRFOutputHighPilot));
+      double rfOutputHighPilot =
+          rawRFOutputHighPilotByteData.getInt16(0, Endian.little) / 10;
+
+      List<int> rawVoltageRipple = rawData.sublist(i * 16 + 14, i * 16 + 16);
+      ByteData rawVoltageRippleByteData =
+          ByteData.sublistView(Uint8List.fromList(rawVoltageRipple));
+      int voltageRipple = rawVoltageRippleByteData.getInt16(0, Endian.little);
+
+      final DateTime dateTime =
+          DateTime.parse('$strYear-$strMonth-$strDate $strHour:$strMinute:00');
+
+      logChunks.add(Log1p8G(
+        dateTime: dateTime,
+        temperature: temperature,
+        voltage: voltage,
+        rfOutputLowPilot: rfOutputLowPilot,
+        rfOutputHighPilot: rfOutputHighPilot,
+        voltageRipple: voltageRipple,
+      ));
+    }
+
+    return logChunks;
   }
 
   bool _parseSettingResult(List<int> rawData) {

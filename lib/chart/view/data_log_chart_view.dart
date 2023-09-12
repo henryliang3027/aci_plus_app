@@ -212,90 +212,90 @@ class _LogChartView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                // Wrap(
-                //   children: [
-                //     ElevatedButton(
-                //       onPressed: () {
-                //         context
-                //             .read<Chart18Bloc>()
-                //             .add(const MoreDataRequested(0));
-                //       },
-                //       child: const Text('Load 0'),
-                //     ),
-                //     ElevatedButton(
-                //       onPressed: () {
-                //         context
-                //             .read<Chart18Bloc>()
-                //             .add(const MoreDataRequested(1));
-                //       },
-                //       child: const Text('Load 1'),
-                //     ),
-                //     ElevatedButton(
-                //       onPressed: () {
-                //         context
-                //             .read<Chart18Bloc>()
-                //             .add(const MoreDataRequested(2));
-                //       },
-                //       child: const Text('Load 2'),
-                //     ),
-                //     ElevatedButton(
-                //       onPressed: () {
-                //         context
-                //             .read<Chart18Bloc>()
-                //             .add(const MoreDataRequested(3));
-                //       },
-                //       child: const Text('Load 3'),
-                //     ),
-                //     ElevatedButton(
-                //       onPressed: () {
-                //         context
-                //             .read<Chart18Bloc>()
-                //             .add(const MoreDataRequested(4));
-                //       },
-                //       child: const Text('Load 4'),
-                //     ),
-                //     ElevatedButton(
-                //       onPressed: () {
-                //         context
-                //             .read<Chart18Bloc>()
-                //             .add(const MoreDataRequested(5));
-                //       },
-                //       child: const Text('Load 5'),
-                //     ),
-                //     ElevatedButton(
-                //       onPressed: () {
-                //         context
-                //             .read<Chart18Bloc>()
-                //             .add(const MoreDataRequested(6));
-                //       },
-                //       child: const Text('Load 6'),
-                //     ),
-                //     ElevatedButton(
-                //       onPressed: () {
-                //         context
-                //             .read<Chart18Bloc>()
-                //             .add(const MoreDataRequested(7));
-                //       },
-                //       child: const Text('Load 7'),
-                //     ),
-                //     ElevatedButton(
-                //       onPressed: () {
-                //         context
-                //             .read<Chart18Bloc>()
-                //             .add(const MoreDataRequested(8));
-                //       },
-                //       child: const Text('Load 8'),
-                //     ),
-                //     ElevatedButton(
-                //       onPressed: () {
-                //         context
-                //             .read<Chart18Bloc>()
-                //             .add(const MoreDataRequested(9));
-                //       },
-                //       child: const Text('Load 9'),
-                //     ),
-                //   ],
-                // ),
+                Wrap(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        context
+                            .read<Chart18Bloc>()
+                            .add(const MoreDataRequested(0));
+                      },
+                      child: const Text('Load 0'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context
+                            .read<Chart18Bloc>()
+                            .add(const MoreDataRequested(1));
+                      },
+                      child: const Text('Load 1'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context
+                            .read<Chart18Bloc>()
+                            .add(const MoreDataRequested(2));
+                      },
+                      child: const Text('Load 2'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context
+                            .read<Chart18Bloc>()
+                            .add(const MoreDataRequested(3));
+                      },
+                      child: const Text('Load 3'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context
+                            .read<Chart18Bloc>()
+                            .add(const MoreDataRequested(4));
+                      },
+                      child: const Text('Load 4'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context
+                            .read<Chart18Bloc>()
+                            .add(const MoreDataRequested(5));
+                      },
+                      child: const Text('Load 5'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context
+                            .read<Chart18Bloc>()
+                            .add(const MoreDataRequested(6));
+                      },
+                      child: const Text('Load 6'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context
+                            .read<Chart18Bloc>()
+                            .add(const MoreDataRequested(7));
+                      },
+                      child: const Text('Load 7'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context
+                            .read<Chart18Bloc>()
+                            .add(const MoreDataRequested(8));
+                      },
+                      child: const Text('Load 8'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context
+                            .read<Chart18Bloc>()
+                            .add(const MoreDataRequested(9));
+                      },
+                      child: const Text('Load 9'),
+                    ),
+                  ],
+                ),
                 buildChart(
                   getChartDataOfLog1(
                       dateValueCollectionOfLog: state.dateValueCollectionOfLog),
