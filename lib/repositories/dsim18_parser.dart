@@ -1,28 +1,14 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:dsim_app/core/command18.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
+import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
-
-class Log1p8G {
-  const Log1p8G({
-    required this.dateTime,
-    required this.temperature,
-    required this.voltage,
-    required this.rfOutputLowPilot,
-    required this.rfOutputHighPilot,
-    required this.voltageRipple,
-  });
-
-  final DateTime dateTime;
-  final double temperature;
-  final double voltage;
-  final double rfOutputLowPilot;
-  final double rfOutputHighPilot;
-  final int voltageRipple;
-}
+import 'package:dsim_app/repositories/unit_converter.dart';
+import 'package:excel/excel.dart';
+import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Dsim18Parser {
   Dsim18Parser() {
@@ -31,7 +17,6 @@ class Dsim18Parser {
 
   final List<List<int>> _command18Collection = [];
   List<int> _rawLogs = [];
-  List<Log1p8G> _logs = [];
 
   List<List<int>> get command18Collection => _command18Collection;
 
@@ -185,17 +170,15 @@ class Dsim18Parser {
         List<int> rawMaxVoltageRipple = rawData.sublist(11, 13);
         ByteData rawMaxVoltageRippleByteData =
             ByteData.sublistView(Uint8List.fromList(rawMaxVoltageRipple));
-        maxVoltageRipple = rawMaxVoltageRippleByteData
-            .getInt16(0, Endian.little)
-            .toStringAsFixed(1);
+        maxVoltageRipple =
+            rawMaxVoltageRippleByteData.getInt16(0, Endian.little).toString();
 
         // 解析 minVoltageRipple
         List<int> rawMinVoltageRipple = rawData.sublist(13, 15);
         ByteData rawMinVoltageRippleByteData =
             ByteData.sublistView(Uint8List.fromList(rawMinVoltageRipple));
-        minVoltageRipple = rawMinVoltageRippleByteData
-            .getInt16(0, Endian.little)
-            .toStringAsFixed(1);
+        minVoltageRipple =
+            rawMinVoltageRippleByteData.getInt16(0, Endian.little).toString();
 
         // 解析 maxRFOutputTotalPower
         List<int> rawMaxRFOutputTotalPower = rawData.sublist(15, 17);
@@ -467,7 +450,7 @@ class Dsim18Parser {
 
         currentVoltageRipple = rawCurrentVoltageRippleByteData
             .getInt16(0, Endian.little)
-            .toStringAsFixed(1);
+            .toString();
 
         // 解析 currentRFInputPower
         List<int> rawCurrentRFInputPower = rawData.sublist(18, 20);
@@ -520,6 +503,42 @@ class Dsim18Parser {
         }
         break;
       case 183:
+        List<int> header = [0xB0, 0x03, 0x00];
+        if (listEquals(rawData.sublist(0, 3), header)) {
+          _rawLogs.clear();
+        }
+        _rawLogs.addAll(rawData);
+
+        if (_rawLogs.length == 16389) {
+          _rawLogs.removeRange(_rawLogs.length - 2, _rawLogs.length);
+          _rawLogs.removeRange(0, 3);
+          print(_rawLogs);
+          List<Log1p8G> log1p8Gs = _parse1p8GLog(_rawLogs);
+          var (
+            historicalMinTemperatureC,
+            historicalMaxTemperatureC,
+            historicalMinTemperatureF,
+            historicalMaxTemperatureF,
+            historicalMinVoltageStr,
+            historicalMaxVoltageStr,
+            historicalMinVoltageRippleStr,
+            historicalMaxVoltageRippleStr,
+          ) = _get1p8GLogStatistics(log1p8Gs);
+
+          if (!completer.isCompleted) {
+            completer.complete((
+              historicalMinTemperatureC,
+              historicalMaxTemperatureC,
+              historicalMinTemperatureF,
+              historicalMaxTemperatureF,
+              historicalMinVoltageStr,
+              historicalMaxVoltageStr,
+              historicalMinVoltageRippleStr,
+              historicalMaxVoltageRippleStr,
+              log1p8Gs,
+            ));
+          }
+        }
       case 184:
       case 185:
       case 186:
@@ -529,6 +548,10 @@ class Dsim18Parser {
       case 190:
       case 191:
       case 192:
+        List<int> header = [0xB0, 0x03, 0x00];
+        if (listEquals(rawData.sublist(0, 3), header)) {
+          _rawLogs.clear();
+        }
         _rawLogs.addAll(rawData);
         print('${_rawLogs.length}');
 
@@ -536,8 +559,11 @@ class Dsim18Parser {
           _rawLogs.removeRange(_rawLogs.length - 2, _rawLogs.length);
           _rawLogs.removeRange(0, 3);
           print(_rawLogs);
-          _parse1p8GLog(_rawLogs);
-          _rawLogs.clear();
+          List<Log1p8G> log1p8Gs = _parse1p8GLog(_rawLogs);
+
+          if (!completer.isCompleted) {
+            completer.complete(log1p8Gs);
+          }
         }
 
         break;
@@ -630,6 +656,8 @@ class Dsim18Parser {
       case 350:
       case 351:
       case 352:
+      case 353:
+      case 354:
         if (!completer.isCompleted) {
           bool result = _parseSettingResult(rawData);
           completer.complete(result);
@@ -641,20 +669,103 @@ class Dsim18Parser {
     }
   }
 
+  (String, String, String, String, String, String, String, String)
+      _get1p8GLogStatistics(List<Log1p8G> log1p8Gs) {
+    UnitConverter unitConverter = UnitConverter();
+    if (log1p8Gs.isNotEmpty) {
+      // get min temperature
+      double historicalMinTemperature = log1p8Gs
+          .map((log1p8G) => log1p8G.temperature)
+          .reduce((min, current) => min < current ? min : current);
+
+      // get max temperature
+      double historicalMaxTemperature = log1p8Gs
+          .map((log1p8G) => log1p8G.temperature)
+          .reduce((max, current) => max > current ? max : current);
+
+      // get min voltage
+      double historicalMinVoltage = log1p8Gs
+          .map((log1p8G) => log1p8G.voltage)
+          .reduce((min, current) => min < current ? min : current);
+
+      // get max voltage
+      double historicalMaxVoltage = log1p8Gs
+          .map((log1p8G) => log1p8G.voltage)
+          .reduce((max, current) => max > current ? max : current);
+
+      // get min voltage
+      int historicalMinVoltageRipple = log1p8Gs
+          .map((log1p8G) => log1p8G.voltageRipple)
+          .reduce((min, current) => min < current ? min : current);
+
+      // get max voltage
+      int historicalMaxVoltageRipple = log1p8Gs
+          .map((log1p8G) => log1p8G.voltageRipple)
+          .reduce((max, current) => max > current ? max : current);
+
+      String historicalMinTemperatureC = historicalMinTemperature.toString();
+
+      String historicalMaxTemperatureC = historicalMaxTemperature.toString();
+
+      String historicalMinTemperatureF = unitConverter
+          .converCelciusToFahrenheit(historicalMinTemperature)
+          .toStringAsFixed(1);
+
+      String historicalMaxTemperatureF = unitConverter
+          .converCelciusToFahrenheit(historicalMaxTemperature)
+          .toStringAsFixed(1);
+
+      String historicalMinVoltageStr = historicalMinVoltage.toStringAsFixed(1);
+      String historicalMaxVoltageStr = historicalMaxVoltage.toStringAsFixed(1);
+      String historicalMinVoltageRippleStr =
+          historicalMinVoltageRipple.toString();
+      String historicalMaxVoltageRippleStr =
+          historicalMaxVoltageRipple.toString();
+
+      return (
+        historicalMinTemperatureC,
+        historicalMaxTemperatureC,
+        historicalMinTemperatureF,
+        historicalMaxTemperatureF,
+        historicalMinVoltageStr,
+        historicalMaxVoltageStr,
+        historicalMinVoltageRippleStr,
+        historicalMaxVoltageRippleStr,
+      );
+    } else {
+      return (
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      );
+    }
+  }
+
   List<Log1p8G> _parse1p8GLog(List<int> rawData) {
     List<Log1p8G> logChunks = [];
     for (var i = 0; i < 1024; i++) {
+      // 如果檢查到有一筆log 的內容全部是 255, 則視為沒有更多log資料了
+      bool isEmptyLog = rawData
+          .sublist(i * 16, i * 16 + 16)
+          .every((element) => element == 255);
+      if (isEmptyLog) {
+        break;
+      }
       // 解析 strDateTime
       List<int> rawYear = rawData.sublist(i * 16, i * 16 + 2);
       ByteData rawYearByteData =
           ByteData.sublistView(Uint8List.fromList(rawYear));
-      String strYear =
-          rawYearByteData.getInt16(0, Endian.little).toStringAsFixed(1);
+      String strYear = rawYearByteData.getInt16(0, Endian.little).toString();
 
-      String strMonth = rawData[2].toString().padLeft(2, '0');
-      String strDate = rawData[3].toString().padLeft(2, '0');
-      String strHour = rawData[4].toString().padLeft(2, '0');
-      String strMinute = rawData[5].toString().padLeft(2, '0');
+      String strMonth = rawData[i * 16 + 2].toString().padLeft(2, '0');
+      String strDay = rawData[i * 16 + 3].toString().padLeft(2, '0');
+      String strHour = rawData[i * 16 + 4].toString().padLeft(2, '0');
+      String strMinute = rawData[i * 16 + 5].toString().padLeft(2, '0');
 
       List<int> rawTemperature = rawData.sublist(i * 16 + 6, i * 16 + 8);
       ByteData rawTemperatureByteData =
@@ -686,7 +797,7 @@ class Dsim18Parser {
       int voltageRipple = rawVoltageRippleByteData.getInt16(0, Endian.little);
 
       final DateTime dateTime =
-          DateTime.parse('$strYear-$strMonth-$strDate $strHour:$strMinute:00');
+          DateTime.parse('$strYear-$strMonth-$strDay $strHour:$strMinute:00');
 
       logChunks.add(Log1p8G(
         dateTime: dateTime,
@@ -699,6 +810,111 @@ class Dsim18Parser {
     }
 
     return logChunks;
+  }
+
+  Future<dynamic> export1p8GRecords(List<Log1p8G> log1p8Gs) async {
+    Excel excel = Excel.createExcel();
+    List<String> log1p8GHeader = [
+      'Time',
+      'Temperature(C)',
+      'RF Output Low Pilot',
+      'RF Output High Pilot',
+      '24V(V)',
+      '24V Ripple(mV)',
+    ];
+    // List<String> eventHeader = [
+    //   'Power On',
+    //   'Power Off',
+    //   '24V High(V)',
+    //   '24V Low(V)',
+    //   'Temperature High(C)',
+    //   'Temperature Low(C)',
+    //   'Input RF Power High(dBuV)',
+    //   'Input RF Power Low(dBuV)',
+    //   '24V Ripple High(mV)',
+    //   'Align Loss Pilot',
+    //   'AGC Loss Pilot',
+    //   'Controll Plug in',
+    //   'Controll Plug out',
+    // ];
+
+    Sheet log1p8GSheet = excel['Log'];
+    // Sheet eventSheet = excel['Event'];
+
+    // eventSheet.insertRowIterables(eventHeader, 0);
+    // List<List<String>> eventContent = formatEvent();
+    // for (int i = 0; i < eventContent.length; i++) {
+    //   List<String> row = eventContent[i];
+    //   eventSheet.insertRowIterables(row, i + 1);
+    // }
+
+    log1p8GSheet.insertRowIterables(log1p8GHeader, 0);
+    for (int i = 0; i < log1p8Gs.length; i++) {
+      Log1p8G log1p8G = log1p8Gs[i];
+      List<String> row = formatLog1p8G(log1p8G);
+      log1p8GSheet.insertRowIterables(row, i + 1);
+    }
+
+    excel.unLink('Sheet1'); // Excel 預設會自動產生 Sheet1, 所以先unlink
+    excel.delete('Sheet1'); // 再刪除 Sheet1
+    excel.link('Log', log1p8GSheet);
+    var fileBytes = excel.save();
+
+    String timeStamp =
+        DateFormat('yyyy_MM_dd_HH_mm_ss').format(DateTime.now()).toString();
+    String filename = 'log_$timeStamp';
+    String extension = '.xlsx';
+
+    if (Platform.isIOS) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$filename$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
+      return [
+        true,
+        filename,
+        fullWrittenPath,
+      ];
+    } else if (Platform.isAndroid) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$filename$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
+
+      return [
+        true,
+        filename,
+        fullWrittenPath,
+      ];
+    } else {
+      return [
+        false,
+        '',
+        'write file failed, export function not implement on ${Platform.operatingSystem} '
+      ];
+    }
+  }
+
+  List<String> formatLog1p8G(Log1p8G log1p8G) {
+    String formattedDateTime =
+        DateFormat('yyyy-MM-dd HH:mm').format(log1p8G.dateTime);
+    String temperatureC = log1p8G.temperature.toString();
+    String rfOutputLowPilot = log1p8G.rfOutputLowPilot.toString();
+    String rfOutputHighPilot = log1p8G.rfOutputHighPilot.toString();
+    String voltage = log1p8G.voltage.toString();
+    String voltageRipple = log1p8G.voltageRipple.toString();
+    List<String> row = [
+      formattedDateTime,
+      temperatureC,
+      rfOutputLowPilot,
+      rfOutputHighPilot,
+      voltage,
+      voltageRipple
+    ];
+
+    return row;
   }
 
   bool _parseSettingResult(List<int> rawData) {

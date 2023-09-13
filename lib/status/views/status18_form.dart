@@ -338,8 +338,8 @@ class _TemperatureCard extends StatelessWidget {
                     children: [
                       getMinTemperature(
                         loadingStatus: loadingStatus,
-                        minTemperature: 'N/A',
-                        unit: '',
+                        minTemperature: minTemperature,
+                        unit: unit,
                         fontSize: 32,
                       ),
                       Text(
@@ -357,8 +357,8 @@ class _TemperatureCard extends StatelessWidget {
                     children: [
                       getMaxTemperature(
                         loadingStatus: loadingStatus,
-                        maxTemperature: 'N/A',
-                        unit: '',
+                        maxTemperature: maxTemperature,
+                        unit: unit,
                         fontSize: 32,
                       ),
                       Text(
@@ -407,16 +407,20 @@ class _TemperatureCard extends StatelessWidget {
           currentTemperature =
               homeState.characteristicData[DataKey.currentTemperatureC] ?? '';
           maxTemperature =
-              homeState.characteristicData[DataKey.maxTemperatureC] ?? '';
+              homeState.characteristicData[DataKey.historicalMaxTemperatureC] ??
+                  '';
           minTemperature =
-              homeState.characteristicData[DataKey.minTemperatureC] ?? '';
+              homeState.characteristicData[DataKey.historicalMinTemperatureC] ??
+                  '';
         } else {
           currentTemperature =
               homeState.characteristicData[DataKey.currentTemperatureF] ?? '';
           maxTemperature =
-              homeState.characteristicData[DataKey.maxTemperatureF] ?? '';
+              homeState.characteristicData[DataKey.historicalMaxTemperatureF] ??
+                  '';
           minTemperature =
-              homeState.characteristicData[DataKey.minTemperatureF] ?? '';
+              homeState.characteristicData[DataKey.historicalMinTemperatureF] ??
+                  '';
         }
 
         return Card(
@@ -688,7 +692,7 @@ class _PowerSupplyCard extends StatelessWidget {
                   children: [
                     getMinVoltage(
                       loadingStatus: loadingStatus,
-                      minVoltage: 'N/A',
+                      minVoltage: minVoltage,
                       fontSize: 32,
                     ),
                     Text(
@@ -706,7 +710,7 @@ class _PowerSupplyCard extends StatelessWidget {
                   children: [
                     getMaxVoltage(
                       loadingStatus: loadingStatus,
-                      maxVoltage: 'N/A',
+                      maxVoltage: maxVoltage,
                       fontSize: 32,
                     ),
                     Text(
@@ -747,9 +751,11 @@ class _PowerSupplyCard extends StatelessWidget {
               currentVoltage:
                   state.characteristicData[DataKey.currentVoltage] ?? '',
               minVoltageTitle: AppLocalizations.of(context).minVoltage,
-              minVoltage: state.characteristicData[DataKey.minVoltage] ?? '',
+              minVoltage:
+                  state.characteristicData[DataKey.historicalMinVoltage] ?? '',
               maxVoltageTitle: AppLocalizations.of(context).maxVoltage,
-              maxVoltage: state.characteristicData[DataKey.maxVoltage] ?? '',
+              maxVoltage:
+                  state.characteristicData[DataKey.historicalMaxVoltage] ?? '',
               borderColor: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(
@@ -949,7 +955,7 @@ class _VoltageRippleCard extends StatelessWidget {
                   children: [
                     getMinVoltageRipple(
                       loadingStatus: loadingStatus,
-                      minVoltageRipple: 'N/A',
+                      minVoltageRipple: minVoltageRipple,
                       fontSize: 32,
                     ),
                     Text(
@@ -967,7 +973,7 @@ class _VoltageRippleCard extends StatelessWidget {
                   children: [
                     getMaxVoltageRipple(
                       loadingStatus: loadingStatus,
-                      maxVoltageRipple: 'N/A',
+                      maxVoltageRipple: maxVoltageRipple,
                       fontSize: 32,
                     ),
                     Text(
@@ -1009,12 +1015,14 @@ class _VoltageRippleCard extends StatelessWidget {
               currentVoltageRipple:
                   state.characteristicData[DataKey.currentVoltageRipple] ?? '',
               minVoltageRippleTitle: AppLocalizations.of(context).minVoltage,
-              minVoltageRipple:
-                  state.characteristicData[DataKey.minVoltageRipple] ?? '',
+              minVoltageRipple: state
+                      .characteristicData[DataKey.historicalMinVoltageRipple] ??
+                  '',
               maxVoltageRippleTitle:
                   AppLocalizations.of(context).maxVoltageRipple,
-              maxVoltageRipple:
-                  state.characteristicData[DataKey.maxVoltageRipple] ?? '',
+              maxVoltageRipple: state
+                      .characteristicData[DataKey.historicalMaxVoltageRipple] ??
+                  '',
               borderColor: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(

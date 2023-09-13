@@ -30,6 +30,24 @@ enum Alarm {
   medium,
 }
 
+class Log1p8G {
+  const Log1p8G({
+    required this.dateTime,
+    required this.temperature,
+    required this.voltage,
+    required this.rfOutputLowPilot,
+    required this.rfOutputHighPilot,
+    required this.voltageRipple,
+  });
+
+  final DateTime dateTime;
+  final double temperature;
+  final double voltage;
+  final double rfOutputLowPilot;
+  final double rfOutputHighPilot;
+  final int voltageRipple;
+}
+
 class Log {
   const Log({
     required this.dateTime,
@@ -147,6 +165,7 @@ class DsimRepository {
   String _basicInterval = '';
   final List<int> _rawLog = [];
   final List<Log> _logs = [];
+  final List<Log1p8G> _log1p8Gs = [];
   final List<int> _rawEvent = [];
   final List<Event> _events = [];
   final int _totalBytesPerCommand = 261;
@@ -261,6 +280,7 @@ class DsimRepository {
     _completer = Completer<dynamic>();
     cancelTimeout(name: 'set timeout from clearCache');
     _logs.clear();
+    _log1p8Gs.clear();
     _rawLog.clear();
     _events.clear();
     _rawEvent.clear();
@@ -1122,7 +1142,7 @@ class DsimRepository {
   }
 
   // commandIndex range from 183 to 192;
-  // chunkIndex range from 0 to 9;
+  // commandIndex = 183 時獲取最新的1024筆Log的統計資料跟 log
   Future<dynamic> requestCommand1p8GForLogChunk(int chunkIndex) async {
     commandIndex = chunkIndex + 183;
     _completer = Completer<dynamic>();
@@ -1135,33 +1155,63 @@ class DsimRepository {
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8GForLogChunk');
 
-    try {
-      var (
-        historicalMinTemperatureC,
-        historicalMaxTemperatureC,
-        historicalMinTemperatureF,
-        historicalMaxTemperatureF,
-        historicalMinVoltage,
-        historicalMaxVoltage,
-      ) = await _completer.future;
-      cancelTimeout(name: '1p8GForLogChunk');
+    if (commandIndex == 183) {
+      _log1p8Gs.clear();
+      try {
+        var (
+          historicalMinTemperatureC,
+          historicalMaxTemperatureC,
+          historicalMinTemperatureF,
+          historicalMaxTemperatureF,
+          historicalMinVoltage,
+          historicalMaxVoltage,
+          historicalMinVoltageRipple,
+          historicalMaxVoltageRipple,
+          log1p8Gs,
+        ) = await _completer.future;
+        // 將第一組 log 加入 _log1p8Gs
+        _log1p8Gs.addAll(log1p8Gs);
+        cancelTimeout(name: '1p8GForLogChunk');
 
-      return [
-        true,
-        historicalMinTemperatureC,
-        historicalMaxTemperatureC,
-        historicalMinTemperatureF,
-        historicalMaxTemperatureF,
-        historicalMinVoltage,
-        historicalMaxVoltage,
-      ];
-    } catch (e) {
-      return [
-        false,
-        '',
-        '',
-        '',
-      ];
+        return [
+          true,
+          historicalMinTemperatureC,
+          historicalMaxTemperatureC,
+          historicalMinTemperatureF,
+          historicalMaxTemperatureF,
+          historicalMinVoltage,
+          historicalMaxVoltage,
+          historicalMinVoltageRipple,
+          historicalMaxVoltageRipple,
+        ];
+      } catch (e) {
+        return [
+          false,
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+        ];
+      }
+    } else {
+      try {
+        // 將其他組 log 加入 _log1p8Gs
+        List<Log1p8G> log1p8Gs = await _completer.future;
+        _log1p8Gs.addAll(log1p8Gs);
+        cancelTimeout(name: '1p8GForLogChunk');
+
+        return [
+          true,
+        ];
+      } catch (e) {
+        return [
+          false,
+        ];
+      }
     }
   }
 
@@ -1198,6 +1248,50 @@ class DsimRepository {
         '',
       ];
     }
+  }
+
+  List<List<ValuePair>> get1p8GDateValueCollectionOfLogs() {
+    List<ValuePair> temperatureDataList = [];
+    List<ValuePair> rfOutputLowPilotDataList = [];
+    List<ValuePair> rfOutputHighPilotDataList = [];
+    List<ValuePair> voltageDataList = [];
+    List<ValuePair> voltageRippleDataList = [];
+
+    for (Log1p8G log1p8G in _log1p8Gs.reversed) {
+      temperatureDataList.add(ValuePair(
+        x: log1p8G.dateTime,
+        y: log1p8G.temperature,
+      ));
+      rfOutputLowPilotDataList.add(ValuePair(
+        x: log1p8G.dateTime,
+        y: log1p8G.rfOutputLowPilot,
+      ));
+      rfOutputHighPilotDataList.add(ValuePair(
+        x: log1p8G.dateTime,
+        y: log1p8G.rfOutputHighPilot,
+      ));
+      voltageDataList.add(ValuePair(
+        x: log1p8G.dateTime,
+        y: log1p8G.voltage,
+      ));
+      voltageRippleDataList.add(ValuePair(
+        x: log1p8G.dateTime,
+        y: log1p8G.voltageRipple.toDouble(),
+      ));
+    }
+
+    return [
+      temperatureDataList,
+      rfOutputLowPilotDataList,
+      rfOutputHighPilotDataList,
+      voltageDataList,
+      voltageRippleDataList,
+    ];
+  }
+
+  Future<dynamic> export1p8GRecords() async {
+    List<dynamic> result = await _dsim18parser.export1p8GRecords(_log1p8Gs);
+    return result;
   }
 
   Future<dynamic> set1p8GMaxTemperature(String temperature) async {
@@ -1843,6 +1937,85 @@ class DsimRepository {
     );
 
     _writeSetCommandToCharacteristic(Command18.setLogIntervalCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GTransitDelayTime(int ms) async {
+    commandIndex = 353;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, ms, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setTransitDelayTimeCmd[7] = bytes[0];
+    Command18.setTransitDelayTimeCmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setTransitDelayTimeCmd,
+      usDataLength: Command18.setTransitDelayTimeCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setTransitDelayTimeCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GNowDateTime() async {
+    commandIndex = 354;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    DateTime dateTime = DateTime.now();
+
+    int year = dateTime.year;
+
+    // Convert the integer to bytes
+    ByteData yearByteData = ByteData(2);
+    yearByteData.setInt16(0, year, Endian.little); // little endian
+    Uint8List yearBytes = Uint8List.view(yearByteData.buffer);
+
+    int month = dateTime.month;
+    int day = dateTime.day;
+    int hour = dateTime.hour;
+    int minute = dateTime.minute;
+
+    Command18.setNowDateTimeCmd[7] = yearBytes[0];
+    Command18.setNowDateTimeCmd[8] = yearBytes[1];
+    Command18.setNowDateTimeCmd[9] = month;
+    Command18.setNowDateTimeCmd[10] = day;
+    Command18.setNowDateTimeCmd[11] = hour;
+    Command18.setNowDateTimeCmd[12] = minute;
+
+    CRC16.calculateCRC16(
+      command: Command18.setNowDateTimeCmd,
+      usDataLength: Command18.setNowDateTimeCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setNowDateTimeCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');

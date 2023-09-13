@@ -399,13 +399,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       characteristicData: {},
     ));
 
+    // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
+    await _dsimRepository.set1p8GNowDateTime();
+
     List<Function> requestCommands = [
       _dsimRepository.requestCommand1p8G0,
       _dsimRepository.requestCommand1p8G1,
       _dsimRepository.requestCommand1p8G2,
-      // for (int i = 0; i < 1; i++) ...[
-      //   _dsimRepository.requestCommand1p8GForLogChunk,
-      // ]
+      _dsimRepository.requestCommand1p8GForLogChunk,
     ];
 
     for (int i = 0; i < requestCommands.length; i++) {
@@ -415,7 +416,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       if (i <= 2) {
         result = await requestCommands[i]();
       } else {
-        result = await requestCommands[i](i + 180);
+        result = await requestCommands[i](i - 3);
       }
 
       if (result[0]) {
@@ -460,10 +461,35 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             newCharacteristicData.addAll(result[1]);
 
             emit(state.copyWith(
-              loadingStatus: FormStatus.requestSuccess,
               characteristicData: newCharacteristicData,
             ));
             break;
+          case 3:
+            Map<DataKey, String> newCharacteristicData = {};
+            newCharacteristicData.addEntries(state.characteristicData.entries);
+            List<List<ValuePair>> dateValueCollectionOfLog =
+                _dsimRepository.get1p8GDateValueCollectionOfLogs();
+
+            newCharacteristicData[DataKey.historicalMinTemperatureC] =
+                result[1];
+            newCharacteristicData[DataKey.historicalMaxTemperatureC] =
+                result[2];
+            newCharacteristicData[DataKey.historicalMinTemperatureF] =
+                result[3];
+            newCharacteristicData[DataKey.historicalMaxTemperatureF] =
+                result[4];
+            newCharacteristicData[DataKey.historicalMinVoltage] = result[5];
+            newCharacteristicData[DataKey.historicalMaxVoltage] = result[6];
+            newCharacteristicData[DataKey.historicalMinVoltageRipple] =
+                result[7];
+            newCharacteristicData[DataKey.historicalMaxVoltageRipple] =
+                result[8];
+
+            emit(state.copyWith(
+              loadingStatus: FormStatus.requestSuccess,
+              characteristicData: newCharacteristicData,
+              dateValueCollectionOfLog: dateValueCollectionOfLog,
+            ));
           default:
             break;
         }

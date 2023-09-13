@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:dsim_app/chart/chart/chart18_bloc/chart18_bloc.dart';
 import 'package:dsim_app/chart/view/full_screen_chart_form.dart';
 import 'package:dsim_app/core/custom_style.dart';
@@ -29,22 +28,22 @@ class _LogChartView extends StatelessWidget {
     }) {
       LineSeries temperatureLineSeries = LineSeries(
         name: 'Temperature',
-        dataList: [],
+        dataList: dateValueCollectionOfLog[0],
         color: Theme.of(context).colorScheme.primary,
         minYAxisValue: -30.0,
         maxYAxisValue: 100.0,
       );
-      LineSeries rfOutputLowPilotLineSeries = const LineSeries(
+      LineSeries rfOutputLowPilotLineSeries = LineSeries(
         name: 'RF Output Low Pilot',
-        dataList: [],
-        color: Color(0xffff5963),
+        dataList: dateValueCollectionOfLog[1],
+        color: const Color(0xffff5963),
         minYAxisValue: 0.0,
         maxYAxisValue: 300.0,
       );
-      LineSeries rfOutputHighPilotLineSeries = const LineSeries(
+      LineSeries rfOutputHighPilotLineSeries = LineSeries(
         name: 'RF Output High Pilot',
-        dataList: [],
-        color: Color(0xff249689),
+        dataList: dateValueCollectionOfLog[2],
+        color: const Color(0xff249689),
         minYAxisValue: 0.0,
         maxYAxisValue: 300.0,
       );
@@ -59,23 +58,23 @@ class _LogChartView extends StatelessWidget {
     List<LineSeries> getChartDataOfLog2({
       required List<List<ValuePair>> dateValueCollectionOfLog,
     }) {
-      LineSeries temperatureLineSeries = LineSeries(
+      LineSeries voltageLineSeries = LineSeries(
+        name: '24V',
+        dataList: dateValueCollectionOfLog[3],
+        color: const Color(0xffff5963),
+        minYAxisValue: 0.0,
+        maxYAxisValue: 40.0,
+      );
+      LineSeries voltageRippleLineSeries = LineSeries(
         name: '24V Ripple',
-        dataList: [],
+        dataList: dateValueCollectionOfLog[4],
         color: Theme.of(context).colorScheme.primary,
         minYAxisValue: 0.0,
         maxYAxisValue: 500.0,
       );
-      LineSeries voltageLineSeries = const LineSeries(
-        name: '24V',
-        dataList: [],
-        color: Color(0xffff5963),
-        minYAxisValue: 0.0,
-        maxYAxisValue: 40.0,
-      );
       return [
-        temperatureLineSeries,
         voltageLineSeries,
+        voltageRippleLineSeries,
       ];
     }
 

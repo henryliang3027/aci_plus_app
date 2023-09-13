@@ -18,6 +18,13 @@ class DataShared extends Chart18Event {
   List<Object?> get props => [];
 }
 
+class AllDataDownloaded extends Chart18Event {
+  const AllDataDownloaded();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class MoreDataRequested extends Chart18Event {
   const MoreDataRequested(this.chunkIndex);
 

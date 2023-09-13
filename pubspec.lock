@@ -222,11 +222,9 @@ packages:
   flutter_speed_chart:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "0ff461c"
-      resolved-ref: "0ff461cf4c770d1c4896c89af9f837715d3af433"
-      url: "/Users/henry.liang/projects/flutter_speed_chart"
-    source: git
+      path: "/Users/henry.liang/projects/flutter_speed_chart"
+      relative: false
+    source: path
     version: "0.0.1"
   flutter_test:
     dependency: "direct dev"

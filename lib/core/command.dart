@@ -25,6 +25,7 @@ enum DataKey {
   maxTemperatureF,
   historicalMinTemperatureF,
   historicalMaxTemperatureF,
+
   currentTemperatureC,
   minTemperatureC,
   maxTemperatureC,
@@ -35,6 +36,8 @@ enum DataKey {
   maxVoltage,
   historicalMinVoltage,
   historicalMaxVoltage,
+  historicalMinVoltageRipple,
+  historicalMaxVoltageRipple,
   currentVoltageRipple,
   minVoltageRipple,
   maxVoltageRipple,

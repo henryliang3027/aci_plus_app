@@ -14,6 +14,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     on<DataExported>(_onDataExported);
     on<DataShared>(_onDataShared);
     on<MoreDataRequested>(_onMoreDataRequested);
+    on<AllDataDownloaded>(_onAllDataDownloaded);
   }
 
   final DsimRepository _dsimRepository;
@@ -22,12 +23,63 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     DataExported event,
     Emitter<Chart18State> emit,
   ) async {
-    // emit(state.copyWith(
-    //   dataShareStatus: FormStatus.none,
-    //   dataExportStatus: FormStatus.requestInProgress,
-    // ));
+    emit(state.copyWith(
+      dataExportStatus: FormStatus.requestInProgress,
+      dataShareStatus: FormStatus.none,
+      allDataExportStatus: FormStatus.none,
+    ));
 
-    // final List<dynamic> result = await _dsimRepository.exportRecords();
+    final List<dynamic> result = await _dsimRepository.export1p8GRecords();
+
+    if (result[0]) {
+      emit(state.copyWith(
+        dataExportStatus: FormStatus.requestSuccess,
+        dataExportPath: result[2],
+      ));
+    } else {
+      emit(state.copyWith(
+        dataExportStatus: FormStatus.requestFailure,
+        dataExportPath: result[2],
+      ));
+    }
+  }
+
+  void _onDataShared(
+    DataShared event,
+    Emitter<Chart18State> emit,
+  ) async {
+    emit(state.copyWith(
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.requestInProgress,
+      allDataExportStatus: FormStatus.none,
+    ));
+
+    final List<dynamic> result = await _dsimRepository.export1p8GRecords();
+
+    if (result[0]) {
+      emit(state.copyWith(
+        dataShareStatus: FormStatus.requestSuccess,
+        exportFileName: result[1],
+        dataExportPath: result[2],
+      ));
+    } else {
+      emit(state.copyWith(
+        dataShareStatus: FormStatus.requestFailure,
+        exportFileName: result[1],
+        dataExportPath: result[2],
+      ));
+    }
+  }
+
+  void _onAllDataDownloaded(
+    AllDataDownloaded event,
+    Emitter<Chart18State> emit,
+  ) async {
+    emit(state.copyWith(
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataExportStatus: FormStatus.requestInProgress,
+    ));
 
     // if (result[0]) {
     //   emit(state.copyWith(
@@ -37,32 +89,6 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     // } else {
     //   emit(state.copyWith(
     //     dataExportStatus: FormStatus.requestFailure,
-    //     dataExportPath: result[2],
-    //   ));
-    // }
-  }
-
-  void _onDataShared(
-    DataShared event,
-    Emitter<Chart18State> emit,
-  ) async {
-    // emit(state.copyWith(
-    //   dataExportStatus: FormStatus.none,
-    //   dataShareStatus: FormStatus.requestInProgress,
-    // ));
-
-    // final List<dynamic> result = await _dsimRepository.exportRecords();
-
-    // if (result[0]) {
-    //   emit(state.copyWith(
-    //     dataShareStatus: FormStatus.requestSuccess,
-    //     exportFileName: result[1],
-    //     dataExportPath: result[2],
-    //   ));
-    // } else {
-    //   emit(state.copyWith(
-    //     dataShareStatus: FormStatus.requestFailure,
-    //     exportFileName: result[1],
     //     dataExportPath: result[2],
     //   ));
     // }

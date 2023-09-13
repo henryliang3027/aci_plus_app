@@ -1,5 +1,6 @@
 import 'package:dsim_app/chart/chart/chart18_bloc/chart18_bloc.dart';
 import 'package:dsim_app/chart/view/chart18_tab_bar.dart';
+import 'package:dsim_app/chart/view/linear_progress_bar.dart';
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
@@ -35,6 +36,7 @@ class Chart18Form extends StatelessWidget {
                       type: 'application/vnd.ms-excel',
                       uti: 'com.microsoft.excel.xls',
                     );
+                    print(result.message);
                   },
                 ),
               ),
@@ -137,6 +139,25 @@ class _PopupMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> showInProgressDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitleProcessing,
+            ),
+            actionsAlignment: MainAxisAlignment.center,
+            content: const CustomLinearProgressIndicator(),
+            // actions: const <Widget>[
+            //   CustomLinearProgressIndicator(),
+            // ],
+          );
+        },
+      );
+    }
+
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       if (state.loadingStatus.isRequestSuccess) {
         return PopupMenuButton<Menu>(
@@ -150,13 +171,14 @@ class _PopupMenu extends StatelessWidget {
               case Menu.refresh:
                 context.read<HomeBloc>().add(const DeviceRefreshed());
               case Menu.share:
-                // context.read<ChartBloc>().add(const DataShared());
+                context.read<Chart18Bloc>().add(const DataShared());
                 break;
               case Menu.export:
-                // context.read<ChartBloc>().add(const DataExported());
+                context.read<Chart18Bloc>().add(const DataExported());
                 break;
               case Menu.downloadAll:
-              // context.read<ChartBloc>().add(const DataExported());
+                showInProgressDialog();
+              // context.read<Chart18Bloc>().add(const DataExported());
               default:
                 break;
             }
