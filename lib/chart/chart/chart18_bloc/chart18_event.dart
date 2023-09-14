@@ -25,6 +25,15 @@ class AllDataDownloaded extends Chart18Event {
   List<Object?> get props => [];
 }
 
+class AllDataExported extends Chart18Event {
+  const AllDataExported(this.log1p8Gs);
+
+  final List<Log1p8G> log1p8Gs;
+
+  @override
+  List<Object?> get props => [log1p8Gs];
+}
+
 class MoreDataRequested extends Chart18Event {
   const MoreDataRequested(this.chunkIndex);
 

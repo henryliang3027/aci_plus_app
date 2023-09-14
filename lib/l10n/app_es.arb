@@ -136,6 +136,7 @@
     "systemEngineer": "Ingeniero de Sistemas",
 
     "dialogTitleAskBeforeExitApp": "¿Quieres salir de la aplicación?",
+    "dialogTitleDownloading": "Descargando...",
     "dialogTitleProcessing": "configurando...",
     "dialogTitleError": "Error",
     "dialogTitleSettingResult": "Resultado",

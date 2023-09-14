@@ -507,6 +507,7 @@ class Dsim18Parser {
         if (listEquals(rawData.sublist(0, 3), header)) {
           _rawLogs.clear();
         }
+        print(_rawLogs.length);
         _rawLogs.addAll(rawData);
 
         if (_rawLogs.length == 16389) {

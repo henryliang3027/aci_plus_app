@@ -1,10 +1,11 @@
 import 'package:dsim_app/chart/chart/chart18_bloc/chart18_bloc.dart';
 import 'package:dsim_app/chart/view/chart18_tab_bar.dart';
-import 'package:dsim_app/chart/view/linear_progress_bar.dart';
+import 'package:dsim_app/chart/view/download_indicator.dart';
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -17,7 +18,7 @@ class Chart18Form extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<Chart18Bloc, Chart18State>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state.dataExportStatus.isRequestSuccess) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -60,6 +61,46 @@ class Chart18Form extends StatelessWidget {
             sharePositionOrigin:
                 Rect.fromLTWH(0.0, height / 2, width, height / 2),
           );
+        } else if (state.allDataDownloadStatus.isRequestInProgress) {
+          List<dynamic>? resultOfDownload = await showDialog<List<dynamic>>(
+            context: context,
+            barrierDismissible: false, // user must tap button!
+            builder: (BuildContext buildContext) {
+              return DownloadIndicatorForm(
+                dsimRepository: RepositoryProvider.of<DsimRepository>(context),
+              );
+            },
+          );
+
+          if (resultOfDownload != null) {
+            if (resultOfDownload[0]) {
+              List<Log1p8G> log1p8Gs = resultOfDownload[1];
+              context.read<Chart18Bloc>().add(AllDataExported(log1p8Gs));
+            }
+          }
+        } else if (state.allDataDownloadStatus.isRequestSuccess) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                duration: const Duration(seconds: 30),
+                content: Text(
+                  AppLocalizations.of(context)
+                      .dialogMessageDataExportSuccessful,
+                ),
+                action: SnackBarAction(
+                  label: AppLocalizations.of(context).open,
+                  onPressed: () async {
+                    OpenResult result = await OpenFilex.open(
+                      state.dataExportPath,
+                      type: 'application/vnd.ms-excel',
+                      uti: 'com.microsoft.excel.xls',
+                    );
+                    print(result.message);
+                  },
+                ),
+              ),
+            );
         }
       },
       child: Scaffold(
@@ -139,24 +180,31 @@ class _PopupMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> showInProgressDialog() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context).dialogTitleProcessing,
-            ),
-            actionsAlignment: MainAxisAlignment.center,
-            content: const CustomLinearProgressIndicator(),
-            // actions: const <Widget>[
-            //   CustomLinearProgressIndicator(),
-            // ],
-          );
-        },
-      );
-    }
+    // Future<void> showInProgressDialog() async {
+    //   return showDialog<void>(
+    //     context: context,
+    //     barrierDismissible: false, // user must tap button!
+    //     builder: (BuildContext context) {
+    //       return AlertDialog(
+    //         title: Text(
+    //           AppLocalizations.of(context).dialogTitleProcessing,
+    //         ),
+    //         actionsAlignment: MainAxisAlignment.center,
+    //         content: SingleChildScrollView(
+    //           child: ListBody(
+    //             children: <Widget>[
+    //               LinearProgressIndicator(),
+    //               Text('100%'),
+    //             ],
+    //           ),
+    //         ),
+    //         // actions: const <Widget>[
+    //         //   CustomLinearProgressIndicator(),
+    //         // ],
+    //       );
+    //     },
+    //   );
+    // }
 
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       if (state.loadingStatus.isRequestSuccess) {
@@ -177,8 +225,7 @@ class _PopupMenu extends StatelessWidget {
                 context.read<Chart18Bloc>().add(const DataExported());
                 break;
               case Menu.downloadAll:
-                showInProgressDialog();
-              // context.read<Chart18Bloc>().add(const DataExported());
+                context.read<Chart18Bloc>().add(const AllDataDownloaded());
               default:
                 break;
             }

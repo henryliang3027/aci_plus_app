@@ -134,6 +134,7 @@
     "systemEngineer": "System Engineer",
     
     "dialogTitleAskBeforeExitApp": "Do you want to exit the app ?",
+    "dialogTitleDownloading": "Downloading...",
     "dialogTitleProcessing": "Setting up...",
     "dialogTitleError": "Error",
     "dialogTitleSettingResult": "Result",

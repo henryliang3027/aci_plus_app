@@ -165,7 +165,7 @@ class DsimRepository {
   String _basicInterval = '';
   final List<int> _rawLog = [];
   final List<Log> _logs = [];
-  final List<Log1p8G> _log1p8Gs = [];
+  // final List<Log1p8G> _log1p8Gs = [];
   final List<int> _rawEvent = [];
   final List<Event> _events = [];
   final int _totalBytesPerCommand = 261;
@@ -280,7 +280,6 @@ class DsimRepository {
     _completer = Completer<dynamic>();
     cancelTimeout(name: 'set timeout from clearCache');
     _logs.clear();
-    _log1p8Gs.clear();
     _rawLog.clear();
     _events.clear();
     _rawEvent.clear();
@@ -1141,6 +1140,12 @@ class DsimRepository {
     }
   }
 
+  Future<dynamic> testForLogChunk(int chunkIndex) async {
+    await Future.delayed(Duration(seconds: 1));
+
+    return [true, true];
+  }
+
   // commandIndex range from 183 to 192;
   // commandIndex = 183 時獲取最新的1024筆Log的統計資料跟 log
   Future<dynamic> requestCommand1p8GForLogChunk(int chunkIndex) async {
@@ -1156,7 +1161,7 @@ class DsimRepository {
         name: '1p8GForLogChunk');
 
     if (commandIndex == 183) {
-      _log1p8Gs.clear();
+      // _log1p8Gs.clear();
       try {
         var (
           historicalMinTemperatureC,
@@ -1170,11 +1175,15 @@ class DsimRepository {
           log1p8Gs,
         ) = await _completer.future;
         // 將第一組 log 加入 _log1p8Gs
-        _log1p8Gs.addAll(log1p8Gs);
+        // _log1p8Gs.addAll(log1p8Gs);
         cancelTimeout(name: '1p8GForLogChunk');
+
+        bool hasNextChunk = log1p8Gs.length == 1024 ? true : false;
 
         return [
           true,
+          hasNextChunk,
+          log1p8Gs,
           historicalMinTemperatureC,
           historicalMaxTemperatureC,
           historicalMinTemperatureF,
@@ -1186,6 +1195,7 @@ class DsimRepository {
         ];
       } catch (e) {
         return [
+          false,
           false,
           '',
           '',
@@ -1201,14 +1211,19 @@ class DsimRepository {
       try {
         // 將其他組 log 加入 _log1p8Gs
         List<Log1p8G> log1p8Gs = await _completer.future;
-        _log1p8Gs.addAll(log1p8Gs);
+        // _log1p8Gs.addAll(log1p8Gs);
         cancelTimeout(name: '1p8GForLogChunk');
+
+        bool hasNextChunk = log1p8Gs.length == 1024 ? true : false;
 
         return [
           true,
+          hasNextChunk,
+          log1p8Gs,
         ];
       } catch (e) {
         return [
+          false,
           false,
         ];
       }
@@ -1250,14 +1265,15 @@ class DsimRepository {
     }
   }
 
-  List<List<ValuePair>> get1p8GDateValueCollectionOfLogs() {
+  List<List<ValuePair>> get1p8GDateValueCollectionOfLogs(
+      List<Log1p8G> log1p8Gs) {
     List<ValuePair> temperatureDataList = [];
     List<ValuePair> rfOutputLowPilotDataList = [];
     List<ValuePair> rfOutputHighPilotDataList = [];
     List<ValuePair> voltageDataList = [];
     List<ValuePair> voltageRippleDataList = [];
 
-    for (Log1p8G log1p8G in _log1p8Gs.reversed) {
+    for (Log1p8G log1p8G in log1p8Gs.reversed) {
       temperatureDataList.add(ValuePair(
         x: log1p8G.dateTime,
         y: log1p8G.temperature,
@@ -1289,8 +1305,8 @@ class DsimRepository {
     ];
   }
 
-  Future<dynamic> export1p8GRecords() async {
-    List<dynamic> result = await _dsim18parser.export1p8GRecords(_log1p8Gs);
+  Future<dynamic> export1p8GRecords(List<Log1p8G> log1p8Gs) async {
+    List<dynamic> result = await _dsim18parser.export1p8GRecords(log1p8Gs);
     return result;
   }
 

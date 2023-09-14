@@ -180,162 +180,111 @@ class _LogChartView extends StatelessWidget {
       );
     }
 
-    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      if (state.loadingStatus == FormStatus.requestInProgress) {
-        return Stack(
-          alignment: Alignment.center,
-          children: [
-            buildLoadingFormWithProgressiveChartView(
-                state.dateValueCollectionOfLog),
-            Container(
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(70, 158, 158, 158),
-              ),
-              child: const Center(
-                child: SizedBox(
-                  width: CustomStyle.diameter,
-                  height: CustomStyle.diameter,
-                  child: CircularProgressIndicator(),
+    return Builder(
+      builder: (context) {
+        HomeState homeState = context.watch<HomeBloc>().state;
+        Chart18State chart18State = context.watch<Chart18Bloc>().state;
+
+        if (homeState.loadingStatus == FormStatus.requestInProgress) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              buildLoadingFormWithProgressiveChartView(
+                  chart18State.dateValueCollectionOfLog),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(70, 158, 158, 158),
+                ),
+                child: const Center(
+                  child: SizedBox(
+                    width: CustomStyle.diameter,
+                    height: CustomStyle.diameter,
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               ),
-            ),
-          ],
-        );
-      } else if (state.loadingStatus == FormStatus.requestSuccess) {
-        return SingleChildScrollView(
-          // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
-          // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-          key: const Key('ChartForm_Chart'),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Wrap(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        context
-                            .read<Chart18Bloc>()
-                            .add(const MoreDataRequested(0));
-                      },
-                      child: const Text('Load 0'),
+            ],
+          );
+        } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
+          context.read<Chart18Bloc>().add(const MoreDataRequested(0));
+
+          if (chart18State.dataRequestStatus.isRequestInProgress) {
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                buildLoadingFormWithProgressiveChartView(
+                    homeState.dateValueCollectionOfLog),
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(70, 158, 158, 158),
+                  ),
+                  child: const Center(
+                    child: SizedBox(
+                      width: CustomStyle.diameter,
+                      height: CustomStyle.diameter,
+                      child: CircularProgressIndicator(),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context
-                            .read<Chart18Bloc>()
-                            .add(const MoreDataRequested(1));
-                      },
-                      child: const Text('Load 1'),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return SingleChildScrollView(
+              // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+              // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+              key: const Key('ChartForm_Chart'),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    buildChart(
+                      getChartDataOfLog1(
+                          dateValueCollectionOfLog:
+                              chart18State.dateValueCollectionOfLog),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context
-                            .read<Chart18Bloc>()
-                            .add(const MoreDataRequested(2));
-                      },
-                      child: const Text('Load 2'),
+                    const SizedBox(
+                      height: 50.0,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context
-                            .read<Chart18Bloc>()
-                            .add(const MoreDataRequested(3));
-                      },
-                      child: const Text('Load 3'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context
-                            .read<Chart18Bloc>()
-                            .add(const MoreDataRequested(4));
-                      },
-                      child: const Text('Load 4'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context
-                            .read<Chart18Bloc>()
-                            .add(const MoreDataRequested(5));
-                      },
-                      child: const Text('Load 5'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context
-                            .read<Chart18Bloc>()
-                            .add(const MoreDataRequested(6));
-                      },
-                      child: const Text('Load 6'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context
-                            .read<Chart18Bloc>()
-                            .add(const MoreDataRequested(7));
-                      },
-                      child: const Text('Load 7'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context
-                            .read<Chart18Bloc>()
-                            .add(const MoreDataRequested(8));
-                      },
-                      child: const Text('Load 8'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context
-                            .read<Chart18Bloc>()
-                            .add(const MoreDataRequested(9));
-                      },
-                      child: const Text('Load 9'),
+                    buildChart(
+                      getChartDataOfLog2(
+                          dateValueCollectionOfLog:
+                              homeState.dateValueCollectionOfLog),
                     ),
                   ],
                 ),
-                buildChart(
-                  getChartDataOfLog1(
-                      dateValueCollectionOfLog: state.dateValueCollectionOfLog),
-                ),
-                const SizedBox(
-                  height: 50.0,
-                ),
-                buildChart(
-                  getChartDataOfLog2(
-                      dateValueCollectionOfLog: state.dateValueCollectionOfLog),
-                ),
-              ],
+              ),
+            );
+          }
+        } else {
+          return SingleChildScrollView(
+            // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+            // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+            key: const Key('ChartForm_Chart'),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  buildChart(
+                    getChartDataOfLog1(
+                        dateValueCollectionOfLog:
+                            homeState.dateValueCollectionOfLog),
+                  ),
+                  const SizedBox(
+                    height: 50.0,
+                  ),
+                  buildChart(
+                    getChartDataOfLog2(
+                        dateValueCollectionOfLog:
+                            homeState.dateValueCollectionOfLog),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      } else {
-        return SingleChildScrollView(
-          // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
-          // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-          key: const Key('ChartForm_Chart'),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                buildChart(
-                  getChartDataOfLog1(
-                      dateValueCollectionOfLog: state.dateValueCollectionOfLog),
-                ),
-                const SizedBox(
-                  height: 50.0,
-                ),
-                buildChart(
-                  getChartDataOfLog2(
-                      dateValueCollectionOfLog: state.dateValueCollectionOfLog),
-                ),
-              ],
-            ),
-          ),
-        );
-      }
-    });
+          );
+        }
+      },
+    );
   }
 }

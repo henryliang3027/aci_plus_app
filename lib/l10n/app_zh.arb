@@ -134,6 +134,7 @@
     "systemEngineer": "系統工程師",
     
     "dialogTitleAskBeforeExitApp": "您確定要退出應用程式嗎？",
+    "dialogTitleDownloading": "下載中...",
     "dialogTitleProcessing": "設定中...",
     "dialogTitleError": "錯誤",
     "dialogTitleSettingResult": "結果",

@@ -467,23 +467,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           case 3:
             Map<DataKey, String> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
+
             List<List<ValuePair>> dateValueCollectionOfLog =
-                _dsimRepository.get1p8GDateValueCollectionOfLogs();
+                _dsimRepository.get1p8GDateValueCollectionOfLogs(result[2]);
 
             newCharacteristicData[DataKey.historicalMinTemperatureC] =
-                result[1];
-            newCharacteristicData[DataKey.historicalMaxTemperatureC] =
-                result[2];
-            newCharacteristicData[DataKey.historicalMinTemperatureF] =
                 result[3];
-            newCharacteristicData[DataKey.historicalMaxTemperatureF] =
+            newCharacteristicData[DataKey.historicalMaxTemperatureC] =
                 result[4];
-            newCharacteristicData[DataKey.historicalMinVoltage] = result[5];
-            newCharacteristicData[DataKey.historicalMaxVoltage] = result[6];
+            newCharacteristicData[DataKey.historicalMinTemperatureF] =
+                result[5];
+            newCharacteristicData[DataKey.historicalMaxTemperatureF] =
+                result[6];
+            newCharacteristicData[DataKey.historicalMinVoltage] = result[7];
+            newCharacteristicData[DataKey.historicalMaxVoltage] = result[8];
             newCharacteristicData[DataKey.historicalMinVoltageRipple] =
-                result[7];
+                result[9];
             newCharacteristicData[DataKey.historicalMaxVoltageRipple] =
-                result[8];
+                result[10];
 
             emit(state.copyWith(
               loadingStatus: FormStatus.requestSuccess,

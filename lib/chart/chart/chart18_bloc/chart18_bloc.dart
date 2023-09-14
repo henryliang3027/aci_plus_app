@@ -2,6 +2,7 @@ import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_chart/speed_chart.dart';
 
 part 'chart18_event.dart';
 part 'chart18_state.dart';
@@ -15,6 +16,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     on<DataShared>(_onDataShared);
     on<MoreDataRequested>(_onMoreDataRequested);
     on<AllDataDownloaded>(_onAllDataDownloaded);
+    on<AllDataExported>(_onAllDataExported);
   }
 
   final DsimRepository _dsimRepository;
@@ -26,10 +28,11 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     emit(state.copyWith(
       dataExportStatus: FormStatus.requestInProgress,
       dataShareStatus: FormStatus.none,
-      allDataExportStatus: FormStatus.none,
+      allDataDownloadStatus: FormStatus.none,
     ));
 
-    final List<dynamic> result = await _dsimRepository.export1p8GRecords();
+    final List<dynamic> result =
+        await _dsimRepository.export1p8GRecords(state.log1p8Gs);
 
     if (result[0]) {
       emit(state.copyWith(
@@ -51,10 +54,11 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     emit(state.copyWith(
       dataExportStatus: FormStatus.none,
       dataShareStatus: FormStatus.requestInProgress,
-      allDataExportStatus: FormStatus.none,
+      allDataDownloadStatus: FormStatus.none,
     ));
 
-    final List<dynamic> result = await _dsimRepository.export1p8GRecords();
+    final List<dynamic> result =
+        await _dsimRepository.export1p8GRecords(state.log1p8Gs);
 
     if (result[0]) {
       emit(state.copyWith(
@@ -78,8 +82,19 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     emit(state.copyWith(
       dataExportStatus: FormStatus.none,
       dataShareStatus: FormStatus.none,
-      allDataExportStatus: FormStatus.requestInProgress,
+      allDataDownloadStatus: FormStatus.requestInProgress,
     ));
+
+    // for (int i = 0; i < 10; i++) {
+    //   await Future.delayed(Duration(seconds: 1));
+
+    //   emit(state.copyWith(
+    //     dataExportStatus: FormStatus.none,
+    //     dataShareStatus: FormStatus.none,
+    //     allDataDownloadStatus: FormStatus.none,
+    //     chunckIndex: i + 1,
+    //   ));
+    // }
 
     // if (result[0]) {
     //   emit(state.copyWith(
@@ -94,10 +109,58 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     // }
   }
 
+  void _onAllDataExported(
+    AllDataExported event,
+    Emitter<Chart18State> emit,
+  ) async {
+    emit(state.copyWith(
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataDownloadStatus: FormStatus.requestSuccess,
+    ));
+
+    final List<dynamic> result =
+        await _dsimRepository.export1p8GRecords(event.log1p8Gs);
+
+    if (result[0]) {
+      emit(state.copyWith(
+        dataExportStatus: FormStatus.requestSuccess,
+        dataExportPath: result[2],
+      ));
+    } else {
+      emit(state.copyWith(
+        dataExportStatus: FormStatus.requestFailure,
+        dataExportPath: result[2],
+      ));
+    }
+  }
+
   Future<void> _onMoreDataRequested(
     MoreDataRequested event,
     Emitter<Chart18State> emit,
   ) async {
-    await _dsimRepository.requestCommand1p8GForLogChunk(event.chunkIndex);
+    emit(state.copyWith(
+      dataRequestStatus: FormStatus.requestInProgress,
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataDownloadStatus: FormStatus.none,
+    ));
+
+    List<Log1p8G> log1p8Gs = [];
+    log1p8Gs.addAll(state.log1p8Gs);
+
+    List<dynamic> resultOfLog1p8G =
+        await _dsimRepository.requestCommand1p8GForLogChunk(event.chunkIndex);
+
+    log1p8Gs.addAll(resultOfLog1p8G[2]);
+
+    List<List<ValuePair>> dateValueCollectionOfLog =
+        _dsimRepository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
+
+    emit(state.copyWith(
+      dataRequestStatus: FormStatus.requestInProgress,
+      log1p8Gs: log1p8Gs,
+      dateValueCollectionOfLog: dateValueCollectionOfLog,
+    ));
   }
 }
