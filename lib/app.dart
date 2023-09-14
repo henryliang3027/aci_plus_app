@@ -48,6 +48,7 @@ class _AppView extends StatelessWidget {
       supportedLocales: const <Locale>[
         Locale('en'),
         Locale('es'),
+        Locale('fr'),
         Locale('zh'),
         Locale.fromSubtags(
             languageCode: 'zh',
