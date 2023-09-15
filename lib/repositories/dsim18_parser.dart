@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:dsim_app/core/command18.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
-import 'package:dsim_app/core/custom_style.dart';
+
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:dsim_app/repositories/unit_converter.dart';
 import 'package:excel/excel.dart';
