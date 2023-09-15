@@ -4,13 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StatusPage extends StatelessWidget {
-  const StatusPage({super.key});
+  const StatusPage({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => StatusBloc(),
-      child: const StatusForm(),
+      child: StatusForm(
+        pageController: pageController,
+      ),
     );
   }
 }

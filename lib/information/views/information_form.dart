@@ -2,6 +2,7 @@ import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:dsim_app/information/bloc/information_bloc/information_bloc.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InformationForm extends StatelessWidget {
-  const InformationForm({super.key});
+  const InformationForm({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +35,10 @@ class InformationForm extends StatelessWidget {
             _AlarmCard(),
           ],
         ),
+      ),
+      bottomNavigationBar: HomeBottomNavigationBar(
+        pageController: pageController,
+        selectedIndex: 2,
       ),
     );
   }

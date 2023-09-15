@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Setting18Page extends StatelessWidget {
-  const Setting18Page({super.key});
+  const Setting18Page({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,9 @@ class Setting18Page extends StatelessWidget {
           ),
         ),
       ],
-      child: const Setting18Form(),
+      child: Setting18Form(
+        pageController: pageController,
+      ),
     );
   }
 }

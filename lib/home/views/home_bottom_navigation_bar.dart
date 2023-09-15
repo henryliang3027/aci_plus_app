@@ -5,14 +5,17 @@ class HomeBottomNavigationBar extends StatelessWidget {
     Key? key,
     required this.selectedIndex,
     required this.pageController,
+    this.enableTap = true,
   }) : super(key: key);
 
   final int selectedIndex;
   final PageController pageController;
+  final bool enableTap;
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       type: BottomNavigationBarType.fixed,
       showSelectedLabels: false,
       showUnselectedLabels: false,
@@ -48,11 +51,13 @@ class HomeBottomNavigationBar extends StatelessWidget {
       currentIndex: selectedIndex,
       selectedItemColor: Theme.of(context).primaryColor,
       unselectedItemColor: Theme.of(context).hintColor,
-      onTap: (int index) {
-        pageController.jumpToPage(
-          index,
-        );
-      },
+      onTap: enableTap
+          ? (int index) {
+              pageController.jumpToPage(
+                index,
+              );
+            }
+          : null,
     );
   }
 }

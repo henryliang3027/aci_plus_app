@@ -1,10 +1,11 @@
+import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AboutPage extends StatefulWidget {
-  const AboutPage({
-    Key? key,
-  }) : super(key: key);
+  const AboutPage({super.key, required this.pageController});
+
+  final PageController pageController;
 
   @override
   State<AboutPage> createState() => _AboutPageState();
@@ -422,6 +423,10 @@ class _AboutPageState extends State<AboutPage> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: HomeBottomNavigationBar(
+        pageController: widget.pageController,
+        selectedIndex: 4,
       ),
     );
   }

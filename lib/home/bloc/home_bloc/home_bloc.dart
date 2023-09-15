@@ -443,7 +443,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
             // 如果讀取到 0 分鐘, 則自動設定為 30 分鐘
             if (result[1][DataKey.logInterval] == '0') {
-              await _dsimRepository.set1p8GLogInterval('30');
+              await _dsimRepository.set1p8GLogInterval('25');
               List<dynamic> resultOf1p8G1 =
                   await _dsimRepository.requestCommand1p8G1();
               newCharacteristicData[DataKey.logInterval] =

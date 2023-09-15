@@ -5,14 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Status18Page extends StatelessWidget {
-  const Status18Page({super.key});
+  const Status18Page({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Status18Bloc(
           unitRepository: RepositoryProvider.of<UnitRepository>(context)),
-      child: const Status18Form(),
+      child: Status18Form(
+        pageController: pageController,
+      ),
     );
   }
 }

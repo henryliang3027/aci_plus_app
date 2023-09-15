@@ -7,7 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SettingPage extends StatelessWidget {
-  const SettingPage({super.key});
+  const SettingPage({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,9 @@ class SettingPage extends StatelessWidget {
           ),
         )
       ],
-      child: const SettingForm(),
+      child: SettingForm(
+        pageController: pageController,
+      ),
     );
   }
 }

@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Chart18TabBar extends StatelessWidget {
-  const Chart18TabBar({super.key});
+  const Chart18TabBar({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -54,12 +59,16 @@ class Chart18TabBar extends StatelessWidget {
               ),
             ),
           ),
-          const Expanded(
+          Expanded(
             child: TabBarView(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               children: [
-                DataLogChartView(),
-                RFLevelChartView(),
+                DataLogChartView(
+                  pageController: pageController,
+                ),
+                RFLevelChartView(
+                  pageController: pageController,
+                ),
               ],
             ),
           ),

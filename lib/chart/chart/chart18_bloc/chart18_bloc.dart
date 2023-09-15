@@ -146,6 +146,10 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       allDataDownloadStatus: FormStatus.none,
     ));
 
+    if (event.chunkIndex == 0) {
+      await Future.delayed(const Duration(milliseconds: 1000));
+    }
+
     List<Log1p8G> log1p8Gs = [];
     log1p8Gs.addAll(state.log1p8Gs);
 
@@ -158,7 +162,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
         _dsimRepository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
 
     emit(state.copyWith(
-      dataRequestStatus: FormStatus.requestInProgress,
+      dataRequestStatus: FormStatus.requestSuccess,
       log1p8Gs: log1p8Gs,
       dateValueCollectionOfLog: dateValueCollectionOfLog,
     ));

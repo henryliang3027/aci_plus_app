@@ -45,6 +45,8 @@ class _FullScreenChartFormState extends State<FullScreenChartForm> {
         SystemChrome.setPreferredOrientations([
           DeviceOrientation.portraitUp,
           DeviceOrientation.portraitDown,
+          DeviceOrientation.landscapeLeft,
+          DeviceOrientation.landscapeRight,
         ]);
         return true;
       },

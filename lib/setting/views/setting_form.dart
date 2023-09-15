@@ -2,6 +2,7 @@ import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/message_localization.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_list_view_bloc/setting_list_view_bloc.dart';
 import 'package:dsim_app/setting/views/setting_graph_view.dart';
@@ -11,7 +12,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingForm extends StatelessWidget {
-  const SettingForm({super.key});
+  const SettingForm({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +30,10 @@ class SettingForm extends StatelessWidget {
         actions: const [_DeviceRefresh()],
       ),
       body: const _ViewLayout(),
+      bottomNavigationBar: HomeBottomNavigationBar(
+        pageController: pageController,
+        selectedIndex: 0,
+      ),
     );
   }
 }

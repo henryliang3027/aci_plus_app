@@ -4,17 +4,29 @@ import 'package:dsim_app/chart/view/full_screen_chart_form.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RFLevelChartView extends StatelessWidget {
-  const RFLevelChartView({super.key});
+  const RFLevelChartView({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
-    return const _ChartView();
+    return Scaffold(
+      body: const _ChartView(),
+      bottomNavigationBar: HomeBottomNavigationBar(
+        pageController: pageController,
+        selectedIndex: 3,
+      ),
+    );
   }
 }
 

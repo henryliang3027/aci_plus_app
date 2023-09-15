@@ -6,6 +6,7 @@ import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,7 +15,12 @@ import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ChartForm extends StatelessWidget {
-  const ChartForm({super.key});
+  const ChartForm({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +81,10 @@ class ChartForm extends StatelessWidget {
           ],
         ),
         body: const _LogChartView(),
+        bottomNavigationBar: HomeBottomNavigationBar(
+          pageController: pageController,
+          selectedIndex: 3,
+        ),
       ),
     );
   }

@@ -4,22 +4,110 @@ import 'package:dsim_app/chart/view/full_screen_chart_form.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DataLogChartView extends StatelessWidget {
-  const DataLogChartView({super.key});
+  const DataLogChartView({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
-    return const _LogChartView();
+    return _LogChartView(
+      pageController: pageController,
+    );
   }
 }
 
 class _LogChartView extends StatelessWidget {
-  const _LogChartView({super.key});
+  const _LogChartView({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: const _LogChartListView(),
+      floatingActionButton: const _MoreDataFloatingActionButton(),
+      bottomNavigationBar: _DynamicBottomNavigationBar(
+        pageController: pageController,
+        selectedIndex: 3,
+      ),
+    );
+  }
+}
+
+class _DynamicBottomNavigationBar extends StatelessWidget {
+  const _DynamicBottomNavigationBar({
+    super.key,
+    required this.pageController,
+    required this.selectedIndex,
+  });
+
+  final PageController pageController;
+  final int selectedIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Chart18Bloc, Chart18State>(
+      builder: (context, state) {
+        if (state.dataRequestStatus.isRequestInProgress) {
+          return HomeBottomNavigationBar(
+            pageController: pageController,
+            selectedIndex: selectedIndex,
+            enableTap: false,
+          );
+        } else {
+          return HomeBottomNavigationBar(
+            pageController: pageController,
+            selectedIndex: selectedIndex,
+          );
+        }
+      },
+    );
+  }
+}
+
+class _MoreDataFloatingActionButton extends StatelessWidget {
+  const _MoreDataFloatingActionButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Chart18Bloc, Chart18State>(
+      builder: (context, state) {
+        if (state.dataRequestStatus.isRequestInProgress) {
+          return Container();
+        } else {
+          return FloatingActionButton(
+            shape: const CircleBorder(
+              side: BorderSide.none,
+            ),
+            backgroundColor:
+                Theme.of(context).colorScheme.primary.withAlpha(200),
+            child: Icon(
+              Icons.add,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+            onPressed: () {},
+          );
+        }
+      },
+    );
+  }
+}
+
+class _LogChartListView extends StatelessWidget {
+  const _LogChartListView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -121,21 +209,14 @@ class _LogChartView extends StatelessWidget {
 
     Widget buildLoadingFormWithProgressiveChartView(
         List<List<ValuePair>> dateValueCollectionOfLog) {
-      List<List<ValuePair>> emptyDateValueCollection = [
-        [],
-        [],
-        [],
-        [],
-        [],
-      ];
       String intValue = Random().nextInt(100).toString();
       List<LineSeries> log1Data = [];
       List<LineSeries> logVoltage = [];
       if (dateValueCollectionOfLog.isEmpty) {
         log1Data = getChartDataOfLog1(
-            dateValueCollectionOfLog: emptyDateValueCollection);
+            dateValueCollectionOfLog: dateValueCollectionOfLog);
         logVoltage = getChartDataOfLog2(
-            dateValueCollectionOfLog: emptyDateValueCollection);
+            dateValueCollectionOfLog: dateValueCollectionOfLog);
       } else {
         log1Data = getChartDataOfLog1(
             dateValueCollectionOfLog: dateValueCollectionOfLog);
@@ -206,14 +287,15 @@ class _LogChartView extends StatelessWidget {
             ],
           );
         } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
-          context.read<Chart18Bloc>().add(const MoreDataRequested(0));
-
+          if (chart18State.dataRequestStatus.isNone) {
+            context.read<Chart18Bloc>().add(const MoreDataRequested(0));
+          }
           if (chart18State.dataRequestStatus.isRequestInProgress) {
             return Stack(
               alignment: Alignment.center,
               children: [
                 buildLoadingFormWithProgressiveChartView(
-                    homeState.dateValueCollectionOfLog),
+                    chart18State.dateValueCollectionOfLog),
                 Container(
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(70, 158, 158, 158),
@@ -249,7 +331,7 @@ class _LogChartView extends StatelessWidget {
                     buildChart(
                       getChartDataOfLog2(
                           dateValueCollectionOfLog:
-                              homeState.dateValueCollectionOfLog),
+                              chart18State.dateValueCollectionOfLog),
                     ),
                   ],
                 ),
@@ -269,7 +351,7 @@ class _LogChartView extends StatelessWidget {
                   buildChart(
                     getChartDataOfLog1(
                         dateValueCollectionOfLog:
-                            homeState.dateValueCollectionOfLog),
+                            chart18State.dateValueCollectionOfLog),
                   ),
                   const SizedBox(
                     height: 50.0,
@@ -277,7 +359,7 @@ class _LogChartView extends StatelessWidget {
                   buildChart(
                     getChartDataOfLog2(
                         dateValueCollectionOfLog:
-                            homeState.dateValueCollectionOfLog),
+                            chart18State.dateValueCollectionOfLog),
                   ),
                 ],
               ),

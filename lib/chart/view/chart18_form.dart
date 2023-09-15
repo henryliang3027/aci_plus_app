@@ -13,7 +13,12 @@ import 'package:open_filex/open_filex.dart';
 import 'package:share_plus/share_plus.dart';
 
 class Chart18Form extends StatelessWidget {
-  const Chart18Form({super.key});
+  const Chart18Form({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +119,9 @@ class Chart18Form extends StatelessWidget {
             _PopupMenu(),
           ],
         ),
-        body: const Chart18TabBar(),
+        body: Chart18TabBar(
+          pageController: pageController,
+        ),
       ),
     );
   }

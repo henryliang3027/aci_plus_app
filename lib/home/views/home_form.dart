@@ -111,21 +111,41 @@ class _HomeFormState extends State<HomeForm> {
     List<Widget> buildPages(int mtu) {
       if (mtu == 20 || mtu == 23) {
         // 適用 1G/1.2G 的頁面
-        return const [
-          SettingPage(),
-          StatusPage(),
-          InformationPage(),
-          ChartPage(),
-          AboutPage(),
+        return [
+          SettingPage(
+            pageController: _pageController,
+          ),
+          StatusPage(
+            pageController: _pageController,
+          ),
+          InformationPage(
+            pageController: _pageController,
+          ),
+          ChartPage(
+            pageController: _pageController,
+          ),
+          AboutPage(
+            pageController: _pageController,
+          ),
         ];
       } else {
         // 適用 1.8G 的頁面
-        return const [
-          Setting18Page(),
-          Status18Page(),
-          Information18Page(),
-          Chart18Page(),
-          AboutPage(),
+        return [
+          Setting18Page(
+            pageController: _pageController,
+          ),
+          Status18Page(
+            pageController: _pageController,
+          ),
+          Information18Page(
+            pageController: _pageController,
+          ),
+          Chart18Page(
+            pageController: _pageController,
+          ),
+          AboutPage(
+            pageController: _pageController,
+          ),
         ];
       }
     }
@@ -154,53 +174,53 @@ class _HomeFormState extends State<HomeForm> {
               children: buildPages(context.read<HomeBloc>().state.mtu),
             ),
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: Theme.of(context).colorScheme.onPrimary,
-            type: BottomNavigationBarType.fixed,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Setting',
-                tooltip: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.memory_outlined),
-                label: 'Status',
-                tooltip: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.info),
-                label: 'Information',
-                tooltip: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.area_chart_sharp),
-                label: 'Chart',
-                tooltip: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.contact_support),
-                label: 'About',
-                tooltip: '',
-              ),
-            ],
-            //if current page is account which is not list in bottom navigation bar, make all items grey color
-            //assign a useless 0 as currentIndex for account page
-            currentIndex: _sclectedIndex,
-            selectedItemColor: Theme.of(context).primaryColor,
-            unselectedItemColor: Theme.of(context).hintColor,
-            onTap: (int index) {
-              setState(() {
-                _sclectedIndex = index;
-              });
+          // bottomNavigationBar: BottomNavigationBar(
+          //   backgroundColor: Theme.of(context).colorScheme.onPrimary,
+          //   type: BottomNavigationBarType.fixed,
+          //   showSelectedLabels: false,
+          //   showUnselectedLabels: false,
+          //   items: const [
+          //     BottomNavigationBarItem(
+          //       icon: Icon(Icons.settings),
+          //       label: 'Setting',
+          //       tooltip: '',
+          //     ),
+          //     BottomNavigationBarItem(
+          //       icon: Icon(Icons.memory_outlined),
+          //       label: 'Status',
+          //       tooltip: '',
+          //     ),
+          //     BottomNavigationBarItem(
+          //       icon: Icon(Icons.info),
+          //       label: 'Information',
+          //       tooltip: '',
+          //     ),
+          //     BottomNavigationBarItem(
+          //       icon: Icon(Icons.area_chart_sharp),
+          //       label: 'Chart',
+          //       tooltip: '',
+          //     ),
+          //     BottomNavigationBarItem(
+          //       icon: Icon(Icons.contact_support),
+          //       label: 'About',
+          //       tooltip: '',
+          //     ),
+          //   ],
+          //   //if current page is account which is not list in bottom navigation bar, make all items grey color
+          //   //assign a useless 0 as currentIndex for account page
+          //   currentIndex: _sclectedIndex,
+          //   selectedItemColor: Theme.of(context).primaryColor,
+          //   unselectedItemColor: Theme.of(context).hintColor,
+          //   onTap: (int index) {
+          //     setState(() {
+          //       _sclectedIndex = index;
+          //     });
 
-              _pageController.jumpToPage(
-                index,
-              );
-            },
-          ),
+          //     _pageController.jumpToPage(
+          //       index,
+          //     );
+          //   },
+          // ),
         ),
       ),
     );

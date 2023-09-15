@@ -5,14 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Chart18Page extends StatelessWidget {
-  const Chart18Page({super.key});
+  const Chart18Page({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Chart18Bloc(
           dsimRepository: RepositoryProvider.of<DsimRepository>(context)),
-      child: const Chart18Form(),
+      child: Chart18Form(
+        pageController: pageController,
+      ),
     );
   }
 }
