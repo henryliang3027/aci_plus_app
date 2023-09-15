@@ -396,7 +396,7 @@ class Command18 {
     0x00,
   ];
 
-  static List<int> setTransitDelayTimeCmd = [
+  static List<int> setTransmitDelayTimeCmd = [
     0xB0,
     0x10,
     0x00,

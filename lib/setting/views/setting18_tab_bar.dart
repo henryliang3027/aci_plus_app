@@ -17,7 +17,8 @@ class Setting18TabBar extends StatelessWidget {
           Container(
             width: double.maxFinite,
             color: Theme.of(context).colorScheme.primary,
-            child: Center(
+            child: Align(
+              alignment: Alignment.centerLeft,
               child: TabBar(
                 unselectedLabelColor: Colors.white,
                 labelColor: Theme.of(context).colorScheme.primary,

@@ -35,10 +35,8 @@ class AllDataExported extends Chart18Event {
 }
 
 class MoreDataRequested extends Chart18Event {
-  const MoreDataRequested(this.chunkIndex);
-
-  final int chunkIndex;
+  const MoreDataRequested();
 
   @override
-  List<Object?> get props => [chunkIndex];
+  List<Object?> get props => [];
 }

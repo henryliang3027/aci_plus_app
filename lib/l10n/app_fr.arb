@@ -169,5 +169,6 @@
     "dialogMessageSettingSuccessful": "Réglage réussi",
     "dialogMessageSettingFailed": "Échec du réglage",
     "dialogMessagePilotSearchFailed": "Échec de la recherche pilote",
-    "dialogMessageDataExportSuccessful": "Exportation réussie des données"
+    "dialogMessageDataExportSuccessful": "Exportation réussie des données",
+    "dialogMessageNoMoreLogs": "Plus de journaux."
 }

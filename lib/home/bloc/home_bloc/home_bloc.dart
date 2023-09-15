@@ -400,7 +400,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
 
     // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
-    await _dsimRepository.set1p8GNowDateTime();
+    // await _dsimRepository.set1p8GNowDateTime();
+    await _dsimRepository.set1p8GTransmitDelayTime(25);
 
     List<Function> requestCommands = [
       _dsimRepository.requestCommand1p8G0,
@@ -442,13 +443,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             newCharacteristicData.addAll(result[1]);
 
             // 如果讀取到 0 分鐘, 則自動設定為 30 分鐘
-            if (result[1][DataKey.logInterval] == '0') {
-              await _dsimRepository.set1p8GLogInterval('25');
-              List<dynamic> resultOf1p8G1 =
-                  await _dsimRepository.requestCommand1p8G1();
-              newCharacteristicData[DataKey.logInterval] =
-                  resultOf1p8G1[1][DataKey.logInterval];
-            }
+            // if (result[1][DataKey.logInterval] == '0') {
+            //   await _dsimRepository.set1p8GLogInterval('25');
+            //   List<dynamic> resultOf1p8G1 =
+            //       await _dsimRepository.requestCommand1p8G1();
+            //   newCharacteristicData[DataKey.logInterval] =
+            //       resultOf1p8G1[1][DataKey.logInterval];
+            // }
 
             emit(state.copyWith(
               characteristicData: newCharacteristicData,

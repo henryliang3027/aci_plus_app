@@ -146,25 +146,31 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       allDataDownloadStatus: FormStatus.none,
     ));
 
-    if (event.chunkIndex == 0) {
-      await Future.delayed(const Duration(milliseconds: 1000));
-    }
-
     List<Log1p8G> log1p8Gs = [];
     log1p8Gs.addAll(state.log1p8Gs);
 
     List<dynamic> resultOfLog1p8G =
-        await _dsimRepository.requestCommand1p8GForLogChunk(event.chunkIndex);
+        await _dsimRepository.requestCommand1p8GForLogChunk(state.chunckIndex);
 
-    log1p8Gs.addAll(resultOfLog1p8G[2]);
+    if (resultOfLog1p8G[0]) {
+      log1p8Gs.addAll(resultOfLog1p8G[2]);
 
-    List<List<ValuePair>> dateValueCollectionOfLog =
-        _dsimRepository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
+      List<List<ValuePair>> dateValueCollectionOfLog =
+          _dsimRepository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
 
-    emit(state.copyWith(
-      dataRequestStatus: FormStatus.requestSuccess,
-      log1p8Gs: log1p8Gs,
-      dateValueCollectionOfLog: dateValueCollectionOfLog,
-    ));
+      emit(
+        state.copyWith(
+          dataRequestStatus: FormStatus.requestFailure,
+          log1p8Gs: log1p8Gs,
+          dateValueCollectionOfLog: dateValueCollectionOfLog,
+          chunckIndex: state.chunckIndex + 1,
+          hasNextChunk: resultOfLog1p8G[1],
+        ),
+      );
+    } else {
+      state.copyWith(
+        dataRequestStatus: FormStatus.requestFailure,
+      );
+    }
   }
 }

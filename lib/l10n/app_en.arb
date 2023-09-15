@@ -170,5 +170,6 @@
     "dialogMessageSettingSuccessful": "OK",
     "dialogMessageSettingFailed": "Fail",
     "dialogMessagePilotSearchFailed": "Pilot not found, Please type correct code.",
-    "dialogMessageDataExportSuccessful": "Data export successful."
+    "dialogMessageDataExportSuccessful": "Data export successful.",
+    "dialogMessageNoMoreLogs": "No More logs."
 }

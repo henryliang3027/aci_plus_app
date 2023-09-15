@@ -1178,7 +1178,7 @@ class DsimRepository {
         // _log1p8Gs.addAll(log1p8Gs);
         cancelTimeout(name: '1p8GForLogChunk');
 
-        bool hasNextChunk = log1p8Gs.length == 1024 ? true : false;
+        bool hasNextChunk = log1p8Gs.isNotEmpty ? true : false;
 
         return [
           true,
@@ -1214,7 +1214,7 @@ class DsimRepository {
         // _log1p8Gs.addAll(log1p8Gs);
         cancelTimeout(name: '1p8GForLogChunk');
 
-        bool hasNextChunk = log1p8Gs.length == 1024 ? true : false;
+        bool hasNextChunk = log1p8Gs.isNotEmpty ? true : false;
 
         return [
           true,
@@ -1966,7 +1966,9 @@ class DsimRepository {
     }
   }
 
-  Future<dynamic> set1p8GTransitDelayTime(int ms) async {
+  // 設定藍芽串口的資料傳輸延遲時間, 單位為 ms
+  // 例如 MTU = 244, 則每傳輸244byte 就會休息 ms 時間再傳下一筆
+  Future<dynamic> set1p8GTransmitDelayTime(int ms) async {
     commandIndex = 353;
     _completer = Completer<dynamic>();
 
@@ -1977,15 +1979,15 @@ class DsimRepository {
     byteData.setInt16(0, ms, Endian.little); // little endian
     Uint8List bytes = Uint8List.view(byteData.buffer);
 
-    Command18.setTransitDelayTimeCmd[7] = bytes[0];
-    Command18.setTransitDelayTimeCmd[8] = bytes[1];
+    Command18.setTransmitDelayTimeCmd[7] = bytes[0];
+    Command18.setTransmitDelayTimeCmd[8] = bytes[1];
 
     CRC16.calculateCRC16(
-      command: Command18.setTransitDelayTimeCmd,
-      usDataLength: Command18.setTransitDelayTimeCmd.length - 2,
+      command: Command18.setTransmitDelayTimeCmd,
+      usDataLength: Command18.setTransmitDelayTimeCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setTransitDelayTimeCmd);
+    _writeSetCommandToCharacteristic(Command18.setTransmitDelayTimeCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');

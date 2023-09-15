@@ -170,7 +170,8 @@
     "dialogMessageSettingSuccessful": "成功",
     "dialogMessageSettingFailed": "失敗",
     "dialogMessagePilotSearchFailed": "找不到此導航頻率，請輸入正確的代碼",
-    "dialogMessageDataExportSuccessful": "資料匯出成功"
+    "dialogMessageDataExportSuccessful": "資料匯出成功",
+    "dialogMessageNoMoreLogs": "無法載入更多紀錄。"
 
 
 }

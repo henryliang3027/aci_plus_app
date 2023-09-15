@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class DataLogChartView extends StatelessWidget {
   const DataLogChartView({
@@ -36,12 +37,51 @@ class _LogChartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: const _LogChartListView(),
-      floatingActionButton: const _MoreDataFloatingActionButton(),
-      bottomNavigationBar: _DynamicBottomNavigationBar(
-        pageController: pageController,
-        selectedIndex: 3,
+    Future<bool?> showNoMoreDataDialog({
+      required BuildContext context,
+    }) async {
+      return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitleAskBeforeExitApp,
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context).cancel,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(false); // pop dialog
+                },
+              ),
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context).exit,
+                  style: const TextStyle(color: CustomStyle.customRed),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    return BlocListener<Chart18Bloc, Chart18State>(
+      listener: (context, state) {
+        if (!state.hasNextChunk) {}
+      },
+      child: Scaffold(
+        body: const _LogChartListView(),
+        floatingActionButton: const _MoreDataFloatingActionButton(),
+        bottomNavigationBar: _DynamicBottomNavigationBar(
+          pageController: pageController,
+          selectedIndex: 3,
+        ),
       ),
     );
   }
@@ -98,7 +138,9 @@ class _MoreDataFloatingActionButton extends StatelessWidget {
               Icons.add,
               color: Theme.of(context).colorScheme.onPrimary,
             ),
-            onPressed: () {},
+            onPressed: () {
+              context.read<Chart18Bloc>().add(const MoreDataRequested());
+            },
           );
         }
       },
@@ -288,9 +330,27 @@ class _LogChartListView extends StatelessWidget {
           );
         } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
           if (chart18State.dataRequestStatus.isNone) {
-            context.read<Chart18Bloc>().add(const MoreDataRequested(0));
-          }
-          if (chart18State.dataRequestStatus.isRequestInProgress) {
+            context.read<Chart18Bloc>().add(const MoreDataRequested());
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                buildLoadingFormWithProgressiveChartView(
+                    chart18State.dateValueCollectionOfLog),
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(70, 158, 158, 158),
+                  ),
+                  child: const Center(
+                    child: SizedBox(
+                      width: CustomStyle.diameter,
+                      height: CustomStyle.diameter,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          } else if (chart18State.dataRequestStatus.isRequestInProgress) {
             return Stack(
               alignment: Alignment.center,
               children: [
@@ -320,6 +380,14 @@ class _LogChartListView extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    // ElevatedButton(
+                    //     onPressed: () {
+                    //       String timeStamp = DateFormat('yyyy_MM_dd_HH_mm_ss')
+                    //           .format(DateTime.now())
+                    //           .toString();
+                    //       print(timeStamp);
+                    //     },
+                    //     child: Text('NowDateTime')),
                     buildChart(
                       getChartDataOfLog1(
                           dateValueCollectionOfLog:

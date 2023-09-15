@@ -7,6 +7,7 @@ class Chart18State extends Equatable {
     this.dataShareStatus = FormStatus.none,
     this.allDataDownloadStatus = FormStatus.none,
     this.chunckIndex = 0,
+    this.hasNextChunk = false,
     this.log1p8Gs = const [],
     this.dateValueCollectionOfLog = const [[], [], [], [], []],
     this.exportFileName = '',
@@ -19,6 +20,7 @@ class Chart18State extends Equatable {
   final FormStatus dataShareStatus;
   final FormStatus allDataDownloadStatus;
   final int chunckIndex;
+  final bool hasNextChunk;
   final List<Log1p8G> log1p8Gs;
   final List<List<ValuePair>> dateValueCollectionOfLog;
   final String exportFileName;
@@ -31,6 +33,7 @@ class Chart18State extends Equatable {
     FormStatus? dataShareStatus,
     FormStatus? allDataDownloadStatus,
     int? chunckIndex,
+    bool? hasNextChunk,
     List<Log1p8G>? log1p8Gs,
     List<List<ValuePair>>? dateValueCollectionOfLog,
     String? exportFileName,
@@ -44,6 +47,7 @@ class Chart18State extends Equatable {
       allDataDownloadStatus:
           allDataDownloadStatus ?? this.allDataDownloadStatus,
       chunckIndex: chunckIndex ?? this.chunckIndex,
+      hasNextChunk: hasNextChunk ?? this.hasNextChunk,
       log1p8Gs: log1p8Gs ?? this.log1p8Gs,
       dateValueCollectionOfLog:
           dateValueCollectionOfLog ?? this.dateValueCollectionOfLog,
@@ -60,6 +64,7 @@ class Chart18State extends Equatable {
         dataShareStatus,
         allDataDownloadStatus,
         chunckIndex,
+        hasNextChunk,
         log1p8Gs,
         dateValueCollectionOfLog,
         exportFileName,

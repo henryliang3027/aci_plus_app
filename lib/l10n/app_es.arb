@@ -171,5 +171,6 @@
     "dialogMessageSettingSuccessful": "Exitoso",
     "dialogMessageSettingFailed": "Fallido",
     "dialogMessagePilotSearchFailed": "Piloto no encontrado, Favor de insertar el código correcto.",
-    "dialogMessageDataExportSuccessful": "Exportación de datos exitosa."
+    "dialogMessageDataExportSuccessful": "Exportación de datos exitosa.",
+    "dialogMessageNoMoreLogs": "No hay más registros."
 }
