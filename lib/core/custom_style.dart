@@ -21,9 +21,10 @@ class CustomStyle {
   static const String dBmV = 'dBmV';
 
   static const Map<String, Color> alarmColor = {
-    'success': Color(0xff28a745), //success
-    'danger': Color(0xffdc3545), //danger
-    'medium': Color(0xff6c757d), //medium
-    'default': Color(0xff6c757d), //default
+    'success': Color(0xff28a745),
+    'danger': Color(0xffdc3545),
+    'medium': Color(0xff6c757d),
+    'default': Color(0xff6c757d),
+    'mask': Colors.black,
   };
 }

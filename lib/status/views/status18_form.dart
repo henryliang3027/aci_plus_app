@@ -93,6 +93,22 @@ class _DeviceStatus extends StatelessWidget {
   }
 }
 
+Color _getCurrentValueColor({
+  required String alarmStatus,
+  required double min,
+  required double max,
+  required double current,
+}) {
+  // temperatureAlarmState == 1 時不顯示警告顏色
+  if (alarmStatus == '1') {
+    return CustomStyle.alarmColor['mask']!;
+  } else {
+    return current > min && current < max
+        ? CustomStyle.alarmColor['success']!
+        : CustomStyle.alarmColor['danger']!;
+  }
+}
+
 class _DeviceRefresh extends StatelessWidget {
   const _DeviceRefresh({super.key});
 
@@ -117,52 +133,13 @@ class _DeviceRefresh extends StatelessWidget {
   }
 }
 
-// class _ModuleCard extends StatelessWidget {
-//   const _ModuleCard({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<HomeBloc, HomeState>(
-//       builder: (context, state) => Card(
-//         color: Theme.of(context).colorScheme.onPrimary,
-//         surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
-//         child: Padding(
-//           padding: const EdgeInsets.all(16.0),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Text(
-//                 AppLocalizations.of(context).module,
-//                 style: Theme.of(context).textTheme.titleLarge,
-//               ),
-//               const SizedBox(
-//                 height: 10.0,
-//               ),
-//               itemText(
-//                 loadingStatus: state.loadingStatus,
-//                 title: AppLocalizations.of(context).serialNumber,
-//                 content: state.characteristicData[DataKey.serialNumber] ?? '',
-//               ),
-//               itemText(
-//                 loadingStatus: state.loadingStatus,
-//                 title: AppLocalizations.of(context).firmwareVersion,
-//                 content:
-//                     state.characteristicData[DataKey.firmwareVersion] ?? '',
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class _TemperatureCard extends StatelessWidget {
   const _TemperatureCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     Color currentTemperatureColor({
+      required String temperatureAlarmState,
       required String minTemperature,
       required String maxTemperature,
       required String currentTemperature,
@@ -171,13 +148,17 @@ class _TemperatureCard extends StatelessWidget {
       double max = double.parse(maxTemperature);
       double current = double.parse(currentTemperature);
 
-      return current >= min && current <= max
-          ? CustomStyle.alarmColor['success']!
-          : CustomStyle.alarmColor['danger']!;
+      return _getCurrentValueColor(
+        alarmStatus: temperatureAlarmState,
+        min: min,
+        max: max,
+        current: current,
+      );
     }
 
     Widget getCurrentTemperature({
       required FormStatus loadingStatus,
+      required String temperatureAlarmState,
       required String minTemperature,
       required String maxTemperature,
       required String currentTemperature,
@@ -205,6 +186,7 @@ class _TemperatureCard extends StatelessWidget {
           style: TextStyle(
             fontSize: fontSize,
             color: currentTemperatureColor(
+              temperatureAlarmState: temperatureAlarmState,
               minTemperature: minTemperature,
               maxTemperature: maxTemperature,
               currentTemperature: currentTemperature,
@@ -221,7 +203,7 @@ class _TemperatureCard extends StatelessWidget {
       }
     }
 
-    Widget getMinTemperature({
+    Widget getHistoricalMinTemperature({
       required FormStatus loadingStatus,
       required String minTemperature,
       required String unit,
@@ -259,7 +241,7 @@ class _TemperatureCard extends StatelessWidget {
       }
     }
 
-    Widget getMaxTemperature({
+    Widget getHistoricalMaxTemperature({
       required FormStatus loadingStatus,
       required String maxTemperature,
       required String unit,
@@ -300,12 +282,15 @@ class _TemperatureCard extends StatelessWidget {
     Widget temperatureBlock({
       required FormStatus loadingStatus,
       required FormStatus connectionStatus,
+      required String temperatureAlarmState,
       required String currentTemperatureTitle,
       required String currentTemperature,
       required String minTemperatureTitle,
       required String minTemperature,
       required String maxTemperatureTitle,
       required String maxTemperature,
+      required String historicalMinTemperature,
+      required String historicalMaxTemperature,
       required String unit,
     }) {
       return Padding(
@@ -320,6 +305,7 @@ class _TemperatureCard extends StatelessWidget {
                   children: [
                     getCurrentTemperature(
                       loadingStatus: loadingStatus,
+                      temperatureAlarmState: temperatureAlarmState,
                       minTemperature: minTemperature,
                       maxTemperature: maxTemperature,
                       currentTemperature: currentTemperature,
@@ -346,9 +332,9 @@ class _TemperatureCard extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      getMinTemperature(
+                      getHistoricalMinTemperature(
                         loadingStatus: loadingStatus,
-                        minTemperature: minTemperature,
+                        minTemperature: historicalMinTemperature,
                         unit: unit,
                         fontSize: 32,
                       ),
@@ -365,9 +351,9 @@ class _TemperatureCard extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      getMaxTemperature(
+                      getHistoricalMaxTemperature(
                         loadingStatus: loadingStatus,
-                        maxTemperature: maxTemperature,
+                        maxTemperature: historicalMaxTemperature,
                         unit: unit,
                         fontSize: 32,
                       ),
@@ -409,26 +395,38 @@ class _TemperatureCard extends StatelessWidget {
       builder: (context) {
         final HomeState homeState = context.watch<HomeBloc>().state;
         final Status18State status18State = context.watch<Status18Bloc>().state;
+        String temperatureAlarmState =
+            homeState.characteristicData[DataKey.temperatureAlarmState] ?? '1';
         String currentTemperature = '';
         String maxTemperature = '';
         String minTemperature = '';
+        String historicalMaxTemperature = '';
+        String historicalMinTemperature = '';
 
         if (status18State.temperatureUnit == TemperatureUnit.celsius) {
           currentTemperature =
               homeState.characteristicData[DataKey.currentTemperatureC] ?? '';
           maxTemperature =
+              homeState.characteristicData[DataKey.maxTemperatureC] ?? '';
+          minTemperature =
+              homeState.characteristicData[DataKey.minTemperatureC] ?? '';
+          historicalMaxTemperature =
               homeState.characteristicData[DataKey.historicalMaxTemperatureC] ??
                   '';
-          minTemperature =
+          historicalMinTemperature =
               homeState.characteristicData[DataKey.historicalMinTemperatureC] ??
                   '';
         } else {
           currentTemperature =
               homeState.characteristicData[DataKey.currentTemperatureF] ?? '';
           maxTemperature =
+              homeState.characteristicData[DataKey.maxTemperatureF] ?? '';
+          minTemperature =
+              homeState.characteristicData[DataKey.minTemperatureF] ?? '';
+          historicalMaxTemperature =
               homeState.characteristicData[DataKey.historicalMaxTemperatureF] ??
                   '';
-          minTemperature =
+          historicalMinTemperature =
               homeState.characteristicData[DataKey.historicalMinTemperatureF] ??
                   '';
         }
@@ -493,6 +491,7 @@ class _TemperatureCard extends StatelessWidget {
                 temperatureBlock(
                   loadingStatus: homeState.loadingStatus,
                   connectionStatus: homeState.connectionStatus,
+                  temperatureAlarmState: temperatureAlarmState,
                   currentTemperatureTitle:
                       AppLocalizations.of(context).currentTemperature,
                   currentTemperature: currentTemperature,
@@ -502,6 +501,8 @@ class _TemperatureCard extends StatelessWidget {
                   maxTemperatureTitle:
                       AppLocalizations.of(context).maxTemperature,
                   maxTemperature: maxTemperature,
+                  historicalMinTemperature: historicalMinTemperature,
+                  historicalMaxTemperature: historicalMaxTemperature,
                   unit: status18State.temperatureUnit == TemperatureUnit.celsius
                       ? CustomStyle.celciusUnit
                       : CustomStyle.fahrenheitUnit,
@@ -519,6 +520,7 @@ class _PowerSupplyCard extends StatelessWidget {
   const _PowerSupplyCard({super.key});
 
   Color currentVoltageColor({
+    required String voltageAlarmState,
     required String minVoltage,
     required String maxVoltage,
     required String currentVoltage,
@@ -527,13 +529,17 @@ class _PowerSupplyCard extends StatelessWidget {
     double max = double.parse(maxVoltage);
     double current = double.parse(currentVoltage);
 
-    return current >= min && current <= max
-        ? CustomStyle.alarmColor['success']!
-        : CustomStyle.alarmColor['danger']!;
+    return _getCurrentValueColor(
+      alarmStatus: voltageAlarmState,
+      min: min,
+      max: max,
+      current: current,
+    );
   }
 
   Widget getCurrentVoltage({
     required FormStatus loadingStatus,
+    required String voltageAlarmState,
     required String minVoltage,
     required String maxVoltage,
     required String currentVoltage,
@@ -560,6 +566,7 @@ class _PowerSupplyCard extends StatelessWidget {
         style: TextStyle(
           fontSize: fontSize,
           color: currentVoltageColor(
+            voltageAlarmState: voltageAlarmState,
             minVoltage: minVoltage,
             maxVoltage: maxVoltage,
             currentVoltage: currentVoltage,
@@ -576,7 +583,7 @@ class _PowerSupplyCard extends StatelessWidget {
     }
   }
 
-  Widget getMinVoltage({
+  Widget getHistoricalMinVoltage({
     required FormStatus loadingStatus,
     required String minVoltage,
     double fontSize = 16,
@@ -613,7 +620,7 @@ class _PowerSupplyCard extends StatelessWidget {
     }
   }
 
-  Widget getMaxVoltage({
+  Widget getHistoricalMaxVoltage({
     required FormStatus loadingStatus,
     required String maxVoltage,
     double fontSize = 16,
@@ -652,12 +659,15 @@ class _PowerSupplyCard extends StatelessWidget {
 
   Widget voltageBlock({
     required FormStatus loadingStatus,
+    required String voltageAlarmState,
     required String currentVoltageTitle,
     required String currentVoltage,
     required String minVoltageTitle,
     required String minVoltage,
     required String maxVoltageTitle,
     required String maxVoltage,
+    required String historicalMinVoltage,
+    required String historicalMaxVoltage,
     required Color borderColor,
   }) {
     return Padding(
@@ -674,6 +684,7 @@ class _PowerSupplyCard extends StatelessWidget {
                   children: [
                     getCurrentVoltage(
                       loadingStatus: loadingStatus,
+                      voltageAlarmState: voltageAlarmState,
                       minVoltage: minVoltage,
                       maxVoltage: maxVoltage,
                       currentVoltage: currentVoltage,
@@ -700,9 +711,9 @@ class _PowerSupplyCard extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    getMinVoltage(
+                    getHistoricalMinVoltage(
                       loadingStatus: loadingStatus,
-                      minVoltage: minVoltage,
+                      minVoltage: historicalMinVoltage,
                       fontSize: 32,
                     ),
                     Text(
@@ -718,9 +729,9 @@ class _PowerSupplyCard extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    getMaxVoltage(
+                    getHistoricalMaxVoltage(
                       loadingStatus: loadingStatus,
-                      maxVoltage: maxVoltage,
+                      maxVoltage: historicalMaxVoltage,
                       fontSize: 32,
                     ),
                     Text(
@@ -757,14 +768,18 @@ class _PowerSupplyCard extends StatelessWidget {
             ),
             voltageBlock(
               loadingStatus: state.loadingStatus,
+              voltageAlarmState:
+                  state.characteristicData[DataKey.voltageAlarmState] ?? '1',
               currentVoltageTitle: AppLocalizations.of(context).currentVoltage,
               currentVoltage:
                   state.characteristicData[DataKey.currentVoltage] ?? '',
               minVoltageTitle: AppLocalizations.of(context).minVoltage,
-              minVoltage:
-                  state.characteristicData[DataKey.historicalMinVoltage] ?? '',
+              minVoltage: state.characteristicData[DataKey.minVoltage] ?? '',
               maxVoltageTitle: AppLocalizations.of(context).maxVoltage,
-              maxVoltage:
+              maxVoltage: state.characteristicData[DataKey.maxVoltage] ?? '',
+              historicalMinVoltage:
+                  state.characteristicData[DataKey.historicalMinVoltage] ?? '',
+              historicalMaxVoltage:
                   state.characteristicData[DataKey.historicalMaxVoltage] ?? '',
               borderColor: Theme.of(context).colorScheme.primary,
             ),
@@ -782,6 +797,7 @@ class _VoltageRippleCard extends StatelessWidget {
   const _VoltageRippleCard({super.key});
 
   Color currentVoltageRippleColor({
+    required String voltageRippleAlarmState,
     required String minVoltageRipple,
     required String maxVoltageRipple,
     required String currentVoltageRipple,
@@ -790,13 +806,17 @@ class _VoltageRippleCard extends StatelessWidget {
     double max = double.parse(maxVoltageRipple);
     double current = double.parse(currentVoltageRipple);
 
-    return current >= min && current <= max
-        ? CustomStyle.alarmColor['success']!
-        : CustomStyle.alarmColor['danger']!;
+    return _getCurrentValueColor(
+      alarmStatus: voltageRippleAlarmState,
+      min: min,
+      max: max,
+      current: current,
+    );
   }
 
   Widget getCurrentVoltageRipple({
     required FormStatus loadingStatus,
+    required String voltageRippleAlarmState,
     required String minVoltageRipple,
     required String maxVoltageRipple,
     required String currentVoltageRipple,
@@ -823,6 +843,7 @@ class _VoltageRippleCard extends StatelessWidget {
         style: TextStyle(
           fontSize: fontSize,
           color: currentVoltageRippleColor(
+            voltageRippleAlarmState: voltageRippleAlarmState,
             minVoltageRipple: minVoltageRipple,
             maxVoltageRipple: maxVoltageRipple,
             currentVoltageRipple: currentVoltageRipple,
@@ -839,7 +860,7 @@ class _VoltageRippleCard extends StatelessWidget {
     }
   }
 
-  Widget getMinVoltageRipple({
+  Widget getHistoricalMinVoltageRipple({
     required FormStatus loadingStatus,
     required String minVoltageRipple,
     double fontSize = 16,
@@ -876,7 +897,7 @@ class _VoltageRippleCard extends StatelessWidget {
     }
   }
 
-  Widget getMaxVoltageRipple({
+  Widget getHistoricalMaxVoltageRipple({
     required FormStatus loadingStatus,
     required String maxVoltageRipple,
     double fontSize = 16,
@@ -915,12 +936,15 @@ class _VoltageRippleCard extends StatelessWidget {
 
   Widget voltageRippleBlock({
     required FormStatus loadingStatus,
+    required String voltageRippleAlarmState,
     required String currentVoltageRippleTitle,
     required String currentVoltageRipple,
     required String minVoltageRippleTitle,
     required String minVoltageRipple,
     required String maxVoltageRippleTitle,
     required String maxVoltageRipple,
+    required String historicalMinVoltageRipple,
+    required String historicalMaxVoltageRipple,
     required Color borderColor,
   }) {
     return Padding(
@@ -937,6 +961,7 @@ class _VoltageRippleCard extends StatelessWidget {
                   children: [
                     getCurrentVoltageRipple(
                       loadingStatus: loadingStatus,
+                      voltageRippleAlarmState: voltageRippleAlarmState,
                       minVoltageRipple: minVoltageRipple,
                       maxVoltageRipple: maxVoltageRipple,
                       currentVoltageRipple: currentVoltageRipple,
@@ -963,9 +988,9 @@ class _VoltageRippleCard extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    getMinVoltageRipple(
+                    getHistoricalMinVoltageRipple(
                       loadingStatus: loadingStatus,
-                      minVoltageRipple: minVoltageRipple,
+                      minVoltageRipple: historicalMinVoltageRipple,
                       fontSize: 32,
                     ),
                     Text(
@@ -981,9 +1006,9 @@ class _VoltageRippleCard extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    getMaxVoltageRipple(
+                    getHistoricalMaxVoltageRipple(
                       loadingStatus: loadingStatus,
-                      maxVoltageRipple: maxVoltageRipple,
+                      maxVoltageRipple: historicalMaxVoltageRipple,
                       fontSize: 32,
                     ),
                     Text(
@@ -1020,17 +1045,24 @@ class _VoltageRippleCard extends StatelessWidget {
             ),
             voltageRippleBlock(
               loadingStatus: state.loadingStatus,
+              voltageRippleAlarmState:
+                  state.characteristicData[DataKey.voltageRippleAlarmState] ??
+                      '1',
               currentVoltageRippleTitle:
                   AppLocalizations.of(context).currentVoltageRipple,
               currentVoltageRipple:
                   state.characteristicData[DataKey.currentVoltageRipple] ?? '',
               minVoltageRippleTitle: AppLocalizations.of(context).minVoltage,
-              minVoltageRipple: state
-                      .characteristicData[DataKey.historicalMinVoltageRipple] ??
-                  '',
+              minVoltageRipple:
+                  state.characteristicData[DataKey.minVoltageRipple] ?? '',
               maxVoltageRippleTitle:
                   AppLocalizations.of(context).maxVoltageRipple,
-              maxVoltageRipple: state
+              maxVoltageRipple:
+                  state.characteristicData[DataKey.maxVoltageRipple] ?? '',
+              historicalMinVoltageRipple: state
+                      .characteristicData[DataKey.historicalMinVoltageRipple] ??
+                  '',
+              historicalMaxVoltageRipple: state
                       .characteristicData[DataKey.historicalMaxVoltageRipple] ??
                   '',
               borderColor: Theme.of(context).colorScheme.primary,
@@ -1049,6 +1081,7 @@ class _RFOutputPowerCard extends StatelessWidget {
   const _RFOutputPowerCard({super.key});
 
   Color currentRFOutputPowerColor({
+    required String rfOutputPowerAlarmState,
     required String minRFOutputPower,
     required String maxRFOutputPower,
     required String currentRFOutputPower,
@@ -1057,13 +1090,17 @@ class _RFOutputPowerCard extends StatelessWidget {
     double max = double.parse(maxRFOutputPower);
     double current = double.parse(currentRFOutputPower);
 
-    return current >= min && current <= max
-        ? CustomStyle.alarmColor['success']!
-        : CustomStyle.alarmColor['danger']!;
+    return _getCurrentValueColor(
+      alarmStatus: rfOutputPowerAlarmState,
+      min: min,
+      max: max,
+      current: current,
+    );
   }
 
   Widget getCurrentRFOutputPower({
     required FormStatus loadingStatus,
+    required String rfOutputPowerAlarmState,
     required String minRFOutputPower,
     required String maxRFOutputPower,
     required String currentRFOutputPower,
@@ -1090,6 +1127,7 @@ class _RFOutputPowerCard extends StatelessWidget {
         style: TextStyle(
           fontSize: fontSize,
           color: currentRFOutputPowerColor(
+            rfOutputPowerAlarmState: rfOutputPowerAlarmState,
             minRFOutputPower: minRFOutputPower,
             maxRFOutputPower: maxRFOutputPower,
             currentRFOutputPower: currentRFOutputPower,
@@ -1182,6 +1220,7 @@ class _RFOutputPowerCard extends StatelessWidget {
 
   Widget rfOutputPowerBlock({
     required FormStatus loadingStatus,
+    required String rfOutputPowerAlarmState,
     required String currentRFOutputPowerTitle,
     required String currentRFOutputPower,
     required String minRFOutputPowerTitle,
@@ -1204,6 +1243,7 @@ class _RFOutputPowerCard extends StatelessWidget {
                   children: [
                     getCurrentRFOutputPower(
                       loadingStatus: loadingStatus,
+                      rfOutputPowerAlarmState: rfOutputPowerAlarmState,
                       minRFOutputPower: minRFOutputPower,
                       maxRFOutputPower: maxRFOutputPower,
                       currentRFOutputPower: currentRFOutputPower,
@@ -1287,6 +1327,9 @@ class _RFOutputPowerCard extends StatelessWidget {
             ),
             rfOutputPowerBlock(
               loadingStatus: state.loadingStatus,
+              rfOutputPowerAlarmState:
+                  state.characteristicData[DataKey.rfOutputPowerAlarmState] ??
+                      '1',
               currentRFOutputPowerTitle:
                   AppLocalizations.of(context).currentRFOutputPower,
               currentRFOutputPower:

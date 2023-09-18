@@ -1,3 +1,4 @@
+import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
@@ -12,6 +13,10 @@ class Setting18ControlView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeState homeState = context.watch<HomeBloc>().state;
+    String minTemperature =
+        homeState.characteristicData[DataKey.minTemperatureC] ?? '';
+
     return BlocListener<Setting18ControlBloc, Setting18ControlState>(
       listener: (context, state) {},
       child: Scaffold(

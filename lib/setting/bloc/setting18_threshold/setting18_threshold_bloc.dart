@@ -820,6 +820,8 @@ class Setting18ThresholdBloc
           '${DataKey.pilotFrequency2AlarmState.name},$resultOfSetPilotFrequency2AlarmState');
     }
 
+    await Future.delayed(const Duration(milliseconds: 200));
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
