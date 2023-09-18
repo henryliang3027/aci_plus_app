@@ -50,7 +50,7 @@ class _HomeFormState extends State<HomeForm> {
             actions: <Widget>[
               TextButton(
                 child: Text(
-                  AppLocalizations.of(context).cancel,
+                  AppLocalizations.of(context).dialogMessageCancel,
                 ),
                 onPressed: () {
                   Navigator.of(context).pop(false); // pop dialog
@@ -58,7 +58,7 @@ class _HomeFormState extends State<HomeForm> {
               ),
               TextButton(
                 child: Text(
-                  AppLocalizations.of(context).exit,
+                  AppLocalizations.of(context).dialogMessageExit,
                   style: const TextStyle(color: CustomStyle.customRed),
                 ),
                 onPressed: () {

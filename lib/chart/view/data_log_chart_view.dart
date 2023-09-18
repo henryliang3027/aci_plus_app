@@ -3,13 +3,13 @@ import 'package:dsim_app/chart/chart/chart18_bloc/chart18_bloc.dart';
 import 'package:dsim_app/chart/view/full_screen_chart_form.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
+import 'package:dsim_app/core/message_localization.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:intl/intl.dart';
 
 class DataLogChartView extends StatelessWidget {
   const DataLogChartView({
@@ -37,32 +37,70 @@ class _LogChartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<bool?> showNoMoreDataDialog({
-      required BuildContext context,
-    }) async {
+    Future<bool?> showNoMoreDataDialog() async {
       return showDialog<bool>(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              AppLocalizations.of(context).dialogTitleAskBeforeExitApp,
+              AppLocalizations.of(context).dialogTitleSuccess,
+              style: const TextStyle(
+                color: CustomStyle.customGreen,
+              ),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                    AppLocalizations.of(context).dialogMessageNoMoreLogs,
+                  ),
+                ],
+              ),
             ),
             actions: <Widget>[
               TextButton(
                 child: Text(
-                  AppLocalizations.of(context).cancel,
+                  AppLocalizations.of(context).dialogMessageOk,
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop(false); // pop dialog
+                  Navigator.of(context).pop(); // pop dialog
                 },
               ),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<void> showFailureDialog(String msg) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitleError,
+              style: const TextStyle(
+                color: CustomStyle.customRed,
+              ),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                    getMessageLocalization(
+                      msg: msg,
+                      context: context,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
               TextButton(
-                child: Text(
-                  AppLocalizations.of(context).exit,
-                  style: const TextStyle(color: CustomStyle.customRed),
-                ),
+                child: const Text('OK'),
                 onPressed: () {
-                  Navigator.of(context).pop(true); // pop dialog
+                  Navigator.of(context).pop(); // pop dialog
                 },
               ),
             ],
@@ -73,7 +111,13 @@ class _LogChartView extends StatelessWidget {
 
     return BlocListener<Chart18Bloc, Chart18State>(
       listener: (context, state) {
-        if (!state.hasNextChunk) {}
+        if (state.dataRequestStatus.isRequestSuccess) {
+          if (!state.hasNextChunk) {
+            showNoMoreDataDialog();
+          }
+        } else if (state.dataRequestStatus.isRequestFailure) {
+          showFailureDialog(state.errorMessage);
+        }
       },
       child: Scaffold(
         body: const _LogChartListView(),
@@ -381,13 +425,17 @@ class _LogChartListView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     // ElevatedButton(
-                    //     onPressed: () {
-                    //       String timeStamp = DateFormat('yyyy_MM_dd_HH_mm_ss')
-                    //           .format(DateTime.now())
-                    //           .toString();
-                    //       print(timeStamp);
+                    //     onPressed: () async {
+                    //       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+                    //       AndroidDeviceInfo androidInfo =
+                    //           await deviceInfo.androidInfo;
+
+                    //       IosDeviceInfo iosDeviceInfo =
+                    //           await deviceInfo.iosInfo;
+
+                    //       print(androidInfo.model + ' ' + iosDeviceInfo.model);
                     //     },
-                    //     child: Text('NowDateTime')),
+                    //     child: Text('Mobile info')),
                     buildChart(
                       getChartDataOfLog1(
                           dateValueCollectionOfLog:

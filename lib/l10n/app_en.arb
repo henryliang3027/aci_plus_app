@@ -116,10 +116,6 @@
     "rfLevel": "RF Level",
 
 
-    "cancel": "Cancel",
-    "exit": "Exit",
-
-
     "aboutUs": "About Us",
     "aboutArticleParagraph1": "Twoway Communications, Inc., founded in October 1992, is Taiwan's largest broadband amplifier and optical workstation equipment corporation, as well as Asia's first HFC ( Hybrid Fiber-Coaxial ) transmission equipment R&D manufacturer that has passed the certification of major North American MSO ( Multiple-System Operators ).",
     "aboutArticleParagraph2": "In 1999, Twoway Group established the American subsidiary \"ACI Communications, Inc.\" and merged the \"Augat\" product line which from the United States, applying the \"ACI\" brand to sell globally. Twoway Group concentrates on R&D and production of high-quality wide-area broadband optical fiber outdoor network equipment, high-performance broadband amplifier products, optical nodes, and head-end optoelectronics equipment. Twoway Group offers a comprehensive selection of high-quality products to deliver the finest services to the worldwide cable television and telecoms sectors.",
@@ -138,6 +134,7 @@
     "dialogTitleProcessing": "Setting up...",
     "dialogTitleError": "Error",
     "dialogTitleSettingResult": "Result",
+    "dialogTitleSuccess": "Success",
     "dialogMessageDeviceNotFound": "Device not found.",
     "dialogMessageBluetoothDisabled": "Bluetooth is disabled.",
     "dialogMessageConnectionFailure": "Device connection failed",
@@ -167,9 +164,12 @@
     "dialogMessageCoordinatesSetting": "Coordinates setting",
 
 
-    "dialogMessageSettingSuccessful": "OK",
-    "dialogMessageSettingFailed": "Fail",
+    "dialogMessageSuccessful": "OK",
+    "dialogMessageFailed": "Fail",
+    "dialogMessageCancel": "Cancel",
+    "dialogMessageExit": "Exit",
+    "dialogMessageOk": "OK",
     "dialogMessagePilotSearchFailed": "Pilot not found, Please type correct code.",
     "dialogMessageDataExportSuccessful": "Data export successful.",
-    "dialogMessageNoMoreLogs": "No More logs."
+    "dialogMessageNoMoreLogs": "No more logs."
 }

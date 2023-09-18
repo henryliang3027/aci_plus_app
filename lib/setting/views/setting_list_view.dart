@@ -114,8 +114,8 @@ class SettingListView extends StatelessWidget {
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
-          ? AppLocalizations.of(context).dialogMessageSettingSuccessful
-          : AppLocalizations.of(context).dialogMessageSettingFailed;
+          ? AppLocalizations.of(context).dialogMessageSuccessful
+          : AppLocalizations.of(context).dialogMessageFailed;
     }
 
     String formatResultItem(String item) {

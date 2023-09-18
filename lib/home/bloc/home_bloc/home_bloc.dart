@@ -400,108 +400,80 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
 
     // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
-    // await _dsimRepository.set1p8GNowDateTime();
-    await _dsimRepository.set1p8GTransmitDelayTime(25);
+    await _dsimRepository.set1p8GNowDateTime();
+    await _dsimRepository.set1p8GTransmitDelayTime();
 
-    List<Function> requestCommands = [
-      _dsimRepository.requestCommand1p8G0,
-      _dsimRepository.requestCommand1p8G1,
-      _dsimRepository.requestCommand1p8G2,
-      _dsimRepository.requestCommand1p8GForLogChunk,
-    ];
+    Map<DataKey, String> newCharacteristicData = {};
 
-    for (int i = 0; i < requestCommands.length; i++) {
-      List<dynamic> result = [];
-      // result = await requestCommands[i](192);
+    List<dynamic> resultOf1p8G0 = await _dsimRepository.requestCommand1p8G0();
 
-      if (i <= 2) {
-        result = await requestCommands[i]();
-      } else {
-        result = await requestCommands[i](i - 3);
-      }
+    if (resultOf1p8G0[0]) {
+      newCharacteristicData.addAll(resultOf1p8G0[1]);
+      emit(state.copyWith(
+        characteristicData: newCharacteristicData,
+      ));
+    } else {
+      emit(state.copyWith(
+        loadingStatus: FormStatus.requestFailure,
+        characteristicData: state.characteristicData,
+        errorMassage: 'Data loading failed',
+      ));
+    }
 
-      if (result[0]) {
-        switch (i) {
-          case 0:
-            // 因為 state 是 immutable, 所以要創一個新的 map, copy 原來的 element, 加上新的 element,
-            // emit 的 state 才算新的, 才會觸發 bloc builder
+    List<dynamic> resultOf1p8G1 = await _dsimRepository.requestCommand1p8G1();
 
-            Map<DataKey, String> newCharacteristicData =
-                Map<DataKey, String>.from(result[1]);
-            emit(state.copyWith(
-              // loadingStatus: FormStatus.requestSuccess,
-              characteristicData: newCharacteristicData,
-            ));
-            break;
-          case 1:
-            // 因為 state 是 immutable, 所以要創一個新的 map, copy 原來的 element, 加上新的 element,
-            // emit 的 state 才算新的, 才會觸發 bloc builder
+    if (resultOf1p8G1[0]) {
+      newCharacteristicData.addAll(resultOf1p8G1[1]);
+      emit(state.copyWith(
+        characteristicData: newCharacteristicData,
+      ));
+    } else {
+      emit(state.copyWith(
+        loadingStatus: FormStatus.requestFailure,
+        characteristicData: state.characteristicData,
+        errorMassage: 'Data loading failed',
+      ));
+    }
 
-            Map<DataKey, String> newCharacteristicData =
-                Map<DataKey, String>.from(state.characteristicData);
+    List<dynamic> resultOf1p8G2 = await _dsimRepository.requestCommand1p8G2();
 
-            newCharacteristicData.addAll(result[1]);
+    if (resultOf1p8G2[0]) {
+      newCharacteristicData.addAll(resultOf1p8G2[1]);
+      emit(state.copyWith(
+        characteristicData: newCharacteristicData,
+      ));
+    } else {
+      emit(state.copyWith(
+        loadingStatus: FormStatus.requestFailure,
+        characteristicData: state.characteristicData,
+        errorMassage: 'Data loading failed',
+      ));
+    }
 
-            // 如果讀取到 0 分鐘, 則自動設定為 30 分鐘
-            // if (result[1][DataKey.logInterval] == '0') {
-            //   await _dsimRepository.set1p8GLogInterval('25');
-            //   List<dynamic> resultOf1p8G1 =
-            //       await _dsimRepository.requestCommand1p8G1();
-            //   newCharacteristicData[DataKey.logInterval] =
-            //       resultOf1p8G1[1][DataKey.logInterval];
-            // }
+    // 最多 retry 3 次, 連續失敗3次就視為失敗
+    for (int i = 0; i < 3; i++) {
+      List<dynamic> resultOf1p8GForLogChunk =
+          await _dsimRepository.requestCommand1p8GForLogChunk(0);
 
-            emit(state.copyWith(
-              characteristicData: newCharacteristicData,
-            ));
-            break;
-          case 2:
-            Map<DataKey, String> newCharacteristicData =
-                Map<DataKey, String>.from(state.characteristicData);
+      if (resultOf1p8GForLogChunk[0]) {
+        newCharacteristicData.addAll(resultOf1p8GForLogChunk[3]);
 
-            newCharacteristicData.addAll(result[1]);
-
-            emit(state.copyWith(
-              characteristicData: newCharacteristicData,
-            ));
-            break;
-          case 3:
-            Map<DataKey, String> newCharacteristicData = {};
-            newCharacteristicData.addEntries(state.characteristicData.entries);
-
-            List<List<ValuePair>> dateValueCollectionOfLog =
-                _dsimRepository.get1p8GDateValueCollectionOfLogs(result[2]);
-
-            newCharacteristicData[DataKey.historicalMinTemperatureC] =
-                result[3];
-            newCharacteristicData[DataKey.historicalMaxTemperatureC] =
-                result[4];
-            newCharacteristicData[DataKey.historicalMinTemperatureF] =
-                result[5];
-            newCharacteristicData[DataKey.historicalMaxTemperatureF] =
-                result[6];
-            newCharacteristicData[DataKey.historicalMinVoltage] = result[7];
-            newCharacteristicData[DataKey.historicalMaxVoltage] = result[8];
-            newCharacteristicData[DataKey.historicalMinVoltageRipple] =
-                result[9];
-            newCharacteristicData[DataKey.historicalMaxVoltageRipple] =
-                result[10];
-
-            emit(state.copyWith(
-              loadingStatus: FormStatus.requestSuccess,
-              characteristicData: newCharacteristicData,
-              dateValueCollectionOfLog: dateValueCollectionOfLog,
-            ));
-          default:
-            break;
-        }
-      } else {
         emit(state.copyWith(
-          loadingStatus: FormStatus.requestFailure,
-          characteristicData: state.characteristicData,
-          errorMassage: 'Data loading failed',
+          loadingStatus: FormStatus.requestSuccess,
+          characteristicData: newCharacteristicData,
         ));
+
         break;
+      } else {
+        if (i == 2) {
+          emit(state.copyWith(
+            loadingStatus: FormStatus.requestFailure,
+            characteristicData: state.characteristicData,
+            errorMassage: 'Data loading failed',
+          ));
+        } else {
+          continue;
+        }
       }
     }
   }

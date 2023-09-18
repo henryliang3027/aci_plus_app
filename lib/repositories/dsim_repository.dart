@@ -17,6 +17,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 enum ScanStatus {
   success,
@@ -1184,27 +1185,21 @@ class DsimRepository {
           true,
           hasNextChunk,
           log1p8Gs,
-          historicalMinTemperatureC,
-          historicalMaxTemperatureC,
-          historicalMinTemperatureF,
-          historicalMaxTemperatureF,
-          historicalMinVoltage,
-          historicalMaxVoltage,
-          historicalMinVoltageRipple,
-          historicalMaxVoltageRipple,
+          <DataKey, String>{
+            DataKey.historicalMinTemperatureC: historicalMinTemperatureC,
+            DataKey.historicalMaxTemperatureC: historicalMaxTemperatureC,
+            DataKey.historicalMinTemperatureF: historicalMinTemperatureF,
+            DataKey.historicalMaxTemperatureF: historicalMaxTemperatureF,
+            DataKey.historicalMinVoltage: historicalMinVoltage,
+            DataKey.historicalMaxVoltage: historicalMaxVoltage,
+            DataKey.historicalMinVoltageRipple: historicalMinVoltageRipple,
+            DataKey.historicalMaxVoltageRipple: historicalMaxVoltageRipple,
+          }
         ];
       } catch (e) {
         return [
           false,
           false,
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
         ];
       }
     } else {
@@ -1968,11 +1963,31 @@ class DsimRepository {
 
   // 設定藍芽串口的資料傳輸延遲時間, 單位為 ms
   // 例如 MTU = 244, 則每傳輸244byte 就會休息 ms 時間再傳下一筆
-  Future<dynamic> set1p8GTransmitDelayTime(int ms) async {
+  Future<dynamic> set1p8GTransmitDelayTime() async {
     commandIndex = 353;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
+
+    int ms = 26;
+
+    if (Platform.isIOS) {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+
+      // ipad version ex: 16.6.1
+      // ios version ex: 16.5
+      double version = double.parse(iosDeviceInfo.systemVersion.split('.')[0]);
+
+      if (version >= 16) {
+        ms = 26;
+      } else {
+        ms = 59;
+      }
+    } else {
+      // Android
+      ms = 26;
+    }
 
     // Convert the integer to bytes
     ByteData byteData = ByteData(2);

@@ -118,10 +118,6 @@
     "rfLevel": "RF Nivel",
 
 
-    "cancel": "Cancelar",
-    "exit": "Salir",
-
-
     "aboutUs": "Sobre nosotros",
     "aboutArticleParagraph1": "Twoway Communications, Inc., fundada en octubre de 1992, es la empresa más grande de Taiwán en la fabricación de amplificadores de banda ancha, y equipos de estación de trabajo óptica. Además, es el primer fabricante de equipos de transmisión HFC (fibra híbrida-coaxial) de Asia, en pasar la certificación de los principales MSO (operadores de múltiples sistemas) de América del Norte.",
     "aboutArticleParagraph2": "En 1999, el Grupo Twoway estableció la subsidiaria estadounidense \"ACI Communications, Inc.\" y fusionó la línea de productos \"Augat\" de Estados Unidos, lanzando la marca \"ACI\" para promover a nivel mundial. El Grupo Twoway se concentra en la investigación y desarrollo, así como en la producción de equipos de de alta calidad y rendimiento, para redes de fibra óptica exterior, amplificadores de banda ancha, nodos ópticos, y equipos optoelectrónicos de cabecera. Ofreciendo así, una selección completa de productos de alta calidad, para brindar los mejores servicios a los sectores de televisión por cable y telecomunicaciones a nivel mundial.",
@@ -140,6 +136,7 @@
     "dialogTitleProcessing": "configurando...",
     "dialogTitleError": "Error",
     "dialogTitleSettingResult": "Resultado",
+    "dialogTitleSuccess": "Éxito",
     "dialogMessageDeviceNotFound": "Dispositivo no encontrado.",
     "dialogMessageBluetoothDisabled": "Bluetooth está deshabilitado.",
     "dialogMessageConnectionFailure": "Fallo en la conexión del dispositivo",
@@ -168,8 +165,11 @@
     "dialogMessageSplitOptionSetting": "Ajuste Opciones divididas",
     "dialogMessageCoordinatesSetting": "Ajuste coordenada",
 
-    "dialogMessageSettingSuccessful": "Exitoso",
-    "dialogMessageSettingFailed": "Fallido",
+    "dialogMessageSuccessful": "Exitoso",
+    "dialogMessageFailed": "Fallido",
+    "dialogMessageCancel": "Cancelar",
+    "dialogMessageExit": "Salir",
+    "dialogMessageOk": "OK",
     "dialogMessagePilotSearchFailed": "Piloto no encontrado, Favor de insertar el código correcto.",
     "dialogMessageDataExportSuccessful": "Exportación de datos exitosa.",
     "dialogMessageNoMoreLogs": "No hay más registros."

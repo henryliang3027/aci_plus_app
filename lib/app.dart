@@ -96,7 +96,7 @@ class SplashScreen extends StatelessWidget {
       children: [
         const SplashView(),
         Image.asset(
-          'assets/splash.gif',
+          'assets/splash2.gif',
           fit: BoxFit.cover,
           frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
             if (frame != null) {

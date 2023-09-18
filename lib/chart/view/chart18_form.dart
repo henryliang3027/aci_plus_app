@@ -4,6 +4,7 @@ import 'package:dsim_app/chart/view/download_indicator.dart';
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
+import 'package:dsim_app/core/message_localization.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,43 @@ class Chart18Form extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> showFailureDialog(String msg) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitleError,
+              style: const TextStyle(
+                color: CustomStyle.customRed,
+              ),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                    getMessageLocalization(
+                      msg: msg,
+                      context: context,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return BlocListener<Chart18Bloc, Chart18State>(
       listener: (context, state) async {
         if (state.dataExportStatus.isRequestSuccess) {
@@ -78,10 +116,14 @@ class Chart18Form extends StatelessWidget {
           );
 
           if (resultOfDownload != null) {
-            if (resultOfDownload[0]) {
-              List<Log1p8G> log1p8Gs = resultOfDownload[1];
-              context.read<Chart18Bloc>().add(AllDataExported(log1p8Gs));
-            }
+            bool isSuccessful = resultOfDownload[0];
+            List<Log1p8G> log1p8Gs = resultOfDownload[1];
+            String errorMessage = resultOfDownload[2];
+            context.read<Chart18Bloc>().add(AllDataExported(
+                  isSuccessful,
+                  log1p8Gs,
+                  errorMessage,
+                ));
           }
         } else if (state.allDataDownloadStatus.isRequestSuccess) {
           ScaffoldMessenger.of(context)
@@ -106,6 +148,8 @@ class Chart18Form extends StatelessWidget {
                 ),
               ),
             );
+        } else if (state.allDataDownloadStatus.isRequestFailure) {
+          showFailureDialog(state.errorMessage);
         }
       },
       child: Scaffold(

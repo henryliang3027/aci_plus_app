@@ -54,7 +54,9 @@ class HomeState extends Equatable {
       showSplash: showSplash ?? this.showSplash,
       mtu: mtu ?? this.mtu,
       device: device ?? this.device,
-      characteristicData: characteristicData ?? this.characteristicData,
+      characteristicData: characteristicData != null
+          ? Map<DataKey, String>.from(characteristicData)
+          : this.characteristicData,
       errorMassage: errorMassage ?? this.errorMassage,
       dateValueCollectionOfLog:
           dateValueCollectionOfLog ?? this.dateValueCollectionOfLog,

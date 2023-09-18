@@ -26,12 +26,22 @@ class AllDataDownloaded extends Chart18Event {
 }
 
 class AllDataExported extends Chart18Event {
-  const AllDataExported(this.log1p8Gs);
+  const AllDataExported(
+    this.isSuccessful,
+    this.log1p8Gs,
+    this.errorMessage,
+  );
 
+  final bool isSuccessful;
   final List<Log1p8G> log1p8Gs;
+  final String errorMessage;
 
   @override
-  List<Object?> get props => [log1p8Gs];
+  List<Object?> get props => [
+        isSuccessful,
+        log1p8Gs,
+        errorMessage,
+      ];
 }
 
 class MoreDataRequested extends Chart18Event {

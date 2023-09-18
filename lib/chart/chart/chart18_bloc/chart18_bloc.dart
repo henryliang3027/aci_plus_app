@@ -113,24 +113,25 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     AllDataExported event,
     Emitter<Chart18State> emit,
   ) async {
-    emit(state.copyWith(
-      dataExportStatus: FormStatus.none,
-      dataShareStatus: FormStatus.none,
-      allDataDownloadStatus: FormStatus.requestSuccess,
-    ));
+    if (event.isSuccessful) {
+      final List<dynamic> result =
+          await _dsimRepository.export1p8GRecords(event.log1p8Gs);
 
-    final List<dynamic> result =
-        await _dsimRepository.export1p8GRecords(event.log1p8Gs);
-
-    if (result[0]) {
-      emit(state.copyWith(
-        dataExportStatus: FormStatus.requestSuccess,
-        dataExportPath: result[2],
-      ));
+      if (result[0]) {
+        emit(state.copyWith(
+          allDataDownloadStatus: FormStatus.requestSuccess,
+          dataExportPath: result[2],
+        ));
+      } else {
+        emit(state.copyWith(
+          allDataDownloadStatus: FormStatus.requestFailure,
+          dataExportPath: result[2],
+        ));
+      }
     } else {
       emit(state.copyWith(
-        dataExportStatus: FormStatus.requestFailure,
-        dataExportPath: result[2],
+        allDataDownloadStatus: FormStatus.requestFailure,
+        errorMessage: event.errorMessage,
       ));
     }
   }
@@ -149,28 +150,62 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     List<Log1p8G> log1p8Gs = [];
     log1p8Gs.addAll(state.log1p8Gs);
 
-    List<dynamic> resultOfLog1p8G =
-        await _dsimRepository.requestCommand1p8GForLogChunk(state.chunckIndex);
+    // 最多 retry 3 次, 連續失敗3次就視為失敗
+    for (int i = 0; i < 3; i++) {
+      List<dynamic> resultOfLog1p8G = await _dsimRepository
+          .requestCommand1p8GForLogChunk(state.chunckIndex);
 
-    if (resultOfLog1p8G[0]) {
-      log1p8Gs.addAll(resultOfLog1p8G[2]);
+      if (resultOfLog1p8G[0]) {
+        log1p8Gs.addAll(resultOfLog1p8G[2]);
 
-      List<List<ValuePair>> dateValueCollectionOfLog =
-          _dsimRepository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
+        List<List<ValuePair>> dateValueCollectionOfLog =
+            _dsimRepository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
 
-      emit(
-        state.copyWith(
-          dataRequestStatus: FormStatus.requestFailure,
-          log1p8Gs: log1p8Gs,
-          dateValueCollectionOfLog: dateValueCollectionOfLog,
-          chunckIndex: state.chunckIndex + 1,
-          hasNextChunk: resultOfLog1p8G[1],
-        ),
-      );
-    } else {
-      state.copyWith(
-        dataRequestStatus: FormStatus.requestFailure,
-      );
+        emit(
+          state.copyWith(
+            dataRequestStatus: FormStatus.requestSuccess,
+            log1p8Gs: log1p8Gs,
+            dateValueCollectionOfLog: dateValueCollectionOfLog,
+            chunckIndex: state.chunckIndex + 1,
+            hasNextChunk: resultOfLog1p8G[1],
+          ),
+        );
+
+        break;
+      } else {
+        if (i == 2) {
+          emit(state.copyWith(
+            dataRequestStatus: FormStatus.requestFailure,
+            errorMessage: 'Data loading failed',
+          ));
+        } else {
+          continue;
+        }
+      }
     }
+
+    // List<dynamic> resultOfLog1p8G =
+    //     await _dsimRepository.requestCommand1p8GForLogChunk(state.chunckIndex);
+
+    // if (resultOfLog1p8G[0]) {
+    //   log1p8Gs.addAll(resultOfLog1p8G[2]);
+
+    //   List<List<ValuePair>> dateValueCollectionOfLog =
+    //       _dsimRepository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
+
+    //   emit(
+    //     state.copyWith(
+    //       dataRequestStatus: FormStatus.requestSuccess,
+    //       log1p8Gs: log1p8Gs,
+    //       dateValueCollectionOfLog: dateValueCollectionOfLog,
+    //       chunckIndex: state.chunckIndex + 1,
+    //       hasNextChunk: resultOfLog1p8G[1],
+    //     ),
+    //   );
+    // } else {
+    //   state.copyWith(
+    //     dataRequestStatus: FormStatus.requestFailure,
+    //   );
+    // }
   }
 }

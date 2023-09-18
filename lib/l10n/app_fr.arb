@@ -115,10 +115,6 @@
     "rfLevel": "Niveau RF",
 
 
-    "cancel": "Annuler",
-    "exit": "Sortie",
-
-
     "aboutUs": "Qui sommes-nous",
     "aboutArticleParagraph1": "Twoway Communications, Inc., fondée en octobre 1992, est la plus grande société taïwanaise d’amplificateurs à large bande et d’équipements de station de travail optique, ainsi que le premier fabricant asiatique d’équipements de transmission HFC (fibre hybride coaxiale) qui a passé la certification de l’important MSO (Multiple-System Operators) nord-américain.",
     "aboutArticleParagraph2": "En 1999, Twoway Group a créé la filiale américaine « ACI Communications, Inc. » et a fusionné la gamme de produits « Augat » qui, à partir des États-Unis, appliquant la marque « ACI » pour vendre dans le monde entier. Twoway Group se concentre sur la R & D et la production d’équipements de réseau extérieur à fibre optique large bande de haute qualité, de produits d’amplificateurs à large bande haute performance, de nœuds optiques et d’équipements optoélectroniques de tête de réseau. Twoway Group offre une sélection complète de produits de haute qualité pour fournir les meilleurs services aux secteurs mondiaux de la télévision par câble et des télécommunications.",
@@ -137,14 +133,15 @@
     "dialogTitleProcessing": "Traitement des titres...",
     "dialogTitleError": "Erreur de titre",
     "dialogTitleSettingResult": "Résultat",
-    "dialogMaessageDeviceNotFound": "Erreur de titre",
-    "dialogMaessageBluetoothDisabled": "Résultat du réglage du titre",
+    "dialogTitleSuccess": "Succès",
+    "dialogMessageDeviceNotFound": "Erreur de titre",
+    "dialogMessageBluetoothDisabled": "Résultat du réglage du titre",
     "dialogMessageConnectionFailure": "Device connection failed",
     "dialogMessageLoadingDataFailure": "Data loading failed",
-    "dialogMaessageLocationSetting": "Paramètre de localisation",
-    "dialogMaessageTGCCableLengthSetting": "Réglage de la longueur du câble TGC",
-    "dialogMaessageLogIntervalSetting": "Paramètre d’intervalle de journalisation",
-    "dialogMaessageWorkingModeSetting": "Réglage du mode de travail",
+    "dialogMessageLocationSetting": "Paramètre de localisation",
+    "dialogMessageTGCCableLengthSetting": "Réglage de la longueur du câble TGC",
+    "dialogMessageLogIntervalSetting": "Paramètre d’intervalle de journalisation",
+    "dialogMessageWorkingModeSetting": "Réglage du mode de travail",
     "dialogMessageSaveUserPilot": "Save user pilot",
     "dialogMessageSaveUserPilot2": "Save User Pilot2",
 
@@ -166,8 +163,11 @@
     "dialogMessageCoordinatesSetting": "Réglage des coordonnées",
 
 
-    "dialogMessageSettingSuccessful": "Réglage réussi",
-    "dialogMessageSettingFailed": "Échec du réglage",
+    "dialogMessageSuccessful": "Réussi",
+    "dialogMessageFailed": "Échoué",
+    "dialogMessageCancel": "Annuler",
+    "dialogMessageExit": "Sortie",
+    "dialogMessageOk": "OK",
     "dialogMessagePilotSearchFailed": "Échec de la recherche pilote",
     "dialogMessageDataExportSuccessful": "Exportation réussie des données",
     "dialogMessageNoMoreLogs": "Plus de journaux."

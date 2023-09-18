@@ -49,6 +49,7 @@ dependencies:
   open_filex: ^4.3.1
   share_plus: ^7.0.2
   shared_preferences: ^2.2.0 # for persist two pilotCodes
+  device_info_plus: ^9.0.3
   # assets_audio_player: ^3.1.0
 
   # flutter_speed_chart:
