@@ -500,6 +500,64 @@ class Setting18ConfigureBloc
       settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
     }
 
+    if (state.firstChannelLoadingFrequency != state.initialValues[3]) {
+      bool resultOfSetFirstChannelLoadingFrequency =
+          await _dsimRepository.set1p8GFirstChannelLoadingFrequency(
+              state.firstChannelLoadingFrequency);
+
+      settingResult.add(
+          '${DataKey.firstChannelLoadingFrequency.name},$resultOfSetFirstChannelLoadingFrequency');
+    }
+
+    if (state.firstChannelLoadingLevel != state.initialValues[4]) {
+      bool resultOfSetFirstChannelLoadingLevel = await _dsimRepository
+          .set1p8GFirstChannelLoadingLevel(state.firstChannelLoadingLevel);
+
+      settingResult.add(
+          '${DataKey.firstChannelLoadingLevel.name},$resultOfSetFirstChannelLoadingLevel');
+    }
+
+    if (state.lastChannelLoadingFrequency != state.initialValues[5]) {
+      bool resultOfSetLastChannelLoadingFrequency =
+          await _dsimRepository.set1p8GLastChannelLoadingFrequency(
+              state.lastChannelLoadingFrequency);
+
+      settingResult.add(
+          '${DataKey.lastChannelLoadingFrequency.name},$resultOfSetLastChannelLoadingFrequency');
+    }
+
+    if (state.lastChannelLoadingLevel != state.initialValues[6]) {
+      bool resultOfSetLastChannelLoadingLevel = await _dsimRepository
+          .set1p8GLastChannelLoadingLevel(state.lastChannelLoadingLevel);
+
+      settingResult.add(
+          '${DataKey.lastChannelLoadingLevel.name},$resultOfSetLastChannelLoadingLevel');
+    }
+
+    if (state.pilotFrequencyMode != state.initialValues[7]) {
+      bool resultOfSetPilotFrequencyMode = await _dsimRepository
+          .set1p8GPilotFrequencyMode(state.pilotFrequencyMode);
+
+      settingResult.add(
+          '${DataKey.pilotFrequencyMode.name},$resultOfSetPilotFrequencyMode');
+    }
+
+    if (state.pilotFrequency1 != state.initialValues[8]) {
+      bool resultOfSetPilotFrequency1 =
+          await _dsimRepository.set1p8GPilotFrequency1(state.pilotFrequency1);
+
+      settingResult
+          .add('${DataKey.pilotFrequency1.name},$resultOfSetPilotFrequency1');
+    }
+
+    if (state.pilotFrequency2 != state.initialValues[9]) {
+      bool resultOfSetPilotFrequency2 =
+          await _dsimRepository.set1p8GPilotFrequency2(state.pilotFrequency2);
+
+      settingResult
+          .add('${DataKey.pilotFrequency2.name},$resultOfSetPilotFrequency2');
+    }
+
     if (state.fwdAGCMode != state.initialValues[10]) {
       bool resultOfSetForwardAGCMode =
           await _dsimRepository.set1p8GForwardAGCMode(state.fwdAGCMode);

@@ -1717,6 +1717,40 @@ class DsimRepository {
     }
   }
 
+  Future<dynamic> set1p8GPilotFrequencyMode(String value) async {
+    commandIndex = 315;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int intValue = int.parse(value);
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, intValue, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setPilotFrequencyModeCmd[7] = bytes[0];
+
+    CRC16.calculateCRC16(
+      command: Command18.setPilotFrequencyModeCmd,
+      usDataLength: Command18.setPilotFrequencyModeCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setPilotFrequencyModeCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<dynamic> set1p8GForwardAGCMode(String value) async {
     commandIndex = 316;
     _completer = Completer<dynamic>();
@@ -1762,6 +1796,222 @@ class DsimRepository {
     );
 
     _writeSetCommandToCharacteristic(Command18.setALCModeCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GFirstChannelLoadingFrequency(String value) async {
+    commandIndex = 318;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int intValue = int.parse(value);
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, intValue, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setFirstChannelLoadingFrequencyCmd[7] = bytes[0];
+    Command18.setFirstChannelLoadingFrequencyCmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setFirstChannelLoadingFrequencyCmd,
+      usDataLength: Command18.setFirstChannelLoadingFrequencyCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(
+        Command18.setFirstChannelLoadingFrequencyCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GLastChannelLoadingFrequency(String value) async {
+    commandIndex = 319;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int intValue = int.parse(value);
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, intValue, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setLastChannelLoadingFrequencyCmd[7] = bytes[0];
+    Command18.setLastChannelLoadingFrequencyCmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setLastChannelLoadingFrequencyCmd,
+      usDataLength: Command18.setLastChannelLoadingFrequencyCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(
+        Command18.setLastChannelLoadingFrequencyCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GFirstChannelLoadingLevel(String value) async {
+    commandIndex = 320;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    double doubleValue = double.parse(value);
+
+    int intValue = (doubleValue * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, intValue, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setFirstChannelLoadingLevelCmd[7] = bytes[0];
+    Command18.setFirstChannelLoadingLevelCmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setFirstChannelLoadingLevelCmd,
+      usDataLength: Command18.setFirstChannelLoadingLevelCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setFirstChannelLoadingLevelCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GLastChannelLoadingLevel(String value) async {
+    commandIndex = 321;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    double doubleValue = double.parse(value);
+
+    int intValue = (doubleValue * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, intValue, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setLastChannelLoadingLevelCmd[7] = bytes[0];
+    Command18.setLastChannelLoadingLevelCmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setLastChannelLoadingLevelCmd,
+      usDataLength: Command18.setLastChannelLoadingLevelCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setLastChannelLoadingLevelCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GPilotFrequency1(String value) async {
+    commandIndex = 322;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int intValue = int.parse(value);
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, intValue, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setPilotFrequency1Cmd[7] = bytes[0];
+    Command18.setPilotFrequency1Cmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setPilotFrequency1Cmd,
+      usDataLength: Command18.setPilotFrequency1Cmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setPilotFrequency1Cmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GPilotFrequency2(String value) async {
+    commandIndex = 323;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int intValue = int.parse(value);
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, intValue, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setPilotFrequency2Cmd[7] = bytes[0];
+    Command18.setPilotFrequency2Cmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setPilotFrequency2Cmd,
+      usDataLength: Command18.setPilotFrequency2Cmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setPilotFrequency2Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');

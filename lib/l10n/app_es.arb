@@ -151,6 +151,13 @@
 
     "dialogMessageAGCModeSetting": "Ajuste AGC modo",
     "dialogMessageALCModeSetting": "Ajuste ALC modo",
+    "dialogMessageFirstChannelLoadingFrequencySetting": "Ajuste inicio frecuencia",
+    "dialogMessageFirstChannelLoadingLevelSetting": "Ajuste inicio nivel",
+    "dialogMessageLastChannelLoadingFrequencySetting": "Ajuste parar frecuencia",
+    "dialogMessageLastChannelLoadingLevelSetting": "Ajuste parar nivel",
+    "dialogMessagePilotFrequencyModeSetting": "Ajuste selección frecuencia piloto",
+    "dialogMessagePilotFrequency1Setting": "Ajuste piloto frecuencia 1",
+    "dialogMessagePilotFrequency2Setting": "Ajuste piloto frecuencia 2",
     "dialogMessageMaxTemperatureSetting": "Ajuste máximo temperatura",
     "dialogMessageMinTemperatureSetting": "Ajuste mínimo temperatura",
     "dialogMessageMaxVoltageSetting": "Ajuste máximo voltaje",

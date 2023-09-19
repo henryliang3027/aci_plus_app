@@ -223,47 +223,46 @@ class Dsim18Parser {
             Uint8List.fromList(rawFirstChannelLoadingFrequency));
         firstChannelLoadingFrequency = rawFirstChannelLoadingFrequencyByteData
             .getInt16(0, Endian.little)
-            .toStringAsFixed(1);
+            .toString();
 
-        // 解析 firstChannelLoadingFrequency
+        // 解析 lastChannelLoadingFrequency
         List<int> rawLastChannelLoadingFrequency = rawData.sublist(31, 33);
         ByteData rawLastChannelLoadingFrequencyByteData = ByteData.sublistView(
             Uint8List.fromList(rawLastChannelLoadingFrequency));
         lastChannelLoadingFrequency = rawLastChannelLoadingFrequencyByteData
             .getInt16(0, Endian.little)
-            .toStringAsFixed(1);
+            .toString();
 
         // 解析 firstChannelLoadingLevel
         List<int> rawFirstChannelLoadingLevel = rawData.sublist(33, 35);
         ByteData rawFirstChannelLoadingLevelByteData = ByteData.sublistView(
             Uint8List.fromList(rawFirstChannelLoadingLevel));
-        firstChannelLoadingLevel = rawFirstChannelLoadingLevelByteData
-            .getInt16(0, Endian.little)
-            .toStringAsFixed(1);
+        firstChannelLoadingLevel =
+            (rawFirstChannelLoadingLevelByteData.getInt16(0, Endian.little) /
+                    10)
+                .toStringAsFixed(1);
 
-        // 解析 firstChannelLoadingLevel
+        // 解析 lastChannelLoadingLevel
         List<int> rawLastChannelLoadingLevel = rawData.sublist(35, 37);
         ByteData rawLastChannelLoadingLevelByteData = ByteData.sublistView(
             Uint8List.fromList(rawLastChannelLoadingLevel));
-        lastChannelLoadingLevel = rawLastChannelLoadingLevelByteData
-            .getInt16(0, Endian.little)
-            .toStringAsFixed(1);
+        lastChannelLoadingLevel =
+            (rawLastChannelLoadingLevelByteData.getInt16(0, Endian.little) / 10)
+                .toStringAsFixed(1);
 
         // 解析 pilotFrequency1
         List<int> rawPilotFrequency1 = rawData.sublist(37, 39);
         ByteData rawPilotFrequency1ByteData =
             ByteData.sublistView(Uint8List.fromList(rawPilotFrequency1));
-        pilotFrequency1 = rawPilotFrequency1ByteData
-            .getInt16(0, Endian.little)
-            .toStringAsFixed(1);
+        pilotFrequency1 =
+            rawPilotFrequency1ByteData.getInt16(0, Endian.little).toString();
 
         // 解析 pilotFrequency2
         List<int> rawPilotFrequency2 = rawData.sublist(39, 41);
         ByteData rawPilotFrequency2ByteData =
             ByteData.sublistView(Uint8List.fromList(rawPilotFrequency2));
-        pilotFrequency2 = rawPilotFrequency2ByteData
-            .getInt16(0, Endian.little)
-            .toStringAsFixed(1);
+        pilotFrequency2 =
+            rawPilotFrequency2ByteData.getInt16(0, Endian.little).toString();
 
         // 解析 pilotFrequency1AlarmState
         pilotFrequency1AlarmState = rawData[43].toString();

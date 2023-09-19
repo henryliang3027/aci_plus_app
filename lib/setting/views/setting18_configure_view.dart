@@ -38,8 +38,22 @@ class Setting18ConfigureView extends StatelessWidget {
         homeState.characteristicData[DataKey.coordinates] ?? '';
     String splitOption =
         homeState.characteristicData[DataKey.splitOption] ?? '';
+    String firstChannelLoadingFrequency =
+        homeState.characteristicData[DataKey.firstChannelLoadingFrequency] ??
+            '';
+    String lastChannelLoadingFrequency =
+        homeState.characteristicData[DataKey.lastChannelLoadingFrequency] ?? '';
+    String firstChannelLoadingLevel =
+        homeState.characteristicData[DataKey.firstChannelLoadingLevel] ?? '';
+    String lastChannelLoadingLevel =
+        homeState.characteristicData[DataKey.lastChannelLoadingLevel] ?? '';
     String pilotFrequencyMode =
         homeState.characteristicData[DataKey.pilotFrequencyMode] ?? '';
+    String pilotFrequency1 =
+        homeState.characteristicData[DataKey.pilotFrequency1] ?? '';
+    String pilotFrequency2 =
+        homeState.characteristicData[DataKey.pilotFrequency2] ?? '';
+
     String fwdAgcMode = homeState.characteristicData[DataKey.agcMode] ?? '';
     String autoLevelControl =
         homeState.characteristicData[DataKey.alcMode] ?? '';
@@ -50,13 +64,13 @@ class Setting18ConfigureView extends StatelessWidget {
           location: location,
           coordinates: coordinates,
           splitOption: splitOption,
-          firstChannelLoadingFrequency: '',
-          firstChannelLoadingLevel: '',
-          lastChannelLoadingFrequency: '',
-          lastChannelLoadingLevel: '',
+          firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+          firstChannelLoadingLevel: firstChannelLoadingLevel,
+          lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+          lastChannelLoadingLevel: lastChannelLoadingLevel,
           pilotFrequencyMode: pilotFrequencyMode,
-          pilotFrequency1: '',
-          pilotFrequency2: '',
+          pilotFrequency1: pilotFrequency1,
+          pilotFrequency2: pilotFrequency2,
           fwdAGCMode: fwdAgcMode,
           autoLevelControl: autoLevelControl,
           logInterval: logInterval,
@@ -130,6 +144,25 @@ class Setting18ConfigureView extends StatelessWidget {
         return AppLocalizations.of(context).dialogMessageCoordinatesSetting;
       } else if (item == DataKey.splitOption.name) {
         return AppLocalizations.of(context).dialogMessageSplitOptionSetting;
+      } else if (item == DataKey.firstChannelLoadingFrequency.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageFirstChannelLoadingFrequencySetting;
+      } else if (item == DataKey.firstChannelLoadingLevel.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageFirstChannelLoadingLevelSetting;
+      } else if (item == DataKey.lastChannelLoadingFrequency.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageLastChannelLoadingFrequencySetting;
+      } else if (item == DataKey.lastChannelLoadingLevel.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageLastChannelLoadingLevelSetting;
+      } else if (item == DataKey.pilotFrequencyMode.name) {
+        return AppLocalizations.of(context)
+            .dialogMessagePilotFrequencyModeSetting;
+      } else if (item == DataKey.pilotFrequency1.name) {
+        return AppLocalizations.of(context).dialogMessagePilotFrequency1Setting;
+      } else if (item == DataKey.pilotFrequency2.name) {
+        return AppLocalizations.of(context).dialogMessagePilotFrequency2Setting;
       } else if (item == DataKey.agcMode.name) {
         return AppLocalizations.of(context).dialogMessageAGCModeSetting;
       } else if (item == DataKey.alcMode.name) {
@@ -870,16 +903,17 @@ class _PilotFrequency1 extends StatelessWidget {
                 ),
                 enabled: state.editMode,
                 textInputAction: TextInputAction.done,
-                onChanged: (location) {
-                  // context
-                  //     .read<Setting18ConfigureBloc>()
-                  //     .add(LocationChanged(location));
+                onChanged: (frequency) {
+                  context
+                      .read<Setting18ConfigureBloc>()
+                      .add(PilotFrequency1Changed(frequency));
                 },
                 maxLength: 40,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
+                decoration: InputDecoration(
+                  label: Text(AppLocalizations.of(context).frequency),
+                  border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(10.0),
+                  contentPadding: const EdgeInsets.all(10.0),
                   isDense: true,
                   filled: true,
                   fillColor: Colors.white,
@@ -933,16 +967,17 @@ class _PilotFrequency2 extends StatelessWidget {
                 ),
                 enabled: state.editMode,
                 textInputAction: TextInputAction.done,
-                onChanged: (location) {
-                  // context
-                  //     .read<Setting18ConfigureBloc>()
-                  //     .add(LocationChanged(location));
+                onChanged: (frequency) {
+                  context
+                      .read<Setting18ConfigureBloc>()
+                      .add(PilotFrequency2Changed(frequency));
                 },
                 maxLength: 40,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
+                decoration: InputDecoration(
+                  label: Text(AppLocalizations.of(context).frequency),
+                  border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(10.0),
+                  contentPadding: const EdgeInsets.all(10.0),
                   isDense: true,
                   filled: true,
                   fillColor: Colors.white,
