@@ -146,6 +146,9 @@
     "dialogMessageSaveUserPilot": "Save user pilot",
     "dialogMessageSaveUserPilot2": "Save User Pilot2",
 
+
+    "dialogMessageAGCModeSetting": "AGC mode setting",
+    "dialogMessageALCModeSetting": "ALC mode setting",
     "dialogMessageMaxTemperatureSetting": "Max temperature setting",
     "dialogMessageMinTemperatureSetting": "Min temperature setting",
     "dialogMessageMaxVoltageSetting": "Max voltage setting",
@@ -162,6 +165,17 @@
     "dialogMessagePilotFrequency2AlarmStateSetting": "Pilot Frequency 2 alarm setting",
     "dialogMessageSplitOptionSetting": "Split option setting",
     "dialogMessageCoordinatesSetting": "Coordinates setting",
+    "dialogMessageForwardInputAttenuationSetting": "Input attenuation setting",
+    "dialogMessageForwardInputEqualizerSetting": "Input equalizer setting",
+    "dialogMessageReturnInputAttenuation2Setting": "Input attenuation 2 setting",
+    "dialogMessageReturnInputAttenuation3Setting": "Input attenuation 3 setting",
+    "dialogMessageReturnInputAttenuation4Setting": "Input attenuation 4 setting",
+    "dialogMessageReturnOutputAttenuationSetting": "Output attenuation setting",
+    "dialogMessageReturnOutputEqualizerSetting": "Output equalizer setting",
+    "dialogMessageReturnIngress2Setting": "Ingress 2 setting",
+    "dialogMessageReturnIngress3Setting": "Ingress 3 setting",
+    "dialogMessageReturnIngress4Setting": "Ingress 4 setting",
+
 
 
     "dialogMessageSuccessful": "OK",

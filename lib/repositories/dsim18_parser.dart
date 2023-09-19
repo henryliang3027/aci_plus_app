@@ -311,49 +311,56 @@ class Dsim18Parser {
         ByteData rawInputAttenuationByteData =
             ByteData.sublistView(Uint8List.fromList(rawInputAttenuation));
         inputAttenuation =
-            rawInputAttenuationByteData.getInt16(0, Endian.little).toString();
+            (rawInputAttenuationByteData.getInt16(0, Endian.little) / 10)
+                .toStringAsFixed(1);
 
         // 解析 inputEqualizer (0x96 DS Slope1 Set dB)
         List<int> rawInputEqualizer = rawData.sublist(153, 155);
         ByteData rawInputEqualizerByteData =
             ByteData.sublistView(Uint8List.fromList(rawInputEqualizer));
         inputEqualizer =
-            rawInputEqualizerByteData.getInt16(0, Endian.little).toString();
+            (rawInputEqualizerByteData.getInt16(0, Endian.little) / 10)
+                .toStringAsFixed(1);
 
         // 解析 inputAttenuation2 (0x9C US VCA1 Set dB)
         List<int> rawInputAttenuation2 = rawData.sublist(159, 161);
         ByteData rawInputAttenuation2ByteData =
             ByteData.sublistView(Uint8List.fromList(rawInputAttenuation2));
         inputAttenuation2 =
-            rawInputAttenuation2ByteData.getInt16(0, Endian.little).toString();
+            (rawInputAttenuation2ByteData.getInt16(0, Endian.little) / 10)
+                .toStringAsFixed(1);
 
         // 解析 outputEqualizer (0x9E US E-REQ Set dB)
         List<int> rawOutputEqualizer = rawData.sublist(161, 163);
         ByteData rawOutputEqualizerByteData =
             ByteData.sublistView(Uint8List.fromList(rawOutputEqualizer));
         outputEqualizer =
-            rawOutputEqualizerByteData.getInt16(0, Endian.little).toString();
+            (rawOutputEqualizerByteData.getInt16(0, Endian.little) / 10)
+                .toStringAsFixed(1);
 
         // 解析 outputAttenuation (0xA4 US VCA2 Set dB)
         List<int> rawOutputAttenuation = rawData.sublist(167, 169);
         ByteData rawOutputAttenuationByteData =
             ByteData.sublistView(Uint8List.fromList(rawOutputAttenuation));
         outputAttenuation =
-            rawOutputAttenuationByteData.getInt16(0, Endian.little).toString();
+            (rawOutputAttenuationByteData.getInt16(0, Endian.little) / 10)
+                .toStringAsFixed(1);
 
         // 解析 inputAttenuation3 (0xA6 US VCA3 Set dB)
         List<int> rawInputAttenuation3 = rawData.sublist(169, 171);
         ByteData rawInputAttenuation3ByteData =
             ByteData.sublistView(Uint8List.fromList(rawInputAttenuation3));
         inputAttenuation3 =
-            rawInputAttenuation3ByteData.getInt16(0, Endian.little).toString();
+            (rawInputAttenuation3ByteData.getInt16(0, Endian.little) / 10)
+                .toStringAsFixed(1);
 
         // 解析 inputAttenuation4 (0xA8 US VCA4 Set dB)
         List<int> rawInputAttenuation4 = rawData.sublist(171, 173);
         ByteData rawInputAttenuation4ByteData =
             ByteData.sublistView(Uint8List.fromList(rawInputAttenuation4));
         inputAttenuation4 =
-            rawInputAttenuation4ByteData.getInt16(0, Endian.little).toString();
+            (rawInputAttenuation4ByteData.getInt16(0, Endian.little) / 10)
+                .toStringAsFixed(1);
 
         if (!completer.isCompleted) {
           completer.complete((

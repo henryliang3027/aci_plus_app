@@ -500,6 +500,20 @@ class Setting18ConfigureBloc
       settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
     }
 
+    if (state.fwdAGCMode != state.initialValues[10]) {
+      bool resultOfSetForwardAGCMode =
+          await _dsimRepository.set1p8GForwardAGCMode(state.fwdAGCMode);
+
+      settingResult.add('${DataKey.agcMode.name},$resultOfSetForwardAGCMode');
+    }
+
+    if (state.autoLevelControl != state.initialValues[11]) {
+      bool resultOfSetALCMode =
+          await _dsimRepository.set1p8GALCMode(state.autoLevelControl);
+
+      settingResult.add('${DataKey.alcMode.name},$resultOfSetALCMode');
+    }
+
     if (state.logInterval != state.initialValues[12]) {
       bool resultOfSetLogInterval =
           await _dsimRepository.set1p8GLogInterval(state.logInterval);

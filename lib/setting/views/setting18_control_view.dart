@@ -14,11 +14,182 @@ class Setting18ControlView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
-    String minTemperature =
-        homeState.characteristicData[DataKey.minTemperatureC] ?? '';
+    String inputAttenuation =
+        homeState.characteristicData[DataKey.inputAttenuation] ?? '';
+    String inputEqualizer =
+        homeState.characteristicData[DataKey.inputEqualizer] ?? '';
+    String inputAttenuation2 =
+        homeState.characteristicData[DataKey.inputAttenuation2] ?? '';
+    String inputAttenuation3 =
+        homeState.characteristicData[DataKey.inputAttenuation3] ?? '';
+    String inputAttenuation4 =
+        homeState.characteristicData[DataKey.inputAttenuation4] ?? '';
+    String outputAttenuation =
+        homeState.characteristicData[DataKey.outputAttenuation] ?? '';
+    String outputEqualizer =
+        homeState.characteristicData[DataKey.outputEqualizer] ?? '';
+    String ingressSetting2 =
+        homeState.characteristicData[DataKey.ingressSetting2] ?? '';
+    String ingressSetting3 =
+        homeState.characteristicData[DataKey.ingressSetting3] ?? '';
+    String ingressSetting4 =
+        homeState.characteristicData[DataKey.ingressSetting4] ?? '';
+
+    context.read<Setting18ControlBloc>().add(Initialized(
+          fwdInputAttenuation: inputAttenuation,
+          fwdInputEQ: inputEqualizer,
+          rtnInputAttenuation2: inputAttenuation2,
+          rtnInputAttenuation3: inputAttenuation3,
+          rtnInputAttenuation4: inputAttenuation4,
+          rtnOutputLevelAttenuation: outputAttenuation,
+          rtnOutputEQ: outputEqualizer,
+          rtnIngressSetting2: ingressSetting2,
+          rtnIngressSetting3: ingressSetting3,
+          rtnIngressSetting4: ingressSetting4,
+        ));
+
+    Future<void> showInProgressDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitleProcessing,
+            ),
+            actionsAlignment: MainAxisAlignment.center,
+            actions: const <Widget>[
+              Center(
+                child: SizedBox(
+                  width: CustomStyle.diameter,
+                  height: CustomStyle.diameter,
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<void> showResultDialog(List<Widget> messageRows) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            contentPadding: const EdgeInsets.all(16.0),
+            titlePadding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 0.0),
+            buttonPadding: const EdgeInsets.all(0.0),
+            actionsPadding: const EdgeInsets.all(16.0),
+            title: Text(
+              AppLocalizations.of(context).dialogTitleSettingResult,
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: messageRows,
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    String formatResultValue(String boolValue) {
+      return boolValue == 'true'
+          ? AppLocalizations.of(context).dialogMessageSuccessful
+          : AppLocalizations.of(context).dialogMessageFailed;
+    }
+
+    String formatResultItem(String item) {
+      if (item == DataKey.inputAttenuation.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageForwardInputAttenuationSetting;
+      } else if (item == DataKey.inputEqualizer.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageForwardInputEqualizerSetting;
+      } else if (item == DataKey.inputAttenuation2.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageReturnInputAttenuation2Setting;
+      } else if (item == DataKey.inputAttenuation3.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageReturnInputAttenuation3Setting;
+      } else if (item == DataKey.inputAttenuation4.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageReturnInputAttenuation4Setting;
+      } else if (item == DataKey.outputAttenuation.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageReturnOutputAttenuationSetting;
+      } else if (item == DataKey.outputEqualizer.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageReturnOutputEqualizerSetting;
+      } else if (item == DataKey.ingressSetting2.name) {
+        return AppLocalizations.of(context).dialogMessageReturnIngress2Setting;
+      } else if (item == DataKey.ingressSetting3.name) {
+        return AppLocalizations.of(context).dialogMessageReturnIngress3Setting;
+      } else if (item == DataKey.ingressSetting4.name) {
+        return AppLocalizations.of(context).dialogMessageReturnIngress4Setting;
+      } else {
+        return '';
+      }
+    }
+
+    Color getResultValueColor(String resultValue) {
+      return resultValue == 'true' ? Colors.green : Colors.red;
+    }
+
+    List<Widget> getMessageRows(List<String> settingResultList) {
+      List<Widget> rows = [];
+      for (String settingResult in settingResultList) {
+        String item = settingResult.split(',')[0];
+        String value = settingResult.split(',')[1];
+        Color valueColor = getResultValueColor(value);
+
+        rows.add(Padding(
+          padding: const EdgeInsets.only(
+            bottom: 8.0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                formatResultItem(item),
+                style: const TextStyle(fontSize: 16),
+              ),
+              Text(
+                formatResultValue(value),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: valueColor,
+                ),
+              )
+            ],
+          ),
+        ));
+      }
+      return rows;
+    }
 
     return BlocListener<Setting18ControlBloc, Setting18ControlState>(
-      listener: (context, state) {},
+      listener: (context, state) async {
+        if (state.submissionStatus.isSubmissionInProgress) {
+          await showInProgressDialog();
+        } else if (state.submissionStatus.isSubmissionSuccess) {
+          if (ModalRoute.of(context)?.isCurrent != true) {
+            Navigator.of(context).pop();
+          }
+          List<Widget> rows = getMessageRows(state.settingResult);
+          showResultDialog(rows);
+        }
+      },
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
@@ -59,6 +230,14 @@ class Setting18ControlView extends StatelessWidget {
         floatingActionButton: const _SettingFloatingActionButton(),
       ),
     );
+  }
+}
+
+double _getValue(String value) {
+  if (value.isNotEmpty) {
+    return double.parse(value);
+  } else {
+    return 0.0;
   }
 }
 
@@ -148,6 +327,89 @@ Widget controlParameterSlider({
   );
 }
 
+List<String> rtnIngressValues = const [
+  '0',
+  '1',
+  '2',
+  '4',
+];
+
+List<bool> getSelectionState(String selectedrtnIngress) {
+  Map<String, bool> selectedrtnIngressMap = {
+    '0': false,
+    '1': false,
+    '2': false,
+    '4': false,
+  };
+
+  if (selectedrtnIngressMap.containsKey(selectedrtnIngress)) {
+    selectedrtnIngressMap[selectedrtnIngress] = true;
+  }
+
+  return selectedrtnIngressMap.values.toList();
+}
+
+Widget controlToggleButton({
+  required BuildContext context,
+  required bool editMode,
+  required String title,
+  required String currentValue,
+  required ValueChanged<int> onChanged,
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(
+      bottom: 40.0,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: 16.0,
+          ),
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16.0,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        LayoutBuilder(
+          builder: (context, constraints) => ToggleButtons(
+            direction: Axis.horizontal,
+            onPressed: editMode ? onChanged : (index) {},
+            textStyle: const TextStyle(fontSize: 18.0),
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            selectedBorderColor: editMode
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context)
+                    .colorScheme
+                    .inversePrimary, // indigo border color
+            selectedColor:
+                Theme.of(context).colorScheme.onPrimary, // white text color
+
+            fillColor: editMode
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.inversePrimary, // selected
+            color: Theme.of(context).colorScheme.secondary, // not selected
+            constraints: BoxConstraints.expand(
+              width: (constraints.maxWidth - 6) / rtnIngressValues.length,
+            ),
+            isSelected: getSelectionState(currentValue),
+            children: <Widget>[
+              const Text('0'),
+              const Text('-3'),
+              const Text('-6'),
+              Text(AppLocalizations.of(context).ingressOpen),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 class _ClusterTitle extends StatelessWidget {
   const _ClusterTitle({super.key, required this.title});
 
@@ -186,14 +448,13 @@ class _FwdInputAttenuation extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).fwdInputAttenuation}: ${state.fwdInputAttenuation.toStringAsFixed(1)} dB',
+              '${AppLocalizations.of(context).fwdInputAttenuation}: ${state.fwdInputAttenuation} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: state.fwdInputAttenuation,
+          currentValue: _getValue(state.fwdInputAttenuation),
           onChanged: (fwdInputAttenuation) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(FwdInputAttenuationChanged(fwdInputAttenuation));
+            context.read<Setting18ControlBloc>().add(FwdInputAttenuationChanged(
+                fwdInputAttenuation.toStringAsFixed(1)));
           },
         );
       },
@@ -212,14 +473,14 @@ class _FwdInputEQ extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).fwdInputEQ}: ${state.fwdInputEQ.toStringAsFixed(1)} dB',
+              '${AppLocalizations.of(context).fwdInputEQ}: ${state.fwdInputEQ} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: state.fwdInputEQ,
+          currentValue: _getValue(state.fwdInputEQ),
           onChanged: (fwdInputEQ) {
             context
                 .read<Setting18ControlBloc>()
-                .add(FwdInputEQChanged(fwdInputEQ));
+                .add(FwdInputEQChanged(fwdInputEQ.toStringAsFixed(1)));
           },
         );
       },
@@ -238,14 +499,14 @@ class _RtnInputAttenuation2 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).rtnInputAttenuation2}: ${state.rtnInputAttenuation2.toStringAsFixed(1)} dB',
+              '${AppLocalizations.of(context).rtnInputAttenuation2}: ${state.rtnInputAttenuation2} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: state.rtnInputAttenuation2,
+          currentValue: _getValue(state.rtnInputAttenuation2),
           onChanged: (rtnInputAttenuation) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(RtnInputAttenuation2Changed(rtnInputAttenuation));
+            context.read<Setting18ControlBloc>().add(
+                RtnInputAttenuation2Changed(
+                    rtnInputAttenuation.toStringAsFixed(1)));
           },
         );
       },
@@ -264,14 +525,14 @@ class _RtnInputAttenuation3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).rtnInputAttenuation3}: ${state.rtnInputAttenuation3.toStringAsFixed(1)} dB',
+              '${AppLocalizations.of(context).rtnInputAttenuation3}: ${state.rtnInputAttenuation3} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: state.rtnInputAttenuation3,
+          currentValue: _getValue(state.rtnInputAttenuation3),
           onChanged: (rtnInputAttenuation) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(RtnInputAttenuation3Changed(rtnInputAttenuation));
+            context.read<Setting18ControlBloc>().add(
+                RtnInputAttenuation3Changed(
+                    rtnInputAttenuation.toStringAsFixed(1)));
           },
         );
       },
@@ -290,14 +551,14 @@ class _RtnInputAttenuation4 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).rtnInputAttenuation4}: ${state.rtnInputAttenuation4.toStringAsFixed(1)} dB',
+              '${AppLocalizations.of(context).rtnInputAttenuation4}: ${state.rtnInputAttenuation4} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: state.rtnInputAttenuation4,
+          currentValue: _getValue(state.rtnInputAttenuation4),
           onChanged: (rtnInputAttenuation) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(RtnInputAttenuation4Changed(rtnInputAttenuation));
+            context.read<Setting18ControlBloc>().add(
+                RtnInputAttenuation4Changed(
+                    rtnInputAttenuation.toStringAsFixed(1)));
           },
         );
       },
@@ -316,14 +577,14 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).rtnOutputLevelAttenuation}: ${state.rtnOutputLevelAttenuation.toStringAsFixed(1)} dB',
+              '${AppLocalizations.of(context).rtnOutputLevelAttenuation}: ${state.rtnOutputLevelAttenuation} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: state.rtnOutputLevelAttenuation,
+          currentValue: _getValue(state.rtnOutputLevelAttenuation),
           onChanged: (rtnInputAttenuation) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(RtnOutputLevelAttenuationChanged(rtnInputAttenuation));
+            context.read<Setting18ControlBloc>().add(
+                RtnOutputLevelAttenuationChanged(
+                    rtnInputAttenuation.toStringAsFixed(1)));
           },
         );
       },
@@ -342,14 +603,14 @@ class _RtnOutputEQ extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).rtnOutputEQ}: ${state.rtnOutputEQ.toStringAsFixed(1)} dB',
+              '${AppLocalizations.of(context).rtnOutputEQ}: ${state.rtnOutputEQ} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: state.rtnOutputEQ,
+          currentValue: _getValue(state.rtnOutputEQ),
           onChanged: (rtnOutputEQ) {
             context
                 .read<Setting18ControlBloc>()
-                .add(RtnOutputEQChanged(rtnOutputEQ));
+                .add(RtnOutputEQChanged(rtnOutputEQ.toStringAsFixed(1)));
           },
         );
       },
@@ -362,28 +623,6 @@ class _RtnIngressSetting2 extends StatelessWidget {
     super.key,
   });
 
-  final List<String> rtnIngressTexts = const [
-    '0',
-    '-3',
-    '-6',
-    'Open',
-  ];
-
-  List<bool> getSelectionState(String selectedrtnIngress) {
-    Map<String, bool> selectedrtnIngressMap = {
-      '0': false,
-      '-3': false,
-      '-6': false,
-      'Open': false,
-    };
-
-    if (selectedrtnIngressMap.containsKey(selectedrtnIngress)) {
-      selectedrtnIngressMap[selectedrtnIngress] = true;
-    }
-
-    return selectedrtnIngressMap.values.toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
@@ -391,66 +630,16 @@ class _RtnIngressSetting2 extends StatelessWidget {
           previous.rtnIngressSetting2 != current.rtnIngressSetting2 ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context).rtnIngressSetting2}:',
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              LayoutBuilder(
-                builder: (context, constraints) => ToggleButtons(
-                  direction: Axis.horizontal,
-                  onPressed: (int index) {
-                    if (state.editMode) {
-                      context.read<Setting18ControlBloc>().add(
-                          RtnIngressSetting2Changed(rtnIngressTexts[index]));
-                    }
-                  },
-                  textStyle: const TextStyle(fontSize: 18.0),
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  selectedBorderColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // indigo border color
-                  selectedColor: Theme.of(context)
-                      .colorScheme
-                      .onPrimary, // white text color
-
-                  fillColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // selected
-                  color:
-                      Theme.of(context).colorScheme.secondary, // not selected
-                  constraints: BoxConstraints.expand(
-                    width: (constraints.maxWidth - 6) / rtnIngressTexts.length,
-                  ),
-                  isSelected: getSelectionState(state.rtnIngressSetting2),
-                  children: <Widget>[
-                    const Text('0'),
-                    const Text('-3'),
-                    const Text('-6'),
-                    Text(AppLocalizations.of(context).ingressOpen),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context).rtnIngressSetting2}:',
+          currentValue: state.rtnIngressSetting2,
+          onChanged: (int index) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(RtnIngressSetting2Changed(rtnIngressValues[index]));
+          },
         );
       },
     );
@@ -462,28 +651,6 @@ class _RtnIngressSetting3 extends StatelessWidget {
     super.key,
   });
 
-  final List<String> rtnIngressTexts = const [
-    '0',
-    '-3',
-    '-6',
-    'Open',
-  ];
-
-  List<bool> getSelectionState(String selectedrtnIngress) {
-    Map<String, bool> selectedrtnIngressMap = {
-      '0': false,
-      '-3': false,
-      '-6': false,
-      'Open': false,
-    };
-
-    if (selectedrtnIngressMap.containsKey(selectedrtnIngress)) {
-      selectedrtnIngressMap[selectedrtnIngress] = true;
-    }
-
-    return selectedrtnIngressMap.values.toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
@@ -491,66 +658,16 @@ class _RtnIngressSetting3 extends StatelessWidget {
           previous.rtnIngressSetting3 != current.rtnIngressSetting3 ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context).rtnIngressSetting3}:',
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              LayoutBuilder(
-                builder: (context, constraints) => ToggleButtons(
-                  direction: Axis.horizontal,
-                  onPressed: (int index) {
-                    if (state.editMode) {
-                      context.read<Setting18ControlBloc>().add(
-                          RtnIngressSetting3Changed(rtnIngressTexts[index]));
-                    }
-                  },
-                  textStyle: const TextStyle(fontSize: 18.0),
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  selectedBorderColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // indigo border color
-                  selectedColor: Theme.of(context)
-                      .colorScheme
-                      .onPrimary, // white text color
-
-                  fillColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // selected
-                  color:
-                      Theme.of(context).colorScheme.secondary, // not selected
-                  constraints: BoxConstraints.expand(
-                    width: (constraints.maxWidth - 6) / rtnIngressTexts.length,
-                  ),
-                  isSelected: getSelectionState(state.rtnIngressSetting3),
-                  children: <Widget>[
-                    const Text('0'),
-                    const Text('-3'),
-                    const Text('-6'),
-                    Text(AppLocalizations.of(context).ingressOpen),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context).rtnIngressSetting3}:',
+          currentValue: state.rtnIngressSetting3,
+          onChanged: (int index) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(RtnIngressSetting3Changed(rtnIngressValues[index]));
+          },
         );
       },
     );
@@ -562,28 +679,6 @@ class _RtnIngressSetting4 extends StatelessWidget {
     super.key,
   });
 
-  final List<String> rtnIngressTexts = const [
-    '0',
-    '-3',
-    '-6',
-    'Open',
-  ];
-
-  List<bool> getSelectionState(String selectedrtnIngress) {
-    Map<String, bool> selectedrtnIngressMap = {
-      '0': false,
-      '-3': false,
-      '-6': false,
-      'Open': false,
-    };
-
-    if (selectedrtnIngressMap.containsKey(selectedrtnIngress)) {
-      selectedrtnIngressMap[selectedrtnIngress] = true;
-    }
-
-    return selectedrtnIngressMap.values.toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
@@ -591,66 +686,16 @@ class _RtnIngressSetting4 extends StatelessWidget {
           previous.rtnIngressSetting4 != current.rtnIngressSetting4 ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context).rtnIngressSetting4}:',
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              LayoutBuilder(
-                builder: (context, constraints) => ToggleButtons(
-                  direction: Axis.horizontal,
-                  onPressed: (int index) {
-                    if (state.editMode) {
-                      context.read<Setting18ControlBloc>().add(
-                          RtnIngressSetting4Changed(rtnIngressTexts[index]));
-                    }
-                  },
-                  textStyle: const TextStyle(fontSize: 18.0),
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  selectedBorderColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // indigo border color
-                  selectedColor: Theme.of(context)
-                      .colorScheme
-                      .onPrimary, // white text color
-
-                  fillColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // selected
-                  color:
-                      Theme.of(context).colorScheme.secondary, // not selected
-                  constraints: BoxConstraints.expand(
-                    width: (constraints.maxWidth - 6) / rtnIngressTexts.length,
-                  ),
-                  isSelected: getSelectionState(state.rtnIngressSetting4),
-                  children: <Widget>[
-                    const Text('0'),
-                    const Text('-3'),
-                    const Text('-6'),
-                    Text(AppLocalizations.of(context).ingressOpen),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context).rtnIngressSetting4}:',
+          currentValue: state.rtnIngressSetting4,
+          onChanged: (int index) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(RtnIngressSetting4Changed(rtnIngressValues[index]));
+          },
         );
       },
     );
@@ -703,9 +748,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       : Colors.grey.withAlpha(200),
                   onPressed: enableSubmission
                       ? () {
-                          // context
-                          //     .read<SettingListViewBloc>()
-                          //     .add(const SettingSubmitted());
+                          context
+                              .read<Setting18ControlBloc>()
+                              .add(const SettingSubmitted());
                         }
                       : null,
                   child: Icon(

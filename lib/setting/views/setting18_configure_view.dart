@@ -38,6 +38,8 @@ class Setting18ConfigureView extends StatelessWidget {
         homeState.characteristicData[DataKey.coordinates] ?? '';
     String splitOption =
         homeState.characteristicData[DataKey.splitOption] ?? '';
+    String pilotFrequencyMode =
+        homeState.characteristicData[DataKey.pilotFrequencyMode] ?? '';
     String fwdAgcMode = homeState.characteristicData[DataKey.agcMode] ?? '';
     String autoLevelControl =
         homeState.characteristicData[DataKey.alcMode] ?? '';
@@ -52,7 +54,7 @@ class Setting18ConfigureView extends StatelessWidget {
           firstChannelLoadingLevel: '',
           lastChannelLoadingFrequency: '',
           lastChannelLoadingLevel: '',
-          pilotFrequencyMode: '',
+          pilotFrequencyMode: pilotFrequencyMode,
           pilotFrequency1: '',
           pilotFrequency2: '',
           fwdAGCMode: fwdAgcMode,
@@ -126,10 +128,14 @@ class Setting18ConfigureView extends StatelessWidget {
         return AppLocalizations.of(context).dialogMessageLocationSetting;
       } else if (item == DataKey.coordinates.name) {
         return AppLocalizations.of(context).dialogMessageCoordinatesSetting;
-      } else if (item == DataKey.logInterval.name) {
-        return AppLocalizations.of(context).dialogMessageLogIntervalSetting;
       } else if (item == DataKey.splitOption.name) {
         return AppLocalizations.of(context).dialogMessageSplitOptionSetting;
+      } else if (item == DataKey.agcMode.name) {
+        return AppLocalizations.of(context).dialogMessageAGCModeSetting;
+      } else if (item == DataKey.alcMode.name) {
+        return AppLocalizations.of(context).dialogMessageALCModeSetting;
+      } else if (item == DataKey.logInterval.name) {
+        return AppLocalizations.of(context).dialogMessageLogIntervalSetting;
       } else {
         return '';
       }
@@ -731,17 +737,17 @@ class _PilotFrequencyMode extends StatelessWidget {
     super.key,
   });
 
-  final List<String> pilotFrequencyModeTexts = const [
-    'Auto',
-    'Manual',
-    'Test',
+  final List<String> pilotFrequencyModeValues = const [
+    '0',
+    '1',
+    '2',
   ];
 
   List<bool> getSelectionState(String selectedPilotFrequencyMode) {
     Map<String, bool> pilotFrequencyModeMap = {
-      'Auto': false,
-      'Manual': false,
-      'Test': false,
+      '0': false,
+      '1': false,
+      '2': false,
     };
 
     if (pilotFrequencyModeMap.containsKey(selectedPilotFrequencyMode)) {
@@ -784,7 +790,7 @@ class _PilotFrequencyMode extends StatelessWidget {
                     if (state.editMode) {
                       context.read<Setting18ConfigureBloc>().add(
                           PilotFrequencyModeChanged(
-                              pilotFrequencyModeTexts[index]));
+                              pilotFrequencyModeValues[index]));
                     }
                   },
                   textStyle: const TextStyle(fontSize: 18.0),
@@ -807,7 +813,7 @@ class _PilotFrequencyMode extends StatelessWidget {
                       Theme.of(context).colorScheme.secondary, // not selected
                   constraints: BoxConstraints.expand(
                     width: (constraints.maxWidth - 4) /
-                        pilotFrequencyModeTexts.length,
+                        pilotFrequencyModeValues.length,
                   ),
                   isSelected: getSelectionState(state.pilotFrequencyMode),
                   children: <Widget>[
@@ -956,15 +962,15 @@ class _FwdAGCMode extends StatelessWidget {
     super.key,
   });
 
-  final List<String> fwdAGCModeTexts = const [
-    'ON',
-    'OFF',
+  final List<String> fwdAGCModeValues = const [
+    '1',
+    '0',
   ];
 
   List<bool> getSelectionState(String selectedFwdAGCMode) {
     Map<String, bool> fwdAGCModeMap = {
-      'ON': false,
-      'OFF': false,
+      '1': false,
+      '0': false,
     };
 
     if (fwdAGCModeMap.containsKey(selectedFwdAGCMode)) {
@@ -1007,7 +1013,7 @@ class _FwdAGCMode extends StatelessWidget {
                     if (state.editMode) {
                       context
                           .read<Setting18ConfigureBloc>()
-                          .add(FwdAGCModeChanged(fwdAGCModeTexts[index]));
+                          .add(FwdAGCModeChanged(fwdAGCModeValues[index]));
                     }
                   },
                   textStyle: const TextStyle(fontSize: 18.0),
@@ -1029,7 +1035,7 @@ class _FwdAGCMode extends StatelessWidget {
                   color:
                       Theme.of(context).colorScheme.secondary, // not selected
                   constraints: BoxConstraints.expand(
-                    width: (constraints.maxWidth - 4) / fwdAGCModeTexts.length,
+                    width: (constraints.maxWidth - 4) / fwdAGCModeValues.length,
                   ),
                   isSelected: getSelectionState(state.fwdAGCMode),
                   children: <Widget>[
@@ -1051,15 +1057,15 @@ class _AutoLevelControl extends StatelessWidget {
     super.key,
   });
 
-  final List<String> autoLevelControlTexts = const [
-    'ON',
-    'OFF',
+  final List<String> autoLevelControlValues = const [
+    '1',
+    '0',
   ];
 
   List<bool> getSelectionState(String selectedAutoLevelControl) {
     Map<String, bool> autoLevelControlMap = {
-      'ON': false,
-      'OFF': false,
+      '1': false,
+      '0': false,
     };
 
     if (autoLevelControlMap.containsKey(selectedAutoLevelControl)) {
@@ -1102,7 +1108,7 @@ class _AutoLevelControl extends StatelessWidget {
                     if (state.editMode) {
                       context.read<Setting18ConfigureBloc>().add(
                           AutoLevelControlChanged(
-                              autoLevelControlTexts[index]));
+                              autoLevelControlValues[index]));
                     }
                   },
                   textStyle: const TextStyle(fontSize: 18.0),
@@ -1125,7 +1131,7 @@ class _AutoLevelControl extends StatelessWidget {
                       Theme.of(context).colorScheme.secondary, // not selected
                   constraints: BoxConstraints.expand(
                     width: (constraints.maxWidth - 4) /
-                        autoLevelControlTexts.length,
+                        autoLevelControlValues.length,
                   ),
                   isSelected: getSelectionState(state.autoLevelControl),
                   children: <Widget>[

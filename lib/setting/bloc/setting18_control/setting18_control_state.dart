@@ -3,51 +3,57 @@ part of 'setting18_control_bloc.dart';
 class Setting18ControlState extends Equatable {
   const Setting18ControlState({
     this.submissionStatus = SubmissionStatus.none,
-    this.fwdInputAttenuation = 0.0,
-    this.fwdInputEQ = 0.0,
-    this.rtnInputAttenuation2 = 0.0,
-    this.rtnInputAttenuation3 = 0.0,
-    this.rtnInputAttenuation4 = 0.0,
-    this.rtnOutputLevelAttenuation = 0.0,
-    this.rtnOutputEQ = 0.0,
+    this.fwdInputAttenuation = '',
+    this.fwdInputEQ = '',
+    this.rtnInputAttenuation2 = '',
+    this.rtnInputAttenuation3 = '',
+    this.rtnInputAttenuation4 = '',
+    this.rtnOutputLevelAttenuation = '',
+    this.rtnOutputEQ = '',
     this.rtnIngressSetting2 = '',
     this.rtnIngressSetting3 = '',
     this.rtnIngressSetting4 = '',
     this.editMode = false,
     this.enableSubmission = false,
     this.isInitialize = true,
+    this.initialValues = const [],
+    this.settingResult = const [],
   });
 
   final SubmissionStatus submissionStatus;
-  final double fwdInputAttenuation;
-  final double fwdInputEQ;
-  final double rtnInputAttenuation2;
-  final double rtnInputAttenuation3;
-  final double rtnInputAttenuation4;
-  final double rtnOutputLevelAttenuation;
-  final double rtnOutputEQ;
+  final String fwdInputAttenuation;
+  final String fwdInputEQ;
+  final String rtnInputAttenuation2;
+  final String rtnInputAttenuation3;
+  final String rtnInputAttenuation4;
+  final String rtnOutputLevelAttenuation;
+  final String rtnOutputEQ;
   final String rtnIngressSetting2;
   final String rtnIngressSetting3;
   final String rtnIngressSetting4;
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
+  final List<dynamic> initialValues;
+  final List<String> settingResult;
 
   Setting18ControlState copyWith({
     SubmissionStatus? submissionStatus,
-    double? fwdInputAttenuation,
-    double? fwdInputEQ,
-    double? rtnInputAttenuation2,
-    double? rtnInputAttenuation3,
-    double? rtnInputAttenuation4,
-    double? rtnOutputLevelAttenuation,
-    double? rtnOutputEQ,
+    String? fwdInputAttenuation,
+    String? fwdInputEQ,
+    String? rtnInputAttenuation2,
+    String? rtnInputAttenuation3,
+    String? rtnInputAttenuation4,
+    String? rtnOutputLevelAttenuation,
+    String? rtnOutputEQ,
     String? rtnIngressSetting2,
     String? rtnIngressSetting3,
     String? rtnIngressSetting4,
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
+    List<dynamic>? initialValues,
+    List<String>? settingResult,
   }) {
     return Setting18ControlState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
@@ -65,6 +71,8 @@ class Setting18ControlState extends Equatable {
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
+      initialValues: initialValues ?? this.initialValues,
+      settingResult: settingResult ?? this.settingResult,
     );
   }
 
@@ -84,5 +92,7 @@ class Setting18ControlState extends Equatable {
         editMode,
         enableSubmission,
         isInitialize,
+        initialValues,
+        settingResult,
       ];
 }

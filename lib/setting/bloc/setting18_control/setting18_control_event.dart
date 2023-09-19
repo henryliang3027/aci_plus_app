@@ -7,10 +7,50 @@ class Setting18ControlEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class Initialized extends Setting18ControlEvent {
+  const Initialized({
+    required this.fwdInputAttenuation,
+    required this.fwdInputEQ,
+    required this.rtnInputAttenuation2,
+    required this.rtnInputAttenuation3,
+    required this.rtnInputAttenuation4,
+    required this.rtnOutputLevelAttenuation,
+    required this.rtnOutputEQ,
+    required this.rtnIngressSetting2,
+    required this.rtnIngressSetting3,
+    required this.rtnIngressSetting4,
+  });
+
+  final String fwdInputAttenuation;
+  final String fwdInputEQ;
+  final String rtnInputAttenuation2;
+  final String rtnInputAttenuation3;
+  final String rtnInputAttenuation4;
+  final String rtnOutputLevelAttenuation;
+  final String rtnOutputEQ;
+  final String rtnIngressSetting2;
+  final String rtnIngressSetting3;
+  final String rtnIngressSetting4;
+
+  @override
+  List<Object> get props => [
+        fwdInputAttenuation,
+        fwdInputEQ,
+        rtnInputAttenuation2,
+        rtnInputAttenuation3,
+        rtnInputAttenuation4,
+        rtnOutputLevelAttenuation,
+        rtnOutputEQ,
+        rtnIngressSetting2,
+        rtnIngressSetting3,
+        rtnIngressSetting4,
+      ];
+}
+
 class FwdInputAttenuationChanged extends Setting18ControlEvent {
   const FwdInputAttenuationChanged(this.fwdInputAttenuation);
 
-  final double fwdInputAttenuation;
+  final String fwdInputAttenuation;
 
   @override
   List<Object> get props => [fwdInputAttenuation];
@@ -19,7 +59,7 @@ class FwdInputAttenuationChanged extends Setting18ControlEvent {
 class FwdInputEQChanged extends Setting18ControlEvent {
   const FwdInputEQChanged(this.fwdInputEQ);
 
-  final double fwdInputEQ;
+  final String fwdInputEQ;
 
   @override
   List<Object> get props => [fwdInputEQ];
@@ -28,7 +68,7 @@ class FwdInputEQChanged extends Setting18ControlEvent {
 class RtnInputAttenuation2Changed extends Setting18ControlEvent {
   const RtnInputAttenuation2Changed(this.rtnInputAttenuation2);
 
-  final double rtnInputAttenuation2;
+  final String rtnInputAttenuation2;
 
   @override
   List<Object> get props => [rtnInputAttenuation2];
@@ -37,7 +77,7 @@ class RtnInputAttenuation2Changed extends Setting18ControlEvent {
 class RtnInputAttenuation3Changed extends Setting18ControlEvent {
   const RtnInputAttenuation3Changed(this.rtnInputAttenuation3);
 
-  final double rtnInputAttenuation3;
+  final String rtnInputAttenuation3;
 
   @override
   List<Object> get props => [rtnInputAttenuation3];
@@ -46,7 +86,7 @@ class RtnInputAttenuation3Changed extends Setting18ControlEvent {
 class RtnInputAttenuation4Changed extends Setting18ControlEvent {
   const RtnInputAttenuation4Changed(this.rtnInputAttenuation4);
 
-  final double rtnInputAttenuation4;
+  final String rtnInputAttenuation4;
 
   @override
   List<Object> get props => [rtnInputAttenuation4];
@@ -55,7 +95,7 @@ class RtnInputAttenuation4Changed extends Setting18ControlEvent {
 class RtnOutputLevelAttenuationChanged extends Setting18ControlEvent {
   const RtnOutputLevelAttenuationChanged(this.rtnOutputLevelAttenuation);
 
-  final double rtnOutputLevelAttenuation;
+  final String rtnOutputLevelAttenuation;
 
   @override
   List<Object> get props => [rtnOutputLevelAttenuation];
@@ -64,7 +104,7 @@ class RtnOutputLevelAttenuationChanged extends Setting18ControlEvent {
 class RtnOutputEQChanged extends Setting18ControlEvent {
   const RtnOutputEQChanged(this.rtnOutputEQ);
 
-  final double rtnOutputEQ;
+  final String rtnOutputEQ;
 
   @override
   List<Object> get props => [rtnOutputEQ];

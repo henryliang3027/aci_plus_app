@@ -25,7 +25,6 @@ enum DataKey {
   maxTemperatureF,
   historicalMinTemperatureF,
   historicalMaxTemperatureF,
-
   currentTemperatureC,
   minTemperatureC,
   maxTemperatureC,

@@ -415,41 +415,43 @@ class _LogChartListView extends StatelessWidget {
               ],
             );
           } else {
-            return SingleChildScrollView(
-              // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
-              // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-              key: const Key('ChartForm_Chart'),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 30.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    // ElevatedButton(
-                    //     onPressed: () async {
-                    //       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-                    //       AndroidDeviceInfo androidInfo =
-                    //           await deviceInfo.androidInfo;
+            return Center(
+              child: SingleChildScrollView(
+                // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+                // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+                key: const Key('ChartForm_Chart'),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 30.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      // ElevatedButton(
+                      //     onPressed: () async {
+                      //       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+                      //       AndroidDeviceInfo androidInfo =
+                      //           await deviceInfo.androidInfo;
 
-                    //       IosDeviceInfo iosDeviceInfo =
-                    //           await deviceInfo.iosInfo;
+                      //       IosDeviceInfo iosDeviceInfo =
+                      //           await deviceInfo.iosInfo;
 
-                    //       print(androidInfo.model + ' ' + iosDeviceInfo.model);
-                    //     },
-                    //     child: Text('Mobile info')),
-                    buildChart(
-                      getChartDataOfLog1(
-                          dateValueCollectionOfLog:
-                              chart18State.dateValueCollectionOfLog),
-                    ),
-                    const SizedBox(
-                      height: 50.0,
-                    ),
-                    buildChart(
-                      getChartDataOfLog2(
-                          dateValueCollectionOfLog:
-                              chart18State.dateValueCollectionOfLog),
-                    ),
-                  ],
+                      //       print(androidInfo.model + ' ' + iosDeviceInfo.model);
+                      //     },
+                      //     child: Text('Mobile info')),
+                      buildChart(
+                        getChartDataOfLog1(
+                            dateValueCollectionOfLog:
+                                chart18State.dateValueCollectionOfLog),
+                      ),
+                      const SizedBox(
+                        height: 50.0,
+                      ),
+                      buildChart(
+                        getChartDataOfLog2(
+                            dateValueCollectionOfLog:
+                                chart18State.dateValueCollectionOfLog),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

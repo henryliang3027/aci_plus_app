@@ -148,6 +148,9 @@
     "dialogMessageSaveUserPilot": "Guardar piloto de usuario",
     "dialogMessageSaveUserPilot2": "Guardar piloto de usuario 2",
 
+
+    "dialogMessageAGCModeSetting": "Ajuste AGC modo",
+    "dialogMessageALCModeSetting": "Ajuste ALC modo",
     "dialogMessageMaxTemperatureSetting": "Ajuste máximo temperatura",
     "dialogMessageMinTemperatureSetting": "Ajuste mínimo temperatura",
     "dialogMessageMaxVoltageSetting": "Ajuste máximo voltaje",
@@ -164,6 +167,16 @@
     "dialogMessagePilotFrequency2AlarmStateSetting": "Ajuste piloto frecuencia 2 alarma setting",
     "dialogMessageSplitOptionSetting": "Ajuste Opciones divididas",
     "dialogMessageCoordinatesSetting": "Ajuste coordenada",
+    "dialogMessageForwardInputAttenuationSetting": "Ajuste entrada atenuación",
+    "dialogMessageForwardInputEqualizerSetting": "Ajuste entrada ecualizador",
+    "dialogMessageReturnInputAttenuation2Setting": "Ajuste entrada atenuación 2",
+    "dialogMessageReturnInputAttenuation3Setting": "Ajuste entrada atenuación 3",
+    "dialogMessageReturnInputAttenuation4Setting": "Ajuste entrada atenuación 4",
+    "dialogMessageReturnOutputAttenuationSetting": "Ajuste salida atenuación",
+    "dialogMessageReturnOutputEqualizerSetting": "Ajuste salida ecualizador",
+    "dialogMessageReturnIngress2Setting": "Ajuste ingreso 2",
+    "dialogMessageReturnIngress3Setting": "Ajuste ingreso 3",
+    "dialogMessageReturnIngress4Setting": "Ajuste ingreso 4",
 
     "dialogMessageSuccessful": "Exitoso",
     "dialogMessageFailed": "Fallido",

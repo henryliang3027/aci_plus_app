@@ -148,6 +148,9 @@
     "dialogMessageSaveUserPilot": "儲存導航頻率",
     "dialogMessageSaveUserPilot2": "儲存導航頻率2",
 
+
+    "dialogMessageAGCModeSetting": "AGC 模式設定",
+    "dialogMessageALCModeSetting": "ALC 模式設定",
     "dialogMessageMaxTemperatureSetting": "最高溫設定",
     "dialogMessageMinTemperatureSetting": "最低溫設定",
     "dialogMessageMaxVoltageSetting": "最大電壓設定",
@@ -164,6 +167,16 @@
     "dialogMessagePilotFrequency2AlarmStateSetting": "第二導航頻道警告設定",
     "dialogMessageSplitOptionSetting": "上下行截止頻率設定",
     "dialogMessageCoordinatesSetting": "座標設定",
+    "dialogMessageForwardInputAttenuationSetting": "輸入強度衰減量設定",
+    "dialogMessageForwardInputEqualizerSetting": "輸入等化器設定",
+    "dialogMessageReturnInputAttenuation2Setting": "Port 2 輸入衰減量設定",
+    "dialogMessageReturnInputAttenuation3Setting": "Port 3 輸入衰減量設定",
+    "dialogMessageReturnInputAttenuation4Setting": "Port 4 輸入衰減量設定",
+    "dialogMessageReturnOutputAttenuationSetting": "輸出衰減量設定",
+    "dialogMessageReturnOutputEqualizerSetting": "輸出等化器設定",
+    "dialogMessageReturnIngress2Setting": "Port 2 輸入衰減量設定",
+    "dialogMessageReturnIngress3Setting": "Port 3 輸入衰減量設定",
+    "dialogMessageReturnIngress4Setting": "Port 4 輸入衰減量設定",
 
     "dialogMessageSuccessful": "成功",
     "dialogMessageFailed": "失敗",
