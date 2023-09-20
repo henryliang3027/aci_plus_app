@@ -378,11 +378,13 @@ class _AlarmCard extends StatelessWidget {
 
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       String alarmUSeverity =
-          state.characteristicData[DataKey.alarmUSeverity] ?? 'default';
+          state.characteristicData[DataKey.unitStatusAlarmSeverity] ??
+              'default';
       String alarmTSeverity =
-          state.characteristicData[DataKey.alarmTSeverity] ?? 'default';
+          state.characteristicData[DataKey.temperatureAlarmServerity] ??
+              'default';
       String alarmPSeverity =
-          state.characteristicData[DataKey.alarmPSeverity] ?? 'default';
+          state.characteristicData[DataKey.voltageAlarmServerity] ?? 'default';
 
       if (state.loadingStatus.isRequestSuccess) {
         // informationState 的 alarmRSeverity, alarmTSeverity, alarmPSeverity 還是 'default' 時代表還沒有觸發定期讀取資料, 這時候用 homeState 讀到的值來顯示

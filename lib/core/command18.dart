@@ -75,7 +75,7 @@ class Command18 {
     0x00,
   ];
 
-  static List<int> setDFUAlarmStateCmd = [
+  static List<int> setSplitOptionAlarmStateCmd = [
     0xB0,
     0x10,
     0x00,

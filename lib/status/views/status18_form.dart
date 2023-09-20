@@ -30,6 +30,8 @@ class Status18Form extends StatelessWidget {
         child: Column(
           children: [
             // _ModuleCard(),
+            _WorkingModeCard(),
+            _SplitOptionCard(),
             _TemperatureCard(),
             _PowerSupplyCard(),
             _VoltageRippleCard(),
@@ -130,6 +132,268 @@ class _DeviceRefresh extends StatelessWidget {
         }
       },
     );
+  }
+}
+
+class _WorkingModeCard extends StatelessWidget {
+  const _WorkingModeCard({super.key});
+
+  // Color currentWorkingModeColor({
+  //   required String currentVoltage,
+  // }) {
+  //   double min = double.parse(minVoltage);
+  //   double max = double.parse(maxVoltage);
+  //   double current = double.parse(currentVoltage);
+
+  //   return _getCurrentValueColor(
+  //     alarmStatus: voltageAlarmState,
+  //     min: min,
+  //     max: max,
+  //     current: current,
+  //   );
+  // }
+
+  Widget getCurrentWorkingMode({
+    required FormStatus loadingStatus,
+    required String currentWorkingMode,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return currentWorkingMode.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              currentWorkingMode,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        currentWorkingMode,
+        style: TextStyle(
+          fontSize: fontSize,
+          // color: currentWorkingModeColor(
+          //   voltageAlarmState: voltageAlarmState,
+          //   minVoltage: minVoltage,
+          //   maxVoltage: maxVoltage,
+          //   currentVoltage: currentVoltage,
+          // ),
+        ),
+      );
+    } else {
+      return Text(
+        currentWorkingMode.isEmpty ? 'N/A' : currentWorkingMode,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget workingModeBlock({
+    required FormStatus loadingStatus,
+    required String currentWorkingMode,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getCurrentWorkingMode(
+                      loadingStatus: loadingStatus,
+                      currentWorkingMode: currentWorkingMode,
+                      fontSize: 40,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      String currentWorkingMode =
+          state.characteristicData[DataKey.currentWorkingMode] ?? '';
+
+      String workingMode =
+          currentWorkingMode == '0' ? 'N/A' : currentWorkingMode;
+
+      return Card(
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
+              child: Text(
+                AppLocalizations.of(context).workingMode,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            workingModeBlock(
+              loadingStatus: state.loadingStatus,
+              currentWorkingMode: workingMode,
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+          ],
+        ),
+      );
+    });
+  }
+}
+
+class _SplitOptionCard extends StatelessWidget {
+  const _SplitOptionCard({super.key});
+
+  Color currentWorkingModeColor({
+    required String splitOptionAlarmState,
+    required String splitOptionAlarmSeverity,
+  }) {
+    return splitOptionAlarmState == '0'
+        ? CustomStyle.alarmColor[splitOptionAlarmSeverity]!
+        : CustomStyle.alarmColor['mask']!;
+  }
+
+  Widget getCurrentSplitOption({
+    required FormStatus loadingStatus,
+    required String splitOptionAlarmState,
+    required String splitOptionAlarmSeverity,
+    required String currentSplitOption,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return currentSplitOption.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              currentSplitOption,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        currentSplitOption,
+        style: TextStyle(
+          fontSize: fontSize,
+          color: currentWorkingModeColor(
+            splitOptionAlarmState: splitOptionAlarmState,
+            splitOptionAlarmSeverity: splitOptionAlarmSeverity,
+          ),
+        ),
+      );
+    } else {
+      return Text(
+        currentSplitOption.isEmpty ? 'N/A' : currentSplitOption,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget splitOptionBlock({
+    required FormStatus loadingStatus,
+    required String splitOptionAlarmState,
+    required String splitOptionAlarmSeverity,
+    required String currentSplitOption,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getCurrentSplitOption(
+                      loadingStatus: loadingStatus,
+                      splitOptionAlarmState: splitOptionAlarmState,
+                      splitOptionAlarmSeverity: splitOptionAlarmSeverity,
+                      currentSplitOption: currentSplitOption,
+                      fontSize: 40,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      String currentSplitOption =
+          state.characteristicData[DataKey.currentDetectedSplitOption] ?? '';
+
+      String splitOption =
+          currentSplitOption == '0' ? 'N/A' : currentSplitOption;
+
+      String splitOptionAlarmState =
+          state.characteristicData[DataKey.splitOptionAlarmState] ?? '1';
+
+      String splitOptionAlarmSeverity =
+          state.characteristicData[DataKey.splitOptionAlarmSeverity] ?? '1';
+
+      return Card(
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
+              child: Text(
+                AppLocalizations.of(context).splitOption,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            splitOptionBlock(
+              loadingStatus: state.loadingStatus,
+              splitOptionAlarmState: splitOptionAlarmState,
+              splitOptionAlarmSeverity: splitOptionAlarmSeverity,
+              currentSplitOption: splitOption,
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+          ],
+        ),
+      );
+    });
   }
 }
 

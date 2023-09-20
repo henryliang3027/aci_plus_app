@@ -406,27 +406,24 @@ class Dsim18Parser {
         }
         break;
       case 182:
-        Alarm alarmUSeverity = Alarm.medium;
-        Alarm alarmTServerity = Alarm.medium;
-        Alarm alarmPServerity = Alarm.medium;
         String currentTemperatureC = '';
         String currentTemperatureF = '';
         String currentVoltage = '';
         String currentVoltageRipple = '';
         String currentRFInputPower = '';
         String currentRFOutputPower = '';
+        String currentWorkingMode = '';
+        String currentDetectedSplitOption = '';
+        Alarm unitStatusAlarmSeverity = Alarm.medium;
+        Alarm temperatureAlarmServerity = Alarm.medium;
+        Alarm voltageAlarmServerity = Alarm.medium;
         Alarm splitOptionAlarmSeverity = Alarm.medium;
         Alarm voltageRippleAlarmSeverity = Alarm.medium;
         Alarm outputPowerAlarmSeverity = Alarm.medium;
 
         int unitStatus = rawData[3];
-        alarmUSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
-
-        int temperatureStatus = rawData[128];
-        alarmTServerity = temperatureStatus == 1 ? Alarm.danger : Alarm.success;
-
-        int powerStatus = rawData[129];
-        alarmPServerity = powerStatus == 1 ? Alarm.danger : Alarm.success;
+        unitStatusAlarmSeverity =
+            unitStatus == 1 ? Alarm.success : Alarm.danger;
 
         // 解析 currentTemperatureC, currentTemperatureC
         List<int> rawCurrentTemperatureC = rawData.sublist(4, 6);
@@ -476,6 +473,21 @@ class Dsim18Parser {
             (rawCurrentRFOutputPowerByteData.getInt16(0, Endian.little) / 10)
                 .toStringAsFixed(1);
 
+        // 解析 currentWorkingMode
+        currentWorkingMode = rawData[70].toString();
+
+        // 解析 currentDetectedSplitOption
+        currentDetectedSplitOption = rawData[71].toString();
+
+        // 解析 temperatureAlarmSeverity
+        int temperatureStatus = rawData[128];
+        temperatureAlarmServerity =
+            temperatureStatus == 1 ? Alarm.danger : Alarm.success;
+
+        int voltageStatus = rawData[129];
+        voltageAlarmServerity =
+            voltageStatus == 1 ? Alarm.danger : Alarm.success;
+
         // 解析 splitOptionStatusAlarm
         int splitOptionStatus = rawData[134];
         splitOptionAlarmSeverity =
@@ -493,15 +505,17 @@ class Dsim18Parser {
 
         if (!completer.isCompleted) {
           completer.complete((
-            alarmUSeverity.name,
-            alarmTServerity.name,
-            alarmPServerity.name,
             currentTemperatureC,
             currentTemperatureF,
             currentVoltage,
             currentVoltageRipple,
             currentRFInputPower,
             currentRFOutputPower,
+            currentWorkingMode,
+            currentDetectedSplitOption,
+            unitStatusAlarmSeverity.name,
+            temperatureAlarmServerity.name,
+            voltageAlarmServerity.name,
             splitOptionAlarmSeverity.name,
             voltageRippleAlarmSeverity.name,
             outputPowerAlarmSeverity.name,

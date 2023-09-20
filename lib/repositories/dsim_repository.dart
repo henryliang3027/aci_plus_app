@@ -1102,15 +1102,17 @@ class DsimRepository {
 
     try {
       var (
-        alarmUSeverity,
-        alarmTServerity,
-        alarmPServerity,
         currentTemperatureC,
         currentTemperatureF,
         currentVoltage,
         currentVoltageRipple,
         currentRFInputPower,
         currentRFOutputPower,
+        currentWorkingMode,
+        currentDetectedSplitOption,
+        unitStatusAlarmSeverity,
+        temperatureAlarmServerity,
+        voltageAlarmServerity,
         splitOptionAlarmSeverity,
         voltageRippleAlarmSeverity,
         outputPowerAlarmSeverity,
@@ -1120,15 +1122,17 @@ class DsimRepository {
       return [
         true,
         <DataKey, String>{
-          DataKey.alarmUSeverity: alarmUSeverity,
-          DataKey.alarmTSeverity: alarmTServerity,
-          DataKey.alarmPSeverity: alarmPServerity,
           DataKey.currentTemperatureC: currentTemperatureC,
           DataKey.currentTemperatureF: currentTemperatureF,
           DataKey.currentVoltage: currentVoltage,
           DataKey.currentVoltageRipple: currentVoltageRipple,
           DataKey.currentRFInputPower: currentRFInputPower,
           DataKey.currentRFOutputPower: currentRFOutputPower,
+          DataKey.currentWorkingMode: currentWorkingMode,
+          DataKey.currentDetectedSplitOption: currentDetectedSplitOption,
+          DataKey.unitStatusAlarmSeverity: unitStatusAlarmSeverity,
+          DataKey.temperatureAlarmServerity: temperatureAlarmServerity,
+          DataKey.voltageAlarmServerity: voltageAlarmServerity,
           DataKey.splitOptionAlarmSeverity: splitOptionAlarmSeverity,
           DataKey.voltageRippleAlarmSeverity: voltageRippleAlarmSeverity,
           DataKey.outputPowerAlarmSeverity: outputPowerAlarmSeverity,
@@ -2145,7 +2149,7 @@ class DsimRepository {
     }
   }
 
-  Future<dynamic> set1p8GDFUAlarmState(String isEnable) async {
+  Future<dynamic> set1p8GSplitOptionAlarmState(String isEnable) async {
     commandIndex = 334;
     _completer = Completer<dynamic>();
 
@@ -2153,14 +2157,14 @@ class DsimRepository {
 
     int isEnableNumber = int.parse(isEnable);
 
-    Command18.setDFUAlarmStateCmd[7] = isEnableNumber;
+    Command18.setSplitOptionAlarmStateCmd[7] = isEnableNumber;
 
     CRC16.calculateCRC16(
-      command: Command18.setDFUAlarmStateCmd,
-      usDataLength: Command18.setDFUAlarmStateCmd.length - 2,
+      command: Command18.setSplitOptionAlarmStateCmd,
+      usDataLength: Command18.setSplitOptionAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setDFUAlarmStateCmd);
+    _writeSetCommandToCharacteristic(Command18.setSplitOptionAlarmStateCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');

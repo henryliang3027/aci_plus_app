@@ -13,7 +13,12 @@ enum DataKey {
   alarmRSeverity,
   alarmTSeverity,
   alarmPSeverity,
-  alarmUSeverity,
+  unitStatusAlarmSeverity,
+  temperatureAlarmServerity,
+  voltageAlarmServerity,
+  splitOptionAlarmSeverity,
+  voltageRippleAlarmSeverity,
+  outputPowerAlarmSeverity,
   currentAttenuation,
   minAttenuation,
   centerAttenuation,
@@ -47,6 +52,8 @@ enum DataKey {
   currentRFOutputPower,
   minRFOutputPower,
   maxRFOutputPower,
+  currentWorkingMode,
+  currentDetectedSplitOption,
   agcMode,
   alcMode,
   pilotFrequencyMode,
@@ -73,9 +80,6 @@ enum DataKey {
   inputAttenuation4,
   outputEqualizer,
   outputAttenuation,
-  splitOptionAlarmSeverity,
-  voltageRippleAlarmSeverity,
-  outputPowerAlarmSeverity,
 }
 
 class Command {

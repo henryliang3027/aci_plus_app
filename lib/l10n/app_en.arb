@@ -75,6 +75,7 @@
     "minVoltageRipple": "Minimum",
     "maxVoltageRipple": "Maximum",
 
+
     "mfgDate": "MFG Date",
     "coordinates": "Coordinates",
     "currentRFInputPower": "Current",
@@ -83,6 +84,7 @@
     "currentRFOutputPower": "Current",
     "minRFOutputPower": "Minimum",
     "maxRFOutputPower": "Maximum",
+    "unknown": "Unknown",
     
     "information": "Information",
     "connection": "Connection",
@@ -168,6 +170,7 @@
     "dialogMessageVoltageAlarmStateSetting": "Voltage alarm setting",
     "dialogMessageVoltageRippleAlarmStateSetting": "Voltage ripple alarm setting",
     "dialogMessageRFOutputPowerAlarmStateSetting": "Output power alarm setting",
+    "dialogMessageSplitOptionAlarmStateSetting": "Split option alarm setting",
     "dialogMessagePilotFrequency1AlarmStateSetting": "Pilot Frequency 1 alarm setting",
     "dialogMessagePilotFrequency2AlarmStateSetting": "Pilot Frequency 2 alarm setting",
     "dialogMessageSplitOptionSetting": "Split option setting",

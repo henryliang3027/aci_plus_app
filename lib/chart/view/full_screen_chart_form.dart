@@ -42,12 +42,22 @@ class _FullScreenChartFormState extends State<FullScreenChartForm> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        SystemChrome.setPreferredOrientations([
-          DeviceOrientation.portraitUp,
-          DeviceOrientation.portraitDown,
-          DeviceOrientation.landscapeLeft,
-          DeviceOrientation.landscapeRight,
-        ]);
+        double screenWidth = WidgetsBinding
+            .instance.platformDispatcher.views.first.physicalSize.width;
+
+        if (screenWidth <= 1290) {
+          SystemChrome.setPreferredOrientations([
+            DeviceOrientation.portraitUp,
+            DeviceOrientation.portraitDown,
+          ]);
+        } else {
+          SystemChrome.setPreferredOrientations([
+            DeviceOrientation.portraitUp,
+            DeviceOrientation.portraitDown,
+            DeviceOrientation.landscapeRight,
+            DeviceOrientation.landscapeLeft,
+          ]);
+        }
         return true;
       },
       child: Scaffold(

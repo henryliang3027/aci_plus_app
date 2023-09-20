@@ -67,6 +67,10 @@ class Setting18ThresholdView extends StatelessWidget {
         homeState.characteristicData[DataKey.rfOutputPowerAlarmState] ?? '';
     bool rfOutputPowerAlarmState =
         strRFOutputPowerAlarmState == '1' ? false : true;
+    String strSplitOptionAlarmState =
+        homeState.characteristicData[DataKey.splitOptionAlarmState] ?? '';
+    bool splitOptionAlarmState = strSplitOptionAlarmState == '1' ? false : true;
+
     String strPilotFrequency1AlarmState =
         homeState.characteristicData[DataKey.pilotFrequency1AlarmState] ?? '';
     bool pilotFrequency1AlarmState =
@@ -91,6 +95,7 @@ class Setting18ThresholdView extends StatelessWidget {
           rfOutputPowerAlarmState: rfOutputPowerAlarmState,
           minRFOutputPower: minRFOutputPower,
           maxRFOutputPower: maxRFOutputPower,
+          splitOptionAlarmState: splitOptionAlarmState,
           pilotFrequency1AlarmState: pilotFrequency1AlarmState,
           pilotFrequency2AlarmState: pilotFrequency2AlarmState,
           firstChannelOutputLevelAlarmState: false,
@@ -191,6 +196,9 @@ class Setting18ThresholdView extends StatelessWidget {
       } else if (item == DataKey.rfOutputPowerAlarmState.name) {
         return AppLocalizations.of(context)
             .dialogMessageRFOutputPowerAlarmStateSetting;
+      } else if (item == DataKey.splitOptionAlarmState.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageSplitOptionAlarmStateSetting;
       } else if (item == DataKey.pilotFrequency1AlarmState.name) {
         return AppLocalizations.of(context)
             .dialogMessagePilotFrequency1AlarmStateSetting;
@@ -297,6 +305,7 @@ class Setting18ThresholdView extends StatelessWidget {
                   _ClusterTitle(
                     title: AppLocalizations.of(context).forwardSetting,
                   ),
+                  const _SplitOptionAlarmControl(),
                   const _PilotFrequency1AlarmControl(),
                   const _PilotFrequency2AlarmControl(),
                   const _FirstChannelOutputLevelAlarmControl(),
@@ -937,6 +946,29 @@ Widget controlParameterSwitch({
       ],
     ),
   );
+}
+
+class _SplitOptionAlarmControl extends StatelessWidget {
+  const _SplitOptionAlarmControl({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
+      builder: (context, state) {
+        return controlParameterSwitch(
+          context: context,
+          editMode: state.editMode,
+          title: AppLocalizations.of(context).splitOption,
+          value: state.splitOptionAlarmState,
+          onChanged: (bool value) {
+            context
+                .read<Setting18ThresholdBloc>()
+                .add(SplitOptionAlarmChanged(value));
+          },
+        );
+      },
+    );
+  }
 }
 
 class _PilotFrequency1AlarmControl extends StatelessWidget {

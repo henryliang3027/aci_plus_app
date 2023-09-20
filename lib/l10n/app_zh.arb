@@ -83,6 +83,7 @@
     "currentRFOutputPower": "目前",
     "minRFOutputPower": "最小",
     "maxRFOutputPower": "最大",
+    "unknown": "未知",
 
 
     "information": "資訊",
@@ -170,6 +171,7 @@
     "dialogMessageVoltageAlarmStateSetting": "電壓警告設定",
     "dialogMessageVoltageRippleAlarmStateSetting": "電壓漣波警告設定",
     "dialogMessageRFOutputPowerAlarmStateSetting": "輸出強度警告設定",
+    "dialogMessageSplitOptionAlarmStateSetting": "上下行截止頻率警告設定",
     "dialogMessagePilotFrequency1AlarmStateSetting": "第一導航頻道警告設定",
     "dialogMessagePilotFrequency2AlarmStateSetting": "第二導航頻道警告設定",
     "dialogMessageSplitOptionSetting": "上下行截止頻率設定",

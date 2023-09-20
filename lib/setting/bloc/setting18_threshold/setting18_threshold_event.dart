@@ -23,6 +23,7 @@ class Initialized extends Setting18ThresholdEvent {
     required this.rfOutputPowerAlarmState,
     required this.minRFOutputPower,
     required this.maxRFOutputPower,
+    required this.splitOptionAlarmState,
     required this.pilotFrequency1AlarmState,
     required this.pilotFrequency2AlarmState,
     required this.firstChannelOutputLevelAlarmState,
@@ -43,6 +44,7 @@ class Initialized extends Setting18ThresholdEvent {
   final bool rfOutputPowerAlarmState;
   final String minRFOutputPower;
   final String maxRFOutputPower;
+  final bool splitOptionAlarmState;
   final bool pilotFrequency1AlarmState;
   final bool pilotFrequency2AlarmState;
   final bool firstChannelOutputLevelAlarmState;
@@ -64,6 +66,7 @@ class Initialized extends Setting18ThresholdEvent {
         rfOutputPowerAlarmState,
         minRFOutputPower,
         maxRFOutputPower,
+        splitOptionAlarmState,
         pilotFrequency1AlarmState,
         pilotFrequency2AlarmState,
         firstChannelOutputLevelAlarmState,
@@ -177,6 +180,15 @@ class MaxRFOutputPowerChanged extends Setting18ThresholdEvent {
 
   @override
   List<Object> get props => [maxRFOutputPower];
+}
+
+class SplitOptionAlarmChanged extends Setting18ThresholdEvent {
+  const SplitOptionAlarmChanged(this.splitOptionAlarmState);
+
+  final bool splitOptionAlarmState;
+
+  @override
+  List<Object> get props => [splitOptionAlarmState];
 }
 
 class PilotFrequency1AlarmChanged extends Setting18ThresholdEvent {

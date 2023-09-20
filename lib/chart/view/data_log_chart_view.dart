@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dsim_app/chart/chart/chart18_bloc/chart18_bloc.dart';
 import 'package:dsim_app/chart/view/full_screen_chart_form.dart';
 import 'package:dsim_app/core/custom_style.dart';
@@ -428,13 +429,14 @@ class _LogChartListView extends StatelessWidget {
                       // ElevatedButton(
                       //     onPressed: () async {
                       //       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-                      //       AndroidDeviceInfo androidInfo =
-                      //           await deviceInfo.androidInfo;
+                      //       // AndroidDeviceInfo androidInfo =
+                      //       //     await deviceInfo.androidInfo;
 
                       //       IosDeviceInfo iosDeviceInfo =
                       //           await deviceInfo.iosInfo;
 
-                      //       print(androidInfo.model + ' ' + iosDeviceInfo.model);
+                      //       // print(androidInfo.model + ' ' + iosDeviceInfo.model);
+                      //       print(iosDeviceInfo.model);
                       //     },
                       //     child: Text('Mobile info')),
                       buildChart(

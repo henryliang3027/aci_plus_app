@@ -83,6 +83,8 @@
     "currentRFOutputPower": "Courant",
     "minRFOutputPower": "Minimale",
     "maxRFOutputPower": "Maximale",
+    "unknown": "Inconnu",
+    
     
     "information": "information",
     "connection": "Connexion",
@@ -166,6 +168,7 @@
     "dialogMessageVoltageAlarmStateSetting": "Tension alarme réglage",
     "dialogMessageVoltageRippleAlarmStateSetting": "Tension ondulation alarme réglage",
     "dialogMessageRFOutputPowerAlarmStateSetting": "Sortie puissance alarme réglage",
+    "dialogMessageSplitOptionAlarmStateSetting": "Division option alarme réglage",
     "dialogMessagePilotFrequency1AlarmStateSetting": "Pilote fréquence 1 alarme réglage",
     "dialogMessagePilotFrequency2AlarmStateSetting": "Pilote fréquence 2 alarme réglage",
     "dialogMessageSplitOptionSetting": "Diviser option réglage",
