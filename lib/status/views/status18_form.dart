@@ -36,6 +36,8 @@ class Status18Form extends StatelessWidget {
             _PowerSupplyCard(),
             _VoltageRippleCard(),
             _RFOutputPowerCard(),
+            _PilotFrequency1Card(),
+            _PilotFrequency2Card(),
           ],
         ),
       ),
@@ -95,20 +97,11 @@ class _DeviceStatus extends StatelessWidget {
   }
 }
 
-Color _getCurrentValueColor({
-  required String alarmStatus,
-  required double min,
-  required double max,
-  required double current,
-}) {
-  // temperatureAlarmState == 1 時不顯示警告顏色
-  if (alarmStatus == '1') {
-    return CustomStyle.alarmColor['mask']!;
-  } else {
-    return current > min && current < max
-        ? CustomStyle.alarmColor['success']!
-        : CustomStyle.alarmColor['danger']!;
-  }
+Color _getCurrentValueColor(
+    {required String alarmState, required String alarmSeverity}) {
+  return alarmState == '0'
+      ? CustomStyle.alarmColor[alarmSeverity]!
+      : CustomStyle.alarmColor['mask']!;
 }
 
 class _DeviceRefresh extends StatelessWidget {
@@ -266,15 +259,6 @@ class _WorkingModeCard extends StatelessWidget {
 class _SplitOptionCard extends StatelessWidget {
   const _SplitOptionCard({super.key});
 
-  Color currentWorkingModeColor({
-    required String splitOptionAlarmState,
-    required String splitOptionAlarmSeverity,
-  }) {
-    return splitOptionAlarmState == '0'
-        ? CustomStyle.alarmColor[splitOptionAlarmSeverity]!
-        : CustomStyle.alarmColor['mask']!;
-  }
-
   Widget getCurrentSplitOption({
     required FormStatus loadingStatus,
     required String splitOptionAlarmState,
@@ -302,9 +286,9 @@ class _SplitOptionCard extends StatelessWidget {
         currentSplitOption,
         style: TextStyle(
           fontSize: fontSize,
-          color: currentWorkingModeColor(
-            splitOptionAlarmState: splitOptionAlarmState,
-            splitOptionAlarmSeverity: splitOptionAlarmSeverity,
+          color: _getCurrentValueColor(
+            alarmState: splitOptionAlarmState,
+            alarmSeverity: splitOptionAlarmSeverity,
           ),
         ),
       );
@@ -402,27 +386,10 @@ class _TemperatureCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color currentTemperatureColor({
-      required String temperatureAlarmState,
-      required String minTemperature,
-      required String maxTemperature,
-      required String currentTemperature,
-    }) {
-      double min = double.parse(minTemperature);
-      double max = double.parse(maxTemperature);
-      double current = double.parse(currentTemperature);
-
-      return _getCurrentValueColor(
-        alarmStatus: temperatureAlarmState,
-        min: min,
-        max: max,
-        current: current,
-      );
-    }
-
     Widget getCurrentTemperature({
       required FormStatus loadingStatus,
       required String temperatureAlarmState,
+      required String temperatureAlarmSeverity,
       required String minTemperature,
       required String maxTemperature,
       required String currentTemperature,
@@ -449,11 +416,9 @@ class _TemperatureCard extends StatelessWidget {
           '$currentTemperature $unit',
           style: TextStyle(
             fontSize: fontSize,
-            color: currentTemperatureColor(
-              temperatureAlarmState: temperatureAlarmState,
-              minTemperature: minTemperature,
-              maxTemperature: maxTemperature,
-              currentTemperature: currentTemperature,
+            color: _getCurrentValueColor(
+              alarmState: temperatureAlarmState,
+              alarmSeverity: temperatureAlarmSeverity,
             ),
           ),
         );
@@ -547,6 +512,7 @@ class _TemperatureCard extends StatelessWidget {
       required FormStatus loadingStatus,
       required FormStatus connectionStatus,
       required String temperatureAlarmState,
+      required String temperatureAlarmSeverity,
       required String currentTemperatureTitle,
       required String currentTemperature,
       required String minTemperatureTitle,
@@ -570,6 +536,7 @@ class _TemperatureCard extends StatelessWidget {
                     getCurrentTemperature(
                       loadingStatus: loadingStatus,
                       temperatureAlarmState: temperatureAlarmState,
+                      temperatureAlarmSeverity: temperatureAlarmSeverity,
                       minTemperature: minTemperature,
                       maxTemperature: maxTemperature,
                       currentTemperature: currentTemperature,
@@ -661,6 +628,9 @@ class _TemperatureCard extends StatelessWidget {
         final Status18State status18State = context.watch<Status18Bloc>().state;
         String temperatureAlarmState =
             homeState.characteristicData[DataKey.temperatureAlarmState] ?? '1';
+        String temperatureAlarmSeverity =
+            homeState.characteristicData[DataKey.temperatureAlarmSeverity] ??
+                '0';
         String currentTemperature = '';
         String maxTemperature = '';
         String minTemperature = '';
@@ -756,6 +726,7 @@ class _TemperatureCard extends StatelessWidget {
                   loadingStatus: homeState.loadingStatus,
                   connectionStatus: homeState.connectionStatus,
                   temperatureAlarmState: temperatureAlarmState,
+                  temperatureAlarmSeverity: temperatureAlarmSeverity,
                   currentTemperatureTitle:
                       AppLocalizations.of(context).currentTemperature,
                   currentTemperature: currentTemperature,
@@ -783,27 +754,10 @@ class _TemperatureCard extends StatelessWidget {
 class _PowerSupplyCard extends StatelessWidget {
   const _PowerSupplyCard({super.key});
 
-  Color currentVoltageColor({
-    required String voltageAlarmState,
-    required String minVoltage,
-    required String maxVoltage,
-    required String currentVoltage,
-  }) {
-    double min = double.parse(minVoltage);
-    double max = double.parse(maxVoltage);
-    double current = double.parse(currentVoltage);
-
-    return _getCurrentValueColor(
-      alarmStatus: voltageAlarmState,
-      min: min,
-      max: max,
-      current: current,
-    );
-  }
-
   Widget getCurrentVoltage({
     required FormStatus loadingStatus,
     required String voltageAlarmState,
+    required String voltageAlarmSeverity,
     required String minVoltage,
     required String maxVoltage,
     required String currentVoltage,
@@ -829,11 +783,9 @@ class _PowerSupplyCard extends StatelessWidget {
         currentVoltage,
         style: TextStyle(
           fontSize: fontSize,
-          color: currentVoltageColor(
-            voltageAlarmState: voltageAlarmState,
-            minVoltage: minVoltage,
-            maxVoltage: maxVoltage,
-            currentVoltage: currentVoltage,
+          color: _getCurrentValueColor(
+            alarmState: voltageAlarmState,
+            alarmSeverity: voltageAlarmSeverity,
           ),
         ),
       );
@@ -924,6 +876,7 @@ class _PowerSupplyCard extends StatelessWidget {
   Widget voltageBlock({
     required FormStatus loadingStatus,
     required String voltageAlarmState,
+    required String voltageAlarmSeverity,
     required String currentVoltageTitle,
     required String currentVoltage,
     required String minVoltageTitle,
@@ -949,6 +902,7 @@ class _PowerSupplyCard extends StatelessWidget {
                     getCurrentVoltage(
                       loadingStatus: loadingStatus,
                       voltageAlarmState: voltageAlarmState,
+                      voltageAlarmSeverity: voltageAlarmSeverity,
                       minVoltage: minVoltage,
                       maxVoltage: maxVoltage,
                       currentVoltage: currentVoltage,
@@ -1034,6 +988,8 @@ class _PowerSupplyCard extends StatelessWidget {
               loadingStatus: state.loadingStatus,
               voltageAlarmState:
                   state.characteristicData[DataKey.voltageAlarmState] ?? '1',
+              voltageAlarmSeverity:
+                  state.characteristicData[DataKey.voltageAlarmSeverity] ?? '0',
               currentVoltageTitle: AppLocalizations.of(context).currentVoltage,
               currentVoltage:
                   state.characteristicData[DataKey.currentVoltage] ?? '',
@@ -1060,27 +1016,10 @@ class _PowerSupplyCard extends StatelessWidget {
 class _VoltageRippleCard extends StatelessWidget {
   const _VoltageRippleCard({super.key});
 
-  Color currentVoltageRippleColor({
-    required String voltageRippleAlarmState,
-    required String minVoltageRipple,
-    required String maxVoltageRipple,
-    required String currentVoltageRipple,
-  }) {
-    double min = double.parse(minVoltageRipple);
-    double max = double.parse(maxVoltageRipple);
-    double current = double.parse(currentVoltageRipple);
-
-    return _getCurrentValueColor(
-      alarmStatus: voltageRippleAlarmState,
-      min: min,
-      max: max,
-      current: current,
-    );
-  }
-
   Widget getCurrentVoltageRipple({
     required FormStatus loadingStatus,
     required String voltageRippleAlarmState,
+    required String voltageRippleAlarmSeverity,
     required String minVoltageRipple,
     required String maxVoltageRipple,
     required String currentVoltageRipple,
@@ -1106,11 +1045,9 @@ class _VoltageRippleCard extends StatelessWidget {
         currentVoltageRipple,
         style: TextStyle(
           fontSize: fontSize,
-          color: currentVoltageRippleColor(
-            voltageRippleAlarmState: voltageRippleAlarmState,
-            minVoltageRipple: minVoltageRipple,
-            maxVoltageRipple: maxVoltageRipple,
-            currentVoltageRipple: currentVoltageRipple,
+          color: _getCurrentValueColor(
+            alarmState: voltageRippleAlarmState,
+            alarmSeverity: voltageRippleAlarmSeverity,
           ),
         ),
       );
@@ -1201,6 +1138,7 @@ class _VoltageRippleCard extends StatelessWidget {
   Widget voltageRippleBlock({
     required FormStatus loadingStatus,
     required String voltageRippleAlarmState,
+    required String voltageRippleAlarmSeverity,
     required String currentVoltageRippleTitle,
     required String currentVoltageRipple,
     required String minVoltageRippleTitle,
@@ -1226,6 +1164,7 @@ class _VoltageRippleCard extends StatelessWidget {
                     getCurrentVoltageRipple(
                       loadingStatus: loadingStatus,
                       voltageRippleAlarmState: voltageRippleAlarmState,
+                      voltageRippleAlarmSeverity: voltageRippleAlarmSeverity,
                       minVoltageRipple: minVoltageRipple,
                       maxVoltageRipple: maxVoltageRipple,
                       currentVoltageRipple: currentVoltageRipple,
@@ -1312,6 +1251,9 @@ class _VoltageRippleCard extends StatelessWidget {
               voltageRippleAlarmState:
                   state.characteristicData[DataKey.voltageRippleAlarmState] ??
                       '1',
+              voltageRippleAlarmSeverity: state
+                      .characteristicData[DataKey.voltageRippleAlarmSeverity] ??
+                  '0',
               currentVoltageRippleTitle:
                   AppLocalizations.of(context).currentVoltageRipple,
               currentVoltageRipple:
@@ -1344,27 +1286,10 @@ class _VoltageRippleCard extends StatelessWidget {
 class _RFOutputPowerCard extends StatelessWidget {
   const _RFOutputPowerCard({super.key});
 
-  Color currentRFOutputPowerColor({
-    required String rfOutputPowerAlarmState,
-    required String minRFOutputPower,
-    required String maxRFOutputPower,
-    required String currentRFOutputPower,
-  }) {
-    double min = double.parse(minRFOutputPower);
-    double max = double.parse(maxRFOutputPower);
-    double current = double.parse(currentRFOutputPower);
-
-    return _getCurrentValueColor(
-      alarmStatus: rfOutputPowerAlarmState,
-      min: min,
-      max: max,
-      current: current,
-    );
-  }
-
   Widget getCurrentRFOutputPower({
     required FormStatus loadingStatus,
     required String rfOutputPowerAlarmState,
+    required String rfOutputPowerAlarmSeverity,
     required String minRFOutputPower,
     required String maxRFOutputPower,
     required String currentRFOutputPower,
@@ -1390,11 +1315,9 @@ class _RFOutputPowerCard extends StatelessWidget {
         currentRFOutputPower,
         style: TextStyle(
           fontSize: fontSize,
-          color: currentRFOutputPowerColor(
-            rfOutputPowerAlarmState: rfOutputPowerAlarmState,
-            minRFOutputPower: minRFOutputPower,
-            maxRFOutputPower: maxRFOutputPower,
-            currentRFOutputPower: currentRFOutputPower,
+          color: _getCurrentValueColor(
+            alarmState: rfOutputPowerAlarmState,
+            alarmSeverity: rfOutputPowerAlarmSeverity,
           ),
         ),
       );
@@ -1485,6 +1408,7 @@ class _RFOutputPowerCard extends StatelessWidget {
   Widget rfOutputPowerBlock({
     required FormStatus loadingStatus,
     required String rfOutputPowerAlarmState,
+    required String rfOutputPowerAlarmSeverity,
     required String currentRFOutputPowerTitle,
     required String currentRFOutputPower,
     required String minRFOutputPowerTitle,
@@ -1508,6 +1432,7 @@ class _RFOutputPowerCard extends StatelessWidget {
                     getCurrentRFOutputPower(
                       loadingStatus: loadingStatus,
                       rfOutputPowerAlarmState: rfOutputPowerAlarmState,
+                      rfOutputPowerAlarmSeverity: rfOutputPowerAlarmSeverity,
                       minRFOutputPower: minRFOutputPower,
                       maxRFOutputPower: maxRFOutputPower,
                       currentRFOutputPower: currentRFOutputPower,
@@ -1594,6 +1519,9 @@ class _RFOutputPowerCard extends StatelessWidget {
               rfOutputPowerAlarmState:
                   state.characteristicData[DataKey.rfOutputPowerAlarmState] ??
                       '1',
+              rfOutputPowerAlarmSeverity:
+                  state.characteristicData[DataKey.outputPowerAlarmSeverity] ??
+                      '0',
               currentRFOutputPowerTitle:
                   AppLocalizations.of(context).currentRFOutputPower,
               currentRFOutputPower:
@@ -1614,5 +1542,251 @@ class _RFOutputPowerCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _PilotFrequency1Card extends StatelessWidget {
+  const _PilotFrequency1Card({super.key});
+
+  Widget getCurrentPilotFrequency({
+    required FormStatus loadingStatus,
+    required String pilotFrequencyAlarmState,
+    required String pilotFrequencyAlarmSeverity,
+    required String currentPilotFrequency,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return currentPilotFrequency.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              currentPilotFrequency,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        currentPilotFrequency,
+        style: TextStyle(
+          fontSize: fontSize,
+          color: _getCurrentValueColor(
+            alarmState: pilotFrequencyAlarmState,
+            alarmSeverity: pilotFrequencyAlarmSeverity,
+          ),
+        ),
+      );
+    } else {
+      return Text(
+        currentPilotFrequency.isEmpty ? 'N/A' : currentPilotFrequency,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget pilotFrequencyBlock({
+    required FormStatus loadingStatus,
+    required String pilotFrequencyAlarmState,
+    required String pilotFrequencyAlarmSeverity,
+    required String currentPilotFrequency,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getCurrentPilotFrequency(
+                      loadingStatus: loadingStatus,
+                      pilotFrequencyAlarmState: pilotFrequencyAlarmState,
+                      pilotFrequencyAlarmSeverity: pilotFrequencyAlarmSeverity,
+                      currentPilotFrequency: currentPilotFrequency,
+                      fontSize: 40,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      String pilotFrequency1AlarmState =
+          state.characteristicData[DataKey.pilotFrequency1AlarmState] ?? '1';
+
+      String pilotFrequency1AlarmSeverity = state.characteristicData[
+              DataKey.rfInputPilotLowFrequencyAlarmSeverity] ??
+          '0';
+
+      String currentPilotFrequency1 =
+          pilotFrequency1AlarmSeverity == '1' ? 'Lock' : 'Unlock';
+
+      return Card(
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
+              child: Text(
+                AppLocalizations.of(context).pilotFrequency1Status,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            pilotFrequencyBlock(
+              loadingStatus: state.loadingStatus,
+              pilotFrequencyAlarmState: pilotFrequency1AlarmState,
+              pilotFrequencyAlarmSeverity: pilotFrequency1AlarmSeverity,
+              currentPilotFrequency: currentPilotFrequency1,
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+          ],
+        ),
+      );
+    });
+  }
+}
+
+class _PilotFrequency2Card extends StatelessWidget {
+  const _PilotFrequency2Card({super.key});
+
+  Widget getCurrentPilotFrequency({
+    required FormStatus loadingStatus,
+    required String pilotFrequencyAlarmState,
+    required String pilotFrequencyAlarmSeverity,
+    required String currentPilotFrequency,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return currentPilotFrequency.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              currentPilotFrequency,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        currentPilotFrequency,
+        style: TextStyle(
+          fontSize: fontSize,
+          color: _getCurrentValueColor(
+            alarmState: pilotFrequencyAlarmState,
+            alarmSeverity: pilotFrequencyAlarmSeverity,
+          ),
+        ),
+      );
+    } else {
+      return Text(
+        currentPilotFrequency.isEmpty ? 'N/A' : currentPilotFrequency,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget pilotFrequencyBlock({
+    required FormStatus loadingStatus,
+    required String pilotFrequencyAlarmState,
+    required String pilotFrequencyAlarmSeverity,
+    required String currentPilotFrequency,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getCurrentPilotFrequency(
+                      loadingStatus: loadingStatus,
+                      pilotFrequencyAlarmState: pilotFrequencyAlarmState,
+                      pilotFrequencyAlarmSeverity: pilotFrequencyAlarmSeverity,
+                      currentPilotFrequency: currentPilotFrequency,
+                      fontSize: 40,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      String pilotFrequency2AlarmState =
+          state.characteristicData[DataKey.pilotFrequency2AlarmState] ?? '1';
+
+      String pilotFrequency2AlarmSeverity = state.characteristicData[
+              DataKey.rfInputPilotHighFrequencyAlarmSeverity] ??
+          '0';
+
+      String currentPilotFrequency2 =
+          pilotFrequency2AlarmSeverity == '1' ? 'Lock' : 'Unlock';
+
+      return Card(
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
+              child: Text(
+                AppLocalizations.of(context).pilotFrequency2Status,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            pilotFrequencyBlock(
+              loadingStatus: state.loadingStatus,
+              pilotFrequencyAlarmState: pilotFrequency2AlarmState,
+              pilotFrequencyAlarmSeverity: pilotFrequency2AlarmSeverity,
+              currentPilotFrequency: currentPilotFrequency2,
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

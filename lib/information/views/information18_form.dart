@@ -381,10 +381,10 @@ class _AlarmCard extends StatelessWidget {
           state.characteristicData[DataKey.unitStatusAlarmSeverity] ??
               'default';
       String alarmTSeverity =
-          state.characteristicData[DataKey.temperatureAlarmServerity] ??
+          state.characteristicData[DataKey.temperatureAlarmSeverity] ??
               'default';
       String alarmPSeverity =
-          state.characteristicData[DataKey.voltageAlarmServerity] ?? 'default';
+          state.characteristicData[DataKey.voltageAlarmSeverity] ?? 'default';
 
       if (state.loadingStatus.isRequestSuccess) {
         // informationState 的 alarmRSeverity, alarmTSeverity, alarmPSeverity 還是 'default' 時代表還沒有觸發定期讀取資料, 這時候用 homeState 讀到的值來顯示

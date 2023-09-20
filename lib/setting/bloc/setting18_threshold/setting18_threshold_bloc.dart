@@ -897,6 +897,9 @@ class Setting18ThresholdBloc
           '${DataKey.pilotFrequency2AlarmState.name},$resultOfSetPilotFrequency2AlarmState');
     }
 
+    // 等待 device 完成更新後在讀取值
+    await Future.delayed(const Duration(milliseconds: 1000));
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,

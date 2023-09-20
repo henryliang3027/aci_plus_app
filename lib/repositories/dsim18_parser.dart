@@ -415,8 +415,12 @@ class Dsim18Parser {
         String currentWorkingMode = '';
         String currentDetectedSplitOption = '';
         Alarm unitStatusAlarmSeverity = Alarm.medium;
-        Alarm temperatureAlarmServerity = Alarm.medium;
-        Alarm voltageAlarmServerity = Alarm.medium;
+        Alarm rfInputPilotLowFrequencyAlarmSeverity = Alarm.medium;
+        Alarm rfInputPilotHighFrequencyAlarmSeverity = Alarm.medium;
+        Alarm rfOutputPilotLowFrequencyAlarmSeverity = Alarm.medium;
+        Alarm rfOutputPilotHighFrequencyAlarmSeverity = Alarm.medium;
+        Alarm temperatureAlarmSeverity = Alarm.medium;
+        Alarm voltageAlarmSeverity = Alarm.medium;
         Alarm splitOptionAlarmSeverity = Alarm.medium;
         Alarm voltageRippleAlarmSeverity = Alarm.medium;
         Alarm outputPowerAlarmSeverity = Alarm.medium;
@@ -479,13 +483,36 @@ class Dsim18Parser {
         // 解析 currentDetectedSplitOption
         currentDetectedSplitOption = rawData[71].toString();
 
+        // 解析 rfInputPilotLowFrequencyAlarmSeverity
+        int rfInputPilotLowFrequencyStatus = rawData[124];
+        rfInputPilotLowFrequencyAlarmSeverity =
+            rfInputPilotLowFrequencyStatus == 1 ? Alarm.danger : Alarm.success;
+
+        // 解析 rfInputPilotHighFrequencyAlarmSeverity
+        int rfInputPilotHighFrequencyStatus = rawData[125];
+        rfInputPilotHighFrequencyAlarmSeverity =
+            rfInputPilotHighFrequencyStatus == 1 ? Alarm.danger : Alarm.success;
+
+        // 解析 rfOutputPilotLowFrequencyAlarmSeverity
+        int rfOutputPilotLowFrequencyStatus = rawData[126];
+        rfOutputPilotLowFrequencyAlarmSeverity =
+            rfOutputPilotLowFrequencyStatus == 1 ? Alarm.danger : Alarm.success;
+
+        // 解析 rfOutputPilotHighFrequencyAlarmSeverity
+        int rfOutputPilotHighFrequencyStatus = rawData[127];
+        rfOutputPilotHighFrequencyAlarmSeverity =
+            rfOutputPilotHighFrequencyStatus == 1
+                ? Alarm.danger
+                : Alarm.success;
+
         // 解析 temperatureAlarmSeverity
         int temperatureStatus = rawData[128];
-        temperatureAlarmServerity =
+        temperatureAlarmSeverity =
             temperatureStatus == 1 ? Alarm.danger : Alarm.success;
 
+        // 解析 voltageAlarmSeverity
         int voltageStatus = rawData[129];
-        voltageAlarmServerity =
+        voltageAlarmSeverity =
             voltageStatus == 1 ? Alarm.danger : Alarm.success;
 
         // 解析 splitOptionStatusAlarm
@@ -514,8 +541,12 @@ class Dsim18Parser {
             currentWorkingMode,
             currentDetectedSplitOption,
             unitStatusAlarmSeverity.name,
-            temperatureAlarmServerity.name,
-            voltageAlarmServerity.name,
+            rfInputPilotLowFrequencyAlarmSeverity.name,
+            rfInputPilotHighFrequencyAlarmSeverity.name,
+            rfOutputPilotLowFrequencyAlarmSeverity.name,
+            rfOutputPilotHighFrequencyAlarmSeverity.name,
+            temperatureAlarmSeverity.name,
+            voltageAlarmSeverity.name,
             splitOptionAlarmSeverity.name,
             voltageRippleAlarmSeverity.name,
             outputPowerAlarmSeverity.name,

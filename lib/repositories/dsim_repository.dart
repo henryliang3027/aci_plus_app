@@ -1111,8 +1111,12 @@ class DsimRepository {
         currentWorkingMode,
         currentDetectedSplitOption,
         unitStatusAlarmSeverity,
-        temperatureAlarmServerity,
-        voltageAlarmServerity,
+        rfInputPilotLowFrequencyAlarmSeverity,
+        rfInputPilotHighFrequencyAlarmSeverity,
+        rfOutputPilotLowFrequencyAlarmSeverity,
+        rfOutputPilotHighFrequencyAlarmSeverity,
+        temperatureAlarmSeverity,
+        voltageAlarmSeverity,
         splitOptionAlarmSeverity,
         voltageRippleAlarmSeverity,
         outputPowerAlarmSeverity,
@@ -1131,8 +1135,16 @@ class DsimRepository {
           DataKey.currentWorkingMode: currentWorkingMode,
           DataKey.currentDetectedSplitOption: currentDetectedSplitOption,
           DataKey.unitStatusAlarmSeverity: unitStatusAlarmSeverity,
-          DataKey.temperatureAlarmServerity: temperatureAlarmServerity,
-          DataKey.voltageAlarmServerity: voltageAlarmServerity,
+          DataKey.rfInputPilotLowFrequencyAlarmSeverity:
+              rfInputPilotLowFrequencyAlarmSeverity,
+          DataKey.rfInputPilotHighFrequencyAlarmSeverity:
+              rfInputPilotHighFrequencyAlarmSeverity,
+          DataKey.rfOutputPilotLowFrequencyAlarmSeverity:
+              rfOutputPilotLowFrequencyAlarmSeverity,
+          DataKey.rfOutputPilotHighFrequencyAlarmSeverity:
+              rfOutputPilotHighFrequencyAlarmSeverity,
+          DataKey.temperatureAlarmSeverity: temperatureAlarmSeverity,
+          DataKey.voltageAlarmSeverity: voltageAlarmSeverity,
           DataKey.splitOptionAlarmSeverity: splitOptionAlarmSeverity,
           DataKey.voltageRippleAlarmSeverity: voltageRippleAlarmSeverity,
           DataKey.outputPowerAlarmSeverity: outputPowerAlarmSeverity,
