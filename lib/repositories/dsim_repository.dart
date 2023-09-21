@@ -1008,6 +1008,7 @@ class DsimRepository {
         ingressSetting2,
         ingressSetting3,
         ingressSetting4,
+        tgcCableLength,
         splitOption,
         pilotFrequencyMode,
         agcMode,
@@ -1020,6 +1021,8 @@ class DsimRepository {
         pilotFrequency2,
         pilotFrequency1AlarmState,
         pilotFrequency2AlarmState,
+        rfOutputPilotLowFrequencyAlarmState,
+        rfOutputPilotHighFrequencyAlarmState,
         temperatureAlarmState,
         voltageAlarmState,
         splitOptionAlarmState,
@@ -1027,13 +1030,18 @@ class DsimRepository {
         rfOutputPowerAlarmState,
         location,
         logInterval,
-        inputEqualizer,
         inputAttenuation,
+        inputEqualizer,
+        dsVVA2,
+        dsSlope2,
         inputAttenuation2,
+        outputEqualizer,
+        dsVVA3,
+        dsVVA4,
+        outputAttenuation,
         inputAttenuation3,
         inputAttenuation4,
-        outputEqualizer,
-        outputAttenuation,
+        usTGC,
       ) = await _completer.future;
       cancelTimeout(name: '1p8G1');
 
@@ -1053,6 +1061,7 @@ class DsimRepository {
           DataKey.ingressSetting2: ingressSetting2,
           DataKey.ingressSetting3: ingressSetting3,
           DataKey.ingressSetting4: ingressSetting4,
+          DataKey.tgcCableLength: tgcCableLength,
           DataKey.splitOption: splitOption,
           DataKey.pilotFrequencyMode: pilotFrequencyMode,
           DataKey.agcMode: agcMode,
@@ -1065,6 +1074,10 @@ class DsimRepository {
           DataKey.pilotFrequency2: pilotFrequency2,
           DataKey.pilotFrequency1AlarmState: pilotFrequency1AlarmState,
           DataKey.pilotFrequency2AlarmState: pilotFrequency2AlarmState,
+          DataKey.rfOutputPilotLowFrequencyAlarmState:
+              rfOutputPilotLowFrequencyAlarmState,
+          DataKey.rfOutputPilotHighFrequencyAlarmState:
+              rfOutputPilotHighFrequencyAlarmState,
           DataKey.temperatureAlarmState: temperatureAlarmState,
           DataKey.voltageAlarmState: voltageAlarmState,
           DataKey.splitOptionAlarmState: splitOptionAlarmState,
@@ -1072,13 +1085,18 @@ class DsimRepository {
           DataKey.rfOutputPowerAlarmState: rfOutputPowerAlarmState,
           DataKey.location: location,
           DataKey.logInterval: logInterval,
-          DataKey.inputEqualizer: inputEqualizer,
           DataKey.inputAttenuation: inputAttenuation,
+          DataKey.inputEqualizer: inputEqualizer,
+          DataKey.dsVVA2: dsVVA2,
+          DataKey.dsSlope2: dsSlope2,
           DataKey.inputAttenuation2: inputAttenuation2,
+          DataKey.outputEqualizer: outputEqualizer,
+          DataKey.dsVVA3: dsVVA3,
+          DataKey.dsVVA4: dsVVA4,
+          DataKey.outputAttenuation: outputAttenuation,
           DataKey.inputAttenuation3: inputAttenuation3,
           DataKey.inputAttenuation4: inputAttenuation4,
-          DataKey.outputEqualizer: outputEqualizer,
-          DataKey.outputAttenuation: outputAttenuation,
+          DataKey.usTGC: usTGC,
         }
       ];
     } catch (e) {
@@ -1704,6 +1722,35 @@ class DsimRepository {
     }
   }
 
+  Future<dynamic> set1p8GTGCCableLength(String value) async {
+    commandIndex = 313;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int intValue = int.parse(value);
+
+    Command18.setTGCCableLengthCmd[7] = intValue;
+
+    CRC16.calculateCRC16(
+      command: Command18.setTGCCableLengthCmd,
+      usDataLength: Command18.setTGCCableLengthCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setTGCCableLengthCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<dynamic> set1p8GSplitOption(String splitOption) async {
     commandIndex = 314;
     _completer = Completer<dynamic>();
@@ -2028,6 +2075,67 @@ class DsimRepository {
     );
 
     _writeSetCommandToCharacteristic(Command18.setPilotFrequency2Cmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> setInputPilotLowFrequencyAlarmState(String isEnable) async {
+    commandIndex = 324;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int isEnableNumber = int.parse(isEnable);
+
+    Command18.setInputPilotLowFrequencyAlarmStateCmd[7] = isEnableNumber;
+
+    CRC16.calculateCRC16(
+      command: Command18.setInputPilotLowFrequencyAlarmStateCmd,
+      usDataLength: Command18.setInputPilotLowFrequencyAlarmStateCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(
+        Command18.setInputPilotLowFrequencyAlarmStateCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> setInputPilotHighFrequencyAlarmState(String isEnable) async {
+    commandIndex = 325;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int isEnableNumber = int.parse(isEnable);
+
+    Command18.setInputPilotHighFrequencyAlarmStateCmd[7] = isEnableNumber;
+
+    CRC16.calculateCRC16(
+      command: Command18.setInputPilotHighFrequencyAlarmStateCmd,
+      usDataLength:
+          Command18.setInputPilotHighFrequencyAlarmStateCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(
+        Command18.setInputPilotHighFrequencyAlarmStateCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2409,6 +2517,80 @@ class DsimRepository {
     }
   }
 
+  Future<dynamic> set1p8GDSVVA2(String strValue) async {
+    commandIndex = 341;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    double doubleValue = double.parse(strValue);
+
+    int intValue = (doubleValue * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, intValue, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setDSVVA2Cmd[7] = bytes[0];
+    Command18.setDSVVA2Cmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setDSVVA2Cmd,
+      usDataLength: Command18.setDSVVA2Cmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setDSVVA2Cmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GDSSlope2(String strValue) async {
+    commandIndex = 342;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    double doubleValue = double.parse(strValue);
+
+    int intValue = (doubleValue * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, intValue, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setDSSlope2Cmd[7] = bytes[0];
+    Command18.setDSSlope2Cmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setDSSlope2Cmd,
+      usDataLength: Command18.setDSSlope2Cmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setDSSlope2Cmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<dynamic> set1p8GReturnInputAttenuation2(String strValue) async {
     commandIndex = 343;
     _completer = Completer<dynamic>();
@@ -2470,6 +2652,80 @@ class DsimRepository {
     );
 
     _writeSetCommandToCharacteristic(Command18.setReturnOutputEqualizerCmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8DSVVA3(String strValue) async {
+    commandIndex = 345;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    double doubleValue = double.parse(strValue);
+
+    int intValue = (doubleValue * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, intValue, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setDSVVA3Cmd[7] = bytes[0];
+    Command18.setDSVVA3Cmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setDSVVA3Cmd,
+      usDataLength: Command18.setDSVVA3Cmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setDSVVA3Cmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8DSVVA4(String strValue) async {
+    commandIndex = 346;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    double doubleValue = double.parse(strValue);
+
+    int intValue = (doubleValue * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, intValue, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setDSVVA4Cmd[7] = bytes[0];
+    Command18.setDSVVA4Cmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setDSVVA4Cmd,
+      usDataLength: Command18.setDSVVA4Cmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setDSVVA4Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2581,6 +2837,43 @@ class DsimRepository {
     );
 
     _writeSetCommandToCharacteristic(Command18.setReturnInputAttenuation4Cmd);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: '1p8G$commandIndex');
+
+    try {
+      bool isDone = await _completer.future;
+      cancelTimeout(name: '1p8G$commandIndex');
+      return isDone;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8USTGC(String strValue) async {
+    commandIndex = 350;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G$commandIndex');
+
+    double doubleValue = double.parse(strValue);
+
+    int intValue = (doubleValue * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, intValue, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setUSTGCCmd[7] = bytes[0];
+    Command18.setUSTGCCmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setUSTGCCmd,
+      usDataLength: Command18.setUSTGCCmd.length - 2,
+    );
+
+    _writeSetCommandToCharacteristic(Command18.setUSTGCCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');

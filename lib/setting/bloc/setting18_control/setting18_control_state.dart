@@ -13,6 +13,12 @@ class Setting18ControlState extends Equatable {
     this.rtnIngressSetting2 = '',
     this.rtnIngressSetting3 = '',
     this.rtnIngressSetting4 = '',
+    this.tgcCableLength = '',
+    this.dsVVA2 = '',
+    this.dsSlope2 = '',
+    this.dsVVA3 = '',
+    this.dsVVA4 = '',
+    this.usTGC = '',
     this.editMode = false,
     this.enableSubmission = false,
     this.isInitialize = true,
@@ -31,6 +37,12 @@ class Setting18ControlState extends Equatable {
   final String rtnIngressSetting2;
   final String rtnIngressSetting3;
   final String rtnIngressSetting4;
+  final String tgcCableLength;
+  final String dsVVA2;
+  final String dsSlope2;
+  final String dsVVA3;
+  final String dsVVA4;
+  final String usTGC;
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
@@ -49,6 +61,12 @@ class Setting18ControlState extends Equatable {
     String? rtnIngressSetting2,
     String? rtnIngressSetting3,
     String? rtnIngressSetting4,
+    String? tgcCableLength,
+    String? dsVVA2,
+    String? dsSlope2,
+    String? dsVVA3,
+    String? dsVVA4,
+    String? usTGC,
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
@@ -68,6 +86,12 @@ class Setting18ControlState extends Equatable {
       rtnIngressSetting2: rtnIngressSetting2 ?? this.rtnIngressSetting2,
       rtnIngressSetting3: rtnIngressSetting3 ?? this.rtnIngressSetting3,
       rtnIngressSetting4: rtnIngressSetting4 ?? this.rtnIngressSetting4,
+      tgcCableLength: tgcCableLength ?? this.tgcCableLength,
+      dsVVA2: dsVVA2 ?? this.dsVVA2,
+      dsSlope2: dsSlope2 ?? this.dsSlope2,
+      dsVVA3: dsVVA3 ?? this.dsVVA3,
+      dsVVA4: dsVVA4 ?? this.dsVVA4,
+      usTGC: usTGC ?? this.usTGC,
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
@@ -89,6 +113,12 @@ class Setting18ControlState extends Equatable {
         rtnIngressSetting2,
         rtnIngressSetting3,
         rtnIngressSetting4,
+        tgcCableLength,
+        dsVVA2,
+        dsSlope2,
+        dsVVA3,
+        dsVVA4,
+        usTGC,
         editMode,
         enableSubmission,
         isInitialize,

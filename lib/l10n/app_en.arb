@@ -185,7 +185,11 @@
     "dialogMessageReturnIngress2Setting": "Ingress 2 setting",
     "dialogMessageReturnIngress3Setting": "Ingress 3 setting",
     "dialogMessageReturnIngress4Setting": "Ingress 4 setting",
-
+    "dialogMessageDSVVA2Setting": "DS VVA2 setting",
+    "dialogMessageDSSlope2Setting": "DS Slope2 setting",
+    "dialogMessageDSVVA3Setting": "DS VVA3 setting",
+    "dialogMessageDSVVA4Setting": "DS VVA4 setting",
+    "dialogMessageUSTGCSetting": "US TGC setting",
 
 
     "dialogMessageSuccessful": "OK",

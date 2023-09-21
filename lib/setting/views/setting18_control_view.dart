@@ -34,6 +34,13 @@ class Setting18ControlView extends StatelessWidget {
         homeState.characteristicData[DataKey.ingressSetting3] ?? '';
     String ingressSetting4 =
         homeState.characteristicData[DataKey.ingressSetting4] ?? '';
+    String tgcCableLength =
+        homeState.characteristicData[DataKey.tgcCableLength] ?? '';
+    String dsVVA2 = homeState.characteristicData[DataKey.dsVVA2] ?? '';
+    String dsSlope2 = homeState.characteristicData[DataKey.dsSlope2] ?? '';
+    String dsVVA3 = homeState.characteristicData[DataKey.dsVVA3] ?? '';
+    String dsVVA4 = homeState.characteristicData[DataKey.dsVVA4] ?? '';
+    String usTGC = homeState.characteristicData[DataKey.usTGC] ?? '';
 
     context.read<Setting18ControlBloc>().add(Initialized(
           fwdInputAttenuation: inputAttenuation,
@@ -46,6 +53,12 @@ class Setting18ControlView extends StatelessWidget {
           rtnIngressSetting2: ingressSetting2,
           rtnIngressSetting3: ingressSetting3,
           rtnIngressSetting4: ingressSetting4,
+          tgcCableLength: tgcCableLength,
+          dsVVA2: dsVVA2,
+          dsSlope2: dsSlope2,
+          dsVVA3: dsVVA3,
+          dsVVA4: dsVVA4,
+          usTGC: usTGC,
         ));
 
     Future<void> showInProgressDialog() async {
@@ -137,6 +150,18 @@ class Setting18ControlView extends StatelessWidget {
         return AppLocalizations.of(context).dialogMessageReturnIngress3Setting;
       } else if (item == DataKey.ingressSetting4.name) {
         return AppLocalizations.of(context).dialogMessageReturnIngress4Setting;
+      } else if (item == DataKey.tgcCableLength.name) {
+        return AppLocalizations.of(context).dialogMessageTGCCableLengthSetting;
+      } else if (item == DataKey.dsVVA2.name) {
+        return AppLocalizations.of(context).dialogMessageDSVVA2Setting;
+      } else if (item == DataKey.dsSlope2.name) {
+        return AppLocalizations.of(context).dialogMessageDSSlope2Setting;
+      } else if (item == DataKey.dsVVA3.name) {
+        return AppLocalizations.of(context).dialogMessageDSVVA3Setting;
+      } else if (item == DataKey.dsVVA4.name) {
+        return AppLocalizations.of(context).dialogMessageDSVVA4Setting;
+      } else if (item == DataKey.usTGC.name) {
+        return AppLocalizations.of(context).dialogMessageUSTGCSetting;
       } else {
         return '';
       }
@@ -219,6 +244,12 @@ class Setting18ControlView extends StatelessWidget {
                   const _RtnIngressSetting2(),
                   const _RtnIngressSetting3(),
                   const _RtnIngressSetting4(),
+                  const _TGCCableLength(),
+                  const _DSVVA2(),
+                  const _DSSlope2(),
+                  const _DSVVA3(),
+                  const _DSVVA4(),
+                  const _USTGC(),
                   const SizedBox(
                     height: 120,
                   ),
@@ -695,6 +726,231 @@ class _RtnIngressSetting4 extends StatelessWidget {
             context
                 .read<Setting18ControlBloc>()
                 .add(RtnIngressSetting4Changed(rtnIngressValues[index]));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _TGCCableLength extends StatelessWidget {
+  const _TGCCableLength({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> tgcCableLengthValues = const [
+      '9',
+      '18',
+      '27',
+    ];
+
+    List<bool> getTGCCableLengthSelectionState(String selectedTGCCableLength) {
+      Map<String, bool> selectedTGCCableLengthMap = {
+        '9': false,
+        '18': false,
+        '27': false,
+      };
+
+      if (selectedTGCCableLengthMap.containsKey(selectedTGCCableLength)) {
+        selectedTGCCableLengthMap[selectedTGCCableLength] = true;
+      }
+
+      return selectedTGCCableLengthMap.values.toList();
+    }
+
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+      buildWhen: (previous, current) =>
+          previous.tgcCableLength != current.tgcCableLength ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 40.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: Text(
+                  '${AppLocalizations.of(context).tgcCableLength}:',
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              LayoutBuilder(
+                builder: (context, constraints) => ToggleButtons(
+                  direction: Axis.horizontal,
+                  onPressed: state.editMode
+                      ? (int index) {
+                          context.read<Setting18ControlBloc>().add(
+                              TGCCableLengthChanged(
+                                  tgcCableLengthValues[index]));
+                        }
+                      : (index) {},
+                  textStyle: const TextStyle(fontSize: 18.0),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  selectedBorderColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // indigo border color
+                  selectedColor: Theme.of(context)
+                      .colorScheme
+                      .onPrimary, // white text color
+
+                  fillColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // selected
+                  color:
+                      Theme.of(context).colorScheme.secondary, // not selected
+                  constraints: BoxConstraints.expand(
+                    width: (constraints.maxWidth - 4) /
+                        tgcCableLengthValues.length,
+                  ),
+                  isSelected:
+                      getTGCCableLengthSelectionState(state.tgcCableLength),
+                  children: const <Widget>[
+                    Text('9'),
+                    Text('18'),
+                    Text('27'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _DSVVA2 extends StatelessWidget {
+  const _DSVVA2({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title: 'DS VVA2: ${state.dsVVA2} dB',
+          minValue: 0.0,
+          maxValue: 15.0,
+          currentValue: _getValue(state.dsVVA2),
+          onChanged: (value) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(DSVVA2Changed(value.toStringAsFixed(1)));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _DSSlope2 extends StatelessWidget {
+  const _DSSlope2({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title: 'DS Slope2: ${state.dsSlope2} dB',
+          minValue: 0.0,
+          maxValue: 15.0,
+          currentValue: _getValue(state.dsSlope2),
+          onChanged: (value) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(DSSlope2Changed(value.toStringAsFixed(1)));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _DSVVA3 extends StatelessWidget {
+  const _DSVVA3({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title: 'DS VVA3: ${state.dsVVA3} dB',
+          minValue: 0.0,
+          maxValue: 15.0,
+          currentValue: _getValue(state.dsVVA3),
+          onChanged: (value) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(DSVVA3Changed(value.toStringAsFixed(1)));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _DSVVA4 extends StatelessWidget {
+  const _DSVVA4({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title: 'DS VVA4: ${state.dsVVA4} dB',
+          minValue: 0.0,
+          maxValue: 15.0,
+          currentValue: _getValue(state.dsVVA4),
+          onChanged: (value) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(DSVVA4Changed(value.toStringAsFixed(1)));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _USTGC extends StatelessWidget {
+  const _USTGC({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title: 'US TGC: ${state.usTGC} dB',
+          minValue: 0.0,
+          maxValue: 15.0,
+          currentValue: _getValue(state.usTGC),
+          onChanged: (value) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(USTGCChanged(value.toStringAsFixed(1)));
           },
         );
       },

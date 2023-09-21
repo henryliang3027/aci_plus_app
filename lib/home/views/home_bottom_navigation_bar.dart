@@ -1,3 +1,4 @@
+import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 
 class HomeBottomNavigationBar extends StatelessWidget {
@@ -21,27 +22,27 @@ class HomeBottomNavigationBar extends StatelessWidget {
       showUnselectedLabels: false,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
+          icon: Icon(CustomIcons.setting),
           label: 'Setting',
           tooltip: '',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.memory_outlined),
+          icon: Icon(CustomIcons.status),
           label: 'Status',
           tooltip: '',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.info),
+          icon: Icon(CustomIcons.information),
           label: 'Information',
           tooltip: '',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.area_chart_sharp),
+          icon: Icon(CustomIcons.chart),
           label: 'Chart',
           tooltip: '',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.contact_support),
+          icon: Icon(CustomIcons.about),
           label: 'About',
           tooltip: '',
         ),

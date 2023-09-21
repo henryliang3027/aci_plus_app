@@ -19,6 +19,12 @@ class Initialized extends Setting18ControlEvent {
     required this.rtnIngressSetting2,
     required this.rtnIngressSetting3,
     required this.rtnIngressSetting4,
+    required this.tgcCableLength,
+    required this.dsVVA2,
+    required this.dsSlope2,
+    required this.dsVVA3,
+    required this.dsVVA4,
+    required this.usTGC,
   });
 
   final String fwdInputAttenuation;
@@ -31,6 +37,12 @@ class Initialized extends Setting18ControlEvent {
   final String rtnIngressSetting2;
   final String rtnIngressSetting3;
   final String rtnIngressSetting4;
+  final String tgcCableLength;
+  final String dsVVA2;
+  final String dsSlope2;
+  final String dsVVA3;
+  final String dsVVA4;
+  final String usTGC;
 
   @override
   List<Object> get props => [
@@ -44,6 +56,12 @@ class Initialized extends Setting18ControlEvent {
         rtnIngressSetting2,
         rtnIngressSetting3,
         rtnIngressSetting4,
+        tgcCableLength,
+        dsVVA2,
+        dsSlope2,
+        dsVVA3,
+        dsVVA4,
+        usTGC,
       ];
 }
 
@@ -135,6 +153,60 @@ class RtnIngressSetting4Changed extends Setting18ControlEvent {
 
   @override
   List<Object> get props => [rtnIngressSetting4];
+}
+
+class TGCCableLengthChanged extends Setting18ControlEvent {
+  const TGCCableLengthChanged(this.tgcCableLength);
+
+  final String tgcCableLength;
+
+  @override
+  List<Object> get props => [tgcCableLength];
+}
+
+class DSVVA2Changed extends Setting18ControlEvent {
+  const DSVVA2Changed(this.dsVVA2);
+
+  final String dsVVA2;
+
+  @override
+  List<Object> get props => [dsVVA2];
+}
+
+class DSSlope2Changed extends Setting18ControlEvent {
+  const DSSlope2Changed(this.dsSlope2);
+
+  final String dsSlope2;
+
+  @override
+  List<Object> get props => [dsSlope2];
+}
+
+class DSVVA3Changed extends Setting18ControlEvent {
+  const DSVVA3Changed(this.dsVVA3);
+
+  final String dsVVA3;
+
+  @override
+  List<Object> get props => [dsVVA3];
+}
+
+class DSVVA4Changed extends Setting18ControlEvent {
+  const DSVVA4Changed(this.dsVVA4);
+
+  final String dsVVA4;
+
+  @override
+  List<Object> get props => [dsVVA4];
+}
+
+class USTGCChanged extends Setting18ControlEvent {
+  const USTGCChanged(this.usTGC);
+
+  final String usTGC;
+
+  @override
+  List<Object> get props => [usTGC];
 }
 
 class EditModeEnabled extends Setting18ControlEvent {

@@ -880,7 +880,7 @@ class Setting18ThresholdBloc
       String voltagePilotFrequency1AlarmState =
           _boolToStringNumber(state.pilotFrequency1AlarmState);
       bool resultOfSetPilotFrequency1AlarmState =
-          await _dsimRepository.setOutputPilotLowFrequencyAlarmState(
+          await _dsimRepository.setInputPilotLowFrequencyAlarmState(
               voltagePilotFrequency1AlarmState);
 
       settingResult.add(
@@ -891,7 +891,7 @@ class Setting18ThresholdBloc
       String pilotFrequency2AlarmState =
           _boolToStringNumber(state.pilotFrequency2AlarmState);
       bool resultOfSetPilotFrequency2AlarmState = await _dsimRepository
-          .setOutputPilotHighFrequencyAlarmState(pilotFrequency2AlarmState);
+          .setInputPilotHighFrequencyAlarmState(pilotFrequency2AlarmState);
 
       settingResult.add(
           '${DataKey.pilotFrequency2AlarmState.name},$resultOfSetPilotFrequency2AlarmState');

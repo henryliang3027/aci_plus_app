@@ -1,7 +1,6 @@
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
-import 'package:dsim_app/setting/bloc/setting_list_view_bloc/setting_list_view_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,6 +23,12 @@ class Setting18ControlBloc
     on<RtnIngressSetting2Changed>(_onRtnIngressSetting2Changed);
     on<RtnIngressSetting3Changed>(_onRtnIngressSetting3Changed);
     on<RtnIngressSetting4Changed>(_onRtnIngressSetting4Changed);
+    on<TGCCableLengthChanged>(_onTGCCableLengthChanged);
+    on<DSVVA2Changed>(_onDSVVA2Changed);
+    on<DSSlope2Changed>(_onDSSlope2Changed);
+    on<DSVVA3Changed>(_onDSVVA3Changed);
+    on<DSVVA4Changed>(_onDSVVA4Changed);
+    on<USTGCChanged>(_onUSTGCChanged);
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
@@ -46,6 +51,12 @@ class Setting18ControlBloc
         rtnIngressSetting2: event.rtnIngressSetting2,
         rtnIngressSetting3: event.rtnIngressSetting3,
         rtnIngressSetting4: event.rtnIngressSetting4,
+        tgcCableLength: event.tgcCableLength,
+        dsVVA2: event.dsVVA2,
+        dsSlope2: event.dsSlope2,
+        dsVVA3: event.dsVVA3,
+        dsVVA4: event.dsVVA4,
+        usTGC: event.usTGC,
         isInitialize: true,
         initialValues: [
           event.fwdInputAttenuation,
@@ -58,6 +69,12 @@ class Setting18ControlBloc
           event.rtnIngressSetting2,
           event.rtnIngressSetting3,
           event.rtnIngressSetting4,
+          event.tgcCableLength,
+          event.dsVVA2,
+          event.dsSlope2,
+          event.dsVVA3,
+          event.dsVVA4,
+          event.usTGC,
         ]));
   }
 
@@ -80,6 +97,12 @@ class Setting18ControlBloc
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
       ),
     ));
   }
@@ -103,6 +126,12 @@ class Setting18ControlBloc
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
       ),
     ));
   }
@@ -126,6 +155,12 @@ class Setting18ControlBloc
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
       ),
     ));
   }
@@ -149,6 +184,12 @@ class Setting18ControlBloc
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
       ),
     ));
   }
@@ -172,6 +213,12 @@ class Setting18ControlBloc
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
       ),
     ));
   }
@@ -195,6 +242,12 @@ class Setting18ControlBloc
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
       ),
     ));
   }
@@ -218,6 +271,12 @@ class Setting18ControlBloc
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
       ),
     ));
   }
@@ -241,6 +300,12 @@ class Setting18ControlBloc
         rtnIngressSetting2: event.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
       ),
     ));
   }
@@ -264,6 +329,12 @@ class Setting18ControlBloc
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: event.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
       ),
     ));
   }
@@ -287,6 +358,186 @@ class Setting18ControlBloc
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: event.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onTGCCableLengthChanged(
+    TGCCableLengthChanged event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      tgcCableLength: event.tgcCableLength,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: event.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onDSVVA2Changed(
+    DSVVA2Changed event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsVVA2: event.dsVVA2,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: event.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onDSSlope2Changed(
+    DSSlope2Changed event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsSlope2: event.dsSlope2,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: event.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onDSVVA3Changed(
+    DSVVA3Changed event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsVVA3: event.dsVVA3,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: event.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onDSVVA4Changed(
+    DSVVA4Changed event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsVVA4: event.dsVVA4,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: event.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onUSTGCChanged(
+    USTGCChanged event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      usTGC: event.usTGC,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: event.usTGC,
       ),
     ));
   }
@@ -321,6 +572,12 @@ class Setting18ControlBloc
       rtnIngressSetting2: state.initialValues[7],
       rtnIngressSetting3: state.initialValues[8],
       rtnIngressSetting4: state.initialValues[9],
+      tgcCableLength: state.initialValues[10],
+      dsVVA2: state.initialValues[11],
+      dsSlope2: state.initialValues[12],
+      dsVVA3: state.initialValues[13],
+      dsVVA4: state.initialValues[14],
+      usTGC: state.initialValues[15],
     ));
   }
 
@@ -335,6 +592,12 @@ class Setting18ControlBloc
     required String rtnIngressSetting2,
     required String rtnIngressSetting3,
     required String rtnIngressSetting4,
+    required String tgcCableLength,
+    required String dsVVA2,
+    required String dsSlope2,
+    required String dsVVA3,
+    required String dsVVA4,
+    required String usTGC,
   }) {
     if (fwdInputAttenuation != state.initialValues[0] ||
         fwdInputEQ != state.initialValues[1] ||
@@ -345,7 +608,13 @@ class Setting18ControlBloc
         rtnOutputEQ != state.initialValues[6] ||
         rtnIngressSetting2 != state.initialValues[7] ||
         rtnIngressSetting3 != state.initialValues[8] ||
-        rtnIngressSetting4 != state.initialValues[9]) {
+        rtnIngressSetting4 != state.initialValues[9] ||
+        tgcCableLength != state.initialValues[10] ||
+        dsVVA2 != state.initialValues[11] ||
+        dsSlope2 != state.initialValues[12] ||
+        dsVVA3 != state.initialValues[13] ||
+        dsVVA4 != state.initialValues[14] ||
+        usTGC != state.initialValues[15]) {
       return true;
     } else {
       return false;
@@ -442,6 +711,49 @@ class Setting18ControlBloc
       settingResult
           .add('${DataKey.ingressSetting4.name},$resultOfSetReturnIngress4');
     }
+
+    if (state.tgcCableLength != state.initialValues[10]) {
+      bool resultOfSetTGCCableLength =
+          await _dsimRepository.set1p8GTGCCableLength(state.tgcCableLength);
+
+      settingResult
+          .add('${DataKey.tgcCableLength.name},$resultOfSetTGCCableLength');
+    }
+
+    if (state.dsVVA2 != state.initialValues[11]) {
+      bool resultOfSetDSVVA2 =
+          await _dsimRepository.set1p8GDSVVA2(state.dsVVA2);
+
+      settingResult.add('${DataKey.dsVVA2.name},$resultOfSetDSVVA2');
+    }
+
+    if (state.dsSlope2 != state.initialValues[12]) {
+      bool resultOfSetDSSlope2 =
+          await _dsimRepository.set1p8GDSSlope2(state.dsSlope2);
+
+      settingResult.add('${DataKey.dsSlope2.name},$resultOfSetDSSlope2');
+    }
+
+    if (state.dsVVA3 != state.initialValues[13]) {
+      bool resultOfSetDSVVA3 = await _dsimRepository.set1p8DSVVA3(state.dsVVA3);
+
+      settingResult.add('${DataKey.dsVVA3.name},$resultOfSetDSVVA3');
+    }
+
+    if (state.dsVVA4 != state.initialValues[14]) {
+      bool resultOfSetDSVVA4 = await _dsimRepository.set1p8DSVVA4(state.dsVVA4);
+
+      settingResult.add('${DataKey.dsVVA4.name},$resultOfSetDSVVA4');
+    }
+
+    if (state.usTGC != state.initialValues[15]) {
+      bool resultOfSetUSTGC = await _dsimRepository.set1p8USTGC(state.usTGC);
+
+      settingResult.add('${DataKey.usTGC.name},$resultOfSetUSTGC');
+    }
+
+    // 等待 device 完成更新後在讀取值
+    await Future.delayed(const Duration(milliseconds: 1000));
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,

@@ -104,6 +104,7 @@ class Dsim18Parser {
         String ingressSetting2 = '';
         String ingressSetting3 = '';
         String ingressSetting4 = '';
+        String tgcCableLength = '';
         String splitOption = '';
         String pilotFrequencyMode = '';
         String agcMode = '';
@@ -116,6 +117,8 @@ class Dsim18Parser {
         String pilotFrequency2 = '';
         String pilotFrequency1AlarmState = '';
         String pilotFrequency2AlarmState = '';
+        String rfOutputPilotLowFrequencyAlarmState = '';
+        String rfOutputPilotHighFrequencyAlarmState = '';
         String temperatureAlarmState = '';
         String voltageAlarmState = '';
         String splitOptionAlarmState = '';
@@ -123,11 +126,16 @@ class Dsim18Parser {
         String outputPowerAlarmState = '';
         String inputAttenuation = '';
         String inputEqualizer = '';
+        String dsVVA2 = '';
+        String dsSlope2 = '';
         String inputAttenuation2 = '';
         String inputAttenuation3 = '';
         String inputAttenuation4 = '';
         String outputAttenuation = '';
         String outputEqualizer = '';
+        String dsVVA3 = '';
+        String dsVVA4 = '';
+        String usTGC = '';
         String location = '';
         String logInterval = '';
 
@@ -153,13 +161,14 @@ class Dsim18Parser {
         minTemperatureF =
             _convertToFahrenheit(minTemperature).toStringAsFixed(1);
 
-        // 解析 maxVoltage, minVoltage
+        // 解析 maxVoltage
         List<int> rawMaxVoltage = rawData.sublist(7, 9);
         ByteData rawMaxVoltageByteData =
             ByteData.sublistView(Uint8List.fromList(rawMaxVoltage));
         maxVoltage = (rawMaxVoltageByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
 
+        // 解析 minVoltage
         List<int> rawMinVoltage = rawData.sublist(9, 11);
         ByteData rawMinVoltageByteData =
             ByteData.sublistView(Uint8List.fromList(rawMinVoltage));
@@ -204,6 +213,9 @@ class Dsim18Parser {
 
         // 解析 ingress setting 4
         ingressSetting4 = rawData[21].toString();
+
+        // 解析 tgcCableLength
+        tgcCableLength = rawData[24].toString();
 
         // 解析 splitOption
         splitOption = rawData[25].toString();
@@ -265,10 +277,16 @@ class Dsim18Parser {
             rawPilotFrequency2ByteData.getInt16(0, Endian.little).toString();
 
         // 解析 pilotFrequency1AlarmState
-        pilotFrequency1AlarmState = rawData[43].toString();
+        pilotFrequency1AlarmState = rawData[41].toString();
 
         // 解析 pilotFrequency2AlarmState
-        pilotFrequency2AlarmState = rawData[44].toString();
+        pilotFrequency2AlarmState = rawData[42].toString();
+
+        // 解析 pilotFrequency1AlarmState
+        rfOutputPilotLowFrequencyAlarmState = rawData[43].toString();
+
+        // 解析 pilotFrequency2AlarmState
+        rfOutputPilotHighFrequencyAlarmState = rawData[44].toString();
 
         // 解析 temperatureAlarmState
         temperatureAlarmState = rawData[45].toString();
@@ -321,6 +339,20 @@ class Dsim18Parser {
             (rawInputEqualizerByteData.getInt16(0, Endian.little) / 10)
                 .toStringAsFixed(1);
 
+        // 解析 dsVVA2 (0x98 DS VVA2 Set dB)
+        List<int> rawDSVVA2 = rawData.sublist(155, 157);
+        ByteData rawDSVVA2ByteData =
+            ByteData.sublistView(Uint8List.fromList(rawDSVVA2));
+        dsVVA2 = (rawDSVVA2ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+        // 解析 dsSlope2 (0x9A DS Slope2 Set dB)
+        List<int> rawDSSlope2 = rawData.sublist(157, 159);
+        ByteData rawDSSlope2ByteData =
+            ByteData.sublistView(Uint8List.fromList(rawDSSlope2));
+        dsSlope2 = (rawDSSlope2ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
         // 解析 inputAttenuation2 (0x9C US VCA1 Set dB)
         List<int> rawInputAttenuation2 = rawData.sublist(159, 161);
         ByteData rawInputAttenuation2ByteData =
@@ -336,6 +368,20 @@ class Dsim18Parser {
         outputEqualizer =
             (rawOutputEqualizerByteData.getInt16(0, Endian.little) / 10)
                 .toStringAsFixed(1);
+
+        // 解析 dsVVA3 (0xA0 DS VVA3 Set dB)
+        List<int> rawDSVVA3 = rawData.sublist(163, 165);
+        ByteData rawDSVVA3ByteData =
+            ByteData.sublistView(Uint8List.fromList(rawDSVVA3));
+        dsVVA3 = (rawDSVVA3ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+        // 解析 dsVVA4 (0xA2 DS VVA4 Set dB)
+        List<int> rawDSVVA4 = rawData.sublist(165, 167);
+        ByteData rawDSVVA4ByteData =
+            ByteData.sublistView(Uint8List.fromList(rawDSVVA4));
+        dsVVA4 = (rawDSVVA4ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
 
         // 解析 outputAttenuation (0xA4 US VCA2 Set dB)
         List<int> rawOutputAttenuation = rawData.sublist(167, 169);
@@ -361,6 +407,13 @@ class Dsim18Parser {
             (rawInputAttenuation4ByteData.getInt16(0, Endian.little) / 10)
                 .toStringAsFixed(1);
 
+        // 解析 usTGC (0xAA US TGC Set dB)
+        List<int> rawUSTGC = rawData.sublist(173, 175);
+        ByteData rawUSTGCByteData =
+            ByteData.sublistView(Uint8List.fromList(rawUSTGC));
+        usTGC = (rawUSTGCByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
         if (!completer.isCompleted) {
           completer.complete((
             minTemperatureC,
@@ -376,6 +429,7 @@ class Dsim18Parser {
             ingressSetting2,
             ingressSetting3,
             ingressSetting4,
+            tgcCableLength,
             splitOption,
             pilotFrequencyMode,
             agcMode,
@@ -388,6 +442,8 @@ class Dsim18Parser {
             pilotFrequency2,
             pilotFrequency1AlarmState,
             pilotFrequency2AlarmState,
+            rfOutputPilotLowFrequencyAlarmState,
+            rfOutputPilotHighFrequencyAlarmState,
             temperatureAlarmState,
             voltageAlarmState,
             splitOptionAlarmState,
@@ -395,13 +451,18 @@ class Dsim18Parser {
             outputPowerAlarmState,
             location,
             logInterval,
-            inputEqualizer,
             inputAttenuation,
+            inputEqualizer,
+            dsVVA2,
+            dsSlope2,
             inputAttenuation2,
+            outputEqualizer,
+            dsVVA3,
+            dsVVA4,
+            outputAttenuation,
             inputAttenuation3,
             inputAttenuation4,
-            outputEqualizer,
-            outputAttenuation,
+            usTGC,
           ));
         }
         break;
@@ -515,17 +576,17 @@ class Dsim18Parser {
         voltageAlarmSeverity =
             voltageStatus == 1 ? Alarm.danger : Alarm.success;
 
-        // 解析 splitOptionStatusAlarm
+        // 解析 splitOptionAlarmSeverity
         int splitOptionStatus = rawData[134];
         splitOptionAlarmSeverity =
             splitOptionStatus == 1 ? Alarm.danger : Alarm.success;
 
-        // 解析 voltageRippleStatusAlarm
+        // 解析 voltageRippleAlarmSeverity
         int voltageRippleStatus = rawData[135];
         voltageRippleAlarmSeverity =
             voltageRippleStatus == 1 ? Alarm.danger : Alarm.success;
 
-        // 解析 voltageRippleStatusAlarm
+        // 解析 outputPowerAlarmSeverity
         int outputPowerStatus = rawData[136];
         outputPowerAlarmSeverity =
             outputPowerStatus == 1 ? Alarm.danger : Alarm.success;

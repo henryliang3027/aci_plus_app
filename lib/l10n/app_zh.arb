@@ -186,6 +186,11 @@
     "dialogMessageReturnIngress2Setting": "Port 2 輸入衰減量設定",
     "dialogMessageReturnIngress3Setting": "Port 3 輸入衰減量設定",
     "dialogMessageReturnIngress4Setting": "Port 4 輸入衰減量設定",
+    "dialogMessageDSVVA2Setting": "DS VVA2 setting",
+    "dialogMessageDSSlope2Setting": "DS Slope2 setting",
+    "dialogMessageDSVVA3Setting": "DS VVA3 setting",
+    "dialogMessageDSVVA4Setting": "DS VVA4 setting",
+    "dialogMessageUSTGCSetting": "US TGC setting",
 
     "dialogMessageSuccessful": "成功",
     "dialogMessageFailed": "失敗",

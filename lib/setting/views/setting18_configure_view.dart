@@ -106,6 +106,9 @@ class Setting18ConfigureView extends StatelessWidget {
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            insetPadding: EdgeInsets.zero,
             contentPadding: const EdgeInsets.all(16.0),
             titlePadding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 0.0),
             buttonPadding: const EdgeInsets.all(0.0),
@@ -113,10 +116,20 @@ class Setting18ConfigureView extends StatelessWidget {
             title: Text(
               AppLocalizations.of(context).dialogTitleSettingResult,
             ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: messageRows,
-              ),
+            content: Builder(
+              builder: (context) {
+                var height = MediaQuery.of(context).size.height;
+                var width = MediaQuery.of(context).size.width;
+
+                return Container(
+                  width: width - 20,
+                  child: SingleChildScrollView(
+                    child: ListBody(
+                      children: messageRows,
+                    ),
+                  ),
+                );
+              },
             ),
             actions: <Widget>[
               TextButton(
@@ -447,7 +460,10 @@ class _SplitOptionDropDownMenu extends StatelessWidget {
 
   final Map<String, String> types = const {
     '204/258 MHz': '1',
-    // '396/492 MHz': '2',
+    '300/372 MHz': '2',
+    '396/492 MHz': '3',
+    '492/606 MHz': '4',
+    '684/834 MHz': '5',
   };
 
   @override
@@ -494,6 +510,12 @@ class _SplitOptionDropDownMenu extends StatelessWidget {
                       value: state.splitOption == '0' || state.splitOption == ''
                           ? null
                           : state.splitOption,
+                      hint: Text(
+                        state.splitOption == '0' ? 'N/A' : '',
+                        style: const TextStyle(
+                          color: CustomStyle.customRed,
+                        ),
+                      ),
                       items: [
                         for (String k in types.keys)
                           DropdownMenuItem(

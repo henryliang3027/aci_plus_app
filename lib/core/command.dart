@@ -72,6 +72,8 @@ enum DataKey {
   ingressSetting4,
   pilotFrequency1AlarmState,
   pilotFrequency2AlarmState,
+  rfOutputPilotLowFrequencyAlarmState,
+  rfOutputPilotHighFrequencyAlarmState,
   temperatureAlarmState,
   voltageAlarmState,
   splitOptionAlarmState,
@@ -84,6 +86,11 @@ enum DataKey {
   inputAttenuation4,
   outputEqualizer,
   outputAttenuation,
+  dsVVA2,
+  dsSlope2,
+  dsVVA3,
+  dsVVA4,
+  usTGC,
 }
 
 class Command {

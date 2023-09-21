@@ -186,6 +186,11 @@
     "dialogMessageReturnIngress2Setting": "Ajuste ingreso 2",
     "dialogMessageReturnIngress3Setting": "Ajuste ingreso 3",
     "dialogMessageReturnIngress4Setting": "Ajuste ingreso 4",
+    "dialogMessageDSVVA2Setting": "DS VVA2 setting",
+    "dialogMessageDSSlope2Setting": "DS Slope2 setting",
+    "dialogMessageDSVVA3Setting": "DS VVA3 setting",
+    "dialogMessageDSVVA4Setting": "DS VVA4 setting",
+    "dialogMessageUSTGCSetting": "US TGC setting",
 
     "dialogMessageSuccessful": "Exitoso",
     "dialogMessageFailed": "Fallido",
