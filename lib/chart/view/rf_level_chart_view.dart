@@ -36,12 +36,12 @@ class _ChartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<LineSeries> getChartDataOfInputRFLevel({
+    List<LineSeries> getChartDataOfOutputRFLevel({
       required List<List<ValuePair>> dateValueCollectionOfLog,
     }) {
       LineSeries rfLevelLineSeries = LineSeries(
-        name: 'Input RF Level',
-        dataList: dateValueCollectionOfLog[1],
+        name: 'Output RF Level',
+        dataList: dateValueCollectionOfLog[0],
         color: Theme.of(context).colorScheme.primary,
         // minYAxisValue: -30.0,
         // maxYAxisValue: 100.0,
@@ -52,12 +52,12 @@ class _ChartView extends StatelessWidget {
       ];
     }
 
-    List<LineSeries> getChartDataOfOutputRFLevel({
+    List<LineSeries> getChartDataOfInputRFLevel({
       required List<List<ValuePair>> dateValueCollectionOfLog,
     }) {
       LineSeries rfLevelLineSeries = LineSeries(
-        name: 'Output RF Level',
-        dataList: dateValueCollectionOfLog[0],
+        name: 'Input RF Level',
+        dataList: dateValueCollectionOfLog[1],
         color: Theme.of(context).colorScheme.primary,
         // minYAxisValue: -30.0,
         // maxYAxisValue: 100.0,
