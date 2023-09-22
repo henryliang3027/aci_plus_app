@@ -10,6 +10,8 @@ class Chart18State extends Equatable {
     this.hasNextChunk = false,
     this.log1p8Gs = const [],
     this.dateValueCollectionOfLog = const [[], [], [], [], []],
+    this.rfInOuts = const [],
+    this.valueCollectionOfRFInOut = const [[], []],
     this.exportFileName = '',
     this.dataExportPath = '',
     this.errorMessage = '',
@@ -23,6 +25,8 @@ class Chart18State extends Equatable {
   final bool hasNextChunk;
   final List<Log1p8G> log1p8Gs;
   final List<List<ValuePair>> dateValueCollectionOfLog;
+  final List<RFInOut> rfInOuts;
+  final List<List<ValuePair>> valueCollectionOfRFInOut;
   final String exportFileName;
   final String dataExportPath;
   final String errorMessage;
@@ -36,6 +40,8 @@ class Chart18State extends Equatable {
     bool? hasNextChunk,
     List<Log1p8G>? log1p8Gs,
     List<List<ValuePair>>? dateValueCollectionOfLog,
+    List<RFInOut>? rfInOuts,
+    List<List<ValuePair>>? valueCollectionOfRFInOut,
     String? exportFileName,
     String? dataExportPath,
     String? errorMessage,
@@ -51,6 +57,9 @@ class Chart18State extends Equatable {
       log1p8Gs: log1p8Gs ?? this.log1p8Gs,
       dateValueCollectionOfLog:
           dateValueCollectionOfLog ?? this.dateValueCollectionOfLog,
+      rfInOuts: rfInOuts ?? this.rfInOuts,
+      valueCollectionOfRFInOut:
+          valueCollectionOfRFInOut ?? this.valueCollectionOfRFInOut,
       exportFileName: exportFileName ?? this.exportFileName,
       dataExportPath: dataExportPath ?? this.dataExportPath,
       errorMessage: errorMessage ?? this.errorMessage,
@@ -67,6 +76,8 @@ class Chart18State extends Equatable {
         hasNextChunk,
         log1p8Gs,
         dateValueCollectionOfLog,
+        rfInOuts,
+        valueCollectionOfRFInOut,
         exportFileName,
         dataExportPath,
         errorMessage,

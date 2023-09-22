@@ -220,14 +220,25 @@ class _WorkingModeCard extends StatelessWidget {
     );
   }
 
+  String getWorkingModeText(String workingMode) {
+    if (workingMode == '13') {
+      return 'AGC';
+    } else if (workingMode == '14') {
+      return 'TGC';
+    } else {
+      return workingMode;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       String currentWorkingMode =
           state.characteristicData[DataKey.currentWorkingMode] ?? '';
 
-      String workingMode =
-          currentWorkingMode == '0' ? 'N/A' : currentWorkingMode;
+      String workingMode = currentWorkingMode == '0'
+          ? 'N/A'
+          : getWorkingModeText(currentWorkingMode);
 
       return Card(
         color: Theme.of(context).colorScheme.onPrimary,
@@ -339,12 +350,20 @@ class _SplitOptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Map<String, String> types = const {
+      '1': '204/258 MHz',
+      '2': '300/372 MHz',
+      '3': '396/492 MHz',
+      '4': '492/606 MHz',
+      '5': '684/834 MHz',
+    };
+
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       String currentSplitOption =
           state.characteristicData[DataKey.currentDetectedSplitOption] ?? '';
 
       String splitOption =
-          currentSplitOption == '0' ? 'N/A' : currentSplitOption;
+          currentSplitOption == '0' ? 'N/A' : types[currentSplitOption]!;
 
       String splitOptionAlarmState =
           state.characteristicData[DataKey.splitOptionAlarmState] ?? '1';

@@ -17,6 +17,7 @@ class Dsim18Parser {
 
   final List<List<int>> _command18Collection = [];
   List<int> _rawLogs = [];
+  List<int> _rawRFInOut = [];
 
   List<List<int>> get command18Collection => _command18Collection;
 
@@ -615,6 +616,25 @@ class Dsim18Parser {
         }
         break;
       case 183:
+        List<int> header = [0xB0, 0x03, 0x16];
+        if (listEquals(rawData.sublist(0, 3), header)) {
+          _rawRFInOut.clear();
+        }
+
+        _rawRFInOut.addAll(rawData);
+        print(_rawRFInOut.length);
+
+        if (_rawRFInOut.length == 1029) {
+          _rawRFInOut.removeRange(_rawRFInOut.length - 2, _rawRFInOut.length);
+          _rawRFInOut.removeRange(0, 3);
+          List<RFInOut> rfInOuts = _parseRFInOut(_rawRFInOut);
+
+          if (!completer.isCompleted) {
+            completer.complete(rfInOuts);
+          }
+        }
+        break;
+      case 184:
         List<int> header = [0xB0, 0x03, 0x00];
         if (listEquals(rawData.sublist(0, 3), header)) {
           _rawLogs.clear();
@@ -653,7 +673,7 @@ class Dsim18Parser {
             ));
           }
         }
-      case 184:
+        break;
       case 185:
       case 186:
       case 187:
@@ -662,6 +682,7 @@ class Dsim18Parser {
       case 190:
       case 191:
       case 192:
+      case 193:
         List<int> header = [0xB0, 0x03, 0x00];
         if (listEquals(rawData.sublist(0, 3), header)) {
           _rawLogs.clear();
@@ -681,7 +702,6 @@ class Dsim18Parser {
         }
 
         break;
-      case 193:
       case 194:
       case 195:
       case 196:
@@ -858,6 +878,30 @@ class Dsim18Parser {
         '',
       );
     }
+  }
+
+  List<RFInOut> _parseRFInOut(List<int> rawData) {
+    List<RFInOut> rfInOuts = [];
+    for (var i = 0; i < 256; i++) {
+      // 解析 input
+      List<int> rawInput = rawData.sublist(i * 2, i * 2 + 2);
+      ByteData rawInputByteData =
+          ByteData.sublistView(Uint8List.fromList(rawInput));
+      double input = rawInputByteData.getInt16(0, Endian.little).toDouble();
+
+      // 解析 output
+      List<int> rawOutput = rawData.sublist(i * 2 + 512, i * 2 + 2 + 512);
+      ByteData rawOutputByteData =
+          ByteData.sublistView(Uint8List.fromList(rawOutput));
+      double output = rawOutputByteData.getInt16(0, Endian.little).toDouble();
+
+      rfInOuts.add(RFInOut(
+        input: input,
+        output: output,
+      ));
+    }
+
+    return rfInOuts;
   }
 
   List<Log1p8G> _parse1p8GLog(List<int> rawData) {
@@ -1082,6 +1126,7 @@ class Dsim18Parser {
     CRC16.calculateCRC16(command: Command18.req00Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.req01Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.req02Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.req03Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqLog00Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqLog01Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqLog02Cmd, usDataLength: 6);
@@ -1096,6 +1141,7 @@ class Dsim18Parser {
     _command18Collection.add(Command18.req00Cmd);
     _command18Collection.add(Command18.req01Cmd);
     _command18Collection.add(Command18.req02Cmd);
+    _command18Collection.add(Command18.req03Cmd);
     _command18Collection.add(Command18.reqLog00Cmd);
     _command18Collection.add(Command18.reqLog01Cmd);
     _command18Collection.add(Command18.reqLog02Cmd);

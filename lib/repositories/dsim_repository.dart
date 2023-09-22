@@ -49,6 +49,16 @@ class Log1p8G {
   final int voltageRipple;
 }
 
+class RFInOut {
+  const RFInOut({
+    required this.input,
+    required this.output,
+  });
+
+  final double input;
+  final double output;
+}
+
 class Log {
   const Log({
     required this.dateTime,
@@ -1175,16 +1185,43 @@ class DsimRepository {
     }
   }
 
+  Future<dynamic> requestCommand1p8G3() async {
+    commandIndex = 183;
+    _completer = Completer<dynamic>();
+
+    print('get data from request command 1p8G3');
+
+    _writeSetCommandToCharacteristic(
+        _dsim18parser.command18Collection[commandIndex - 180]);
+    setTimeout(
+        duration: Duration(seconds: _commandExecutionTimeout),
+        name: 'cmd1p8G3');
+
+    try {
+      var rfInOuts = await _completer.future;
+      cancelTimeout(name: '1p8G3');
+
+      return [
+        true,
+        rfInOuts,
+      ];
+    } catch (e) {
+      return [
+        false,
+      ];
+    }
+  }
+
   Future<dynamic> testForLogChunk(int chunkIndex) async {
     await Future.delayed(Duration(seconds: 1));
 
     return [true, true];
   }
 
-  // commandIndex range from 183 to 192;
-  // commandIndex = 183 時獲取最新的1024筆Log的統計資料跟 log
+  // commandIndex range from 184 to 193;
+  // commandIndex = 184 時獲取最新的1024筆Log的統計資料跟 log
   Future<dynamic> requestCommand1p8GForLogChunk(int chunkIndex) async {
-    commandIndex = chunkIndex + 183;
+    commandIndex = chunkIndex + 184;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8GForLogChunk');
@@ -1195,7 +1232,7 @@ class DsimRepository {
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8GForLogChunk');
 
-    if (commandIndex == 183) {
+    if (commandIndex == 184) {
       // _log1p8Gs.clear();
       try {
         var (
@@ -1331,6 +1368,33 @@ class DsimRepository {
       rfOutputHighPilotDataList,
       voltageDataList,
       voltageRippleDataList,
+    ];
+  }
+
+  List<List<ValuePair>> get1p8GValueCollectionOfRFInOut(
+      List<RFInOut> rfInOuts) {
+    List<ValuePair> rfInputs = [];
+    List<ValuePair> rfOutputs = [];
+
+    for (int i = 0; i < rfInOuts.length; i++) {
+      int frequency = 261 + 6 * i;
+
+      RFInOut rfInOut = rfInOuts[i];
+
+      rfOutputs.add(ValuePair(
+        x: frequency,
+        y: rfInOut.output,
+      ));
+
+      rfInputs.add(ValuePair(
+        x: frequency,
+        y: rfInOut.input,
+      ));
+    }
+
+    return [
+      rfOutputs,
+      rfInputs,
     ];
   }
 

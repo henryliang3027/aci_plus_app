@@ -375,7 +375,7 @@ class _LogChartListView extends StatelessWidget {
           );
         } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
           if (chart18State.dataRequestStatus.isNone) {
-            context.read<Chart18Bloc>().add(const MoreDataRequested());
+            // context.read<Chart18Bloc>().add(const MoreDataRequested());
             return Stack(
               alignment: Alignment.center,
               children: [

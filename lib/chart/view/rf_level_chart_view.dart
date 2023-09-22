@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dsim_app/chart/chart/chart18_bloc/chart18_bloc.dart';
 import 'package:dsim_app/chart/view/full_screen_chart_form.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
@@ -35,15 +36,31 @@ class _ChartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<LineSeries> getChartDataOfRFLevel({
+    List<LineSeries> getChartDataOfInputRFLevel({
       required List<List<ValuePair>> dateValueCollectionOfLog,
     }) {
       LineSeries rfLevelLineSeries = LineSeries(
-        name: 'RF Level',
-        dataList: [],
+        name: 'Input RF Level',
+        dataList: dateValueCollectionOfLog[1],
         color: Theme.of(context).colorScheme.primary,
-        minYAxisValue: -30.0,
-        maxYAxisValue: 100.0,
+        // minYAxisValue: -30.0,
+        // maxYAxisValue: 100.0,
+      );
+
+      return [
+        rfLevelLineSeries,
+      ];
+    }
+
+    List<LineSeries> getChartDataOfOutputRFLevel({
+      required List<List<ValuePair>> dateValueCollectionOfLog,
+    }) {
+      LineSeries rfLevelLineSeries = LineSeries(
+        name: 'Output RF Level',
+        dataList: dateValueCollectionOfLog[0],
+        color: Theme.of(context).colorScheme.primary,
+        // minYAxisValue: -30.0,
+        // maxYAxisValue: 100.0,
       );
 
       return [
@@ -104,10 +121,10 @@ class _ChartView extends StatelessWidget {
       String intValue = Random().nextInt(100).toString();
       List<LineSeries> log1Data = [];
       if (dateValueCollectionOfLog.isEmpty) {
-        log1Data = getChartDataOfRFLevel(
+        log1Data = getChartDataOfOutputRFLevel(
             dateValueCollectionOfLog: emptyDateValueCollection);
       } else {
-        log1Data = getChartDataOfRFLevel(
+        log1Data = getChartDataOfInputRFLevel(
             dateValueCollectionOfLog: dateValueCollectionOfLog);
       }
 
@@ -144,78 +161,166 @@ class _ChartView extends StatelessWidget {
       );
     }
 
-    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      if (state.loadingStatus == FormStatus.requestInProgress) {
-        return Stack(
-          alignment: Alignment.center,
-          children: [
-            buildLoadingFormWithProgressiveChartView(
-                state.dateValueCollectionOfLog),
-            Container(
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(70, 158, 158, 158),
-              ),
-              child: const Center(
-                child: SizedBox(
-                  width: CustomStyle.diameter,
-                  height: CustomStyle.diameter,
-                  child: CircularProgressIndicator(),
+    return Builder(
+      builder: (context) {
+        HomeState homeState = context.watch<HomeBloc>().state;
+        Chart18State chart18State = context.watch<Chart18Bloc>().state;
+
+        if (homeState.loadingStatus == FormStatus.requestInProgress) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              buildLoadingFormWithProgressiveChartView(
+                  chart18State.dateValueCollectionOfLog),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(70, 158, 158, 158),
+                ),
+                child: const Center(
+                  child: SizedBox(
+                    width: CustomStyle.diameter,
+                    height: CustomStyle.diameter,
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               ),
-            )
-          ],
-        );
-      } else if (state.loadingStatus == FormStatus.requestSuccess) {
-        return SingleChildScrollView(
-          // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
-          // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-          key: const Key('ChartForm_Chart'),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                buildChart(
-                  getChartDataOfRFLevel(
-                      dateValueCollectionOfLog: state.dateValueCollectionOfLog),
-                ),
-                const SizedBox(
-                  height: 50.0,
-                ),
-                buildChart(
-                  getChartDataOfRFLevel(
-                      dateValueCollectionOfLog: state.dateValueCollectionOfLog),
+            ],
+          );
+        } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
+          if (chart18State.dataRequestStatus.isNone) {
+            context.read<Chart18Bloc>().add(const RFInOutDataRequested());
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                buildLoadingFormWithProgressiveChartView(
+                    chart18State.dateValueCollectionOfLog),
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(70, 158, 158, 158),
+                  ),
+                  child: const Center(
+                    child: SizedBox(
+                      width: CustomStyle.diameter,
+                      height: CustomStyle.diameter,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
                 ),
               ],
-            ),
-          ),
-        );
-      } else {
-        return SingleChildScrollView(
-          // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
-          // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-          key: const Key('ChartForm_Chart'),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                buildChart(
-                  getChartDataOfRFLevel(
-                      dateValueCollectionOfLog: state.dateValueCollectionOfLog),
-                ),
-                const SizedBox(
-                  height: 50.0,
-                ),
-                buildChart(
-                  getChartDataOfRFLevel(
-                      dateValueCollectionOfLog: state.dateValueCollectionOfLog),
+            );
+          } else if (chart18State.dataRequestStatus.isRequestInProgress) {
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                buildLoadingFormWithProgressiveChartView(
+                    chart18State.dateValueCollectionOfLog),
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(70, 158, 158, 158),
+                  ),
+                  child: const Center(
+                    child: SizedBox(
+                      width: CustomStyle.diameter,
+                      height: CustomStyle.diameter,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
                 ),
               ],
+            );
+          } else if (chart18State.dataRequestStatus.isRequestFailure) {
+            context.read<Chart18Bloc>().add(const MoreDataRequested());
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                buildLoadingFormWithProgressiveChartView(
+                    chart18State.dateValueCollectionOfLog),
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(70, 158, 158, 158),
+                  ),
+                  child: const Center(
+                    child: SizedBox(
+                      width: CustomStyle.diameter,
+                      height: CustomStyle.diameter,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return Center(
+              child: SingleChildScrollView(
+                // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+                // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+                key: const Key('ChartForm_Chart'),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 30.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      // ElevatedButton(
+                      //     onPressed: () async {
+                      //       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+                      //       // AndroidDeviceInfo androidInfo =
+                      //       //     await deviceInfo.androidInfo;
+
+                      //       IosDeviceInfo iosDeviceInfo =
+                      //           await deviceInfo.iosInfo;
+
+                      //       // print(androidInfo.model + ' ' + iosDeviceInfo.model);
+                      //       print(iosDeviceInfo.model);
+                      //     },
+                      //     child: Text('Mobile info')),
+                      buildChart(
+                        getChartDataOfOutputRFLevel(
+                            dateValueCollectionOfLog:
+                                chart18State.valueCollectionOfRFInOut),
+                      ),
+                      const SizedBox(
+                        height: 50.0,
+                      ),
+                      buildChart(
+                        getChartDataOfInputRFLevel(
+                            dateValueCollectionOfLog:
+                                chart18State.valueCollectionOfRFInOut),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+        } else {
+          return SingleChildScrollView(
+            // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+            // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+            key: const Key('ChartForm_Chart'),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  buildChart(
+                    getChartDataOfOutputRFLevel(
+                        dateValueCollectionOfLog:
+                            chart18State.valueCollectionOfRFInOut),
+                  ),
+                  const SizedBox(
+                    height: 50.0,
+                  ),
+                  buildChart(
+                    getChartDataOfInputRFLevel(
+                        dateValueCollectionOfLog:
+                            chart18State.valueCollectionOfRFInOut),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      }
-    });
+          );
+        }
+      },
+    );
   }
 }

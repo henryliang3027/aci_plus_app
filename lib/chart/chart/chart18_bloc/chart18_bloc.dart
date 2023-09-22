@@ -15,6 +15,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     on<DataExported>(_onDataExported);
     on<DataShared>(_onDataShared);
     on<MoreDataRequested>(_onMoreDataRequested);
+    on<RFInOutDataRequested>(_onRFInOutDataRequested);
     on<AllDataDownloaded>(_onAllDataDownloaded);
     on<AllDataExported>(_onAllDataExported);
   }
@@ -183,29 +184,49 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
         }
       }
     }
+  }
 
-    // List<dynamic> resultOfLog1p8G =
-    //     await _dsimRepository.requestCommand1p8GForLogChunk(state.chunckIndex);
+  Future<void> _onRFInOutDataRequested(
+    RFInOutDataRequested event,
+    Emitter<Chart18State> emit,
+  ) async {
+    emit(state.copyWith(
+      dataRequestStatus: FormStatus.requestInProgress,
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataDownloadStatus: FormStatus.none,
+    ));
 
-    // if (resultOfLog1p8G[0]) {
-    //   log1p8Gs.addAll(resultOfLog1p8G[2]);
+    List<RFInOut> rfInOuts = [];
+    // 最多 retry 3 次, 連續失敗3次就視為失敗
+    for (int i = 0; i < 3; i++) {
+      List<dynamic> resultOf1p8G3 = await _dsimRepository.requestCommand1p8G3();
 
-    //   List<List<ValuePair>> dateValueCollectionOfLog =
-    //       _dsimRepository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
+      if (resultOf1p8G3[0]) {
+        rfInOuts.addAll(resultOf1p8G3[1]);
 
-    //   emit(
-    //     state.copyWith(
-    //       dataRequestStatus: FormStatus.requestSuccess,
-    //       log1p8Gs: log1p8Gs,
-    //       dateValueCollectionOfLog: dateValueCollectionOfLog,
-    //       chunckIndex: state.chunckIndex + 1,
-    //       hasNextChunk: resultOfLog1p8G[1],
-    //     ),
-    //   );
-    // } else {
-    //   state.copyWith(
-    //     dataRequestStatus: FormStatus.requestFailure,
-    //   );
-    // }
+        List<List<ValuePair>> dateValueCollectionOfLog =
+            _dsimRepository.get1p8GValueCollectionOfRFInOut(rfInOuts);
+
+        emit(
+          state.copyWith(
+            dataRequestStatus: FormStatus.requestSuccess,
+            rfInOuts: rfInOuts,
+            valueCollectionOfRFInOut: dateValueCollectionOfLog,
+          ),
+        );
+
+        break;
+      } else {
+        if (i == 2) {
+          emit(state.copyWith(
+            dataRequestStatus: FormStatus.requestFailure,
+            errorMessage: 'Data loading failed',
+          ));
+        } else {
+          continue;
+        }
+      }
+    }
   }
 }

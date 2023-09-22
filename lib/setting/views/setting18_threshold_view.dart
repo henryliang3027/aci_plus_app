@@ -169,22 +169,28 @@ class Setting18ThresholdView extends StatelessWidget {
 
         rows.add(Padding(
           padding: const EdgeInsets.only(
-            bottom: 8.0,
+            bottom: 14.0,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                formatResultItem(item),
-                style: const TextStyle(fontSize: 16),
-              ),
-              Text(
-                formatResultValue(value),
-                style: TextStyle(
-                  fontSize: 16,
-                  color: valueColor,
+              Expanded(
+                flex: 3,
+                child: Text(
+                  formatResultItem(item),
+                  style: const TextStyle(fontSize: 16),
                 ),
-              )
+              ),
+              Expanded(
+                child: Text(
+                  formatResultValue(value),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: valueColor,
+                  ),
+                  textAlign: TextAlign.end,
+                ),
+              ),
             ],
           ),
         ));
