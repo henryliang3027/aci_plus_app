@@ -4,6 +4,7 @@ import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting18_control/setting18_control_bloc.dart';
+import 'package:dsim_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -60,61 +61,6 @@ class Setting18ControlView extends StatelessWidget {
           dsVVA4: dsVVA4,
           usTGC: usTGC,
         ));
-
-    Future<void> showInProgressDialog() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context).dialogTitleProcessing,
-            ),
-            actionsAlignment: MainAxisAlignment.center,
-            actions: const <Widget>[
-              Center(
-                child: SizedBox(
-                  width: CustomStyle.diameter,
-                  height: CustomStyle.diameter,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    Future<void> showResultDialog(List<Widget> messageRows) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            contentPadding: const EdgeInsets.all(16.0),
-            titlePadding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 0.0),
-            buttonPadding: const EdgeInsets.all(0.0),
-            actionsPadding: const EdgeInsets.all(16.0),
-            title: Text(
-              AppLocalizations.of(context).dialogTitleSettingResult,
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: messageRows,
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(true); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
@@ -206,13 +152,16 @@ class Setting18ControlView extends StatelessWidget {
     return BlocListener<Setting18ControlBloc, Setting18ControlState>(
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionInProgress) {
-          await showInProgressDialog();
+          await showInProgressDialog(context);
         } else if (state.submissionStatus.isSubmissionSuccess) {
           if (ModalRoute.of(context)?.isCurrent != true) {
             Navigator.of(context).pop();
           }
           List<Widget> rows = getMessageRows(state.settingResult);
-          showResultDialog(rows);
+          showResultDialog(
+            context: context,
+            messageRows: rows,
+          );
         }
       },
       child: Scaffold(
@@ -244,12 +193,12 @@ class Setting18ControlView extends StatelessWidget {
                   const _RtnIngressSetting2(),
                   const _RtnIngressSetting3(),
                   const _RtnIngressSetting4(),
-                  const _TGCCableLength(),
-                  const _DSVVA2(),
-                  const _DSSlope2(),
-                  const _DSVVA3(),
-                  const _DSVVA4(),
-                  const _USTGC(),
+                  // const _TGCCableLength(),
+                  // const _DSVVA2(),
+                  // const _DSSlope2(),
+                  // const _DSVVA3(),
+                  // const _DSVVA4(),
+                  // const _USTGC(),
                   const SizedBox(
                     height: 120,
                   ),

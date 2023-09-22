@@ -5,6 +5,7 @@ import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting18_configure/setting18_configure_bloc.dart';
+import 'package:dsim_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -75,74 +76,6 @@ class Setting18ConfigureView extends StatelessWidget {
           autoLevelControl: autoLevelControl,
           logInterval: logInterval,
         ));
-
-    Future<void> showInProgressDialog() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context).dialogTitleProcessing,
-            ),
-            actionsAlignment: MainAxisAlignment.center,
-            actions: const <Widget>[
-              Center(
-                child: SizedBox(
-                  width: CustomStyle.diameter,
-                  height: CustomStyle.diameter,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    Future<void> showResultDialog(List<Widget> messageRows) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            insetPadding: EdgeInsets.zero,
-            contentPadding: const EdgeInsets.all(16.0),
-            titlePadding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 0.0),
-            buttonPadding: const EdgeInsets.all(0.0),
-            actionsPadding: const EdgeInsets.all(16.0),
-            title: Text(
-              AppLocalizations.of(context).dialogTitleSettingResult,
-            ),
-            content: Builder(
-              builder: (context) {
-                var height = MediaQuery.of(context).size.height;
-                var width = MediaQuery.of(context).size.width;
-
-                return Container(
-                  width: width - 20,
-                  child: SingleChildScrollView(
-                    child: ListBody(
-                      children: messageRows,
-                    ),
-                  ),
-                );
-              },
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(true); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
@@ -226,11 +159,14 @@ class Setting18ConfigureView extends StatelessWidget {
     return BlocListener<Setting18ConfigureBloc, Setting18ConfigureState>(
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionInProgress) {
-          await showInProgressDialog();
+          await showInProgressDialog(context);
         } else if (state.submissionStatus.isSubmissionSuccess) {
           Navigator.of(context).pop();
           List<Widget> rows = getMessageRows(state.settingResult);
-          showResultDialog(rows);
+          showResultDialog(
+            context: context,
+            messageRows: rows,
+          );
         }
 
         if (state.isInitialize) {

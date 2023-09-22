@@ -415,6 +415,27 @@ class _LogChartListView extends StatelessWidget {
                 ),
               ],
             );
+          } else if (chart18State.dataRequestStatus.isRequestFailure) {
+            context.read<Chart18Bloc>().add(const MoreDataRequested());
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                buildLoadingFormWithProgressiveChartView(
+                    chart18State.dateValueCollectionOfLog),
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(70, 158, 158, 158),
+                  ),
+                  child: const Center(
+                    child: SizedBox(
+                      width: CustomStyle.diameter,
+                      height: CustomStyle.diameter,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ),
+              ],
+            );
           } else {
             return Center(
               child: SingleChildScrollView(

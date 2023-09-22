@@ -5,6 +5,7 @@ import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/repositories/unit_repository.dart';
 import 'package:dsim_app/setting/bloc/setting18_threshold/setting18_threshold_bloc.dart';
+import 'package:dsim_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -102,61 +103,6 @@ class Setting18ThresholdView extends StatelessWidget {
           lastChannelOutputLevelAlarmState: false,
         ));
 
-    Future<void> showInProgressDialog() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context).dialogTitleProcessing,
-            ),
-            actionsAlignment: MainAxisAlignment.center,
-            actions: const <Widget>[
-              Center(
-                child: SizedBox(
-                  width: CustomStyle.diameter,
-                  height: CustomStyle.diameter,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    Future<void> showResultDialog(List<Widget> messageRows) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            contentPadding: const EdgeInsets.all(16.0),
-            titlePadding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 0.0),
-            buttonPadding: const EdgeInsets.all(0.0),
-            actionsPadding: const EdgeInsets.all(16.0),
-            title: Text(
-              AppLocalizations.of(context).dialogTitleSettingResult,
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: messageRows,
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(true); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
           ? AppLocalizations.of(context).dialogMessageSuccessful
@@ -249,13 +195,16 @@ class Setting18ThresholdView extends StatelessWidget {
     return BlocListener<Setting18ThresholdBloc, Setting18ThresholdState>(
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionInProgress) {
-          await showInProgressDialog();
+          await showInProgressDialog(context);
         } else if (state.submissionStatus.isSubmissionSuccess) {
           if (ModalRoute.of(context)?.isCurrent != true) {
             Navigator.of(context).pop();
           }
           List<Widget> rows = getMessageRows(state.settingResult);
-          showResultDialog(rows);
+          showResultDialog(
+            context: context,
+            messageRows: rows,
+          );
         }
 
         if (state.isInitialize) {
