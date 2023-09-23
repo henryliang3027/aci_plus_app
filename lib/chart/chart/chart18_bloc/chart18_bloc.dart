@@ -191,7 +191,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     Emitter<Chart18State> emit,
   ) async {
     emit(state.copyWith(
-      dataRequestStatus: FormStatus.requestInProgress,
+      rfDataRequestStatus: FormStatus.requestInProgress,
       dataExportStatus: FormStatus.none,
       dataShareStatus: FormStatus.none,
       allDataDownloadStatus: FormStatus.none,
@@ -210,7 +210,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
 
         emit(
           state.copyWith(
-            dataRequestStatus: FormStatus.requestSuccess,
+            rfDataRequestStatus: FormStatus.requestSuccess,
             rfInOuts: rfInOuts,
             valueCollectionOfRFInOut: dateValueCollectionOfLog,
           ),
@@ -220,7 +220,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       } else {
         if (i == 2) {
           emit(state.copyWith(
-            dataRequestStatus: FormStatus.requestFailure,
+            rfDataRequestStatus: FormStatus.requestFailure,
             errorMessage: 'Data loading failed',
           ));
         } else {

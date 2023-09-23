@@ -375,7 +375,8 @@ class _LogChartListView extends StatelessWidget {
           );
         } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
           if (chart18State.dataRequestStatus.isNone) {
-            // context.read<Chart18Bloc>().add(const MoreDataRequested());
+            print('get logs');
+            context.read<Chart18Bloc>().add(const MoreDataRequested());
             return Stack(
               alignment: Alignment.center,
               children: [
@@ -416,7 +417,7 @@ class _LogChartListView extends StatelessWidget {
               ],
             );
           } else if (chart18State.dataRequestStatus.isRequestFailure) {
-            context.read<Chart18Bloc>().add(const MoreDataRequested());
+            // context.read<Chart18Bloc>().add(const MoreDataRequested());
             return Stack(
               alignment: Alignment.center,
               children: [

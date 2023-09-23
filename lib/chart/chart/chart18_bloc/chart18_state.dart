@@ -3,6 +3,7 @@ part of 'chart18_bloc.dart';
 class Chart18State extends Equatable {
   const Chart18State({
     this.dataRequestStatus = FormStatus.none,
+    this.rfDataRequestStatus = FormStatus.none,
     this.dataExportStatus = FormStatus.none,
     this.dataShareStatus = FormStatus.none,
     this.allDataDownloadStatus = FormStatus.none,
@@ -18,6 +19,7 @@ class Chart18State extends Equatable {
   });
 
   final FormStatus dataRequestStatus;
+  final FormStatus rfDataRequestStatus;
   final FormStatus dataExportStatus;
   final FormStatus dataShareStatus;
   final FormStatus allDataDownloadStatus;
@@ -33,6 +35,7 @@ class Chart18State extends Equatable {
 
   Chart18State copyWith({
     FormStatus? dataRequestStatus,
+    FormStatus? rfDataRequestStatus,
     FormStatus? dataExportStatus,
     FormStatus? dataShareStatus,
     FormStatus? allDataDownloadStatus,
@@ -48,6 +51,7 @@ class Chart18State extends Equatable {
   }) {
     return Chart18State(
       dataRequestStatus: dataRequestStatus ?? this.dataRequestStatus,
+      rfDataRequestStatus: rfDataRequestStatus ?? this.rfDataRequestStatus,
       dataExportStatus: dataExportStatus ?? this.dataExportStatus,
       dataShareStatus: dataShareStatus ?? this.dataExportStatus,
       allDataDownloadStatus:
@@ -69,6 +73,7 @@ class Chart18State extends Equatable {
   @override
   List<Object> get props => [
         dataRequestStatus,
+        rfDataRequestStatus,
         dataExportStatus,
         dataShareStatus,
         allDataDownloadStatus,

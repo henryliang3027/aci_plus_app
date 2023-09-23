@@ -616,7 +616,7 @@ class Dsim18Parser {
         }
         break;
       case 183:
-        List<int> header = [0xB0, 0x03, 0x16];
+        List<int> header = [0xB0, 0x03, 0x00];
         if (listEquals(rawData.sublist(0, 3), header)) {
           _rawRFInOut.clear();
         }
@@ -887,13 +887,13 @@ class Dsim18Parser {
       List<int> rawInput = rawData.sublist(i * 2, i * 2 + 2);
       ByteData rawInputByteData =
           ByteData.sublistView(Uint8List.fromList(rawInput));
-      double input = rawInputByteData.getInt16(0, Endian.little).toDouble();
+      double input = rawInputByteData.getInt16(0, Endian.little) / 10;
 
       // 解析 output
       List<int> rawOutput = rawData.sublist(i * 2 + 512, i * 2 + 2 + 512);
       ByteData rawOutputByteData =
           ByteData.sublistView(Uint8List.fromList(rawOutput));
-      double output = rawOutputByteData.getInt16(0, Endian.little).toDouble();
+      double output = rawOutputByteData.getInt16(0, Endian.little) / 10;
 
       rfInOuts.add(RFInOut(
         input: input,

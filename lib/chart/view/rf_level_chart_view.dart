@@ -43,8 +43,8 @@ class _ChartView extends StatelessWidget {
         name: 'Output RF Level',
         dataList: dateValueCollectionOfLog[0],
         color: Theme.of(context).colorScheme.primary,
-        // minYAxisValue: -30.0,
-        // maxYAxisValue: 100.0,
+        minYAxisValue: 0.0,
+        maxYAxisValue: 60.0,
       );
 
       return [
@@ -58,9 +58,9 @@ class _ChartView extends StatelessWidget {
       LineSeries rfLevelLineSeries = LineSeries(
         name: 'Input RF Level',
         dataList: dateValueCollectionOfLog[1],
-        color: Theme.of(context).colorScheme.primary,
-        // minYAxisValue: -30.0,
-        // maxYAxisValue: 100.0,
+        color: CustomStyle.customGreen,
+        minYAxisValue: 0.0,
+        maxYAxisValue: 60.0,
       );
 
       return [
@@ -114,17 +114,19 @@ class _ChartView extends StatelessWidget {
       List<List<ValuePair>> emptyDateValueCollection = [
         [],
         [],
-        [],
-        [],
-        [],
       ];
       String intValue = Random().nextInt(100).toString();
-      List<LineSeries> log1Data = [];
+      List<LineSeries> rfOutputData = [];
+      List<LineSeries> rfInputData = [];
       if (dateValueCollectionOfLog.isEmpty) {
-        log1Data = getChartDataOfOutputRFLevel(
+        rfOutputData = getChartDataOfOutputRFLevel(
+            dateValueCollectionOfLog: emptyDateValueCollection);
+        rfInputData = getChartDataOfInputRFLevel(
             dateValueCollectionOfLog: emptyDateValueCollection);
       } else {
-        log1Data = getChartDataOfInputRFLevel(
+        rfOutputData = getChartDataOfOutputRFLevel(
+            dateValueCollectionOfLog: dateValueCollectionOfLog);
+        rfInputData = getChartDataOfInputRFLevel(
             dateValueCollectionOfLog: dateValueCollectionOfLog);
       }
 
@@ -140,7 +142,11 @@ class _ChartView extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  buildChart(log1Data),
+                  buildChart(rfOutputData),
+                  const SizedBox(
+                    height: 50.0,
+                  ),
+                  buildChart(rfInputData),
                 ],
               ),
             ),
@@ -187,7 +193,8 @@ class _ChartView extends StatelessWidget {
             ],
           );
         } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
-          if (chart18State.dataRequestStatus.isNone) {
+          if (chart18State.rfDataRequestStatus.isNone) {
+            print('get rf');
             context.read<Chart18Bloc>().add(const RFInOutDataRequested());
             return Stack(
               alignment: Alignment.center,
@@ -208,7 +215,7 @@ class _ChartView extends StatelessWidget {
                 ),
               ],
             );
-          } else if (chart18State.dataRequestStatus.isRequestInProgress) {
+          } else if (chart18State.rfDataRequestStatus.isRequestInProgress) {
             return Stack(
               alignment: Alignment.center,
               children: [
@@ -228,8 +235,7 @@ class _ChartView extends StatelessWidget {
                 ),
               ],
             );
-          } else if (chart18State.dataRequestStatus.isRequestFailure) {
-            context.read<Chart18Bloc>().add(const MoreDataRequested());
+          } else if (chart18State.rfDataRequestStatus.isRequestFailure) {
             return Stack(
               alignment: Alignment.center,
               children: [
