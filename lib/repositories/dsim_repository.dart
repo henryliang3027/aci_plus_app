@@ -6,24 +6,17 @@ import 'package:dsim_app/core/command18.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/shared_preference_key.dart';
+import 'package:dsim_app/repositories/ble_client.dart';
 import 'package:dsim_app/repositories/dsim18_parser.dart';
 import 'package:dsim_app/repositories/unit_converter.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
-import 'package:location/location.dart' as GPS;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-
-enum ScanStatus {
-  success,
-  failure,
-  disable,
-}
 
 enum Alarm {
   success,
@@ -89,26 +82,6 @@ class Event {
   final int parameter;
 }
 
-class ScanReport {
-  const ScanReport({
-    required this.scanStatus,
-    this.discoveredDevice,
-  });
-
-  final ScanStatus scanStatus;
-  final DiscoveredDevice? discoveredDevice;
-}
-
-class ConnectionReport {
-  const ConnectionReport({
-    required this.connectionState,
-    this.errorMessage = '',
-  });
-
-  final DeviceConnectionState connectionState;
-  final String errorMessage;
-}
-
 class SettingData {
   const SettingData({
     required this.location,
@@ -138,23 +111,23 @@ class SettingData {
 
 class DsimRepository {
   DsimRepository()
-      : _ble = FlutterReactiveBle(),
+      : _bleClient = BLEClient(),
         _dsim18parser = Dsim18Parser(),
         _unitConverter = UnitConverter() {
     _calculateCRCs();
   }
-  final FlutterReactiveBle _ble;
+  final BLEClient _bleClient;
   final _scanTimeout = 3; // sec
   final _connectionTimeout = 30; //sec
-  late StreamController<ScanReport> _scanReportStreamController;
-  StreamController<ConnectionReport> _connectionReportStreamController =
-      StreamController<ConnectionReport>();
-  StreamController<Map<DataKey, String>> _characteristicDataStreamController =
-      StreamController<Map<DataKey, String>>();
-  StreamSubscription<DiscoveredDevice>? _discoveredDeviceStreamSubscription;
-  StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
-  StreamSubscription<List<int>>? _characteristicStreamSubscription;
-  late QualifiedCharacteristic _qualifiedCharacteristic;
+  // late StreamController<ScanReport> _scanReportStreamController;
+  // StreamController<ConnectionReport> _connectionReportStreamController =
+  //     StreamController<ConnectionReport>();
+  // StreamController<Map<DataKey, String>> _characteristicDataStreamController =
+  //     StreamController<Map<DataKey, String>>();
+  // StreamSubscription<DiscoveredDevice>? _discoveredDeviceStreamSubscription;
+  // StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
+  // StreamSubscription<List<int>>? _characteristicStreamSubscription;
+  // late QualifiedCharacteristic _qualifiedCharacteristic;
 
   final _aciPrefix = 'ACI';
   final _serviceId = 'ffe0';
@@ -204,87 +177,20 @@ class DsimRepository {
   final Dsim18Parser _dsim18parser;
   final UnitConverter _unitConverter;
 
-  Future<bool> checkBluetoothEnabled() async {
-    // 要求定位與藍芽存取權
-    bool isPermissionGranted = await _requestPermission();
-
-    if (isPermissionGranted) {
-      // 偵測定位是否有打開, 如果沒有打開會跳出提示訊息
-      bool resultOfEnableGPS = await GPS.Location().requestService();
-
-      // 偵測藍芽是否有打開, 如果沒有打開會跳出提示訊息
-      String resultStrOfEnableBluetooth = await BluetoothEnable.enableBluetooth;
-      bool resultOfEnableBluetooth =
-          resultStrOfEnableBluetooth == 'true' ? true : false;
-
-      if (resultOfEnableGPS && resultOfEnableBluetooth) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-
   Stream<ScanReport> get scanReport async* {
-    bool isGranted = await checkBluetoothEnabled();
-    _scanReportStreamController = StreamController<ScanReport>();
-    if (isGranted) {
-      // 設定 scan timeout
-      Timer scanTimer = Timer(Duration(seconds: _scanTimeout), () async {
-        _scanReportStreamController.add(
-          const ScanReport(
-            scanStatus: ScanStatus.failure,
-            discoveredDevice: null,
-          ),
-        );
-
-        await closeScanStream();
-      });
-
-      _discoveredDeviceStreamSubscription =
-          _ble.scanForDevices(withServices: []).listen((device) {
-        if (device.name.startsWith(_aciPrefix)) {
-          if (!_scanReportStreamController.isClosed) {
-            scanTimer.cancel();
-            print('Device: ${device.name}');
-            _scanReportStreamController.add(
-              ScanReport(
-                scanStatus: ScanStatus.success,
-                discoveredDevice: device,
-              ),
-            );
-          }
-        }
-      }, onError: (error) {
-        print('Scan Error $error');
-        _scanReportStreamController.add(
-          const ScanReport(
-            scanStatus: ScanStatus.failure,
-            discoveredDevice: null,
-          ),
-        );
-      });
-    } else {
-      print('bluetooth disable');
-      _scanReportStreamController.add(
-        const ScanReport(
-          scanStatus: ScanStatus.disable,
-          discoveredDevice: null,
-        ),
-      );
-    }
-
-    yield* _scanReportStreamController.stream;
+    yield* _bleClient.scanReport;
   }
 
   Stream<ConnectionReport> get connectionStateReport async* {
-    yield* _connectionReportStreamController.stream;
+    yield* _bleClient.connectionStateReport;
   }
 
   Stream<Map<DataKey, String>> get characteristicData async* {
-    yield* _characteristicDataStreamController.stream;
+    yield* _bleClient.characteristicData;
+  }
+
+  Future<void> connectToDevice(DiscoveredDevice discoveredDevice) {
+    return _bleClient.connectToDevice(discoveredDevice);
   }
 
   void clearCache() {
@@ -311,193 +217,19 @@ class DsimRepository {
   }
 
   Future<void> closeScanStream() async {
-    print('closeScanStream');
-
-    if (_scanReportStreamController.isClosed) {
-      await _scanReportStreamController.close();
-    }
-
-    await _discoveredDeviceStreamSubscription?.cancel();
-    _discoveredDeviceStreamSubscription = null;
+    await _bleClient.closeScanStream();
   }
 
   Future<void> closeConnectionStream() async {
-    print('close _characteristicStreamSubscription');
-
-    if (_connectionReportStreamController.hasListener) {
-      if (!_connectionReportStreamController.isClosed) {
-        await _connectionReportStreamController.close();
-      }
-    }
-
-    if (_characteristicDataStreamController.hasListener) {
-      if (!_characteristicDataStreamController.isClosed) {
-        await _characteristicDataStreamController.close();
-      }
-    }
-
-    await _characteristicStreamSubscription?.cancel();
-    _characteristicStreamSubscription = null;
-
-    // add delay to solve the following exception on ios
-    // Error unsubscribing from notifications:
-    // PlatformException(reactive_ble_mobile.PluginError:7, The operation couldn’t be completed.
-    // (reactive_ble_mobile.PluginError error 7.), {}, null)
-    await Future.delayed(const Duration(milliseconds: 100));
-
-    print('close _connectionStreamSubscription');
-    await _connectionStreamSubscription?.cancel();
-    await Future.delayed(const Duration(milliseconds: 2000));
-    _connectionStreamSubscription = null;
-  }
-
-  // 透過 1G/1.2G/1.8G 同樣的基本指令, 來取得回傳資料的長度
-  Future<dynamic> _requestDataLength() async {
-    commandIndex = -1;
-    _completer = Completer<dynamic>();
-
-    print('get data from request command 0');
-
-    _writeSetCommandToCharacteristic(_commandCollection[0]);
-    setTimeout(duration: const Duration(seconds: 1), name: 'cmd0');
-
-    try {
-      int length = await _completer.future;
-      cancelTimeout(name: 'cmd0');
-
-      return [true, length];
-    } catch (e) {
-      return [false];
-    }
+    await _bleClient.closeConnectionStream();
   }
 
   Future<int> requestMTU({
     required String deviceId,
     int mtu = 247,
   }) async {
-    final negotiatedMtu = await _ble.requestMtu(deviceId: deviceId, mtu: mtu);
-
-    // 設定 mtu = 247
-    List<dynamic> response = await _requestDataLength();
-    if (response[0]) {
-      // 1G/1.2G data length = 17
-      if (response[1] == 17) {
-        return 23;
-      } else {
-        // 1.8G data length = 181
-        return 244;
-      }
-    } else {
-      return 244;
-    }
-  }
-
-  Future<void> connectToDevice(DiscoveredDevice discoveredDevice) async {
-    Timer connectionTimer =
-        Timer(Duration(seconds: _connectionTimeout), () async {
-      _connectionReportStreamController.add(const ConnectionReport(
-        connectionState: DeviceConnectionState.disconnected,
-        errorMessage: 'disconnected',
-      ));
-
-      await closeScanStream();
-      await closeConnectionStream();
-    });
-
-    _connectionReportStreamController = StreamController<ConnectionReport>();
-    _connectionStreamSubscription = _ble
-        .connectToDevice(
-      id: discoveredDevice.id,
-    )
-        .listen((connectionStateUpdate) async {
-      print('connectionStateUpdateXXXXXX: $connectionStateUpdate');
-      switch (connectionStateUpdate.connectionState) {
-        case DeviceConnectionState.connecting:
-          break;
-        case DeviceConnectionState.connected:
-          connectionTimer.cancel();
-
-          _characteristicDataStreamController =
-              StreamController<Map<DataKey, String>>();
-
-          _qualifiedCharacteristic = QualifiedCharacteristic(
-            serviceId: Uuid.parse(_serviceId),
-            characteristicId: Uuid.parse(_characteristicId),
-            deviceId: discoveredDevice.id,
-          );
-
-          _characteristicStreamSubscription = _ble
-              .subscribeToCharacteristic(_qualifiedCharacteristic)
-              .listen((data) async {
-            List<int> rawData = data;
-            print(commandIndex);
-            print('data length: ${rawData.length}');
-
-            if (commandIndex <= 13) {
-              _parseRawData(rawData);
-            } else if (commandIndex >= 14 && commandIndex <= 29) {
-              _rawLog.addAll(rawData);
-              // 一個 log command 總共會接收 261 bytes, 每一次傳回 16 bytes
-              if (_rawLog.length == _totalBytesPerCommand) {
-                _rawLog.removeRange(_rawLog.length - 2, _rawLog.length);
-                _rawLog.removeRange(0, 3);
-                _parseLog();
-                _rawLog.clear();
-              }
-            } else if (commandIndex >= 30 && commandIndex <= 37) {
-              _rawEvent.addAll(rawData);
-              // 一個 event command 總共會接收 261 bytes, 每一次傳回 16 bytes
-              if (_rawEvent.length == _totalBytesPerCommand) {
-                _rawEvent.removeRange(_rawEvent.length - 2, _rawEvent.length);
-                _rawEvent.removeRange(0, 3);
-                _parseEvent();
-                _rawEvent.clear();
-              }
-            } else if (commandIndex >= 40 && commandIndex <= 43) {
-              _parseSetLocation(rawData);
-            } else if (commandIndex == 44) {
-              _parseSetTGCCableLength(rawData);
-            } else if (commandIndex == 45) {
-              _parseSetLogInterval(rawData);
-            } else if (commandIndex == 46) {
-              _parseSetWorkingMode(rawData);
-            } else if (commandIndex >= 180) {
-              _dsim18parser.parseRawData(
-                  commandIndex: commandIndex,
-                  rawData: rawData,
-                  completer: _completer);
-            }
-          }, onError: (error) {
-            print('lisetn to Characteristic failed');
-          });
-
-          _connectionReportStreamController.add(const ConnectionReport(
-            connectionState: DeviceConnectionState.connected,
-          ));
-
-          break;
-        case DeviceConnectionState.disconnecting:
-        // _connectionReportStreamController.add(const ConnectionReport(
-        //   connectionState: DeviceConnectionState.disconnected,
-        //   errorMessage: 'disconnecting',
-        // ));
-        // break;
-        case DeviceConnectionState.disconnected:
-          _connectionReportStreamController.add(const ConnectionReport(
-            connectionState: DeviceConnectionState.disconnected,
-            errorMessage: 'disconnected',
-          ));
-          break;
-        default:
-          break;
-      }
-    }, onError: (error) {
-      print('Error: $error');
-      _connectionReportStreamController.add(const ConnectionReport(
-        connectionState: DeviceConnectionState.disconnected,
-        errorMessage: 'disconnected',
-      ));
-    });
+    return _bleClient.requestMTU(
+        commandIndex: -1, value: _commandCollection[0], deviceId: deviceId);
   }
 
   void _parseEvent() {
@@ -956,11 +688,12 @@ class DsimRepository {
 
     print('get data from request command 1p8G0');
 
-    _writeSetCommandToCharacteristic(
-        _dsim18parser.command18Collection[commandIndex - 180]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: 'cmd1p8G0');
+    List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18parser.command18Collection[commandIndex - 180]);
+    // setTimeout(
+    //     duration: Duration(seconds: _commandExecutionTimeout),
+    //     name: 'cmd1p8G0');
 
     try {
       var (
@@ -997,8 +730,8 @@ class DsimRepository {
 
     print('get data from request command 1p8G1');
 
-    _writeSetCommandToCharacteristic(
-        _dsim18parser.command18Collection[commandIndex - 180]);
+    // _bleClient.writeSetCommandToCharacteristic(
+    //     _dsim18parser.command18Collection[commandIndex - 180]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: 'cmd1p8G1');
@@ -1122,8 +855,8 @@ class DsimRepository {
 
     print('get data from request command 1p8G2');
 
-    _writeSetCommandToCharacteristic(
-        _dsim18parser.command18Collection[commandIndex - 180]);
+    // _bleClient.writeSetCommandToCharacteristic(
+    //     _dsim18parser.command18Collection[commandIndex - 180]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: 'cmd1p8G2');
@@ -1191,8 +924,8 @@ class DsimRepository {
 
     print('get data from request command 1p8G3');
 
-    _writeSetCommandToCharacteristic(
-        _dsim18parser.command18Collection[commandIndex - 180]);
+    // _bleClient.writeSetCommandToCharacteristic(
+    //     _dsim18parser.command18Collection[commandIndex - 180]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: 'cmd1p8G3');
@@ -1226,8 +959,8 @@ class DsimRepository {
 
     print('get data from request command 1p8GForLogChunk');
 
-    _writeSetCommandToCharacteristic(
-        _dsim18parser.command18Collection[commandIndex - 180]);
+    // _bleClient.writeSetCommandToCharacteristic(
+    //     _dsim18parser.command18Collection[commandIndex - 180]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8GForLogChunk');
@@ -1302,7 +1035,8 @@ class DsimRepository {
 
     print('get data from request command 1p8G_Alarm');
 
-    _writeSetCommandToCharacteristic(_dsim18parser.command18Collection[2]);
+    // _bleClient
+    //     .writeSetCommandToCharacteristic(_dsim18parser.command18Collection[2]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G_Alarm');
@@ -1426,7 +1160,7 @@ class DsimRepository {
       usDataLength: Command18.setMaxTemperatureCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMaxTemperatureCmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setMaxTemperatureCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1463,7 +1197,7 @@ class DsimRepository {
       usDataLength: Command18.setMinTemperatureCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMinTemperatureCmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setMinTemperatureCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1500,7 +1234,7 @@ class DsimRepository {
       usDataLength: Command18.setMaxVoltageCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMaxVoltageCmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setMaxVoltageCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1537,7 +1271,7 @@ class DsimRepository {
       usDataLength: Command18.setMinVoltageCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMinVoltageCmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setMinVoltageCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1574,7 +1308,8 @@ class DsimRepository {
       usDataLength: Command18.setMaxVoltageRippleCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMaxVoltageRippleCmd);
+    // _bleClient
+    //     .writeSetCommandToCharacteristic(Command18.setMaxVoltageRippleCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1611,7 +1346,8 @@ class DsimRepository {
       usDataLength: Command18.setMinVoltageRippleCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMinVoltageRippleCmd);
+    // _bleClient
+    //     .writeSetCommandToCharacteristic(Command18.setMinVoltageRippleCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1648,7 +1384,7 @@ class DsimRepository {
       usDataLength: Command18.setMaxOutputPowerCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMaxOutputPowerCmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setMaxOutputPowerCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1685,7 +1421,7 @@ class DsimRepository {
       usDataLength: Command18.setMinOutputPowerCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMinOutputPowerCmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setMinOutputPowerCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1714,7 +1450,7 @@ class DsimRepository {
       usDataLength: Command18.setReturnIngress2Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setReturnIngress2Cmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setReturnIngress2Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1743,7 +1479,7 @@ class DsimRepository {
       usDataLength: Command18.setReturnIngress3Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setReturnIngress3Cmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setReturnIngress3Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1772,7 +1508,7 @@ class DsimRepository {
       usDataLength: Command18.setReturnIngress4Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setReturnIngress4Cmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setReturnIngress4Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1801,7 +1537,7 @@ class DsimRepository {
       usDataLength: Command18.setTGCCableLengthCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setTGCCableLengthCmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setTGCCableLengthCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1830,7 +1566,7 @@ class DsimRepository {
       usDataLength: Command18.setSplitOptionCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setSplitOptionCmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setSplitOptionCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1864,7 +1600,8 @@ class DsimRepository {
       usDataLength: Command18.setPilotFrequencyModeCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setPilotFrequencyModeCmd);
+    // _bleClient
+    //     .writeSetCommandToCharacteristic(Command18.setPilotFrequencyModeCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1893,7 +1630,7 @@ class DsimRepository {
       usDataLength: Command18.setFowardAGCModeCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setFowardAGCModeCmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setFowardAGCModeCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1922,7 +1659,7 @@ class DsimRepository {
       usDataLength: Command18.setALCModeCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setALCModeCmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setALCModeCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1957,8 +1694,8 @@ class DsimRepository {
       usDataLength: Command18.setFirstChannelLoadingFrequencyCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(
-        Command18.setFirstChannelLoadingFrequencyCmd);
+    //  _bleClient.writeSetCommandToCharacteristic(
+    //     Command18.setFirstChannelLoadingFrequencyCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -1993,8 +1730,8 @@ class DsimRepository {
       usDataLength: Command18.setLastChannelLoadingFrequencyCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(
-        Command18.setLastChannelLoadingFrequencyCmd);
+    //  _bleClient.writeSetCommandToCharacteristic(
+    //     Command18.setLastChannelLoadingFrequencyCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2031,7 +1768,8 @@ class DsimRepository {
       usDataLength: Command18.setFirstChannelLoadingLevelCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setFirstChannelLoadingLevelCmd);
+    //  _bleClient.writeSetCommandToCharacteristic(
+    //     Command18.setFirstChannelLoadingLevelCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2068,7 +1806,8 @@ class DsimRepository {
       usDataLength: Command18.setLastChannelLoadingLevelCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setLastChannelLoadingLevelCmd);
+    //  _bleClient.writeSetCommandToCharacteristic(
+    //     Command18.setLastChannelLoadingLevelCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2103,7 +1842,7 @@ class DsimRepository {
       usDataLength: Command18.setPilotFrequency1Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setPilotFrequency1Cmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setPilotFrequency1Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2138,7 +1877,7 @@ class DsimRepository {
       usDataLength: Command18.setPilotFrequency2Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setPilotFrequency2Cmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setPilotFrequency2Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2167,8 +1906,8 @@ class DsimRepository {
       usDataLength: Command18.setInputPilotLowFrequencyAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(
-        Command18.setInputPilotLowFrequencyAlarmStateCmd);
+    // _bleClient.writeSetCommandToCharacteristic(
+    //     Command18.setInputPilotLowFrequencyAlarmStateCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2198,8 +1937,8 @@ class DsimRepository {
           Command18.setInputPilotHighFrequencyAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(
-        Command18.setInputPilotHighFrequencyAlarmStateCmd);
+    // _bleClient.writeSetCommandToCharacteristic(
+    //     Command18.setInputPilotHighFrequencyAlarmStateCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2229,8 +1968,8 @@ class DsimRepository {
           Command18.setOutputPilotLowFrequencyAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(
-        Command18.setOutputPilotLowFrequencyAlarmStateCmd);
+    //  _bleClient.writeSetCommandToCharacteristic(
+    //     Command18.setOutputPilotLowFrequencyAlarmStateCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2260,8 +1999,8 @@ class DsimRepository {
           Command18.setOutputPilotHighFrequencyAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(
-        Command18.setOutputPilotHighFrequencyAlarmStateCmd);
+    // _bleClient.writeSetCommandToCharacteristic(
+    //     Command18.setOutputPilotHighFrequencyAlarmStateCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2290,7 +2029,8 @@ class DsimRepository {
       usDataLength: Command18.setTemperatureAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setTemperatureAlarmStateCmd);
+    // _bleClient
+    //     .writeSetCommandToCharacteristic(Command18.setTemperatureAlarmStateCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2319,7 +2059,8 @@ class DsimRepository {
       usDataLength: Command18.setVoltageAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setVoltageAlarmStateCmd);
+    // _bleClient
+    //     .writeSetCommandToCharacteristic(Command18.setVoltageAlarmStateCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2348,7 +2089,8 @@ class DsimRepository {
       usDataLength: Command18.setSplitOptionAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setSplitOptionAlarmStateCmd);
+    // _bleClient
+    //     .writeSetCommandToCharacteristic(Command18.setSplitOptionAlarmStateCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2377,7 +2119,8 @@ class DsimRepository {
       usDataLength: Command18.setVoltageRippleAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setVoltageRippleAlarmStateCmd);
+    //  _bleClient.writeSetCommandToCharacteristic(
+    //     Command18.setVoltageRippleAlarmStateCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2406,7 +2149,8 @@ class DsimRepository {
       usDataLength: Command18.setRFOutputPowerAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setRFOutputPowerAlarmStateCmd);
+    //  _bleClient.writeSetCommandToCharacteristic(
+    //     Command18.setRFOutputPowerAlarmStateCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2464,7 +2208,7 @@ class DsimRepository {
       usDataLength: Command18.setLocationCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setLocationCmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setLocationCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2493,7 +2237,7 @@ class DsimRepository {
       usDataLength: Command18.setLogIntervalCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setLogIntervalCmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setLogIntervalCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2530,7 +2274,8 @@ class DsimRepository {
       usDataLength: Command18.setForwardInputAttenuationCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setForwardInputAttenuationCmd);
+    //  _bleClient.writeSetCommandToCharacteristic(
+    //     Command18.setForwardInputAttenuationCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2567,7 +2312,8 @@ class DsimRepository {
       usDataLength: Command18.setForwardInputEqualizerCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setForwardInputEqualizerCmd);
+    // _bleClient
+    //     .writeSetCommandToCharacteristic(Command18.setForwardInputEqualizerCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2604,7 +2350,7 @@ class DsimRepository {
       usDataLength: Command18.setDSVVA2Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setDSVVA2Cmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setDSVVA2Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2641,7 +2387,7 @@ class DsimRepository {
       usDataLength: Command18.setDSSlope2Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setDSSlope2Cmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setDSSlope2Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2678,7 +2424,8 @@ class DsimRepository {
       usDataLength: Command18.setReturnInputAttenuation2Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setReturnInputAttenuation2Cmd);
+    //  _bleClient.writeSetCommandToCharacteristic(
+    //     Command18.setReturnInputAttenuation2Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2715,7 +2462,8 @@ class DsimRepository {
       usDataLength: Command18.setReturnOutputEqualizerCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setReturnOutputEqualizerCmd);
+    // _bleClient
+    //     .writeSetCommandToCharacteristic(Command18.setReturnOutputEqualizerCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2752,7 +2500,7 @@ class DsimRepository {
       usDataLength: Command18.setDSVVA3Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setDSVVA3Cmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setDSVVA3Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2789,7 +2537,7 @@ class DsimRepository {
       usDataLength: Command18.setDSVVA4Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setDSVVA4Cmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setDSVVA4Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2826,7 +2574,8 @@ class DsimRepository {
       usDataLength: Command18.setReturnOutputAttenuationCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setReturnOutputAttenuationCmd);
+    //  _bleClient.writeSetCommandToCharacteristic(
+    //     Command18.setReturnOutputAttenuationCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2863,7 +2612,8 @@ class DsimRepository {
       usDataLength: Command18.setReturnInputAttenuation3Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setReturnInputAttenuation3Cmd);
+    //  _bleClient.writeSetCommandToCharacteristic(
+    //     Command18.setReturnInputAttenuation3Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2900,7 +2650,8 @@ class DsimRepository {
       usDataLength: Command18.setReturnInputAttenuation4Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setReturnInputAttenuation4Cmd);
+    //  _bleClient.writeSetCommandToCharacteristic(
+    //     Command18.setReturnInputAttenuation4Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2937,7 +2688,7 @@ class DsimRepository {
       usDataLength: Command18.setUSTGCCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setUSTGCCmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setUSTGCCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -2974,7 +2725,7 @@ class DsimRepository {
       usDataLength: Command18.setCoordinatesCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setCoordinatesCmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setCoordinatesCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -3029,7 +2780,8 @@ class DsimRepository {
       usDataLength: Command18.setTransmitDelayTimeCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setTransmitDelayTimeCmd);
+    // _bleClient
+    //     .writeSetCommandToCharacteristic(Command18.setTransmitDelayTimeCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -3075,7 +2827,7 @@ class DsimRepository {
       usDataLength: Command18.setNowDateTimeCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setNowDateTimeCmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command18.setNowDateTimeCmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: '1p8G$commandIndex');
@@ -3093,21 +2845,21 @@ class DsimRepository {
     List<dynamic> resultOf1p8G0 = await requestCommand1p8G0();
 
     if (resultOf1p8G0[0]) {
-      _characteristicDataStreamController
-          .add(Map<DataKey, String>.from(resultOf1p8G0[1]));
+      // _characteristicDataStreamController
+      //     .add(Map<DataKey, String>.from(resultOf1p8G0[1]));
     }
 
     List<dynamic> resultOf1p8G1 = await requestCommand1p8G1();
 
     if (resultOf1p8G1[0]) {
-      _characteristicDataStreamController
-          .add(Map<DataKey, String>.from(resultOf1p8G1[1]));
+      // _characteristicDataStreamController
+      // .add(Map<DataKey, String>.from(resultOf1p8G1[1]));
     }
 
     List<dynamic> resultOf1p8G2 = await requestCommand1p8G2();
     if (resultOf1p8G2[0]) {
-      _characteristicDataStreamController
-          .add(Map<DataKey, String>.from(resultOf1p8G2[1]));
+      // _characteristicDataStreamController
+      //     .add(Map<DataKey, String>.from(resultOf1p8G2[1]));
     }
   }
 
@@ -3117,7 +2869,7 @@ class DsimRepository {
 
     print('get data from request command 0');
 
-    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    //_bleClient.writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd0');
 
@@ -3136,7 +2888,7 @@ class DsimRepository {
     _completer = Completer<dynamic>();
 
     print('get data from request command 1');
-    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    //_bleClient.writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd1');
 
@@ -3155,7 +2907,7 @@ class DsimRepository {
     _completer = Completer<dynamic>();
 
     print('get data from request command 2');
-    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    //_bleClient.writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd2');
 
@@ -3174,7 +2926,7 @@ class DsimRepository {
     _completer = Completer<dynamic>();
 
     print('get data from request command 3');
-    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    //_bleClient.writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd3');
 
@@ -3195,7 +2947,7 @@ class DsimRepository {
     _completer = Completer<dynamic>();
 
     print('get data from request command 4');
-    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    //_bleClient.writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd4');
 
@@ -3232,7 +2984,7 @@ class DsimRepository {
     _completer = Completer<dynamic>();
 
     print('get data from request command 5');
-    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    //_bleClient.writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd5');
 
@@ -3284,7 +3036,7 @@ class DsimRepository {
     _completer = Completer<dynamic>();
 
     print('get data from request command 6');
-    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    //_bleClient.writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd6');
 
@@ -3318,7 +3070,8 @@ class DsimRepository {
       _completer = Completer<dynamic>();
 
       print('get data from request command $i');
-      _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+      // _bleClient
+      //     .writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
       setTimeout(
           duration: Duration(seconds: _commandExecutionTimeout),
           name: 'cmd9 to 12');
@@ -3350,7 +3103,7 @@ class DsimRepository {
     print('get data from request command $chunkIndex');
     // _stopwatch.reset();
     // _stopwatch.start();
-    _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+    //_bleClient.writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: 'cmd14 to 29');
@@ -3412,7 +3165,8 @@ class DsimRepository {
       print('get data from request command $i');
       // _stopwatch.reset();
       // _stopwatch.start();
-      _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+      // _bleClient
+      //     .writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
       setTimeout(
           duration: Duration(seconds: _commandExecutionTimeout),
           name: 'cmd14 to 29');
@@ -3471,7 +3225,8 @@ class DsimRepository {
       _completer = Completer<dynamic>();
 
       print('get data from request command $i');
-      _writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
+      // _bleClient
+      //     .writeSetCommandToCharacteristic(_commandCollection[commandIndex]);
       setTimeout(
           duration: Duration(seconds: _commandExecutionTimeout),
           name: 'cmd30 to 37');
@@ -3557,9 +3312,9 @@ class DsimRepository {
           (rawData[5] == 0x06)) {
         print('Location09 Set');
         commandIndex = 41;
-        _writeSetCommandToCharacteristic(
-          Command.setLocACmd,
-        );
+        // _bleClient.writeSetCommandToCharacteristic(
+        //   Command.setLocACmd,
+        // );
       } else {}
     } else if (commandIndex == 41) {
       if ((rawData[0] == 0xB0) &&
@@ -3570,9 +3325,9 @@ class DsimRepository {
           (rawData[5] == 0x06)) {
         print('Location0A Set');
         commandIndex = 42;
-        _writeSetCommandToCharacteristic(
-          Command.setLocBCmd,
-        );
+        // _bleClient.writeSetCommandToCharacteristic(
+        //   Command.setLocBCmd,
+        // );
       } else {}
     } else if (commandIndex == 42) {
       if ((rawData[0] == 0xB0) &&
@@ -3583,9 +3338,9 @@ class DsimRepository {
           (rawData[5] == 0x06)) {
         print('Location0B Set');
         commandIndex = 43;
-        _writeSetCommandToCharacteristic(
-          Command.setLocCCmd,
-        );
+        // _bleClient.writeSetCommandToCharacteristic(
+        //   Command.setLocCCmd,
+        // );
       } else {}
     } else if (commandIndex == 43) {
       if ((rawData[0] == 0xB0) &&
@@ -3679,9 +3434,9 @@ class DsimRepository {
     endIndex = 43;
 
     print('set location');
-    _writeSetCommandToCharacteristic(
-      Command.setLoc9Cmd,
-    );
+    // _bleClient.writeSetCommandToCharacteristic(
+    //   Command.setLoc9Cmd,
+    // );
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: 'cmd set location');
@@ -3696,8 +3451,8 @@ class DsimRepository {
 
         if (resultOfGetLocation[0]) {
           if (location == resultOfGetLocation[1]) {
-            _characteristicDataStreamController
-                .add({DataKey.location: resultOfGetLocation[1]});
+            // _characteristicDataStreamController
+            //     .add({DataKey.location: resultOfGetLocation[1]});
             _location = resultOfGetLocation[1];
             return true;
           } else {
@@ -3736,7 +3491,7 @@ class DsimRepository {
 
     commandIndex = 44;
     endIndex = 44;
-    _writeSetCommandToCharacteristic(Command.set04Cmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command.set04Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: 'cmd set tgc cable length');
@@ -3752,11 +3507,11 @@ class DsimRepository {
 
         if (resultOfCommand4[0] && resultOfCommand5[0]) {
           if (tgcCableLength == resultOfCommand4[4]) {
-            _characteristicDataStreamController
-                .add({DataKey.tgcCableLength: resultOfCommand4[4]});
+            // _characteristicDataStreamController
+            //     .add({DataKey.tgcCableLength: resultOfCommand4[4]});
 
-            _characteristicDataStreamController
-                .add({DataKey.workingMode: resultOfCommand5[1]});
+            // _characteristicDataStreamController
+            //     .add({DataKey.workingMode: resultOfCommand5[1]});
 
             _tgcCableLength = resultOfCommand4[4];
             _workingMode = resultOfCommand5[1];
@@ -3785,7 +3540,7 @@ class DsimRepository {
 
     commandIndex = 45;
     endIndex = 45;
-    _writeSetCommandToCharacteristic(Command.set04Cmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command.set04Cmd);
     setTimeout(
         duration: Duration(seconds: _commandExecutionTimeout),
         name: 'cmd set log interval');
@@ -3800,8 +3555,8 @@ class DsimRepository {
 
         if (result[0]) {
           if (logIntervalId.toString() == result[1]) {
-            _characteristicDataStreamController
-                .add({DataKey.logInterval: result[1]});
+            // _characteristicDataStreamController
+            //     .add({DataKey.logInterval: result[1]});
             _logIntervalId = int.parse(result[1]);
             return true;
           } else {
@@ -3860,7 +3615,7 @@ class DsimRepository {
 
     commandIndex = 46;
     endIndex = 46;
-    _writeSetCommandToCharacteristic(Command.set04Cmd);
+    // _bleClient.writeSetCommandToCharacteristic(Command.set04Cmd);
 
     if (_workingModeId == 1) {
       // AGC
@@ -3883,12 +3638,12 @@ class DsimRepository {
 
         if (result[0]) {
           if (workingMode == result[1]) {
-            _characteristicDataStreamController
-                .add({DataKey.workingMode: result[1]});
-            _characteristicDataStreamController
-                .add({DataKey.currentPilot: result[2]});
-            _characteristicDataStreamController
-                .add({DataKey.currentPilotMode: result[3]});
+            // _characteristicDataStreamController
+            //     .add({DataKey.workingMode: result[1]});
+            // _characteristicDataStreamController
+            //     .add({DataKey.currentPilot: result[2]});
+            // _characteristicDataStreamController
+            //     .add({DataKey.currentPilotMode: result[3]});
 
             _workingMode = result[1];
             _currentAttenuation = currentAttenuation.toString();
@@ -3929,27 +3684,10 @@ class DsimRepository {
     }
   }
 
-  // iOS 跟 Android 的 set command 方式不一樣
-  Future<void> _writeSetCommandToCharacteristic(List<int> value) async {
-    try {
-      if (Platform.isAndroid) {
-        await _ble.writeCharacteristicWithResponse(
-          _qualifiedCharacteristic,
-          value: value,
-        );
-      } else if (Platform.isIOS) {
-        await _ble.writeCharacteristicWithoutResponse(
-          _qualifiedCharacteristic,
-          value: value,
-        );
-      } else {}
-    } catch (e) {
-      if (!_completer.isCompleted) {
-        _completer.completeError('Write command failed');
-        print('Write command failed');
-      }
-    }
-  }
+  // // iOS 跟 Android 的 set command 方式不一樣
+  // Future<void> writeSetCommandToCharacteristic(List<int> value) async {
+  //   await _bleClient.writeSetCommandToCharacteristic(value);
+  // }
 
   Future<dynamic> exportRecords() async {
     Excel excel = Excel.createExcel();
