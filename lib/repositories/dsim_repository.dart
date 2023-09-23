@@ -42,16 +42,6 @@ class Log1p8G {
   final int voltageRipple;
 }
 
-class RFInOut {
-  const RFInOut({
-    required this.input,
-    required this.output,
-  });
-
-  final double input;
-  final double output;
-}
-
 class Log {
   const Log({
     required this.dateTime,
@@ -684,37 +674,26 @@ class DsimRepository {
 
   Future<dynamic> requestCommand1p8G0() async {
     commandIndex = 180;
-    _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G0');
 
-    List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: _dsim18parser.command18Collection[commandIndex - 180]);
-    // setTimeout(
-    //     duration: Duration(seconds: _commandExecutionTimeout),
-    //     name: 'cmd1p8G0');
-
     try {
-      var (
-        partName,
-        partNo,
-        serialNumber,
-        firmwareVersion,
-        mfgDate,
-        coordinate
-      ) = await _completer.future;
-      cancelTimeout(name: '1p8G0');
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18parser.command18Collection[commandIndex - 180],
+      );
+
+      A1P8G0 a1p8g0 = _dsim18parser.parseA1P8G0(rawData);
 
       return [
         true,
         <DataKey, String>{
-          DataKey.partName: partName,
-          DataKey.partNo: partNo,
-          DataKey.serialNumber: serialNumber,
-          DataKey.firmwareVersion: firmwareVersion,
-          DataKey.mfgDate: mfgDate,
-          DataKey.coordinates: coordinate,
+          DataKey.partName: a1p8g0.partName,
+          DataKey.partNo: a1p8g0.partNo,
+          DataKey.serialNumber: a1p8g0.serialNumber,
+          DataKey.firmwareVersion: a1p8g0.firmwareVersion,
+          DataKey.mfgDate: a1p8g0.mfgDate,
+          DataKey.coordinates: a1p8g0.coordinate,
         },
       ];
     } catch (e) {
@@ -728,118 +707,68 @@ class DsimRepository {
     commandIndex = 181;
     _completer = Completer<dynamic>();
 
-    print('get data from request command 1p8G1');
-
-    // _bleClient.writeSetCommandToCharacteristic(
-    //     _dsim18parser.command18Collection[commandIndex - 180]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: 'cmd1p8G1');
-
     try {
-      var (
-        minTemperatureC,
-        maxTemperatureC,
-        minTemperatureF,
-        maxTemperatureF,
-        minVoltage,
-        maxVoltage,
-        minVoltageRipple,
-        maxVoltageRipple,
-        minRFOutputPower,
-        maxRFOutputPower,
-        ingressSetting2,
-        ingressSetting3,
-        ingressSetting4,
-        tgcCableLength,
-        splitOption,
-        pilotFrequencyMode,
-        agcMode,
-        alcMode,
-        firstChannelLoadingFrequency,
-        lastChannelLoadingFrequency,
-        firstChannelLoadingLevel,
-        lastChannelLoadingLevel,
-        pilotFrequency1,
-        pilotFrequency2,
-        pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState,
-        rfOutputPilotLowFrequencyAlarmState,
-        rfOutputPilotHighFrequencyAlarmState,
-        temperatureAlarmState,
-        voltageAlarmState,
-        splitOptionAlarmState,
-        voltageRippleAlarmState,
-        rfOutputPowerAlarmState,
-        location,
-        logInterval,
-        inputAttenuation,
-        inputEqualizer,
-        dsVVA2,
-        dsSlope2,
-        inputAttenuation2,
-        outputEqualizer,
-        dsVVA3,
-        dsVVA4,
-        outputAttenuation,
-        inputAttenuation3,
-        inputAttenuation4,
-        usTGC,
-      ) = await _completer.future;
-      cancelTimeout(name: '1p8G1');
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18parser.command18Collection[commandIndex - 180],
+      );
+
+      A1P8G1 a1p8g1 = _dsim18parser.parseA1P8G1(rawData);
 
       return [
         true,
         <DataKey, String>{
-          DataKey.minTemperatureC: minTemperatureC,
-          DataKey.maxTemperatureC: maxTemperatureC,
-          DataKey.minTemperatureF: minTemperatureF,
-          DataKey.maxTemperatureF: maxTemperatureF,
-          DataKey.minVoltage: minVoltage,
-          DataKey.maxVoltage: maxVoltage,
-          DataKey.minVoltageRipple: minVoltageRipple,
-          DataKey.maxVoltageRipple: maxVoltageRipple,
-          DataKey.minRFOutputPower: minRFOutputPower,
-          DataKey.maxRFOutputPower: maxRFOutputPower,
-          DataKey.ingressSetting2: ingressSetting2,
-          DataKey.ingressSetting3: ingressSetting3,
-          DataKey.ingressSetting4: ingressSetting4,
-          DataKey.tgcCableLength: tgcCableLength,
-          DataKey.splitOption: splitOption,
-          DataKey.pilotFrequencyMode: pilotFrequencyMode,
-          DataKey.agcMode: agcMode,
-          DataKey.alcMode: alcMode,
-          DataKey.firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-          DataKey.lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-          DataKey.firstChannelLoadingLevel: firstChannelLoadingLevel,
-          DataKey.lastChannelLoadingLevel: lastChannelLoadingLevel,
-          DataKey.pilotFrequency1: pilotFrequency1,
-          DataKey.pilotFrequency2: pilotFrequency2,
-          DataKey.pilotFrequency1AlarmState: pilotFrequency1AlarmState,
-          DataKey.pilotFrequency2AlarmState: pilotFrequency2AlarmState,
+          DataKey.minTemperatureC: a1p8g1.minTemperatureC,
+          DataKey.maxTemperatureC: a1p8g1.maxTemperatureC,
+          DataKey.minTemperatureF: a1p8g1.minTemperatureF,
+          DataKey.maxTemperatureF: a1p8g1.maxTemperatureF,
+          DataKey.minVoltage: a1p8g1.minVoltage,
+          DataKey.maxVoltage: a1p8g1.maxVoltage,
+          DataKey.minVoltageRipple: a1p8g1.minVoltageRipple,
+          DataKey.maxVoltageRipple: a1p8g1.maxVoltageRipple,
+          DataKey.minRFOutputPower: a1p8g1.minRFOutputPower,
+          DataKey.maxRFOutputPower: a1p8g1.maxRFOutputPower,
+          DataKey.ingressSetting2: a1p8g1.ingressSetting2,
+          DataKey.ingressSetting3: a1p8g1.ingressSetting3,
+          DataKey.ingressSetting4: a1p8g1.ingressSetting4,
+          DataKey.tgcCableLength: a1p8g1.tgcCableLength,
+          DataKey.splitOption: a1p8g1.splitOption,
+          DataKey.pilotFrequencyMode: a1p8g1.pilotFrequencyMode,
+          DataKey.agcMode: a1p8g1.agcMode,
+          DataKey.alcMode: a1p8g1.alcMode,
+          DataKey.firstChannelLoadingFrequency:
+              a1p8g1.firstChannelLoadingFrequency,
+          DataKey.lastChannelLoadingFrequency:
+              a1p8g1.lastChannelLoadingFrequency,
+          DataKey.firstChannelLoadingLevel: a1p8g1.firstChannelLoadingLevel,
+          DataKey.lastChannelLoadingLevel: a1p8g1.lastChannelLoadingLevel,
+          DataKey.pilotFrequency1: a1p8g1.pilotFrequency1,
+          DataKey.pilotFrequency2: a1p8g1.pilotFrequency2,
+          DataKey.pilotFrequency1AlarmState: a1p8g1.pilotFrequency1AlarmState,
+          DataKey.pilotFrequency2AlarmState: a1p8g1.pilotFrequency2AlarmState,
           DataKey.rfOutputPilotLowFrequencyAlarmState:
-              rfOutputPilotLowFrequencyAlarmState,
+              a1p8g1.rfOutputPilotLowFrequencyAlarmState,
           DataKey.rfOutputPilotHighFrequencyAlarmState:
-              rfOutputPilotHighFrequencyAlarmState,
-          DataKey.temperatureAlarmState: temperatureAlarmState,
-          DataKey.voltageAlarmState: voltageAlarmState,
-          DataKey.splitOptionAlarmState: splitOptionAlarmState,
-          DataKey.voltageRippleAlarmState: voltageRippleAlarmState,
-          DataKey.rfOutputPowerAlarmState: rfOutputPowerAlarmState,
-          DataKey.location: location,
-          DataKey.logInterval: logInterval,
-          DataKey.inputAttenuation: inputAttenuation,
-          DataKey.inputEqualizer: inputEqualizer,
-          DataKey.dsVVA2: dsVVA2,
-          DataKey.dsSlope2: dsSlope2,
-          DataKey.inputAttenuation2: inputAttenuation2,
-          DataKey.outputEqualizer: outputEqualizer,
-          DataKey.dsVVA3: dsVVA3,
-          DataKey.dsVVA4: dsVVA4,
-          DataKey.outputAttenuation: outputAttenuation,
-          DataKey.inputAttenuation3: inputAttenuation3,
-          DataKey.inputAttenuation4: inputAttenuation4,
-          DataKey.usTGC: usTGC,
+              a1p8g1.rfOutputPilotHighFrequencyAlarmState,
+          DataKey.temperatureAlarmState: a1p8g1.temperatureAlarmState,
+          DataKey.voltageAlarmState: a1p8g1.voltageAlarmState,
+          DataKey.splitOptionAlarmState: a1p8g1.splitOptionAlarmState,
+          DataKey.voltageRippleAlarmState: a1p8g1.voltageRippleAlarmState,
+          DataKey.rfOutputPowerAlarmState: a1p8g1.outputPowerAlarmState,
+          DataKey.location: a1p8g1.location,
+          DataKey.logInterval: a1p8g1.logInterval,
+          DataKey.inputAttenuation: a1p8g1.inputAttenuation,
+          DataKey.inputEqualizer: a1p8g1.inputEqualizer,
+          DataKey.dsVVA2: a1p8g1.dsVVA2,
+          DataKey.dsSlope2: a1p8g1.dsSlope2,
+          DataKey.inputAttenuation2: a1p8g1.inputAttenuation2,
+          DataKey.outputEqualizer: a1p8g1.outputEqualizer,
+          DataKey.dsVVA3: a1p8g1.dsVVA3,
+          DataKey.dsVVA4: a1p8g1.dsVVA4,
+          DataKey.outputAttenuation: a1p8g1.outputAttenuation,
+          DataKey.inputAttenuation3: a1p8g1.inputAttenuation3,
+          DataKey.inputAttenuation4: a1p8g1.inputAttenuation4,
+          DataKey.usTGC: a1p8g1.usTGC,
         }
       ];
     } catch (e) {
@@ -853,62 +782,39 @@ class DsimRepository {
     commandIndex = 182;
     _completer = Completer<dynamic>();
 
-    print('get data from request command 1p8G2');
-
-    // _bleClient.writeSetCommandToCharacteristic(
-    //     _dsim18parser.command18Collection[commandIndex - 180]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: 'cmd1p8G2');
-
     try {
-      var (
-        currentTemperatureC,
-        currentTemperatureF,
-        currentVoltage,
-        currentVoltageRipple,
-        currentRFInputPower,
-        currentRFOutputPower,
-        currentWorkingMode,
-        currentDetectedSplitOption,
-        unitStatusAlarmSeverity,
-        rfInputPilotLowFrequencyAlarmSeverity,
-        rfInputPilotHighFrequencyAlarmSeverity,
-        rfOutputPilotLowFrequencyAlarmSeverity,
-        rfOutputPilotHighFrequencyAlarmSeverity,
-        temperatureAlarmSeverity,
-        voltageAlarmSeverity,
-        splitOptionAlarmSeverity,
-        voltageRippleAlarmSeverity,
-        outputPowerAlarmSeverity,
-      ) = await _completer.future;
-      cancelTimeout(name: '1p8G2');
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18parser.command18Collection[commandIndex - 180],
+      );
+
+      A1P8G2 a1p8g2 = _dsim18parser.parseA1P8G2(rawData);
 
       return [
         true,
         <DataKey, String>{
-          DataKey.currentTemperatureC: currentTemperatureC,
-          DataKey.currentTemperatureF: currentTemperatureF,
-          DataKey.currentVoltage: currentVoltage,
-          DataKey.currentVoltageRipple: currentVoltageRipple,
-          DataKey.currentRFInputPower: currentRFInputPower,
-          DataKey.currentRFOutputPower: currentRFOutputPower,
-          DataKey.currentWorkingMode: currentWorkingMode,
-          DataKey.currentDetectedSplitOption: currentDetectedSplitOption,
-          DataKey.unitStatusAlarmSeverity: unitStatusAlarmSeverity,
+          DataKey.currentTemperatureC: a1p8g2.currentTemperatureC,
+          DataKey.currentTemperatureF: a1p8g2.currentTemperatureF,
+          DataKey.currentVoltage: a1p8g2.currentVoltage,
+          DataKey.currentVoltageRipple: a1p8g2.currentVoltageRipple,
+          DataKey.currentRFInputPower: a1p8g2.currentRFInputPower,
+          DataKey.currentRFOutputPower: a1p8g2.currentRFOutputPower,
+          DataKey.currentWorkingMode: a1p8g2.currentWorkingMode,
+          DataKey.currentDetectedSplitOption: a1p8g2.currentDetectedSplitOption,
+          DataKey.unitStatusAlarmSeverity: a1p8g2.unitStatusAlarmSeverity,
           DataKey.rfInputPilotLowFrequencyAlarmSeverity:
-              rfInputPilotLowFrequencyAlarmSeverity,
+              a1p8g2.rfInputPilotLowFrequencyAlarmSeverity,
           DataKey.rfInputPilotHighFrequencyAlarmSeverity:
-              rfInputPilotHighFrequencyAlarmSeverity,
+              a1p8g2.rfInputPilotHighFrequencyAlarmSeverity,
           DataKey.rfOutputPilotLowFrequencyAlarmSeverity:
-              rfOutputPilotLowFrequencyAlarmSeverity,
+              a1p8g2.rfOutputPilotLowFrequencyAlarmSeverity,
           DataKey.rfOutputPilotHighFrequencyAlarmSeverity:
-              rfOutputPilotHighFrequencyAlarmSeverity,
-          DataKey.temperatureAlarmSeverity: temperatureAlarmSeverity,
-          DataKey.voltageAlarmSeverity: voltageAlarmSeverity,
-          DataKey.splitOptionAlarmSeverity: splitOptionAlarmSeverity,
-          DataKey.voltageRippleAlarmSeverity: voltageRippleAlarmSeverity,
-          DataKey.outputPowerAlarmSeverity: outputPowerAlarmSeverity,
+              a1p8g2.rfOutputPilotHighFrequencyAlarmSeverity,
+          DataKey.temperatureAlarmSeverity: a1p8g2.temperatureAlarmSeverity,
+          DataKey.voltageAlarmSeverity: a1p8g2.voltageAlarmSeverity,
+          DataKey.splitOptionAlarmSeverity: a1p8g2.splitOptionAlarmSeverity,
+          DataKey.voltageRippleAlarmSeverity: a1p8g2.voltageRippleAlarmSeverity,
+          DataKey.outputPowerAlarmSeverity: a1p8g2.outputPowerAlarmSeverity,
         }
       ];
     } catch (e) {
@@ -924,15 +830,13 @@ class DsimRepository {
 
     print('get data from request command 1p8G3');
 
-    // _bleClient.writeSetCommandToCharacteristic(
-    //     _dsim18parser.command18Collection[commandIndex - 180]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: 'cmd1p8G3');
-
     try {
-      var rfInOuts = await _completer.future;
-      cancelTimeout(name: '1p8G3');
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18parser.command18Collection[commandIndex - 180],
+      );
+
+      List<RFInOut> rfInOuts = _dsim18parser.parseRFInOut(rawData);
 
       return [
         true,

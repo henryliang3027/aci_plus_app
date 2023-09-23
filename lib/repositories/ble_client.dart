@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:dsim_app/core/command.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart' as GPS;
@@ -55,13 +56,15 @@ class BLEClient {
 
   late Completer<dynamic> _completer;
 
-  final List<List<int>> _commandCollection = [];
   int _currentCommandIndex = 0;
   int _endIndex = 37;
 
   final int _commandExecutionTimeout = 10; // s
   final int _agcWorkingModeSettingTimeout = 40; // s
   Timer? _timeoutTimer;
+
+  // 1p8G variables
+  List<int> _rawRFInOut = [];
 
   Future<bool> checkBluetoothEnabled() async {
     // 要求定位與藍芽存取權
@@ -180,12 +183,33 @@ class BLEClient {
             print('data length: ${rawData.length}');
 
             if (_currentCommandIndex <= 13) {
+              cancelTimeout(name: 'cmd $_currentCommandIndex');
               if (!_completer.isCompleted) {
                 _completer.complete(rawData);
               }
-            } else if (_currentCommandIndex >= 180) {
+            } else if (_currentCommandIndex >= 180 &&
+                _currentCommandIndex <= 182) {
+              cancelTimeout(name: 'cmd $_currentCommandIndex');
               if (!_completer.isCompleted) {
                 _completer.complete(rawData);
+              }
+            } else if (_currentCommandIndex == 183) {
+              List<int> header = [0xB0, 0x03, 0x00];
+              if (listEquals(rawData.sublist(0, 3), header)) {
+                _rawRFInOut.clear();
+              }
+
+              _rawRFInOut.addAll(rawData);
+              print(_rawRFInOut.length);
+
+              if (_rawRFInOut.length == 1029) {
+                _rawRFInOut.removeRange(
+                    _rawRFInOut.length - 2, _rawRFInOut.length);
+                _rawRFInOut.removeRange(0, 3);
+                cancelTimeout(name: 'cmd $_currentCommandIndex');
+                if (!_completer.isCompleted) {
+                  _completer.complete(_rawRFInOut);
+                }
               }
             }
 

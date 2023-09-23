@@ -401,8 +401,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
 
     // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
-    await _dsimRepository.set1p8GNowDateTime();
-    await _dsimRepository.set1p8GTransmitDelayTime();
+    // await _dsimRepository.set1p8GNowDateTime();
+    // await _dsimRepository.set1p8GTransmitDelayTime();
 
     Map<DataKey, String> newCharacteristicData = {};
 

@@ -6,8 +6,8 @@ import 'package:flutter/services.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  double screenWidth =
-      WidgetsBinding.instance.platformDispatcher.views.first.physicalSize.width;
+  double screenWidth = WidgetsBinding
+      .instance.platformDispatcher.views.first.physicalSize.shortestSide;
 
   if (screenWidth <= 1290) {
     SystemChrome.setPreferredOrientations([
