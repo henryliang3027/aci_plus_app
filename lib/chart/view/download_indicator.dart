@@ -75,7 +75,6 @@ class _DownloadIndicatorFormState extends State<DownloadIndicatorForm>
             );
             setState(() {});
           }
-          isSuccessful = true;
         } else {
           chunckIndex = 10;
           if (mounted) {
@@ -90,6 +89,7 @@ class _DownloadIndicatorFormState extends State<DownloadIndicatorForm>
         }
       } else {
         isSuccessful = false;
+        break;
       }
     }
 
