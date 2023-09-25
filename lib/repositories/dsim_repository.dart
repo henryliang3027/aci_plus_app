@@ -849,12 +849,6 @@ class DsimRepository {
     }
   }
 
-  Future<dynamic> testForLogChunk(int chunkIndex) async {
-    await Future.delayed(Duration(seconds: 1));
-
-    return [true, true];
-  }
-
   // commandIndex range from 184 to 193;
   // commandIndex = 184 時獲取最新的1024筆Log的統計資料跟 log
   Future<dynamic> requestCommand1p8GForLogChunk(int chunkIndex) async {
