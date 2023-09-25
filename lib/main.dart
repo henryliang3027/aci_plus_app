@@ -1,28 +1,13 @@
 import 'package:dsim_app/app.dart';
+import 'package:dsim_app/core/utils.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:dsim_app/repositories/unit_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  double screenWidth =
-      WidgetsBinding.instance.platformDispatcher.views.first.physicalSize.width;
 
-  if (screenWidth <= 1290) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-  } else {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
-  }
-  print('width: $screenWidth');
+  setPreferredOrientation();
 
   runApp(App(
     dsimRepository: DsimRepository(),

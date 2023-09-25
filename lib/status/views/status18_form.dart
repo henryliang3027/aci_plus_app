@@ -168,7 +168,7 @@ class _WorkingModeCard extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
-        currentWorkingMode,
+        currentWorkingMode.isEmpty ? 'N/A' : currentWorkingMode,
         style: TextStyle(
           fontSize: fontSize,
           // color: currentWorkingModeColor(
@@ -294,7 +294,7 @@ class _SplitOptionCard extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
-        currentSplitOption,
+        currentSplitOption.isEmpty ? 'N/A' : currentSplitOption,
         style: TextStyle(
           fontSize: fontSize,
           color: _getCurrentValueColor(
@@ -351,6 +351,7 @@ class _SplitOptionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, String> types = const {
+      '0': 'N/A',
       '1': '204/258 MHz',
       '2': '300/372 MHz',
       '3': '396/492 MHz',
@@ -363,7 +364,7 @@ class _SplitOptionCard extends StatelessWidget {
           state.characteristicData[DataKey.currentDetectedSplitOption] ?? '';
 
       String splitOption =
-          currentSplitOption == '0' ? 'N/A' : types[currentSplitOption]!;
+          currentSplitOption == '' ? 'N/A' : types[currentSplitOption] ?? 'N/A';
 
       String splitOptionAlarmState =
           state.characteristicData[DataKey.splitOptionAlarmState] ?? '1';
@@ -432,7 +433,7 @@ class _TemperatureCard extends StatelessWidget {
               );
       } else if (loadingStatus == FormStatus.requestSuccess) {
         return Text(
-          '$currentTemperature $unit',
+          currentTemperature.isEmpty ? 'N/A' : currentTemperature,
           style: TextStyle(
             fontSize: fontSize,
             color: _getCurrentValueColor(
@@ -474,7 +475,7 @@ class _TemperatureCard extends StatelessWidget {
               );
       } else if (loadingStatus == FormStatus.requestSuccess) {
         return Text(
-          '$minTemperature $unit',
+          minTemperature.isEmpty ? 'N/A' : minTemperature,
           style: TextStyle(
             fontSize: fontSize,
           ),
@@ -512,7 +513,7 @@ class _TemperatureCard extends StatelessWidget {
               );
       } else if (loadingStatus == FormStatus.requestSuccess) {
         return Text(
-          '$maxTemperature $unit',
+          maxTemperature.isEmpty ? 'N/A' : maxTemperature,
           style: TextStyle(
             fontSize: fontSize,
           ),
@@ -799,7 +800,7 @@ class _PowerSupplyCard extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
-        currentVoltage,
+        currentVoltage.isEmpty ? 'N/A' : currentVoltage,
         style: TextStyle(
           fontSize: fontSize,
           color: _getCurrentValueColor(
@@ -840,7 +841,7 @@ class _PowerSupplyCard extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
-        minVoltage,
+        minVoltage.isEmpty ? 'N/A' : minVoltage,
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -877,7 +878,7 @@ class _PowerSupplyCard extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
-        maxVoltage,
+        maxVoltage.isEmpty ? 'N/A' : maxVoltage,
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1061,7 +1062,7 @@ class _VoltageRippleCard extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
-        currentVoltageRipple,
+        currentVoltageRipple.isEmpty ? 'N/A' : currentVoltageRipple,
         style: TextStyle(
           fontSize: fontSize,
           color: _getCurrentValueColor(
@@ -1102,7 +1103,7 @@ class _VoltageRippleCard extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
-        minVoltageRipple,
+        minVoltageRipple.isEmpty ? 'N/A' : minVoltageRipple,
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1139,7 +1140,7 @@ class _VoltageRippleCard extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
-        maxVoltageRipple,
+        maxVoltageRipple.isEmpty ? 'N/A' : maxVoltageRipple,
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1331,7 +1332,7 @@ class _RFOutputPowerCard extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
-        currentRFOutputPower,
+        currentRFOutputPower.isEmpty ? 'N/A' : currentRFOutputPower,
         style: TextStyle(
           fontSize: fontSize,
           color: _getCurrentValueColor(
@@ -1372,7 +1373,7 @@ class _RFOutputPowerCard extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
-        minRFOutputPower,
+        minRFOutputPower.isEmpty ? 'N/A' : minRFOutputPower,
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1409,7 +1410,7 @@ class _RFOutputPowerCard extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
-        maxRFOutputPower,
+        maxRFOutputPower.isEmpty ? 'N/A' : maxRFOutputPower,
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1591,7 +1592,7 @@ class _PilotFrequency1Card extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
-        currentPilotFrequency,
+        currentPilotFrequency.isEmpty ? 'N/A' : currentPilotFrequency,
         style: TextStyle(
           fontSize: fontSize,
           color: _getCurrentValueColor(
@@ -1714,7 +1715,7 @@ class _PilotFrequency2Card extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
-        currentPilotFrequency,
+        currentPilotFrequency.isEmpty ? 'N/A' : currentPilotFrequency,
         style: TextStyle(
           fontSize: fontSize,
           color: _getCurrentValueColor(

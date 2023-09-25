@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dsim_app/chart/chart/chart18_bloc/chart18_bloc.dart';
 import 'package:dsim_app/chart/view/full_screen_chart_form.dart';
 import 'package:dsim_app/core/custom_style.dart';

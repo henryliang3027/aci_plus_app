@@ -1,3 +1,4 @@
+import 'package:dsim_app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
@@ -32,32 +33,14 @@ class _FullScreenChartFormState extends State<FullScreenChartForm> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
+    setFullScreenOrientation();
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        double screenWidth = WidgetsBinding
-            .instance.platformDispatcher.views.first.physicalSize.width;
-
-        if (screenWidth <= 1290) {
-          SystemChrome.setPreferredOrientations([
-            DeviceOrientation.portraitUp,
-            DeviceOrientation.portraitDown,
-          ]);
-        } else {
-          SystemChrome.setPreferredOrientations([
-            DeviceOrientation.portraitUp,
-            DeviceOrientation.portraitDown,
-            DeviceOrientation.landscapeRight,
-            DeviceOrientation.landscapeLeft,
-          ]);
-        }
+        setPreferredOrientation();
         return true;
       },
       child: Scaffold(
