@@ -400,13 +400,123 @@ class _Coordinates extends StatelessWidget {
 class _SplitOptionDropDownMenu extends StatelessWidget {
   const _SplitOptionDropDownMenu({super.key});
 
-  final Map<String, String> types = const {
-    '204/258 MHz': '1',
-    '300/372 MHz': '2',
-    '396/492 MHz': '3',
-    '492/606 MHz': '4',
-    '684/834 MHz': '5',
-  };
+  final List<String> splitOptionTexts = const [
+    'Null',
+    '204/258 MHz',
+    '300/372 MHz',
+    '396/492 MHz',
+    '492/606 MHz',
+    '684/834 MHz',
+  ];
+
+  final List<String> splitOptionValues = const [
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+  ];
+
+  List<bool> getSelectionState(String selectedSplitOption) {
+    Map<String, bool> splitOptionMap = {
+      '0': false,
+      '1': false,
+      '2': false,
+      '3': false,
+      '4': false,
+      '5': false,
+    };
+
+    if (splitOptionMap.containsKey(selectedSplitOption)) {
+      splitOptionMap[selectedSplitOption] = true;
+    }
+
+    return splitOptionMap.values.toList();
+  }
+
+  Color getNullBackgroundColor({
+    required BuildContext context,
+    required String value,
+    required int index,
+  }) {
+    String strIndex = index.toString();
+    return strIndex == value
+        ? CustomStyle.customRed
+        : Theme.of(context).colorScheme.onPrimary;
+  }
+
+  Color getNullBorderColor({
+    required BuildContext context,
+    required String value,
+    required int index,
+  }) {
+    String strIndex = index.toString();
+    return strIndex == value ? CustomStyle.customRed : Colors.grey;
+  }
+
+  Color getBackgroundColor({
+    required BuildContext context,
+    required String value,
+    required int index,
+  }) {
+    String strIndex = index.toString();
+
+    return strIndex == value
+        ? Theme.of(context).colorScheme.primary
+        : Theme.of(context).colorScheme.onPrimary;
+  }
+
+  Color getBorderColor({
+    required BuildContext context,
+    required String value,
+    required int index,
+  }) {
+    String strIndex = index.toString();
+
+    return strIndex == value
+        ? Theme.of(context).colorScheme.primary
+        : Colors.grey;
+  }
+
+  Color getForegroundColor({
+    required BuildContext context,
+    required String value,
+    required int index,
+  }) {
+    String strIndex = index.toString();
+    return strIndex == value
+        ? Theme.of(context).colorScheme.onPrimary
+        : Colors.grey;
+  }
+
+  Color getDisabledNullBackgroundColor({
+    required BuildContext context,
+    required String value,
+    required int index,
+  }) {
+    String strIndex = index.toString();
+
+    return strIndex == value
+        ? const Color.fromARGB(255, 215, 82, 95)
+        : Theme.of(context).colorScheme.onPrimary;
+  }
+
+  Color getDisabledBackgroundColor({
+    required BuildContext context,
+    required String value,
+    required int index,
+  }) {
+    String strIndex = index.toString();
+
+    return strIndex == value
+        ? Theme.of(context).colorScheme.inversePrimary
+        : Theme.of(context).colorScheme.onPrimary;
+  }
+
+  Color getDisabledBorderColor() {
+    return Colors.grey;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -417,7 +527,7 @@ class _SplitOptionDropDownMenu extends StatelessWidget {
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.only(
-              bottom: 60.0,
+              bottom: 40.0,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -434,55 +544,115 @@ class _SplitOptionDropDownMenu extends StatelessWidget {
                     ),
                   ),
                 ),
-                DropdownButtonHideUnderline(
-                  child: DropdownButton2<String?>(
-                      buttonHeight: 40,
-                      buttonDecoration: BoxDecoration(
-                        border: Border.all(
-                          color: state.editMode
-                              ? Colors.grey.shade700
-                              : Colors.grey,
-                        ),
-                        borderRadius: BorderRadius.circular(4.0),
-                        color: Colors.white,
-                      ),
-                      dropdownMaxHeight: 200,
-                      isExpanded: true,
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      value: state.splitOption == '0' || state.splitOption == ''
-                          ? null
-                          : state.splitOption,
-                      hint: Text(
-                        state.splitOption == '0' ? 'N/A' : '',
-                        style: const TextStyle(
-                          color: CustomStyle.customRed,
-                        ),
-                      ),
-                      items: [
-                        for (String k in types.keys)
-                          DropdownMenuItem(
-                            value: types[k],
-                            child: Text(
-                              k,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: CustomStyle.sizeXL,
-                                fontWeight: FontWeight.normal,
-                                color:
-                                    state.editMode ? Colors.black : Colors.grey,
-                              ),
+                GridView.count(
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: 2,
+                  childAspectRatio: (1 / .3),
+                  shrinkWrap: true,
+                  children: List.generate(6, (index) {
+                    if (index == 0) {
+                      return Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0.0,
+                            foregroundColor: getForegroundColor(
+                              context: context,
+                              value: state.splitOption,
+                              index: index,
                             ),
-                          )
-                      ],
-                      onChanged: state.editMode
-                          ? (String? value) {
-                              if (value != null) {
-                                context
-                                    .read<Setting18ConfigureBloc>()
-                                    .add(SplitOptionChanged(value));
-                              }
-                            }
-                          : null),
+                            backgroundColor: state.editMode
+                                ? getNullBackgroundColor(
+                                    context: context,
+                                    value: state.splitOption,
+                                    index: index,
+                                  )
+                                : getDisabledNullBackgroundColor(
+                                    context: context,
+                                    value: state.splitOption,
+                                    index: index),
+                            side: BorderSide(
+                              color: state.editMode
+                                  ? getNullBorderColor(
+                                      context: context,
+                                      value: state.splitOption,
+                                      index: index,
+                                    )
+                                  : getDisabledBorderColor(),
+                              width: 1.0,
+                            ),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0))),
+                          ),
+                          onPressed: state.editMode && index != 0
+                              ? () {
+                                  context.read<Setting18ConfigureBloc>().add(
+                                      SplitOptionChanged(
+                                          splitOptionValues[index]));
+                                }
+                              : () {},
+                          child: Text(
+                            splitOptionTexts[index],
+                            style: const TextStyle(
+                                fontSize: CustomStyle.sizeXL,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0.0,
+                            foregroundColor: getForegroundColor(
+                              context: context,
+                              value: state.splitOption,
+                              index: index,
+                            ),
+                            backgroundColor: state.editMode
+                                ? getBackgroundColor(
+                                    context: context,
+                                    value: state.splitOption,
+                                    index: index,
+                                  )
+                                : getDisabledBackgroundColor(
+                                    context: context,
+                                    value: state.splitOption,
+                                    index: index,
+                                  ),
+                            side: BorderSide(
+                              color: state.editMode
+                                  ? getBorderColor(
+                                      context: context,
+                                      value: state.splitOption,
+                                      index: index,
+                                    )
+                                  : getDisabledBorderColor(),
+                              width: 1.0,
+                            ),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0))),
+                          ),
+                          onPressed: state.editMode && index > 0 && index < 2
+                              ? () {
+                                  context.read<Setting18ConfigureBloc>().add(
+                                      SplitOptionChanged(
+                                          splitOptionValues[index]));
+                                }
+                              : () {},
+                          child: Text(
+                            splitOptionTexts[index],
+                            style: const TextStyle(
+                                fontSize: CustomStyle.sizeXL,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ),
+                      );
+                    }
+                  }),
                 ),
               ],
             ),
