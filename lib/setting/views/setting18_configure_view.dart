@@ -205,7 +205,7 @@ class Setting18ConfigureView extends StatelessWidget {
                   _Coordinates(
                     textEditingController: coordinateTextEditingController,
                   ),
-                  const _SplitOptionDropDownMenu(),
+                  const _SplitOption(),
                   _ClusterTitle(
                       title: AppLocalizations.of(context).forwardSetting),
                   _FirstChannelLoading(
@@ -397,8 +397,8 @@ class _Coordinates extends StatelessWidget {
   }
 }
 
-class _SplitOptionDropDownMenu extends StatelessWidget {
-  const _SplitOptionDropDownMenu({super.key});
+class _SplitOption extends StatelessWidget {
+  const _SplitOption({super.key});
 
   final List<String> splitOptionTexts = const [
     'Null',
