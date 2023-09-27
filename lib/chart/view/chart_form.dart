@@ -258,7 +258,7 @@ class _LogChartView extends StatelessWidget {
         maxYAxisValue: 4000.0,
       );
       LineSeries temperatureLineSeries = LineSeries(
-        name: 'Temperature',
+        name: 'Temperature (${CustomStyle.celciusUnit})',
         dataList: dateValueCollectionOfLog[1],
         color: Theme.of(context).colorScheme.primary,
         minYAxisValue: -30.0,
@@ -291,7 +291,7 @@ class _LogChartView extends StatelessWidget {
         maxYAxisValue: 40.0,
       );
       LineSeries voltageRippleLineSeries = LineSeries(
-        name: '24V Ripple',
+        name: '24V Ripple (${CustomStyle.milliVolt})',
         dataList: dateValueCollectionOfLog[4],
         color: const Color(0xff249689),
         minYAxisValue: 0.0,

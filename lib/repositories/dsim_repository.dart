@@ -547,7 +547,7 @@ class DsimRepository {
         if (temperature > 32767) {
           temperature = -(65535 - temperature + 1).abs();
         }
-        print('$_nowTimeCount: $timeStamp');
+        // print('$_nowTimeCount: $timeStamp');
 
         int timeDiff = _nowTimeCount - timeStamp;
         if (timeDiff < 0) {
@@ -3873,18 +3873,21 @@ class DsimRepository {
       cancelTimeout(name: 'cmd set working mode');
 
       if (isDone) {
-        List<dynamic> result = await requestCommand5();
+        List<dynamic> resultOfCommand5 = await requestCommand5();
 
-        if (result[0]) {
-          if (workingMode == result[1]) {
+        if (resultOfCommand5[0]) {
+          if (workingMode == resultOfCommand5[1]) {
             _characteristicDataStreamController
-                .add({DataKey.workingMode: result[1]});
+                .add({DataKey.workingMode: resultOfCommand5[1]});
             _characteristicDataStreamController
-                .add({DataKey.currentPilot: result[2]});
+                .add({DataKey.currentPilot: resultOfCommand5[2]});
             _characteristicDataStreamController
-                .add({DataKey.currentPilotMode: result[3]});
+                .add({DataKey.currentPilotMode: resultOfCommand5[3]});
 
-            _workingMode = result[1];
+            _characteristicDataStreamController.add(
+                {DataKey.currentAttenuation: currentAttenuation.toString()});
+
+            _workingMode = resultOfCommand5[1];
             _currentAttenuation = currentAttenuation.toString();
 
             return true;

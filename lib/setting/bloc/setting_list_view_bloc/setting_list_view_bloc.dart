@@ -58,15 +58,13 @@ class SettingListViewBloc
     required String workingMode,
     required String pilotChannelAndMode,
     required String pilot2ChannelAndMode,
-    required String currentAttenuation,
   }) {
     if (location != state.initialValues[0] ||
         tgcCableLength != state.initialValues[1] ||
         logIntervalId != state.initialValues[2] ||
         workingMode != state.initialValues[3] ||
         pilotChannelAndMode != state.initialValues[4] ||
-        pilot2ChannelAndMode != state.initialValues[5] ||
-        currentAttenuation != state.initialValues[6]) {
+        pilot2ChannelAndMode != state.initialValues[5]) {
       return true;
     } else {
       return false;
@@ -248,7 +246,6 @@ class SettingListViewBloc
         workingMode: _getSelectedWorkingMode(),
         pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
         pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
-        currentAttenuation: state.currentAttenuation.toString(),
       ),
     ));
   }
@@ -276,7 +273,6 @@ class SettingListViewBloc
         workingMode: _getSelectedWorkingMode(),
         pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
         pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
-        currentAttenuation: state.currentAttenuation.toString(),
       ),
     ));
   }
@@ -296,7 +292,6 @@ class SettingListViewBloc
         workingMode: _getSelectedWorkingMode(),
         pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
         pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
-        currentAttenuation: state.currentAttenuation.toString(),
       ),
     ));
   }
@@ -324,7 +319,6 @@ class SettingListViewBloc
         workingMode: event.workingMode,
         pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
         pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
-        currentAttenuation: state.currentAttenuation.toString(),
       ),
     ));
   }
@@ -385,7 +379,6 @@ class SettingListViewBloc
           workingMode: _getSelectedWorkingMode(),
           pilotChannelAndMode: '$pilotChannel $pilotMode',
           pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
-          currentAttenuation: state.currentAttenuation.toString(),
         ),
       ));
     }
@@ -448,7 +441,6 @@ class SettingListViewBloc
           workingMode: _getSelectedWorkingMode(),
           pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
           pilot2ChannelAndMode: '$pilot2Channel $pilot2Mode',
-          currentAttenuation: state.currentAttenuation.toString(),
         ),
       ));
     }
@@ -475,7 +467,6 @@ class SettingListViewBloc
         workingMode: _getSelectedWorkingMode(),
         pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
         pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
-        currentAttenuation: event.attenuation.toString(),
       ),
     ));
   }
@@ -505,7 +496,6 @@ class SettingListViewBloc
         workingMode: _getSelectedWorkingMode(),
         pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
         pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
-        currentAttenuation: newAttenuation.toString(),
       ),
     ));
   }
@@ -535,7 +525,6 @@ class SettingListViewBloc
         workingMode: _getSelectedWorkingMode(),
         pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
         pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
-        currentAttenuation: newAttenuation.toString(),
       ),
     ));
   }
@@ -562,7 +551,6 @@ class SettingListViewBloc
         workingMode: _getSelectedWorkingMode(),
         pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
         pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
-        currentAttenuation: state.centerAttenuation.toString(),
       ),
     ));
   }

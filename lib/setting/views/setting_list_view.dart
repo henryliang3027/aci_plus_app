@@ -216,7 +216,7 @@ class SettingListView extends StatelessWidget {
                       _Location(
                         textEditingController: locationTextEditingController,
                       ),
-                      const _TGCCabelLength(),
+                      // const _TGCCabelLength(),
                       const _LogIntervalDropDownMenu(),
                       const _WorkingMode(),
                       _UserPilot(
@@ -937,11 +937,13 @@ class _AGCPrepAttenator extends StatelessWidget {
                               AGCPrepAttenuationChanged(attenuation.toInt()));
                         }
                       : null,
-                  // onChangeEnd: state.editMode
-                  //     ? (attenuation) {
-                  //         print(attenuation);
-                  //       }
-                  //     : null,
+                  onChangeEnd: state.editMode
+                      ? (attenuation) {
+                          context
+                              .read<SettingListViewBloc>()
+                              .add(const SettingSubmitted());
+                        }
+                      : null,
                 ),
               ),
               Row(
@@ -956,6 +958,9 @@ class _AGCPrepAttenator extends StatelessWidget {
                             context
                                 .read<SettingListViewBloc>()
                                 .add(const AGCPrepAttenuationDecreased());
+                            context
+                                .read<SettingListViewBloc>()
+                                .add(const SettingSubmitted());
                           }
                         : null,
                   ),
@@ -968,6 +973,9 @@ class _AGCPrepAttenator extends StatelessWidget {
                             context
                                 .read<SettingListViewBloc>()
                                 .add(const AGCPrepAttenuationCentered());
+                            context
+                                .read<SettingListViewBloc>()
+                                .add(const SettingSubmitted());
                           }
                         : null,
                   ),
@@ -980,6 +988,9 @@ class _AGCPrepAttenator extends StatelessWidget {
                             context
                                 .read<SettingListViewBloc>()
                                 .add(const AGCPrepAttenuationIncreased());
+                            context
+                                .read<SettingListViewBloc>()
+                                .add(const SettingSubmitted());
                           }
                         : null,
                   ),
