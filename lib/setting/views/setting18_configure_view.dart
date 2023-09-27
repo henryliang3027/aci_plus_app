@@ -418,23 +418,6 @@ class _SplitOption extends StatelessWidget {
     '5',
   ];
 
-  List<bool> getSelectionState(String selectedSplitOption) {
-    Map<String, bool> splitOptionMap = {
-      '0': false,
-      '1': false,
-      '2': false,
-      '3': false,
-      '4': false,
-      '5': false,
-    };
-
-    if (splitOptionMap.containsKey(selectedSplitOption)) {
-      splitOptionMap[selectedSplitOption] = true;
-    }
-
-    return splitOptionMap.values.toList();
-  }
-
   Color getNullBackgroundColor({
     required BuildContext context,
     required String value,
