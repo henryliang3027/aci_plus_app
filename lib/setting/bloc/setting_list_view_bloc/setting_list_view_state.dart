@@ -15,7 +15,7 @@ class SettingListViewState extends Equatable {
       'AGC': false,
       'TGC': false,
     },
-    this.logIntervalId = 0,
+    this.logIntervalId = '0',
     this.pilotChannelStatus = FormStatus.none,
     this.pilotChannel = '',
     this.pilotMode = '', // IRC or DIG
@@ -41,7 +41,7 @@ class SettingListViewState extends Equatable {
   final Location location;
   final Map<String, bool> selectedTGCCableLength;
   final Map<String, bool> selectedWorkingMode;
-  final int logIntervalId;
+  final String logIntervalId;
   final FormStatus pilotChannelStatus;
   final String pilotChannel;
   final String pilotMode;
@@ -67,7 +67,7 @@ class SettingListViewState extends Equatable {
     Location? location,
     Map<String, bool>? selectedTGCCableLength,
     Map<String, bool>? selectedWorkingMode,
-    int? logIntervalId,
+    String? logIntervalId,
     FormStatus? pilotChannelStatus,
     String? pilotChannel,
     String? pilotMode,

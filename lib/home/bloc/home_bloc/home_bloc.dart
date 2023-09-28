@@ -232,6 +232,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             Map<DataKey, String> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             newCharacteristicData[DataKey.partNo] = result[1];
+            newCharacteristicData[DataKey.hasDualPilot] = result[2];
 
             emit(state.copyWith(
               characteristicData: newCharacteristicData,

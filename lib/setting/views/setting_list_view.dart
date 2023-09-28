@@ -23,6 +23,37 @@ class SettingListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeState homeState = context.watch<HomeBloc>().state;
+    String location = homeState.characteristicData[DataKey.location] ?? '';
+    String tgcCableLength =
+        homeState.characteristicData[DataKey.tgcCableLength] ?? '';
+    String workingMode =
+        homeState.characteristicData[DataKey.workingMode] ?? '';
+    String logInterval =
+        homeState.characteristicData[DataKey.logInterval] ?? '';
+    String maxAttenuation =
+        homeState.characteristicData[DataKey.maxAttenuation] ?? '';
+    String minAttenuation =
+        homeState.characteristicData[DataKey.minAttenuation] ?? '';
+    String currentAttenuation =
+        homeState.characteristicData[DataKey.currentAttenuation] ?? '';
+    String centerAttenuation =
+        homeState.characteristicData[DataKey.centerAttenuation] ?? '';
+    String hasDualPilot =
+        homeState.characteristicData[DataKey.hasDualPilot] ?? '';
+
+    context.read<SettingListViewBloc>().add(Initialized(
+          location: location,
+          logIntervalId: logInterval,
+          workingMode: workingMode,
+          tgcCableLength: tgcCableLength,
+          maxAttenuation: maxAttenuation,
+          minAttenuation: minAttenuation,
+          currentAttenuation: currentAttenuation,
+          centerAttenuation: centerAttenuation,
+          hasDualPilot: hasDualPilot,
+        ));
+
     Future<void> showInProgressDialog() async {
       return showDialog<void>(
         context: context,
@@ -183,7 +214,17 @@ class SettingListView extends StatelessWidget {
 
           // 設定完成後不論成功或失敗都重新載入初始設定值
           // 這樣可以達到設定 tgc cable length 完成時, working mode 跟著更新為 tgc mode
-          context.read<SettingListViewBloc>().add(const Initialized(true));
+          context.read<SettingListViewBloc>().add(Initialized(
+                location: location,
+                tgcCableLength: tgcCableLength,
+                workingMode: workingMode,
+                logIntervalId: logInterval,
+                maxAttenuation: maxAttenuation,
+                minAttenuation: minAttenuation,
+                currentAttenuation: currentAttenuation,
+                centerAttenuation: centerAttenuation,
+                hasDualPilot: hasDualPilot,
+              ));
         } else if (state.isInitialize) {
           locationTextEditingController.text = state.location.value;
           userPilotTextEditingController.text = state.pilotCode.value;
@@ -268,9 +309,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                         .add(const EditModeDisabled());
 
                     // 重新載入初始設定值
-                    context
-                        .read<SettingListViewBloc>()
-                        .add(const Initialized(true));
+                    // context
+                    //     .read<SettingListViewBloc>()
+                    //     .add(const Initialized(true));
                   },
                 ),
                 const SizedBox(
@@ -571,8 +612,9 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
                       dropdownMaxHeight: 200,
                       isExpanded: true,
                       icon: const Icon(Icons.keyboard_arrow_down),
-                      value:
-                          state.logIntervalId == 0 ? null : state.logIntervalId,
+                      value: state.logIntervalId == '0'
+                          ? null
+                          : int.parse(state.logIntervalId),
                       items: [
                         for (String k in types.keys)
                           DropdownMenuItem(
@@ -594,7 +636,7 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
                               if (value != null) {
                                 context
                                     .read<SettingListViewBloc>()
-                                    .add(LogIntervalChanged(value));
+                                    .add(LogIntervalChanged(value.toString()));
                               }
                             }
                           : null),

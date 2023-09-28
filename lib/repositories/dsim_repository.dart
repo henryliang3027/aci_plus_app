@@ -181,21 +181,9 @@ class DsimRepository {
   final List<Event> _events = [];
   final int _totalBytesPerCommand = 261;
 
-  // 給 setting page 用
-  String _location = '';
-  String _tgcCableLength = '';
-  String _workingMode = '';
-  int _logIntervalId = 0;
-  String _maxAttenuation = '';
-  String _minAttenuation = '';
-  String _centerAttenuation = '';
-  String _currentAttenuation = '';
-
   // 記錄欲設定的 workingModeId
   int _workingModeId = 0;
   final int _agcWorkingModeSettingDuration = 30;
-
-  bool _hasDualPilot = false;
 
   final int _commandExecutionTimeout = 10; // s
   final int _agcWorkingModeSettingTimeout = 40; // s
@@ -294,17 +282,6 @@ class DsimRepository {
     _rawLog.clear();
     _events.clear();
     _rawEvent.clear();
-    _hasDualPilot = false;
-
-    // clear setting form data
-    _location = '';
-    _tgcCableLength = '';
-    _workingMode = '';
-    _logIntervalId = 0;
-    _maxAttenuation = '';
-    _minAttenuation = '';
-    _centerAttenuation = '';
-    _currentAttenuation = '';
 
     commandIndex = 0;
     endIndex = 37;
@@ -685,6 +662,7 @@ class DsimRepository {
         break;
       case 1:
         String partNo = 'DSIM';
+        String hasDualPilot = '0';
         for (int i = 3; i < 15; i++) {
           partNo += String.fromCharCode(rawData[i]);
         }
@@ -693,11 +671,14 @@ class DsimRepository {
 
         // 如果是 dual, 會有兩的 pilot channel
         if (partNo.startsWith('DSIM-CG')) {
-          _hasDualPilot = true;
+          hasDualPilot = '1';
         }
 
         if (!_completer.isCompleted) {
-          _completer.complete(partNo);
+          _completer.complete((
+            partNo,
+            hasDualPilot,
+          ));
         }
         break;
       case 2:
@@ -733,8 +714,6 @@ class DsimRepository {
           firmwareVersion += String.fromCharCode(rawData[i]);
         }
 
-        _logIntervalId = int.parse(_basicInterval);
-
         if (!_completer.isCompleted) {
           _completer.complete((_basicInterval, firmwareVersion));
         }
@@ -750,18 +729,6 @@ class DsimRepository {
         _basicCurrentPilotMode = rawData[8];
 
         String tgcCableLength = rawData[6].toString();
-
-        // setting data _currentAttenuation
-        _currentAttenuation = currentAttenuator.toString();
-
-        // setting data _minAttenuation
-        _minAttenuation = '0';
-
-        // setting data _maxAttenuation
-        _maxAttenuation = '3000';
-
-        // setting data _tgcCableLength
-        _tgcCableLength = tgcCableLength;
 
         if (!_completer.isCompleted) {
           _completer.complete((
@@ -872,16 +839,10 @@ class DsimRepository {
           ));
         }
 
-        // setting data _workingMode
-        _workingMode = workingMode;
-
         break;
       case 6:
         int centerAttenuation = rawData[11] * 256 + rawData[12];
         int currentVoltageRipple = rawData[9] * 256 + rawData[10]; //24VR
-
-        // setting data _centerAttenuation
-        _centerAttenuation = centerAttenuation.toString();
 
         if (!_completer.isCompleted) {
           _completer.complete(
@@ -3135,12 +3096,20 @@ class DsimRepository {
         duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd1');
 
     try {
-      String partNo = await _completer.future;
+      var (String partNo, String hasDualPilot) = await _completer.future;
       cancelTimeout(name: 'cmd1');
 
-      return [true, partNo];
+      return [
+        true,
+        partNo,
+        hasDualPilot,
+      ];
     } catch (e) {
-      return [false, ''];
+      return [
+        false,
+        '',
+        '',
+      ];
     }
   }
 
@@ -3328,7 +3297,6 @@ class DsimRepository {
         print('$i $loc, $partOfLocation');
 
         if (commandIndex == 12) {
-          _location = loc;
           return [true, loc];
         }
       } catch (e) {
@@ -3692,7 +3660,6 @@ class DsimRepository {
           if (location == resultOfGetLocation[1]) {
             _characteristicDataStreamController
                 .add({DataKey.location: resultOfGetLocation[1]});
-            _location = resultOfGetLocation[1];
             return true;
           } else {
             return false;
@@ -3713,7 +3680,7 @@ class DsimRepository {
     required String tgcCableLength,
     required String pilotChannel,
     required String pilotMode,
-    required int logIntervalId,
+    required String logIntervalId,
   }) async {
     _completer = Completer<dynamic>();
 
@@ -3723,7 +3690,7 @@ class DsimRepository {
     Command.set04Cmd[10] = int.parse(tgcCableLength); //TGC Cable length
     Command.set04Cmd[11] = int.parse(pilotChannel); //AGC Channel 1Byte
     Command.set04Cmd[12] = _getPilotModeId(pilotMode); //AGC channel Mode 1 Byte
-    Command.set04Cmd[13] = logIntervalId; //Log Minutes 1Byte
+    Command.set04Cmd[13] = int.parse(logIntervalId); //Log Minutes 1Byte
     Command.set04Cmd[14] = 0x03; //AGC Channel 2 1Byte
     Command.set04Cmd[15] = 0x02; //AGC Channel 2 Mode 1Byte
     CRC16.calculateCRC16(command: Command.set04Cmd, usDataLength: 19);
@@ -3752,8 +3719,6 @@ class DsimRepository {
             _characteristicDataStreamController
                 .add({DataKey.workingMode: resultOfCommand5[1]});
 
-            _tgcCableLength = resultOfCommand4[4];
-            _workingMode = resultOfCommand5[1];
             return true;
           } else {
             return false;
@@ -3770,11 +3735,14 @@ class DsimRepository {
   }
 
   Future<bool> setLogInterval({
-    required int logIntervalId,
+    required String logIntervalId,
   }) async {
     _completer = Completer<dynamic>();
+
+    int intLogIntervalId = int.parse(logIntervalId);
+
     Command.set04Cmd[7] = 0x08; // 8
-    Command.set04Cmd[13] = logIntervalId; // Log Minutes 1Byte
+    Command.set04Cmd[13] = intLogIntervalId; // Log Minutes 1Byte
     CRC16.calculateCRC16(command: Command.set04Cmd, usDataLength: 19);
 
     commandIndex = 45;
@@ -3796,7 +3764,6 @@ class DsimRepository {
           if (logIntervalId.toString() == result[1]) {
             _characteristicDataStreamController
                 .add({DataKey.logInterval: result[1]});
-            _logIntervalId = int.parse(result[1]);
             return true;
           } else {
             return false;
@@ -3820,12 +3787,13 @@ class DsimRepository {
     required String pilotMode,
     String pilot2Channel = '',
     String pilot2Mode = '',
-    required int logIntervalId,
+    required String logIntervalId,
+    required bool hasDualPilot,
   }) async {
     _completer = Completer<dynamic>();
     _workingModeId = _getWorkingModeId(workingMode);
 
-    if (_hasDualPilot) {
+    if (hasDualPilot) {
       Command.set04Cmd[7] = _workingModeId;
       Command.set04Cmd[8] = currentAttenuation ~/ 256; //MGC Value 2Bytes
       Command.set04Cmd[9] = currentAttenuation % 256; //MGC Value
@@ -3833,7 +3801,7 @@ class DsimRepository {
       Command.set04Cmd[11] = int.parse(pilotChannel); //AGC Channel 1Byte
       Command.set04Cmd[12] =
           _getPilotModeId(pilotMode); //AGC channel Mode 1 Byte
-      Command.set04Cmd[13] = logIntervalId; //Log Minutes 1Byte
+      Command.set04Cmd[13] = int.parse(logIntervalId); //Log Minutes 1Byte
       Command.set04Cmd[14] = int.parse(pilot2Channel); //AGC Channel 2 1Byte
       Command.set04Cmd[15] =
           _getPilotModeId(pilot2Mode); //AGC Channel 2 Mode 1Byte
@@ -3845,7 +3813,7 @@ class DsimRepository {
       Command.set04Cmd[11] = int.parse(pilotChannel); //AGC Channel 1Byte
       Command.set04Cmd[12] =
           _getPilotModeId(pilot2Mode); //AGC channel Mode 1 Byte
-      Command.set04Cmd[13] = logIntervalId; //Log Minutes 1Byte
+      Command.set04Cmd[13] = int.parse(logIntervalId); //Log Minutes 1Byte
       Command.set04Cmd[14] = 0x03; //AGC Channel 2 1Byte
       Command.set04Cmd[15] = 0x02; //AGC Channel 2 Mode 1Byte
     }
@@ -3886,9 +3854,6 @@ class DsimRepository {
 
             _characteristicDataStreamController.add(
                 {DataKey.currentAttenuation: currentAttenuation.toString()});
-
-            _workingMode = resultOfCommand5[1];
-            _currentAttenuation = currentAttenuation.toString();
 
             return true;
           } else {
@@ -4390,25 +4355,6 @@ class DsimRepository {
     String pilot2Code =
         prefs.getString(SharedPreferenceKey.pilot2Code.name) ?? 'C<A';
     return pilot2Code;
-  }
-
-  Future<SettingData> getSettingData() async {
-    String pilotCode = await readPilotCode();
-    String pilot2Code = await readPilot2Code();
-
-    return SettingData(
-      location: _location,
-      tgcCableLength: _tgcCableLength,
-      workingMode: _workingMode,
-      logIntervalId: _logIntervalId,
-      pilotCode: pilotCode,
-      pilot2Code: pilot2Code,
-      maxAttenuation: _maxAttenuation,
-      minAttenuation: _minAttenuation,
-      currentAttenuation: _currentAttenuation,
-      centerAttenuation: _centerAttenuation,
-      hasDualPilot: _hasDualPilot,
-    );
   }
 
   void _calculateCRCs() {

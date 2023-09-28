@@ -7,12 +7,40 @@ abstract class SettingListViewEvent extends Equatable {
 }
 
 class Initialized extends SettingListViewEvent {
-  const Initialized(this.isLoadData);
+  const Initialized({
+    required this.location,
+    required this.tgcCableLength,
+    required this.workingMode,
+    required this.logIntervalId,
+    required this.maxAttenuation,
+    required this.minAttenuation,
+    required this.currentAttenuation,
+    required this.centerAttenuation,
+    required this.hasDualPilot,
+  });
 
-  final bool isLoadData;
+  final String location;
+  final String tgcCableLength;
+  final String workingMode;
+  final String logIntervalId;
+  final String maxAttenuation;
+  final String minAttenuation;
+  final String currentAttenuation;
+  final String centerAttenuation;
+  final String hasDualPilot;
 
   @override
-  List<Object> get props => [isLoadData];
+  List<Object> get props => [
+        location,
+        tgcCableLength,
+        workingMode,
+        logIntervalId,
+        maxAttenuation,
+        minAttenuation,
+        currentAttenuation,
+        centerAttenuation,
+        hasDualPilot,
+      ];
 }
 
 class LocationChanged extends SettingListViewEvent {
@@ -59,7 +87,7 @@ class LogIntervalChanged extends SettingListViewEvent {
     this.logIntervalId,
   );
 
-  final int logIntervalId;
+  final String logIntervalId;
 
   @override
   List<Object> get props => [

@@ -51,10 +51,14 @@ class SettingListViewBloc
         orElse: () => '');
   }
 
+  bool _boolStringToBool(String value) {
+    return value == '1' ? true : false;
+  }
+
   bool _isEnabledSubmission({
     required String location,
     required String tgcCableLength,
-    required int logIntervalId,
+    required String logIntervalId,
     required String workingMode,
     required String pilotChannelAndMode,
     required String pilot2ChannelAndMode,
@@ -115,8 +119,8 @@ class SettingListViewBloc
     Initialized event,
     Emitter<SettingListViewState> emit,
   ) async {
-    SettingData settingData = await _dsimRepository.getSettingData();
-    final Location location = Location.dirty(settingData.location);
+    // SettingData settingData = await _dsimRepository.getSettingData();
+    final Location location = Location.dirty(event.location);
 
     final Map<String, bool> newSelectedTGCCableLength = {
       '9': false,
@@ -124,8 +128,8 @@ class SettingListViewBloc
       '27': false,
     };
 
-    if (newSelectedTGCCableLength.containsKey(settingData.tgcCableLength)) {
-      newSelectedTGCCableLength[settingData.tgcCableLength] = true;
+    if (newSelectedTGCCableLength.containsKey(event.tgcCableLength)) {
+      newSelectedTGCCableLength[event.tgcCableLength] = true;
     }
 
     final Map<String, bool> newSelectedWorkingMode = {
@@ -134,28 +138,29 @@ class SettingListViewBloc
       'TGC': false,
     };
 
-    if (newSelectedWorkingMode.containsKey(settingData.workingMode)) {
-      newSelectedWorkingMode[settingData.workingMode] = true;
+    if (newSelectedWorkingMode.containsKey(event.workingMode)) {
+      newSelectedWorkingMode[event.workingMode] = true;
     }
 
-    final int maxAttenuation = settingData.maxAttenuation.isNotEmpty
-        ? int.parse(settingData.maxAttenuation)
+    final int maxAttenuation = event.maxAttenuation.isNotEmpty
+        ? int.parse(event.maxAttenuation)
         : 3000;
-    final int minAttenuation = settingData.minAttenuation.isNotEmpty
-        ? int.parse(settingData.minAttenuation)
+    final int minAttenuation =
+        event.minAttenuation.isNotEmpty ? int.parse(event.minAttenuation) : 0;
+    final int currentAttenuation = event.currentAttenuation.isNotEmpty
+        ? int.parse(event.currentAttenuation)
         : 0;
-    final int currentAttenuation = settingData.currentAttenuation.isNotEmpty
-        ? int.parse(settingData.currentAttenuation)
-        : 0;
-    final int centerAttenuation = settingData.centerAttenuation.isNotEmpty
-        ? int.parse(settingData.centerAttenuation)
+    final int centerAttenuation = event.centerAttenuation.isNotEmpty
+        ? int.parse(event.centerAttenuation)
         : 0;
 
-    final PilotCode pilotCode = PilotCode.dirty(settingData.pilotCode);
-    final PilotCode pilot2Code = PilotCode.dirty(settingData.pilot2Code);
-    final List<String>? pilot = _getPilotChannelAndMode(settingData.pilotCode);
-    final List<String>? pilot2 =
-        _getPilotChannelAndMode(settingData.pilot2Code);
+    String strPilotCode = await _dsimRepository.readPilotCode();
+    String strPilot2Code = await _dsimRepository.readPilot2Code();
+
+    final PilotCode pilotCode = PilotCode.dirty(strPilotCode);
+    final PilotCode pilot2Code = PilotCode.dirty(strPilot2Code);
+    final List<String>? pilot = _getPilotChannelAndMode(strPilotCode);
+    final List<String>? pilot2 = _getPilotChannelAndMode(strPilot2Code);
 
     final String pilotChannelAndMode =
         pilot != null ? '${pilot[0]} ${pilot[1]}' : '';
@@ -163,70 +168,39 @@ class SettingListViewBloc
     final String pilot2ChannelAndMode =
         pilot2 != null ? '${pilot2[0]} ${pilot2[1]}' : '';
 
-    if (event.isLoadData) {
-      print('location:  $location');
-      emit(state.copyWith(
-        initialValues: [
-          settingData.location,
-          settingData.tgcCableLength,
-          settingData.logIntervalId,
-          settingData.workingMode,
-          pilotChannelAndMode,
-          pilot2ChannelAndMode,
-          settingData.currentAttenuation,
-        ],
-        location: location,
-        selectedTGCCableLength: newSelectedTGCCableLength,
-        selectedWorkingMode: newSelectedWorkingMode,
-        logIntervalId: settingData.logIntervalId,
-        pilotChannel: pilot != null ? pilot[0] : '',
-        pilotMode: pilot != null ? pilot[1] : '',
-        pilotCode: pilotCode,
-        pilot2Channel: pilot2 != null ? pilot2[0] : '',
-        pilot2Mode: pilot2 != null ? pilot2[1] : '',
-        pilot2Code: pilot2Code,
-        maxAttenuation: maxAttenuation,
-        minAttenuation: minAttenuation,
-        currentAttenuation: currentAttenuation,
-        centerAttenuation: centerAttenuation,
-        hasDualPilot: settingData.hasDualPilot,
-        isInitialize: true,
-        submissionStatus: SubmissionStatus.none,
-        pilotChannelStatus: pilot != null
-            ? FormStatus.requestSuccess
-            : FormStatus.requestFailure,
-        pilot2ChannelStatus: pilot2 != null
-            ? FormStatus.requestSuccess
-            : FormStatus.requestFailure,
-      ));
-    } else {
-      emit(state.copyWith(
-        initialValues: const [],
-        location: const Location.pure(),
-        selectedTGCCableLength: const {
-          '9': false,
-          '18': false,
-          '27': false,
-        },
-        selectedWorkingMode: const {
-          'MGC': false,
-          'AGC': false,
-          'TGC': false,
-        },
-        logIntervalId: 0,
-        pilotChannelStatus: FormStatus.none,
-        pilotChannel: '',
-        pilotMode: '', // IRC or DIG
-        pilotCode: const PilotCode.pure(),
-        pilot2ChannelStatus: FormStatus.none,
-        pilot2Channel: '',
-        pilot2Mode: '', // IRC or DIG
-        pilot2Code: const PilotCode.pure(),
-        editable: false,
-        editMode: false,
-        enableSubmission: false,
-      ));
-    }
+    emit(state.copyWith(
+      initialValues: [
+        event.location,
+        event.tgcCableLength,
+        event.logIntervalId,
+        event.workingMode,
+        pilotChannelAndMode,
+        pilot2ChannelAndMode,
+        event.currentAttenuation,
+      ],
+      location: location,
+      selectedTGCCableLength: newSelectedTGCCableLength,
+      selectedWorkingMode: newSelectedWorkingMode,
+      logIntervalId: event.logIntervalId,
+      pilotChannel: pilot != null ? pilot[0] : '',
+      pilotMode: pilot != null ? pilot[1] : '',
+      pilotCode: pilotCode,
+      pilot2Channel: pilot2 != null ? pilot2[0] : '',
+      pilot2Mode: pilot2 != null ? pilot2[1] : '',
+      pilot2Code: pilot2Code,
+      maxAttenuation: maxAttenuation,
+      minAttenuation: minAttenuation,
+      currentAttenuation: currentAttenuation,
+      centerAttenuation: centerAttenuation,
+      hasDualPilot: _boolStringToBool(event.hasDualPilot),
+      isInitialize: true,
+      submissionStatus: SubmissionStatus.none,
+      pilotChannelStatus:
+          pilot != null ? FormStatus.requestSuccess : FormStatus.requestFailure,
+      pilot2ChannelStatus: pilot2 != null
+          ? FormStatus.requestSuccess
+          : FormStatus.requestFailure,
+    ));
   }
 
   void _onLocationChanged(
@@ -569,12 +543,77 @@ class SettingListViewBloc
   void _onEditModeDisabled(
     EditModeDisabled event,
     Emitter<SettingListViewState> emit,
-  ) {
+  ) async {
+    // initialValues: [
+    //   event.location,
+    //   event.tgcCableLength,
+    //   event.logIntervalId,
+    //   event.workingMode,
+    //   pilotChannelAndMode,
+    //   pilot2ChannelAndMode,
+    //   event.currentAttenuation,
+    // ],
+
+    final Location location = Location.dirty(state.initialValues[0]);
+
+    final Map<String, bool> newSelectedTGCCableLength = {
+      '9': false,
+      '18': false,
+      '27': false,
+    };
+
+    if (newSelectedTGCCableLength.containsKey(state.initialValues[1])) {
+      newSelectedTGCCableLength[state.initialValues[1]] = true;
+    }
+
+    final Map<String, bool> newSelectedWorkingMode = {
+      'MGC': false,
+      'AGC': false,
+      'TGC': false,
+    };
+
+    if (newSelectedWorkingMode.containsKey(state.initialValues[3])) {
+      newSelectedWorkingMode[state.initialValues[3]] = true;
+    }
+
+    final int currentAttenuation = state.initialValues[6].isNotEmpty
+        ? int.parse(state.initialValues[6])
+        : 0;
+
+    String strPilotCode = await _dsimRepository.readPilotCode();
+    String strPilot2Code = await _dsimRepository.readPilot2Code();
+
+    final PilotCode pilotCode = PilotCode.dirty(strPilotCode);
+    final PilotCode pilot2Code = PilotCode.dirty(strPilot2Code);
+    final List<String>? pilot = _getPilotChannelAndMode(strPilotCode);
+    final List<String>? pilot2 = _getPilotChannelAndMode(strPilot2Code);
+
+    final String pilotChannelAndMode =
+        pilot != null ? '${pilot[0]} ${pilot[1]}' : '';
+
+    final String pilot2ChannelAndMode =
+        pilot2 != null ? '${pilot2[0]} ${pilot2[1]}' : '';
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      isInitialize: false,
+      isInitialize: true,
       editMode: false,
       enableSubmission: false,
+      location: location,
+      logIntervalId: state.initialValues[2],
+      selectedWorkingMode: newSelectedWorkingMode,
+      pilotChannel: pilot != null ? pilot[0] : '',
+      pilotMode: pilot != null ? pilot[1] : '',
+      pilotCode: pilotCode,
+      pilot2Channel: pilot2 != null ? pilot2[0] : '',
+      pilot2Mode: pilot2 != null ? pilot2[1] : '',
+      pilot2Code: pilot2Code,
+      currentAttenuation: currentAttenuation,
+      pilotChannelStatus:
+          pilot != null ? FormStatus.requestSuccess : FormStatus.requestFailure,
+      pilot2ChannelStatus: pilot2 != null
+          ? FormStatus.requestSuccess
+          : FormStatus.requestFailure,
     ));
   }
 
@@ -637,6 +676,7 @@ class SettingListViewBloc
           pilot2Channel: state.pilot2Channel,
           pilot2Mode: state.pilot2Mode,
           logIntervalId: state.logIntervalId,
+          hasDualPilot: state.hasDualPilot,
         );
       } else {
         resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
@@ -646,6 +686,7 @@ class SettingListViewBloc
           pilotChannel: state.pilotChannel,
           pilotMode: state.pilotMode,
           logIntervalId: state.logIntervalId,
+          hasDualPilot: state.hasDualPilot,
         );
       }
 
@@ -667,12 +708,19 @@ class SettingListViewBloc
           '${SharedPreferenceKey.pilot2Code.name},$resultOfWritePilot2Code');
     }
 
+    // 不論有沒有更改 pilotChannelAndMode, pilot2ChannelAndMode, 一律更新 initialValues,
+    // 因為這兩個不會透過 homeState 觸發 Initialized 來更新 initialValues
+    List<dynamic> newInitialValues = List.from(state.initialValues);
+    newInitialValues[4] = pilotChannelAndMode;
+    newInitialValues[5] = pilot2ChannelAndMode;
+
     emit(state.copyWith(
       isInitialize: false,
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
       enableSubmission: false,
       editMode: false,
+      initialValues: newInitialValues,
     ));
   }
 }

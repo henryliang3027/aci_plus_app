@@ -4,7 +4,6 @@ import 'package:dsim_app/core/message_localization.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
-import 'package:dsim_app/setting/bloc/setting_list_view_bloc/setting_list_view_bloc.dart';
 import 'package:dsim_app/setting/views/setting_graph_view.dart';
 import 'package:dsim_app/setting/views/setting_list_view.dart';
 import 'package:flutter/material.dart';
@@ -155,7 +154,7 @@ class _ViewLayout extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.loadingStatus.isRequestInProgress) {
-          context.read<SettingListViewBloc>().add(const Initialized(true));
+          // context.read<SettingListViewBloc>().add(const Initialized(true));
           return Stack(
             alignment: Alignment.center,
             children: [
@@ -221,7 +220,7 @@ class _Layout extends StatelessWidget {
         if (state.isGraphType) {
           return SettingGraphView();
         } else {
-          context.read<SettingListViewBloc>().add(Initialized(isLoadData));
+          // context.read<SettingListViewBloc>().add(Initialized(isLoadData));
           return SettingListView();
         }
       },
