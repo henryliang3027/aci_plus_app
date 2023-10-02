@@ -84,7 +84,7 @@ class Event {
 class DsimRepository {
   DsimRepository()
       : _bleClient = BLEClient(),
-        _dsim18parser = Dsim18Parser(),
+        _dsim18Parser = Dsim18Parser(),
         _dsimParser = DsimParser(),
         _unitConverter = UnitConverter() {}
 
@@ -108,7 +108,7 @@ class DsimRepository {
 
   final BLEClient _bleClient;
   final DsimParser _dsimParser;
-  final Dsim18Parser _dsim18parser;
+  final Dsim18Parser _dsim18Parser;
   final UnitConverter _unitConverter;
 
   Stream<ScanReport> get scanReport async* {
@@ -152,36 +152,26 @@ class DsimRepository {
 
   Future<dynamic> requestCommand1p8G0() async {
     int commandIndex = 180;
-    _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G0');
 
-    _writeSetCommandToCharacteristic(
-        _dsim18parser.command18Collection[commandIndex - 180]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: 'cmd1p8G0');
-
     try {
-      var (
-        partName,
-        partNo,
-        serialNumber,
-        firmwareVersion,
-        mfgDate,
-        coordinate
-      ) = await _completer.future;
-      cancelTimeout(name: '1p8G0');
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18Parser.command18Collection[commandIndex - 180],
+      );
+
+      A1P8G0 a1p8g0 = _dsim18Parser.decodeA1P8G0(rawData);
 
       return [
         true,
         <DataKey, String>{
-          DataKey.partName: partName,
-          DataKey.partNo: partNo,
-          DataKey.serialNumber: serialNumber,
-          DataKey.firmwareVersion: firmwareVersion,
-          DataKey.mfgDate: mfgDate,
-          DataKey.coordinates: coordinate,
+          DataKey.partName: a1p8g0.partName,
+          DataKey.partNo: a1p8g0.partNo,
+          DataKey.serialNumber: a1p8g0.serialNumber,
+          DataKey.firmwareVersion: a1p8g0.firmwareVersion,
+          DataKey.mfgDate: a1p8g0.mfgDate,
+          DataKey.coordinates: a1p8g0.coordinate,
         },
       ];
     } catch (e) {
@@ -193,120 +183,71 @@ class DsimRepository {
 
   Future<dynamic> requestCommand1p8G1() async {
     int commandIndex = 181;
-    _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G1');
 
-    _writeSetCommandToCharacteristic(
-        _dsim18parser.command18Collection[commandIndex - 180]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: 'cmd1p8G1');
-
     try {
-      var (
-        minTemperatureC,
-        maxTemperatureC,
-        minTemperatureF,
-        maxTemperatureF,
-        minVoltage,
-        maxVoltage,
-        minVoltageRipple,
-        maxVoltageRipple,
-        minRFOutputPower,
-        maxRFOutputPower,
-        ingressSetting2,
-        ingressSetting3,
-        ingressSetting4,
-        tgcCableLength,
-        splitOption,
-        pilotFrequencyMode,
-        agcMode,
-        alcMode,
-        firstChannelLoadingFrequency,
-        lastChannelLoadingFrequency,
-        firstChannelLoadingLevel,
-        lastChannelLoadingLevel,
-        pilotFrequency1,
-        pilotFrequency2,
-        pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState,
-        rfOutputPilotLowFrequencyAlarmState,
-        rfOutputPilotHighFrequencyAlarmState,
-        temperatureAlarmState,
-        voltageAlarmState,
-        splitOptionAlarmState,
-        voltageRippleAlarmState,
-        rfOutputPowerAlarmState,
-        location,
-        logInterval,
-        inputAttenuation,
-        inputEqualizer,
-        dsVVA2,
-        dsSlope2,
-        inputAttenuation2,
-        outputEqualizer,
-        dsVVA3,
-        dsVVA4,
-        outputAttenuation,
-        inputAttenuation3,
-        inputAttenuation4,
-        usTGC,
-      ) = await _completer.future;
-      cancelTimeout(name: '1p8G1');
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18Parser.command18Collection[commandIndex - 180],
+      );
+
+      A1P8G1 a1p8g1 = _dsim18Parser.decodeA1P8G1(rawData);
 
       return [
         true,
         <DataKey, String>{
-          DataKey.minTemperatureC: minTemperatureC,
-          DataKey.maxTemperatureC: maxTemperatureC,
-          DataKey.minTemperatureF: minTemperatureF,
-          DataKey.maxTemperatureF: maxTemperatureF,
-          DataKey.minVoltage: minVoltage,
-          DataKey.maxVoltage: maxVoltage,
-          DataKey.minVoltageRipple: minVoltageRipple,
-          DataKey.maxVoltageRipple: maxVoltageRipple,
-          DataKey.minRFOutputPower: minRFOutputPower,
-          DataKey.maxRFOutputPower: maxRFOutputPower,
-          DataKey.ingressSetting2: ingressSetting2,
-          DataKey.ingressSetting3: ingressSetting3,
-          DataKey.ingressSetting4: ingressSetting4,
-          DataKey.tgcCableLength: tgcCableLength,
-          DataKey.splitOption: splitOption,
-          DataKey.pilotFrequencyMode: pilotFrequencyMode,
-          DataKey.agcMode: agcMode,
-          DataKey.alcMode: alcMode,
-          DataKey.firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-          DataKey.lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-          DataKey.firstChannelLoadingLevel: firstChannelLoadingLevel,
-          DataKey.lastChannelLoadingLevel: lastChannelLoadingLevel,
-          DataKey.pilotFrequency1: pilotFrequency1,
-          DataKey.pilotFrequency2: pilotFrequency2,
-          DataKey.pilotFrequency1AlarmState: pilotFrequency1AlarmState,
-          DataKey.pilotFrequency2AlarmState: pilotFrequency2AlarmState,
+          DataKey.minTemperatureC: a1p8g1.minTemperatureC,
+          DataKey.maxTemperatureC: a1p8g1.maxTemperatureC,
+          DataKey.minTemperatureF: a1p8g1.minTemperatureF,
+          DataKey.maxTemperatureF: a1p8g1.maxTemperatureF,
+          DataKey.minVoltage: a1p8g1.minVoltage,
+          DataKey.maxVoltage: a1p8g1.maxVoltage,
+          DataKey.minVoltageRipple: a1p8g1.minVoltageRipple,
+          DataKey.maxVoltageRipple: a1p8g1.maxVoltageRipple,
+          DataKey.minRFOutputPower: a1p8g1.minRFOutputPower,
+          DataKey.maxRFOutputPower: a1p8g1.maxRFOutputPower,
+          DataKey.ingressSetting2: a1p8g1.ingressSetting2,
+          DataKey.ingressSetting3: a1p8g1.ingressSetting3,
+          DataKey.ingressSetting4: a1p8g1.ingressSetting4,
+          DataKey.tgcCableLength: a1p8g1.tgcCableLength,
+          DataKey.splitOption: a1p8g1.splitOption,
+          DataKey.pilotFrequencyMode: a1p8g1.pilotFrequencyMode,
+          DataKey.agcMode: a1p8g1.agcMode,
+          DataKey.alcMode: a1p8g1.alcMode,
+          DataKey.firstChannelLoadingFrequency:
+              a1p8g1.firstChannelLoadingFrequency,
+          DataKey.lastChannelLoadingFrequency:
+              a1p8g1.lastChannelLoadingFrequency,
+          DataKey.firstChannelLoadingLevel: a1p8g1.firstChannelLoadingLevel,
+          DataKey.lastChannelLoadingLevel: a1p8g1.lastChannelLoadingLevel,
+          DataKey.pilotFrequency1: a1p8g1.pilotFrequency1,
+          DataKey.pilotFrequency2: a1p8g1.pilotFrequency2,
+          DataKey.pilotFrequency1AlarmState: a1p8g1.pilotFrequency1AlarmState,
+          DataKey.pilotFrequency2AlarmState: a1p8g1.pilotFrequency2AlarmState,
           DataKey.rfOutputPilotLowFrequencyAlarmState:
-              rfOutputPilotLowFrequencyAlarmState,
+              a1p8g1.rfOutputPilotLowFrequencyAlarmState,
           DataKey.rfOutputPilotHighFrequencyAlarmState:
-              rfOutputPilotHighFrequencyAlarmState,
-          DataKey.temperatureAlarmState: temperatureAlarmState,
-          DataKey.voltageAlarmState: voltageAlarmState,
-          DataKey.splitOptionAlarmState: splitOptionAlarmState,
-          DataKey.voltageRippleAlarmState: voltageRippleAlarmState,
-          DataKey.rfOutputPowerAlarmState: rfOutputPowerAlarmState,
-          DataKey.location: location,
-          DataKey.logInterval: logInterval,
-          DataKey.inputAttenuation: inputAttenuation,
-          DataKey.inputEqualizer: inputEqualizer,
-          DataKey.dsVVA2: dsVVA2,
-          DataKey.dsSlope2: dsSlope2,
-          DataKey.inputAttenuation2: inputAttenuation2,
-          DataKey.outputEqualizer: outputEqualizer,
-          DataKey.dsVVA3: dsVVA3,
-          DataKey.dsVVA4: dsVVA4,
-          DataKey.outputAttenuation: outputAttenuation,
-          DataKey.inputAttenuation3: inputAttenuation3,
-          DataKey.inputAttenuation4: inputAttenuation4,
-          DataKey.usTGC: usTGC,
+              a1p8g1.rfOutputPilotHighFrequencyAlarmState,
+          DataKey.temperatureAlarmState: a1p8g1.temperatureAlarmState,
+          DataKey.voltageAlarmState: a1p8g1.voltageAlarmState,
+          DataKey.splitOptionAlarmState: a1p8g1.splitOptionAlarmState,
+          DataKey.voltageRippleAlarmState: a1p8g1.voltageRippleAlarmState,
+          DataKey.rfOutputPowerAlarmState: a1p8g1.outputPowerAlarmState,
+          DataKey.location: a1p8g1.location,
+          DataKey.logInterval: a1p8g1.logInterval,
+          DataKey.inputAttenuation: a1p8g1.inputAttenuation,
+          DataKey.inputEqualizer: a1p8g1.inputEqualizer,
+          DataKey.dsVVA2: a1p8g1.dsVVA2,
+          DataKey.dsSlope2: a1p8g1.dsSlope2,
+          DataKey.inputAttenuation2: a1p8g1.inputAttenuation2,
+          DataKey.outputEqualizer: a1p8g1.outputEqualizer,
+          DataKey.dsVVA3: a1p8g1.dsVVA3,
+          DataKey.dsVVA4: a1p8g1.dsVVA4,
+          DataKey.outputAttenuation: a1p8g1.outputAttenuation,
+          DataKey.inputAttenuation3: a1p8g1.inputAttenuation3,
+          DataKey.inputAttenuation4: a1p8g1.inputAttenuation4,
+          DataKey.usTGC: a1p8g1.usTGC,
         }
       ];
     } catch (e) {
@@ -318,64 +259,42 @@ class DsimRepository {
 
   Future<dynamic> requestCommand1p8G2() async {
     int commandIndex = 182;
-    _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G2');
 
-    _writeSetCommandToCharacteristic(
-        _dsim18parser.command18Collection[commandIndex - 180]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: 'cmd1p8G2');
-
     try {
-      var (
-        currentTemperatureC,
-        currentTemperatureF,
-        currentVoltage,
-        currentVoltageRipple,
-        currentRFInputPower,
-        currentRFOutputPower,
-        currentWorkingMode,
-        currentDetectedSplitOption,
-        unitStatusAlarmSeverity,
-        rfInputPilotLowFrequencyAlarmSeverity,
-        rfInputPilotHighFrequencyAlarmSeverity,
-        rfOutputPilotLowFrequencyAlarmSeverity,
-        rfOutputPilotHighFrequencyAlarmSeverity,
-        temperatureAlarmSeverity,
-        voltageAlarmSeverity,
-        splitOptionAlarmSeverity,
-        voltageRippleAlarmSeverity,
-        outputPowerAlarmSeverity,
-      ) = await _completer.future;
-      cancelTimeout(name: '1p8G2');
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18Parser.command18Collection[commandIndex - 180],
+      );
+
+      A1P8G2 a1p8g2 = _dsim18Parser.decodeA1P8G2(rawData);
 
       return [
         true,
         <DataKey, String>{
-          DataKey.currentTemperatureC: currentTemperatureC,
-          DataKey.currentTemperatureF: currentTemperatureF,
-          DataKey.currentVoltage: currentVoltage,
-          DataKey.currentVoltageRipple: currentVoltageRipple,
-          DataKey.currentRFInputPower: currentRFInputPower,
-          DataKey.currentRFOutputPower: currentRFOutputPower,
-          DataKey.currentWorkingMode: currentWorkingMode,
-          DataKey.currentDetectedSplitOption: currentDetectedSplitOption,
-          DataKey.unitStatusAlarmSeverity: unitStatusAlarmSeverity,
+          DataKey.currentTemperatureC: a1p8g2.currentTemperatureC,
+          DataKey.currentTemperatureF: a1p8g2.currentTemperatureF,
+          DataKey.currentVoltage: a1p8g2.currentVoltage,
+          DataKey.currentVoltageRipple: a1p8g2.currentVoltageRipple,
+          DataKey.currentRFInputPower: a1p8g2.currentRFInputPower,
+          DataKey.currentRFOutputPower: a1p8g2.currentRFOutputPower,
+          DataKey.currentWorkingMode: a1p8g2.currentWorkingMode,
+          DataKey.currentDetectedSplitOption: a1p8g2.currentDetectedSplitOption,
+          DataKey.unitStatusAlarmSeverity: a1p8g2.unitStatusAlarmSeverity,
           DataKey.rfInputPilotLowFrequencyAlarmSeverity:
-              rfInputPilotLowFrequencyAlarmSeverity,
+              a1p8g2.rfInputPilotLowFrequencyAlarmSeverity,
           DataKey.rfInputPilotHighFrequencyAlarmSeverity:
-              rfInputPilotHighFrequencyAlarmSeverity,
+              a1p8g2.rfInputPilotHighFrequencyAlarmSeverity,
           DataKey.rfOutputPilotLowFrequencyAlarmSeverity:
-              rfOutputPilotLowFrequencyAlarmSeverity,
+              a1p8g2.rfOutputPilotLowFrequencyAlarmSeverity,
           DataKey.rfOutputPilotHighFrequencyAlarmSeverity:
-              rfOutputPilotHighFrequencyAlarmSeverity,
-          DataKey.temperatureAlarmSeverity: temperatureAlarmSeverity,
-          DataKey.voltageAlarmSeverity: voltageAlarmSeverity,
-          DataKey.splitOptionAlarmSeverity: splitOptionAlarmSeverity,
-          DataKey.voltageRippleAlarmSeverity: voltageRippleAlarmSeverity,
-          DataKey.outputPowerAlarmSeverity: outputPowerAlarmSeverity,
+              a1p8g2.rfOutputPilotHighFrequencyAlarmSeverity,
+          DataKey.temperatureAlarmSeverity: a1p8g2.temperatureAlarmSeverity,
+          DataKey.voltageAlarmSeverity: a1p8g2.voltageAlarmSeverity,
+          DataKey.splitOptionAlarmSeverity: a1p8g2.splitOptionAlarmSeverity,
+          DataKey.voltageRippleAlarmSeverity: a1p8g2.voltageRippleAlarmSeverity,
+          DataKey.outputPowerAlarmSeverity: a1p8g2.outputPowerAlarmSeverity,
         }
       ];
     } catch (e) {
@@ -387,19 +306,16 @@ class DsimRepository {
 
   Future<dynamic> requestCommand1p8G3() async {
     int commandIndex = 183;
-    _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G3');
 
-    _writeSetCommandToCharacteristic(
-        _dsim18parser.command18Collection[commandIndex - 180]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: 'cmd1p8G3');
-
     try {
-      var rfInOuts = await _completer.future;
-      cancelTimeout(name: '1p8G3');
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18Parser.command18Collection[commandIndex - 180],
+      );
+
+      List<RFInOut> rfInOuts = _dsim18Parser.parse1P8GRFInOut(rawData);
 
       return [
         true,
@@ -416,34 +332,35 @@ class DsimRepository {
   // commandIndex = 184 時獲取最新的1024筆Log的統計資料跟 log
   Future<dynamic> requestCommand1p8GForLogChunk(int chunkIndex) async {
     int commandIndex = chunkIndex + 184;
-    _completer = Completer<dynamic>();
 
     print('get data from request command 1p8GForLogChunk');
 
-    _writeSetCommandToCharacteristic(
-        _dsim18parser.command18Collection[commandIndex - 180]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8GForLogChunk');
+    List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      commandIndex: commandIndex,
+      value: _dsim18Parser.command18Collection[commandIndex - 180],
+    );
 
     if (commandIndex == 184) {
       // _log1p8Gs.clear();
       try {
-        var (
-          historicalMinTemperatureC,
-          historicalMaxTemperatureC,
-          historicalMinTemperatureF,
-          historicalMaxTemperatureF,
-          historicalMinVoltage,
-          historicalMaxVoltage,
-          historicalMinVoltageRipple,
-          historicalMaxVoltageRipple,
-          log1p8Gs,
-        ) = await _completer.future;
-        // 將第一組 log 加入 _log1p8Gs
-        // _log1p8Gs.addAll(log1p8Gs);
-        cancelTimeout(name: '1p8GForLogChunk');
+        // var (
+        //   historicalMinTemperatureC,
+        //   historicalMaxTemperatureC,
+        //   historicalMinTemperatureF,
+        //   historicalMaxTemperatureF,
+        //   historicalMinVoltage,
+        //   historicalMaxVoltage,
+        //   historicalMinVoltageRipple,
+        //   historicalMaxVoltageRipple,
+        //   log1p8Gs,
+        // ) = await _completer.future;
+        // // 將第一組 log 加入 _log1p8Gs
+        // // _log1p8Gs.addAll(log1p8Gs);
+        // cancelTimeout(name: '1p8GForLogChunk');
 
+        List<Log1p8G> log1p8Gs = _dsim18Parser.parse1P8GLog(rawData);
+        A1P8GLogStatistic a1p8gLogStatistic =
+            _dsim18Parser.getA1p8GLogStatistics(log1p8Gs);
         bool hasNextChunk = log1p8Gs.isNotEmpty ? true : false;
 
         return [
@@ -451,14 +368,22 @@ class DsimRepository {
           hasNextChunk,
           log1p8Gs,
           <DataKey, String>{
-            DataKey.historicalMinTemperatureC: historicalMinTemperatureC,
-            DataKey.historicalMaxTemperatureC: historicalMaxTemperatureC,
-            DataKey.historicalMinTemperatureF: historicalMinTemperatureF,
-            DataKey.historicalMaxTemperatureF: historicalMaxTemperatureF,
-            DataKey.historicalMinVoltage: historicalMinVoltage,
-            DataKey.historicalMaxVoltage: historicalMaxVoltage,
-            DataKey.historicalMinVoltageRipple: historicalMinVoltageRipple,
-            DataKey.historicalMaxVoltageRipple: historicalMaxVoltageRipple,
+            DataKey.historicalMinTemperatureC:
+                a1p8gLogStatistic.historicalMinTemperatureC,
+            DataKey.historicalMaxTemperatureC:
+                a1p8gLogStatistic.historicalMaxTemperatureC,
+            DataKey.historicalMinTemperatureF:
+                a1p8gLogStatistic.historicalMinTemperatureF,
+            DataKey.historicalMaxTemperatureF:
+                a1p8gLogStatistic.historicalMaxTemperatureF,
+            DataKey.historicalMinVoltage:
+                a1p8gLogStatistic.historicalMinVoltage,
+            DataKey.historicalMaxVoltage:
+                a1p8gLogStatistic.historicalMaxVoltage,
+            DataKey.historicalMinVoltageRipple:
+                a1p8gLogStatistic.historicalMinVoltageRipple,
+            DataKey.historicalMaxVoltageRipple:
+                a1p8gLogStatistic.historicalMaxVoltageRipple,
           }
         ];
       } catch (e) {
@@ -469,11 +394,7 @@ class DsimRepository {
       }
     } else {
       try {
-        // 將其他組 log 加入 _log1p8Gs
-        List<Log1p8G> log1p8Gs = await _completer.future;
-        // _log1p8Gs.addAll(log1p8Gs);
-        cancelTimeout(name: '1p8GForLogChunk');
-
+        List<Log1p8G> log1p8Gs = _dsim18Parser.parse1P8GLog(rawData);
         bool hasNextChunk = log1p8Gs.isNotEmpty ? true : false;
 
         return [
@@ -492,14 +413,13 @@ class DsimRepository {
 
   Future<dynamic> requestCommand1p8GAlarm() async {
     int commandIndex = 204;
-    _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G_Alarm');
 
-    _writeSetCommandToCharacteristic(_dsim18parser.command18Collection[2]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G_Alarm');
+    List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      commandIndex: commandIndex,
+      value: _dsim18Parser.command18Collection[commandIndex - 180],
+    );
 
     try {
       var (
@@ -593,7 +513,7 @@ class DsimRepository {
   }
 
   Future<dynamic> export1p8GRecords(List<Log1p8G> log1p8Gs) async {
-    List<dynamic> result = await _dsim18parser.export1p8GRecords(log1p8Gs);
+    List<dynamic> result = await _dsim18Parser.export1p8GRecords(log1p8Gs);
     return result;
   }
 
@@ -1377,7 +1297,7 @@ class DsimRepository {
   }
 
   Future<dynamic> setInputPilotHighFrequencyAlarmState(String isEnable) async {
-    commandIndex = 325;
+    int commandIndex = 325;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1408,7 +1328,7 @@ class DsimRepository {
   }
 
   Future<dynamic> setOutputPilotLowFrequencyAlarmState(String isEnable) async {
-    commandIndex = 326;
+    int commandIndex = 326;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1439,7 +1359,7 @@ class DsimRepository {
   }
 
   Future<dynamic> setOutputPilotHighFrequencyAlarmState(String isEnable) async {
-    commandIndex = 327;
+    int commandIndex = 327;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1470,7 +1390,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GTemperatureAlarmState(String isEnable) async {
-    commandIndex = 328;
+    int commandIndex = 328;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1499,7 +1419,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GVoltageAlarmState(String isEnable) async {
-    commandIndex = 329;
+    int commandIndex = 329;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1528,7 +1448,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GSplitOptionAlarmState(String isEnable) async {
-    commandIndex = 334;
+    int commandIndex = 334;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1557,7 +1477,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GVoltageRippleAlarmState(String isEnable) async {
-    commandIndex = 335;
+    int commandIndex = 335;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1586,7 +1506,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GRFOutputPowerAlarmState(String isEnable) async {
-    commandIndex = 336;
+    int commandIndex = 336;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1615,7 +1535,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GLocation(String location) async {
-    commandIndex = 337;
+    int commandIndex = 337;
     _completer = Completer<dynamic>();
 
     List<int> locationBytes = [];
@@ -1673,7 +1593,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GLogInterval(String logInterval) async {
-    commandIndex = 338;
+    int commandIndex = 338;
     _completer = Completer<dynamic>();
 
     int interval = int.parse(logInterval);
@@ -1702,7 +1622,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GForwardInputAttenuation(String strValue) async {
-    commandIndex = 339;
+    int commandIndex = 339;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1739,7 +1659,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GForwardInputEqualizer(String strValue) async {
-    commandIndex = 340;
+    int commandIndex = 340;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1776,7 +1696,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GDSVVA2(String strValue) async {
-    commandIndex = 341;
+    int commandIndex = 341;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1813,7 +1733,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GDSSlope2(String strValue) async {
-    commandIndex = 342;
+    int commandIndex = 342;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1850,7 +1770,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GReturnInputAttenuation2(String strValue) async {
-    commandIndex = 343;
+    int commandIndex = 343;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1887,7 +1807,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GReturnOutputEqualizer(String strValue) async {
-    commandIndex = 344;
+    int commandIndex = 344;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1924,7 +1844,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8DSVVA3(String strValue) async {
-    commandIndex = 345;
+    int commandIndex = 345;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1961,7 +1881,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8DSVVA4(String strValue) async {
-    commandIndex = 346;
+    int commandIndex = 346;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1998,7 +1918,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GReturnOutputAttenuation(String strValue) async {
-    commandIndex = 347;
+    int commandIndex = 347;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -2035,7 +1955,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GReturnInputAttenuation3(String strValue) async {
-    commandIndex = 348;
+    int commandIndex = 348;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -2072,7 +1992,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GReturnInputAttenuation4(String strValue) async {
-    commandIndex = 349;
+    int commandIndex = 349;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -2109,7 +2029,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8USTGC(String strValue) async {
-    commandIndex = 350;
+    int commandIndex = 350;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -2146,7 +2066,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GCoordinates(String coordinates) async {
-    commandIndex = 352;
+    int commandIndex = 352;
     _completer = Completer<dynamic>();
 
     List<int> coordinatesBytes = [];
@@ -2185,7 +2105,7 @@ class DsimRepository {
   // 設定藍芽串口的資料傳輸延遲時間, 單位為 ms
   // 例如 MTU = 244, 則每傳輸244byte 就會休息 ms 時間再傳下一筆
   Future<dynamic> set1p8GTransmitDelayTime() async {
-    commandIndex = 353;
+    int commandIndex = 353;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -2238,7 +2158,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GNowDateTime() async {
-    commandIndex = 354;
+    int commandIndex = 354;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -2306,7 +2226,7 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommand0() async {
-    commandIndex = 0;
+    int commandIndex = 0;
 
     print('get data from request command 0');
 
@@ -2327,7 +2247,7 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommand1() async {
-    commandIndex = 1;
+    int commandIndex = 1;
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
@@ -2350,7 +2270,7 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommand2() async {
-    commandIndex = 2;
+    int commandIndex = 2;
 
     print('get data from request command 2');
 
@@ -2374,7 +2294,7 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommand3() async {
-    commandIndex = 3;
+    int commandIndex = 3;
 
     print('get data from request command 3');
 
@@ -2399,7 +2319,7 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommand4() async {
-    commandIndex = 4;
+    int commandIndex = 4;
     print('get data from request command 4');
 
     try {
@@ -2425,7 +2345,7 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommand5() async {
-    commandIndex = 5;
+    int commandIndex = 5;
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
@@ -2455,7 +2375,7 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommand6() async {
-    commandIndex = 6;
+    int commandIndex = 6;
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
@@ -2478,7 +2398,7 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommand9() async {
-    commandIndex = 6;
+    int commandIndex = 6;
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
@@ -2504,7 +2424,7 @@ class DsimRepository {
   Future requestCommand9To12() async {
     String location = '';
     for (int i = 9; i <= 12; i++) {
-      commandIndex = i;
+      int commandIndex = i;
       try {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
@@ -2531,7 +2451,7 @@ class DsimRepository {
   }
 
   Future requestCommandForLogChunk(int chunkIndex) async {
-    commandIndex = chunkIndex;
+    int commandIndex = chunkIndex;
     print('get data from request command $chunkIndex');
 
     try {
@@ -2569,7 +2489,7 @@ class DsimRepository {
 
   Future requestCommand30To37() async {
     for (int i = 30; i <= 37; i++) {
-      commandIndex = i;
+      int commandIndex = i;
 
       print('get data from request command $i');
       try {
@@ -2775,12 +2695,19 @@ class DsimRepository {
     CRC16.calculateCRC16(command: Command.setLocBCmd, usDataLength: 19);
     CRC16.calculateCRC16(command: Command.setLocCCmd, usDataLength: 19);
 
-    for (int i = 40; i < 43; i++) {
-      commandIndex = i;
+    List<List<int>> locationCommand = [
+      Command.setLoc9Cmd,
+      Command.setLocACmd,
+      Command.setLocBCmd,
+      Command.setLocCCmd
+    ];
+
+    for (int i = 0; i < 3; i++) {
+      int commandIndex = i + 40;
       try {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
-          value: _dsimParser.commandCollection[commandIndex],
+          value: locationCommand[i],
         );
       } catch (e) {
         return false;
@@ -2824,9 +2751,10 @@ class DsimRepository {
     CRC16.calculateCRC16(command: Command.set04Cmd, usDataLength: 19);
 
     try {
+      int commandIndex = 44;
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _dsimParser.commandCollection[commandIndex],
+        value: Command.set04Cmd,
       );
     } catch (e) {
       return false;
@@ -2865,36 +2793,28 @@ class DsimRepository {
     Command.set04Cmd[13] = intLogIntervalId; // Log Minutes 1Byte
     CRC16.calculateCRC16(command: Command.set04Cmd, usDataLength: 19);
 
-    commandIndex = 45;
-    endIndex = 45;
-    _writeSetCommandToCharacteristic(Command.set04Cmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: 'cmd set log interval');
+    try {
+      int commandIndex = 45;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command.set04Cmd,
+      );
+    } catch (e) {
+      return false;
+    }
 
     // 設定後重新讀取 log interval 來比對是否設定成功
-    try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: 'cmd set log interval');
+    List<dynamic> result = await requestCommand3();
 
-      if (isDone) {
-        List<dynamic> result = await requestCommand3();
-
-        if (result[0]) {
-          if (logIntervalId.toString() == result[1]) {
-            _characteristicDataStreamController
-                .add({DataKey.logInterval: result[1]});
-            return true;
-          } else {
-            return false;
-          }
-        } else {
-          return false;
-        }
+    if (result[0]) {
+      if (logIntervalId.toString() == result[1]) {
+        _characteristicDataStreamController
+            .add({DataKey.logInterval: result[1]});
+        return true;
       } else {
         return false;
       }
-    } catch (e) {
+    } else {
       return false;
     }
   }
@@ -2940,52 +2860,51 @@ class DsimRepository {
 
     CRC16.calculateCRC16(command: Command.set04Cmd, usDataLength: 19);
 
-    commandIndex = 46;
-    endIndex = 46;
-    _writeSetCommandToCharacteristic(Command.set04Cmd);
+    int commandIndex = 46;
 
     if (_workingModeId == 1) {
       // AGC
-      setTimeout(
-          duration: Duration(seconds: _agcWorkingModeSettingTimeout),
-          name: 'cmd set working mode');
+
+      try {
+        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+            commandIndex: commandIndex,
+            value: Command.set04Cmd,
+            timeout: Duration(seconds: _agcWorkingModeSettingTimeout));
+      } catch (e) {
+        return false;
+      }
     } else {
-      setTimeout(
-          duration: Duration(seconds: _commandExecutionTimeout),
-          name: 'cmd set working mode');
+      try {
+        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+          commandIndex: commandIndex,
+          value: Command.set04Cmd,
+        );
+      } catch (e) {
+        return false;
+      }
     }
 
     // 設定後重新讀取 working mode 來比對是否設定成功
-    try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: 'cmd set working mode');
 
-      if (isDone) {
-        List<dynamic> resultOfCommand5 = await requestCommand5();
+    List<dynamic> resultOfCommand5 = await requestCommand5();
 
-        if (resultOfCommand5[0]) {
-          if (workingMode == resultOfCommand5[1]) {
-            _characteristicDataStreamController
-                .add({DataKey.workingMode: resultOfCommand5[1]});
-            _characteristicDataStreamController
-                .add({DataKey.currentPilot: resultOfCommand5[2]});
-            _characteristicDataStreamController
-                .add({DataKey.currentPilotMode: resultOfCommand5[3]});
+    if (resultOfCommand5[0]) {
+      if (workingMode == resultOfCommand5[1]) {
+        _characteristicDataStreamController
+            .add({DataKey.workingMode: resultOfCommand5[1]});
+        _characteristicDataStreamController
+            .add({DataKey.currentPilot: resultOfCommand5[2]});
+        _characteristicDataStreamController
+            .add({DataKey.currentPilotMode: resultOfCommand5[3]});
 
-            _characteristicDataStreamController.add(
-                {DataKey.currentAttenuation: currentAttenuation.toString()});
+        _characteristicDataStreamController
+            .add({DataKey.currentAttenuation: currentAttenuation.toString()});
 
-            return true;
-          } else {
-            return false;
-          }
-        } else {
-          return false;
-        }
+        return true;
       } else {
         return false;
       }
-    } catch (e) {
+    } else {
       return false;
     }
   }
@@ -3012,26 +2931,26 @@ class DsimRepository {
   }
 
   // iOS 跟 Android 的 set command 方式不一樣
-  Future<void> _writeSetCommandToCharacteristic(List<int> value) async {
-    try {
-      if (Platform.isAndroid) {
-        await _ble.writeCharacteristicWithResponse(
-          _qualifiedCharacteristic,
-          value: value,
-        );
-      } else if (Platform.isIOS) {
-        await _ble.writeCharacteristicWithoutResponse(
-          _qualifiedCharacteristic,
-          value: value,
-        );
-      } else {}
-    } catch (e) {
-      if (!_completer.isCompleted) {
-        _completer.completeError('Write command failed');
-        print('Write command failed');
-      }
-    }
-  }
+  // Future<void> _writeSetCommandToCharacteristic(List<int> value) async {
+  //   try {
+  //     if (Platform.isAndroid) {
+  //       await _ble.writeCharacteristicWithResponse(
+  //         _qualifiedCharacteristic,
+  //         value: value,
+  //       );
+  //     } else if (Platform.isIOS) {
+  //       await _ble.writeCharacteristicWithoutResponse(
+  //         _qualifiedCharacteristic,
+  //         value: value,
+  //       );
+  //     } else {}
+  //   } catch (e) {
+  //     if (!_completer.isCompleted) {
+  //       _completer.completeError('Write command failed');
+  //       print('Write command failed');
+  //     }
+  //   }
+  // }
 
   Future<dynamic> exportRecords() async {
     return _dsimParser.exportRecords();

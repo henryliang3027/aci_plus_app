@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:dsim_app/core/command.dart';
+import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -196,6 +197,7 @@ class BLEClient {
               if (_rawLog.length == _totalBytesPerCommand) {
                 List<int> rawLogs = List.from(_rawLog);
                 _rawLog.clear();
+                cancelTimeout(name: 'cmd $_currentCommandIndex');
                 if (!_completer.isCompleted) {
                   _completer.complete(rawLogs);
                 }
@@ -207,20 +209,32 @@ class BLEClient {
               if (_rawEvent.length == _totalBytesPerCommand) {
                 List<int> rawEvents = List.from(_rawEvent);
                 _rawEvent.clear();
+                cancelTimeout(name: 'cmd $_currentCommandIndex');
                 if (!_completer.isCompleted) {
                   _completer.complete(rawEvents);
                 }
               }
             } else if (_currentCommandIndex >= 40 &&
                 _currentCommandIndex <= 46) {
+              cancelTimeout(name: 'cmd $_currentCommandIndex');
               if (!_completer.isCompleted) {
                 _completer.complete(rawData);
               }
             } else if (_currentCommandIndex >= 180 &&
                 _currentCommandIndex <= 182) {
               cancelTimeout(name: 'cmd $_currentCommandIndex');
-              if (!_completer.isCompleted) {
-                _completer.complete(rawData);
+
+              if (rawData.length == 181) {
+                bool isValidCRC = checkCRC(rawData);
+                if (isValidCRC) {
+                  if (!_completer.isCompleted) {
+                    _completer.complete(rawData);
+                  }
+                } else {
+                  if (!_completer.isCompleted) {
+                    _completer.completeError('Invalid data');
+                  }
+                }
               }
             } else if (_currentCommandIndex == 183) {
               List<int> header = [0xB0, 0x03, 0x00];
@@ -232,12 +246,19 @@ class BLEClient {
               print(_rawRFInOut.length);
 
               if (_rawRFInOut.length == 1029) {
-                _rawRFInOut.removeRange(
-                    _rawRFInOut.length - 2, _rawRFInOut.length);
-                _rawRFInOut.removeRange(0, 3);
-                cancelTimeout(name: 'cmd $_currentCommandIndex');
-                if (!_completer.isCompleted) {
-                  _completer.complete(_rawRFInOut);
+                bool isValidCRC = checkCRC(_rawRFInOut);
+                if (isValidCRC) {
+                  _rawRFInOut.removeRange(
+                      _rawRFInOut.length - 2, _rawRFInOut.length);
+                  _rawRFInOut.removeRange(0, 3);
+                  cancelTimeout(name: 'cmd $_currentCommandIndex');
+                  if (!_completer.isCompleted) {
+                    _completer.complete(_rawRFInOut);
+                  }
+                } else {
+                  if (!_completer.isCompleted) {
+                    _completer.completeError('Invalid data');
+                  }
                 }
               }
             }
@@ -321,6 +342,19 @@ class BLEClient {
     await _connectionStreamSubscription?.cancel();
     await Future.delayed(const Duration(milliseconds: 2000));
     _connectionStreamSubscription = null;
+  }
+
+  bool checkCRC(
+    List<int> rawData,
+  ) {
+    List<int> crcData = List<int>.from(rawData);
+    CRC16.calculateCRC16(command: crcData, usDataLength: crcData.length - 2);
+    if (crcData[crcData.length - 1] == rawData[rawData.length - 1] &&
+        crcData[crcData.length - 2] == rawData[rawData.length - 2]) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // 透過 1G/1.2G/1.8G 同樣的基本指令, 來取得回傳資料的長度

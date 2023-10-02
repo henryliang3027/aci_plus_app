@@ -613,421 +613,444 @@ class Dsim18Parser {
     );
   }
 
-  void parseRawData({
-    required int commandIndex,
-    required List<int> rawData,
-    required Completer completer,
-  }) {
-    switch (commandIndex) {
-      case 180:
-        if (rawData.length == 181) {
-          bool isValidCRC = checkCRC(rawData);
-          if (isValidCRC) {
-            A1P8G0 a1p8g0 = decodeA1P8G0(rawData);
-            if (!completer.isCompleted) {
-              completer.complete((
-                a1p8g0.partName,
-                a1p8g0.partNo,
-                a1p8g0.serialNumber,
-                a1p8g0.firmwareVersion,
-                a1p8g0.mfgDate,
-                a1p8g0.coordinate,
-              ));
-            }
-          } else {
-            if (!completer.isCompleted) {
-              completer.completeError('Invalid data');
-            }
-          }
-        } else {
-          if (!completer.isCompleted) {
-            completer.completeError('Invalid data');
-          }
-        }
+  A1P8GAlarm devoceAlarmSeverity(List<int> rawData) {
+    // 給 定期更新 information page 的 alarm 用
+    Alarm unitStatusAlarmSeverity = Alarm.medium;
+    Alarm temperatureAlarmSeverity = Alarm.medium;
+    Alarm powerAlarmSeverity = Alarm.medium;
 
-        break;
-      case 181:
-        if (rawData.length == 181) {
-          bool isValidCRC = checkCRC(rawData);
-          if (isValidCRC) {
-            A1P8G1 a1p8g1 = decodeA1P8G1(rawData);
-            if (!completer.isCompleted) {
-              completer.complete((
-                a1p8g1.minTemperatureC,
-                a1p8g1.maxTemperatureC,
-                a1p8g1.minTemperatureF,
-                a1p8g1.maxTemperatureF,
-                a1p8g1.minVoltage,
-                a1p8g1.maxVoltage,
-                a1p8g1.minVoltageRipple,
-                a1p8g1.maxVoltageRipple,
-                a1p8g1.minRFOutputPower,
-                a1p8g1.maxRFOutputPower,
-                a1p8g1.ingressSetting2,
-                a1p8g1.ingressSetting3,
-                a1p8g1.ingressSetting4,
-                a1p8g1.tgcCableLength,
-                a1p8g1.splitOption,
-                a1p8g1.pilotFrequencyMode,
-                a1p8g1.agcMode,
-                a1p8g1.alcMode,
-                a1p8g1.firstChannelLoadingFrequency,
-                a1p8g1.lastChannelLoadingFrequency,
-                a1p8g1.firstChannelLoadingLevel,
-                a1p8g1.lastChannelLoadingLevel,
-                a1p8g1.pilotFrequency1,
-                a1p8g1.pilotFrequency2,
-                a1p8g1.pilotFrequency1AlarmState,
-                a1p8g1.pilotFrequency2AlarmState,
-                a1p8g1.rfOutputPilotLowFrequencyAlarmState,
-                a1p8g1.rfOutputPilotHighFrequencyAlarmState,
-                a1p8g1.temperatureAlarmState,
-                a1p8g1.voltageAlarmState,
-                a1p8g1.splitOptionAlarmState,
-                a1p8g1.voltageRippleAlarmState,
-                a1p8g1.outputPowerAlarmState,
-                a1p8g1.location,
-                a1p8g1.logInterval,
-                a1p8g1.inputAttenuation,
-                a1p8g1.inputEqualizer,
-                a1p8g1.dsVVA2,
-                a1p8g1.dsSlope2,
-                a1p8g1.inputAttenuation2,
-                a1p8g1.outputEqualizer,
-                a1p8g1.dsVVA3,
-                a1p8g1.dsVVA4,
-                a1p8g1.outputAttenuation,
-                a1p8g1.inputAttenuation3,
-                a1p8g1.inputAttenuation4,
-                a1p8g1.usTGC,
-              ));
-            }
-          } else {
-            if (!completer.isCompleted) {
-              completer.completeError('Invalid data');
-            }
-          }
-        } else {
-          if (!completer.isCompleted) {
-            completer.completeError('Invalid data');
-          }
-        }
+    int unitStatus = rawData[3];
+    unitStatusAlarmSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
 
-        break;
-      case 182:
-        if (rawData.length == 181) {
-          bool isValidCRC = checkCRC(rawData);
-          if (isValidCRC) {
-            A1P8G2 a1p8g2 = decodeA1P8G2(rawData);
-            if (!completer.isCompleted) {
-              completer.complete((
-                a1p8g2.currentTemperatureC,
-                a1p8g2.currentTemperatureF,
-                a1p8g2.currentVoltage,
-                a1p8g2.currentVoltageRipple,
-                a1p8g2.currentRFInputPower,
-                a1p8g2.currentRFOutputPower,
-                a1p8g2.currentWorkingMode,
-                a1p8g2.currentDetectedSplitOption,
-                a1p8g2.unitStatusAlarmSeverity,
-                a1p8g2.rfInputPilotLowFrequencyAlarmSeverity,
-                a1p8g2.rfInputPilotHighFrequencyAlarmSeverity,
-                a1p8g2.rfOutputPilotLowFrequencyAlarmSeverity,
-                a1p8g2.rfOutputPilotHighFrequencyAlarmSeverity,
-                a1p8g2.temperatureAlarmSeverity,
-                a1p8g2.voltageAlarmSeverity,
-                a1p8g2.splitOptionAlarmSeverity,
-                a1p8g2.voltageRippleAlarmSeverity,
-                a1p8g2.outputPowerAlarmSeverity,
-              ));
-            }
-          } else {
-            if (!completer.isCompleted) {
-              completer.completeError('Invalid data');
-            }
-          }
-        } else {
-          if (!completer.isCompleted) {
-            completer.completeError('Invalid data');
-          }
-        }
+    int temperatureStatus = rawData[128];
+    temperatureAlarmSeverity =
+        temperatureStatus == 1 ? Alarm.danger : Alarm.success;
 
-        break;
-      case 183:
-        List<int> header = [0xB0, 0x03, 0x00];
-        if (rawData.length < 3) {
-          if (!completer.isCompleted) {
-            completer.completeError('Invalid data');
-          }
-        } else {
-          if (listEquals(rawData.sublist(0, 3), header)) {
-            _rawRFInOut.clear();
-          }
+    int powerStatus = rawData[129];
+    powerAlarmSeverity = powerStatus == 1 ? Alarm.danger : Alarm.success;
 
-          _rawRFInOut.addAll(rawData);
-          print(_rawRFInOut.length);
+    A1P8GAlarm a1p8gAlarm = A1P8GAlarm(
+      unitStatusAlarmSeverity: unitStatusAlarmSeverity.name,
+      temperatureAlarmSeverity: temperatureAlarmSeverity.name,
+      powerAlarmSeverity: powerAlarmSeverity.name,
+    );
 
-          if (_rawRFInOut.length == 1029) {
-            bool isValidCRC = checkCRC(_rawRFInOut);
-            if (isValidCRC) {
-              _rawRFInOut.removeRange(
-                  _rawRFInOut.length - 2, _rawRFInOut.length);
-              _rawRFInOut.removeRange(0, 3);
-              List<RFInOut> rfInOuts = _parseRFInOut(_rawRFInOut);
-
-              if (!completer.isCompleted) {
-                completer.complete(rfInOuts);
-              }
-            } else {
-              if (!completer.isCompleted) {
-                completer.completeError('Invalid data');
-              }
-            }
-          }
-        }
-
-        break;
-      case 184:
-        List<int> header = [0xB0, 0x03, 0x00];
-        if (rawData.length < 3) {
-          if (!completer.isCompleted) {
-            completer.completeError('Invalid data');
-          }
-        } else {
-          if (listEquals(rawData.sublist(0, 3), header)) {
-            _rawLogs.clear();
-          }
-
-          _rawLogs.addAll(rawData);
-          print(_rawLogs.length);
-
-          if (_rawLogs.length == 16389) {
-            bool isValidCRC = checkCRC(_rawLogs);
-            if (isValidCRC) {
-              _rawLogs.removeRange(_rawLogs.length - 2, _rawLogs.length);
-              _rawLogs.removeRange(0, 3);
-              List<Log1p8G> log1p8Gs = _parse1p8GLog(_rawLogs);
-              var (
-                historicalMinTemperatureC,
-                historicalMaxTemperatureC,
-                historicalMinTemperatureF,
-                historicalMaxTemperatureF,
-                historicalMinVoltageStr,
-                historicalMaxVoltageStr,
-                historicalMinVoltageRippleStr,
-                historicalMaxVoltageRippleStr,
-              ) = _get1p8GLogStatistics(log1p8Gs);
-
-              if (!completer.isCompleted) {
-                completer.complete((
-                  historicalMinTemperatureC,
-                  historicalMaxTemperatureC,
-                  historicalMinTemperatureF,
-                  historicalMaxTemperatureF,
-                  historicalMinVoltageStr,
-                  historicalMaxVoltageStr,
-                  historicalMinVoltageRippleStr,
-                  historicalMaxVoltageRippleStr,
-                  log1p8Gs,
-                ));
-              }
-            } else {
-              if (!completer.isCompleted) {
-                completer.completeError('Invalid data');
-              }
-            }
-          }
-        }
-        break;
-      case 185:
-      case 186:
-      case 187:
-      case 188:
-      case 189:
-      case 190:
-      case 191:
-      case 192:
-      case 193:
-        List<int> header = [0xB0, 0x03, 0x00];
-        if (rawData.length < 3) {
-          if (!completer.isCompleted) {
-            completer.completeError('Invalid data');
-          }
-        } else {
-          if (listEquals(rawData.sublist(0, 3), header)) {
-            _rawLogs.clear();
-          }
-
-          _rawLogs.addAll(rawData);
-          print(_rawLogs.length);
-
-          if (_rawLogs.length == 16389) {
-            bool isValidCRC = checkCRC(_rawLogs);
-            if (isValidCRC) {
-              _rawLogs.removeRange(_rawLogs.length - 2, _rawLogs.length);
-              _rawLogs.removeRange(0, 3);
-              List<Log1p8G> log1p8Gs = _parse1p8GLog(_rawLogs);
-              if (!completer.isCompleted) {
-                completer.complete(log1p8Gs);
-              }
-            } else {
-              if (!completer.isCompleted) {
-                completer.completeError('Invalid data');
-              }
-            }
-          }
-        }
-
-        // List<int> header = [0xB0, 0x03, 0x00];
-        // if (listEquals(rawData.sublist(0, 3), header)) {
-        //   _rawLogs.clear();
-        // }
-        // _rawLogs.addAll(rawData);
-        // print('${_rawLogs.length}');
-
-        // if (_rawLogs.length == 16389) {
-        //   _rawLogs.removeRange(_rawLogs.length - 2, _rawLogs.length);
-        //   _rawLogs.removeRange(0, 3);
-        //   print(_rawLogs);
-        //   List<Log1p8G> log1p8Gs = _parse1p8GLog(_rawLogs);
-
-        //   if (!completer.isCompleted) {
-        //     completer.complete(log1p8Gs);
-        //   }
-        // }
-
-        break;
-      case 194:
-      case 195:
-      case 196:
-      case 197:
-      case 198:
-      case 199:
-      case 200:
-      case 201:
-      case 202:
-      case 203:
-        break;
-      case 204:
-        if (rawData.length == 181) {
-          bool isValidCRC = checkCRC(rawData);
-          if (isValidCRC) {
-            // 給 定期更新 information page 的 alarm 用
-            Alarm alarmUSeverity = Alarm.medium;
-            Alarm alarmTServerity = Alarm.medium;
-            Alarm alarmPServerity = Alarm.medium;
-
-            int unitStatus = rawData[3];
-            alarmUSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
-
-            int temperatureStatus = rawData[128];
-            alarmTServerity =
-                temperatureStatus == 1 ? Alarm.danger : Alarm.success;
-
-            int powerStatus = rawData[129];
-            alarmPServerity = powerStatus == 1 ? Alarm.danger : Alarm.success;
-
-            if (!completer.isCompleted) {
-              completer.complete((
-                alarmUSeverity.name,
-                alarmTServerity.name,
-                alarmPServerity.name,
-              ));
-            }
-          } else {
-            if (!completer.isCompleted) {
-              completer.completeError('Invalid data');
-            }
-          }
-        } else {
-          if (!completer.isCompleted) {
-            completer.completeError('Invalid data');
-          }
-        }
-
-        break;
-      case 300:
-      case 301:
-      case 302:
-      case 303:
-      case 304:
-      case 305:
-      case 306:
-      case 307:
-      case 308:
-      case 309:
-      case 310:
-      case 311:
-      case 312:
-      case 313:
-      case 314:
-      case 315:
-      case 316:
-      case 317:
-      case 318:
-      case 319:
-      case 320:
-      case 321:
-      case 322:
-      case 323:
-      case 324:
-      case 325:
-      case 326:
-      case 327:
-      case 328:
-      case 329:
-      case 330:
-      case 331:
-      case 332:
-      case 333:
-      case 334:
-      case 335:
-      case 336:
-      case 337:
-      case 338:
-      case 339:
-      case 340:
-      case 341:
-      case 342:
-      case 343:
-      case 344:
-      case 345:
-      case 346:
-      case 347:
-      case 348:
-      case 349:
-      case 350:
-      case 351:
-      case 352:
-      case 353:
-      case 354:
-        if (rawData.length == 8) {
-          bool isValidCRC = checkCRC(rawData);
-          if (isValidCRC) {
-            if (!completer.isCompleted) {
-              bool result = _parseSettingResult(rawData);
-              completer.complete(result);
-            }
-          } else {
-            if (!completer.isCompleted) {
-              completer.completeError('Invalid data');
-            }
-          }
-        } else {
-          if (!completer.isCompleted) {
-            completer.completeError('Invalid data');
-          }
-        }
-
-        break;
-
-      default:
-        break;
-    }
+    return a1p8gAlarm;
   }
 
-  (String, String, String, String, String, String, String, String)
-      _get1p8GLogStatistics(List<Log1p8G> log1p8Gs) {
+  // void parseRawData({
+  //   required int commandIndex,
+  //   required List<int> rawData,
+  // }) {
+  //   switch (commandIndex) {
+  //     case 180:
+  //       if (rawData.length == 181) {
+  //         bool isValidCRC = checkCRC(rawData);
+  //         if (isValidCRC) {
+  //           A1P8G0 a1p8g0 = decodeA1P8G0(rawData);
+  //           if (!completer.isCompleted) {
+  //             completer.complete((
+  //               a1p8g0.partName,
+  //               a1p8g0.partNo,
+  //               a1p8g0.serialNumber,
+  //               a1p8g0.firmwareVersion,
+  //               a1p8g0.mfgDate,
+  //               a1p8g0.coordinate,
+  //             ));
+  //           }
+  //         } else {
+  //           if (!completer.isCompleted) {
+  //             completer.completeError('Invalid data');
+  //           }
+  //         }
+  //       } else {
+  //         if (!completer.isCompleted) {
+  //           completer.completeError('Invalid data');
+  //         }
+  //       }
+
+  //       break;
+  //     case 181:
+  //       if (rawData.length == 181) {
+  //         bool isValidCRC = checkCRC(rawData);
+  //         if (isValidCRC) {
+  //           A1P8G1 a1p8g1 = decodeA1P8G1(rawData);
+  //           if (!completer.isCompleted) {
+  //             completer.complete((
+  //               a1p8g1.minTemperatureC,
+  //               a1p8g1.maxTemperatureC,
+  //               a1p8g1.minTemperatureF,
+  //               a1p8g1.maxTemperatureF,
+  //               a1p8g1.minVoltage,
+  //               a1p8g1.maxVoltage,
+  //               a1p8g1.minVoltageRipple,
+  //               a1p8g1.maxVoltageRipple,
+  //               a1p8g1.minRFOutputPower,
+  //               a1p8g1.maxRFOutputPower,
+  //               a1p8g1.ingressSetting2,
+  //               a1p8g1.ingressSetting3,
+  //               a1p8g1.ingressSetting4,
+  //               a1p8g1.tgcCableLength,
+  //               a1p8g1.splitOption,
+  //               a1p8g1.pilotFrequencyMode,
+  //               a1p8g1.agcMode,
+  //               a1p8g1.alcMode,
+  //               a1p8g1.firstChannelLoadingFrequency,
+  //               a1p8g1.lastChannelLoadingFrequency,
+  //               a1p8g1.firstChannelLoadingLevel,
+  //               a1p8g1.lastChannelLoadingLevel,
+  //               a1p8g1.pilotFrequency1,
+  //               a1p8g1.pilotFrequency2,
+  //               a1p8g1.pilotFrequency1AlarmState,
+  //               a1p8g1.pilotFrequency2AlarmState,
+  //               a1p8g1.rfOutputPilotLowFrequencyAlarmState,
+  //               a1p8g1.rfOutputPilotHighFrequencyAlarmState,
+  //               a1p8g1.temperatureAlarmState,
+  //               a1p8g1.voltageAlarmState,
+  //               a1p8g1.splitOptionAlarmState,
+  //               a1p8g1.voltageRippleAlarmState,
+  //               a1p8g1.outputPowerAlarmState,
+  //               a1p8g1.location,
+  //               a1p8g1.logInterval,
+  //               a1p8g1.inputAttenuation,
+  //               a1p8g1.inputEqualizer,
+  //               a1p8g1.dsVVA2,
+  //               a1p8g1.dsSlope2,
+  //               a1p8g1.inputAttenuation2,
+  //               a1p8g1.outputEqualizer,
+  //               a1p8g1.dsVVA3,
+  //               a1p8g1.dsVVA4,
+  //               a1p8g1.outputAttenuation,
+  //               a1p8g1.inputAttenuation3,
+  //               a1p8g1.inputAttenuation4,
+  //               a1p8g1.usTGC,
+  //             ));
+  //           }
+  //         } else {
+  //           if (!completer.isCompleted) {
+  //             completer.completeError('Invalid data');
+  //           }
+  //         }
+  //       } else {
+  //         if (!completer.isCompleted) {
+  //           completer.completeError('Invalid data');
+  //         }
+  //       }
+
+  //       break;
+  //     case 182:
+  //       if (rawData.length == 181) {
+  //         bool isValidCRC = checkCRC(rawData);
+  //         if (isValidCRC) {
+  //           A1P8G2 a1p8g2 = decodeA1P8G2(rawData);
+  //           if (!completer.isCompleted) {
+  //             completer.complete((
+  //               a1p8g2.currentTemperatureC,
+  //               a1p8g2.currentTemperatureF,
+  //               a1p8g2.currentVoltage,
+  //               a1p8g2.currentVoltageRipple,
+  //               a1p8g2.currentRFInputPower,
+  //               a1p8g2.currentRFOutputPower,
+  //               a1p8g2.currentWorkingMode,
+  //               a1p8g2.currentDetectedSplitOption,
+  //               a1p8g2.unitStatusAlarmSeverity,
+  //               a1p8g2.rfInputPilotLowFrequencyAlarmSeverity,
+  //               a1p8g2.rfInputPilotHighFrequencyAlarmSeverity,
+  //               a1p8g2.rfOutputPilotLowFrequencyAlarmSeverity,
+  //               a1p8g2.rfOutputPilotHighFrequencyAlarmSeverity,
+  //               a1p8g2.temperatureAlarmSeverity,
+  //               a1p8g2.voltageAlarmSeverity,
+  //               a1p8g2.splitOptionAlarmSeverity,
+  //               a1p8g2.voltageRippleAlarmSeverity,
+  //               a1p8g2.outputPowerAlarmSeverity,
+  //             ));
+  //           }
+  //         } else {
+  //           if (!completer.isCompleted) {
+  //             completer.completeError('Invalid data');
+  //           }
+  //         }
+  //       } else {
+  //         if (!completer.isCompleted) {
+  //           completer.completeError('Invalid data');
+  //         }
+  //       }
+
+  //       break;
+  //     case 183:
+  //       List<int> header = [0xB0, 0x03, 0x00];
+  //       if (rawData.length < 3) {
+  //         if (!completer.isCompleted) {
+  //           completer.completeError('Invalid data');
+  //         }
+  //       } else {
+  //         if (listEquals(rawData.sublist(0, 3), header)) {
+  //           _rawRFInOut.clear();
+  //         }
+
+  //         _rawRFInOut.addAll(rawData);
+  //         print(_rawRFInOut.length);
+
+  //         if (_rawRFInOut.length == 1029) {
+  //           bool isValidCRC = checkCRC(_rawRFInOut);
+  //           if (isValidCRC) {
+  //             _rawRFInOut.removeRange(
+  //                 _rawRFInOut.length - 2, _rawRFInOut.length);
+  //             _rawRFInOut.removeRange(0, 3);
+  //             List<RFInOut> rfInOuts = _parseRFInOut(_rawRFInOut);
+
+  //             if (!completer.isCompleted) {
+  //               completer.complete(rfInOuts);
+  //             }
+  //           } else {
+  //             if (!completer.isCompleted) {
+  //               completer.completeError('Invalid data');
+  //             }
+  //           }
+  //         }
+  //       }
+
+  //       break;
+  //     case 184:
+  //       List<int> header = [0xB0, 0x03, 0x00];
+  //       if (rawData.length < 3) {
+  //         if (!completer.isCompleted) {
+  //           completer.completeError('Invalid data');
+  //         }
+  //       } else {
+  //         if (listEquals(rawData.sublist(0, 3), header)) {
+  //           _rawLogs.clear();
+  //         }
+
+  //         _rawLogs.addAll(rawData);
+  //         print(_rawLogs.length);
+
+  //         if (_rawLogs.length == 16389) {
+  //           bool isValidCRC = checkCRC(_rawLogs);
+  //           if (isValidCRC) {
+  //             _rawLogs.removeRange(_rawLogs.length - 2, _rawLogs.length);
+  //             _rawLogs.removeRange(0, 3);
+  //             List<Log1p8G> log1p8Gs = _parse1p8GLog(_rawLogs);
+  //             var (
+  //               historicalMinTemperatureC,
+  //               historicalMaxTemperatureC,
+  //               historicalMinTemperatureF,
+  //               historicalMaxTemperatureF,
+  //               historicalMinVoltageStr,
+  //               historicalMaxVoltageStr,
+  //               historicalMinVoltageRippleStr,
+  //               historicalMaxVoltageRippleStr,
+  //             ) = _get1p8GLogStatistics(log1p8Gs);
+
+  //             if (!completer.isCompleted) {
+  //               completer.complete((
+  //                 historicalMinTemperatureC,
+  //                 historicalMaxTemperatureC,
+  //                 historicalMinTemperatureF,
+  //                 historicalMaxTemperatureF,
+  //                 historicalMinVoltageStr,
+  //                 historicalMaxVoltageStr,
+  //                 historicalMinVoltageRippleStr,
+  //                 historicalMaxVoltageRippleStr,
+  //                 log1p8Gs,
+  //               ));
+  //             }
+  //           } else {
+  //             if (!completer.isCompleted) {
+  //               completer.completeError('Invalid data');
+  //             }
+  //           }
+  //         }
+  //       }
+  //       break;
+  //     case 185:
+  //     case 186:
+  //     case 187:
+  //     case 188:
+  //     case 189:
+  //     case 190:
+  //     case 191:
+  //     case 192:
+  //     case 193:
+  //       // List<int> header = [0xB0, 0x03, 0x00];
+  //       // if (rawData.length < 3) {
+  //       //   if (!completer.isCompleted) {
+  //       //     completer.completeError('Invalid data');
+  //       //   }
+  //       // } else {
+  //       //   if (listEquals(rawData.sublist(0, 3), header)) {
+  //       //     _rawLogs.clear();
+  //       //   }
+
+  //       //   _rawLogs.addAll(rawData);
+  //       //   print(_rawLogs.length);
+
+  //       //   if (_rawLogs.length == 16389) {
+  //       //     bool isValidCRC = checkCRC(_rawLogs);
+  //       //     if (isValidCRC) {
+  //       //       _rawLogs.removeRange(_rawLogs.length - 2, _rawLogs.length);
+  //       //       _rawLogs.removeRange(0, 3);
+  //       //       List<Log1p8G> log1p8Gs = _parse1p8GLog(_rawLogs);
+  //       //       if (!completer.isCompleted) {
+  //       //         completer.complete(log1p8Gs);
+  //       //       }
+  //       //     } else {
+  //       //       if (!completer.isCompleted) {
+  //       //         completer.completeError('Invalid data');
+  //       //       }
+  //       //     }
+  //       //   }
+  //       // }
+
+  //       // List<int> header = [0xB0, 0x03, 0x00];
+  //       // if (listEquals(rawData.sublist(0, 3), header)) {
+  //       //   _rawLogs.clear();
+  //       // }
+  //       // _rawLogs.addAll(rawData);
+  //       // print('${_rawLogs.length}');
+
+  //       // if (_rawLogs.length == 16389) {
+  //       //   _rawLogs.removeRange(_rawLogs.length - 2, _rawLogs.length);
+  //       //   _rawLogs.removeRange(0, 3);
+  //       //   print(_rawLogs);
+  //       //   List<Log1p8G> log1p8Gs = _parse1p8GLog(_rawLogs);
+
+  //       //   if (!completer.isCompleted) {
+  //       //     completer.complete(log1p8Gs);
+  //       //   }
+  //       // }
+
+  //       break;
+  //     case 194:
+  //     case 195:
+  //     case 196:
+  //     case 197:
+  //     case 198:
+  //     case 199:
+  //     case 200:
+  //     case 201:
+  //     case 202:
+  //     case 203:
+  //       break;
+  //     case 204:
+  //       // if (rawData.length == 181) {
+  //       //   bool isValidCRC = checkCRC(rawData);
+  //       //   if (isValidCRC) {
+  //       //     // 給 定期更新 information page 的 alarm 用
+  //       //     Alarm alarmUSeverity = Alarm.medium;
+  //       //     Alarm alarmTServerity = Alarm.medium;
+  //       //     Alarm alarmPServerity = Alarm.medium;
+
+  //       //     int unitStatus = rawData[3];
+  //       //     alarmUSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
+
+  //       //     int temperatureStatus = rawData[128];
+  //       //     alarmTServerity =
+  //       //         temperatureStatus == 1 ? Alarm.danger : Alarm.success;
+
+  //       //     int powerStatus = rawData[129];
+  //       //     alarmPServerity = powerStatus == 1 ? Alarm.danger : Alarm.success;
+
+  //       //     if (!completer.isCompleted) {
+  //       //       completer.complete((
+  //       //         alarmUSeverity.name,
+  //       //         alarmTServerity.name,
+  //       //         alarmPServerity.name,
+  //       //       ));
+  //       //     }
+  //       //   } else {
+  //       //     if (!completer.isCompleted) {
+  //       //       completer.completeError('Invalid data');
+  //       //     }
+  //       //   }
+  //       // } else {
+  //       //   if (!completer.isCompleted) {
+  //       //     completer.completeError('Invalid data');
+  //       //   }
+  //       // }
+
+  //       break;
+  //     case 300:
+  //     case 301:
+  //     case 302:
+  //     case 303:
+  //     case 304:
+  //     case 305:
+  //     case 306:
+  //     case 307:
+  //     case 308:
+  //     case 309:
+  //     case 310:
+  //     case 311:
+  //     case 312:
+  //     case 313:
+  //     case 314:
+  //     case 315:
+  //     case 316:
+  //     case 317:
+  //     case 318:
+  //     case 319:
+  //     case 320:
+  //     case 321:
+  //     case 322:
+  //     case 323:
+  //     case 324:
+  //     case 325:
+  //     case 326:
+  //     case 327:
+  //     case 328:
+  //     case 329:
+  //     case 330:
+  //     case 331:
+  //     case 332:
+  //     case 333:
+  //     case 334:
+  //     case 335:
+  //     case 336:
+  //     case 337:
+  //     case 338:
+  //     case 339:
+  //     case 340:
+  //     case 341:
+  //     case 342:
+  //     case 343:
+  //     case 344:
+  //     case 345:
+  //     case 346:
+  //     case 347:
+  //     case 348:
+  //     case 349:
+  //     case 350:
+  //     case 351:
+  //     case 352:
+  //     case 353:
+  //     case 354:
+  //       // if (rawData.length == 8) {
+  //       //   bool isValidCRC = checkCRC(rawData);
+  //       //   if (isValidCRC) {
+  //       //     if (!completer.isCompleted) {
+  //       //       bool result = _parseSettingResult(rawData);
+  //       //       completer.complete(result);
+  //       //     }
+  //       //   } else {
+  //       //     if (!completer.isCompleted) {
+  //       //       completer.completeError('Invalid data');
+  //       //     }
+  //       //   }
+  //       // } else {
+  //       //   if (!completer.isCompleted) {
+  //       //     completer.completeError('Invalid data');
+  //       //   }
+  //       // }
+
+  //       break;
+
+  //     default:
+  //       break;
+  //   }
+  // }
+
+  A1P8GLogStatistic getA1p8GLogStatistics(List<Log1p8G> log1p8Gs) {
     UnitConverter unitConverter = UnitConverter();
     if (log1p8Gs.isNotEmpty) {
       // get min temperature
@@ -1079,32 +1102,38 @@ class Dsim18Parser {
       String historicalMaxVoltageRippleStr =
           historicalMaxVoltageRipple.toString();
 
-      return (
-        historicalMinTemperatureC,
-        historicalMaxTemperatureC,
-        historicalMinTemperatureF,
-        historicalMaxTemperatureF,
-        historicalMinVoltageStr,
-        historicalMaxVoltageStr,
-        historicalMinVoltageRippleStr,
-        historicalMaxVoltageRippleStr,
+      A1P8GLogStatistic a1p8gLogStatistic = A1P8GLogStatistic(
+        historicalMinTemperatureC: historicalMinTemperatureC,
+        historicalMaxTemperatureC: historicalMaxTemperatureC,
+        historicalMinTemperatureF: historicalMinTemperatureF,
+        historicalMaxTemperatureF: historicalMaxTemperatureF,
+        historicalMinVoltage: historicalMinVoltageStr,
+        historicalMaxVoltage: historicalMaxVoltageStr,
+        historicalMinVoltageRipple: historicalMinVoltageRippleStr,
+        historicalMaxVoltageRipple: historicalMaxVoltageRippleStr,
       );
+
+      return a1p8gLogStatistic;
     } else {
-      return (
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
+      A1P8GLogStatistic a1p8gLogStatistic = const A1P8GLogStatistic(
+        historicalMinTemperatureC: '',
+        historicalMaxTemperatureC: '',
+        historicalMinTemperatureF: '',
+        historicalMaxTemperatureF: '',
+        historicalMinVoltage: '',
+        historicalMaxVoltage: '',
+        historicalMinVoltageRipple: '',
+        historicalMaxVoltageRipple: '',
       );
+      return a1p8gLogStatistic;
     }
   }
 
-  List<RFInOut> _parseRFInOut(List<int> rawData) {
+  List<RFInOut> parse1P8GRFInOut(List<int> rawData) {
     List<RFInOut> rfInOuts = [];
+    rawData.removeRange(rawData.length - 2, rawData.length);
+    rawData.removeRange(0, 3);
+
     for (var i = 0; i < 256; i++) {
       // 解析 input
       List<int> rawInput = rawData.sublist(i * 2, i * 2 + 2);
@@ -1127,8 +1156,10 @@ class Dsim18Parser {
     return rfInOuts;
   }
 
-  List<Log1p8G> _parse1p8GLog(List<int> rawData) {
+  List<Log1p8G> parse1P8GLog(List<int> rawData) {
     List<Log1p8G> logChunks = [];
+    rawData.removeRange(rawData.length - 2, rawData.length);
+    rawData.removeRange(0, 3);
     for (var i = 0; i < 1024; i++) {
       // 如果檢查到有一筆log 的內容全部是 255, 則視為沒有更多log資料了
       bool isEmptyLog = rawData
@@ -1536,4 +1567,38 @@ class A1P8G2 {
   final String splitOptionAlarmSeverity;
   final String voltageRippleAlarmSeverity;
   final String outputPowerAlarmSeverity;
+}
+
+class A1P8GAlarm {
+  const A1P8GAlarm({
+    required this.unitStatusAlarmSeverity,
+    required this.temperatureAlarmSeverity,
+    required this.powerAlarmSeverity,
+  });
+
+  final String unitStatusAlarmSeverity;
+  final String temperatureAlarmSeverity;
+  final String powerAlarmSeverity;
+}
+
+class A1P8GLogStatistic {
+  const A1P8GLogStatistic({
+    required this.historicalMinTemperatureC,
+    required this.historicalMaxTemperatureC,
+    required this.historicalMinTemperatureF,
+    required this.historicalMaxTemperatureF,
+    required this.historicalMinVoltage,
+    required this.historicalMaxVoltage,
+    required this.historicalMinVoltageRipple,
+    required this.historicalMaxVoltageRipple,
+  });
+
+  final String historicalMinTemperatureC;
+  final String historicalMaxTemperatureC;
+  final String historicalMinTemperatureF;
+  final String historicalMaxTemperatureF;
+  final String historicalMinVoltage;
+  final String historicalMaxVoltage;
+  final String historicalMinVoltageRipple;
+  final String historicalMaxVoltageRipple;
 }
