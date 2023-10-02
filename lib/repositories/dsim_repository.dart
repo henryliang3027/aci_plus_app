@@ -5,6 +5,7 @@ import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/command18.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:dsim_app/core/shared_preference_key.dart';
+import 'package:dsim_app/repositories/ble_client.dart';
 import 'package:dsim_app/repositories/dsim18_parser.dart';
 import 'package:dsim_app/repositories/dsim_parser.dart';
 import 'package:dsim_app/repositories/unit_converter.dart';
@@ -15,12 +16,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-
-enum ScanStatus {
-  success,
-  failure,
-  disable,
-}
 
 enum Alarm {
   success,
@@ -86,95 +81,22 @@ class Event {
   final int parameter;
 }
 
-class ScanReport {
-  const ScanReport({
-    required this.scanStatus,
-    this.discoveredDevice,
-  });
-
-  final ScanStatus scanStatus;
-  final DiscoveredDevice? discoveredDevice;
-}
-
-class ConnectionReport {
-  const ConnectionReport({
-    required this.connectionState,
-    this.errorMessage = '',
-  });
-
-  final DeviceConnectionState connectionState;
-  final String errorMessage;
-}
-
-class SettingData {
-  const SettingData({
-    required this.location,
-    required this.tgcCableLength,
-    required this.workingMode,
-    required this.logIntervalId,
-    required this.pilotCode,
-    required this.pilot2Code,
-    required this.maxAttenuation,
-    required this.minAttenuation,
-    required this.currentAttenuation,
-    required this.centerAttenuation,
-    required this.hasDualPilot,
-  });
-  final String location;
-  final String tgcCableLength;
-  final String workingMode;
-  final int logIntervalId;
-  final String pilotCode;
-  final String pilot2Code;
-  final String maxAttenuation;
-  final String minAttenuation;
-  final String currentAttenuation;
-  final String centerAttenuation;
-  final bool hasDualPilot;
-}
-
 class DsimRepository {
   DsimRepository()
-      : _ble = FlutterReactiveBle(),
+      : _bleClient = BLEClient(),
         _dsim18parser = Dsim18Parser(),
         _dsimParser = DsimParser(),
         _unitConverter = UnitConverter() {}
-  final FlutterReactiveBle _ble;
-  final _scanTimeout = 3; // sec
-  final _connectionTimeout = 30; //sec
-  late StreamController<ScanReport> _scanReportStreamController;
-  StreamController<ConnectionReport> _connectionReportStreamController =
-      StreamController<ConnectionReport>();
+
+  late QualifiedCharacteristic _qualifiedCharacteristic;
   StreamController<Map<DataKey, String>> _characteristicDataStreamController =
       StreamController<Map<DataKey, String>>();
-  StreamSubscription<DiscoveredDevice>? _discoveredDeviceStreamSubscription;
-  StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
-  StreamSubscription<List<int>>? _characteristicStreamSubscription;
-  late QualifiedCharacteristic _qualifiedCharacteristic;
 
   final _aciPrefix = 'ACI';
   final _serviceId = 'ffe0';
   final _characteristicId = 'ffe1';
 
-  int commandIndex = 0;
-  int endIndex = 37;
-
   late Completer<dynamic> _completer;
-
-  String _basicCurrentPilot = '';
-  int _basicCurrentPilotMode = 0;
-  int _currentSettingMode = 0;
-  int _nowTimeCount = 0;
-  int _alarmR = 0;
-  int _alarmT = 0;
-  int _alarmP = 0;
-  String _basicInterval = '';
-  final List<int> _rawLog = [];
-  final List<Log> _logs = [];
-  // final List<Log1p8G> _log1p8Gs = [];
-  final List<int> _rawEvent = [];
-  final List<Event> _events = [];
-  final int _totalBytesPerCommand = 261;
 
   // 記錄欲設定的 workingModeId
   int _workingModeId = 0;
@@ -184,714 +106,52 @@ class DsimRepository {
   final int _agcWorkingModeSettingTimeout = 40; // s
   Timer? _timeoutTimer;
 
+  final BLEClient _bleClient;
   final DsimParser _dsimParser;
   final Dsim18Parser _dsim18parser;
   final UnitConverter _unitConverter;
 
-  Future<bool> checkBluetoothEnabled() async {
-    // 要求定位與藍芽存取權
-    bool isPermissionGranted = await _requestPermission();
-
-    if (isPermissionGranted) {
-      // 偵測定位是否有打開, 如果沒有打開會跳出提示訊息
-      bool resultOfEnableGPS = await GPS.Location().requestService();
-
-      // 偵測藍芽是否有打開, 如果沒有打開會跳出提示訊息
-      String resultStrOfEnableBluetooth = await BluetoothEnable.enableBluetooth;
-      bool resultOfEnableBluetooth =
-          resultStrOfEnableBluetooth == 'true' ? true : false;
-
-      if (resultOfEnableGPS && resultOfEnableBluetooth) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-
   Stream<ScanReport> get scanReport async* {
-    bool isGranted = await checkBluetoothEnabled();
-    _scanReportStreamController = StreamController<ScanReport>();
-    if (isGranted) {
-      // 設定 scan timeout
-      Timer scanTimer = Timer(Duration(seconds: _scanTimeout), () async {
-        _scanReportStreamController.add(
-          const ScanReport(
-            scanStatus: ScanStatus.failure,
-            discoveredDevice: null,
-          ),
-        );
-
-        await closeScanStream();
-      });
-
-      _discoveredDeviceStreamSubscription =
-          _ble.scanForDevices(withServices: []).listen((device) {
-        if (device.name.startsWith(_aciPrefix)) {
-          if (!_scanReportStreamController.isClosed) {
-            scanTimer.cancel();
-            print('Device: ${device.name}');
-            _scanReportStreamController.add(
-              ScanReport(
-                scanStatus: ScanStatus.success,
-                discoveredDevice: device,
-              ),
-            );
-          }
-        }
-      }, onError: (error) {
-        print('Scan Error $error');
-        _scanReportStreamController.add(
-          const ScanReport(
-            scanStatus: ScanStatus.failure,
-            discoveredDevice: null,
-          ),
-        );
-      });
-    } else {
-      print('bluetooth disable');
-      _scanReportStreamController.add(
-        const ScanReport(
-          scanStatus: ScanStatus.disable,
-          discoveredDevice: null,
-        ),
-      );
-    }
-
-    yield* _scanReportStreamController.stream;
+    yield* _bleClient.scanReport;
   }
 
   Stream<ConnectionReport> get connectionStateReport async* {
-    yield* _connectionReportStreamController.stream;
+    yield* _bleClient.connectionStateReport;
   }
 
   Stream<Map<DataKey, String>> get characteristicData async* {
-    yield* _characteristicDataStreamController.stream;
+    yield* _bleClient.characteristicData;
   }
 
-  void clearCache() {
-    _completer = Completer<dynamic>();
-    cancelTimeout(name: 'set timeout from clearCache');
-
-    commandIndex = 0;
-    endIndex = 37;
-
-    _dsimParser.clearCache();
+  Future<void> connectToDevice(DiscoveredDevice discoveredDevice) {
+    return _bleClient.connectToDevice(discoveredDevice);
   }
 
   Future<void> closeScanStream() async {
-    print('closeScanStream');
-
-    if (_scanReportStreamController.isClosed) {
-      await _scanReportStreamController.close();
-    }
-
-    await _discoveredDeviceStreamSubscription?.cancel();
-    _discoveredDeviceStreamSubscription = null;
+    await _bleClient.closeScanStream();
   }
 
   Future<void> closeConnectionStream() async {
-    print('close _characteristicStreamSubscription');
-
-    if (_connectionReportStreamController.hasListener) {
-      if (!_connectionReportStreamController.isClosed) {
-        await _connectionReportStreamController.close();
-      }
-    }
-
-    if (_characteristicDataStreamController.hasListener) {
-      if (!_characteristicDataStreamController.isClosed) {
-        await _characteristicDataStreamController.close();
-      }
-    }
-
-    await _characteristicStreamSubscription?.cancel();
-    _characteristicStreamSubscription = null;
-
-    // add delay to solve the following exception on ios
-    // Error unsubscribing from notifications:
-    // PlatformException(reactive_ble_mobile.PluginError:7, The operation couldn’t be completed.
-    // (reactive_ble_mobile.PluginError error 7.), {}, null)
-    await Future.delayed(const Duration(milliseconds: 100));
-
-    print('close _connectionStreamSubscription');
-    await _connectionStreamSubscription?.cancel();
-    await Future.delayed(const Duration(milliseconds: 2000));
-    _connectionStreamSubscription = null;
-  }
-
-  // 透過 1G/1.2G/1.8G 同樣的基本指令, 來取得回傳資料的長度
-  Future<dynamic> _requestDataLength() async {
-    commandIndex = -1;
-    _completer = Completer<dynamic>();
-
-    print('get data from request command 0');
-
-    _writeSetCommandToCharacteristic(_dsimParser.commandCollection[0]);
-    setTimeout(duration: const Duration(seconds: 1), name: 'cmd0');
-
-    try {
-      int length = await _completer.future;
-      cancelTimeout(name: 'cmd0');
-
-      return [true, length];
-    } catch (e) {
-      return [false];
-    }
+    await _bleClient.closeConnectionStream();
   }
 
   Future<int> requestMTU({
     required String deviceId,
     int mtu = 247,
   }) async {
-    final negotiatedMtu = await _ble.requestMtu(deviceId: deviceId, mtu: mtu);
-
-    // 設定 mtu = 247
-    List<dynamic> response = await _requestDataLength();
-    if (response[0]) {
-      // 1G/1.2G data length = 17
-      if (response[1] == 17) {
-        return 23;
-      } else {
-        // 1.8G data length = 181
-        return 244;
-      }
-    } else {
-      return 244;
-    }
+    return _bleClient.requestMTU(
+      commandIndex: -1,
+      value: _dsimParser.commandCollection[0],
+      deviceId: deviceId,
+    );
   }
 
-  Future<void> connectToDevice(DiscoveredDevice discoveredDevice) async {
-    Timer connectionTimer =
-        Timer(Duration(seconds: _connectionTimeout), () async {
-      _connectionReportStreamController.add(const ConnectionReport(
-        connectionState: DeviceConnectionState.disconnected,
-        errorMessage: 'disconnected',
-      ));
-
-      await closeScanStream();
-      await closeConnectionStream();
-    });
-
-    _connectionReportStreamController = StreamController<ConnectionReport>();
-    _connectionStreamSubscription = _ble
-        .connectToDevice(
-      id: discoveredDevice.id,
-    )
-        .listen((connectionStateUpdate) async {
-      print('connectionStateUpdateXXXXXX: $connectionStateUpdate');
-      switch (connectionStateUpdate.connectionState) {
-        case DeviceConnectionState.connecting:
-          break;
-        case DeviceConnectionState.connected:
-          connectionTimer.cancel();
-
-          _characteristicDataStreamController =
-              StreamController<Map<DataKey, String>>();
-
-          _qualifiedCharacteristic = QualifiedCharacteristic(
-            serviceId: Uuid.parse(_serviceId),
-            characteristicId: Uuid.parse(_characteristicId),
-            deviceId: discoveredDevice.id,
-          );
-
-          _characteristicStreamSubscription = _ble
-              .subscribeToCharacteristic(_qualifiedCharacteristic)
-              .listen((data) async {
-            List<int> rawData = data;
-            print(commandIndex);
-            print('data length: ${rawData.length}');
-
-            if (commandIndex <= 37) {
-              _dsimParser.parseRawData(
-                  commandIndex: commandIndex,
-                  rawData: rawData,
-                  completer: _completer);
-            } else if (commandIndex >= 40 && commandIndex <= 43) {
-              _parseSetLocation(rawData);
-            } else if (commandIndex == 44) {
-              _parseSetTGCCableLength(rawData);
-            } else if (commandIndex == 45) {
-              _parseSetLogInterval(rawData);
-            } else if (commandIndex == 46) {
-              _parseSetWorkingMode(rawData);
-            } else if (commandIndex >= 180) {
-              _dsim18parser.parseRawData(
-                  commandIndex: commandIndex,
-                  rawData: rawData,
-                  completer: _completer);
-            }
-          }, onError: (error) {
-            print('lisetn to Characteristic failed');
-          });
-
-          _connectionReportStreamController.add(const ConnectionReport(
-            connectionState: DeviceConnectionState.connected,
-          ));
-
-          break;
-        case DeviceConnectionState.disconnecting:
-        // _connectionReportStreamController.add(const ConnectionReport(
-        //   connectionState: DeviceConnectionState.disconnected,
-        //   errorMessage: 'disconnecting',
-        // ));
-        // break;
-        case DeviceConnectionState.disconnected:
-          _connectionReportStreamController.add(const ConnectionReport(
-            connectionState: DeviceConnectionState.disconnected,
-            errorMessage: 'disconnected',
-          ));
-          break;
-        default:
-          break;
-      }
-    }, onError: (error) {
-      print('Error: $error');
-      _connectionReportStreamController.add(const ConnectionReport(
-        connectionState: DeviceConnectionState.disconnected,
-        errorMessage: 'disconnected',
-      ));
-    });
+  void clearCache() {
+    _dsimParser.clearCache();
   }
-
-  // void _parseEvent() {
-  //   for (int i = 0; i < 16; i++) {
-  //     int timeStamp = _rawEvent[i * 16] * 256 + _rawEvent[i * 16 + 1];
-  //     int code = _rawEvent[i * 16 + 2] * 256 + _rawEvent[i * 16 + 3];
-  //     int parameter = _rawEvent[i * 16 + 4] * 256 + _rawEvent[i * 16 + 5];
-
-  //     int timeDiff = _nowTimeCount - timeStamp;
-  //     if (timeDiff < 0) {
-  //       timeDiff = timeDiff + 65520;
-  //     }
-  //     timeStamp = timeDiff;
-  //     final DateTime dateTime = timeStampToDateTime(timeStamp);
-
-  //     _events.add(Event(
-  //       dateTime: dateTime,
-  //       code: code,
-  //       parameter: parameter,
-  //     ));
-  //   }
-
-  //   if (commandIndex == 37) {
-  //     _events.sort((a, b) => a.dateTime.compareTo(b.dateTime));
-  //   }
-
-  //   if (!_completer.isCompleted) {
-  //     _completer.complete(true);
-  //   }
-  // }
-
-  // void _parseLog() {
-  //   // Stopwatch swatch = Stopwatch();
-  //   // swatch.start();
-
-  //   for (var i = 0; i < 16; i++) {
-  //     int timeStamp = _rawLog[i * 16] * 256 + _rawLog[i * 16 + 1];
-  //     double temperature =
-  //         (_rawLog[i * 16 + 2] * 256 + _rawLog[i * 16 + 3]) / 10;
-  //     int attenuation = _rawLog[i * 16 + 4] * 256 + _rawLog[i * 16 + 5];
-  //     double pilot = (_rawLog[i * 16 + 6] * 256 + _rawLog[i * 16 + 7]) / 10;
-  //     double voltage = (_rawLog[i * 16 + 8] * 256 + _rawLog[i * 16 + 9]) / 10;
-  //     int voltageRipple = _rawLog[i * 16 + 10] * 256 + _rawLog[i * 16 + 11];
-
-  //     if (timeStamp < 0xFFF0) {
-  //       //# 20210128 做2補數
-  //       if (temperature > 32767) {
-  //         temperature = -(65535 - temperature + 1).abs();
-  //       }
-  //       // print('$_nowTimeCount: $timeStamp');
-
-  //       int timeDiff = _nowTimeCount - timeStamp;
-  //       if (timeDiff < 0) {
-  //         timeDiff = timeDiff + 65520;
-  //       }
-  //       timeStamp = timeDiff;
-
-  //       final DateTime dateTime = timeStampToDateTime(timeStamp);
-
-  //       _logs.add(Log(
-  //           dateTime: dateTime,
-  //           temperature: temperature,
-  //           attenuation: attenuation,
-  //           pilot: pilot,
-  //           voltage: voltage,
-  //           voltageRipple: voltageRipple));
-  //     }
-  //   }
-
-  //   if (commandIndex < 29) {
-  //     if (!_completer.isCompleted) {
-  //       _completer.complete(true);
-  //     }
-  //   } else {
-  //     if (_logs.isNotEmpty) {
-  //       _logs.sort((a, b) => a.dateTime.compareTo(b.dateTime));
-
-  //       // get min temperature
-  //       double minTemperature = _logs
-  //           .map((log) => log.temperature)
-  //           .reduce((min, current) => min < current ? min : current);
-
-  //       // get max temperature
-  //       double maxTemperature = _logs
-  //           .map((log) => log.temperature)
-  //           .reduce((max, current) => max > current ? max : current);
-
-  //       // get min attenuation
-  //       int historicalMinAttenuation = _logs
-  //           .map((log) => log.attenuation)
-  //           .reduce((min, current) => min < current ? min : current);
-
-  //       // get max attenuation
-  //       int historicalMaxAttenuation = _logs
-  //           .map((log) => log.attenuation)
-  //           .reduce((max, current) => max > current ? max : current);
-
-  //       // get min voltage
-  //       double minVoltage = _logs
-  //           .map((log) => log.voltage)
-  //           .reduce((min, current) => min < current ? min : current);
-
-  //       // get max voltage
-  //       double maxVoltage = _logs
-  //           .map((log) => log.voltage)
-  //           .reduce((max, current) => max > current ? max : current);
-
-  //       // get min voltage ripple
-  //       int minVoltageRipple = _logs
-  //           .map((log) => log.voltageRipple)
-  //           .reduce((min, current) => min < current ? min : current);
-
-  //       // get max voltage ripple
-  //       int maxVoltageRipple = _logs
-  //           .map((log) => log.voltageRipple)
-  //           .reduce((max, current) => max > current ? max : current);
-
-  //       String minTemperatureF = _unitConverter
-  //               .converCelciusToFahrenheit(minTemperature)
-  //               .toStringAsFixed(1) +
-  //           CustomStyle.fahrenheitUnit;
-
-  //       String maxTemperatureF = _unitConverter
-  //               .converCelciusToFahrenheit(maxTemperature)
-  //               .toStringAsFixed(1) +
-  //           CustomStyle.fahrenheitUnit;
-
-  //       String minTemperatureC =
-  //           minTemperature.toString() + CustomStyle.celciusUnit;
-
-  //       String maxTemperatureC =
-  //           maxTemperature.toString() + CustomStyle.celciusUnit;
-
-  //       if (!_completer.isCompleted) {
-  //         _completer.complete((
-  //           minTemperatureF,
-  //           maxTemperatureF,
-  //           minTemperatureC,
-  //           maxTemperatureC,
-  //           historicalMinAttenuation.toString(),
-  //           historicalMaxAttenuation.toString(),
-  //           minVoltage.toString(),
-  //           maxVoltage.toString(),
-  //           minVoltageRipple.toString(),
-  //           maxVoltageRipple.toString(),
-  //         ));
-  //       }
-  //     } else {
-  //       if (!_completer.isCompleted) {
-  //         _completer.complete((
-  //           '',
-  //           '',
-  //           '',
-  //           '',
-  //           '',
-  //           '',
-  //           '',
-  //           '',
-  //           '',
-  //           '',
-  //         ));
-  //       }
-  //     }
-  //   }
-  //   // print('parse log executed in ${swatch.elapsed.inMilliseconds}');
-  // }
-
-  // void _parseRawData(List<int> rawData) {
-  //   switch (commandIndex) {
-  //     case -1:
-  //       if (!_completer.isCompleted) {
-  //         _completer.complete(rawData.length);
-  //       }
-  //     case 0:
-  //       String typeNo = '';
-  //       for (int i = 3; i < 15; i++) {
-  //         typeNo += String.fromCharCode(rawData[i]);
-  //       }
-  //       typeNo = typeNo.trim();
-
-  //       if (!_completer.isCompleted) {
-  //         _completer.complete(typeNo);
-  //       }
-
-  //       break;
-  //     case 1:
-  //       String partNo = 'DSIM';
-  //       String hasDualPilot = '0';
-  //       for (int i = 3; i < 15; i++) {
-  //         partNo += String.fromCharCode(rawData[i]);
-  //       }
-
-  //       partNo = partNo.trim();
-
-  //       // 如果是 dual, 會有兩的 pilot channel
-  //       if (partNo.startsWith('DSIM-CG')) {
-  //         hasDualPilot = '1';
-  //       }
-
-  //       if (!_completer.isCompleted) {
-  //         _completer.complete((
-  //           partNo,
-  //           hasDualPilot,
-  //         ));
-  //       }
-  //       break;
-  //     case 2:
-  //       String serialNumber = '';
-  //       for (int i = 3; i < 15; i++) {
-  //         serialNumber += String.fromCharCode(rawData[i]);
-  //       }
-  //       serialNumber = serialNumber.trim();
-
-  //       if (!_completer.isCompleted) {
-  //         _completer.complete(serialNumber);
-  //       }
-
-  //       break;
-  //     case 3:
-  //       int number = rawData[10]; // hardware status 4 bytes last byte
-
-  //       // bit 0: RF detect Max, bit 1 : RF detect Min
-  //       _alarmR = (number & 0x01) + (number & 0x02);
-
-  //       // bit 6: Temperature Max, bit 7 : Temperature Min
-  //       _alarmT = (number & 0x40) + (number & 0x80);
-
-  //       // bit 4: Voltage 24v Max, bit 5 : Voltage 24v Min
-  //       _alarmP = (number & 0x10) + (number & 0x20);
-
-  //       _basicInterval = rawData[13].toString(); //time interval
-
-  //       _nowTimeCount = rawData[11] * 256 + rawData[12];
-
-  //       String firmwareVersion = '';
-  //       for (int i = 3; i < 6; i++) {
-  //         firmwareVersion += String.fromCharCode(rawData[i]);
-  //       }
-
-  //       if (!_completer.isCompleted) {
-  //         _completer.complete((_basicInterval, firmwareVersion));
-  //       }
-
-  //       break;
-  //     case 4:
-  //       //MGC Value 2Bytes
-  //       int currentAttenuator = rawData[4] * 256 + rawData[5];
-
-  //       _currentSettingMode = rawData[3];
-
-  //       _basicCurrentPilot = rawData[7].toString();
-  //       _basicCurrentPilotMode = rawData[8];
-
-  //       String tgcCableLength = rawData[6].toString();
-
-  //       if (!_completer.isCompleted) {
-  //         _completer.complete((
-  //           currentAttenuator.toString(),
-  //           '0',
-  //           '3000',
-  //           tgcCableLength,
-  //         ));
-  //       }
-  //       break;
-
-  //     case 5:
-  //       String workingMode = '';
-  //       String currentPilot = '';
-  //       Alarm alarmRSeverity = Alarm.medium;
-  //       Alarm alarmTSeverity = Alarm.medium;
-  //       Alarm alarmPSeverity = Alarm.medium;
-  //       double currentTemperatureC;
-  //       double currentTemperatureF;
-  //       double current24V;
-  //       String pilotMode = '';
-  //       switch (rawData[3]) //working mode
-  //       {
-  //         case 1:
-  //           {
-  //             // _basicModeID = 1;
-  //             workingMode = "Align";
-  //             break;
-  //           }
-  //         case 2:
-  //           {
-  //             // _basicModeID = 2;
-  //             workingMode = "AGC";
-  //             break;
-  //           }
-  //         case 3:
-  //           {
-  //             // _basicModeID = 3;
-  //             workingMode = "TGC";
-  //             break;
-  //           }
-  //         case 4:
-  //           {
-  //             // _basicModeID = 4;
-  //             workingMode = "MGC";
-  //             break;
-  //           }
-  //       }
-
-  //       if (rawData[3] > 2) {
-  //         // medium
-  //         alarmRSeverity = Alarm.medium;
-  //       } else {
-  //         if (_alarmR > 0) {
-  //           // danger
-  //           alarmRSeverity = Alarm.danger;
-  //         } else {
-  //           // success
-  //           alarmRSeverity = Alarm.success;
-  //         }
-  //       }
-  //       if (rawData[3] == 3) {
-  //         if (_currentSettingMode == 1 || _currentSettingMode == 2) {
-  //           // danger
-  //           alarmRSeverity = Alarm.danger;
-  //         }
-  //       }
-
-  //       if (alarmRSeverity == Alarm.danger) {
-  //         currentPilot = 'Loss';
-  //       } else {
-  //         currentPilot = _basicCurrentPilot;
-  //         if (_basicCurrentPilotMode == 1) {
-  //           // currentPilot += ' IRC';
-  //           pilotMode = 'IRC';
-  //         } else {
-  //           // currentPilot += ' DIG';
-  //           pilotMode = 'DIG';
-  //         }
-  //       }
-
-  //       alarmTSeverity = _alarmT > 0 ? Alarm.danger : Alarm.success;
-  //       alarmPSeverity = _alarmP > 0 ? Alarm.danger : Alarm.success;
-
-  //       //Temperature
-  //       currentTemperatureC = (rawData[10] * 256 + rawData[11]) / 10;
-  //       currentTemperatureF =
-  //           _unitConverter.converCelciusToFahrenheit(currentTemperatureC);
-  //       String strCurrentTemperatureF =
-  //           currentTemperatureF.toStringAsFixed(1) + CustomStyle.fahrenheitUnit;
-  //       String strCurrentTemperatureC =
-  //           currentTemperatureC.toString() + CustomStyle.celciusUnit;
-
-  //       //24V
-  //       current24V = (rawData[8] * 256 + rawData[9]) / 10;
-
-  //       if (!_completer.isCompleted) {
-  //         _completer.complete((
-  //           workingMode,
-  //           currentPilot,
-  //           pilotMode,
-  //           alarmRSeverity.name,
-  //           alarmTSeverity.name,
-  //           alarmPSeverity.name,
-  //           strCurrentTemperatureF,
-  //           strCurrentTemperatureC,
-  //           current24V.toString(),
-  //         ));
-  //       }
-
-  //       break;
-  //     case 6:
-  //       int centerAttenuation = rawData[11] * 256 + rawData[12];
-  //       int currentVoltageRipple = rawData[9] * 256 + rawData[10]; //24VR
-
-  //       if (!_completer.isCompleted) {
-  //         _completer.complete(
-  //             (centerAttenuation.toString(), currentVoltageRipple.toString()));
-  //       }
-
-  //       break;
-  //     case 7:
-  //       // no logic
-  //       break;
-  //     case 8:
-  //       // no logic
-  //       break;
-  //     case 9:
-  //       String partOfLocation = '';
-  //       for (int i = 3; i < 15; i++) {
-  //         if (rawData[i] == 0) {
-  //           break;
-  //         }
-  //         partOfLocation += String.fromCharCode(rawData[i]);
-  //       }
-  //       if (!_completer.isCompleted) {
-  //         _completer.complete(partOfLocation);
-  //       }
-  //       break;
-  //     case 10:
-  //       String partOfLocation = '';
-  //       for (int i = 3; i < 15; i++) {
-  //         if (rawData[i] == 0) {
-  //           break;
-  //         }
-  //         partOfLocation += String.fromCharCode(rawData[i]);
-  //       }
-  //       if (!_completer.isCompleted) {
-  //         _completer.complete(partOfLocation);
-  //       }
-  //       break;
-  //     case 11:
-  //       String partOfLocation = '';
-  //       for (int i = 3; i < 15; i++) {
-  //         if (rawData[i] == 0) {
-  //           break;
-  //         }
-  //         partOfLocation += String.fromCharCode(rawData[i]);
-  //       }
-  //       if (!_completer.isCompleted) {
-  //         _completer.complete(partOfLocation);
-  //       }
-  //       break;
-  //     case 12:
-  //       String partOfLocation = '';
-  //       for (int i = 3; i < 7; i++) {
-  //         if (rawData[i] == 0) {
-  //           break;
-  //         }
-  //         partOfLocation += String.fromCharCode(rawData[i]);
-  //       }
-
-  //       if (!_completer.isCompleted) {
-  //         _completer.complete(partOfLocation);
-  //       }
-
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
 
   Future<dynamic> requestCommand1p8G0() async {
-    commandIndex = 180;
+    int commandIndex = 180;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G0');
@@ -932,7 +192,7 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommand1p8G1() async {
-    commandIndex = 181;
+    int commandIndex = 181;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G1');
@@ -1057,7 +317,7 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommand1p8G2() async {
-    commandIndex = 182;
+    int commandIndex = 182;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G2');
@@ -1126,7 +386,7 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommand1p8G3() async {
-    commandIndex = 183;
+    int commandIndex = 183;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G3');
@@ -1155,7 +415,7 @@ class DsimRepository {
   // commandIndex range from 184 to 193;
   // commandIndex = 184 時獲取最新的1024筆Log的統計資料跟 log
   Future<dynamic> requestCommand1p8GForLogChunk(int chunkIndex) async {
-    commandIndex = chunkIndex + 184;
+    int commandIndex = chunkIndex + 184;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8GForLogChunk');
@@ -1231,7 +491,7 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommand1p8GAlarm() async {
-    commandIndex = 204;
+    int commandIndex = 204;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G_Alarm');
@@ -1338,7 +598,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GMaxTemperature(String temperature) async {
-    commandIndex = 300;
+    int commandIndex = 300;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1375,7 +635,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GMinTemperature(String temperature) async {
-    commandIndex = 301;
+    int commandIndex = 301;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1412,7 +672,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GMaxVoltage(String valtage) async {
-    commandIndex = 302;
+    int commandIndex = 302;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1449,7 +709,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GMinVoltage(String valtage) async {
-    commandIndex = 303;
+    int commandIndex = 303;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1486,7 +746,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GMaxVoltageRipple(String valtageRipple) async {
-    commandIndex = 304;
+    int commandIndex = 304;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1523,7 +783,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GMinVoltageRipple(String valtageRipple) async {
-    commandIndex = 305;
+    int commandIndex = 305;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1560,7 +820,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GMaxRFOutputPower(String outputPower) async {
-    commandIndex = 306;
+    int commandIndex = 306;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1597,7 +857,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GMinRFOutputPower(String outputPower) async {
-    commandIndex = 307;
+    int commandIndex = 307;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1634,7 +894,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GReturnIngress2(String ingress) async {
-    commandIndex = 308;
+    int commandIndex = 308;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1663,7 +923,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GReturnIngress3(String ingress) async {
-    commandIndex = 309;
+    int commandIndex = 309;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1692,7 +952,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GReturnIngress4(String ingress) async {
-    commandIndex = 310;
+    int commandIndex = 310;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1721,7 +981,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GTGCCableLength(String value) async {
-    commandIndex = 313;
+    int commandIndex = 313;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1750,7 +1010,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GSplitOption(String splitOption) async {
-    commandIndex = 314;
+    int commandIndex = 314;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1779,7 +1039,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GPilotFrequencyMode(String value) async {
-    commandIndex = 315;
+    int commandIndex = 315;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1813,7 +1073,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GForwardAGCMode(String value) async {
-    commandIndex = 316;
+    int commandIndex = 316;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1842,7 +1102,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GALCMode(String value) async {
-    commandIndex = 317;
+    int commandIndex = 317;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1871,7 +1131,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GFirstChannelLoadingFrequency(String value) async {
-    commandIndex = 318;
+    int commandIndex = 318;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1907,7 +1167,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GLastChannelLoadingFrequency(String value) async {
-    commandIndex = 319;
+    int commandIndex = 319;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1943,7 +1203,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GFirstChannelLoadingLevel(String value) async {
-    commandIndex = 320;
+    int commandIndex = 320;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -1980,7 +1240,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GLastChannelLoadingLevel(String value) async {
-    commandIndex = 321;
+    int commandIndex = 321;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -2017,7 +1277,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GPilotFrequency1(String value) async {
-    commandIndex = 322;
+    int commandIndex = 322;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -2052,7 +1312,7 @@ class DsimRepository {
   }
 
   Future<dynamic> set1p8GPilotFrequency2(String value) async {
-    commandIndex = 323;
+    int commandIndex = 323;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -2087,7 +1347,7 @@ class DsimRepository {
   }
 
   Future<dynamic> setInputPilotLowFrequencyAlarmState(String isEnable) async {
-    commandIndex = 324;
+    int commandIndex = 324;
     _completer = Completer<dynamic>();
 
     print('get data from request command 1p8G$commandIndex');
@@ -3047,393 +2307,281 @@ class DsimRepository {
 
   Future<dynamic> requestCommand0() async {
     commandIndex = 0;
-    _completer = Completer<dynamic>();
 
     print('get data from request command 0');
 
-    _writeSetCommandToCharacteristic(
-        _dsimParser.commandCollection[commandIndex]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd0');
-
     try {
-      String typeNo = await _completer.future;
-      cancelTimeout(name: 'cmd0');
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsimParser.commandCollection[commandIndex],
+      );
+
+      String typeNo = _dsimParser.parseCommand0(rawData);
 
       return [true, typeNo];
     } catch (e) {
-      return [false, ''];
+      return [
+        false,
+      ];
     }
   }
 
   Future<dynamic> requestCommand1() async {
     commandIndex = 1;
-    _completer = Completer<dynamic>();
-
-    print('get data from request command 1');
-    _writeSetCommandToCharacteristic(
-        _dsimParser.commandCollection[commandIndex]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd1');
 
     try {
-      var (String partNo, String hasDualPilot) = await _completer.future;
-      cancelTimeout(name: 'cmd1');
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsimParser.commandCollection[commandIndex],
+      );
+
+      A1G1 a1g1 = _dsimParser.parseCommand1(rawData);
 
       return [
         true,
-        partNo,
-        hasDualPilot,
+        a1g1.partNo,
+        a1g1.hasDualPilot,
       ];
     } catch (e) {
       return [
         false,
-        '',
-        '',
       ];
     }
   }
 
   Future<dynamic> requestCommand2() async {
     commandIndex = 2;
-    _completer = Completer<dynamic>();
 
     print('get data from request command 2');
-    _writeSetCommandToCharacteristic(
-        _dsimParser.commandCollection[commandIndex]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd2');
 
     try {
-      String serialNumber = await _completer.future;
-      cancelTimeout(name: 'cmd2');
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsimParser.commandCollection[commandIndex],
+      );
 
-      return [true, serialNumber];
+      String serialNumber = _dsimParser.parseCommand2(rawData);
+
+      return [
+        true,
+        serialNumber,
+      ];
     } catch (e) {
-      return [false, ''];
+      return [
+        false,
+      ];
     }
   }
 
   Future<dynamic> requestCommand3() async {
     commandIndex = 3;
-    _completer = Completer<dynamic>();
 
     print('get data from request command 3');
-    _writeSetCommandToCharacteristic(
-        _dsimParser.commandCollection[commandIndex]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd3');
 
     try {
-      var (String basicInterval, String firmwareVersion) =
-          await _completer.future;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsimParser.commandCollection[commandIndex],
+      );
 
-      cancelTimeout(name: 'cmd3');
+      A1G3 a1g3 = _dsimParser.parseCommand3(rawData);
 
-      return [true, basicInterval, firmwareVersion];
+      return [
+        true,
+        a1g3.logInterval,
+        a1g3.firmwareVersion,
+      ];
     } catch (e) {
-      return [false, '', ''];
+      return [
+        false,
+      ];
     }
   }
 
   Future<dynamic> requestCommand4() async {
     commandIndex = 4;
-    _completer = Completer<dynamic>();
-
     print('get data from request command 4');
-    _writeSetCommandToCharacteristic(
-        _dsimParser.commandCollection[commandIndex]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd4');
 
     try {
-      var (
-        String currentAttenuation,
-        String minAttenuation,
-        String maxAttenuation,
-        String tgcCableLength
-      ) = await _completer.future;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsimParser.commandCollection[commandIndex],
+      );
 
-      cancelTimeout(name: 'cmd4');
+      A1G4 a1g4 = _dsimParser.parseCommand4(rawData);
 
       return [
         true,
-        currentAttenuation,
-        minAttenuation,
-        maxAttenuation,
-        tgcCableLength,
+        a1g4.currentAttenuation,
+        a1g4.minAttenuation,
+        a1g4.maxAttenuation,
+        a1g4.tgcCableLength,
       ];
     } catch (e) {
       return [
         false,
-        '',
-        '',
-        '',
-        '',
       ];
     }
   }
 
   Future<dynamic> requestCommand5() async {
     commandIndex = 5;
-    _completer = Completer<dynamic>();
-
-    print('get data from request command 5');
-    _writeSetCommandToCharacteristic(
-        _dsimParser.commandCollection[commandIndex]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd5');
 
     try {
-      var (
-        String workingMode,
-        String currentPilot,
-        String pilotMode,
-        String alarmRSeverity,
-        String alarmTSeverity,
-        String alarmPSeverity,
-        String strCurrentTemperatureF,
-        String strCurrentTemperatureC,
-        String current24V,
-      ) = await _completer.future;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsimParser.commandCollection[commandIndex],
+      );
 
-      cancelTimeout(name: 'cmd5');
+      A1G5 a1g5 = _dsimParser.parseCommand5(rawData);
 
       return [
         true,
-        workingMode,
-        currentPilot,
-        pilotMode,
-        alarmRSeverity,
-        alarmTSeverity,
-        alarmPSeverity,
-        strCurrentTemperatureF,
-        strCurrentTemperatureC,
-        current24V,
+        a1g5.workingMode,
+        a1g5.currentPilot,
+        a1g5.pilotMode,
+        a1g5.rfAlarmSeverity,
+        a1g5.temperatureAlarmSeverity,
+        a1g5.powerAlarmSeverity,
+        a1g5.currentTemperatureF,
+        a1g5.currentTemperatureC,
+        a1g5.currentVoltage,
       ];
     } catch (e) {
       return [
         false,
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
       ];
     }
   }
 
   Future<dynamic> requestCommand6() async {
     commandIndex = 6;
-    _completer = Completer<dynamic>();
-
-    print('get data from request command 6');
-    _writeSetCommandToCharacteristic(
-        _dsimParser.commandCollection[commandIndex]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout), name: 'cmd6');
 
     try {
-      var (
-        String centerAttenuation,
-        String currentVoltageRipple,
-      ) = await _completer.future;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsimParser.commandCollection[commandIndex],
+      );
 
-      cancelTimeout(name: 'cmd6');
+      A1G6 a1g6 = _dsimParser.parseCommand6(rawData);
 
       return [
         true,
-        centerAttenuation,
-        currentVoltageRipple,
+        a1g6.centerAttenuation,
+        a1g6.currentVoltageRipple,
       ];
     } catch (e) {
       return [
         false,
-        '',
-        '',
+      ];
+    }
+  }
+
+  Future<dynamic> requestCommand9() async {
+    commandIndex = 6;
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsimParser.commandCollection[commandIndex],
+      );
+
+      A1G6 a1g6 = _dsimParser.parseCommand6(rawData);
+
+      return [
+        true,
+        a1g6.centerAttenuation,
+        a1g6.currentVoltageRipple,
+      ];
+    } catch (e) {
+      return [
+        false,
       ];
     }
   }
 
   // location
   Future requestCommand9To12() async {
-    String loc = '';
+    String location = '';
     for (int i = 9; i <= 12; i++) {
       commandIndex = i;
-      _completer = Completer<dynamic>();
-
-      print('get data from request command $i');
-      _writeSetCommandToCharacteristic(
-          _dsimParser.commandCollection[commandIndex]);
-      setTimeout(
-          duration: Duration(seconds: _commandExecutionTimeout),
-          name: 'cmd9 to 12');
-
-      // 設定後重新讀取 location 來比對是否設定成功
       try {
-        String partOfLocation = await _completer.future;
+        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+          commandIndex: commandIndex,
+          value: _dsimParser.commandCollection[commandIndex],
+        );
 
-        cancelTimeout(name: 'cmd$i');
+        String partOfLocation =
+            _dsimParser.parseLocationChunk(rawData, commandIndex - 9);
 
-        loc += partOfLocation;
-
-        print('$i $loc, $partOfLocation');
+        location += partOfLocation;
 
         if (commandIndex == 12) {
-          return [true, loc];
+          return [
+            true,
+            location,
+          ];
         }
       } catch (e) {
-        return [false, ''];
+        return [
+          false,
+        ];
       }
     }
   }
 
   Future requestCommandForLogChunk(int chunkIndex) async {
     commandIndex = chunkIndex;
-    _completer = Completer<dynamic>();
-
     print('get data from request command $chunkIndex');
-    // _stopwatch.reset();
-    // _stopwatch.start();
-    _writeSetCommandToCharacteristic(
-        _dsimParser.commandCollection[commandIndex]);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: 'cmd14 to 29');
 
-    if (commandIndex == 29) {
-      try {
-        var (
-          minTemperatureF,
-          maxTemperatureF,
-          minTemperatureC,
-          maxTemperatureC,
-          historicalMinAttenuation,
-          historicalMaxAttenuation,
-          minVoltage,
-          maxVoltage,
-          minVoltageRipple,
-          maxVoltageRipple,
-        ) = await _completer.future;
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsimParser.commandCollection[commandIndex],
+      );
 
-        cancelTimeout(name: 'cmd$chunkIndex');
+      _dsimParser.parseLog(
+        commandIndex: commandIndex,
+        rawLog: rawData,
+      );
+
+      if (commandIndex == 29) {
+        LogStatistic logStatistic = _dsimParser.getLogStatistic();
 
         return [
           true,
-          minTemperatureF,
-          maxTemperatureF,
-          minTemperatureC,
-          maxTemperatureC,
-          historicalMinAttenuation,
-          historicalMaxAttenuation,
-          minVoltage,
-          maxVoltage,
-          minVoltageRipple,
-          maxVoltageRipple,
+          logStatistic.minTemperatureF,
+          logStatistic.maxTemperatureF,
+          logStatistic.minTemperatureC,
+          logStatistic.maxTemperatureC,
+          logStatistic.historicalMinAttenuation,
+          logStatistic.historicalMaxAttenuation,
+          logStatistic.minVoltage,
+          logStatistic.maxVoltage,
+          logStatistic.minVoltageRipple,
+          logStatistic.maxVoltageRipple,
         ];
-      } catch (e) {
-        return [false, '', '', '', '', '', '', '', '', '', ''];
       }
-    } else {
-      try {
-        bool isDone = await _completer.future;
-        print('cmd$chunkIndex done');
-        cancelTimeout(name: 'cmd$chunkIndex');
-        if (!isDone) {
-          return [false, '', '', '', '', '', '', '', '', '', ''];
-        } else {
-          return [true, '', '', '', '', '', '', '', '', '', ''];
-        }
-      } catch (e) {
-        return [false, '', '', '', '', '', '', '', '', '', ''];
-      }
-    }
-  }
-
-  Future requestCommand14To29() async {
-    for (int i = 14; i <= 29; i++) {
-      commandIndex = i;
-      _completer = Completer<dynamic>();
-
-      print('get data from request command $i');
-      // _stopwatch.reset();
-      // _stopwatch.start();
-      _writeSetCommandToCharacteristic(
-          _dsimParser.commandCollection[commandIndex]);
-      setTimeout(
-          duration: Duration(seconds: _commandExecutionTimeout),
-          name: 'cmd14 to 29');
-
-      if (commandIndex == 29) {
-        try {
-          var (
-            minTemperatureF,
-            maxTemperatureF,
-            minTemperatureC,
-            maxTemperatureC,
-            historicalMinAttenuation,
-            historicalMaxAttenuation,
-            minVoltage,
-            maxVoltage,
-            minVoltageRipple,
-            maxVoltageRipple,
-          ) = await _completer.future;
-
-          cancelTimeout(name: 'cmd$i');
-
-          return [
-            true,
-            minTemperatureF,
-            maxTemperatureF,
-            minTemperatureC,
-            maxTemperatureC,
-            historicalMinAttenuation,
-            historicalMaxAttenuation,
-            minVoltage,
-            maxVoltage,
-            minVoltageRipple,
-            maxVoltageRipple,
-          ];
-        } catch (e) {
-          return [false, '', '', '', '', '', '', '', '', '', ''];
-        }
-      } else {
-        try {
-          bool isDone = await _completer.future;
-          print('cmd$i done');
-          cancelTimeout(name: 'cmd$i');
-          if (!isDone) {
-            return [false, '', '', '', '', '', '', '', '', '', ''];
-          }
-        } catch (e) {
-          return [false, '', '', '', '', '', '', '', '', '', ''];
-        }
-      }
+    } catch (e) {
+      return [false, '', '', '', '', '', '', '', '', '', ''];
     }
   }
 
   Future requestCommand30To37() async {
     for (int i = 30; i <= 37; i++) {
       commandIndex = i;
-      _completer = Completer<dynamic>();
 
       print('get data from request command $i');
-      _writeSetCommandToCharacteristic(
-          _dsimParser.commandCollection[commandIndex]);
-      setTimeout(
-          duration: Duration(seconds: _commandExecutionTimeout),
-          name: 'cmd30 to 37');
-
       try {
-        bool isGettingChunkDone = await _completer.future;
-        cancelTimeout(name: 'cmd$i');
-        if (!isGettingChunkDone) {
-          return [false];
-        }
+        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+          commandIndex: commandIndex,
+          value: _dsimParser.commandCollection[commandIndex],
+        );
+
+        _dsimParser.parseEvent(
+          commandIndex: commandIndex,
+          rawEvent: rawData,
+        );
       } catch (e) {
         return [false];
       }
@@ -3442,118 +2590,118 @@ class DsimRepository {
     return [true];
   }
 
-  void _parseSetWorkingMode(List<int> rawData) async {
-    if (commandIndex == 46) {
-      if ((rawData[0] == 0xB0) &&
-          (rawData[1] == 0x10) &&
-          (rawData[2] == 0x00) &&
-          (rawData[3] == 0x04) &&
-          (rawData[4] == 0x00) &&
-          (rawData[5] == 0x06)) {
-        print('set working mode done');
+  // void _parseSetWorkingMode(List<int> rawData) async {
+  //   if (commandIndex == 46) {
+  //     if ((rawData[0] == 0xB0) &&
+  //         (rawData[1] == 0x10) &&
+  //         (rawData[2] == 0x00) &&
+  //         (rawData[3] == 0x04) &&
+  //         (rawData[4] == 0x00) &&
+  //         (rawData[5] == 0x06)) {
+  //       print('set working mode done');
 
-        // 如果 _workingModeId == 1 也就是 AGC, 則等待30秒後再讀回資料
-        if (_workingModeId == 1) {
-          await Future.delayed(
-              Duration(seconds: _agcWorkingModeSettingDuration));
-        }
+  //       // 如果 _workingModeId == 1 也就是 AGC, 則等待30秒後再讀回資料
+  //       if (_workingModeId == 1) {
+  //         await Future.delayed(
+  //             Duration(seconds: _agcWorkingModeSettingDuration));
+  //       }
 
-        if (!_completer.isCompleted) {
-          _completer.complete(true);
-        }
-      }
-    }
-  }
+  //       if (!_completer.isCompleted) {
+  //         _completer.complete(true);
+  //       }
+  //     }
+  //   }
+  // }
 
-  Future<void> _parseSetLogInterval(List<int> rawData) async {
-    if (commandIndex == 45) {
-      if ((rawData[0] == 0xB0) &&
-          (rawData[1] == 0x10) &&
-          (rawData[2] == 0x00) &&
-          (rawData[3] == 0x04) &&
-          (rawData[4] == 0x00) &&
-          (rawData[5] == 0x06)) {
-        print('set log interval done');
+  // Future<void> _parseSetLogInterval(List<int> rawData) async {
+  //   if (commandIndex == 45) {
+  //     if ((rawData[0] == 0xB0) &&
+  //         (rawData[1] == 0x10) &&
+  //         (rawData[2] == 0x00) &&
+  //         (rawData[3] == 0x04) &&
+  //         (rawData[4] == 0x00) &&
+  //         (rawData[5] == 0x06)) {
+  //       print('set log interval done');
 
-        if (!_completer.isCompleted) {
-          _completer.complete(true);
-        }
-      }
-    }
-  }
+  //       if (!_completer.isCompleted) {
+  //         _completer.complete(true);
+  //       }
+  //     }
+  //   }
+  // }
 
-  Future<void> _parseSetTGCCableLength(List<int> rawData) async {
-    if (commandIndex == 44) {
-      if ((rawData[0] == 0xB0) &&
-          (rawData[1] == 0x10) &&
-          (rawData[2] == 0x00) &&
-          (rawData[3] == 0x04) &&
-          (rawData[4] == 0x00) &&
-          (rawData[5] == 0x06)) {
-        print('set TGC cable length done');
-      }
+  // Future<void> _parseSetTGCCableLength(List<int> rawData) async {
+  //   if (commandIndex == 44) {
+  //     if ((rawData[0] == 0xB0) &&
+  //         (rawData[1] == 0x10) &&
+  //         (rawData[2] == 0x00) &&
+  //         (rawData[3] == 0x04) &&
+  //         (rawData[4] == 0x00) &&
+  //         (rawData[5] == 0x06)) {
+  //       print('set TGC cable length done');
+  //     }
 
-      if (!_completer.isCompleted) {
-        _completer.complete(true);
-      }
-    }
-  }
+  //     if (!_completer.isCompleted) {
+  //       _completer.complete(true);
+  //     }
+  //   }
+  // }
 
-  Future<void> _parseSetLocation(List<int> rawData) async {
-    if (commandIndex == 40) {
-      if ((rawData[0] == 0xB0) &&
-          (rawData[1] == 0x10) &&
-          (rawData[2] == 0x00) &&
-          (rawData[3] == 0x09) &&
-          (rawData[4] == 0x00) &&
-          (rawData[5] == 0x06)) {
-        print('Location09 Set');
-        commandIndex = 41;
-        _writeSetCommandToCharacteristic(
-          Command.setLocACmd,
-        );
-      } else {}
-    } else if (commandIndex == 41) {
-      if ((rawData[0] == 0xB0) &&
-          (rawData[1] == 0x10) &&
-          (rawData[2] == 0x00) &&
-          (rawData[3] == 0x0A) &&
-          (rawData[4] == 0x00) &&
-          (rawData[5] == 0x06)) {
-        print('Location0A Set');
-        commandIndex = 42;
-        _writeSetCommandToCharacteristic(
-          Command.setLocBCmd,
-        );
-      } else {}
-    } else if (commandIndex == 42) {
-      if ((rawData[0] == 0xB0) &&
-          (rawData[1] == 0x10) &&
-          (rawData[2] == 0x00) &&
-          (rawData[3] == 0x0B) &&
-          (rawData[4] == 0x00) &&
-          (rawData[5] == 0x06)) {
-        print('Location0B Set');
-        commandIndex = 43;
-        _writeSetCommandToCharacteristic(
-          Command.setLocCCmd,
-        );
-      } else {}
-    } else if (commandIndex == 43) {
-      if ((rawData[0] == 0xB0) &&
-          (rawData[1] == 0x10) &&
-          (rawData[2] == 0x00) &&
-          (rawData[3] == 0x0C) &&
-          (rawData[4] == 0x00) &&
-          (rawData[5] == 0x06)) {
-        print('Location0C Set');
+  // Future<void> _parseSetLocation(List<int> rawData) async {
+  //   if (commandIndex == 40) {
+  //     if ((rawData[0] == 0xB0) &&
+  //         (rawData[1] == 0x10) &&
+  //         (rawData[2] == 0x00) &&
+  //         (rawData[3] == 0x09) &&
+  //         (rawData[4] == 0x00) &&
+  //         (rawData[5] == 0x06)) {
+  //       print('Location09 Set');
+  //       commandIndex = 41;
+  //       _writeSetCommandToCharacteristic(
+  //         Command.setLocACmd,
+  //       );
+  //     } else {}
+  //   } else if (commandIndex == 41) {
+  //     if ((rawData[0] == 0xB0) &&
+  //         (rawData[1] == 0x10) &&
+  //         (rawData[2] == 0x00) &&
+  //         (rawData[3] == 0x0A) &&
+  //         (rawData[4] == 0x00) &&
+  //         (rawData[5] == 0x06)) {
+  //       print('Location0A Set');
+  //       commandIndex = 42;
+  //       _writeSetCommandToCharacteristic(
+  //         Command.setLocBCmd,
+  //       );
+  //     } else {}
+  //   } else if (commandIndex == 42) {
+  //     if ((rawData[0] == 0xB0) &&
+  //         (rawData[1] == 0x10) &&
+  //         (rawData[2] == 0x00) &&
+  //         (rawData[3] == 0x0B) &&
+  //         (rawData[4] == 0x00) &&
+  //         (rawData[5] == 0x06)) {
+  //       print('Location0B Set');
+  //       commandIndex = 43;
+  //       _writeSetCommandToCharacteristic(
+  //         Command.setLocCCmd,
+  //       );
+  //     } else {}
+  //   } else if (commandIndex == 43) {
+  //     if ((rawData[0] == 0xB0) &&
+  //         (rawData[1] == 0x10) &&
+  //         (rawData[2] == 0x00) &&
+  //         (rawData[3] == 0x0C) &&
+  //         (rawData[4] == 0x00) &&
+  //         (rawData[5] == 0x06)) {
+  //       print('Location0C Set');
 
-        if (!_completer.isCompleted) {
-          _completer.complete(true);
-        }
-      } else {}
-    }
-  }
+  //       if (!_completer.isCompleted) {
+  //         _completer.complete(true);
+  //       }
+  //     } else {}
+  //   }
+  // }
 
   Future<bool> setLocation(String location) async {
     _completer = Completer<dynamic>();
@@ -3627,40 +2775,30 @@ class DsimRepository {
     CRC16.calculateCRC16(command: Command.setLocBCmd, usDataLength: 19);
     CRC16.calculateCRC16(command: Command.setLocCCmd, usDataLength: 19);
 
-    commandIndex = 40;
-    endIndex = 43;
-
-    print('set location');
-    _writeSetCommandToCharacteristic(
-      Command.setLoc9Cmd,
-    );
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: 'cmd set location');
+    for (int i = 40; i < 43; i++) {
+      commandIndex = i;
+      try {
+        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+          commandIndex: commandIndex,
+          value: _dsimParser.commandCollection[commandIndex],
+        );
+      } catch (e) {
+        return false;
+      }
+    }
 
     // 設定後重新讀取 location 來比對是否設定成功
-    try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: 'cmd set location');
+    List<dynamic> resultOfGetLocation = await requestCommand9To12();
 
-      if (isDone) {
-        List<dynamic> resultOfGetLocation = await requestCommand9To12();
-
-        if (resultOfGetLocation[0]) {
-          if (location == resultOfGetLocation[1]) {
-            _characteristicDataStreamController
-                .add({DataKey.location: resultOfGetLocation[1]});
-            return true;
-          } else {
-            return false;
-          }
-        } else {
-          return false;
-        }
+    if (resultOfGetLocation[0]) {
+      if (location == resultOfGetLocation[1]) {
+        _characteristicDataStreamController
+            .add({DataKey.location: resultOfGetLocation[1]});
+        return true;
       } else {
         return false;
       }
-    } catch (e) {
+    } else {
       return false;
     }
   }
@@ -3685,41 +2823,33 @@ class DsimRepository {
     Command.set04Cmd[15] = 0x02; //AGC Channel 2 Mode 1Byte
     CRC16.calculateCRC16(command: Command.set04Cmd, usDataLength: 19);
 
-    commandIndex = 44;
-    endIndex = 44;
-    _writeSetCommandToCharacteristic(Command.set04Cmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: 'cmd set tgc cable length');
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsimParser.commandCollection[commandIndex],
+      );
+    } catch (e) {
+      return false;
+    }
 
     // 設定後重新讀取 tgc cable length 來比對是否設定成功
-    try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: 'cmd set tgc cable length');
 
-      if (isDone) {
-        List<dynamic> resultOfCommand4 = await requestCommand4();
-        List<dynamic> resultOfCommand5 = await requestCommand5();
+    List<dynamic> resultOfCommand4 = await requestCommand4();
+    List<dynamic> resultOfCommand5 = await requestCommand5();
 
-        if (resultOfCommand4[0] && resultOfCommand5[0]) {
-          if (tgcCableLength == resultOfCommand4[4]) {
-            _characteristicDataStreamController
-                .add({DataKey.tgcCableLength: resultOfCommand4[4]});
+    if (resultOfCommand4[0] && resultOfCommand5[0]) {
+      if (tgcCableLength == resultOfCommand4[4]) {
+        _characteristicDataStreamController
+            .add({DataKey.tgcCableLength: resultOfCommand4[4]});
 
-            _characteristicDataStreamController
-                .add({DataKey.workingMode: resultOfCommand5[1]});
+        _characteristicDataStreamController
+            .add({DataKey.workingMode: resultOfCommand5[1]});
 
-            return true;
-          } else {
-            return false;
-          }
-        } else {
-          return false;
-        }
+        return true;
       } else {
         return false;
       }
-    } catch (e) {
+    } else {
       return false;
     }
   }

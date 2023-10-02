@@ -57,11 +57,13 @@ class BLEClient {
   late Completer<dynamic> _completer;
 
   int _currentCommandIndex = 0;
-  int _endIndex = 37;
 
-  final int _commandExecutionTimeout = 10; // s
-  final int _agcWorkingModeSettingTimeout = 40; // s
   Timer? _timeoutTimer;
+
+  // 1G/1.2G variables
+  List<int> _rawLog = [];
+  List<int> _rawEvent = [];
+  int _totalBytesPerCommand = 261;
 
   // 1p8G variables
   List<int> _rawRFInOut = [];
@@ -187,6 +189,33 @@ class BLEClient {
               if (!_completer.isCompleted) {
                 _completer.complete(rawData);
               }
+            } else if (_currentCommandIndex >= 14 &&
+                _currentCommandIndex <= 29) {
+              _rawLog.addAll(rawData);
+              // 一個 log command 總共會接收 261 bytes, 每一次傳回 16 bytes
+              if (_rawLog.length == _totalBytesPerCommand) {
+                List<int> rawLogs = List.from(_rawLog);
+                _rawLog.clear();
+                if (!_completer.isCompleted) {
+                  _completer.complete(rawLogs);
+                }
+              }
+            } else if (_currentCommandIndex >= 30 &&
+                _currentCommandIndex <= 37) {
+              _rawEvent.addAll(rawData);
+              // 一個 event command 總共會接收 261 bytes, 每一次傳回 16 bytes
+              if (_rawEvent.length == _totalBytesPerCommand) {
+                List<int> rawEvents = List.from(_rawEvent);
+                _rawEvent.clear();
+                if (!_completer.isCompleted) {
+                  _completer.complete(rawEvents);
+                }
+              }
+            } else if (_currentCommandIndex >= 40 &&
+                _currentCommandIndex <= 46) {
+              if (!_completer.isCompleted) {
+                _completer.complete(rawData);
+              }
             } else if (_currentCommandIndex >= 180 &&
                 _currentCommandIndex <= 182) {
               cancelTimeout(name: 'cmd $_currentCommandIndex');
@@ -212,41 +241,6 @@ class BLEClient {
                 }
               }
             }
-
-            // if (commandIndex <= 13) {
-            //   _parseRawData(rawData);
-            // } else if (commandIndex >= 14 && commandIndex <= 29) {
-            //   _rawLog.addAll(rawData);
-            //   // 一個 log command 總共會接收 261 bytes, 每一次傳回 16 bytes
-            //   if (_rawLog.length == _totalBytesPerCommand) {
-            //     _rawLog.removeRange(_rawLog.length - 2, _rawLog.length);
-            //     _rawLog.removeRange(0, 3);
-            //     _parseLog();
-            //     _rawLog.clear();
-            //   }
-            // } else if (commandIndex >= 30 && commandIndex <= 37) {
-            //   _rawEvent.addAll(rawData);
-            //   // 一個 event command 總共會接收 261 bytes, 每一次傳回 16 bytes
-            //   if (_rawEvent.length == _totalBytesPerCommand) {
-            //     _rawEvent.removeRange(_rawEvent.length - 2, _rawEvent.length);
-            //     _rawEvent.removeRange(0, 3);
-            //     _parseEvent();
-            //     _rawEvent.clear();
-            //   }
-            // } else if (commandIndex >= 40 && commandIndex <= 43) {
-            //   _parseSetLocation(rawData);
-            // } else if (commandIndex == 44) {
-            //   _parseSetTGCCableLength(rawData);
-            // } else if (commandIndex == 45) {
-            //   _parseSetLogInterval(rawData);
-            // } else if (commandIndex == 46) {
-            //   _parseSetWorkingMode(rawData);
-            // } else if (commandIndex >= 180) {
-            //   _dsim18parser.parseRawData(
-            //       commandIndex: commandIndex,
-            //       rawData: rawData,
-            //       completer: _completer);
-            // }
           }, onError: (error) {
             print('lisetn to Characteristic failed');
           });

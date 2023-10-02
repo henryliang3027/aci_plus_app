@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/form_status.dart';
+import 'package:dsim_app/repositories/ble_client.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
