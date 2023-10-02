@@ -1,4 +1,4 @@
-import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
+import 'package:dsim_app/core/custom_icons/custom_icons.dart';
 import 'package:flutter/material.dart';
 
 class HomeBottomNavigationBar extends StatelessWidget {

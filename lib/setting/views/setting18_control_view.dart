@@ -1,5 +1,5 @@
 import 'package:dsim_app/core/command.dart';
-import 'package:dsim_app/core/custom_icons/custom_icons_icons.dart';
+import 'package:dsim_app/core/custom_icons/custom_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';

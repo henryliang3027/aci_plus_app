@@ -11,6 +11,36 @@ import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
+class Log {
+  const Log({
+    required this.dateTime,
+    required this.temperature,
+    required this.attenuation,
+    required this.pilot,
+    required this.voltage,
+    required this.voltageRipple,
+  });
+
+  final DateTime dateTime;
+  final double temperature;
+  final int attenuation;
+  final double pilot;
+  final double voltage;
+  final int voltageRipple;
+}
+
+class Event {
+  const Event({
+    required this.dateTime,
+    required this.code,
+    required this.parameter,
+  });
+
+  final DateTime dateTime;
+  final int code;
+  final int parameter;
+}
+
 class A1G1 {
   const A1G1({
     required this.partNo,

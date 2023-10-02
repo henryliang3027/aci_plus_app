@@ -261,6 +261,11 @@ class BLEClient {
                   }
                 }
               }
+            } else if (_currentCommandIndex >= 300) {
+              cancelTimeout(name: 'cmd $_currentCommandIndex');
+              if (!_completer.isCompleted) {
+                _completer.complete(rawData);
+              }
             }
           }, onError: (error) {
             print('lisetn to Characteristic failed');

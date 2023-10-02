@@ -7,6 +7,7 @@ import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:dsim_app/repositories/unit_converter.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -613,7 +614,7 @@ class Dsim18Parser {
     );
   }
 
-  A1P8GAlarm devoceAlarmSeverity(List<int> rawData) {
+  A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {
     // 給 定期更新 information page 的 alarm 用
     Alarm unitStatusAlarmSeverity = Alarm.medium;
     Alarm temperatureAlarmSeverity = Alarm.medium;
@@ -1309,6 +1310,73 @@ class Dsim18Parser {
     }
   }
 
+  List<List<ValuePair>> get1p8GDateValueCollectionOfLogs(
+      List<Log1p8G> log1p8Gs) {
+    List<ValuePair> temperatureDataList = [];
+    List<ValuePair> rfOutputLowPilotDataList = [];
+    List<ValuePair> rfOutputHighPilotDataList = [];
+    List<ValuePair> voltageDataList = [];
+    List<ValuePair> voltageRippleDataList = [];
+
+    for (Log1p8G log1p8G in log1p8Gs.reversed) {
+      temperatureDataList.add(ValuePair(
+        x: log1p8G.dateTime,
+        y: log1p8G.temperature,
+      ));
+      rfOutputLowPilotDataList.add(ValuePair(
+        x: log1p8G.dateTime,
+        y: log1p8G.rfOutputLowPilot,
+      ));
+      rfOutputHighPilotDataList.add(ValuePair(
+        x: log1p8G.dateTime,
+        y: log1p8G.rfOutputHighPilot,
+      ));
+      voltageDataList.add(ValuePair(
+        x: log1p8G.dateTime,
+        y: log1p8G.voltage,
+      ));
+      voltageRippleDataList.add(ValuePair(
+        x: log1p8G.dateTime,
+        y: log1p8G.voltageRipple.toDouble(),
+      ));
+    }
+
+    return [
+      temperatureDataList,
+      rfOutputLowPilotDataList,
+      rfOutputHighPilotDataList,
+      voltageDataList,
+      voltageRippleDataList,
+    ];
+  }
+
+  List<List<ValuePair>> get1p8GValueCollectionOfRFInOut(
+      List<RFInOut> rfInOuts) {
+    List<ValuePair> rfInputs = [];
+    List<ValuePair> rfOutputs = [];
+
+    for (int i = 0; i < rfInOuts.length; i++) {
+      int frequency = 261 + 6 * i;
+
+      RFInOut rfInOut = rfInOuts[i];
+
+      rfOutputs.add(ValuePair(
+        x: frequency,
+        y: rfInOut.output,
+      ));
+
+      rfInputs.add(ValuePair(
+        x: frequency,
+        y: rfInOut.input,
+      ));
+    }
+
+    return [
+      rfOutputs,
+      rfInputs,
+    ];
+  }
+
   List<String> formatLog1p8G(Log1p8G log1p8G) {
     String formattedDateTime =
         DateFormat('yyyy-MM-dd HH:mm').format(log1p8G.dateTime);
@@ -1407,6 +1475,34 @@ class Dsim18Parser {
     _command18Collection.add(Command18.reqLog08Cmd);
     _command18Collection.add(Command18.reqLog09Cmd);
   }
+}
+
+class Log1p8G {
+  const Log1p8G({
+    required this.dateTime,
+    required this.temperature,
+    required this.voltage,
+    required this.rfOutputLowPilot,
+    required this.rfOutputHighPilot,
+    required this.voltageRipple,
+  });
+
+  final DateTime dateTime;
+  final double temperature;
+  final double voltage;
+  final double rfOutputLowPilot;
+  final double rfOutputHighPilot;
+  final int voltageRipple;
+}
+
+class RFInOut {
+  const RFInOut({
+    required this.input,
+    required this.output,
+  });
+
+  final double input;
+  final double output;
 }
 
 class A1P8G0 {

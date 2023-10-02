@@ -23,64 +23,6 @@ enum Alarm {
   medium,
 }
 
-class Log1p8G {
-  const Log1p8G({
-    required this.dateTime,
-    required this.temperature,
-    required this.voltage,
-    required this.rfOutputLowPilot,
-    required this.rfOutputHighPilot,
-    required this.voltageRipple,
-  });
-
-  final DateTime dateTime;
-  final double temperature;
-  final double voltage;
-  final double rfOutputLowPilot;
-  final double rfOutputHighPilot;
-  final int voltageRipple;
-}
-
-class RFInOut {
-  const RFInOut({
-    required this.input,
-    required this.output,
-  });
-
-  final double input;
-  final double output;
-}
-
-class Log {
-  const Log({
-    required this.dateTime,
-    required this.temperature,
-    required this.attenuation,
-    required this.pilot,
-    required this.voltage,
-    required this.voltageRipple,
-  });
-
-  final DateTime dateTime;
-  final double temperature;
-  final int attenuation;
-  final double pilot;
-  final double voltage;
-  final int voltageRipple;
-}
-
-class Event {
-  const Event({
-    required this.dateTime,
-    required this.code,
-    required this.parameter,
-  });
-
-  final DateTime dateTime;
-  final int code;
-  final int parameter;
-}
-
 class DsimRepository {
   DsimRepository()
       : _bleClient = BLEClient(),
@@ -88,7 +30,6 @@ class DsimRepository {
         _dsimParser = DsimParser(),
         _unitConverter = UnitConverter() {}
 
-  late QualifiedCharacteristic _qualifiedCharacteristic;
   StreamController<Map<DataKey, String>> _characteristicDataStreamController =
       StreamController<Map<DataKey, String>>();
 
@@ -412,7 +353,7 @@ class DsimRepository {
   }
 
   Future<dynamic> requestCommand1p8GAlarm() async {
-    int commandIndex = 204;
+    int commandIndex = 182;
 
     print('get data from request command 1p8G_Alarm');
 
@@ -422,18 +363,12 @@ class DsimRepository {
     );
 
     try {
-      var (
-        alarmUSeverity,
-        alarmTServerity,
-        alarmPServerity,
-      ) = await _completer.future;
-      cancelTimeout(name: '1p8G_Alarm');
-
+      A1P8GAlarm a1p8gAlarm = _dsim18Parser.decodeAlarmSeverity(rawData);
       return [
         true,
-        alarmUSeverity,
-        alarmTServerity,
-        alarmPServerity,
+        a1p8gAlarm.unitStatusAlarmSeverity,
+        a1p8gAlarm.temperatureAlarmSeverity,
+        a1p8gAlarm.powerAlarmSeverity,
       ];
     } catch (e) {
       return [
@@ -447,69 +382,12 @@ class DsimRepository {
 
   List<List<ValuePair>> get1p8GDateValueCollectionOfLogs(
       List<Log1p8G> log1p8Gs) {
-    List<ValuePair> temperatureDataList = [];
-    List<ValuePair> rfOutputLowPilotDataList = [];
-    List<ValuePair> rfOutputHighPilotDataList = [];
-    List<ValuePair> voltageDataList = [];
-    List<ValuePair> voltageRippleDataList = [];
-
-    for (Log1p8G log1p8G in log1p8Gs.reversed) {
-      temperatureDataList.add(ValuePair(
-        x: log1p8G.dateTime,
-        y: log1p8G.temperature,
-      ));
-      rfOutputLowPilotDataList.add(ValuePair(
-        x: log1p8G.dateTime,
-        y: log1p8G.rfOutputLowPilot,
-      ));
-      rfOutputHighPilotDataList.add(ValuePair(
-        x: log1p8G.dateTime,
-        y: log1p8G.rfOutputHighPilot,
-      ));
-      voltageDataList.add(ValuePair(
-        x: log1p8G.dateTime,
-        y: log1p8G.voltage,
-      ));
-      voltageRippleDataList.add(ValuePair(
-        x: log1p8G.dateTime,
-        y: log1p8G.voltageRipple.toDouble(),
-      ));
-    }
-
-    return [
-      temperatureDataList,
-      rfOutputLowPilotDataList,
-      rfOutputHighPilotDataList,
-      voltageDataList,
-      voltageRippleDataList,
-    ];
+    return _dsim18Parser.get1p8GDateValueCollectionOfLogs(log1p8Gs);
   }
 
   List<List<ValuePair>> get1p8GValueCollectionOfRFInOut(
       List<RFInOut> rfInOuts) {
-    List<ValuePair> rfInputs = [];
-    List<ValuePair> rfOutputs = [];
-
-    for (int i = 0; i < rfInOuts.length; i++) {
-      int frequency = 261 + 6 * i;
-
-      RFInOut rfInOut = rfInOuts[i];
-
-      rfOutputs.add(ValuePair(
-        x: frequency,
-        y: rfInOut.output,
-      ));
-
-      rfInputs.add(ValuePair(
-        x: frequency,
-        y: rfInOut.input,
-      ));
-    }
-
-    return [
-      rfOutputs,
-      rfInputs,
-    ];
+    return _dsim18Parser.get1p8GValueCollectionOfRFInOut(rfInOuts);
   }
 
   Future<dynamic> export1p8GRecords(List<Log1p8G> log1p8Gs) async {
@@ -540,15 +418,12 @@ class DsimRepository {
       usDataLength: Command18.setMaxTemperatureCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMaxTemperatureCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setMaxTemperatureCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -577,15 +452,12 @@ class DsimRepository {
       usDataLength: Command18.setMinTemperatureCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMinTemperatureCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setMinTemperatureCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -614,15 +486,12 @@ class DsimRepository {
       usDataLength: Command18.setMaxVoltageCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMaxVoltageCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setMaxVoltageCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -651,15 +520,12 @@ class DsimRepository {
       usDataLength: Command18.setMinVoltageCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMinVoltageCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setMinVoltageCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -688,15 +554,12 @@ class DsimRepository {
       usDataLength: Command18.setMaxVoltageRippleCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMaxVoltageRippleCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setMaxVoltageRippleCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -725,15 +588,12 @@ class DsimRepository {
       usDataLength: Command18.setMinVoltageRippleCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMinVoltageRippleCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setMinVoltageRippleCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -762,15 +622,12 @@ class DsimRepository {
       usDataLength: Command18.setMaxOutputPowerCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMaxOutputPowerCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setMaxOutputPowerCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -799,15 +656,12 @@ class DsimRepository {
       usDataLength: Command18.setMinOutputPowerCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setMinOutputPowerCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setMinOutputPowerCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -827,16 +681,12 @@ class DsimRepository {
       command: Command18.setReturnIngress2Cmd,
       usDataLength: Command18.setReturnIngress2Cmd.length - 2,
     );
-
-    _writeSetCommandToCharacteristic(Command18.setReturnIngress2Cmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setReturnIngress2Cmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -857,15 +707,12 @@ class DsimRepository {
       usDataLength: Command18.setReturnIngress3Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setReturnIngress3Cmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setReturnIngress3Cmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -886,15 +733,12 @@ class DsimRepository {
       usDataLength: Command18.setReturnIngress4Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setReturnIngress4Cmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setReturnIngress4Cmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -915,15 +759,12 @@ class DsimRepository {
       usDataLength: Command18.setTGCCableLengthCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setTGCCableLengthCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setTGCCableLengthCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -944,15 +785,12 @@ class DsimRepository {
       usDataLength: Command18.setSplitOptionCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setSplitOptionCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setSplitOptionCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -978,15 +816,12 @@ class DsimRepository {
       usDataLength: Command18.setPilotFrequencyModeCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setPilotFrequencyModeCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setPilotFrequencyModeCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1007,15 +842,12 @@ class DsimRepository {
       usDataLength: Command18.setFowardAGCModeCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setFowardAGCModeCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setFowardAGCModeCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1036,15 +868,12 @@ class DsimRepository {
       usDataLength: Command18.setALCModeCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setALCModeCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setALCModeCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1071,16 +900,12 @@ class DsimRepository {
       usDataLength: Command18.setFirstChannelLoadingFrequencyCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(
-        Command18.setFirstChannelLoadingFrequencyCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setFirstChannelLoadingFrequencyCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1107,16 +932,12 @@ class DsimRepository {
       usDataLength: Command18.setLastChannelLoadingFrequencyCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(
-        Command18.setLastChannelLoadingFrequencyCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setLastChannelLoadingFrequencyCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1145,15 +966,12 @@ class DsimRepository {
       usDataLength: Command18.setFirstChannelLoadingLevelCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setFirstChannelLoadingLevelCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setFirstChannelLoadingLevelCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1182,15 +1000,12 @@ class DsimRepository {
       usDataLength: Command18.setLastChannelLoadingLevelCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setLastChannelLoadingLevelCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setLastChannelLoadingLevelCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1217,15 +1032,12 @@ class DsimRepository {
       usDataLength: Command18.setPilotFrequency1Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setPilotFrequency1Cmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setPilotFrequency1Cmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1252,15 +1064,12 @@ class DsimRepository {
       usDataLength: Command18.setPilotFrequency2Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setPilotFrequency2Cmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setPilotFrequency2Cmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1281,16 +1090,12 @@ class DsimRepository {
       usDataLength: Command18.setInputPilotLowFrequencyAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(
-        Command18.setInputPilotLowFrequencyAlarmStateCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setInputPilotLowFrequencyAlarmStateCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1312,16 +1117,12 @@ class DsimRepository {
           Command18.setInputPilotHighFrequencyAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(
-        Command18.setInputPilotHighFrequencyAlarmStateCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setInputPilotHighFrequencyAlarmStateCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1343,16 +1144,12 @@ class DsimRepository {
           Command18.setOutputPilotLowFrequencyAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(
-        Command18.setOutputPilotLowFrequencyAlarmStateCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setOutputPilotLowFrequencyAlarmStateCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1374,16 +1171,12 @@ class DsimRepository {
           Command18.setOutputPilotHighFrequencyAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(
-        Command18.setOutputPilotHighFrequencyAlarmStateCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setOutputPilotHighFrequencyAlarmStateCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1404,15 +1197,12 @@ class DsimRepository {
       usDataLength: Command18.setTemperatureAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setTemperatureAlarmStateCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setTemperatureAlarmStateCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1433,15 +1223,12 @@ class DsimRepository {
       usDataLength: Command18.setVoltageAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setVoltageAlarmStateCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setVoltageAlarmStateCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1462,15 +1249,12 @@ class DsimRepository {
       usDataLength: Command18.setSplitOptionAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setSplitOptionAlarmStateCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setSplitOptionAlarmStateCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1491,15 +1275,12 @@ class DsimRepository {
       usDataLength: Command18.setVoltageRippleAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setVoltageRippleAlarmStateCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setVoltageRippleAlarmStateCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1520,15 +1301,12 @@ class DsimRepository {
       usDataLength: Command18.setRFOutputPowerAlarmStateCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setRFOutputPowerAlarmStateCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setRFOutputPowerAlarmStateCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1564,29 +1342,17 @@ class DsimRepository {
       Command18.setLocationCmd[i + 8] = 0x00;
     }
 
-    // String output = '';
-    // print('length: ${Command18.setLocationCmd.length}');
-    // for (int i = 0; i < Command18.setLocationCmd.length; i++) {
-    //   // print(Command18.setLocationCmd[i].toRadixString(16));
-    //   output += Command18.setLocationCmd[i].toRadixString(16) + ' ';
-    // }
-
-    // print(output);
-
     CRC16.calculateCRC16(
       command: Command18.setLocationCmd,
       usDataLength: Command18.setLocationCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setLocationCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setLocationCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1607,15 +1373,12 @@ class DsimRepository {
       usDataLength: Command18.setLogIntervalCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setLogIntervalCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setLogIntervalCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1644,15 +1407,12 @@ class DsimRepository {
       usDataLength: Command18.setForwardInputAttenuationCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setForwardInputAttenuationCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setForwardInputAttenuationCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1681,15 +1441,12 @@ class DsimRepository {
       usDataLength: Command18.setForwardInputEqualizerCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setForwardInputEqualizerCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setForwardInputEqualizerCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1718,15 +1475,12 @@ class DsimRepository {
       usDataLength: Command18.setDSVVA2Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setDSVVA2Cmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setDSVVA2Cmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1755,15 +1509,12 @@ class DsimRepository {
       usDataLength: Command18.setDSSlope2Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setDSSlope2Cmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setDSSlope2Cmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1792,15 +1543,12 @@ class DsimRepository {
       usDataLength: Command18.setReturnInputAttenuation2Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setReturnInputAttenuation2Cmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setReturnInputAttenuation2Cmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1829,15 +1577,12 @@ class DsimRepository {
       usDataLength: Command18.setReturnOutputEqualizerCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setReturnOutputEqualizerCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setReturnOutputEqualizerCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1866,15 +1611,12 @@ class DsimRepository {
       usDataLength: Command18.setDSVVA3Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setDSVVA3Cmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setDSVVA3Cmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1903,15 +1645,12 @@ class DsimRepository {
       usDataLength: Command18.setDSVVA4Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setDSVVA4Cmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setDSVVA4Cmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1940,15 +1679,12 @@ class DsimRepository {
       usDataLength: Command18.setReturnOutputAttenuationCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setReturnOutputAttenuationCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setReturnOutputAttenuationCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -1977,15 +1713,12 @@ class DsimRepository {
       usDataLength: Command18.setReturnInputAttenuation3Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setReturnInputAttenuation3Cmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setReturnInputAttenuation3Cmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -2014,15 +1747,12 @@ class DsimRepository {
       usDataLength: Command18.setReturnInputAttenuation4Cmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setReturnInputAttenuation4Cmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setReturnInputAttenuation4Cmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -2050,16 +1780,12 @@ class DsimRepository {
       command: Command18.setUSTGCCmd,
       usDataLength: Command18.setUSTGCCmd.length - 2,
     );
-
-    _writeSetCommandToCharacteristic(Command18.setUSTGCCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setUSTGCCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -2088,15 +1814,12 @@ class DsimRepository {
       usDataLength: Command18.setCoordinatesCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setCoordinatesCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setCoordinatesCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -2143,15 +1866,12 @@ class DsimRepository {
       usDataLength: Command18.setTransmitDelayTimeCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setTransmitDelayTimeCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setTransmitDelayTimeCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
@@ -2189,15 +1909,12 @@ class DsimRepository {
       usDataLength: Command18.setNowDateTimeCmd.length - 2,
     );
 
-    _writeSetCommandToCharacteristic(Command18.setNowDateTimeCmd);
-    setTimeout(
-        duration: Duration(seconds: _commandExecutionTimeout),
-        name: '1p8G$commandIndex');
-
     try {
-      bool isDone = await _completer.future;
-      cancelTimeout(name: '1p8G$commandIndex');
-      return isDone;
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setNowDateTimeCmd,
+      );
+      return true;
     } catch (e) {
       return false;
     }
