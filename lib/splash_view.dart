@@ -1,3 +1,4 @@
+import 'package:dsim_app/core/custom_icons/custom_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:flutter/material.dart';
@@ -31,32 +32,34 @@ class SplashView extends StatelessWidget {
         showUnselectedLabels: false,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
+            icon: Icon(CustomIcons.setting),
             label: 'Setting',
             tooltip: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.memory_outlined),
+            icon: Icon(CustomIcons.status),
             label: 'Status',
             tooltip: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.info),
+            icon: Icon(CustomIcons.information),
             label: 'Information',
             tooltip: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.area_chart_sharp),
+            icon: Icon(CustomIcons.chart),
             label: 'Chart',
             tooltip: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.contact_support),
+            icon: Icon(CustomIcons.about),
             label: 'About',
             tooltip: '',
           ),
         ],
         currentIndex: 2,
+        selectedIconTheme: const IconThemeData(size: 36),
+        selectedFontSize: 10.0,
         selectedItemColor: Theme.of(context).primaryColor,
         unselectedItemColor: Theme.of(context).hintColor,
       ),
