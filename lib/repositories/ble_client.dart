@@ -44,8 +44,8 @@ class BLEClient {
   late StreamController<ScanReport> _scanReportStreamController;
   StreamController<ConnectionReport> _connectionReportStreamController =
       StreamController<ConnectionReport>();
-  StreamController<Map<DataKey, String>> _characteristicDataStreamController =
-      StreamController<Map<DataKey, String>>();
+  // StreamController<Map<DataKey, String>> _characteristicDataStreamController =
+  //     StreamController<Map<DataKey, String>>();
   StreamSubscription<DiscoveredDevice>? _discoveredDeviceStreamSubscription;
   StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
   StreamSubscription<List<int>>? _characteristicStreamSubscription;
@@ -169,8 +169,8 @@ class BLEClient {
         case DeviceConnectionState.connected:
           connectionTimer.cancel();
 
-          _characteristicDataStreamController =
-              StreamController<Map<DataKey, String>>();
+          // _characteristicDataStreamController =
+          //     StreamController<Map<DataKey, String>>();
 
           _qualifiedCharacteristic = QualifiedCharacteristic(
             serviceId: Uuid.parse(_serviceId),
@@ -248,12 +248,34 @@ class BLEClient {
               if (_rawRFInOut.length == 1029) {
                 bool isValidCRC = checkCRC(_rawRFInOut);
                 if (isValidCRC) {
-                  _rawRFInOut.removeRange(
-                      _rawRFInOut.length - 2, _rawRFInOut.length);
-                  _rawRFInOut.removeRange(0, 3);
+                  List<int> rawRFInOuts = List.from(_rawRFInOut);
                   cancelTimeout(name: 'cmd $_currentCommandIndex');
                   if (!_completer.isCompleted) {
-                    _completer.complete(_rawRFInOut);
+                    _completer.complete(rawRFInOuts);
+                  }
+                } else {
+                  if (!_completer.isCompleted) {
+                    _completer.completeError('Invalid data');
+                  }
+                }
+              }
+            } else if (_currentCommandIndex >= 184 &&
+                _currentCommandIndex <= 193) {
+              List<int> header = [0xB0, 0x03, 0x00];
+              if (listEquals(rawData.sublist(0, 3), header)) {
+                _rawLog.clear();
+              }
+
+              _rawLog.addAll(rawData);
+              print(_rawLog.length);
+
+              if (_rawLog.length == 16389) {
+                bool isValidCRC = checkCRC(_rawLog);
+                if (isValidCRC) {
+                  List<int> rawLogs = List.from(_rawLog);
+                  cancelTimeout(name: 'cmd $_currentCommandIndex');
+                  if (!_completer.isCompleted) {
+                    _completer.complete(rawLogs);
                   }
                 } else {
                   if (!_completer.isCompleted) {
@@ -304,9 +326,9 @@ class BLEClient {
     yield* _connectionReportStreamController.stream;
   }
 
-  Stream<Map<DataKey, String>> get characteristicData async* {
-    yield* _characteristicDataStreamController.stream;
-  }
+  // Stream<Map<DataKey, String>> get characteristicData async* {
+  //   yield* _characteristicDataStreamController.stream;
+  // }
 
   Future<void> closeScanStream() async {
     print('closeScanStream');
@@ -328,11 +350,11 @@ class BLEClient {
       }
     }
 
-    if (_characteristicDataStreamController.hasListener) {
-      if (!_characteristicDataStreamController.isClosed) {
-        await _characteristicDataStreamController.close();
-      }
-    }
+    // if (_characteristicDataStreamController.hasListener) {
+    //   if (!_characteristicDataStreamController.isClosed) {
+    //     await _characteristicDataStreamController.close();
+    //   }
+    // }
 
     await _characteristicStreamSubscription?.cancel();
     _characteristicStreamSubscription = null;

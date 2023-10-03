@@ -24,6 +24,8 @@ class SettingListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
+    SettingListViewState settingListViewState =
+        context.read<SettingListViewBloc>().state;
     String location = homeState.characteristicData[DataKey.location] ?? '';
     String tgcCableLength =
         homeState.characteristicData[DataKey.tgcCableLength] ?? '';
@@ -42,17 +44,21 @@ class SettingListView extends StatelessWidget {
     String hasDualPilot =
         homeState.characteristicData[DataKey.hasDualPilot] ?? '';
 
-    context.read<SettingListViewBloc>().add(Initialized(
-          location: location,
-          logIntervalId: logInterval,
-          workingMode: workingMode,
-          tgcCableLength: tgcCableLength,
-          maxAttenuation: maxAttenuation,
-          minAttenuation: minAttenuation,
-          currentAttenuation: currentAttenuation,
-          centerAttenuation: centerAttenuation,
-          hasDualPilot: hasDualPilot,
-        ));
+    // 主要想到讀取資料時能夠逐一呈現, 設定的時候因為是全部資料更新,
+    // 所以為了避免短時間內顯示回更改前的初始值, 在 editMode 的時候不及時更新設定值ａ
+    if (!settingListViewState.editMode) {
+      context.read<SettingListViewBloc>().add(Initialized(
+            location: location,
+            logIntervalId: logInterval,
+            workingMode: workingMode,
+            tgcCableLength: tgcCableLength,
+            maxAttenuation: maxAttenuation,
+            minAttenuation: minAttenuation,
+            currentAttenuation: currentAttenuation,
+            centerAttenuation: centerAttenuation,
+            hasDualPilot: hasDualPilot,
+          ));
+    }
 
     Future<void> showInProgressDialog() async {
       return showDialog<void>(

@@ -187,3 +187,10 @@ class SettingSubmitted extends SettingListViewEvent {
   @override
   List<Object> get props => [];
 }
+
+class AGCPrepAttenuationSubmitted extends SettingListViewEvent {
+  const AGCPrepAttenuationSubmitted();
+
+  @override
+  List<Object> get props => [];
+}
