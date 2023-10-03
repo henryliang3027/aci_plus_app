@@ -530,7 +530,7 @@ class _SplitOption extends StatelessWidget {
                 GridView.count(
                   physics: const NeverScrollableScrollPhysics(),
                   crossAxisCount: 2,
-                  childAspectRatio: (1 / .3),
+                  childAspectRatio: (MediaQuery.of(context).size.width / 100.0),
                   shrinkWrap: true,
                   children: List.generate(6, (index) {
                     if (index == 0) {
