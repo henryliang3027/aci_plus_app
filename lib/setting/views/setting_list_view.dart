@@ -44,8 +44,6 @@ class SettingListView extends StatelessWidget {
     String hasDualPilot =
         homeState.characteristicData[DataKey.hasDualPilot] ?? '';
 
-    // 主要想到讀取資料時能夠逐一呈現, 設定的時候因為是全部資料更新,
-    // 所以為了避免短時間內顯示回更改前的初始值, 在 editMode 的時候不及時更新設定值ａ
     if (!settingListViewState.editMode) {
       context.read<SettingListViewBloc>().add(Initialized(
             location: location,
@@ -315,9 +313,44 @@ class _SettingFloatingActionButton extends StatelessWidget {
                         .add(const EditModeDisabled());
 
                     // 重新載入初始設定值
-                    // context
-                    //     .read<SettingListViewBloc>()
-                    //     .add(const Initialized(true));
+                    HomeState homeState = context.read<HomeBloc>().state;
+
+                    String location =
+                        homeState.characteristicData[DataKey.location] ?? '';
+                    String tgcCableLength =
+                        homeState.characteristicData[DataKey.tgcCableLength] ??
+                            '';
+                    String workingMode =
+                        homeState.characteristicData[DataKey.workingMode] ?? '';
+                    String logInterval =
+                        homeState.characteristicData[DataKey.logInterval] ?? '';
+                    String maxAttenuation =
+                        homeState.characteristicData[DataKey.maxAttenuation] ??
+                            '';
+                    String minAttenuation =
+                        homeState.characteristicData[DataKey.minAttenuation] ??
+                            '';
+                    String currentAttenuation = homeState
+                            .characteristicData[DataKey.currentAttenuation] ??
+                        '';
+                    String centerAttenuation = homeState
+                            .characteristicData[DataKey.centerAttenuation] ??
+                        '';
+                    String hasDualPilot =
+                        homeState.characteristicData[DataKey.hasDualPilot] ??
+                            '';
+
+                    context.read<SettingListViewBloc>().add(Initialized(
+                          location: location,
+                          logIntervalId: logInterval,
+                          workingMode: workingMode,
+                          tgcCableLength: tgcCableLength,
+                          maxAttenuation: maxAttenuation,
+                          minAttenuation: minAttenuation,
+                          currentAttenuation: currentAttenuation,
+                          centerAttenuation: centerAttenuation,
+                          hasDualPilot: hasDualPilot,
+                        ));
                   },
                 ),
                 const SizedBox(
@@ -618,7 +651,8 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
                       dropdownMaxHeight: 200,
                       isExpanded: true,
                       icon: const Icon(Icons.keyboard_arrow_down),
-                      value: state.logIntervalId == '0'
+                      value: state.logIntervalId == '0' ||
+                              state.logIntervalId == ''
                           ? null
                           : int.parse(state.logIntervalId),
                       items: [

@@ -2400,13 +2400,12 @@ class DsimRepository {
 
     if (workingModeId == 1) {
       // AGC
-      int agcWorkingModeSettingTimeout = 30;
       try {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
           value: Command.set04Cmd,
-          timeout: Duration(seconds: agcWorkingModeSettingTimeout),
         );
+        await Future.delayed(const Duration(seconds: 30));
       } catch (e) {
         return false;
       }

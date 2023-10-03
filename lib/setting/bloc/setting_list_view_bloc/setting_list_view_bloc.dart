@@ -170,6 +170,7 @@ class SettingListViewBloc
         pilot2 != null ? '${pilot2[0]} ${pilot2[1]}' : '';
 
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       initialValues: [
         event.location,
         event.tgcCableLength,
@@ -195,7 +196,8 @@ class SettingListViewBloc
       centerAttenuation: centerAttenuation,
       hasDualPilot: _boolStringToBool(event.hasDualPilot),
       isInitialize: true,
-      submissionStatus: SubmissionStatus.none,
+      editMode: false,
+      enableSubmission: false,
       pilotChannelStatus:
           pilot != null ? FormStatus.requestSuccess : FormStatus.requestFailure,
       pilot2ChannelStatus: pilot2 != null
@@ -434,7 +436,6 @@ class SettingListViewBloc
         'AGC': false,
         'TGC': false,
       },
-      // enableSubmission: event.attenuation.toString() != state.initialValues[4],
       enableSubmission: _isEnabledSubmission(
         location: state.location.value,
         tgcCableLength: _getSelectedTgcCableLength(),
@@ -449,114 +450,248 @@ class SettingListViewBloc
   void _onAGCPrepAttenuationChangeEnded(
     AGCPrepAttenuationChangeEnded event,
     Emitter<SettingListViewState> emit,
-  ) {
-    // if (state.hasDualPilot) {
-    //   bool resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
-    //     workingMode: workingMode,
-    //     currentAttenuation: state.currentAttenuation,
-    //     tgcCableLength: tgcCableLength,
-    //     pilotChannel: state.pilotChannel,
-    //     pilotMode: state.pilotMode,
-    //     pilot2Channel: state.pilot2Channel,
-    //     pilot2Mode: state.pilot2Mode,
-    //     logIntervalId: state.logIntervalId,
-    //     hasDualPilot: state.hasDualPilot,
-    //   );
-    // } else {
-    //   bool resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
-    //     workingMode: workingMode,
-    //     currentAttenuation: state.currentAttenuation,
-    //     tgcCableLength: tgcCableLength,
-    //     pilotChannel: state.pilotChannel,
-    //     pilotMode: state.pilotMode,
-    //     logIntervalId: state.logIntervalId,
-    //     hasDualPilot: state.hasDualPilot,
-    //   );
-    // }
+  ) async {
+    String workingMode = _getSelectedWorkingMode();
+    String tgcCableLength = _getSelectedTgcCableLength();
+    List<dynamic> initialValues = List.from(state.initialValues);
+    initialValues[3] = 'MGC';
+
+    if (state.hasDualPilot) {
+      bool resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
+        workingMode: workingMode,
+        currentAttenuation: state.currentAttenuation,
+        tgcCableLength: tgcCableLength,
+        pilotChannel: state.pilotChannel,
+        pilotMode: state.pilotMode,
+        pilot2Channel: state.pilot2Channel,
+        pilot2Mode: state.pilot2Mode,
+        logIntervalId: state.logIntervalId,
+        hasDualPilot: state.hasDualPilot,
+      );
+    } else {
+      bool resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
+        workingMode: workingMode,
+        currentAttenuation: state.currentAttenuation,
+        tgcCableLength: tgcCableLength,
+        pilotChannel: state.pilotChannel,
+        pilotMode: state.pilotMode,
+        logIntervalId: state.logIntervalId,
+        hasDualPilot: state.hasDualPilot,
+      );
+    }
+
+    emit(state.copyWith(
+      initialValues: initialValues,
+      isChangedAGCPrepAttenuation: true,
+      enableSubmission: true,
+    ));
   }
 
   void _onAGCPrepAttenuationIncreased(
     AGCPrepAttenuationIncreased event,
     Emitter<SettingListViewState> emit,
-  ) {
+  ) async {
     int newAttenuation = state.currentAttenuation + 50 <= state.maxAttenuation
         ? state.currentAttenuation + 50
         : state.maxAttenuation;
 
+    String workingMode = 'MGC';
+    String tgcCableLength = _getSelectedTgcCableLength();
+    List<dynamic> initialValues = List.from(state.initialValues);
+    initialValues[3] = 'MGC';
+
+    if (state.hasDualPilot) {
+      bool resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
+        workingMode: workingMode,
+        currentAttenuation: newAttenuation,
+        tgcCableLength: tgcCableLength,
+        pilotChannel: state.pilotChannel,
+        pilotMode: state.pilotMode,
+        pilot2Channel: state.pilot2Channel,
+        pilot2Mode: state.pilot2Mode,
+        logIntervalId: state.logIntervalId,
+        hasDualPilot: state.hasDualPilot,
+      );
+    } else {
+      bool resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
+        workingMode: workingMode,
+        currentAttenuation: newAttenuation,
+        tgcCableLength: tgcCableLength,
+        pilotChannel: state.pilotChannel,
+        pilotMode: state.pilotMode,
+        logIntervalId: state.logIntervalId,
+        hasDualPilot: state.hasDualPilot,
+      );
+    }
+
     emit(state.copyWith(
-      isInitialize: false,
-      submissionStatus: SubmissionStatus.none,
-      currentAttenuation: newAttenuation,
       selectedWorkingMode: <String, bool>{
         'MGC': true,
         'AGC': false,
         'TGC': false,
       },
-      // enableSubmission: newAttenuation.toString() != state.initialValues[4],
-      enableSubmission: _isEnabledSubmission(
-        location: state.location.value,
-        tgcCableLength: _getSelectedTgcCableLength(),
-        logIntervalId: state.logIntervalId,
-        workingMode: _getSelectedWorkingMode(),
-        pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
-        pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
-      ),
+      initialValues: initialValues,
+      currentAttenuation: newAttenuation,
+      isChangedAGCPrepAttenuation: true,
+      enableSubmission: true,
     ));
+
+    // emit(state.copyWith(
+    //   isInitialize: false,
+    //   submissionStatus: SubmissionStatus.none,
+    //   currentAttenuation: newAttenuation,
+    //   selectedWorkingMode: <String, bool>{
+    //     'MGC': true,
+    //     'AGC': false,
+    //     'TGC': false,
+    //   },
+    //   // enableSubmission: newAttenuation.toString() != state.initialValues[4],
+    //   enableSubmission: _isEnabledSubmission(
+    //     location: state.location.value,
+    //     tgcCableLength: _getSelectedTgcCableLength(),
+    //     logIntervalId: state.logIntervalId,
+    //     workingMode: _getSelectedWorkingMode(),
+    //     pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
+    //     pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
+    //   ),
+    // ));
   }
 
   void _onAGCPrepAttenuationDecreased(
     AGCPrepAttenuationDecreased event,
     Emitter<SettingListViewState> emit,
-  ) {
+  ) async {
     int newAttenuation = state.currentAttenuation - 50 >= state.minAttenuation
         ? state.currentAttenuation - 50
         : state.minAttenuation;
 
+    String workingMode = 'MGC';
+    String tgcCableLength = _getSelectedTgcCableLength();
+    List<dynamic> initialValues = List.from(state.initialValues);
+    initialValues[3] = 'MGC';
+
+    if (state.hasDualPilot) {
+      bool resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
+        workingMode: workingMode,
+        currentAttenuation: newAttenuation,
+        tgcCableLength: tgcCableLength,
+        pilotChannel: state.pilotChannel,
+        pilotMode: state.pilotMode,
+        pilot2Channel: state.pilot2Channel,
+        pilot2Mode: state.pilot2Mode,
+        logIntervalId: state.logIntervalId,
+        hasDualPilot: state.hasDualPilot,
+      );
+    } else {
+      bool resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
+        workingMode: workingMode,
+        currentAttenuation: newAttenuation,
+        tgcCableLength: tgcCableLength,
+        pilotChannel: state.pilotChannel,
+        pilotMode: state.pilotMode,
+        logIntervalId: state.logIntervalId,
+        hasDualPilot: state.hasDualPilot,
+      );
+    }
+
     emit(state.copyWith(
-      isInitialize: false,
-      submissionStatus: SubmissionStatus.none,
-      currentAttenuation: newAttenuation,
       selectedWorkingMode: <String, bool>{
         'MGC': true,
         'AGC': false,
         'TGC': false,
       },
-      // enableSubmission: newAttenuation.toString() != state.initialValues[4],
-      enableSubmission: _isEnabledSubmission(
-        location: state.location.value,
-        tgcCableLength: _getSelectedTgcCableLength(),
-        logIntervalId: state.logIntervalId,
-        workingMode: _getSelectedWorkingMode(),
-        pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
-        pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
-      ),
+      initialValues: initialValues,
+      currentAttenuation: newAttenuation,
+      isChangedAGCPrepAttenuation: true,
+      enableSubmission: true,
     ));
+
+    // emit(state.copyWith(
+    //   isInitialize: false,
+    //   submissionStatus: SubmissionStatus.none,
+    //   currentAttenuation: newAttenuation,
+    //   selectedWorkingMode: <String, bool>{
+    //     'MGC': true,
+    //     'AGC': false,
+    //     'TGC': false,
+    //   },
+    //   // enableSubmission: newAttenuation.toString() != state.initialValues[4],
+    //   enableSubmission: _isEnabledSubmission(
+    //     location: state.location.value,
+    //     tgcCableLength: _getSelectedTgcCableLength(),
+    //     logIntervalId: state.logIntervalId,
+    //     workingMode: _getSelectedWorkingMode(),
+    //     pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
+    //     pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
+    //   ),
+    // ));
   }
 
   void _onAGCPrepAttenuationCentered(
     AGCPrepAttenuationCentered event,
     Emitter<SettingListViewState> emit,
-  ) {
+  ) async {
+    String workingMode = 'MGC';
+    String tgcCableLength = _getSelectedTgcCableLength();
+    List<dynamic> initialValues = List.from(state.initialValues);
+    initialValues[3] = 'MGC';
+
+    if (state.hasDualPilot) {
+      bool resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
+        workingMode: workingMode,
+        currentAttenuation: state.centerAttenuation,
+        tgcCableLength: tgcCableLength,
+        pilotChannel: state.pilotChannel,
+        pilotMode: state.pilotMode,
+        pilot2Channel: state.pilot2Channel,
+        pilot2Mode: state.pilot2Mode,
+        logIntervalId: state.logIntervalId,
+        hasDualPilot: state.hasDualPilot,
+      );
+    } else {
+      bool resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
+        workingMode: workingMode,
+        currentAttenuation: state.centerAttenuation,
+        tgcCableLength: tgcCableLength,
+        pilotChannel: state.pilotChannel,
+        pilotMode: state.pilotMode,
+        logIntervalId: state.logIntervalId,
+        hasDualPilot: state.hasDualPilot,
+      );
+    }
+
     emit(state.copyWith(
-      isInitialize: false,
-      submissionStatus: SubmissionStatus.none,
-      currentAttenuation: state.centerAttenuation,
       selectedWorkingMode: <String, bool>{
         'MGC': true,
         'AGC': false,
         'TGC': false,
       },
-      // enableSubmission:
-      //     state.centerAttenuation.toString() != state.initialValues[4],
-      enableSubmission: _isEnabledSubmission(
-        location: state.location.value,
-        tgcCableLength: _getSelectedTgcCableLength(),
-        logIntervalId: state.logIntervalId,
-        workingMode: _getSelectedWorkingMode(),
-        pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
-        pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
-      ),
+      initialValues: initialValues,
+      currentAttenuation: state.centerAttenuation,
+      isChangedAGCPrepAttenuation: true,
+      enableSubmission: true,
     ));
+
+    // emit(state.copyWith(
+    //   isInitialize: false,
+    //   submissionStatus: SubmissionStatus.none,
+    //   currentAttenuation: state.centerAttenuation,
+    //   selectedWorkingMode: <String, bool>{
+    //     'MGC': true,
+    //     'AGC': false,
+    //     'TGC': false,
+    //   },
+    //   // enableSubmission:
+    //   //     state.centerAttenuation.toString() != state.initialValues[4],
+    //   enableSubmission: _isEnabledSubmission(
+    //     location: state.location.value,
+    //     tgcCableLength: _getSelectedTgcCableLength(),
+    //     logIntervalId: state.logIntervalId,
+    //     workingMode: _getSelectedWorkingMode(),
+    //     pilotChannelAndMode: '${state.pilotChannel} ${state.pilotMode}',
+    //     pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
+    //   ),
+    // ));
   }
 
   void _onEditModeEnabled(
@@ -574,76 +709,8 @@ class SettingListViewBloc
     EditModeDisabled event,
     Emitter<SettingListViewState> emit,
   ) async {
-    // initialValues: [
-    //   event.location,
-    //   event.tgcCableLength,
-    //   event.logIntervalId,
-    //   event.workingMode,
-    //   pilotChannelAndMode,
-    //   pilot2ChannelAndMode,
-    //   event.currentAttenuation,
-    // ],
-
-    final Location location = Location.dirty(state.initialValues[0]);
-
-    final Map<String, bool> newSelectedTGCCableLength = {
-      '9': false,
-      '18': false,
-      '27': false,
-    };
-
-    if (newSelectedTGCCableLength.containsKey(state.initialValues[1])) {
-      newSelectedTGCCableLength[state.initialValues[1]] = true;
-    }
-
-    final Map<String, bool> newSelectedWorkingMode = {
-      'MGC': false,
-      'AGC': false,
-      'TGC': false,
-    };
-
-    if (newSelectedWorkingMode.containsKey(state.initialValues[3])) {
-      newSelectedWorkingMode[state.initialValues[3]] = true;
-    }
-
-    final int currentAttenuation = state.initialValues[6].isNotEmpty
-        ? int.parse(state.initialValues[6])
-        : 0;
-
-    String strPilotCode = await _dsimRepository.readPilotCode();
-    String strPilot2Code = await _dsimRepository.readPilot2Code();
-
-    final PilotCode pilotCode = PilotCode.dirty(strPilotCode);
-    final PilotCode pilot2Code = PilotCode.dirty(strPilot2Code);
-    final List<String>? pilot = _getPilotChannelAndMode(strPilotCode);
-    final List<String>? pilot2 = _getPilotChannelAndMode(strPilot2Code);
-
-    final String pilotChannelAndMode =
-        pilot != null ? '${pilot[0]} ${pilot[1]}' : '';
-
-    final String pilot2ChannelAndMode =
-        pilot2 != null ? '${pilot2[0]} ${pilot2[1]}' : '';
-
     emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      isInitialize: true,
       editMode: false,
-      enableSubmission: false,
-      location: location,
-      logIntervalId: state.initialValues[2],
-      selectedWorkingMode: newSelectedWorkingMode,
-      pilotChannel: pilot != null ? pilot[0] : '',
-      pilotMode: pilot != null ? pilot[1] : '',
-      pilotCode: pilotCode,
-      pilot2Channel: pilot2 != null ? pilot2[0] : '',
-      pilot2Mode: pilot2 != null ? pilot2[1] : '',
-      pilot2Code: pilot2Code,
-      currentAttenuation: currentAttenuation,
-      pilotChannelStatus:
-          pilot != null ? FormStatus.requestSuccess : FormStatus.requestFailure,
-      pilot2ChannelStatus: pilot2 != null
-          ? FormStatus.requestSuccess
-          : FormStatus.requestFailure,
     ));
   }
 
@@ -694,7 +761,7 @@ class SettingListViewBloc
     }
 
     if (workingMode != state.initialValues[3] ||
-        state.currentAttenuation.toString() != state.initialValues[6]) {
+        state.isChangedAGCPrepAttenuation) {
       bool resultOfSettingWorkingMode = false;
       if (state.hasDualPilot) {
         resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
@@ -738,19 +805,13 @@ class SettingListViewBloc
           '${SharedPreferenceKey.pilot2Code.name},$resultOfWritePilot2Code');
     }
 
-    // 不論有沒有更改 pilotChannelAndMode, pilot2ChannelAndMode, 一律更新 initialValues,
-    // 因為這兩個不會透過 homeState 觸發 Initialized 來更新 initialValues
-    List<dynamic> newInitialValues = List.from(state.initialValues);
-    newInitialValues[4] = pilotChannelAndMode;
-    newInitialValues[5] = pilot2ChannelAndMode;
-
     emit(state.copyWith(
       isInitialize: false,
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
       enableSubmission: false,
       editMode: false,
-      initialValues: newInitialValues,
+      isChangedAGCPrepAttenuation: false,
     ));
   }
 }
