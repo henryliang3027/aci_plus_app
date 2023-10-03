@@ -28,6 +28,7 @@ class SettingListViewBloc
     on<PilotChannelSearched>(_onPilotChannelSearched);
     on<Pilot2ChannelSearched>(_onPilot2ChannelSearched);
     on<AGCPrepAttenuationChanged>(_onAGCPrepAttenuationChanged);
+    on<AGCPrepAttenuationChangeEnded>(_onAGCPrepAttenuationChangeEnded);
     on<AGCPrepAttenuationIncreased>(_onAGCPrepAttenuationIncreased);
     on<AGCPrepAttenuationDecreased>(_onAGCPrepAttenuationDecreased);
     on<AGCPrepAttenuationCentered>(_onAGCPrepAttenuationCentered);
@@ -443,6 +444,35 @@ class SettingListViewBloc
         pilot2ChannelAndMode: '${state.pilot2Channel} ${state.pilot2Mode}',
       ),
     ));
+  }
+
+  void _onAGCPrepAttenuationChangeEnded(
+    AGCPrepAttenuationChangeEnded event,
+    Emitter<SettingListViewState> emit,
+  ) {
+    // if (state.hasDualPilot) {
+    //   bool resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
+    //     workingMode: workingMode,
+    //     currentAttenuation: state.currentAttenuation,
+    //     tgcCableLength: tgcCableLength,
+    //     pilotChannel: state.pilotChannel,
+    //     pilotMode: state.pilotMode,
+    //     pilot2Channel: state.pilot2Channel,
+    //     pilot2Mode: state.pilot2Mode,
+    //     logIntervalId: state.logIntervalId,
+    //     hasDualPilot: state.hasDualPilot,
+    //   );
+    // } else {
+    //   bool resultOfSettingWorkingMode = await _dsimRepository.setWorkingMode(
+    //     workingMode: workingMode,
+    //     currentAttenuation: state.currentAttenuation,
+    //     tgcCableLength: tgcCableLength,
+    //     pilotChannel: state.pilotChannel,
+    //     pilotMode: state.pilotMode,
+    //     logIntervalId: state.logIntervalId,
+    //     hasDualPilot: state.hasDualPilot,
+    //   );
+    // }
   }
 
   void _onAGCPrepAttenuationIncreased(

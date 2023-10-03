@@ -146,6 +146,13 @@ class AGCPrepAttenuationChanged extends SettingListViewEvent {
       ];
 }
 
+class AGCPrepAttenuationChangeEnded extends SettingListViewEvent {
+  const AGCPrepAttenuationChangeEnded();
+
+  @override
+  List<Object> get props => [];
+}
+
 class AGCPrepAttenuationIncreased extends SettingListViewEvent {
   const AGCPrepAttenuationIncreased();
 
@@ -183,13 +190,6 @@ class EditModeDisabled extends SettingListViewEvent {
 
 class SettingSubmitted extends SettingListViewEvent {
   const SettingSubmitted();
-
-  @override
-  List<Object> get props => [];
-}
-
-class AGCPrepAttenuationSubmitted extends SettingListViewEvent {
-  const AGCPrepAttenuationSubmitted();
 
   @override
   List<Object> get props => [];

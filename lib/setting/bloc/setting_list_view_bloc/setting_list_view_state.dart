@@ -33,6 +33,7 @@ class SettingListViewState extends Equatable {
     this.editMode = false,
     this.enableSubmission = false,
     this.isInitialize = true,
+    this.isChangedAGCPrepAttenuation = false,
     this.settingResult = const [],
   });
 
@@ -59,6 +60,7 @@ class SettingListViewState extends Equatable {
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
+  final bool isChangedAGCPrepAttenuation;
   final List<String> settingResult;
 
   SettingListViewState copyWith({
@@ -85,6 +87,7 @@ class SettingListViewState extends Equatable {
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
+    bool? isChangedAGCPrepAttenuation,
     List<String>? settingResult,
   }) {
     return SettingListViewState(
@@ -112,6 +115,8 @@ class SettingListViewState extends Equatable {
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
+      isChangedAGCPrepAttenuation:
+          isChangedAGCPrepAttenuation ?? this.isChangedAGCPrepAttenuation,
       settingResult: settingResult ?? this.settingResult,
     );
   }
@@ -141,6 +146,7 @@ class SettingListViewState extends Equatable {
         editMode,
         enableSubmission,
         isInitialize,
+        isChangedAGCPrepAttenuation,
         settingResult,
       ];
 }

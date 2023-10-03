@@ -989,7 +989,7 @@ class _AGCPrepAttenator extends StatelessWidget {
                       ? (attenuation) {
                           context
                               .read<SettingListViewBloc>()
-                              .add(const SettingSubmitted());
+                              .add(const AGCPrepAttenuationChangeEnded());
                         }
                       : null,
                 ),
@@ -1006,9 +1006,6 @@ class _AGCPrepAttenator extends StatelessWidget {
                             context
                                 .read<SettingListViewBloc>()
                                 .add(const AGCPrepAttenuationDecreased());
-                            context
-                                .read<SettingListViewBloc>()
-                                .add(const SettingSubmitted());
                           }
                         : null,
                   ),
@@ -1021,9 +1018,6 @@ class _AGCPrepAttenator extends StatelessWidget {
                             context
                                 .read<SettingListViewBloc>()
                                 .add(const AGCPrepAttenuationCentered());
-                            context
-                                .read<SettingListViewBloc>()
-                                .add(const SettingSubmitted());
                           }
                         : null,
                   ),
@@ -1036,9 +1030,6 @@ class _AGCPrepAttenator extends StatelessWidget {
                             context
                                 .read<SettingListViewBloc>()
                                 .add(const AGCPrepAttenuationIncreased());
-                            context
-                                .read<SettingListViewBloc>()
-                                .add(const SettingSubmitted());
                           }
                         : null,
                   ),

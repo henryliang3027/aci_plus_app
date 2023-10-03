@@ -17,8 +17,6 @@ class Dsim18Parser {
   }
 
   final List<List<int>> _command18Collection = [];
-  List<int> _rawLogs = [];
-  List<int> _rawRFInOut = [];
 
   List<List<int>> get command18Collection => _command18Collection;
 

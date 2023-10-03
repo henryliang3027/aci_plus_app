@@ -50,6 +50,8 @@ class HomeBottomNavigationBar extends StatelessWidget {
       //if current page is account which is not list in bottom navigation bar, make all items grey color
       //assign a useless 0 as currentIndex for account page
       currentIndex: selectedIndex,
+      selectedIconTheme: const IconThemeData(size: 36),
+      selectedFontSize: 10.0,
       selectedItemColor: Theme.of(context).primaryColor,
       unselectedItemColor: Theme.of(context).hintColor,
       onTap: enableTap
