@@ -110,8 +110,15 @@ class Chart18Form extends StatelessWidget {
             context: context,
             barrierDismissible: false, // user must tap button!
             builder: (BuildContext buildContext) {
-              return DownloadIndicatorForm(
-                dsimRepository: RepositoryProvider.of<DsimRepository>(context),
+              return WillPopScope(
+                onWillPop: () async {
+                  // 避免 Android 使用者點擊系統返回鍵關閉 dialog
+                  return false;
+                },
+                child: DownloadIndicatorForm(
+                  dsimRepository:
+                      RepositoryProvider.of<DsimRepository>(context),
+                ),
               );
             },
           );
@@ -232,32 +239,6 @@ class _PopupMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Future<void> showInProgressDialog() async {
-    //   return showDialog<void>(
-    //     context: context,
-    //     barrierDismissible: false, // user must tap button!
-    //     builder: (BuildContext context) {
-    //       return AlertDialog(
-    //         title: Text(
-    //           AppLocalizations.of(context).dialogTitleProcessing,
-    //         ),
-    //         actionsAlignment: MainAxisAlignment.center,
-    //         content: SingleChildScrollView(
-    //           child: ListBody(
-    //             children: <Widget>[
-    //               LinearProgressIndicator(),
-    //               Text('100%'),
-    //             ],
-    //           ),
-    //         ),
-    //         // actions: const <Widget>[
-    //         //   CustomLinearProgressIndicator(),
-    //         // ],
-    //       );
-    //     },
-    //   );
-    // }
-
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       if (state.loadingStatus.isRequestSuccess) {
         return PopupMenuButton<Menu>(

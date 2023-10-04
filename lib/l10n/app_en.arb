@@ -190,6 +190,8 @@
     "dialogMessageDSVVA3Setting": "DS VVA3 setting",
     "dialogMessageDSVVA4Setting": "DS VVA4 setting",
     "dialogMessageUSTGCSetting": "US TGC setting",
+    "dialogMessageGPSServiceDisabled": "Location services are disabled. Please enable location services.",
+    "dialogMessageGPSPermissionDenied": "Location permissions are denied. Please provide permission.",
 
 
     "dialogMessageSuccessful": "OK",

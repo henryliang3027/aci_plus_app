@@ -1854,6 +1854,10 @@ class DsimRepository {
     }
   }
 
+  Future<String> getGPSCoordinates() async {
+    return await _dsim18Parser.getGPSCoordinates();
+  }
+
   Future<void> updateCharacteristics() async {
     List<dynamic> resultOf1p8G0 = await requestCommand1p8G0();
 

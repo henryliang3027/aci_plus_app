@@ -3,6 +3,7 @@ part of 'setting18_configure_bloc.dart';
 class Setting18ConfigureState extends Equatable {
   const Setting18ConfigureState({
     this.submissionStatus = SubmissionStatus.none,
+    this.gpsStatus = FormStatus.none,
     this.location = '',
     this.coordinates = '',
     this.splitOption = '1',
@@ -21,9 +22,11 @@ class Setting18ConfigureState extends Equatable {
     this.isInitialize = true,
     this.initialValues = const [],
     this.settingResult = const [],
+    this.gpsCoordinateErrorMessage = '',
   });
 
   final SubmissionStatus submissionStatus;
+  final FormStatus gpsStatus;
   final String location;
   final String coordinates;
   final String splitOption;
@@ -42,9 +45,11 @@ class Setting18ConfigureState extends Equatable {
   final bool isInitialize;
   final List<dynamic> initialValues;
   final List<String> settingResult;
+  final String gpsCoordinateErrorMessage;
 
   Setting18ConfigureState copyWith({
     SubmissionStatus? submissionStatus,
+    FormStatus? gpsStatus,
     String? location,
     String? coordinates,
     String? splitOption,
@@ -63,9 +68,11 @@ class Setting18ConfigureState extends Equatable {
     bool? isInitialize,
     List<dynamic>? initialValues,
     List<String>? settingResult,
+    String? gpsCoordinateErrorMessage,
   }) {
     return Setting18ConfigureState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
+      gpsStatus: gpsStatus ?? this.gpsStatus,
       location: location ?? this.location,
       coordinates: coordinates ?? this.coordinates,
       splitOption: splitOption ?? this.splitOption,
@@ -88,12 +95,15 @@ class Setting18ConfigureState extends Equatable {
       isInitialize: isInitialize ?? this.isInitialize,
       initialValues: initialValues ?? this.initialValues,
       settingResult: settingResult ?? this.settingResult,
+      gpsCoordinateErrorMessage:
+          gpsCoordinateErrorMessage ?? this.gpsCoordinateErrorMessage,
     );
   }
 
   @override
   List<Object> get props => [
         submissionStatus,
+        gpsStatus,
         location,
         coordinates,
         splitOption,
@@ -112,5 +122,6 @@ class Setting18ConfigureState extends Equatable {
         isInitialize,
         initialValues,
         settingResult,
+        gpsCoordinateErrorMessage
       ];
 }

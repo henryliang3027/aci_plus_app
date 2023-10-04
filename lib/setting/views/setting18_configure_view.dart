@@ -3,6 +3,7 @@ import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_icons/custom_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
+import 'package:dsim_app/core/message_localization.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting18_configure/setting18_configure_bloc.dart';
 import 'package:dsim_app/setting/views/custom_setting_dialog.dart';
@@ -162,6 +163,43 @@ class Setting18ConfigureView extends StatelessWidget {
       return rows;
     }
 
+    Future<void> showFailureDialog(String msg) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context).dialogTitleError,
+              style: const TextStyle(
+                color: CustomStyle.customRed,
+              ),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                    getMessageLocalization(
+                      msg: msg,
+                      context: context,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return BlocListener<Setting18ConfigureBloc, Setting18ConfigureState>(
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionInProgress) {
@@ -173,6 +211,13 @@ class Setting18ConfigureView extends StatelessWidget {
             context: context,
             messageRows: rows,
           );
+        } else if (state.gpsStatus.isRequestFailure) {
+          showFailureDialog(
+            getMessageLocalization(
+                msg: state.gpsCoordinateErrorMessage, context: context),
+          );
+        } else if (state.gpsStatus.isRequestSuccess) {
+          coordinateTextEditingController.text = state.coordinates;
         }
 
         if (state.isInitialize) {
@@ -379,10 +424,34 @@ class _Coordinates extends StatelessWidget {
                       .add(CoordinatesChanged(coordinate));
                 },
                 maxLength: 39,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
+                decoration: InputDecoration(
+                  suffixIconConstraints: const BoxConstraints(
+                    maxHeight: 40,
+                    maxWidth: 40,
+                    minHeight: 40,
+                    minWidth: 40,
+                  ),
+                  suffixIcon: state.gpsStatus.isRequestInProgress
+                      ? Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: CircularProgressIndicator(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        )
+                      : IconButton(
+                          icon: const Icon(
+                            Icons.pin_drop,
+                            size: 24,
+                          ),
+                          onPressed: () {
+                            context
+                                .read<Setting18ConfigureBloc>()
+                                .add(const GPSCoordinatesRequested());
+                          },
+                        ),
+                  border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(10.0),
+                  contentPadding: const EdgeInsets.all(10.0),
                   isDense: true,
                   filled: true,
                   fillColor: Colors.white,

@@ -16,6 +16,7 @@ class Setting18ConfigureBloc
     on<Initialized>(_onInitialized);
     on<LocationChanged>(_onLocationChanged);
     on<CoordinatesChanged>(_onCoordinatesChanged);
+    on<GPSCoordinatesRequested>(_onGPSCoordinatesRequested);
     on<SplitOptionChanged>(_onSplitOptionChanged);
     on<FirstChannelLoadingFrequencyChanged>(
         _onFirstChannelLoadingFrequencyChanged);
@@ -79,6 +80,7 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       location: event.location,
       enableSubmission: _isEnabledSubmission(
         location: event.location,
@@ -104,6 +106,7 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       coordinates: event.coordinates,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
@@ -123,12 +126,66 @@ class Setting18ConfigureBloc
     ));
   }
 
+  Future<void> _onGPSCoordinatesRequested(
+    GPSCoordinatesRequested event,
+    Emitter<Setting18ConfigureState> emit,
+  ) async {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.requestInProgress,
+    ));
+
+    try {
+      String coordinates = await _dsimRepository.getGPSCoordinates();
+      emit(state.copyWith(
+        gpsStatus: FormStatus.requestSuccess,
+        coordinates: coordinates,
+        enableSubmission: _isEnabledSubmission(
+          location: state.location,
+          coordinates: coordinates,
+          splitOption: state.splitOption,
+          firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+          firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+          lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+          lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+          pilotFrequencyMode: state.pilotFrequencyMode,
+          pilotFrequency1: state.pilotFrequency1,
+          pilotFrequency2: state.pilotFrequency2,
+          fwdAGCMode: state.fwdAGCMode,
+          autoLevelControl: state.autoLevelControl,
+          logInterval: state.logInterval,
+        ),
+      ));
+    } catch (error) {
+      emit(state.copyWith(
+        gpsStatus: FormStatus.requestFailure,
+        gpsCoordinateErrorMessage: error.toString(),
+        enableSubmission: _isEnabledSubmission(
+          location: state.location,
+          coordinates: state.coordinates,
+          splitOption: state.splitOption,
+          firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+          firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+          lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+          lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+          pilotFrequencyMode: state.pilotFrequencyMode,
+          pilotFrequency1: state.pilotFrequency1,
+          pilotFrequency2: state.pilotFrequency2,
+          fwdAGCMode: state.fwdAGCMode,
+          autoLevelControl: state.autoLevelControl,
+          logInterval: state.logInterval,
+        ),
+      ));
+    }
+  }
+
   void _onSplitOptionChanged(
     SplitOptionChanged event,
     Emitter<Setting18ConfigureState> emit,
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       splitOption: event.splitOption,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
@@ -154,6 +211,7 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
@@ -179,6 +237,7 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       firstChannelLoadingLevel: event.firstChannelLoadingLevel,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
@@ -204,6 +263,7 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
@@ -229,6 +289,7 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       lastChannelLoadingLevel: event.lastChannelLoadingLevel,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
@@ -254,6 +315,7 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       pilotFrequencyMode: event.pilotFrequencyMode,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
@@ -279,6 +341,7 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       pilotFrequency1: event.pilotFrequency1,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
@@ -304,6 +367,7 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       pilotFrequency2: event.pilotFrequency2,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
@@ -329,6 +393,7 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       fwdAGCMode: event.fwdAGCMode,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
@@ -354,6 +419,7 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       autoLevelControl: event.autoLevelControl,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
@@ -379,6 +445,7 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       logInterval: event.logInterval,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
@@ -404,6 +471,7 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       isInitialize: false,
       editMode: true,
     ));
@@ -415,6 +483,7 @@ class Setting18ConfigureBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       isInitialize: true,
       editMode: false,
       enableSubmission: false,
@@ -473,8 +542,9 @@ class Setting18ConfigureBloc
     Emitter<Setting18ConfigureState> emit,
   ) async {
     emit(state.copyWith(
-      isInitialize: false,
       submissionStatus: SubmissionStatus.submissionInProgress,
+      gpsStatus: FormStatus.none,
+      isInitialize: false,
     ));
 
     List<String> settingResult = [];

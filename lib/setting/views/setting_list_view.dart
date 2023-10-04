@@ -7,6 +7,7 @@ import 'package:dsim_app/core/shared_preference_key.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting_list_view_bloc/setting_list_view_bloc.dart';
+import 'package:dsim_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -56,30 +57,6 @@ class SettingListView extends StatelessWidget {
             centerAttenuation: centerAttenuation,
             hasDualPilot: hasDualPilot,
           ));
-    }
-
-    Future<void> showInProgressDialog() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context).dialogTitleProcessing,
-            ),
-            actionsAlignment: MainAxisAlignment.center,
-            actions: const <Widget>[
-              Center(
-                child: SizedBox(
-                  width: CustomStyle.diameter,
-                  height: CustomStyle.diameter,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            ],
-          );
-        },
-      );
     }
 
     Future<void> showResultDialog(List<Widget> messageRows) async {
@@ -210,7 +187,7 @@ class SettingListView extends StatelessWidget {
     return BlocListener<SettingListViewBloc, SettingListViewState>(
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionInProgress) {
-          await showInProgressDialog();
+          await showInProgressDialog(context);
         } else if (state.submissionStatus.isSubmissionSuccess) {
           Navigator.of(context).pop();
           List<Widget> rows = getMessageRows(state.settingResult);

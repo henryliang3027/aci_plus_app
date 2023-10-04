@@ -74,6 +74,13 @@ class CoordinatesChanged extends Setting18ConfigureEvent {
   List<Object> get props => [coordinates];
 }
 
+class GPSCoordinatesRequested extends Setting18ConfigureEvent {
+  const GPSCoordinatesRequested();
+
+  @override
+  List<Object> get props => [];
+}
+
 class SplitOptionChanged extends Setting18ConfigureEvent {
   const SplitOptionChanged(this.splitOption);
 

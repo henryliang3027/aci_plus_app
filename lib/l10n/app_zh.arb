@@ -191,6 +191,9 @@
     "dialogMessageDSVVA3Setting": "DS VVA3 setting",
     "dialogMessageDSVVA4Setting": "DS VVA4 setting",
     "dialogMessageUSTGCSetting": "US TGC setting",
+    "dialogMessageGPSServiceDisabled": "定位服務已關閉, 請開啟定位服務。",
+    "dialogMessageGPSPermissionDenied": "無法取得定位權限, 請允許定位權限。",
+
 
     "dialogMessageSuccessful": "成功",
     "dialogMessageFailed": "失敗",

@@ -188,6 +188,9 @@
     "dialogMessageDSVVA3Setting": "DS VVA3 setting",
     "dialogMessageDSVVA4Setting": "DS VVA4 setting",
     "dialogMessageUSTGCSetting": "US TGC setting",
+    "dialogMessageGPSServiceDisabled": "Les services de localisation sont désactivés. Veuillez activer les services de localisation.",
+    "dialogMessageGPSPermissionDenied": "Les autorisations de localisation sont refusées. Veuillez fournir l'autorisation.",
+
 
 
     "dialogMessageSuccessful": "Réussi",
