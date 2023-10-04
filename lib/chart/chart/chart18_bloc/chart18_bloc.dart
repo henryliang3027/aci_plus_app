@@ -144,6 +144,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
   ) async {
     emit(state.copyWith(
       dataRequestStatus: FormStatus.requestInProgress,
+      // rfDataRequestStatus: FormStatus.none,
       dataExportStatus: FormStatus.none,
       dataShareStatus: FormStatus.none,
       allDataDownloadStatus: FormStatus.none,
@@ -193,6 +194,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
   ) async {
     emit(state.copyWith(
       rfDataRequestStatus: FormStatus.requestInProgress,
+      // dataRequestStatus: FormStatus.none,
       dataExportStatus: FormStatus.none,
       dataShareStatus: FormStatus.none,
       allDataDownloadStatus: FormStatus.none,
