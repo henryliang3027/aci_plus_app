@@ -8,6 +8,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
+import 'package:intl/intl.dart';
 // import 'package:assets_audio_player/assets_audio_player.dart';
 
 part 'home_event.dart';
@@ -413,8 +414,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       characteristicData: {},
     ));
 
-    // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
-    await _dsimRepository.set1p8GNowDateTime();
     await _dsimRepository.set1p8GTransmitDelayTime();
 
     Map<DataKey, String> newCharacteristicData = {};
@@ -524,6 +523,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
       }
     }
+
+    String deviceNowTime = state.characteristicData[DataKey.nowDateTime] ??
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+
+    // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
+    await _dsimRepository.set1p8GNowDateTime(deviceNowTime);
   }
 
   Future<void> _onEventRequested(

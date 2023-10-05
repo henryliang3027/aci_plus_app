@@ -48,6 +48,7 @@ class Dsim18Parser {
     String firmwareVersion = '';
     String mfgDate = '';
     String coordinate = '';
+    String nowDateTime = '';
 
     // 解析 partName
     for (int i = 3; i <= 22; i++) {
@@ -81,10 +82,22 @@ class Dsim18Parser {
     String day = rawData[70].toString().padLeft(2, '0');
     mfgDate = '$year/$month/$day';
 
+    // 解析 coordinates
     for (int i = 72; i <= 110; i++) {
       coordinate += String.fromCharCode(rawData[i]);
     }
     coordinate = _trimString(coordinate);
+
+    // 解析 now time
+    List<int> rawNowYear = rawData.sublist(171, 173);
+    ByteData rawNowYearByteData =
+        ByteData.sublistView(Uint8List.fromList(rawNowYear));
+    String nowYear = rawNowYearByteData.getInt16(0, Endian.little).toString();
+    String nowMonth = rawData[173].toString().padLeft(2, '0');
+    String nowDay = rawData[174].toString().padLeft(2, '0');
+    String nowHour = rawData[175].toString().padLeft(2, '0');
+    String nowMinute = rawData[176].toString().padLeft(2, '0');
+    nowDateTime = '$nowYear-$nowMonth-$nowDay $nowHour:$nowMinute:00';
 
     return A1P8G0(
       partName: partName,
@@ -93,6 +106,7 @@ class Dsim18Parser {
       firmwareVersion: firmwareVersion,
       mfgDate: mfgDate,
       coordinate: coordinate,
+      nowDateTime: nowDateTime,
     );
   }
 
@@ -1138,6 +1152,7 @@ class A1P8G0 {
     required this.firmwareVersion,
     required this.mfgDate,
     required this.coordinate,
+    required this.nowDateTime,
   });
 
   final String partName;
@@ -1146,6 +1161,7 @@ class A1P8G0 {
   final String firmwareVersion;
   final String mfgDate;
   final String coordinate;
+  final String nowDateTime;
 }
 
 class A1P8G1 {

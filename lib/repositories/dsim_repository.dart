@@ -8,12 +8,8 @@ import 'package:dsim_app/core/shared_preference_key.dart';
 import 'package:dsim_app/repositories/ble_client.dart';
 import 'package:dsim_app/repositories/dsim18_parser.dart';
 import 'package:dsim_app/repositories/dsim_parser.dart';
-import 'package:dsim_app/repositories/unit_converter.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
-import 'package:location/location.dart' as GPS;
-import 'package:permission_handler/permission_handler.dart';
-import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
@@ -106,6 +102,7 @@ class DsimRepository {
           DataKey.firmwareVersion: a1p8g0.firmwareVersion,
           DataKey.mfgDate: a1p8g0.mfgDate,
           DataKey.coordinates: a1p8g0.coordinate,
+          DataKey.nowDateTime: a1p8g0.nowDateTime,
         },
       ];
     } catch (e) {
@@ -1812,12 +1809,13 @@ class DsimRepository {
     }
   }
 
-  Future<dynamic> set1p8GNowDateTime() async {
+  Future<dynamic> set1p8GNowDateTime(String deviceNowDateTime) async {
     int commandIndex = 354;
 
     print('get data from request command 1p8G$commandIndex');
 
     DateTime dateTime = DateTime.now();
+    DateTime deviceDateTime = DateTime.parse(deviceNowDateTime);
 
     int year = dateTime.year;
 
@@ -1843,14 +1841,21 @@ class DsimRepository {
       usDataLength: Command18.setNowDateTimeCmd.length - 2,
     );
 
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setNowDateTimeCmd,
-      );
+    int difference = dateTime.difference(deviceDateTime).inMinutes.abs();
+
+    // 如果 device 的now time 跟 目前時間相差大於5分鐘, 則寫入目前時間
+    if (difference > 5) {
+      try {
+        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+          commandIndex: commandIndex,
+          value: Command18.setNowDateTimeCmd,
+        );
+        return true;
+      } catch (e) {
+        return false;
+      }
+    } else {
       return true;
-    } catch (e) {
-      return false;
     }
   }
 
