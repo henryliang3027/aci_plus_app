@@ -261,20 +261,6 @@ Widget controlParameterSlider({
             ],
           ),
         ),
-        SliderTheme(
-          data: const SliderThemeData(
-            valueIndicatorColor: Colors.red,
-            showValueIndicator: ShowValueIndicator.always,
-            overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
-          ),
-          child: Slider(
-            min: 0.0,
-            max: 15.0,
-            divisions: 150,
-            value: currentValue,
-            onChanged: editMode ? onChanged : null,
-          ),
-        ),
         Padding(
           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: Row(
@@ -283,15 +269,6 @@ Widget controlParameterSlider({
               2,
               (index) => Column(
                 children: [
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 16,
-                    child: VerticalDivider(
-                      indent: 0,
-                      thickness: 1.2,
-                      color: Colors.grey.shade300,
-                    ),
-                  ),
                   Container(
                     alignment: Alignment.bottomCenter,
                     height: 22,
@@ -303,10 +280,67 @@ Widget controlParameterSlider({
                       textAlign: TextAlign.center,
                     ),
                   ),
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    height: 16,
+                    child: VerticalDivider(
+                      indent: 0,
+                      thickness: 1.2,
+                      color: Colors.grey.shade300,
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 0.0),
+          child: SliderTheme(
+            data: const SliderThemeData(
+              valueIndicatorColor: Colors.red,
+              showValueIndicator: ShowValueIndicator.always,
+              overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
+            ),
+            child: Slider(
+              min: 0.0,
+              max: 15.0,
+              divisions: 150,
+              value: currentValue,
+              onChanged: editMode ? onChanged : null,
+            ),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton.filled(
+              visualDensity: const VisualDensity(horizontal: -4.0),
+              icon: const Icon(
+                Icons.remove,
+              ),
+              onPressed: editMode
+                  ? () {
+                      // context
+                      //     .read<SettingListViewBloc>()
+                      //     .add(const AGCPrepAttenuationDecreased());
+                    }
+                  : null,
+            ),
+            IconButton.filled(
+              visualDensity: const VisualDensity(horizontal: -4.0),
+              icon: const Icon(
+                Icons.add,
+              ),
+              onPressed: editMode
+                  ? () {
+                      // context
+                      //     .read<SettingListViewBloc>()
+                      //     .add(const AGCPrepAttenuationIncreased());
+                    }
+                  : null,
+            ),
+          ],
         ),
       ],
     ),

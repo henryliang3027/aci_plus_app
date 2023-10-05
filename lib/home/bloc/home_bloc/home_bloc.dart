@@ -121,37 +121,49 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         // ));
         break;
       case DeviceConnectionState.connected:
-        int mtu = await _dsimRepository.requestMTU(deviceId: state.device!.id);
+        List<dynamic> result =
+            await _dsimRepository.requestMTU(deviceId: state.device!.id);
 
-        emit(state.copyWith(
-          scanStatus: FormStatus.requestSuccess,
-          connectionStatus: FormStatus.requestSuccess,
-          mtu: mtu,
-        ));
+        if (result[0]) {
+          int mtu = result[1];
+          emit(state.copyWith(
+            scanStatus: FormStatus.requestSuccess,
+            connectionStatus: FormStatus.requestSuccess,
+            mtu: mtu,
+          ));
 
-        if (mtu == 244 || mtu == 247) {
-          print('244 _characteristicDataStreamSubscription');
-          add(const Data18Requested());
+          if (mtu == 244 || mtu == 247) {
+            print('244 _characteristicDataStreamSubscription');
+            add(const Data18Requested());
 
-          _characteristicDataStreamSubscription =
-              _dsimRepository.characteristicData.listen(
-            (data) {
-              add(DeviceCharacteristicChanged(data));
-            },
-            onDone: () {},
-          );
+            _characteristicDataStreamSubscription =
+                _dsimRepository.characteristicData.listen(
+              (data) {
+                add(DeviceCharacteristicChanged(data));
+              },
+              onDone: () {},
+            );
+          } else {
+            print('20 _characteristicDataStreamSubscription');
+            add(const DataRequested());
+
+            //當設定頁面設定資料時, 用來更新Information page 對應的資料欄位
+            _characteristicDataStreamSubscription =
+                _dsimRepository.characteristicData.listen(
+              (data) {
+                add(DeviceCharacteristicChanged(data));
+              },
+              onDone: () {},
+            );
+          }
         } else {
-          print('20 _characteristicDataStreamSubscription');
-          add(const DataRequested());
-
-          //當設定頁面設定資料時, 用來更新Information page 對應的資料欄位
-          _characteristicDataStreamSubscription =
-              _dsimRepository.characteristicData.listen(
-            (data) {
-              add(DeviceCharacteristicChanged(data));
-            },
-            onDone: () {},
-          );
+          emit(state.copyWith(
+            scanStatus: FormStatus.requestSuccess,
+            connectionStatus: FormStatus.requestSuccess,
+            loadingStatus: FormStatus.requestFailure,
+            characteristicData: state.characteristicData,
+            errorMassage: 'Data loading failed',
+          ));
         }
 
         break;

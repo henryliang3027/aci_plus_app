@@ -387,22 +387,24 @@ class BLEClient {
   // 透過 1G/1.2G/1.8G 同樣的基本指令, 來取得回傳資料的長度
   Future<dynamic> _requestDataLength(List<int> value) async {
     _currentCommandIndex = -1;
-    // _completer = Completer<dynamic>();
 
     print('get data from request command 0');
 
-    List<int> rawData = await writeSetCommandToCharacteristic(
-      commandIndex: 0,
-      value: value,
-      timeout: const Duration(seconds: 10),
-    );
-
-    int length = rawData.length;
-
-    return length;
+    try {
+      List<int> rawData = await writeSetCommandToCharacteristic(
+        commandIndex: 0,
+        value: value,
+        timeout: const Duration(seconds: 10),
+      );
+      return [true, rawData.length];
+    } catch (e) {
+      return [
+        false,
+      ];
+    }
   }
 
-  Future<int> requestMTU({
+  Future<dynamic> requestMTU({
     required int commandIndex,
     required List<int> value,
     required String deviceId,
@@ -412,14 +414,27 @@ class BLEClient {
     final negotiatedMtu = await _ble.requestMtu(deviceId: deviceId, mtu: mtu);
 
     // 設定 mtu = 247
-    int length = await _requestDataLength(value);
+    List<dynamic> result = await _requestDataLength(value);
 
-    // 1G/1.2G data length = 17
-    if (length == 17) {
-      return 23;
+    if (result[0]) {
+      int length = result[1];
+      // 1G/1.2G data length = 17
+      if (length == 17) {
+        return [
+          true,
+          23,
+        ];
+      } else {
+        // 1.8G data length = 181
+        return [
+          true,
+          244,
+        ];
+      }
     } else {
-      // 1.8G data length = 181
-      return 244;
+      return [
+        false,
+      ];
     }
   }
 

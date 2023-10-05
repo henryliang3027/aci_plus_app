@@ -69,7 +69,7 @@ class DsimRepository {
     await _bleClient.closeConnectionStream();
   }
 
-  Future<int> requestMTU({
+  Future<dynamic> requestMTU({
     required String deviceId,
     int mtu = 247,
   }) async {
