@@ -30,6 +30,8 @@ class Setting18ConfigureBloc
     on<FwdAGCModeChanged>(_onFwdAGCModeChanged);
     on<AutoLevelControlChanged>(_onAutoLevelControlChanged);
     on<LogIntervalChanged>(_onLogIntervalChanged);
+    on<LogIntervalIncreased>(_onLogIntervalIncreased);
+    on<LogIntervalDecreased>(_onLogIntervalDecreased);
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
@@ -461,6 +463,78 @@ class Setting18ConfigureBloc
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
         logInterval: event.logInterval,
+      ),
+    ));
+  }
+
+  String _getIncreasedNumber(String value) {
+    double doubleValue = double.parse(value);
+    doubleValue = doubleValue + 1.0 <= 60.0 ? doubleValue + 1.0 : doubleValue;
+    String strValue = doubleValue.toStringAsFixed(0);
+
+    return strValue;
+  }
+
+  String _getDecreasedNumber(String value) {
+    double doubleValue = double.parse(value);
+    doubleValue = doubleValue - 1.0 >= 0.0 ? doubleValue - 1.0 : doubleValue;
+    String strValue = doubleValue.toStringAsFixed(0);
+
+    return strValue;
+  }
+
+  void _onLogIntervalIncreased(
+    LogIntervalIncreased event,
+    Emitter<Setting18ConfigureState> emit,
+  ) {
+    String logInterval = _getIncreasedNumber(state.logInterval);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
+      logInterval: logInterval,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        splitOption: state.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+        fwdAGCMode: state.fwdAGCMode,
+        autoLevelControl: state.autoLevelControl,
+        logInterval: logInterval,
+      ),
+    ));
+  }
+
+  void _onLogIntervalDecreased(
+    LogIntervalDecreased event,
+    Emitter<Setting18ConfigureState> emit,
+  ) {
+    String logInterval = _getDecreasedNumber(state.logInterval);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
+      logInterval: logInterval,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        splitOption: state.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+        fwdAGCMode: state.fwdAGCMode,
+        autoLevelControl: state.autoLevelControl,
+        logInterval: logInterval,
       ),
     ));
   }

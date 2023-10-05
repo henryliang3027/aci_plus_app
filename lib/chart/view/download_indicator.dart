@@ -76,6 +76,9 @@ class _DownloadIndicatorFormState extends State<DownloadIndicatorForm>
             );
             setState(() {});
           }
+          if (chunckIndex == 9) {
+            isSuccessful = true;
+          }
         } else {
           chunckIndex = 10;
           if (mounted) {

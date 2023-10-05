@@ -1412,11 +1412,43 @@ class _LogInterval extends StatelessWidget {
                   ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(
+                    2,
+                    (index) => Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.bottomCenter,
+                          height: 22,
+                          child: Text(
+                            '${(List.from([1, 60])[index]).toStringAsFixed(0)}',
+                            style: const TextStyle(
+                              fontSize: CustomStyle.sizeM,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.bottomCenter,
+                          height: 16,
+                          child: VerticalDivider(
+                            indent: 0,
+                            thickness: 1.2,
+                            color: Colors.grey.shade300,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               SliderTheme(
                 data: const SliderThemeData(
                   valueIndicatorColor: Colors.red,
                   showValueIndicator: ShowValueIndicator.always,
-                  // trackShape: CustomTrackShape(),
                   overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
                 ),
                 child: Slider(
@@ -1433,40 +1465,36 @@ class _LogInterval extends StatelessWidget {
                       : null,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(
-                    2,
-                    (index) => Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.bottomCenter,
-                          height: 16,
-                          child: VerticalDivider(
-                            indent: 0,
-                            thickness: 1.2,
-                            color: Colors.grey.shade300,
-                          ),
-                        ),
-                        Container(
-                            alignment: Alignment.bottomCenter,
-                            height: 22,
-                            child: Text(
-                              '${(List.from([
-                                    1,
-                                    60
-                                  ])[index]).toStringAsFixed(0)}',
-                              style: const TextStyle(
-                                fontSize: CustomStyle.sizeM,
-                              ),
-                              textAlign: TextAlign.center,
-                            )),
-                      ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton.filled(
+                    visualDensity: const VisualDensity(horizontal: -4.0),
+                    icon: const Icon(
+                      Icons.remove,
                     ),
+                    onPressed: state.editMode
+                        ? () {
+                            context
+                                .read<Setting18ConfigureBloc>()
+                                .add(const LogIntervalDecreased());
+                          }
+                        : null,
                   ),
-                ),
+                  IconButton.filled(
+                    visualDensity: const VisualDensity(horizontal: -4.0),
+                    icon: const Icon(
+                      Icons.add,
+                    ),
+                    onPressed: state.editMode
+                        ? () {
+                            context
+                                .read<Setting18ConfigureBloc>()
+                                .add(const LogIntervalIncreased());
+                          }
+                        : null,
+                  ),
+                ],
               ),
             ],
           ),

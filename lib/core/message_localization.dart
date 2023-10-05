@@ -13,6 +13,9 @@ String getMessageLocalization({
     return AppLocalizations.of(context).dialogMessageConnectionFailure;
   } else if (msg == 'Data loading failed') {
     return AppLocalizations.of(context).dialogMessageLoadingDataFailure;
+  } else if (msg == 'Setting the log interval to 30 minutes failed.') {
+    return AppLocalizations.of(context)
+        .dialogMessageAutoSettingLogIntervalFailed;
   } else if (msg ==
       'Location services are disabled. Please enable location services.') {
     return AppLocalizations.of(context).dialogMessageGPSServiceDisabled;

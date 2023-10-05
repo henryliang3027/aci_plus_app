@@ -193,6 +193,7 @@
     "dialogMessageUSTGCSetting": "US TGC setting",
     "dialogMessageGPSServiceDisabled": "定位服務已關閉, 請開啟定位服務。",
     "dialogMessageGPSPermissionDenied": "無法取得定位權限, 請允許定位權限。",
+    "dialogMessageAutoSettingLogIntervalFailed": "設定記錄間隔為 30 分鐘失敗",
 
 
     "dialogMessageSuccessful": "成功",

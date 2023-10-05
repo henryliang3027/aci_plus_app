@@ -192,6 +192,7 @@
     "dialogMessageUSTGCSetting": "US TGC setting",
     "dialogMessageGPSServiceDisabled": "Location services are disabled. Please enable location services.",
     "dialogMessageGPSPermissionDenied": "Location permissions are denied. Please provide permission.",
+    "dialogMessageAutoSettingLogIntervalFailed": "Setting the log interval to 30 minutes failed.",
 
 
     "dialogMessageSuccessful": "OK",

@@ -180,6 +180,20 @@ class LogIntervalChanged extends Setting18ConfigureEvent {
   List<Object> get props => [logInterval];
 }
 
+class LogIntervalIncreased extends Setting18ConfigureEvent {
+  const LogIntervalIncreased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class LogIntervalDecreased extends Setting18ConfigureEvent {
+  const LogIntervalDecreased();
+
+  @override
+  List<Object> get props => [];
+}
+
 class EditModeEnabled extends Setting18ConfigureEvent {
   const EditModeEnabled();
 

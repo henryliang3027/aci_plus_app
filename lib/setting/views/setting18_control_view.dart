@@ -235,6 +235,8 @@ Widget controlParameterSlider({
   required double currentValue,
   required double maxValue,
   required ValueChanged<double> onChanged,
+  required VoidCallback onIncreased,
+  required VoidCallback onDecreased,
 }) {
   return Padding(
     padding: const EdgeInsets.only(
@@ -294,21 +296,18 @@ Widget controlParameterSlider({
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 0.0),
-          child: SliderTheme(
-            data: const SliderThemeData(
-              valueIndicatorColor: Colors.red,
-              showValueIndicator: ShowValueIndicator.always,
-              overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
-            ),
-            child: Slider(
-              min: 0.0,
-              max: 15.0,
-              divisions: 150,
-              value: currentValue,
-              onChanged: editMode ? onChanged : null,
-            ),
+        SliderTheme(
+          data: const SliderThemeData(
+            valueIndicatorColor: Colors.red,
+            showValueIndicator: ShowValueIndicator.always,
+            overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
+          ),
+          child: Slider(
+            min: 0.0,
+            max: 15.0,
+            divisions: 150,
+            value: currentValue,
+            onChanged: editMode ? onChanged : null,
           ),
         ),
         Row(
@@ -319,26 +318,14 @@ Widget controlParameterSlider({
               icon: const Icon(
                 Icons.remove,
               ),
-              onPressed: editMode
-                  ? () {
-                      // context
-                      //     .read<SettingListViewBloc>()
-                      //     .add(const AGCPrepAttenuationDecreased());
-                    }
-                  : null,
+              onPressed: editMode ? onDecreased : null,
             ),
             IconButton.filled(
               visualDensity: const VisualDensity(horizontal: -4.0),
               icon: const Icon(
                 Icons.add,
               ),
-              onPressed: editMode
-                  ? () {
-                      // context
-                      //     .read<SettingListViewBloc>()
-                      //     .add(const AGCPrepAttenuationIncreased());
-                    }
-                  : null,
+              onPressed: editMode ? onIncreased : null,
             ),
           ],
         ),
@@ -476,6 +463,12 @@ class _FwdInputAttenuation extends StatelessWidget {
             context.read<Setting18ControlBloc>().add(FwdInputAttenuationChanged(
                 fwdInputAttenuation.toStringAsFixed(1)));
           },
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const FwdInputAttenuationDecreased()),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const FwdInputAttenuationIncreased()),
         );
       },
     );
@@ -502,6 +495,12 @@ class _FwdInputEQ extends StatelessWidget {
                 .read<Setting18ControlBloc>()
                 .add(FwdInputEQChanged(fwdInputEQ.toStringAsFixed(1)));
           },
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const FwdInputEQDecreased()),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const FwdInputEQIncreased()),
         );
       },
     );
@@ -528,6 +527,12 @@ class _RtnInputAttenuation2 extends StatelessWidget {
                 RtnInputAttenuation2Changed(
                     rtnInputAttenuation.toStringAsFixed(1)));
           },
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const RtnInputAttenuation2Decreased()),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const RtnInputAttenuation2Increased()),
         );
       },
     );
@@ -554,6 +559,12 @@ class _RtnInputAttenuation3 extends StatelessWidget {
                 RtnInputAttenuation3Changed(
                     rtnInputAttenuation.toStringAsFixed(1)));
           },
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const RtnInputAttenuation3Decreased()),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const RtnInputAttenuation3Increased()),
         );
       },
     );
@@ -580,6 +591,12 @@ class _RtnInputAttenuation4 extends StatelessWidget {
                 RtnInputAttenuation4Changed(
                     rtnInputAttenuation.toStringAsFixed(1)));
           },
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const RtnInputAttenuation4Decreased()),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const RtnInputAttenuation4Increased()),
         );
       },
     );
@@ -606,6 +623,12 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
                 RtnOutputLevelAttenuationChanged(
                     rtnInputAttenuation.toStringAsFixed(1)));
           },
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const RtnOutputLevelAttenuationDecreased()),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const RtnOutputLevelAttenuationIncreased()),
         );
       },
     );
@@ -632,6 +655,12 @@ class _RtnOutputEQ extends StatelessWidget {
                 .read<Setting18ControlBloc>()
                 .add(RtnOutputEQChanged(rtnOutputEQ.toStringAsFixed(1)));
           },
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const RtnOutputEQDecreased()),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const RtnOutputEQIncreased()),
         );
       },
     );
@@ -822,130 +851,131 @@ class _TGCCableLength extends StatelessWidget {
   }
 }
 
-class _DSVVA2 extends StatelessWidget {
-  const _DSVVA2({super.key});
+// class _DSVVA2 extends StatelessWidget {
+//   const _DSVVA2({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
-      builder: (context, state) {
-        return controlParameterSlider(
-          context: context,
-          editMode: state.editMode,
-          title: 'DS VVA2: ${state.dsVVA2} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
-          currentValue: _getValue(state.dsVVA2),
-          onChanged: (value) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(DSVVA2Changed(value.toStringAsFixed(1)));
-          },
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+//       builder: (context, state) {
+//         return controlParameterSlider(
+//           context: context,
+//           editMode: state.editMode,
+//           title: 'DS VVA2: ${state.dsVVA2} dB',
+//           minValue: 0.0,
+//           maxValue: 15.0,
+//           currentValue: _getValue(state.dsVVA2),
+//           onChanged: (value) {
+//             context
+//                 .read<Setting18ControlBloc>()
+//                 .add(DSVVA2Changed(value.toStringAsFixed(1)));
+//           },
 
-class _DSSlope2 extends StatelessWidget {
-  const _DSSlope2({super.key});
+//         );
+//       },
+//     );
+//   }
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
-      builder: (context, state) {
-        return controlParameterSlider(
-          context: context,
-          editMode: state.editMode,
-          title: 'DS Slope2: ${state.dsSlope2} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
-          currentValue: _getValue(state.dsSlope2),
-          onChanged: (value) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(DSSlope2Changed(value.toStringAsFixed(1)));
-          },
-        );
-      },
-    );
-  }
-}
+// class _DSSlope2 extends StatelessWidget {
+//   const _DSSlope2({super.key});
 
-class _DSVVA3 extends StatelessWidget {
-  const _DSVVA3({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+//       builder: (context, state) {
+//         return controlParameterSlider(
+//           context: context,
+//           editMode: state.editMode,
+//           title: 'DS Slope2: ${state.dsSlope2} dB',
+//           minValue: 0.0,
+//           maxValue: 15.0,
+//           currentValue: _getValue(state.dsSlope2),
+//           onChanged: (value) {
+//             context
+//                 .read<Setting18ControlBloc>()
+//                 .add(DSSlope2Changed(value.toStringAsFixed(1)));
+//           },
+//         );
+//       },
+//     );
+//   }
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
-      builder: (context, state) {
-        return controlParameterSlider(
-          context: context,
-          editMode: state.editMode,
-          title: 'DS VVA3: ${state.dsVVA3} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
-          currentValue: _getValue(state.dsVVA3),
-          onChanged: (value) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(DSVVA3Changed(value.toStringAsFixed(1)));
-          },
-        );
-      },
-    );
-  }
-}
+// class _DSVVA3 extends StatelessWidget {
+//   const _DSVVA3({super.key});
 
-class _DSVVA4 extends StatelessWidget {
-  const _DSVVA4({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+//       builder: (context, state) {
+//         return controlParameterSlider(
+//           context: context,
+//           editMode: state.editMode,
+//           title: 'DS VVA3: ${state.dsVVA3} dB',
+//           minValue: 0.0,
+//           maxValue: 15.0,
+//           currentValue: _getValue(state.dsVVA3),
+//           onChanged: (value) {
+//             context
+//                 .read<Setting18ControlBloc>()
+//                 .add(DSVVA3Changed(value.toStringAsFixed(1)));
+//           },
+//         );
+//       },
+//     );
+//   }
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
-      builder: (context, state) {
-        return controlParameterSlider(
-          context: context,
-          editMode: state.editMode,
-          title: 'DS VVA4: ${state.dsVVA4} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
-          currentValue: _getValue(state.dsVVA4),
-          onChanged: (value) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(DSVVA4Changed(value.toStringAsFixed(1)));
-          },
-        );
-      },
-    );
-  }
-}
+// class _DSVVA4 extends StatelessWidget {
+//   const _DSVVA4({super.key});
 
-class _USTGC extends StatelessWidget {
-  const _USTGC({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+//       builder: (context, state) {
+//         return controlParameterSlider(
+//           context: context,
+//           editMode: state.editMode,
+//           title: 'DS VVA4: ${state.dsVVA4} dB',
+//           minValue: 0.0,
+//           maxValue: 15.0,
+//           currentValue: _getValue(state.dsVVA4),
+//           onChanged: (value) {
+//             context
+//                 .read<Setting18ControlBloc>()
+//                 .add(DSVVA4Changed(value.toStringAsFixed(1)));
+//           },
+//         );
+//       },
+//     );
+//   }
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
-      builder: (context, state) {
-        return controlParameterSlider(
-          context: context,
-          editMode: state.editMode,
-          title: 'US TGC: ${state.usTGC} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
-          currentValue: _getValue(state.usTGC),
-          onChanged: (value) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(USTGCChanged(value.toStringAsFixed(1)));
-          },
-        );
-      },
-    );
-  }
-}
+// class _USTGC extends StatelessWidget {
+//   const _USTGC({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+//       builder: (context, state) {
+//         return controlParameterSlider(
+//           context: context,
+//           editMode: state.editMode,
+//           title: 'US TGC: ${state.usTGC} dB',
+//           minValue: 0.0,
+//           maxValue: 15.0,
+//           currentValue: _getValue(state.usTGC),
+//           onChanged: (value) {
+//             context
+//                 .read<Setting18ControlBloc>()
+//                 .add(USTGCChanged(value.toStringAsFixed(1)));
+//           },
+//         );
+//       },
+//     );
+//   }
+// }
 
 class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({super.key});

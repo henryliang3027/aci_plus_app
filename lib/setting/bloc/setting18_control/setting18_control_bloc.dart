@@ -14,12 +14,28 @@ class Setting18ControlBloc
         super(const Setting18ControlState()) {
     on<Initialized>(_onInitialized);
     on<FwdInputAttenuationChanged>(_onFwdInputAttenuationChanged);
+    on<FwdInputAttenuationIncreased>(_onFwdInputAttenuationIncreased);
+    on<FwdInputAttenuationDecreased>(_onFwdInputAttenuationDecreased);
     on<FwdInputEQChanged>(_onFwdInputEQChanged);
+    on<FwdInputEQIncreased>(_onFwdInputEQIncreased);
+    on<FwdInputEQDecreased>(_onFwdInputEQDecreased);
     on<RtnInputAttenuation2Changed>(_onRtnInputAttenuation2Changed);
+    on<RtnInputAttenuation2Increased>(_onRtnInputAttenuation2Increased);
+    on<RtnInputAttenuation2Decreased>(_onRtnInputAttenuation2Decreased);
     on<RtnInputAttenuation3Changed>(_onRtnInputAttenuation3Changed);
+    on<RtnInputAttenuation3Increased>(_onRtnInputAttenuation3Increased);
+    on<RtnInputAttenuation3Decreased>(_onRtnInputAttenuation3Decreased);
     on<RtnInputAttenuation4Changed>(_onRtnInputAttenuation4Changed);
+    on<RtnInputAttenuation4Increased>(_onRtnInputAttenuation4Increased);
+    on<RtnInputAttenuation4Decreased>(_onRtnInputAttenuation4Decreased);
     on<RtnOutputLevelAttenuationChanged>(_onRtnOutputLevelAttenuationChanged);
+    on<RtnOutputLevelAttenuationIncreased>(
+        _onRtnOutputLevelAttenuationIncreased);
+    on<RtnOutputLevelAttenuationDecreased>(
+        _onRtnOutputLevelAttenuationDecreased);
     on<RtnOutputEQChanged>(_onRtnOutputEQChanged);
+    on<RtnOutputEQIncreased>(_onRtnOutputEQIncreased);
+    on<RtnOutputEQDecreased>(_onRtnOutputEQDecreased);
     on<RtnIngressSetting2Changed>(_onRtnIngressSetting2Changed);
     on<RtnIngressSetting3Changed>(_onRtnIngressSetting3Changed);
     on<RtnIngressSetting4Changed>(_onRtnIngressSetting4Changed);
@@ -78,6 +94,22 @@ class Setting18ControlBloc
         ]));
   }
 
+  String _getIncreasedNumber(String value) {
+    double doubleValue = double.parse(value);
+    doubleValue = doubleValue + 0.1 <= 15.0 ? doubleValue + 0.1 : doubleValue;
+    String strValue = doubleValue.toStringAsFixed(1);
+
+    return strValue;
+  }
+
+  String _getDecreasedNumber(String value) {
+    double doubleValue = double.parse(value);
+    doubleValue = doubleValue - 0.1 >= 0.0 ? doubleValue - 0.1 : doubleValue;
+    String strValue = doubleValue.toStringAsFixed(1);
+
+    return strValue;
+  }
+
   void _onFwdInputAttenuationChanged(
     FwdInputAttenuationChanged event,
     Emitter<Setting18ControlState> emit,
@@ -88,6 +120,68 @@ class Setting18ControlBloc
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: event.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onFwdInputAttenuationIncreased(
+    FwdInputAttenuationIncreased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String fwdInputAttenuation = _getIncreasedNumber(state.fwdInputAttenuation);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      fwdInputAttenuation: fwdInputAttenuation,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onFwdInputAttenuationDecreased(
+    FwdInputAttenuationDecreased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String fwdInputAttenuation = _getDecreasedNumber(state.fwdInputAttenuation);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      fwdInputAttenuation: fwdInputAttenuation,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -136,6 +230,68 @@ class Setting18ControlBloc
     ));
   }
 
+  void _onFwdInputEQIncreased(
+    FwdInputEQIncreased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String fwdInputEQ = _getIncreasedNumber(state.fwdInputEQ);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      fwdInputEQ: fwdInputEQ,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onFwdInputEQDecreased(
+    FwdInputEQDecreased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String fwdInputEQ = _getDecreasedNumber(state.fwdInputEQ);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      fwdInputEQ: fwdInputEQ,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
   void _onRtnInputAttenuation2Changed(
     RtnInputAttenuation2Changed event,
     Emitter<Setting18ControlState> emit,
@@ -148,6 +304,68 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: event.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onRtnInputAttenuation2Increased(
+    RtnInputAttenuation2Increased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String rtnInputAttenuation2 =
+        _getIncreasedNumber(state.rtnInputAttenuation2);
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      rtnInputAttenuation2: rtnInputAttenuation2,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onRtnInputAttenuation2Decreased(
+    RtnInputAttenuation2Decreased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String rtnInputAttenuation2 =
+        _getDecreasedNumber(state.rtnInputAttenuation2);
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      rtnInputAttenuation2: rtnInputAttenuation2,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
@@ -194,6 +412,70 @@ class Setting18ControlBloc
     ));
   }
 
+  void _onRtnInputAttenuation3Increased(
+    RtnInputAttenuation3Increased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String rtnInputAttenuation3 =
+        _getIncreasedNumber(state.rtnInputAttenuation3);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      rtnInputAttenuation3: rtnInputAttenuation3,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onRtnInputAttenuation3Decreased(
+    RtnInputAttenuation3Decreased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String rtnInputAttenuation3 =
+        _getDecreasedNumber(state.rtnInputAttenuation3);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      rtnInputAttenuation3: rtnInputAttenuation3,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
   void _onRtnInputAttenuation4Changed(
     RtnInputAttenuation4Changed event,
     Emitter<Setting18ControlState> emit,
@@ -208,6 +490,68 @@ class Setting18ControlBloc
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: event.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onRtnInputAttenuation4Increased(
+    RtnInputAttenuation4Increased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String rtnInputAttenuation4 =
+        _getIncreasedNumber(state.rtnInputAttenuation4);
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      rtnInputAttenuation4: rtnInputAttenuation4,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onRtnInputAttenuation4Decreased(
+    RtnInputAttenuation4Decreased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String rtnInputAttenuation4 =
+        _getDecreasedNumber(state.rtnInputAttenuation4);
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      rtnInputAttenuation4: rtnInputAttenuation4,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: rtnInputAttenuation4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -252,6 +596,70 @@ class Setting18ControlBloc
     ));
   }
 
+  void _onRtnOutputLevelAttenuationIncreased(
+    RtnOutputLevelAttenuationIncreased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String rtnOutputLevelAttenuation =
+        _getIncreasedNumber(state.rtnOutputLevelAttenuation);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      rtnOutputLevelAttenuation: rtnOutputLevelAttenuation,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onRtnOutputLevelAttenuationDecreased(
+    RtnOutputLevelAttenuationDecreased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String rtnOutputLevelAttenuation =
+        _getDecreasedNumber(state.rtnOutputLevelAttenuation);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      rtnOutputLevelAttenuation: rtnOutputLevelAttenuation,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
   void _onRtnOutputEQChanged(
     RtnOutputEQChanged event,
     Emitter<Setting18ControlState> emit,
@@ -268,6 +676,66 @@ class Setting18ControlBloc
         rtnInputAttenuation4: state.rtnInputAttenuation4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: event.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onRtnOutputEQIncreased(
+    RtnOutputEQIncreased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String rtnOutputEQ = _getIncreasedNumber(state.rtnOutputEQ);
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      rtnOutputEQ: rtnOutputEQ,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onRtnOutputEQDecreased(
+    RtnOutputEQDecreased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String rtnOutputEQ = _getDecreasedNumber(state.rtnOutputEQ);
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      rtnOutputEQ: rtnOutputEQ,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,

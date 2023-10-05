@@ -437,10 +437,44 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List<dynamic> resultOf1p8G1 = await _dsimRepository.requestCommand1p8G1();
 
     if (resultOf1p8G1[0]) {
-      newCharacteristicData.addAll(resultOf1p8G1[1]);
-      emit(state.copyWith(
-        characteristicData: newCharacteristicData,
-      ));
+      String logInterval = resultOf1p8G1[1][DataKey.logInterval];
+
+      // 如果讀取到 logInterval == '0', 則自動設定為 30 分鐘
+      if (logInterval == '0') {
+        bool isSuccess =
+            await _dsimRepository.setLogInterval(logIntervalId: '30');
+
+        // 如果設定失敗, 則顯示 dialog
+        if (!isSuccess) {
+          emit(state.copyWith(
+            loadingStatus: FormStatus.requestFailure,
+            characteristicData: state.characteristicData,
+            errorMassage: 'Setting the log interval to 30 minutes failed.',
+          ));
+        } else {
+          List<dynamic> newResultOf1p8G1 =
+              await _dsimRepository.requestCommand1p8G1();
+
+          if (newResultOf1p8G1[0]) {
+            newCharacteristicData.addAll(newResultOf1p8G1[1]);
+            emit(state.copyWith(
+              characteristicData: newCharacteristicData,
+            ));
+          } else {
+            emit(state.copyWith(
+              loadingStatus: FormStatus.requestFailure,
+              characteristicData: state.characteristicData,
+              errorMassage: 'Data loading failed',
+            ));
+          }
+        }
+      } else {
+        // 如果讀取到 logInterval != '0', 則 emit 讀取到的資料
+        newCharacteristicData.addAll(resultOf1p8G1[1]);
+        emit(state.copyWith(
+          characteristicData: newCharacteristicData,
+        ));
+      }
     } else {
       emit(state.copyWith(
         loadingStatus: FormStatus.requestFailure,
