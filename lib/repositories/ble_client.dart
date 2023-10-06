@@ -447,7 +447,6 @@ class BLEClient {
     _currentCommandIndex = commandIndex;
     _completer = Completer<dynamic>();
 
-    setTimeout(duration: timeout, name: 'cmd $commandIndex');
     try {
       if (Platform.isAndroid) {
         await _ble.writeCharacteristicWithResponse(
@@ -461,15 +460,36 @@ class BLEClient {
         );
       } else {}
 
+      _timeoutTimer = Timer(timeout, () {
+        if (!_completer.isCompleted) {
+          _completer.completeError('Timeout occurred');
+          print('cmd:$commandIndex Timeout occurred');
+        }
+      });
+
       return _completer.future;
     } catch (e) {
       if (!_completer.isCompleted) {
-        _completer.completeError('Write command failed');
-        print('Write command failed');
+        _completer.completeError(e.toString());
       }
       return _completer.future;
     }
   }
+
+  // Future getCompleter() {
+  //   _completer = Completer<dynamic>();
+  //   return _completer.future;
+  // }
+
+  // void testTimeout() {
+  //   print(1111);
+  //   _timeoutTimer = Timer(Duration(seconds: 1), () {
+  //     if (!_completer.isCompleted) {
+  //       _completer.completeError('Timeout occurred');
+  //     }
+  //   });
+  //   print(1111);
+  // }
 
   void setTimeout({required Duration duration, required String name}) {
     _timeoutTimer = Timer(duration, () {

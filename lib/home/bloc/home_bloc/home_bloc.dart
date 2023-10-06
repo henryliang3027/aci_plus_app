@@ -27,6 +27,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
     on<DeviceConnectionChanged>(_onDeviceConnectionChanged);
+    // on<testTimeout>(_onTestTimeout);
   }
 
   final DsimRepository _dsimRepository;
@@ -36,6 +37,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _characteristicDataStreamSubscription;
 
   // final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer();
+
+  // Future<void> _onTestTimeout(
+  //   testTimeout event,
+  //   Emitter<HomeState> emit,
+  // ) async {
+  //   try {
+  //     // Future result = await _dsimRepository.getCompleter();
+  //     _dsimRepository.testTimeout();
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   // 進入首頁時播放動畫，動畫播完後掃描藍芽裝置
   Future<void> _onSplashStateChanged(

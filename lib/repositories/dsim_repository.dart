@@ -1885,6 +1885,14 @@ class DsimRepository {
     }
   }
 
+  // Future getCompleter() {
+  //   return _bleClient.getCompleter();
+  // }
+
+  // void testTimeout() {
+  //   _bleClient.testTimeout();
+  // }
+
   Future<dynamic> requestCommand0() async {
     int commandIndex = 0;
 

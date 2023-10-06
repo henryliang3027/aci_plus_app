@@ -978,10 +978,57 @@ class _AGCPrepAttenator extends StatelessWidget {
                   ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(state.minAttenuation.toString()),
+                    Text(state.maxAttenuation.toString()),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(
+                    2,
+                    (index) => Column(
+                      children: [
+                        // Container(
+                        //   alignment: Alignment.bottomCenter,
+                        //   height: 22,
+                        //   child: Text(
+                        //     '${(List.from([
+                        //           state.minAttenuation,
+                        //           state.maxAttenuation,
+                        //         ])[index]).toStringAsFixed(0)}',
+                        //     style: const TextStyle(
+                        //       fontSize: CustomStyle.sizeM,
+                        //     ),
+                        //     textAlign: TextAlign.start,
+                        //   ),
+                        // ),
+                        Container(
+                          alignment: Alignment.bottomCenter,
+                          height: 16,
+                          child: VerticalDivider(
+                            indent: 0,
+                            thickness: 1.2,
+                            color: Colors.grey.shade300,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               SliderTheme(
                 data: const SliderThemeData(
                   valueIndicatorColor: Colors.red,
                   showValueIndicator: ShowValueIndicator.always,
+                  overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
                 ),
                 child: Slider(
                   min: state.minAttenuation.toDouble(),
@@ -1009,6 +1056,7 @@ class _AGCPrepAttenator extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton.filled(
+                    visualDensity: const VisualDensity(horizontal: -4.0),
                     icon: const Icon(
                       Icons.remove,
                     ),
@@ -1021,6 +1069,7 @@ class _AGCPrepAttenator extends StatelessWidget {
                         : null,
                   ),
                   IconButton.filled(
+                    visualDensity: const VisualDensity(horizontal: -4.0),
                     icon: const Icon(
                       Icons.circle_outlined,
                     ),
@@ -1033,6 +1082,7 @@ class _AGCPrepAttenator extends StatelessWidget {
                         : null,
                   ),
                   IconButton.filled(
+                    visualDensity: const VisualDensity(horizontal: -4.0),
                     icon: const Icon(
                       Icons.add,
                     ),

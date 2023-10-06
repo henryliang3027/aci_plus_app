@@ -191,6 +191,11 @@ class _ConnectionCard extends StatelessWidget {
               const SizedBox(
                 height: 10.0,
               ),
+              // ElevatedButton(
+              //     onPressed: () {
+              //       context.read<HomeBloc>().add(testTimeout());
+              //     },
+              //     child: Icon(Icons.abc)),
               itemLinkText(
                 title: '',
                 content: AppLocalizations.of(context).visitWebsite,

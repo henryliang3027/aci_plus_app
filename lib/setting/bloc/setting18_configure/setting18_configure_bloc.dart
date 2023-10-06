@@ -477,7 +477,7 @@ class Setting18ConfigureBloc
 
   String _getDecreasedNumber(String value) {
     double doubleValue = double.parse(value);
-    doubleValue = doubleValue - 1.0 >= 0.0 ? doubleValue - 1.0 : doubleValue;
+    doubleValue = doubleValue - 1.0 >= 1.0 ? doubleValue - 1.0 : doubleValue;
     String strValue = doubleValue.toStringAsFixed(0);
 
     return strValue;

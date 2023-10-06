@@ -78,3 +78,10 @@ class DeviceRefreshed extends HomeEvent {
   @override
   List<Object?> get props => [];
 }
+
+// class testTimeout extends HomeEvent {
+//   const testTimeout();
+
+//   @override
+//   List<Object> get props => [];
+// }

@@ -28,10 +28,6 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
     AlarmUpdated event,
     Emitter<InformationState> emit,
   ) async {
-    //讓 _dsimRepository 裡面的 _alarmR _alarmT_ alarmp 重新取得資料
-
-    await _dsimRepository.requestCommand3();
-
     List<dynamic> resultOfRequestCommand5 =
         await _dsimRepository.requestCommand5();
 
