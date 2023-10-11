@@ -41,6 +41,8 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
         alarmTSeverity: alarmTServerity,
         alarmPSeverity: alarmPServerity,
       ));
+    } else {
+      print('failed, time out');
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:dsim_app/core/utils.dart';
 import 'package:dsim_app/home/views/home_form.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +7,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    setPreferredOrientation();
     return const Scaffold(
       body: HomeForm(),
     );

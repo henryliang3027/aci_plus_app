@@ -425,37 +425,58 @@ class _Coordinates extends StatelessWidget {
                 },
                 maxLength: 39,
                 decoration: InputDecoration(
-                  suffixIconConstraints: const BoxConstraints(
-                    maxHeight: 40,
-                    maxWidth: 40,
-                    minHeight: 40,
-                    minWidth: 40,
-                  ),
-                  suffixIcon: state.gpsStatus.isRequestInProgress
-                      ? Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: CircularProgressIndicator(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        )
-                      : IconButton(
-                          icon: const Icon(
-                            Icons.pin_drop,
-                            size: 24,
-                          ),
-                          onPressed: () {
-                            context
-                                .read<Setting18ConfigureBloc>()
-                                .add(const GPSCoordinatesRequested());
-                          },
-                        ),
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: const EdgeInsets.all(10.0),
+                  contentPadding: EdgeInsets.all(10.0),
                   isDense: true,
                   filled: true,
                   fillColor: Colors.white,
                   counterText: '',
+                  suffixIconConstraints: const BoxConstraints(
+                    maxHeight: 48,
+                    maxWidth: 56,
+                    minHeight: 48,
+                    minWidth: 56,
+                  ),
+                  suffixIcon: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Material(
+                      // elevation: 5.0,
+                      color: state.editMode
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.inversePrimary,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(4.0),
+                              bottomRight: Radius.circular(4.0))),
+                      // shadowColor: Colors.green,
+                      child: state.gpsStatus.isRequestInProgress
+                          ? Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: CircularProgressIndicator(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                            )
+                          : IconButton(
+                              iconSize: 26,
+                              icon: Icon(
+                                Icons.pin_drop,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                // size: 22,
+                              ),
+                              onPressed: state.editMode
+                                  ? () {
+                                      context
+                                          .read<Setting18ConfigureBloc>()
+                                          .add(const GPSCoordinatesRequested());
+                                    }
+                                  : null,
+                            ),
+                    ),
+                  ),
+                  border: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(4.0),
+                    ),
+                  ),
                 ),
               ),
             ],

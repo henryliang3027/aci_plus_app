@@ -430,8 +430,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     await _dsimRepository.set1p8GTransmitDelayTime();
 
     Map<DataKey, String> newCharacteristicData = {};
+    List<dynamic> resultOf1p8G0 = [];
+    List<dynamic> resultOf1p8G1 = [];
+    List<dynamic> resultOf1p8G2 = [];
+    List<dynamic> resultOf1p8GForLogChunk = [];
 
-    List<dynamic> resultOf1p8G0 = await _dsimRepository.requestCommand1p8G0();
+    resultOf1p8G0 = await _dsimRepository.requestCommand1p8G0();
 
     if (resultOf1p8G0[0]) {
       newCharacteristicData.addAll(resultOf1p8G0[1]);
@@ -446,102 +450,110 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ));
     }
 
-    List<dynamic> resultOf1p8G1 = await _dsimRepository.requestCommand1p8G1();
+    if (resultOf1p8G0[0]) {
+      resultOf1p8G1 = await _dsimRepository.requestCommand1p8G1();
 
-    if (resultOf1p8G1[0]) {
-      String logInterval = resultOf1p8G1[1][DataKey.logInterval];
+      if (resultOf1p8G1[0]) {
+        String logInterval = resultOf1p8G1[1][DataKey.logInterval];
 
-      // 如果讀取到 logInterval == '0', 則自動設定為 30 分鐘
-      if (logInterval == '0') {
-        bool isSuccess =
-            await _dsimRepository.setLogInterval(logIntervalId: '30');
+        // 如果讀取到 logInterval == '0', 則自動設定為 30 分鐘
+        if (logInterval == '0') {
+          bool isSuccess =
+              await _dsimRepository.setLogInterval(logIntervalId: '30');
 
-        // 如果設定失敗, 則顯示 dialog
-        if (!isSuccess) {
-          emit(state.copyWith(
-            loadingStatus: FormStatus.requestFailure,
-            characteristicData: state.characteristicData,
-            errorMassage: 'Setting the log interval to 30 minutes failed.',
-          ));
-        } else {
-          List<dynamic> newResultOf1p8G1 =
-              await _dsimRepository.requestCommand1p8G1();
-
-          if (newResultOf1p8G1[0]) {
-            newCharacteristicData.addAll(newResultOf1p8G1[1]);
+          // 如果設定失敗, 則顯示 dialog
+          if (!isSuccess) {
             emit(state.copyWith(
-              characteristicData: newCharacteristicData,
+              loadingStatus: FormStatus.requestFailure,
+              characteristicData: state.characteristicData,
+              errorMassage: 'Setting the log interval to 30 minutes failed.',
             ));
           } else {
+            List<dynamic> newResultOf1p8G1 =
+                await _dsimRepository.requestCommand1p8G1();
+
+            if (newResultOf1p8G1[0]) {
+              newCharacteristicData.addAll(newResultOf1p8G1[1]);
+              emit(state.copyWith(
+                characteristicData: newCharacteristicData,
+              ));
+            } else {
+              emit(state.copyWith(
+                loadingStatus: FormStatus.requestFailure,
+                characteristicData: state.characteristicData,
+                errorMassage: 'Data loading failed',
+              ));
+            }
+          }
+        } else {
+          // 如果讀取到 logInterval != '0', 則 emit 讀取到的資料
+          newCharacteristicData.addAll(resultOf1p8G1[1]);
+          emit(state.copyWith(
+            characteristicData: newCharacteristicData,
+          ));
+        }
+      } else {
+        emit(state.copyWith(
+          loadingStatus: FormStatus.requestFailure,
+          characteristicData: state.characteristicData,
+          errorMassage: 'Data loading failed',
+        ));
+      }
+    }
+
+    if (resultOf1p8G1[0]) {
+      resultOf1p8G2 = await _dsimRepository.requestCommand1p8G2();
+
+      if (resultOf1p8G2[0]) {
+        newCharacteristicData.addAll(resultOf1p8G2[1]);
+        emit(state.copyWith(
+          characteristicData: newCharacteristicData,
+        ));
+      } else {
+        emit(state.copyWith(
+          loadingStatus: FormStatus.requestFailure,
+          characteristicData: state.characteristicData,
+          errorMassage: 'Data loading failed',
+        ));
+      }
+    }
+
+    if (resultOf1p8G2[0]) {
+      // 最多 retry 3 次, 連續失敗3次就視為失敗
+      for (int i = 0; i < 3; i++) {
+        resultOf1p8GForLogChunk =
+            await _dsimRepository.requestCommand1p8GForLogChunk(0);
+
+        if (resultOf1p8GForLogChunk[0]) {
+          newCharacteristicData.addAll(resultOf1p8GForLogChunk[3]);
+
+          emit(state.copyWith(
+            loadingStatus: FormStatus.requestSuccess,
+            characteristicData: newCharacteristicData,
+          ));
+
+          break;
+        } else {
+          if (i == 2) {
             emit(state.copyWith(
               loadingStatus: FormStatus.requestFailure,
               characteristicData: state.characteristicData,
               errorMassage: 'Data loading failed',
             ));
+          } else {
+            continue;
           }
         }
-      } else {
-        // 如果讀取到 logInterval != '0', 則 emit 讀取到的資料
-        newCharacteristicData.addAll(resultOf1p8G1[1]);
-        emit(state.copyWith(
-          characteristicData: newCharacteristicData,
-        ));
-      }
-    } else {
-      emit(state.copyWith(
-        loadingStatus: FormStatus.requestFailure,
-        characteristicData: state.characteristicData,
-        errorMassage: 'Data loading failed',
-      ));
-    }
-
-    List<dynamic> resultOf1p8G2 = await _dsimRepository.requestCommand1p8G2();
-
-    if (resultOf1p8G2[0]) {
-      newCharacteristicData.addAll(resultOf1p8G2[1]);
-      emit(state.copyWith(
-        characteristicData: newCharacteristicData,
-      ));
-    } else {
-      emit(state.copyWith(
-        loadingStatus: FormStatus.requestFailure,
-        characteristicData: state.characteristicData,
-        errorMassage: 'Data loading failed',
-      ));
-    }
-
-    // 最多 retry 3 次, 連續失敗3次就視為失敗
-    for (int i = 0; i < 3; i++) {
-      List<dynamic> resultOf1p8GForLogChunk =
-          await _dsimRepository.requestCommand1p8GForLogChunk(0);
-
-      if (resultOf1p8GForLogChunk[0]) {
-        newCharacteristicData.addAll(resultOf1p8GForLogChunk[3]);
-
-        emit(state.copyWith(
-          loadingStatus: FormStatus.requestSuccess,
-          characteristicData: newCharacteristicData,
-        ));
-
-        break;
-      } else {
-        if (i == 2) {
-          emit(state.copyWith(
-            loadingStatus: FormStatus.requestFailure,
-            characteristicData: state.characteristicData,
-            errorMassage: 'Data loading failed',
-          ));
-        } else {
-          continue;
-        }
       }
     }
 
-    String deviceNowTime = state.characteristicData[DataKey.nowDateTime] ??
-        DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+    // if (resultOf1p8GForLogChunk[0]) {
+    //   String deviceNowTime = state.characteristicData[DataKey.nowDateTime] ??
+    //       DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
-    // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
-    await _dsimRepository.set1p8GNowDateTime(deviceNowTime);
+    //   // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
+    //   await _dsimRepository.set1p8GNowDateTime(deviceNowTime);
+    // }
   }
 
   Future<void> _onEventRequested(
