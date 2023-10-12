@@ -628,6 +628,8 @@ class _SplitOption extends StatelessWidget {
                         padding: const EdgeInsets.all(2.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 6.0),
                             elevation: 0.0,
                             foregroundColor: getForegroundColor(
                               context: context,
@@ -668,8 +670,9 @@ class _SplitOption extends StatelessWidget {
                           child: Text(
                             splitOptionTexts[index],
                             style: const TextStyle(
-                                fontSize: CustomStyle.sizeXL,
-                                fontWeight: FontWeight.normal),
+                              fontSize: CustomStyle.sizeXL,
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                         ),
                       );
@@ -678,6 +681,8 @@ class _SplitOption extends StatelessWidget {
                         padding: const EdgeInsets.all(2.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 6.0),
                             elevation: 0.0,
                             foregroundColor: getForegroundColor(
                               context: context,
@@ -719,8 +724,9 @@ class _SplitOption extends StatelessWidget {
                           child: Text(
                             splitOptionTexts[index],
                             style: const TextStyle(
-                                fontSize: CustomStyle.sizeXL,
-                                fontWeight: FontWeight.normal),
+                              fontSize: CustomStyle.sizeXL,
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                         ),
                       );
@@ -1033,7 +1039,9 @@ class _PilotFrequencyMode extends StatelessWidget {
                               pilotFrequencyModeValues[index]));
                     }
                   },
-                  textStyle: const TextStyle(fontSize: 18.0),
+                  textStyle: const TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                  ),
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
                   selectedBorderColor: state.editMode
                       ? Theme.of(context).colorScheme.primary

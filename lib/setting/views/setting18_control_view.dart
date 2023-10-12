@@ -15,6 +15,7 @@ class Setting18ControlView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
+    String partName = homeState.characteristicData[DataKey.partName] ?? '';
     String inputAttenuation =
         homeState.characteristicData[DataKey.inputAttenuation] ?? '';
     String inputEqualizer =
@@ -155,6 +156,74 @@ class Setting18ControlView extends StatelessWidget {
       return rows;
     }
 
+    Widget buildControlWidget(String partName) {
+      if (partName.contains('BLE') ||
+          partName.contains('SDLE') ||
+          partName.contains('LE')) {
+        return Column(children: [
+          _ClusterTitle(
+            title: AppLocalizations.of(context).forwardControlParameters,
+          ),
+          const _FwdInputAttenuation(),
+          const _FwdInputEQ(),
+          const SizedBox(
+            height: 30,
+          ),
+          _ClusterTitle(
+            title: AppLocalizations.of(context).returnControlParameters,
+          ),
+          const _RtnInputAttenuation2(),
+
+          const _RtnOutputLevelAttenuation(),
+          const _RtnOutputEQ(),
+          const _RtnIngressSetting2(),
+
+          // const _TGCCableLength(),
+          // const _DSVVA2(),
+          // const _DSSlope2(),
+          // const _DSVVA3(),
+          // const _DSVVA4(),
+          // const _USTGC(),
+          const SizedBox(
+            height: 120,
+          ),
+        ]);
+      } else {
+        return Column(
+          children: [
+            _ClusterTitle(
+              title: AppLocalizations.of(context).forwardControlParameters,
+            ),
+            const _FwdInputAttenuation(),
+            const _FwdInputEQ(),
+            const SizedBox(
+              height: 30,
+            ),
+            _ClusterTitle(
+              title: AppLocalizations.of(context).returnControlParameters,
+            ),
+            const _RtnInputAttenuation2(),
+            const _RtnInputAttenuation3(),
+            const _RtnInputAttenuation4(),
+            const _RtnOutputLevelAttenuation(),
+            const _RtnOutputEQ(),
+            const _RtnIngressSetting2(),
+            const _RtnIngressSetting3(),
+            const _RtnIngressSetting4(),
+            // const _TGCCableLength(),
+            // const _DSVVA2(),
+            // const _DSSlope2(),
+            // const _DSVVA3(),
+            // const _DSVVA4(),
+            // const _USTGC(),
+            const SizedBox(
+              height: 120,
+            ),
+          ],
+        );
+      }
+    }
+
     return BlocListener<Setting18ControlBloc, Setting18ControlState>(
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionInProgress) {
@@ -177,39 +246,7 @@ class Setting18ControlView extends StatelessWidget {
               padding: const EdgeInsets.all(
                 CustomStyle.sizeXL,
               ),
-              child: Column(
-                children: [
-                  _ClusterTitle(
-                    title:
-                        AppLocalizations.of(context).forwardControlParameters,
-                  ),
-                  const _FwdInputAttenuation(),
-                  const _FwdInputEQ(),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  _ClusterTitle(
-                    title: AppLocalizations.of(context).returnControlParameters,
-                  ),
-                  const _RtnInputAttenuation2(),
-                  const _RtnInputAttenuation3(),
-                  const _RtnInputAttenuation4(),
-                  const _RtnOutputLevelAttenuation(),
-                  const _RtnOutputEQ(),
-                  const _RtnIngressSetting2(),
-                  const _RtnIngressSetting3(),
-                  const _RtnIngressSetting4(),
-                  // const _TGCCableLength(),
-                  // const _DSVVA2(),
-                  // const _DSSlope2(),
-                  // const _DSVVA3(),
-                  // const _DSVVA4(),
-                  // const _USTGC(),
-                  const SizedBox(
-                    height: 120,
-                  ),
-                ],
-              ),
+              child: buildControlWidget(partName),
             ),
           ),
         ),
