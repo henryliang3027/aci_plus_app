@@ -15,6 +15,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
         super(const Chart18State()) {
     on<DataExported>(_onDataExported);
     on<DataShared>(_onDataShared);
+    on<LogEventRequested>(_onLogEventRequested);
     on<MoreDataRequested>(_onMoreDataRequested);
     on<RFInOutDataRequested>(_onRFInOutDataRequested);
     on<AllDataDownloaded>(_onAllDataDownloaded);
@@ -135,6 +136,78 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
         allDataDownloadStatus: FormStatus.requestFailure,
         errorMessage: event.errorMessage,
       ));
+    }
+  }
+
+  Future<void> _onLogEventRequested(
+    LogEventRequested event,
+    Emitter<Chart18State> emit,
+  ) async {
+    emit(state.copyWith(
+      dataRequestStatus: FormStatus.requestInProgress,
+      // rfDataRequestStatus: FormStatus.none,
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataDownloadStatus: FormStatus.none,
+    ));
+
+    List<dynamic> resultOfLog1p8G = [];
+    List<dynamic> resultOfEvent1p8G = [];
+
+    // 最多 retry 3 次, 連續失敗3次就視為失敗
+    for (int i = 0; i < 3; i++) {
+      resultOfLog1p8G = await _dsimRepository.requestCommand1p8GForLogChunk(0);
+
+      if (resultOfLog1p8G[0]) {
+        break;
+      } else {
+        if (i == 2) {
+          emit(state.copyWith(
+            dataRequestStatus: FormStatus.requestFailure,
+            errorMessage: 'Data loading failed',
+          ));
+        } else {
+          continue;
+        }
+      }
+    }
+
+    if (resultOfLog1p8G[0]) {
+      // 最多 retry 3 次, 連續失敗3次就視為失敗
+      for (int i = 0; i < 3; i++) {
+        resultOfEvent1p8G = await _dsimRepository.requestCommand1p8GEvent();
+
+        if (resultOfEvent1p8G[0]) {
+          List<Event1p8G> event1p8Gs = resultOfEvent1p8G[1];
+          bool hasNextChunk = resultOfLog1p8G[1];
+          List<Log1p8G> log1p8Gs = resultOfLog1p8G[2];
+
+          List<List<ValuePair>> dateValueCollectionOfLog =
+              _dsimRepository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
+
+          emit(
+            state.copyWith(
+              dataRequestStatus: FormStatus.requestSuccess,
+              event1p8Gs: event1p8Gs,
+              log1p8Gs: log1p8Gs,
+              dateValueCollectionOfLog: dateValueCollectionOfLog,
+              chunckIndex: 1,
+              hasNextChunk: hasNextChunk,
+            ),
+          );
+
+          break;
+        } else {
+          if (i == 2) {
+            emit(state.copyWith(
+              dataRequestStatus: FormStatus.requestFailure,
+              errorMessage: 'Data loading failed',
+            ));
+          } else {
+            continue;
+          }
+        }
+      }
     }
   }
 

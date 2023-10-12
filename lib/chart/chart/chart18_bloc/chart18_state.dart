@@ -10,6 +10,7 @@ class Chart18State extends Equatable {
     this.chunckIndex = 0,
     this.hasNextChunk = false,
     this.log1p8Gs = const [],
+    this.event1p8Gs = const [],
     this.dateValueCollectionOfLog = const [[], [], [], [], []],
     this.rfInOuts = const [],
     this.valueCollectionOfRFInOut = const [[], []],
@@ -29,6 +30,7 @@ class Chart18State extends Equatable {
   final List<List<ValuePair>> dateValueCollectionOfLog;
   final List<RFInOut> rfInOuts;
   final List<List<ValuePair>> valueCollectionOfRFInOut;
+  final List<Event1p8G> event1p8Gs;
   final String exportFileName;
   final String dataExportPath;
   final String errorMessage;
@@ -45,6 +47,7 @@ class Chart18State extends Equatable {
     List<List<ValuePair>>? dateValueCollectionOfLog,
     List<RFInOut>? rfInOuts,
     List<List<ValuePair>>? valueCollectionOfRFInOut,
+    List<Event1p8G>? event1p8Gs,
     String? exportFileName,
     String? dataExportPath,
     String? errorMessage,
@@ -62,6 +65,7 @@ class Chart18State extends Equatable {
       dateValueCollectionOfLog:
           dateValueCollectionOfLog ?? this.dateValueCollectionOfLog,
       rfInOuts: rfInOuts ?? this.rfInOuts,
+      event1p8Gs: event1p8Gs ?? this.event1p8Gs,
       valueCollectionOfRFInOut:
           valueCollectionOfRFInOut ?? this.valueCollectionOfRFInOut,
       exportFileName: exportFileName ?? this.exportFileName,
@@ -83,6 +87,7 @@ class Chart18State extends Equatable {
         dateValueCollectionOfLog,
         rfInOuts,
         valueCollectionOfRFInOut,
+        event1p8Gs,
         exportFileName,
         dataExportPath,
         errorMessage,

@@ -826,6 +826,12 @@ class Dsim18Parser {
     return logChunks;
   }
 
+  List<Event1p8G> parse1p8GEvent(List<int> rawData) {
+    List<Event1p8G> event1p8Gs = [];
+
+    return event1p8Gs;
+  }
+
   Future<dynamic> export1p8GRecords(List<Log1p8G> log1p8Gs) async {
     Excel excel = Excel.createExcel();
     List<String> log1p8GHeader = [
@@ -1098,6 +1104,7 @@ class Dsim18Parser {
     CRC16.calculateCRC16(command: Command18.reqLog07Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqLog08Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqLog09Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqEvent00Cmd, usDataLength: 6);
 
     _command18Collection.add(Command18.req00Cmd);
     _command18Collection.add(Command18.req01Cmd);
@@ -1113,6 +1120,7 @@ class Dsim18Parser {
     _command18Collection.add(Command18.reqLog07Cmd);
     _command18Collection.add(Command18.reqLog08Cmd);
     _command18Collection.add(Command18.reqLog09Cmd);
+    _command18Collection.add(Command18.reqEvent00Cmd);
   }
 }
 
@@ -1132,6 +1140,18 @@ class Log1p8G {
   final double rfOutputLowPilot;
   final double rfOutputHighPilot;
   final int voltageRipple;
+}
+
+class Event1p8G {
+  const Event1p8G({
+    required this.dateTime,
+    required this.code,
+    required this.parameter,
+  });
+
+  final DateTime dateTime;
+  final int code;
+  final int parameter;
 }
 
 class RFInOut {

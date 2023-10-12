@@ -51,6 +51,13 @@ class MoreDataRequested extends Chart18Event {
   List<Object?> get props => [];
 }
 
+class LogEventRequested extends Chart18Event {
+  const LogEventRequested();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class RFInOutDataRequested extends Chart18Event {
   const RFInOutDataRequested();
 

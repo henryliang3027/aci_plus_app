@@ -61,7 +61,6 @@ class BLEClient {
 
   Timer? _timeoutTimer;
 
-  // 1G/1.2G variables
   List<int> _rawLog = [];
   List<int> _rawEvent = [];
   int _totalBytesPerCommand = 261;
@@ -284,6 +283,29 @@ class BLEClient {
                   }
                 }
               }
+            } else if (_currentCommandIndex == 194) {
+              List<int> header = [0xB0, 0x03, 0x00];
+              if (listEquals(rawData.sublist(0, 3), header)) {
+                _rawEvent.clear();
+              }
+
+              _rawEvent.addAll(rawData);
+              print(_rawEvent.length);
+
+              if (_rawEvent.length == 16389) {
+                bool isValidCRC = checkCRC(_rawEvent);
+                if (isValidCRC) {
+                  List<int> rawEvents = List.from(_rawEvent);
+                  cancelTimeout(name: 'cmd $_currentCommandIndex');
+                  if (!_completer.isCompleted) {
+                    _completer.complete(rawEvents);
+                  }
+                } else {
+                  if (!_completer.isCompleted) {
+                    _completer.completeError('Invalid data');
+                  }
+                }
+              }
             } else if (_currentCommandIndex >= 300) {
               cancelTimeout(name: 'cmd $_currentCommandIndex');
               if (!_completer.isCompleted) {
@@ -372,6 +394,9 @@ class BLEClient {
     await Future.delayed(const Duration(milliseconds: 2000));
     _connectionStreamSubscription = null;
     _ble = null;
+    _rawLog.clear();
+    _rawEvent.clear();
+    _rawRFInOut.clear();
   }
 
   bool checkCRC(

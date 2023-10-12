@@ -331,6 +331,29 @@ class DsimRepository {
     }
   }
 
+  Future<dynamic> requestCommand1p8GEvent() async {
+    int commandIndex = 194;
+
+    print('get data from request command 1p8G_Event');
+
+    List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      commandIndex: commandIndex,
+      value: _dsim18Parser.command18Collection[commandIndex - 180],
+    );
+
+    try {
+      List<Event1p8G> event1p8Gs = _dsim18Parser.parse1p8GEvent(rawData);
+      return [
+        true,
+        event1p8Gs,
+      ];
+    } catch (e) {
+      return [
+        false,
+      ];
+    }
+  }
+
   Future<dynamic> requestCommand1p8GAlarm() async {
     int commandIndex = 182;
 
