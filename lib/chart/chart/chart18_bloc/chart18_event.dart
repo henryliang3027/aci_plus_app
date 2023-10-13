@@ -44,15 +44,22 @@ class AllDataExported extends Chart18Event {
       ];
 }
 
-class MoreDataRequested extends Chart18Event {
-  const MoreDataRequested();
+class LogDataRequested extends Chart18Event {
+  const LogDataRequested();
 
   @override
   List<Object?> get props => [];
 }
 
-class LogEventRequested extends Chart18Event {
-  const LogEventRequested();
+class EventDataRequested extends Chart18Event {
+  const EventDataRequested();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class MoreDataRequested extends Chart18Event {
+  const MoreDataRequested();
 
   @override
   List<Object?> get props => [];

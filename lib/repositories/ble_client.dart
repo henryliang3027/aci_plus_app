@@ -183,7 +183,7 @@ class BLEClient {
               .listen((data) async {
             List<int> rawData = data;
             print(_currentCommandIndex);
-            print('data length: ${rawData.length}');
+            // print('data length: ${rawData.length}');
 
             if (_currentCommandIndex <= 13) {
               cancelTimeout(name: 'cmd $_currentCommandIndex');
@@ -267,7 +267,7 @@ class BLEClient {
               }
 
               _rawLog.addAll(rawData);
-              print(_rawLog.length);
+              // print(_rawLog.length);
 
               if (_rawLog.length == 16389) {
                 bool isValidCRC = checkCRC(_rawLog);

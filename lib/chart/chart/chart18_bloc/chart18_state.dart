@@ -4,6 +4,7 @@ class Chart18State extends Equatable {
   const Chart18State({
     this.dataRequestStatus = FormStatus.none,
     this.rfDataRequestStatus = FormStatus.none,
+    this.eventDataRequestStatus = FormStatus.none,
     this.dataExportStatus = FormStatus.none,
     this.dataShareStatus = FormStatus.none,
     this.allDataDownloadStatus = FormStatus.none,
@@ -21,6 +22,7 @@ class Chart18State extends Equatable {
 
   final FormStatus dataRequestStatus;
   final FormStatus rfDataRequestStatus;
+  final FormStatus eventDataRequestStatus;
   final FormStatus dataExportStatus;
   final FormStatus dataShareStatus;
   final FormStatus allDataDownloadStatus;
@@ -38,6 +40,7 @@ class Chart18State extends Equatable {
   Chart18State copyWith({
     FormStatus? dataRequestStatus,
     FormStatus? rfDataRequestStatus,
+    FormStatus? eventDataRequestStatus,
     FormStatus? dataExportStatus,
     FormStatus? dataShareStatus,
     FormStatus? allDataDownloadStatus,
@@ -55,6 +58,8 @@ class Chart18State extends Equatable {
     return Chart18State(
       dataRequestStatus: dataRequestStatus ?? this.dataRequestStatus,
       rfDataRequestStatus: rfDataRequestStatus ?? this.rfDataRequestStatus,
+      eventDataRequestStatus:
+          eventDataRequestStatus ?? this.eventDataRequestStatus,
       dataExportStatus: dataExportStatus ?? this.dataExportStatus,
       dataShareStatus: dataShareStatus ?? this.dataExportStatus,
       allDataDownloadStatus:
@@ -78,6 +83,7 @@ class Chart18State extends Equatable {
   List<Object> get props => [
         dataRequestStatus,
         rfDataRequestStatus,
+        eventDataRequestStatus,
         dataExportStatus,
         dataShareStatus,
         allDataDownloadStatus,

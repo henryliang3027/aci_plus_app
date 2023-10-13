@@ -829,10 +829,56 @@ class Dsim18Parser {
   List<Event1p8G> parse1p8GEvent(List<int> rawData) {
     List<Event1p8G> event1p8Gs = [];
 
+    rawData.removeRange(rawData.length - 2, rawData.length);
+    rawData.removeRange(0, 3);
+
+    for (var i = 0; i < 1024; i++) {
+      // 如果檢查到有一筆log 的內容全部是 255, 則視為沒有更多log資料了
+      bool isEmptyLog = rawData
+          .sublist(i * 16, i * 16 + 16)
+          .every((element) => element == 255);
+      if (isEmptyLog) {
+        break;
+      }
+
+      // 解析 strDateTime
+      List<int> rawYear = rawData.sublist(i * 16, i * 16 + 2);
+      ByteData rawYearByteData =
+          ByteData.sublistView(Uint8List.fromList(rawYear));
+      String strYear = rawYearByteData.getInt16(0, Endian.little).toString();
+
+      String strMonth = rawData[i * 16 + 2].toString().padLeft(2, '0');
+      String strDay = rawData[i * 16 + 3].toString().padLeft(2, '0');
+      String strHour = rawData[i * 16 + 4].toString().padLeft(2, '0');
+      String strMinute = rawData[i * 16 + 5].toString().padLeft(2, '0');
+
+      final DateTime dateTime =
+          DateTime.parse('$strYear-$strMonth-$strDay $strHour:$strMinute:00');
+
+      List<int> rawCode = rawData.sublist(i * 16 + 6, i * 16 + 8);
+      ByteData rawCodeByteData =
+          ByteData.sublistView(Uint8List.fromList(rawCode));
+      int code = rawCodeByteData.getInt16(0, Endian.little);
+
+      List<int> rawParameter = rawData.sublist(i * 16 + 8, i * 16 + 10);
+      ByteData rawParameterByteData =
+          ByteData.sublistView(Uint8List.fromList(rawParameter));
+      int parameter = rawParameterByteData.getInt16(0, Endian.little);
+
+      event1p8Gs.add(Event1p8G(
+        dateTime: dateTime,
+        code: code,
+        parameter: parameter,
+      ));
+    }
+
     return event1p8Gs;
   }
 
-  Future<dynamic> export1p8GRecords(List<Log1p8G> log1p8Gs) async {
+  Future<dynamic> export1p8GRecords({
+    required List<Log1p8G> log1p8Gs,
+    required List<Event1p8G> event1p8Gs,
+  }) async {
     Excel excel = Excel.createExcel();
     List<String> log1p8GHeader = [
       'Time',
@@ -842,31 +888,32 @@ class Dsim18Parser {
       '24V(V)',
       '24V Ripple(mV)',
     ];
-    // List<String> eventHeader = [
-    //   'Power On',
-    //   'Power Off',
-    //   '24V High(V)',
-    //   '24V Low(V)',
-    //   'Temperature High(C)',
-    //   'Temperature Low(C)',
-    //   'Input RF Power High(dBuV)',
-    //   'Input RF Power Low(dBuV)',
-    //   '24V Ripple High(mV)',
-    //   'Align Loss Pilot',
-    //   'AGC Loss Pilot',
-    //   'Controll Plug in',
-    //   'Controll Plug out',
-    // ];
+    List<String> eventHeader = [
+      '24V High Alarm(V)',
+      '24V Low Alarm(V)',
+      'Temperature High Alarm(C)',
+      'Temperature Low Alarm(C)',
+      'RF Input Pilot Low Frequency Unlock',
+      'RF Input Pilot High Frequency Unlock',
+      'RF Output Pilot Low Frequency Unlock',
+      'RF Output Pilot High Frequency Unlock',
+      'RF Input Total Power High Alarm',
+      'RF Input Total Power Low Alarm',
+      'RF Output Total Power High Alarm',
+      'RF Output Total Power Low Alarm',
+      '24V Ripple High Alarm',
+      'Amplifier Power On',
+    ];
 
     Sheet log1p8GSheet = excel['Log'];
-    // Sheet eventSheet = excel['Event'];
+    Sheet eventSheet = excel['Event'];
 
-    // eventSheet.insertRowIterables(eventHeader, 0);
-    // List<List<String>> eventContent = formatEvent();
-    // for (int i = 0; i < eventContent.length; i++) {
-    //   List<String> row = eventContent[i];
-    //   eventSheet.insertRowIterables(row, i + 1);
-    // }
+    eventSheet.insertRowIterables(eventHeader, 0);
+    List<List<String>> eventContent = formatEvent1p8G(event1p8Gs);
+    for (int i = 0; i < eventContent.length; i++) {
+      List<String> row = eventContent[i];
+      eventSheet.insertRowIterables(row, i + 1);
+    }
 
     log1p8GSheet.insertRowIterables(log1p8GHeader, 0);
     for (int i = 0; i < log1p8Gs.length; i++) {
@@ -1002,6 +1049,197 @@ class Dsim18Parser {
     ];
 
     return row;
+  }
+
+  List<List<String>> formatEvent1p8G(List<Event1p8G> event1p8Gs) {
+    List<int> counts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<List<String>> csvContent = List<List<String>>.generate(
+      1024,
+      (index) => List<String>.generate(
+        14,
+        (index) => '',
+        growable: false,
+      ),
+      growable: false,
+    );
+
+    for (Event1p8G event1p8G in event1p8Gs) {
+      String formattedDateTime =
+          DateFormat('yyyy-MM-dd HH:mm').format(event1p8G.dateTime);
+
+      switch (event1p8G.code) {
+        case 1:
+          {
+            int index = 0;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 2:
+          {
+            int index = 1;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 3:
+          {
+            int index = 2;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 4:
+          {
+            int index = 3;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 5:
+          {
+            int index = 4;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 6:
+          {
+            int index = 5;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 7:
+          {
+            int index = 6;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 8:
+          {
+            int index = 7;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 9:
+          {
+            int index = 8;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 10:
+          {
+            int index = 9;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 11:
+          {
+            int index = 10;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 12:
+          {
+            int index = 11;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 13:
+          {
+            int index = 12;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 15:
+          {
+            int index = 13;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+      }
+    }
+
+    return csvContent;
   }
 
   bool _parseSettingResult(List<int> rawData) {

@@ -392,8 +392,14 @@ class DsimRepository {
     return _dsim18Parser.get1p8GValueCollectionOfRFInOut(rfInOuts);
   }
 
-  Future<dynamic> export1p8GRecords(List<Log1p8G> log1p8Gs) async {
-    List<dynamic> result = await _dsim18Parser.export1p8GRecords(log1p8Gs);
+  Future<dynamic> export1p8GRecords({
+    required List<Log1p8G> log1p8Gs,
+    required List<Event1p8G> event1p8Gs,
+  }) async {
+    List<dynamic> result = await _dsim18Parser.export1p8GRecords(
+      log1p8Gs: log1p8Gs,
+      event1p8Gs: event1p8Gs,
+    );
     return result;
   }
 

@@ -145,7 +145,8 @@ class _DynamicBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Chart18Bloc, Chart18State>(
       builder: (context, state) {
-        if (state.dataRequestStatus.isRequestInProgress) {
+        if (state.eventDataRequestStatus.isRequestInProgress ||
+            state.dataRequestStatus.isRequestInProgress) {
           return HomeBottomNavigationBar(
             pageController: pageController,
             selectedIndex: selectedIndex,
@@ -374,8 +375,8 @@ class _LogChartListView extends StatelessWidget {
           );
         } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
           if (chart18State.dataRequestStatus.isNone) {
-            print('get logs');
-            context.read<Chart18Bloc>().add(const MoreDataRequested());
+            print('===== get log ======');
+            context.read<Chart18Bloc>().add(const LogDataRequested());
             return Stack(
               alignment: Alignment.center,
               children: [
@@ -416,7 +417,6 @@ class _LogChartListView extends StatelessWidget {
               ],
             );
           } else if (chart18State.dataRequestStatus.isRequestFailure) {
-            // context.read<Chart18Bloc>().add(const MoreDataRequested());
             return Stack(
               alignment: Alignment.center,
               children: [
@@ -437,47 +437,112 @@ class _LogChartListView extends StatelessWidget {
               ],
             );
           } else {
-            return Center(
-              child: SingleChildScrollView(
-                // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
-                // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-                key: const Key('ChartForm_Chart'),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      // ElevatedButton(
-                      //     onPressed: () async {
-                      //       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-                      //       // AndroidDeviceInfo androidInfo =
-                      //       //     await deviceInfo.androidInfo;
+            if (chart18State.eventDataRequestStatus.isNone) {
+              print('===== get event ======');
+              context.read<Chart18Bloc>().add(const EventDataRequested());
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  buildLoadingFormWithProgressiveChartView(
+                      chart18State.dateValueCollectionOfLog),
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(70, 158, 158, 158),
+                    ),
+                    child: const Center(
+                      child: SizedBox(
+                        width: CustomStyle.diameter,
+                        height: CustomStyle.diameter,
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            } else if (chart18State
+                .eventDataRequestStatus.isRequestInProgress) {
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  buildLoadingFormWithProgressiveChartView(
+                      chart18State.dateValueCollectionOfLog),
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(70, 158, 158, 158),
+                    ),
+                    child: const Center(
+                      child: SizedBox(
+                        width: CustomStyle.diameter,
+                        height: CustomStyle.diameter,
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            } else if (chart18State.eventDataRequestStatus.isRequestFailure) {
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  buildLoadingFormWithProgressiveChartView(
+                      chart18State.dateValueCollectionOfLog),
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(70, 158, 158, 158),
+                    ),
+                    child: const Center(
+                      child: SizedBox(
+                        width: CustomStyle.diameter,
+                        height: CustomStyle.diameter,
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return Center(
+                child: SingleChildScrollView(
+                  // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+                  // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+                  key: const Key('ChartForm_Chart'),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        // ElevatedButton(
+                        //     onPressed: () async {
+                        //       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+                        //       // AndroidDeviceInfo androidInfo =
+                        //       //     await deviceInfo.androidInfo;
 
-                      //       IosDeviceInfo iosDeviceInfo =
-                      //           await deviceInfo.iosInfo;
+                        //       IosDeviceInfo iosDeviceInfo =
+                        //           await deviceInfo.iosInfo;
 
-                      //       // print(androidInfo.model + ' ' + iosDeviceInfo.model);
-                      //       print(iosDeviceInfo.model);
-                      //     },
-                      //     child: Text('Mobile info')),
-                      buildChart(
-                        getChartDataOfLog1(
-                            dateValueCollectionOfLog:
-                                chart18State.dateValueCollectionOfLog),
-                      ),
-                      const SizedBox(
-                        height: 50.0,
-                      ),
-                      buildChart(
-                        getChartDataOfLog2(
-                            dateValueCollectionOfLog:
-                                chart18State.dateValueCollectionOfLog),
-                      ),
-                    ],
+                        //       // print(androidInfo.model + ' ' + iosDeviceInfo.model);
+                        //       print(iosDeviceInfo.model);
+                        //     },
+                        //     child: Text('Mobile info')),
+                        buildChart(
+                          getChartDataOfLog1(
+                              dateValueCollectionOfLog:
+                                  chart18State.dateValueCollectionOfLog),
+                        ),
+                        const SizedBox(
+                          height: 50.0,
+                        ),
+                        buildChart(
+                          getChartDataOfLog2(
+                              dateValueCollectionOfLog:
+                                  chart18State.dateValueCollectionOfLog),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
+              );
+            }
           }
         } else {
           return SingleChildScrollView(

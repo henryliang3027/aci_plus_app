@@ -2,6 +2,7 @@ import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/repositories/dsim18_parser.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 
@@ -15,7 +16,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
         super(const Chart18State()) {
     on<DataExported>(_onDataExported);
     on<DataShared>(_onDataShared);
-    on<LogEventRequested>(_onLogEventRequested);
+    on<LogDataRequested>(_onLogDataRequested);
+    on<EventDataRequested>(_onEventDataRequested);
     on<MoreDataRequested>(_onMoreDataRequested);
     on<RFInOutDataRequested>(_onRFInOutDataRequested);
     on<AllDataDownloaded>(_onAllDataDownloaded);
@@ -34,8 +36,10 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       allDataDownloadStatus: FormStatus.none,
     ));
 
-    final List<dynamic> result =
-        await _dsimRepository.export1p8GRecords(state.log1p8Gs);
+    final List<dynamic> result = await _dsimRepository.export1p8GRecords(
+      log1p8Gs: state.log1p8Gs,
+      event1p8Gs: state.event1p8Gs,
+    );
 
     if (result[0]) {
       emit(state.copyWith(
@@ -60,8 +64,10 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       allDataDownloadStatus: FormStatus.none,
     ));
 
-    final List<dynamic> result =
-        await _dsimRepository.export1p8GRecords(state.log1p8Gs);
+    final List<dynamic> result = await _dsimRepository.export1p8GRecords(
+      log1p8Gs: state.log1p8Gs,
+      event1p8Gs: state.event1p8Gs,
+    );
 
     if (result[0]) {
       emit(state.copyWith(
@@ -117,8 +123,10 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     Emitter<Chart18State> emit,
   ) async {
     if (event.isSuccessful) {
-      final List<dynamic> result =
-          await _dsimRepository.export1p8GRecords(event.log1p8Gs);
+      final List<dynamic> result = await _dsimRepository.export1p8GRecords(
+        log1p8Gs: event.log1p8Gs,
+        event1p8Gs: state.event1p8Gs,
+      );
 
       if (result[0]) {
         emit(state.copyWith(
@@ -139,8 +147,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     }
   }
 
-  Future<void> _onLogEventRequested(
-    LogEventRequested event,
+  Future<void> _onLogDataRequested(
+    LogDataRequested event,
     Emitter<Chart18State> emit,
   ) async {
     emit(state.copyWith(
@@ -151,61 +159,78 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       allDataDownloadStatus: FormStatus.none,
     ));
 
-    List<dynamic> resultOfLog1p8G = [];
-    List<dynamic> resultOfEvent1p8G = [];
-
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      resultOfLog1p8G = await _dsimRepository.requestCommand1p8GForLogChunk(0);
+      List<dynamic> resultOfLog1p8G =
+          await _dsimRepository.requestCommand1p8GForLogChunk(0);
 
       if (resultOfLog1p8G[0]) {
+        bool hasNextChunk = resultOfLog1p8G[1];
+        List<Log1p8G> log1p8Gs = resultOfLog1p8G[2];
+
+        List<List<ValuePair>> dateValueCollectionOfLog =
+            _dsimRepository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
+
+        emit(
+          state.copyWith(
+            dataRequestStatus: FormStatus.requestSuccess,
+            log1p8Gs: log1p8Gs,
+            dateValueCollectionOfLog: dateValueCollectionOfLog,
+            chunckIndex: 1,
+            hasNextChunk: hasNextChunk,
+          ),
+        );
+
         break;
       } else {
         if (i == 2) {
           emit(state.copyWith(
             dataRequestStatus: FormStatus.requestFailure,
-            errorMessage: 'Data loading failed',
+            errorMessage: 'Log data loading failed',
           ));
         } else {
           continue;
         }
       }
     }
+  }
 
-    if (resultOfLog1p8G[0]) {
-      // 最多 retry 3 次, 連續失敗3次就視為失敗
-      for (int i = 0; i < 3; i++) {
-        resultOfEvent1p8G = await _dsimRepository.requestCommand1p8GEvent();
+  Future<void> _onEventDataRequested(
+    EventDataRequested event,
+    Emitter<Chart18State> emit,
+  ) async {
+    emit(state.copyWith(
+      eventDataRequestStatus: FormStatus.requestInProgress,
+      // rfDataRequestStatus: FormStatus.none,
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataDownloadStatus: FormStatus.none,
+    ));
 
-        if (resultOfEvent1p8G[0]) {
-          List<Event1p8G> event1p8Gs = resultOfEvent1p8G[1];
-          bool hasNextChunk = resultOfLog1p8G[1];
-          List<Log1p8G> log1p8Gs = resultOfLog1p8G[2];
+    // 最多 retry 3 次, 連續失敗3次就視為失敗
+    for (int i = 0; i < 3; i++) {
+      List<dynamic> resultOfEvent1p8G =
+          await _dsimRepository.requestCommand1p8GEvent();
 
-          List<List<ValuePair>> dateValueCollectionOfLog =
-              _dsimRepository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
+      if (resultOfEvent1p8G[0]) {
+        List<Event1p8G> event1p8Gs = resultOfEvent1p8G[1];
 
-          emit(
-            state.copyWith(
-              dataRequestStatus: FormStatus.requestSuccess,
-              event1p8Gs: event1p8Gs,
-              log1p8Gs: log1p8Gs,
-              dateValueCollectionOfLog: dateValueCollectionOfLog,
-              chunckIndex: 1,
-              hasNextChunk: hasNextChunk,
-            ),
-          );
+        emit(
+          state.copyWith(
+            eventDataRequestStatus: FormStatus.requestSuccess,
+            event1p8Gs: event1p8Gs,
+          ),
+        );
 
-          break;
+        break;
+      } else {
+        if (i == 2) {
+          emit(state.copyWith(
+            eventDataRequestStatus: FormStatus.requestFailure,
+            errorMessage: 'Event Data loading failed',
+          ));
         } else {
-          if (i == 2) {
-            emit(state.copyWith(
-              dataRequestStatus: FormStatus.requestFailure,
-              errorMessage: 'Data loading failed',
-            ));
-          } else {
-            continue;
-          }
+          continue;
         }
       }
     }
