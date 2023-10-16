@@ -98,6 +98,7 @@ class DsimRepository {
         <DataKey, String>{
           DataKey.partName: a1p8g0.partName,
           DataKey.partNo: a1p8g0.partNo,
+          DataKey.partId: a1p8g0.partId,
           DataKey.serialNumber: a1p8g0.serialNumber,
           DataKey.firmwareVersion: a1p8g0.firmwareVersion,
           DataKey.mfgDate: a1p8g0.mfgDate,
@@ -212,6 +213,15 @@ class DsimRepository {
           DataKey.currentRFOutputPower: a1p8g2.currentRFOutputPower,
           DataKey.currentWorkingMode: a1p8g2.currentWorkingMode,
           DataKey.currentDetectedSplitOption: a1p8g2.currentDetectedSplitOption,
+          DataKey.rfOutputOperatingSlope: a1p8g2.rfOutputOperatingSlope,
+          DataKey.manualModePilot1RFOutputPower:
+              a1p8g2.manualModePilot1RFOutputPower,
+          DataKey.manualModePilot2RFOutputPower:
+              a1p8g2.manualModePilot2RFOutputPower,
+          DataKey.rfOutputLowChannelPower: a1p8g2.rfOutputLowChannelPower,
+          DataKey.rfOutputHighChannelPower: a1p8g2.rfOutputHighChannelPower,
+          DataKey.pilot1RFChannelFrequency: a1p8g2.pilot1RFChannelFrequency,
+          DataKey.pilot2RFChannelFrequency: a1p8g2.pilot2RFChannelFrequency,
           DataKey.unitStatusAlarmSeverity: a1p8g2.unitStatusAlarmSeverity,
           DataKey.rfInputPilotLowFrequencyAlarmSeverity:
               a1p8g2.rfInputPilotLowFrequencyAlarmSeverity,

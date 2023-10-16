@@ -54,6 +54,8 @@ class Setting18ConfigureBloc
       pilotFrequencyMode: event.pilotFrequencyMode,
       pilotFrequency1: event.pilotFrequency1,
       pilotFrequency2: event.pilotFrequency2,
+      manualModePilot1RFOutputPower: event.manualModePilot1RFOutputPower,
+      manualModePilot2RFOutputPower: event.manualModePilot2RFOutputPower,
       fwdAGCMode: event.fwdAGCMode,
       autoLevelControl: event.autoLevelControl,
       logInterval: event.logInterval,

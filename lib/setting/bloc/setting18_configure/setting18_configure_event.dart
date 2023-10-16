@@ -19,6 +19,8 @@ class Initialized extends Setting18ConfigureEvent {
     required this.pilotFrequencyMode,
     required this.pilotFrequency1,
     required this.pilotFrequency2,
+    required this.manualModePilot1RFOutputPower,
+    required this.manualModePilot2RFOutputPower,
     required this.fwdAGCMode,
     required this.autoLevelControl,
     required this.logInterval,
@@ -34,6 +36,8 @@ class Initialized extends Setting18ConfigureEvent {
   final String pilotFrequencyMode;
   final String pilotFrequency1;
   final String pilotFrequency2;
+  final String manualModePilot1RFOutputPower;
+  final String manualModePilot2RFOutputPower;
   final String fwdAGCMode;
   final String autoLevelControl;
   final String logInterval;
@@ -50,6 +54,8 @@ class Initialized extends Setting18ConfigureEvent {
         pilotFrequencyMode,
         pilotFrequency1,
         pilotFrequency2,
+        manualModePilot1RFOutputPower,
+        manualModePilot2RFOutputPower,
         fwdAGCMode,
         autoLevelControl,
         logInterval,

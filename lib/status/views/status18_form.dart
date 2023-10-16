@@ -36,8 +36,11 @@ class Status18Form extends StatelessWidget {
             _PowerSupplyCard(),
             _VoltageRippleCard(),
             _RFOutputPowerCard(),
-            // _PilotFrequency1Card(),
-            // _PilotFrequency2Card(),
+            _PilotFrequency1Card(),
+            _PilotFrequency2Card(),
+            _FirstChannelPowerLevelCard(),
+            _LastChannelPowerLevelCard(),
+            _OutputOperatingSlopeCard(),
           ],
         ),
       ),
@@ -1657,7 +1660,7 @@ class _PilotFrequency1Card extends StatelessWidget {
           '0';
 
       String currentPilotFrequency1 =
-          pilotFrequency1AlarmSeverity == '1' ? 'Lock' : 'Unlock';
+          pilotFrequency1AlarmSeverity == '1' ? 'Unlock' : 'Lock';
 
       return Card(
         color: Theme.of(context).colorScheme.onPrimary,
@@ -1780,7 +1783,7 @@ class _PilotFrequency2Card extends StatelessWidget {
           '0';
 
       String currentPilotFrequency2 =
-          pilotFrequency2AlarmSeverity == '1' ? 'Lock' : 'Unlock';
+          pilotFrequency2AlarmSeverity == '1' ? 'Unlock' : 'Lock';
 
       return Card(
         color: Theme.of(context).colorScheme.onPrimary,
@@ -1800,6 +1803,484 @@ class _PilotFrequency2Card extends StatelessWidget {
               pilotFrequencyAlarmState: pilotFrequency2AlarmState,
               pilotFrequencyAlarmSeverity: pilotFrequency2AlarmSeverity,
               currentPilotFrequency: currentPilotFrequency2,
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+          ],
+        ),
+      );
+    });
+  }
+}
+
+class _FirstChannelPowerLevelCard extends StatelessWidget {
+  const _FirstChannelPowerLevelCard({super.key});
+
+  Widget getFrequency({
+    required FormStatus loadingStatus,
+    // required String pilotFrequencyAlarmState,
+    // required String pilotFrequencyAlarmSeverity,
+    required String frequency,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return frequency.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              frequency,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        frequency.isEmpty ? 'N/A' : frequency,
+        style: TextStyle(
+          fontSize: fontSize,
+          // color: _getCurrentValueColor(
+          //   alarmState: pilotFrequencyAlarmState,
+          //   alarmSeverity: pilotFrequencyAlarmSeverity,
+          // ),
+        ),
+      );
+    } else {
+      return Text(
+        frequency.isEmpty ? 'N/A' : frequency,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget getOutputPower({
+    required FormStatus loadingStatus,
+    // required String pilotFrequencyAlarmState,
+    // required String pilotFrequencyAlarmSeverity,
+    required String outputPower,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return outputPower.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              outputPower,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        outputPower.isEmpty ? 'N/A' : outputPower,
+        style: TextStyle(
+          fontSize: fontSize,
+          // color: _getCurrentValueColor(
+          //   alarmState: pilotFrequencyAlarmState,
+          //   alarmSeverity: pilotFrequencyAlarmSeverity,
+          // ),
+        ),
+      );
+    } else {
+      return Text(
+        outputPower.isEmpty ? 'N/A' : outputPower,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget pilotFrequencyBlock({
+    required FormStatus loadingStatus,
+    // required String pilotFrequencyAlarmState,
+    required String firstChannelFrequency,
+    required String rfOutputLowChannelPower,
+    required String frequencyTitle,
+    required String outputPowerTitle,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getFrequency(
+                      loadingStatus: loadingStatus,
+                      frequency: firstChannelFrequency,
+                      fontSize: 32,
+                    ),
+                    Text(
+                      frequencyTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getOutputPower(
+                      loadingStatus: loadingStatus,
+                      outputPower: rfOutputLowChannelPower,
+                      fontSize: 32,
+                    ),
+                    Text(
+                      outputPowerTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      String firstChannelFrequency =
+          state.characteristicData[DataKey.pilot1RFChannelFrequency] ?? '';
+
+      String rfOutputLowChannelPower =
+          state.characteristicData[DataKey.rfOutputLowChannelPower] ?? '';
+
+      return Card(
+          color: Theme.of(context).colorScheme.onPrimary,
+          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
+                child: Text(
+                  AppLocalizations.of(context).firstChannelPowerLevel,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+              pilotFrequencyBlock(
+                loadingStatus: state.loadingStatus,
+                // pilotFrequencyAlarmState: pilotFrequency2AlarmState,
+                firstChannelFrequency: firstChannelFrequency,
+                rfOutputLowChannelPower: rfOutputLowChannelPower,
+                frequencyTitle: AppLocalizations.of(context).level,
+                outputPowerTitle: AppLocalizations.of(context).frequency,
+              ),
+            ],
+          ));
+    });
+  }
+}
+
+class _LastChannelPowerLevelCard extends StatelessWidget {
+  const _LastChannelPowerLevelCard({super.key});
+
+  Widget getFrequency({
+    required FormStatus loadingStatus,
+    // required String pilotFrequencyAlarmState,
+    // required String pilotFrequencyAlarmSeverity,
+    required String frequency,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return frequency.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              frequency,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        frequency.isEmpty ? 'N/A' : frequency,
+        style: TextStyle(
+          fontSize: fontSize,
+          // color: _getCurrentValueColor(
+          //   alarmState: pilotFrequencyAlarmState,
+          //   alarmSeverity: pilotFrequencyAlarmSeverity,
+          // ),
+        ),
+      );
+    } else {
+      return Text(
+        frequency.isEmpty ? 'N/A' : frequency,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget getOutputPower({
+    required FormStatus loadingStatus,
+    // required String pilotFrequencyAlarmState,
+    // required String pilotFrequencyAlarmSeverity,
+    required String outputPower,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return outputPower.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              outputPower,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        outputPower.isEmpty ? 'N/A' : outputPower,
+        style: TextStyle(
+          fontSize: fontSize,
+          // color: _getCurrentValueColor(
+          //   alarmState: pilotFrequencyAlarmState,
+          //   alarmSeverity: pilotFrequencyAlarmSeverity,
+          // ),
+        ),
+      );
+    } else {
+      return Text(
+        outputPower.isEmpty ? 'N/A' : outputPower,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget pilotFrequencyBlock({
+    required FormStatus loadingStatus,
+    // required String pilotFrequencyAlarmState,
+    required String lastChannelFrequency,
+    required String rfOutputHighChannelPower,
+    required String frequencyTitle,
+    required String outputPowerTitle,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getFrequency(
+                      loadingStatus: loadingStatus,
+                      frequency: lastChannelFrequency,
+                      fontSize: 32,
+                    ),
+                    Text(
+                      frequencyTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getOutputPower(
+                      loadingStatus: loadingStatus,
+                      outputPower: rfOutputHighChannelPower,
+                      fontSize: 32,
+                    ),
+                    Text(
+                      outputPowerTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      String lastChannelFrequency =
+          state.characteristicData[DataKey.pilot2RFChannelFrequency] ?? '';
+
+      String rfOutputHighChannelPower =
+          state.characteristicData[DataKey.rfOutputHighChannelPower] ?? '';
+
+      return Card(
+          color: Theme.of(context).colorScheme.onPrimary,
+          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
+                child: Text(
+                  AppLocalizations.of(context).lastChannelPowerLevel,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+              pilotFrequencyBlock(
+                loadingStatus: state.loadingStatus,
+                // pilotFrequencyAlarmState: pilotFrequency2AlarmState,
+                lastChannelFrequency: lastChannelFrequency,
+                rfOutputHighChannelPower: rfOutputHighChannelPower,
+                frequencyTitle: AppLocalizations.of(context).level,
+                outputPowerTitle: AppLocalizations.of(context).frequency,
+              ),
+            ],
+          ));
+    });
+  }
+}
+
+class _OutputOperatingSlopeCard extends StatelessWidget {
+  const _OutputOperatingSlopeCard({super.key});
+
+  Widget getOutputOperatingSlope({
+    required FormStatus loadingStatus,
+    required String outputOperatingSlope,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return outputOperatingSlope.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              outputOperatingSlope,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        outputOperatingSlope.isEmpty ? 'N/A' : outputOperatingSlope,
+        style: TextStyle(
+          fontSize: fontSize,
+          // color: _getCurrentValueColor(
+          //   alarmState: pilotFrequencyAlarmState,
+          //   alarmSeverity: pilotFrequencyAlarmSeverity,
+          // ),
+        ),
+      );
+    } else {
+      return Text(
+        outputOperatingSlope.isEmpty ? 'N/A' : outputOperatingSlope,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget outputOperatingSlopeBlock({
+    required FormStatus loadingStatus,
+    required String outputOperatingSlope,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getOutputOperatingSlope(
+                      loadingStatus: loadingStatus,
+                      outputOperatingSlope: outputOperatingSlope,
+                      fontSize: 40,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      String outputOperatingSlope =
+          state.characteristicData[DataKey.rfOutputOperatingSlope] ?? '';
+
+      return Card(
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
+              child: Text(
+                '${AppLocalizations.of(context).operatingSlope} (${CustomStyle.dB})',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            outputOperatingSlopeBlock(
+              loadingStatus: state.loadingStatus,
+              outputOperatingSlope: outputOperatingSlope,
             ),
             const SizedBox(
               height: 20.0,

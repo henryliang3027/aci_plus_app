@@ -14,6 +14,8 @@ class Setting18ConfigureState extends Equatable {
     this.pilotFrequencyMode = '',
     this.pilotFrequency1 = '',
     this.pilotFrequency2 = '',
+    this.manualModePilot1RFOutputPower = '',
+    this.manualModePilot2RFOutputPower = '',
     this.fwdAGCMode = '',
     this.autoLevelControl = '',
     this.logInterval = '30',
@@ -37,6 +39,8 @@ class Setting18ConfigureState extends Equatable {
   final String pilotFrequencyMode;
   final String pilotFrequency1;
   final String pilotFrequency2;
+  final String manualModePilot1RFOutputPower;
+  final String manualModePilot2RFOutputPower;
   final String fwdAGCMode;
   final String autoLevelControl;
   final String logInterval;
@@ -60,6 +64,8 @@ class Setting18ConfigureState extends Equatable {
     String? pilotFrequencyMode,
     String? pilotFrequency1,
     String? pilotFrequency2,
+    String? manualModePilot1RFOutputPower,
+    String? manualModePilot2RFOutputPower,
     String? fwdAGCMode,
     String? autoLevelControl,
     String? logInterval,
@@ -87,6 +93,10 @@ class Setting18ConfigureState extends Equatable {
       pilotFrequencyMode: pilotFrequencyMode ?? this.pilotFrequencyMode,
       pilotFrequency1: pilotFrequency1 ?? this.pilotFrequency1,
       pilotFrequency2: pilotFrequency2 ?? this.pilotFrequency2,
+      manualModePilot1RFOutputPower:
+          manualModePilot1RFOutputPower ?? this.manualModePilot1RFOutputPower,
+      manualModePilot2RFOutputPower:
+          manualModePilot2RFOutputPower ?? this.manualModePilot2RFOutputPower,
       fwdAGCMode: fwdAGCMode ?? this.fwdAGCMode,
       autoLevelControl: autoLevelControl ?? this.autoLevelControl,
       logInterval: logInterval ?? this.logInterval,
@@ -114,6 +124,8 @@ class Setting18ConfigureState extends Equatable {
         pilotFrequencyMode,
         pilotFrequency1,
         pilotFrequency2,
+        manualModePilot1RFOutputPower,
+        manualModePilot2RFOutputPower,
         fwdAGCMode,
         autoLevelControl,
         logInterval,

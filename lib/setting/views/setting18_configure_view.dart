@@ -31,6 +31,12 @@ class Setting18ConfigureView extends StatelessWidget {
       TextEditingController();
   final TextEditingController pilotFrequency2TextEditingController =
       TextEditingController();
+  final TextEditingController
+      manualModePilot1RFOutputPowerTextEditingController =
+      TextEditingController();
+  final TextEditingController
+      manualModePilot2RFOutputPowerTextEditingController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +62,13 @@ class Setting18ConfigureView extends StatelessWidget {
     String pilotFrequency2 =
         homeState.characteristicData[DataKey.pilotFrequency2] ?? '';
 
+    String manualModePilot1RFOutputPower =
+        homeState.characteristicData[DataKey.manualModePilot1RFOutputPower] ??
+            '';
+    String manualModePilot2RFOutputPower =
+        homeState.characteristicData[DataKey.manualModePilot2RFOutputPower] ??
+            '';
+
     String fwdAgcMode = homeState.characteristicData[DataKey.agcMode] ?? '';
     String autoLevelControl =
         homeState.characteristicData[DataKey.alcMode] ?? '';
@@ -73,6 +86,8 @@ class Setting18ConfigureView extends StatelessWidget {
           pilotFrequencyMode: pilotFrequencyMode,
           pilotFrequency1: pilotFrequency1,
           pilotFrequency2: pilotFrequency2,
+          manualModePilot1RFOutputPower: manualModePilot1RFOutputPower,
+          manualModePilot2RFOutputPower: manualModePilot2RFOutputPower,
           fwdAGCMode: fwdAgcMode,
           autoLevelControl: autoLevelControl,
           logInterval: logInterval,
@@ -233,6 +248,10 @@ class Setting18ConfigureView extends StatelessWidget {
               state.lastChannelLoadingLevel;
           pilotFrequency1TextEditingController.text = state.pilotFrequency1;
           pilotFrequency2TextEditingController.text = state.pilotFrequency2;
+          manualModePilot1RFOutputPowerTextEditingController.text =
+              state.manualModePilot1RFOutputPower;
+          manualModePilot2RFOutputPowerTextEditingController.text =
+              state.manualModePilot2RFOutputPower;
         }
       },
       child: Scaffold(
@@ -267,10 +286,16 @@ class Setting18ConfigureView extends StatelessWidget {
                   ),
                   const _PilotFrequencyMode(),
                   _PilotFrequency1(
-                    textEditingController: pilotFrequency1TextEditingController,
+                    pilotFrequency1TextEditingController:
+                        pilotFrequency1TextEditingController,
+                    manualModePilot1RFOutputPowerTextEditingController:
+                        manualModePilot1RFOutputPowerTextEditingController,
                   ),
                   _PilotFrequency2(
-                    textEditingController: pilotFrequency2TextEditingController,
+                    pilotFrequency2TextEditingController:
+                        pilotFrequency2TextEditingController,
+                    manualModePilot2RFOutputPowerTextEditingController:
+                        manualModePilot2RFOutputPowerTextEditingController,
                   ),
                   const _FwdAGCMode(),
                   const _AutoLevelControl(),
@@ -969,7 +994,7 @@ class _LastChannelLoading extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 60,
+              height: 40,
             ),
           ],
         );
@@ -1082,10 +1107,13 @@ class _PilotFrequencyMode extends StatelessWidget {
 class _PilotFrequency1 extends StatelessWidget {
   const _PilotFrequency1({
     super.key,
-    required this.textEditingController,
+    required this.pilotFrequency1TextEditingController,
+    required this.manualModePilot1RFOutputPowerTextEditingController,
   });
 
-  final TextEditingController textEditingController;
+  final TextEditingController pilotFrequency1TextEditingController;
+  final TextEditingController
+      manualModePilot1RFOutputPowerTextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1093,7 +1121,7 @@ class _PilotFrequency1 extends StatelessWidget {
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(
-            bottom: 40.0,
+            bottom: 16.0,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1110,29 +1138,74 @@ class _PilotFrequency1 extends StatelessWidget {
                   ),
                 ),
               ),
-              TextField(
-                controller: textEditingController,
-                key: const Key('setting18Form_pilotFrequency1Input_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
                 ),
-                enabled: state.editMode,
-                textInputAction: TextInputAction.done,
-                onChanged: (frequency) {
-                  context
-                      .read<Setting18ConfigureBloc>()
-                      .add(PilotFrequency1Changed(frequency));
-                },
-                maxLength: 40,
-                decoration: InputDecoration(
-                  label: Text(AppLocalizations.of(context).frequency),
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: const EdgeInsets.all(10.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.white,
-                  counterText: '',
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: TextField(
+                        controller: pilotFrequency1TextEditingController,
+                        key: const Key(
+                            'setting18Form_pilotFrequency1Input_textField'),
+                        style: const TextStyle(
+                          fontSize: CustomStyle.sizeXL,
+                        ),
+                        enabled: state.editMode,
+                        textInputAction: TextInputAction.done,
+                        onChanged: (frequency) {
+                          context
+                              .read<Setting18ConfigureBloc>()
+                              .add(PilotFrequency1Changed(frequency));
+                        },
+                        maxLength: 40,
+                        decoration: InputDecoration(
+                          label: Text(AppLocalizations.of(context).frequency),
+                          border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4.0))),
+                          contentPadding: const EdgeInsets.all(10.0),
+                          isDense: true,
+                          filled: true,
+                          fillColor: Colors.white,
+                          counterText: '',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Flexible(
+                      flex: 2,
+                      child: TextField(
+                        controller:
+                            manualModePilot1RFOutputPowerTextEditingController,
+                        key: const Key(
+                            'setting18Form_manualModePilot1RFOutputPowerInput_textField'),
+                        style: const TextStyle(
+                          fontSize: CustomStyle.sizeXL,
+                        ),
+                        enabled: false,
+                        textInputAction: TextInputAction.done,
+                        onChanged: null,
+                        maxLength: 40,
+                        decoration: InputDecoration(
+                          label: Text(AppLocalizations.of(context).level),
+                          border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4.0))),
+                          contentPadding: const EdgeInsets.all(8.0),
+                          isDense: true,
+                          filled: true,
+                          fillColor: Colors.white,
+                          counterText: '',
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -1146,10 +1219,13 @@ class _PilotFrequency1 extends StatelessWidget {
 class _PilotFrequency2 extends StatelessWidget {
   const _PilotFrequency2({
     super.key,
-    required this.textEditingController,
+    required this.pilotFrequency2TextEditingController,
+    required this.manualModePilot2RFOutputPowerTextEditingController,
   });
 
-  final TextEditingController textEditingController;
+  final TextEditingController pilotFrequency2TextEditingController;
+  final TextEditingController
+      manualModePilot2RFOutputPowerTextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1157,7 +1233,7 @@ class _PilotFrequency2 extends StatelessWidget {
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(
-            bottom: 40.0,
+            bottom: 16.0,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1174,29 +1250,74 @@ class _PilotFrequency2 extends StatelessWidget {
                   ),
                 ),
               ),
-              TextField(
-                controller: textEditingController,
-                key: const Key('setting18Form_pilotFrequency2Input_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
                 ),
-                enabled: state.editMode,
-                textInputAction: TextInputAction.done,
-                onChanged: (frequency) {
-                  context
-                      .read<Setting18ConfigureBloc>()
-                      .add(PilotFrequency2Changed(frequency));
-                },
-                maxLength: 40,
-                decoration: InputDecoration(
-                  label: Text(AppLocalizations.of(context).frequency),
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: const EdgeInsets.all(10.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.white,
-                  counterText: '',
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: TextField(
+                        controller: pilotFrequency2TextEditingController,
+                        key: const Key(
+                            'setting18Form_pilotFrequency2Input_textField'),
+                        style: const TextStyle(
+                          fontSize: CustomStyle.sizeXL,
+                        ),
+                        enabled: state.editMode,
+                        textInputAction: TextInputAction.done,
+                        onChanged: (frequency) {
+                          context
+                              .read<Setting18ConfigureBloc>()
+                              .add(PilotFrequency2Changed(frequency));
+                        },
+                        maxLength: 40,
+                        decoration: InputDecoration(
+                          label: Text(AppLocalizations.of(context).frequency),
+                          border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4.0))),
+                          contentPadding: const EdgeInsets.all(10.0),
+                          isDense: true,
+                          filled: true,
+                          fillColor: Colors.white,
+                          counterText: '',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Flexible(
+                      flex: 2,
+                      child: TextField(
+                        controller:
+                            manualModePilot2RFOutputPowerTextEditingController,
+                        key: const Key(
+                            'setting18Form_manualModePilot2RFOutputPowerInput_textField'),
+                        style: const TextStyle(
+                          fontSize: CustomStyle.sizeXL,
+                        ),
+                        enabled: false,
+                        textInputAction: TextInputAction.done,
+                        onChanged: null,
+                        maxLength: 40,
+                        decoration: InputDecoration(
+                          label: Text(AppLocalizations.of(context).level),
+                          border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4.0))),
+                          contentPadding: const EdgeInsets.all(8.0),
+                          isDense: true,
+                          filled: true,
+                          fillColor: Colors.white,
+                          counterText: '',
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

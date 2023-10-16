@@ -44,6 +44,7 @@ class Dsim18Parser {
   A1P8G0 decodeA1P8G0(List<int> rawData) {
     String partName = '';
     String partNo = '';
+    String partId = '';
     String serialNumber = '';
     String firmwareVersion = '';
     String mfgDate = '';
@@ -82,6 +83,16 @@ class Dsim18Parser {
     String day = rawData[70].toString().padLeft(2, '0');
     mfgDate = '$year/$month/$day';
 
+    // 0: MFTJ (預留, app不適用)
+    // 1: SDLE
+    // 2: MOTO BLE
+    // 3: MOTO MB
+    // 4: C-Cor Node
+    // 5: C-Cor TR
+    // 6: C-Cor BR
+    // 7: C-Cor LE
+    partId = rawData[71].toString();
+
     // 解析 coordinates
     for (int i = 72; i <= 110; i++) {
       coordinate += String.fromCharCode(rawData[i]);
@@ -102,6 +113,7 @@ class Dsim18Parser {
     return A1P8G0(
       partName: partName,
       partNo: partNo,
+      partId: partId,
       serialNumber: serialNumber,
       firmwareVersion: firmwareVersion,
       mfgDate: mfgDate,
@@ -491,6 +503,13 @@ class Dsim18Parser {
     String currentRFOutputPower = '';
     String currentWorkingMode = '';
     String currentDetectedSplitOption = '';
+    String rfOutputOperatingSlope = '';
+    String manualModePilot1RFOutputPower = '';
+    String manualModePilot2RFOutputPower = '';
+    String rfOutputLowChannelPower = '';
+    String rfOutputHighChannelPower = '';
+    String pilot1RFChannelFrequency = '';
+    String pilot2RFChannelFrequency = '';
     Alarm unitStatusAlarmSeverity = Alarm.medium;
     Alarm rfInputPilotLowFrequencyAlarmSeverity = Alarm.medium;
     Alarm rfInputPilotHighFrequencyAlarmSeverity = Alarm.medium;
@@ -557,6 +576,71 @@ class Dsim18Parser {
     // 解析 currentDetectedSplitOption
     currentDetectedSplitOption = rawData[71].toString();
 
+    // 解析 rfOutputLowChannelPower
+    List<int> rawRFOutputLowChannelPower = rawData.sublist(92, 94);
+    ByteData rawRFOutputLowChannelPowerByteData =
+        ByteData.sublistView(Uint8List.fromList(rawRFOutputLowChannelPower));
+
+    rfOutputLowChannelPower =
+        (rawRFOutputLowChannelPowerByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 rfOutputHighChannelPower
+    List<int> rawRFOutputHighChannelPower = rawData.sublist(94, 96);
+    ByteData rawRFOutputHighChannelPowerByteData =
+        ByteData.sublistView(Uint8List.fromList(rawRFOutputHighChannelPower));
+
+    rfOutputHighChannelPower =
+        (rawRFOutputHighChannelPowerByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 rfOutputOperatingSlope
+    List<int> rawRFOutputOperatingSlope = rawData.sublist(96, 98);
+    ByteData rawRFOutputOperatingSlopeByteData =
+        ByteData.sublistView(Uint8List.fromList(rawRFOutputOperatingSlope));
+
+    rfOutputOperatingSlope =
+        (rawRFOutputOperatingSlopeByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 manualModePilot1RFOutputPower
+    List<int> rawManualModePilot1RFOutputPower = rawData.sublist(98, 100);
+    ByteData rawManualModePilot1RFOutputPowerByteData = ByteData.sublistView(
+        Uint8List.fromList(rawManualModePilot1RFOutputPower));
+
+    manualModePilot1RFOutputPower =
+        (rawManualModePilot1RFOutputPowerByteData.getInt16(0, Endian.little) /
+                10)
+            .toStringAsFixed(1);
+
+    // 解析 manualModePilot2RFOutputPower
+    List<int> rawManualModePilot2RFOutputPower = rawData.sublist(100, 102);
+    ByteData rawManualModePilot2RFOutputPowerByteData = ByteData.sublistView(
+        Uint8List.fromList(rawManualModePilot2RFOutputPower));
+
+    manualModePilot2RFOutputPower =
+        (rawManualModePilot2RFOutputPowerByteData.getInt16(0, Endian.little) /
+                10)
+            .toStringAsFixed(1);
+
+    // 解析 pilot1RFChannelFrequency
+    List<int> rawPilot1RFChannelFrequency = rawData.sublist(102, 104);
+    ByteData rawPilot1RFChannelFrequencyByteData =
+        ByteData.sublistView(Uint8List.fromList(rawPilot1RFChannelFrequency));
+
+    pilot1RFChannelFrequency =
+        (rawPilot1RFChannelFrequencyByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 pilot2RFChannelFrequency
+    List<int> rawPilot2RFChannelFrequency = rawData.sublist(104, 106);
+    ByteData rawPilot2RFChannelFrequencyByteData =
+        ByteData.sublistView(Uint8List.fromList(rawPilot2RFChannelFrequency));
+
+    pilot2RFChannelFrequency =
+        (rawPilot2RFChannelFrequencyByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
     // 解析 rfInputPilotLowFrequencyAlarmSeverity
     int rfInputPilotLowFrequencyStatus = rawData[124];
     rfInputPilotLowFrequencyAlarmSeverity =
@@ -610,6 +694,13 @@ class Dsim18Parser {
       currentRFOutputPower: currentRFOutputPower,
       currentWorkingMode: currentWorkingMode,
       currentDetectedSplitOption: currentDetectedSplitOption,
+      rfOutputOperatingSlope: rfOutputOperatingSlope,
+      manualModePilot1RFOutputPower: manualModePilot1RFOutputPower,
+      manualModePilot2RFOutputPower: manualModePilot2RFOutputPower,
+      rfOutputLowChannelPower: rfOutputLowChannelPower,
+      rfOutputHighChannelPower: rfOutputHighChannelPower,
+      pilot1RFChannelFrequency: pilot1RFChannelFrequency,
+      pilot2RFChannelFrequency: pilot2RFChannelFrequency,
       unitStatusAlarmSeverity: unitStatusAlarmSeverity.name,
       rfInputPilotLowFrequencyAlarmSeverity:
           rfInputPilotLowFrequencyAlarmSeverity.name,
@@ -1406,6 +1497,7 @@ class A1P8G0 {
   const A1P8G0({
     required this.partName,
     required this.partNo,
+    required this.partId,
     required this.serialNumber,
     required this.firmwareVersion,
     required this.mfgDate,
@@ -1415,6 +1507,7 @@ class A1P8G0 {
 
   final String partName;
   final String partNo;
+  final String partId;
   final String serialNumber;
   final String firmwareVersion;
   final String mfgDate;
@@ -1532,6 +1625,13 @@ class A1P8G2 {
     required this.currentRFOutputPower,
     required this.currentWorkingMode,
     required this.currentDetectedSplitOption,
+    required this.rfOutputOperatingSlope,
+    required this.manualModePilot1RFOutputPower,
+    required this.manualModePilot2RFOutputPower,
+    required this.rfOutputLowChannelPower,
+    required this.rfOutputHighChannelPower,
+    required this.pilot1RFChannelFrequency,
+    required this.pilot2RFChannelFrequency,
     required this.unitStatusAlarmSeverity,
     required this.rfInputPilotLowFrequencyAlarmSeverity,
     required this.rfInputPilotHighFrequencyAlarmSeverity,
@@ -1552,6 +1652,13 @@ class A1P8G2 {
   final String currentRFOutputPower;
   final String currentWorkingMode;
   final String currentDetectedSplitOption;
+  final String rfOutputOperatingSlope;
+  final String manualModePilot1RFOutputPower;
+  final String manualModePilot2RFOutputPower;
+  final String rfOutputLowChannelPower;
+  final String rfOutputHighChannelPower;
+  final String pilot1RFChannelFrequency;
+  final String pilot2RFChannelFrequency;
   final String unitStatusAlarmSeverity;
   final String rfInputPilotLowFrequencyAlarmSeverity;
   final String rfInputPilotHighFrequencyAlarmSeverity;
