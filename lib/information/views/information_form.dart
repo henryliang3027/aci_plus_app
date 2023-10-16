@@ -39,6 +39,11 @@ class InformationForm extends StatelessWidget {
       bottomNavigationBar: HomeBottomNavigationBar(
         pageController: pageController,
         selectedIndex: 2,
+        onTap: (int index) {
+          pageController.jumpToPage(
+            index,
+          );
+        },
       ),
     );
   }

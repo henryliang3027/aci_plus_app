@@ -13,17 +13,26 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
   })  : _dsimRepository = dsimRepository,
         super(const Information18State()) {
     on<AlarmUpdated>(_onAlarmUpdated);
+    on<AlarmPeriodicUpdateRequested>(_onAlarmPeriodicUpdateRequested);
+    on<AlarmPeriodicUpdateCanceled>(_onAlarmPeriodicUpdateCanceled);
+  }
 
-    add(const AlarmUpdated());
+  Timer? _timer;
+  final DsimRepository _dsimRepository;
+
+  void _onAlarmPeriodicUpdateRequested(
+    AlarmPeriodicUpdateRequested event,
+    Emitter<Information18State> emit,
+  ) {
+    if (_timer != null) {
+      _timer!.cancel();
+    }
 
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       print('alarm trigger timer: ${timer.tick}');
       add(const AlarmUpdated());
     });
   }
-
-  late final Timer _timer;
-  final DsimRepository _dsimRepository;
 
   Future<void> _onAlarmUpdated(
     AlarmUpdated event,
@@ -37,6 +46,7 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
       String alarmPServerity = result[3];
 
       emit(state.copyWith(
+        status: FormStatus.requestSuccess,
         alarmUSeverity: alarmUServerity,
         alarmTSeverity: alarmTServerity,
         alarmPSeverity: alarmPServerity,
@@ -44,10 +54,13 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     }
   }
 
-  @override
-  Future<void> close() {
-    _timer.cancel();
-    print('alarm trigger timer is canceled');
-    return super.close();
+  void _onAlarmPeriodicUpdateCanceled(
+    AlarmPeriodicUpdateCanceled event,
+    Emitter<Information18State> emit,
+  ) {
+    if (_timer != null) {
+      _timer!.cancel();
+      print('alarm trigger timer is canceled');
+    }
   }
 }

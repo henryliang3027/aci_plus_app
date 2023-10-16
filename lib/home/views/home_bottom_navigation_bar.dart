@@ -1,16 +1,20 @@
 import 'package:dsim_app/core/custom_icons/custom_icons.dart';
+import 'package:dsim_app/information/bloc/information18_bloc/information18_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeBottomNavigationBar extends StatelessWidget {
   const HomeBottomNavigationBar({
     Key? key,
     required this.selectedIndex,
     required this.pageController,
+    required this.onTap,
     this.enableTap = true,
   }) : super(key: key);
 
   final int selectedIndex;
   final PageController pageController;
+  final ValueChanged<int> onTap;
   final bool enableTap;
 
   @override
@@ -54,13 +58,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
       selectedFontSize: 10.0,
       selectedItemColor: Theme.of(context).primaryColor,
       unselectedItemColor: Theme.of(context).hintColor,
-      onTap: enableTap
-          ? (int index) {
-              pageController.jumpToPage(
-                index,
-              );
-            }
-          : null,
+      onTap: enableTap ? onTap : null,
     );
   }
 }

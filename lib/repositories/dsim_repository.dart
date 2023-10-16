@@ -2299,7 +2299,7 @@ class DsimRepository {
       Command.setLocCCmd
     ];
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i <= 3; i++) {
       int commandIndex = i + 40;
       try {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
@@ -2477,21 +2477,21 @@ class DsimRepository {
     }
 
     // 設定後重新讀取 working mode 來比對是否設定成功
-
     List<dynamic> resultOfCommand5 = await requestCommand5();
 
     if (resultOfCommand5[0]) {
+      // 設定 AGC mode 如果失敗會變為 TGC mode
+      _characteristicDataStreamController
+          .add({DataKey.workingMode: resultOfCommand5[1]});
+      _characteristicDataStreamController
+          .add({DataKey.currentPilot: resultOfCommand5[2]});
+      _characteristicDataStreamController
+          .add({DataKey.currentPilotMode: resultOfCommand5[3]});
+
+      _characteristicDataStreamController
+          .add({DataKey.currentAttenuation: currentAttenuation.toString()});
+
       if (workingMode == resultOfCommand5[1]) {
-        _characteristicDataStreamController
-            .add({DataKey.workingMode: resultOfCommand5[1]});
-        _characteristicDataStreamController
-            .add({DataKey.currentPilot: resultOfCommand5[2]});
-        _characteristicDataStreamController
-            .add({DataKey.currentPilotMode: resultOfCommand5[3]});
-
-        _characteristicDataStreamController
-            .add({DataKey.currentAttenuation: currentAttenuation.toString()});
-
         return true;
       } else {
         return false;

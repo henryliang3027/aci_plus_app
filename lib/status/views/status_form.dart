@@ -39,6 +39,11 @@ class StatusForm extends StatelessWidget {
       bottomNavigationBar: HomeBottomNavigationBar(
         pageController: pageController,
         selectedIndex: 1,
+        onTap: (int index) {
+          pageController.jumpToPage(
+            index,
+          );
+        },
       ),
     );
   }

@@ -151,11 +151,21 @@ class _DynamicBottomNavigationBar extends StatelessWidget {
             pageController: pageController,
             selectedIndex: selectedIndex,
             enableTap: false,
+            onTap: (int index) {
+              pageController.jumpToPage(
+                index,
+              );
+            },
           );
         } else {
           return HomeBottomNavigationBar(
             pageController: pageController,
             selectedIndex: selectedIndex,
+            onTap: (int index) {
+              pageController.jumpToPage(
+                index,
+              );
+            },
           );
         }
       },

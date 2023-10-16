@@ -39,6 +39,16 @@ class Information18Form extends StatelessWidget {
       bottomNavigationBar: HomeBottomNavigationBar(
         pageController: pageController,
         selectedIndex: 2,
+        onTap: (int index) {
+          if (index != 2) {
+            context
+                .read<Information18Bloc>()
+                .add(const AlarmPeriodicUpdateCanceled());
+          }
+          pageController.jumpToPage(
+            index,
+          );
+        },
       ),
     );
   }
@@ -376,29 +386,37 @@ class _AlarmCard extends StatelessWidget {
       );
     }
 
-    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+    return Builder(builder: (context) {
+      HomeState homeState = context.watch<HomeBloc>().state;
+      Information18State information18State =
+          context.watch<Information18Bloc>().state;
       String alarmUSeverity =
-          state.characteristicData[DataKey.unitStatusAlarmSeverity] ??
+          homeState.characteristicData[DataKey.unitStatusAlarmSeverity] ??
               'default';
       String alarmTSeverity =
-          state.characteristicData[DataKey.temperatureAlarmSeverity] ??
+          homeState.characteristicData[DataKey.temperatureAlarmSeverity] ??
               'default';
       String alarmPSeverity =
-          state.characteristicData[DataKey.voltageAlarmSeverity] ?? 'default';
+          homeState.characteristicData[DataKey.voltageAlarmSeverity] ??
+              'default';
 
-      if (state.loadingStatus.isRequestSuccess) {
-        // informationState 的 alarmRSeverity, alarmTSeverity, alarmPSeverity 還是 'default' 時代表還沒有觸發定期讀取資料, 這時候用 homeState 讀到的值來顯示
-        // 觸發定期更新後就持續顯示 informationState 的值
-        return BlocProvider(
-          create: (context) => Information18Bloc(
-              dsimRepository: RepositoryProvider.of<DsimRepository>(context)),
-          child: BlocBuilder<Information18Bloc, Information18State>(
-            builder: (context, informationState) => buildAlarmCard(
-              alarmUSeverity: informationState.alarmUSeverity,
-              alarmTSeverity: informationState.alarmTSeverity,
-              alarmPSeverity: informationState.alarmPSeverity,
-            ),
-          ),
+      if (homeState.loadingStatus.isRequestSuccess) {
+        if (information18State.status == FormStatus.none) {
+          context
+              .read<Information18Bloc>()
+              .add(const AlarmPeriodicUpdateRequested());
+        }
+
+        return buildAlarmCard(
+          alarmUSeverity: information18State.alarmUSeverity == 'defaule'
+              ? alarmUSeverity
+              : information18State.alarmUSeverity,
+          alarmTSeverity: information18State.alarmTSeverity == 'defaule'
+              ? alarmTSeverity
+              : information18State.alarmTSeverity,
+          alarmPSeverity: information18State.alarmPSeverity == 'defaule'
+              ? alarmPSeverity
+              : information18State.alarmPSeverity,
         );
       } else {
         // homeState formStatus failure or inProgress 時都用 homeState 讀到的值來顯示

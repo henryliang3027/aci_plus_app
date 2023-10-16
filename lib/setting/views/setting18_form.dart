@@ -32,6 +32,11 @@ class Setting18Form extends StatelessWidget {
       bottomNavigationBar: HomeBottomNavigationBar(
         pageController: pageController,
         selectedIndex: 0,
+        onTap: (int index) {
+          pageController.jumpToPage(
+            index,
+          );
+        },
       ),
     );
   }

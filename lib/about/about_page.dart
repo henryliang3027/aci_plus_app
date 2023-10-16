@@ -427,6 +427,11 @@ class _AboutPageState extends State<AboutPage> {
       bottomNavigationBar: HomeBottomNavigationBar(
         pageController: widget.pageController,
         selectedIndex: 4,
+        onTap: (int index) {
+          widget.pageController.jumpToPage(
+            index,
+          );
+        },
       ),
     );
   }

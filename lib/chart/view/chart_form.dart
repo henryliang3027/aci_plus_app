@@ -84,6 +84,11 @@ class ChartForm extends StatelessWidget {
         bottomNavigationBar: HomeBottomNavigationBar(
           pageController: pageController,
           selectedIndex: 3,
+          onTap: (int index) {
+            pageController.jumpToPage(
+              index,
+            );
+          },
         ),
       ),
     );
