@@ -32,6 +32,8 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
       print('alarm trigger timer: ${timer.tick}');
       add(const AlarmUpdated());
     });
+
+    print('alarm trigger started');
   }
 
   Future<void> _onAlarmUpdated(
@@ -58,6 +60,11 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     AlarmPeriodicUpdateCanceled event,
     Emitter<Information18State> emit,
   ) {
+    // 如果按重新連線藍芽, 才會重新開始定時更新alarm
+    // emit(state.copyWith(
+    //   status: FormStatus.none,
+    // ));
+
     if (_timer != null) {
       _timer!.cancel();
       print('alarm trigger timer is canceled');

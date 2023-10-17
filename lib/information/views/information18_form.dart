@@ -112,6 +112,11 @@ class _DeviceRefresh extends StatelessWidget {
         if (!state.connectionStatus.isRequestInProgress) {
           return IconButton(
               onPressed: () {
+                // 停止定時更新 alarm 資料
+                context
+                    .read<Information18Bloc>()
+                    .add(const AlarmPeriodicUpdateCanceled());
+
                 context.read<HomeBloc>().add(const DeviceRefreshed());
               },
               icon: Icon(
@@ -420,6 +425,10 @@ class _AlarmCard extends StatelessWidget {
         );
       } else {
         // homeState formStatus failure or inProgress 時都用 homeState 讀到的值來顯示
+        context
+            .read<Information18Bloc>()
+            .add(const AlarmPeriodicUpdateCanceled());
+
         return buildAlarmCard(
           alarmUSeverity: alarmUSeverity,
           alarmTSeverity: alarmTSeverity,

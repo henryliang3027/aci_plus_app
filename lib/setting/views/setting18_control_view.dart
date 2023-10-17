@@ -2,6 +2,7 @@ import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_icons/custom_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
+import 'package:dsim_app/core/setting_items_table.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting18_control/setting18_control_bloc.dart';
 import 'package:dsim_app/setting/views/custom_setting_dialog.dart';
@@ -15,7 +16,7 @@ class Setting18ControlView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
-    String partName = homeState.characteristicData[DataKey.partName] ?? '';
+    String partId = homeState.characteristicData[DataKey.partId] ?? '';
     String inputAttenuation =
         homeState.characteristicData[DataKey.inputAttenuation] ?? '';
     String inputEqualizer =
@@ -156,72 +157,138 @@ class Setting18ControlView extends StatelessWidget {
       return rows;
     }
 
-    Widget buildControlWidget(String partName) {
-      if (partName.contains('BLE') ||
-          partName.contains('SDLE') ||
-          partName.contains('LE')) {
-        return Column(children: [
-          _ClusterTitle(
-            title: AppLocalizations.of(context).forwardControlParameters,
-          ),
-          const _FwdInputAttenuation(),
-          const _FwdInputEQ(),
-          const SizedBox(
-            height: 30,
-          ),
-          _ClusterTitle(
-            title: AppLocalizations.of(context).returnControlParameters,
-          ),
-          const _RtnInputAttenuation2(),
+    List<Widget> getForwardControlParameterWidgetsByPartId(String partId) {
+      Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
+      List<Widget> widgets = [];
 
-          const _RtnOutputLevelAttenuation(),
-          const _RtnOutputEQ(),
-          const _RtnIngressSetting2(),
+      List<Enum> enabledItems =
+          itemsMap.keys.where((key) => itemsMap[key] == true).toList();
 
-          // const _TGCCableLength(),
-          // const _DSVVA2(),
-          // const _DSSlope2(),
-          // const _DSVVA3(),
-          // const _DSVVA4(),
-          // const _USTGC(),
-          const SizedBox(
-            height: 120,
-          ),
-        ]);
-      } else {
-        return Column(
-          children: [
-            _ClusterTitle(
-              title: AppLocalizations.of(context).forwardControlParameters,
-            ),
-            const _FwdInputAttenuation(),
-            const _FwdInputEQ(),
-            const SizedBox(
-              height: 30,
-            ),
-            _ClusterTitle(
-              title: AppLocalizations.of(context).returnControlParameters,
-            ),
-            const _RtnInputAttenuation2(),
-            const _RtnInputAttenuation3(),
-            const _RtnInputAttenuation4(),
-            const _RtnOutputLevelAttenuation(),
-            const _RtnOutputEQ(),
-            const _RtnIngressSetting2(),
-            const _RtnIngressSetting3(),
-            const _RtnIngressSetting4(),
-            // const _TGCCableLength(),
-            // const _DSVVA2(),
-            // const _DSSlope2(),
-            // const _DSVVA3(),
-            // const _DSVVA4(),
-            // const _USTGC(),
-            const SizedBox(
-              height: 120,
-            ),
-          ],
-        );
+      for (Enum name in enabledItems) {
+        switch (name) {
+          case Control.forwardInputAttenuation:
+            widgets.add(
+              const _FwdInputAttenuation(),
+            );
+            break;
+          case Control.forwardInputEqualizer:
+            widgets.add(
+              const _FwdInputEQ(),
+            );
+            break;
+        }
       }
+
+      return widgets;
+    }
+
+    List<Widget> getReturnControlParameterWidgetsByPartId(String partId) {
+      Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
+      List<Widget> widgets = [];
+
+      List<Enum> enabledItems =
+          itemsMap.keys.where((key) => itemsMap[key] == true).toList();
+
+      for (Enum name in enabledItems) {
+        switch (name) {
+          case Control.returnInputAttenuation1:
+            break;
+          case Control.returnInputAttenuation2:
+            widgets.add(
+              const _RtnInputAttenuation2(),
+            );
+            break;
+          case Control.returnInputAttenuation3:
+            widgets.add(
+              const _RtnInputAttenuation3(),
+            );
+            break;
+          case Control.returnInputAttenuation4:
+            widgets.add(
+              const _RtnInputAttenuation4(),
+            );
+            break;
+          case Control.returnInputAttenuation5:
+            break;
+          case Control.returnInputAttenuation6:
+            break;
+          case Control.returnInputAttenuation2and3:
+            break;
+          case Control.returnInputAttenuation5and6:
+            break;
+          case Control.returnOutputAttenuation:
+            widgets.add(
+              const _RtnOutputLevelAttenuation(),
+            );
+            break;
+          case Control.returnOutputEqualizer:
+            widgets.add(
+              const _RtnOutputEQ(),
+            );
+            break;
+          case Control.returnIngressSetting1:
+            break;
+          case Control.returnIngressSetting2:
+            widgets.add(
+              const _RtnIngressSetting2(),
+            );
+            break;
+          case Control.returnIngressSetting3:
+            widgets.add(
+              const _RtnIngressSetting3(),
+            );
+            break;
+          case Control.returnIngressSetting4:
+            widgets.add(
+              const _RtnIngressSetting4(),
+            );
+          case Control.returnIngressSetting5:
+            break;
+          case Control.returnIngressSetting6:
+            break;
+          case Control.returnIngressSetting2_3:
+            break;
+          case Control.returnIngressSetting5_6:
+            break;
+        }
+      }
+      return widgets;
+    }
+
+    Widget buildControlWidget(String partId) {
+      List<Widget> forwardControlParameters =
+          getForwardControlParameterWidgetsByPartId(partId);
+      List<Widget> returnControlParameters =
+          getReturnControlParameterWidgetsByPartId(partId);
+
+      return Column(children: [
+        forwardControlParameters.isNotEmpty
+            ? _ClusterTitle(
+                title: AppLocalizations.of(context).forwardControlParameters,
+              )
+            : Container(),
+        ...forwardControlParameters,
+        forwardControlParameters.isNotEmpty
+            ? const SizedBox(
+                height: 30,
+              )
+            : Container(),
+        returnControlParameters.isNotEmpty
+            ? _ClusterTitle(
+                title: AppLocalizations.of(context).returnControlParameters,
+              )
+            : Container(),
+        ...returnControlParameters,
+        // const _TGCCableLength(),
+        // const _DSVVA2(),
+        // const _DSSlope2(),
+        // const _DSVVA3(),
+        // const _DSVVA4(),
+        // const _USTGC(),
+        const SizedBox(
+          height: 120,
+        ),
+      ]);
     }
 
     return BlocListener<Setting18ControlBloc, Setting18ControlState>(
@@ -246,7 +313,7 @@ class Setting18ControlView extends StatelessWidget {
               padding: const EdgeInsets.all(
                 CustomStyle.sizeXL,
               ),
-              child: buildControlWidget(partName),
+              child: buildControlWidget(partId),
             ),
           ),
         ),
