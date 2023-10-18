@@ -40,6 +40,12 @@ class InformationForm extends StatelessWidget {
         pageController: pageController,
         selectedIndex: 2,
         onTap: (int index) {
+          if (index != 2) {
+            context
+                .read<InformationBloc>()
+                .add(const AlarmPeriodicUpdateCanceled());
+          }
+
           pageController.jumpToPage(
             index,
           );
@@ -400,36 +406,44 @@ class _AlarmCard extends StatelessWidget {
       );
     }
 
-    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+    return Builder(builder: (context) {
+      HomeState homeState = context.watch<HomeBloc>().state;
+      InformationState informationState =
+          context.watch<InformationBloc>().state;
       String alarmRSeverity =
-          state.characteristicData[DataKey.alarmRSeverity] ?? 'default';
+          homeState.characteristicData[DataKey.alarmRSeverity] ?? 'default';
       String alarmTSeverity =
-          state.characteristicData[DataKey.alarmTSeverity] ?? 'default';
+          homeState.characteristicData[DataKey.alarmTSeverity] ?? 'default';
       String alarmPSeverity =
-          state.characteristicData[DataKey.alarmPSeverity] ?? 'default';
+          homeState.characteristicData[DataKey.alarmPSeverity] ?? 'default';
 
-      if (state.loadingStatus.isRequestSuccess) {
-        // informationState 的 alarmRSeverity, alarmTSeverity, alarmPSeverity 還是 'default' 時代表還沒有觸發定期讀取資料, 這時候用 homeState 讀到的值來顯示
-        // 觸發定期更新後就持續顯示 informationState 的值
-        return BlocProvider(
-          create: (context) => InformationBloc(
-              dsimRepository: RepositoryProvider.of<DsimRepository>(context)),
-          child: BlocBuilder<InformationBloc, InformationState>(
-            builder: (context, informationState) => buildAlarmCard(
-              alarmRSeverity: informationState.alarmRSeverity == 'default'
-                  ? alarmRSeverity
-                  : informationState.alarmRSeverity,
-              alarmTSeverity: informationState.alarmTSeverity == 'default'
-                  ? alarmTSeverity
-                  : informationState.alarmTSeverity,
-              alarmPSeverity: informationState.alarmPSeverity == 'default'
-                  ? alarmPSeverity
-                  : informationState.alarmPSeverity,
-            ),
-          ),
+      if (homeState.loadingStatus.isRequestSuccess) {
+        if (!informationState.isTimerStarted) {
+          context
+              .read<InformationBloc>()
+              .add(const AlarmPeriodicUpdateRequested());
+        }
+
+        return buildAlarmCard(
+          alarmRSeverity: informationState.alarmRSeverity == 'default'
+              ? alarmRSeverity
+              : informationState.alarmRSeverity,
+          alarmTSeverity: informationState.alarmTSeverity == 'default'
+              ? alarmTSeverity
+              : informationState.alarmTSeverity,
+          alarmPSeverity: informationState.alarmPSeverity == 'default'
+              ? alarmPSeverity
+              : informationState.alarmPSeverity,
         );
       } else {
         // homeState formStatus failure or inProgress 時都用 homeState 讀到的值來顯示
+
+        if (informationState.isTimerStarted) {
+          context
+              .read<InformationBloc>()
+              .add(const AlarmPeriodicUpdateCanceled());
+        }
+
         return buildAlarmCard(
           alarmRSeverity: alarmRSeverity,
           alarmTSeverity: alarmTSeverity,

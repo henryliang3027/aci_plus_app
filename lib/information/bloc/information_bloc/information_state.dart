@@ -2,36 +2,36 @@ part of 'information_bloc.dart';
 
 class InformationState extends Equatable {
   const InformationState({
-    this.status = FormStatus.none,
     this.alarmRSeverity = 'default',
     this.alarmTSeverity = 'default',
     this.alarmPSeverity = 'default',
+    this.isTimerStarted = false,
   });
 
-  final FormStatus status;
   final String alarmRSeverity;
   final String alarmTSeverity;
   final String alarmPSeverity;
+  final bool isTimerStarted;
 
   InformationState copyWith({
-    FormStatus? status,
     String? alarmRSeverity,
     String? alarmTSeverity,
     String? alarmPSeverity,
+    bool? isTimerStarted,
   }) {
     return InformationState(
-      status: status ?? this.status,
       alarmRSeverity: alarmRSeverity ?? this.alarmRSeverity,
       alarmTSeverity: alarmTSeverity ?? this.alarmTSeverity,
       alarmPSeverity: alarmPSeverity ?? this.alarmPSeverity,
+      isTimerStarted: isTimerStarted ?? this.isTimerStarted,
     );
   }
 
   @override
   List<Object?> get props => [
-        status,
         alarmRSeverity,
         alarmTSeverity,
         alarmPSeverity,
+        isTimerStarted,
       ];
 }

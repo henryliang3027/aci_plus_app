@@ -12,3 +12,17 @@ class AlarmUpdated extends InformationEvent {
   @override
   List<Object> get props => [];
 }
+
+class AlarmPeriodicUpdateRequested extends InformationEvent {
+  const AlarmPeriodicUpdateRequested();
+
+  @override
+  List<Object> get props => [];
+}
+
+class AlarmPeriodicUpdateCanceled extends InformationEvent {
+  const AlarmPeriodicUpdateCanceled();
+
+  @override
+  List<Object> get props => [];
+}

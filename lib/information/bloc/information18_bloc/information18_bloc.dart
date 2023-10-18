@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,6 +33,10 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     });
 
     print('alarm trigger started');
+
+    emit(state.copyWith(
+      isTimerStarted: true,
+    ));
   }
 
   Future<void> _onAlarmUpdated(
@@ -48,7 +51,6 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
       String alarmPServerity = result[3];
 
       emit(state.copyWith(
-        status: FormStatus.requestSuccess,
         alarmUSeverity: alarmUServerity,
         alarmTSeverity: alarmTServerity,
         alarmPSeverity: alarmPServerity,
@@ -56,18 +58,20 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     }
   }
 
-  void _onAlarmPeriodicUpdateCanceled(
+  Future<void> _onAlarmPeriodicUpdateCanceled(
     AlarmPeriodicUpdateCanceled event,
     Emitter<Information18State> emit,
-  ) {
-    // 如果按重新連線藍芽, 才會重新開始定時更新alarm
-    // emit(state.copyWith(
-    //   status: FormStatus.none,
-    // ));
-
+  ) async {
     if (_timer != null) {
       _timer!.cancel();
       print('alarm trigger timer is canceled');
     }
+
+    // 等待兩秒再將 isTimerStarted = false, 避免當使用者切到別的頁面時馬上又觸發 bloc 重新創建 timer
+    await Future.delayed(const Duration(seconds: 2));
+
+    emit(state.copyWith(
+      isTimerStarted: false,
+    ));
   }
 }

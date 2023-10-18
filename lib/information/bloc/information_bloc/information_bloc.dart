@@ -14,15 +14,32 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
   })  : _dsimRepository = dsimRepository,
         super(const InformationState()) {
     on<AlarmUpdated>(_onAlarmUpdated);
+    on<AlarmPeriodicUpdateRequested>(_onAlarmPeriodicUpdateRequested);
+    on<AlarmPeriodicUpdateCanceled>(_onAlarmPeriodicUpdateCanceled);
+  }
+
+  Timer? _timer;
+  final DsimRepository _dsimRepository;
+
+  void _onAlarmPeriodicUpdateRequested(
+    AlarmPeriodicUpdateRequested event,
+    Emitter<InformationState> emit,
+  ) {
+    if (_timer != null) {
+      _timer!.cancel();
+    }
 
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       print('alarm trigger timer: ${timer.tick}');
       add(const AlarmUpdated());
     });
-  }
 
-  late final Timer _timer;
-  final DsimRepository _dsimRepository;
+    print('alarm trigger started');
+
+    emit(state.copyWith(
+      isTimerStarted: true,
+    ));
+  }
 
   Future<void> _onAlarmUpdated(
     AlarmUpdated event,
@@ -46,10 +63,20 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
     }
   }
 
-  @override
-  Future<void> close() {
-    _timer.cancel();
-    print('alarm trigger timer is canceled');
-    return super.close();
+  Future<void> _onAlarmPeriodicUpdateCanceled(
+    AlarmPeriodicUpdateCanceled event,
+    Emitter<InformationState> emit,
+  ) async {
+    if (_timer != null) {
+      _timer!.cancel();
+      print('alarm trigger timer is canceled');
+    }
+
+    // 等待兩秒再將 isTimerStarted = false, 避免當使用者切到別的頁面時馬上又觸發 bloc 重新創建 timer
+    await Future.delayed(const Duration(seconds: 2));
+
+    emit(state.copyWith(
+      isTimerStarted: false,
+    ));
   }
 }
