@@ -164,14 +164,18 @@ class Setting18ControlView extends StatelessWidget {
       List<Enum> enabledItems =
           itemsMap.keys.where((key) => itemsMap[key] == true).toList();
 
+      enabledItems = enabledItems
+          .where((item) => item.runtimeType == SettingControl)
+          .toList();
+
       for (Enum name in enabledItems) {
         switch (name) {
-          case Control.forwardInputAttenuation:
+          case SettingControl.forwardInputAttenuation:
             widgets.add(
               const _FwdInputAttenuation(),
             );
             break;
-          case Control.forwardInputEqualizer:
+          case SettingControl.forwardInputEqualizer:
             widgets.add(
               const _FwdInputEQ(),
             );
@@ -189,66 +193,70 @@ class Setting18ControlView extends StatelessWidget {
       List<Enum> enabledItems =
           itemsMap.keys.where((key) => itemsMap[key] == true).toList();
 
+      enabledItems = enabledItems
+          .where((item) => item.runtimeType == SettingControl)
+          .toList();
+
       for (Enum name in enabledItems) {
         switch (name) {
-          case Control.returnInputAttenuation1:
+          case SettingControl.returnInputAttenuation1:
             break;
-          case Control.returnInputAttenuation2:
+          case SettingControl.returnInputAttenuation2:
             widgets.add(
               const _RtnInputAttenuation2(),
             );
             break;
-          case Control.returnInputAttenuation3:
+          case SettingControl.returnInputAttenuation3:
             widgets.add(
               const _RtnInputAttenuation3(),
             );
             break;
-          case Control.returnInputAttenuation4:
+          case SettingControl.returnInputAttenuation4:
             widgets.add(
               const _RtnInputAttenuation4(),
             );
             break;
-          case Control.returnInputAttenuation5:
+          case SettingControl.returnInputAttenuation5:
             break;
-          case Control.returnInputAttenuation6:
+          case SettingControl.returnInputAttenuation6:
             break;
-          case Control.returnInputAttenuation2and3:
+          case SettingControl.returnInputAttenuation2and3:
             break;
-          case Control.returnInputAttenuation5and6:
+          case SettingControl.returnInputAttenuation5and6:
             break;
-          case Control.returnOutputAttenuation:
+          case SettingControl.returnOutputAttenuation:
             widgets.add(
               const _RtnOutputLevelAttenuation(),
             );
             break;
-          case Control.returnOutputEqualizer:
+          case SettingControl.returnOutputEqualizer:
             widgets.add(
               const _RtnOutputEQ(),
             );
             break;
-          case Control.returnIngressSetting1:
+          case SettingControl.returnIngressSetting1:
             break;
-          case Control.returnIngressSetting2:
+          case SettingControl.returnIngressSetting2:
             widgets.add(
               const _RtnIngressSetting2(),
             );
             break;
-          case Control.returnIngressSetting3:
+          case SettingControl.returnIngressSetting3:
             widgets.add(
               const _RtnIngressSetting3(),
             );
             break;
-          case Control.returnIngressSetting4:
+          case SettingControl.returnIngressSetting4:
             widgets.add(
               const _RtnIngressSetting4(),
             );
-          case Control.returnIngressSetting5:
+          case SettingControl.returnIngressSetting5:
             break;
-          case Control.returnIngressSetting6:
+          case SettingControl.returnIngressSetting6:
             break;
-          case Control.returnIngressSetting2_3:
+          case SettingControl.returnIngressSetting2_3:
             break;
-          case Control.returnIngressSetting5_6:
+          case SettingControl.returnIngressSetting5_6:
             break;
         }
       }

@@ -24,6 +24,7 @@ class Initialized extends Setting18ConfigureEvent {
     required this.fwdAGCMode,
     required this.autoLevelControl,
     required this.logInterval,
+    required this.tgcCableLength,
   });
 
   final String location;
@@ -41,6 +42,7 @@ class Initialized extends Setting18ConfigureEvent {
   final String fwdAGCMode;
   final String autoLevelControl;
   final String logInterval;
+  final String tgcCableLength;
 
   @override
   List<Object> get props => [
@@ -59,6 +61,7 @@ class Initialized extends Setting18ConfigureEvent {
         fwdAGCMode,
         autoLevelControl,
         logInterval,
+        tgcCableLength,
       ];
 }
 
@@ -198,6 +201,15 @@ class LogIntervalDecreased extends Setting18ConfigureEvent {
 
   @override
   List<Object> get props => [];
+}
+
+class TGCCableLengthChanged extends Setting18ConfigureEvent {
+  const TGCCableLengthChanged(this.tgcCableLength);
+
+  final String tgcCableLength;
+
+  @override
+  List<Object> get props => [tgcCableLength];
 }
 
 class EditModeEnabled extends Setting18ConfigureEvent {

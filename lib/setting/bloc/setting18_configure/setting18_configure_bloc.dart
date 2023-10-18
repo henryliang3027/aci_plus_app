@@ -32,6 +32,7 @@ class Setting18ConfigureBloc
     on<LogIntervalChanged>(_onLogIntervalChanged);
     on<LogIntervalIncreased>(_onLogIntervalIncreased);
     on<LogIntervalDecreased>(_onLogIntervalDecreased);
+    on<TGCCableLengthChanged>(_onTGCCableLengthChanged);
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
@@ -59,6 +60,7 @@ class Setting18ConfigureBloc
       fwdAGCMode: event.fwdAGCMode,
       autoLevelControl: event.autoLevelControl,
       logInterval: event.logInterval,
+      tgcCableLength: event.tgcCableLength,
       isInitialize: true,
       initialValues: [
         event.location,
@@ -74,6 +76,7 @@ class Setting18ConfigureBloc
         event.fwdAGCMode,
         event.autoLevelControl,
         event.logInterval,
+        event.tgcCableLength,
       ],
     ));
   }
@@ -100,6 +103,7 @@ class Setting18ConfigureBloc
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
         logInterval: state.logInterval,
+        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -126,6 +130,7 @@ class Setting18ConfigureBloc
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
         logInterval: state.logInterval,
+        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -158,6 +163,7 @@ class Setting18ConfigureBloc
           fwdAGCMode: state.fwdAGCMode,
           autoLevelControl: state.autoLevelControl,
           logInterval: state.logInterval,
+          tgcCableLength: state.tgcCableLength,
         ),
       ));
     } catch (error) {
@@ -178,6 +184,7 @@ class Setting18ConfigureBloc
           fwdAGCMode: state.fwdAGCMode,
           autoLevelControl: state.autoLevelControl,
           logInterval: state.logInterval,
+          tgcCableLength: state.tgcCableLength,
         ),
       ));
     }
@@ -205,6 +212,7 @@ class Setting18ConfigureBloc
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
         logInterval: state.logInterval,
+        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -231,6 +239,7 @@ class Setting18ConfigureBloc
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
         logInterval: state.logInterval,
+        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -257,6 +266,7 @@ class Setting18ConfigureBloc
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
         logInterval: state.logInterval,
+        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -283,6 +293,7 @@ class Setting18ConfigureBloc
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
         logInterval: state.logInterval,
+        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -309,6 +320,7 @@ class Setting18ConfigureBloc
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
         logInterval: state.logInterval,
+        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -335,6 +347,7 @@ class Setting18ConfigureBloc
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
         logInterval: state.logInterval,
+        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -361,6 +374,7 @@ class Setting18ConfigureBloc
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
         logInterval: state.logInterval,
+        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -387,6 +401,7 @@ class Setting18ConfigureBloc
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
         logInterval: state.logInterval,
+        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -413,6 +428,7 @@ class Setting18ConfigureBloc
         fwdAGCMode: event.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
         logInterval: state.logInterval,
+        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -439,6 +455,7 @@ class Setting18ConfigureBloc
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: event.autoLevelControl,
         logInterval: state.logInterval,
+        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -465,6 +482,7 @@ class Setting18ConfigureBloc
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
         logInterval: event.logInterval,
+        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -509,6 +527,7 @@ class Setting18ConfigureBloc
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
         logInterval: logInterval,
+        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -537,6 +556,34 @@ class Setting18ConfigureBloc
         fwdAGCMode: state.fwdAGCMode,
         autoLevelControl: state.autoLevelControl,
         logInterval: logInterval,
+        tgcCableLength: state.tgcCableLength,
+      ),
+    ));
+  }
+
+  void _onTGCCableLengthChanged(
+    TGCCableLengthChanged event,
+    Emitter<Setting18ConfigureState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
+      tgcCableLength: event.tgcCableLength,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        splitOption: state.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+        fwdAGCMode: state.fwdAGCMode,
+        autoLevelControl: state.autoLevelControl,
+        logInterval: state.logInterval,
+        tgcCableLength: event.tgcCableLength,
       ),
     ));
   }
@@ -576,6 +623,7 @@ class Setting18ConfigureBloc
       fwdAGCMode: state.initialValues[10],
       autoLevelControl: state.initialValues[11],
       logInterval: state.initialValues[12],
+      tgcCableLength: state.initialValues[13],
     ));
   }
 
@@ -593,6 +641,7 @@ class Setting18ConfigureBloc
     required String fwdAGCMode,
     required String autoLevelControl,
     required String logInterval,
+    required String tgcCableLength,
   }) {
     if (location != state.initialValues[0] ||
         coordinates != state.initialValues[1] ||
@@ -606,7 +655,8 @@ class Setting18ConfigureBloc
         pilotFrequency2 != state.initialValues[9] ||
         fwdAGCMode != state.initialValues[10] ||
         autoLevelControl != state.initialValues[11] ||
-        logInterval != state.initialValues[12]) {
+        logInterval != state.initialValues[12] ||
+        tgcCableLength != state.initialValues[13]) {
       return true;
     } else {
       return false;
@@ -723,6 +773,14 @@ class Setting18ConfigureBloc
           await _dsimRepository.set1p8GLogInterval(state.logInterval);
 
       settingResult.add('${DataKey.logInterval.name},$resultOfSetLogInterval');
+    }
+
+    if (state.tgcCableLength != state.initialValues[13]) {
+      bool resultOfSetTGCCableLength =
+          await _dsimRepository.set1p8GTGCCableLength(state.tgcCableLength);
+
+      settingResult
+          .add('${DataKey.tgcCableLength.name},$resultOfSetTGCCableLength');
     }
 
     // 等待 device 完成更新後在讀取值

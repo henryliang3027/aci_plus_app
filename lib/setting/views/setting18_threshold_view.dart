@@ -2,6 +2,7 @@ import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_icons/custom_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
+import 'package:dsim_app/core/setting_items_table.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/repositories/unit_repository.dart';
 import 'package:dsim_app/setting/bloc/setting18_threshold/setting18_threshold_bloc.dart';
@@ -35,6 +36,7 @@ class Setting18ThresholdView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
+    String partId = homeState.characteristicData[DataKey.partId] ?? '';
     String minTemperature =
         homeState.characteristicData[DataKey.minTemperatureC] ?? '';
     String maxTemperature =
@@ -198,6 +200,110 @@ class Setting18ThresholdView extends StatelessWidget {
       return rows;
     }
 
+    List<Widget> getThresholdParameterWidgetsByPartId(String partId) {
+      Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
+      List<Widget> widgets = [];
+
+      List<Enum> enabledItems =
+          itemsMap.keys.where((key) => itemsMap[key] == true).toList();
+
+      enabledItems = enabledItems
+          .where((item) => item.runtimeType == SettingThreshold)
+          .toList();
+
+      for (Enum name in enabledItems) {
+        switch (name) {
+          case SettingThreshold.temperature:
+            widgets.add(_TemperatureAlarmControl(
+              minTemperatureTextEditingController:
+                  minTemperatureTextEditingController,
+              maxTemperatureTextEditingController:
+                  maxTemperatureTextEditingController,
+            ));
+            break;
+          case SettingThreshold.inputVoltage24V:
+            widgets.add(_VoltageAlarmControl(
+              minVoltageTextEditingController: minVoltageTextEditingController,
+              maxVoltageTextEditingController: maxVoltageTextEditingController,
+            ));
+            break;
+          case SettingThreshold.inputVoltageRipple24V:
+            widgets.add(_VoltageRippleAlarmControl(
+              minVoltageRippleTextEditingController:
+                  minVoltageRippleTextEditingController,
+              maxVoltageRippleTextEditingController:
+                  maxVoltageRippleTextEditingController,
+            ));
+            break;
+          case SettingThreshold.outputPower:
+            widgets.add(_RFOutputPowerAlarmControl(
+              minRFOutputPowerTextEditingController:
+                  minRFOutputPowerTextEditingController,
+              maxRFOutputPowerTextEditingController:
+                  maxRFOutputPowerTextEditingController,
+            ));
+            break;
+        }
+      }
+
+      return widgets;
+    }
+
+    List<Widget> getForwardSettingWidgetsByPartId(String partId) {
+      Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
+      List<Widget> widgets = [];
+
+      List<Enum> enabledItems =
+          itemsMap.keys.where((key) => itemsMap[key] == true).toList();
+
+      enabledItems = enabledItems
+          .where((item) => item.runtimeType == SettingThreshold)
+          .toList();
+
+      for (Enum name in enabledItems) {
+        switch (name) {
+          case SettingThreshold.splitOptions:
+            widgets.add(const _SplitOptionAlarmControl());
+            break;
+          case SettingThreshold.pilot1Status:
+            widgets.add(const _PilotFrequency1AlarmControl());
+            break;
+          case SettingThreshold.pilot2Status:
+            widgets.add(const _PilotFrequency2AlarmControl());
+            break;
+          case SettingThreshold.startFrequencyOutputLevel:
+            widgets.add(const _FirstChannelOutputLevelAlarmControl());
+            break;
+          case SettingThreshold.stopFrequencyOutputLevel:
+            widgets.add(const _LastChannelOutputLevelAlarmControl());
+            break;
+        }
+      }
+
+      return widgets;
+    }
+
+    Widget buildThresholdWidget(String partId) {
+      List<Widget> thresholdParameters =
+          getThresholdParameterWidgetsByPartId(partId);
+      List<Widget> forwardSettings = getForwardSettingWidgetsByPartId(partId);
+
+      return Column(
+        children: [
+          ...thresholdParameters,
+          forwardSettings.isNotEmpty
+              ? _ClusterTitle(
+                  title: AppLocalizations.of(context).forwardSetting,
+                )
+              : Container(),
+          ...forwardSettings,
+          const SizedBox(
+            height: 120,
+          ),
+        ],
+      );
+    }
+
     return BlocListener<Setting18ThresholdBloc, Setting18ThresholdState>(
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionInProgress) {
@@ -231,45 +337,7 @@ class Setting18ThresholdView extends StatelessWidget {
               padding: const EdgeInsets.all(
                 CustomStyle.sizeXL,
               ),
-              child: Column(
-                children: [
-                  _TemperatureAlarmControl(
-                    minTemperatureTextEditingController:
-                        minTemperatureTextEditingController,
-                    maxTemperatureTextEditingController:
-                        maxTemperatureTextEditingController,
-                  ),
-                  _VoltageAlarmControl(
-                    minVoltageTextEditingController:
-                        minVoltageTextEditingController,
-                    maxVoltageTextEditingController:
-                        maxVoltageTextEditingController,
-                  ),
-                  _VoltageRippleAlarmControl(
-                    minVoltageRippleTextEditingController:
-                        minVoltageRippleTextEditingController,
-                    maxVoltageRippleTextEditingController:
-                        maxVoltageRippleTextEditingController,
-                  ),
-                  _RFOutputPowerAlarmControl(
-                    minRFOutputPowerTextEditingController:
-                        minRFOutputPowerTextEditingController,
-                    maxRFOutputPowerTextEditingController:
-                        maxRFOutputPowerTextEditingController,
-                  ),
-                  _ClusterTitle(
-                    title: AppLocalizations.of(context).forwardSetting,
-                  ),
-                  const _SplitOptionAlarmControl(),
-                  const _PilotFrequency1AlarmControl(),
-                  const _PilotFrequency2AlarmControl(),
-                  const _FirstChannelOutputLevelAlarmControl(),
-                  const _LastChannelOutputLevelAlarmControl(),
-                  const SizedBox(
-                    height: 120,
-                  ),
-                ],
-              ),
+              child: buildThresholdWidget(partId),
             ),
           ),
         ),

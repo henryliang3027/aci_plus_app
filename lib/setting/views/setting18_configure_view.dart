@@ -1,9 +1,9 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_icons/custom_icons.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/message_localization.dart';
+import 'package:dsim_app/core/setting_items_table.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/setting/bloc/setting18_configure/setting18_configure_bloc.dart';
 import 'package:dsim_app/setting/views/custom_setting_dialog.dart';
@@ -41,6 +41,7 @@ class Setting18ConfigureView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
+    String partId = homeState.characteristicData[DataKey.partId] ?? '';
     String location = homeState.characteristicData[DataKey.location] ?? '';
     String coordinates =
         homeState.characteristicData[DataKey.coordinates] ?? '';
@@ -74,6 +75,8 @@ class Setting18ConfigureView extends StatelessWidget {
         homeState.characteristicData[DataKey.alcMode] ?? '';
     String logInterval =
         homeState.characteristicData[DataKey.logInterval] ?? '';
+    String tgcCableLength =
+        homeState.characteristicData[DataKey.tgcCableLength] ?? '';
 
     context.read<Setting18ConfigureBloc>().add(Initialized(
           location: location,
@@ -91,6 +94,7 @@ class Setting18ConfigureView extends StatelessWidget {
           fwdAGCMode: fwdAgcMode,
           autoLevelControl: autoLevelControl,
           logInterval: logInterval,
+          tgcCableLength: tgcCableLength,
         ));
 
     String formatResultValue(String boolValue) {
@@ -131,6 +135,8 @@ class Setting18ConfigureView extends StatelessWidget {
         return AppLocalizations.of(context).dialogMessageALCModeSetting;
       } else if (item == DataKey.logInterval.name) {
         return AppLocalizations.of(context).dialogMessageLogIntervalSetting;
+      } else if (item == DataKey.tgcCableLength.name) {
+        return AppLocalizations.of(context).dialogMessageTGCCableLengthSetting;
       } else {
         return '';
       }
@@ -215,6 +221,98 @@ class Setting18ConfigureView extends StatelessWidget {
       );
     }
 
+    List<Widget> getConfigurationParameterWidgetsByPartId(String partId) {
+      Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
+      List<Widget> widgets = [];
+
+      List<Enum> enabledItems =
+          itemsMap.keys.where((key) => itemsMap[key] == true).toList();
+
+      enabledItems = enabledItems
+          .where((item) => item.runtimeType == SettingConfiruration)
+          .toList();
+
+      for (Enum name in enabledItems) {
+        switch (name) {
+          case SettingConfiruration.location:
+            widgets.add(_Location(
+              textEditingController: locationTextEditingController,
+            ));
+            break;
+          case SettingConfiruration.coordinates:
+            widgets.add(_Coordinates(
+              textEditingController: coordinateTextEditingController,
+            ));
+            break;
+          case SettingConfiruration.splitOptions:
+            widgets.add(const _SplitOption());
+            break;
+          case SettingConfiruration.startFrequency:
+            widgets.add(_FirstChannelLoading(
+              firstChannelLoadingFrequencyTextEditingController:
+                  firstChannelLoadingFrequencyTextEditingController,
+              firstChannelLoadingLevelTextEditingController:
+                  firstChannelLoadingLevelTextEditingController,
+            ));
+            break;
+          case SettingConfiruration.stopFrequency:
+            widgets.add(_LastChannelLoading(
+              lastChannelLoadingFrequencyTextEditingController:
+                  lastChannelLoadingFrequencyTextEditingController,
+              lastChannelLoadingLevelTextEditingController:
+                  lastChannelLoadingLevelTextEditingController,
+            ));
+            break;
+          case SettingConfiruration.pilotFrequencySelect:
+            widgets.add(const _PilotFrequencyMode());
+            break;
+          case SettingConfiruration.pilot1:
+            widgets.add(_PilotFrequency1(
+              pilotFrequency1TextEditingController:
+                  pilotFrequency1TextEditingController,
+              manualModePilot1RFOutputPowerTextEditingController:
+                  manualModePilot1RFOutputPowerTextEditingController,
+            ));
+            break;
+          case SettingConfiruration.pilot2:
+            widgets.add(_PilotFrequency2(
+              pilotFrequency2TextEditingController:
+                  pilotFrequency2TextEditingController,
+              manualModePilot2RFOutputPowerTextEditingController:
+                  manualModePilot2RFOutputPowerTextEditingController,
+            ));
+            break;
+          case SettingConfiruration.agcMode:
+            widgets.add(const _FwdAGCMode());
+            break;
+          case SettingConfiruration.alcMode:
+            widgets.add(const _AutoLevelControl());
+            break;
+          case SettingConfiruration.logInterval:
+            widgets.add(const _LogInterval());
+            break;
+          case SettingConfiruration.cableLength:
+            widgets.add(const _TGCCableLength());
+            break;
+        }
+      }
+      return widgets;
+    }
+
+    Widget buildThresholdWidget(String partId) {
+      List<Widget> configurationParameters =
+          getConfigurationParameterWidgetsByPartId(partId);
+
+      return Column(
+        children: [
+          ...configurationParameters,
+          const SizedBox(
+            height: 120,
+          ),
+        ],
+      );
+    }
+
     return BlocListener<Setting18ConfigureBloc, Setting18ConfigureState>(
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionInProgress) {
@@ -261,81 +359,11 @@ class Setting18ConfigureView extends StatelessWidget {
               padding: const EdgeInsets.all(
                 CustomStyle.sizeXL,
               ),
-              child: Column(
-                children: [
-                  _Location(
-                    textEditingController: locationTextEditingController,
-                  ),
-                  _Coordinates(
-                    textEditingController: coordinateTextEditingController,
-                  ),
-                  const _SplitOption(),
-                  _ClusterTitle(
-                      title: AppLocalizations.of(context).forwardSetting),
-                  _FirstChannelLoading(
-                    firstChannelLoadingFrequencyTextEditingController:
-                        firstChannelLoadingFrequencyTextEditingController,
-                    firstChannelLoadingLevelTextEditingController:
-                        firstChannelLoadingLevelTextEditingController,
-                  ),
-                  _LastChannelLoading(
-                    lastChannelLoadingFrequencyTextEditingController:
-                        lastChannelLoadingFrequencyTextEditingController,
-                    lastChannelLoadingLevelTextEditingController:
-                        lastChannelLoadingLevelTextEditingController,
-                  ),
-                  const _PilotFrequencyMode(),
-                  _PilotFrequency1(
-                    pilotFrequency1TextEditingController:
-                        pilotFrequency1TextEditingController,
-                    manualModePilot1RFOutputPowerTextEditingController:
-                        manualModePilot1RFOutputPowerTextEditingController,
-                  ),
-                  _PilotFrequency2(
-                    pilotFrequency2TextEditingController:
-                        pilotFrequency2TextEditingController,
-                    manualModePilot2RFOutputPowerTextEditingController:
-                        manualModePilot2RFOutputPowerTextEditingController,
-                  ),
-                  const _FwdAGCMode(),
-                  const _AutoLevelControl(),
-                  const _LogInterval(),
-                  const SizedBox(
-                    height: 120,
-                  ),
-                ],
-              ),
+              child: buildThresholdWidget(partId),
             ),
           ),
         ),
         floatingActionButton: const _SettingFloatingActionButton(),
-      ),
-    );
-  }
-}
-
-class _ClusterTitle extends StatelessWidget {
-  const _ClusterTitle({super.key, required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              title,
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w500,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -1654,20 +1682,101 @@ class _LogInterval extends StatelessWidget {
   }
 }
 
-class CustomTrackShape extends RoundedRectSliderTrackShape {
-  Rect getPreferredRect({
-    required RenderBox parentBox,
-    Offset offset = Offset.zero,
-    required SliderThemeData sliderTheme,
-    bool isEnabled = false,
-    bool isDiscrete = false,
-  }) {
-    final double trackHeight = sliderTheme.trackHeight!;
-    final double trackLeft = offset.dx;
-    final double trackTop =
-        offset.dy + (parentBox.size.height - trackHeight) / 2;
-    final double trackWidth = parentBox.size.width;
-    return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
+class _TGCCableLength extends StatelessWidget {
+  const _TGCCableLength({
+    super.key,
+  });
+
+  final List<String> tgcCableLengthValues = const [
+    '9',
+    '18',
+    '27',
+  ];
+
+  List<bool> getSelectionState(String selectedTGCCableLength) {
+    Map<String, bool> tgcCableLengthMap = {
+      '9': false,
+      '18': false,
+      '27': false,
+    };
+
+    if (tgcCableLengthMap.containsKey(selectedTGCCableLength)) {
+      tgcCableLengthMap[selectedTGCCableLength] = true;
+    }
+
+    return tgcCableLengthMap.values.toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
+      buildWhen: (previous, current) =>
+          previous.tgcCableLength != current.tgcCableLength ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 40.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ),
+                child: Text(
+                  '${AppLocalizations.of(context).tgcCableLength}:',
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              LayoutBuilder(
+                builder: (context, constraints) => ToggleButtons(
+                  direction: Axis.horizontal,
+                  onPressed: (int index) {
+                    if (state.editMode) {
+                      context.read<Setting18ConfigureBloc>().add(
+                          TGCCableLengthChanged(tgcCableLengthValues[index]));
+                    }
+                  },
+                  textStyle: const TextStyle(fontSize: 18.0),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  selectedBorderColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // indigo border color
+                  selectedColor: Theme.of(context)
+                      .colorScheme
+                      .onPrimary, // white text color
+
+                  fillColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // selected
+                  color:
+                      Theme.of(context).colorScheme.secondary, // not selected
+                  constraints: BoxConstraints.expand(
+                    width: (constraints.maxWidth - 4) /
+                        tgcCableLengthValues.length,
+                  ),
+                  isSelected: getSelectionState(state.tgcCableLength),
+                  children: const <Widget>[
+                    Text('9 ${CustomStyle.dB}'),
+                    Text('18 ${CustomStyle.dB}'),
+                    Text('27 ${CustomStyle.dB}'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
 

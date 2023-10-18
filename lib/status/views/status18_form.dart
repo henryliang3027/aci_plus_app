@@ -1,6 +1,7 @@
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
+import 'package:dsim_app/core/setting_items_table.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:dsim_app/repositories/unit_repository.dart';
@@ -19,6 +20,65 @@ class Status18Form extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeState homeState = context.watch<HomeBloc>().state;
+    String partId = homeState.characteristicData[DataKey.partId] ?? '';
+
+    Widget getWidgetsByPartId(String partId) {
+      Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
+      List<Widget> widgets = [];
+
+      List<Enum> enabledItems =
+          itemsMap.keys.where((key) => itemsMap[key] == true).toList();
+
+      enabledItems = enabledItems
+          .where((item) => item.runtimeType == SettingThreshold)
+          .toList();
+
+      for (Enum name in enabledItems) {
+        switch (name) {
+          case SettingThreshold.workingMode:
+            widgets.add(const _WorkingModeCard());
+            break;
+          case SettingThreshold.splitOptions:
+            widgets.add(const _SplitOptionCard());
+            break;
+          case SettingThreshold.temperature:
+            widgets.add(const _TemperatureCard());
+            break;
+          case SettingThreshold.inputVoltage24V:
+            widgets.add(const _PowerSupplyCard());
+            break;
+          case SettingThreshold.inputVoltageRipple24V:
+            widgets.add(const _VoltageRippleCard());
+            break;
+          case SettingThreshold.outputPower:
+            widgets.add(const _RFOutputPowerCard());
+            break;
+          case SettingThreshold.pilot1Status:
+            widgets.add(const _PilotFrequency1Card());
+            break;
+          case SettingThreshold.pilot2Status:
+            widgets.add(const _PilotFrequency2Card());
+            break;
+          case SettingThreshold.startFrequencyOutputLevel:
+            widgets.add(const _FirstChannelPowerLevelCard());
+            break;
+          case SettingThreshold.stopFrequencyOutputLevel:
+            widgets.add(const _LastChannelPowerLevelCard());
+            break;
+          case SettingThreshold.operatingSlope:
+            widgets.add(const _OutputOperatingSlopeCard());
+            break;
+        }
+      }
+
+      return Column(
+        children: [
+          ...widgets,
+        ],
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).status),
@@ -26,23 +86,8 @@ class Status18Form extends StatelessWidget {
         leading: const _DeviceStatus(),
         actions: const [_DeviceRefresh()],
       ),
-      body: const SingleChildScrollView(
-        child: Column(
-          children: [
-            // _ModuleCard(),
-            _WorkingModeCard(),
-            _SplitOptionCard(),
-            _TemperatureCard(),
-            _PowerSupplyCard(),
-            _VoltageRippleCard(),
-            _RFOutputPowerCard(),
-            _PilotFrequency1Card(),
-            _PilotFrequency2Card(),
-            _FirstChannelPowerLevelCard(),
-            _LastChannelPowerLevelCard(),
-            _OutputOperatingSlopeCard(),
-          ],
-        ),
+      body: SingleChildScrollView(
+        child: getWidgetsByPartId(partId),
       ),
       bottomNavigationBar: HomeBottomNavigationBar(
         pageController: pageController,
@@ -1867,8 +1912,8 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
 
   Widget getOutputPower({
     required FormStatus loadingStatus,
-    // required String pilotFrequencyAlarmState,
-    // required String pilotFrequencyAlarmSeverity,
+    required String pilotFrequencyAlarmState,
+    required String pilotFrequencyAlarmSeverity,
     required String outputPower,
     double fontSize = 16,
   }) {
@@ -1892,10 +1937,10 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
         outputPower.isEmpty ? 'N/A' : outputPower,
         style: TextStyle(
           fontSize: fontSize,
-          // color: _getCurrentValueColor(
-          //   alarmState: pilotFrequencyAlarmState,
-          //   alarmSeverity: pilotFrequencyAlarmSeverity,
-          // ),
+          color: _getCurrentValueColor(
+            alarmState: pilotFrequencyAlarmState,
+            alarmSeverity: pilotFrequencyAlarmSeverity,
+          ),
         ),
       );
     } else {
@@ -1910,7 +1955,8 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
 
   Widget pilotFrequencyBlock({
     required FormStatus loadingStatus,
-    // required String pilotFrequencyAlarmState,
+    required String pilotFrequencyAlarmState,
+    required String pilotFrequencyAlarmSeverity,
     required String firstChannelFrequency,
     required String rfOutputLowChannelPower,
     required String frequencyTitle,
@@ -1949,6 +1995,8 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
                   children: [
                     getOutputPower(
                       loadingStatus: loadingStatus,
+                      pilotFrequencyAlarmState: pilotFrequencyAlarmState,
+                      pilotFrequencyAlarmSeverity: pilotFrequencyAlarmSeverity,
                       outputPower: rfOutputLowChannelPower,
                       fontSize: 32,
                     ),
@@ -1973,9 +2021,13 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       String firstChannelFrequency =
           state.characteristicData[DataKey.pilot1RFChannelFrequency] ?? '';
-
       String rfOutputLowChannelPower =
           state.characteristicData[DataKey.rfOutputLowChannelPower] ?? '';
+      String pilotFrequency1AlarmState =
+          state.characteristicData[DataKey.pilotFrequency1AlarmState] ?? '1';
+      String pilotFrequency1AlarmSeverity = state.characteristicData[
+              DataKey.rfInputPilotLowFrequencyAlarmSeverity] ??
+          '0';
 
       return Card(
           color: Theme.of(context).colorScheme.onPrimary,
@@ -1992,11 +2044,12 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
               ),
               pilotFrequencyBlock(
                 loadingStatus: state.loadingStatus,
-                // pilotFrequencyAlarmState: pilotFrequency2AlarmState,
+                pilotFrequencyAlarmState: pilotFrequency1AlarmState,
+                pilotFrequencyAlarmSeverity: pilotFrequency1AlarmSeverity,
                 firstChannelFrequency: firstChannelFrequency,
                 rfOutputLowChannelPower: rfOutputLowChannelPower,
-                frequencyTitle: AppLocalizations.of(context).level,
-                outputPowerTitle: AppLocalizations.of(context).frequency,
+                frequencyTitle: AppLocalizations.of(context).frequency,
+                outputPowerTitle: AppLocalizations.of(context).level,
               ),
             ],
           ));
@@ -2052,8 +2105,8 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
 
   Widget getOutputPower({
     required FormStatus loadingStatus,
-    // required String pilotFrequencyAlarmState,
-    // required String pilotFrequencyAlarmSeverity,
+    required String pilotFrequencyAlarmState,
+    required String pilotFrequencyAlarmSeverity,
     required String outputPower,
     double fontSize = 16,
   }) {
@@ -2077,10 +2130,10 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
         outputPower.isEmpty ? 'N/A' : outputPower,
         style: TextStyle(
           fontSize: fontSize,
-          // color: _getCurrentValueColor(
-          //   alarmState: pilotFrequencyAlarmState,
-          //   alarmSeverity: pilotFrequencyAlarmSeverity,
-          // ),
+          color: _getCurrentValueColor(
+            alarmState: pilotFrequencyAlarmState,
+            alarmSeverity: pilotFrequencyAlarmSeverity,
+          ),
         ),
       );
     } else {
@@ -2095,7 +2148,8 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
 
   Widget pilotFrequencyBlock({
     required FormStatus loadingStatus,
-    // required String pilotFrequencyAlarmState,
+    required String pilotFrequencyAlarmState,
+    required String pilotFrequencyAlarmSeverity,
     required String lastChannelFrequency,
     required String rfOutputHighChannelPower,
     required String frequencyTitle,
@@ -2134,6 +2188,8 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
                   children: [
                     getOutputPower(
                       loadingStatus: loadingStatus,
+                      pilotFrequencyAlarmState: pilotFrequencyAlarmState,
+                      pilotFrequencyAlarmSeverity: pilotFrequencyAlarmSeverity,
                       outputPower: rfOutputHighChannelPower,
                       fontSize: 32,
                     ),
@@ -2162,6 +2218,12 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
       String rfOutputHighChannelPower =
           state.characteristicData[DataKey.rfOutputHighChannelPower] ?? '';
 
+      String pilotFrequency2AlarmState =
+          state.characteristicData[DataKey.pilotFrequency1AlarmState] ?? '1';
+      String pilotFrequency2AlarmSeverity = state.characteristicData[
+              DataKey.rfInputPilotLowFrequencyAlarmSeverity] ??
+          '0';
+
       return Card(
           color: Theme.of(context).colorScheme.onPrimary,
           surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
@@ -2177,11 +2239,12 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
               ),
               pilotFrequencyBlock(
                 loadingStatus: state.loadingStatus,
-                // pilotFrequencyAlarmState: pilotFrequency2AlarmState,
+                pilotFrequencyAlarmState: pilotFrequency2AlarmState,
+                pilotFrequencyAlarmSeverity: pilotFrequency2AlarmSeverity,
                 lastChannelFrequency: lastChannelFrequency,
                 rfOutputHighChannelPower: rfOutputHighChannelPower,
-                frequencyTitle: AppLocalizations.of(context).level,
-                outputPowerTitle: AppLocalizations.of(context).frequency,
+                frequencyTitle: AppLocalizations.of(context).frequency,
+                outputPowerTitle: AppLocalizations.of(context).level,
               ),
             ],
           ));
