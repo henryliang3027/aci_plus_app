@@ -57,6 +57,8 @@ enum DataKey {
   splitOption,
   currentRFInputPower,
   currentRFOutputPower,
+  historicalMinRFOutputPower,
+  historicalMaxRFOutputPower,
   minRFOutputPower,
   maxRFOutputPower,
   currentWorkingMode,

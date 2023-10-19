@@ -257,10 +257,18 @@ class DsimRepository {
       );
 
       List<RFInOut> rfInOuts = _dsim18Parser.parse1P8GRFInOut(rawData);
+      A1P8GRFOutputPowerStatistic a1p8grfOutputPowerStatistic =
+          _dsim18Parser.getA1p8GRFOutputPowerStatistic(rfInOuts);
 
       return [
         true,
         rfInOuts,
+        <DataKey, String>{
+          DataKey.historicalMinRFOutputPower:
+              a1p8grfOutputPowerStatistic.historicalMinRFOutputPower,
+          DataKey.historicalMaxRFOutputPower:
+              a1p8grfOutputPowerStatistic.historicalMaxRFOutputPower,
+        }
       ];
     } catch (e) {
       return [

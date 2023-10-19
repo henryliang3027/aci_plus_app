@@ -2,6 +2,7 @@ import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/setting_items_table.dart';
+import 'package:dsim_app/core/utils.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:dsim_app/repositories/unit_repository.dart';
@@ -596,6 +597,19 @@ class _TemperatureCard extends StatelessWidget {
       required String historicalMaxTemperature,
       required String unit,
     }) {
+      if (currentTemperature != '' &&
+          historicalMinTemperature != '' &&
+          historicalMaxTemperature != '') {
+        historicalMinTemperature = adjustMinDoubleValue(
+          current: currentTemperature,
+          min: historicalMinTemperature,
+        );
+        historicalMaxTemperature = adjustMaxDoubleValue(
+          current: currentTemperature,
+          max: historicalMaxTemperature,
+        );
+      }
+
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Column(
@@ -960,6 +974,19 @@ class _PowerSupplyCard extends StatelessWidget {
     required String historicalMaxVoltage,
     required Color borderColor,
   }) {
+    if (currentVoltage != '' &&
+        historicalMinVoltage != '' &&
+        historicalMaxVoltage != '') {
+      historicalMinVoltage = adjustMinDoubleValue(
+        current: currentVoltage,
+        min: historicalMinVoltage,
+      );
+      historicalMaxVoltage = adjustMaxDoubleValue(
+        current: currentVoltage,
+        max: historicalMaxVoltage,
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 16.0,
@@ -1222,6 +1249,19 @@ class _VoltageRippleCard extends StatelessWidget {
     required String historicalMaxVoltageRipple,
     required Color borderColor,
   }) {
+    if (currentVoltageRipple != '' &&
+        historicalMinVoltageRipple != '' &&
+        historicalMaxVoltageRipple != '') {
+      historicalMinVoltageRipple = adjustMinIntValue(
+        current: currentVoltageRipple,
+        min: historicalMinVoltageRipple,
+      );
+      historicalMaxVoltageRipple = adjustMaxIntValue(
+        current: currentVoltageRipple,
+        max: historicalMaxVoltageRipple,
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 16.0,
@@ -1488,8 +1528,23 @@ class _RFOutputPowerCard extends StatelessWidget {
     required String minRFOutputPower,
     required String maxRFOutputPowerTitle,
     required String maxRFOutputPower,
+    required String historicalMinRFOutputPower,
+    required String historicalMaxRFOutputPower,
     required Color borderColor,
   }) {
+    if (currentRFOutputPower != '' &&
+        historicalMinRFOutputPower != '' &&
+        historicalMaxRFOutputPower != '') {
+      historicalMinRFOutputPower = adjustMinDoubleValue(
+        current: currentRFOutputPower,
+        min: historicalMinRFOutputPower,
+      );
+      historicalMaxRFOutputPower = adjustMaxDoubleValue(
+        current: currentRFOutputPower,
+        max: historicalMaxRFOutputPower,
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 16.0,
@@ -1534,7 +1589,7 @@ class _RFOutputPowerCard extends StatelessWidget {
                   children: [
                     getMinRFOutputPower(
                       loadingStatus: loadingStatus,
-                      minRFOutputPower: 'N/A',
+                      minRFOutputPower: historicalMinRFOutputPower,
                       fontSize: 32,
                     ),
                     Text(
@@ -1552,7 +1607,7 @@ class _RFOutputPowerCard extends StatelessWidget {
                   children: [
                     getMaxRFOutputPower(
                       loadingStatus: loadingStatus,
-                      maxRFOutputPower: 'N/A',
+                      maxRFOutputPower: historicalMaxRFOutputPower,
                       fontSize: 32,
                     ),
                     Text(
@@ -1606,6 +1661,12 @@ class _RFOutputPowerCard extends StatelessWidget {
                   AppLocalizations.of(context).maxRFOutputPower,
               maxRFOutputPower:
                   state.characteristicData[DataKey.maxRFOutputPower] ?? '',
+              historicalMinRFOutputPower: state
+                      .characteristicData[DataKey.historicalMinRFOutputPower] ??
+                  '',
+              historicalMaxRFOutputPower: state
+                      .characteristicData[DataKey.historicalMaxRFOutputPower] ??
+                  '',
               borderColor: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(

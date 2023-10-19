@@ -849,6 +849,43 @@ class Dsim18Parser {
     return rfInOuts;
   }
 
+  A1P8GRFOutputPowerStatistic getA1p8GRFOutputPowerStatistic(
+      List<RFInOut> rfInOuts) {
+    if (rfInOuts.isNotEmpty) {
+      // get min rf output power
+      double historicalMinRFOutputPower = rfInOuts
+          .map((rfInOut) => rfInOut.output)
+          .reduce((min, current) => min < current ? min : current);
+
+      // get max rf output power
+      double historicalMaxRFOutputPower = rfInOuts
+          .map((rfInOut) => rfInOut.output)
+          .reduce((max, current) => max > current ? max : current);
+
+      String historicalMinRFOutputPowerStr =
+          historicalMinRFOutputPower.toStringAsFixed(1);
+
+      String historicalMaxRFOutputPowerStr =
+          historicalMaxRFOutputPower.toStringAsFixed(1);
+
+      A1P8GRFOutputPowerStatistic a1p8gRFOutputPowerStatistic =
+          A1P8GRFOutputPowerStatistic(
+        historicalMinRFOutputPower: historicalMinRFOutputPowerStr,
+        historicalMaxRFOutputPower: historicalMaxRFOutputPowerStr,
+      );
+
+      return a1p8gRFOutputPowerStatistic;
+    } else {
+      A1P8GRFOutputPowerStatistic a1p8gRFOutputPowerStatistic =
+          const A1P8GRFOutputPowerStatistic(
+        historicalMinRFOutputPower: '',
+        historicalMaxRFOutputPower: '',
+      );
+
+      return a1p8gRFOutputPowerStatistic;
+    }
+  }
+
   List<Log1p8G> parse1P8GLog(List<int> rawData) {
     List<Log1p8G> logChunks = [];
     rawData.removeRange(rawData.length - 2, rawData.length);
@@ -1703,4 +1740,14 @@ class A1P8GLogStatistic {
   final String historicalMaxVoltage;
   final String historicalMinVoltageRipple;
   final String historicalMaxVoltageRipple;
+}
+
+class A1P8GRFOutputPowerStatistic {
+  const A1P8GRFOutputPowerStatistic({
+    required this.historicalMinRFOutputPower,
+    required this.historicalMaxRFOutputPower,
+  });
+
+  final String historicalMinRFOutputPower;
+  final String historicalMaxRFOutputPower;
 }

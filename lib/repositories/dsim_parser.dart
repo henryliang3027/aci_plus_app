@@ -330,10 +330,8 @@ class DsimParser {
     currentTemperatureC = (rawData[10] * 256 + rawData[11]) / 10;
     currentTemperatureF =
         _unitConverter.converCelciusToFahrenheit(currentTemperatureC);
-    String strCurrentTemperatureF =
-        currentTemperatureF.toStringAsFixed(1) + CustomStyle.fahrenheitUnit;
-    String strCurrentTemperatureC =
-        currentTemperatureC.toString() + CustomStyle.celciusUnit;
+    String strCurrentTemperatureF = currentTemperatureF.toStringAsFixed(1);
+    String strCurrentTemperatureC = currentTemperatureC.toString();
 
     //24V
     currentVoltage = ((rawData[8] * 256 + rawData[9]) / 10).toStringAsFixed(1);
@@ -439,20 +437,16 @@ class DsimParser {
           .reduce((max, current) => max > current ? max : current);
 
       String minTemperatureF = _unitConverter
-              .converCelciusToFahrenheit(minTemperature)
-              .toStringAsFixed(1) +
-          CustomStyle.fahrenheitUnit;
+          .converCelciusToFahrenheit(minTemperature)
+          .toStringAsFixed(1);
 
       String maxTemperatureF = _unitConverter
-              .converCelciusToFahrenheit(maxTemperature)
-              .toStringAsFixed(1) +
-          CustomStyle.fahrenheitUnit;
+          .converCelciusToFahrenheit(maxTemperature)
+          .toStringAsFixed(1);
 
-      String minTemperatureC =
-          minTemperature.toString() + CustomStyle.celciusUnit;
+      String minTemperatureC = minTemperature.toString();
 
-      String maxTemperatureC =
-          maxTemperature.toString() + CustomStyle.celciusUnit;
+      String maxTemperatureC = maxTemperature.toString();
 
       LogStatistic logStatistic = LogStatistic(
         minTemperatureF: minTemperatureF,

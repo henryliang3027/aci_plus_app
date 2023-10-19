@@ -29,3 +29,47 @@ void setFullScreenOrientation() {
     DeviceOrientation.landscapeLeft,
   ]);
 }
+
+String adjustMinDoubleValue({
+  required String current,
+  required String min,
+}) {
+  double doubleCurrentValue = double.parse(current);
+  double doubleMinValue = double.parse(min);
+  return doubleMinValue < doubleCurrentValue
+      ? doubleMinValue.toString()
+      : doubleCurrentValue.toString();
+}
+
+String adjustMaxDoubleValue({
+  required String current,
+  required String max,
+}) {
+  double doubleCurrentValue = double.parse(current);
+  double doubleMaxValue = double.parse(max);
+  return doubleMaxValue > doubleCurrentValue
+      ? doubleMaxValue.toString()
+      : doubleCurrentValue.toString();
+}
+
+String adjustMinIntValue({
+  required String current,
+  required String min,
+}) {
+  int intCurrentValue = int.parse(current);
+  int intMinValue = int.parse(min);
+  return intMinValue < intCurrentValue
+      ? intMinValue.toString()
+      : intCurrentValue.toString();
+}
+
+String adjustMaxIntValue({
+  required String current,
+  required String max,
+}) {
+  int intCurrentValue = int.parse(current);
+  int intMaxValue = int.parse(max);
+  return intMaxValue > intCurrentValue
+      ? intMaxValue.toString()
+      : intCurrentValue.toString();
+}

@@ -1,6 +1,7 @@
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
+import 'package:dsim_app/core/utils.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:dsim_app/repositories/unit_repository.dart';
@@ -176,6 +177,18 @@ class _TemperatureCard extends StatelessWidget {
       required String maxTemperatureTitle,
       required String maxTemperature,
     }) {
+      if (currentTemperature != '' &&
+          minTemperature != '' &&
+          maxTemperature != '') {
+        minTemperature = adjustMinDoubleValue(
+          current: currentTemperature,
+          min: minTemperature,
+        );
+        maxTemperature = adjustMaxDoubleValue(
+          current: currentTemperature,
+          max: maxTemperature,
+        );
+      }
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Column(
@@ -414,6 +427,19 @@ class _AttenuationCard extends StatelessWidget {
     required String maxAttenuation,
     required Color borderColor,
   }) {
+    if (currentAttenuation != '' &&
+        minAttenuation != '' &&
+        maxAttenuation != '') {
+      minAttenuation = adjustMinIntValue(
+        current: currentAttenuation,
+        min: minAttenuation,
+      );
+      maxAttenuation = adjustMaxIntValue(
+        current: currentAttenuation,
+        max: maxAttenuation,
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16.0,
@@ -667,6 +693,17 @@ class _PowerSupplyCard extends StatelessWidget {
     required String maxVoltage,
     required Color borderColor,
   }) {
+    if (currentVoltage != '' && minVoltage != '' && maxVoltage != '') {
+      minVoltage = adjustMinDoubleValue(
+        current: currentVoltage,
+        min: minVoltage,
+      );
+      maxVoltage = adjustMaxDoubleValue(
+        current: currentVoltage,
+        max: maxVoltage,
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16.0,
@@ -749,6 +786,19 @@ class _PowerSupplyCard extends StatelessWidget {
     required String maxVoltageRipple,
     required Color borderColor,
   }) {
+    if (currentVoltageRipple != '' &&
+        minVoltageRipple != '' &&
+        maxVoltageRipple != '') {
+      minVoltageRipple = adjustMinIntValue(
+        current: currentVoltageRipple,
+        min: minVoltageRipple,
+      );
+      maxVoltageRipple = adjustMaxIntValue(
+        current: currentVoltageRipple,
+        max: maxVoltageRipple,
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16.0,
