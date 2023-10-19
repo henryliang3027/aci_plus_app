@@ -73,11 +73,26 @@ class Status18Form extends StatelessWidget {
         }
       }
 
-      return Column(
-        children: [
-          ...widgets,
-        ],
-      );
+      return widgets.isNotEmpty
+          ? SingleChildScrollView(
+              child: Column(
+                children: [
+                  ...widgets,
+                ],
+              ),
+            )
+          : Container(
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(70, 158, 158, 158),
+              ),
+              child: const Center(
+                child: SizedBox(
+                  width: CustomStyle.diameter,
+                  height: CustomStyle.diameter,
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            );
     }
 
     return Scaffold(
@@ -87,9 +102,7 @@ class Status18Form extends StatelessWidget {
         leading: const _DeviceStatus(),
         actions: const [_DeviceRefresh()],
       ),
-      body: SingleChildScrollView(
-        child: getWidgetsByPartId(partId),
-      ),
+      body: getWidgetsByPartId(partId),
       bottomNavigationBar: HomeBottomNavigationBar(
         pageController: pageController,
         selectedIndex: 1,
