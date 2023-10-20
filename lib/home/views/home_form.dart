@@ -1,12 +1,14 @@
 import 'package:dsim_app/about/about_page.dart';
 import 'package:dsim_app/chart/view/chart18_page.dart';
 import 'package:dsim_app/chart/view/chart_page.dart';
+import 'package:dsim_app/core/common_enum.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/message_localization.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/information/views/information18_page.dart';
 import 'package:dsim_app/information/views/information_page.dart';
+import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:dsim_app/setting/views/setting18_page.dart';
 import 'package:dsim_app/setting/views/setting_page.dart';
 import 'package:dsim_app/status/views/status18_page.dart';
@@ -108,8 +110,8 @@ class _HomeFormState extends State<HomeForm> {
       );
     }
 
-    List<Widget> buildPages(int mtu) {
-      if (mtu == 20 || mtu == 23) {
+    List<Widget> buildPages(ACIDeviceType aciDeviceType) {
+      if (aciDeviceType == ACIDeviceType.dsim1G1P2G) {
         // 適用 1G/1.2G 的頁面
         return [
           SettingPage(
@@ -167,11 +169,13 @@ class _HomeFormState extends State<HomeForm> {
         },
         child: Scaffold(
           body: BlocBuilder<HomeBloc, HomeState>(
-            buildWhen: (previous, current) => previous.mtu != current.mtu,
+            buildWhen: (previous, current) =>
+                previous.aciDeviceType != current.aciDeviceType,
             builder: (context, state) => PageView(
               physics: const NeverScrollableScrollPhysics(),
               controller: _pageController,
-              children: buildPages(context.read<HomeBloc>().state.mtu),
+              children:
+                  buildPages(context.read<HomeBloc>().state.aciDeviceType),
             ),
           ),
           // bottomNavigationBar: BottomNavigationBar(

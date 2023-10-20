@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dsim_app/core/command.dart';
+import 'package:dsim_app/core/common_enum.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/repositories/ble_client.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
@@ -136,20 +137,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         break;
       case DeviceConnectionState.connected:
         List<dynamic> result =
-            await _dsimRepository.requestMTU(deviceId: state.device!.id);
+            await _dsimRepository.getACIDeviceType(deviceId: state.device!.id);
 
         if (result[0]) {
-          int mtu = result[1];
+          ACIDeviceType aciDeviceType = result[1];
           emit(state.copyWith(
             scanStatus: FormStatus.requestSuccess,
             connectionStatus: FormStatus.requestSuccess,
-            mtu: mtu,
+            aciDeviceType: aciDeviceType,
           ));
 
-          if (mtu == 244 || mtu == 247) {
-            print('244 _characteristicDataStreamSubscription');
+          if (aciDeviceType == ACIDeviceType.amplifier1P8G) {
+            print('1.8G _characteristicDataStreamSubscription');
             add(const Data18Requested());
 
+            //當在設定頁面設定資料時, 用來更新Information page 對應的資料欄位
             _characteristicDataStreamSubscription =
                 _dsimRepository.characteristicData.listen(
               (data) {
@@ -158,10 +160,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               onDone: () {},
             );
           } else {
-            print('20 _characteristicDataStreamSubscription');
+            print('1G/1.2G _characteristicDataStreamSubscription');
             add(const DataRequested());
 
-            //當設定頁面設定資料時, 用來更新Information page 對應的資料欄位
+            //當在設定頁面設定資料時, 用來更新Information page 對應的資料欄位
             _characteristicDataStreamSubscription =
                 _dsimRepository.characteristicData.listen(
               (data) {

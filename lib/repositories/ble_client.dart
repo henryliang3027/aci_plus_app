@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
-import 'package:dsim_app/core/command.dart';
+import 'package:dsim_app/core/common_enum.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
@@ -187,19 +187,34 @@ class BLEClient {
 
             if (_currentCommandIndex <= 13) {
               cancelTimeout(name: 'cmd $_currentCommandIndex');
-              if (!_completer.isCompleted) {
-                _completer.complete(rawData);
+
+              bool isValidCRC = checkCRC(rawData);
+              if (isValidCRC) {
+                if (!_completer.isCompleted) {
+                  _completer.complete(rawData);
+                }
+              } else {
+                if (!_completer.isCompleted) {
+                  _completer.completeError('Invalid data');
+                }
               }
             } else if (_currentCommandIndex >= 14 &&
                 _currentCommandIndex <= 29) {
               _rawLog.addAll(rawData);
               // 一個 log command 總共會接收 261 bytes, 每一次傳回 16 bytes
               if (_rawLog.length == _totalBytesPerCommand) {
-                List<int> rawLogs = List.from(_rawLog);
-                _rawLog.clear();
-                cancelTimeout(name: 'cmd $_currentCommandIndex');
-                if (!_completer.isCompleted) {
-                  _completer.complete(rawLogs);
+                bool isValidCRC = checkCRC(_rawLog);
+                if (isValidCRC) {
+                  List<int> rawLogs = List.from(_rawLog);
+                  _rawLog.clear();
+                  cancelTimeout(name: 'cmd $_currentCommandIndex');
+                  if (!_completer.isCompleted) {
+                    _completer.complete(rawLogs);
+                  }
+                } else {
+                  if (!_completer.isCompleted) {
+                    _completer.completeError('Invalid data');
+                  }
                 }
               }
             } else if (_currentCommandIndex >= 30 &&
@@ -207,11 +222,18 @@ class BLEClient {
               _rawEvent.addAll(rawData);
               // 一個 event command 總共會接收 261 bytes, 每一次傳回 16 bytes
               if (_rawEvent.length == _totalBytesPerCommand) {
-                List<int> rawEvents = List.from(_rawEvent);
-                _rawEvent.clear();
-                cancelTimeout(name: 'cmd $_currentCommandIndex');
-                if (!_completer.isCompleted) {
-                  _completer.complete(rawEvents);
+                bool isValidCRC = checkCRC(_rawEvent);
+                if (isValidCRC) {
+                  List<int> rawEvents = List.from(_rawEvent);
+                  _rawEvent.clear();
+                  cancelTimeout(name: 'cmd $_currentCommandIndex');
+                  if (!_completer.isCompleted) {
+                    _completer.complete(rawEvents);
+                  }
+                } else {
+                  if (!_completer.isCompleted) {
+                    _completer.completeError('Invalid data');
+                  }
                 }
               }
             } else if (_currentCommandIndex >= 40 &&
@@ -432,7 +454,7 @@ class BLEClient {
     }
   }
 
-  Future<dynamic> requestMTU({
+  Future<dynamic> getACIDeviceType({
     required int commandIndex,
     required List<int> value,
     required String deviceId,
@@ -450,13 +472,13 @@ class BLEClient {
       if (length == 17) {
         return [
           true,
-          23,
+          ACIDeviceType.dsim1G1P2G,
         ];
       } else {
         // 1.8G data length = 181
         return [
           true,
-          244,
+          ACIDeviceType.amplifier1P8G,
         ];
       }
     } else {

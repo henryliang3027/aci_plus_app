@@ -9,7 +9,7 @@ class HomeState extends Equatable {
     this.dataExportStatus = FormStatus.none,
     this.dataShareStatus = FormStatus.none,
     this.showSplash = true,
-    this.mtu = 0,
+    this.aciDeviceType = ACIDeviceType.undefined,
     this.device,
     this.characteristicData = const {},
     this.errorMassage = '',
@@ -24,7 +24,7 @@ class HomeState extends Equatable {
   final FormStatus dataShareStatus;
 
   final bool showSplash;
-  final int mtu;
+  final ACIDeviceType aciDeviceType;
   final DiscoveredDevice? device;
   final Map<DataKey, String> characteristicData;
   final String errorMassage;
@@ -38,7 +38,7 @@ class HomeState extends Equatable {
     FormStatus? dataExportStatus,
     FormStatus? dataShareStatus,
     bool? showSplash,
-    int? mtu,
+    ACIDeviceType? aciDeviceType,
     DiscoveredDevice? device,
     Map<DataKey, String>? characteristicData,
     String? errorMassage,
@@ -52,7 +52,7 @@ class HomeState extends Equatable {
       dataExportStatus: dataExportStatus ?? this.dataExportStatus,
       dataShareStatus: dataShareStatus ?? this.dataShareStatus,
       showSplash: showSplash ?? this.showSplash,
-      mtu: mtu ?? this.mtu,
+      aciDeviceType: aciDeviceType ?? this.aciDeviceType,
       device: device ?? this.device,
       characteristicData: characteristicData != null
           ? Map<DataKey, String>.from(characteristicData)
@@ -72,7 +72,7 @@ class HomeState extends Equatable {
         dataExportStatus,
         dataShareStatus,
         showSplash,
-        mtu,
+        aciDeviceType,
         device,
         characteristicData,
         errorMassage,

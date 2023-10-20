@@ -427,19 +427,6 @@ class _AttenuationCard extends StatelessWidget {
     required String maxAttenuation,
     required Color borderColor,
   }) {
-    if (currentAttenuation != '' &&
-        minAttenuation != '' &&
-        maxAttenuation != '') {
-      minAttenuation = adjustMinIntValue(
-        current: currentAttenuation,
-        min: minAttenuation,
-      );
-      maxAttenuation = adjustMaxIntValue(
-        current: currentAttenuation,
-        max: maxAttenuation,
-      );
-    }
-
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16.0,

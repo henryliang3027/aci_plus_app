@@ -13,12 +13,6 @@ import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
-enum Alarm {
-  success,
-  danger,
-  medium,
-}
-
 class DsimRepository {
   DsimRepository()
       : _bleClient = BLEClient(),
@@ -65,14 +59,15 @@ class DsimRepository {
     await _bleClient.closeConnectionStream();
   }
 
-  Future<dynamic> requestMTU({
+  Future<dynamic> getACIDeviceType({
     required String deviceId,
     int mtu = 247,
   }) async {
-    return _bleClient.requestMTU(
+    return _bleClient.getACIDeviceType(
       commandIndex: -1,
       value: _dsimParser.commandCollection[0],
       deviceId: deviceId,
+      mtu: mtu,
     );
   }
 
@@ -2469,6 +2464,8 @@ class DsimRepository {
           commandIndex: commandIndex,
           value: Command.set04Cmd,
         );
+
+        // 等 30 秒再讀取 working mode
         await Future.delayed(const Duration(seconds: 30));
       } catch (e) {
         return false;
