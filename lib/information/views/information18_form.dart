@@ -409,13 +409,13 @@ class _AlarmCard extends StatelessWidget {
         }
 
         return buildAlarmCard(
-          alarmUSeverity: information18State.alarmUSeverity == 'defaule'
+          alarmUSeverity: information18State.alarmUSeverity == 'default'
               ? alarmUSeverity
               : information18State.alarmUSeverity,
-          alarmTSeverity: information18State.alarmTSeverity == 'defaule'
+          alarmTSeverity: information18State.alarmTSeverity == 'default'
               ? alarmTSeverity
               : information18State.alarmTSeverity,
-          alarmPSeverity: information18State.alarmPSeverity == 'defaule'
+          alarmPSeverity: information18State.alarmPSeverity == 'default'
               ? alarmPSeverity
               : information18State.alarmPSeverity,
         );
