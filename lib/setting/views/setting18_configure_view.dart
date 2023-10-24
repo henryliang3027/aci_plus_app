@@ -296,10 +296,49 @@ class Setting18ConfigureView extends StatelessWidget {
             break;
         }
       }
-      return widgets;
+      return widgets.isNotEmpty
+          ? widgets
+          : [
+              _Location(
+                textEditingController: locationTextEditingController,
+              ),
+              _Coordinates(
+                textEditingController: coordinateTextEditingController,
+              ),
+              const _SplitOption(),
+              _FirstChannelLoading(
+                firstChannelLoadingFrequencyTextEditingController:
+                    firstChannelLoadingFrequencyTextEditingController,
+                firstChannelLoadingLevelTextEditingController:
+                    firstChannelLoadingLevelTextEditingController,
+              ),
+              _LastChannelLoading(
+                lastChannelLoadingFrequencyTextEditingController:
+                    lastChannelLoadingFrequencyTextEditingController,
+                lastChannelLoadingLevelTextEditingController:
+                    lastChannelLoadingLevelTextEditingController,
+              ),
+              const _PilotFrequencyMode(),
+              _PilotFrequency1(
+                pilotFrequency1TextEditingController:
+                    pilotFrequency1TextEditingController,
+                manualModePilot1RFOutputPowerTextEditingController:
+                    manualModePilot1RFOutputPowerTextEditingController,
+              ),
+              _PilotFrequency2(
+                pilotFrequency2TextEditingController:
+                    pilotFrequency2TextEditingController,
+                manualModePilot2RFOutputPowerTextEditingController:
+                    manualModePilot2RFOutputPowerTextEditingController,
+              ),
+              const _FwdAGCMode(),
+              const _AutoLevelControl(),
+              const _LogInterval(),
+              const _TGCCableLength(),
+            ];
     }
 
-    Widget buildThresholdWidget(String partId) {
+    Widget buildConfigurationWidget(String partId) {
       List<Widget> configurationParameters =
           getConfigurationParameterWidgetsByPartId(partId);
 
@@ -359,7 +398,7 @@ class Setting18ConfigureView extends StatelessWidget {
               padding: const EdgeInsets.all(
                 CustomStyle.sizeXL,
               ),
-              child: buildThresholdWidget(partId),
+              child: buildConfigurationWidget(partId),
             ),
           ),
         ),

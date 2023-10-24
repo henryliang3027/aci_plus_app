@@ -246,7 +246,34 @@ class Setting18ThresholdView extends StatelessWidget {
         }
       }
 
-      return widgets;
+      return widgets.isNotEmpty
+          ? widgets
+          : [
+              _TemperatureAlarmControl(
+                minTemperatureTextEditingController:
+                    minTemperatureTextEditingController,
+                maxTemperatureTextEditingController:
+                    maxTemperatureTextEditingController,
+              ),
+              _VoltageAlarmControl(
+                minVoltageTextEditingController:
+                    minVoltageTextEditingController,
+                maxVoltageTextEditingController:
+                    maxVoltageTextEditingController,
+              ),
+              _VoltageRippleAlarmControl(
+                minVoltageRippleTextEditingController:
+                    minVoltageRippleTextEditingController,
+                maxVoltageRippleTextEditingController:
+                    maxVoltageRippleTextEditingController,
+              ),
+              _RFOutputPowerAlarmControl(
+                minRFOutputPowerTextEditingController:
+                    minRFOutputPowerTextEditingController,
+                maxRFOutputPowerTextEditingController:
+                    maxRFOutputPowerTextEditingController,
+              ),
+            ];
     }
 
     List<Widget> getForwardSettingWidgetsByPartId(String partId) {
@@ -280,7 +307,15 @@ class Setting18ThresholdView extends StatelessWidget {
         }
       }
 
-      return widgets;
+      return widgets.isNotEmpty
+          ? widgets
+          : [
+              const _SplitOptionAlarmControl(),
+              const _PilotFrequency1AlarmControl(),
+              const _PilotFrequency2AlarmControl(),
+              const _FirstChannelOutputLevelAlarmControl(),
+              const _LastChannelOutputLevelAlarmControl(),
+            ];
     }
 
     Widget buildThresholdWidget(String partId) {

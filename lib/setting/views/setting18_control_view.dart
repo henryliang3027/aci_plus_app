@@ -183,7 +183,12 @@ class Setting18ControlView extends StatelessWidget {
         }
       }
 
-      return widgets;
+      return widgets.isNotEmpty
+          ? widgets
+          : [
+              const _FwdInputAttenuation(),
+              const _FwdInputEQ(),
+            ];
     }
 
     List<Widget> getReturnControlParameterWidgetsByPartId(String partId) {
@@ -260,7 +265,18 @@ class Setting18ControlView extends StatelessWidget {
             break;
         }
       }
-      return widgets;
+      return widgets.isNotEmpty
+          ? widgets
+          : [
+              const _RtnInputAttenuation2(),
+              const _RtnInputAttenuation3(),
+              const _RtnInputAttenuation4(),
+              const _RtnOutputLevelAttenuation(),
+              const _RtnOutputEQ(),
+              const _RtnIngressSetting2(),
+              const _RtnIngressSetting3(),
+              const _RtnIngressSetting4(),
+            ];
     }
 
     Widget buildControlWidget(String partId) {

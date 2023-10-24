@@ -81,16 +81,21 @@ class Status18Form extends StatelessWidget {
                 ],
               ),
             )
-          : Container(
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(70, 158, 158, 158),
-              ),
-              child: const Center(
-                child: SizedBox(
-                  width: CustomStyle.diameter,
-                  height: CustomStyle.diameter,
-                  child: CircularProgressIndicator(),
-                ),
+          : const SingleChildScrollView(
+              child: Column(
+                children: [
+                  _WorkingModeCard(),
+                  _SplitOptionCard(),
+                  _TemperatureCard(),
+                  _PowerSupplyCard(),
+                  _VoltageRippleCard(),
+                  _RFOutputPowerCard(),
+                  _PilotFrequency1Card(),
+                  _PilotFrequency2Card(),
+                  _FirstChannelPowerLevelCard(),
+                  _LastChannelPowerLevelCard(),
+                  _OutputOperatingSlopeCard(),
+                ],
               ),
             );
     }

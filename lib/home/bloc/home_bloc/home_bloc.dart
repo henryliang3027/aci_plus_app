@@ -530,7 +530,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           newCharacteristicData.addAll(resultOf1p8G3[2]);
 
           emit(state.copyWith(
-            loadingStatus: FormStatus.requestSuccess,
+            //  loadingStatus: FormStatus.requestSuccess,
             characteristicData: newCharacteristicData,
           ));
 
