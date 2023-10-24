@@ -4,8 +4,8 @@ abstract class RFLevelChartEvent extends Equatable {
   const RFLevelChartEvent();
 }
 
-class DataRequested extends RFLevelChartEvent {
-  const DataRequested();
+class RFInOutRequested extends RFLevelChartEvent {
+  const RFInOutRequested();
 
   @override
   List<Object?> get props => [];

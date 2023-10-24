@@ -1,6 +1,5 @@
 import 'dart:math';
-
-import 'package:dsim_app/chart/chart/chart18_bloc/chart18_bloc.dart';
+import 'package:dsim_app/chart/chart/rf_level_chart_bloc/rf_level_chart_bloc.dart';
 import 'package:dsim_app/chart/view/full_screen_chart_form.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
@@ -175,14 +174,15 @@ class _ChartView extends StatelessWidget {
     return Builder(
       builder: (context) {
         HomeState homeState = context.watch<HomeBloc>().state;
-        Chart18State chart18State = context.watch<Chart18Bloc>().state;
+        RFLevelChartState rfLevelChartState =
+            context.watch<RFLevelChartBloc>().state;
 
         if (homeState.loadingStatus == FormStatus.requestInProgress) {
           return Stack(
             alignment: Alignment.center,
             children: [
               buildLoadingFormWithProgressiveChartView(
-                  chart18State.dateValueCollectionOfLog),
+                  rfLevelChartState.valueCollectionOfRFInOut),
               Container(
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(70, 158, 158, 158),
@@ -198,14 +198,14 @@ class _ChartView extends StatelessWidget {
             ],
           );
         } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
-          if (chart18State.rfDataRequestStatus.isNone) {
+          if (rfLevelChartState.rfInOutRequestStatus.isNone) {
             print('get rf');
-            context.read<Chart18Bloc>().add(const RFInOutDataRequested());
+            context.read<RFLevelChartBloc>().add(const RFInOutRequested());
             return Stack(
               alignment: Alignment.center,
               children: [
                 buildLoadingFormWithProgressiveChartView(
-                    chart18State.dateValueCollectionOfLog),
+                    rfLevelChartState.valueCollectionOfRFInOut),
                 Container(
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(70, 158, 158, 158),
@@ -220,12 +220,13 @@ class _ChartView extends StatelessWidget {
                 ),
               ],
             );
-          } else if (chart18State.rfDataRequestStatus.isRequestInProgress) {
+          } else if (rfLevelChartState
+              .rfInOutRequestStatus.isRequestInProgress) {
             return Stack(
               alignment: Alignment.center,
               children: [
                 buildLoadingFormWithProgressiveChartView(
-                    chart18State.dateValueCollectionOfLog),
+                    rfLevelChartState.valueCollectionOfRFInOut),
                 Container(
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(70, 158, 158, 158),
@@ -240,12 +241,12 @@ class _ChartView extends StatelessWidget {
                 ),
               ],
             );
-          } else if (chart18State.rfDataRequestStatus.isRequestFailure) {
+          } else if (rfLevelChartState.rfInOutRequestStatus.isRequestFailure) {
             return Stack(
               alignment: Alignment.center,
               children: [
                 buildLoadingFormWithProgressiveChartView(
-                    chart18State.dateValueCollectionOfLog),
+                    rfLevelChartState.valueCollectionOfRFInOut),
                 Container(
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(70, 158, 158, 158),
@@ -287,7 +288,7 @@ class _ChartView extends StatelessWidget {
                       buildChart(
                         getChartDataOfOutputRFLevel(
                             dateValueCollectionOfLog:
-                                chart18State.valueCollectionOfRFInOut),
+                                rfLevelChartState.valueCollectionOfRFInOut),
                       ),
                       const SizedBox(
                         height: 50.0,
@@ -295,7 +296,7 @@ class _ChartView extends StatelessWidget {
                       buildChart(
                         getChartDataOfInputRFLevel(
                             dateValueCollectionOfLog:
-                                chart18State.valueCollectionOfRFInOut),
+                                rfLevelChartState.valueCollectionOfRFInOut),
                       ),
                     ],
                   ),
@@ -316,7 +317,7 @@ class _ChartView extends StatelessWidget {
                   buildChart(
                     getChartDataOfOutputRFLevel(
                         dateValueCollectionOfLog:
-                            chart18State.valueCollectionOfRFInOut),
+                            rfLevelChartState.valueCollectionOfRFInOut),
                   ),
                   const SizedBox(
                     height: 50.0,
@@ -324,7 +325,7 @@ class _ChartView extends StatelessWidget {
                   buildChart(
                     getChartDataOfInputRFLevel(
                         dateValueCollectionOfLog:
-                            chart18State.valueCollectionOfRFInOut),
+                            rfLevelChartState.valueCollectionOfRFInOut),
                   ),
                 ],
               ),

@@ -1,4 +1,6 @@
 import 'package:dsim_app/chart/chart/chart18_bloc/chart18_bloc.dart';
+import 'package:dsim_app/chart/chart/data_log_chart_bloc/data_log_chart_bloc.dart';
+import 'package:dsim_app/chart/chart/rf_level_chart_bloc/rf_level_chart_bloc.dart';
 import 'package:dsim_app/chart/view/chart18_form.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +16,19 @@ class Chart18Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => Chart18Bloc(
-          dsimRepository: RepositoryProvider.of<DsimRepository>(context)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => DataLogChartBloc(
+            dsimRepository: RepositoryProvider.of<DsimRepository>(context),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => RFLevelChartBloc(
+            dsimRepository: RepositoryProvider.of<DsimRepository>(context),
+          ),
+        )
+      ],
       child: Chart18Form(
         pageController: pageController,
       ),

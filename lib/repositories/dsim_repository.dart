@@ -349,12 +349,12 @@ class DsimRepository {
 
     print('get data from request command 1p8G_Event');
 
-    List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-      commandIndex: commandIndex,
-      value: _dsim18Parser.command18Collection[commandIndex - 180],
-    );
-
     try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18Parser.command18Collection[commandIndex - 180],
+      );
+
       List<Event1p8G> event1p8Gs = _dsim18Parser.parse1p8GEvent(rawData);
       return [
         true,

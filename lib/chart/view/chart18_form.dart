@@ -1,6 +1,10 @@
 import 'package:dsim_app/chart/chart/chart18_bloc/chart18_bloc.dart';
+import 'package:dsim_app/chart/chart/data_log_chart_bloc/data_log_chart_bloc.dart';
+import 'package:dsim_app/chart/chart/rf_level_chart_bloc/rf_level_chart_bloc.dart';
 import 'package:dsim_app/chart/view/chart18_tab_bar.dart';
+import 'package:dsim_app/chart/view/data_log_chart_page.dart';
 import 'package:dsim_app/chart/view/download_indicator.dart';
+import 'package:dsim_app/chart/view/rf_level_chart_page.dart';
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
@@ -14,7 +18,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:share_plus/share_plus.dart';
 
-class Chart18Form extends StatelessWidget {
+class Chart18Form extends StatefulWidget {
   const Chart18Form({
     super.key,
     required this.pageController,
@@ -23,161 +27,204 @@ class Chart18Form extends StatelessWidget {
   final PageController pageController;
 
   @override
+  State<Chart18Form> createState() => _Chart18FormState();
+}
+
+class _Chart18FormState extends State<Chart18Form>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(vsync: this, length: 2);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Future<void> showFailureDialog(String msg) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context).dialogTitleError,
-              style: const TextStyle(
-                color: CustomStyle.customRed,
-              ),
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                    getMessageLocalization(
-                      msg: msg,
-                      context: context,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    return BlocListener<Chart18Bloc, Chart18State>(
-      listener: (context, state) async {
-        if (state.dataExportStatus.isRequestSuccess) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                duration: const Duration(seconds: 30),
-                content: Text(
-                  AppLocalizations.of(context)
-                      .dialogMessageDataExportSuccessful,
-                ),
-                action: SnackBarAction(
-                  label: AppLocalizations.of(context).open,
-                  onPressed: () async {
-                    OpenResult result = await OpenFilex.open(
-                      state.dataExportPath,
-                      type: 'application/vnd.ms-excel',
-                      uti: 'com.microsoft.excel.xls',
-                    );
-                    print(result.message);
-                  },
-                ),
-              ),
-            );
-        } else if (state.dataShareStatus.isRequestSuccess) {
-          String partNo = context
-              .read<HomeBloc>()
-              .state
-              .characteristicData[DataKey.partNo]!;
-          String location = context
-              .read<HomeBloc>()
-              .state
-              .characteristicData[DataKey.location]!;
-
-          double width = MediaQuery.of(context).size.width;
-          double height = MediaQuery.of(context).size.height;
-          Share.shareXFiles(
-            [XFile(state.dataExportPath)],
-            subject: state.exportFileName,
-            text: '$partNo / $location',
-            sharePositionOrigin:
-                Rect.fromLTWH(0.0, height / 2, width, height / 2),
-          );
-        } else if (state.allDataDownloadStatus.isRequestInProgress) {
-          List<dynamic>? resultOfDownload = await showDialog<List<dynamic>>(
-            context: context,
-            barrierDismissible: false, // user must tap button!
-            builder: (BuildContext buildContext) {
-              return WillPopScope(
-                onWillPop: () async {
-                  // 避免 Android 使用者點擊系統返回鍵關閉 dialog
-                  return false;
-                },
-                child: DownloadIndicatorForm(
-                  dsimRepository:
-                      RepositoryProvider.of<DsimRepository>(context),
-                ),
-              );
-            },
-          );
-
-          if (resultOfDownload != null) {
-            bool isSuccessful = resultOfDownload[0];
-            List<Log1p8G> log1p8Gs = resultOfDownload[1];
-            String errorMessage = resultOfDownload[2];
-            context.read<Chart18Bloc>().add(AllDataExported(
-                  isSuccessful,
-                  log1p8Gs,
-                  errorMessage,
-                ));
-          }
-        } else if (state.allDataDownloadStatus.isRequestSuccess) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                duration: const Duration(seconds: 30),
-                content: Text(
-                  AppLocalizations.of(context)
-                      .dialogMessageDataExportSuccessful,
-                ),
-                action: SnackBarAction(
-                  label: AppLocalizations.of(context).open,
-                  onPressed: () async {
-                    OpenResult result = await OpenFilex.open(
-                      state.dataExportPath,
-                      type: 'application/vnd.ms-excel',
-                      uti: 'com.microsoft.excel.xls',
-                    );
-                    print(result.message);
-                  },
-                ),
-              ),
-            );
-        } else if (state.allDataDownloadStatus.isRequestFailure) {
-          showFailureDialog(state.errorMessage);
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context).monitoringChart,
-          ),
-          centerTitle: true,
-          leading: const _DeviceStatus(),
-          actions: const [
-            _PopupMenu(),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          AppLocalizations.of(context).monitoringChart,
         ),
-        body: Chart18TabBar(
-          pageController: pageController,
-        ),
+        centerTitle: true,
+        leading: const _DeviceStatus(),
+        actions: const [
+          _PopupMenu(),
+        ],
+      ),
+      body: _Chart18TabBar(
+        pageController: widget.pageController,
+        tabController: _tabController,
       ),
     );
   }
 }
+
+// class Chart18Form extends StatelessWidget {
+//   const Chart18Form({
+//     super.key,
+//     required this.pageController,
+//   });
+
+//   final PageController pageController;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     Future<void> showFailureDialog(String msg) async {
+//       return showDialog<void>(
+//         context: context,
+//         barrierDismissible: false, // user must tap button!
+//         builder: (BuildContext context) {
+//           return AlertDialog(
+//             title: Text(
+//               AppLocalizations.of(context).dialogTitleError,
+//               style: const TextStyle(
+//                 color: CustomStyle.customRed,
+//               ),
+//             ),
+//             content: SingleChildScrollView(
+//               child: ListBody(
+//                 children: <Widget>[
+//                   Text(
+//                     getMessageLocalization(
+//                       msg: msg,
+//                       context: context,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             actions: <Widget>[
+//               TextButton(
+//                 child: const Text('OK'),
+//                 onPressed: () {
+//                   Navigator.of(context).pop(); // pop dialog
+//                 },
+//               ),
+//             ],
+//           );
+//         },
+//       );
+//     }
+
+//     return BlocListener<Chart18Bloc, Chart18State>(
+//       listener: (context, state) async {
+//         if (state.dataExportStatus.isRequestSuccess) {
+//           ScaffoldMessenger.of(context)
+//             ..hideCurrentSnackBar()
+//             ..showSnackBar(
+//               SnackBar(
+//                 duration: const Duration(seconds: 30),
+//                 content: Text(
+//                   AppLocalizations.of(context)
+//                       .dialogMessageDataExportSuccessful,
+//                 ),
+//                 action: SnackBarAction(
+//                   label: AppLocalizations.of(context).open,
+//                   onPressed: () async {
+//                     OpenResult result = await OpenFilex.open(
+//                       state.dataExportPath,
+//                       type: 'application/vnd.ms-excel',
+//                       uti: 'com.microsoft.excel.xls',
+//                     );
+//                     print(result.message);
+//                   },
+//                 ),
+//               ),
+//             );
+//         } else if (state.dataShareStatus.isRequestSuccess) {
+//           String partNo = context
+//               .read<HomeBloc>()
+//               .state
+//               .characteristicData[DataKey.partNo]!;
+//           String location = context
+//               .read<HomeBloc>()
+//               .state
+//               .characteristicData[DataKey.location]!;
+
+//           double width = MediaQuery.of(context).size.width;
+//           double height = MediaQuery.of(context).size.height;
+//           Share.shareXFiles(
+//             [XFile(state.dataExportPath)],
+//             subject: state.exportFileName,
+//             text: '$partNo / $location',
+//             sharePositionOrigin:
+//                 Rect.fromLTWH(0.0, height / 2, width, height / 2),
+//           );
+//         } else if (state.allDataDownloadStatus.isRequestInProgress) {
+//           List<dynamic>? resultOfDownload = await showDialog<List<dynamic>>(
+//             context: context,
+//             barrierDismissible: false, // user must tap button!
+//             builder: (BuildContext buildContext) {
+//               return WillPopScope(
+//                 onWillPop: () async {
+//                   // 避免 Android 使用者點擊系統返回鍵關閉 dialog
+//                   return false;
+//                 },
+//                 child: DownloadIndicatorForm(
+//                   dsimRepository:
+//                       RepositoryProvider.of<DsimRepository>(context),
+//                 ),
+//               );
+//             },
+//           );
+
+//           if (resultOfDownload != null) {
+//             bool isSuccessful = resultOfDownload[0];
+//             List<Log1p8G> log1p8Gs = resultOfDownload[1];
+//             String errorMessage = resultOfDownload[2];
+//             // context.read<DataLogChartBloc>().add(AllDataExported(
+//             //       isSuccessful,
+//             //       log1p8Gs,
+//             //       errorMessage,
+//             //     ));
+//           }
+//         } else if (state.allDataDownloadStatus.isRequestSuccess) {
+//           ScaffoldMessenger.of(context)
+//             ..hideCurrentSnackBar()
+//             ..showSnackBar(
+//               SnackBar(
+//                 duration: const Duration(seconds: 30),
+//                 content: Text(
+//                   AppLocalizations.of(context)
+//                       .dialogMessageDataExportSuccessful,
+//                 ),
+//                 action: SnackBarAction(
+//                   label: AppLocalizations.of(context).open,
+//                   onPressed: () async {
+//                     OpenResult result = await OpenFilex.open(
+//                       state.dataExportPath,
+//                       type: 'application/vnd.ms-excel',
+//                       uti: 'com.microsoft.excel.xls',
+//                     );
+//                     print(result.message);
+//                   },
+//                 ),
+//               ),
+//             );
+//         } else if (state.allDataDownloadStatus.isRequestFailure) {
+//           showFailureDialog(state.errorMessage);
+//         }
+//       },
+//       child: Scaffold(
+//         appBar: AppBar(
+//           title: Text(
+//             AppLocalizations.of(context).monitoringChart,
+//           ),
+//           centerTitle: true,
+//           leading: const _DeviceStatus(),
+//           actions: const [
+//             _PopupMenu(),
+//           ],
+//         ),
+//         body: _Chart18TabBar(
+//           pageController: pageController,
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class _DeviceStatus extends StatelessWidget {
   const _DeviceStatus({super.key});
@@ -252,13 +299,13 @@ class _PopupMenu extends StatelessWidget {
               case Menu.refresh:
                 context.read<HomeBloc>().add(const DeviceRefreshed());
               case Menu.share:
-                context.read<Chart18Bloc>().add(const DataShared());
+                // context.read<Chart18Bloc>().add(const DataShared());
                 break;
               case Menu.export:
-                context.read<Chart18Bloc>().add(const DataExported());
+                // context.read<Chart18Bloc>().add(const DataExported());
                 break;
               case Menu.downloadAll:
-                context.read<Chart18Bloc>().add(const AllDataDownloaded());
+              // context.read<Chart18Bloc>().add(const AllDataDownloaded());
               default:
                 break;
             }
@@ -353,5 +400,86 @@ class _PopupMenu extends StatelessWidget {
         }
       }
     });
+  }
+}
+
+class _Chart18TabBar extends StatelessWidget {
+  const _Chart18TabBar({
+    super.key,
+    required this.pageController,
+    required this.tabController,
+  });
+
+  final PageController pageController;
+  final TabController tabController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: double.maxFinite,
+          color: Theme.of(context).colorScheme.primary,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: IgnorePointer(
+              ignoring: false,
+              child: TabBar(
+                controller: tabController,
+                unselectedLabelColor: Colors.white,
+                labelColor: Theme.of(context).colorScheme.primary,
+                isScrollable: true,
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicator: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                  color: Colors.white,
+                ),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 24.0),
+                tabs: [
+                  Tab(
+                    child: SizedBox(
+                      width: 130,
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context).dataLog,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Tab(
+                    child: SizedBox(
+                      width: 130,
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context).rfLevel,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              // Icon(Icons.abc),
+              // Icon(Icons.ac_unit_rounded),
+              DataLogChartPage(
+                pageController: pageController,
+              ),
+              RFLevelChartPage(
+                pageController: pageController,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

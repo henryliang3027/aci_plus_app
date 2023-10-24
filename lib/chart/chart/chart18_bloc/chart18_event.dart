@@ -18,13 +18,6 @@ class DataShared extends Chart18Event {
   List<Object?> get props => [];
 }
 
-class AllDataDownloaded extends Chart18Event {
-  const AllDataDownloaded();
-
-  @override
-  List<Object?> get props => [];
-}
-
 class AllDataExported extends Chart18Event {
   const AllDataExported(
     this.isSuccessful,
@@ -42,32 +35,4 @@ class AllDataExported extends Chart18Event {
         log1p8Gs,
         errorMessage,
       ];
-}
-
-class LogDataRequested extends Chart18Event {
-  const LogDataRequested();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class EventDataRequested extends Chart18Event {
-  const EventDataRequested();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class MoreDataRequested extends Chart18Event {
-  const MoreDataRequested();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class RFInOutDataRequested extends Chart18Event {
-  const RFInOutDataRequested();
-
-  @override
-  List<Object?> get props => [];
 }

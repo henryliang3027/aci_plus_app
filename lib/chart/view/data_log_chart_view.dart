@@ -1,15 +1,22 @@
 import 'dart:math';
 import 'package:dsim_app/chart/chart/chart18_bloc/chart18_bloc.dart';
+import 'package:dsim_app/chart/chart/data_log_chart_bloc/data_log_chart_bloc.dart';
+import 'package:dsim_app/chart/view/download_indicator.dart';
 import 'package:dsim_app/chart/view/full_screen_chart_form.dart';
+import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/message_localization.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
+import 'package:dsim_app/repositories/dsim18_parser.dart';
+import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:share_plus/share_plus.dart';
 
 class DataLogChartView extends StatelessWidget {
   const DataLogChartView({
@@ -109,13 +116,108 @@ class _LogChartView extends StatelessWidget {
       );
     }
 
-    return BlocListener<Chart18Bloc, Chart18State>(
-      listener: (context, state) {
-        if (state.dataRequestStatus.isRequestSuccess) {
+    return BlocListener<DataLogChartBloc, DataLogChartState>(
+      listener: (context, state) async {
+        if (state.logRequestStatus.isRequestSuccess) {
           if (!state.hasNextChunk) {
             showNoMoreDataDialog();
           }
-        } else if (state.dataRequestStatus.isRequestFailure) {
+        } else if (state.logRequestStatus.isRequestFailure) {
+          showFailureDialog(state.errorMessage);
+        } else if (state.dataExportStatus.isRequestSuccess) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                duration: const Duration(seconds: 30),
+                content: Text(
+                  AppLocalizations.of(context)
+                      .dialogMessageDataExportSuccessful,
+                ),
+                action: SnackBarAction(
+                  label: AppLocalizations.of(context).open,
+                  onPressed: () async {
+                    OpenResult result = await OpenFilex.open(
+                      state.dataExportPath,
+                      type: 'application/vnd.ms-excel',
+                      uti: 'com.microsoft.excel.xls',
+                    );
+                    print(result.message);
+                  },
+                ),
+              ),
+            );
+        } else if (state.dataShareStatus.isRequestSuccess) {
+          String partNo = context
+              .read<HomeBloc>()
+              .state
+              .characteristicData[DataKey.partNo]!;
+          String location = context
+              .read<HomeBloc>()
+              .state
+              .characteristicData[DataKey.location]!;
+
+          double width = MediaQuery.of(context).size.width;
+          double height = MediaQuery.of(context).size.height;
+          Share.shareXFiles(
+            [XFile(state.dataExportPath)],
+            subject: state.exportFileName,
+            text: '$partNo / $location',
+            sharePositionOrigin:
+                Rect.fromLTWH(0.0, height / 2, width, height / 2),
+          );
+        } else if (state.allDataExportStatus.isRequestInProgress) {
+          List<dynamic>? resultOfDownload = await showDialog<List<dynamic>>(
+            context: context,
+            barrierDismissible: false, // user must tap button!
+            builder: (BuildContext buildContext) {
+              return WillPopScope(
+                onWillPop: () async {
+                  // 避免 Android 使用者點擊系統返回鍵關閉 dialog
+                  return false;
+                },
+                child: DownloadIndicatorForm(
+                  dsimRepository:
+                      RepositoryProvider.of<DsimRepository>(context),
+                ),
+              );
+            },
+          );
+
+          if (resultOfDownload != null) {
+            bool isSuccessful = resultOfDownload[0];
+            List<Log1p8G> log1p8Gs = resultOfDownload[1];
+            String errorMessage = resultOfDownload[2];
+            // context.read<DataLogChartBloc>().add(AllDataExported(
+            //       isSuccessful,
+            //       log1p8Gs,
+            //       errorMessage,
+            //     ));
+          }
+        } else if (state.allDataExportStatus.isRequestSuccess) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                duration: const Duration(seconds: 30),
+                content: Text(
+                  AppLocalizations.of(context)
+                      .dialogMessageDataExportSuccessful,
+                ),
+                action: SnackBarAction(
+                  label: AppLocalizations.of(context).open,
+                  onPressed: () async {
+                    OpenResult result = await OpenFilex.open(
+                      state.dataExportPath,
+                      type: 'application/vnd.ms-excel',
+                      uti: 'com.microsoft.excel.xls',
+                    );
+                    print(result.message);
+                  },
+                ),
+              ),
+            );
+        } else if (state.allDataExportStatus.isRequestFailure) {
           showFailureDialog(state.errorMessage);
         }
       },
@@ -194,7 +296,7 @@ class _MoreDataFloatingActionButton extends StatelessWidget {
               color: Theme.of(context).colorScheme.onPrimary,
             ),
             onPressed: () {
-              context.read<Chart18Bloc>().add(const MoreDataRequested());
+              context.read<DataLogChartBloc>().add(const MoreLogRequested());
             },
           );
         }
@@ -361,14 +463,15 @@ class _LogChartListView extends StatelessWidget {
     return Builder(
       builder: (context) {
         HomeState homeState = context.watch<HomeBloc>().state;
-        Chart18State chart18State = context.watch<Chart18Bloc>().state;
+        DataLogChartState dataLogChartState =
+            context.watch<DataLogChartBloc>().state;
 
         if (homeState.loadingStatus == FormStatus.requestInProgress) {
           return Stack(
             alignment: Alignment.center,
             children: [
               buildLoadingFormWithProgressiveChartView(
-                  chart18State.dateValueCollectionOfLog),
+                  dataLogChartState.dateValueCollectionOfLog),
               Container(
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(70, 158, 158, 158),
@@ -384,14 +487,14 @@ class _LogChartListView extends StatelessWidget {
             ],
           );
         } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
-          if (chart18State.dataRequestStatus.isNone) {
+          if (dataLogChartState.logRequestStatus.isNone) {
             print('===== get log ======');
-            context.read<Chart18Bloc>().add(const LogDataRequested());
+            context.read<DataLogChartBloc>().add(const LogRequested());
             return Stack(
               alignment: Alignment.center,
               children: [
                 buildLoadingFormWithProgressiveChartView(
-                    chart18State.dateValueCollectionOfLog),
+                    dataLogChartState.dateValueCollectionOfLog),
                 Container(
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(70, 158, 158, 158),
@@ -406,12 +509,12 @@ class _LogChartListView extends StatelessWidget {
                 ),
               ],
             );
-          } else if (chart18State.dataRequestStatus.isRequestInProgress) {
+          } else if (dataLogChartState.logRequestStatus.isRequestInProgress) {
             return Stack(
               alignment: Alignment.center,
               children: [
                 buildLoadingFormWithProgressiveChartView(
-                    chart18State.dateValueCollectionOfLog),
+                    dataLogChartState.dateValueCollectionOfLog),
                 Container(
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(70, 158, 158, 158),
@@ -426,12 +529,12 @@ class _LogChartListView extends StatelessWidget {
                 ),
               ],
             );
-          } else if (chart18State.dataRequestStatus.isRequestFailure) {
+          } else if (dataLogChartState.logRequestStatus.isRequestFailure) {
             return Stack(
               alignment: Alignment.center,
               children: [
                 buildLoadingFormWithProgressiveChartView(
-                    chart18State.dateValueCollectionOfLog),
+                    dataLogChartState.dateValueCollectionOfLog),
                 Container(
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(70, 158, 158, 158),
@@ -447,14 +550,14 @@ class _LogChartListView extends StatelessWidget {
               ],
             );
           } else {
-            if (chart18State.eventDataRequestStatus.isNone) {
+            if (dataLogChartState.eventRequestStatus.isNone) {
               print('===== get event ======');
-              context.read<Chart18Bloc>().add(const EventDataRequested());
+              context.read<DataLogChartBloc>().add(const Event1P8GRequested());
               return Stack(
                 alignment: Alignment.center,
                 children: [
                   buildLoadingFormWithProgressiveChartView(
-                      chart18State.dateValueCollectionOfLog),
+                      dataLogChartState.dateValueCollectionOfLog),
                   Container(
                     decoration: const BoxDecoration(
                       color: Color.fromARGB(70, 158, 158, 158),
@@ -469,13 +572,13 @@ class _LogChartListView extends StatelessWidget {
                   ),
                 ],
               );
-            } else if (chart18State
-                .eventDataRequestStatus.isRequestInProgress) {
+            } else if (dataLogChartState
+                .eventRequestStatus.isRequestInProgress) {
               return Stack(
                 alignment: Alignment.center,
                 children: [
                   buildLoadingFormWithProgressiveChartView(
-                      chart18State.dateValueCollectionOfLog),
+                      dataLogChartState.dateValueCollectionOfLog),
                   Container(
                     decoration: const BoxDecoration(
                       color: Color.fromARGB(70, 158, 158, 158),
@@ -490,12 +593,12 @@ class _LogChartListView extends StatelessWidget {
                   ),
                 ],
               );
-            } else if (chart18State.eventDataRequestStatus.isRequestFailure) {
+            } else if (dataLogChartState.eventRequestStatus.isRequestFailure) {
               return Stack(
                 alignment: Alignment.center,
                 children: [
                   buildLoadingFormWithProgressiveChartView(
-                      chart18State.dateValueCollectionOfLog),
+                      dataLogChartState.dateValueCollectionOfLog),
                   Container(
                     decoration: const BoxDecoration(
                       color: Color.fromARGB(70, 158, 158, 158),
@@ -537,7 +640,7 @@ class _LogChartListView extends StatelessWidget {
                         buildChart(
                           getChartDataOfLog1(
                               dateValueCollectionOfLog:
-                                  chart18State.dateValueCollectionOfLog),
+                                  dataLogChartState.dateValueCollectionOfLog),
                         ),
                         const SizedBox(
                           height: 50.0,
@@ -545,7 +648,7 @@ class _LogChartListView extends StatelessWidget {
                         buildChart(
                           getChartDataOfLog2(
                               dateValueCollectionOfLog:
-                                  chart18State.dateValueCollectionOfLog),
+                                  dataLogChartState.dateValueCollectionOfLog),
                         ),
                       ],
                     ),
@@ -567,7 +670,7 @@ class _LogChartListView extends StatelessWidget {
                   buildChart(
                     getChartDataOfLog1(
                         dateValueCollectionOfLog:
-                            chart18State.dateValueCollectionOfLog),
+                            dataLogChartState.dateValueCollectionOfLog),
                   ),
                   const SizedBox(
                     height: 50.0,
@@ -575,7 +678,7 @@ class _LogChartListView extends StatelessWidget {
                   buildChart(
                     getChartDataOfLog2(
                         dateValueCollectionOfLog:
-                            chart18State.dateValueCollectionOfLog),
+                            dataLogChartState.dateValueCollectionOfLog),
                   ),
                 ],
               ),
