@@ -1,4 +1,5 @@
 import 'package:dsim_app/core/command.dart';
+import 'package:dsim_app/core/common_enum.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/setting_items_table.dart';
@@ -1697,6 +1698,16 @@ class _RFOutputPowerCard extends StatelessWidget {
   }
 }
 
+String _getPilotFrequencyAlarmSeverityText(String pilotFrequencyStatus) {
+  if (pilotFrequencyStatus == Alarm.danger.name) {
+    return 'Unlock';
+  } else if (pilotFrequencyStatus == Alarm.success.name) {
+    return 'Lock';
+  } else {
+    return pilotFrequencyStatus;
+  }
+}
+
 class _PilotFrequency1Card extends StatelessWidget {
   const _PilotFrequency1Card({super.key});
 
@@ -1785,11 +1796,11 @@ class _PilotFrequency1Card extends StatelessWidget {
           state.characteristicData[DataKey.pilotFrequency1AlarmState] ?? '1';
 
       String pilotFrequency1AlarmSeverity = state.characteristicData[
-              DataKey.rfInputPilotLowFrequencyAlarmSeverity] ??
-          '0';
+              DataKey.rfOutputPilotLowFrequencyAlarmSeverity] ??
+          '';
 
       String currentPilotFrequency1 =
-          pilotFrequency1AlarmSeverity == '1' ? 'Unlock' : 'Lock';
+          _getPilotFrequencyAlarmSeverityText(pilotFrequency1AlarmSeverity);
 
       return Card(
         color: Theme.of(context).colorScheme.onPrimary,
@@ -1908,11 +1919,11 @@ class _PilotFrequency2Card extends StatelessWidget {
           state.characteristicData[DataKey.pilotFrequency2AlarmState] ?? '1';
 
       String pilotFrequency2AlarmSeverity = state.characteristicData[
-              DataKey.rfInputPilotHighFrequencyAlarmSeverity] ??
-          '0';
+              DataKey.rfOutputPilotHighFrequencyAlarmSeverity] ??
+          '';
 
       String currentPilotFrequency2 =
-          pilotFrequency2AlarmSeverity == '1' ? 'Unlock' : 'Lock';
+          _getPilotFrequencyAlarmSeverityText(pilotFrequency2AlarmSeverity);
 
       return Card(
         color: Theme.of(context).colorScheme.onPrimary,
@@ -2105,7 +2116,7 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
       String pilotFrequency1AlarmState =
           state.characteristicData[DataKey.pilotFrequency1AlarmState] ?? '1';
       String pilotFrequency1AlarmSeverity = state.characteristicData[
-              DataKey.rfInputPilotLowFrequencyAlarmSeverity] ??
+              DataKey.rfOutputPilotLowFrequencyAlarmSeverity] ??
           '0';
 
       return Card(
@@ -2300,7 +2311,7 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
       String pilotFrequency2AlarmState =
           state.characteristicData[DataKey.pilotFrequency1AlarmState] ?? '1';
       String pilotFrequency2AlarmSeverity = state.characteristicData[
-              DataKey.rfInputPilotLowFrequencyAlarmSeverity] ??
+              DataKey.rfOutputPilotLowFrequencyAlarmSeverity] ??
           '0';
 
       return Card(

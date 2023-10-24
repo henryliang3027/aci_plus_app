@@ -45,7 +45,7 @@ class _ChartView extends StatelessWidget {
       required List<List<ValuePair>> dateValueCollectionOfLog,
     }) {
       LineSeries rfLevelLineSeries = LineSeries(
-        name: 'Output RF Level',
+        name: 'Output RF Level (${CustomStyle.dBmV})',
         dataList: dateValueCollectionOfLog[0],
         color: Theme.of(context).colorScheme.primary,
         minYAxisValue: 0.0,
@@ -61,7 +61,7 @@ class _ChartView extends StatelessWidget {
       required List<List<ValuePair>> dateValueCollectionOfLog,
     }) {
       LineSeries rfLevelLineSeries = LineSeries(
-        name: 'Input RF Level',
+        name: 'Input RF Level (${CustomStyle.dBmV})',
         dataList: dateValueCollectionOfLog[1],
         color: CustomStyle.customGreen,
         minYAxisValue: 0.0,

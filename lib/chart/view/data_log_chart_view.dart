@@ -212,21 +212,21 @@ class _LogChartListView extends StatelessWidget {
       required List<List<ValuePair>> dateValueCollectionOfLog,
     }) {
       LineSeries temperatureLineSeries = LineSeries(
-        name: 'Temperature',
+        name: 'Temperature (${CustomStyle.celciusUnit})',
         dataList: dateValueCollectionOfLog[0],
         color: Theme.of(context).colorScheme.primary,
         minYAxisValue: -30.0,
         maxYAxisValue: 100.0,
       );
       LineSeries rfOutputLowPilotLineSeries = LineSeries(
-        name: 'RF Output Low Pilot',
+        name: 'RF Output Low Pilot (${CustomStyle.dBmV})',
         dataList: dateValueCollectionOfLog[1],
         color: const Color(0xffff5963),
         minYAxisValue: 0.0,
         maxYAxisValue: 300.0,
       );
       LineSeries rfOutputHighPilotLineSeries = LineSeries(
-        name: 'RF Output High Pilot',
+        name: 'RF Output High Pilot (${CustomStyle.dBmV})',
         dataList: dateValueCollectionOfLog[2],
         color: const Color(0xff249689),
         minYAxisValue: 0.0,
@@ -251,7 +251,7 @@ class _LogChartListView extends StatelessWidget {
         maxYAxisValue: 40.0,
       );
       LineSeries voltageRippleLineSeries = LineSeries(
-        name: '24V Ripple',
+        name: '24V Ripple (${CustomStyle.milliVolt})',
         dataList: dateValueCollectionOfLog[4],
         color: Theme.of(context).colorScheme.primary,
         minYAxisValue: 0.0,
