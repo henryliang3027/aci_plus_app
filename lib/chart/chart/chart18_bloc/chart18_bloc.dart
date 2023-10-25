@@ -2,9 +2,7 @@ import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/repositories/dsim18_parser.dart';
 import 'package:dsim_app/repositories/dsim_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_speed_chart/speed_chart.dart';
 
 part 'chart18_event.dart';
 part 'chart18_state.dart';
@@ -14,12 +12,35 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     required DsimRepository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const Chart18State()) {
+    on<TabChangedEnabled>(_onTabChangedEnabled);
+    on<TabChangedDisabled>(_onTabChangedDisabled);
     on<DataExported>(_onDataExported);
     on<DataShared>(_onDataShared);
+    on<AllDataDownloaded>(_onAllDataDownloaded);
     on<AllDataExported>(_onAllDataExported);
+    on<RFLevelShared>(_onRFLevelShared);
+    on<RFLevelExported>(_onRFLevelExported);
   }
 
   final DsimRepository _dsimRepository;
+
+  void _onTabChangedEnabled(
+    TabChangedEnabled event,
+    Emitter<Chart18State> emit,
+  ) async {
+    emit(state.copyWith(
+      enableTabChange: true,
+    ));
+  }
+
+  void _onTabChangedDisabled(
+    TabChangedDisabled event,
+    Emitter<Chart18State> emit,
+  ) async {
+    emit(state.copyWith(
+      enableTabChange: false,
+    ));
+  }
 
   void _onDataExported(
     DataExported event,
@@ -28,13 +49,12 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     emit(state.copyWith(
       dataExportStatus: FormStatus.requestInProgress,
       dataShareStatus: FormStatus.none,
-      allDataDownloadStatus: FormStatus.none,
+      allDataExportStatus: FormStatus.none,
+      rfLevelExportStatus: FormStatus.none,
+      rfLevelShareStatus: FormStatus.none,
     ));
 
-    final List<dynamic> result = await _dsimRepository.export1p8GRecords(
-      log1p8Gs: state.log1p8Gs,
-      event1p8Gs: state.event1p8Gs,
-    );
+    final List<dynamic> result = await _dsimRepository.export1p8GRecords();
 
     if (result[0]) {
       emit(state.copyWith(
@@ -56,13 +76,12 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     emit(state.copyWith(
       dataExportStatus: FormStatus.none,
       dataShareStatus: FormStatus.requestInProgress,
-      allDataDownloadStatus: FormStatus.none,
+      allDataExportStatus: FormStatus.none,
+      rfLevelExportStatus: FormStatus.none,
+      rfLevelShareStatus: FormStatus.none,
     ));
 
-    final List<dynamic> result = await _dsimRepository.export1p8GRecords(
-      log1p8Gs: state.log1p8Gs,
-      event1p8Gs: state.event1p8Gs,
-    );
+    final List<dynamic> result = await _dsimRepository.export1p8GRecords();
 
     if (result[0]) {
       emit(state.copyWith(
@@ -79,31 +98,98 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     }
   }
 
+  void _onAllDataDownloaded(
+    AllDataDownloaded event,
+    Emitter<Chart18State> emit,
+  ) async {
+    emit(state.copyWith(
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataExportStatus: FormStatus.requestInProgress,
+      rfLevelExportStatus: FormStatus.none,
+      rfLevelShareStatus: FormStatus.none,
+    ));
+  }
+
   void _onAllDataExported(
     AllDataExported event,
     Emitter<Chart18State> emit,
   ) async {
     if (event.isSuccessful) {
-      final List<dynamic> result = await _dsimRepository.export1p8GRecords(
-        log1p8Gs: event.log1p8Gs,
-        event1p8Gs: state.event1p8Gs,
-      );
+      _dsimRepository.writeAllLog1p8Gs(event.log1p8Gs);
+      final List<dynamic> result = await _dsimRepository.exportAll1p8GRecords();
 
       if (result[0]) {
         emit(state.copyWith(
-          allDataDownloadStatus: FormStatus.requestSuccess,
+          allDataExportStatus: FormStatus.requestSuccess,
           dataExportPath: result[2],
         ));
       } else {
         emit(state.copyWith(
-          allDataDownloadStatus: FormStatus.requestFailure,
+          allDataExportStatus: FormStatus.requestFailure,
           dataExportPath: result[2],
         ));
       }
     } else {
       emit(state.copyWith(
-        allDataDownloadStatus: FormStatus.requestFailure,
+        allDataExportStatus: FormStatus.requestFailure,
         errorMessage: event.errorMessage,
+      ));
+    }
+  }
+
+  void _onRFLevelExported(
+    RFLevelExported event,
+    Emitter<Chart18State> emit,
+  ) async {
+    emit(state.copyWith(
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataExportStatus: FormStatus.none,
+      rfLevelExportStatus: FormStatus.requestInProgress,
+      rfLevelShareStatus: FormStatus.none,
+    ));
+
+    final List<dynamic> result = await _dsimRepository.export1p8GRFLevels();
+
+    if (result[0]) {
+      emit(state.copyWith(
+        rfLevelExportStatus: FormStatus.requestSuccess,
+        dataExportPath: result[2],
+      ));
+    } else {
+      emit(state.copyWith(
+        rfLevelExportStatus: FormStatus.requestFailure,
+        dataExportPath: result[2],
+      ));
+    }
+  }
+
+  void _onRFLevelShared(
+    RFLevelShared event,
+    Emitter<Chart18State> emit,
+  ) async {
+    emit(state.copyWith(
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataExportStatus: FormStatus.none,
+      rfLevelExportStatus: FormStatus.none,
+      rfLevelShareStatus: FormStatus.requestInProgress,
+    ));
+
+    final List<dynamic> result = await _dsimRepository.export1p8GRFLevels();
+
+    if (result[0]) {
+      emit(state.copyWith(
+        rfLevelShareStatus: FormStatus.requestSuccess,
+        exportFileName: result[1],
+        dataExportPath: result[2],
+      ));
+    } else {
+      emit(state.copyWith(
+        rfLevelShareStatus: FormStatus.requestFailure,
+        exportFileName: result[1],
+        dataExportPath: result[2],
       ));
     }
   }

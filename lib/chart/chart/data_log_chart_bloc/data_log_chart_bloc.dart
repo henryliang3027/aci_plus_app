@@ -13,73 +13,74 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
     required DsimRepository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const DataLogChartState()) {
-    on<DataExported>(_onDataExported);
-    on<DataShared>(_onDataShared);
+    // on<DataExported>(_onDataExported);
+    // on<DataShared>(_onDataShared);
     on<LogRequested>(_onLogRequested);
     on<Event1P8GRequested>(_onEvent1P8GDataRequested);
-    on<AllDataExported>(_onAllDataExported);
+    // on<AllDataDownloaded>(_onAllDataDownloaded);
+    // on<AllDataExported>(_onAllDataExported);
     on<MoreLogRequested>(_onMoreLogRequested);
   }
 
   final DsimRepository _dsimRepository;
 
-  void _onDataExported(
-    DataExported event,
-    Emitter<DataLogChartState> emit,
-  ) async {
-    emit(state.copyWith(
-      dataExportStatus: FormStatus.requestInProgress,
-      dataShareStatus: FormStatus.none,
-      allDataExportStatus: FormStatus.none,
-    ));
+  // void _onDataExported(
+  //   DataExported event,
+  //   Emitter<DataLogChartState> emit,
+  // ) async {
+  //   emit(state.copyWith(
+  //     dataExportStatus: FormStatus.requestInProgress,
+  //     dataShareStatus: FormStatus.none,
+  //     allDataExportStatus: FormStatus.none,
+  //   ));
 
-    final List<dynamic> result = await _dsimRepository.export1p8GRecords(
-      log1p8Gs: state.log1p8Gs,
-      event1p8Gs: state.event1p8Gs,
-    );
+  //   final List<dynamic> result = await _dsimRepository.export1p8GRecords(
+  //     log1p8Gs: state.log1p8Gs,
+  //     event1p8Gs: state.event1p8Gs,
+  //   );
 
-    if (result[0]) {
-      emit(state.copyWith(
-        dataExportStatus: FormStatus.requestSuccess,
-        dataExportPath: result[2],
-      ));
-    } else {
-      emit(state.copyWith(
-        dataExportStatus: FormStatus.requestFailure,
-        dataExportPath: result[2],
-      ));
-    }
-  }
+  //   if (result[0]) {
+  //     emit(state.copyWith(
+  //       dataExportStatus: FormStatus.requestSuccess,
+  //       dataExportPath: result[2],
+  //     ));
+  //   } else {
+  //     emit(state.copyWith(
+  //       dataExportStatus: FormStatus.requestFailure,
+  //       dataExportPath: result[2],
+  //     ));
+  //   }
+  // }
 
-  void _onDataShared(
-    DataShared event,
-    Emitter<DataLogChartState> emit,
-  ) async {
-    emit(state.copyWith(
-      dataExportStatus: FormStatus.none,
-      dataShareStatus: FormStatus.requestInProgress,
-      allDataExportStatus: FormStatus.none,
-    ));
+  // void _onDataShared(
+  //   DataShared event,
+  //   Emitter<DataLogChartState> emit,
+  // ) async {
+  //   emit(state.copyWith(
+  //     dataExportStatus: FormStatus.none,
+  //     dataShareStatus: FormStatus.requestInProgress,
+  //     allDataExportStatus: FormStatus.none,
+  //   ));
 
-    final List<dynamic> result = await _dsimRepository.export1p8GRecords(
-      log1p8Gs: state.log1p8Gs,
-      event1p8Gs: state.event1p8Gs,
-    );
+  //   final List<dynamic> result = await _dsimRepository.export1p8GRecords(
+  //     log1p8Gs: state.log1p8Gs,
+  //     event1p8Gs: state.event1p8Gs,
+  //   );
 
-    if (result[0]) {
-      emit(state.copyWith(
-        dataShareStatus: FormStatus.requestSuccess,
-        exportFileName: result[1],
-        dataExportPath: result[2],
-      ));
-    } else {
-      emit(state.copyWith(
-        dataShareStatus: FormStatus.requestFailure,
-        exportFileName: result[1],
-        dataExportPath: result[2],
-      ));
-    }
-  }
+  //   if (result[0]) {
+  //     emit(state.copyWith(
+  //       dataShareStatus: FormStatus.requestSuccess,
+  //       exportFileName: result[1],
+  //       dataExportPath: result[2],
+  //     ));
+  //   } else {
+  //     emit(state.copyWith(
+  //       dataShareStatus: FormStatus.requestFailure,
+  //       exportFileName: result[1],
+  //       dataExportPath: result[2],
+  //     ));
+  //   }
+  // }
 
   Future<void> _onLogRequested(
     LogRequested event,
@@ -88,9 +89,9 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
     emit(state.copyWith(
       logRequestStatus: FormStatus.requestInProgress,
       // rfDataRequestStatus: FormStatus.none,
-      dataExportStatus: FormStatus.none,
-      dataShareStatus: FormStatus.none,
-      allDataExportStatus: FormStatus.none,
+      // dataExportStatus: FormStatus.none,
+      // dataShareStatus: FormStatus.none,
+      // allDataExportStatus: FormStatus.none,
     ));
 
     // 最多 retry 3 次, 連續失敗3次就視為失敗
@@ -104,6 +105,12 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
 
         List<List<ValuePair>> dateValueCollectionOfLog =
             _dsimRepository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
+
+        // 清除 cache
+        _dsimRepository.clearCache();
+
+        // 將 log 寫入 cache
+        _dsimRepository.writeLoadMoreLog1p8Gs(log1p8Gs);
 
         emit(
           state.copyWith(
@@ -135,9 +142,9 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
   ) async {
     emit(state.copyWith(
       eventRequestStatus: FormStatus.requestInProgress,
-      dataExportStatus: FormStatus.none,
-      dataShareStatus: FormStatus.none,
-      allDataExportStatus: FormStatus.none,
+      // dataExportStatus: FormStatus.none,
+      // dataShareStatus: FormStatus.none,
+      // allDataExportStatus: FormStatus.none,
     ));
 
     // 最多 retry 3 次, 連續失敗3次就視為失敗
@@ -147,6 +154,9 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
 
       if (resultOfEvent1p8G[0]) {
         List<Event1p8G> event1p8Gs = resultOfEvent1p8G[1];
+
+        // 將 event 寫入 cache
+        _dsimRepository.writeEvent1p8Gs(event1p8Gs);
 
         emit(
           state.copyWith(
@@ -175,9 +185,9 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
   ) async {
     emit(state.copyWith(
       logRequestStatus: FormStatus.requestInProgress,
-      dataExportStatus: FormStatus.none,
-      dataShareStatus: FormStatus.none,
-      allDataExportStatus: FormStatus.none,
+      // dataExportStatus: FormStatus.none,
+      // dataShareStatus: FormStatus.none,
+      // allDataExportStatus: FormStatus.none,
     ));
 
     List<Log1p8G> log1p8Gs = [];
@@ -193,6 +203,9 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
 
         List<List<ValuePair>> dateValueCollectionOfLog =
             _dsimRepository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
+
+        // 將新的 log 寫入 cache
+        _dsimRepository.writeLoadMoreLog1p8Gs(resultOfLog1p8G[2]);
 
         emit(
           state.copyWith(
@@ -218,32 +231,43 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
     }
   }
 
-  void _onAllDataExported(
-    AllDataExported event,
-    Emitter<DataLogChartState> emit,
-  ) async {
-    if (event.isSuccessful) {
-      final List<dynamic> result = await _dsimRepository.export1p8GRecords(
-        log1p8Gs: event.log1p8Gs,
-        event1p8Gs: state.event1p8Gs,
-      );
+  // void _onAllDataDownloaded(
+  //   AllDataDownloaded event,
+  //   Emitter<DataLogChartState> emit,
+  // ) async {
+  //   emit(state.copyWith(
+  //     dataExportStatus: FormStatus.none,
+  //     dataShareStatus: FormStatus.none,
+  //     allDataExportStatus: FormStatus.requestInProgress,
+  //   ));
+  // }
 
-      if (result[0]) {
-        emit(state.copyWith(
-          allDataExportStatus: FormStatus.requestSuccess,
-          dataExportPath: result[2],
-        ));
-      } else {
-        emit(state.copyWith(
-          allDataExportStatus: FormStatus.requestFailure,
-          dataExportPath: result[2],
-        ));
-      }
-    } else {
-      emit(state.copyWith(
-        allDataExportStatus: FormStatus.requestFailure,
-        errorMessage: event.errorMessage,
-      ));
-    }
-  }
+  // void _onAllDataExported(
+  //   AllDataExported event,
+  //   Emitter<DataLogChartState> emit,
+  // ) async {
+  //   if (event.isSuccessful) {
+  //     final List<dynamic> result = await _dsimRepository.export1p8GRecords(
+  //       log1p8Gs: event.log1p8Gs,
+  //       event1p8Gs: state.event1p8Gs,
+  //     );
+
+  //     if (result[0]) {
+  //       emit(state.copyWith(
+  //         allDataExportStatus: FormStatus.requestSuccess,
+  //         dataExportPath: result[2],
+  //       ));
+  //     } else {
+  //       emit(state.copyWith(
+  //         allDataExportStatus: FormStatus.requestFailure,
+  //         dataExportPath: result[2],
+  //       ));
+  //     }
+  //   } else {
+  //     emit(state.copyWith(
+  //       allDataExportStatus: FormStatus.requestFailure,
+  //       errorMessage: event.errorMessage,
+  //     ));
+  //   }
+  // }
 }

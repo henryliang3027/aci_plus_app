@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:dsim_app/chart/chart/chart18_bloc/chart18_bloc.dart';
 import 'package:dsim_app/chart/chart/rf_level_chart_bloc/rf_level_chart_bloc.dart';
 import 'package:dsim_app/chart/view/full_screen_chart_form.dart';
 import 'package:dsim_app/core/custom_style.dart';
@@ -200,6 +201,7 @@ class _ChartView extends StatelessWidget {
         } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
           if (rfLevelChartState.rfInOutRequestStatus.isNone) {
             print('get rf');
+            context.read<Chart18Bloc>().add(const TabChangedDisabled());
             context.read<RFLevelChartBloc>().add(const RFInOutRequested());
             return Stack(
               alignment: Alignment.center,
@@ -242,6 +244,7 @@ class _ChartView extends StatelessWidget {
               ],
             );
           } else if (rfLevelChartState.rfInOutRequestStatus.isRequestFailure) {
+            context.read<Chart18Bloc>().add(const TabChangedEnabled());
             return Stack(
               alignment: Alignment.center,
               children: [
@@ -262,6 +265,7 @@ class _ChartView extends StatelessWidget {
               ],
             );
           } else {
+            context.read<Chart18Bloc>().add(const TabChangedEnabled());
             return Center(
               child: SingleChildScrollView(
                 // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料

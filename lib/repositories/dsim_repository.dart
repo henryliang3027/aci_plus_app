@@ -6,6 +6,7 @@ import 'package:dsim_app/core/command18.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:dsim_app/core/shared_preference_key.dart';
 import 'package:dsim_app/repositories/ble_client.dart';
+import 'package:dsim_app/repositories/dsim18_chart_cache.dart';
 import 'package:dsim_app/repositories/dsim18_parser.dart';
 import 'package:dsim_app/repositories/dsim_parser.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
@@ -16,8 +17,9 @@ import 'package:device_info_plus/device_info_plus.dart';
 class DsimRepository {
   DsimRepository()
       : _bleClient = BLEClient(),
+        _dsimParser = DsimParser(),
         _dsim18Parser = Dsim18Parser(),
-        _dsimParser = DsimParser();
+        _dsim18ChartCache = Dsim18ChartCache();
 
   StreamController<Map<DataKey, String>> _characteristicDataStreamController =
       StreamController<Map<DataKey, String>>();
@@ -25,6 +27,7 @@ class DsimRepository {
   final BLEClient _bleClient;
   final DsimParser _dsimParser;
   final Dsim18Parser _dsim18Parser;
+  final Dsim18ChartCache _dsim18ChartCache;
 
   Stream<ScanReport> get scanReport async* {
     yield* _bleClient.scanReport;
@@ -72,7 +75,7 @@ class DsimRepository {
   }
 
   void clearCache() {
-    _dsimParser.clearCache();
+    _dsim18ChartCache.clearCache();
   }
 
   Future<dynamic> requestCommand1p8G0() async {
@@ -405,10 +408,48 @@ class DsimRepository {
     return _dsim18Parser.get1p8GValueCollectionOfRFInOut(rfInOuts);
   }
 
-  Future<dynamic> export1p8GRecords({
-    required List<Log1p8G> log1p8Gs,
-    required List<Event1p8G> event1p8Gs,
-  }) async {
+  void clearDsim18ChartCache() {
+    _dsim18ChartCache.clearCache();
+  }
+
+  void writeEvent1p8Gs(List<Event1p8G> event1p8Gs) {
+    _dsim18ChartCache.writeEvent1p8Gs(event1p8Gs);
+  }
+
+  void writeLoadMoreLog1p8Gs(List<Log1p8G> log1p8Gs) {
+    _dsim18ChartCache.writeLoadMoreLog1p8Gs(log1p8Gs);
+  }
+
+  void writeAllLog1p8Gs(List<Log1p8G> log1p8Gs) {
+    _dsim18ChartCache.writeAllLog1p8Gs(log1p8Gs);
+  }
+
+  Future<dynamic> export1p8GRecords() async {
+    List<Log1p8G> log1p8Gs = _dsim18ChartCache.readLoadMoreLog1p8Gs();
+    List<Event1p8G> event1p8Gs = _dsim18ChartCache.readEvent1p8Gs();
+
+    List<dynamic> result = await _dsim18Parser.export1p8GRecords(
+      log1p8Gs: log1p8Gs,
+      event1p8Gs: event1p8Gs,
+    );
+    return result;
+  }
+
+  Future<dynamic> exportAll1p8GRecords() async {
+    List<Log1p8G> log1p8Gs = _dsim18ChartCache.readAllLog1p8Gs();
+    List<Event1p8G> event1p8Gs = _dsim18ChartCache.readEvent1p8Gs();
+
+    List<dynamic> result = await _dsim18Parser.export1p8GRecords(
+      log1p8Gs: log1p8Gs,
+      event1p8Gs: event1p8Gs,
+    );
+    return result;
+  }
+
+  Future<dynamic> export1p8GRFLevels() async {
+    List<Log1p8G> log1p8Gs = _dsim18ChartCache.readLoadMoreLog1p8Gs();
+    List<Event1p8G> event1p8Gs = _dsim18ChartCache.readEvent1p8Gs();
+
     List<dynamic> result = await _dsim18Parser.export1p8GRecords(
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,

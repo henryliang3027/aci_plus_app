@@ -4,38 +4,45 @@ abstract class DataLogChartEvent extends Equatable {
   const DataLogChartEvent();
 }
 
-class DataExported extends DataLogChartEvent {
-  const DataExported();
+// class DataExported extends DataLogChartEvent {
+//   const DataExported();
 
-  @override
-  List<Object?> get props => [];
-}
+//   @override
+//   List<Object?> get props => [];
+// }
 
-class DataShared extends DataLogChartEvent {
-  const DataShared();
+// class DataShared extends DataLogChartEvent {
+//   const DataShared();
 
-  @override
-  List<Object?> get props => [];
-}
+//   @override
+//   List<Object?> get props => [];
+// }
 
-class AllDataExported extends DataLogChartEvent {
-  const AllDataExported(
-    this.isSuccessful,
-    this.log1p8Gs,
-    this.errorMessage,
-  );
+// class AllDataDownloaded extends DataLogChartEvent {
+//   const AllDataDownloaded();
 
-  final bool isSuccessful;
-  final List<Log1p8G> log1p8Gs;
-  final String errorMessage;
+//   @override
+//   List<Object?> get props => [];
+// }
 
-  @override
-  List<Object?> get props => [
-        isSuccessful,
-        log1p8Gs,
-        errorMessage,
-      ];
-}
+// class AllDataExported extends DataLogChartEvent {
+//   const AllDataExported(
+//     this.isSuccessful,
+//     this.log1p8Gs,
+//     this.errorMessage,
+//   );
+
+//   final bool isSuccessful;
+//   final List<Log1p8G> log1p8Gs;
+//   final String errorMessage;
+
+//   @override
+//   List<Object?> get props => [
+//         isSuccessful,
+//         log1p8Gs,
+//         errorMessage,
+//       ];
+// }
 
 class MoreLogRequested extends DataLogChartEvent {
   const MoreLogRequested();

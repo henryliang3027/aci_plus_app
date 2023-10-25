@@ -4,6 +4,20 @@ abstract class Chart18Event extends Equatable {
   const Chart18Event();
 }
 
+class TabChangedEnabled extends Chart18Event {
+  const TabChangedEnabled();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class TabChangedDisabled extends Chart18Event {
+  const TabChangedDisabled();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class DataExported extends Chart18Event {
   const DataExported();
 
@@ -13,6 +27,27 @@ class DataExported extends Chart18Event {
 
 class DataShared extends Chart18Event {
   const DataShared();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class RFLevelExported extends Chart18Event {
+  const RFLevelExported();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class RFLevelShared extends Chart18Event {
+  const RFLevelShared();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class AllDataDownloaded extends Chart18Event {
+  const AllDataDownloaded();
 
   @override
   List<Object?> get props => [];

@@ -19,6 +19,11 @@ class Chart18Page extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+          create: (context) => Chart18Bloc(
+            dsimRepository: RepositoryProvider.of<DsimRepository>(context),
+          ),
+        ),
+        BlocProvider(
           create: (context) => DataLogChartBloc(
             dsimRepository: RepositoryProvider.of<DsimRepository>(context),
           ),

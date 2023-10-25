@@ -64,7 +64,7 @@
     "historicalAttenuation": "Position",
     "historicalMinAttenuation": "Minimum",
     "historicalMaxAttenuation": "Maximale",
-    "temperatureFC": "Température FC",
+    "temperatureFC": "Température",
     "currentTemperature": "Courant",
     "minTemperature": "Minimale",
     "maxTemperature": "Maximale",

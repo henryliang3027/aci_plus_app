@@ -166,17 +166,21 @@ class SettingListView extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                formatResultItem(item),
-                style: const TextStyle(fontSize: 16),
-              ),
-              Text(
-                formatResultValue(value),
-                style: TextStyle(
-                  fontSize: 16,
-                  color: valueColor,
+              Expanded(
+                child: Text(
+                  formatResultItem(item),
+                  style: const TextStyle(fontSize: 16),
                 ),
-              )
+              ),
+              Expanded(
+                child: Text(
+                  formatResultValue(value),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: valueColor,
+                  ),
+                ),
+              ),
             ],
           ),
         ));
