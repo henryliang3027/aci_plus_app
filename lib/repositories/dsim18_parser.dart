@@ -827,6 +827,8 @@ class Dsim18Parser {
     rawData.removeRange(0, 3);
 
     for (var i = 0; i < 256; i++) {
+      int frequency = 261 + 6 * i;
+
       // 解析 input
       List<int> rawInput = rawData.sublist(i * 2, i * 2 + 2);
       ByteData rawInputByteData =
@@ -840,6 +842,7 @@ class Dsim18Parser {
       double output = rawOutputByteData.getInt16(0, Endian.little) / 10;
 
       rfInOuts.add(RFInOut(
+        frequency: frequency,
         input: input,
         output: output,
       ));
@@ -1002,6 +1005,78 @@ class Dsim18Parser {
     return event1p8Gs;
   }
 
+  Future<dynamic> export1p8GRFInOuts({
+    required List<RFInOut> rfInOuts,
+  }) async {
+    Excel excel = Excel.createExcel();
+    List<String> rfInOutHeader = [
+      'Frequency (MHz)',
+      'Level (dBmV)',
+    ];
+
+    Sheet rfInSheet = excel['Input Levels'];
+    Sheet rfOutSheet = excel['Output Levels'];
+
+    rfInSheet.insertRowIterables(rfInOutHeader, 0);
+    for (int i = 0; i < rfInOuts.length; i++) {
+      String frequency = rfInOuts[i].frequency.toString();
+      String level = rfInOuts[i].input.toStringAsFixed(1);
+
+      List<String> row = [frequency, level];
+      rfInSheet.insertRowIterables(row, i + 1);
+    }
+
+    rfOutSheet.insertRowIterables(rfInOutHeader, 0);
+    for (int i = 0; i < rfInOuts.length; i++) {
+      String frequency = rfInOuts[i].frequency.toString();
+      String level = rfInOuts[i].output.toStringAsFixed(1);
+
+      List<String> row = [frequency, level];
+      rfOutSheet.insertRowIterables(row, i + 1);
+    }
+
+    excel.unLink('Sheet1'); // Excel 預設會自動產生 Sheet1, 所以先unlink
+    excel.delete('Sheet1'); // 再刪除 Sheet1
+    excel.link('Input Levels', rfInSheet);
+    var fileBytes = excel.save();
+
+    String timeStamp =
+        DateFormat('yyyy_MM_dd_HH_mm_ss').format(DateTime.now()).toString();
+    String filename = 'log_$timeStamp';
+    String extension = '.xlsx';
+
+    if (Platform.isIOS) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$filename$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
+      return [
+        true,
+        filename,
+        fullWrittenPath,
+      ];
+    } else if (Platform.isAndroid) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$filename$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
+
+      return [
+        true,
+        filename,
+        fullWrittenPath,
+      ];
+    } else {
+      return [
+        false,
+        '',
+        'write file failed, export function not implement on ${Platform.operatingSystem} '
+      ];
+    }
+  }
+
   Future<dynamic> export1p8GRecords({
     required List<Log1p8G> log1p8Gs,
     required List<Event1p8G> event1p8Gs,
@@ -1137,17 +1212,15 @@ class Dsim18Parser {
     List<ValuePair> rfOutputs = [];
 
     for (int i = 0; i < rfInOuts.length; i++) {
-      int frequency = 261 + 6 * i;
-
       RFInOut rfInOut = rfInOuts[i];
 
       rfOutputs.add(ValuePair(
-        x: frequency,
+        x: rfInOut.frequency,
         y: rfInOut.output,
       ));
 
       rfInputs.add(ValuePair(
-        x: frequency,
+        x: rfInOut.frequency,
         y: rfInOut.input,
       ));
     }
@@ -1521,10 +1594,12 @@ class Event1p8G {
 
 class RFInOut {
   const RFInOut({
+    required this.frequency,
     required this.input,
     required this.output,
   });
 
+  final int frequency;
   final double input;
   final double output;
 }

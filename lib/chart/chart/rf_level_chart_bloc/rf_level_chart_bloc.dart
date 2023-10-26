@@ -38,6 +38,12 @@ class RFLevelChartBloc extends Bloc<RFLevelChartEvent, RFLevelChartState> {
       if (resultOf1p8G3[0]) {
         rfInOuts.addAll(resultOf1p8G3[1]);
 
+        // 清除 cache
+        _dsimRepository.clearRFInOuts();
+
+        // 將 RFInOuts 寫入 cache
+        _dsimRepository.writeRFInOuts(rfInOuts);
+
         List<List<ValuePair>> dateValueCollectionOfLog =
             _dsimRepository.get1p8GValueCollectionOfRFInOut(rfInOuts);
 

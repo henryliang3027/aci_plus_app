@@ -107,7 +107,7 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
             _dsimRepository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
 
         // 清除 cache
-        _dsimRepository.clearCache();
+        _dsimRepository.clearLoadMoreLog1p8Gs();
 
         // 將 log 寫入 cache
         _dsimRepository.writeLoadMoreLog1p8Gs(log1p8Gs);
@@ -154,6 +154,9 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
 
       if (resultOfEvent1p8G[0]) {
         List<Event1p8G> event1p8Gs = resultOfEvent1p8G[1];
+
+        // 清除 cache
+        _dsimRepository.clearEvent1p8Gs();
 
         // 將 event 寫入 cache
         _dsimRepository.writeEvent1p8Gs(event1p8Gs);

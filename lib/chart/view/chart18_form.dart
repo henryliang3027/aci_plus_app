@@ -319,203 +319,212 @@ class _PopupMenu extends StatelessWidget {
   Widget buildDataLogPageMenu(BuildContext context) {
     return BlocBuilder<Chart18Bloc, Chart18State>(
       builder: (context, state) {
-        return PopupMenuButton<DataLogMenu>(
-          icon: const Icon(
-            Icons.more_vert_outlined,
-            color: Colors.white,
-          ),
-          tooltip: '',
-          onSelected: (DataLogMenu item) async {
-            switch (item) {
-              case DataLogMenu.refresh:
-                context.read<HomeBloc>().add(const DeviceRefreshed());
-                break;
-              case DataLogMenu.share:
-                context.read<Chart18Bloc>().add(const DataShared());
-                break;
-              case DataLogMenu.export:
-                context.read<Chart18Bloc>().add(const DataExported());
-                break;
-              case DataLogMenu.downloadAll:
-                context.read<Chart18Bloc>().add(const AllDataDownloaded());
-              default:
-                break;
-            }
-          },
-          itemBuilder: (BuildContext context) => <PopupMenuEntry<DataLogMenu>>[
-            PopupMenuItem<DataLogMenu>(
-              value: DataLogMenu.refresh,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.refresh,
-                    size: 20.0,
-                    color: Colors.black,
+        return state.enableTabChange
+            ? PopupMenuButton<DataLogMenu>(
+                icon: const Icon(
+                  Icons.more_vert_outlined,
+                  color: Colors.white,
+                ),
+                tooltip: '',
+                onSelected: (DataLogMenu item) async {
+                  switch (item) {
+                    case DataLogMenu.refresh:
+                      context.read<HomeBloc>().add(const DeviceRefreshed());
+                      break;
+                    case DataLogMenu.share:
+                      context.read<Chart18Bloc>().add(const DataShared());
+                      break;
+                    case DataLogMenu.export:
+                      context.read<Chart18Bloc>().add(const DataExported());
+                      break;
+                    case DataLogMenu.downloadAll:
+                      context
+                          .read<Chart18Bloc>()
+                          .add(const AllDataDownloaded());
+                    default:
+                      break;
+                  }
+                },
+                itemBuilder: (BuildContext context) =>
+                    <PopupMenuEntry<DataLogMenu>>[
+                  PopupMenuItem<DataLogMenu>(
+                    value: DataLogMenu.refresh,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.refresh,
+                          size: 20.0,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(AppLocalizations.of(context).reconnect),
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    width: 10.0,
+                  PopupMenuItem<DataLogMenu>(
+                    value: DataLogMenu.share,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.share,
+                          size: 20.0,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(AppLocalizations.of(context).share),
+                      ],
+                    ),
                   ),
-                  Text(AppLocalizations.of(context).reconnect),
+                  PopupMenuItem<DataLogMenu>(
+                    value: DataLogMenu.export,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.download,
+                          size: 20.0,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(AppLocalizations.of(context).export),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem<DataLogMenu>(
+                    value: DataLogMenu.downloadAll,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.cloud_download_outlined,
+                          size: 20.0,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(AppLocalizations.of(context).downloadAll),
+                      ],
+                    ),
+                  ),
                 ],
-              ),
-            ),
-            PopupMenuItem<DataLogMenu>(
-              value: DataLogMenu.share,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.share,
-                    size: 20.0,
-                    color: Colors.black,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(AppLocalizations.of(context).share),
-                ],
-              ),
-            ),
-            PopupMenuItem<DataLogMenu>(
-              value: DataLogMenu.export,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.download,
-                    size: 20.0,
-                    color: Colors.black,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(AppLocalizations.of(context).export),
-                ],
-              ),
-            ),
-            PopupMenuItem<DataLogMenu>(
-              value: DataLogMenu.downloadAll,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.cloud_download_outlined,
-                    size: 20.0,
-                    color: Colors.black,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(AppLocalizations.of(context).downloadAll),
-                ],
-              ),
-            ),
-          ],
-        );
+              )
+            : IconButton(
+                onPressed: () {
+                  context.read<HomeBloc>().add(const DeviceRefreshed());
+                },
+                icon: Icon(
+                  Icons.refresh,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ));
       },
     );
   }
 
   Widget buildRFLevelPageMenu(BuildContext context) {
-    return BlocBuilder<RFLevelChartBloc, RFLevelChartState>(
+    return BlocBuilder<Chart18Bloc, Chart18State>(
       builder: (context, state) {
-        if (state.rfInOutRequestStatus == FormStatus.requestInProgress) {
-          return IconButton(
-            onPressed: () {
-              context.read<HomeBloc>().add(const DeviceRefreshed());
-            },
-            icon: Icon(
-              Icons.refresh,
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-          );
-        } else {
-          return PopupMenuButton<RFLevelMenu>(
-            icon: const Icon(
-              Icons.more_vert_outlined,
-              color: Colors.white,
-            ),
-            tooltip: '',
-            onSelected: (RFLevelMenu item) async {
-              switch (item) {
-                case RFLevelMenu.refresh:
-                  context.read<HomeBloc>().add(const DeviceRefreshed());
-                  break;
-                case RFLevelMenu.share:
-                  // context.read<Chart18Bloc>().add(const DataShared());
-                  break;
-                case RFLevelMenu.export:
-                  // context.read<Chart18Bloc>().add(const DataExported());
-                  break;
+        return state.enableTabChange
+            ? PopupMenuButton<RFLevelMenu>(
+                icon: const Icon(
+                  Icons.more_vert_outlined,
+                  color: Colors.white,
+                ),
+                tooltip: '',
+                onSelected: (RFLevelMenu item) async {
+                  switch (item) {
+                    case RFLevelMenu.refresh:
+                      context.read<HomeBloc>().add(const DeviceRefreshed());
+                      break;
+                    case RFLevelMenu.share:
+                      context.read<Chart18Bloc>().add(const RFLevelShared());
+                      break;
+                    case RFLevelMenu.export:
+                      context.read<Chart18Bloc>().add(const RFLevelExported());
+                      break;
 
-                default:
-                  break;
-              }
-            },
-            itemBuilder: (BuildContext context) =>
-                <PopupMenuEntry<RFLevelMenu>>[
-              PopupMenuItem<RFLevelMenu>(
-                value: RFLevelMenu.refresh,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.refresh,
-                      size: 20.0,
-                      color: Colors.black,
+                    default:
+                      break;
+                  }
+                },
+                itemBuilder: (BuildContext context) =>
+                    <PopupMenuEntry<RFLevelMenu>>[
+                  PopupMenuItem<RFLevelMenu>(
+                    value: RFLevelMenu.refresh,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.refresh,
+                          size: 20.0,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(AppLocalizations.of(context).reconnect),
+                      ],
                     ),
-                    const SizedBox(
-                      width: 10.0,
+                  ),
+                  PopupMenuItem<RFLevelMenu>(
+                    value: RFLevelMenu.share,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.share,
+                          size: 20.0,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(AppLocalizations.of(context).share),
+                      ],
                     ),
-                    Text(AppLocalizations.of(context).reconnect),
-                  ],
-                ),
-              ),
-              PopupMenuItem<RFLevelMenu>(
-                value: RFLevelMenu.share,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.share,
-                      size: 20.0,
-                      color: Colors.black,
+                  ),
+                  PopupMenuItem<RFLevelMenu>(
+                    value: RFLevelMenu.export,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.download,
+                          size: 20.0,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(AppLocalizations.of(context).export),
+                      ],
                     ),
-                    const SizedBox(
-                      width: 10.0,
-                    ),
-                    Text(AppLocalizations.of(context).share),
-                  ],
-                ),
-              ),
-              PopupMenuItem<RFLevelMenu>(
-                value: RFLevelMenu.export,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.download,
-                      size: 20.0,
-                      color: Colors.black,
-                    ),
-                    const SizedBox(
-                      width: 10.0,
-                    ),
-                    Text(AppLocalizations.of(context).export),
-                  ],
-                ),
-              ),
-            ],
-          );
-        }
+                  ),
+                ],
+              )
+            : IconButton(
+                onPressed: () {
+                  context.read<HomeBloc>().add(const DeviceRefreshed());
+                },
+                icon: Icon(
+                  Icons.refresh,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ));
       },
     );
   }

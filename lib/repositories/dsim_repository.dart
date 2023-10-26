@@ -75,7 +75,7 @@ class DsimRepository {
   }
 
   void clearCache() {
-    _dsim18ChartCache.clearCache();
+    _dsimParser.clearCache();
   }
 
   Future<dynamic> requestCommand1p8G0() async {
@@ -408,8 +408,20 @@ class DsimRepository {
     return _dsim18Parser.get1p8GValueCollectionOfRFInOut(rfInOuts);
   }
 
-  void clearDsim18ChartCache() {
-    _dsim18ChartCache.clearCache();
+  void clearEvent1p8Gs() {
+    _dsim18ChartCache.clearEvent1p8Gs();
+  }
+
+  void clearLoadMoreLog1p8Gs() {
+    _dsim18ChartCache.clearLoadMoreLog1p8Gs();
+  }
+
+  void clearAllLog1p8Gs() {
+    _dsim18ChartCache.clearAllLog1p8Gs();
+  }
+
+  void clearRFInOuts() {
+    _dsim18ChartCache.clearRFInOuts();
   }
 
   void writeEvent1p8Gs(List<Event1p8G> event1p8Gs) {
@@ -422,6 +434,10 @@ class DsimRepository {
 
   void writeAllLog1p8Gs(List<Log1p8G> log1p8Gs) {
     _dsim18ChartCache.writeAllLog1p8Gs(log1p8Gs);
+  }
+
+  void writeRFInOuts(List<RFInOut> rfInOuts) {
+    _dsim18ChartCache.writeRFInOuts(rfInOuts);
   }
 
   Future<dynamic> export1p8GRecords() async {
@@ -446,14 +462,11 @@ class DsimRepository {
     return result;
   }
 
-  Future<dynamic> export1p8GRFLevels() async {
-    List<Log1p8G> log1p8Gs = _dsim18ChartCache.readLoadMoreLog1p8Gs();
-    List<Event1p8G> event1p8Gs = _dsim18ChartCache.readEvent1p8Gs();
+  Future<dynamic> export1p8GRFInOuts() async {
+    List<RFInOut> rfInOuts = _dsim18ChartCache.readRFInOuts();
 
-    List<dynamic> result = await _dsim18Parser.export1p8GRecords(
-      log1p8Gs: log1p8Gs,
-      event1p8Gs: event1p8Gs,
-    );
+    List<dynamic> result =
+        await _dsim18Parser.export1p8GRFInOuts(rfInOuts: rfInOuts);
     return result;
   }
 

@@ -29,6 +29,11 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     Emitter<Chart18State> emit,
   ) async {
     emit(state.copyWith(
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataExportStatus: FormStatus.none,
+      rfLevelExportStatus: FormStatus.none,
+      rfLevelShareStatus: FormStatus.none,
       enableTabChange: true,
     ));
   }
@@ -38,6 +43,11 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     Emitter<Chart18State> emit,
   ) async {
     emit(state.copyWith(
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataExportStatus: FormStatus.none,
+      rfLevelExportStatus: FormStatus.none,
+      rfLevelShareStatus: FormStatus.none,
       enableTabChange: false,
     ));
   }
@@ -150,7 +160,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       rfLevelShareStatus: FormStatus.none,
     ));
 
-    final List<dynamic> result = await _dsimRepository.export1p8GRFLevels();
+    final List<dynamic> result = await _dsimRepository.export1p8GRFInOuts();
 
     if (result[0]) {
       emit(state.copyWith(
@@ -177,7 +187,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       rfLevelShareStatus: FormStatus.requestInProgress,
     ));
 
-    final List<dynamic> result = await _dsimRepository.export1p8GRFLevels();
+    final List<dynamic> result = await _dsimRepository.export1p8GRFInOuts();
 
     if (result[0]) {
       emit(state.copyWith(
