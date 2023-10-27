@@ -122,45 +122,45 @@ class _DeviceRefresh extends StatelessWidget {
   }
 }
 
-class _ModuleCard extends StatelessWidget {
-  const _ModuleCard({super.key});
+// class _ModuleCard extends StatelessWidget {
+//   const _ModuleCard({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                AppLocalizations.of(context).module,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              itemText(
-                loadingStatus: state.loadingStatus,
-                title: AppLocalizations.of(context).serialNumber,
-                content: state.characteristicData[DataKey.serialNumber] ?? '',
-              ),
-              itemText(
-                loadingStatus: state.loadingStatus,
-                title: AppLocalizations.of(context).firmwareVersion,
-                content:
-                    state.characteristicData[DataKey.firmwareVersion] ?? '',
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<HomeBloc, HomeState>(
+//       builder: (context, state) => Card(
+//         color: Theme.of(context).colorScheme.onPrimary,
+//         surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+//         child: Padding(
+//           padding: const EdgeInsets.all(16.0),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Text(
+//                 AppLocalizations.of(context).module,
+//                 style: Theme.of(context).textTheme.titleLarge,
+//               ),
+//               const SizedBox(
+//                 height: 10.0,
+//               ),
+//               itemText(
+//                 loadingStatus: state.loadingStatus,
+//                 title: AppLocalizations.of(context).serialNumber,
+//                 content: state.characteristicData[DataKey.serialNumber] ?? '',
+//               ),
+//               itemText(
+//                 loadingStatus: state.loadingStatus,
+//                 title: AppLocalizations.of(context).firmwareVersion,
+//                 content:
+//                     state.characteristicData[DataKey.firmwareVersion] ?? '',
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class _TemperatureCard extends StatelessWidget {
   const _TemperatureCard({super.key});

@@ -2138,8 +2138,10 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
                 pilotFrequencyAlarmSeverity: pilotFrequency1AlarmSeverity,
                 firstChannelFrequency: firstChannelFrequency,
                 rfOutputLowChannelPower: rfOutputLowChannelPower,
-                frequencyTitle: AppLocalizations.of(context).frequency,
-                outputPowerTitle: AppLocalizations.of(context).level,
+                frequencyTitle:
+                    '${AppLocalizations.of(context).frequency} (${CustomStyle.mHz})',
+                outputPowerTitle:
+                    '${AppLocalizations.of(context).level} (${CustomStyle.dBmV})',
               ),
             ],
           ));
@@ -2333,8 +2335,10 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
                 pilotFrequencyAlarmSeverity: pilotFrequency2AlarmSeverity,
                 lastChannelFrequency: lastChannelFrequency,
                 rfOutputHighChannelPower: rfOutputHighChannelPower,
-                frequencyTitle: AppLocalizations.of(context).frequency,
-                outputPowerTitle: AppLocalizations.of(context).level,
+                frequencyTitle:
+                    '${AppLocalizations.of(context).frequency} (${CustomStyle.mHz})',
+                outputPowerTitle:
+                    '${AppLocalizations.of(context).level} (${CustomStyle.dBmV})',
               ),
             ],
           ));

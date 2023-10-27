@@ -1955,6 +1955,13 @@ class DsimRepository {
     }
   }
 
+  // Future<bool> checkLocationEnabled() async {
+  //   // 偵測定位是否有打開, 如果沒有打開會跳出提示訊息
+  //   bool resultOfEnableGPS = await Location().requestService();
+
+  //   return resultOfEnableGPS;
+  // }
+
   Future<String> getGPSCoordinates() async {
     return await _dsim18Parser.getGPSCoordinates();
   }

@@ -45,15 +45,16 @@ class _AppView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
-      locale: const Locale('en'),
+      // locale: const Locale('en'),
       supportedLocales: const <Locale>[
         Locale('en'),
         Locale('es'),
         Locale('fr'),
-        Locale.fromSubtags(
-          languageCode: 'zh',
-          scriptCode: 'Hant',
-        ),
+        Locale('zh'),
+        // Locale.fromSubtags(
+        //   languageCode: 'zh',
+        //   scriptCode: 'Hant',
+        // ),
       ],
       theme: ThemeData(
         // This is the theme of your application.

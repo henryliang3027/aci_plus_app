@@ -40,7 +40,7 @@ dependencies:
   permission_handler: ^10.2.0
   flutter_reactive_ble: ^5.0.3
   bluetooth_enable_fork: ^0.1.6 # check if bluetooth is enabled
-  location: ^4.4.0
+  location: ^5.0.3
   equatable: ^2.0.5
   dropdown_button2: ^1.4.0 # custom dropdownButton and dropdownMenuItems
   url_launcher: ^6.1.11 # for launch dsim website

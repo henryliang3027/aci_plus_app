@@ -7,7 +7,6 @@ import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:location/location.dart' as GPS;
 
 enum ScanStatus {
   success,
@@ -73,15 +72,12 @@ class BLEClient {
     bool isPermissionGranted = await _requestPermission();
 
     if (isPermissionGranted) {
-      // 偵測定位是否有打開, 如果沒有打開會跳出提示訊息
-      bool resultOfEnableGPS = await GPS.Location().requestService();
-
       // 偵測藍芽是否有打開, 如果沒有打開會跳出提示訊息
       String resultStrOfEnableBluetooth = await BluetoothEnable.enableBluetooth;
       bool resultOfEnableBluetooth =
           resultStrOfEnableBluetooth == 'true' ? true : false;
 
-      if (resultOfEnableGPS && resultOfEnableBluetooth) {
+      if (resultOfEnableBluetooth) {
         return true;
       } else {
         return false;
@@ -93,9 +89,11 @@ class BLEClient {
 
   Stream<ScanReport> get scanReport async* {
     _ble ??= FlutterReactiveBle();
-    bool isGranted = await checkBluetoothEnabled();
     _scanReportStreamController = StreamController<ScanReport>();
-    if (isGranted) {
+
+    bool isPermissionGranted = await checkBluetoothEnabled();
+
+    if (isPermissionGranted) {
       // 設定 scan timeout
       Timer scanTimer = Timer(Duration(seconds: _scanTimeout), () async {
         _scanReportStreamController.add(

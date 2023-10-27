@@ -20,6 +20,7 @@ class CustomStyle {
   static const String volt = 'V';
   static const String dBmV = 'dBmV';
   static const String dB = 'dB';
+  static const String mHz = 'MHz';
 
   static const Map<String, Color> alarmColor = {
     'success': Color(0xff28a745),

@@ -15,12 +15,18 @@ class _AboutPageState extends State<AboutPage> {
   late final ScrollController _scrollController;
   late final double _kExpandedHeight;
   late final String _dsimVersion;
+  late final double _maxTitleSize;
+  late final double _minTitleSize;
+  late double _currentTitleSize;
 
   @override
   void initState() {
     _kExpandedHeight = 160.0;
     _scrollController = ScrollController()..addListener(() => setState(() {}));
     _dsimVersion = 'V 2.0.0';
+    _maxTitleSize = 26;
+    _minTitleSize = 22;
+    _currentTitleSize = _maxTitleSize;
     super.initState();
   }
 
@@ -29,6 +35,10 @@ class _AboutPageState extends State<AboutPage> {
     double horizontalTitlePadding() {
       const kBasePadding = 40.0;
       const kMultiplier = 4.5;
+
+      double toolbarWidth = MediaQuery.of(context).size.width;
+
+      print('toolbarWidth : $toolbarWidth');
 
       if (_scrollController.hasClients) {
         if (_scrollController.offset < (_kExpandedHeight / 2)) {
@@ -40,34 +50,51 @@ class _AboutPageState extends State<AboutPage> {
           return 0.0;
         } else {
           // In case 0%-50% of the expanded height is viewed
-          return (_scrollController.offset - (_kExpandedHeight / 2)) *
-                  kMultiplier +
-              kBasePadding;
+          // return (_scrollController.offset - (_kExpandedHeight / 2)) *
+          //         kMultiplier +
+          //     kBasePadding;
+          return kBasePadding;
         }
       }
 
       return kBasePadding;
     }
 
-    double getTitleFontSize() {
-      const defaultSize = 30.0;
-
+    double getTitleFontSize(String text) {
+      double size = _maxTitleSize;
       if (_scrollController.hasClients) {
+        // print('_scrollController.offset: ${_scrollController.offset}');
+        // print('_kExpandedHeight: ${_kExpandedHeight}');
+        // print('kToolbarHeight: ${kToolbarHeight}');
+
         if (_scrollController.offset < (_kExpandedHeight / 2)) {
           // In case 50%-100% of the expanded height is viewed
-          return 30;
-        }
-
-        if (_scrollController.offset > (_kExpandedHeight - kToolbarHeight)) {
+          print('size1: $size');
+          size = _maxTitleSize;
+        } else if (_scrollController.offset >
+            (_kExpandedHeight - kToolbarHeight)) {
           // In case 0% of the expanded height is viewed
-          return 22;
+          print('size2: $size');
+          size = _maxTitleSize;
         }
 
         // In case 0%-50% of the expanded height is viewed
-        return 30 - (_scrollController.offset - (_kExpandedHeight / 2)) * 0.3;
+        else {
+          size = _maxTitleSize -
+              (_scrollController.offset - (_kExpandedHeight / 2)) * 0.1;
+
+          print('size3: $size');
+        }
+      } else {
+        size = _maxTitleSize;
+
+        print('size4: $size');
       }
 
-      return defaultSize;
+      _currentTitleSize = size;
+      print('size: $size');
+
+      return size;
     }
 
     bool isCenterTitle() {
@@ -108,13 +135,14 @@ class _AboutPageState extends State<AboutPage> {
                   horizontalTitlePadding(),
                   10.0,
                   0.0,
-                  10.0,
+                  14.0,
                 ),
                 centerTitle: isCenterTitle(),
                 title: Text(
                   AppLocalizations.of(context).aboutUs,
                   style: TextStyle(
-                    fontSize: getTitleFontSize(),
+                    fontSize:
+                        getTitleFontSize(AppLocalizations.of(context).aboutUs),
                   ),
                   textAlign: TextAlign.center,
                 ),

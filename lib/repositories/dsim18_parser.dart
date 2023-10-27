@@ -8,6 +8,7 @@ import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -1496,11 +1497,12 @@ class Dsim18Parser {
     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
-      return Future.error(
-          'Location services are disabled. Please enable location services.');
+      // 跳出打開定位的提示 dialog
+      bool isEnableGPS = await Location().requestService();
+      if (!isEnableGPS) {
+        return Future.error(
+            'Location services are disabled. Please enable location services.');
+      }
     }
 
     permission = await Geolocator.checkPermission();

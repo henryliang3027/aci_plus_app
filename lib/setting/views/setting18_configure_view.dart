@@ -893,7 +893,8 @@ class _FirstChannelLoading extends StatelessWidget {
                       },
                       maxLength: 40,
                       decoration: InputDecoration(
-                        label: Text(AppLocalizations.of(context).frequency),
+                        label: Text(
+                            '${AppLocalizations.of(context).frequency} (${CustomStyle.mHz})'),
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0))),
@@ -926,7 +927,8 @@ class _FirstChannelLoading extends StatelessWidget {
                       },
                       maxLength: 40,
                       decoration: InputDecoration(
-                        label: Text(AppLocalizations.of(context).level),
+                        label: Text(
+                            '${AppLocalizations.of(context).level} (${CustomStyle.dBmV})'),
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0))),
@@ -1012,7 +1014,8 @@ class _LastChannelLoading extends StatelessWidget {
                       },
                       maxLength: 40,
                       decoration: InputDecoration(
-                        label: Text(AppLocalizations.of(context).frequency),
+                        label: Text(
+                            '${AppLocalizations.of(context).frequency} (${CustomStyle.mHz})'),
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0))),
@@ -1045,7 +1048,8 @@ class _LastChannelLoading extends StatelessWidget {
                       },
                       maxLength: 40,
                       decoration: InputDecoration(
-                        label: Text(AppLocalizations.of(context).level),
+                        label: Text(
+                            '${AppLocalizations.of(context).level} (${CustomStyle.dBmV})'),
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0))),
@@ -1230,7 +1234,8 @@ class _PilotFrequency1 extends StatelessWidget {
                         },
                         maxLength: 40,
                         decoration: InputDecoration(
-                          label: Text(AppLocalizations.of(context).frequency),
+                          label: Text(
+                              '${AppLocalizations.of(context).frequency} (${CustomStyle.mHz})'),
                           border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(4.0))),
@@ -1260,7 +1265,8 @@ class _PilotFrequency1 extends StatelessWidget {
                         onChanged: null,
                         maxLength: 40,
                         decoration: InputDecoration(
-                          label: Text(AppLocalizations.of(context).level),
+                          label: Text(
+                              '${AppLocalizations.of(context).level} (${CustomStyle.dBmV})'),
                           border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(4.0))),
@@ -1342,7 +1348,8 @@ class _PilotFrequency2 extends StatelessWidget {
                         },
                         maxLength: 40,
                         decoration: InputDecoration(
-                          label: Text(AppLocalizations.of(context).frequency),
+                          label: Text(
+                              '${AppLocalizations.of(context).frequency} (${CustomStyle.mHz})'),
                           border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(4.0))),
@@ -1372,7 +1379,8 @@ class _PilotFrequency2 extends StatelessWidget {
                         onChanged: null,
                         maxLength: 40,
                         decoration: InputDecoration(
-                          label: Text(AppLocalizations.of(context).level),
+                          label: Text(
+                              '${AppLocalizations.of(context).level} (${CustomStyle.dBmV})'),
                           border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(4.0))),

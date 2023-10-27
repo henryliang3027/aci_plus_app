@@ -441,6 +441,7 @@ class _TemperatureAlarmControl extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Flexible(
+                    flex: 3,
                     child: Text(
                       AppLocalizations.of(context).temperatureFC,
                       style: const TextStyle(
@@ -581,6 +582,7 @@ class _VoltageAlarmControl extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Flexible(
+                    flex: 3,
                     child: Text(
                       '${AppLocalizations.of(context).voltageLevel} (${CustomStyle.volt})',
                       style: const TextStyle(
@@ -717,6 +719,7 @@ class _VoltageRippleAlarmControl extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Flexible(
+                    flex: 3,
                     child: Text(
                       '${AppLocalizations.of(context).voltageRipple} (${CustomStyle.milliVolt})',
                       style: const TextStyle(
@@ -857,6 +860,7 @@ class _RFOutputPowerAlarmControl extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Flexible(
+                    flex: 3,
                     child: Text(
                       '${AppLocalizations.of(context).rfOutputPower} (${CustomStyle.dBmV})',
                       style: const TextStyle(

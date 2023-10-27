@@ -179,6 +179,7 @@ class SettingListView extends StatelessWidget {
                     fontSize: 16,
                     color: valueColor,
                   ),
+                  textAlign: TextAlign.end,
                 ),
               ),
             ],

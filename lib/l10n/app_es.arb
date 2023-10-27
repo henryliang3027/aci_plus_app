@@ -15,8 +15,8 @@
     "forwardSetting": "Adelante configuración",
     "startFrequency": "Inicio Frecuencia",
     "stopFrequency": "Parar Frecuencia",
-    "frequency": "Frecuencia (MHz)",
-    "level": "Nivel (dBmV)",
+    "frequency": "Frecuencia",
+    "level": "Nivel",
     "pilotFrequencySelect": "Selección Frecuencia Piloto",
     "pilotFrequencyFull": "Completo",
     "pilotFrequencyManual": "Manual",
@@ -53,7 +53,6 @@
 
 
     "status": "estado",
-    "module": "Módulo",
     "serialNumber": "número de serie",
     "firmwareVersion": "Versión del firmware",
     "attenuation": "Atenuación",
@@ -87,13 +86,11 @@
     "currentRFOutputPower": "Actual",
     "minRFOutputPower": "Mínimo",
     "maxRFOutputPower": "Máximo",
-    "unknown": "Desconocido",
 
 
     "information": "Información",
     "connection": "Conexión",
     "bluetooth": "Bluetooth",
-    "dsim": "DSIM",
     "visitWebsite": "Visitar ACI sitio web",
     "basic": "Básico",
     "typeNo": "No. de Tipo",
@@ -128,7 +125,7 @@
     "aboutArticleParagraph3": "En respuesta a la demanda de la digitalización, el Grupo Twoway con sus ventajas en tecnología de redes y equipos, aplicando los años de experiencia en soluciones de \"IoT\" (Internet de las Cosas) y la inteligencia artificial,  proporciona también servicios de convergencia digital y valor agregado inteligente, para los principales operadores de telecomunicaciones. Aprovechando las oportunidades de negocio de la integración de servicios de aplicación, el Grupo Twoway promueve la plataforma inteligente en la nube en diversos sectores, y expande el negocio de sistemas de seguridad urbana, desarrolla soluciones de monitoreo inteligente, integra tecnología de transmisión de cables y fibras ópticas, y amplía las oportunidades de negocio en hogares inteligentes, servicios de atención médica, y gestión de prevención de desastres.",
     "aboutArticleParagraph4": "El principio y objetivo más alto del Grupo Twoway es \"La logística transfronteriza global, con servicio local y oportuno\", y busca siempre construir los mejores servicios personalizados. Actualmente, El Grupo Twoway tiene sucursales en Estados Unidos, Indonesia, Vietnam, Tailandia y Filipinas. También ha establecido oficinas representativas en Japón, Corea del Sur y Chile, entre otros lugares. Al mismo tiempo, El Grupo Twoway trabaja en estrecha colaboración con socios de distribución regionales en varios países de todo el mundo, y mejora la calidad de los servicios para satisfacer las diversas demandas de los clientes.",
     "aboutArticleParagraph5": "La sede global de Twoway Group en Taiwán ha obtenido la certificación [ ISO 9001 Sistema de Gestión de Calidad ] y [ ISO 14001 Sistema de Gestión Ambiental ].",
-    "aboutArticleDigitalTeamTitle": "Equipo digital",
+    "aboutArticleDigitalTeamTitle": "EQUIPO DIGITAL",
     "aboutArticleDigitalTeamParagraph": "Nuestro equipo de desarrollo incluye gerentes de proyectos de web, diseñadores de web, programadores de Front-end / Back-end, e ingenieros de sistemas. En el grupo Twoway creemos que un sistema de gestión de redes diseñado correctamente, ayudará a los clientes a ejecutar trabajos de monitoreo precisos, oportunos y de respuesta rápida, para obtener mayores beneficios. Seguiremos mejorando nuestra capacidad en adquirir más experiencia, aprender y crecer, desarrollar la creatividad, y mantenernos al día con los tiempos e integrarnos con nuevas tecnologías. Continuar absorbiendo los comentarios de los clientes, desarrollar productos de monitoreo de equipos más profesionales y servicios globales, para hacer realidad el concepto de servicios de monitoreo remoto.",
     "projectManager": "Gerente de proyecto",
     "websiteDesigner": "Diseñador de Web",

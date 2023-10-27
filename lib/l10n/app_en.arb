@@ -15,8 +15,8 @@
     "forwardSetting": "Forward Setting",
     "startFrequency": "Start Frequency",
     "stopFrequency": "Stop Frequency",
-    "frequency": "Frequency (MHz)",
-    "level": "Level (dBmV)",
+    "frequency": "Frequency",
+    "level": "Level",
     "pilotFrequencySelect": "Pilot Frequency Select",
     "pilotFrequencyFull": "Full",
     "pilotFrequencyManual": "Manual",
@@ -52,7 +52,6 @@
 
     
     "status": "Status",
-    "module": "Module",
     "serialNumber": "Serial Number",
     "firmwareVersion": "Firmware Version",
     "attenuation": "Attenuation",
@@ -87,12 +86,11 @@
     "currentRFOutputPower": "Current",
     "minRFOutputPower": "Minimum",
     "maxRFOutputPower": "Maximum",
-    "unknown": "Unknown",
+    
     
     "information": "Information",
     "connection": "Connection",
     "bluetooth": "Bluetooth",
-    "dsim": "DSIM",
     "visitWebsite": "Visit ACI website",
     "basic": "Basic",
     "typeNo": "Type No",

@@ -125,102 +125,6 @@ class _LogChartView extends StatelessWidget {
         } else if (state.logRequestStatus.isRequestFailure) {
           showFailureDialog(state.errorMessage);
         }
-        // } else if (state.dataExportStatus.isRequestSuccess) {
-        //   ScaffoldMessenger.of(context)
-        //     ..hideCurrentSnackBar()
-        //     ..showSnackBar(
-        //       SnackBar(
-        //         duration: const Duration(seconds: 30),
-        //         content: Text(
-        //           AppLocalizations.of(context)
-        //               .dialogMessageDataExportSuccessful,
-        //         ),
-        //         action: SnackBarAction(
-        //           label: AppLocalizations.of(context).open,
-        //           onPressed: () async {
-        //             OpenResult result = await OpenFilex.open(
-        //               state.dataExportPath,
-        //               type: 'application/vnd.ms-excel',
-        //               uti: 'com.microsoft.excel.xls',
-        //             );
-        //             print(result.message);
-        //           },
-        //         ),
-        //       ),
-        //     );
-        // } else if (state.dataShareStatus.isRequestSuccess) {
-        //   String partNo = context
-        //       .read<HomeBloc>()
-        //       .state
-        //       .characteristicData[DataKey.partNo]!;
-        //   String location = context
-        //       .read<HomeBloc>()
-        //       .state
-        //       .characteristicData[DataKey.location]!;
-
-        //   double width = MediaQuery.of(context).size.width;
-        //   double height = MediaQuery.of(context).size.height;
-        //   Share.shareXFiles(
-        //     [XFile(state.dataExportPath)],
-        //     subject: state.exportFileName,
-        //     text: '$partNo / $location',
-        //     sharePositionOrigin:
-        //         Rect.fromLTWH(0.0, height / 2, width, height / 2),
-        //   );
-        // } else if (state.allDataExportStatus.isRequestInProgress) {
-        //   List<dynamic>? resultOfDownload = await showDialog<List<dynamic>>(
-        //     context: context,
-        //     barrierDismissible: false, // user must tap button!
-        //     builder: (BuildContext buildContext) {
-        //       return WillPopScope(
-        //         onWillPop: () async {
-        //           // 避免 Android 使用者點擊系統返回鍵關閉 dialog
-        //           return false;
-        //         },
-        //         child: DownloadIndicatorForm(
-        //           dsimRepository:
-        //               RepositoryProvider.of<DsimRepository>(context),
-        //         ),
-        //       );
-        //     },
-        //   );
-
-        //   if (resultOfDownload != null) {
-        //     bool isSuccessful = resultOfDownload[0];
-        //     List<Log1p8G> log1p8Gs = resultOfDownload[1];
-        //     String errorMessage = resultOfDownload[2];
-        //     context.read<DataLogChartBloc>().add(AllDataExported(
-        //           isSuccessful,
-        //           log1p8Gs,
-        //           errorMessage,
-        //         ));
-        //   }
-        // } else if (state.allDataExportStatus.isRequestSuccess) {
-        //   ScaffoldMessenger.of(context)
-        //     ..hideCurrentSnackBar()
-        //     ..showSnackBar(
-        //       SnackBar(
-        //         duration: const Duration(seconds: 30),
-        //         content: Text(
-        //           AppLocalizations.of(context)
-        //               .dialogMessageDataExportSuccessful,
-        //         ),
-        //         action: SnackBarAction(
-        //           label: AppLocalizations.of(context).open,
-        //           onPressed: () async {
-        //             OpenResult result = await OpenFilex.open(
-        //               state.dataExportPath,
-        //               type: 'application/vnd.ms-excel',
-        //               uti: 'com.microsoft.excel.xls',
-        //             );
-        //             print(result.message);
-        //           },
-        //         ),
-        //       ),
-        //     );
-        // } else if (state.allDataExportStatus.isRequestFailure) {
-        //   showFailureDialog(state.errorMessage);
-        // }
       },
       child: Scaffold(
         body: const _LogChartListView(),
@@ -555,7 +459,7 @@ class _LogChartListView extends StatelessWidget {
           } else {
             if (dataLogChartState.eventRequestStatus.isNone) {
               print('===== get event ======');
-              context.read<Chart18Bloc>().add(const TabChangedEnabled());
+              context.read<Chart18Bloc>().add(const TabChangedDisabled());
               context.read<DataLogChartBloc>().add(const Event1P8GRequested());
               return Stack(
                 alignment: Alignment.center,
