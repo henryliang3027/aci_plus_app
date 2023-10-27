@@ -24,7 +24,7 @@ class _AboutPageState extends State<AboutPage> {
     _kExpandedHeight = 160.0;
     _scrollController = ScrollController()..addListener(() => setState(() {}));
     _dsimVersion = 'V 2.0.0';
-    _maxTitleSize = 26;
+    _maxTitleSize = 24;
     _minTitleSize = 22;
     _currentTitleSize = _maxTitleSize;
     super.initState();
@@ -33,7 +33,7 @@ class _AboutPageState extends State<AboutPage> {
   @override
   Widget build(BuildContext context) {
     double horizontalTitlePadding() {
-      const kBasePadding = 40.0;
+      const kBasePadding = 26.0;
       const kMultiplier = 4.5;
 
       double toolbarWidth = MediaQuery.of(context).size.width;
