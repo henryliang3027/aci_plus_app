@@ -1,5 +1,5 @@
-import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AboutPage extends StatefulWidget {
@@ -15,101 +15,18 @@ class _AboutPageState extends State<AboutPage> {
   late final ScrollController _scrollController;
   late final double _kExpandedHeight;
   late final String _dsimVersion;
-  late final double _maxTitleSize;
-  late final double _minTitleSize;
-  late double _currentTitleSize;
 
   @override
   void initState() {
     _kExpandedHeight = 160.0;
-    _scrollController = ScrollController()..addListener(() => setState(() {}));
+    _scrollController = ScrollController()..addListener(() {});
     _dsimVersion = 'V 2.0.0';
-    _maxTitleSize = 24;
-    _minTitleSize = 22;
-    _currentTitleSize = _maxTitleSize;
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    double horizontalTitlePadding() {
-      const kBasePadding = 26.0;
-      const kMultiplier = 4.5;
-
-      double toolbarWidth = MediaQuery.of(context).size.width;
-
-      print('toolbarWidth : $toolbarWidth');
-
-      if (_scrollController.hasClients) {
-        if (_scrollController.offset < (_kExpandedHeight / 2)) {
-          // In case 50%-100% of the expanded height is viewed
-          return kBasePadding;
-        } else if (_scrollController.offset >
-            (_kExpandedHeight - kToolbarHeight)) {
-          // In case 0% of the expanded height is viewed
-          return 0.0;
-        } else {
-          // In case 0%-50% of the expanded height is viewed
-          // return (_scrollController.offset - (_kExpandedHeight / 2)) *
-          //         kMultiplier +
-          //     kBasePadding;
-          return kBasePadding;
-        }
-      }
-
-      return kBasePadding;
-    }
-
-    double getTitleFontSize(String text) {
-      double size = _maxTitleSize;
-      if (_scrollController.hasClients) {
-        // print('_scrollController.offset: ${_scrollController.offset}');
-        // print('_kExpandedHeight: ${_kExpandedHeight}');
-        // print('kToolbarHeight: ${kToolbarHeight}');
-
-        if (_scrollController.offset < (_kExpandedHeight / 2)) {
-          // In case 50%-100% of the expanded height is viewed
-          print('size1: $size');
-          size = _maxTitleSize;
-        } else if (_scrollController.offset >
-            (_kExpandedHeight - kToolbarHeight)) {
-          // In case 0% of the expanded height is viewed
-          print('size2: $size');
-          size = _maxTitleSize;
-        }
-
-        // In case 0%-50% of the expanded height is viewed
-        else {
-          size = _maxTitleSize -
-              (_scrollController.offset - (_kExpandedHeight / 2)) * 0.1;
-
-          print('size3: $size');
-        }
-      } else {
-        size = _maxTitleSize;
-
-        print('size4: $size');
-      }
-
-      _currentTitleSize = size;
-      print('size: $size');
-
-      return size;
-    }
-
-    bool isCenterTitle() {
-      if (_scrollController.hasClients) {
-        if (_scrollController.offset > (_kExpandedHeight - kToolbarHeight)) {
-          // In case 0% of the expanded height is viewed
-          return true;
-        }
-
-        return false;
-      }
-
-      return false;
-    }
-
     Widget buildParagraph({
       required String paragraph,
       double fontSize = 16,
@@ -130,21 +47,32 @@ class _AboutPageState extends State<AboutPage> {
           SliverAppBar(
             pinned: true,
             expandedHeight: _kExpandedHeight,
-            flexibleSpace: FlexibleSpaceBar(
-                titlePadding: EdgeInsets.fromLTRB(
-                  horizontalTitlePadding(),
-                  10.0,
-                  0.0,
-                  14.0,
-                ),
-                centerTitle: isCenterTitle(),
-                title: Text(
-                  AppLocalizations.of(context).aboutUs,
-                  style: TextStyle(
-                    fontSize:
-                        getTitleFontSize(AppLocalizations.of(context).aboutUs),
+            flexibleSpace: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+              double percentage = (constraints.maxHeight - kToolbarHeight) /
+                  (_kExpandedHeight - kToolbarHeight);
+
+              Alignment titleAlignment = Alignment.bottomCenter;
+              if (percentage <= 0.5) {
+                titleAlignment = Alignment.center;
+              } else {
+                titleAlignment = Alignment.bottomLeft;
+              }
+
+              return FlexibleSpaceBar(
+                titlePadding: const EdgeInsets.fromLTRB(26.0, 10.0, 26.0, 14.0),
+                centerTitle: false,
+                title: AnimatedContainer(
+                  padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
+                  duration: const Duration(milliseconds: 300),
+                  alignment: titleAlignment,
+                  child: Text(
+                    AppLocalizations.of(context).aboutUs,
+                    style: const TextStyle(
+                        //  fontSize: 24,
+                        ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
                 background: Stack(
                   children: [
@@ -175,7 +103,9 @@ class _AboutPageState extends State<AboutPage> {
                       ),
                     ),
                   ],
-                )),
+                ),
+              );
+            }),
           ),
           SliverToBoxAdapter(
             child: Column(

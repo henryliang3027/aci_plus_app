@@ -45,7 +45,7 @@ class _AppView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
-      // locale: const Locale('en'),
+      // locale: const Locale('en'),'
       supportedLocales: const <Locale>[
         Locale('en'),
         Locale('es'),
