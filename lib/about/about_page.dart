@@ -54,7 +54,7 @@ class _AboutPageState extends State<AboutPage> {
 
               Alignment titleAlignment = Alignment.bottomCenter;
               if (percentage <= 0.5) {
-                titleAlignment = Alignment.center;
+                titleAlignment = Alignment.bottomCenter;
               } else {
                 titleAlignment = Alignment.bottomLeft;
               }
@@ -63,7 +63,6 @@ class _AboutPageState extends State<AboutPage> {
                 titlePadding: const EdgeInsets.fromLTRB(26.0, 10.0, 26.0, 14.0),
                 centerTitle: false,
                 title: AnimatedContainer(
-                  padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
                   duration: const Duration(milliseconds: 300),
                   alignment: titleAlignment,
                   child: Text(
