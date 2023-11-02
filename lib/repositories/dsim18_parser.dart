@@ -28,19 +28,6 @@ class Dsim18Parser {
     return s;
   }
 
-  bool checkCRC(
-    List<int> rawData,
-  ) {
-    List<int> crcData = List<int>.from(rawData);
-    CRC16.calculateCRC16(command: crcData, usDataLength: crcData.length - 2);
-    if (crcData[crcData.length - 1] == rawData[rawData.length - 1] &&
-        crcData[crcData.length - 2] == rawData[rawData.length - 2]) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   A1P8G0 decodeA1P8G0(List<int> rawData) {
     String partName = '';
     String partNo = '';

@@ -103,6 +103,9 @@ enum DataKey {
   dsVVA3,
   dsVVA4,
   usTGC,
+  cCor80,
+  cCor91,
+  cCorA1,
 }
 
 class Command {

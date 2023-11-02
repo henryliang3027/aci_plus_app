@@ -1,31 +1,32 @@
-// import 'dart:async';
-// import 'dart:io';
-// import 'package:dsim_app/core/command18.dart';
-// import 'package:dsim_app/core/common_enum.dart';
-// import 'package:dsim_app/core/crc16_calculate.dart';
-// import 'package:dsim_app/repositories/unit_converter.dart';
-// import 'package:excel/excel.dart';
-// import 'package:flutter/foundation.dart';
-// import 'package:flutter_speed_chart/speed_chart.dart';
-// import 'package:intl/intl.dart';
-// import 'package:path_provider/path_provider.dart';
-// import 'package:geolocator/geolocator.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:dsim_app/core/command18_c_core_node.dart';
+import 'package:dsim_app/core/common_enum.dart';
+import 'package:dsim_app/core/crc16_calculate.dart';
+import 'package:dsim_app/repositories/unit_converter.dart';
+import 'package:excel/excel.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_speed_chart/speed_chart.dart';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:geolocator/geolocator.dart';
 
-// class Dsim18CCorNodeParser {
-//   Dsim18CCorNodeParser() {
-//     calculate18CRCs();
-//   }
+class Dsim18CCorNodeParser {
+  Dsim18CCorNodeParser() {
+    calculate18CRCs();
+  }
 
-//   final List<List<int>> _command18Collection = [];
+  final List<List<int>> _command18CCorNodeCollection = [];
 
-//   List<List<int>> get command18Collection => _command18Collection;
+  List<List<int>> get command18CCorNodeCollection =>
+      _command18CCorNodeCollection;
 
-//   // 刪除所有 Null character (0x00), 頭尾空白 character
-//   String _trimString(String s) {
-//     s = s.replaceAll('\x00', '');
-//     s = s.trim();
-//     return s;
-//   }
+  // 刪除所有 Null character (0x00), 頭尾空白 character
+  String _trimString(String s) {
+    s = s.replaceAll('\x00', '');
+    s = s.trim();
+    return s;
+  }
 
 //   bool checkCRC(
 //     List<int> rawData,
@@ -1454,299 +1455,296 @@
 //     return coordinate;
 //   }
 
-//   void calculate18CRCs() {
-//     CRC16.calculateCRC16(command: Command18.req00Cmd, usDataLength: 6);
-//     CRC16.calculateCRC16(command: Command18.req01Cmd, usDataLength: 6);
-//     CRC16.calculateCRC16(command: Command18.req02Cmd, usDataLength: 6);
-//     CRC16.calculateCRC16(command: Command18.req03Cmd, usDataLength: 6);
-//     CRC16.calculateCRC16(command: Command18.reqLog00Cmd, usDataLength: 6);
-//     CRC16.calculateCRC16(command: Command18.reqLog01Cmd, usDataLength: 6);
-//     CRC16.calculateCRC16(command: Command18.reqLog02Cmd, usDataLength: 6);
-//     CRC16.calculateCRC16(command: Command18.reqLog03Cmd, usDataLength: 6);
-//     CRC16.calculateCRC16(command: Command18.reqLog04Cmd, usDataLength: 6);
-//     CRC16.calculateCRC16(command: Command18.reqLog05Cmd, usDataLength: 6);
-//     CRC16.calculateCRC16(command: Command18.reqLog06Cmd, usDataLength: 6);
-//     CRC16.calculateCRC16(command: Command18.reqLog07Cmd, usDataLength: 6);
-//     CRC16.calculateCRC16(command: Command18.reqLog08Cmd, usDataLength: 6);
-//     CRC16.calculateCRC16(command: Command18.reqLog09Cmd, usDataLength: 6);
-//     CRC16.calculateCRC16(command: Command18.reqEvent00Cmd, usDataLength: 6);
+  void calculate18CRCs() {
+    CRC16.calculateCRC16(command: Command18CCorNode.req00Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18CCorNode.req01Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18CCorNode.req02Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(
+        command: Command18CCorNode.reqLog00Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(
+        command: Command18CCorNode.reqLog01Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(
+        command: Command18CCorNode.reqLog02Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(
+        command: Command18CCorNode.reqLog03Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(
+        command: Command18CCorNode.reqLog04Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(
+        command: Command18CCorNode.reqLog05Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(
+        command: Command18CCorNode.reqLog06Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(
+        command: Command18CCorNode.reqLog07Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(
+        command: Command18CCorNode.reqLog08Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(
+        command: Command18CCorNode.reqLog09Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(
+        command: Command18CCorNode.reqEvent00Cmd, usDataLength: 6);
 
-//     _command18Collection.add(Command18.req00Cmd);
-//     _command18Collection.add(Command18.req01Cmd);
-//     _command18Collection.add(Command18.req02Cmd);
-//     _command18Collection.add(Command18.req03Cmd);
-//     _command18Collection.add(Command18.reqLog00Cmd);
-//     _command18Collection.add(Command18.reqLog01Cmd);
-//     _command18Collection.add(Command18.reqLog02Cmd);
-//     _command18Collection.add(Command18.reqLog03Cmd);
-//     _command18Collection.add(Command18.reqLog04Cmd);
-//     _command18Collection.add(Command18.reqLog05Cmd);
-//     _command18Collection.add(Command18.reqLog06Cmd);
-//     _command18Collection.add(Command18.reqLog07Cmd);
-//     _command18Collection.add(Command18.reqLog08Cmd);
-//     _command18Collection.add(Command18.reqLog09Cmd);
-//     _command18Collection.add(Command18.reqEvent00Cmd);
-//   }
-// }
+    _command18CCorNodeCollection.add(Command18CCorNode.req00Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.req01Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.req02Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.reqLog00Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.reqLog01Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.reqLog02Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.reqLog03Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.reqLog04Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.reqLog05Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.reqLog06Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.reqLog07Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.reqLog08Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.reqLog09Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.reqEvent00Cmd);
+  }
+}
 
-// class Log1p8G {
-//   const Log1p8G({
-//     required this.dateTime,
-//     required this.temperature,
-//     required this.voltage,
-//     required this.rfOutputLowPilot,
-//     required this.rfOutputHighPilot,
-//     required this.voltageRipple,
-//   });
+class Log1p8GCCoreNode {
+  const Log1p8GCCoreNode({
+    required this.dateTime,
+    required this.temperature,
+    required this.forwardPower1,
+    required this.forwardPower3,
+    required this.forwardPower4,
+    required this.forwardPower6,
+  });
 
-//   final DateTime dateTime;
-//   final double temperature;
-//   final double voltage;
-//   final double rfOutputLowPilot;
-//   final double rfOutputHighPilot;
-//   final int voltageRipple;
-// }
+  final DateTime dateTime;
+  final double temperature;
+  final double forwardPower1;
+  final double forwardPower3;
+  final double forwardPower4;
+  final double forwardPower6;
+}
 
-// class Event1p8G {
-//   const Event1p8G({
-//     required this.dateTime,
-//     required this.code,
-//     required this.parameter,
-//   });
+class Event1p8GCCoreNode {
+  const Event1p8GCCoreNode({
+    required this.dateTime,
+    required this.code,
+    required this.parameter,
+  });
 
-//   final DateTime dateTime;
-//   final int code;
-//   final int parameter;
-// }
+  final DateTime dateTime;
+  final int code;
+  final int parameter;
+}
 
-// class RFInOut {
-//   const RFInOut({
-//     required this.input,
-//     required this.output,
-//   });
+class A1P8GCCorNode80 {
+  const A1P8GCCorNode80({
+    required this.partName,
+    required this.partNo,
+    required this.partId,
+    required this.serialNumber,
+    required this.firmwareVersion,
+    required this.mfgDate,
+    required this.coordinate,
+    required this.nowDateTime,
+  });
 
-//   final double input;
-//   final double output;
-// }
+  final String partName;
+  final String partNo;
+  final String partId;
+  final String serialNumber;
+  final String firmwareVersion;
+  final String mfgDate;
+  final String coordinate;
+  final String nowDateTime;
+}
 
-// class A1P8G0 {
-//   const A1P8G0({
-//     required this.partName,
-//     required this.partNo,
-//     required this.partId,
-//     required this.serialNumber,
-//     required this.firmwareVersion,
-//     required this.mfgDate,
-//     required this.coordinate,
-//     required this.nowDateTime,
-//   });
+class A1P8GCCorNode91 {
+  const A1P8GCCorNode91({
+    required this.maxTemperatureC,
+    required this.minTemperatureC,
+    required this.maxTemperatureF,
+    required this.minTemperatureF,
+    required this.maxVoltage,
+    required this.minVoltage,
+    required this.maxRFPower1,
+    required this.minRFPower1,
+    required this.ingressSetting1,
+    required this.ingressSetting3,
+    required this.ingressSetting4,
+    required this.ingressSetting6,
+    required this.splitOption,
+    required this.maxRFPower3,
+    required this.minRFPower3,
+    required this.fowwardVVA1,
+    required this.fowwardInSlope1,
+    required this.fowwarOutSlope1,
+    required this.returnVCA1,
+    required this.rfOutputPower1AlarmState,
+    required this.rfOutputPower3AlarmState,
+    required this.rfOutputPower4AlarmState,
+    required this.rfOutputPower6AlarmState,
+    required this.temperatureAlarmState,
+    required this.voltageAlarmState,
+    required this.maxRFPower4,
+    required this.minRFPower4,
+    required this.splitOptionAlarmState,
+    required this.location,
+    required this.logInterval,
+    required this.forwardVVA3,
+    required this.forwardInSlope3,
+    required this.forwardOutSlope3,
+    required this.rerturnVCA3,
+    required this.forwardVVA4,
+    required this.forwardInSlope4,
+    required this.forwardOutSlope4,
+    required this.returnVCA4,
+    required this.forwardVVA6,
+    required this.forwardInSlope6,
+    required this.forwardOutSlope6,
+    required this.returnVCA6,
+    required this.maxRFPower6,
+    required this.minRFPower6,
+  });
 
-//   final String partName;
-//   final String partNo;
-//   final String partId;
-//   final String serialNumber;
-//   final String firmwareVersion;
-//   final String mfgDate;
-//   final String coordinate;
-//   final String nowDateTime;
-// }
+  final String maxTemperatureC;
+  final String minTemperatureC;
+  final String maxTemperatureF;
+  final String minTemperatureF;
+  final String maxVoltage;
+  final String minVoltage;
+  final String maxRFPower1;
+  final String minRFPower1;
+  final String ingressSetting1;
+  final String ingressSetting3;
+  final String ingressSetting4;
+  final String ingressSetting6;
+  final String splitOption;
+  final String maxRFPower3;
+  final String minRFPower3;
+  final String fowwardVVA1;
+  final String fowwardInSlope1;
+  final String fowwarOutSlope1;
+  final String returnVCA1;
+  final String rfOutputPower1AlarmState;
+  final String rfOutputPower3AlarmState;
+  final String rfOutputPower4AlarmState;
+  final String rfOutputPower6AlarmState;
+  final String temperatureAlarmState;
+  final String voltageAlarmState;
+  final String maxRFPower4;
+  final String minRFPower4;
+  final String splitOptionAlarmState;
+  final String location;
+  final String logInterval;
+  final String forwardVVA3;
+  final String forwardInSlope3;
+  final String forwardOutSlope3;
+  final String rerturnVCA3;
+  final String forwardVVA4;
+  final String forwardInSlope4;
+  final String forwardOutSlope4;
+  final String returnVCA4;
+  final String forwardVVA6;
+  final String forwardInSlope6;
+  final String forwardOutSlope6;
+  final String returnVCA6;
+  final String maxRFPower6;
+  final String minRFPower6;
+}
 
-// class A1P8G1 {
-//   const A1P8G1({
-//     required this.maxTemperatureC,
-//     required this.minTemperatureC,
-//     required this.maxTemperatureF,
-//     required this.minTemperatureF,
-//     required this.maxVoltage,
-//     required this.minVoltage,
-//     required this.maxVoltageRipple,
-//     required this.minVoltageRipple,
-//     required this.maxRFOutputPower,
-//     required this.minRFOutputPower,
-//     required this.ingressSetting2,
-//     required this.ingressSetting3,
-//     required this.ingressSetting4,
-//     required this.tgcCableLength,
-//     required this.splitOption,
-//     required this.pilotFrequencyMode,
-//     required this.agcMode,
-//     required this.alcMode,
-//     required this.firstChannelLoadingFrequency,
-//     required this.lastChannelLoadingFrequency,
-//     required this.firstChannelLoadingLevel,
-//     required this.lastChannelLoadingLevel,
-//     required this.pilotFrequency1,
-//     required this.pilotFrequency2,
-//     required this.pilotFrequency1AlarmState,
-//     required this.pilotFrequency2AlarmState,
-//     required this.rfOutputPilotLowFrequencyAlarmState,
-//     required this.rfOutputPilotHighFrequencyAlarmState,
-//     required this.temperatureAlarmState,
-//     required this.voltageAlarmState,
-//     required this.splitOptionAlarmState,
-//     required this.voltageRippleAlarmState,
-//     required this.outputPowerAlarmState,
-//     required this.inputAttenuation,
-//     required this.inputEqualizer,
-//     required this.dsVVA2,
-//     required this.dsSlope2,
-//     required this.inputAttenuation2,
-//     required this.inputAttenuation3,
-//     required this.inputAttenuation4,
-//     required this.outputAttenuation,
-//     required this.outputEqualizer,
-//     required this.dsVVA3,
-//     required this.dsVVA4,
-//     required this.usTGC,
-//     required this.location,
-//     required this.logInterval,
-//   });
+class A1P8GCCorNodeA1 {
+  const A1P8GCCorNodeA1({
+    required this.currentTemperatureC,
+    required this.currentTemperatureF,
+    required this.currentVoltage,
+    required this.currentVoltageRipple,
+    required this.currentRFOutputPower1,
+    required this.currentRFOutputPower3,
+    required this.currentRFOutputPower4,
+    required this.currentRFOutputPower6,
+    required this.currentForwardVVA1,
+    required this.currentForwardInSlope1,
+    required this.currentForwardOutSlope1,
+    required this.currentReturnVCA1,
+    required this.currentForwardVVA3,
+    required this.currentForwardInSlope3,
+    required this.currentForwardOutSlope3,
+    required this.currentReturnVCA3,
+    required this.currentForwardVVA4,
+    required this.currentForwardInSlope4,
+    required this.currentForwardOutSlope4,
+    required this.currentReturnVCA4,
+    required this.currentForwardVVA6,
+    required this.currentForwardInSlope6,
+    required this.currentForwardOutSlope6,
+    required this.currentReturnVCA6,
+    required this.currentWorkingMode,
+    required this.currentDetectedSplitOption,
+    required this.temperatureAlarmSeverity,
+    required this.voltageAlarmSeverity,
+    required this.splitOptionAlarmSeverity,
+    required this.voltageRippleAlarmSeverity,
+    required this.rfOutputPower1AlarmSeverity,
+    required this.rfOutputPower3AlarmSeverity,
+    required this.rfOutputPower4AlarmSeverity,
+    required this.rfOutputPower6AlarmSeverity,
+  });
 
-//   final String maxTemperatureC;
-//   final String minTemperatureC;
-//   final String maxTemperatureF;
-//   final String minTemperatureF;
-//   final String maxVoltage;
-//   final String minVoltage;
-//   final String maxVoltageRipple;
-//   final String minVoltageRipple;
-//   final String maxRFOutputPower;
-//   final String minRFOutputPower;
-//   final String ingressSetting2;
-//   final String ingressSetting3;
-//   final String ingressSetting4;
-//   final String tgcCableLength;
-//   final String splitOption;
-//   final String pilotFrequencyMode;
-//   final String agcMode;
-//   final String alcMode;
-//   final String firstChannelLoadingFrequency;
-//   final String lastChannelLoadingFrequency;
-//   final String firstChannelLoadingLevel;
-//   final String lastChannelLoadingLevel;
-//   final String pilotFrequency1;
-//   final String pilotFrequency2;
-//   final String pilotFrequency1AlarmState;
-//   final String pilotFrequency2AlarmState;
-//   final String rfOutputPilotLowFrequencyAlarmState;
-//   final String rfOutputPilotHighFrequencyAlarmState;
-//   final String temperatureAlarmState;
-//   final String voltageAlarmState;
-//   final String splitOptionAlarmState;
-//   final String voltageRippleAlarmState;
-//   final String outputPowerAlarmState;
-//   final String inputAttenuation;
-//   final String inputEqualizer;
-//   final String dsVVA2;
-//   final String dsSlope2;
-//   final String inputAttenuation2;
-//   final String inputAttenuation3;
-//   final String inputAttenuation4;
-//   final String outputAttenuation;
-//   final String outputEqualizer;
-//   final String dsVVA3;
-//   final String dsVVA4;
-//   final String usTGC;
-//   final String location;
-//   final String logInterval;
-// }
+  final String currentTemperatureC;
+  final String currentTemperatureF;
+  final String currentVoltage;
+  final String currentVoltageRipple;
+  final String currentRFOutputPower1;
+  final String currentRFOutputPower3;
+  final String currentRFOutputPower4;
+  final String currentRFOutputPower6;
+  final String currentForwardVVA1;
+  final String currentForwardInSlope1;
+  final String currentForwardOutSlope1;
+  final String currentReturnVCA1;
+  final String currentForwardVVA3;
+  final String currentForwardInSlope3;
+  final String currentForwardOutSlope3;
+  final String currentReturnVCA3;
+  final String currentForwardVVA4;
+  final String currentForwardInSlope4;
+  final String currentForwardOutSlope4;
+  final String currentReturnVCA4;
+  final String currentForwardVVA6;
+  final String currentForwardInSlope6;
+  final String currentForwardOutSlope6;
+  final String currentReturnVCA6;
+  final String currentWorkingMode;
+  final String currentDetectedSplitOption;
+  final String temperatureAlarmSeverity;
+  final String voltageAlarmSeverity;
+  final String splitOptionAlarmSeverity;
+  final String voltageRippleAlarmSeverity;
+  final String rfOutputPower1AlarmSeverity;
+  final String rfOutputPower3AlarmSeverity;
+  final String rfOutputPower4AlarmSeverity;
+  final String rfOutputPower6AlarmSeverity;
+}
 
-// class A1P8G2 {
-//   const A1P8G2({
-//     required this.currentTemperatureC,
-//     required this.currentTemperatureF,
-//     required this.currentVoltage,
-//     required this.currentVoltageRipple,
-//     required this.currentRFInputPower,
-//     required this.currentRFOutputPower,
-//     required this.currentWorkingMode,
-//     required this.currentDetectedSplitOption,
-//     required this.rfOutputOperatingSlope,
-//     required this.manualModePilot1RFOutputPower,
-//     required this.manualModePilot2RFOutputPower,
-//     required this.rfOutputLowChannelPower,
-//     required this.rfOutputHighChannelPower,
-//     required this.pilot1RFChannelFrequency,
-//     required this.pilot2RFChannelFrequency,
-//     required this.unitStatusAlarmSeverity,
-//     required this.rfInputPilotLowFrequencyAlarmSeverity,
-//     required this.rfInputPilotHighFrequencyAlarmSeverity,
-//     required this.rfOutputPilotLowFrequencyAlarmSeverity,
-//     required this.rfOutputPilotHighFrequencyAlarmSeverity,
-//     required this.temperatureAlarmSeverity,
-//     required this.voltageAlarmSeverity,
-//     required this.splitOptionAlarmSeverity,
-//     required this.voltageRippleAlarmSeverity,
-//     required this.outputPowerAlarmSeverity,
-//   });
+class A1P8GCCorNodeLogStatistic {
+  const A1P8GCCorNodeLogStatistic({
+    required this.historicalMinTemperatureC,
+    required this.historicalMaxTemperatureC,
+    required this.historicalMinTemperatureF,
+    required this.historicalMaxTemperatureF,
+    required this.historicalMinRFOutputPower1,
+    required this.historicalMaxRFOutputPower1,
+    required this.historicalMinRFOutputPower3,
+    required this.historicalMaxRFOutputPower3,
+    required this.historicalMinRFOutputPower4,
+    required this.historicalMaxRFOutputPower4,
+    required this.historicalMinRFOutputPower6,
+    required this.historicalMaxRFOutputPower6,
+  });
 
-//   final String currentTemperatureC;
-//   final String currentTemperatureF;
-//   final String currentVoltage;
-//   final String currentVoltageRipple;
-//   final String currentRFInputPower;
-//   final String currentRFOutputPower;
-//   final String currentWorkingMode;
-//   final String currentDetectedSplitOption;
-//   final String rfOutputOperatingSlope;
-//   final String manualModePilot1RFOutputPower;
-//   final String manualModePilot2RFOutputPower;
-//   final String rfOutputLowChannelPower;
-//   final String rfOutputHighChannelPower;
-//   final String pilot1RFChannelFrequency;
-//   final String pilot2RFChannelFrequency;
-//   final String unitStatusAlarmSeverity;
-//   final String rfInputPilotLowFrequencyAlarmSeverity;
-//   final String rfInputPilotHighFrequencyAlarmSeverity;
-//   final String rfOutputPilotLowFrequencyAlarmSeverity;
-//   final String rfOutputPilotHighFrequencyAlarmSeverity;
-//   final String temperatureAlarmSeverity;
-//   final String voltageAlarmSeverity;
-//   final String splitOptionAlarmSeverity;
-//   final String voltageRippleAlarmSeverity;
-//   final String outputPowerAlarmSeverity;
-// }
-
-// class A1P8GAlarm {
-//   const A1P8GAlarm({
-//     required this.unitStatusAlarmSeverity,
-//     required this.temperatureAlarmSeverity,
-//     required this.powerAlarmSeverity,
-//   });
-
-//   final String unitStatusAlarmSeverity;
-//   final String temperatureAlarmSeverity;
-//   final String powerAlarmSeverity;
-// }
-
-// class A1P8GLogStatistic {
-//   const A1P8GLogStatistic({
-//     required this.historicalMinTemperatureC,
-//     required this.historicalMaxTemperatureC,
-//     required this.historicalMinTemperatureF,
-//     required this.historicalMaxTemperatureF,
-//     required this.historicalMinVoltage,
-//     required this.historicalMaxVoltage,
-//     required this.historicalMinVoltageRipple,
-//     required this.historicalMaxVoltageRipple,
-//   });
-
-//   final String historicalMinTemperatureC;
-//   final String historicalMaxTemperatureC;
-//   final String historicalMinTemperatureF;
-//   final String historicalMaxTemperatureF;
-//   final String historicalMinVoltage;
-//   final String historicalMaxVoltage;
-//   final String historicalMinVoltageRipple;
-//   final String historicalMaxVoltageRipple;
-// }
-
-// class A1P8GRFOutputPowerStatistic {
-//   const A1P8GRFOutputPowerStatistic({
-//     required this.historicalMinRFOutputPower,
-//     required this.historicalMaxRFOutputPower,
-//   });
-
-//   final String historicalMinRFOutputPower;
-//   final String historicalMaxRFOutputPower;
-// }
+  final String historicalMinTemperatureC;
+  final String historicalMaxTemperatureC;
+  final String historicalMinTemperatureF;
+  final String historicalMaxTemperatureF;
+  final String historicalMinRFOutputPower1;
+  final String historicalMaxRFOutputPower1;
+  final String historicalMinRFOutputPower3;
+  final String historicalMaxRFOutputPower3;
+  final String historicalMinRFOutputPower4;
+  final String historicalMaxRFOutputPower4;
+  final String historicalMinRFOutputPower6;
+  final String historicalMaxRFOutputPower6;
+}
