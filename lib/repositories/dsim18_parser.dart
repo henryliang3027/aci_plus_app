@@ -615,18 +615,18 @@ class Dsim18Parser {
     ByteData rawPilot1RFChannelFrequencyByteData =
         ByteData.sublistView(Uint8List.fromList(rawPilot1RFChannelFrequency));
 
-    pilot1RFChannelFrequency =
-        (rawPilot1RFChannelFrequencyByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
+    pilot1RFChannelFrequency = rawPilot1RFChannelFrequencyByteData
+        .getInt16(0, Endian.little)
+        .toString();
 
     // 解析 pilot2RFChannelFrequency
     List<int> rawPilot2RFChannelFrequency = rawData.sublist(104, 106);
     ByteData rawPilot2RFChannelFrequencyByteData =
         ByteData.sublistView(Uint8List.fromList(rawPilot2RFChannelFrequency));
 
-    pilot2RFChannelFrequency =
-        (rawPilot2RFChannelFrequencyByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
+    pilot2RFChannelFrequency = rawPilot2RFChannelFrequencyByteData
+        .getInt16(0, Endian.little)
+        .toString();
 
     // 解析 rfInputPilotLowFrequencyAlarmSeverity
     int rfInputPilotLowFrequencyStatus = rawData[124];

@@ -3,13 +3,12 @@ import 'dart:io';
 import 'package:dsim_app/core/command18_c_core_node.dart';
 import 'package:dsim_app/core/common_enum.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
+import 'package:dsim_app/repositories/dsim18_parser.dart';
 import 'package:dsim_app/repositories/unit_converter.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:geolocator/geolocator.dart';
 
 class Dsim18CCorNodeParser {
   Dsim18CCorNodeParser() {
@@ -803,241 +802,201 @@ class Dsim18CCorNodeParser {
     );
   }
 
-//   A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {
-//     // 給 定期更新 information page 的 alarm 用
-//     Alarm unitStatusAlarmSeverity = Alarm.medium;
-//     Alarm temperatureAlarmSeverity = Alarm.medium;
-//     Alarm powerAlarmSeverity = Alarm.medium;
+  A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {
+    // 給 定期更新 information page 的 alarm 用
+    Alarm unitStatusAlarmSeverity = Alarm.medium;
+    Alarm temperatureAlarmSeverity = Alarm.medium;
+    Alarm powerAlarmSeverity = Alarm.medium;
 
-//     int unitStatus = rawData[3];
-//     unitStatusAlarmSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
+    int unitStatus = rawData[3];
+    unitStatusAlarmSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
 
-//     int temperatureStatus = rawData[128];
-//     temperatureAlarmSeverity =
-//         temperatureStatus == 1 ? Alarm.danger : Alarm.success;
+    int temperatureStatus = rawData[128];
+    temperatureAlarmSeverity =
+        temperatureStatus == 1 ? Alarm.danger : Alarm.success;
 
-//     int powerStatus = rawData[129];
-//     powerAlarmSeverity = powerStatus == 1 ? Alarm.danger : Alarm.success;
+    int powerStatus = rawData[129];
+    powerAlarmSeverity = powerStatus == 1 ? Alarm.danger : Alarm.success;
 
-//     A1P8GAlarm a1p8gAlarm = A1P8GAlarm(
-//       unitStatusAlarmSeverity: unitStatusAlarmSeverity.name,
-//       temperatureAlarmSeverity: temperatureAlarmSeverity.name,
-//       powerAlarmSeverity: powerAlarmSeverity.name,
-//     );
+    A1P8GAlarm a1p8gAlarm = A1P8GAlarm(
+      unitStatusAlarmSeverity: unitStatusAlarmSeverity.name,
+      temperatureAlarmSeverity: temperatureAlarmSeverity.name,
+      powerAlarmSeverity: powerAlarmSeverity.name,
+    );
 
-//     return a1p8gAlarm;
-//   }
+    return a1p8gAlarm;
+  }
 
-//   A1P8GLogStatistic getA1p8GLogStatistics(List<Log1p8G> log1p8Gs) {
-//     UnitConverter unitConverter = UnitConverter();
-//     if (log1p8Gs.isNotEmpty) {
-//       // get min temperature
-//       double historicalMinTemperature = log1p8Gs
-//           .map((log1p8G) => log1p8G.temperature)
-//           .reduce((min, current) => min < current ? min : current);
+  A1P8GCCorNodeLogStatistic getA1p8GLogStatistics(
+      List<Log1p8GCCorNode> log1p8Gs) {
+    UnitConverter unitConverter = UnitConverter();
+    if (log1p8Gs.isNotEmpty) {
+      // get min temperature
+      double historicalMinTemperature = log1p8Gs
+          .map((log1p8G) => log1p8G.temperature)
+          .reduce((min, current) => min < current ? min : current);
 
-//       // get max temperature
-//       double historicalMaxTemperature = log1p8Gs
-//           .map((log1p8G) => log1p8G.temperature)
-//           .reduce((max, current) => max > current ? max : current);
+      // get max temperature
+      double historicalMaxTemperature = log1p8Gs
+          .map((log1p8G) => log1p8G.temperature)
+          .reduce((max, current) => max > current ? max : current);
 
-//       // get min voltage
-//       double historicalMinVoltage = log1p8Gs
-//           .map((log1p8G) => log1p8G.voltage)
-//           .reduce((min, current) => min < current ? min : current);
+      // get min rfOutputPower1
+      double historicalMinRFOutputPower1 = log1p8Gs
+          .map((log1p8G) => log1p8G.rfOutputPower1)
+          .reduce((min, current) => min < current ? min : current);
 
-//       // get max voltage
-//       double historicalMaxVoltage = log1p8Gs
-//           .map((log1p8G) => log1p8G.voltage)
-//           .reduce((max, current) => max > current ? max : current);
+      // get max rfOutputPower1
+      double historicalMaxRFOutputPower1 = log1p8Gs
+          .map((log1p8G) => log1p8G.rfOutputPower1)
+          .reduce((max, current) => max > current ? max : current);
 
-//       // get min voltage
-//       int historicalMinVoltageRipple = log1p8Gs
-//           .map((log1p8G) => log1p8G.voltageRipple)
-//           .reduce((min, current) => min < current ? min : current);
+      // get min rfOutputPower3
+      double historicalMinRFOutputPower3 = log1p8Gs
+          .map((log1p8G) => log1p8G.rfOutputPower3)
+          .reduce((min, current) => min < current ? min : current);
 
-//       // get max voltage
-//       int historicalMaxVoltageRipple = log1p8Gs
-//           .map((log1p8G) => log1p8G.voltageRipple)
-//           .reduce((max, current) => max > current ? max : current);
+      // get max rfOutputPower3
+      double historicalMaxRFOutputPower3 = log1p8Gs
+          .map((log1p8G) => log1p8G.rfOutputPower3)
+          .reduce((max, current) => max > current ? max : current);
 
-//       String historicalMinTemperatureC = historicalMinTemperature.toString();
+      // get min rfOutputPower4
+      double historicalMinRFOutputPower4 = log1p8Gs
+          .map((log1p8G) => log1p8G.rfOutputPower4)
+          .reduce((min, current) => min < current ? min : current);
 
-//       String historicalMaxTemperatureC = historicalMaxTemperature.toString();
+      // get max rfOutputPower4
+      double historicalMaxRFOutputPower4 = log1p8Gs
+          .map((log1p8G) => log1p8G.rfOutputPower4)
+          .reduce((max, current) => max > current ? max : current);
 
-//       String historicalMinTemperatureF = unitConverter
-//           .converCelciusToFahrenheit(historicalMinTemperature)
-//           .toStringAsFixed(1);
+      // get min rfOutputPower6
+      double historicalMinRFOutputPower6 = log1p8Gs
+          .map((log1p8G) => log1p8G.rfOutputPower6)
+          .reduce((min, current) => min < current ? min : current);
 
-//       String historicalMaxTemperatureF = unitConverter
-//           .converCelciusToFahrenheit(historicalMaxTemperature)
-//           .toStringAsFixed(1);
+      // get max rfOutputPower6
+      double historicalMaxRFOutputPower6 = log1p8Gs
+          .map((log1p8G) => log1p8G.rfOutputPower6)
+          .reduce((max, current) => max > current ? max : current);
 
-//       String historicalMinVoltageStr = historicalMinVoltage.toStringAsFixed(1);
-//       String historicalMaxVoltageStr = historicalMaxVoltage.toStringAsFixed(1);
-//       String historicalMinVoltageRippleStr =
-//           historicalMinVoltageRipple.toString();
-//       String historicalMaxVoltageRippleStr =
-//           historicalMaxVoltageRipple.toString();
+      String historicalMinTemperatureC = historicalMinTemperature.toString();
 
-//       A1P8GLogStatistic a1p8gLogStatistic = A1P8GLogStatistic(
-//         historicalMinTemperatureC: historicalMinTemperatureC,
-//         historicalMaxTemperatureC: historicalMaxTemperatureC,
-//         historicalMinTemperatureF: historicalMinTemperatureF,
-//         historicalMaxTemperatureF: historicalMaxTemperatureF,
-//         historicalMinVoltage: historicalMinVoltageStr,
-//         historicalMaxVoltage: historicalMaxVoltageStr,
-//         historicalMinVoltageRipple: historicalMinVoltageRippleStr,
-//         historicalMaxVoltageRipple: historicalMaxVoltageRippleStr,
-//       );
+      String historicalMaxTemperatureC = historicalMaxTemperature.toString();
 
-//       return a1p8gLogStatistic;
-//     } else {
-//       A1P8GLogStatistic a1p8gLogStatistic = const A1P8GLogStatistic(
-//         historicalMinTemperatureC: '',
-//         historicalMaxTemperatureC: '',
-//         historicalMinTemperatureF: '',
-//         historicalMaxTemperatureF: '',
-//         historicalMinVoltage: '',
-//         historicalMaxVoltage: '',
-//         historicalMinVoltageRipple: '',
-//         historicalMaxVoltageRipple: '',
-//       );
-//       return a1p8gLogStatistic;
-//     }
-//   }
+      String historicalMinTemperatureF = unitConverter
+          .converCelciusToFahrenheit(historicalMinTemperature)
+          .toStringAsFixed(1);
 
-//   List<RFInOut> parse1P8GRFInOut(List<int> rawData) {
-//     List<RFInOut> rfInOuts = [];
-//     rawData.removeRange(rawData.length - 2, rawData.length);
-//     rawData.removeRange(0, 3);
+      String historicalMaxTemperatureF = unitConverter
+          .converCelciusToFahrenheit(historicalMaxTemperature)
+          .toStringAsFixed(1);
 
-//     for (var i = 0; i < 256; i++) {
-//       // 解析 input
-//       List<int> rawInput = rawData.sublist(i * 2, i * 2 + 2);
-//       ByteData rawInputByteData =
-//           ByteData.sublistView(Uint8List.fromList(rawInput));
-//       double input = rawInputByteData.getInt16(0, Endian.little) / 10;
+      A1P8GCCorNodeLogStatistic a1p8gLogStatistic = A1P8GCCorNodeLogStatistic(
+        historicalMinTemperatureC: historicalMinTemperatureC,
+        historicalMaxTemperatureC: historicalMaxTemperatureC,
+        historicalMinTemperatureF: historicalMinTemperatureF,
+        historicalMaxTemperatureF: historicalMaxTemperatureF,
+        historicalMinRFOutputPower1: historicalMinRFOutputPower1.toString(),
+        historicalMaxRFOutputPower1: historicalMaxRFOutputPower1.toString(),
+        historicalMinRFOutputPower3: historicalMinRFOutputPower3.toString(),
+        historicalMaxRFOutputPower3: historicalMaxRFOutputPower3.toString(),
+        historicalMinRFOutputPower4: historicalMinRFOutputPower4.toString(),
+        historicalMaxRFOutputPower4: historicalMaxRFOutputPower4.toString(),
+        historicalMinRFOutputPower6: historicalMinRFOutputPower6.toString(),
+        historicalMaxRFOutputPower6: historicalMaxRFOutputPower6.toString(),
+      );
 
-//       // 解析 output
-//       List<int> rawOutput = rawData.sublist(i * 2 + 512, i * 2 + 2 + 512);
-//       ByteData rawOutputByteData =
-//           ByteData.sublistView(Uint8List.fromList(rawOutput));
-//       double output = rawOutputByteData.getInt16(0, Endian.little) / 10;
+      return a1p8gLogStatistic;
+    } else {
+      A1P8GCCorNodeLogStatistic a1p8gLogStatistic =
+          const A1P8GCCorNodeLogStatistic(
+        historicalMinTemperatureC: '',
+        historicalMaxTemperatureC: '',
+        historicalMinTemperatureF: '',
+        historicalMaxTemperatureF: '',
+        historicalMinRFOutputPower1: '',
+        historicalMaxRFOutputPower1: '',
+        historicalMinRFOutputPower3: '',
+        historicalMaxRFOutputPower3: '',
+        historicalMinRFOutputPower4: '',
+        historicalMaxRFOutputPower4: '',
+        historicalMinRFOutputPower6: '',
+        historicalMaxRFOutputPower6: '',
+      );
+      return a1p8gLogStatistic;
+    }
+  }
 
-//       rfInOuts.add(RFInOut(
-//         input: input,
-//         output: output,
-//       ));
-//     }
+  List<Log1p8GCCorNode> parse1P8GLog(List<int> rawData) {
+    List<Log1p8GCCorNode> logChunks = [];
+    rawData.removeRange(rawData.length - 2, rawData.length);
+    rawData.removeRange(0, 3);
+    for (var i = 0; i < 1024; i++) {
+      // 如果檢查到有一筆log 的內容全部是 255, 則視為沒有更多log資料了
+      bool isEmptyLog = rawData
+          .sublist(i * 16, i * 16 + 16)
+          .every((element) => element == 255);
+      if (isEmptyLog) {
+        break;
+      }
+      // 解析 strDateTime
+      List<int> rawYear = rawData.sublist(i * 16, i * 16 + 2);
+      ByteData rawYearByteData =
+          ByteData.sublistView(Uint8List.fromList(rawYear));
+      String strYear = rawYearByteData.getInt16(0, Endian.little).toString();
 
-//     return rfInOuts;
-//   }
+      String strMonth = rawData[i * 16 + 2].toString().padLeft(2, '0');
+      String strDay = rawData[i * 16 + 3].toString().padLeft(2, '0');
+      String strHour = rawData[i * 16 + 4].toString().padLeft(2, '0');
+      String strMinute = rawData[i * 16 + 5].toString().padLeft(2, '0');
 
-//   A1P8GRFOutputPowerStatistic getA1p8GRFOutputPowerStatistic(
-//       List<RFInOut> rfInOuts) {
-//     if (rfInOuts.isNotEmpty) {
-//       // get min rf output power
-//       double historicalMinRFOutputPower = rfInOuts
-//           .map((rfInOut) => rfInOut.output)
-//           .reduce((min, current) => min < current ? min : current);
+      List<int> rawTemperature = rawData.sublist(i * 16 + 6, i * 16 + 8);
+      ByteData rawTemperatureByteData =
+          ByteData.sublistView(Uint8List.fromList(rawTemperature));
+      double temperature =
+          rawTemperatureByteData.getInt16(0, Endian.little) / 10;
 
-//       // get max rf output power
-//       double historicalMaxRFOutputPower = rfInOuts
-//           .map((rfInOut) => rfInOut.output)
-//           .reduce((max, current) => max > current ? max : current);
+      List<int> rawRFOutputPower1 = rawData.sublist(i * 16 + 8, i * 16 + 10);
+      ByteData rawRFOutputPower1ByteData =
+          ByteData.sublistView(Uint8List.fromList(rawRFOutputPower1));
+      double rfOutputPower1 =
+          rawRFOutputPower1ByteData.getInt16(0, Endian.little) / 10;
 
-//       String historicalMinRFOutputPowerStr =
-//           historicalMinRFOutputPower.toStringAsFixed(1);
+      List<int> rawRFOutputPower3 = rawData.sublist(i * 16 + 10, i * 16 + 12);
+      ByteData rawRFOutputPower3ByteData =
+          ByteData.sublistView(Uint8List.fromList(rawRFOutputPower3));
+      double rfOutputPower3 =
+          rawRFOutputPower3ByteData.getInt16(0, Endian.little) / 10;
 
-//       String historicalMaxRFOutputPowerStr =
-//           historicalMaxRFOutputPower.toStringAsFixed(1);
+      List<int> rawRFOutputPower4 = rawData.sublist(i * 16 + 12, i * 16 + 14);
+      ByteData rawRFOutputPower4ByteData =
+          ByteData.sublistView(Uint8List.fromList(rawRFOutputPower4));
+      double rfOutputPower4 =
+          rawRFOutputPower4ByteData.getInt16(0, Endian.little) / 10;
 
-//       A1P8GRFOutputPowerStatistic a1p8gRFOutputPowerStatistic =
-//           A1P8GRFOutputPowerStatistic(
-//         historicalMinRFOutputPower: historicalMinRFOutputPowerStr,
-//         historicalMaxRFOutputPower: historicalMaxRFOutputPowerStr,
-//       );
+      List<int> rawRFOutputPower6 = rawData.sublist(i * 16 + 14, i * 16 + 16);
+      ByteData rawRFOutputPower6ByteData =
+          ByteData.sublistView(Uint8List.fromList(rawRFOutputPower6));
+      double rfOutputPower6 =
+          rawRFOutputPower6ByteData.getInt16(0, Endian.little) / 10;
 
-//       return a1p8gRFOutputPowerStatistic;
-//     } else {
-//       A1P8GRFOutputPowerStatistic a1p8gRFOutputPowerStatistic =
-//           const A1P8GRFOutputPowerStatistic(
-//         historicalMinRFOutputPower: '',
-//         historicalMaxRFOutputPower: '',
-//       );
+      final DateTime dateTime =
+          DateTime.parse('$strYear-$strMonth-$strDay $strHour:$strMinute:00');
 
-//       return a1p8gRFOutputPowerStatistic;
-//     }
-//   }
+      logChunks.add(Log1p8GCCorNode(
+        dateTime: dateTime,
+        temperature: temperature,
+        rfOutputPower1: rfOutputPower1,
+        rfOutputPower3: rfOutputPower3,
+        rfOutputPower4: rfOutputPower4,
+        rfOutputPower6: rfOutputPower6,
+      ));
+    }
 
-//   List<Log1p8G> parse1P8GLog(List<int> rawData) {
-//     List<Log1p8G> logChunks = [];
-//     rawData.removeRange(rawData.length - 2, rawData.length);
-//     rawData.removeRange(0, 3);
-//     for (var i = 0; i < 1024; i++) {
-//       // 如果檢查到有一筆log 的內容全部是 255, 則視為沒有更多log資料了
-//       bool isEmptyLog = rawData
-//           .sublist(i * 16, i * 16 + 16)
-//           .every((element) => element == 255);
-//       if (isEmptyLog) {
-//         break;
-//       }
-//       // 解析 strDateTime
-//       List<int> rawYear = rawData.sublist(i * 16, i * 16 + 2);
-//       ByteData rawYearByteData =
-//           ByteData.sublistView(Uint8List.fromList(rawYear));
-//       String strYear = rawYearByteData.getInt16(0, Endian.little).toString();
-
-//       String strMonth = rawData[i * 16 + 2].toString().padLeft(2, '0');
-//       String strDay = rawData[i * 16 + 3].toString().padLeft(2, '0');
-//       String strHour = rawData[i * 16 + 4].toString().padLeft(2, '0');
-//       String strMinute = rawData[i * 16 + 5].toString().padLeft(2, '0');
-
-//       List<int> rawTemperature = rawData.sublist(i * 16 + 6, i * 16 + 8);
-//       ByteData rawTemperatureByteData =
-//           ByteData.sublistView(Uint8List.fromList(rawTemperature));
-//       double temperature =
-//           rawTemperatureByteData.getInt16(0, Endian.little) / 10;
-
-//       List<int> rawVoltage = rawData.sublist(i * 16 + 8, i * 16 + 10);
-//       ByteData rawVoltageByteData =
-//           ByteData.sublistView(Uint8List.fromList(rawVoltage));
-//       double voltage = rawVoltageByteData.getInt16(0, Endian.little) / 10;
-
-//       List<int> rawRFOutputLowPilot = rawData.sublist(i * 16 + 10, i * 16 + 12);
-//       ByteData rawRFOutputLowPilotByteData =
-//           ByteData.sublistView(Uint8List.fromList(rawRFOutputLowPilot));
-//       double rfOutputLowPilot =
-//           rawRFOutputLowPilotByteData.getInt16(0, Endian.little) / 10;
-
-//       List<int> rawRFOutputHighPilot =
-//           rawData.sublist(i * 16 + 12, i * 16 + 14);
-//       ByteData rawRFOutputHighPilotByteData =
-//           ByteData.sublistView(Uint8List.fromList(rawRFOutputHighPilot));
-//       double rfOutputHighPilot =
-//           rawRFOutputHighPilotByteData.getInt16(0, Endian.little) / 10;
-
-//       List<int> rawVoltageRipple = rawData.sublist(i * 16 + 14, i * 16 + 16);
-//       ByteData rawVoltageRippleByteData =
-//           ByteData.sublistView(Uint8List.fromList(rawVoltageRipple));
-//       int voltageRipple = rawVoltageRippleByteData.getInt16(0, Endian.little);
-
-//       final DateTime dateTime =
-//           DateTime.parse('$strYear-$strMonth-$strDay $strHour:$strMinute:00');
-
-//       logChunks.add(Log1p8G(
-//         dateTime: dateTime,
-//         temperature: temperature,
-//         voltage: voltage,
-//         rfOutputLowPilot: rfOutputLowPilot,
-//         rfOutputHighPilot: rfOutputHighPilot,
-//         voltageRipple: voltageRipple,
-//       ));
-//     }
-
-//     return logChunks;
-//   }
+    return logChunks;
+  }
 
 //   List<Event1p8G> parse1p8GEvent(List<int> rawData) {
 //     List<Event1p8G> event1p8Gs = [];
@@ -1088,94 +1047,95 @@ class Dsim18CCorNodeParser {
 //     return event1p8Gs;
 //   }
 
-//   Future<dynamic> export1p8GRecords({
-//     required List<Log1p8G> log1p8Gs,
-//     required List<Event1p8G> event1p8Gs,
-//   }) async {
-//     Excel excel = Excel.createExcel();
-//     List<String> log1p8GHeader = [
-//       'Time',
-//       'Temperature(C)',
-//       'RF Output Low Pilot',
-//       'RF Output High Pilot',
-//       '24V(V)',
-//       '24V Ripple(mV)',
-//     ];
-//     List<String> eventHeader = [
-//       '24V High Alarm(V)',
-//       '24V Low Alarm(V)',
-//       'Temperature High Alarm(C)',
-//       'Temperature Low Alarm(C)',
-//       'RF Input Pilot Low Frequency Unlock',
-//       'RF Input Pilot High Frequency Unlock',
-//       'RF Output Pilot Low Frequency Unlock',
-//       'RF Output Pilot High Frequency Unlock',
-//       'RF Input Total Power High Alarm',
-//       'RF Input Total Power Low Alarm',
-//       'RF Output Total Power High Alarm',
-//       'RF Output Total Power Low Alarm',
-//       '24V Ripple High Alarm',
-//       'Amplifier Power On',
-//     ];
+  Future<dynamic> export1p8GCCorNodeRecords({
+    required List<Log1p8GCCorNode> log1p8Gs,
+    required List<Event1p8GCCorNode> event1p8Gs,
+  }) async {
+    Excel excel = Excel.createExcel();
+    List<String> log1p8GHeader = [
+      'Time',
+      'Temperature(C)',
+      'Port 1 RF Output Power',
+      'Port 3 RF Output Power',
+      'Port 4 RF Output Power',
+      'Port 6 RF Output Power',
+    ];
+    List<String> eventHeader = [
+      '24V High Alarm(V)',
+      '24V Low Alarm(V)',
+      'Temperature High Alarm(C)',
+      'Temperature Low Alarm(C)',
+      'Port 1 RF Output Power High Alarm',
+      'Port 1 RF Output Power Low Alarm',
+      'Port 3 RF Output Power High Alarm',
+      'Port 3 RF Output Power Low Alarm',
+      'Port 4 RF Output Power High Alarm',
+      'Port 4 RF Output Power Low Alarm',
+      'Port 6 RF Output Power High Alarm',
+      'Port 6 RF Output Power Low Alarm',
+      '24V Ripple High Alarm',
+      '24V Ripple Low Alarm',
+      'Amplifier Power On',
+    ];
 
-//     Sheet log1p8GSheet = excel['Log'];
-//     Sheet eventSheet = excel['Event'];
+    Sheet log1p8GSheet = excel['Log'];
+    Sheet eventSheet = excel['Event'];
 
-//     eventSheet.insertRowIterables(eventHeader, 0);
-//     List<List<String>> eventContent = formatEvent1p8G(event1p8Gs);
-//     for (int i = 0; i < eventContent.length; i++) {
-//       List<String> row = eventContent[i];
-//       eventSheet.insertRowIterables(row, i + 1);
-//     }
+    eventSheet.insertRowIterables(eventHeader, 0);
+    List<List<String>> eventContent = formatEvent1p8G(event1p8Gs);
+    for (int i = 0; i < eventContent.length; i++) {
+      List<String> row = eventContent[i];
+      eventSheet.insertRowIterables(row, i + 1);
+    }
 
-//     log1p8GSheet.insertRowIterables(log1p8GHeader, 0);
-//     for (int i = 0; i < log1p8Gs.length; i++) {
-//       Log1p8G log1p8G = log1p8Gs[i];
-//       List<String> row = formatLog1p8G(log1p8G);
-//       log1p8GSheet.insertRowIterables(row, i + 1);
-//     }
+    log1p8GSheet.insertRowIterables(log1p8GHeader, 0);
+    for (int i = 0; i < log1p8Gs.length; i++) {
+      Log1p8GCCorNode log1p8G = log1p8Gs[i];
+      List<String> row = formatLog1p8G(log1p8G);
+      log1p8GSheet.insertRowIterables(row, i + 1);
+    }
 
-//     excel.unLink('Sheet1'); // Excel 預設會自動產生 Sheet1, 所以先unlink
-//     excel.delete('Sheet1'); // 再刪除 Sheet1
-//     excel.link('Log', log1p8GSheet);
-//     var fileBytes = excel.save();
+    excel.unLink('Sheet1'); // Excel 預設會自動產生 Sheet1, 所以先unlink
+    excel.delete('Sheet1'); // 再刪除 Sheet1
+    excel.link('Log', log1p8GSheet);
+    var fileBytes = excel.save();
 
-//     String timeStamp =
-//         DateFormat('yyyy_MM_dd_HH_mm_ss').format(DateTime.now()).toString();
-//     String filename = 'log_$timeStamp';
-//     String extension = '.xlsx';
+    String timeStamp =
+        DateFormat('yyyy_MM_dd_HH_mm_ss').format(DateTime.now()).toString();
+    String filename = 'log_$timeStamp';
+    String extension = '.xlsx';
 
-//     if (Platform.isIOS) {
-//       Directory appDocDir = await getApplicationDocumentsDirectory();
-//       String appDocPath = appDocDir.path;
-//       String fullWrittenPath = '$appDocPath/$filename$extension';
-//       File f = File(fullWrittenPath);
-//       await f.writeAsBytes(fileBytes!);
-//       return [
-//         true,
-//         filename,
-//         fullWrittenPath,
-//       ];
-//     } else if (Platform.isAndroid) {
-//       Directory appDocDir = await getApplicationDocumentsDirectory();
-//       String appDocPath = appDocDir.path;
-//       String fullWrittenPath = '$appDocPath/$filename$extension';
-//       File f = File(fullWrittenPath);
-//       await f.writeAsBytes(fileBytes!);
+    if (Platform.isIOS) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$filename$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
+      return [
+        true,
+        filename,
+        fullWrittenPath,
+      ];
+    } else if (Platform.isAndroid) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$filename$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
 
-//       return [
-//         true,
-//         filename,
-//         fullWrittenPath,
-//       ];
-//     } else {
-//       return [
-//         false,
-//         '',
-//         'write file failed, export function not implement on ${Platform.operatingSystem} '
-//       ];
-//     }
-//   }
+      return [
+        true,
+        filename,
+        fullWrittenPath,
+      ];
+    } else {
+      return [
+        false,
+        '',
+        'write file failed, export function not implement on ${Platform.operatingSystem} '
+      ];
+    }
+  }
 
 //   List<List<ValuePair>> get1p8GDateValueCollectionOfLogs(
 //       List<Log1p8G> log1p8Gs) {
@@ -1244,301 +1204,233 @@ class Dsim18CCorNodeParser {
 //     ];
 //   }
 
-//   List<String> formatLog1p8G(Log1p8G log1p8G) {
-//     String formattedDateTime =
-//         DateFormat('yyyy-MM-dd HH:mm').format(log1p8G.dateTime);
-//     String temperatureC = log1p8G.temperature.toString();
-//     String rfOutputLowPilot = log1p8G.rfOutputLowPilot.toString();
-//     String rfOutputHighPilot = log1p8G.rfOutputHighPilot.toString();
-//     String voltage = log1p8G.voltage.toString();
-//     String voltageRipple = log1p8G.voltageRipple.toString();
-//     List<String> row = [
-//       formattedDateTime,
-//       temperatureC,
-//       rfOutputLowPilot,
-//       rfOutputHighPilot,
-//       voltage,
-//       voltageRipple
-//     ];
+  List<String> formatLog1p8G(Log1p8GCCorNode log1p8G) {
+    String formattedDateTime =
+        DateFormat('yyyy-MM-dd HH:mm').format(log1p8G.dateTime);
+    String temperatureC = log1p8G.temperature.toString();
+    String rfOutputPower1 = log1p8G.rfOutputPower1.toString();
+    String rfOutputPower3 = log1p8G.rfOutputPower3.toString();
+    String rfOutputPower4 = log1p8G.rfOutputPower4.toString();
+    String rfOutputPower6 = log1p8G.rfOutputPower6.toString();
+    List<String> row = [
+      formattedDateTime,
+      temperatureC,
+      rfOutputPower1,
+      rfOutputPower3,
+      rfOutputPower4,
+      rfOutputPower6
+    ];
 
-//     return row;
-//   }
+    return row;
+  }
 
-//   List<List<String>> formatEvent1p8G(List<Event1p8G> event1p8Gs) {
-//     List<int> counts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-//     List<List<String>> csvContent = List<List<String>>.generate(
-//       1024,
-//       (index) => List<String>.generate(
-//         14,
-//         (index) => '',
-//         growable: false,
-//       ),
-//       growable: false,
-//     );
+  List<List<String>> formatEvent1p8G(List<Event1p8GCCorNode> event1p8Gs) {
+    List<int> counts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<List<String>> csvContent = List<List<String>>.generate(
+      1024,
+      (index) => List<String>.generate(
+        14,
+        (index) => '',
+        growable: false,
+      ),
+      growable: false,
+    );
 
-//     for (Event1p8G event1p8G in event1p8Gs) {
-//       String formattedDateTime =
-//           DateFormat('yyyy-MM-dd HH:mm').format(event1p8G.dateTime);
+    for (Event1p8GCCorNode event1p8G in event1p8Gs) {
+      String formattedDateTime =
+          DateFormat('yyyy-MM-dd HH:mm').format(event1p8G.dateTime);
 
-//       switch (event1p8G.code) {
-//         case 1:
-//           {
-//             int index = 0;
-//             if (event1p8G.parameter > 0) {
-//               csvContent[counts[index]][index] =
-//                   '$formattedDateTime@${event1p8G.parameter / 10}';
-//             } else {
-//               csvContent[counts[index]][index] = formattedDateTime;
-//             }
-//             counts[index]++;
-//             break;
-//           }
-//         case 2:
-//           {
-//             int index = 1;
-//             if (event1p8G.parameter > 0) {
-//               csvContent[counts[index]][index] =
-//                   '$formattedDateTime@${event1p8G.parameter / 10}';
-//             } else {
-//               csvContent[counts[index]][index] = formattedDateTime;
-//             }
-//             counts[index]++;
-//             break;
-//           }
-//         case 3:
-//           {
-//             int index = 2;
-//             if (event1p8G.parameter > 0) {
-//               csvContent[counts[index]][index] =
-//                   '$formattedDateTime@${event1p8G.parameter / 10}';
-//             } else {
-//               csvContent[counts[index]][index] = formattedDateTime;
-//             }
-//             counts[index]++;
-//             break;
-//           }
-//         case 4:
-//           {
-//             int index = 3;
-//             if (event1p8G.parameter > 0) {
-//               csvContent[counts[index]][index] =
-//                   '$formattedDateTime@${event1p8G.parameter / 10}';
-//             } else {
-//               csvContent[counts[index]][index] = formattedDateTime;
-//             }
-//             counts[index]++;
-//             break;
-//           }
-//         case 5:
-//           {
-//             int index = 4;
-//             if (event1p8G.parameter > 0) {
-//               csvContent[counts[index]][index] =
-//                   '$formattedDateTime@${event1p8G.parameter / 10}';
-//             } else {
-//               csvContent[counts[index]][index] = formattedDateTime;
-//             }
-//             counts[index]++;
-//             break;
-//           }
-//         case 6:
-//           {
-//             int index = 5;
-//             if (event1p8G.parameter > 0) {
-//               csvContent[counts[index]][index] =
-//                   '$formattedDateTime@${event1p8G.parameter / 10}';
-//             } else {
-//               csvContent[counts[index]][index] = formattedDateTime;
-//             }
-//             counts[index]++;
-//             break;
-//           }
-//         case 7:
-//           {
-//             int index = 6;
-//             if (event1p8G.parameter > 0) {
-//               csvContent[counts[index]][index] =
-//                   '$formattedDateTime@${event1p8G.parameter / 10}';
-//             } else {
-//               csvContent[counts[index]][index] = formattedDateTime;
-//             }
-//             counts[index]++;
-//             break;
-//           }
-//         case 8:
-//           {
-//             int index = 7;
-//             if (event1p8G.parameter > 0) {
-//               csvContent[counts[index]][index] =
-//                   '$formattedDateTime@${event1p8G.parameter / 10}';
-//             } else {
-//               csvContent[counts[index]][index] = formattedDateTime;
-//             }
-//             counts[index]++;
-//             break;
-//           }
-//         case 9:
-//           {
-//             int index = 8;
-//             if (event1p8G.parameter > 0) {
-//               csvContent[counts[index]][index] =
-//                   '$formattedDateTime@${event1p8G.parameter / 10}';
-//             } else {
-//               csvContent[counts[index]][index] = formattedDateTime;
-//             }
-//             counts[index]++;
-//             break;
-//           }
-//         case 10:
-//           {
-//             int index = 9;
-//             if (event1p8G.parameter > 0) {
-//               csvContent[counts[index]][index] =
-//                   '$formattedDateTime@${event1p8G.parameter / 10}';
-//             } else {
-//               csvContent[counts[index]][index] = formattedDateTime;
-//             }
-//             counts[index]++;
-//             break;
-//           }
-//         case 11:
-//           {
-//             int index = 10;
-//             if (event1p8G.parameter > 0) {
-//               csvContent[counts[index]][index] =
-//                   '$formattedDateTime@${event1p8G.parameter / 10}';
-//             } else {
-//               csvContent[counts[index]][index] = formattedDateTime;
-//             }
-//             counts[index]++;
-//             break;
-//           }
-//         case 12:
-//           {
-//             int index = 11;
-//             if (event1p8G.parameter > 0) {
-//               csvContent[counts[index]][index] =
-//                   '$formattedDateTime@${event1p8G.parameter / 10}';
-//             } else {
-//               csvContent[counts[index]][index] = formattedDateTime;
-//             }
-//             counts[index]++;
-//             break;
-//           }
-//         case 13:
-//           {
-//             int index = 12;
-//             if (event1p8G.parameter > 0) {
-//               csvContent[counts[index]][index] =
-//                   '$formattedDateTime@${event1p8G.parameter / 10}';
-//             } else {
-//               csvContent[counts[index]][index] = formattedDateTime;
-//             }
-//             counts[index]++;
-//             break;
-//           }
-//         case 15:
-//           {
-//             int index = 13;
-//             if (event1p8G.parameter > 0) {
-//               csvContent[counts[index]][index] =
-//                   '$formattedDateTime@${event1p8G.parameter}';
-//             } else {
-//               csvContent[counts[index]][index] = formattedDateTime;
-//             }
-//             counts[index]++;
-//             break;
-//           }
-//       }
-//     }
+      switch (event1p8G.code) {
+        case 1:
+          {
+            int index = 0;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 2:
+          {
+            int index = 1;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 3:
+          {
+            int index = 2;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 4:
+          {
+            int index = 3;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 5:
+          {
+            int index = 4;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 6:
+          {
+            int index = 5;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 7:
+          {
+            int index = 6;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 8:
+          {
+            int index = 7;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 9:
+          {
+            int index = 8;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 10:
+          {
+            int index = 9;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 11:
+          {
+            int index = 10;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 12:
+          {
+            int index = 11;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 13:
+          {
+            int index = 12;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 14:
+          {
+            int index = 13;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 15:
+          {
+            int index = 14;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+      }
+    }
 
-//     return csvContent;
-//   }
-
-//   bool _parseSettingResult(List<int> rawData) {
-//     if (rawData ==
-//         [
-//           0xB0,
-//           0x10,
-//           0x00,
-//           0x00,
-//           0x00,
-//           0x01,
-//           0x1A,
-//           0x28,
-//         ]) {
-//       return false;
-//     } else if (rawData ==
-//         [
-//           0xB0,
-//           0x10,
-//           0x00,
-//           0x00,
-//           0x00,
-//           0x02,
-//           0x5A,
-//           0x29,
-//         ]) {
-//       return false;
-//     } else if (rawData ==
-//         [
-//           0xB0,
-//           0x10,
-//           0x00,
-//           0x90,
-//           0x00,
-//           0x03,
-//           0x9B,
-//           0xE9,
-//         ]) {
-//       return false;
-//     } else {
-//       return true;
-//     }
-//   }
+    return csvContent;
+  }
 
   double _convertToFahrenheit(double celcius) {
     double fahrenheit = (celcius * 1.8) + 32;
     return fahrenheit;
   }
-
-//   Future<String> getGPSCoordinates() async {
-//     bool serviceEnabled;
-//     LocationPermission permission;
-
-//     // Test if location services are enabled.
-//     serviceEnabled = await Geolocator.isLocationServiceEnabled();
-//     if (!serviceEnabled) {
-//       // Location services are not enabled don't continue
-//       // accessing the position and request users of the
-//       // App to enable the location services.
-//       return Future.error(
-//           'Location services are disabled. Please enable location services.');
-//     }
-
-//     permission = await Geolocator.checkPermission();
-//     if (permission == LocationPermission.denied) {
-//       permission = await Geolocator.requestPermission();
-//       if (permission == LocationPermission.denied ||
-//           permission == LocationPermission.deniedForever) {
-//         // Permissions are denied, next time you could try
-//         // requesting permissions again (this is also where
-//         // Android's shouldShowRequestPermissionRationale
-//         // returned true. According to Android guidelines
-//         // your App should show an explanatory UI now.
-//         return Future.error(
-//             'Location permissions are denied. Please provide permission.');
-//       }
-//     }
-
-//     // When we reach here, permissions are granted and we can
-//     // continue accessing the position of the device.
-//     Position position = await Geolocator.getCurrentPosition();
-//     String coordinate =
-//         '${position.latitude.toStringAsFixed(10)},${position.longitude.toStringAsFixed(10)}';
-
-//     return coordinate;
-//   }
 
   void calculate18CRCs() {
     CRC16.calculateCRC16(command: Command18CCorNode.req00Cmd, usDataLength: 6);
@@ -1584,26 +1476,26 @@ class Dsim18CCorNodeParser {
   }
 }
 
-class Log1p8GCCoreNode {
-  const Log1p8GCCoreNode({
+class Log1p8GCCorNode {
+  const Log1p8GCCorNode({
     required this.dateTime,
     required this.temperature,
-    required this.forwardPower1,
-    required this.forwardPower3,
-    required this.forwardPower4,
-    required this.forwardPower6,
+    required this.rfOutputPower1,
+    required this.rfOutputPower3,
+    required this.rfOutputPower4,
+    required this.rfOutputPower6,
   });
 
   final DateTime dateTime;
   final double temperature;
-  final double forwardPower1;
-  final double forwardPower3;
-  final double forwardPower4;
-  final double forwardPower6;
+  final double rfOutputPower1;
+  final double rfOutputPower3;
+  final double rfOutputPower4;
+  final double rfOutputPower6;
 }
 
-class Event1p8GCCoreNode {
-  const Event1p8GCCoreNode({
+class Event1p8GCCorNode {
+  const Event1p8GCCorNode({
     required this.dateTime,
     required this.code,
     required this.parameter,
