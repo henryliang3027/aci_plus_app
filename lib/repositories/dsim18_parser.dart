@@ -829,18 +829,23 @@ class Dsim18Parser {
 
     for (var i = 0; i < 256; i++) {
       int frequency = 261 + 6 * i;
+      // double outputValue = rfOutputs[frequency]!;
+      // double inputValue = rfInputs[frequency]!;
 
       // 解析 input
       List<int> rawInput = rawData.sublist(i * 2, i * 2 + 2);
       ByteData rawInputByteData =
           ByteData.sublistView(Uint8List.fromList(rawInput));
       double input = rawInputByteData.getInt16(0, Endian.little) / 10;
+      // double input = inputValue;
 
       // 解析 output
       List<int> rawOutput = rawData.sublist(i * 2 + 512, i * 2 + 2 + 512);
       ByteData rawOutputByteData =
           ByteData.sublistView(Uint8List.fromList(rawOutput));
       double output = rawOutputByteData.getInt16(0, Endian.little) / 10;
+
+      // double output = outputValue;
 
       rfInOuts.add(RFInOut(
         frequency: frequency,
