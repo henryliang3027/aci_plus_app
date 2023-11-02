@@ -1435,48 +1435,6 @@ class Dsim18Parser {
     return csvContent;
   }
 
-  bool _parseSettingResult(List<int> rawData) {
-    if (rawData ==
-        [
-          0xB0,
-          0x10,
-          0x00,
-          0x00,
-          0x00,
-          0x01,
-          0x1A,
-          0x28,
-        ]) {
-      return false;
-    } else if (rawData ==
-        [
-          0xB0,
-          0x10,
-          0x00,
-          0x00,
-          0x00,
-          0x02,
-          0x5A,
-          0x29,
-        ]) {
-      return false;
-    } else if (rawData ==
-        [
-          0xB0,
-          0x10,
-          0x00,
-          0x90,
-          0x00,
-          0x03,
-          0x9B,
-          0xE9,
-        ]) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   double _convertToFahrenheit(double celcius) {
     double fahrenheit = (celcius * 1.8) + 32;
     return fahrenheit;

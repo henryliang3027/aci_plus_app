@@ -28,695 +28,780 @@ class Dsim18CCorNodeParser {
     return s;
   }
 
-//   bool checkCRC(
-//     List<int> rawData,
-//   ) {
-//     List<int> crcData = List<int>.from(rawData);
-//     CRC16.calculateCRC16(command: crcData, usDataLength: crcData.length - 2);
-//     if (crcData[crcData.length - 1] == rawData[rawData.length - 1] &&
-//         crcData[crcData.length - 2] == rawData[rawData.length - 2]) {
-//       return true;
-//     } else {
-//       return false;
-//     }
-//   }
-
-//   A1P8G0 decodeA1P8G0(List<int> rawData) {
-//     String partName = '';
-//     String partNo = '';
-//     String partId = '';
-//     String serialNumber = '';
-//     String firmwareVersion = '';
-//     String mfgDate = '';
-//     String coordinate = '';
-//     String nowDateTime = '';
-
-//     // 解析 partName
-//     for (int i = 3; i <= 22; i++) {
-//       partName += String.fromCharCode(rawData[i]);
-//     }
-//     partName = _trimString(partName);
-
-//     // 解析 partNo
-//     for (int i = 23; i <= 42; i++) {
-//       partNo += String.fromCharCode(rawData[i]);
-//     }
-//     partNo = _trimString(partNo);
-
-//     // 解析 serialNumber
-//     for (int i = 43; i <= 62; i++) {
-//       serialNumber += String.fromCharCode(rawData[i]);
-//     }
-//     serialNumber = _trimString(serialNumber);
-
-//     // 解析 firmwareVersion
-//     for (int i = 63; i <= 66; i++) {
-//       firmwareVersion += String.fromCharCode(rawData[i]);
-//     }
-//     firmwareVersion = _trimString(firmwareVersion);
-
-//     // 解析 mfgDate
-//     List<int> rawYear = rawData.sublist(67, 69);
-//     ByteData byteData = ByteData.sublistView(Uint8List.fromList(rawYear));
-//     String year = byteData.getInt16(0, Endian.little).toString();
-//     String month = rawData[69].toString().padLeft(2, '0');
-//     String day = rawData[70].toString().padLeft(2, '0');
-//     mfgDate = '$year/$month/$day';
-
-//     // 0: MFTJ (預留, app不適用)
-//     // 1: SDLE
-//     // 2: MOTO BLE
-//     // 3: MOTO MB
-//     // 4: C-Cor Node
-//     // 5: C-Cor TR
-//     // 6: C-Cor BR
-//     // 7: C-Cor LE
-//     partId = rawData[71].toString();
-
-//     // 解析 coordinates
-//     for (int i = 72; i <= 110; i++) {
-//       coordinate += String.fromCharCode(rawData[i]);
-//     }
-//     coordinate = _trimString(coordinate);
-
-//     // 解析 now time
-//     List<int> rawNowYear = rawData.sublist(171, 173);
-//     ByteData rawNowYearByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawNowYear));
-//     String nowYear = rawNowYearByteData.getInt16(0, Endian.little).toString();
-//     String nowMonth = rawData[173].toString().padLeft(2, '0');
-//     String nowDay = rawData[174].toString().padLeft(2, '0');
-//     String nowHour = rawData[175].toString().padLeft(2, '0');
-//     String nowMinute = rawData[176].toString().padLeft(2, '0');
-//     nowDateTime = '$nowYear-$nowMonth-$nowDay $nowHour:$nowMinute:00';
-
-//     return A1P8G0(
-//       partName: partName,
-//       partNo: partNo,
-//       partId: partId,
-//       serialNumber: serialNumber,
-//       firmwareVersion: firmwareVersion,
-//       mfgDate: mfgDate,
-//       coordinate: coordinate,
-//       nowDateTime: nowDateTime,
-//     );
-//   }
-
-//   A1P8G1 decodeA1P8G1(List<int> rawData) {
-//     String maxTemperatureC = '';
-//     String minTemperatureC = '';
-//     String maxTemperatureF = '';
-//     String minTemperatureF = '';
-//     String maxVoltage = '';
-//     String minVoltage = '';
-//     String maxVoltageRipple = '';
-//     String minVoltageRipple = '';
-//     String maxRFOutputPower = '';
-//     String minRFOutputPower = '';
-//     String ingressSetting2 = '';
-//     String ingressSetting3 = '';
-//     String ingressSetting4 = '';
-//     String tgcCableLength = '';
-//     String splitOption = '';
-//     String pilotFrequencyMode = '';
-//     String agcMode = '';
-//     String alcMode = '';
-//     String firstChannelLoadingFrequency = '';
-//     String lastChannelLoadingFrequency = '';
-//     String firstChannelLoadingLevel = '';
-//     String lastChannelLoadingLevel = '';
-//     String pilotFrequency1 = '';
-//     String pilotFrequency2 = '';
-//     String pilotFrequency1AlarmState = '';
-//     String pilotFrequency2AlarmState = '';
-//     String rfOutputPilotLowFrequencyAlarmState = '';
-//     String rfOutputPilotHighFrequencyAlarmState = '';
-//     String temperatureAlarmState = '';
-//     String voltageAlarmState = '';
-//     String splitOptionAlarmState = '';
-//     String voltageRippleAlarmState = '';
-//     String outputPowerAlarmState = '';
-//     String inputAttenuation = '';
-//     String inputEqualizer = '';
-//     String dsVVA2 = '';
-//     String dsSlope2 = '';
-//     String inputAttenuation2 = '';
-//     String inputAttenuation3 = '';
-//     String inputAttenuation4 = '';
-//     String outputAttenuation = '';
-//     String outputEqualizer = '';
-//     String dsVVA3 = '';
-//     String dsVVA4 = '';
-//     String usTGC = '';
-//     String location = '';
-//     String logInterval = '';
-
-//     // 解析 maxTemperatureC, maxTemperatureF
-//     List<int> rawMaxTemperatureC = rawData.sublist(3, 5);
-//     ByteData rawMaxTemperatureCByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawMaxTemperatureC));
-
-//     double maxTemperature =
-//         rawMaxTemperatureCByteData.getInt16(0, Endian.little) / 10;
-//     maxTemperatureC = maxTemperature.toStringAsFixed(1);
-//     maxTemperatureF = _convertToFahrenheit(maxTemperature).toStringAsFixed(1);
-
-//     // 解析 minTemperatureC, minTemperatureF
-//     List<int> rawMinTemperatureC = rawData.sublist(5, 7);
-//     ByteData rawMinTemperatureCByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawMinTemperatureC));
-
-//     double minTemperature =
-//         rawMinTemperatureCByteData.getInt16(0, Endian.little) / 10;
-//     minTemperatureC = minTemperature.toStringAsFixed(1);
-//     minTemperatureF = _convertToFahrenheit(minTemperature).toStringAsFixed(1);
-
-//     // 解析 maxVoltage
-//     List<int> rawMaxVoltage = rawData.sublist(7, 9);
-//     ByteData rawMaxVoltageByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawMaxVoltage));
-//     maxVoltage = (rawMaxVoltageByteData.getInt16(0, Endian.little) / 10)
-//         .toStringAsFixed(1);
-
-//     // 解析 minVoltage
-//     List<int> rawMinVoltage = rawData.sublist(9, 11);
-//     ByteData rawMinVoltageByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawMinVoltage));
-//     minVoltage = (rawMinVoltageByteData.getInt16(0, Endian.little) / 10)
-//         .toStringAsFixed(1);
-
-//     // 解析 maxVoltageRipple
-//     List<int> rawMaxVoltageRipple = rawData.sublist(11, 13);
-//     ByteData rawMaxVoltageRippleByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawMaxVoltageRipple));
-//     maxVoltageRipple =
-//         rawMaxVoltageRippleByteData.getInt16(0, Endian.little).toString();
-
-//     // 解析 minVoltageRipple
-//     List<int> rawMinVoltageRipple = rawData.sublist(13, 15);
-//     ByteData rawMinVoltageRippleByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawMinVoltageRipple));
-//     minVoltageRipple =
-//         rawMinVoltageRippleByteData.getInt16(0, Endian.little).toString();
-
-//     // 解析 maxRFOutputTotalPower
-//     List<int> rawMaxRFOutputTotalPower = rawData.sublist(15, 17);
-//     ByteData rawMaxRFOutputTotalPowerByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawMaxRFOutputTotalPower));
-//     maxRFOutputPower =
-//         (rawMaxRFOutputTotalPowerByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 minRFOutputTotalPower
-//     List<int> rawMinRFOutputTotalPower = rawData.sublist(17, 19);
-//     ByteData rawMinRFOutputTotalPowerByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawMinRFOutputTotalPower));
-//     minRFOutputPower =
-//         (rawMinRFOutputTotalPowerByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 ingress setting 2
-//     ingressSetting2 = rawData[19].toString();
-
-//     // 解析 ingress setting 3
-//     ingressSetting3 = rawData[20].toString();
-
-//     // 解析 ingress setting 4
-//     ingressSetting4 = rawData[21].toString();
-
-//     // 解析 tgcCableLength
-//     tgcCableLength = rawData[24].toString();
-
-//     // 解析 splitOption
-//     splitOption = rawData[25].toString();
-
-//     // 解析 pilotFrequencyMode
-//     pilotFrequencyMode = rawData[26].toString();
-
-//     // 解析 agcMode
-//     agcMode = rawData[27].toString();
-
-//     // 解析 alcMode
-//     alcMode = rawData[28].toString();
-
-//     // 解析 firstChannelLoadingFrequency
-//     List<int> rawFirstChannelLoadingFrequency = rawData.sublist(29, 31);
-//     ByteData rawFirstChannelLoadingFrequencyByteData = ByteData.sublistView(
-//         Uint8List.fromList(rawFirstChannelLoadingFrequency));
-//     firstChannelLoadingFrequency = rawFirstChannelLoadingFrequencyByteData
-//         .getInt16(0, Endian.little)
-//         .toString();
-
-//     // 解析 lastChannelLoadingFrequency
-//     List<int> rawLastChannelLoadingFrequency = rawData.sublist(31, 33);
-//     ByteData rawLastChannelLoadingFrequencyByteData = ByteData.sublistView(
-//         Uint8List.fromList(rawLastChannelLoadingFrequency));
-//     lastChannelLoadingFrequency = rawLastChannelLoadingFrequencyByteData
-//         .getInt16(0, Endian.little)
-//         .toString();
-
-//     // 解析 firstChannelLoadingLevel
-//     List<int> rawFirstChannelLoadingLevel = rawData.sublist(33, 35);
-//     ByteData rawFirstChannelLoadingLevelByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawFirstChannelLoadingLevel));
-//     firstChannelLoadingLevel =
-//         (rawFirstChannelLoadingLevelByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 lastChannelLoadingLevel
-//     List<int> rawLastChannelLoadingLevel = rawData.sublist(35, 37);
-//     ByteData rawLastChannelLoadingLevelByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawLastChannelLoadingLevel));
-//     lastChannelLoadingLevel =
-//         (rawLastChannelLoadingLevelByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 pilotFrequency1
-//     List<int> rawPilotFrequency1 = rawData.sublist(37, 39);
-//     ByteData rawPilotFrequency1ByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawPilotFrequency1));
-//     pilotFrequency1 =
-//         rawPilotFrequency1ByteData.getInt16(0, Endian.little).toString();
-
-//     // 解析 pilotFrequency2
-//     List<int> rawPilotFrequency2 = rawData.sublist(39, 41);
-//     ByteData rawPilotFrequency2ByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawPilotFrequency2));
-//     pilotFrequency2 =
-//         rawPilotFrequency2ByteData.getInt16(0, Endian.little).toString();
-
-//     // 解析 pilotFrequency1AlarmState
-//     pilotFrequency1AlarmState = rawData[41].toString();
-
-//     // 解析 pilotFrequency2AlarmState
-//     pilotFrequency2AlarmState = rawData[42].toString();
-
-//     // 解析 pilotFrequency1AlarmState
-//     rfOutputPilotLowFrequencyAlarmState = rawData[43].toString();
-
-//     // 解析 pilotFrequency2AlarmState
-//     rfOutputPilotHighFrequencyAlarmState = rawData[44].toString();
-
-//     // 解析 temperatureAlarmState
-//     temperatureAlarmState = rawData[45].toString();
-
-//     // 解析 voltageAlarmState
-//     voltageAlarmState = rawData[46].toString();
-
-//     // 解析 splitOptionAlarmState
-//     splitOptionAlarmState = rawData[51].toString();
-
-//     // 解析 voltageRippleAlarmState
-//     voltageRippleAlarmState = rawData[52].toString();
-
-//     // 解析 outputPowerAlarmState
-//     outputPowerAlarmState = rawData[53].toString();
-
-//     // 使用 unicode 解析 location
-//     for (int i = 54; i < 150; i += 2) {
-//       Uint8List bytes = Uint8List.fromList([rawData[i], rawData[i + 1]]);
-
-//       // Extract the bytes and create the Unicode code point
-//       int lowerByte = bytes[0];
-//       int upperByte = bytes[1];
-//       int unicodeCodePoint = (upperByte << 8) | lowerByte;
-
-//       // Convert the Unicode code point to a string
-//       String chineseCharacter = String.fromCharCode(unicodeCodePoint);
-//       location += chineseCharacter;
-//     }
-
-//     location = _trimString(location);
-
-//     // 解析 logInterval
-//     logInterval = rawData[150].toString();
-//     print('LOG interval: $logInterval');
-
-//     // 解析 inputAttenuation (0x94 DS VVA1 Set dB)
-//     List<int> rawInputAttenuation = rawData.sublist(151, 153);
-//     ByteData rawInputAttenuationByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawInputAttenuation));
-//     inputAttenuation =
-//         (rawInputAttenuationByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 inputEqualizer (0x96 DS Slope1 Set dB)
-//     List<int> rawInputEqualizer = rawData.sublist(153, 155);
-//     ByteData rawInputEqualizerByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawInputEqualizer));
-//     inputEqualizer = (rawInputEqualizerByteData.getInt16(0, Endian.little) / 10)
-//         .toStringAsFixed(1);
-
-//     // 解析 dsVVA2 (0x98 DS VVA2 Set dB)
-//     List<int> rawDSVVA2 = rawData.sublist(155, 157);
-//     ByteData rawDSVVA2ByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawDSVVA2));
-//     dsVVA2 =
-//         (rawDSVVA2ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
-
-//     // 解析 dsSlope2 (0x9A DS Slope2 Set dB)
-//     List<int> rawDSSlope2 = rawData.sublist(157, 159);
-//     ByteData rawDSSlope2ByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawDSSlope2));
-//     dsSlope2 = (rawDSSlope2ByteData.getInt16(0, Endian.little) / 10)
-//         .toStringAsFixed(1);
-
-//     // 解析 inputAttenuation2 (0x9C US VCA1 Set dB)
-//     List<int> rawInputAttenuation2 = rawData.sublist(159, 161);
-//     ByteData rawInputAttenuation2ByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawInputAttenuation2));
-//     inputAttenuation2 =
-//         (rawInputAttenuation2ByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 outputEqualizer (0x9E US E-REQ Set dB)
-//     List<int> rawOutputEqualizer = rawData.sublist(161, 163);
-//     ByteData rawOutputEqualizerByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawOutputEqualizer));
-//     outputEqualizer =
-//         (rawOutputEqualizerByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 dsVVA3 (0xA0 DS VVA3 Set dB)
-//     List<int> rawDSVVA3 = rawData.sublist(163, 165);
-//     ByteData rawDSVVA3ByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawDSVVA3));
-//     dsVVA3 =
-//         (rawDSVVA3ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
-
-//     // 解析 dsVVA4 (0xA2 DS VVA4 Set dB)
-//     List<int> rawDSVVA4 = rawData.sublist(165, 167);
-//     ByteData rawDSVVA4ByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawDSVVA4));
-//     dsVVA4 =
-//         (rawDSVVA4ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
-
-//     // 解析 outputAttenuation (0xA4 US VCA2 Set dB)
-//     List<int> rawOutputAttenuation = rawData.sublist(167, 169);
-//     ByteData rawOutputAttenuationByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawOutputAttenuation));
-//     outputAttenuation =
-//         (rawOutputAttenuationByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 inputAttenuation3 (0xA6 US VCA3 Set dB)
-//     List<int> rawInputAttenuation3 = rawData.sublist(169, 171);
-//     ByteData rawInputAttenuation3ByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawInputAttenuation3));
-//     inputAttenuation3 =
-//         (rawInputAttenuation3ByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 inputAttenuation4 (0xA8 US VCA4 Set dB)
-//     List<int> rawInputAttenuation4 = rawData.sublist(171, 173);
-//     ByteData rawInputAttenuation4ByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawInputAttenuation4));
-//     inputAttenuation4 =
-//         (rawInputAttenuation4ByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 usTGC (0xAA US TGC Set dB)
-//     List<int> rawUSTGC = rawData.sublist(173, 175);
-//     ByteData rawUSTGCByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawUSTGC));
-//     usTGC =
-//         (rawUSTGCByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
-
-//     return A1P8G1(
-//       maxTemperatureC: maxTemperatureC,
-//       minTemperatureC: minTemperatureC,
-//       maxTemperatureF: maxTemperatureF,
-//       minTemperatureF: minTemperatureF,
-//       maxVoltage: maxVoltage,
-//       minVoltage: minVoltage,
-//       maxVoltageRipple: maxVoltageRipple,
-//       minVoltageRipple: minVoltageRipple,
-//       maxRFOutputPower: maxRFOutputPower,
-//       minRFOutputPower: minRFOutputPower,
-//       ingressSetting2: ingressSetting2,
-//       ingressSetting3: ingressSetting3,
-//       ingressSetting4: ingressSetting4,
-//       tgcCableLength: tgcCableLength,
-//       splitOption: splitOption,
-//       pilotFrequencyMode: pilotFrequencyMode,
-//       agcMode: agcMode,
-//       alcMode: alcMode,
-//       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-//       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-//       firstChannelLoadingLevel: firstChannelLoadingLevel,
-//       lastChannelLoadingLevel: lastChannelLoadingLevel,
-//       pilotFrequency1: pilotFrequency1,
-//       pilotFrequency2: pilotFrequency2,
-//       pilotFrequency1AlarmState: pilotFrequency1AlarmState,
-//       pilotFrequency2AlarmState: pilotFrequency2AlarmState,
-//       rfOutputPilotLowFrequencyAlarmState: rfOutputPilotLowFrequencyAlarmState,
-//       rfOutputPilotHighFrequencyAlarmState:
-//           rfOutputPilotHighFrequencyAlarmState,
-//       temperatureAlarmState: temperatureAlarmState,
-//       voltageAlarmState: voltageAlarmState,
-//       splitOptionAlarmState: splitOptionAlarmState,
-//       voltageRippleAlarmState: voltageRippleAlarmState,
-//       outputPowerAlarmState: outputPowerAlarmState,
-//       inputAttenuation: inputAttenuation,
-//       inputEqualizer: inputEqualizer,
-//       dsVVA2: dsVVA2,
-//       dsSlope2: dsSlope2,
-//       inputAttenuation2: inputAttenuation2,
-//       inputAttenuation3: inputAttenuation3,
-//       inputAttenuation4: inputAttenuation4,
-//       outputAttenuation: outputAttenuation,
-//       outputEqualizer: outputEqualizer,
-//       dsVVA3: dsVVA3,
-//       dsVVA4: dsVVA4,
-//       usTGC: usTGC,
-//       location: location,
-//       logInterval: logInterval,
-//     );
-//   }
-
-//   A1P8G2 decodeA1P8G2(List<int> rawData) {
-//     String currentTemperatureC = '';
-//     String currentTemperatureF = '';
-//     String currentVoltage = '';
-//     String currentVoltageRipple = '';
-//     String currentRFInputPower = '';
-//     String currentRFOutputPower = '';
-//     String currentWorkingMode = '';
-//     String currentDetectedSplitOption = '';
-//     String rfOutputOperatingSlope = '';
-//     String manualModePilot1RFOutputPower = '';
-//     String manualModePilot2RFOutputPower = '';
-//     String rfOutputLowChannelPower = '';
-//     String rfOutputHighChannelPower = '';
-//     String pilot1RFChannelFrequency = '';
-//     String pilot2RFChannelFrequency = '';
-//     Alarm unitStatusAlarmSeverity = Alarm.medium;
-//     Alarm rfInputPilotLowFrequencyAlarmSeverity = Alarm.medium;
-//     Alarm rfInputPilotHighFrequencyAlarmSeverity = Alarm.medium;
-//     Alarm rfOutputPilotLowFrequencyAlarmSeverity = Alarm.medium;
-//     Alarm rfOutputPilotHighFrequencyAlarmSeverity = Alarm.medium;
-//     Alarm temperatureAlarmSeverity = Alarm.medium;
-//     Alarm voltageAlarmSeverity = Alarm.medium;
-//     Alarm splitOptionAlarmSeverity = Alarm.medium;
-//     Alarm voltageRippleAlarmSeverity = Alarm.medium;
-//     Alarm outputPowerAlarmSeverity = Alarm.medium;
-
-//     int unitStatus = rawData[3];
-//     unitStatusAlarmSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
-
-//     // 解析 currentTemperatureC, currentTemperatureC
-//     List<int> rawCurrentTemperatureC = rawData.sublist(4, 6);
-//     ByteData rawCurrentTemperatureCByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawCurrentTemperatureC));
-
-//     double currentTemperature =
-//         rawCurrentTemperatureCByteData.getInt16(0, Endian.little) / 10;
-
-//     currentTemperatureC = currentTemperature.toStringAsFixed(1);
-//     currentTemperatureF =
-//         _convertToFahrenheit(currentTemperature).toStringAsFixed(1);
-
-//     // 解析 currentVoltage
-//     List<int> rawCurrentVoltage = rawData.sublist(6, 8);
-//     ByteData rawCurrentVoltageByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawCurrentVoltage));
-
-//     currentVoltage = (rawCurrentVoltageByteData.getInt16(0, Endian.little) / 10)
-//         .toStringAsFixed(1);
-
-//     // 解析 currentVoltageRipple
-//     List<int> rawCurrentVoltageRipple = rawData.sublist(8, 10);
-//     ByteData rawCurrentVoltageRippleByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawCurrentVoltageRipple));
-
-//     currentVoltageRipple =
-//         rawCurrentVoltageRippleByteData.getInt16(0, Endian.little).toString();
-
-//     // 解析 currentRFInputPower
-//     List<int> rawCurrentRFInputPower = rawData.sublist(18, 20);
-//     ByteData rawCurrentRFInputPowerByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawCurrentRFInputPower));
-
-//     currentRFInputPower =
-//         (rawCurrentRFInputPowerByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 currentRFOutputPower
-//     List<int> rawCurrentRFOutputPower = rawData.sublist(20, 22);
-//     ByteData rawCurrentRFOutputPowerByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawCurrentRFOutputPower));
-
-//     currentRFOutputPower =
-//         (rawCurrentRFOutputPowerByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 currentWorkingMode
-//     currentWorkingMode = rawData[70].toString();
-
-//     // 解析 currentDetectedSplitOption
-//     currentDetectedSplitOption = rawData[71].toString();
-
-//     // 解析 rfOutputLowChannelPower
-//     List<int> rawRFOutputLowChannelPower = rawData.sublist(92, 94);
-//     ByteData rawRFOutputLowChannelPowerByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawRFOutputLowChannelPower));
-
-//     rfOutputLowChannelPower =
-//         (rawRFOutputLowChannelPowerByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 rfOutputHighChannelPower
-//     List<int> rawRFOutputHighChannelPower = rawData.sublist(94, 96);
-//     ByteData rawRFOutputHighChannelPowerByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawRFOutputHighChannelPower));
-
-//     rfOutputHighChannelPower =
-//         (rawRFOutputHighChannelPowerByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 rfOutputOperatingSlope
-//     List<int> rawRFOutputOperatingSlope = rawData.sublist(96, 98);
-//     ByteData rawRFOutputOperatingSlopeByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawRFOutputOperatingSlope));
-
-//     rfOutputOperatingSlope =
-//         (rawRFOutputOperatingSlopeByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 manualModePilot1RFOutputPower
-//     List<int> rawManualModePilot1RFOutputPower = rawData.sublist(98, 100);
-//     ByteData rawManualModePilot1RFOutputPowerByteData = ByteData.sublistView(
-//         Uint8List.fromList(rawManualModePilot1RFOutputPower));
-
-//     manualModePilot1RFOutputPower =
-//         (rawManualModePilot1RFOutputPowerByteData.getInt16(0, Endian.little) /
-//                 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 manualModePilot2RFOutputPower
-//     List<int> rawManualModePilot2RFOutputPower = rawData.sublist(100, 102);
-//     ByteData rawManualModePilot2RFOutputPowerByteData = ByteData.sublistView(
-//         Uint8List.fromList(rawManualModePilot2RFOutputPower));
-
-//     manualModePilot2RFOutputPower =
-//         (rawManualModePilot2RFOutputPowerByteData.getInt16(0, Endian.little) /
-//                 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 pilot1RFChannelFrequency
-//     List<int> rawPilot1RFChannelFrequency = rawData.sublist(102, 104);
-//     ByteData rawPilot1RFChannelFrequencyByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawPilot1RFChannelFrequency));
-
-//     pilot1RFChannelFrequency =
-//         (rawPilot1RFChannelFrequencyByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 pilot2RFChannelFrequency
-//     List<int> rawPilot2RFChannelFrequency = rawData.sublist(104, 106);
-//     ByteData rawPilot2RFChannelFrequencyByteData =
-//         ByteData.sublistView(Uint8List.fromList(rawPilot2RFChannelFrequency));
-
-//     pilot2RFChannelFrequency =
-//         (rawPilot2RFChannelFrequencyByteData.getInt16(0, Endian.little) / 10)
-//             .toStringAsFixed(1);
-
-//     // 解析 rfInputPilotLowFrequencyAlarmSeverity
-//     int rfInputPilotLowFrequencyStatus = rawData[124];
-//     rfInputPilotLowFrequencyAlarmSeverity =
-//         rfInputPilotLowFrequencyStatus == 1 ? Alarm.danger : Alarm.success;
-
-//     // 解析 rfInputPilotHighFrequencyAlarmSeverity
-//     int rfInputPilotHighFrequencyStatus = rawData[125];
-//     rfInputPilotHighFrequencyAlarmSeverity =
-//         rfInputPilotHighFrequencyStatus == 1 ? Alarm.danger : Alarm.success;
-
-//     // 解析 rfOutputPilotLowFrequencyAlarmSeverity
-//     int rfOutputPilotLowFrequencyStatus = rawData[126];
-//     rfOutputPilotLowFrequencyAlarmSeverity =
-//         rfOutputPilotLowFrequencyStatus == 1 ? Alarm.danger : Alarm.success;
-
-//     // 解析 rfOutputPilotHighFrequencyAlarmSeverity
-//     int rfOutputPilotHighFrequencyStatus = rawData[127];
-//     rfOutputPilotHighFrequencyAlarmSeverity =
-//         rfOutputPilotHighFrequencyStatus == 1 ? Alarm.danger : Alarm.success;
-
-//     // 解析 temperatureAlarmSeverity
-//     int temperatureStatus = rawData[128];
-//     temperatureAlarmSeverity =
-//         temperatureStatus == 1 ? Alarm.danger : Alarm.success;
-
-//     // 解析 voltageAlarmSeverity
-//     int voltageStatus = rawData[129];
-//     voltageAlarmSeverity = voltageStatus == 1 ? Alarm.danger : Alarm.success;
-
-//     // 解析 splitOptionAlarmSeverity
-//     int splitOptionStatus = rawData[134];
-//     splitOptionAlarmSeverity =
-//         splitOptionStatus == 1 ? Alarm.danger : Alarm.success;
-
-//     // 解析 voltageRippleAlarmSeverity
-//     int voltageRippleStatus = rawData[135];
-//     voltageRippleAlarmSeverity =
-//         voltageRippleStatus == 1 ? Alarm.danger : Alarm.success;
-
-//     // 解析 outputPowerAlarmSeverity
-//     int outputPowerStatus = rawData[136];
-//     outputPowerAlarmSeverity =
-//         outputPowerStatus == 1 ? Alarm.danger : Alarm.success;
-
-//     return A1P8G2(
-//       currentTemperatureC: currentTemperatureC,
-//       currentTemperatureF: currentTemperatureF,
-//       currentVoltage: currentVoltage,
-//       currentVoltageRipple: currentVoltageRipple,
-//       currentRFInputPower: currentRFInputPower,
-//       currentRFOutputPower: currentRFOutputPower,
-//       currentWorkingMode: currentWorkingMode,
-//       currentDetectedSplitOption: currentDetectedSplitOption,
-//       rfOutputOperatingSlope: rfOutputOperatingSlope,
-//       manualModePilot1RFOutputPower: manualModePilot1RFOutputPower,
-//       manualModePilot2RFOutputPower: manualModePilot2RFOutputPower,
-//       rfOutputLowChannelPower: rfOutputLowChannelPower,
-//       rfOutputHighChannelPower: rfOutputHighChannelPower,
-//       pilot1RFChannelFrequency: pilot1RFChannelFrequency,
-//       pilot2RFChannelFrequency: pilot2RFChannelFrequency,
-//       unitStatusAlarmSeverity: unitStatusAlarmSeverity.name,
-//       rfInputPilotLowFrequencyAlarmSeverity:
-//           rfInputPilotLowFrequencyAlarmSeverity.name,
-//       rfInputPilotHighFrequencyAlarmSeverity:
-//           rfInputPilotHighFrequencyAlarmSeverity.name,
-//       rfOutputPilotLowFrequencyAlarmSeverity:
-//           rfOutputPilotLowFrequencyAlarmSeverity.name,
-//       rfOutputPilotHighFrequencyAlarmSeverity:
-//           rfOutputPilotHighFrequencyAlarmSeverity.name,
-//       temperatureAlarmSeverity: temperatureAlarmSeverity.name,
-//       voltageAlarmSeverity: voltageAlarmSeverity.name,
-//       splitOptionAlarmSeverity: splitOptionAlarmSeverity.name,
-//       voltageRippleAlarmSeverity: voltageRippleAlarmSeverity.name,
-//       outputPowerAlarmSeverity: outputPowerAlarmSeverity.name,
-//     );
-//   }
+  A1P8GCCorNode80 decodeA1P8GCCorNode80(List<int> rawData) {
+    String partName = '';
+    String partNo = '';
+    String partId = '';
+    String serialNumber = '';
+    String firmwareVersion = '';
+    String mfgDate = '';
+    String coordinate = '';
+    String nowDateTime = '';
+
+    // 解析 partName
+    for (int i = 3; i <= 22; i++) {
+      partName += String.fromCharCode(rawData[i]);
+    }
+    partName = _trimString(partName);
+
+    // 解析 partNo
+    for (int i = 23; i <= 42; i++) {
+      partNo += String.fromCharCode(rawData[i]);
+    }
+    partNo = _trimString(partNo);
+
+    // 解析 serialNumber
+    for (int i = 43; i <= 62; i++) {
+      serialNumber += String.fromCharCode(rawData[i]);
+    }
+    serialNumber = _trimString(serialNumber);
+
+    // 解析 firmwareVersion
+    for (int i = 63; i <= 66; i++) {
+      firmwareVersion += String.fromCharCode(rawData[i]);
+    }
+    firmwareVersion = _trimString(firmwareVersion);
+
+    // 解析 mfgDate
+    List<int> rawYear = rawData.sublist(67, 69);
+    ByteData byteData = ByteData.sublistView(Uint8List.fromList(rawYear));
+    String year = byteData.getInt16(0, Endian.little).toString();
+    String month = rawData[69].toString().padLeft(2, '0');
+    String day = rawData[70].toString().padLeft(2, '0');
+    mfgDate = '$year/$month/$day';
+
+    // 0: MFTJ (預留, app不適用)
+    // 1: SDLE
+    // 2: MOTO BLE
+    // 3: MOTO MB
+    // 4: C-Cor Node
+    // 5: C-Cor TR
+    // 6: C-Cor BR
+    // 7: C-Cor LE
+    partId = rawData[71].toString();
+
+    // 解析 coordinates
+    for (int i = 72; i <= 110; i++) {
+      coordinate += String.fromCharCode(rawData[i]);
+    }
+    coordinate = _trimString(coordinate);
+
+    // 解析 now time
+    List<int> rawNowYear = rawData.sublist(171, 173);
+    ByteData rawNowYearByteData =
+        ByteData.sublistView(Uint8List.fromList(rawNowYear));
+    String nowYear = rawNowYearByteData.getInt16(0, Endian.little).toString();
+    String nowMonth = rawData[173].toString().padLeft(2, '0');
+    String nowDay = rawData[174].toString().padLeft(2, '0');
+    String nowHour = rawData[175].toString().padLeft(2, '0');
+    String nowMinute = rawData[176].toString().padLeft(2, '0');
+    nowDateTime = '$nowYear-$nowMonth-$nowDay $nowHour:$nowMinute:00';
+
+    return A1P8GCCorNode80(
+      partName: partName,
+      partNo: partNo,
+      partId: partId,
+      serialNumber: serialNumber,
+      firmwareVersion: firmwareVersion,
+      mfgDate: mfgDate,
+      coordinate: coordinate,
+      nowDateTime: nowDateTime,
+    );
+  }
+
+  A1P8GCCorNode91 decodeA1P8GCCorNode91(List<int> rawData) {
+    String maxTemperatureC = '';
+    String minTemperatureC = '';
+    String maxTemperatureF = '';
+    String minTemperatureF = '';
+    String maxVoltage = '';
+    String minVoltage = '';
+    String maxRFOutputPower1 = '';
+    String minRFOutputPower1 = '';
+    String ingressSetting1 = '';
+    String ingressSetting3 = '';
+    String ingressSetting4 = '';
+    String ingressSetting6 = '';
+    String splitOption = '';
+    String maxRFOutputPower3 = '';
+    String minRFOutputPower3 = '';
+    String forwardVVA1 = '';
+    String forwardInSlope1 = '';
+    String forwardOutSlope1 = '';
+    String returnVCA1 = '';
+    String rfOutputPower1AlarmState = '';
+    String rfOutputPower3AlarmState = '';
+    String rfOutputPower4AlarmState = '';
+    String rfOutputPower6AlarmState = '';
+    String temperatureAlarmState = '';
+    String voltageAlarmState = '';
+    String maxRFOutputPower4 = '';
+    String minRFOutputPower4 = '';
+    String splitOptionAlarmState = '';
+    String location = '';
+    String logInterval = '';
+    String forwardVVA3 = '';
+    String forwardInSlope3 = '';
+    String forwardOutSlope3 = '';
+    String rerturnVCA3 = '';
+    String forwardVVA4 = '';
+    String forwardInSlope4 = '';
+    String forwardOutSlope4 = '';
+    String returnVCA4 = '';
+    String forwardVVA6 = '';
+    String forwardInSlope6 = '';
+    String forwardOutSlope6 = '';
+    String returnVCA6 = '';
+    String maxRFOutputPower6 = '';
+    String minRFOutputPower6 = '';
+
+    // 解析 maxTemperatureC, maxTemperatureF
+    List<int> rawMaxTemperatureC = rawData.sublist(3, 5);
+    ByteData rawMaxTemperatureCByteData =
+        ByteData.sublistView(Uint8List.fromList(rawMaxTemperatureC));
+
+    double maxTemperature =
+        rawMaxTemperatureCByteData.getInt16(0, Endian.little) / 10;
+    maxTemperatureC = maxTemperature.toStringAsFixed(1);
+    maxTemperatureF = _convertToFahrenheit(maxTemperature).toStringAsFixed(1);
+
+    // 解析 minTemperatureC, minTemperatureF
+    List<int> rawMinTemperatureC = rawData.sublist(5, 7);
+    ByteData rawMinTemperatureCByteData =
+        ByteData.sublistView(Uint8List.fromList(rawMinTemperatureC));
+
+    double minTemperature =
+        rawMinTemperatureCByteData.getInt16(0, Endian.little) / 10;
+    minTemperatureC = minTemperature.toStringAsFixed(1);
+    minTemperatureF = _convertToFahrenheit(minTemperature).toStringAsFixed(1);
+
+    // 解析 maxVoltage
+    List<int> rawMaxVoltage = rawData.sublist(7, 9);
+    ByteData rawMaxVoltageByteData =
+        ByteData.sublistView(Uint8List.fromList(rawMaxVoltage));
+    maxVoltage = (rawMaxVoltageByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 minVoltage
+    List<int> rawMinVoltage = rawData.sublist(9, 11);
+    ByteData rawMinVoltageByteData =
+        ByteData.sublistView(Uint8List.fromList(rawMinVoltage));
+    minVoltage = (rawMinVoltageByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 maxRFOutputPower1
+    List<int> rawMaxRFOutputPower1 = rawData.sublist(15, 17);
+    ByteData rawMaxRFOutputPower1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawMaxRFOutputPower1));
+    maxRFOutputPower1 =
+        (rawMaxRFOutputPower1ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 minRFOutputPower1
+    List<int> rawMinRFOutputPower1 = rawData.sublist(17, 19);
+    ByteData rawMinRFOutputPower1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawMinRFOutputPower1));
+    minRFOutputPower1 =
+        (rawMinRFOutputPower1ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 ingress setting 1
+    ingressSetting1 = rawData[19].toString();
+
+    // 解析 ingress setting 3
+    ingressSetting3 = rawData[20].toString();
+
+    // 解析 ingress setting 4
+    ingressSetting4 = rawData[21].toString();
+
+    // 解析 ingress setting 6
+    ingressSetting6 = rawData[22].toString();
+
+    // 解析 splitOption
+    splitOption = rawData[25].toString();
+
+    // 解析 maxRFOutputPower3
+    List<int> rawMaxRFOutputPower3 = rawData.sublist(29, 31);
+    ByteData rawMaxRFOutputPower3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawMaxRFOutputPower3));
+    maxRFOutputPower3 =
+        rawMaxRFOutputPower3ByteData.getInt16(0, Endian.little).toString();
+
+    // 解析 minRFOutputPower3
+    List<int> rawMinRFOutputPower3 = rawData.sublist(31, 33);
+    ByteData rawMinRFOutputPower3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawMinRFOutputPower3));
+    minRFOutputPower3 =
+        rawMinRFOutputPower3ByteData.getInt16(0, Endian.little).toString();
+
+    // 解析 fowwardVVA1
+    List<int> rawForwardVVA1 = rawData.sublist(33, 35);
+    ByteData rawForwardVVA1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawForwardVVA1));
+    forwardVVA1 = (rawForwardVVA1ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 fowwardInSlope1
+    List<int> rawForwardInSlope1 = rawData.sublist(35, 37);
+    ByteData rawForwardInSlope1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawForwardInSlope1));
+    forwardInSlope1 =
+        (rawForwardInSlope1ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 forwardOutSlope1
+    List<int> rawForwardOutSlope1 = rawData.sublist(37, 39);
+    ByteData rawForwardOutSlope1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawForwardOutSlope1));
+    forwardOutSlope1 =
+        rawForwardOutSlope1ByteData.getInt16(0, Endian.little).toString();
+
+    // 解析 returnVCA1
+    List<int> rawReturnVCA1 = rawData.sublist(39, 41);
+    ByteData rawReturnVCA1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawReturnVCA1));
+    returnVCA1 = rawReturnVCA1ByteData.getInt16(0, Endian.little).toString();
+
+    // 解析 rfOutputPower1AlarmState
+    rfOutputPower1AlarmState = rawData[41].toString();
+
+    // 解析 rfOutputPower3AlarmState
+    rfOutputPower3AlarmState = rawData[42].toString();
+
+    // 解析 rfOutputPower4AlarmState
+    rfOutputPower4AlarmState = rawData[43].toString();
+
+    // 解析 rfOutputPower6AlarmState
+    rfOutputPower6AlarmState = rawData[44].toString();
+
+    // 解析 temperatureAlarmState
+    temperatureAlarmState = rawData[45].toString();
+
+    // 解析 voltageAlarmState
+    voltageAlarmState = rawData[46].toString();
+
+    // 解析 maxRFOutputPower4
+    List<int> rawMaxRFOutputPower4 = rawData.sublist(47, 49);
+    ByteData rawMaxRFOutputPower4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawMaxRFOutputPower4));
+    maxRFOutputPower4 =
+        rawMaxRFOutputPower4ByteData.getInt16(0, Endian.little).toString();
+
+    // 解析 minRFOutputPower4
+    List<int> rawMinRFOutputPower4 = rawData.sublist(49, 51);
+    ByteData rawMinRFOutputPower4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawMinRFOutputPower4));
+    minRFOutputPower4 =
+        rawMinRFOutputPower4ByteData.getInt16(0, Endian.little).toString();
+
+    // 解析 splitOptionAlarmState
+    splitOptionAlarmState = rawData[51].toString();
+
+    // 使用 unicode 解析 location
+    for (int i = 54; i < 150; i += 2) {
+      Uint8List bytes = Uint8List.fromList([rawData[i], rawData[i + 1]]);
+
+      // Extract the bytes and create the Unicode code point
+      int lowerByte = bytes[0];
+      int upperByte = bytes[1];
+      int unicodeCodePoint = (upperByte << 8) | lowerByte;
+
+      // Convert the Unicode code point to a string
+      String chineseCharacter = String.fromCharCode(unicodeCodePoint);
+      location += chineseCharacter;
+    }
+
+    location = _trimString(location);
+
+    // 解析 logInterval
+    logInterval = rawData[150].toString();
+    print('LOG interval: $logInterval');
+
+    // 解析 forwardVVA3
+    List<int> rawForwardVVA3 = rawData.sublist(151, 153);
+    ByteData rawForwardVVA3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawForwardVVA3));
+    forwardVVA3 = (rawForwardVVA3ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 forwardInSlope3
+    List<int> rawForwardInSlope3 = rawData.sublist(153, 155);
+    ByteData rawForwardInSlope3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawForwardInSlope3));
+    forwardInSlope3 =
+        (rawForwardInSlope3ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 forwardOutSlope3
+    List<int> rawForwardOutSlope3 = rawData.sublist(155, 157);
+    ByteData rawForwardOutSlope3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawForwardOutSlope3));
+    forwardOutSlope3 =
+        (rawForwardOutSlope3ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 rerturnVCA3
+    List<int> rawReturnVCA3 = rawData.sublist(157, 159);
+    ByteData rawReturnVCA3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawReturnVCA3));
+    rerturnVCA3 = (rawReturnVCA3ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 forwardVVA4
+    List<int> rawForwardVVA4 = rawData.sublist(159, 161);
+    ByteData rawForwardVVA4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawForwardVVA4));
+    forwardVVA4 = (rawForwardVVA4ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 forwardInSlope4
+    List<int> rawForwardInSlope4 = rawData.sublist(161, 163);
+    ByteData rawForwardInSlope4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawForwardInSlope4));
+    forwardInSlope4 =
+        (rawForwardInSlope4ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 forwardOutSlope4
+    List<int> rawForwardOutSlope4 = rawData.sublist(163, 165);
+    ByteData rawForwardOutSlope4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawForwardOutSlope4));
+    forwardOutSlope4 =
+        (rawForwardOutSlope4ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 returnVCA4 (0xA2 DS VVA4 Set dB)
+    List<int> rawReturnVCA4 = rawData.sublist(165, 167);
+    ByteData rawReturnVCA4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawReturnVCA4));
+    returnVCA4 = (rawReturnVCA4ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 forwardVVA6
+    List<int> rawForwardVVA6 = rawData.sublist(167, 169);
+    ByteData rawForwardVVA6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawForwardVVA6));
+    forwardVVA6 = (rawForwardVVA6ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 forwardInSlope6
+    List<int> rawForwardInSlope6 = rawData.sublist(169, 171);
+    ByteData rawForwardInSlope6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawForwardInSlope6));
+    forwardInSlope6 =
+        (rawForwardInSlope6ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 forwardOutSlope6
+    List<int> rawForwardOutSlope6 = rawData.sublist(171, 173);
+    ByteData rawForwardOutSlope6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawForwardOutSlope6));
+    forwardOutSlope6 =
+        (rawForwardOutSlope6ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 returnVCA6
+    List<int> rawReturnVCA6 = rawData.sublist(173, 175);
+    ByteData rawReturnVCA6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawReturnVCA6));
+    returnVCA6 = (rawReturnVCA6ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 maxRFOutputPower6
+    List<int> rawMaxRFOutputPower6 = rawData.sublist(175, 177);
+    ByteData rawMaxRFOutputPower6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawMaxRFOutputPower6));
+    maxRFOutputPower6 =
+        (rawMaxRFOutputPower6ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 minRFOutputPower6
+    List<int> rawMinRFOutputPower6 = rawData.sublist(177, 179);
+    ByteData rawMinRFOutputPower6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawMinRFOutputPower6));
+    minRFOutputPower6 =
+        (rawMinRFOutputPower6ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    return A1P8GCCorNode91(
+      maxTemperatureC: maxTemperatureC,
+      minTemperatureC: minTemperatureC,
+      maxTemperatureF: maxTemperatureF,
+      minTemperatureF: minTemperatureF,
+      maxVoltage: maxVoltage,
+      minVoltage: minVoltage,
+      maxRFOutputPower1: maxRFOutputPower1,
+      minRFOutputPower1: minRFOutputPower1,
+      ingressSetting1: ingressSetting1,
+      ingressSetting3: ingressSetting3,
+      ingressSetting4: ingressSetting4,
+      ingressSetting6: ingressSetting6,
+      splitOption: splitOption,
+      maxRFOutputPower3: maxRFOutputPower3,
+      minRFOutputPower3: minRFOutputPower3,
+      forwardVVA1: forwardVVA1,
+      forwardInSlope1: forwardInSlope1,
+      forwardOutSlope1: forwardOutSlope1,
+      returnVCA1: returnVCA1,
+      rfOutputPower1AlarmState: rfOutputPower1AlarmState,
+      rfOutputPower3AlarmState: rfOutputPower3AlarmState,
+      rfOutputPower4AlarmState: rfOutputPower4AlarmState,
+      rfOutputPower6AlarmState: rfOutputPower6AlarmState,
+      temperatureAlarmState: temperatureAlarmState,
+      voltageAlarmState: voltageAlarmState,
+      maxRFOutputPower4: maxRFOutputPower4,
+      minRFOutputPower4: minRFOutputPower4,
+      splitOptionAlarmState: splitOptionAlarmState,
+      location: location,
+      logInterval: logInterval,
+      forwardVVA3: forwardVVA3,
+      forwardInSlope3: forwardInSlope3,
+      forwardOutSlope3: forwardOutSlope3,
+      rerturnVCA3: rerturnVCA3,
+      forwardVVA4: forwardVVA4,
+      forwardInSlope4: forwardInSlope4,
+      forwardOutSlope4: forwardOutSlope4,
+      returnVCA4: returnVCA4,
+      forwardVVA6: forwardVVA6,
+      forwardInSlope6: forwardInSlope6,
+      forwardOutSlope6: forwardOutSlope6,
+      returnVCA6: returnVCA6,
+      maxRFOutputPower6: maxRFOutputPower6,
+      minRFOutputPower6: minRFOutputPower6,
+    );
+  }
+
+  A1P8GCCorNodeA1 decodeA1P8GCCorNodeA1(List<int> rawData) {
+    String currentTemperatureC;
+    String currentTemperatureF;
+    String currentVoltage;
+    String currentVoltageRipple;
+    String currentRFOutputPower1;
+    String currentRFOutputPower3;
+    String currentRFOutputPower4;
+    String currentRFOutputPower6;
+    String currentForwardVVA1;
+    String currentForwardInSlope1;
+    String currentForwardOutSlope1;
+    String currentReturnVCA1;
+    String currentForwardVVA3;
+    String currentForwardInSlope3;
+    String currentForwardOutSlope3;
+    String currentReturnVCA3;
+    String currentForwardVVA4;
+    String currentForwardInSlope4;
+    String currentForwardOutSlope4;
+    String currentReturnVCA4;
+    String currentForwardVVA6;
+    String currentForwardInSlope6;
+    String currentForwardOutSlope6;
+    String currentReturnVCA6;
+    String currentWorkingMode;
+    String currentDetectedSplitOption;
+    Alarm unitStatusAlarmSeverity = Alarm.medium;
+    Alarm temperatureAlarmSeverity = Alarm.medium;
+    Alarm voltageAlarmSeverity = Alarm.medium;
+    Alarm splitOptionAlarmSeverity = Alarm.medium;
+    Alarm voltageRippleAlarmSeverity = Alarm.medium;
+    Alarm rfOutputPower1AlarmSeverity = Alarm.medium;
+    Alarm rfOutputPower3AlarmSeverity = Alarm.medium;
+    Alarm rfOutputPower4AlarmSeverity = Alarm.medium;
+    Alarm rfOutputPower6AlarmSeverity = Alarm.medium;
+
+    int unitStatus = rawData[3];
+    unitStatusAlarmSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
+
+    // 解析 currentTemperatureC, currentTemperatureC
+    List<int> rawCurrentTemperatureC = rawData.sublist(4, 6);
+    ByteData rawCurrentTemperatureCByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentTemperatureC));
+
+    double currentTemperature =
+        rawCurrentTemperatureCByteData.getInt16(0, Endian.little) / 10;
+
+    currentTemperatureC = currentTemperature.toStringAsFixed(1);
+    currentTemperatureF =
+        _convertToFahrenheit(currentTemperature).toStringAsFixed(1);
+
+    // 解析 currentVoltage
+    List<int> rawCurrentVoltage = rawData.sublist(6, 8);
+    ByteData rawCurrentVoltageByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentVoltage));
+
+    currentVoltage = (rawCurrentVoltageByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 currentVoltageRipple
+    List<int> rawCurrentVoltageRipple = rawData.sublist(8, 10);
+    ByteData rawCurrentVoltageRippleByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentVoltageRipple));
+
+    currentVoltageRipple =
+        rawCurrentVoltageRippleByteData.getInt16(0, Endian.little).toString();
+
+    // 解析 currentRFOutputPower1
+    List<int> rawCurrentRFOutputPower1 = rawData.sublist(18, 20);
+    ByteData rawCurrentRFOutputPower1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentRFOutputPower1));
+
+    currentRFOutputPower1 =
+        (rawCurrentRFOutputPower1ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentRFOutputPower3
+    List<int> rawCurrentRFOutputPower3 = rawData.sublist(22, 24);
+    ByteData rawCurrentRFOutputPower3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentRFOutputPower3));
+
+    currentRFOutputPower3 =
+        (rawCurrentRFOutputPower3ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentRFOutputPower4
+    List<int> rawCurrentRFOutputPower4 = rawData.sublist(24, 26);
+    ByteData rawCurrentRFOutputPower4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentRFOutputPower4));
+
+    currentRFOutputPower4 =
+        (rawCurrentRFOutputPower4ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentRFOutputPower6
+    List<int> rawCurrentRFOutputPower6 = rawData.sublist(28, 30);
+    ByteData rawCurrentRFOutputPower6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentRFOutputPower6));
+
+    currentRFOutputPower6 =
+        (rawCurrentRFOutputPower6ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentForwardVVA1
+    List<int> rawCurrentForwardVVA1 = rawData.sublist(34, 36);
+    ByteData rawCurrentForwardVVA1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardVVA1));
+
+    currentForwardVVA1 =
+        (rawCurrentForwardVVA1ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentForwardInSlope1
+    List<int> rawCurrentForwardInSlope1 = rawData.sublist(36, 38);
+    ByteData rawCurrentForwardInSlope1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardInSlope1));
+
+    currentForwardInSlope1 =
+        (rawCurrentForwardInSlope1ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentForwardOutSlope1
+    List<int> rawCurrentForwardOutSlope1 = rawData.sublist(38, 40);
+    ByteData rawCurrentForwardOutSlope1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardOutSlope1));
+
+    currentForwardOutSlope1 =
+        (rawCurrentForwardOutSlope1ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentReturnVCA1
+    List<int> rawCurrentReturnVCA1 = rawData.sublist(40, 42);
+    ByteData rawCurrentReturnVCA1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentReturnVCA1));
+
+    currentReturnVCA1 =
+        (rawCurrentReturnVCA1ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentForwardVVA3
+    List<int> rawCurrentForwardVVA3 = rawData.sublist(42, 44);
+    ByteData rawCurrentForwardVVA3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardVVA3));
+
+    currentForwardVVA3 =
+        (rawCurrentForwardVVA3ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentForwardInSlope3
+    List<int> rawCurrentForwardInSlope3 = rawData.sublist(44, 46);
+    ByteData rawCurrentForwardInSlope3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardInSlope3));
+
+    currentForwardInSlope3 =
+        (rawCurrentForwardInSlope3ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentForwardOutSlope3
+    List<int> rawCurrentForwardOutSlope3 = rawData.sublist(46, 48);
+    ByteData rawCurrentForwardOutSlope3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardOutSlope3));
+
+    currentForwardOutSlope3 =
+        (rawCurrentForwardOutSlope3ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentReturnVCA3
+    List<int> rawCurrentReturnVCA3 = rawData.sublist(48, 50);
+    ByteData rawCurrentReturnVCA3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentReturnVCA3));
+
+    currentReturnVCA3 =
+        (rawCurrentReturnVCA3ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentForwardVVA4
+    List<int> rawCurrentForwardVVA4 = rawData.sublist(50, 52);
+    ByteData rawCurrentForwardVVA4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardVVA4));
+
+    currentForwardVVA4 =
+        (rawCurrentForwardVVA4ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentForwardInSlope4
+    List<int> rawCurrentForwardInSlope4 = rawData.sublist(52, 54);
+    ByteData rawCurrentForwardInSlope4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardInSlope4));
+
+    currentForwardInSlope4 =
+        (rawCurrentForwardInSlope4ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentForwardOutSlope4
+    List<int> rawCurrentForwardOutSlope4 = rawData.sublist(54, 56);
+    ByteData rawCurrentForwardOutSlope4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardOutSlope4));
+
+    currentForwardOutSlope4 =
+        (rawCurrentForwardOutSlope4ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentReturnVCA4
+    List<int> rawCurrentReturnVCA4 = rawData.sublist(56, 58);
+    ByteData rawCurrentReturnVCA4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentReturnVCA4));
+
+    currentReturnVCA4 =
+        (rawCurrentReturnVCA4ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentForwardVVA6
+    List<int> rawCurrentForwardVVA6 = rawData.sublist(58, 60);
+    ByteData rawCurrentForwardVVA6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardVVA6));
+
+    currentForwardVVA6 =
+        (rawCurrentForwardVVA6ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentForwardInSlope6
+    List<int> rawCurrentForwardInSlope6 = rawData.sublist(60, 62);
+    ByteData rawCurrentForwardInSlope6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardInSlope6));
+
+    currentForwardInSlope6 =
+        (rawCurrentForwardInSlope6ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentForwardOutSlope6
+    List<int> rawCurrentForwardOutSlope6 = rawData.sublist(62, 64);
+    ByteData rawCurrentForwardOutSlope6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardOutSlope6));
+
+    currentForwardOutSlope6 =
+        (rawCurrentForwardOutSlope6ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentReturnVCA6
+    List<int> rawCurrentReturnVCA6 = rawData.sublist(64, 66);
+    ByteData rawCurrentReturnVCA6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentReturnVCA6));
+
+    currentReturnVCA6 =
+        (rawCurrentReturnVCA6ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentWorkingMode
+    currentWorkingMode = rawData[70].toString();
+
+    // 解析 currentDetectedSplitOption
+    currentDetectedSplitOption = rawData[71].toString();
+
+    // 解析 temperatureAlarmSeverity
+    int temperatureStatus = rawData[128];
+    temperatureAlarmSeverity =
+        temperatureStatus == 1 ? Alarm.danger : Alarm.success;
+
+    // 解析 voltageAlarmSeverity
+    int voltageStatus = rawData[129];
+    voltageAlarmSeverity = voltageStatus == 1 ? Alarm.danger : Alarm.success;
+
+    // 解析 splitOptionAlarmSeverity
+    int splitOptionStatus = rawData[134];
+    splitOptionAlarmSeverity =
+        splitOptionStatus == 1 ? Alarm.danger : Alarm.success;
+
+    // 解析 voltageRippleAlarmSeverity
+    int voltageRippleStatus = rawData[135];
+    voltageRippleAlarmSeverity =
+        voltageRippleStatus == 1 ? Alarm.danger : Alarm.success;
+
+    // 解析 rfOutputPower1AlarmSeverity
+    int outputPower1Status = rawData[136];
+    rfOutputPower1AlarmSeverity =
+        outputPower1Status == 1 ? Alarm.danger : Alarm.success;
+
+    // 解析 rfOutputPower3AlarmSeverity
+    int outputPower3Status = rawData[138];
+    rfOutputPower3AlarmSeverity =
+        outputPower3Status == 1 ? Alarm.danger : Alarm.success;
+
+    // 解析 rfOutputPower4AlarmSeverity
+    int outputPower4Status = rawData[139];
+    rfOutputPower4AlarmSeverity =
+        outputPower4Status == 1 ? Alarm.danger : Alarm.success;
+
+    // 解析 rfOutputPower6AlarmSeverity
+    int outputPower6Status = rawData[141];
+    rfOutputPower6AlarmSeverity =
+        outputPower6Status == 1 ? Alarm.danger : Alarm.success;
+
+    return A1P8GCCorNodeA1(
+      currentTemperatureC: currentTemperatureC,
+      currentTemperatureF: currentTemperatureF,
+      currentVoltage: currentVoltage,
+      currentVoltageRipple: currentVoltageRipple,
+      currentRFOutputPower1: currentRFOutputPower1,
+      currentRFOutputPower3: currentRFOutputPower3,
+      currentRFOutputPower4: currentRFOutputPower4,
+      currentRFOutputPower6: currentRFOutputPower6,
+      currentForwardVVA1: currentForwardVVA1,
+      currentForwardInSlope1: currentForwardInSlope1,
+      currentForwardOutSlope1: currentForwardOutSlope1,
+      currentReturnVCA1: currentReturnVCA1,
+      currentForwardVVA3: currentForwardVVA3,
+      currentForwardInSlope3: currentForwardInSlope3,
+      currentForwardOutSlope3: currentForwardOutSlope3,
+      currentReturnVCA3: currentReturnVCA3,
+      currentForwardVVA4: currentForwardVVA4,
+      currentForwardInSlope4: currentForwardInSlope4,
+      currentForwardOutSlope4: currentForwardOutSlope4,
+      currentReturnVCA4: currentReturnVCA4,
+      currentForwardVVA6: currentForwardVVA6,
+      currentForwardInSlope6: currentForwardInSlope6,
+      currentForwardOutSlope6: currentForwardOutSlope6,
+      currentReturnVCA6: currentReturnVCA6,
+      currentWorkingMode: currentWorkingMode,
+      currentDetectedSplitOption: currentDetectedSplitOption,
+      unitStatusAlarmSeverity: unitStatusAlarmSeverity.name,
+      temperatureAlarmSeverity: temperatureAlarmSeverity.name,
+      voltageAlarmSeverity: voltageAlarmSeverity.name,
+      splitOptionAlarmSeverity: splitOptionAlarmSeverity.name,
+      voltageRippleAlarmSeverity: voltageRippleAlarmSeverity.name,
+      rfOutputPower1AlarmSeverity: rfOutputPower1AlarmSeverity.name,
+      rfOutputPower3AlarmSeverity: rfOutputPower3AlarmSeverity.name,
+      rfOutputPower4AlarmSeverity: rfOutputPower4AlarmSeverity.name,
+      rfOutputPower6AlarmSeverity: rfOutputPower6AlarmSeverity.name,
+    );
+  }
 
 //   A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {
 //     // 給 定期更新 information page 的 alarm 用
@@ -1412,10 +1497,10 @@ class Dsim18CCorNodeParser {
 //     }
 //   }
 
-//   double _convertToFahrenheit(double celcius) {
-//     double fahrenheit = (celcius * 1.8) + 32;
-//     return fahrenheit;
-//   }
+  double _convertToFahrenheit(double celcius) {
+    double fahrenheit = (celcius * 1.8) + 32;
+    return fahrenheit;
+  }
 
 //   Future<String> getGPSCoordinates() async {
 //     bool serviceEnabled;
@@ -1559,18 +1644,18 @@ class A1P8GCCorNode91 {
     required this.minTemperatureF,
     required this.maxVoltage,
     required this.minVoltage,
-    required this.maxRFPower1,
-    required this.minRFPower1,
+    required this.maxRFOutputPower1,
+    required this.minRFOutputPower1,
     required this.ingressSetting1,
     required this.ingressSetting3,
     required this.ingressSetting4,
     required this.ingressSetting6,
     required this.splitOption,
-    required this.maxRFPower3,
-    required this.minRFPower3,
-    required this.fowwardVVA1,
-    required this.fowwardInSlope1,
-    required this.fowwarOutSlope1,
+    required this.maxRFOutputPower3,
+    required this.minRFOutputPower3,
+    required this.forwardVVA1,
+    required this.forwardInSlope1,
+    required this.forwardOutSlope1,
     required this.returnVCA1,
     required this.rfOutputPower1AlarmState,
     required this.rfOutputPower3AlarmState,
@@ -1578,8 +1663,8 @@ class A1P8GCCorNode91 {
     required this.rfOutputPower6AlarmState,
     required this.temperatureAlarmState,
     required this.voltageAlarmState,
-    required this.maxRFPower4,
-    required this.minRFPower4,
+    required this.maxRFOutputPower4,
+    required this.minRFOutputPower4,
     required this.splitOptionAlarmState,
     required this.location,
     required this.logInterval,
@@ -1595,8 +1680,8 @@ class A1P8GCCorNode91 {
     required this.forwardInSlope6,
     required this.forwardOutSlope6,
     required this.returnVCA6,
-    required this.maxRFPower6,
-    required this.minRFPower6,
+    required this.maxRFOutputPower6,
+    required this.minRFOutputPower6,
   });
 
   final String maxTemperatureC;
@@ -1605,18 +1690,18 @@ class A1P8GCCorNode91 {
   final String minTemperatureF;
   final String maxVoltage;
   final String minVoltage;
-  final String maxRFPower1;
-  final String minRFPower1;
+  final String maxRFOutputPower1;
+  final String minRFOutputPower1;
   final String ingressSetting1;
   final String ingressSetting3;
   final String ingressSetting4;
   final String ingressSetting6;
   final String splitOption;
-  final String maxRFPower3;
-  final String minRFPower3;
-  final String fowwardVVA1;
-  final String fowwardInSlope1;
-  final String fowwarOutSlope1;
+  final String maxRFOutputPower3;
+  final String minRFOutputPower3;
+  final String forwardVVA1;
+  final String forwardInSlope1;
+  final String forwardOutSlope1;
   final String returnVCA1;
   final String rfOutputPower1AlarmState;
   final String rfOutputPower3AlarmState;
@@ -1624,8 +1709,8 @@ class A1P8GCCorNode91 {
   final String rfOutputPower6AlarmState;
   final String temperatureAlarmState;
   final String voltageAlarmState;
-  final String maxRFPower4;
-  final String minRFPower4;
+  final String maxRFOutputPower4;
+  final String minRFOutputPower4;
   final String splitOptionAlarmState;
   final String location;
   final String logInterval;
@@ -1641,8 +1726,8 @@ class A1P8GCCorNode91 {
   final String forwardInSlope6;
   final String forwardOutSlope6;
   final String returnVCA6;
-  final String maxRFPower6;
-  final String minRFPower6;
+  final String maxRFOutputPower6;
+  final String minRFOutputPower6;
 }
 
 class A1P8GCCorNodeA1 {
@@ -1673,6 +1758,7 @@ class A1P8GCCorNodeA1 {
     required this.currentReturnVCA6,
     required this.currentWorkingMode,
     required this.currentDetectedSplitOption,
+    required this.unitStatusAlarmSeverity,
     required this.temperatureAlarmSeverity,
     required this.voltageAlarmSeverity,
     required this.splitOptionAlarmSeverity,
@@ -1709,6 +1795,7 @@ class A1P8GCCorNodeA1 {
   final String currentReturnVCA6;
   final String currentWorkingMode;
   final String currentDetectedSplitOption;
+  final String unitStatusAlarmSeverity;
   final String temperatureAlarmSeverity;
   final String voltageAlarmSeverity;
   final String splitOptionAlarmSeverity;
