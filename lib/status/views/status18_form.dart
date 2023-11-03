@@ -1980,6 +1980,9 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
               ),
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
+      int intFrequency = int.parse(frequency);
+      frequency = intFrequency >= 1209 ? '1785~1791' : frequency;
+
       return Text(
         frequency.isEmpty ? 'N/A' : frequency,
         style: TextStyle(
@@ -2175,6 +2178,9 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
               ),
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
+      int intFrequency = int.parse(frequency);
+      frequency = intFrequency >= 1209 ? '1785~1791' : frequency;
+
       return Text(
         frequency.isEmpty ? 'N/A' : frequency,
         style: TextStyle(
