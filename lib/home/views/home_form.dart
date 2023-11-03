@@ -129,8 +129,26 @@ class _HomeFormState extends State<HomeForm> {
             pageController: _pageController,
           ),
         ];
+      } else if (aciDeviceType == ACIDeviceType.amplifier1P8G) {
+        // 適用 1.8G Amplifier 的頁面
+        return [
+          Setting18Page(
+            pageController: _pageController,
+          ),
+          Status18Page(
+            pageController: _pageController,
+          ),
+          Information18Page(
+            pageController: _pageController,
+          ),
+          Chart18Page(
+            pageController: _pageController,
+          ),
+          AboutPage(
+            pageController: _pageController,
+          ),
+        ];
       } else {
-        // 適用 1.8G 的頁面
         return [
           Setting18Page(
             pageController: _pageController,
