@@ -128,10 +128,10 @@ class Dsim18CCorNodeParser {
     String forwardInSlope1 = '';
     String forwardOutSlope1 = '';
     String returnVCA1 = '';
-    String rfOutputPower1AlarmState = '';
-    String rfOutputPower3AlarmState = '';
-    String rfOutputPower4AlarmState = '';
-    String rfOutputPower6AlarmState = '';
+    String rfOutputPowerAlarmState1 = '';
+    String rfOutputPowerAlarmState3 = '';
+    String rfOutputPowerAlarmState4 = '';
+    String rfOutputPowerAlarmState6 = '';
     String temperatureAlarmState = '';
     String voltageAlarmState = '';
     String maxRFOutputPower4 = '';
@@ -142,7 +142,7 @@ class Dsim18CCorNodeParser {
     String forwardVVA3 = '';
     String forwardInSlope3 = '';
     String forwardOutSlope3 = '';
-    String rerturnVCA3 = '';
+    String returnVCA3 = '';
     String forwardVVA4 = '';
     String forwardInSlope4 = '';
     String forwardOutSlope4 = '';
@@ -261,17 +261,17 @@ class Dsim18CCorNodeParser {
         ByteData.sublistView(Uint8List.fromList(rawReturnVCA1));
     returnVCA1 = rawReturnVCA1ByteData.getInt16(0, Endian.little).toString();
 
-    // 解析 rfOutputPower1AlarmState
-    rfOutputPower1AlarmState = rawData[41].toString();
+    // 解析 rfOutputPowerAlarmState1
+    rfOutputPowerAlarmState1 = rawData[41].toString();
 
-    // 解析 rfOutputPower3AlarmState
-    rfOutputPower3AlarmState = rawData[42].toString();
+    // 解析 rfOutputPowerAlarmState3
+    rfOutputPowerAlarmState3 = rawData[42].toString();
 
-    // 解析 rfOutputPower4AlarmState
-    rfOutputPower4AlarmState = rawData[43].toString();
+    // 解析 rfOutputPowerAlarmState4
+    rfOutputPowerAlarmState4 = rawData[43].toString();
 
-    // 解析 rfOutputPower6AlarmState
-    rfOutputPower6AlarmState = rawData[44].toString();
+    // 解析 rfOutputPowerAlarmState6
+    rfOutputPowerAlarmState6 = rawData[44].toString();
 
     // 解析 temperatureAlarmState
     temperatureAlarmState = rawData[45].toString();
@@ -339,11 +339,11 @@ class Dsim18CCorNodeParser {
         (rawForwardOutSlope3ByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
 
-    // 解析 rerturnVCA3
+    // 解析 returnVCA3
     List<int> rawReturnVCA3 = rawData.sublist(157, 159);
     ByteData rawReturnVCA3ByteData =
         ByteData.sublistView(Uint8List.fromList(rawReturnVCA3));
-    rerturnVCA3 = (rawReturnVCA3ByteData.getInt16(0, Endian.little) / 10)
+    returnVCA3 = (rawReturnVCA3ByteData.getInt16(0, Endian.little) / 10)
         .toStringAsFixed(1);
 
     // 解析 forwardVVA4
@@ -442,10 +442,10 @@ class Dsim18CCorNodeParser {
       forwardInSlope1: forwardInSlope1,
       forwardOutSlope1: forwardOutSlope1,
       returnVCA1: returnVCA1,
-      rfOutputPower1AlarmState: rfOutputPower1AlarmState,
-      rfOutputPower3AlarmState: rfOutputPower3AlarmState,
-      rfOutputPower4AlarmState: rfOutputPower4AlarmState,
-      rfOutputPower6AlarmState: rfOutputPower6AlarmState,
+      rfOutputPowerAlarmState1: rfOutputPowerAlarmState1,
+      rfOutputPowerAlarmState3: rfOutputPowerAlarmState3,
+      rfOutputPowerAlarmState4: rfOutputPowerAlarmState4,
+      rfOutputPowerAlarmState6: rfOutputPowerAlarmState6,
       temperatureAlarmState: temperatureAlarmState,
       voltageAlarmState: voltageAlarmState,
       maxRFOutputPower4: maxRFOutputPower4,
@@ -456,7 +456,7 @@ class Dsim18CCorNodeParser {
       forwardVVA3: forwardVVA3,
       forwardInSlope3: forwardInSlope3,
       forwardOutSlope3: forwardOutSlope3,
-      rerturnVCA3: rerturnVCA3,
+      returnVCA3: returnVCA3,
       forwardVVA4: forwardVVA4,
       forwardInSlope4: forwardInSlope4,
       forwardOutSlope4: forwardOutSlope4,
@@ -1549,10 +1549,10 @@ class A1P8GCCorNode91 {
     required this.forwardInSlope1,
     required this.forwardOutSlope1,
     required this.returnVCA1,
-    required this.rfOutputPower1AlarmState,
-    required this.rfOutputPower3AlarmState,
-    required this.rfOutputPower4AlarmState,
-    required this.rfOutputPower6AlarmState,
+    required this.rfOutputPowerAlarmState1,
+    required this.rfOutputPowerAlarmState3,
+    required this.rfOutputPowerAlarmState4,
+    required this.rfOutputPowerAlarmState6,
     required this.temperatureAlarmState,
     required this.voltageAlarmState,
     required this.maxRFOutputPower4,
@@ -1563,7 +1563,7 @@ class A1P8GCCorNode91 {
     required this.forwardVVA3,
     required this.forwardInSlope3,
     required this.forwardOutSlope3,
-    required this.rerturnVCA3,
+    required this.returnVCA3,
     required this.forwardVVA4,
     required this.forwardInSlope4,
     required this.forwardOutSlope4,
@@ -1595,10 +1595,10 @@ class A1P8GCCorNode91 {
   final String forwardInSlope1;
   final String forwardOutSlope1;
   final String returnVCA1;
-  final String rfOutputPower1AlarmState;
-  final String rfOutputPower3AlarmState;
-  final String rfOutputPower4AlarmState;
-  final String rfOutputPower6AlarmState;
+  final String rfOutputPowerAlarmState1;
+  final String rfOutputPowerAlarmState3;
+  final String rfOutputPowerAlarmState4;
+  final String rfOutputPowerAlarmState6;
   final String temperatureAlarmState;
   final String voltageAlarmState;
   final String maxRFOutputPower4;
@@ -1609,7 +1609,7 @@ class A1P8GCCorNode91 {
   final String forwardVVA3;
   final String forwardInSlope3;
   final String forwardOutSlope3;
-  final String rerturnVCA3;
+  final String returnVCA3;
   final String forwardVVA4;
   final String forwardInSlope4;
   final String forwardOutSlope4;

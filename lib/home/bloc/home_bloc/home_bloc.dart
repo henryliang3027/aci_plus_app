@@ -205,7 +205,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     DeviceCharacteristicChanged event,
     Emitter<HomeState> emit,
   ) {
-    Map<DataKey, String> newCharacteristicData = {};
+    Map<DataKey, dynamic> newCharacteristicData = {};
     newCharacteristicData.addEntries(state.characteristicData.entries);
     newCharacteristicData.addEntries(event.dataMap.entries);
     emit(state.copyWith(
@@ -258,7 +258,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 1:
-            Map<DataKey, String> newCharacteristicData = {};
+            Map<DataKey, dynamic> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             newCharacteristicData[DataKey.partNo] = result[1];
             newCharacteristicData[DataKey.hasDualPilot] = result[2];
@@ -268,7 +268,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 2:
-            Map<DataKey, String> newCharacteristicData = {};
+            Map<DataKey, dynamic> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             newCharacteristicData[DataKey.serialNumber] = result[1];
             emit(state.copyWith(
@@ -276,7 +276,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 3:
-            Map<DataKey, String> newCharacteristicData = {};
+            Map<DataKey, dynamic> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             newCharacteristicData[DataKey.logInterval] = result[1];
             newCharacteristicData[DataKey.firmwareVersion] = result[2];
@@ -285,7 +285,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 4:
-            Map<DataKey, String> newCharacteristicData = {};
+            Map<DataKey, dynamic> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             newCharacteristicData[DataKey.currentAttenuation] = result[1];
             newCharacteristicData[DataKey.minAttenuation] = result[2];
@@ -296,7 +296,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 5:
-            Map<DataKey, String> newCharacteristicData = {};
+            Map<DataKey, dynamic> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             newCharacteristicData[DataKey.workingMode] = result[1];
             newCharacteristicData[DataKey.currentPilot] = result[2];
@@ -312,7 +312,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 6:
-            Map<DataKey, String> newCharacteristicData = {};
+            Map<DataKey, dynamic> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             newCharacteristicData[DataKey.centerAttenuation] = result[1];
             newCharacteristicData[DataKey.currentVoltageRipple] = result[2];
@@ -321,7 +321,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 7:
-            Map<DataKey, String> newCharacteristicData = {};
+            Map<DataKey, dynamic> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             newCharacteristicData[DataKey.location] = result[1];
             emit(state.copyWith(
@@ -344,7 +344,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           case 21:
           case 22:
             // request log command 14 ~ 29
-            Map<DataKey, String> newCharacteristicData = {};
+            Map<DataKey, dynamic> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             List<List<ValuePair>> dateValueCollectionOfLog =
                 _dsimRepository.getDateValueCollectionOfLogs();
@@ -354,7 +354,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 23:
-            Map<DataKey, String> newCharacteristicData = {};
+            Map<DataKey, dynamic> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
 
             List<List<ValuePair>> dateValueCollectionOfLog =

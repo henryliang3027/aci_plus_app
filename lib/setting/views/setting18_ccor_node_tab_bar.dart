@@ -1,6 +1,5 @@
-import 'package:dsim_app/setting/views/setting18_configure_page.dart';
-import 'package:dsim_app/setting/views/setting18_control_page.dart';
-import 'package:dsim_app/setting/views/setting18_threshold_page.dart';
+import 'package:dsim_app/setting/views/setting18_ccor_node_configure_page.dart';
+import 'package:dsim_app/setting/views/setting18_ccor_node_threshold_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -70,9 +69,8 @@ class Setting18CCorNodeTabBar extends StatelessWidget {
             child: TabBarView(
               // physics: NeverScrollableScrollPhysics(),
               children: [
-                Setting18ConfigurePage(),
-                Setting18ThresholdPage(),
-                Setting18ControlPage(),
+                Setting18CCorNodeConfigurePage(),
+                Setting18CCorNodeThresholdPage(),
               ],
             ),
           ),

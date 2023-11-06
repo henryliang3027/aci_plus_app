@@ -225,9 +225,9 @@ class Setting18ControlView extends StatelessWidget {
             break;
           case SettingControl.returnInputAttenuation6:
             break;
-          case SettingControl.returnInputAttenuation2and3:
+          case SettingControl.returnInputAttenuation2And3:
             break;
-          case SettingControl.returnInputAttenuation5and6:
+          case SettingControl.returnInputAttenuation5And6:
             break;
           case SettingControl.returnOutputAttenuation:
             widgets.add(
@@ -259,9 +259,9 @@ class Setting18ControlView extends StatelessWidget {
             break;
           case SettingControl.returnIngressSetting6:
             break;
-          case SettingControl.returnIngressSetting2_3:
+          case SettingControl.returnIngressSetting2And3:
             break;
-          case SettingControl.returnIngressSetting5_6:
+          case SettingControl.returnIngressSetting5And6:
             break;
         }
       }
