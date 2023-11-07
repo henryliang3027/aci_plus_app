@@ -1,6 +1,22 @@
 {
+  "es": [
+    "dialogMessageReturnOutputEqualizer1Setting",
+    "dialogMessageReturnOutputEqualizer3Setting",
+    "dialogMessageReturnOutputEqualizer4Setting",
+    "dialogMessageReturnOutputEqualizer6Setting"
+  ],
+
   "fr": [
-    "dialogMessageDeviceNotFound",
-    "dialogMessageBluetoothDisabled"
+    "dialogMessageReturnOutputEqualizer1Setting",
+    "dialogMessageReturnOutputEqualizer3Setting",
+    "dialogMessageReturnOutputEqualizer4Setting",
+    "dialogMessageReturnOutputEqualizer6Setting"
+  ],
+
+  "zh": [
+    "dialogMessageReturnOutputEqualizer1Setting",
+    "dialogMessageReturnOutputEqualizer3Setting",
+    "dialogMessageReturnOutputEqualizer4Setting",
+    "dialogMessageReturnOutputEqualizer6Setting"
   ]
 }

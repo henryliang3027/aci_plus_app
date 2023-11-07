@@ -433,7 +433,7 @@ class BLEClient {
   }
 
   // 透過 1G/1.2G/1.8G 同樣的基本指令, 來取得回傳資料的長度
-  Future<dynamic> _requestDataLength(List<int> value) async {
+  Future<dynamic> _requestBasicInformationRawData(List<int> value) async {
     _currentCommandIndex = -1;
 
     print('get data from request command 0');
@@ -444,7 +444,7 @@ class BLEClient {
         value: value,
         timeout: const Duration(seconds: 10),
       );
-      return [true, rawData.length];
+      return [true, rawData];
     } catch (e) {
       return [
         false,
@@ -462,10 +462,11 @@ class BLEClient {
     final negotiatedMtu = await _ble!.requestMtu(deviceId: deviceId, mtu: mtu);
 
     // 設定 mtu = 247
-    List<dynamic> result = await _requestDataLength(value);
+    List<dynamic> result = await _requestBasicInformationRawData(value);
 
     if (result[0]) {
-      int length = result[1];
+      List<int> rawData = result[1];
+      int length = rawData.length;
       // 1G/1.2G data length = 17
       if (length == 17) {
         return [
@@ -474,10 +475,18 @@ class BLEClient {
         ];
       } else {
         // 1.8G data length = 181
-        return [
-          true,
-          ACIDeviceType.amplifier1P8G,
-        ];
+        int partId = rawData[71];
+        if (partId == 4) {
+          return [
+            true,
+            ACIDeviceType.cCorNode1P8G,
+          ];
+        } else {
+          return [
+            true,
+            ACIDeviceType.amplifier1P8G,
+          ];
+        }
       }
     } else {
       return [

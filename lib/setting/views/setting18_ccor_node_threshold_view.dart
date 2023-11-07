@@ -4,7 +4,6 @@ import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/core/setting_items_table.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:dsim_app/repositories/dsim18_ccor_node_parser.dart';
 import 'package:dsim_app/repositories/unit_repository.dart';
 import 'package:dsim_app/setting/bloc/setting18_ccor_node_threshold/setting18_ccor_node_threshold_bloc.dart';
 import 'package:dsim_app/setting/views/custom_setting_dialog.dart';
@@ -28,36 +27,20 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
       TextEditingController();
   final TextEditingController maxRFOutputPower1TextEditingController =
       TextEditingController();
-  final TextEditingController outputAttenuation1TextEditingController =
-      TextEditingController();
-  final TextEditingController outputEqualizer1TextEditingController =
-      TextEditingController();
 
   final TextEditingController minRFOutputPower3TextEditingController =
       TextEditingController();
   final TextEditingController maxRFOutputPower3TextEditingController =
-      TextEditingController();
-  final TextEditingController outputAttenuation3TextEditingController =
-      TextEditingController();
-  final TextEditingController outputEqualizer3TextEditingController =
       TextEditingController();
 
   final TextEditingController minRFOutputPower4TextEditingController =
       TextEditingController();
   final TextEditingController maxRFOutputPower4TextEditingController =
       TextEditingController();
-  final TextEditingController outputAttenuation4TextEditingController =
-      TextEditingController();
-  final TextEditingController outputEqualizer4TextEditingController =
-      TextEditingController();
 
   final TextEditingController minRFOutputPower6TextEditingController =
       TextEditingController();
   final TextEditingController maxRFOutputPower6TextEditingController =
-      TextEditingController();
-  final TextEditingController outputAttenuation6TextEditingController =
-      TextEditingController();
-  final TextEditingController outputEqualizer6TextEditingController =
       TextEditingController();
 
   @override
@@ -66,72 +49,64 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
 
     String minTemperature =
-        homeState.characteristicData[DataKey.minTemperatureC];
+        homeState.characteristicData[DataKey.minTemperatureC] ?? '';
     String maxTemperature =
-        homeState.characteristicData[DataKey.maxTemperatureC];
+        homeState.characteristicData[DataKey.maxTemperatureC] ?? '';
     String minTemperatureF =
-        homeState.characteristicData[DataKey.minTemperatureF];
+        homeState.characteristicData[DataKey.minTemperatureF] ?? '';
     String maxTemperatureF =
-        homeState.characteristicData[DataKey.maxTemperatureF];
-    String minVoltage = homeState.characteristicData[DataKey.minVoltage];
-    String maxVoltage = homeState.characteristicData[DataKey.maxVoltage];
+        homeState.characteristicData[DataKey.maxTemperatureF] ?? '';
+    String minVoltage = homeState.characteristicData[DataKey.minVoltage] ?? '';
+    String maxVoltage = homeState.characteristicData[DataKey.maxVoltage] ?? '';
 
     String strTemperatureAlarmState =
-        homeState.characteristicData[DataKey.temperatureAlarmState];
+        homeState.characteristicData[DataKey.temperatureAlarmState] ?? '';
     bool temperatureAlarmState = strTemperatureAlarmState == '1' ? false : true;
 
     String strVoltageAlarmState =
-        homeState.characteristicData[DataKey.voltageAlarmState];
+        homeState.characteristicData[DataKey.voltageAlarmState] ?? '';
     bool voltageAlarmState = strVoltageAlarmState == '1' ? false : true;
 
     String strSplitOptionAlarmState =
-        homeState.characteristicData[DataKey.splitOptionAlarmState];
+        homeState.characteristicData[DataKey.splitOptionAlarmState] ?? '';
     bool splitOptionAlarmState = strSplitOptionAlarmState == '1' ? false : true;
 
     String strRFOutputPowerAlarmState1 =
-        homeState.characteristicData[DataKey.rfOutputPowerAlarmState1];
+        homeState.characteristicData[DataKey.rfOutputPowerAlarmState1] ?? '';
     bool rfOutputPowerAlarmState1 =
         strRFOutputPowerAlarmState1 == '1' ? false : true;
 
     String strRFOutputPowerAlarmState3 =
-        homeState.characteristicData[DataKey.rfOutputPowerAlarmState3];
+        homeState.characteristicData[DataKey.rfOutputPowerAlarmState3] ?? '';
     bool rfOutputPowerAlarmState3 =
         strRFOutputPowerAlarmState3 == '1' ? false : true;
 
     String strRFOutputPowerAlarmState4 =
-        homeState.characteristicData[DataKey.rfOutputPowerAlarmState4];
+        homeState.characteristicData[DataKey.rfOutputPowerAlarmState4] ?? '';
     bool rfOutputPowerAlarmState4 =
         strRFOutputPowerAlarmState4 == '1' ? false : true;
 
     String strRFOutputPowerAlarmState6 =
-        homeState.characteristicData[DataKey.rfOutputPowerAlarmState6];
+        homeState.characteristicData[DataKey.rfOutputPowerAlarmState6] ?? '';
     bool rfOutputPowerAlarmState6 =
         strRFOutputPowerAlarmState6 == '1' ? false : true;
 
     String minRFOutputPower1 =
-        homeState.characteristicData[DataKey.minRFOutputPower1];
+        homeState.characteristicData[DataKey.minRFOutputPower1] ?? '';
     String maxRFOutputPower1 =
-        homeState.characteristicData[DataKey.maxRFOutputPower1];
-    // String outputAttenuation1 = a1p8GCCorNode91.forwardVVA1;
-    // String outputEqualizer1 = a1p8GCCorNode91.forwardOutSlope1;
+        homeState.characteristicData[DataKey.maxRFOutputPower1] ?? '';
     String minRFOutputPower3 =
-        homeState.characteristicData[DataKey.minRFOutputPower3];
+        homeState.characteristicData[DataKey.minRFOutputPower3] ?? '';
     String maxRFOutputPower3 =
-        homeState.characteristicData[DataKey.maxRFOutputPower3];
-    // String outputAttenuation3 = a1p8GCCorNode91.forwardVVA3;
-    // String outputEqualizer3 = a1p8GCCorNode91.forwardOutSlope3;
+        homeState.characteristicData[DataKey.maxRFOutputPower3] ?? '';
     String minRFOutputPower4 =
-        homeState.characteristicData[DataKey.minRFOutputPower4];
+        homeState.characteristicData[DataKey.minRFOutputPower4] ?? '';
     String maxRFOutputPower4 =
-        homeState.characteristicData[DataKey.maxRFOutputPower4];
-    // String outputAttenuation4 = a1p8GCCorNode91.forwardVVA4;
-    // String outputEqualizer4 = a1p8GCCorNode91.forwardOutSlope4;
+        homeState.characteristicData[DataKey.maxRFOutputPower4] ?? '';
     String minRFOutputPower6 =
-        homeState.characteristicData[DataKey.minRFOutputPower6];
+        homeState.characteristicData[DataKey.minRFOutputPower6] ?? '';
     String maxRFOutputPower6 =
-        homeState.characteristicData[DataKey.maxRFOutputPower6];
-    // String outputAttenuation6 = a1p8GCCorNode91.forwardVVA6;
-    // String outputEqualizer6 = a1p8GCCorNode91.forwardOutSlope6;
+        homeState.characteristicData[DataKey.maxRFOutputPower6] ?? '';
 
     context.read<Setting18CCorNodeThresholdBloc>().add(Initialized(
           temperatureAlarmState: temperatureAlarmState,
@@ -146,23 +121,15 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
           rfOutputPowerAlarmState1: rfOutputPowerAlarmState1,
           minRFOutputPower1: minRFOutputPower1,
           maxRFOutputPower1: maxRFOutputPower1,
-          outputAttenuation1: outputAttenuation1,
-          outputEqualizer1: outputEqualizer1,
           rfOutputPowerAlarmState3: rfOutputPowerAlarmState3,
           minRFOutputPower3: minRFOutputPower3,
           maxRFOutputPower3: maxRFOutputPower3,
-          outputAttenuation3: outputAttenuation3,
-          outputEqualizer3: outputEqualizer3,
           rfOutputPowerAlarmState4: rfOutputPowerAlarmState4,
           minRFOutputPower4: minRFOutputPower4,
           maxRFOutputPower4: maxRFOutputPower4,
-          outputAttenuation4: outputAttenuation4,
-          outputEqualizer4: outputEqualizer4,
           rfOutputPowerAlarmState6: rfOutputPowerAlarmState6,
           minRFOutputPower6: minRFOutputPower6,
           maxRFOutputPower6: maxRFOutputPower6,
-          outputAttenuation6: outputAttenuation6,
-          outputEqualizer6: outputEqualizer6,
         ));
 
     String formatResultValue(String boolValue) {
@@ -180,16 +147,10 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
         return AppLocalizations.of(context).dialogMessageMaxVoltageSetting;
       } else if (item == DataKey.minVoltage.name) {
         return AppLocalizations.of(context).dialogMessageMinVoltageSetting;
-      } else if (item == DataKey.maxVoltageRipple.name) {
-        return AppLocalizations.of(context)
-            .dialogMessageMaxVoltageRippleSetting;
-      } else if (item == DataKey.minVoltageRipple.name) {
-        return AppLocalizations.of(context)
-            .dialogMessageMinVoltageRippleSetting;
-      } else if (item == DataKey.maxRFOutputPower.name) {
+      } else if (item == DataKey.maxRFOutputPower1.name) {
         return AppLocalizations.of(context)
             .dialogMessageMaxRFOutputPowerSetting;
-      } else if (item == DataKey.minRFOutputPower.name) {
+      } else if (item == DataKey.minRFOutputPower1.name) {
         return AppLocalizations.of(context)
             .dialogMessageMinRFOutputPowerSetting;
       } else if (item == DataKey.temperatureAlarmState.name) {
@@ -198,21 +159,9 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
       } else if (item == DataKey.voltageAlarmState.name) {
         return AppLocalizations.of(context)
             .dialogMessageVoltageAlarmStateSetting;
-      } else if (item == DataKey.voltageRippleAlarmState.name) {
-        return AppLocalizations.of(context)
-            .dialogMessageVoltageRippleAlarmStateSetting;
-      } else if (item == DataKey.rfOutputPowerAlarmState.name) {
-        return AppLocalizations.of(context)
-            .dialogMessageRFOutputPowerAlarmStateSetting;
       } else if (item == DataKey.splitOptionAlarmState.name) {
         return AppLocalizations.of(context)
             .dialogMessageSplitOptionAlarmStateSetting;
-      } else if (item == DataKey.pilotFrequency1AlarmState.name) {
-        return AppLocalizations.of(context)
-            .dialogMessagePilotFrequency1AlarmStateSetting;
-      } else if (item == DataKey.pilotFrequency2AlarmState.name) {
-        return AppLocalizations.of(context)
-            .dialogMessagePilotFrequency2AlarmStateSetting;
       } else {
         return '';
       }
@@ -437,8 +386,12 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
           maxVoltageTextEditingController.text = state.maxVoltage;
           minRFOutputPower1TextEditingController.text = state.minRFOutputPower1;
           maxRFOutputPower1TextEditingController.text = state.maxRFOutputPower1;
-          outputAttenuation1TextEditingController.text = outputAttenuation1;
-          outputEqualizer1TextEditingController.text = outputEqualizer1;
+          minRFOutputPower3TextEditingController.text = state.minRFOutputPower3;
+          maxRFOutputPower3TextEditingController.text = state.maxRFOutputPower3;
+          minRFOutputPower4TextEditingController.text = state.minRFOutputPower4;
+          maxRFOutputPower4TextEditingController.text = state.maxRFOutputPower4;
+          minRFOutputPower6TextEditingController.text = state.minRFOutputPower6;
+          maxRFOutputPower6TextEditingController.text = state.maxRFOutputPower6;
         }
       },
       child: Scaffold(

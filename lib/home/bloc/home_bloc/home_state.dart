@@ -26,7 +26,7 @@ class HomeState extends Equatable {
   final bool showSplash;
   final ACIDeviceType aciDeviceType;
   final DiscoveredDevice? device;
-  final Map<DataKey, dynamic> characteristicData;
+  final Map<DataKey, String> characteristicData;
   final String errorMassage;
   final List<List<ValuePair>> dateValueCollectionOfLog;
 
@@ -40,7 +40,7 @@ class HomeState extends Equatable {
     bool? showSplash,
     ACIDeviceType? aciDeviceType,
     DiscoveredDevice? device,
-    Map<DataKey, dynamic>? characteristicData,
+    Map<DataKey, String>? characteristicData,
     String? errorMassage,
     List<List<ValuePair>>? dateValueCollectionOfLog,
   }) {

@@ -21,23 +21,15 @@ class Initialized extends Setting18CCorNodeThresholdEvent {
     required this.rfOutputPowerAlarmState1,
     required this.minRFOutputPower1,
     required this.maxRFOutputPower1,
-    required this.outputAttenuation1,
-    required this.outputEqualizer1,
     required this.rfOutputPowerAlarmState3,
     required this.minRFOutputPower3,
     required this.maxRFOutputPower3,
-    required this.outputAttenuation3,
-    required this.outputEqualizer3,
     required this.rfOutputPowerAlarmState4,
     required this.minRFOutputPower4,
     required this.maxRFOutputPower4,
-    required this.outputAttenuation4,
-    required this.outputEqualizer4,
     required this.rfOutputPowerAlarmState6,
     required this.minRFOutputPower6,
     required this.maxRFOutputPower6,
-    required this.outputAttenuation6,
-    required this.outputEqualizer6,
   });
 
   final bool temperatureAlarmState;
@@ -52,23 +44,15 @@ class Initialized extends Setting18CCorNodeThresholdEvent {
   final bool rfOutputPowerAlarmState1;
   final String minRFOutputPower1;
   final String maxRFOutputPower1;
-  final String outputAttenuation1;
-  final String outputEqualizer1;
   final bool rfOutputPowerAlarmState3;
   final String minRFOutputPower3;
   final String maxRFOutputPower3;
-  final String outputAttenuation3;
-  final String outputEqualizer3;
   final bool rfOutputPowerAlarmState4;
   final String minRFOutputPower4;
   final String maxRFOutputPower4;
-  final String outputAttenuation4;
-  final String outputEqualizer4;
   final bool rfOutputPowerAlarmState6;
   final String minRFOutputPower6;
   final String maxRFOutputPower6;
-  final String outputAttenuation6;
-  final String outputEqualizer6;
 
   @override
   List<Object> get props => [
@@ -84,23 +68,15 @@ class Initialized extends Setting18CCorNodeThresholdEvent {
         rfOutputPowerAlarmState1,
         minRFOutputPower1,
         maxRFOutputPower1,
-        outputAttenuation1,
-        outputEqualizer1,
         rfOutputPowerAlarmState3,
         minRFOutputPower3,
         maxRFOutputPower3,
-        outputAttenuation3,
-        outputEqualizer3,
         rfOutputPowerAlarmState4,
         minRFOutputPower4,
         maxRFOutputPower4,
-        outputAttenuation4,
-        outputEqualizer4,
         rfOutputPowerAlarmState6,
         minRFOutputPower6,
         maxRFOutputPower6,
-        outputAttenuation6,
-        outputEqualizer6,
       ];
 }
 
@@ -194,24 +170,6 @@ class MaxRFOutputPower1Changed extends Setting18CCorNodeThresholdEvent {
   @override
   List<Object> get props => [maxRFOutputPower1];
 }
-
-class OutputAttenuation1Changed extends Setting18CCorNodeThresholdEvent {
-  const OutputAttenuation1Changed(this.outputAttenuation1);
-
-  final String outputAttenuation1;
-
-  @override
-  List<Object> get props => [outputAttenuation1];
-}
-
-class OutputEqualizer1Changed extends Setting18CCorNodeThresholdEvent {
-  const OutputEqualizer1Changed(this.outputEqualizer1);
-
-  final String outputEqualizer1;
-
-  @override
-  List<Object> get props => [outputEqualizer1];
-}
 // port 1
 
 // port 3
@@ -240,24 +198,6 @@ class MaxRFOutputPower3Changed extends Setting18CCorNodeThresholdEvent {
 
   @override
   List<Object> get props => [maxRFOutputPower3];
-}
-
-class OutputAttenuation3Changed extends Setting18CCorNodeThresholdEvent {
-  const OutputAttenuation3Changed(this.outputAttenuation3);
-
-  final String outputAttenuation3;
-
-  @override
-  List<Object> get props => [outputAttenuation3];
-}
-
-class OutputEqualizer3Changed extends Setting18CCorNodeThresholdEvent {
-  const OutputEqualizer3Changed(this.outputEqualizer3);
-
-  final String outputEqualizer3;
-
-  @override
-  List<Object> get props => [outputEqualizer3];
 }
 // port 3
 
@@ -288,24 +228,6 @@ class MaxRFOutputPower4Changed extends Setting18CCorNodeThresholdEvent {
   @override
   List<Object> get props => [maxRFOutputPower4];
 }
-
-class OutputAttenuation4Changed extends Setting18CCorNodeThresholdEvent {
-  const OutputAttenuation4Changed(this.outputAttenuation4);
-
-  final String outputAttenuation4;
-
-  @override
-  List<Object> get props => [outputAttenuation4];
-}
-
-class OutputEqualizer4Changed extends Setting18CCorNodeThresholdEvent {
-  const OutputEqualizer4Changed(this.outputEqualizer4);
-
-  final String outputEqualizer4;
-
-  @override
-  List<Object> get props => [outputEqualizer4];
-}
 // port 4
 
 // port 6
@@ -334,24 +256,6 @@ class MaxRFOutputPower6Changed extends Setting18CCorNodeThresholdEvent {
 
   @override
   List<Object> get props => [maxRFOutputPower6];
-}
-
-class OutputAttenuation6Changed extends Setting18CCorNodeThresholdEvent {
-  const OutputAttenuation6Changed(this.outputAttenuation6);
-
-  final String outputAttenuation6;
-
-  @override
-  List<Object> get props => [outputAttenuation6];
-}
-
-class OutputEqualizer6Changed extends Setting18CCorNodeThresholdEvent {
-  const OutputEqualizer6Changed(this.outputEqualizer6);
-
-  final String outputEqualizer6;
-
-  @override
-  List<Object> get props => [outputEqualizer6];
 }
 // port 6
 

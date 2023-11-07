@@ -3,9 +3,11 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/command18.dart';
+import 'package:dsim_app/core/command18_c_core_node.dart';
 import 'package:dsim_app/core/crc16_calculate.dart';
 import 'package:dsim_app/core/shared_preference_key.dart';
 import 'package:dsim_app/repositories/ble_client.dart';
+import 'package:dsim_app/repositories/dsim18_ccor_node_parser.dart';
 import 'package:dsim_app/repositories/dsim18_chart_cache.dart';
 import 'package:dsim_app/repositories/dsim18_parser.dart';
 import 'package:dsim_app/repositories/dsim_parser.dart';
@@ -19,7 +21,8 @@ class DsimRepository {
       : _bleClient = BLEClient(),
         _dsimParser = DsimParser(),
         _dsim18Parser = Dsim18Parser(),
-        _dsim18ChartCache = Dsim18ChartCache();
+        _dsim18ChartCache = Dsim18ChartCache(),
+        _dsim18CCorNodeParser = Dsim18CCorNodeParser();
 
   StreamController<Map<DataKey, String>> _characteristicDataStreamController =
       StreamController<Map<DataKey, String>>();
@@ -28,6 +31,7 @@ class DsimRepository {
   final DsimParser _dsimParser;
   final Dsim18Parser _dsim18Parser;
   final Dsim18ChartCache _dsim18ChartCache;
+  final Dsim18CCorNodeParser _dsim18CCorNodeParser;
 
   Stream<ScanReport> get scanReport async* {
     yield* _bleClient.scanReport;
@@ -76,6 +80,220 @@ class DsimRepository {
 
   void clearCache() {
     _dsimParser.clearCache();
+  }
+
+  Future<dynamic> requestCommand1p8GCCorNode80() async {
+    int commandIndex = 180;
+
+    print('get data from request command 1p8G0');
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18CCorNodeParser
+            .command18CCorNodeCollection[commandIndex - 180],
+      );
+
+      A1P8GCCorNode80 a1p8gcCorNode80 =
+          _dsim18CCorNodeParser.decodeA1P8GCCorNode80(rawData);
+
+      return [
+        true,
+        <DataKey, String>{
+          DataKey.partName: a1p8gcCorNode80.partName,
+          DataKey.partNo: a1p8gcCorNode80.partNo,
+          DataKey.partId: a1p8gcCorNode80.partId,
+          DataKey.serialNumber: a1p8gcCorNode80.serialNumber,
+          DataKey.firmwareVersion: a1p8gcCorNode80.firmwareVersion,
+          DataKey.mfgDate: a1p8gcCorNode80.mfgDate,
+          DataKey.coordinates: a1p8gcCorNode80.coordinate,
+          DataKey.nowDateTime: a1p8gcCorNode80.nowDateTime,
+        },
+      ];
+    } catch (e) {
+      return [
+        false,
+      ];
+    }
+  }
+
+  Future<dynamic> requestCommand1p8GCCorNode91() async {
+    int commandIndex = 181;
+
+    print('get data from request command 1p8G0');
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18CCorNodeParser
+            .command18CCorNodeCollection[commandIndex - 180],
+      );
+
+      A1P8GCCorNode91 a1p8gcCorNode91 =
+          _dsim18CCorNodeParser.decodeA1P8GCCorNode91(rawData);
+
+      return [
+        true,
+        <DataKey, String>{
+          DataKey.maxTemperatureC: a1p8gcCorNode91.maxTemperatureC,
+          DataKey.minTemperatureC: a1p8gcCorNode91.minTemperatureC,
+          DataKey.maxTemperatureF: a1p8gcCorNode91.maxTemperatureF,
+          DataKey.minTemperatureF: a1p8gcCorNode91.minTemperatureF,
+          DataKey.maxVoltage: a1p8gcCorNode91.maxVoltage,
+          DataKey.minVoltage: a1p8gcCorNode91.minVoltage,
+          DataKey.maxRFOutputPower1: a1p8gcCorNode91.maxRFOutputPower1,
+          DataKey.minRFOutputPower1: a1p8gcCorNode91.minRFOutputPower1,
+          DataKey.ingressSetting1: a1p8gcCorNode91.ingressSetting1,
+          DataKey.ingressSetting3: a1p8gcCorNode91.ingressSetting3,
+          DataKey.ingressSetting4: a1p8gcCorNode91.ingressSetting4,
+          DataKey.ingressSetting6: a1p8gcCorNode91.ingressSetting6,
+          DataKey.splitOption: a1p8gcCorNode91.splitOption,
+          DataKey.maxRFOutputPower3: a1p8gcCorNode91.maxRFOutputPower3,
+          DataKey.minRFOutputPower3: a1p8gcCorNode91.minRFOutputPower3,
+          DataKey.forwardVVA1: a1p8gcCorNode91.forwardVVA1,
+          DataKey.forwardInSlope1: a1p8gcCorNode91.forwardInSlope1,
+          DataKey.forwardOutSlope1: a1p8gcCorNode91.forwardOutSlope1,
+          DataKey.returnVCA1: a1p8gcCorNode91.returnVCA1,
+          DataKey.rfOutputPowerAlarmState1:
+              a1p8gcCorNode91.rfOutputPowerAlarmState1,
+          DataKey.rfOutputPowerAlarmState3:
+              a1p8gcCorNode91.rfOutputPowerAlarmState3,
+          DataKey.rfOutputPowerAlarmState4:
+              a1p8gcCorNode91.rfOutputPowerAlarmState4,
+          DataKey.rfOutputPowerAlarmState6:
+              a1p8gcCorNode91.rfOutputPowerAlarmState6,
+          DataKey.temperatureAlarmState: a1p8gcCorNode91.temperatureAlarmState,
+          DataKey.voltageAlarmState: a1p8gcCorNode91.voltageAlarmState,
+          DataKey.maxRFOutputPower4: a1p8gcCorNode91.maxRFOutputPower4,
+          DataKey.minRFOutputPower4: a1p8gcCorNode91.minRFOutputPower4,
+          DataKey.splitOptionAlarmState: a1p8gcCorNode91.splitOptionAlarmState,
+          DataKey.location: a1p8gcCorNode91.location,
+          DataKey.logInterval: a1p8gcCorNode91.logInterval,
+          DataKey.forwardVVA3: a1p8gcCorNode91.forwardVVA3,
+          DataKey.forwardInSlope3: a1p8gcCorNode91.forwardInSlope3,
+          DataKey.forwardOutSlope3: a1p8gcCorNode91.forwardOutSlope3,
+          DataKey.returnVCA3: a1p8gcCorNode91.returnVCA3,
+          DataKey.forwardVVA4: a1p8gcCorNode91.forwardVVA4,
+          DataKey.forwardInSlope4: a1p8gcCorNode91.forwardInSlope4,
+          DataKey.forwardOutSlope4: a1p8gcCorNode91.forwardOutSlope4,
+          DataKey.returnVCA4: a1p8gcCorNode91.returnVCA4,
+          DataKey.forwardVVA6: a1p8gcCorNode91.forwardVVA6,
+          DataKey.forwardInSlope6: a1p8gcCorNode91.forwardInSlope6,
+          DataKey.forwardOutSlope6: a1p8gcCorNode91.forwardOutSlope6,
+          DataKey.returnVCA6: a1p8gcCorNode91.returnVCA6,
+          DataKey.maxRFOutputPower6: a1p8gcCorNode91.maxRFOutputPower6,
+          DataKey.minRFOutputPower6: a1p8gcCorNode91.minRFOutputPower6,
+        },
+      ];
+    } catch (e) {
+      return [
+        false,
+      ];
+    }
+  }
+
+  Future<dynamic> requestCommand1p8GCCorNodeA1() async {
+    int commandIndex = 182;
+
+    print('get data from request command 1p8G0');
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18CCorNodeParser
+            .command18CCorNodeCollection[commandIndex - 180],
+      );
+
+      A1P8GCCorNodeA1 a1p8gcCorNodeA1 =
+          _dsim18CCorNodeParser.decodeA1P8GCCorNodeA1(rawData);
+
+      return [
+        true,
+        <DataKey, String>{
+          DataKey.currentTemperatureC: a1p8gcCorNodeA1.currentTemperatureC,
+          DataKey.currentTemperatureF: a1p8gcCorNodeA1.currentTemperatureF,
+          DataKey.currentVoltage: a1p8gcCorNodeA1.currentVoltage,
+          DataKey.currentVoltageRipple: a1p8gcCorNodeA1.currentVoltageRipple,
+          DataKey.currentRFOutputPower1: a1p8gcCorNodeA1.currentRFOutputPower1,
+          DataKey.currentRFOutputPower3: a1p8gcCorNodeA1.currentRFOutputPower3,
+          DataKey.currentRFOutputPower4: a1p8gcCorNodeA1.currentRFOutputPower4,
+          DataKey.currentRFOutputPower6: a1p8gcCorNodeA1.currentRFOutputPower6,
+          DataKey.currentForwardVVA1: a1p8gcCorNodeA1.currentForwardVVA1,
+          DataKey.currentForwardInSlope1:
+              a1p8gcCorNodeA1.currentForwardInSlope1,
+          DataKey.currentForwardOutSlope1:
+              a1p8gcCorNodeA1.currentForwardOutSlope1,
+          DataKey.currentReturnVCA1: a1p8gcCorNodeA1.currentReturnVCA1,
+          DataKey.currentForwardVVA3: a1p8gcCorNodeA1.currentForwardVVA3,
+          DataKey.currentForwardInSlope3:
+              a1p8gcCorNodeA1.currentForwardInSlope3,
+          DataKey.currentForwardOutSlope3:
+              a1p8gcCorNodeA1.currentForwardOutSlope3,
+          DataKey.currentReturnVCA3: a1p8gcCorNodeA1.currentReturnVCA3,
+          DataKey.currentForwardVVA4: a1p8gcCorNodeA1.currentForwardVVA4,
+          DataKey.currentForwardInSlope4:
+              a1p8gcCorNodeA1.currentForwardInSlope4,
+          DataKey.currentForwardOutSlope4:
+              a1p8gcCorNodeA1.currentForwardOutSlope4,
+          DataKey.currentReturnVCA4: a1p8gcCorNodeA1.currentReturnVCA4,
+          DataKey.currentForwardVVA6: a1p8gcCorNodeA1.currentForwardVVA6,
+          DataKey.currentForwardInSlope6:
+              a1p8gcCorNodeA1.currentForwardInSlope6,
+          DataKey.currentForwardOutSlope6:
+              a1p8gcCorNodeA1.currentForwardOutSlope6,
+          DataKey.currentReturnVCA6: a1p8gcCorNodeA1.currentReturnVCA6,
+          DataKey.currentWorkingMode: a1p8gcCorNodeA1.currentWorkingMode,
+          DataKey.currentDetectedSplitOption:
+              a1p8gcCorNodeA1.currentDetectedSplitOption,
+          DataKey.unitStatusAlarmSeverity:
+              a1p8gcCorNodeA1.unitStatusAlarmSeverity,
+          DataKey.temperatureAlarmSeverity:
+              a1p8gcCorNodeA1.temperatureAlarmSeverity,
+          DataKey.voltageAlarmSeverity: a1p8gcCorNodeA1.voltageAlarmSeverity,
+          DataKey.splitOptionAlarmSeverity:
+              a1p8gcCorNodeA1.splitOptionAlarmSeverity,
+          DataKey.voltageRippleAlarmSeverity:
+              a1p8gcCorNodeA1.voltageRippleAlarmSeverity,
+          DataKey.rfOutputPower1AlarmSeverity:
+              a1p8gcCorNodeA1.rfOutputPower1AlarmSeverity,
+          DataKey.rfOutputPower3AlarmSeverity:
+              a1p8gcCorNodeA1.rfOutputPower3AlarmSeverity,
+          DataKey.rfOutputPower4AlarmSeverity:
+              a1p8gcCorNodeA1.rfOutputPower4AlarmSeverity,
+          DataKey.rfOutputPower6AlarmSeverity:
+              a1p8gcCorNodeA1.rfOutputPower6AlarmSeverity,
+        },
+      ];
+    } catch (e) {
+      return [
+        false,
+      ];
+    }
+  }
+
+  Future<dynamic> set1p8GCCorNodeLogInterval(String logInterval) async {
+    int commandIndex = 338;
+
+    int interval = int.parse(logInterval);
+
+    print('get data from request command 1p8G$commandIndex');
+
+    Command18CCorNode.setLogIntervalCmd[7] = interval;
+
+    CRC16.calculateCRC16(
+      command: Command18CCorNode.setLogIntervalCmd,
+      usDataLength: Command18CCorNode.setLogIntervalCmd.length - 2,
+    );
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18CCorNode.setLogIntervalCmd,
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<dynamic> requestCommand1p8G0() async {

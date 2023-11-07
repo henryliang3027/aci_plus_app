@@ -8,6 +8,7 @@ import 'package:dsim_app/core/message_localization.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/information/views/information18_page.dart';
 import 'package:dsim_app/information/views/information_page.dart';
+import 'package:dsim_app/setting/views/setting18_ccor_node_page.dart';
 import 'package:dsim_app/setting/views/setting18_page.dart';
 import 'package:dsim_app/setting/views/setting_page.dart';
 import 'package:dsim_app/status/views/status18_page.dart';
@@ -133,6 +134,24 @@ class _HomeFormState extends State<HomeForm> {
         // 適用 1.8G Amplifier 的頁面
         return [
           Setting18Page(
+            pageController: _pageController,
+          ),
+          Status18Page(
+            pageController: _pageController,
+          ),
+          Information18Page(
+            pageController: _pageController,
+          ),
+          Chart18Page(
+            pageController: _pageController,
+          ),
+          AboutPage(
+            pageController: _pageController,
+          ),
+        ];
+      } else if (aciDeviceType == ACIDeviceType.cCorNode1P8G) {
+        return [
+          Setting18CCorNodePage(
             pageController: _pageController,
           ),
           Status18Page(

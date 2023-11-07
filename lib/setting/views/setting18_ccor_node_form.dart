@@ -1,17 +1,17 @@
-import 'package:dsim_app/core/command.dart';
 import 'package:dsim_app/core/custom_style.dart';
 import 'package:dsim_app/core/form_status.dart';
 import 'package:dsim_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
+import 'package:dsim_app/setting/views/setting18_ccor_node_tab_bar.dart';
 import 'package:dsim_app/setting/views/setting18_graph_view.dart';
 import 'package:dsim_app/setting/views/setting18_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Setting18Form extends StatelessWidget {
-  const Setting18Form({
+class Setting18CCorNodeForm extends StatelessWidget {
+  const Setting18CCorNodeForm({
     super.key,
     required this.pageController,
   });
@@ -174,9 +174,9 @@ class _Layout extends StatelessWidget {
           previous.isGraphType != current.isGraphType,
       builder: (context, state) {
         if (state.isGraphType) {
-          return Setting18GraphView();
+          return const Setting18GraphView();
         } else {
-          return Setting18TabBar();
+          return const Setting18CCorNodeTabBar();
         }
       },
     );

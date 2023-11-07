@@ -120,7 +120,10 @@ class _LogChartView extends StatelessWidget {
       listener: (context, state) async {
         if (state.logRequestStatus.isRequestSuccess) {
           if (!state.hasNextChunk) {
-            showNoMoreDataDialog();
+            // 避免 dialog 重複跳出
+            if (ModalRoute.of(context)?.isCurrent == true) {
+              showNoMoreDataDialog();
+            }
           }
         } else if (state.logRequestStatus.isRequestFailure) {
           showFailureDialog(state.errorMessage);

@@ -24,6 +24,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
     on<DataRequested>(_onDataRequested);
     on<Data18Requested>(_onData18Requested);
+    on<CCorNode18DataRequested>(_onCCorNode18DataRequested);
     on<EventRequested>(_onEventRequested);
     on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
@@ -159,6 +160,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               },
               onDone: () {},
             );
+          } else if (aciDeviceType == ACIDeviceType.cCorNode1P8G) {
+            print('1.8G _characteristicDataStreamSubscription');
+            add(const CCorNode18DataRequested());
+            //當在設定頁面設定資料時, 用來更新Information page 對應的資料欄位
+            _characteristicDataStreamSubscription =
+                _dsimRepository.characteristicData.listen(
+              (data) {
+                add(DeviceCharacteristicChanged(data));
+              },
+              onDone: () {},
+            );
           } else {
             print('1G/1.2G _characteristicDataStreamSubscription');
             add(const DataRequested());
@@ -205,7 +217,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     DeviceCharacteristicChanged event,
     Emitter<HomeState> emit,
   ) {
-    Map<DataKey, dynamic> newCharacteristicData = {};
+    Map<DataKey, String> newCharacteristicData = {};
     newCharacteristicData.addEntries(state.characteristicData.entries);
     newCharacteristicData.addEntries(event.dataMap.entries);
     emit(state.copyWith(
@@ -258,7 +270,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 1:
-            Map<DataKey, dynamic> newCharacteristicData = {};
+            Map<DataKey, String> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             newCharacteristicData[DataKey.partNo] = result[1];
             newCharacteristicData[DataKey.hasDualPilot] = result[2];
@@ -268,7 +280,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 2:
-            Map<DataKey, dynamic> newCharacteristicData = {};
+            Map<DataKey, String> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             newCharacteristicData[DataKey.serialNumber] = result[1];
             emit(state.copyWith(
@@ -276,7 +288,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 3:
-            Map<DataKey, dynamic> newCharacteristicData = {};
+            Map<DataKey, String> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             newCharacteristicData[DataKey.logInterval] = result[1];
             newCharacteristicData[DataKey.firmwareVersion] = result[2];
@@ -285,7 +297,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 4:
-            Map<DataKey, dynamic> newCharacteristicData = {};
+            Map<DataKey, String> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             newCharacteristicData[DataKey.currentAttenuation] = result[1];
             newCharacteristicData[DataKey.minAttenuation] = result[2];
@@ -296,7 +308,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 5:
-            Map<DataKey, dynamic> newCharacteristicData = {};
+            Map<DataKey, String> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             newCharacteristicData[DataKey.workingMode] = result[1];
             newCharacteristicData[DataKey.currentPilot] = result[2];
@@ -312,7 +324,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 6:
-            Map<DataKey, dynamic> newCharacteristicData = {};
+            Map<DataKey, String> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             newCharacteristicData[DataKey.centerAttenuation] = result[1];
             newCharacteristicData[DataKey.currentVoltageRipple] = result[2];
@@ -321,7 +333,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 7:
-            Map<DataKey, dynamic> newCharacteristicData = {};
+            Map<DataKey, String> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             newCharacteristicData[DataKey.location] = result[1];
             emit(state.copyWith(
@@ -354,7 +366,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
             break;
           case 23:
-            Map<DataKey, dynamic> newCharacteristicData = {};
+            Map<DataKey, String> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
 
             List<List<ValuePair>> dateValueCollectionOfLog =
@@ -461,8 +473,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
         // 如果讀取到 logInterval == '0', 則自動設定為 30 分鐘
         if (logInterval == '0') {
-          bool isSuccess =
-              await _dsimRepository.setLogInterval(logIntervalId: '30');
+          bool isSuccess = await _dsimRepository.set1p8GLogInterval('30');
 
           // 如果設定失敗, 則顯示 dialog
           if (!isSuccess) {
@@ -589,6 +600,112 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
   }
 
+  Future<void> _onCCorNode18DataRequested(
+    CCorNode18DataRequested event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(state.copyWith(
+      loadingStatus: FormStatus.requestInProgress,
+      characteristicData: {},
+    ));
+
+    // await _dsimRepository.set1p8GTransmitDelayTime();
+
+    Map<DataKey, String> newCharacteristicData = {};
+    List<dynamic> resultOf1p8GCCorNode80 = [];
+    List<dynamic> resultOf1p8GCCorNode91 = [];
+    List<dynamic> resultOf1p8GCCorNodeA1 = [];
+    // List<dynamic> resultOf1p8G3 = [];
+    // List<dynamic> resultOf1p8GForLogChunk = [];
+
+    resultOf1p8GCCorNode80 =
+        await _dsimRepository.requestCommand1p8GCCorNode80();
+
+    if (resultOf1p8GCCorNode80[0]) {
+      newCharacteristicData.addAll(resultOf1p8GCCorNode80[1]);
+      emit(state.copyWith(
+        characteristicData: newCharacteristicData,
+      ));
+    } else {
+      emit(state.copyWith(
+        loadingStatus: FormStatus.requestFailure,
+        characteristicData: state.characteristicData,
+        errorMassage: 'Data loading failed',
+      ));
+    }
+
+    if (resultOf1p8GCCorNode80[0]) {
+      resultOf1p8GCCorNode91 =
+          await _dsimRepository.requestCommand1p8GCCorNode91();
+
+      if (resultOf1p8GCCorNode91[0]) {
+        String logInterval = resultOf1p8GCCorNode91[1][DataKey.logInterval];
+
+        // 如果讀取到 logInterval == '0', 則自動設定為 30 分鐘
+        if (logInterval == '0') {
+          bool isSuccess =
+              await _dsimRepository.set1p8GCCorNodeLogInterval('30');
+
+          // 如果設定失敗, 則顯示 dialog
+          if (!isSuccess) {
+            emit(state.copyWith(
+              loadingStatus: FormStatus.requestFailure,
+              characteristicData: state.characteristicData,
+              errorMassage: 'Setting the log interval to 30 minutes failed.',
+            ));
+          } else {
+            List<dynamic> newResultOf1p8GCCorNode91 =
+                await _dsimRepository.requestCommand1p8GCCorNode91();
+
+            if (newResultOf1p8GCCorNode91[0]) {
+              newCharacteristicData.addAll(newResultOf1p8GCCorNode91[1]);
+              emit(state.copyWith(
+                characteristicData: newCharacteristicData,
+              ));
+            } else {
+              emit(state.copyWith(
+                loadingStatus: FormStatus.requestFailure,
+                characteristicData: state.characteristicData,
+                errorMassage: 'Data loading failed',
+              ));
+            }
+          }
+        } else {
+          // 如果讀取到 logInterval != '0', 則 emit 讀取到的資料
+          newCharacteristicData.addAll(resultOf1p8GCCorNode91[1]);
+          emit(state.copyWith(
+            characteristicData: newCharacteristicData,
+          ));
+        }
+      } else {
+        emit(state.copyWith(
+          loadingStatus: FormStatus.requestFailure,
+          characteristicData: state.characteristicData,
+          errorMassage: 'Data loading failed',
+        ));
+      }
+    }
+
+    if (resultOf1p8GCCorNode91[0]) {
+      resultOf1p8GCCorNodeA1 =
+          await _dsimRepository.requestCommand1p8GCCorNodeA1();
+
+      if (resultOf1p8GCCorNodeA1[0]) {
+        newCharacteristicData.addAll(resultOf1p8GCCorNodeA1[1]);
+        emit(state.copyWith(
+          characteristicData: newCharacteristicData,
+          loadingStatus: FormStatus.requestSuccess,
+        ));
+      } else {
+        emit(state.copyWith(
+          loadingStatus: FormStatus.requestFailure,
+          characteristicData: state.characteristicData,
+          errorMassage: 'Data loading failed',
+        ));
+      }
+    }
+  }
+
   Future<void> _onEventRequested(
     EventRequested event,
     Emitter<HomeState> emit,
@@ -648,57 +765,5 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         add(DiscoveredDeviceChanged(scanReport));
       },
     );
-
-    // _dsimRepository.scanDevices();
   }
-
-  // void _onDataExported(
-  //   DataExported event,
-  //   Emitter<HomeState> emit,
-  // ) async {
-  //   emit(state.copyWith(
-  //     dataShareStatus: FormStatus.none,
-  //     dataExportStatus: FormStatus.requestInProgress,
-  //   ));
-
-  //   final List<dynamic> result = await _dsimRepository.exportRecords();
-
-  //   if (result[0]) {
-  //     emit(state.copyWith(
-  //       dataExportStatus: FormStatus.requestSuccess,
-  //       dataExportPath: result[2],
-  //     ));
-  //   } else {
-  //     emit(state.copyWith(
-  //       dataExportStatus: FormStatus.requestFailure,
-  //       dataExportPath: result[2],
-  //     ));
-  //   }
-  // }
-
-  // void _onDataShared(
-  //   DataShared event,
-  //   Emitter<HomeState> emit,
-  // ) async {
-  //   emit(state.copyWith(
-  //     dataExportStatus: FormStatus.none,
-  //     dataShareStatus: FormStatus.requestInProgress,
-  //   ));
-
-  //   final List<dynamic> result = await _dsimRepository.exportRecords();
-
-  //   if (result[0]) {
-  //     emit(state.copyWith(
-  //       dataShareStatus: FormStatus.requestSuccess,
-  //       exportFileName: result[1],
-  //       dataExportPath: result[2],
-  //     ));
-  //   } else {
-  //     emit(state.copyWith(
-  //       dataShareStatus: FormStatus.requestFailure,
-  //       exportFileName: result[1],
-  //       dataExportPath: result[2],
-  //     ));
-  //   }
-  // }
 }
