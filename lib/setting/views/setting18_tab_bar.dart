@@ -1,6 +1,6 @@
-import 'package:dsim_app/setting/views/setting18_configure_page.dart';
-import 'package:dsim_app/setting/views/setting18_control_page.dart';
-import 'package:dsim_app/setting/views/setting18_threshold_page.dart';
+import 'package:aci_plus_app/setting/views/setting18_configure_page.dart';
+import 'package:aci_plus_app/setting/views/setting18_control_page.dart';
+import 'package:aci_plus_app/setting/views/setting18_threshold_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

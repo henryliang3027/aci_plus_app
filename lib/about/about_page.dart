@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dsim_app/home/views/home_bottom_navigation_bar.dart';
+import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AboutPage extends StatefulWidget {

@@ -1,4 +1,4 @@
-package com.example.dsim_app
+package com.aci.aciPlusApp
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,5 +1,5 @@
-import 'package:dsim_app/setting/bloc/setting_bloc/setting_bloc.dart';
-import 'package:dsim_app/setting/views/circuit_painter.dart';
+import 'package:aci_plus_app/setting/bloc/setting_bloc/setting_bloc.dart';
+import 'package:aci_plus_app/setting/views/circuit_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

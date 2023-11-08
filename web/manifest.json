@@ -1,6 +1,6 @@
 {
-    "name": "dsim_app",
-    "short_name": "dsim_app",
+    "name": "aci_plus_app",
+    "short_name": "aci_plus_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

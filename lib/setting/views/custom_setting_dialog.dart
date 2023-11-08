@@ -1,4 +1,4 @@
-import 'package:dsim_app/core/custom_style.dart';
+import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

@@ -1,6 +1,6 @@
-import 'package:dsim_app/core/custom_icons/custom_icons.dart';
-import 'package:dsim_app/core/custom_style.dart';
-import 'package:dsim_app/core/form_status.dart';
+import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
+import 'package:aci_plus_app/core/custom_style.dart';
+import 'package:aci_plus_app/core/form_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';

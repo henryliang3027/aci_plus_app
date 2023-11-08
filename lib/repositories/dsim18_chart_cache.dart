@@ -1,4 +1,4 @@
-import 'package:dsim_app/repositories/dsim18_parser.dart';
+import 'package:aci_plus_app/repositories/dsim18_parser.dart';
 
 class Dsim18ChartCache {
   Dsim18ChartCache();

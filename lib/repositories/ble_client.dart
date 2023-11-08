@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
-import 'package:dsim_app/core/common_enum.dart';
-import 'package:dsim_app/core/crc16_calculate.dart';
+import 'package:aci_plus_app/core/common_enum.dart';
+import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';

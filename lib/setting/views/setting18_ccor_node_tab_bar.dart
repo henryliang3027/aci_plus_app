@@ -1,6 +1,6 @@
-import 'package:dsim_app/setting/views/setting18_ccor_node_configure_page.dart';
-import 'package:dsim_app/setting/views/setting18_ccor_node_control_page.dart';
-import 'package:dsim_app/setting/views/setting18_ccor_node_threshold_page.dart';
+import 'package:aci_plus_app/setting/views/setting18_ccor_node_configure_page.dart';
+import 'package:aci_plus_app/setting/views/setting18_ccor_node_control_page.dart';
+import 'package:aci_plus_app/setting/views/setting18_ccor_node_threshold_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
