@@ -593,13 +593,14 @@ class DsimRepository {
 
     print('get data from request command 1p8G_Alarm');
 
-    List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-      commandIndex: commandIndex,
-      value: _dsim18Parser.command18Collection[commandIndex - 180],
-    );
-
     try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18Parser.command18Collection[commandIndex - 180],
+      );
+
       A1P8GAlarm a1p8gAlarm = _dsim18Parser.decodeAlarmSeverity(rawData);
+
       return [
         true,
         a1p8gAlarm.unitStatusAlarmSeverity,
