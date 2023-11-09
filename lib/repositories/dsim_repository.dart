@@ -271,6 +271,112 @@ class DsimRepository {
     }
   }
 
+  // commandIndex range from 183 to 192;
+  // commandIndex = 184 時獲取最新的1024筆Log的統計資料跟 log
+  Future<dynamic> requestCommand1p8GCCorNodeLogChunk(int chunkIndex) async {
+    int commandIndex = chunkIndex + 184;
+
+    print('get data from request command 1p8GForLogChunk');
+
+    if (commandIndex == 184) {
+      try {
+        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+          commandIndex: commandIndex,
+          value: _dsim18CCorNodeParser.command18CCorNodeCollection[3],
+        );
+
+        List<Log1p8GCCorNode> log1p8Gs =
+            _dsim18CCorNodeParser.parse1P8GLog(rawData);
+        A1P8GCCorNodeLogStatistic a1p8gcCorNodeLogStatistic =
+            _dsim18CCorNodeParser.getA1p8GLogStatistics(log1p8Gs);
+        bool hasNextChunk = log1p8Gs.isNotEmpty ? true : false;
+
+        return [
+          true,
+          hasNextChunk,
+          log1p8Gs,
+          <DataKey, String>{
+            DataKey.historicalMinTemperatureC:
+                a1p8gcCorNodeLogStatistic.historicalMinTemperatureC,
+            DataKey.historicalMaxTemperatureC:
+                a1p8gcCorNodeLogStatistic.historicalMaxTemperatureC,
+            DataKey.historicalMinTemperatureF:
+                a1p8gcCorNodeLogStatistic.historicalMinTemperatureF,
+            DataKey.historicalMaxTemperatureF:
+                a1p8gcCorNodeLogStatistic.historicalMaxTemperatureF,
+            DataKey.historicalMinRFOutputPower1:
+                a1p8gcCorNodeLogStatistic.historicalMinRFOutputPower1,
+            DataKey.historicalMaxRFOutputPower1:
+                a1p8gcCorNodeLogStatistic.historicalMaxRFOutputPower1,
+            DataKey.historicalMinRFOutputPower3:
+                a1p8gcCorNodeLogStatistic.historicalMinRFOutputPower3,
+            DataKey.historicalMaxRFOutputPower3:
+                a1p8gcCorNodeLogStatistic.historicalMaxRFOutputPower3,
+            DataKey.historicalMinRFOutputPower4:
+                a1p8gcCorNodeLogStatistic.historicalMinRFOutputPower4,
+            DataKey.historicalMaxRFOutputPower4:
+                a1p8gcCorNodeLogStatistic.historicalMaxRFOutputPower4,
+            DataKey.historicalMinRFOutputPower6:
+                a1p8gcCorNodeLogStatistic.historicalMinRFOutputPower6,
+            DataKey.historicalMaxRFOutputPower6:
+                a1p8gcCorNodeLogStatistic.historicalMaxRFOutputPower6,
+          }
+        ];
+      } catch (e) {
+        return [
+          false,
+          false,
+        ];
+      }
+    } else {
+      try {
+        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+          commandIndex: commandIndex,
+          value: _dsim18CCorNodeParser
+              .command18CCorNodeCollection[commandIndex - 180],
+        );
+
+        List<Log1p8GCCorNode> log1p8Gs =
+            _dsim18CCorNodeParser.parse1P8GLog(rawData);
+        bool hasNextChunk = log1p8Gs.isNotEmpty ? true : false;
+
+        return [
+          true,
+          hasNextChunk,
+          log1p8Gs,
+        ];
+      } catch (e) {
+        return [
+          false,
+          false,
+        ];
+      }
+    }
+  }
+
+  Future<dynamic> requestCommand1p8GCCorNodeEvent() async {
+    int commandIndex = 194;
+
+    print('get data from request command 1p8G_Event');
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18Parser.command18Collection[commandIndex - 180],
+      );
+
+      List<Event1p8G> event1p8Gs = _dsim18Parser.parse1p8GEvent(rawData);
+      return [
+        true,
+        event1p8Gs,
+      ];
+    } catch (e) {
+      return [
+        false,
+      ];
+    }
+  }
+
   Future<dynamic> set1p8GCCorNodeLogInterval(String logInterval) async {
     int commandIndex = 338;
 

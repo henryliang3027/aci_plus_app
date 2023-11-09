@@ -1385,11 +1385,11 @@ class _RFOutputPower1Card extends StatelessWidget {
                   AppLocalizations.of(context).maxRFOutputPower,
               maxRFOutputPower:
                   state.characteristicData[DataKey.maxRFOutputPower1] ?? '',
-              historicalMinRFOutputPower: state
-                      .characteristicData[DataKey.historicalMinRFOutputPower] ??
+              historicalMinRFOutputPower: state.characteristicData[
+                      DataKey.historicalMinRFOutputPower1] ??
                   '',
-              historicalMaxRFOutputPower: state
-                      .characteristicData[DataKey.historicalMaxRFOutputPower] ??
+              historicalMaxRFOutputPower: state.characteristicData[
+                      DataKey.historicalMaxRFOutputPower1] ??
                   '',
               borderColor: Theme.of(context).colorScheme.primary,
             ),
@@ -1441,11 +1441,11 @@ class _RFOutputPower3Card extends StatelessWidget {
                   AppLocalizations.of(context).maxRFOutputPower,
               maxRFOutputPower:
                   state.characteristicData[DataKey.maxRFOutputPower3] ?? '',
-              historicalMinRFOutputPower: state
-                      .characteristicData[DataKey.historicalMinRFOutputPower] ??
+              historicalMinRFOutputPower: state.characteristicData[
+                      DataKey.historicalMinRFOutputPower3] ??
                   '',
-              historicalMaxRFOutputPower: state
-                      .characteristicData[DataKey.historicalMaxRFOutputPower] ??
+              historicalMaxRFOutputPower: state.characteristicData[
+                      DataKey.historicalMaxRFOutputPower3] ??
                   '',
               borderColor: Theme.of(context).colorScheme.primary,
             ),
@@ -1497,11 +1497,11 @@ class _RFOutputPower4Card extends StatelessWidget {
                   AppLocalizations.of(context).maxRFOutputPower,
               maxRFOutputPower:
                   state.characteristicData[DataKey.maxRFOutputPower4] ?? '',
-              historicalMinRFOutputPower: state
-                      .characteristicData[DataKey.historicalMinRFOutputPower] ??
+              historicalMinRFOutputPower: state.characteristicData[
+                      DataKey.historicalMinRFOutputPower4] ??
                   '',
-              historicalMaxRFOutputPower: state
-                      .characteristicData[DataKey.historicalMaxRFOutputPower] ??
+              historicalMaxRFOutputPower: state.characteristicData[
+                      DataKey.historicalMaxRFOutputPower4] ??
                   '',
               borderColor: Theme.of(context).colorScheme.primary,
             ),
@@ -1553,11 +1553,11 @@ class _RFOutputPower6Card extends StatelessWidget {
                   AppLocalizations.of(context).maxRFOutputPower,
               maxRFOutputPower:
                   state.characteristicData[DataKey.maxRFOutputPower6] ?? '',
-              historicalMinRFOutputPower: state
-                      .characteristicData[DataKey.historicalMinRFOutputPower] ??
+              historicalMinRFOutputPower: state.characteristicData[
+                      DataKey.historicalMinRFOutputPower6] ??
                   '',
-              historicalMaxRFOutputPower: state
-                      .characteristicData[DataKey.historicalMaxRFOutputPower] ??
+              historicalMaxRFOutputPower: state.characteristicData[
+                      DataKey.historicalMaxRFOutputPower6] ??
                   '',
               borderColor: Theme.of(context).colorScheme.primary,
             ),

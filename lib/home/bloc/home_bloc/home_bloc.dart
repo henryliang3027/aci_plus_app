@@ -615,8 +615,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List<dynamic> resultOf1p8GCCorNode80 = [];
     List<dynamic> resultOf1p8GCCorNode91 = [];
     List<dynamic> resultOf1p8GCCorNodeA1 = [];
-    // List<dynamic> resultOf1p8G3 = [];
-    // List<dynamic> resultOf1p8GForLogChunk = [];
+    List<dynamic> resultOf1p8GCCorNodeLogChunk = [];
 
     resultOf1p8GCCorNode80 =
         await _dsimRepository.requestCommand1p8GCCorNode80();
@@ -694,7 +693,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         newCharacteristicData.addAll(resultOf1p8GCCorNodeA1[1]);
         emit(state.copyWith(
           characteristicData: newCharacteristicData,
-          loadingStatus: FormStatus.requestSuccess,
         ));
       } else {
         emit(state.copyWith(
@@ -704,6 +702,47 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ));
       }
     }
+
+    if (resultOf1p8GCCorNode91[0]) {
+      // 最多 retry 3 次, 連續失敗3次就視為失敗
+      for (int i = 0; i < 3; i++) {
+        resultOf1p8GCCorNodeLogChunk =
+            await _dsimRepository.requestCommand1p8GCCorNodeLogChunk(0);
+
+        if (resultOf1p8GCCorNodeLogChunk[0]) {
+          newCharacteristicData.addAll(resultOf1p8GCCorNodeLogChunk[3]);
+
+          emit(state.copyWith(
+            characteristicData: newCharacteristicData,
+            loadingStatus: FormStatus.requestSuccess,
+          ));
+
+          break;
+        } else {
+          if (i == 2) {
+            emit(state.copyWith(
+              loadingStatus: FormStatus.requestFailure,
+              characteristicData: state.characteristicData,
+              errorMassage: 'Data loading failed',
+            ));
+          } else {
+            continue;
+          }
+        }
+      }
+    }
+
+    //     if (resultOf1p8GForLogChunk[0]) {
+    //   String deviceNowTime = state.characteristicData[DataKey.nowDateTime] ??
+    //       DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+
+    //   // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
+    //   await _dsimRepository.set1p8GNowDateTime(deviceNowTime);
+    // }
+
+    // emit(state.copyWith(
+    //   loadingStatus: FormStatus.requestSuccess,
+    // ));
   }
 
   Future<void> _onEventRequested(
