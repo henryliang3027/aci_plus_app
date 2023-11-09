@@ -11,6 +11,7 @@ import 'package:aci_plus_app/information/views/information_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_page.dart';
 import 'package:aci_plus_app/setting/views/setting_page.dart';
+import 'package:aci_plus_app/status/views/status18_ccor_node_page.dart';
 import 'package:aci_plus_app/status/views/status18_page.dart';
 import 'package:aci_plus_app/status/views/status_page.dart';
 import 'package:flutter/material.dart';
@@ -154,7 +155,7 @@ class _HomeFormState extends State<HomeForm> {
           Setting18CCorNodePage(
             pageController: _pageController,
           ),
-          Status18Page(
+          Status18CCorNodePage(
             pageController: _pageController,
           ),
           Information18Page(

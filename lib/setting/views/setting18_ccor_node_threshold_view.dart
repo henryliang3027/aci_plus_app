@@ -72,22 +72,22 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
     bool splitOptionAlarmState = strSplitOptionAlarmState == '1' ? false : true;
 
     String strRFOutputPowerAlarmState1 =
-        homeState.characteristicData[DataKey.rfOutputPowerAlarmState1] ?? '';
+        homeState.characteristicData[DataKey.rfOutputPower1AlarmState] ?? '';
     bool rfOutputPowerAlarmState1 =
         strRFOutputPowerAlarmState1 == '1' ? false : true;
 
     String strRFOutputPowerAlarmState3 =
-        homeState.characteristicData[DataKey.rfOutputPowerAlarmState3] ?? '';
+        homeState.characteristicData[DataKey.rfOutputPower3AlarmState] ?? '';
     bool rfOutputPowerAlarmState3 =
         strRFOutputPowerAlarmState3 == '1' ? false : true;
 
     String strRFOutputPowerAlarmState4 =
-        homeState.characteristicData[DataKey.rfOutputPowerAlarmState4] ?? '';
+        homeState.characteristicData[DataKey.rfOutputPower4AlarmState] ?? '';
     bool rfOutputPowerAlarmState4 =
         strRFOutputPowerAlarmState4 == '1' ? false : true;
 
     String strRFOutputPowerAlarmState6 =
-        homeState.characteristicData[DataKey.rfOutputPowerAlarmState6] ?? '';
+        homeState.characteristicData[DataKey.rfOutputPower6AlarmState] ?? '';
     bool rfOutputPowerAlarmState6 =
         strRFOutputPowerAlarmState6 == '1' ? false : true;
 
