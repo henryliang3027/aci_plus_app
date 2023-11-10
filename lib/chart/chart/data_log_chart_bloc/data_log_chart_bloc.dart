@@ -198,8 +198,8 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
 
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      List<dynamic> resultOfLog1p8G = await _dsimRepository
-          .requestCommand1p8GForLogChunk(state.chunckIndex);
+      List<dynamic> resultOfLog1p8G =
+          await _dsimRepository.requestCommand1p8GForLogChunk(state.chunkIndex);
 
       if (resultOfLog1p8G[0]) {
         log1p8Gs.addAll(resultOfLog1p8G[2]);
@@ -215,7 +215,7 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
             logRequestStatus: FormStatus.requestSuccess,
             log1p8Gs: log1p8Gs,
             dateValueCollectionOfLog: dateValueCollectionOfLog,
-            chunckIndex: state.chunckIndex + 1,
+            chunckIndex: state.chunkIndex + 1,
             hasNextChunk: resultOfLog1p8G[1],
           ),
         );

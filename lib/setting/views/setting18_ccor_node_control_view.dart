@@ -4,7 +4,6 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:aci_plus_app/repositories/dsim18_ccor_node_parser.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_control/setting18_ccor_node_control_bloc.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/material.dart';

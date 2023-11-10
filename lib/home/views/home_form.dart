@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/about/about_page.dart';
+import 'package:aci_plus_app/chart/view/chart18_ccor_node_page.dart';
 import 'package:aci_plus_app/chart/view/chart18_page.dart';
 import 'package:aci_plus_app/chart/view/chart_page.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
@@ -161,7 +162,7 @@ class _HomeFormState extends State<HomeForm> {
           Information18Page(
             pageController: _pageController,
           ),
-          Chart18Page(
+          Chart18CCorNodePage(
             pageController: _pageController,
           ),
           AboutPage(

@@ -714,7 +714,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
           emit(state.copyWith(
             characteristicData: newCharacteristicData,
-            loadingStatus: FormStatus.requestSuccess,
           ));
 
           break;
@@ -732,17 +731,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
-    //     if (resultOf1p8GForLogChunk[0]) {
-    //   String deviceNowTime = state.characteristicData[DataKey.nowDateTime] ??
-    //       DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+    if (resultOf1p8GCCorNodeLogChunk[0]) {
+      String deviceNowTime = state.characteristicData[DataKey.nowDateTime] ??
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
-    //   // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
-    //   await _dsimRepository.set1p8GNowDateTime(deviceNowTime);
-    // }
+      // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
+      await _dsimRepository.set1p8GCCorNodeNowDateTime(deviceNowTime);
+    }
 
-    // emit(state.copyWith(
-    //   loadingStatus: FormStatus.requestSuccess,
-    // ));
+    emit(state.copyWith(
+      loadingStatus: FormStatus.requestSuccess,
+    ));
   }
 
   Future<void> _onEventRequested(

@@ -7,6 +7,7 @@ import 'package:aci_plus_app/repositories/dsim18_parser.dart';
 import 'package:aci_plus_app/repositories/unit_converter.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -224,14 +225,16 @@ class Dsim18CCorNodeParser {
     ByteData rawMaxRFOutputPower3ByteData =
         ByteData.sublistView(Uint8List.fromList(rawMaxRFOutputPower3));
     maxRFOutputPower3 =
-        rawMaxRFOutputPower3ByteData.getInt16(0, Endian.little).toString();
+        (rawMaxRFOutputPower3ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
 
     // 解析 minRFOutputPower3
     List<int> rawMinRFOutputPower3 = rawData.sublist(31, 33);
     ByteData rawMinRFOutputPower3ByteData =
         ByteData.sublistView(Uint8List.fromList(rawMinRFOutputPower3));
     minRFOutputPower3 =
-        rawMinRFOutputPower3ByteData.getInt16(0, Endian.little).toString();
+        (rawMinRFOutputPower3ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
 
     // 解析 fowwardVVA1
     List<int> rawForwardVVA1 = rawData.sublist(33, 35);
@@ -253,13 +256,15 @@ class Dsim18CCorNodeParser {
     ByteData rawForwardOutSlope1ByteData =
         ByteData.sublistView(Uint8List.fromList(rawForwardOutSlope1));
     forwardOutSlope1 =
-        rawForwardOutSlope1ByteData.getInt16(0, Endian.little).toString();
+        (rawForwardOutSlope1ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
 
     // 解析 returnVCA1
     List<int> rawReturnVCA1 = rawData.sublist(39, 41);
     ByteData rawReturnVCA1ByteData =
         ByteData.sublistView(Uint8List.fromList(rawReturnVCA1));
-    returnVCA1 = rawReturnVCA1ByteData.getInt16(0, Endian.little).toString();
+    returnVCA1 = (rawReturnVCA1ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
 
     // 解析 rfOutputPower1AlarmState
     rfOutputPower1AlarmState = rawData[41].toString();
@@ -284,14 +289,16 @@ class Dsim18CCorNodeParser {
     ByteData rawMaxRFOutputPower4ByteData =
         ByteData.sublistView(Uint8List.fromList(rawMaxRFOutputPower4));
     maxRFOutputPower4 =
-        rawMaxRFOutputPower4ByteData.getInt16(0, Endian.little).toString();
+        (rawMaxRFOutputPower4ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
 
     // 解析 minRFOutputPower4
     List<int> rawMinRFOutputPower4 = rawData.sublist(49, 51);
     ByteData rawMinRFOutputPower4ByteData =
         ByteData.sublistView(Uint8List.fromList(rawMinRFOutputPower4));
     minRFOutputPower4 =
-        rawMinRFOutputPower4ByteData.getInt16(0, Endian.little).toString();
+        (rawMinRFOutputPower4ByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
 
     // 解析 splitOptionAlarmState
     splitOptionAlarmState = rawData[51].toString();
@@ -827,7 +834,7 @@ class Dsim18CCorNodeParser {
     return a1p8gAlarm;
   }
 
-  A1P8GCCorNodeLogStatistic getA1p8GLogStatistics(
+  A1P8GCCorNodeLogStatistic getA1p8GCCorNodeLogStatistics(
       List<Log1p8GCCorNode> log1p8Gs) {
     UnitConverter unitConverter = UnitConverter();
     if (log1p8Gs.isNotEmpty) {
@@ -929,7 +936,7 @@ class Dsim18CCorNodeParser {
     }
   }
 
-  List<Log1p8GCCorNode> parse1P8GLog(List<int> rawData) {
+  List<Log1p8GCCorNode> parse1P8GCCorNodeLog(List<int> rawData) {
     List<Log1p8GCCorNode> logChunks = [];
     rawData.removeRange(rawData.length - 2, rawData.length);
     rawData.removeRange(0, 3);
@@ -998,54 +1005,54 @@ class Dsim18CCorNodeParser {
     return logChunks;
   }
 
-//   List<Event1p8G> parse1p8GEvent(List<int> rawData) {
-//     List<Event1p8G> event1p8Gs = [];
+  List<Event1p8GCCorNode> parse1p8GCCorNodeEvent(List<int> rawData) {
+    List<Event1p8GCCorNode> event1p8Gs = [];
 
-//     rawData.removeRange(rawData.length - 2, rawData.length);
-//     rawData.removeRange(0, 3);
+    rawData.removeRange(rawData.length - 2, rawData.length);
+    rawData.removeRange(0, 3);
 
-//     for (var i = 0; i < 1024; i++) {
-//       // 如果檢查到有一筆log 的內容全部是 255, 則視為沒有更多log資料了
-//       bool isEmptyLog = rawData
-//           .sublist(i * 16, i * 16 + 16)
-//           .every((element) => element == 255);
-//       if (isEmptyLog) {
-//         break;
-//       }
+    for (var i = 0; i < 1024; i++) {
+      // 如果檢查到有一筆 event 的內容全部是 255, 則視為沒有更多 event 資料了
+      bool isEmptyLog = rawData
+          .sublist(i * 16, i * 16 + 16)
+          .every((element) => element == 255);
+      if (isEmptyLog) {
+        break;
+      }
 
-//       // 解析 strDateTime
-//       List<int> rawYear = rawData.sublist(i * 16, i * 16 + 2);
-//       ByteData rawYearByteData =
-//           ByteData.sublistView(Uint8List.fromList(rawYear));
-//       String strYear = rawYearByteData.getInt16(0, Endian.little).toString();
+      // 解析 strDateTime
+      List<int> rawYear = rawData.sublist(i * 16, i * 16 + 2);
+      ByteData rawYearByteData =
+          ByteData.sublistView(Uint8List.fromList(rawYear));
+      String strYear = rawYearByteData.getInt16(0, Endian.little).toString();
 
-//       String strMonth = rawData[i * 16 + 2].toString().padLeft(2, '0');
-//       String strDay = rawData[i * 16 + 3].toString().padLeft(2, '0');
-//       String strHour = rawData[i * 16 + 4].toString().padLeft(2, '0');
-//       String strMinute = rawData[i * 16 + 5].toString().padLeft(2, '0');
+      String strMonth = rawData[i * 16 + 2].toString().padLeft(2, '0');
+      String strDay = rawData[i * 16 + 3].toString().padLeft(2, '0');
+      String strHour = rawData[i * 16 + 4].toString().padLeft(2, '0');
+      String strMinute = rawData[i * 16 + 5].toString().padLeft(2, '0');
 
-//       final DateTime dateTime =
-//           DateTime.parse('$strYear-$strMonth-$strDay $strHour:$strMinute:00');
+      final DateTime dateTime =
+          DateTime.parse('$strYear-$strMonth-$strDay $strHour:$strMinute:00');
 
-//       List<int> rawCode = rawData.sublist(i * 16 + 6, i * 16 + 8);
-//       ByteData rawCodeByteData =
-//           ByteData.sublistView(Uint8List.fromList(rawCode));
-//       int code = rawCodeByteData.getInt16(0, Endian.little);
+      List<int> rawCode = rawData.sublist(i * 16 + 6, i * 16 + 8);
+      ByteData rawCodeByteData =
+          ByteData.sublistView(Uint8List.fromList(rawCode));
+      int code = rawCodeByteData.getInt16(0, Endian.little);
 
-//       List<int> rawParameter = rawData.sublist(i * 16 + 8, i * 16 + 10);
-//       ByteData rawParameterByteData =
-//           ByteData.sublistView(Uint8List.fromList(rawParameter));
-//       int parameter = rawParameterByteData.getInt16(0, Endian.little);
+      List<int> rawParameter = rawData.sublist(i * 16 + 8, i * 16 + 10);
+      ByteData rawParameterByteData =
+          ByteData.sublistView(Uint8List.fromList(rawParameter));
+      int parameter = rawParameterByteData.getInt16(0, Endian.little);
 
-//       event1p8Gs.add(Event1p8G(
-//         dateTime: dateTime,
-//         code: code,
-//         parameter: parameter,
-//       ));
-//     }
+      event1p8Gs.add(Event1p8GCCorNode(
+        dateTime: dateTime,
+        code: code,
+        parameter: parameter,
+      ));
+    }
 
-//     return event1p8Gs;
-//   }
+    return event1p8Gs;
+  }
 
   Future<dynamic> export1p8GCCorNodeRecords({
     required List<Log1p8GCCorNode> log1p8Gs,
@@ -1137,72 +1144,70 @@ class Dsim18CCorNodeParser {
     }
   }
 
-//   List<List<ValuePair>> get1p8GDateValueCollectionOfLogs(
-//       List<Log1p8G> log1p8Gs) {
-//     List<ValuePair> temperatureDataList = [];
-//     List<ValuePair> rfOutputLowPilotDataList = [];
-//     List<ValuePair> rfOutputHighPilotDataList = [];
-//     List<ValuePair> voltageDataList = [];
-//     List<ValuePair> voltageRippleDataList = [];
+  List<List<ValuePair>> get1p8GDateValueCollectionOfLogs(
+      List<Log1p8GCCorNode> log1p8Gs) {
+    List<ValuePair> temperatureDataList = [];
+    List<ValuePair> rfOutputPower1DataList = [];
+    List<ValuePair> rfOutputPower3DataList = [];
+    List<ValuePair> rfOutputPower4DataList = [];
+    List<ValuePair> rfOutputPower6DataList = [];
 
-//     for (Log1p8G log1p8G in log1p8Gs.reversed) {
-//       temperatureDataList.add(ValuePair(
-//         x: log1p8G.dateTime,
-//         y: log1p8G.temperature,
-//       ));
-//       rfOutputLowPilotDataList.add(ValuePair(
-//         x: log1p8G.dateTime,
-//         y: log1p8G.rfOutputLowPilot,
-//       ));
-//       rfOutputHighPilotDataList.add(ValuePair(
-//         x: log1p8G.dateTime,
-//         y: log1p8G.rfOutputHighPilot,
-//       ));
-//       voltageDataList.add(ValuePair(
-//         x: log1p8G.dateTime,
-//         y: log1p8G.voltage,
-//       ));
-//       voltageRippleDataList.add(ValuePair(
-//         x: log1p8G.dateTime,
-//         y: log1p8G.voltageRipple.toDouble(),
-//       ));
-//     }
+    for (Log1p8GCCorNode log1p8G in log1p8Gs.reversed) {
+      temperatureDataList.add(ValuePair(
+        x: log1p8G.dateTime,
+        y: log1p8G.temperature,
+      ));
+      rfOutputPower1DataList.add(ValuePair(
+        x: log1p8G.dateTime,
+        y: log1p8G.rfOutputPower1,
+      ));
+      rfOutputPower3DataList.add(ValuePair(
+        x: log1p8G.dateTime,
+        y: log1p8G.rfOutputPower3,
+      ));
+      rfOutputPower4DataList.add(ValuePair(
+        x: log1p8G.dateTime,
+        y: log1p8G.rfOutputPower4,
+      ));
+      rfOutputPower6DataList
+          .add(ValuePair(x: log1p8G.dateTime, y: log1p8G.rfOutputPower6));
+    }
 
-//     return [
-//       temperatureDataList,
-//       rfOutputLowPilotDataList,
-//       rfOutputHighPilotDataList,
-//       voltageDataList,
-//       voltageRippleDataList,
-//     ];
-//   }
+    return [
+      temperatureDataList,
+      rfOutputPower1DataList,
+      rfOutputPower3DataList,
+      rfOutputPower4DataList,
+      rfOutputPower6DataList,
+    ];
+  }
 
-//   List<List<ValuePair>> get1p8GValueCollectionOfRFInOut(
-//       List<RFInOut> rfInOuts) {
-//     List<ValuePair> rfInputs = [];
-//     List<ValuePair> rfOutputs = [];
+  List<List<ValuePair>> get1p8GValueCollectionOfRFInOut(
+      List<RFInOut> rfInOuts) {
+    List<ValuePair> rfInputs = [];
+    List<ValuePair> rfOutputs = [];
 
-//     for (int i = 0; i < rfInOuts.length; i++) {
-//       int frequency = 261 + 6 * i;
+    for (int i = 0; i < rfInOuts.length; i++) {
+      int frequency = 261 + 6 * i;
 
-//       RFInOut rfInOut = rfInOuts[i];
+      RFInOut rfInOut = rfInOuts[i];
 
-//       rfOutputs.add(ValuePair(
-//         x: frequency,
-//         y: rfInOut.output,
-//       ));
+      rfOutputs.add(ValuePair(
+        x: frequency,
+        y: rfInOut.output,
+      ));
 
-//       rfInputs.add(ValuePair(
-//         x: frequency,
-//         y: rfInOut.input,
-//       ));
-//     }
+      rfInputs.add(ValuePair(
+        x: frequency,
+        y: rfInOut.input,
+      ));
+    }
 
-//     return [
-//       rfOutputs,
-//       rfInputs,
-//     ];
-//   }
+    return [
+      rfOutputs,
+      rfInputs,
+    ];
+  }
 
   List<String> formatLog1p8G(Log1p8GCCorNode log1p8G) {
     String formattedDateTime =
@@ -1229,7 +1234,7 @@ class Dsim18CCorNodeParser {
     List<List<String>> csvContent = List<List<String>>.generate(
       1024,
       (index) => List<String>.generate(
-        14,
+        15,
         (index) => '',
         growable: false,
       ),

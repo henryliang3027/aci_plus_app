@@ -1,12 +1,12 @@
-part of 'data_log_chart_bloc.dart';
+part of 'chart18_ccor_node_bloc.dart';
 
-class DataLogChartState extends Equatable {
-  const DataLogChartState({
+class Chart18CCorNodeState extends Equatable {
+  const Chart18CCorNodeState({
     this.logRequestStatus = FormStatus.none,
     this.eventRequestStatus = FormStatus.none,
-    // this.dataShareStatus = FormStatus.none,
-    // this.dataExportStatus = FormStatus.none,
-    // this.allDataExportStatus = FormStatus.none,
+    this.dataShareStatus = FormStatus.none,
+    this.dataExportStatus = FormStatus.none,
+    this.allDataExportStatus = FormStatus.none,
     this.chunkIndex = 0,
     this.hasNextChunk = false,
     this.event1p8Gs = const [],
@@ -19,39 +19,39 @@ class DataLogChartState extends Equatable {
 
   final FormStatus logRequestStatus;
   final FormStatus eventRequestStatus;
-  // final FormStatus dataShareStatus;
-  // final FormStatus dataExportStatus;
-  // final FormStatus allDataExportStatus;
+  final FormStatus dataShareStatus;
+  final FormStatus dataExportStatus;
+  final FormStatus allDataExportStatus;
   final int chunkIndex;
   final bool hasNextChunk;
-  final List<Event1p8G> event1p8Gs;
-  final List<Log1p8G> log1p8Gs;
+  final List<Event1p8GCCorNode> event1p8Gs;
+  final List<Log1p8GCCorNode> log1p8Gs;
   final List<List<ValuePair>> dateValueCollectionOfLog;
   final String exportFileName;
   final String dataExportPath;
   final String errorMessage;
 
-  DataLogChartState copyWith({
+  Chart18CCorNodeState copyWith({
     FormStatus? logRequestStatus,
     FormStatus? eventRequestStatus,
-    // FormStatus? dataShareStatus,
-    // FormStatus? dataExportStatus,
-    // FormStatus? allDataExportStatus,
-    int? chunckIndex,
+    FormStatus? dataShareStatus,
+    FormStatus? dataExportStatus,
+    FormStatus? allDataExportStatus,
+    int? chunkIndex,
     bool? hasNextChunk,
-    List<Event1p8G>? event1p8Gs,
-    List<Log1p8G>? log1p8Gs,
+    List<Event1p8GCCorNode>? event1p8Gs,
+    List<Log1p8GCCorNode>? log1p8Gs,
     List<List<ValuePair>>? dateValueCollectionOfLog,
     String? exportFileName,
     String? dataExportPath,
     String? errorMessage,
   }) {
-    return DataLogChartState(
+    return Chart18CCorNodeState(
       logRequestStatus: logRequestStatus ?? this.logRequestStatus,
       eventRequestStatus: eventRequestStatus ?? this.eventRequestStatus,
-      // dataShareStatus: dataShareStatus ?? this.dataShareStatus,
-      // dataExportStatus: dataExportStatus ?? this.dataExportStatus,
-      // allDataExportStatus: allDataExportStatus ?? this.allDataExportStatus,
+      dataShareStatus: dataShareStatus ?? this.dataShareStatus,
+      dataExportStatus: dataExportStatus ?? this.dataExportStatus,
+      allDataExportStatus: allDataExportStatus ?? this.allDataExportStatus,
       chunkIndex: chunkIndex ?? this.chunkIndex,
       hasNextChunk: hasNextChunk ?? this.hasNextChunk,
       event1p8Gs: event1p8Gs ?? this.event1p8Gs,
@@ -68,9 +68,9 @@ class DataLogChartState extends Equatable {
   List<Object> get props => [
         logRequestStatus,
         eventRequestStatus,
-        // dataShareStatus,
-        // dataExportStatus,
-        // allDataExportStatus,
+        dataShareStatus,
+        dataExportStatus,
+        allDataExportStatus,
         chunkIndex,
         hasNextChunk,
         event1p8Gs,

@@ -775,64 +775,69 @@ Widget alarmControl({
           ],
         ),
       ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Flexible(
-            flex: 2,
-            child: TextField(
-              controller: minValueTextEditingController,
-              key: const Key('setting18CCorNodeForm_minValue_textField'),
-              style: const TextStyle(
-                fontSize: CustomStyle.sizeXL,
-              ),
-              enabled: editMode,
-              textInputAction: TextInputAction.done,
-              onChanged: onChangedMinValue,
-              maxLength: 40,
-              decoration: InputDecoration(
-                label: Text(AppLocalizations.of(context).minVoltage),
-                border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                contentPadding: EdgeInsets.all(8.0),
-                isDense: true,
-                filled: true,
-                fillColor: Colors.white,
-                counterText: '',
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          Flexible(
-            flex: 2,
-            child: TextField(
-              controller: maxValueTextEditingController,
-              key: const Key('setting18Form_maxValue_textField'),
-              style: const TextStyle(
-                fontSize: CustomStyle.sizeXL,
-              ),
-              enabled: editMode,
-              textInputAction: TextInputAction.done,
-              onChanged: onChangedMaxValue,
-              maxLength: 40,
-              decoration: InputDecoration(
-                label: Text(AppLocalizations.of(context).maxVoltage),
-                border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                contentPadding: EdgeInsets.all(8.0),
-                isDense: true,
-                filled: true,
-                fillColor: Colors.white,
-                counterText: '',
+      Padding(
+        padding: const EdgeInsets.only(
+          bottom: 16.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              flex: 2,
+              child: TextField(
+                controller: minValueTextEditingController,
+                key: const Key('setting18CCorNodeForm_minValue_textField'),
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                ),
+                enabled: editMode,
+                textInputAction: TextInputAction.done,
+                onChanged: onChangedMinValue,
+                maxLength: 40,
+                decoration: InputDecoration(
+                  label: Text(AppLocalizations.of(context).minVoltage),
+                  border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  contentPadding: EdgeInsets.all(8.0),
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
+                  counterText: '',
+                ),
               ),
             ),
-          ),
-        ],
+            const SizedBox(
+              width: 20,
+            ),
+            Flexible(
+              flex: 2,
+              child: TextField(
+                controller: maxValueTextEditingController,
+                key: const Key('setting18Form_maxValue_textField'),
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                ),
+                enabled: editMode,
+                textInputAction: TextInputAction.done,
+                onChanged: onChangedMaxValue,
+                maxLength: 40,
+                decoration: InputDecoration(
+                  label: Text(AppLocalizations.of(context).maxVoltage),
+                  border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  contentPadding: EdgeInsets.all(8.0),
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
+                  counterText: '',
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       const SizedBox(
-        height: 60,
+        height: 20,
       ),
     ],
   );

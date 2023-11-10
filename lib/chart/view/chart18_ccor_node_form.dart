@@ -1,7 +1,7 @@
 import 'dart:math';
-import 'package:aci_plus_app/chart/chart/chart18_bloc/chart18_bloc.dart';
-import 'package:aci_plus_app/chart/chart/data_log_chart_bloc/data_log_chart_bloc.dart';
-import 'package:aci_plus_app/chart/view/download_indicator18.dart';
+
+import 'package:aci_plus_app/chart/chart/chart18_ccor_node_bloc/chart18_ccor_node_bloc.dart';
+import 'package:aci_plus_app/chart/view/download_indicator18_ccor_node.dart';
 import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
 import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
@@ -9,17 +9,17 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
-import 'package:aci_plus_app/repositories/dsim18_parser.dart';
+import 'package:aci_plus_app/repositories/dsim18_ccor_node_parser.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:share_plus/share_plus.dart';
 
-class DataLogChartView extends StatelessWidget {
-  const DataLogChartView({
+class Chart18CCorNodeForm extends StatelessWidget {
+  const Chart18CCorNodeForm({
     super.key,
     required this.pageController,
   });
@@ -28,57 +28,6 @@ class DataLogChartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _LogChartView(
-      pageController: pageController,
-    );
-  }
-}
-
-class _LogChartView extends StatelessWidget {
-  const _LogChartView({
-    super.key,
-    required this.pageController,
-  });
-
-  final PageController pageController;
-
-  @override
-  Widget build(BuildContext context) {
-    Future<bool?> showNoMoreDataDialog() async {
-      return showDialog<bool>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context).dialogTitleSuccess,
-              style: const TextStyle(
-                color: CustomStyle.customGreen,
-              ),
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context).dialogMessageNoMoreLogs,
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(
-                  AppLocalizations.of(context).dialogMessageOk,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
     Future<void> showFailureDialog(String msg) async {
       return showDialog<void>(
         context: context,
@@ -116,20 +65,116 @@ class _LogChartView extends StatelessWidget {
       );
     }
 
-    return BlocListener<DataLogChartBloc, DataLogChartState>(
+    return BlocListener<Chart18CCorNodeBloc, Chart18CCorNodeState>(
       listener: (context, state) async {
-        if (state.logRequestStatus.isRequestSuccess) {
-          if (!state.hasNextChunk) {
-            // 避免 dialog 重複跳出
-            if (ModalRoute.of(context)?.isCurrent == true) {
-              showNoMoreDataDialog();
-            }
+        if (state.dataExportStatus.isRequestSuccess) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                duration: const Duration(seconds: 30),
+                content: Text(
+                  AppLocalizations.of(context)
+                      .dialogMessageDataExportSuccessful,
+                ),
+                action: SnackBarAction(
+                  label: AppLocalizations.of(context).open,
+                  onPressed: () async {
+                    OpenResult result = await OpenFilex.open(
+                      state.dataExportPath,
+                      type: 'application/vnd.ms-excel',
+                      uti: 'com.microsoft.excel.xls',
+                    );
+                    print(result.message);
+                  },
+                ),
+              ),
+            );
+        } else if (state.dataShareStatus.isRequestSuccess) {
+          String partNo = context
+              .read<HomeBloc>()
+              .state
+              .characteristicData[DataKey.partNo]!;
+          String location = context
+              .read<HomeBloc>()
+              .state
+              .characteristicData[DataKey.location]!;
+
+          double width = MediaQuery.of(context).size.width;
+          double height = MediaQuery.of(context).size.height;
+          Share.shareXFiles(
+            [XFile(state.dataExportPath)],
+            subject: state.exportFileName,
+            text: '$partNo / $location',
+            sharePositionOrigin:
+                Rect.fromLTWH(0.0, height / 2, width, height / 2),
+          );
+        } else if (state.allDataExportStatus.isRequestInProgress) {
+          List<dynamic>? resultOfDownload = await showDialog<List<dynamic>>(
+            context: context,
+            barrierDismissible: false, // user must tap button!
+            builder: (BuildContext buildContext) {
+              return WillPopScope(
+                onWillPop: () async {
+                  // 避免 Android 使用者點擊系統返回鍵關閉 dialog
+                  return false;
+                },
+                child: DownloadIndicator18CCorNodeForm(
+                  dsimRepository:
+                      RepositoryProvider.of<DsimRepository>(context),
+                ),
+              );
+            },
+          );
+
+          if (resultOfDownload != null) {
+            bool isSuccessful = resultOfDownload[0];
+            List<Log1p8GCCorNode> log1p8Gs = resultOfDownload[1];
+            String errorMessage = resultOfDownload[2];
+            context.read<Chart18CCorNodeBloc>().add(AllDataExported(
+                  isSuccessful,
+                  log1p8Gs,
+                  errorMessage,
+                ));
           }
-        } else if (state.logRequestStatus.isRequestFailure) {
+        } else if (state.allDataExportStatus.isRequestSuccess) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                duration: const Duration(seconds: 30),
+                content: Text(
+                  AppLocalizations.of(context)
+                      .dialogMessageDataExportSuccessful,
+                ),
+                action: SnackBarAction(
+                  label: AppLocalizations.of(context).open,
+                  onPressed: () async {
+                    OpenResult result = await OpenFilex.open(
+                      state.dataExportPath,
+                      type: 'application/vnd.ms-excel',
+                      uti: 'com.microsoft.excel.xls',
+                    );
+                    print(result.message);
+                  },
+                ),
+              ),
+            );
+        } else if (state.allDataExportStatus.isRequestFailure) {
           showFailureDialog(state.errorMessage);
         }
       },
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            AppLocalizations.of(context).monitoringChart,
+          ),
+          centerTitle: true,
+          leading: const _DeviceStatus(),
+          actions: const [
+            _PopupMenu(),
+          ],
+        ),
         body: const _LogChartListView(),
         floatingActionButton: const _MoreDataFloatingActionButton(),
         bottomNavigationBar: _DynamicBottomNavigationBar(
@@ -138,6 +183,203 @@ class _LogChartView extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _DeviceStatus extends StatelessWidget {
+  const _DeviceStatus({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.scanStatus.isRequestSuccess) {
+          if (state.connectionStatus.isRequestSuccess) {
+            return const Icon(
+              Icons.bluetooth_connected_outlined,
+            );
+          } else if (state.connectionStatus.isRequestFailure) {
+            return const Icon(
+              Icons.nearby_error,
+              color: Colors.amber,
+            );
+          } else {
+            return const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(
+                  color: Colors.amber,
+                ),
+              ),
+            );
+          }
+        } else if (state.scanStatus.isRequestFailure) {
+          return const Icon(
+            Icons.nearby_error_outlined,
+          );
+        } else {
+          return const Center(
+            child: SizedBox(
+              width: CustomStyle.diameter,
+              height: CustomStyle.diameter,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+}
+
+enum DataLogMenu {
+  refresh,
+  share,
+  export,
+  downloadAll,
+}
+
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+class _PopupMenu extends StatelessWidget {
+  const _PopupMenu({super.key});
+
+  Widget buildDataLogPageMenu(BuildContext context) {
+    return BlocBuilder<Chart18CCorNodeBloc, Chart18CCorNodeState>(
+      builder: (context, state) {
+        return PopupMenuButton<DataLogMenu>(
+          icon: const Icon(
+            Icons.more_vert_outlined,
+            color: Colors.white,
+          ),
+          tooltip: '',
+          onSelected: (DataLogMenu item) async {
+            switch (item) {
+              case DataLogMenu.refresh:
+                context.read<HomeBloc>().add(const DeviceRefreshed());
+                break;
+              case DataLogMenu.share:
+                context.read<Chart18CCorNodeBloc>().add(const DataShared());
+                break;
+              case DataLogMenu.export:
+                context.read<Chart18CCorNodeBloc>().add(const DataExported());
+                break;
+              case DataLogMenu.downloadAll:
+                context
+                    .read<Chart18CCorNodeBloc>()
+                    .add(const AllDataDownloaded());
+              default:
+                break;
+            }
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<DataLogMenu>>[
+            PopupMenuItem<DataLogMenu>(
+              value: DataLogMenu.refresh,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.refresh,
+                    size: 20.0,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(AppLocalizations.of(context).reconnect),
+                ],
+              ),
+            ),
+            PopupMenuItem<DataLogMenu>(
+              value: DataLogMenu.share,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.share,
+                    size: 20.0,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(AppLocalizations.of(context).share),
+                ],
+              ),
+            ),
+            PopupMenuItem<DataLogMenu>(
+              value: DataLogMenu.export,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.download,
+                    size: 20.0,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(AppLocalizations.of(context).export),
+                ],
+              ),
+            ),
+            PopupMenuItem<DataLogMenu>(
+              value: DataLogMenu.downloadAll,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.cloud_download_outlined,
+                    size: 20.0,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(AppLocalizations.of(context).downloadAll),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      if (state.loadingStatus.isRequestSuccess) {
+        return buildDataLogPageMenu(context);
+      } else {
+        if (!state.connectionStatus.isRequestInProgress) {
+          return IconButton(
+              onPressed: () {
+                context.read<HomeBloc>().add(const DeviceRefreshed());
+              },
+              icon: Icon(
+                Icons.refresh,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ));
+        } else {
+          return Container();
+        }
+      }
+    });
   }
 }
 
@@ -153,7 +395,7 @@ class _DynamicBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DataLogChartBloc, DataLogChartState>(
+    return BlocBuilder<Chart18CCorNodeBloc, Chart18CCorNodeState>(
       builder: (context, state) {
         if (state.eventRequestStatus.isRequestInProgress ||
             state.logRequestStatus.isRequestInProgress) {
@@ -188,7 +430,7 @@ class _MoreDataFloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DataLogChartBloc, DataLogChartState>(
+    return BlocBuilder<Chart18CCorNodeBloc, Chart18CCorNodeState>(
       builder: (context, state) {
         if (state.logRequestStatus.isRequestInProgress) {
           return Container();
@@ -204,7 +446,7 @@ class _MoreDataFloatingActionButton extends StatelessWidget {
               color: Theme.of(context).colorScheme.onPrimary,
             ),
             onPressed: () {
-              context.read<DataLogChartBloc>().add(const MoreLogRequested());
+              context.read<Chart18CCorNodeBloc>().add(const MoreLogRequested());
             },
           );
         }
@@ -228,48 +470,48 @@ class _LogChartListView extends StatelessWidget {
         minYAxisValue: -30.0,
         maxYAxisValue: 100.0,
       );
-      LineSeries rfOutputLowPilotLineSeries = LineSeries(
-        name: 'RF Output Low Pilot (${CustomStyle.dBmV})',
-        dataList: dateValueCollectionOfLog[1],
-        color: const Color(0xffff5963),
-        minYAxisValue: 0.0,
-        maxYAxisValue: 300.0,
-      );
-      LineSeries rfOutputHighPilotLineSeries = LineSeries(
-        name: 'RF Output High Pilot (${CustomStyle.dBmV})',
-        dataList: dateValueCollectionOfLog[2],
-        color: const Color(0xff249689),
-        minYAxisValue: 0.0,
-        maxYAxisValue: 300.0,
-      );
 
       return [
         temperatureLineSeries,
-        rfOutputLowPilotLineSeries,
-        rfOutputHighPilotLineSeries,
       ];
     }
 
     List<LineSeries> getChartDataOfLog2({
       required List<List<ValuePair>> dateValueCollectionOfLog,
     }) {
-      LineSeries voltageLineSeries = LineSeries(
-        name: '24V',
+      LineSeries rfOutputPower1 = LineSeries(
+        name: 'Port 1 RF Output Power (${CustomStyle.dBmV})',
+        dataList: dateValueCollectionOfLog[1],
+        color: const Color(0xffff5963),
+        minYAxisValue: 0.0,
+        maxYAxisValue: 60.0,
+      );
+      LineSeries rfOutputPower3 = LineSeries(
+        name: 'Port 3 RF Output Power (${CustomStyle.dBmV})',
+        dataList: dateValueCollectionOfLog[2],
+        color: Theme.of(context).colorScheme.primary,
+        minYAxisValue: 0.0,
+        maxYAxisValue: 60.0,
+      );
+      LineSeries rfOutputPower4 = LineSeries(
+        name: 'Port 4 RF Output Power (${CustomStyle.dBmV})',
         dataList: dateValueCollectionOfLog[3],
         color: const Color(0xffff5963),
         minYAxisValue: 0.0,
-        maxYAxisValue: 40.0,
+        maxYAxisValue: 60.0,
       );
-      LineSeries voltageRippleLineSeries = LineSeries(
-        name: '24V Ripple (${CustomStyle.milliVolt})',
+      LineSeries rfOutputPower6 = LineSeries(
+        name: 'Port 6 RF Output Power (${CustomStyle.dBmV})',
         dataList: dateValueCollectionOfLog[4],
-        color: Theme.of(context).colorScheme.primary,
+        color: const Color(0xff249689),
         minYAxisValue: 0.0,
-        maxYAxisValue: 500.0,
+        maxYAxisValue: 60.0,
       );
       return [
-        voltageLineSeries,
-        voltageRippleLineSeries,
+        rfOutputPower1,
+        rfOutputPower3,
+        rfOutputPower4,
+        rfOutputPower6,
       ];
     }
 
@@ -371,8 +613,8 @@ class _LogChartListView extends StatelessWidget {
     return Builder(
       builder: (context) {
         HomeState homeState = context.watch<HomeBloc>().state;
-        DataLogChartState dataLogChartState =
-            context.watch<DataLogChartBloc>().state;
+        Chart18CCorNodeState dataLogChartState =
+            context.watch<Chart18CCorNodeBloc>().state;
 
         if (homeState.loadingStatus == FormStatus.requestInProgress) {
           return Stack(
@@ -397,8 +639,7 @@ class _LogChartListView extends StatelessWidget {
         } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
           if (dataLogChartState.logRequestStatus.isNone) {
             print('===== get log ======');
-            context.read<Chart18Bloc>().add(const TabChangedDisabled());
-            context.read<DataLogChartBloc>().add(const LogRequested());
+            context.read<Chart18CCorNodeBloc>().add(const LogRequested());
             return Stack(
               alignment: Alignment.center,
               children: [
@@ -439,7 +680,6 @@ class _LogChartListView extends StatelessWidget {
               ],
             );
           } else if (dataLogChartState.logRequestStatus.isRequestFailure) {
-            context.read<Chart18Bloc>().add(const TabChangedEnabled());
             return Stack(
               alignment: Alignment.center,
               children: [
@@ -462,8 +702,9 @@ class _LogChartListView extends StatelessWidget {
           } else {
             if (dataLogChartState.eventRequestStatus.isNone) {
               print('===== get event ======');
-              context.read<Chart18Bloc>().add(const TabChangedDisabled());
-              context.read<DataLogChartBloc>().add(const Event1P8GRequested());
+              context
+                  .read<Chart18CCorNodeBloc>()
+                  .add(const Event1P8GCCorNodeRequested());
               return Stack(
                 alignment: Alignment.center,
                 children: [
@@ -505,7 +746,6 @@ class _LogChartListView extends StatelessWidget {
                 ],
               );
             } else if (dataLogChartState.eventRequestStatus.isRequestFailure) {
-              context.read<Chart18Bloc>().add(const TabChangedEnabled());
               return Stack(
                 alignment: Alignment.center,
                 children: [
@@ -526,7 +766,6 @@ class _LogChartListView extends StatelessWidget {
                 ],
               );
             } else {
-              context.read<Chart18Bloc>().add(const TabChangedEnabled());
               return Center(
                 child: SingleChildScrollView(
                   // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
@@ -571,7 +810,6 @@ class _LogChartListView extends StatelessWidget {
             }
           }
         } else {
-          context.read<Chart18Bloc>().add(const TabChangedEnabled());
           return SingleChildScrollView(
             // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
             // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart

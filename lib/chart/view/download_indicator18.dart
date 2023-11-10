@@ -1,12 +1,10 @@
-import 'package:aci_plus_app/chart/chart/chart18_bloc/chart18_bloc.dart';
 import 'package:aci_plus_app/repositories/dsim18_parser.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class DownloadIndicatorForm extends StatefulWidget {
-  const DownloadIndicatorForm({
+class DownloadIndicator18Form extends StatefulWidget {
+  const DownloadIndicator18Form({
     super.key,
     required this.dsimRepository,
   });
@@ -14,10 +12,11 @@ class DownloadIndicatorForm extends StatefulWidget {
   final DsimRepository dsimRepository;
 
   @override
-  State<DownloadIndicatorForm> createState() => _DownloadIndicatorFormState();
+  State<DownloadIndicator18Form> createState() =>
+      _DownloadIndicator18FormState();
 }
 
-class _DownloadIndicatorFormState extends State<DownloadIndicatorForm>
+class _DownloadIndicator18FormState extends State<DownloadIndicator18Form>
     with TickerProviderStateMixin {
   late AnimationController controller;
   late int chunckIndex;

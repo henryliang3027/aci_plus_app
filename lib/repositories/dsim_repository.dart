@@ -7,6 +7,7 @@ import 'package:aci_plus_app/core/command18_c_core_node.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/shared_preference_key.dart';
 import 'package:aci_plus_app/repositories/ble_client.dart';
+import 'package:aci_plus_app/repositories/dsim18_ccor_node_chart_cache.dart';
 import 'package:aci_plus_app/repositories/dsim18_ccor_node_parser.dart';
 import 'package:aci_plus_app/repositories/dsim18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/dsim18_parser.dart';
@@ -22,7 +23,8 @@ class DsimRepository {
         _dsimParser = DsimParser(),
         _dsim18Parser = Dsim18Parser(),
         _dsim18ChartCache = Dsim18ChartCache(),
-        _dsim18CCorNodeParser = Dsim18CCorNodeParser();
+        _dsim18CCorNodeParser = Dsim18CCorNodeParser(),
+        _dsim18CCorNodeChartCache = Dsim18CCorNodeChartCache();
 
   StreamController<Map<DataKey, String>> _characteristicDataStreamController =
       StreamController<Map<DataKey, String>>();
@@ -32,6 +34,7 @@ class DsimRepository {
   final Dsim18Parser _dsim18Parser;
   final Dsim18ChartCache _dsim18ChartCache;
   final Dsim18CCorNodeParser _dsim18CCorNodeParser;
+  final Dsim18CCorNodeChartCache _dsim18CCorNodeChartCache;
 
   Stream<ScanReport> get scanReport async* {
     yield* _bleClient.scanReport;
@@ -271,7 +274,38 @@ class DsimRepository {
     }
   }
 
-  // commandIndex range from 183 to 192;
+  Future<dynamic> requestCommand1p8GCCorNodeAlarm() async {
+    int commandIndex = 182;
+
+    print('get data from request command 1p8G_Alarm');
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _dsim18CCorNodeParser
+            .command18CCorNodeCollection[commandIndex - 180],
+      );
+
+      A1P8GAlarm a1p8gAlarm =
+          _dsim18CCorNodeParser.decodeAlarmSeverity(rawData);
+
+      return [
+        true,
+        a1p8gAlarm.unitStatusAlarmSeverity,
+        a1p8gAlarm.temperatureAlarmSeverity,
+        a1p8gAlarm.powerAlarmSeverity,
+      ];
+    } catch (e) {
+      return [
+        false,
+        '',
+        '',
+        '',
+      ];
+    }
+  }
+
+  // commandIndex range from 184 to 193;
   // commandIndex = 184 時獲取最新的1024筆Log的統計資料跟 log
   Future<dynamic> requestCommand1p8GCCorNodeLogChunk(int chunkIndex) async {
     int commandIndex = chunkIndex + 184;
@@ -282,13 +316,14 @@ class DsimRepository {
       try {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
-          value: _dsim18CCorNodeParser.command18CCorNodeCollection[3],
+          value: _dsim18CCorNodeParser
+              .command18CCorNodeCollection[commandIndex - 181],
         );
 
         List<Log1p8GCCorNode> log1p8Gs =
-            _dsim18CCorNodeParser.parse1P8GLog(rawData);
+            _dsim18CCorNodeParser.parse1P8GCCorNodeLog(rawData);
         A1P8GCCorNodeLogStatistic a1p8gcCorNodeLogStatistic =
-            _dsim18CCorNodeParser.getA1p8GLogStatistics(log1p8Gs);
+            _dsim18CCorNodeParser.getA1p8GCCorNodeLogStatistics(log1p8Gs);
         bool hasNextChunk = log1p8Gs.isNotEmpty ? true : false;
 
         return [
@@ -333,11 +368,11 @@ class DsimRepository {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
           value: _dsim18CCorNodeParser
-              .command18CCorNodeCollection[commandIndex - 180],
+              .command18CCorNodeCollection[commandIndex - 181],
         );
 
         List<Log1p8GCCorNode> log1p8Gs =
-            _dsim18CCorNodeParser.parse1P8GLog(rawData);
+            _dsim18CCorNodeParser.parse1P8GCCorNodeLog(rawData);
         bool hasNextChunk = log1p8Gs.isNotEmpty ? true : false;
 
         return [
@@ -362,10 +397,12 @@ class DsimRepository {
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _dsim18Parser.command18Collection[commandIndex - 180],
+        value: _dsim18CCorNodeParser
+            .command18CCorNodeCollection[commandIndex - 181],
       );
 
-      List<Event1p8G> event1p8Gs = _dsim18Parser.parse1p8GEvent(rawData);
+      List<Event1p8GCCorNode> event1p8Gs =
+          _dsim18CCorNodeParser.parse1p8GCCorNodeEvent(rawData);
       return [
         true,
         event1p8Gs,
@@ -375,6 +412,109 @@ class DsimRepository {
         false,
       ];
     }
+  }
+
+  Future<dynamic> set1p8GCCorNodeNowDateTime(String deviceNowDateTime) async {
+    int commandIndex = 354;
+
+    print('get data from request command 1p8G$commandIndex');
+
+    DateTime dateTime = DateTime.now();
+    DateTime deviceDateTime = DateTime.parse(deviceNowDateTime);
+
+    int year = dateTime.year;
+
+    // Convert the integer to bytes
+    ByteData yearByteData = ByteData(2);
+    yearByteData.setInt16(0, year, Endian.little); // little endian
+    Uint8List yearBytes = Uint8List.view(yearByteData.buffer);
+
+    int month = dateTime.month;
+    int day = dateTime.day;
+    int hour = dateTime.hour;
+    int minute = dateTime.minute;
+
+    Command18CCorNode.setNowDateTimeCmd[7] = yearBytes[0];
+    Command18CCorNode.setNowDateTimeCmd[8] = yearBytes[1];
+    Command18CCorNode.setNowDateTimeCmd[9] = month;
+    Command18CCorNode.setNowDateTimeCmd[10] = day;
+    Command18CCorNode.setNowDateTimeCmd[11] = hour;
+    Command18CCorNode.setNowDateTimeCmd[12] = minute;
+
+    CRC16.calculateCRC16(
+      command: Command18CCorNode.setNowDateTimeCmd,
+      usDataLength: Command18CCorNode.setNowDateTimeCmd.length - 2,
+    );
+
+    int difference = dateTime.difference(deviceDateTime).inMinutes.abs();
+
+    // 如果 device 的now time 跟 目前時間相差大於5分鐘, 則寫入目前時間
+    if (difference > 5) {
+      try {
+        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+          commandIndex: commandIndex,
+          value: Command18CCorNode.setNowDateTimeCmd,
+        );
+        return true;
+      } catch (e) {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  Future<dynamic> export1p8GCCorNodeRecords({
+    required List<Log1p8GCCorNode> log1p8Gs,
+    required List<Event1p8GCCorNode> event1p8Gs,
+  }) async {
+    List<dynamic> result =
+        await _dsim18CCorNodeParser.export1p8GCCorNodeRecords(
+      log1p8Gs: log1p8Gs,
+      event1p8Gs: event1p8Gs,
+    );
+    return result;
+  }
+
+  Future<dynamic> exportAll1p8GCCorNodeRecords({
+    required List<Log1p8GCCorNode> log1p8Gs,
+    required List<Event1p8GCCorNode> event1p8Gs,
+  }) async {
+    List<dynamic> result =
+        await _dsim18CCorNodeParser.export1p8GCCorNodeRecords(
+      log1p8Gs: log1p8Gs,
+      event1p8Gs: event1p8Gs,
+    );
+    return result;
+  }
+
+  List<List<ValuePair>> get1p8GCCorNodeDateValueCollectionOfLogs(
+      List<Log1p8GCCorNode> log1p8Gs) {
+    return _dsim18CCorNodeParser.get1p8GDateValueCollectionOfLogs(log1p8Gs);
+  }
+
+  void clearEvent1p8GCCorNodes() {
+    _dsim18CCorNodeChartCache.clearEvent1p8Gs();
+  }
+
+  void clearLoadMoreLog1p8GCCorNodes() {
+    _dsim18CCorNodeChartCache.clearLoadMoreLog1p8Gs();
+  }
+
+  void clearAllLog1p8GCCorNodes() {
+    _dsim18CCorNodeChartCache.clearAllLog1p8Gs();
+  }
+
+  void writeEvent1p8GCCorNodes(List<Event1p8GCCorNode> event1p8Gs) {
+    _dsim18CCorNodeChartCache.writeEvent1p8Gs(event1p8Gs);
+  }
+
+  void writeLoadMoreLog1p8GCCorNodes(List<Log1p8GCCorNode> log1p8Gs) {
+    _dsim18CCorNodeChartCache.writeLoadMoreLog1p8Gs(log1p8Gs);
+  }
+
+  void writeAllLog1p8GCCorNodes(List<Log1p8GCCorNode> log1p8Gs) {
+    _dsim18CCorNodeChartCache.writeAllLog1p8Gs(log1p8Gs);
   }
 
   Future<dynamic> set1p8GCCorNodeLogInterval(String logInterval) async {

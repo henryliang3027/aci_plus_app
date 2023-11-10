@@ -2,7 +2,7 @@ import 'package:aci_plus_app/chart/chart/chart18_bloc/chart18_bloc.dart';
 import 'package:aci_plus_app/chart/chart/data_log_chart_bloc/data_log_chart_bloc.dart';
 import 'package:aci_plus_app/chart/chart/rf_level_chart_bloc/rf_level_chart_bloc.dart';
 import 'package:aci_plus_app/chart/view/data_log_chart_page.dart';
-import 'package:aci_plus_app/chart/view/download_indicator.dart';
+import 'package:aci_plus_app/chart/view/download_indicator18.dart';
 import 'package:aci_plus_app/chart/view/rf_level_chart_page.dart';
 import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
@@ -138,7 +138,7 @@ class _Chart18FormState extends State<Chart18Form>
                   // 避免 Android 使用者點擊系統返回鍵關閉 dialog
                   return false;
                 },
-                child: DownloadIndicatorForm(
+                child: DownloadIndicator18Form(
                   dsimRepository:
                       RepositoryProvider.of<DsimRepository>(context),
                 ),

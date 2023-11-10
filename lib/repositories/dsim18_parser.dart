@@ -956,7 +956,7 @@ class Dsim18Parser {
     rawData.removeRange(0, 3);
 
     for (var i = 0; i < 1024; i++) {
-      // 如果檢查到有一筆log 的內容全部是 255, 則視為沒有更多log資料了
+      // 如果檢查到有一筆 event 的內容全部是 255, 則視為沒有更多 event 資料了
       bool isEmptyLog = rawData
           .sublist(i * 16, i * 16 + 16)
           .every((element) => element == 255);
