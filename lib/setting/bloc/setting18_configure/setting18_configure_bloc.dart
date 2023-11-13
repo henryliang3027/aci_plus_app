@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,7 +12,9 @@ class Setting18ConfigureBloc
     extends Bloc<Setting18ConfigureEvent, Setting18ConfigureState> {
   Setting18ConfigureBloc({
     required DsimRepository dsimRepository,
+    required GPSRepository gpsRepository,
   })  : _dsimRepository = dsimRepository,
+        _gpsRepository = gpsRepository,
         super(const Setting18ConfigureState()) {
     on<Initialized>(_onInitialized);
     on<LocationChanged>(_onLocationChanged);
@@ -39,6 +42,7 @@ class Setting18ConfigureBloc
   }
 
   final DsimRepository _dsimRepository;
+  final GPSRepository _gpsRepository;
 
   Future<void> _onInitialized(
     Initialized event,
@@ -145,7 +149,7 @@ class Setting18ConfigureBloc
     ));
 
     try {
-      String coordinates = await _dsimRepository.getGPSCoordinates();
+      String coordinates = await _gpsRepository.getGPSCoordinates();
       emit(state.copyWith(
         gpsStatus: FormStatus.requestSuccess,
         coordinates: coordinates,

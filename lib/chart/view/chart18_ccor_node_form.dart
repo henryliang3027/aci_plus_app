@@ -496,7 +496,7 @@ class _LogChartListView extends StatelessWidget {
       LineSeries rfOutputPower4 = LineSeries(
         name: 'Port 4 RF Output Power (${CustomStyle.dBmV})',
         dataList: dateValueCollectionOfLog[3],
-        color: const Color(0xffff5963),
+        color: const Color(0xFFFFC859),
         minYAxisValue: 0.0,
         maxYAxisValue: 60.0,
       );

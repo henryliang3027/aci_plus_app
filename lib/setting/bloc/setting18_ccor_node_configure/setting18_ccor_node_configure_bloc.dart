@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,7 +12,9 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     Setting18CCorNodeConfigureEvent, Setting18CCorNodeConfigureState> {
   Setting18CCorNodeConfigureBloc({
     required DsimRepository dsimRepository,
+    required GPSRepository gpsRepository,
   })  : _dsimRepository = dsimRepository,
+        _gpsRepository = gpsRepository,
         super(const Setting18CCorNodeConfigureState()) {
     on<Initialized>(_onInitialized);
     on<LocationChanged>(_onLocationChanged);
@@ -27,6 +30,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
   }
 
   final DsimRepository _dsimRepository;
+  final GPSRepository _gpsRepository;
 
   Future<void> _onInitialized(
     Initialized event,
@@ -91,7 +95,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     ));
 
     try {
-      String coordinates = await _dsimRepository.getGPSCoordinates();
+      String coordinates = await _gpsRepository.getGPSCoordinates();
       emit(state.copyWith(
         gpsStatus: FormStatus.requestSuccess,
         coordinates: coordinates,
@@ -263,28 +267,28 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
 
     if (state.location != state.initialValues[0]) {
       bool resultOfSetLocation =
-          await _dsimRepository.set1p8GLocation(state.location);
+          await _dsimRepository.set1p8GCCorNodeLocation(state.location);
 
       settingResult.add('${DataKey.location.name},$resultOfSetLocation');
     }
 
     if (state.coordinates != state.initialValues[1]) {
       bool resultOfSetCoordinates =
-          await _dsimRepository.set1p8GCoordinates(state.coordinates);
+          await _dsimRepository.set1p8GCCorNodeCoordinates(state.coordinates);
 
       settingResult.add('${DataKey.coordinates.name},$resultOfSetCoordinates');
     }
 
     if (state.splitOption != state.initialValues[2]) {
       bool resultOfSetSplitOption =
-          await _dsimRepository.set1p8GSplitOption(state.splitOption);
+          await _dsimRepository.set1p8GCCorNodeSplitOption(state.splitOption);
 
       settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
     }
 
-    if (state.logInterval != state.initialValues[12]) {
+    if (state.logInterval != state.initialValues[3]) {
       bool resultOfSetLogInterval =
-          await _dsimRepository.set1p8GLogInterval(state.logInterval);
+          await _dsimRepository.set1p8GCCorNodeLogInterval(state.logInterval);
 
       settingResult.add('${DataKey.logInterval.name},$resultOfSetLogInterval');
     }
@@ -299,6 +303,6 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       editMode: false,
     ));
 
-    await _dsimRepository.updateCharacteristics();
+    await _dsimRepository.update1p8GCCorNodeCharacteristics();
   }
 }

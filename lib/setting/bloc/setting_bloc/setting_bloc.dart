@@ -9,26 +9,16 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   SettingBloc({required DsimRepository dsimRepository})
       : _dsimRepository = dsimRepository,
         super(const SettingState()) {
-    on<GraphViewToggled>(_onGraphViewToggled);
-    on<ListViewToggled>(_onListViewToggled);
+    on<ViewToggled>(_onViewToggled);
   }
   final DsimRepository _dsimRepository;
 
-  void _onGraphViewToggled(
-    GraphViewToggled event,
+  void _onViewToggled(
+    ViewToggled event,
     Emitter<SettingState> emit,
   ) {
     emit(state.copyWith(
-      isGraphType: true,
-    ));
-  }
-
-  void _onListViewToggled(
-    ListViewToggled event,
-    Emitter<SettingState> emit,
-  ) {
-    emit(state.copyWith(
-      isGraphType: false,
+      isGraphType: !state.isGraphType,
     ));
   }
 }

@@ -6,15 +6,8 @@ abstract class SettingEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GraphViewToggled extends SettingEvent {
-  const GraphViewToggled();
-
-  @override
-  List<Object> get props => [];
-}
-
-class ListViewToggled extends SettingEvent {
-  const ListViewToggled();
+class ViewToggled extends SettingEvent {
+  const ViewToggled();
 
   @override
   List<Object> get props => [];

@@ -11,16 +11,16 @@ class Setting18CCorNodeThresholdState extends Equatable {
     this.minVoltage = '',
     this.maxVoltage = '',
     this.splitOptionAlarmState = false,
-    this.rfOutputPowerAlarmState1 = false,
+    this.rfOutputPower1AlarmState = false,
     this.minRFOutputPower1 = '',
     this.maxRFOutputPower1 = '',
-    this.rfOutputPowerAlarmState3 = false,
+    this.rfOutputPower3AlarmState = false,
     this.minRFOutputPower3 = '',
     this.maxRFOutputPower3 = '',
-    this.rfOutputPowerAlarmState4 = false,
+    this.rfOutputPower4AlarmState = false,
     this.minRFOutputPower4 = '',
     this.maxRFOutputPower4 = '',
-    this.rfOutputPowerAlarmState6 = false,
+    this.rfOutputPower6AlarmState = false,
     this.minRFOutputPower6 = '',
     this.maxRFOutputPower6 = '',
     this.editMode = false,
@@ -39,16 +39,16 @@ class Setting18CCorNodeThresholdState extends Equatable {
   final String minVoltage;
   final String maxVoltage;
   final bool splitOptionAlarmState;
-  final bool rfOutputPowerAlarmState1;
+  final bool rfOutputPower1AlarmState;
   final String minRFOutputPower1;
   final String maxRFOutputPower1;
-  final bool rfOutputPowerAlarmState3;
+  final bool rfOutputPower3AlarmState;
   final String minRFOutputPower3;
   final String maxRFOutputPower3;
-  final bool rfOutputPowerAlarmState4;
+  final bool rfOutputPower4AlarmState;
   final String minRFOutputPower4;
   final String maxRFOutputPower4;
-  final bool rfOutputPowerAlarmState6;
+  final bool rfOutputPower6AlarmState;
   final String minRFOutputPower6;
   final String maxRFOutputPower6;
   final bool editMode;
@@ -67,16 +67,16 @@ class Setting18CCorNodeThresholdState extends Equatable {
     String? minVoltage,
     String? maxVoltage,
     bool? splitOptionAlarmState,
-    bool? rfOutputPowerAlarmState1,
+    bool? rfOutputPower1AlarmState,
     String? minRFOutputPower1,
     String? maxRFOutputPower1,
-    bool? rfOutputPowerAlarmState3,
+    bool? rfOutputPower3AlarmState,
     String? minRFOutputPower3,
     String? maxRFOutputPower3,
-    bool? rfOutputPowerAlarmState4,
+    bool? rfOutputPower4AlarmState,
     String? minRFOutputPower4,
     String? maxRFOutputPower4,
-    bool? rfOutputPowerAlarmState6,
+    bool? rfOutputPower6AlarmState,
     String? minRFOutputPower6,
     String? maxRFOutputPower6,
     bool? editMode,
@@ -97,20 +97,20 @@ class Setting18CCorNodeThresholdState extends Equatable {
       maxVoltage: maxVoltage ?? this.maxVoltage,
       splitOptionAlarmState:
           splitOptionAlarmState ?? this.splitOptionAlarmState,
-      rfOutputPowerAlarmState1:
-          rfOutputPowerAlarmState1 ?? this.rfOutputPowerAlarmState1,
+      rfOutputPower1AlarmState:
+          rfOutputPower1AlarmState ?? this.rfOutputPower1AlarmState,
       minRFOutputPower1: minRFOutputPower1 ?? this.minRFOutputPower1,
       maxRFOutputPower1: maxRFOutputPower1 ?? this.maxRFOutputPower1,
-      rfOutputPowerAlarmState3:
-          rfOutputPowerAlarmState1 ?? this.rfOutputPowerAlarmState3,
+      rfOutputPower3AlarmState:
+          rfOutputPower3AlarmState ?? this.rfOutputPower3AlarmState,
       minRFOutputPower3: minRFOutputPower3 ?? this.minRFOutputPower3,
       maxRFOutputPower3: maxRFOutputPower3 ?? this.maxRFOutputPower3,
-      rfOutputPowerAlarmState4:
-          rfOutputPowerAlarmState4 ?? this.rfOutputPowerAlarmState4,
+      rfOutputPower4AlarmState:
+          rfOutputPower4AlarmState ?? this.rfOutputPower4AlarmState,
       minRFOutputPower4: minRFOutputPower4 ?? this.minRFOutputPower4,
       maxRFOutputPower4: maxRFOutputPower4 ?? this.maxRFOutputPower4,
-      rfOutputPowerAlarmState6:
-          rfOutputPowerAlarmState6 ?? this.rfOutputPowerAlarmState6,
+      rfOutputPower6AlarmState:
+          rfOutputPower6AlarmState ?? this.rfOutputPower6AlarmState,
       minRFOutputPower6: minRFOutputPower6 ?? this.minRFOutputPower6,
       maxRFOutputPower6: maxRFOutputPower6 ?? this.maxRFOutputPower6,
       editMode: editMode ?? this.editMode,
@@ -132,16 +132,16 @@ class Setting18CCorNodeThresholdState extends Equatable {
         minVoltage,
         maxVoltage,
         splitOptionAlarmState,
-        rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState,
         minRFOutputPower1,
         maxRFOutputPower1,
-        rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState,
         minRFOutputPower3,
         maxRFOutputPower3,
-        rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState,
         minRFOutputPower4,
         maxRFOutputPower4,
-        rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState,
         minRFOutputPower6,
         maxRFOutputPower6,
         editMode,

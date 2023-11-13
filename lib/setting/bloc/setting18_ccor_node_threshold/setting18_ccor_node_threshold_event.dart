@@ -18,16 +18,16 @@ class Initialized extends Setting18CCorNodeThresholdEvent {
     required this.minVoltage,
     required this.maxVoltage,
     required this.splitOptionAlarmState,
-    required this.rfOutputPowerAlarmState1,
+    required this.rfOutputPower1AlarmState,
     required this.minRFOutputPower1,
     required this.maxRFOutputPower1,
-    required this.rfOutputPowerAlarmState3,
+    required this.rfOutputPower3AlarmState,
     required this.minRFOutputPower3,
     required this.maxRFOutputPower3,
-    required this.rfOutputPowerAlarmState4,
+    required this.rfOutputPower4AlarmState,
     required this.minRFOutputPower4,
     required this.maxRFOutputPower4,
-    required this.rfOutputPowerAlarmState6,
+    required this.rfOutputPower6AlarmState,
     required this.minRFOutputPower6,
     required this.maxRFOutputPower6,
   });
@@ -41,16 +41,16 @@ class Initialized extends Setting18CCorNodeThresholdEvent {
   final String minVoltage;
   final String maxVoltage;
   final bool splitOptionAlarmState;
-  final bool rfOutputPowerAlarmState1;
+  final bool rfOutputPower1AlarmState;
   final String minRFOutputPower1;
   final String maxRFOutputPower1;
-  final bool rfOutputPowerAlarmState3;
+  final bool rfOutputPower3AlarmState;
   final String minRFOutputPower3;
   final String maxRFOutputPower3;
-  final bool rfOutputPowerAlarmState4;
+  final bool rfOutputPower4AlarmState;
   final String minRFOutputPower4;
   final String maxRFOutputPower4;
-  final bool rfOutputPowerAlarmState6;
+  final bool rfOutputPower6AlarmState;
   final String minRFOutputPower6;
   final String maxRFOutputPower6;
 
@@ -65,16 +65,16 @@ class Initialized extends Setting18CCorNodeThresholdEvent {
         minVoltage,
         maxVoltage,
         splitOptionAlarmState,
-        rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState,
         minRFOutputPower1,
         maxRFOutputPower1,
-        rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState,
         minRFOutputPower3,
         maxRFOutputPower3,
-        rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState,
         minRFOutputPower4,
         maxRFOutputPower4,
-        rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState,
         minRFOutputPower6,
         maxRFOutputPower6,
       ];
@@ -145,12 +145,12 @@ class SplitOptionAlarmChanged extends Setting18CCorNodeThresholdEvent {
 
 // port 1
 class RFOutputPowerAlarmState1Changed extends Setting18CCorNodeThresholdEvent {
-  const RFOutputPowerAlarmState1Changed(this.rfOutputPowerAlarmState1);
+  const RFOutputPowerAlarmState1Changed(this.rfOutputPower1AlarmState);
 
-  final bool rfOutputPowerAlarmState1;
+  final bool rfOutputPower1AlarmState;
 
   @override
-  List<Object> get props => [rfOutputPowerAlarmState1];
+  List<Object> get props => [rfOutputPower1AlarmState];
 }
 
 class MinRFOutputPower1Changed extends Setting18CCorNodeThresholdEvent {
@@ -174,12 +174,12 @@ class MaxRFOutputPower1Changed extends Setting18CCorNodeThresholdEvent {
 
 // port 3
 class RFOutputPowerAlarmState3Changed extends Setting18CCorNodeThresholdEvent {
-  const RFOutputPowerAlarmState3Changed(this.rfOutputPowerAlarmState3);
+  const RFOutputPowerAlarmState3Changed(this.rfOutputPower3AlarmState);
 
-  final bool rfOutputPowerAlarmState3;
+  final bool rfOutputPower3AlarmState;
 
   @override
-  List<Object> get props => [rfOutputPowerAlarmState3];
+  List<Object> get props => [rfOutputPower3AlarmState];
 }
 
 class MinRFOutputPower3Changed extends Setting18CCorNodeThresholdEvent {
@@ -203,12 +203,12 @@ class MaxRFOutputPower3Changed extends Setting18CCorNodeThresholdEvent {
 
 // port 4
 class RFOutputPowerAlarmState4Changed extends Setting18CCorNodeThresholdEvent {
-  const RFOutputPowerAlarmState4Changed(this.rfOutputPowerAlarmState4);
+  const RFOutputPowerAlarmState4Changed(this.rfOutputPower4AlarmState);
 
-  final bool rfOutputPowerAlarmState4;
+  final bool rfOutputPower4AlarmState;
 
   @override
-  List<Object> get props => [rfOutputPowerAlarmState4];
+  List<Object> get props => [rfOutputPower4AlarmState];
 }
 
 class MinRFOutputPower4Changed extends Setting18CCorNodeThresholdEvent {
@@ -232,12 +232,12 @@ class MaxRFOutputPower4Changed extends Setting18CCorNodeThresholdEvent {
 
 // port 6
 class RFOutputPowerAlarmState6Changed extends Setting18CCorNodeThresholdEvent {
-  const RFOutputPowerAlarmState6Changed(this.rfOutputPowerAlarmState6);
+  const RFOutputPowerAlarmState6Changed(this.rfOutputPower6AlarmState);
 
-  final bool rfOutputPowerAlarmState6;
+  final bool rfOutputPower6AlarmState;
 
   @override
-  List<Object> get props => [rfOutputPowerAlarmState6];
+  List<Object> get props => [rfOutputPower6AlarmState];
 }
 
 class MinRFOutputPower6Changed extends Setting18CCorNodeThresholdEvent {

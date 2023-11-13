@@ -247,6 +247,9 @@ class Setting18ConfigureView extends StatelessWidget {
           case SettingConfiruration.splitOptions:
             widgets.add(const _SplitOption());
             break;
+          case SettingConfiruration.pilotFrequencySelect:
+            widgets.add(const _PilotFrequencyMode());
+            break;
           case SettingConfiruration.startFrequency:
             widgets.add(_FirstChannelLoading(
               firstChannelLoadingFrequencyTextEditingController:
@@ -262,9 +265,6 @@ class Setting18ConfigureView extends StatelessWidget {
               lastChannelLoadingLevelTextEditingController:
                   lastChannelLoadingLevelTextEditingController,
             ));
-            break;
-          case SettingConfiruration.pilotFrequencySelect:
-            widgets.add(const _PilotFrequencyMode());
             break;
           case SettingConfiruration.pilot1:
             widgets.add(_PilotFrequency1(
@@ -306,6 +306,7 @@ class Setting18ConfigureView extends StatelessWidget {
                 textEditingController: coordinateTextEditingController,
               ),
               const _SplitOption(),
+              const _PilotFrequencyMode(),
               _FirstChannelLoading(
                 firstChannelLoadingFrequencyTextEditingController:
                     firstChannelLoadingFrequencyTextEditingController,
@@ -318,7 +319,6 @@ class Setting18ConfigureView extends StatelessWidget {
                 lastChannelLoadingLevelTextEditingController:
                     lastChannelLoadingLevelTextEditingController,
               ),
-              const _PilotFrequencyMode(),
               _PilotFrequency1(
                 pilotFrequency1TextEditingController:
                     pilotFrequency1TextEditingController,
@@ -884,7 +884,8 @@ class _FirstChannelLoading extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: CustomStyle.sizeXL,
                       ),
-                      enabled: state.editMode,
+                      enabled:
+                          state.editMode && state.pilotFrequencyMode == '0',
                       textInputAction: TextInputAction.done,
                       onChanged: (firstChannelLoadingFrequency) {
                         context.read<Setting18ConfigureBloc>().add(
@@ -918,7 +919,8 @@ class _FirstChannelLoading extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: CustomStyle.sizeXL,
                       ),
-                      enabled: state.editMode,
+                      enabled:
+                          state.editMode && state.pilotFrequencyMode == '0',
                       textInputAction: TextInputAction.done,
                       onChanged: (firstChannelLoadingLevel) {
                         context.read<Setting18ConfigureBloc>().add(
@@ -1005,7 +1007,8 @@ class _LastChannelLoading extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: CustomStyle.sizeXL,
                       ),
-                      enabled: state.editMode,
+                      enabled:
+                          state.editMode && state.pilotFrequencyMode == '0',
                       textInputAction: TextInputAction.done,
                       onChanged: (lastChannelLoadingFrequency) {
                         context.read<Setting18ConfigureBloc>().add(
@@ -1039,7 +1042,8 @@ class _LastChannelLoading extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: CustomStyle.sizeXL,
                       ),
-                      enabled: state.editMode,
+                      enabled:
+                          state.editMode && state.pilotFrequencyMode == '0',
                       textInputAction: TextInputAction.done,
                       onChanged: (lastChannelLoadingLevel) {
                         context.read<Setting18ConfigureBloc>().add(
@@ -1065,7 +1069,7 @@ class _LastChannelLoading extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 40,
+              height: 20,
             ),
           ],
         );
@@ -1225,7 +1229,8 @@ class _PilotFrequency1 extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: CustomStyle.sizeXL,
                         ),
-                        enabled: state.editMode,
+                        enabled:
+                            state.editMode && state.pilotFrequencyMode == '1',
                         textInputAction: TextInputAction.done,
                         onChanged: (frequency) {
                           context
@@ -1339,7 +1344,8 @@ class _PilotFrequency2 extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: CustomStyle.sizeXL,
                         ),
-                        enabled: state.editMode,
+                        enabled:
+                            state.editMode && state.pilotFrequencyMode == '1',
                         textInputAction: TextInputAction.done,
                         onChanged: (frequency) {
                           context

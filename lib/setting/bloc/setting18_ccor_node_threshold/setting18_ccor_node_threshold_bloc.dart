@@ -81,16 +81,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       minVoltage: event.minVoltage,
       maxVoltage: event.maxVoltage,
       splitOptionAlarmState: event.splitOptionAlarmState,
-      rfOutputPowerAlarmState1: event.rfOutputPowerAlarmState1,
+      rfOutputPower1AlarmState: event.rfOutputPower1AlarmState,
       minRFOutputPower1: event.minRFOutputPower1,
       maxRFOutputPower1: event.maxRFOutputPower1,
-      rfOutputPowerAlarmState3: event.rfOutputPowerAlarmState3,
+      rfOutputPower3AlarmState: event.rfOutputPower3AlarmState,
       minRFOutputPower3: event.minRFOutputPower3,
       maxRFOutputPower3: event.maxRFOutputPower3,
-      rfOutputPowerAlarmState4: event.rfOutputPowerAlarmState4,
+      rfOutputPower4AlarmState: event.rfOutputPower4AlarmState,
       minRFOutputPower4: event.minRFOutputPower4,
       maxRFOutputPower4: event.maxRFOutputPower4,
-      rfOutputPowerAlarmState6: event.rfOutputPowerAlarmState6,
+      rfOutputPower6AlarmState: event.rfOutputPower6AlarmState,
       minRFOutputPower6: event.minRFOutputPower6,
       maxRFOutputPower6: event.maxRFOutputPower6,
       isInitialize: true,
@@ -102,16 +102,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         event.minVoltage,
         event.maxVoltage,
         event.splitOptionAlarmState,
-        event.rfOutputPowerAlarmState1,
+        event.rfOutputPower1AlarmState,
         event.minRFOutputPower1,
         event.maxRFOutputPower1,
-        event.rfOutputPowerAlarmState3,
+        event.rfOutputPower3AlarmState,
         event.minRFOutputPower3,
         event.maxRFOutputPower3,
-        event.rfOutputPowerAlarmState4,
+        event.rfOutputPower4AlarmState,
         event.minRFOutputPower4,
         event.maxRFOutputPower4,
-        event.rfOutputPowerAlarmState6,
+        event.rfOutputPower6AlarmState,
         event.minRFOutputPower6,
         event.maxRFOutputPower6,
       ],
@@ -134,16 +134,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -166,16 +166,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -198,16 +198,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -230,16 +230,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -262,16 +262,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: event.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -294,16 +294,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: event.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -326,16 +326,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: event.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -349,7 +349,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rfOutputPowerAlarmState1: event.rfOutputPowerAlarmState1,
+      rfOutputPower1AlarmState: event.rfOutputPower1AlarmState,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
@@ -359,16 +359,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: event.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: event.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -391,16 +391,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: event.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -423,16 +423,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: event.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -447,7 +447,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rfOutputPowerAlarmState3: event.rfOutputPowerAlarmState3,
+      rfOutputPower3AlarmState: event.rfOutputPower3AlarmState,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
@@ -457,16 +457,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: event.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: event.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -489,16 +489,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: event.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -521,16 +521,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: event.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -545,7 +545,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rfOutputPowerAlarmState4: event.rfOutputPowerAlarmState4,
+      rfOutputPower4AlarmState: event.rfOutputPower4AlarmState,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
@@ -555,16 +555,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: event.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: event.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -587,16 +587,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: event.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -619,16 +619,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: event.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -643,7 +643,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rfOutputPowerAlarmState6: event.rfOutputPowerAlarmState6,
+      rfOutputPower6AlarmState: event.rfOutputPower6AlarmState,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
@@ -653,16 +653,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: event.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: event.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -685,16 +685,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: event.minRFOutputPower6,
         maxRFOutputPower6: state.maxRFOutputPower6,
       ),
@@ -717,16 +717,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage: state.minVoltage,
         maxVoltage: state.maxVoltage,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        rfOutputPowerAlarmState1: state.rfOutputPowerAlarmState1,
+        rfOutputPower1AlarmState: state.rfOutputPower1AlarmState,
         minRFOutputPower1: state.minRFOutputPower1,
         maxRFOutputPower1: state.maxRFOutputPower1,
-        rfOutputPowerAlarmState3: state.rfOutputPowerAlarmState3,
+        rfOutputPower3AlarmState: state.rfOutputPower3AlarmState,
         minRFOutputPower3: state.minRFOutputPower3,
         maxRFOutputPower3: state.maxRFOutputPower3,
-        rfOutputPowerAlarmState4: state.rfOutputPowerAlarmState4,
+        rfOutputPower4AlarmState: state.rfOutputPower4AlarmState,
         minRFOutputPower4: state.minRFOutputPower4,
         maxRFOutputPower4: state.maxRFOutputPower4,
-        rfOutputPowerAlarmState6: state.rfOutputPowerAlarmState6,
+        rfOutputPower6AlarmState: state.rfOutputPower6AlarmState,
         minRFOutputPower6: state.minRFOutputPower6,
         maxRFOutputPower6: event.maxRFOutputPower6,
       ),
@@ -762,16 +762,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       minVoltage: state.initialValues[4],
       maxVoltage: state.initialValues[5],
       splitOptionAlarmState: state.initialValues[6],
-      rfOutputPowerAlarmState1: state.initialValues[7],
+      rfOutputPower1AlarmState: state.initialValues[7],
       minRFOutputPower1: state.initialValues[8],
       maxRFOutputPower1: state.initialValues[9],
-      rfOutputPowerAlarmState3: state.initialValues[10],
+      rfOutputPower3AlarmState: state.initialValues[10],
       minRFOutputPower3: state.initialValues[11],
       maxRFOutputPower3: state.initialValues[12],
-      rfOutputPowerAlarmState4: state.initialValues[13],
+      rfOutputPower4AlarmState: state.initialValues[13],
       minRFOutputPower4: state.initialValues[14],
       maxRFOutputPower4: state.initialValues[15],
-      rfOutputPowerAlarmState6: state.initialValues[16],
+      rfOutputPower6AlarmState: state.initialValues[16],
       minRFOutputPower6: state.initialValues[17],
       maxRFOutputPower6: state.initialValues[18],
     ));
@@ -795,16 +795,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     required String minVoltage,
     required String maxVoltage,
     required bool splitOptionAlarmState,
-    required bool rfOutputPowerAlarmState1,
+    required bool rfOutputPower1AlarmState,
     required String minRFOutputPower1,
     required String maxRFOutputPower1,
-    required bool rfOutputPowerAlarmState3,
+    required bool rfOutputPower3AlarmState,
     required String minRFOutputPower3,
     required String maxRFOutputPower3,
-    required bool rfOutputPowerAlarmState4,
+    required bool rfOutputPower4AlarmState,
     required String minRFOutputPower4,
     required String maxRFOutputPower4,
-    required bool rfOutputPowerAlarmState6,
+    required bool rfOutputPower6AlarmState,
     required String minRFOutputPower6,
     required String maxRFOutputPower6,
   }) {
@@ -815,16 +815,16 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         minVoltage != state.initialValues[4] ||
         maxVoltage != state.initialValues[5] ||
         splitOptionAlarmState != state.initialValues[6] ||
-        rfOutputPowerAlarmState1 != state.initialValues[7] ||
+        rfOutputPower1AlarmState != state.initialValues[7] ||
         minRFOutputPower1 != state.initialValues[8] ||
         maxRFOutputPower1 != state.initialValues[9] ||
-        rfOutputPowerAlarmState3 != state.initialValues[10] ||
+        rfOutputPower3AlarmState != state.initialValues[10] ||
         minRFOutputPower3 != state.initialValues[11] ||
         maxRFOutputPower3 != state.initialValues[12] ||
-        rfOutputPowerAlarmState4 != state.initialValues[13] ||
+        rfOutputPower4AlarmState != state.initialValues[13] ||
         minRFOutputPower4 != state.initialValues[14] ||
         maxRFOutputPower4 != state.initialValues[15] ||
-        rfOutputPowerAlarmState6 != state.initialValues[16] ||
+        rfOutputPower6AlarmState != state.initialValues[16] ||
         minRFOutputPower6 != state.initialValues[17] ||
         maxRFOutputPower6 != state.initialValues[18]) {
       return true;
@@ -837,6 +837,26 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     SettingSubmitted event,
     Emitter<Setting18CCorNodeThresholdState> emit,
   ) async {
+    // event.temperatureAlarmState,
+    // minTemperature,
+    // maxTemperature,
+    // event.voltageAlarmState,
+    // event.minVoltage,
+    // event.maxVoltage,
+    // event.splitOptionAlarmState,
+    // event.rfOutputPower1AlarmState,
+    // event.minRFOutputPower1,
+    // event.maxRFOutputPower1,
+    // event.rfOutputPower3AlarmState,
+    // event.minRFOutputPower3,
+    // event.maxRFOutputPower3,
+    // event.rfOutputPower4AlarmState,
+    // event.minRFOutputPower4,
+    // event.maxRFOutputPower4,
+    // event.rfOutputPower6AlarmState,
+    // event.minRFOutputPower6,
+    // event.maxRFOutputPower6,
+
     emit(state.copyWith(
       isInitialize: false,
       submissionStatus: SubmissionStatus.submissionInProgress,
@@ -848,7 +868,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       String temperatureAlarmState =
           _boolToStringNumber(state.temperatureAlarmState);
       bool resultOfSetTemperatureAlarmState = await _dsimRepository
-          .set1p8GTemperatureAlarmState(temperatureAlarmState);
+          .set1p8GCCorNodeTemperatureAlarmState(temperatureAlarmState);
 
       settingResult.add(
           '${DataKey.temperatureAlarmState.name},$resultOfSetTemperatureAlarmState');
@@ -863,7 +883,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       }
 
       bool resultOfSetMinTemperature =
-          await _dsimRepository.set1p8GMinTemperature(minTemperature);
+          await _dsimRepository.set1p8GCCorNodeMinTemperature(minTemperature);
 
       settingResult
           .add('${DataKey.minTemperatureC.name},$resultOfSetMinTemperature');
@@ -878,7 +898,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       }
 
       bool resultOfSetMaxTemperature =
-          await _dsimRepository.set1p8GMaxTemperature(maxTemperature);
+          await _dsimRepository.set1p8GCCorNodeMaxTemperature(maxTemperature);
 
       settingResult
           .add('${DataKey.maxTemperatureC.name},$resultOfSetMaxTemperature');
@@ -886,8 +906,8 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
 
     if (state.voltageAlarmState != state.initialValues[3]) {
       String voltageAlarmState = _boolToStringNumber(state.voltageAlarmState);
-      bool resultOfSetVoltageAlarmState =
-          await _dsimRepository.set1p8GVoltageAlarmState(voltageAlarmState);
+      bool resultOfSetVoltageAlarmState = await _dsimRepository
+          .set1p8GCCorNodeVoltageAlarmState(voltageAlarmState);
 
       settingResult.add(
           '${DataKey.voltageAlarmState.name},$resultOfSetVoltageAlarmState');
@@ -895,26 +915,130 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
 
     if (state.minVoltage != state.initialValues[4]) {
       bool resultOfSetMinVoltage =
-          await _dsimRepository.set1p8GMinVoltage(state.minVoltage);
+          await _dsimRepository.set1p8GCCorNodeMinVoltage(state.minVoltage);
 
       settingResult.add('${DataKey.minVoltage.name},$resultOfSetMinVoltage');
     }
 
     if (state.maxVoltage != state.initialValues[5]) {
       bool resultOfSetMaxVoltage =
-          await _dsimRepository.set1p8GMaxVoltage(state.maxVoltage);
+          await _dsimRepository.set1p8GCCorNodeMaxVoltage(state.maxVoltage);
 
       settingResult.add('${DataKey.maxVoltage.name},$resultOfSetMaxVoltage');
     }
 
-    if (state.splitOptionAlarmState != state.initialValues[12]) {
+    if (state.splitOptionAlarmState != state.initialValues[6]) {
       String splitOptionAlarmState =
           _boolToStringNumber(state.splitOptionAlarmState);
       bool resultOfSetSplitOptionAlarmState = await _dsimRepository
-          .set1p8GSplitOptionAlarmState(splitOptionAlarmState);
+          .set1p8GCCorNodeSplitOptionAlarmState(splitOptionAlarmState);
 
       settingResult.add(
           '${DataKey.splitOptionAlarmState.name},$resultOfSetSplitOptionAlarmState');
+    }
+
+    if (state.rfOutputPower1AlarmState != state.initialValues[7]) {
+      String rfOutputPower1AlarmState =
+          _boolToStringNumber(state.rfOutputPower1AlarmState);
+      bool resultOfSetRFOutputPower1AlarmState = await _dsimRepository
+          .set1p8GCCorNodeRFOutputPower1AlarmState(rfOutputPower1AlarmState);
+
+      settingResult.add(
+          '${DataKey.rfOutputPower1AlarmState.name},$resultOfSetRFOutputPower1AlarmState');
+    }
+
+    if (state.minRFOutputPower1 != state.initialValues[8]) {
+      bool resultOfSetMinRFOutputPower1 = await _dsimRepository
+          .set1p8GCCorNodeMinRFOutputPower1(state.minRFOutputPower1);
+
+      settingResult.add(
+          '${DataKey.minRFOutputPower1.name},$resultOfSetMinRFOutputPower1');
+    }
+
+    if (state.maxRFOutputPower1 != state.initialValues[9]) {
+      bool resultOfSetMaxRFOutputPower1 = await _dsimRepository
+          .set1p8GCCorNodeMaxRFOutputPower1(state.maxRFOutputPower1);
+
+      settingResult.add(
+          '${DataKey.maxRFOutputPower1.name},$resultOfSetMaxRFOutputPower1');
+    }
+
+    if (state.rfOutputPower3AlarmState != state.initialValues[10]) {
+      String rfOutputPower3AlarmState =
+          _boolToStringNumber(state.rfOutputPower3AlarmState);
+      bool resultOfSetRFOutputPower3AlarmState = await _dsimRepository
+          .set1p8GCCorNodeRFOutputPower3AlarmState(rfOutputPower3AlarmState);
+
+      settingResult.add(
+          '${DataKey.rfOutputPower3AlarmState.name},$resultOfSetRFOutputPower3AlarmState');
+    }
+
+    if (state.minRFOutputPower3 != state.initialValues[11]) {
+      bool resultOfSetMinRFOutputPower3 = await _dsimRepository
+          .set1p8GCCorNodeMinRFOutputPower3(state.minRFOutputPower3);
+
+      settingResult.add(
+          '${DataKey.minRFOutputPower3.name},$resultOfSetMinRFOutputPower3');
+    }
+
+    if (state.maxRFOutputPower3 != state.initialValues[12]) {
+      bool resultOfSetMaxRFOutputPower3 = await _dsimRepository
+          .set1p8GCCorNodeMaxRFOutputPower3(state.maxRFOutputPower3);
+
+      settingResult.add(
+          '${DataKey.maxRFOutputPower3.name},$resultOfSetMaxRFOutputPower3');
+    }
+
+    if (state.rfOutputPower4AlarmState != state.initialValues[13]) {
+      String rfOutputPower4AlarmState =
+          _boolToStringNumber(state.rfOutputPower4AlarmState);
+      bool resultOfSetRFOutputPower4AlarmState = await _dsimRepository
+          .set1p8GCCorNodeRFOutputPower4AlarmState(rfOutputPower4AlarmState);
+
+      settingResult.add(
+          '${DataKey.rfOutputPower4AlarmState.name},$resultOfSetRFOutputPower4AlarmState');
+    }
+
+    if (state.minRFOutputPower4 != state.initialValues[14]) {
+      bool resultOfSetMinRFOutputPower4 = await _dsimRepository
+          .set1p8GCCorNodeMinRFOutputPower4(state.minRFOutputPower4);
+
+      settingResult.add(
+          '${DataKey.minRFOutputPower1.name},$resultOfSetMinRFOutputPower4');
+    }
+
+    if (state.maxRFOutputPower4 != state.initialValues[15]) {
+      bool resultOfSetMaxRFOutputPower4 = await _dsimRepository
+          .set1p8GCCorNodeMaxRFOutputPower4(state.maxRFOutputPower4);
+
+      settingResult.add(
+          '${DataKey.maxRFOutputPower4.name},$resultOfSetMaxRFOutputPower4');
+    }
+
+    if (state.rfOutputPower6AlarmState != state.initialValues[16]) {
+      String rfOutputPower6AlarmState =
+          _boolToStringNumber(state.rfOutputPower6AlarmState);
+      bool resultOfSetRFOutputPower6AlarmState = await _dsimRepository
+          .set1p8GCCorNodeRFOutputPower6AlarmState(rfOutputPower6AlarmState);
+
+      settingResult.add(
+          '${DataKey.rfOutputPower6AlarmState.name},$resultOfSetRFOutputPower6AlarmState');
+    }
+
+    if (state.minRFOutputPower6 != state.initialValues[17]) {
+      bool resultOfSetMinRFOutputPower6 = await _dsimRepository
+          .set1p8GCCorNodeMinRFOutputPower6(state.minRFOutputPower6);
+
+      settingResult.add(
+          '${DataKey.minRFOutputPower6.name},$resultOfSetMinRFOutputPower6');
+    }
+
+    if (state.maxRFOutputPower6 != state.initialValues[18]) {
+      bool resultOfSetMaxRFOutputPower6 = await _dsimRepository
+          .set1p8GCCorNodeMaxRFOutputPower6(state.maxRFOutputPower6);
+
+      settingResult.add(
+          '${DataKey.maxRFOutputPower6.name},$resultOfSetMaxRFOutputPower6');
     }
 
     // 等待 device 完成更新後在讀取值
@@ -927,6 +1051,6 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       editMode: false,
     ));
 
-    await _dsimRepository.updateCharacteristics();
+    await _dsimRepository.update1p8GCCorNodeCharacteristics();
   }
 }

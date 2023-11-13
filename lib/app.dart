@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_page.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/splash_view.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +13,12 @@ class App extends StatelessWidget {
     super.key,
     required this.dsimRepository,
     required this.unitRepository,
+    required this.gpsRepository,
   });
 
   final DsimRepository dsimRepository;
   final UnitRepository unitRepository;
+  final GPSRepository gpsRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,10 @@ class App extends StatelessWidget {
         ),
         RepositoryProvider<UnitRepository>(
           create: (context) => unitRepository,
-        )
+        ),
+        RepositoryProvider<GPSRepository>(
+          create: (context) => gpsRepository,
+        ),
       ],
       child: BlocProvider(
         create: (context) => HomeBloc(

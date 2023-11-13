@@ -71,25 +71,25 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
         homeState.characteristicData[DataKey.splitOptionAlarmState] ?? '';
     bool splitOptionAlarmState = strSplitOptionAlarmState == '1' ? false : true;
 
-    String strRFOutputPowerAlarmState1 =
+    String strRFOutputPower1AlarmState =
         homeState.characteristicData[DataKey.rfOutputPower1AlarmState] ?? '';
-    bool rfOutputPowerAlarmState1 =
-        strRFOutputPowerAlarmState1 == '1' ? false : true;
+    bool rfOutputPower1AlarmState =
+        strRFOutputPower1AlarmState == '1' ? false : true;
 
-    String strRFOutputPowerAlarmState3 =
+    String strRFOutputPower3AlarmState =
         homeState.characteristicData[DataKey.rfOutputPower3AlarmState] ?? '';
-    bool rfOutputPowerAlarmState3 =
-        strRFOutputPowerAlarmState3 == '1' ? false : true;
+    bool rfOutputPower3AlarmState =
+        strRFOutputPower3AlarmState == '1' ? false : true;
 
-    String strRFOutputPowerAlarmState4 =
+    String strRFOutputPower4AlarmState =
         homeState.characteristicData[DataKey.rfOutputPower4AlarmState] ?? '';
-    bool rfOutputPowerAlarmState4 =
-        strRFOutputPowerAlarmState4 == '1' ? false : true;
+    bool rfOutputPower4AlarmState =
+        strRFOutputPower4AlarmState == '1' ? false : true;
 
-    String strRFOutputPowerAlarmState6 =
+    String strRFOutputPower6AlarmState =
         homeState.characteristicData[DataKey.rfOutputPower6AlarmState] ?? '';
-    bool rfOutputPowerAlarmState6 =
-        strRFOutputPowerAlarmState6 == '1' ? false : true;
+    bool rfOutputPower6AlarmState =
+        strRFOutputPower6AlarmState == '1' ? false : true;
 
     String minRFOutputPower1 =
         homeState.characteristicData[DataKey.minRFOutputPower1] ?? '';
@@ -118,16 +118,16 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
           minVoltage: minVoltage,
           maxVoltage: maxVoltage,
           splitOptionAlarmState: splitOptionAlarmState,
-          rfOutputPowerAlarmState1: rfOutputPowerAlarmState1,
+          rfOutputPower1AlarmState: rfOutputPower1AlarmState,
           minRFOutputPower1: minRFOutputPower1,
           maxRFOutputPower1: maxRFOutputPower1,
-          rfOutputPowerAlarmState3: rfOutputPowerAlarmState3,
+          rfOutputPower3AlarmState: rfOutputPower3AlarmState,
           minRFOutputPower3: minRFOutputPower3,
           maxRFOutputPower3: maxRFOutputPower3,
-          rfOutputPowerAlarmState4: rfOutputPowerAlarmState4,
+          rfOutputPower4AlarmState: rfOutputPower4AlarmState,
           minRFOutputPower4: minRFOutputPower4,
           maxRFOutputPower4: maxRFOutputPower4,
-          rfOutputPowerAlarmState6: rfOutputPowerAlarmState6,
+          rfOutputPower6AlarmState: rfOutputPower6AlarmState,
           minRFOutputPower6: minRFOutputPower6,
           maxRFOutputPower6: maxRFOutputPower6,
         ));
@@ -147,12 +147,6 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
         return AppLocalizations.of(context).dialogMessageMaxVoltageSetting;
       } else if (item == DataKey.minVoltage.name) {
         return AppLocalizations.of(context).dialogMessageMinVoltageSetting;
-      } else if (item == DataKey.maxRFOutputPower1.name) {
-        return AppLocalizations.of(context)
-            .dialogMessageMaxRFOutputPowerSetting;
-      } else if (item == DataKey.minRFOutputPower1.name) {
-        return AppLocalizations.of(context)
-            .dialogMessageMinRFOutputPowerSetting;
       } else if (item == DataKey.temperatureAlarmState.name) {
         return AppLocalizations.of(context)
             .dialogMessageTemperatureAlarmStateSetting;
@@ -162,6 +156,42 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
       } else if (item == DataKey.splitOptionAlarmState.name) {
         return AppLocalizations.of(context)
             .dialogMessageSplitOptionAlarmStateSetting;
+      } else if (item == DataKey.maxRFOutputPower1.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageMaxRFOutputPower1Setting;
+      } else if (item == DataKey.minRFOutputPower1.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageMinRFOutputPower1Setting;
+      } else if (item == DataKey.rfOutputPower1AlarmState.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageRFOutputPower1AlarmStateSetting;
+      } else if (item == DataKey.maxRFOutputPower3.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageMaxRFOutputPower3Setting;
+      } else if (item == DataKey.minRFOutputPower3.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageMinRFOutputPower3Setting;
+      } else if (item == DataKey.rfOutputPower3AlarmState.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageRFOutputPower3AlarmStateSetting;
+      } else if (item == DataKey.maxRFOutputPower4.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageMaxRFOutputPower4Setting;
+      } else if (item == DataKey.minRFOutputPower4.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageMinRFOutputPower4Setting;
+      } else if (item == DataKey.rfOutputPower4AlarmState.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageRFOutputPower4AlarmStateSetting;
+      } else if (item == DataKey.maxRFOutputPower6.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageMaxRFOutputPower6Setting;
+      } else if (item == DataKey.minRFOutputPower6.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageMinRFOutputPower6Setting;
+      } else if (item == DataKey.rfOutputPower6AlarmState.name) {
+        return AppLocalizations.of(context)
+            .dialogMessageRFOutputPower6AlarmStateSetting;
       } else {
         return '';
       }
@@ -863,8 +893,8 @@ class _RFOutputPower1AlarmControl extends StatelessWidget {
           minValueTextEditingController: minRFOutputPower1TextEditingController,
           maxValueTextEditingController: maxRFOutputPower1TextEditingController,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context).rfOutputPower} 1',
-          enabledAlarmState: state.rfOutputPowerAlarmState1,
+          title: '${AppLocalizations.of(context).rfOutputPower1}',
+          enabledAlarmState: state.rfOutputPower1AlarmState,
           minValue: state.minRFOutputPower1,
           maxValue: state.maxRFOutputPower1,
           onChangedAlarmState: (value) {
@@ -908,8 +938,8 @@ class _RFOutputPower3AlarmControl extends StatelessWidget {
           minValueTextEditingController: minRFOutputPower3TextEditingController,
           maxValueTextEditingController: maxRFOutputPower3TextEditingController,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context).rfOutputPower} 3',
-          enabledAlarmState: state.rfOutputPowerAlarmState3,
+          title: '${AppLocalizations.of(context).rfOutputPower3}',
+          enabledAlarmState: state.rfOutputPower3AlarmState,
           minValue: state.minRFOutputPower3,
           maxValue: state.maxRFOutputPower3,
           onChangedAlarmState: (value) {
@@ -953,8 +983,8 @@ class _RFOutputPower4AlarmControl extends StatelessWidget {
           minValueTextEditingController: minRFOutputPower4TextEditingController,
           maxValueTextEditingController: maxRFOutputPower4TextEditingController,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context).rfOutputPower} 4',
-          enabledAlarmState: state.rfOutputPowerAlarmState4,
+          title: '${AppLocalizations.of(context).rfOutputPower4}',
+          enabledAlarmState: state.rfOutputPower4AlarmState,
           minValue: state.minRFOutputPower4,
           maxValue: state.maxRFOutputPower4,
           onChangedAlarmState: (value) {
@@ -998,8 +1028,8 @@ class _RFOutputPower6AlarmControl extends StatelessWidget {
           minValueTextEditingController: minRFOutputPower6TextEditingController,
           maxValueTextEditingController: maxRFOutputPower6TextEditingController,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context).rfOutputPower} 6',
-          enabledAlarmState: state.rfOutputPowerAlarmState6,
+          title: '${AppLocalizations.of(context).rfOutputPower6}',
+          enabledAlarmState: state.rfOutputPower6AlarmState,
           minValue: state.minRFOutputPower6,
           maxValue: state.maxRFOutputPower6,
           onChangedAlarmState: (value) {

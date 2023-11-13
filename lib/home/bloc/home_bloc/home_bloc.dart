@@ -609,7 +609,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       characteristicData: {},
     ));
 
-    // await _dsimRepository.set1p8GTransmitDelayTime();
+    await _dsimRepository.set1p8GCCorNodeTransmitDelayTime();
 
     Map<DataKey, String> newCharacteristicData = {};
     List<dynamic> resultOf1p8GCCorNode80 = [];

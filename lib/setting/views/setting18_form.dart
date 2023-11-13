@@ -38,6 +38,7 @@ class Setting18Form extends StatelessWidget {
           );
         },
       ),
+      floatingActionButton: const _Setting18FloatingActionButton(),
     );
   }
 }
@@ -180,5 +181,33 @@ class _Layout extends StatelessWidget {
         }
       },
     );
+  }
+}
+
+class _Setting18FloatingActionButton extends StatelessWidget {
+  const _Setting18FloatingActionButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingBloc, SettingState>(builder: (context, state) {
+      return Padding(
+        padding: state.isGraphType
+            ? const EdgeInsets.only(bottom: 0.0)
+            : const EdgeInsets.only(bottom: 66.0),
+        child: FloatingActionButton(
+          shape: const CircleBorder(
+            side: BorderSide.none,
+          ),
+          backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
+          child: Icon(
+            Icons.list,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+          onPressed: () {
+            context.read<SettingBloc>().add(const ViewToggled());
+          },
+        ),
+      );
+    });
   }
 }
