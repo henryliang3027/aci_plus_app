@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/repositories/dsim18_ccor_node_parser.dart';
 import 'package:aci_plus_app/repositories/dsim18_parser.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,7 @@ class _DownloadIndicator18CCorNodeFormState
   }
 
   Future<dynamic> downloadLogs() async {
-    List<Log1p8G> log1p8Gs = [];
+    List<Log1p8GCCorNode> log1p8Gs = [];
     bool isSuccessful = false;
     for (int i = 0; i < 10; i++) {
       List<dynamic> resultOfLog = await getLogChunkWithRetry(i);
