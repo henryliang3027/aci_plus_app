@@ -1,10 +1,8 @@
-import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
-import 'package:aci_plus_app/setting/bloc/setting_bloc/setting_bloc.dart';
-import 'package:aci_plus_app/setting/views/setting18_graph_view.dart';
+import 'package:aci_plus_app/setting/views/setting18_graph_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -141,43 +139,8 @@ class _ViewLayout extends StatelessWidget {
               ),
             ],
           );
-        } else if (state.loadingStatus.isRequestSuccess) {
-          return const _Layout();
-        } else if (state.loadingStatus.isRequestFailure) {
-          return const _Layout();
-        } else if (state.scanStatus.isRequestFailure) {
-          return const _Layout();
-        } else if (state.connectionStatus.isRequestFailure) {
-          return const _Layout();
         } else {
-          return const Center(
-            child: SizedBox(
-              width: CustomStyle.diameter,
-              height: CustomStyle.diameter,
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-      },
-    );
-  }
-}
-
-class _Layout extends StatelessWidget {
-  const _Layout({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SettingBloc, SettingState>(
-      buildWhen: (previous, current) =>
-          previous.isGraphType != current.isGraphType,
-      builder: (context, state) {
-        if (state.isGraphType) {
-          return Setting18GraphView();
-        } else {
-          return Setting18TabBar();
+          return const Setting18TabBar();
         }
       },
     );
@@ -189,25 +152,23 @@ class _Setting18FloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingBloc, SettingState>(builder: (context, state) {
-      return Padding(
-        padding: state.isGraphType
-            ? const EdgeInsets.only(bottom: 0.0)
-            : const EdgeInsets.only(bottom: 66.0),
-        child: FloatingActionButton(
-          shape: const CircleBorder(
-            side: BorderSide.none,
-          ),
-          backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
-          child: Icon(
-            Icons.list,
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
-          onPressed: () {
-            context.read<SettingBloc>().add(const ViewToggled());
-          },
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 66.0),
+      child: FloatingActionButton(
+        // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
+        heroTag: null,
+        shape: const CircleBorder(
+          side: BorderSide.none,
         ),
-      );
-    });
+        backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
+        child: Icon(
+          Icons.settings_input_composite,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+        onPressed: () {
+          Navigator.push(context, Setting18GraphPage.route());
+        },
+      ),
+    );
   }
 }

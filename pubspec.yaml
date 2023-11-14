@@ -93,6 +93,7 @@ flutter:
   generate: true
   assets:
     - assets/
+    - assets/circuits/
 
   fonts:
     - family: CustomIcons
