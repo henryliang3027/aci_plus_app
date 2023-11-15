@@ -36,7 +36,7 @@ class Setting18Form extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: const _Setting18FloatingActionButton(),
+      // floatingActionButton: const _Setting18FloatingActionButton(),
     );
   }
 }

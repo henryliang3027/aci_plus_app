@@ -1,7 +1,9 @@
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:xml/xml.dart';
 
 class Setting18GraphView extends StatelessWidget {
   const Setting18GraphView({super.key});
@@ -88,47 +90,63 @@ class _GraphInteractor extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            // Positioned(
-            //   left: centerX - 175,
-            //   top: centerY - 199,
-            //   child: Material(
-            //     color: Colors.transparent,
-            //     child: InkWell(
-            //       child: Container(
-            //         width: 68,
-            //         height: 62,
-            //         decoration: BoxDecoration(
-            //             color: Colors.transparent,
-            //             border: Border.all(color: Colors.blue)),
-            //       ),
-            //       onTap: () {
-            //         showResultDialog(context: context, message: 'Button 1');
-            //       },
-            //     ),
-            //   ),
-            // ),
-            // Positioned(
-            //   left: 352,
-            //   top: 18,
-            //   child: Material(
-            //     color: Colors.transparent,
-            //     child: InkWell(
-            //       child: Container(
-            //         width: 68,
-            //         height: 62,
-            //         decoration: BoxDecoration(
-            //             color: Colors.transparent,
-            //             border: Border.all(color: Colors.blue)),
-            //       ),
-            //       onTap: () {
-            //         showResultDialog(context: context, message: 'Button 2');
-            //       },
-            //     ),
-            //   ),
-            // ),
+            Positioned(
+              left: centerX - 175,
+              top: centerY - 199,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  child: Container(
+                    width: 68,
+                    height: 62,
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border.all(color: Colors.blue)),
+                  ),
+                  onTap: () {
+                    showResultDialog(context: context, message: 'Button 1');
+                  },
+                ),
+              ),
+            ),
+            Positioned(
+              left: 352,
+              top: 18,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  child: Container(
+                    width: 68,
+                    height: 62,
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border.all(color: Colors.blue)),
+                  ),
+                  onTap: () {
+                    showResultDialog(context: context, message: 'Button 2');
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+Future<List<String>> loadSvgImage({required String svgImage}) async {
+  List<String> maps = [];
+  String generalString = await rootBundle.loadString(svgImage);
+
+  XmlDocument document = XmlDocument.parse(generalString);
+
+  final paths = document.findAllElements('path');
+
+  for (var element in paths) {
+    String partPath = element.getAttribute('d').toString();
+    maps.add(partPath);
+  }
+
+  return maps;
 }
