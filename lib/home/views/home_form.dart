@@ -16,6 +16,7 @@ import 'package:aci_plus_app/status/views/status18_ccor_node_page.dart';
 import 'package:aci_plus_app/status/views/status18_page.dart';
 import 'package:aci_plus_app/status/views/status_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -43,18 +44,18 @@ class _HomeFormState extends State<HomeForm> {
   Widget build(BuildContext context) {
     Future<bool?> showExitAppDialog({
       required BuildContext context,
-    }) async {
+    }) {
       return showDialog<bool>(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              AppLocalizations.of(context).dialogTitleAskBeforeExitApp,
+              AppLocalizations.of(context)!.dialogTitleAskBeforeExitApp,
             ),
             actions: <Widget>[
               TextButton(
                 child: Text(
-                  AppLocalizations.of(context).dialogMessageCancel,
+                  AppLocalizations.of(context)!.dialogMessageCancel,
                 ),
                 onPressed: () {
                   Navigator.of(context).pop(false); // pop dialog
@@ -62,7 +63,7 @@ class _HomeFormState extends State<HomeForm> {
               ),
               TextButton(
                 child: Text(
-                  AppLocalizations.of(context).dialogMessageExit,
+                  AppLocalizations.of(context)!.dialogMessageExit,
                   style: const TextStyle(color: CustomStyle.customRed),
                 ),
                 onPressed: () {
@@ -82,7 +83,7 @@ class _HomeFormState extends State<HomeForm> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              AppLocalizations.of(context).dialogTitleError,
+              AppLocalizations.of(context)!.dialogTitleError,
               style: const TextStyle(
                 color: CustomStyle.customRed,
               ),
@@ -200,10 +201,15 @@ class _HomeFormState extends State<HomeForm> {
           showFailureDialog(state.errorMassage);
         }
       },
-      child: WillPopScope(
-        onWillPop: () async {
+      child: PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) async {
           bool? isExit = await showExitAppDialog(context: context);
-          return isExit ?? false;
+          if (isExit != null) {
+            if (isExit) {
+              SystemNavigator.pop();
+            }
+          }
         },
         child: Scaffold(
           body: BlocBuilder<HomeBloc, HomeState>(

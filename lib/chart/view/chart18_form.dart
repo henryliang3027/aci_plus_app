@@ -52,7 +52,7 @@ class _Chart18FormState extends State<Chart18Form>
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              AppLocalizations.of(context).dialogTitleError,
+              AppLocalizations.of(context)!.dialogTitleError,
               style: const TextStyle(
                 color: CustomStyle.customRed,
               ),
@@ -91,11 +91,11 @@ class _Chart18FormState extends State<Chart18Form>
               SnackBar(
                 duration: const Duration(seconds: 30),
                 content: Text(
-                  AppLocalizations.of(context)
+                  AppLocalizations.of(context)!
                       .dialogMessageDataExportSuccessful,
                 ),
                 action: SnackBarAction(
-                  label: AppLocalizations.of(context).open,
+                  label: AppLocalizations.of(context)!.open,
                   onPressed: () async {
                     OpenResult result = await OpenFilex.open(
                       state.dataExportPath,
@@ -131,11 +131,8 @@ class _Chart18FormState extends State<Chart18Form>
             context: context,
             barrierDismissible: false, // user must tap button!
             builder: (BuildContext buildContext) {
-              return WillPopScope(
-                onWillPop: () async {
-                  // 避免 Android 使用者點擊系統返回鍵關閉 dialog
-                  return false;
-                },
+              return PopScope(
+                canPop: false, // 避免 Android 使用者點擊系統返回鍵關閉 dialog
                 child: DownloadIndicator18Form(
                   dsimRepository:
                       RepositoryProvider.of<DsimRepository>(context),
@@ -161,11 +158,11 @@ class _Chart18FormState extends State<Chart18Form>
               SnackBar(
                 duration: const Duration(seconds: 30),
                 content: Text(
-                  AppLocalizations.of(context)
+                  AppLocalizations.of(context)!
                       .dialogMessageDataExportSuccessful,
                 ),
                 action: SnackBarAction(
-                  label: AppLocalizations.of(context).open,
+                  label: AppLocalizations.of(context)!.open,
                   onPressed: () async {
                     OpenResult result = await OpenFilex.open(
                       state.dataExportPath,
@@ -186,11 +183,11 @@ class _Chart18FormState extends State<Chart18Form>
               SnackBar(
                 duration: const Duration(seconds: 30),
                 content: Text(
-                  AppLocalizations.of(context)
+                  AppLocalizations.of(context)!
                       .dialogMessageDataExportSuccessful,
                 ),
                 action: SnackBarAction(
-                  label: AppLocalizations.of(context).open,
+                  label: AppLocalizations.of(context)!.open,
                   onPressed: () async {
                     OpenResult result = await OpenFilex.open(
                       state.dataExportPath,
@@ -226,7 +223,7 @@ class _Chart18FormState extends State<Chart18Form>
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            AppLocalizations.of(context).monitoringChart,
+            AppLocalizations.of(context)!.monitoringChart,
           ),
           centerTitle: true,
           leading: const _DeviceStatus(),
@@ -359,7 +356,7 @@ class _PopupMenu extends StatelessWidget {
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text(AppLocalizations.of(context).reconnect),
+                        Text(AppLocalizations.of(context)!.reconnect),
                       ],
                     ),
                   ),
@@ -377,7 +374,7 @@ class _PopupMenu extends StatelessWidget {
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text(AppLocalizations.of(context).share),
+                        Text(AppLocalizations.of(context)!.share),
                       ],
                     ),
                   ),
@@ -395,7 +392,7 @@ class _PopupMenu extends StatelessWidget {
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text(AppLocalizations.of(context).export),
+                        Text(AppLocalizations.of(context)!.export),
                       ],
                     ),
                   ),
@@ -413,7 +410,7 @@ class _PopupMenu extends StatelessWidget {
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text(AppLocalizations.of(context).downloadAll),
+                        Text(AppLocalizations.of(context)!.downloadAll),
                       ],
                     ),
                   ),
@@ -473,7 +470,7 @@ class _PopupMenu extends StatelessWidget {
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text(AppLocalizations.of(context).reconnect),
+                        Text(AppLocalizations.of(context)!.reconnect),
                       ],
                     ),
                   ),
@@ -491,7 +488,7 @@ class _PopupMenu extends StatelessWidget {
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text(AppLocalizations.of(context).share),
+                        Text(AppLocalizations.of(context)!.share),
                       ],
                     ),
                   ),
@@ -509,7 +506,7 @@ class _PopupMenu extends StatelessWidget {
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text(AppLocalizations.of(context).export),
+                        Text(AppLocalizations.of(context)!.export),
                       ],
                     ),
                   ),
@@ -603,7 +600,7 @@ class _Chart18TabBar extends StatelessWidget {
                           width: 130,
                           child: Center(
                             child: Text(
-                              AppLocalizations.of(context).dataLog,
+                              AppLocalizations.of(context)!.dataLog,
                             ),
                           ),
                         ),
@@ -613,7 +610,7 @@ class _Chart18TabBar extends StatelessWidget {
                           width: 130,
                           child: Center(
                             child: Text(
-                              AppLocalizations.of(context).rfLevel,
+                              AppLocalizations.of(context)!.rfLevel,
                             ),
                           ),
                         ),

@@ -134,63 +134,63 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
-          ? AppLocalizations.of(context).dialogMessageSuccessful
-          : AppLocalizations.of(context).dialogMessageFailed;
+          ? AppLocalizations.of(context)!.dialogMessageSuccessful
+          : AppLocalizations.of(context)!.dialogMessageFailed;
     }
 
     String formatResultItem(String item) {
       if (item == DataKey.maxTemperatureC.name) {
-        return AppLocalizations.of(context).dialogMessageMaxTemperatureSetting;
+        return AppLocalizations.of(context)!.dialogMessageMaxTemperatureSetting;
       } else if (item == DataKey.minTemperatureC.name) {
-        return AppLocalizations.of(context).dialogMessageMinTemperatureSetting;
+        return AppLocalizations.of(context)!.dialogMessageMinTemperatureSetting;
       } else if (item == DataKey.maxVoltage.name) {
-        return AppLocalizations.of(context).dialogMessageMaxVoltageSetting;
+        return AppLocalizations.of(context)!.dialogMessageMaxVoltageSetting;
       } else if (item == DataKey.minVoltage.name) {
-        return AppLocalizations.of(context).dialogMessageMinVoltageSetting;
+        return AppLocalizations.of(context)!.dialogMessageMinVoltageSetting;
       } else if (item == DataKey.temperatureAlarmState.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageTemperatureAlarmStateSetting;
       } else if (item == DataKey.voltageAlarmState.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageVoltageAlarmStateSetting;
       } else if (item == DataKey.splitOptionAlarmState.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageSplitOptionAlarmStateSetting;
       } else if (item == DataKey.maxRFOutputPower1.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageMaxRFOutputPower1Setting;
       } else if (item == DataKey.minRFOutputPower1.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageMinRFOutputPower1Setting;
       } else if (item == DataKey.rfOutputPower1AlarmState.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageRFOutputPower1AlarmStateSetting;
       } else if (item == DataKey.maxRFOutputPower3.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageMaxRFOutputPower3Setting;
       } else if (item == DataKey.minRFOutputPower3.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageMinRFOutputPower3Setting;
       } else if (item == DataKey.rfOutputPower3AlarmState.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageRFOutputPower3AlarmStateSetting;
       } else if (item == DataKey.maxRFOutputPower4.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageMaxRFOutputPower4Setting;
       } else if (item == DataKey.minRFOutputPower4.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageMinRFOutputPower4Setting;
       } else if (item == DataKey.rfOutputPower4AlarmState.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageRFOutputPower4AlarmStateSetting;
       } else if (item == DataKey.maxRFOutputPower6.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageMaxRFOutputPower6Setting;
       } else if (item == DataKey.minRFOutputPower6.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageMinRFOutputPower6Setting;
       } else if (item == DataKey.rfOutputPower6AlarmState.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageRFOutputPower6AlarmStateSetting;
       } else {
         return '';
@@ -382,7 +382,7 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
           ...thresholdParameters,
           forwardSettings.isNotEmpty
               ? _ClusterTitle(
-                  title: AppLocalizations.of(context).forwardSetting,
+                  title: AppLocalizations.of(context)!.forwardSetting,
                 )
               : Container(),
           ...forwardSettings,
@@ -503,7 +503,7 @@ class _TemperatureAlarmControl extends StatelessWidget {
                   Flexible(
                     flex: 3,
                     child: Text(
-                      AppLocalizations.of(context).temperatureFC,
+                      AppLocalizations.of(context)!.temperatureFC,
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
@@ -559,7 +559,7 @@ class _TemperatureAlarmControl extends StatelessWidget {
                       maxLength: 40,
                       decoration: InputDecoration(
                         label: Text(
-                            '${AppLocalizations.of(context).minTemperature}(${getTemperatureUnit(state.temperatureUnit)})'),
+                            '${AppLocalizations.of(context)!.minTemperature}(${getTemperatureUnit(state.temperatureUnit)})'),
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0))),
@@ -593,7 +593,7 @@ class _TemperatureAlarmControl extends StatelessWidget {
                       maxLength: 40,
                       decoration: InputDecoration(
                         label: Text(
-                            '${AppLocalizations.of(context).maxTemperature}(${getTemperatureUnit(state.temperatureUnit)})'),
+                            '${AppLocalizations.of(context)!.maxTemperature}(${getTemperatureUnit(state.temperatureUnit)})'),
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0))),
@@ -645,7 +645,7 @@ class _VoltageAlarmControl extends StatelessWidget {
                   Flexible(
                     flex: 3,
                     child: Text(
-                      '${AppLocalizations.of(context).voltageLevel} (${CustomStyle.volt})',
+                      '${AppLocalizations.of(context)!.voltageLevel} (${CustomStyle.volt})',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
@@ -699,7 +699,7 @@ class _VoltageAlarmControl extends StatelessWidget {
                       },
                       maxLength: 40,
                       decoration: InputDecoration(
-                        label: Text(AppLocalizations.of(context).minVoltage),
+                        label: Text(AppLocalizations.of(context)!.minVoltage),
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0))),
@@ -731,7 +731,7 @@ class _VoltageAlarmControl extends StatelessWidget {
                       },
                       maxLength: 40,
                       decoration: InputDecoration(
-                        label: Text(AppLocalizations.of(context).maxVoltage),
+                        label: Text(AppLocalizations.of(context)!.maxVoltage),
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0))),
@@ -825,7 +825,7 @@ Widget alarmControl({
                 onChanged: onChangedMinValue,
                 maxLength: 40,
                 decoration: InputDecoration(
-                  label: Text(AppLocalizations.of(context).minVoltage),
+                  label: Text(AppLocalizations.of(context)!.minVoltage),
                   border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(4.0))),
                   contentPadding: EdgeInsets.all(8.0),
@@ -852,7 +852,7 @@ Widget alarmControl({
                 onChanged: onChangedMaxValue,
                 maxLength: 40,
                 decoration: InputDecoration(
-                  label: Text(AppLocalizations.of(context).maxVoltage),
+                  label: Text(AppLocalizations.of(context)!.maxVoltage),
                   border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(4.0))),
                   contentPadding: EdgeInsets.all(8.0),
@@ -893,7 +893,7 @@ class _RFOutputPower1AlarmControl extends StatelessWidget {
           minValueTextEditingController: minRFOutputPower1TextEditingController,
           maxValueTextEditingController: maxRFOutputPower1TextEditingController,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context).rfOutputPower1}',
+          title: '${AppLocalizations.of(context)!.rfOutputPower1}',
           enabledAlarmState: state.rfOutputPower1AlarmState,
           minValue: state.minRFOutputPower1,
           maxValue: state.maxRFOutputPower1,
@@ -938,7 +938,7 @@ class _RFOutputPower3AlarmControl extends StatelessWidget {
           minValueTextEditingController: minRFOutputPower3TextEditingController,
           maxValueTextEditingController: maxRFOutputPower3TextEditingController,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context).rfOutputPower3}',
+          title: '${AppLocalizations.of(context)!.rfOutputPower3}',
           enabledAlarmState: state.rfOutputPower3AlarmState,
           minValue: state.minRFOutputPower3,
           maxValue: state.maxRFOutputPower3,
@@ -983,7 +983,7 @@ class _RFOutputPower4AlarmControl extends StatelessWidget {
           minValueTextEditingController: minRFOutputPower4TextEditingController,
           maxValueTextEditingController: maxRFOutputPower4TextEditingController,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context).rfOutputPower4}',
+          title: '${AppLocalizations.of(context)!.rfOutputPower4}',
           enabledAlarmState: state.rfOutputPower4AlarmState,
           minValue: state.minRFOutputPower4,
           maxValue: state.maxRFOutputPower4,
@@ -1028,7 +1028,7 @@ class _RFOutputPower6AlarmControl extends StatelessWidget {
           minValueTextEditingController: minRFOutputPower6TextEditingController,
           maxValueTextEditingController: maxRFOutputPower6TextEditingController,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context).rfOutputPower6}',
+          title: '${AppLocalizations.of(context)!.rfOutputPower6}',
           enabledAlarmState: state.rfOutputPower6AlarmState,
           minValue: state.minRFOutputPower6,
           maxValue: state.maxRFOutputPower6,
@@ -1108,7 +1108,7 @@ class _SplitOptionAlarmControl extends StatelessWidget {
         return controlParameterSwitch(
           context: context,
           editMode: state.editMode,
-          title: AppLocalizations.of(context).splitOption,
+          title: AppLocalizations.of(context)!.splitOption,
           value: state.splitOptionAlarmState,
           onChanged: (bool value) {
             context

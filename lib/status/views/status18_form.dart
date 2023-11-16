@@ -103,7 +103,7 @@ class Status18Form extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).status),
+        title: Text(AppLocalizations.of(context)!.status),
         centerTitle: true,
         leading: const _DeviceStatus(),
         actions: const [_DeviceRefresh()],
@@ -322,7 +322,7 @@ class _WorkingModeCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                AppLocalizations.of(context).workingMode,
+                AppLocalizations.of(context)!.workingMode,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -454,7 +454,7 @@ class _SplitOptionCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                AppLocalizations.of(context).splitOption,
+                AppLocalizations.of(context)!.splitOption,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -784,7 +784,7 @@ class _TemperatureCard extends StatelessWidget {
                   children: [
                     Flexible(
                       child: Text(
-                        AppLocalizations.of(context).temperatureFC,
+                        AppLocalizations.of(context)!.temperatureFC,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
@@ -834,13 +834,13 @@ class _TemperatureCard extends StatelessWidget {
                   temperatureAlarmState: temperatureAlarmState,
                   temperatureAlarmSeverity: temperatureAlarmSeverity,
                   currentTemperatureTitle:
-                      AppLocalizations.of(context).currentTemperature,
+                      AppLocalizations.of(context)!.currentTemperature,
                   currentTemperature: currentTemperature,
                   minTemperatureTitle:
-                      AppLocalizations.of(context).minTemperature,
+                      AppLocalizations.of(context)!.minTemperature,
                   minTemperature: minTemperature,
                   maxTemperatureTitle:
-                      AppLocalizations.of(context).maxTemperature,
+                      AppLocalizations.of(context)!.maxTemperature,
                   maxTemperature: maxTemperature,
                   historicalMinTemperature: historicalMinTemperature,
                   historicalMaxTemperature: historicalMaxTemperature,
@@ -1099,7 +1099,7 @@ class _PowerSupplyCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                '${AppLocalizations.of(context).voltageLevel} (${CustomStyle.volt})',
+                '${AppLocalizations.of(context)!.voltageLevel} (${CustomStyle.volt})',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -1109,12 +1109,12 @@ class _PowerSupplyCard extends StatelessWidget {
                   state.characteristicData[DataKey.voltageAlarmState] ?? '1',
               voltageAlarmSeverity:
                   state.characteristicData[DataKey.voltageAlarmSeverity] ?? '0',
-              currentVoltageTitle: AppLocalizations.of(context).currentVoltage,
+              currentVoltageTitle: AppLocalizations.of(context)!.currentVoltage,
               currentVoltage:
                   state.characteristicData[DataKey.currentVoltage] ?? '',
-              minVoltageTitle: AppLocalizations.of(context).minVoltage,
+              minVoltageTitle: AppLocalizations.of(context)!.minVoltage,
               minVoltage: state.characteristicData[DataKey.minVoltage] ?? '',
-              maxVoltageTitle: AppLocalizations.of(context).maxVoltage,
+              maxVoltageTitle: AppLocalizations.of(context)!.maxVoltage,
               maxVoltage: state.characteristicData[DataKey.maxVoltage] ?? '',
               historicalMinVoltage:
                   state.characteristicData[DataKey.historicalMinVoltage] ?? '',
@@ -1374,7 +1374,7 @@ class _VoltageRippleCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                '${AppLocalizations.of(context).voltageRipple} (${CustomStyle.milliVolt})',
+                '${AppLocalizations.of(context)!.voltageRipple} (${CustomStyle.milliVolt})',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -1387,14 +1387,14 @@ class _VoltageRippleCard extends StatelessWidget {
                       .characteristicData[DataKey.voltageRippleAlarmSeverity] ??
                   '0',
               currentVoltageRippleTitle:
-                  AppLocalizations.of(context).currentVoltageRipple,
+                  AppLocalizations.of(context)!.currentVoltageRipple,
               currentVoltageRipple:
                   state.characteristicData[DataKey.currentVoltageRipple] ?? '',
-              minVoltageRippleTitle: AppLocalizations.of(context).minVoltage,
+              minVoltageRippleTitle: AppLocalizations.of(context)!.minVoltage,
               minVoltageRipple:
                   state.characteristicData[DataKey.minVoltageRipple] ?? '',
               maxVoltageRippleTitle:
-                  AppLocalizations.of(context).maxVoltageRipple,
+                  AppLocalizations.of(context)!.maxVoltageRipple,
               maxVoltageRipple:
                   state.characteristicData[DataKey.maxVoltageRipple] ?? '',
               historicalMinVoltageRipple: state
@@ -1657,7 +1657,7 @@ class _RFOutputPowerCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                '${AppLocalizations.of(context).rfOutputPower} (${CustomStyle.dBmV})',
+                '${AppLocalizations.of(context)!.rfOutputPower} (${CustomStyle.dBmV})',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -1670,14 +1670,14 @@ class _RFOutputPowerCard extends StatelessWidget {
                   state.characteristicData[DataKey.outputPowerAlarmSeverity] ??
                       '0',
               currentRFOutputPowerTitle:
-                  AppLocalizations.of(context).currentRFOutputPower,
+                  AppLocalizations.of(context)!.currentRFOutputPower,
               currentRFOutputPower:
                   state.characteristicData[DataKey.currentRFOutputPower] ?? '',
-              minRFOutputPowerTitle: AppLocalizations.of(context).minVoltage,
+              minRFOutputPowerTitle: AppLocalizations.of(context)!.minVoltage,
               minRFOutputPower:
                   state.characteristicData[DataKey.minRFOutputPower] ?? '',
               maxRFOutputPowerTitle:
-                  AppLocalizations.of(context).maxRFOutputPower,
+                  AppLocalizations.of(context)!.maxRFOutputPower,
               maxRFOutputPower:
                   state.characteristicData[DataKey.maxRFOutputPower] ?? '',
               historicalMinRFOutputPower: state
@@ -1811,7 +1811,7 @@ class _PilotFrequency1Card extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                AppLocalizations.of(context).pilotFrequency1Status,
+                AppLocalizations.of(context)!.pilotFrequency1Status,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -1934,7 +1934,7 @@ class _PilotFrequency2Card extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                AppLocalizations.of(context).pilotFrequency2Status,
+                AppLocalizations.of(context)!.pilotFrequency2Status,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -2131,7 +2131,7 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
                 child: Text(
-                  AppLocalizations.of(context).firstChannelPowerLevel,
+                  AppLocalizations.of(context)!.firstChannelPowerLevel,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
@@ -2142,9 +2142,9 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
                 firstChannelFrequency: firstChannelFrequency,
                 rfOutputLowChannelPower: rfOutputLowChannelPower,
                 frequencyTitle:
-                    '${AppLocalizations.of(context).frequency} (${CustomStyle.mHz})',
+                    '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})',
                 outputPowerTitle:
-                    '${AppLocalizations.of(context).level} (${CustomStyle.dBmV})',
+                    '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})',
               ),
             ],
           ));
@@ -2331,7 +2331,7 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
                 child: Text(
-                  AppLocalizations.of(context).lastChannelPowerLevel,
+                  AppLocalizations.of(context)!.lastChannelPowerLevel,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
@@ -2342,9 +2342,9 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
                 lastChannelFrequency: lastChannelFrequency,
                 rfOutputHighChannelPower: rfOutputHighChannelPower,
                 frequencyTitle:
-                    '${AppLocalizations.of(context).frequency} (${CustomStyle.mHz})',
+                    '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})',
                 outputPowerTitle:
-                    '${AppLocalizations.of(context).level} (${CustomStyle.dBmV})',
+                    '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})',
               ),
             ],
           ));
@@ -2442,7 +2442,7 @@ class _OutputOperatingSlopeCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                '${AppLocalizations.of(context).operatingSlope} (${CustomStyle.dB})',
+                '${AppLocalizations.of(context)!.operatingSlope} (${CustomStyle.dB})',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),

@@ -48,34 +48,34 @@ class Setting18CCorNodeControlView extends StatelessWidget {
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
-          ? AppLocalizations.of(context).dialogMessageSuccessful
-          : AppLocalizations.of(context).dialogMessageFailed;
+          ? AppLocalizations.of(context)!.dialogMessageSuccessful
+          : AppLocalizations.of(context)!.dialogMessageFailed;
     }
 
     String formatResultItem(String item) {
       if (item == DataKey.inputAttenuation.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageForwardInputAttenuationSetting;
       } else if (item == DataKey.inputAttenuation1.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageForwardInputEqualizerSetting;
       } else if (item == DataKey.inputAttenuation3.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation3Setting;
       } else if (item == DataKey.inputAttenuation4.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation4Setting;
       } else if (item == DataKey.inputAttenuation6.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation6Setting;
       } else if (item == DataKey.ingressSetting1.name) {
-        return AppLocalizations.of(context).dialogMessageReturnIngress1Setting;
+        return AppLocalizations.of(context)!.dialogMessageReturnIngress1Setting;
       } else if (item == DataKey.ingressSetting3.name) {
-        return AppLocalizations.of(context).dialogMessageReturnIngress3Setting;
+        return AppLocalizations.of(context)!.dialogMessageReturnIngress3Setting;
       } else if (item == DataKey.ingressSetting4.name) {
-        return AppLocalizations.of(context).dialogMessageReturnIngress4Setting;
+        return AppLocalizations.of(context)!.dialogMessageReturnIngress4Setting;
       } else if (item == DataKey.ingressSetting6.name) {
-        return AppLocalizations.of(context).dialogMessageReturnIngress6Setting;
+        return AppLocalizations.of(context)!.dialogMessageReturnIngress6Setting;
       } else {
         return '';
       }
@@ -219,7 +219,7 @@ class Setting18CCorNodeControlView extends StatelessWidget {
       return Column(children: [
         returnControlParameters.isNotEmpty
             ? _ClusterTitle(
-                title: AppLocalizations.of(context).returnControlParameters,
+                title: AppLocalizations.of(context)!.returnControlParameters,
               )
             : Container(),
         ...returnControlParameters,
@@ -451,7 +451,7 @@ Widget controlToggleButton({
               const Text('0'),
               const Text('-3'),
               const Text('-6'),
-              Text(AppLocalizations.of(context).ingressOpen),
+              Text(AppLocalizations.of(context)!.ingressOpen),
             ],
           ),
         ),
@@ -499,7 +499,7 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).rtnInputAttenuation1}: ${state.returnInputAttenuation1} dB',
+              '${AppLocalizations.of(context)!.rtnInputAttenuation1}: ${state.returnInputAttenuation1} dB',
           minValue: 0.0,
           maxValue: 15.0,
           currentValue: _getValue(state.returnInputAttenuation1),
@@ -532,7 +532,7 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).rtnInputAttenuation3}: ${state.returnInputAttenuation3} dB',
+              '${AppLocalizations.of(context)!.rtnInputAttenuation3}: ${state.returnInputAttenuation3} dB',
           minValue: 0.0,
           maxValue: 15.0,
           currentValue: _getValue(state.returnInputAttenuation3),
@@ -565,7 +565,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).rtnInputAttenuation4}: ${state.returnInputAttenuation4} dB',
+              '${AppLocalizations.of(context)!.rtnInputAttenuation4}: ${state.returnInputAttenuation4} dB',
           minValue: 0.0,
           maxValue: 15.0,
           currentValue: _getValue(state.returnInputAttenuation4),
@@ -598,7 +598,7 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).rtnInputAttenuation6}: ${state.returnInputAttenuation6} dB',
+              '${AppLocalizations.of(context)!.rtnInputAttenuation6}: ${state.returnInputAttenuation6} dB',
           minValue: 0.0,
           maxValue: 15.0,
           currentValue: _getValue(state.returnInputAttenuation6),
@@ -635,7 +635,7 @@ class _ReturnIngressSetting1 extends StatelessWidget {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context).rtnIngressSetting1}:',
+          title: '${AppLocalizations.of(context)!.rtnIngressSetting1}:',
           currentValue: state.returnIngressSetting1,
           onChanged: (int index) {
             context
@@ -664,7 +664,7 @@ class _ReturnIngressSetting3 extends StatelessWidget {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context).rtnIngressSetting3}:',
+          title: '${AppLocalizations.of(context)!.rtnIngressSetting3}:',
           currentValue: state.returnIngressSetting3,
           onChanged: (int index) {
             context
@@ -693,7 +693,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context).rtnIngressSetting4}:',
+          title: '${AppLocalizations.of(context)!.rtnIngressSetting4}:',
           currentValue: state.returnIngressSetting4,
           onChanged: (int index) {
             context
@@ -722,7 +722,7 @@ class _ReturnIngressSetting6 extends StatelessWidget {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context).rtnIngressSetting6}:',
+          title: '${AppLocalizations.of(context)!.rtnIngressSetting6}:',
           currentValue: state.returnIngressSetting6,
           onChanged: (int index) {
             context

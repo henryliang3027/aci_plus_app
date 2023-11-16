@@ -75,10 +75,9 @@ class _GraphInteractor extends StatelessWidget {
   Widget build(BuildContext context) {
     double centerX = MediaQuery.of(context).size.width / 2;
     double centerY = MediaQuery.of(context).size.height / 2;
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (didPop) {
         setPreferredOrientation();
-        return true;
       },
       child: InteractiveViewer(
         child: Stack(

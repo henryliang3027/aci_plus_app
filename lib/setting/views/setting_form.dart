@@ -22,7 +22,7 @@ class SettingForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).setting),
+        title: Text(AppLocalizations.of(context)!.setting),
         backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
         leading: const _DeviceStatus(),
@@ -126,7 +126,7 @@ class _ViewLayout extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              AppLocalizations.of(context).dialogTitleError,
+              AppLocalizations.of(context)!.dialogTitleError,
               style: const TextStyle(
                 color: CustomStyle.customRed,
               ),

@@ -69,7 +69,7 @@
 //                             width: 130,
 //                             child: Center(
 //                               child: Text(
-//                                 AppLocalizations.of(context).dataLog,
+//                                 AppLocalizations.of(context)!.dataLog,
 //                               ),
 //                             ),
 //                           ),
@@ -79,7 +79,7 @@
 //                             width: 130,
 //                             child: Center(
 //                               child: Text(
-//                                 AppLocalizations.of(context).rfLevel,
+//                                 AppLocalizations.of(context)!.rfLevel,
 //                               ),
 //                             ),
 //                           ),

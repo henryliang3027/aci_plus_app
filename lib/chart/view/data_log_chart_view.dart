@@ -50,7 +50,7 @@ class _LogChartView extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              AppLocalizations.of(context).dialogTitleSuccess,
+              AppLocalizations.of(context)!.dialogTitleSuccess,
               style: const TextStyle(
                 color: CustomStyle.customGreen,
               ),
@@ -59,7 +59,7 @@ class _LogChartView extends StatelessWidget {
               child: ListBody(
                 children: <Widget>[
                   Text(
-                    AppLocalizations.of(context).dialogMessageNoMoreLogs,
+                    AppLocalizations.of(context)!.dialogMessageNoMoreLogs,
                   ),
                 ],
               ),
@@ -67,7 +67,7 @@ class _LogChartView extends StatelessWidget {
             actions: <Widget>[
               TextButton(
                 child: Text(
-                  AppLocalizations.of(context).dialogMessageOk,
+                  AppLocalizations.of(context)!.dialogMessageOk,
                 ),
                 onPressed: () {
                   Navigator.of(context).pop(); // pop dialog
@@ -86,7 +86,7 @@ class _LogChartView extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              AppLocalizations.of(context).dialogTitleError,
+              AppLocalizations.of(context)!.dialogTitleError,
               style: const TextStyle(
                 color: CustomStyle.customRed,
               ),
@@ -284,7 +284,7 @@ class _LogChartListView extends StatelessWidget {
                 Navigator.push(
                   context,
                   FullScreenChartForm.route(
-                    title: AppLocalizations.of(context).monitoringChart,
+                    title: AppLocalizations.of(context)!.monitoringChart,
                     lineSeriesCollection: lineSeriesCollection,
                   ),
                 );

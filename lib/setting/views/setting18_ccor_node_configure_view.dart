@@ -40,44 +40,46 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
-          ? AppLocalizations.of(context).dialogMessageSuccessful
-          : AppLocalizations.of(context).dialogMessageFailed;
+          ? AppLocalizations.of(context)!.dialogMessageSuccessful
+          : AppLocalizations.of(context)!.dialogMessageFailed;
     }
 
     String formatResultItem(String item) {
       if (item == DataKey.location.name) {
-        return AppLocalizations.of(context).dialogMessageLocationSetting;
+        return AppLocalizations.of(context)!.dialogMessageLocationSetting;
       } else if (item == DataKey.coordinates.name) {
-        return AppLocalizations.of(context).dialogMessageCoordinatesSetting;
+        return AppLocalizations.of(context)!.dialogMessageCoordinatesSetting;
       } else if (item == DataKey.splitOption.name) {
-        return AppLocalizations.of(context).dialogMessageSplitOptionSetting;
+        return AppLocalizations.of(context)!.dialogMessageSplitOptionSetting;
       } else if (item == DataKey.firstChannelLoadingFrequency.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageFirstChannelLoadingFrequencySetting;
       } else if (item == DataKey.firstChannelLoadingLevel.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageFirstChannelLoadingLevelSetting;
       } else if (item == DataKey.lastChannelLoadingFrequency.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageLastChannelLoadingFrequencySetting;
       } else if (item == DataKey.lastChannelLoadingLevel.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageLastChannelLoadingLevelSetting;
       } else if (item == DataKey.pilotFrequencyMode.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessagePilotFrequencyModeSetting;
       } else if (item == DataKey.pilotFrequency1.name) {
-        return AppLocalizations.of(context).dialogMessagePilotFrequency1Setting;
+        return AppLocalizations.of(context)!
+            .dialogMessagePilotFrequency1Setting;
       } else if (item == DataKey.pilotFrequency2.name) {
-        return AppLocalizations.of(context).dialogMessagePilotFrequency2Setting;
+        return AppLocalizations.of(context)!
+            .dialogMessagePilotFrequency2Setting;
       } else if (item == DataKey.agcMode.name) {
-        return AppLocalizations.of(context).dialogMessageAGCModeSetting;
+        return AppLocalizations.of(context)!.dialogMessageAGCModeSetting;
       } else if (item == DataKey.alcMode.name) {
-        return AppLocalizations.of(context).dialogMessageALCModeSetting;
+        return AppLocalizations.of(context)!.dialogMessageALCModeSetting;
       } else if (item == DataKey.logInterval.name) {
-        return AppLocalizations.of(context).dialogMessageLogIntervalSetting;
+        return AppLocalizations.of(context)!.dialogMessageLogIntervalSetting;
       } else if (item == DataKey.tgcCableLength.name) {
-        return AppLocalizations.of(context).dialogMessageTGCCableLengthSetting;
+        return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
       } else {
         return '';
       }
@@ -132,7 +134,7 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              AppLocalizations.of(context).dialogTitleError,
+              AppLocalizations.of(context)!.dialogTitleError,
               style: const TextStyle(
                 color: CustomStyle.customRed,
               ),
@@ -289,7 +291,7 @@ class _Location extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).location}:',
+                  '${AppLocalizations.of(context)!.location}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -353,7 +355,7 @@ class _Coordinates extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).coordinates}:',
+                  '${AppLocalizations.of(context)!.coordinates}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -562,7 +564,7 @@ class _SplitOption extends StatelessWidget {
                     bottom: 16.0,
                   ),
                   child: Text(
-                    '${AppLocalizations.of(context).splitOption}:',
+                    '${AppLocalizations.of(context)!.splitOption}:',
                     style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w500,
@@ -728,7 +730,7 @@ class _LogInterval extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        '${AppLocalizations.of(context).logInterval}: ${state.logInterval} ${AppLocalizations.of(context).minute}',
+                        '${AppLocalizations.of(context)!.logInterval}: ${state.logInterval} ${AppLocalizations.of(context)!.minute}',
                         style: const TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.w500,

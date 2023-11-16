@@ -84,7 +84,7 @@ class _ChartView extends StatelessWidget {
                 Navigator.push(
                   context,
                   FullScreenChartForm.route(
-                    title: AppLocalizations.of(context).monitoringChart,
+                    title: AppLocalizations.of(context)!.monitoringChart,
                     lineSeriesCollection: lineSeriesCollection,
                   ),
                 );

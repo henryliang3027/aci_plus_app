@@ -66,7 +66,7 @@ class _AboutPageState extends State<AboutPage> {
                   duration: const Duration(milliseconds: 300),
                   alignment: titleAlignment,
                   child: Text(
-                    AppLocalizations.of(context).aboutUs,
+                    AppLocalizations.of(context)!.aboutUs,
                     style: const TextStyle(
                         //  fontSize: 24,
                         ),
@@ -112,34 +112,34 @@ class _AboutPageState extends State<AboutPage> {
               children: [
                 buildParagraph(
                   paragraph:
-                      AppLocalizations.of(context).aboutArticleParagraph1,
+                      AppLocalizations.of(context)!.aboutArticleParagraph1,
                 ),
                 buildParagraph(
                   paragraph:
-                      AppLocalizations.of(context).aboutArticleParagraph2,
+                      AppLocalizations.of(context)!.aboutArticleParagraph2,
                 ),
                 buildParagraph(
                   paragraph:
-                      AppLocalizations.of(context).aboutArticleParagraph3,
+                      AppLocalizations.of(context)!.aboutArticleParagraph3,
                 ),
                 buildParagraph(
                   paragraph:
-                      AppLocalizations.of(context).aboutArticleParagraph4,
+                      AppLocalizations.of(context)!.aboutArticleParagraph4,
                 ),
                 buildParagraph(
                   paragraph:
-                      AppLocalizations.of(context).aboutArticleParagraph5,
+                      AppLocalizations.of(context)!.aboutArticleParagraph5,
                 ),
                 const SizedBox(
                   height: 30,
                 ),
                 buildParagraph(
-                  paragraph:
-                      AppLocalizations.of(context).aboutArticleDigitalTeamTitle,
+                  paragraph: AppLocalizations.of(context)!
+                      .aboutArticleDigitalTeamTitle,
                   fontSize: 20,
                 ),
                 buildParagraph(
-                  paragraph: AppLocalizations.of(context)
+                  paragraph: AppLocalizations.of(context)!
                       .aboutArticleDigitalTeamParagraph,
                 ),
                 Padding(
@@ -171,7 +171,7 @@ class _AboutPageState extends State<AboutPage> {
                               ),
                             ),
                             child: Text(
-                              AppLocalizations.of(context).projectManager,
+                              AppLocalizations.of(context)!.projectManager,
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -201,7 +201,7 @@ class _AboutPageState extends State<AboutPage> {
                               ),
                             ),
                             child: Text(
-                              AppLocalizations.of(context).websiteDesigner,
+                              AppLocalizations.of(context)!.websiteDesigner,
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -247,7 +247,7 @@ class _AboutPageState extends State<AboutPage> {
                               ),
                             ),
                             child: Text(
-                              AppLocalizations.of(context)
+                              AppLocalizations.of(context)!
                                   .frontendBackendEngineer,
                               textAlign: TextAlign.center,
                             ),
@@ -278,7 +278,7 @@ class _AboutPageState extends State<AboutPage> {
                               ),
                             ),
                             child: Text(
-                              AppLocalizations.of(context).systemEngineer,
+                              AppLocalizations.of(context)!.systemEngineer,
                               textAlign: TextAlign.center,
                             ),
                           ),

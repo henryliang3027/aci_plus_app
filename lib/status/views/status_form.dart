@@ -22,7 +22,7 @@ class StatusForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).status),
+        title: Text(AppLocalizations.of(context)!.status),
         centerTitle: true,
         leading: const _DeviceStatus(),
         actions: const [_DeviceRefresh()],
@@ -137,7 +137,7 @@ class _DeviceRefresh extends StatelessWidget {
 //             crossAxisAlignment: CrossAxisAlignment.start,
 //             children: [
 //               Text(
-//                 AppLocalizations.of(context).module,
+//                 AppLocalizations.of(context)!.module,
 //                 style: Theme.of(context).textTheme.titleLarge,
 //               ),
 //               const SizedBox(
@@ -145,12 +145,12 @@ class _DeviceRefresh extends StatelessWidget {
 //               ),
 //               itemText(
 //                 loadingStatus: state.loadingStatus,
-//                 title: AppLocalizations.of(context).serialNumber,
+//                 title: AppLocalizations.of(context)!.serialNumber,
 //                 content: state.characteristicData[DataKey.serialNumber] ?? '',
 //               ),
 //               itemText(
 //                 loadingStatus: state.loadingStatus,
-//                 title: AppLocalizations.of(context).firmwareVersion,
+//                 title: AppLocalizations.of(context)!.firmwareVersion,
 //                 content:
 //                     state.characteristicData[DataKey.firmwareVersion] ?? '',
 //               ),
@@ -318,7 +318,7 @@ class _TemperatureCard extends StatelessWidget {
                   children: [
                     Flexible(
                       child: Text(
-                        AppLocalizations.of(context).temperatureFC,
+                        AppLocalizations.of(context)!.temperatureFC,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
@@ -366,13 +366,13 @@ class _TemperatureCard extends StatelessWidget {
                   loadingStatus: homeState.loadingStatus,
                   connectionStatus: homeState.connectionStatus,
                   currentTemperatureTitle:
-                      AppLocalizations.of(context).currentTemperature,
+                      AppLocalizations.of(context)!.currentTemperature,
                   currentTemperature: currentTemperature,
                   minTemperatureTitle:
-                      AppLocalizations.of(context).minTemperature,
+                      AppLocalizations.of(context)!.minTemperature,
                   minTemperature: minTemperature,
                   maxTemperatureTitle:
-                      AppLocalizations.of(context).maxTemperature,
+                      AppLocalizations.of(context)!.maxTemperature,
                   maxTemperature: maxTemperature,
                 ),
               ],
@@ -587,25 +587,25 @@ class _AttenuationCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                AppLocalizations.of(context).attenuation,
+                AppLocalizations.of(context)!.attenuation,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             rangeBlock(
               loadingStatus: state.loadingStatus,
-              title: AppLocalizations.of(context).range,
+              title: AppLocalizations.of(context)!.range,
               currentAttenuationTitle:
-                  AppLocalizations.of(context).currentAttenuation,
+                  AppLocalizations.of(context)!.currentAttenuation,
               currentAttenuation:
                   state.characteristicData[DataKey.currentAttenuation] ?? '',
               centerAttenuationTitle:
-                  AppLocalizations.of(context).centerAttenuation,
+                  AppLocalizations.of(context)!.centerAttenuation,
               centerAttenuation:
                   state.characteristicData[DataKey.centerAttenuation] ?? '',
-              minAttenuationTitle: AppLocalizations.of(context).minAttenuation,
+              minAttenuationTitle: AppLocalizations.of(context)!.minAttenuation,
               minAttenuation:
                   state.characteristicData[DataKey.minAttenuation] ?? '',
-              maxAttenuationTitle: AppLocalizations.of(context).maxAttenuation,
+              maxAttenuationTitle: AppLocalizations.of(context)!.maxAttenuation,
               maxAttenuation:
                   state.characteristicData[DataKey.maxAttenuation] ?? '',
               borderColor: Theme.of(context).colorScheme.primary,
@@ -615,14 +615,14 @@ class _AttenuationCard extends StatelessWidget {
             ),
             historicalBlock(
               loadingStatus: state.loadingStatus,
-              title: AppLocalizations.of(context).historicalAttenuation,
+              title: AppLocalizations.of(context)!.historicalAttenuation,
               historicalMinAttenuationTitle:
-                  AppLocalizations.of(context).historicalMinAttenuation,
+                  AppLocalizations.of(context)!.historicalMinAttenuation,
               historicalMinAttenuation:
                   state.characteristicData[DataKey.historicalMinAttenuation] ??
                       '',
               historicalMaxAttenuationTitle:
-                  AppLocalizations.of(context).historicalMaxAttenuation,
+                  AppLocalizations.of(context)!.historicalMaxAttenuation,
               historicalMaxAttenuation:
                   state.characteristicData[DataKey.historicalMaxAttenuation] ??
                       '',
@@ -869,20 +869,20 @@ class _PowerSupplyCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                AppLocalizations.of(context).powerSupplyVDC,
+                AppLocalizations.of(context)!.powerSupplyVDC,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             voltageBlock(
               loadingStatus: state.loadingStatus,
               title:
-                  '${AppLocalizations.of(context).voltageLevel} (${CustomStyle.volt})',
-              currentVoltageTitle: AppLocalizations.of(context).currentVoltage,
+                  '${AppLocalizations.of(context)!.voltageLevel} (${CustomStyle.volt})',
+              currentVoltageTitle: AppLocalizations.of(context)!.currentVoltage,
               currentVoltage:
                   state.characteristicData[DataKey.currentVoltage] ?? '',
-              minVoltageTitle: AppLocalizations.of(context).minVoltage,
+              minVoltageTitle: AppLocalizations.of(context)!.minVoltage,
               minVoltage: state.characteristicData[DataKey.minVoltage] ?? '',
-              maxVoltageTitle: AppLocalizations.of(context).maxVoltage,
+              maxVoltageTitle: AppLocalizations.of(context)!.maxVoltage,
               maxVoltage: state.characteristicData[DataKey.maxVoltage] ?? '',
               borderColor: Theme.of(context).colorScheme.primary,
             ),
@@ -892,17 +892,17 @@ class _PowerSupplyCard extends StatelessWidget {
             voltageRippleBlock(
               loadingStatus: state.loadingStatus,
               title:
-                  '${AppLocalizations.of(context).voltageRipple} (${CustomStyle.milliVolt})',
+                  '${AppLocalizations.of(context)!.voltageRipple} (${CustomStyle.milliVolt})',
               currentVoltageRippleTitle:
-                  AppLocalizations.of(context).currentVoltageRipple,
+                  AppLocalizations.of(context)!.currentVoltageRipple,
               currentVoltageRipple:
                   state.characteristicData[DataKey.currentVoltageRipple] ?? '',
               minVoltageRippleTitle:
-                  AppLocalizations.of(context).minVoltageRipple,
+                  AppLocalizations.of(context)!.minVoltageRipple,
               minVoltageRipple:
                   state.characteristicData[DataKey.minVoltageRipple] ?? '',
               maxVoltageRippleTitle:
-                  AppLocalizations.of(context).maxVoltageRipple,
+                  AppLocalizations.of(context)!.maxVoltageRipple,
               maxVoltageRipple:
                   state.characteristicData[DataKey.maxVoltageRipple] ?? '',
               borderColor: Theme.of(context).colorScheme.inversePrimary,

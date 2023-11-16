@@ -22,7 +22,7 @@ class Information18Form extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).information),
+        title: Text(AppLocalizations.of(context)!.information),
         centerTitle: true,
         leading: const _DeviceStatus(),
         actions: const [_DeviceRefresh()],
@@ -196,7 +196,7 @@ class _ConnectionCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                AppLocalizations.of(context).connection,
+                AppLocalizations.of(context)!.connection,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(
@@ -204,11 +204,11 @@ class _ConnectionCard extends StatelessWidget {
               ),
               itemLinkText(
                 title: '',
-                content: AppLocalizations.of(context).visitWebsite,
+                content: AppLocalizations.of(context)!.visitWebsite,
               ),
               bluetoothText(
                 scanStatus: state.scanStatus,
-                title: AppLocalizations.of(context).bluetooth,
+                title: AppLocalizations.of(context)!.bluetooth,
                 name: state.device != null ? state.device!.name : '',
               ),
             ],
@@ -243,7 +243,7 @@ class _BasicCard extends StatelessWidget {
       if (logInterval.isEmpty) {
         return '';
       } else {
-        return '$logInterval ${AppLocalizations.of(context).minute}';
+        return '$logInterval ${AppLocalizations.of(context)!.minute}';
       }
     }
 
@@ -257,7 +257,7 @@ class _BasicCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                AppLocalizations.of(context).basic,
+                AppLocalizations.of(context)!.basic,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(
@@ -265,44 +265,44 @@ class _BasicCard extends StatelessWidget {
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
-                title: AppLocalizations.of(context).typeNo,
+                title: AppLocalizations.of(context)!.typeNo,
                 content: state.characteristicData[DataKey.partName] ?? '',
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
-                title: AppLocalizations.of(context).partNo,
+                title: AppLocalizations.of(context)!.partNo,
                 content: state.characteristicData[DataKey.partNo] ?? '',
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
-                title: AppLocalizations.of(context).serialNumber,
+                title: AppLocalizations.of(context)!.serialNumber,
                 content: state.characteristicData[DataKey.serialNumber] ?? '',
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
-                title: AppLocalizations.of(context).firmwareVersion,
+                title: AppLocalizations.of(context)!.firmwareVersion,
                 content:
                     state.characteristicData[DataKey.firmwareVersion] ?? '',
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
-                title: AppLocalizations.of(context).logInterval,
+                title: AppLocalizations.of(context)!.logInterval,
                 content: getCurrentLogInterval(
                     state.characteristicData[DataKey.logInterval] ?? ''),
               ),
               itemMultipleLineText(
                 loadingStatus: state.loadingStatus,
-                title: AppLocalizations.of(context).location,
+                title: AppLocalizations.of(context)!.location,
                 content: state.characteristicData[DataKey.location] ?? '',
               ),
               itemMultipleLineText(
                 loadingStatus: state.loadingStatus,
-                title: AppLocalizations.of(context).coordinates,
+                title: AppLocalizations.of(context)!.coordinates,
                 content: state.characteristicData[DataKey.coordinates] ?? '',
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
-                title: AppLocalizations.of(context).mfgDate,
+                title: AppLocalizations.of(context)!.mfgDate,
                 content: state.characteristicData[DataKey.mfgDate] ?? '',
               ),
             ],
@@ -360,7 +360,7 @@ class _AlarmCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                AppLocalizations.of(context).alarm,
+                AppLocalizations.of(context)!.alarm,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(
@@ -369,17 +369,17 @@ class _AlarmCard extends StatelessWidget {
               alarmItem(
                 iconData: Icons.circle,
                 iconColor: CustomStyle.alarmColor[alarmUSeverity],
-                title: AppLocalizations.of(context).unitStatusAlarm,
+                title: AppLocalizations.of(context)!.unitStatusAlarm,
               ),
               alarmItem(
                 iconData: Icons.circle,
                 iconColor: CustomStyle.alarmColor[alarmTSeverity],
-                title: AppLocalizations.of(context).temperatureAlarm,
+                title: AppLocalizations.of(context)!.temperatureAlarm,
               ),
               alarmItem(
                 iconData: Icons.circle,
                 iconColor: CustomStyle.alarmColor[alarmPSeverity],
-                title: AppLocalizations.of(context).powerSupplyAlarm,
+                title: AppLocalizations.of(context)!.powerSupplyAlarm,
               ),
             ],
           ),

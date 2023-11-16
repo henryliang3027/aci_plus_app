@@ -123,7 +123,7 @@ class _DownloadIndicator18CCorNodeFormState
     }
     return AlertDialog(
       title: Text(
-        AppLocalizations.of(context).dialogTitleDownloading,
+        AppLocalizations.of(context)!.dialogTitleDownloading,
       ),
       actionsAlignment: MainAxisAlignment.center,
       content: SingleChildScrollView(

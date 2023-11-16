@@ -70,7 +70,7 @@ class SettingListView extends StatelessWidget {
             buttonPadding: const EdgeInsets.all(0.0),
             actionsPadding: const EdgeInsets.all(16.0),
             title: Text(
-              AppLocalizations.of(context).dialogTitleSettingResult,
+              AppLocalizations.of(context)!.dialogTitleSettingResult,
             ),
             content: SingleChildScrollView(
               child: ListBody(
@@ -97,7 +97,7 @@ class SettingListView extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              AppLocalizations.of(context).dialogTitleError,
+              AppLocalizations.of(context)!.dialogTitleError,
               style: const TextStyle(
                 color: CustomStyle.customRed,
               ),
@@ -106,7 +106,8 @@ class SettingListView extends StatelessWidget {
               child: ListBody(
                 children: [
                   Text(
-                    AppLocalizations.of(context).dialogMessagePilotSearchFailed,
+                    AppLocalizations.of(context)!
+                        .dialogMessagePilotSearchFailed,
                   ),
                 ],
               ),
@@ -126,23 +127,23 @@ class SettingListView extends StatelessWidget {
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
-          ? AppLocalizations.of(context).dialogMessageSuccessful
-          : AppLocalizations.of(context).dialogMessageFailed;
+          ? AppLocalizations.of(context)!.dialogMessageSuccessful
+          : AppLocalizations.of(context)!.dialogMessageFailed;
     }
 
     String formatResultItem(String item) {
       if (item == DataKey.location.name) {
-        return AppLocalizations.of(context).dialogMessageLocationSetting;
+        return AppLocalizations.of(context)!.dialogMessageLocationSetting;
       } else if (item == DataKey.tgcCableLength.name) {
-        return AppLocalizations.of(context).dialogMessageTGCCableLengthSetting;
+        return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
       } else if (item == DataKey.logInterval.name) {
-        return AppLocalizations.of(context).dialogMessageLogIntervalSetting;
+        return AppLocalizations.of(context)!.dialogMessageLogIntervalSetting;
       } else if (item == DataKey.workingMode.name) {
-        return AppLocalizations.of(context).dialogMessageWorkingModeSetting;
+        return AppLocalizations.of(context)!.dialogMessageWorkingModeSetting;
       } else if (item == SharedPreferenceKey.pilotCode.name) {
-        return AppLocalizations.of(context).dialogMessageSaveUserPilot;
+        return AppLocalizations.of(context)!.dialogMessageSaveUserPilot;
       } else if (item == SharedPreferenceKey.pilot2Code.name) {
-        return AppLocalizations.of(context).dialogMessageSaveUserPilot2;
+        return AppLocalizations.of(context)!.dialogMessageSaveUserPilot2;
       } else {
         return '';
       }
@@ -452,7 +453,7 @@ class _Location extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).location}:',
+                  '${AppLocalizations.of(context)!.location}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -521,7 +522,7 @@ class _TGCCabelLength extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).tgcCableLength}:',
+                  '${AppLocalizations.of(context)!.tgcCableLength}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -611,7 +612,7 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
                     bottom: 16.0,
                   ),
                   child: Text(
-                    '${AppLocalizations.of(context).logInterval}:',
+                    '${AppLocalizations.of(context)!.logInterval}:',
                     style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w500,
@@ -700,7 +701,7 @@ class _WorkingMode extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).workingMode}:',
+                  '${AppLocalizations.of(context)!.workingMode}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -780,7 +781,7 @@ class _UserPilot extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      '${AppLocalizations.of(context).userPilot}: ',
+                      '${AppLocalizations.of(context)!.userPilot}: ',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
@@ -814,7 +815,7 @@ class _UserPilot extends StatelessWidget {
                   isDense: true,
                   filled: true,
                   fillColor: Colors.white,
-                  labelText: AppLocalizations.of(context).userPilot,
+                  labelText: AppLocalizations.of(context)!.userPilot,
                   labelStyle: TextStyle(
                     fontSize: CustomStyle.sizeL,
                     color: Colors.grey.shade400,
@@ -834,7 +835,7 @@ class _UserPilot extends StatelessWidget {
                   errorMaxLines: 2,
                   errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
                   errorText: state.pilotCode.isNotValid
-                      ? AppLocalizations.of(context).pilotCodeFormatError
+                      ? AppLocalizations.of(context)!.pilotCodeFormatError
                       : null,
                 ),
               ),
@@ -873,7 +874,7 @@ class _UserPilot2 extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            '${AppLocalizations.of(context).userPilot2}: ',
+                            '${AppLocalizations.of(context)!.userPilot2}: ',
                             style: const TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.w500,
@@ -908,7 +909,7 @@ class _UserPilot2 extends StatelessWidget {
                         isDense: true,
                         filled: true,
                         fillColor: Colors.white,
-                        labelText: AppLocalizations.of(context).userPilot,
+                        labelText: AppLocalizations.of(context)!.userPilot,
                         labelStyle: TextStyle(
                           fontSize: CustomStyle.sizeL,
                           color: Colors.grey.shade400,
@@ -933,7 +934,7 @@ class _UserPilot2 extends StatelessWidget {
                         errorStyle:
                             const TextStyle(fontSize: CustomStyle.sizeS),
                         errorText: state.pilot2Code.isNotValid
-                            ? AppLocalizations.of(context).pilotCodeFormatError
+                            ? AppLocalizations.of(context)!.pilotCodeFormatError
                             : null,
                       ),
                     ),
@@ -967,7 +968,7 @@ class _AGCPrepAttenator extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      '${AppLocalizations.of(context).agcPrepAttenuator}: ',
+                      '${AppLocalizations.of(context)!.agcPrepAttenuator}: ',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,

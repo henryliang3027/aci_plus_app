@@ -38,10 +38,9 @@ class _FullScreenChartFormState extends State<FullScreenChartForm> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (didPop) {
         setPreferredOrientation();
-        return true;
       },
       child: Scaffold(
         appBar: AppBar(

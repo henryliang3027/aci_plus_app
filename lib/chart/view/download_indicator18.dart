@@ -121,7 +121,7 @@ class _DownloadIndicator18FormState extends State<DownloadIndicator18Form>
     }
     return AlertDialog(
       title: Text(
-        AppLocalizations.of(context).dialogTitleDownloading,
+        AppLocalizations.of(context)!.dialogTitleDownloading,
       ),
       actionsAlignment: MainAxisAlignment.center,
       content: SingleChildScrollView(

@@ -99,44 +99,46 @@ class Setting18ConfigureView extends StatelessWidget {
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
-          ? AppLocalizations.of(context).dialogMessageSuccessful
-          : AppLocalizations.of(context).dialogMessageFailed;
+          ? AppLocalizations.of(context)!.dialogMessageSuccessful
+          : AppLocalizations.of(context)!.dialogMessageFailed;
     }
 
     String formatResultItem(String item) {
       if (item == DataKey.location.name) {
-        return AppLocalizations.of(context).dialogMessageLocationSetting;
+        return AppLocalizations.of(context)!.dialogMessageLocationSetting;
       } else if (item == DataKey.coordinates.name) {
-        return AppLocalizations.of(context).dialogMessageCoordinatesSetting;
+        return AppLocalizations.of(context)!.dialogMessageCoordinatesSetting;
       } else if (item == DataKey.splitOption.name) {
-        return AppLocalizations.of(context).dialogMessageSplitOptionSetting;
+        return AppLocalizations.of(context)!.dialogMessageSplitOptionSetting;
       } else if (item == DataKey.firstChannelLoadingFrequency.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageFirstChannelLoadingFrequencySetting;
       } else if (item == DataKey.firstChannelLoadingLevel.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageFirstChannelLoadingLevelSetting;
       } else if (item == DataKey.lastChannelLoadingFrequency.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageLastChannelLoadingFrequencySetting;
       } else if (item == DataKey.lastChannelLoadingLevel.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageLastChannelLoadingLevelSetting;
       } else if (item == DataKey.pilotFrequencyMode.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessagePilotFrequencyModeSetting;
       } else if (item == DataKey.pilotFrequency1.name) {
-        return AppLocalizations.of(context).dialogMessagePilotFrequency1Setting;
+        return AppLocalizations.of(context)!
+            .dialogMessagePilotFrequency1Setting;
       } else if (item == DataKey.pilotFrequency2.name) {
-        return AppLocalizations.of(context).dialogMessagePilotFrequency2Setting;
+        return AppLocalizations.of(context)!
+            .dialogMessagePilotFrequency2Setting;
       } else if (item == DataKey.agcMode.name) {
-        return AppLocalizations.of(context).dialogMessageAGCModeSetting;
+        return AppLocalizations.of(context)!.dialogMessageAGCModeSetting;
       } else if (item == DataKey.alcMode.name) {
-        return AppLocalizations.of(context).dialogMessageALCModeSetting;
+        return AppLocalizations.of(context)!.dialogMessageALCModeSetting;
       } else if (item == DataKey.logInterval.name) {
-        return AppLocalizations.of(context).dialogMessageLogIntervalSetting;
+        return AppLocalizations.of(context)!.dialogMessageLogIntervalSetting;
       } else if (item == DataKey.tgcCableLength.name) {
-        return AppLocalizations.of(context).dialogMessageTGCCableLengthSetting;
+        return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
       } else {
         return '';
       }
@@ -191,7 +193,7 @@ class Setting18ConfigureView extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              AppLocalizations.of(context).dialogTitleError,
+              AppLocalizations.of(context)!.dialogTitleError,
               style: const TextStyle(
                 color: CustomStyle.customRed,
               ),
@@ -432,7 +434,7 @@ class _Location extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).location}:',
+                  '${AppLocalizations.of(context)!.location}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -495,7 +497,7 @@ class _Coordinates extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).coordinates}:',
+                  '${AppLocalizations.of(context)!.coordinates}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -702,7 +704,7 @@ class _SplitOption extends StatelessWidget {
                     bottom: 16.0,
                   ),
                   child: Text(
-                    '${AppLocalizations.of(context).splitOption}:',
+                    '${AppLocalizations.of(context)!.splitOption}:',
                     style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w500,
@@ -857,7 +859,7 @@ class _FirstChannelLoading extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      '${AppLocalizations.of(context).startFrequency}:',
+                      '${AppLocalizations.of(context)!.startFrequency}:',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
@@ -895,7 +897,7 @@ class _FirstChannelLoading extends StatelessWidget {
                       maxLength: 40,
                       decoration: InputDecoration(
                         label: Text(
-                            '${AppLocalizations.of(context).frequency} (${CustomStyle.mHz})'),
+                            '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0))),
@@ -930,7 +932,7 @@ class _FirstChannelLoading extends StatelessWidget {
                       maxLength: 40,
                       decoration: InputDecoration(
                         label: Text(
-                            '${AppLocalizations.of(context).level} (${CustomStyle.dBmV})'),
+                            '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})'),
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0))),
@@ -980,7 +982,7 @@ class _LastChannelLoading extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      '${AppLocalizations.of(context).stopFrequency}:',
+                      '${AppLocalizations.of(context)!.stopFrequency}:',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
@@ -1018,7 +1020,7 @@ class _LastChannelLoading extends StatelessWidget {
                       maxLength: 40,
                       decoration: InputDecoration(
                         label: Text(
-                            '${AppLocalizations.of(context).frequency} (${CustomStyle.mHz})'),
+                            '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0))),
@@ -1053,7 +1055,7 @@ class _LastChannelLoading extends StatelessWidget {
                       maxLength: 40,
                       decoration: InputDecoration(
                         label: Text(
-                            '${AppLocalizations.of(context).level} (${CustomStyle.dBmV})'),
+                            '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})'),
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0))),
@@ -1122,7 +1124,7 @@ class _PilotFrequencyMode extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).pilotFrequencySelect}:',
+                  '${AppLocalizations.of(context)!.pilotFrequencySelect}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -1165,9 +1167,9 @@ class _PilotFrequencyMode extends StatelessWidget {
                   ),
                   isSelected: getSelectionState(state.pilotFrequencyMode),
                   children: <Widget>[
-                    Text(AppLocalizations.of(context).pilotFrequencyFull),
-                    Text(AppLocalizations.of(context).pilotFrequencyManual),
-                    Text(AppLocalizations.of(context).pilotFrequencyScan),
+                    Text(AppLocalizations.of(context)!.pilotFrequencyFull),
+                    Text(AppLocalizations.of(context)!.pilotFrequencyManual),
+                    Text(AppLocalizations.of(context)!.pilotFrequencyScan),
                   ],
                 ),
               ),
@@ -1206,7 +1208,7 @@ class _PilotFrequency1 extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).pilotFrequency1}:',
+                  '${AppLocalizations.of(context)!.pilotFrequency1}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -1240,7 +1242,7 @@ class _PilotFrequency1 extends StatelessWidget {
                         maxLength: 40,
                         decoration: InputDecoration(
                           label: Text(
-                              '${AppLocalizations.of(context).frequency} (${CustomStyle.mHz})'),
+                              '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
                           border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(4.0))),
@@ -1271,7 +1273,7 @@ class _PilotFrequency1 extends StatelessWidget {
                         maxLength: 40,
                         decoration: InputDecoration(
                           label: Text(
-                              '${AppLocalizations.of(context).level} (${CustomStyle.dBmV})'),
+                              '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})'),
                           border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(4.0))),
@@ -1321,7 +1323,7 @@ class _PilotFrequency2 extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).pilotFrequency2}:',
+                  '${AppLocalizations.of(context)!.pilotFrequency2}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -1355,7 +1357,7 @@ class _PilotFrequency2 extends StatelessWidget {
                         maxLength: 40,
                         decoration: InputDecoration(
                           label: Text(
-                              '${AppLocalizations.of(context).frequency} (${CustomStyle.mHz})'),
+                              '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
                           border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(4.0))),
@@ -1386,7 +1388,7 @@ class _PilotFrequency2 extends StatelessWidget {
                         maxLength: 40,
                         decoration: InputDecoration(
                           label: Text(
-                              '${AppLocalizations.of(context).level} (${CustomStyle.dBmV})'),
+                              '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})'),
                           border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(4.0))),
@@ -1451,7 +1453,7 @@ class _FwdAGCMode extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).agcMode}:',
+                  '${AppLocalizations.of(context)!.agcMode}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -1491,8 +1493,8 @@ class _FwdAGCMode extends StatelessWidget {
                   ),
                   isSelected: getSelectionState(state.fwdAGCMode),
                   children: <Widget>[
-                    Text(AppLocalizations.of(context).on),
-                    Text(AppLocalizations.of(context).off),
+                    Text(AppLocalizations.of(context)!.on),
+                    Text(AppLocalizations.of(context)!.off),
                   ],
                 ),
               ),
@@ -1546,7 +1548,7 @@ class _AutoLevelControl extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).alcMode}:',
+                  '${AppLocalizations.of(context)!.alcMode}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
@@ -1587,8 +1589,8 @@ class _AutoLevelControl extends StatelessWidget {
                   ),
                   isSelected: getSelectionState(state.autoLevelControl),
                   children: <Widget>[
-                    Text(AppLocalizations.of(context).on),
-                    Text(AppLocalizations.of(context).off),
+                    Text(AppLocalizations.of(context)!.on),
+                    Text(AppLocalizations.of(context)!.off),
                   ],
                 ),
               ),
@@ -1633,7 +1635,7 @@ class _LogInterval extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        '${AppLocalizations.of(context).logInterval}: ${state.logInterval} ${AppLocalizations.of(context).minute}',
+                        '${AppLocalizations.of(context)!.logInterval}: ${state.logInterval} ${AppLocalizations.of(context)!.minute}',
                         style: const TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.w500,
@@ -1779,7 +1781,7 @@ class _TGCCableLength extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).tgcCableLength}:',
+                  '${AppLocalizations.of(context)!.tgcCableLength}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,

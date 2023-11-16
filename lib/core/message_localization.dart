@@ -6,22 +6,22 @@ String getMessageLocalization({
   required BuildContext context,
 }) {
   if (msg == 'Device not found.') {
-    return AppLocalizations.of(context).dialogMessageDeviceNotFound;
+    return AppLocalizations.of(context)!.dialogMessageDeviceNotFound;
   } else if (msg == 'Bluetooth is disabled.') {
-    return AppLocalizations.of(context).dialogMessageBluetoothDisabled;
+    return AppLocalizations.of(context)!.dialogMessageBluetoothDisabled;
   } else if (msg == 'Device connection failed') {
-    return AppLocalizations.of(context).dialogMessageConnectionFailure;
+    return AppLocalizations.of(context)!.dialogMessageConnectionFailure;
   } else if (msg == 'Data loading failed') {
-    return AppLocalizations.of(context).dialogMessageLoadingDataFailure;
+    return AppLocalizations.of(context)!.dialogMessageLoadingDataFailure;
   } else if (msg == 'Setting the log interval to 30 minutes failed.') {
-    return AppLocalizations.of(context)
+    return AppLocalizations.of(context)!
         .dialogMessageAutoSettingLogIntervalFailed;
   } else if (msg ==
       'Location services are disabled. Please enable location services.') {
-    return AppLocalizations.of(context).dialogMessageGPSServiceDisabled;
+    return AppLocalizations.of(context)!.dialogMessageGPSServiceDisabled;
   } else if (msg ==
       'Location permissions are denied. Please provide permission.') {
-    return AppLocalizations.of(context).dialogMessageGPSPermissionDenied;
+    return AppLocalizations.of(context)!.dialogMessageGPSPermissionDenied;
   } else {
     return msg;
   }

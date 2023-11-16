@@ -20,7 +20,7 @@ class Setting18Form extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).setting),
+        title: Text(AppLocalizations.of(context)!.setting),
         backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
         leading: const _DeviceStatus(),
@@ -36,7 +36,7 @@ class Setting18Form extends StatelessWidget {
           );
         },
       ),
-      // floatingActionButton: const _Setting18FloatingActionButton(),
+      floatingActionButton: const _Setting18FloatingActionButton(),
     );
   }
 }

@@ -66,50 +66,50 @@ class Setting18ControlView extends StatelessWidget {
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
-          ? AppLocalizations.of(context).dialogMessageSuccessful
-          : AppLocalizations.of(context).dialogMessageFailed;
+          ? AppLocalizations.of(context)!.dialogMessageSuccessful
+          : AppLocalizations.of(context)!.dialogMessageFailed;
     }
 
     String formatResultItem(String item) {
       if (item == DataKey.inputAttenuation.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageForwardInputAttenuationSetting;
       } else if (item == DataKey.inputEqualizer.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageForwardInputEqualizerSetting;
       } else if (item == DataKey.inputAttenuation2.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation2Setting;
       } else if (item == DataKey.inputAttenuation3.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation3Setting;
       } else if (item == DataKey.inputAttenuation4.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation4Setting;
       } else if (item == DataKey.outputAttenuation.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageReturnOutputAttenuationSetting;
       } else if (item == DataKey.outputEqualizer.name) {
-        return AppLocalizations.of(context)
+        return AppLocalizations.of(context)!
             .dialogMessageReturnOutputEqualizerSetting;
       } else if (item == DataKey.ingressSetting2.name) {
-        return AppLocalizations.of(context).dialogMessageReturnIngress2Setting;
+        return AppLocalizations.of(context)!.dialogMessageReturnIngress2Setting;
       } else if (item == DataKey.ingressSetting3.name) {
-        return AppLocalizations.of(context).dialogMessageReturnIngress3Setting;
+        return AppLocalizations.of(context)!.dialogMessageReturnIngress3Setting;
       } else if (item == DataKey.ingressSetting4.name) {
-        return AppLocalizations.of(context).dialogMessageReturnIngress4Setting;
+        return AppLocalizations.of(context)!.dialogMessageReturnIngress4Setting;
       } else if (item == DataKey.tgcCableLength.name) {
-        return AppLocalizations.of(context).dialogMessageTGCCableLengthSetting;
+        return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
       } else if (item == DataKey.dsVVA2.name) {
-        return AppLocalizations.of(context).dialogMessageDSVVA2Setting;
+        return AppLocalizations.of(context)!.dialogMessageDSVVA2Setting;
       } else if (item == DataKey.dsSlope2.name) {
-        return AppLocalizations.of(context).dialogMessageDSSlope2Setting;
+        return AppLocalizations.of(context)!.dialogMessageDSSlope2Setting;
       } else if (item == DataKey.dsVVA3.name) {
-        return AppLocalizations.of(context).dialogMessageDSVVA3Setting;
+        return AppLocalizations.of(context)!.dialogMessageDSVVA3Setting;
       } else if (item == DataKey.dsVVA4.name) {
-        return AppLocalizations.of(context).dialogMessageDSVVA4Setting;
+        return AppLocalizations.of(context)!.dialogMessageDSVVA4Setting;
       } else if (item == DataKey.usTGC.name) {
-        return AppLocalizations.of(context).dialogMessageUSTGCSetting;
+        return AppLocalizations.of(context)!.dialogMessageUSTGCSetting;
       } else {
         return '';
       }
@@ -288,7 +288,7 @@ class Setting18ControlView extends StatelessWidget {
       return Column(children: [
         forwardControlParameters.isNotEmpty
             ? _ClusterTitle(
-                title: AppLocalizations.of(context).forwardControlParameters,
+                title: AppLocalizations.of(context)!.forwardControlParameters,
               )
             : Container(),
         ...forwardControlParameters,
@@ -299,7 +299,7 @@ class Setting18ControlView extends StatelessWidget {
             : Container(),
         returnControlParameters.isNotEmpty
             ? _ClusterTitle(
-                title: AppLocalizations.of(context).returnControlParameters,
+                title: AppLocalizations.of(context)!.returnControlParameters,
               )
             : Container(),
         ...returnControlParameters,
@@ -536,7 +536,7 @@ Widget controlToggleButton({
               const Text('0'),
               const Text('-3'),
               const Text('-6'),
-              Text(AppLocalizations.of(context).ingressOpen),
+              Text(AppLocalizations.of(context)!.ingressOpen),
             ],
           ),
         ),
@@ -583,7 +583,7 @@ class _FwdInputAttenuation extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).fwdInputAttenuation}: ${state.fwdInputAttenuation} dB',
+              '${AppLocalizations.of(context)!.fwdInputAttenuation}: ${state.fwdInputAttenuation} dB',
           minValue: 0.0,
           maxValue: 15.0,
           currentValue: _getValue(state.fwdInputAttenuation),
@@ -614,7 +614,7 @@ class _FwdInputEQ extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).fwdInputEQ}: ${state.fwdInputEQ} dB',
+              '${AppLocalizations.of(context)!.fwdInputEQ}: ${state.fwdInputEQ} dB',
           minValue: 0.0,
           maxValue: 15.0,
           currentValue: _getValue(state.fwdInputEQ),
@@ -646,7 +646,7 @@ class _RtnInputAttenuation2 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).rtnInputAttenuation2}: ${state.rtnInputAttenuation2} dB',
+              '${AppLocalizations.of(context)!.rtnInputAttenuation2}: ${state.rtnInputAttenuation2} dB',
           minValue: 0.0,
           maxValue: 15.0,
           currentValue: _getValue(state.rtnInputAttenuation2),
@@ -678,7 +678,7 @@ class _RtnInputAttenuation3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).rtnInputAttenuation3}: ${state.rtnInputAttenuation3} dB',
+              '${AppLocalizations.of(context)!.rtnInputAttenuation3}: ${state.rtnInputAttenuation3} dB',
           minValue: 0.0,
           maxValue: 15.0,
           currentValue: _getValue(state.rtnInputAttenuation3),
@@ -710,7 +710,7 @@ class _RtnInputAttenuation4 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).rtnInputAttenuation4}: ${state.rtnInputAttenuation4} dB',
+              '${AppLocalizations.of(context)!.rtnInputAttenuation4}: ${state.rtnInputAttenuation4} dB',
           minValue: 0.0,
           maxValue: 15.0,
           currentValue: _getValue(state.rtnInputAttenuation4),
@@ -742,7 +742,7 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).rtnOutputLevelAttenuation}: ${state.rtnOutputLevelAttenuation} dB',
+              '${AppLocalizations.of(context)!.rtnOutputLevelAttenuation}: ${state.rtnOutputLevelAttenuation} dB',
           minValue: 0.0,
           maxValue: 15.0,
           currentValue: _getValue(state.rtnOutputLevelAttenuation),
@@ -774,7 +774,7 @@ class _RtnOutputEQ extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context).rtnOutputEQ}: ${state.rtnOutputEQ} dB',
+              '${AppLocalizations.of(context)!.rtnOutputEQ}: ${state.rtnOutputEQ} dB',
           minValue: 0.0,
           maxValue: 15.0,
           currentValue: _getValue(state.rtnOutputEQ),
@@ -810,7 +810,7 @@ class _RtnIngressSetting2 extends StatelessWidget {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context).rtnIngressSetting2}:',
+          title: '${AppLocalizations.of(context)!.rtnIngressSetting2}:',
           currentValue: state.rtnIngressSetting2,
           onChanged: (int index) {
             context
@@ -838,7 +838,7 @@ class _RtnIngressSetting3 extends StatelessWidget {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context).rtnIngressSetting3}:',
+          title: '${AppLocalizations.of(context)!.rtnIngressSetting3}:',
           currentValue: state.rtnIngressSetting3,
           onChanged: (int index) {
             context
@@ -866,7 +866,7 @@ class _RtnIngressSetting4 extends StatelessWidget {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context).rtnIngressSetting4}:',
+          title: '${AppLocalizations.of(context)!.rtnIngressSetting4}:',
           currentValue: state.rtnIngressSetting4,
           onChanged: (int index) {
             context
@@ -923,7 +923,7 @@ class _TGCCableLength extends StatelessWidget {
                   bottom: 16.0,
                 ),
                 child: Text(
-                  '${AppLocalizations.of(context).tgcCableLength}:',
+                  '${AppLocalizations.of(context)!.tgcCableLength}:',
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,

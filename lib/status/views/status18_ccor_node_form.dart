@@ -91,7 +91,7 @@ class Status18CCorNodeForm extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).status),
+        title: Text(AppLocalizations.of(context)!.status),
         centerTitle: true,
         leading: const _DeviceStatus(),
         actions: const [_DeviceRefresh()],
@@ -310,7 +310,7 @@ class _WorkingModeCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                AppLocalizations.of(context).workingMode,
+                AppLocalizations.of(context)!.workingMode,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -442,7 +442,7 @@ class _SplitOptionCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                AppLocalizations.of(context).splitOption,
+                AppLocalizations.of(context)!.splitOption,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -772,7 +772,7 @@ class _TemperatureCard extends StatelessWidget {
                   children: [
                     Flexible(
                       child: Text(
-                        AppLocalizations.of(context).temperatureFC,
+                        AppLocalizations.of(context)!.temperatureFC,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
@@ -822,13 +822,13 @@ class _TemperatureCard extends StatelessWidget {
                   temperatureAlarmState: temperatureAlarmState,
                   temperatureAlarmSeverity: temperatureAlarmSeverity,
                   currentTemperatureTitle:
-                      AppLocalizations.of(context).currentTemperature,
+                      AppLocalizations.of(context)!.currentTemperature,
                   currentTemperature: currentTemperature,
                   minTemperatureTitle:
-                      AppLocalizations.of(context).minTemperature,
+                      AppLocalizations.of(context)!.minTemperature,
                   minTemperature: minTemperature,
                   maxTemperatureTitle:
-                      AppLocalizations.of(context).maxTemperature,
+                      AppLocalizations.of(context)!.maxTemperature,
                   maxTemperature: maxTemperature,
                   historicalMinTemperature: historicalMinTemperature,
                   historicalMaxTemperature: historicalMaxTemperature,
@@ -1087,7 +1087,7 @@ class _PowerSupplyCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                '${AppLocalizations.of(context).voltageLevel} (${CustomStyle.volt})',
+                '${AppLocalizations.of(context)!.voltageLevel} (${CustomStyle.volt})',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -1097,12 +1097,12 @@ class _PowerSupplyCard extends StatelessWidget {
                   state.characteristicData[DataKey.voltageAlarmState] ?? '1',
               voltageAlarmSeverity:
                   state.characteristicData[DataKey.voltageAlarmSeverity] ?? '0',
-              currentVoltageTitle: AppLocalizations.of(context).currentVoltage,
+              currentVoltageTitle: AppLocalizations.of(context)!.currentVoltage,
               currentVoltage:
                   state.characteristicData[DataKey.currentVoltage] ?? '',
-              minVoltageTitle: AppLocalizations.of(context).minVoltage,
+              minVoltageTitle: AppLocalizations.of(context)!.minVoltage,
               minVoltage: state.characteristicData[DataKey.minVoltage] ?? '',
-              maxVoltageTitle: AppLocalizations.of(context).maxVoltage,
+              maxVoltageTitle: AppLocalizations.of(context)!.maxVoltage,
               maxVoltage: state.characteristicData[DataKey.maxVoltage] ?? '',
               historicalMinVoltage:
                   state.characteristicData[DataKey.historicalMinVoltage] ?? '',
@@ -1362,7 +1362,7 @@ class _RFOutputPower1Card extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                '${AppLocalizations.of(context).rfOutputPower1} (${CustomStyle.dBmV})',
+                '${AppLocalizations.of(context)!.rfOutputPower1} (${CustomStyle.dBmV})',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -1375,14 +1375,14 @@ class _RFOutputPower1Card extends StatelessWidget {
                       DataKey.rfOutputPower1AlarmSeverity] ??
                   '0',
               currentRFOutputPowerTitle:
-                  AppLocalizations.of(context).currentRFOutputPower,
+                  AppLocalizations.of(context)!.currentRFOutputPower,
               currentRFOutputPower:
                   state.characteristicData[DataKey.currentRFOutputPower1] ?? '',
-              minRFOutputPowerTitle: AppLocalizations.of(context).minVoltage,
+              minRFOutputPowerTitle: AppLocalizations.of(context)!.minVoltage,
               minRFOutputPower:
                   state.characteristicData[DataKey.minRFOutputPower1] ?? '',
               maxRFOutputPowerTitle:
-                  AppLocalizations.of(context).maxRFOutputPower,
+                  AppLocalizations.of(context)!.maxRFOutputPower,
               maxRFOutputPower:
                   state.characteristicData[DataKey.maxRFOutputPower1] ?? '',
               historicalMinRFOutputPower: state.characteristicData[
@@ -1418,7 +1418,7 @@ class _RFOutputPower3Card extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                '${AppLocalizations.of(context).rfOutputPower3} (${CustomStyle.dBmV})',
+                '${AppLocalizations.of(context)!.rfOutputPower3} (${CustomStyle.dBmV})',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -1431,14 +1431,14 @@ class _RFOutputPower3Card extends StatelessWidget {
                       DataKey.rfOutputPower3AlarmSeverity] ??
                   '0',
               currentRFOutputPowerTitle:
-                  AppLocalizations.of(context).currentRFOutputPower,
+                  AppLocalizations.of(context)!.currentRFOutputPower,
               currentRFOutputPower:
                   state.characteristicData[DataKey.currentRFOutputPower3] ?? '',
-              minRFOutputPowerTitle: AppLocalizations.of(context).minVoltage,
+              minRFOutputPowerTitle: AppLocalizations.of(context)!.minVoltage,
               minRFOutputPower:
                   state.characteristicData[DataKey.minRFOutputPower3] ?? '',
               maxRFOutputPowerTitle:
-                  AppLocalizations.of(context).maxRFOutputPower,
+                  AppLocalizations.of(context)!.maxRFOutputPower,
               maxRFOutputPower:
                   state.characteristicData[DataKey.maxRFOutputPower3] ?? '',
               historicalMinRFOutputPower: state.characteristicData[
@@ -1474,7 +1474,7 @@ class _RFOutputPower4Card extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                '${AppLocalizations.of(context).rfOutputPower4} (${CustomStyle.dBmV})',
+                '${AppLocalizations.of(context)!.rfOutputPower4} (${CustomStyle.dBmV})',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -1487,14 +1487,14 @@ class _RFOutputPower4Card extends StatelessWidget {
                       DataKey.rfOutputPower4AlarmSeverity] ??
                   '0',
               currentRFOutputPowerTitle:
-                  AppLocalizations.of(context).currentRFOutputPower,
+                  AppLocalizations.of(context)!.currentRFOutputPower,
               currentRFOutputPower:
                   state.characteristicData[DataKey.currentRFOutputPower4] ?? '',
-              minRFOutputPowerTitle: AppLocalizations.of(context).minVoltage,
+              minRFOutputPowerTitle: AppLocalizations.of(context)!.minVoltage,
               minRFOutputPower:
                   state.characteristicData[DataKey.minRFOutputPower4] ?? '',
               maxRFOutputPowerTitle:
-                  AppLocalizations.of(context).maxRFOutputPower,
+                  AppLocalizations.of(context)!.maxRFOutputPower,
               maxRFOutputPower:
                   state.characteristicData[DataKey.maxRFOutputPower4] ?? '',
               historicalMinRFOutputPower: state.characteristicData[
@@ -1530,7 +1530,7 @@ class _RFOutputPower6Card extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                '${AppLocalizations.of(context).rfOutputPower6} (${CustomStyle.dBmV})',
+                '${AppLocalizations.of(context)!.rfOutputPower6} (${CustomStyle.dBmV})',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -1543,14 +1543,14 @@ class _RFOutputPower6Card extends StatelessWidget {
                       DataKey.rfOutputPower6AlarmSeverity] ??
                   '0',
               currentRFOutputPowerTitle:
-                  AppLocalizations.of(context).currentRFOutputPower,
+                  AppLocalizations.of(context)!.currentRFOutputPower,
               currentRFOutputPower:
                   state.characteristicData[DataKey.currentRFOutputPower6] ?? '',
-              minRFOutputPowerTitle: AppLocalizations.of(context).minVoltage,
+              minRFOutputPowerTitle: AppLocalizations.of(context)!.minVoltage,
               minRFOutputPower:
                   state.characteristicData[DataKey.minRFOutputPower6] ?? '',
               maxRFOutputPowerTitle:
-                  AppLocalizations.of(context).maxRFOutputPower,
+                  AppLocalizations.of(context)!.maxRFOutputPower,
               maxRFOutputPower:
                   state.characteristicData[DataKey.maxRFOutputPower6] ?? '',
               historicalMinRFOutputPower: state.characteristicData[

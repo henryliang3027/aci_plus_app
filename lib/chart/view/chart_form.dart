@@ -33,11 +33,11 @@ class ChartForm extends StatelessWidget {
               SnackBar(
                 duration: const Duration(seconds: 30),
                 content: Text(
-                  AppLocalizations.of(context)
+                  AppLocalizations.of(context)!
                       .dialogMessageDataExportSuccessful,
                 ),
                 action: SnackBarAction(
-                  label: AppLocalizations.of(context).open,
+                  label: AppLocalizations.of(context)!.open,
                   onPressed: () async {
                     OpenResult result = await OpenFilex.open(
                       state.dataExportPath,
@@ -72,7 +72,7 @@ class ChartForm extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            AppLocalizations.of(context).monitoringChart,
+            AppLocalizations.of(context)!.monitoringChart,
           ),
           centerTitle: true,
           leading: const _DeviceStatus(),
@@ -187,7 +187,7 @@ class _PopupMenu extends StatelessWidget {
                   const SizedBox(
                     width: 10.0,
                   ),
-                  Text(AppLocalizations.of(context).reconnect),
+                  Text(AppLocalizations.of(context)!.reconnect),
                 ],
               ),
             ),
@@ -205,7 +205,7 @@ class _PopupMenu extends StatelessWidget {
                   const SizedBox(
                     width: 10.0,
                   ),
-                  Text(AppLocalizations.of(context).share),
+                  Text(AppLocalizations.of(context)!.share),
                 ],
               ),
             ),
@@ -223,7 +223,7 @@ class _PopupMenu extends StatelessWidget {
                   const SizedBox(
                     width: 10.0,
                   ),
-                  Text(AppLocalizations.of(context).export),
+                  Text(AppLocalizations.of(context)!.export),
                 ],
               ),
             ),
@@ -320,7 +320,7 @@ class _LogChartView extends StatelessWidget {
                 Navigator.push(
                   context,
                   FullScreenChartForm.route(
-                    title: AppLocalizations.of(context).monitoringChart,
+                    title: AppLocalizations.of(context)!.monitoringChart,
                     lineSeriesCollection: lineSeriesCollection,
                   ),
                 );

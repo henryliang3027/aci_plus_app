@@ -7,14 +7,11 @@ Future<void> showInProgressDialog(BuildContext context) async {
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
-      return WillPopScope(
-        onWillPop: () async {
-          // 避免 Android 使用者點擊系統返回鍵關閉 dialog
-          return false;
-        },
+      return PopScope(
+        canPop: false, // 避免 Android 使用者點擊系統返回鍵關閉 dialog
         child: AlertDialog(
           title: Text(
-            AppLocalizations.of(context).dialogTitleProcessing,
+            AppLocalizations.of(context)!.dialogTitleProcessing,
           ),
           actionsAlignment: MainAxisAlignment.center,
           content: const SingleChildScrollView(
@@ -55,7 +52,7 @@ Future<void> showResultDialog({
           horizontal: width * 0.1,
         ),
         title: Text(
-          AppLocalizations.of(context).dialogTitleSettingResult,
+          AppLocalizations.of(context)!.dialogTitleSettingResult,
         ),
         content: SizedBox(
           width: width,
