@@ -6,3 +6,17 @@ abstract class Setting18GraphViewEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class LoadGraphRequested extends Setting18GraphViewEvent {
+  const LoadGraphRequested();
+
+  @override
+  List<Object> get props => [];
+}
+
+class AttenuatorTapped extends Setting18GraphViewEvent {
+  const AttenuatorTapped();
+
+  @override
+  List<Object> get props => [];
+}

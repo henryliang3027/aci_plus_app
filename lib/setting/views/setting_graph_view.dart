@@ -11,12 +11,14 @@ class SettingGraphView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: GestureDetector(
-          child: CustomPaint(
-            size: Size(400, 400),
-            painter: CircuitPainter(),
-          ),
-        ),
+        child: Container(),
+
+        // GestureDetector(
+        //   child: CustomPaint(
+        //     size: Size(400, 400),
+        //     painter: CircuitPainter(),
+        //   ),
+        // ),
       ),
       floatingActionButton: const _SettingFloatingActionButton(),
     );
