@@ -1,11 +1,11 @@
-import 'package:aci_plus_app/setting/views/setting18_ccor_node_configure_page.dart';
-import 'package:aci_plus_app/setting/views/setting18_ccor_node_control_page.dart';
-import 'package:aci_plus_app/setting/views/setting18_ccor_node_threshold_page.dart';
+import 'package:aci_plus_app/setting/views/setting18_views/setting18_configure_page.dart';
+import 'package:aci_plus_app/setting/views/setting18_views/setting18_control_page.dart';
+import 'package:aci_plus_app/setting/views/setting18_views/setting18_threshold_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Setting18CCorNodeTabBar extends StatelessWidget {
-  const Setting18CCorNodeTabBar({super.key});
+class Setting18TabBar extends StatelessWidget {
+  const Setting18TabBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +70,9 @@ class Setting18CCorNodeTabBar extends StatelessWidget {
             child: TabBarView(
               // physics: NeverScrollableScrollPhysics(),
               children: [
-                Setting18CCorNodeConfigurePage(),
-                Setting18CCorNodeThresholdPage(),
-                Setting18CCorNodeControlPage(),
+                Setting18ConfigurePage(),
+                Setting18ThresholdPage(),
+                Setting18ControlPage(),
               ],
             ),
           ),

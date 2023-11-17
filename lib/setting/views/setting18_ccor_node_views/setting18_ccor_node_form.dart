@@ -1,17 +1,17 @@
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:aci_plus_app/setting/bloc/setting_bloc/setting_bloc.dart';
-import 'package:aci_plus_app/setting/views/setting_graph_view.dart';
-import 'package:aci_plus_app/setting/views/setting_list_view.dart';
+import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_tab_bar.dart';
+import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_view.dart';
+import 'package:aci_plus_app/setting/views/setting18_views/setting18_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SettingForm extends StatelessWidget {
-  const SettingForm({
+class Setting18CCorNodeForm extends StatelessWidget {
+  const Setting18CCorNodeForm({
     super.key,
     required this.pageController,
   });
@@ -119,51 +119,13 @@ class _ViewLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> showFailureDialog(String msg) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context)!.dialogTitleError,
-              style: const TextStyle(
-                color: CustomStyle.customRed,
-              ),
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                    getMessageLocalization(
-                      msg: msg,
-                      context: context,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.loadingStatus.isRequestInProgress) {
-          // context.read<SettingListViewBloc>().add(const Initialized(true));
           return Stack(
             alignment: Alignment.center,
             children: [
-              SettingListView(),
+              const Setting18TabBar(),
               Container(
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(70, 158, 158, 158),
@@ -179,21 +141,13 @@ class _ViewLayout extends StatelessWidget {
             ],
           );
         } else if (state.loadingStatus.isRequestSuccess) {
-          return const _Layout(
-            isLoadData: true,
-          );
+          return const _Layout();
         } else if (state.loadingStatus.isRequestFailure) {
-          return const _Layout(
-            isLoadData: false,
-          );
+          return const _Layout();
         } else if (state.scanStatus.isRequestFailure) {
-          return const _Layout(
-            isLoadData: false,
-          );
+          return const _Layout();
         } else if (state.connectionStatus.isRequestFailure) {
-          return const _Layout(
-            isLoadData: false,
-          );
+          return const _Layout();
         } else {
           return const Center(
             child: SizedBox(
@@ -211,10 +165,7 @@ class _ViewLayout extends StatelessWidget {
 class _Layout extends StatelessWidget {
   const _Layout({
     super.key,
-    required this.isLoadData,
   });
-
-  final bool isLoadData;
 
   @override
   Widget build(BuildContext context) {
@@ -223,10 +174,9 @@ class _Layout extends StatelessWidget {
           previous.isGraphType != current.isGraphType,
       builder: (context, state) {
         if (state.isGraphType) {
-          return SettingGraphView();
+          return const Setting18GraphView();
         } else {
-          // context.read<SettingListViewBloc>().add(Initialized(isLoadData));
-          return SettingListView();
+          return const Setting18CCorNodeTabBar();
         }
       },
     );
