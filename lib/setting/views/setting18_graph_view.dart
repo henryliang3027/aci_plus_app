@@ -68,7 +68,7 @@ class _GraphInteractor extends StatelessWidget {
                       svgPaths: state.svgPaths,
                       boxes: state.boxes,
                     )),
-                    gesturesToOverride: [GestureType.onTapDown],
+                    gesturesToOverride: [GestureType.onTapUp],
                   ),
                 ),
               ],

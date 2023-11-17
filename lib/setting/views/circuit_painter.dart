@@ -75,7 +75,7 @@ class CircuitPainter extends CustomPainter {
           ..strokeWidth = 2.0,
       );
       myCanvas.drawRect(Rect.fromLTWH(box.x, box.y, box.width, box.height),
-          Paint()..color = Colors.transparent, onTapDown: (details) {
+          Paint()..color = Colors.transparent, onTapUp: (details) {
         showResultDialog(context: context, message: 'Tap!!!!!');
       });
     }
