@@ -6,6 +6,7 @@ import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_control/setting18_control_bloc.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
+import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -1166,22 +1167,25 @@ class _SettingFloatingActionButton extends StatelessWidget {
           : Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                // FloatingActionButton(
-                //   shape: const CircleBorder(
-                //     side: BorderSide.none,
-                //   ),
-                //   backgroundColor: Colors.grey.withAlpha(200),
-                //   child: Icon(
-                //     Icons.grain_sharp,
-                //     color: Theme.of(context).colorScheme.onPrimary,
-                //   ),
-                //   onPressed: () {
-                //     context.read<SettingBloc>().add(const GraphViewToggled());
-                //   },
-                // ),
-                // const SizedBox(
-                //   height: 10.0,
-                // ),
+                FloatingActionButton(
+                  // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
+                  heroTag: null,
+                  shape: const CircleBorder(
+                    side: BorderSide.none,
+                  ),
+                  backgroundColor:
+                      Theme.of(context).colorScheme.primary.withAlpha(200),
+                  child: Icon(
+                    Icons.settings_input_composite,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                  onPressed: () {
+                    Navigator.push(context, Setting18GraphPage.route());
+                  },
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
                 FloatingActionButton(
                   shape: const CircleBorder(
                     side: BorderSide.none,

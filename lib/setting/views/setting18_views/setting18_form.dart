@@ -36,7 +36,7 @@ class Setting18Form extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: const _Setting18FloatingActionButton(),
+      // floatingActionButton: const _Setting18FloatingActionButton(),
     );
   }
 }
@@ -143,32 +143,6 @@ class _ViewLayout extends StatelessWidget {
           return const Setting18TabBar();
         }
       },
-    );
-  }
-}
-
-class _Setting18FloatingActionButton extends StatelessWidget {
-  const _Setting18FloatingActionButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 66.0),
-      child: FloatingActionButton(
-        // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
-        heroTag: null,
-        shape: const CircleBorder(
-          side: BorderSide.none,
-        ),
-        backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
-        child: Icon(
-          Icons.settings_input_composite,
-          color: Theme.of(context).colorScheme.onPrimary,
-        ),
-        onPressed: () {
-          Navigator.push(context, Setting18GraphPage.route());
-        },
-      ),
     );
   }
 }

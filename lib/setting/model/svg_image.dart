@@ -1,3 +1,17 @@
+class SVGImage {
+  const SVGImage({
+    required this.width,
+    required this.height,
+    required this.components,
+    required this.boxes,
+  });
+
+  final double width;
+  final double height;
+  final List<Component> components;
+  final List<Box> boxes;
+}
+
 class Component {
   const Component({
     required this.color,

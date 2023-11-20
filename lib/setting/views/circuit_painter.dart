@@ -1,4 +1,7 @@
-import 'package:aci_plus_app/setting/model/component.dart';
+import 'dart:math';
+
+import 'package:aci_plus_app/setting/model/svg_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart';
 import 'package:touchable/touchable.dart';
@@ -6,13 +9,11 @@ import 'package:touchable/touchable.dart';
 class CircuitPainter extends CustomPainter {
   CircuitPainter({
     required this.context,
-    required this.svgPaths,
-    required this.boxes,
+    required this.svgImage,
   });
 
   final BuildContext context;
-  final List<Component> svgPaths;
-  final List<Box> boxes;
+  final SVGImage svgImage;
 
   Future<void> showResultDialog({
     required BuildContext context,
@@ -53,18 +54,55 @@ class CircuitPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    var myCanvas = TouchyCanvas(context, canvas);
+    print('Canvas size: $size');
 
-    for (Component svgPath in svgPaths) {
-      final Path path = parseSvgPathData(svgPath.path);
-      int decimalColor = int.parse(svgPath.color, radix: 16);
+    double scaleFactorX = size.width / svgImage.width;
+
+    double scaleFactorY = size.height / svgImage.height;
+
+    double scaleFactor = min(scaleFactorX, scaleFactorY);
+    double offsetX = size.width / 2 - svgImage.width * scaleFactor / 2;
+    double offsetY = size.height / 2 - svgImage.height * scaleFactor / 2;
+
+    print(offsetX);
+    print(offsetY);
+
+    // canvas.scale(scaleFactor);
+
+    // canvas.translate(offsetX, offsetY);
+
+    final translateM = Float64List.fromList([
+      scaleFactor,
+      0,
+      0,
+      0,
+      0,
+      scaleFactor,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      offsetX,
+      offsetY,
+      0,
+      1,
+    ]);
+
+    canvas.transform(translateM);
+
+    for (Component component in svgImage.components) {
+      final Path path = parseSvgPathData(component.path);
+      int decimalColor = int.parse(component.color, radix: 16);
       canvas.drawPath(
         path,
         Paint()..color = Color(decimalColor),
       );
     }
 
-    for (Box box in boxes) {
+    var myCanvas = TouchyCanvas(context, canvas);
+    for (Box box in svgImage.boxes) {
       canvas.drawRRect(
         RRect.fromRectAndRadius(
             Rect.fromLTWH(box.x, box.y, box.width, box.height),
@@ -74,7 +112,12 @@ class CircuitPainter extends CustomPainter {
           ..style = PaintingStyle.stroke
           ..strokeWidth = 2.0,
       );
-      myCanvas.drawRect(Rect.fromLTWH(box.x, box.y, box.width, box.height),
+      myCanvas.drawRect(
+          Rect.fromLTWH(
+              box.x * scaleFactor + offsetX,
+              box.y * scaleFactor + offsetY,
+              box.width * scaleFactor,
+              box.height * scaleFactor),
           Paint()..color = Colors.transparent, onTapUp: (details) {
         showResultDialog(context: context, message: 'Tap!!!!!');
       });

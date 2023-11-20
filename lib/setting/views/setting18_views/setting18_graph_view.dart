@@ -1,6 +1,5 @@
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_graph_view_bloc/setting18_graph_view_bloc.dart';
-import 'package:aci_plus_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:aci_plus_app/setting/views/circuit_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +14,9 @@ class Setting18GraphView extends StatelessWidget {
   Widget build(BuildContext context) {
     setFullScreenOrientation();
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 0,
+      ),
       body: const _GraphInteractor(),
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(
@@ -39,6 +41,9 @@ class _GraphInteractor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(
+        '${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}');
+
     return BlocBuilder<Setting18GraphViewBloc, Setting18GraphViewState>(
       builder: (context, state) {
         return PopScope(
@@ -48,7 +53,7 @@ class _GraphInteractor extends StatelessWidget {
 
           child: InteractiveViewer(
             child: Stack(
-              alignment: AlignmentDirectional.topStart,
+              alignment: AlignmentDirectional.center,
               children: [
                 // Container(
                 //   width: double.maxFinite,
@@ -58,15 +63,15 @@ class _GraphInteractor extends StatelessWidget {
                 //     // fit: BoxFit.cover,
                 //   ),
                 // ),
+
                 Container(
-                  width: double.maxFinite,
-                  height: double.maxFinite,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
                   child: CanvasTouchDetector(
                     builder: (context) => CustomPaint(
                         painter: CircuitPainter(
                       context: context,
-                      svgPaths: state.svgPaths,
-                      boxes: state.boxes,
+                      svgImage: state.svgImage,
                     )),
                     gesturesToOverride: [GestureType.onTapUp],
                   ),

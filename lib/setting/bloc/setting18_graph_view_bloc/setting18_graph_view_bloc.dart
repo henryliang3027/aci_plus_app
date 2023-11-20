@@ -1,6 +1,6 @@
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
-import 'package:aci_plus_app/setting/model/component.dart';
+import 'package:aci_plus_app/setting/model/svg_image.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -34,8 +34,12 @@ class Setting18GraphViewBloc
 
     final paths = document.findAllElements('path');
     final rects = document.findAllElements('rect');
+    final header = document.findElements('svg').toList()[0];
+    final double width = double.parse(header.getAttribute('width').toString());
+    final double height =
+        double.parse(header.getAttribute('height').toString());
 
-    List<Component> svgPaths = [];
+    List<Component> components = [];
     List<Box> boxes = [];
 
     for (var element in paths) {
@@ -43,7 +47,7 @@ class Setting18GraphViewBloc
           'ff${element.getAttribute('fill').toString().substring(1)}';
       String partPath = element.getAttribute('d').toString();
 
-      svgPaths.add(Component(color: partColor, path: partPath));
+      components.add(Component(color: partColor, path: partPath));
     }
 
     for (var element in rects) {
@@ -60,9 +64,15 @@ class Setting18GraphViewBloc
       ));
     }
 
-    emit(state.copyWith(
-      svgPaths: svgPaths,
+    SVGImage svgImage = SVGImage(
+      width: width,
+      height: height,
+      components: components,
       boxes: boxes,
+    );
+
+    emit(state.copyWith(
+      svgImage: svgImage,
     ));
   }
 
