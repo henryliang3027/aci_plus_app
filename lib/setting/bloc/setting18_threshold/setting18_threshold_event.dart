@@ -1,6 +1,6 @@
 part of 'setting18_threshold_bloc.dart';
 
-sealed class Setting18ThresholdEvent extends Equatable {
+abstract class Setting18ThresholdEvent extends Equatable {
   const Setting18ThresholdEvent();
 
   @override

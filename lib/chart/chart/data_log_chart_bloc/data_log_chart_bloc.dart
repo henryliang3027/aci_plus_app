@@ -117,7 +117,7 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
             logRequestStatus: FormStatus.requestSuccess,
             log1p8Gs: log1p8Gs,
             dateValueCollectionOfLog: dateValueCollectionOfLog,
-            chunckIndex: 1,
+            chunkIndex: 1,
             hasNextChunk: hasNextChunk,
           ),
         );
@@ -215,7 +215,7 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
             logRequestStatus: FormStatus.requestSuccess,
             log1p8Gs: log1p8Gs,
             dateValueCollectionOfLog: dateValueCollectionOfLog,
-            chunckIndex: state.chunkIndex + 1,
+            chunkIndex: state.chunkIndex + 1,
             hasNextChunk: resultOfLog1p8G[1],
           ),
         );

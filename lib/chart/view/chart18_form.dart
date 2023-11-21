@@ -336,6 +336,7 @@ class _PopupMenu extends StatelessWidget {
                       context
                           .read<Chart18Bloc>()
                           .add(const AllDataDownloaded());
+                      break;
                     default:
                       break;
                   }

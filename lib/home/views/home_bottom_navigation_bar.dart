@@ -1,7 +1,5 @@
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
-import 'package:aci_plus_app/information/bloc/information18_bloc/information18_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeBottomNavigationBar extends StatelessWidget {
   const HomeBottomNavigationBar({

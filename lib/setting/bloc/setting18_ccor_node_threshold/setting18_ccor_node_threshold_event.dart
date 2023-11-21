@@ -1,6 +1,6 @@
 part of 'setting18_ccor_node_threshold_bloc.dart';
 
-sealed class Setting18CCorNodeThresholdEvent extends Equatable {
+abstract class Setting18CCorNodeThresholdEvent extends Equatable {
   const Setting18CCorNodeThresholdEvent();
 
   @override

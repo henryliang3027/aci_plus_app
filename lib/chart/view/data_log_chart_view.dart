@@ -1,22 +1,16 @@
 import 'dart:math';
 import 'package:aci_plus_app/chart/chart/chart18_bloc/chart18_bloc.dart';
 import 'package:aci_plus_app/chart/chart/data_log_chart_bloc/data_log_chart_bloc.dart';
-import 'package:aci_plus_app/chart/view/download_indicator18.dart';
 import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
-import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
-import 'package:aci_plus_app/repositories/dsim18_parser.dart';
-import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:open_filex/open_filex.dart';
-import 'package:share_plus/share_plus.dart';
 
 class DataLogChartView extends StatelessWidget {
   const DataLogChartView({

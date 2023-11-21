@@ -8,9 +8,7 @@ import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
-import 'package:location/location.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:geolocator/geolocator.dart';
 
 class Dsim18Parser {
   Dsim18Parser() {

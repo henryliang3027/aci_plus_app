@@ -162,6 +162,7 @@ class _PopupMenu extends StatelessWidget {
             switch (item) {
               case Menu.refresh:
                 context.read<HomeBloc>().add(const DeviceRefreshed());
+                break;
               case Menu.share:
                 context.read<ChartBloc>().add(const DataShared());
                 break;

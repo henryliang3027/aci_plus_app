@@ -1,6 +1,6 @@
 part of 'setting18_ccor_node_control_bloc.dart';
 
-sealed class Setting18CCorNodeControlEvent extends Equatable {
+abstract class Setting18CCorNodeControlEvent extends Equatable {
   const Setting18CCorNodeControlEvent();
 
   @override

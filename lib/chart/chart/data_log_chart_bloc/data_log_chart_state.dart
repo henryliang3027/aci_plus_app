@@ -37,7 +37,7 @@ class DataLogChartState extends Equatable {
     // FormStatus? dataShareStatus,
     // FormStatus? dataExportStatus,
     // FormStatus? allDataExportStatus,
-    int? chunckIndex,
+    int? chunkIndex,
     bool? hasNextChunk,
     List<Event1p8G>? event1p8Gs,
     List<Log1p8G>? log1p8Gs,

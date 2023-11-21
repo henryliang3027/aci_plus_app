@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:aci_plus_app/setting/model/svg_image.dart';
+import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_module_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart';
@@ -15,38 +16,20 @@ class CircuitPainter extends CustomPainter {
   final BuildContext context;
   final SVGImage svgImage;
 
-  Future<void> showResultDialog({
+  Future<void> showModuleSettingDialog({
     required BuildContext context,
-    required String message,
+    required int moduleId,
   }) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
+
       builder: (BuildContext context) {
         var width = MediaQuery.of(context).size.width;
         // var height = MediaQuery.of(context).size.height;
 
-        return AlertDialog(
-          insetPadding: EdgeInsets.symmetric(
-            horizontal: width * 0.1,
-          ),
-          title: const Text("Setting"),
-          content: SizedBox(
-            width: width,
-            child: SingleChildScrollView(
-              child: ListBody(
-                children: [Text(message)],
-              ),
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop(true); // pop dialog
-              },
-            ),
-          ],
+        return Dialog(
+          child: Setting18GraphModulePage(moduleId: moduleId),
         );
       },
     );
@@ -61,8 +44,8 @@ class CircuitPainter extends CustomPainter {
     double scaleFactorY = size.height / svgImage.height;
 
     double scaleFactor = min(scaleFactorX, scaleFactorY);
-    double offsetX = size.width / 2 - svgImage.width * scaleFactor / 2;
-    double offsetY = size.height / 2 - svgImage.height * scaleFactor / 2;
+    double offsetX = (size.width - svgImage.width * scaleFactor) / 2;
+    double offsetY = (size.height - svgImage.height * scaleFactor) / 2;
 
     print(offsetX);
     print(offsetY);
@@ -119,7 +102,7 @@ class CircuitPainter extends CustomPainter {
               box.width * scaleFactor,
               box.height * scaleFactor),
           Paint()..color = Colors.transparent, onTapUp: (details) {
-        showResultDialog(context: context, message: 'Tap!!!!!');
+        showModuleSettingDialog(context: context, moduleId: 1);
       });
     }
   }
