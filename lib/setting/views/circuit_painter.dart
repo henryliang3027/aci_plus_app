@@ -86,15 +86,15 @@ class CircuitPainter extends CustomPainter {
 
     var myCanvas = TouchyCanvas(context, canvas);
     for (Box box in svgImage.boxes) {
-      canvas.drawRRect(
-        RRect.fromRectAndRadius(
-            Rect.fromLTWH(box.x, box.y, box.width, box.height),
-            Radius.circular(10.0)),
-        Paint()
-          ..color = Colors.black
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2.0,
-      );
+      // canvas.drawRRect(
+      //   RRect.fromRectAndRadius(
+      //       Rect.fromLTWH(box.x, box.y, box.width, box.height),
+      //       Radius.circular(10.0)),
+      //   Paint()
+      //     ..color = Colors.black
+      //     ..style = PaintingStyle.stroke
+      //     ..strokeWidth = 2.0,
+      // );
       myCanvas.drawRect(
           Rect.fromLTWH(
               box.x * scaleFactor + offsetX,
@@ -102,7 +102,10 @@ class CircuitPainter extends CustomPainter {
               box.width * scaleFactor,
               box.height * scaleFactor),
           Paint()..color = Colors.transparent, onTapUp: (details) {
-        showModuleSettingDialog(context: context, moduleId: 1);
+        showModuleSettingDialog(
+          context: context,
+          moduleId: box.moduleId,
+        );
       });
     }
   }

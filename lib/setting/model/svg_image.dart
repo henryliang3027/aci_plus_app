@@ -24,12 +24,14 @@ class Component {
 
 class Box {
   const Box({
+    required this.moduleId,
     required this.x,
     required this.y,
     required this.width,
     required this.height,
   });
 
+  final int moduleId;
   final double x;
   final double y;
   final double width;

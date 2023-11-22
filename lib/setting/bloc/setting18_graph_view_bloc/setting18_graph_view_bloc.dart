@@ -28,7 +28,7 @@ class Setting18GraphViewBloc
     Emitter<Setting18GraphViewState> emit,
   ) async {
     String generalString =
-        await rootBundle.loadString('assets/circuits/MB_1.8G_small.svg');
+        await rootBundle.loadString('assets/circuits/MB_1.8G_20231117.svg');
 
     XmlDocument document = XmlDocument.parse(generalString);
 
@@ -51,12 +51,14 @@ class Setting18GraphViewBloc
     }
 
     for (var element in rects) {
+      int moduleId = int.parse(element.getAttribute('symbol').toString());
       double x = double.parse(element.getAttribute('x').toString());
       double y = double.parse(element.getAttribute('y').toString());
       double width = double.parse(element.getAttribute('width').toString());
       double height = double.parse(element.getAttribute('height').toString());
 
       boxes.add(Box(
+        moduleId: moduleId,
         x: x,
         y: y,
         width: width,
