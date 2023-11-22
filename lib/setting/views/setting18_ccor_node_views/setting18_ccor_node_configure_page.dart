@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/repositories/dsim18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_configure/setting18_ccor_node_configure_bloc.dart';
@@ -12,7 +13,8 @@ class Setting18CCorNodeConfigurePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Setting18CCorNodeConfigureBloc(
-        dsimRepository: RepositoryProvider.of<DsimRepository>(context),
+        dsimRepository:
+            RepositoryProvider.of<Dsim18CCorNodeRepository>(context),
         gpsRepository: RepositoryProvider.of<GPSRepository>(context),
       ),
       child: Setting18CCorNodeConfigureView(),

@@ -1,24 +1,20 @@
 import 'package:aci_plus_app/core/utils.dart';
-import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'setting_event.dart';
-part 'setting_state.dart';
+part 'setting18_event.dart';
+part 'setting18_state.dart';
 
-class SettingBloc extends Bloc<SettingEvent, SettingState> {
-  SettingBloc({required DsimRepository dsimRepository})
-      : _dsimRepository = dsimRepository,
-        super(const SettingState()) {
+class Setting18Bloc extends Bloc<Setting18Event, Setting18State> {
+  Setting18Bloc() : super(const Setting18State()) {
     on<GraphViewToggled>(_onGraphViewToggled);
     on<ListViewToggled>(_onListViewToggled);
   }
-  final DsimRepository _dsimRepository;
 
   void _onGraphViewToggled(
     GraphViewToggled event,
-    Emitter<SettingState> emit,
+    Emitter<Setting18State> emit,
   ) {
     setFullScreenOrientation();
 
@@ -32,7 +28,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
 
   void _onListViewToggled(
     ListViewToggled event,
-    Emitter<SettingState> emit,
+    Emitter<Setting18State> emit,
   ) {
     setPreferredOrientation();
 

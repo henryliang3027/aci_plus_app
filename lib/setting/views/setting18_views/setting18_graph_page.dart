@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/dsim18_repository.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_graph_view_bloc/setting18_graph_view_bloc.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_view.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ class Setting18GraphPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Setting18GraphViewBloc(
-        dsimRepository: RepositoryProvider.of<DsimRepository>(context),
+        dsimRepository: RepositoryProvider.of<Dsim18Repository>(context),
       ),
       child: const Setting18GraphView(),
     );

@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/ble_client.dart';
-import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/dsim12_repository.dart';
+import 'package:aci_plus_app/repositories/dsim18_ccor_node_repository.dart';
+import 'package:aci_plus_app/repositories/dsim18_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
@@ -17,8 +20,14 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc({
-    required DsimRepository dsimRepository,
-  })  : _dsimRepository = dsimRepository,
+    required ACIDeviceRepository aciDeviceRepository,
+    required Dsim12Repository dsim12Repository,
+    required Dsim18Repository dsim18Repository,
+    required Dsim18CCorNodeRepository dsim18CCorNodeRepository,
+  })  : _aciDeviceRepository = aciDeviceRepository,
+        _dsim12Repository = dsim12Repository,
+        _dsim18Repository = dsim18Repository,
+        _dsim18CCorNodeRepository = dsim18CCorNodeRepository,
         super(const HomeState()) {
     on<SplashStateChanged>(_onSplashStateChanged);
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
@@ -32,7 +41,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // on<testTimeout>(_onTestTimeout);
   }
 
-  final DsimRepository _dsimRepository;
+  final ACIDeviceRepository _aciDeviceRepository;
+  final Dsim12Repository _dsim12Repository;
+  final Dsim18Repository _dsim18Repository;
+  final Dsim18CCorNodeRepository _dsim18CCorNodeRepository;
   StreamSubscription<ScanReport>? _scanStreamSubscription;
   StreamSubscription<ConnectionReport>? _connectionReportStreamSubscription;
   StreamSubscription<Map<DataKey, String>>?
@@ -64,7 +76,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // _assetsAudioPlayer.play();
     // await Future.delayed(const Duration(milliseconds: 6000));
 
-    _scanStreamSubscription = _dsimRepository.scanReport.listen(
+    // _scanStreamSubscription = _dsimRepository.scanReport.listen(
+    //   (scanReport) {
+    //     add(DiscoveredDeviceChanged(scanReport));
+    //   },
+    // );
+
+    _scanStreamSubscription = _aciDeviceRepository.scanReport.listen(
       (scanReport) {
         add(DiscoveredDeviceChanged(scanReport));
       },
@@ -91,12 +109,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           device: event.scanReport.discoveredDevice,
         ));
 
-        _connectionReportStreamSubscription =
-            _dsimRepository.connectionStateReport.listen((connectionReport) {
+        // _connectionReportStreamSubscription =
+        //     _dsimRepository.connectionStateReport.listen((connectionReport) {
+        //   add(DeviceConnectionChanged(connectionReport));
+        // });
+
+        // _dsimRepository.connectToDevice(event.scanReport.discoveredDevice!);
+
+        _connectionReportStreamSubscription = _aciDeviceRepository
+            .connectionStateReport
+            .listen((connectionReport) {
           add(DeviceConnectionChanged(connectionReport));
         });
 
-        _dsimRepository.connectToDevice(event.scanReport.discoveredDevice!);
+        _aciDeviceRepository
+            .connectToDevice(event.scanReport.discoveredDevice!);
+
         break;
       case ScanStatus.failure:
         emit(state.copyWith(
@@ -116,7 +144,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         break;
     }
 
-    await _dsimRepository.closeScanStream();
+    // await _dsimRepository.closeScanStream();
+
+    await _aciDeviceRepository.closeScanStream();
 
     if (_scanStreamSubscription != null) {
       await _scanStreamSubscription?.cancel();
@@ -137,8 +167,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         // ));
         break;
       case DeviceConnectionState.connected:
-        List<dynamic> result =
-            await _dsimRepository.getACIDeviceType(deviceId: state.device!.id);
+        // List<dynamic> result =
+        //     await _dsimRepository.getACIDeviceType(deviceId: state.device!.id);
+
+        List<dynamic> result = await _aciDeviceRepository.getACIDeviceType(
+            deviceId: state.device!.id);
 
         if (result[0]) {
           ACIDeviceType aciDeviceType = result[1];
@@ -154,7 +187,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
             //當在設定頁面設定資料時, 用來更新Information page 對應的資料欄位
             _characteristicDataStreamSubscription =
-                _dsimRepository.characteristicData.listen(
+                _dsim18Repository.characteristicData.listen(
               (data) {
                 add(DeviceCharacteristicChanged(data));
               },
@@ -165,7 +198,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             add(const CCorNode18DataRequested());
             //當在設定頁面設定資料時, 用來更新Information page 對應的資料欄位
             _characteristicDataStreamSubscription =
-                _dsimRepository.characteristicData.listen(
+                _dsim18CCorNodeRepository.characteristicData.listen(
               (data) {
                 add(DeviceCharacteristicChanged(data));
               },
@@ -177,7 +210,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
             //當在設定頁面設定資料時, 用來更新Information page 對應的資料欄位
             _characteristicDataStreamSubscription =
-                _dsimRepository.characteristicData.listen(
+                _dsim12Repository.characteristicData.listen(
               (data) {
                 add(DeviceCharacteristicChanged(data));
               },
@@ -235,17 +268,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
 
     List<Function> requestCommands = [
-      _dsimRepository.requestCommand0,
-      _dsimRepository.requestCommand1,
-      _dsimRepository.requestCommand2,
-      _dsimRepository.requestCommand3,
-      _dsimRepository.requestCommand4,
-      _dsimRepository.requestCommand5,
-      _dsimRepository.requestCommand6,
-      _dsimRepository.requestCommand9To12,
+      _dsim12Repository.requestCommand0,
+      _dsim12Repository.requestCommand1,
+      _dsim12Repository.requestCommand2,
+      _dsim12Repository.requestCommand3,
+      _dsim12Repository.requestCommand4,
+      _dsim12Repository.requestCommand5,
+      _dsim12Repository.requestCommand6,
+      _dsim12Repository.requestCommand9To12,
 
       for (int i = 0; i < 16; i++) ...[
-        _dsimRepository.requestCommandForLogChunk
+        _dsim12Repository.requestCommandForLogChunk
       ]
       // _dsimRepository.requestCommand14To29,
       // _dsimRepository.requestCommand30To37,
@@ -356,12 +389,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           case 21:
           case 22:
             // request log command 14 ~ 29
-            Map<DataKey, dynamic> newCharacteristicData = {};
+            Map<DataKey, String> newCharacteristicData = {};
             newCharacteristicData.addEntries(state.characteristicData.entries);
             List<List<ValuePair>> dateValueCollectionOfLog =
-                _dsimRepository.getDateValueCollectionOfLogs();
+                _dsim12Repository.getDateValueCollectionOfLogs();
 
             emit(state.copyWith(
+              characteristicData: newCharacteristicData,
               dateValueCollectionOfLog: dateValueCollectionOfLog,
             ));
             break;
@@ -370,7 +404,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             newCharacteristicData.addEntries(state.characteristicData.entries);
 
             List<List<ValuePair>> dateValueCollectionOfLog =
-                _dsimRepository.getDateValueCollectionOfLogs();
+                _dsim12Repository.getDateValueCollectionOfLogs();
 
             List<ValuePair> allValues = dateValueCollectionOfLog
                 .expand(
@@ -441,7 +475,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       characteristicData: {},
     ));
 
-    await _dsimRepository.set1p8GTransmitDelayTime();
+    await _dsim18Repository.set1p8GTransmitDelayTime();
 
     Map<DataKey, String> newCharacteristicData = {};
     List<dynamic> resultOf1p8G0 = [];
@@ -450,7 +484,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List<dynamic> resultOf1p8G3 = [];
     List<dynamic> resultOf1p8GForLogChunk = [];
 
-    resultOf1p8G0 = await _dsimRepository.requestCommand1p8G0();
+    resultOf1p8G0 = await _dsim18Repository.requestCommand1p8G0();
 
     if (resultOf1p8G0[0]) {
       newCharacteristicData.addAll(resultOf1p8G0[1]);
@@ -466,14 +500,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     if (resultOf1p8G0[0]) {
-      resultOf1p8G1 = await _dsimRepository.requestCommand1p8G1();
+      resultOf1p8G1 = await _dsim18Repository.requestCommand1p8G1();
 
       if (resultOf1p8G1[0]) {
         String logInterval = resultOf1p8G1[1][DataKey.logInterval];
 
         // 如果讀取到 logInterval == '0', 則自動設定為 30 分鐘
         if (logInterval == '0') {
-          bool isSuccess = await _dsimRepository.set1p8GLogInterval('30');
+          bool isSuccess = await _dsim18Repository.set1p8GLogInterval('30');
 
           // 如果設定失敗, 則顯示 dialog
           if (!isSuccess) {
@@ -484,7 +518,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
           } else {
             List<dynamic> newResultOf1p8G1 =
-                await _dsimRepository.requestCommand1p8G1();
+                await _dsim18Repository.requestCommand1p8G1();
 
             if (newResultOf1p8G1[0]) {
               newCharacteristicData.addAll(newResultOf1p8G1[1]);
@@ -516,7 +550,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     if (resultOf1p8G1[0]) {
-      resultOf1p8G2 = await _dsimRepository.requestCommand1p8G2();
+      resultOf1p8G2 = await _dsim18Repository.requestCommand1p8G2();
 
       if (resultOf1p8G2[0]) {
         newCharacteristicData.addAll(resultOf1p8G2[1]);
@@ -535,7 +569,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (resultOf1p8G2[0]) {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       for (int i = 0; i < 3; i++) {
-        resultOf1p8G3 = await _dsimRepository.requestCommand1p8G3();
+        resultOf1p8G3 = await _dsim18Repository.requestCommand1p8G3();
 
         if (resultOf1p8G3[0]) {
           newCharacteristicData.addAll(resultOf1p8G3[2]);
@@ -563,7 +597,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       for (int i = 0; i < 3; i++) {
         resultOf1p8GForLogChunk =
-            await _dsimRepository.requestCommand1p8GForLogChunk(0);
+            await _dsim18Repository.requestCommand1p8GForLogChunk(0);
 
         if (resultOf1p8GForLogChunk[0]) {
           newCharacteristicData.addAll(resultOf1p8GForLogChunk[3]);
@@ -592,7 +626,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
       // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
-      await _dsimRepository.set1p8GNowDateTime(deviceNowTime);
+      await _dsim18Repository.set1p8GNowDateTime(deviceNowTime);
     }
 
     emit(state.copyWith(
@@ -609,7 +643,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       characteristicData: {},
     ));
 
-    await _dsimRepository.set1p8GCCorNodeTransmitDelayTime();
+    await _dsim18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
 
     Map<DataKey, String> newCharacteristicData = {};
     List<dynamic> resultOf1p8GCCorNode80 = [];
@@ -618,7 +652,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List<dynamic> resultOf1p8GCCorNodeLogChunk = [];
 
     resultOf1p8GCCorNode80 =
-        await _dsimRepository.requestCommand1p8GCCorNode80();
+        await _dsim18CCorNodeRepository.requestCommand1p8GCCorNode80();
 
     if (resultOf1p8GCCorNode80[0]) {
       newCharacteristicData.addAll(resultOf1p8GCCorNode80[1]);
@@ -635,7 +669,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     if (resultOf1p8GCCorNode80[0]) {
       resultOf1p8GCCorNode91 =
-          await _dsimRepository.requestCommand1p8GCCorNode91();
+          await _dsim18CCorNodeRepository.requestCommand1p8GCCorNode91();
 
       if (resultOf1p8GCCorNode91[0]) {
         String logInterval = resultOf1p8GCCorNode91[1][DataKey.logInterval];
@@ -643,7 +677,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         // 如果讀取到 logInterval == '0', 則自動設定為 30 分鐘
         if (logInterval == '0') {
           bool isSuccess =
-              await _dsimRepository.set1p8GCCorNodeLogInterval('30');
+              await _dsim18CCorNodeRepository.set1p8GCCorNodeLogInterval('30');
 
           // 如果設定失敗, 則顯示 dialog
           if (!isSuccess) {
@@ -654,7 +688,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ));
           } else {
             List<dynamic> newResultOf1p8GCCorNode91 =
-                await _dsimRepository.requestCommand1p8GCCorNode91();
+                await _dsim18CCorNodeRepository.requestCommand1p8GCCorNode91();
 
             if (newResultOf1p8GCCorNode91[0]) {
               newCharacteristicData.addAll(newResultOf1p8GCCorNode91[1]);
@@ -687,7 +721,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     if (resultOf1p8GCCorNode91[0]) {
       resultOf1p8GCCorNodeA1 =
-          await _dsimRepository.requestCommand1p8GCCorNodeA1();
+          await _dsim18CCorNodeRepository.requestCommand1p8GCCorNodeA1();
 
       if (resultOf1p8GCCorNodeA1[0]) {
         newCharacteristicData.addAll(resultOf1p8GCCorNodeA1[1]);
@@ -706,8 +740,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (resultOf1p8GCCorNode91[0]) {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       for (int i = 0; i < 3; i++) {
-        resultOf1p8GCCorNodeLogChunk =
-            await _dsimRepository.requestCommand1p8GCCorNodeLogChunk(0);
+        resultOf1p8GCCorNodeLogChunk = await _dsim18CCorNodeRepository
+            .requestCommand1p8GCCorNodeLogChunk(0);
 
         if (resultOf1p8GCCorNodeLogChunk[0]) {
           newCharacteristicData.addAll(resultOf1p8GCCorNodeLogChunk[3]);
@@ -736,7 +770,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
       // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
-      await _dsimRepository.set1p8GCCorNodeNowDateTime(deviceNowTime);
+      await _dsim18CCorNodeRepository.set1p8GCCorNodeNowDateTime(deviceNowTime);
     }
 
     emit(state.copyWith(
@@ -752,7 +786,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       eventLoadingStatus: FormStatus.requestInProgress,
     ));
 
-    List<dynamic> result = await _dsimRepository.requestCommand30To37();
+    List<dynamic> result = await _dsim12Repository.requestCommand30To37();
 
     if (result[0]) {
       // 取得 event 資料完成
@@ -781,9 +815,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       dateValueCollectionOfLog: const [],
     ));
 
-    _dsimRepository.clearCache();
+    _dsim12Repository.clearCache();
+    _dsim12Repository.closeCharacteristicDataStream();
+    _dsim18Repository.closeCharacteristicDataStream();
+    _dsim18CCorNodeRepository.closeCharacteristicDataStream();
     print('cache cleaned');
-    await _dsimRepository.closeConnectionStream();
+    await _aciDeviceRepository.closeConnectionStream();
     print('connectionStream closed');
 
     if (_connectionReportStreamSubscription != null) {
@@ -798,7 +835,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       print('_characteristicDataStreamSubscription closed');
     }
 
-    _scanStreamSubscription = _dsimRepository.scanReport.listen(
+    _scanStreamSubscription = _aciDeviceRepository.scanReport.listen(
       (scanReport) {
         add(DiscoveredDeviceChanged(scanReport));
       },

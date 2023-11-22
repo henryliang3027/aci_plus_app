@@ -10,7 +10,7 @@ import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:aci_plus_app/repositories/dsim18_ccor_node_parser.dart';
-import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/dsim18_ccor_node_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -118,7 +118,7 @@ class Chart18CCorNodeForm extends StatelessWidget {
                 canPop: false, // 避免 Android 使用者點擊系統返回鍵關閉 dialog
                 child: DownloadIndicator18CCorNodeForm(
                   dsimRepository:
-                      RepositoryProvider.of<DsimRepository>(context),
+                      RepositoryProvider.of<Dsim18CCorNodeRepository>(context),
                 ),
               );
             },

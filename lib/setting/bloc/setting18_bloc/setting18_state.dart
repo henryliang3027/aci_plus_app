@@ -1,16 +1,16 @@
-part of 'setting_bloc.dart';
+part of 'setting18_bloc.dart';
 
-class SettingState extends Equatable {
-  const SettingState({
+class Setting18State extends Equatable {
+  const Setting18State({
     this.isGraphType = false,
   });
 
   final bool isGraphType;
 
-  SettingState copyWith({
+  Setting18State copyWith({
     bool? isGraphType,
   }) {
-    return SettingState(
+    return Setting18State(
       isGraphType: isGraphType ?? this.isGraphType,
     );
   }

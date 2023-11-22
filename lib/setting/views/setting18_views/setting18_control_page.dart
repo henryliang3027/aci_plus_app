@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/dsim18_repository.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_control/setting18_control_bloc.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_control_view.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +11,8 @@ class Setting18ControlPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Setting18ControlBloc(
-          dsimRepository: RepositoryProvider.of<DsimRepository>(context)),
-      child: Setting18ControlView(),
+          dsimRepository: RepositoryProvider.of<Dsim18Repository>(context)),
+      child: const Setting18ControlView(),
     );
   }
 }

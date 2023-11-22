@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/dsim18_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_threshold/setting18_threshold_bloc.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_threshold_view.dart';
@@ -12,7 +12,7 @@ class Setting18ThresholdPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Setting18ThresholdBloc(
-        dsimRepository: RepositoryProvider.of<DsimRepository>(context),
+        dsimRepository: RepositoryProvider.of<Dsim18Repository>(context),
         unitRepository: RepositoryProvider.of<UnitRepository>(context),
       ),
       child: Setting18ThresholdView(),

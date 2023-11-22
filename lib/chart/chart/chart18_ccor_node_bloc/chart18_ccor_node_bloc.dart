@@ -1,6 +1,6 @@
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/dsim18_ccor_node_parser.dart';
-import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/dsim18_ccor_node_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
@@ -11,7 +11,7 @@ part 'chart18_ccor_node_state.dart';
 class Chart18CCorNodeBloc
     extends Bloc<Chart18CCorNodeEvent, Chart18CCorNodeState> {
   Chart18CCorNodeBloc({
-    required DsimRepository dsimRepository,
+    required Dsim18CCorNodeRepository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const Chart18CCorNodeState()) {
     on<LogRequested>(_onLogRequested);
@@ -23,7 +23,7 @@ class Chart18CCorNodeBloc
     on<AllDataExported>(_onAllDataExported);
   }
 
-  final DsimRepository _dsimRepository;
+  final Dsim18CCorNodeRepository _dsimRepository;
 
   Future<void> _onLogRequested(
     LogRequested event,

@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/dsim18_ccor_node_repository.dart';
+
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +12,7 @@ part 'setting18_ccor_node_configure_state.dart';
 class Setting18CCorNodeConfigureBloc extends Bloc<
     Setting18CCorNodeConfigureEvent, Setting18CCorNodeConfigureState> {
   Setting18CCorNodeConfigureBloc({
-    required DsimRepository dsimRepository,
+    required Dsim18CCorNodeRepository dsimRepository,
     required GPSRepository gpsRepository,
   })  : _dsimRepository = dsimRepository,
         _gpsRepository = gpsRepository,
@@ -29,7 +30,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
-  final DsimRepository _dsimRepository;
+  final Dsim18CCorNodeRepository _dsimRepository;
   final GPSRepository _gpsRepository;
 
   Future<void> _onInitialized(

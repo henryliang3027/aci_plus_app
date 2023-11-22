@@ -1,6 +1,6 @@
 import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/dsim18_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,7 +9,7 @@ part 'setting18_graph_module_state.dart';
 
 class Setting18GraphModuleBloc
     extends Bloc<Setting18GraphModuleEvent, Setting18GraphModuleState> {
-  Setting18GraphModuleBloc({required DsimRepository dsimRepository})
+  Setting18GraphModuleBloc({required Dsim18Repository dsimRepository})
       : _dsimRepository = dsimRepository,
         super(const Setting18GraphModuleState()) {
     on<Initialized>(_onInitialized);
@@ -48,7 +48,7 @@ class Setting18GraphModuleBloc
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
-  final DsimRepository _dsimRepository;
+  final Dsim18Repository _dsimRepository;
 
   void _onInitialized(
     Initialized event,

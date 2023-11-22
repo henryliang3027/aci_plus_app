@@ -35,9 +35,13 @@ class ConnectionReport {
 }
 
 class BLEClient {
-  BLEClient() : _ble = FlutterReactiveBle();
+  BLEClient._() : _ble = FlutterReactiveBle();
 
-  FlutterReactiveBle? _ble;
+  static final BLEClient _instance = BLEClient._();
+
+  static BLEClient get instance => _instance;
+
+  final FlutterReactiveBle _ble;
   final _scanTimeout = 3; // sec
   final _connectionTimeout = 30; //sec
   late StreamController<ScanReport> _scanReportStreamController;
@@ -88,7 +92,7 @@ class BLEClient {
   }
 
   Stream<ScanReport> get scanReport async* {
-    _ble ??= FlutterReactiveBle();
+    // _ble ??= FlutterReactiveBle();
     _scanReportStreamController = StreamController<ScanReport>();
 
     bool isPermissionGranted = await checkBluetoothEnabled();
@@ -107,7 +111,7 @@ class BLEClient {
       });
 
       _discoveredDeviceStreamSubscription =
-          _ble!.scanForDevices(withServices: []).listen((device) {
+          _ble.scanForDevices(withServices: []).listen((device) {
         if (device.name.startsWith(_aciPrefix)) {
           if (!_scanReportStreamController.isClosed) {
             scanTimer.cancel();
@@ -155,7 +159,7 @@ class BLEClient {
     });
 
     _connectionReportStreamController = StreamController<ConnectionReport>();
-    _connectionStreamSubscription = _ble!
+    _connectionStreamSubscription = _ble
         .connectToDevice(
       id: discoveredDevice.id,
     )
@@ -176,7 +180,7 @@ class BLEClient {
             deviceId: discoveredDevice.id,
           );
 
-          _characteristicStreamSubscription = _ble!
+          _characteristicStreamSubscription = _ble
               .subscribeToCharacteristic(_qualifiedCharacteristic)
               .listen((data) async {
             List<int> rawData = data;
@@ -413,7 +417,7 @@ class BLEClient {
     await _connectionStreamSubscription?.cancel();
     await Future.delayed(const Duration(milliseconds: 2000));
     _connectionStreamSubscription = null;
-    _ble = null;
+    // _ble = null;
     _rawLog.clear();
     _rawEvent.clear();
     _rawRFInOut.clear();
@@ -459,7 +463,7 @@ class BLEClient {
     int mtu = 247,
   }) async {
     _currentCommandIndex = commandIndex;
-    final negotiatedMtu = await _ble!.requestMtu(deviceId: deviceId, mtu: mtu);
+    final negotiatedMtu = await _ble.requestMtu(deviceId: deviceId, mtu: mtu);
 
     // 設定 mtu = 247
     List<dynamic> result = await _requestBasicInformationRawData(value);
@@ -506,12 +510,12 @@ class BLEClient {
 
     try {
       if (Platform.isAndroid) {
-        await _ble!.writeCharacteristicWithResponse(
+        await _ble.writeCharacteristicWithResponse(
           _qualifiedCharacteristic,
           value: value,
         );
       } else if (Platform.isIOS) {
-        await _ble!.writeCharacteristicWithoutResponse(
+        await _ble.writeCharacteristicWithoutResponse(
           _qualifiedCharacteristic,
           value: value,
         );

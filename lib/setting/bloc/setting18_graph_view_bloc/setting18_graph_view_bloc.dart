@@ -1,5 +1,5 @@
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/dsim18_repository.dart';
 import 'package:aci_plus_app/setting/model/svg_image.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +12,7 @@ part 'setting18_graph_view_state.dart';
 class Setting18GraphViewBloc
     extends Bloc<Setting18GraphViewEvent, Setting18GraphViewState> {
   Setting18GraphViewBloc({
-    required DsimRepository dsimRepository,
+    required Dsim18Repository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const Setting18GraphViewState()) {
     on<LoadGraphRequested>(_onLoadGraphRequested);
@@ -21,7 +21,7 @@ class Setting18GraphViewBloc
     add(const LoadGraphRequested());
   }
 
-  final DsimRepository _dsimRepository;
+  final Dsim18Repository _dsimRepository;
 
   Future<void> _onLoadGraphRequested(
     LoadGraphRequested event,

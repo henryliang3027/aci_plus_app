@@ -1,6 +1,6 @@
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/dsim18_parser.dart';
-import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/dsim18_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
@@ -10,7 +10,7 @@ part 'data_log_chart_state.dart';
 
 class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
   DataLogChartBloc({
-    required DsimRepository dsimRepository,
+    required Dsim18Repository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const DataLogChartState()) {
     // on<DataExported>(_onDataExported);
@@ -22,7 +22,7 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
     on<MoreLogRequested>(_onMoreLogRequested);
   }
 
-  final DsimRepository _dsimRepository;
+  final Dsim18Repository _dsimRepository;
 
   // void _onDataExported(
   //   DataExported event,

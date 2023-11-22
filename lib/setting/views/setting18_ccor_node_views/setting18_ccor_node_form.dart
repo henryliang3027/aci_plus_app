@@ -2,7 +2,7 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
-import 'package:aci_plus_app/setting/bloc/setting_bloc/setting_bloc.dart';
+import 'package:aci_plus_app/setting/bloc/setting18_bloc/setting18_bloc.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_tab_bar.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_view.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_tab_bar.dart';
@@ -169,7 +169,7 @@ class _Layout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingBloc, SettingState>(
+    return BlocBuilder<Setting18Bloc, Setting18State>(
       buildWhen: (previous, current) =>
           previous.isGraphType != current.isGraphType,
       builder: (context, state) {

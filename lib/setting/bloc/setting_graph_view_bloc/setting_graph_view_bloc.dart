@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/repositories/dsim12_repository.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:equatable/equatable.dart';
 
@@ -10,9 +11,9 @@ part 'setting_graph_view_state.dart';
 class SettingGraphViewBloc
     extends Bloc<SettingGraphViewEvent, SettingGraphViewState> {
   SettingGraphViewBloc({
-    required DsimRepository dsimRepository,
+    required Dsim12Repository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const SettingGraphViewState()) {}
 
-  final DsimRepository _dsimRepository;
+  final Dsim12Repository _dsimRepository;
 }

@@ -1,6 +1,6 @@
 import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/dsim18_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +11,7 @@ part 'setting18_threshold_state.dart';
 class Setting18ThresholdBloc
     extends Bloc<Setting18ThresholdEvent, Setting18ThresholdState> {
   Setting18ThresholdBloc({
-    required DsimRepository dsimRepository,
+    required Dsim18Repository dsimRepository,
     required UnitRepository unitRepository,
   })  : _dsimRepository = dsimRepository,
         _unitRepository = unitRepository,
@@ -41,7 +41,7 @@ class Setting18ThresholdBloc
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
-  final DsimRepository _dsimRepository;
+  final Dsim18Repository _dsimRepository;
   final UnitRepository _unitRepository;
 
   Future<void> _onInitialized(

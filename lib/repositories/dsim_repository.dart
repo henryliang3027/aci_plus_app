@@ -17,9 +17,9 @@ import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
-class DsimRepository {
-  DsimRepository()
-      : _bleClient = BLEClient(),
+class DsimRepositoryOld {
+  DsimRepositoryOld()
+      : _bleClient = BLEClient.instance,
         _dsimParser = DsimParser(),
         _dsim18Parser = Dsim18Parser(),
         _dsim18ChartCache = Dsim18ChartCache(),

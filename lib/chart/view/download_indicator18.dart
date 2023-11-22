@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/repositories/dsim18_parser.dart';
+import 'package:aci_plus_app/repositories/dsim18_repository.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -9,7 +10,7 @@ class DownloadIndicator18Form extends StatefulWidget {
     required this.dsimRepository,
   });
 
-  final DsimRepository dsimRepository;
+  final Dsim18Repository dsimRepository;
 
   @override
   State<DownloadIndicator18Form> createState() =>
@@ -36,12 +37,10 @@ class _DownloadIndicator18FormState extends State<DownloadIndicator18Form>
   }
 
   Future<List> getLogChunkWithRetry(int chunkIndex) async {
-    DsimRepository dsimRepository = widget.dsimRepository;
-
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int j = 0; j < 3; j++) {
       List<dynamic> resultOfLog =
-          await dsimRepository.requestCommand1p8GForLogChunk(chunkIndex);
+          await widget.dsimRepository.requestCommand1p8GForLogChunk(chunkIndex);
 
       if (resultOfLog[0]) {
         return resultOfLog;

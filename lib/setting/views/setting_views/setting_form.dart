@@ -3,7 +3,6 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
-import 'package:aci_plus_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:aci_plus_app/setting/views/setting_views/setting_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -178,21 +177,13 @@ class _ViewLayout extends StatelessWidget {
             ],
           );
         } else if (state.loadingStatus.isRequestSuccess) {
-          return const _Layout(
-            isLoadData: true,
-          );
+          return SettingListView();
         } else if (state.loadingStatus.isRequestFailure) {
-          return const _Layout(
-            isLoadData: false,
-          );
+          return SettingListView();
         } else if (state.scanStatus.isRequestFailure) {
-          return const _Layout(
-            isLoadData: false,
-          );
+          return SettingListView();
         } else if (state.connectionStatus.isRequestFailure) {
-          return const _Layout(
-            isLoadData: false,
-          );
+          return SettingListView();
         } else {
           return const Center(
             child: SizedBox(
@@ -201,32 +192,6 @@ class _ViewLayout extends StatelessWidget {
               child: CircularProgressIndicator(),
             ),
           );
-        }
-      },
-    );
-  }
-}
-
-class _Layout extends StatelessWidget {
-  const _Layout({
-    super.key,
-    required this.isLoadData,
-  });
-
-  final bool isLoadData;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SettingBloc, SettingState>(
-      buildWhen: (previous, current) =>
-          previous.isGraphType != current.isGraphType,
-      builder: (context, state) {
-        if (state.isGraphType) {
-          // return SettingGraphView();
-          return Container();
-        } else {
-          // context.read<SettingListViewBloc>().add(Initialized(isLoadData));
-          return SettingListView();
         }
       },
     );

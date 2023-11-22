@@ -5,7 +5,6 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/shared_preference_key.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:aci_plus_app/setting/bloc/setting_bloc/setting_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting_list_view_bloc/setting_list_view_bloc.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +44,10 @@ class SettingListView extends StatelessWidget {
     String hasDualPilot =
         homeState.characteristicData[DataKey.hasDualPilot] ?? '';
 
+    locationTextEditingController.text = settingListViewState.location.value;
+    userPilotTextEditingController.text = settingListViewState.pilotCode.value;
+    userPilot2TextEditingController.text =
+        settingListViewState.pilot2Code.value;
     if (!settingListViewState.editMode) {
       context.read<SettingListViewBloc>().add(Initialized(
             location: location,
@@ -222,46 +225,34 @@ class SettingListView extends StatelessWidget {
           showPilotSearchFailedDialog();
         }
       },
-      child: BlocBuilder<SettingBloc, SettingState>(
-        builder: (context, state) {
-          SettingListViewState settingListViewState =
-              context.read<SettingListViewBloc>().state;
-          locationTextEditingController.text =
-              settingListViewState.location.value;
-          userPilotTextEditingController.text =
-              settingListViewState.pilotCode.value;
-          userPilot2TextEditingController.text =
-              settingListViewState.pilot2Code.value;
-          return Scaffold(
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(
-                    CustomStyle.sizeXL,
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(
+                CustomStyle.sizeXL,
+              ),
+              child: Column(
+                children: [
+                  _Location(
+                    textEditingController: locationTextEditingController,
                   ),
-                  child: Column(
-                    children: [
-                      _Location(
-                        textEditingController: locationTextEditingController,
-                      ),
-                      // const _TGCCabelLength(),
-                      const _LogIntervalDropDownMenu(),
-                      const _WorkingMode(),
-                      _UserPilot(
-                        textEditingController: userPilotTextEditingController,
-                      ),
-                      _UserPilot2(
-                        textEditingController: userPilot2TextEditingController,
-                      ),
-                      const _AGCPrepAttenator(),
-                    ],
+                  // const _TGCCabelLength(),
+                  const _LogIntervalDropDownMenu(),
+                  const _WorkingMode(),
+                  _UserPilot(
+                    textEditingController: userPilotTextEditingController,
                   ),
-                ),
+                  _UserPilot2(
+                    textEditingController: userPilot2TextEditingController,
+                  ),
+                  const _AGCPrepAttenator(),
+                ],
               ),
             ),
-            floatingActionButton: const _SettingFloatingActionButton(),
-          );
-        },
+          ),
+        ),
+        floatingActionButton: const _SettingFloatingActionButton(),
       ),
     );
   }
