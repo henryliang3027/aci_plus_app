@@ -64,12 +64,11 @@ class BLEClient {
 
   Timer? _timeoutTimer;
 
-  List<int> _rawLog = [];
-  List<int> _rawEvent = [];
+  List<int> _combinedRawData = [];
   int _totalBytesPerCommand = 261;
 
   // 1p8G variables
-  List<int> _rawRFInOut = [];
+  // List<int> _rawRFInOut = [];
 
   Future<bool> checkBluetoothEnabled() async {
     // 要求定位與藍芽存取權
@@ -201,36 +200,17 @@ class BLEClient {
                 }
               }
             } else if (_currentCommandIndex >= 14 &&
-                _currentCommandIndex <= 29) {
-              _rawLog.addAll(rawData);
-              // 一個 log command 總共會接收 261 bytes, 每一次傳回 16 bytes
-              if (_rawLog.length == _totalBytesPerCommand) {
-                bool isValidCRC = checkCRC(_rawLog);
-                if (isValidCRC) {
-                  List<int> rawLogs = List.from(_rawLog);
-                  _rawLog.clear();
-                  cancelTimeout(name: 'cmd $_currentCommandIndex');
-                  if (!_completer.isCompleted) {
-                    _completer.complete(rawLogs);
-                  }
-                } else {
-                  if (!_completer.isCompleted) {
-                    _completer.completeError('Invalid data');
-                  }
-                }
-              }
-            } else if (_currentCommandIndex >= 30 &&
                 _currentCommandIndex <= 37) {
-              _rawEvent.addAll(rawData);
-              // 一個 event command 總共會接收 261 bytes, 每一次傳回 16 bytes
-              if (_rawEvent.length == _totalBytesPerCommand) {
-                bool isValidCRC = checkCRC(_rawEvent);
+              _combinedRawData.addAll(rawData);
+              // 一個 log command 總共會接收 261 bytes, 每一次傳回 16 bytes
+              if (_combinedRawData.length == _totalBytesPerCommand) {
+                bool isValidCRC = checkCRC(_combinedRawData);
                 if (isValidCRC) {
-                  List<int> rawEvents = List.from(_rawEvent);
-                  _rawEvent.clear();
+                  List<int> combinedRawData = List.from(_combinedRawData);
+                  _combinedRawData.clear();
                   cancelTimeout(name: 'cmd $_currentCommandIndex');
                   if (!_completer.isCompleted) {
-                    _completer.complete(rawEvents);
+                    _completer.complete(combinedRawData);
                   }
                 } else {
                   if (!_completer.isCompleted) {
@@ -248,31 +228,29 @@ class BLEClient {
                 _currentCommandIndex <= 182) {
               cancelTimeout(name: 'cmd $_currentCommandIndex');
 
-              if (rawData.length == 181) {
-                bool isValidCRC = checkCRC(rawData);
-                if (isValidCRC) {
-                  if (!_completer.isCompleted) {
-                    _completer.complete(rawData);
-                  }
-                } else {
-                  if (!_completer.isCompleted) {
-                    _completer.completeError('Invalid data');
-                  }
+              bool isValidCRC = checkCRC(rawData);
+              if (isValidCRC) {
+                if (!_completer.isCompleted) {
+                  _completer.complete(rawData);
+                }
+              } else {
+                if (!_completer.isCompleted) {
+                  _completer.completeError('Invalid data');
                 }
               }
             } else if (_currentCommandIndex == 183) {
               List<int> header = [0xB0, 0x03, 0x00];
               if (listEquals(rawData.sublist(0, 3), header)) {
-                _rawRFInOut.clear();
+                _combinedRawData.clear();
               }
 
-              _rawRFInOut.addAll(rawData);
-              print(_rawRFInOut.length);
+              _combinedRawData.addAll(rawData);
+              print(_combinedRawData.length);
 
-              if (_rawRFInOut.length == 1029) {
-                bool isValidCRC = checkCRC(_rawRFInOut);
+              if (_combinedRawData.length == 1029) {
+                bool isValidCRC = checkCRC(_combinedRawData);
                 if (isValidCRC) {
-                  List<int> rawRFInOuts = List.from(_rawRFInOut);
+                  List<int> rawRFInOuts = List.from(_combinedRawData);
                   cancelTimeout(name: 'cmd $_currentCommandIndex');
                   if (!_completer.isCompleted) {
                     _completer.complete(rawRFInOuts);
@@ -284,45 +262,22 @@ class BLEClient {
                 }
               }
             } else if (_currentCommandIndex >= 184 &&
-                _currentCommandIndex <= 193) {
+                _currentCommandIndex <= 194) {
               List<int> header = [0xB0, 0x03, 0x00];
               if (listEquals(rawData.sublist(0, 3), header)) {
-                _rawLog.clear();
+                _combinedRawData.clear();
               }
 
-              _rawLog.addAll(rawData);
-              // print(_rawLog.length);
+              _combinedRawData.addAll(rawData);
+              // print(_combinedRawData.length);
 
-              if (_rawLog.length == 16389) {
-                bool isValidCRC = checkCRC(_rawLog);
+              if (_combinedRawData.length == 16389) {
+                bool isValidCRC = checkCRC(_combinedRawData);
                 if (isValidCRC) {
-                  List<int> rawLogs = List.from(_rawLog);
+                  List<int> rawLogs = List.from(_combinedRawData);
                   cancelTimeout(name: 'cmd $_currentCommandIndex');
                   if (!_completer.isCompleted) {
                     _completer.complete(rawLogs);
-                  }
-                } else {
-                  if (!_completer.isCompleted) {
-                    _completer.completeError('Invalid data');
-                  }
-                }
-              }
-            } else if (_currentCommandIndex == 194) {
-              List<int> header = [0xB0, 0x03, 0x00];
-              if (listEquals(rawData.sublist(0, 3), header)) {
-                _rawEvent.clear();
-              }
-
-              _rawEvent.addAll(rawData);
-              print(_rawEvent.length);
-
-              if (_rawEvent.length == 16389) {
-                bool isValidCRC = checkCRC(_rawEvent);
-                if (isValidCRC) {
-                  List<int> rawEvents = List.from(_rawEvent);
-                  cancelTimeout(name: 'cmd $_currentCommandIndex');
-                  if (!_completer.isCompleted) {
-                    _completer.complete(rawEvents);
                   }
                 } else {
                   if (!_completer.isCompleted) {
@@ -417,10 +372,7 @@ class BLEClient {
     await _connectionStreamSubscription?.cancel();
     await Future.delayed(const Duration(milliseconds: 2000));
     _connectionStreamSubscription = null;
-    // _ble = null;
-    _rawLog.clear();
-    _rawEvent.clear();
-    _rawRFInOut.clear();
+    _combinedRawData.clear();
   }
 
   bool checkCRC(
