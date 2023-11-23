@@ -140,41 +140,6 @@ class _ViewLayout extends StatelessWidget {
               ),
             ],
           );
-        } else if (state.loadingStatus.isRequestSuccess) {
-          return const _Layout();
-        } else if (state.loadingStatus.isRequestFailure) {
-          return const _Layout();
-        } else if (state.scanStatus.isRequestFailure) {
-          return const _Layout();
-        } else if (state.connectionStatus.isRequestFailure) {
-          return const _Layout();
-        } else {
-          return const Center(
-            child: SizedBox(
-              width: CustomStyle.diameter,
-              height: CustomStyle.diameter,
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-      },
-    );
-  }
-}
-
-class _Layout extends StatelessWidget {
-  const _Layout({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18Bloc, Setting18State>(
-      buildWhen: (previous, current) =>
-          previous.isGraphType != current.isGraphType,
-      builder: (context, state) {
-        if (state.isGraphType) {
-          return const Setting18GraphView();
         } else {
           return const Setting18CCorNodeTabBar();
         }

@@ -6,8 +6,8 @@ enum TemperatureUnit {
 }
 
 class UnitRepository {
-  UnitRepository({required TemperatureUnit temperatureUnit})
-      : _temperatureUnit = temperatureUnit,
+  UnitRepository()
+      : _temperatureUnit = TemperatureUnit.fahrenheit, // 預設顯示華氏溫度
         _unitConverter = UnitConverter();
 
   final UnitConverter _unitConverter;

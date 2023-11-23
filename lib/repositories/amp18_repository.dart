@@ -5,20 +5,20 @@ import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/command18.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/repositories/ble_client.dart';
-import 'package:aci_plus_app/repositories/dsim18_chart_cache.dart';
-import 'package:aci_plus_app/repositories/dsim18_parser.dart';
+import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
+import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 
-class Dsim18Repository {
-  Dsim18Repository()
+class Amp18Repository {
+  Amp18Repository()
       : _bleClient = BLEClient.instance,
-        _dsim18Parser = Dsim18Parser(),
-        _dsim18ChartCache = Dsim18ChartCache();
+        _amp18Parser = Amp18Parser(),
+        _amp18ChartCache = Amp18ChartCache();
 
   final BLEClient _bleClient;
-  final Dsim18Parser _dsim18Parser;
-  final Dsim18ChartCache _dsim18ChartCache;
+  final Amp18Parser _amp18Parser;
+  final Amp18ChartCache _amp18ChartCache;
 
   StreamController<Map<DataKey, String>> _characteristicDataStreamController =
       StreamController<Map<DataKey, String>>();
@@ -48,10 +48,10 @@ class Dsim18Repository {
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _dsim18Parser.command18Collection[commandIndex - 180],
+        value: _amp18Parser.command18Collection[commandIndex - 180],
       );
 
-      A1P8G0 a1p8g0 = _dsim18Parser.decodeA1P8G0(rawData);
+      A1P8G0 a1p8g0 = _amp18Parser.decodeA1P8G0(rawData);
 
       return [
         true,
@@ -81,10 +81,10 @@ class Dsim18Repository {
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _dsim18Parser.command18Collection[commandIndex - 180],
+        value: _amp18Parser.command18Collection[commandIndex - 180],
       );
 
-      A1P8G1 a1p8g1 = _dsim18Parser.decodeA1P8G1(rawData);
+      A1P8G1 a1p8g1 = _amp18Parser.decodeA1P8G1(rawData);
 
       return [
         true,
@@ -157,10 +157,10 @@ class Dsim18Repository {
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _dsim18Parser.command18Collection[commandIndex - 180],
+        value: _amp18Parser.command18Collection[commandIndex - 180],
       );
 
-      A1P8G2 a1p8g2 = _dsim18Parser.decodeA1P8G2(rawData);
+      A1P8G2 a1p8g2 = _amp18Parser.decodeA1P8G2(rawData);
 
       return [
         true,
@@ -213,12 +213,12 @@ class Dsim18Repository {
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _dsim18Parser.command18Collection[commandIndex - 180],
+        value: _amp18Parser.command18Collection[commandIndex - 180],
       );
 
-      List<RFInOut> rfInOuts = _dsim18Parser.parse1P8GRFInOut(rawData);
+      List<RFInOut> rfInOuts = _amp18Parser.parse1P8GRFInOut(rawData);
       A1P8GRFOutputPowerStatistic a1p8grfOutputPowerStatistic =
-          _dsim18Parser.getA1p8GRFOutputPowerStatistic(rfInOuts);
+          _amp18Parser.getA1p8GRFOutputPowerStatistic(rfInOuts);
 
       return [
         true,
@@ -248,12 +248,12 @@ class Dsim18Repository {
       try {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
-          value: _dsim18Parser.command18Collection[commandIndex - 180],
+          value: _amp18Parser.command18Collection[commandIndex - 180],
         );
 
-        List<Log1p8G> log1p8Gs = _dsim18Parser.parse1P8GLog(rawData);
+        List<Log1p8G> log1p8Gs = _amp18Parser.parse1P8GLog(rawData);
         A1P8GLogStatistic a1p8gLogStatistic =
-            _dsim18Parser.getA1p8GLogStatistics(log1p8Gs);
+            _amp18Parser.getA1p8GLogStatistics(log1p8Gs);
         bool hasNextChunk = log1p8Gs.isNotEmpty ? true : false;
 
         return [
@@ -289,10 +289,10 @@ class Dsim18Repository {
       try {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
-          value: _dsim18Parser.command18Collection[commandIndex - 180],
+          value: _amp18Parser.command18Collection[commandIndex - 180],
         );
 
-        List<Log1p8G> log1p8Gs = _dsim18Parser.parse1P8GLog(rawData);
+        List<Log1p8G> log1p8Gs = _amp18Parser.parse1P8GLog(rawData);
         bool hasNextChunk = log1p8Gs.isNotEmpty ? true : false;
 
         return [
@@ -317,10 +317,10 @@ class Dsim18Repository {
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _dsim18Parser.command18Collection[commandIndex - 180],
+        value: _amp18Parser.command18Collection[commandIndex - 180],
       );
 
-      List<Event1p8G> event1p8Gs = _dsim18Parser.parse1p8GEvent(rawData);
+      List<Event1p8G> event1p8Gs = _amp18Parser.parse1p8GEvent(rawData);
       return [
         true,
         event1p8Gs,
@@ -340,10 +340,10 @@ class Dsim18Repository {
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _dsim18Parser.command18Collection[commandIndex - 180],
+        value: _amp18Parser.command18Collection[commandIndex - 180],
       );
 
-      A1P8GAlarm a1p8gAlarm = _dsim18Parser.decodeAlarmSeverity(rawData);
+      A1P8GAlarm a1p8gAlarm = _amp18Parser.decodeAlarmSeverity(rawData);
 
       return [
         true,
@@ -363,51 +363,51 @@ class Dsim18Repository {
 
   List<List<ValuePair>> get1p8GDateValueCollectionOfLogs(
       List<Log1p8G> log1p8Gs) {
-    return _dsim18Parser.get1p8GDateValueCollectionOfLogs(log1p8Gs);
+    return _amp18Parser.get1p8GDateValueCollectionOfLogs(log1p8Gs);
   }
 
   List<List<ValuePair>> get1p8GValueCollectionOfRFInOut(
       List<RFInOut> rfInOuts) {
-    return _dsim18Parser.get1p8GValueCollectionOfRFInOut(rfInOuts);
+    return _amp18Parser.get1p8GValueCollectionOfRFInOut(rfInOuts);
   }
 
   void clearEvent1p8Gs() {
-    _dsim18ChartCache.clearEvent1p8Gs();
+    _amp18ChartCache.clearEvent1p8Gs();
   }
 
   void clearLoadMoreLog1p8Gs() {
-    _dsim18ChartCache.clearLoadMoreLog1p8Gs();
+    _amp18ChartCache.clearLoadMoreLog1p8Gs();
   }
 
   void clearAllLog1p8Gs() {
-    _dsim18ChartCache.clearAllLog1p8Gs();
+    _amp18ChartCache.clearAllLog1p8Gs();
   }
 
   void clearRFInOuts() {
-    _dsim18ChartCache.clearRFInOuts();
+    _amp18ChartCache.clearRFInOuts();
   }
 
   void writeEvent1p8Gs(List<Event1p8G> event1p8Gs) {
-    _dsim18ChartCache.writeEvent1p8Gs(event1p8Gs);
+    _amp18ChartCache.writeEvent1p8Gs(event1p8Gs);
   }
 
   void writeLoadMoreLog1p8Gs(List<Log1p8G> log1p8Gs) {
-    _dsim18ChartCache.writeLoadMoreLog1p8Gs(log1p8Gs);
+    _amp18ChartCache.writeLoadMoreLog1p8Gs(log1p8Gs);
   }
 
   void writeAllLog1p8Gs(List<Log1p8G> log1p8Gs) {
-    _dsim18ChartCache.writeAllLog1p8Gs(log1p8Gs);
+    _amp18ChartCache.writeAllLog1p8Gs(log1p8Gs);
   }
 
   void writeRFInOuts(List<RFInOut> rfInOuts) {
-    _dsim18ChartCache.writeRFInOuts(rfInOuts);
+    _amp18ChartCache.writeRFInOuts(rfInOuts);
   }
 
   Future<dynamic> export1p8GRecords() async {
-    List<Log1p8G> log1p8Gs = _dsim18ChartCache.readLoadMoreLog1p8Gs();
-    List<Event1p8G> event1p8Gs = _dsim18ChartCache.readEvent1p8Gs();
+    List<Log1p8G> log1p8Gs = _amp18ChartCache.readLoadMoreLog1p8Gs();
+    List<Event1p8G> event1p8Gs = _amp18ChartCache.readEvent1p8Gs();
 
-    List<dynamic> result = await _dsim18Parser.export1p8GRecords(
+    List<dynamic> result = await _amp18Parser.export1p8GRecords(
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
     );
@@ -415,10 +415,10 @@ class Dsim18Repository {
   }
 
   Future<dynamic> exportAll1p8GRecords() async {
-    List<Log1p8G> log1p8Gs = _dsim18ChartCache.readAllLog1p8Gs();
-    List<Event1p8G> event1p8Gs = _dsim18ChartCache.readEvent1p8Gs();
+    List<Log1p8G> log1p8Gs = _amp18ChartCache.readAllLog1p8Gs();
+    List<Event1p8G> event1p8Gs = _amp18ChartCache.readEvent1p8Gs();
 
-    List<dynamic> result = await _dsim18Parser.export1p8GRecords(
+    List<dynamic> result = await _amp18Parser.export1p8GRecords(
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
     );
@@ -426,10 +426,10 @@ class Dsim18Repository {
   }
 
   Future<dynamic> export1p8GRFInOuts() async {
-    List<RFInOut> rfInOuts = _dsim18ChartCache.readRFInOuts();
+    List<RFInOut> rfInOuts = _amp18ChartCache.readRFInOuts();
 
     List<dynamic> result =
-        await _dsim18Parser.export1p8GRFInOuts(rfInOuts: rfInOuts);
+        await _amp18Parser.export1p8GRFInOuts(rfInOuts: rfInOuts);
     return result;
   }
 
@@ -1917,13 +1917,6 @@ class Dsim18Repository {
       return true;
     }
   }
-
-  // Future<bool> checkLocationEnabled() async {
-  //   // 偵測定位是否有打開, 如果沒有打開會跳出提示訊息
-  //   bool resultOfEnableGPS = await Location().requestService();
-
-  //   return resultOfEnableGPS;
-  // }
 
   Future<void> updateCharacteristics() async {
     List<dynamic> resultOf1p8G0 = await requestCommand1p8G0();

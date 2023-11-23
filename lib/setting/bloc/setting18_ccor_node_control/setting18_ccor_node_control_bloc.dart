@@ -1,5 +1,5 @@
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/repositories/dsim18_ccor_node_repository.dart';
+import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,7 +9,7 @@ part 'setting18_ccor_node_control_state.dart';
 class Setting18CCorNodeControlBloc
     extends Bloc<Setting18CCorNodeControlEvent, Setting18CCorNodeControlState> {
   Setting18CCorNodeControlBloc({
-    required Dsim18CCorNodeRepository dsimRepository,
+    required Amp18CCorNodeRepository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const Setting18CCorNodeControlState()) {
     on<Initialized>(_onInitialized);
@@ -34,7 +34,7 @@ class Setting18CCorNodeControlBloc
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
-  final Dsim18CCorNodeRepository _dsimRepository;
+  final Amp18CCorNodeRepository _dsimRepository;
 
   Future<void> _onInitialized(
     Initialized event,

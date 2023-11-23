@@ -2,7 +2,7 @@ import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/pilot_channel.dart';
 import 'package:aci_plus_app/core/shared_preference_key.dart';
-import 'package:aci_plus_app/repositories/dsim12_repository.dart';
+import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:aci_plus_app/setting/model/location.dart';
 import 'package:aci_plus_app/setting/model/pilot_code.dart';
 import 'package:equatable/equatable.dart';
@@ -15,7 +15,7 @@ part 'setting_list_view_state.dart';
 class SettingListViewBloc
     extends Bloc<SettingListViewEvent, SettingListViewState> {
   SettingListViewBloc({
-    required Dsim12Repository dsimRepository,
+    required DsimRepository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const SettingListViewState()) {
     on<Initialized>(_onInitialized);
@@ -37,7 +37,7 @@ class SettingListViewBloc
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
-  final Dsim12Repository _dsimRepository;
+  final DsimRepository _dsimRepository;
 
   String _getSelectedWorkingMode() {
     return state.selectedWorkingMode.keys.firstWhere(

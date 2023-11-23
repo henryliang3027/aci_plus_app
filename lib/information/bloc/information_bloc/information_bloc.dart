@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:aci_plus_app/repositories/dsim12_repository.dart';
+import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,7 +9,7 @@ part 'information_state.dart';
 
 class InformationBloc extends Bloc<InformationEvent, InformationState> {
   InformationBloc({
-    required Dsim12Repository dsimRepository,
+    required DsimRepository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const InformationState()) {
     on<AlarmUpdated>(_onAlarmUpdated);
@@ -18,7 +18,7 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
   }
 
   Timer? _timer;
-  final Dsim12Repository _dsimRepository;
+  final DsimRepository _dsimRepository;
 
   void _onAlarmPeriodicUpdateRequested(
     AlarmPeriodicUpdateRequested event,

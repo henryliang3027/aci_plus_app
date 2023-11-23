@@ -1,6 +1,6 @@
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/repositories/dsim18_parser.dart';
-import 'package:aci_plus_app/repositories/dsim18_repository.dart';
+import 'package:aci_plus_app/repositories/amp18_parser.dart';
+import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,7 +9,7 @@ part 'chart18_state.dart';
 
 class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
   Chart18Bloc({
-    required Dsim18Repository dsimRepository,
+    required Amp18Repository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const Chart18State()) {
     on<TabChangedEnabled>(_onTabChangedEnabled);
@@ -22,7 +22,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     on<RFLevelExported>(_onRFLevelExported);
   }
 
-  final Dsim18Repository _dsimRepository;
+  final Amp18Repository _dsimRepository;
 
   void _onTabChangedEnabled(
     TabChangedEnabled event,

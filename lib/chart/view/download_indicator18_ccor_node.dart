@@ -1,5 +1,5 @@
-import 'package:aci_plus_app/repositories/dsim18_ccor_node_parser.dart';
-import 'package:aci_plus_app/repositories/dsim18_ccor_node_repository.dart';
+import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
+import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -9,7 +9,7 @@ class DownloadIndicator18CCorNodeForm extends StatefulWidget {
     required this.dsimRepository,
   });
 
-  final Dsim18CCorNodeRepository dsimRepository;
+  final Amp18CCorNodeRepository dsimRepository;
 
   @override
   State<DownloadIndicator18CCorNodeForm> createState() =>

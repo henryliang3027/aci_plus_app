@@ -1,5 +1,5 @@
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/repositories/dsim12_repository.dart';
+import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,14 +8,14 @@ part 'chart_state.dart';
 
 class ChartBloc extends Bloc<ChartEvent, ChartState> {
   ChartBloc({
-    required Dsim12Repository dsimRepository,
+    required DsimRepository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const ChartState()) {
     on<DataExported>(_onDataExported);
     on<DataShared>(_onDataShared);
   }
 
-  final Dsim12Repository _dsimRepository;
+  final DsimRepository _dsimRepository;
 
   void _onDataExported(
     DataExported event,

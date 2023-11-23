@@ -1,6 +1,5 @@
-import 'package:aci_plus_app/repositories/dsim18_parser.dart';
-import 'package:aci_plus_app/repositories/dsim18_repository.dart';
-import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/amp18_parser.dart';
+import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -10,7 +9,7 @@ class DownloadIndicator18Form extends StatefulWidget {
     required this.dsimRepository,
   });
 
-  final Dsim18Repository dsimRepository;
+  final Amp18Repository dsimRepository;
 
   @override
   State<DownloadIndicator18Form> createState() =>

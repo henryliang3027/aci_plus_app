@@ -1,7 +1,7 @@
-import 'package:aci_plus_app/repositories/dsim18_parser.dart';
+import 'package:aci_plus_app/repositories/amp18_parser.dart';
 
-class Dsim18ChartCache {
-  Dsim18ChartCache();
+class Amp18ChartCache {
+  Amp18ChartCache();
 
   final List<Event1p8G> _event1p8Gs = [];
   final List<Log1p8G> _loadMoreLog1p8Gs = [];

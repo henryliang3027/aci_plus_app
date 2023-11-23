@@ -10,8 +10,8 @@ import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
-class Dsim18Parser {
-  Dsim18Parser() {
+class Amp18Parser {
+  Amp18Parser() {
     calculate18CRCs();
   }
 

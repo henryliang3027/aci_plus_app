@@ -6,21 +6,21 @@ import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/command18_c_core_node.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/repositories/ble_client.dart';
-import 'package:aci_plus_app/repositories/dsim18_ccor_node_chart_cache.dart';
-import 'package:aci_plus_app/repositories/dsim18_ccor_node_parser.dart';
-import 'package:aci_plus_app/repositories/dsim18_parser.dart';
+import 'package:aci_plus_app/repositories/amp18_ccor_node_chart_cache.dart';
+import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
+import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 
-class Dsim18CCorNodeRepository {
-  Dsim18CCorNodeRepository()
+class Amp18CCorNodeRepository {
+  Amp18CCorNodeRepository()
       : _bleClient = BLEClient.instance,
-        _dsim18CCorNodeParser = Dsim18CCorNodeParser(),
-        _dsim18CCorNodeChartCache = Dsim18CCorNodeChartCache();
+        _amp18CCorNodeParser = Amp18CCorNodeParser(),
+        _amp18CCorNodeChartCache = Amp18CCorNodeChartCache();
 
   final BLEClient _bleClient;
-  final Dsim18CCorNodeParser _dsim18CCorNodeParser;
-  final Dsim18CCorNodeChartCache _dsim18CCorNodeChartCache;
+  final Amp18CCorNodeChartCache _amp18CCorNodeChartCache;
+  final Amp18CCorNodeParser _amp18CCorNodeParser;
 
   StreamController<Map<DataKey, String>> _characteristicDataStreamController =
       StreamController<Map<DataKey, String>>();
@@ -50,12 +50,12 @@ class Dsim18CCorNodeRepository {
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _dsim18CCorNodeParser
+        value: _amp18CCorNodeParser
             .command18CCorNodeCollection[commandIndex - 180],
       );
 
       A1P8GCCorNode80 a1p8gcCorNode80 =
-          _dsim18CCorNodeParser.decodeA1P8GCCorNode80(rawData);
+          _amp18CCorNodeParser.decodeA1P8GCCorNode80(rawData);
 
       return [
         true,
@@ -85,12 +85,12 @@ class Dsim18CCorNodeRepository {
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _dsim18CCorNodeParser
+        value: _amp18CCorNodeParser
             .command18CCorNodeCollection[commandIndex - 180],
       );
 
       A1P8GCCorNode91 a1p8gcCorNode91 =
-          _dsim18CCorNodeParser.decodeA1P8GCCorNode91(rawData);
+          _amp18CCorNodeParser.decodeA1P8GCCorNode91(rawData);
 
       return [
         true,
@@ -160,12 +160,12 @@ class Dsim18CCorNodeRepository {
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _dsim18CCorNodeParser
+        value: _amp18CCorNodeParser
             .command18CCorNodeCollection[commandIndex - 180],
       );
 
       A1P8GCCorNodeA1 a1p8gcCorNodeA1 =
-          _dsim18CCorNodeParser.decodeA1P8GCCorNodeA1(rawData);
+          _amp18CCorNodeParser.decodeA1P8GCCorNodeA1(rawData);
 
       return [
         true,
@@ -239,12 +239,11 @@ class Dsim18CCorNodeRepository {
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _dsim18CCorNodeParser
+        value: _amp18CCorNodeParser
             .command18CCorNodeCollection[commandIndex - 180],
       );
 
-      A1P8GAlarm a1p8gAlarm =
-          _dsim18CCorNodeParser.decodeAlarmSeverity(rawData);
+      A1P8GAlarm a1p8gAlarm = _amp18CCorNodeParser.decodeAlarmSeverity(rawData);
 
       return [
         true,
@@ -273,14 +272,14 @@ class Dsim18CCorNodeRepository {
       try {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
-          value: _dsim18CCorNodeParser
+          value: _amp18CCorNodeParser
               .command18CCorNodeCollection[commandIndex - 181],
         );
 
         List<Log1p8GCCorNode> log1p8Gs =
-            _dsim18CCorNodeParser.parse1P8GCCorNodeLog(rawData);
+            _amp18CCorNodeParser.parse1P8GCCorNodeLog(rawData);
         A1P8GCCorNodeLogStatistic a1p8gcCorNodeLogStatistic =
-            _dsim18CCorNodeParser.getA1p8GCCorNodeLogStatistics(log1p8Gs);
+            _amp18CCorNodeParser.getA1p8GCCorNodeLogStatistics(log1p8Gs);
         bool hasNextChunk = log1p8Gs.isNotEmpty ? true : false;
 
         return [
@@ -324,12 +323,12 @@ class Dsim18CCorNodeRepository {
       try {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
-          value: _dsim18CCorNodeParser
+          value: _amp18CCorNodeParser
               .command18CCorNodeCollection[commandIndex - 181],
         );
 
         List<Log1p8GCCorNode> log1p8Gs =
-            _dsim18CCorNodeParser.parse1P8GCCorNodeLog(rawData);
+            _amp18CCorNodeParser.parse1P8GCCorNodeLog(rawData);
         bool hasNextChunk = log1p8Gs.isNotEmpty ? true : false;
 
         return [
@@ -354,12 +353,12 @@ class Dsim18CCorNodeRepository {
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _dsim18CCorNodeParser
+        value: _amp18CCorNodeParser
             .command18CCorNodeCollection[commandIndex - 181],
       );
 
       List<Event1p8GCCorNode> event1p8Gs =
-          _dsim18CCorNodeParser.parse1p8GCCorNodeEvent(rawData);
+          _amp18CCorNodeParser.parse1p8GCCorNodeEvent(rawData);
       return [
         true,
         event1p8Gs,
@@ -375,8 +374,7 @@ class Dsim18CCorNodeRepository {
     required List<Log1p8GCCorNode> log1p8Gs,
     required List<Event1p8GCCorNode> event1p8Gs,
   }) async {
-    List<dynamic> result =
-        await _dsim18CCorNodeParser.export1p8GCCorNodeRecords(
+    List<dynamic> result = await _amp18CCorNodeParser.export1p8GCCorNodeRecords(
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
     );
@@ -387,8 +385,7 @@ class Dsim18CCorNodeRepository {
     required List<Log1p8GCCorNode> log1p8Gs,
     required List<Event1p8GCCorNode> event1p8Gs,
   }) async {
-    List<dynamic> result =
-        await _dsim18CCorNodeParser.export1p8GCCorNodeRecords(
+    List<dynamic> result = await _amp18CCorNodeParser.export1p8GCCorNodeRecords(
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
     );
@@ -397,31 +394,31 @@ class Dsim18CCorNodeRepository {
 
   List<List<ValuePair>> get1p8GCCorNodeDateValueCollectionOfLogs(
       List<Log1p8GCCorNode> log1p8Gs) {
-    return _dsim18CCorNodeParser.get1p8GDateValueCollectionOfLogs(log1p8Gs);
+    return _amp18CCorNodeParser.get1p8GDateValueCollectionOfLogs(log1p8Gs);
   }
 
   void clearEvent1p8GCCorNodes() {
-    _dsim18CCorNodeChartCache.clearEvent1p8Gs();
+    _amp18CCorNodeChartCache.clearEvent1p8Gs();
   }
 
   void clearLoadMoreLog1p8GCCorNodes() {
-    _dsim18CCorNodeChartCache.clearLoadMoreLog1p8Gs();
+    _amp18CCorNodeChartCache.clearLoadMoreLog1p8Gs();
   }
 
   void clearAllLog1p8GCCorNodes() {
-    _dsim18CCorNodeChartCache.clearAllLog1p8Gs();
+    _amp18CCorNodeChartCache.clearAllLog1p8Gs();
   }
 
   void writeEvent1p8GCCorNodes(List<Event1p8GCCorNode> event1p8Gs) {
-    _dsim18CCorNodeChartCache.writeEvent1p8Gs(event1p8Gs);
+    _amp18CCorNodeChartCache.writeEvent1p8Gs(event1p8Gs);
   }
 
   void writeLoadMoreLog1p8GCCorNodes(List<Log1p8GCCorNode> log1p8Gs) {
-    _dsim18CCorNodeChartCache.writeLoadMoreLog1p8Gs(log1p8Gs);
+    _amp18CCorNodeChartCache.writeLoadMoreLog1p8Gs(log1p8Gs);
   }
 
   void writeAllLog1p8GCCorNodes(List<Log1p8GCCorNode> log1p8Gs) {
-    _dsim18CCorNodeChartCache.writeAllLog1p8Gs(log1p8Gs);
+    _amp18CCorNodeChartCache.writeAllLog1p8Gs(log1p8Gs);
   }
 
   Future<dynamic> set1p8GCCorNodeMaxTemperature(String temperature) async {

@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/repositories/dsim12_repository.dart';
+import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:aci_plus_app/setting/bloc/setting_list_view_bloc/setting_list_view_bloc.dart';
 import 'package:aci_plus_app/setting/views/setting_views/setting_form.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class SettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SettingListViewBloc(
-        dsimRepository: RepositoryProvider.of<Dsim12Repository>(context),
+        dsimRepository: RepositoryProvider.of<DsimRepository>(context),
       ),
       child: SettingForm(
         pageController: pageController,

@@ -1,6 +1,6 @@
 import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/repositories/dsim18_repository.dart';
+import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,7 +9,7 @@ part 'setting18_control_state.dart';
 
 class Setting18ControlBloc
     extends Bloc<Setting18ControlEvent, Setting18ControlState> {
-  Setting18ControlBloc({required Dsim18Repository dsimRepository})
+  Setting18ControlBloc({required Amp18Repository dsimRepository})
       : _dsimRepository = dsimRepository,
         super(const Setting18ControlState()) {
     on<Initialized>(_onInitialized);
@@ -50,7 +50,7 @@ class Setting18ControlBloc
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
-  final Dsim18Repository _dsimRepository;
+  final Amp18Repository _dsimRepository;
 
   void _onInitialized(
     Initialized event,

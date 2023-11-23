@@ -1,6 +1,6 @@
 import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/repositories/dsim18_repository.dart';
+import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +11,7 @@ part 'setting18_configure_state.dart';
 class Setting18ConfigureBloc
     extends Bloc<Setting18ConfigureEvent, Setting18ConfigureState> {
   Setting18ConfigureBloc({
-    required Dsim18Repository dsimRepository,
+    required Amp18Repository dsimRepository,
     required GPSRepository gpsRepository,
   })  : _dsimRepository = dsimRepository,
         _gpsRepository = gpsRepository,
@@ -41,7 +41,7 @@ class Setting18ConfigureBloc
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
-  final Dsim18Repository _dsimRepository;
+  final Amp18Repository _dsimRepository;
   final GPSRepository _gpsRepository;
 
   Future<void> _onInitialized(

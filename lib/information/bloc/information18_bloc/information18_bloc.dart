@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:aci_plus_app/repositories/dsim18_repository.dart';
+import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,7 +8,7 @@ part 'information18_state.dart';
 
 class Information18Bloc extends Bloc<Information18Event, Information18State> {
   Information18Bloc({
-    required Dsim18Repository dsimRepository,
+    required Amp18Repository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const Information18State()) {
     on<AlarmUpdated>(_onAlarmUpdated);
@@ -17,7 +17,7 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
   }
 
   Timer? _timer;
-  final Dsim18Repository _dsimRepository;
+  final Amp18Repository _dsimRepository;
 
   void _onAlarmPeriodicUpdateRequested(
     AlarmPeriodicUpdateRequested event,

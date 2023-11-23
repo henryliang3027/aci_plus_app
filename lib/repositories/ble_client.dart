@@ -483,12 +483,12 @@ class BLEClient {
         if (partId == 4) {
           return [
             true,
-            ACIDeviceType.cCorNode1P8G,
+            ACIDeviceType.ampCCorNode1P8G,
           ];
         } else {
           return [
             true,
-            ACIDeviceType.amplifier1P8G,
+            ACIDeviceType.amp1P8G,
           ];
         }
       }
@@ -527,14 +527,12 @@ class BLEClient {
           print('cmd:$commandIndex Timeout occurred');
         }
       });
-
-      return _completer.future;
     } catch (e) {
       if (!_completer.isCompleted) {
         _completer.completeError(e.toString());
       }
-      return _completer.future;
     }
+    return _completer.future;
   }
 
   // Future getCompleter() {

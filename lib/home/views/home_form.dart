@@ -133,7 +133,7 @@ class _HomeFormState extends State<HomeForm> {
             pageController: _pageController,
           ),
         ];
-      } else if (aciDeviceType == ACIDeviceType.amplifier1P8G) {
+      } else if (aciDeviceType == ACIDeviceType.amp1P8G) {
         // 適用 1.8G Amplifier 的頁面
         return [
           Setting18Page(
@@ -152,7 +152,7 @@ class _HomeFormState extends State<HomeForm> {
             pageController: _pageController,
           ),
         ];
-      } else if (aciDeviceType == ACIDeviceType.cCorNode1P8G) {
+      } else if (aciDeviceType == ACIDeviceType.ampCCorNode1P8G) {
         return [
           Setting18CCorNodePage(
             pageController: _pageController,

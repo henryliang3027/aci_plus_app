@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:aci_plus_app/core/command18_c_core_node.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
-import 'package:aci_plus_app/repositories/dsim18_parser.dart';
+import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/unit_converter.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
@@ -11,8 +11,8 @@ import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
-class Dsim18CCorNodeParser {
-  Dsim18CCorNodeParser() {
+class Amp18CCorNodeParser {
+  Amp18CCorNodeParser() {
     calculate18CRCs();
   }
 

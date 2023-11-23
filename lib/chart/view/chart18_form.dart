@@ -7,8 +7,8 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:aci_plus_app/repositories/dsim18_parser.dart';
-import 'package:aci_plus_app/repositories/dsim18_repository.dart';
+import 'package:aci_plus_app/repositories/amp18_parser.dart';
+import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -135,7 +135,7 @@ class _Chart18FormState extends State<Chart18Form>
                 canPop: false, // 避免 Android 使用者點擊系統返回鍵關閉 dialog
                 child: DownloadIndicator18Form(
                   dsimRepository:
-                      RepositoryProvider.of<Dsim18Repository>(context),
+                      RepositoryProvider.of<Amp18Repository>(context),
                 ),
               );
             },

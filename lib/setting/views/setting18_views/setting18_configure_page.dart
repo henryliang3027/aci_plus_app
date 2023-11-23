@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/repositories/dsim18_repository.dart';
+import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_configure/setting18_configure_bloc.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_configure_view.dart';
@@ -12,7 +12,7 @@ class Setting18ConfigurePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Setting18ConfigureBloc(
-        dsimRepository: RepositoryProvider.of<Dsim18Repository>(context),
+        dsimRepository: RepositoryProvider.of<Amp18Repository>(context),
         gpsRepository: RepositoryProvider.of<GPSRepository>(context),
       ),
       child: Setting18ConfigureView(),

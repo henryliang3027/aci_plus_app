@@ -1,7 +1,7 @@
-import 'package:aci_plus_app/repositories/dsim18_ccor_node_parser.dart';
+import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
 
-class Dsim18CCorNodeChartCache {
-  Dsim18CCorNodeChartCache();
+class Amp18CCorNodeChartCache {
+  Amp18CCorNodeChartCache();
 
   final List<Event1p8GCCorNode> _event1p8Gs = [];
   final List<Log1p8GCCorNode> _loadMoreLog1p8Gs = [];

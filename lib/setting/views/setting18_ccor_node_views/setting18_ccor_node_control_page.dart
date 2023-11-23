@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/repositories/dsim18_ccor_node_repository.dart';
+import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_control/setting18_ccor_node_control_bloc.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_control_view.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ class Setting18CCorNodeControlPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => Setting18CCorNodeControlBloc(
           dsimRepository:
-              RepositoryProvider.of<Dsim18CCorNodeRepository>(context)),
+              RepositoryProvider.of<Amp18CCorNodeRepository>(context)),
       child: const Setting18CCorNodeControlView(),
     );
   }

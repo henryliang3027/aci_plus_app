@@ -1,10 +1,9 @@
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_page.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
-import 'package:aci_plus_app/repositories/dsim12_repository.dart';
-import 'package:aci_plus_app/repositories/dsim18_ccor_node_repository.dart';
-import 'package:aci_plus_app/repositories/dsim18_repository.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
+import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
+import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/splash_view.dart';
@@ -16,17 +15,17 @@ class App extends StatelessWidget {
   const App({
     super.key,
     required this.aciDeviceRepository,
-    required this.dsim12Repository,
-    required this.dsim18Repository,
-    required this.dsim18CCorNodeRepository,
+    required this.dsimRepository,
+    required this.amp18Repository,
+    required this.amp18CCorNodeRepository,
     required this.unitRepository,
     required this.gpsRepository,
   });
 
   final ACIDeviceRepository aciDeviceRepository;
-  final Dsim12Repository dsim12Repository;
-  final Dsim18Repository dsim18Repository;
-  final Dsim18CCorNodeRepository dsim18CCorNodeRepository;
+  final DsimRepository dsimRepository;
+  final Amp18Repository amp18Repository;
+  final Amp18CCorNodeRepository amp18CCorNodeRepository;
   final UnitRepository unitRepository;
   final GPSRepository gpsRepository;
 
@@ -37,14 +36,14 @@ class App extends StatelessWidget {
         RepositoryProvider<ACIDeviceRepository>(
           create: (context) => aciDeviceRepository,
         ),
-        RepositoryProvider<Dsim12Repository>(
-          create: (context) => dsim12Repository,
+        RepositoryProvider<DsimRepository>(
+          create: (context) => dsimRepository,
         ),
-        RepositoryProvider<Dsim18Repository>(
-          create: (context) => dsim18Repository,
+        RepositoryProvider<Amp18Repository>(
+          create: (context) => amp18Repository,
         ),
-        RepositoryProvider<Dsim18CCorNodeRepository>(
-          create: (context) => dsim18CCorNodeRepository,
+        RepositoryProvider<Amp18CCorNodeRepository>(
+          create: (context) => amp18CCorNodeRepository,
         ),
         RepositoryProvider<UnitRepository>(
           create: (context) => unitRepository,
@@ -56,9 +55,9 @@ class App extends StatelessWidget {
       child: BlocProvider(
         create: (context) => HomeBloc(
           aciDeviceRepository: aciDeviceRepository,
-          dsim12Repository: dsim12Repository,
-          dsim18Repository: dsim18Repository,
-          dsim18CCorNodeRepository: dsim18CCorNodeRepository,
+          dsimRepository: dsimRepository,
+          amp18Repository: amp18Repository,
+          amp18CCorNodeRepository: amp18CCorNodeRepository,
         ),
         child: const _AppView(),
       ),

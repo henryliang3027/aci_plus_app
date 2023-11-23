@@ -7,6 +7,6 @@ enum Alarm {
 enum ACIDeviceType {
   undefined,
   dsim1G1P2G,
-  amplifier1P8G,
-  cCorNode1P8G,
+  amp1P8G,
+  ampCCorNode1P8G,
 }
