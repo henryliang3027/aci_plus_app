@@ -16,22 +16,30 @@ class DsimRepository {
   final BLEClient _bleClient;
   final DsimParser _dsimParser;
 
-  StreamController<Map<DataKey, String>> _characteristicDataStreamController =
-      StreamController<Map<DataKey, String>>();
+  late StreamController<Map<DataKey, String>>
+      _characteristicDataStreamController;
+
+  bool isCreateCharacteristicDataStreamController = false;
 
   Stream<Map<DataKey, String>> get characteristicData async* {
     yield* _characteristicDataStreamController.stream;
   }
 
   void createCharacteristicDataStream() {
-    _characteristicDataStreamController =
-        StreamController<Map<DataKey, String>>();
+    if (!isCreateCharacteristicDataStreamController) {
+      _characteristicDataStreamController =
+          StreamController<Map<DataKey, String>>();
+      isCreateCharacteristicDataStreamController = true;
+    }
   }
 
   void closeCharacteristicDataStream() async {
-    if (_characteristicDataStreamController.hasListener) {
-      if (!_characteristicDataStreamController.isClosed) {
-        await _characteristicDataStreamController.close();
+    if (isCreateCharacteristicDataStreamController) {
+      if (_characteristicDataStreamController.hasListener) {
+        if (!_characteristicDataStreamController.isClosed) {
+          await _characteristicDataStreamController.close();
+          isCreateCharacteristicDataStreamController = false;
+        }
       }
     }
   }

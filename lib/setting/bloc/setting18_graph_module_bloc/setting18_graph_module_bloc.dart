@@ -45,6 +45,16 @@ class Setting18GraphModuleBloc
     on<DSVVA3Changed>(_onDSVVA3Changed);
     on<DSVVA4Changed>(_onDSVVA4Changed);
     on<USTGCChanged>(_onUSTGCChanged);
+    on<SplitOptionChanged>(_onSplitOptionChanged);
+    on<PilotFrequencyModeChanged>(_onPilotFrequencyModeChanged);
+    on<FirstChannelLoadingFrequencyChanged>(
+        _onFirstChannelLoadingFrequencyChanged);
+    on<LastChannelLoadingFrequencyChanged>(
+        _onLastChannelLoadingFrequencyChanged);
+    on<FirstChannelLoadingLevelChanged>(_onFirstChannelLoadingLevelChanged);
+    on<LastChannelLoadingLevelChanged>(_onLastChannelLoadingLevelChanged);
+    on<PilotFrequency1Changed>(_onPilotFrequency1Changed);
+    on<PilotFrequency2Changed>(_onPilotFrequency2Changed);
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
@@ -71,25 +81,49 @@ class Setting18GraphModuleBloc
         dsVVA3: event.dsVVA3,
         dsVVA4: event.dsVVA4,
         usTGC: event.usTGC,
+        splitOption: event.splitOption,
+        pilotFrequencyMode: event.pilotFrequencyMode,
+        firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
+        lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
+        firstChannelLoadingLevel: event.firstChannelLoadingLevel,
+        lastChannelLoadingLevel: event.lastChannelLoadingLevel,
+        pilotFrequency1: event.pilotFrequency1,
+        pilotFrequency2: event.pilotFrequency2,
+        manualModePilot1RFOutputPower: event.manualModePilot1RFOutputPower,
+        manualModePilot2RFOutputPower: event.manualModePilot2RFOutputPower,
         isInitialize: true,
-        initialValues: [
-          event.fwdInputAttenuation,
-          event.fwdInputEQ,
-          event.rtnInputAttenuation2,
-          event.rtnInputAttenuation3,
-          event.rtnInputAttenuation4,
-          event.rtnOutputLevelAttenuation,
-          event.rtnOutputEQ,
-          event.rtnIngressSetting2,
-          event.rtnIngressSetting3,
-          event.rtnIngressSetting4,
-          event.tgcCableLength,
-          event.dsVVA2,
-          event.dsSlope2,
-          event.dsVVA3,
-          event.dsVVA4,
-          event.usTGC,
-        ]));
+        initialValues: {
+          DataKey.inputAttenuation: event.fwdInputAttenuation,
+          DataKey.inputEqualizer: event.fwdInputEQ,
+          DataKey.inputAttenuation2: event.rtnInputAttenuation2,
+          DataKey.inputAttenuation3: event.rtnInputAttenuation3,
+          DataKey.inputAttenuation4: event.rtnInputAttenuation4,
+          DataKey.outputAttenuation: event.rtnOutputLevelAttenuation,
+          DataKey.outputEqualizer: event.rtnOutputEQ,
+          DataKey.ingressSetting2: event.rtnIngressSetting2,
+          DataKey.ingressSetting3: event.rtnIngressSetting3,
+          DataKey.ingressSetting4: event.rtnIngressSetting4,
+          DataKey.tgcCableLength: event.tgcCableLength,
+          DataKey.dsVVA2: event.dsVVA2,
+          DataKey.dsSlope2: event.dsSlope2,
+          DataKey.dsVVA3: event.dsVVA3,
+          DataKey.dsVVA4: event.dsVVA4,
+          DataKey.usTGC: event.usTGC,
+          DataKey.splitOption: event.splitOption,
+          DataKey.pilotFrequencyMode: event.pilotFrequencyMode,
+          DataKey.firstChannelLoadingFrequency:
+              event.firstChannelLoadingFrequency,
+          DataKey.lastChannelLoadingFrequency:
+              event.lastChannelLoadingFrequency,
+          DataKey.firstChannelLoadingLevel: event.firstChannelLoadingLevel,
+          DataKey.lastChannelLoadingLevel: event.lastChannelLoadingLevel,
+          DataKey.pilotFrequency1: event.pilotFrequency1,
+          DataKey.pilotFrequency2: event.pilotFrequency2,
+          DataKey.manualModePilot1RFOutputPower:
+              event.manualModePilot1RFOutputPower,
+          DataKey.manualModePilot2RFOutputPower:
+              event.manualModePilot2RFOutputPower,
+        }));
   }
 
   String _getIncreasedNumber(String value) {
@@ -133,6 +167,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -164,6 +206,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -195,6 +245,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -224,6 +282,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -255,6 +321,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -286,6 +360,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -315,6 +397,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -346,6 +436,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -377,6 +475,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -406,6 +512,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -438,6 +552,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -470,6 +592,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -499,6 +629,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -530,6 +668,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -561,6 +707,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -590,6 +744,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -622,6 +784,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -654,6 +824,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -683,6 +861,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -713,6 +899,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -743,6 +937,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -772,6 +974,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -801,6 +1011,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -830,6 +1048,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -859,6 +1085,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -888,6 +1122,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -917,6 +1159,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -946,6 +1196,14 @@ class Setting18GraphModuleBloc
         dsVVA3: event.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -975,6 +1233,14 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: event.dsVVA4,
         usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
       ),
     ));
   }
@@ -1004,6 +1270,302 @@ class Setting18GraphModuleBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         usTGC: event.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+      ),
+    ));
+  }
+
+  void _onSplitOptionChanged(
+    SplitOptionChanged event,
+    Emitter<Setting18GraphModuleState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      splitOption: event.splitOption,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+        splitOption: event.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+      ),
+    ));
+  }
+
+  void _onPilotFrequencyModeChanged(
+    PilotFrequencyModeChanged event,
+    Emitter<Setting18GraphModuleState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      pilotFrequencyMode: event.pilotFrequencyMode,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: event.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+      ),
+    ));
+  }
+
+  void _onFirstChannelLoadingFrequencyChanged(
+    FirstChannelLoadingFrequencyChanged event,
+    Emitter<Setting18GraphModuleState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+      ),
+    ));
+  }
+
+  void _onFirstChannelLoadingLevelChanged(
+    FirstChannelLoadingLevelChanged event,
+    Emitter<Setting18GraphModuleState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      firstChannelLoadingLevel: event.firstChannelLoadingLevel,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: event.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+      ),
+    ));
+  }
+
+  void _onLastChannelLoadingFrequencyChanged(
+    LastChannelLoadingFrequencyChanged event,
+    Emitter<Setting18GraphModuleState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+      ),
+    ));
+  }
+
+  void _onLastChannelLoadingLevelChanged(
+    LastChannelLoadingLevelChanged event,
+    Emitter<Setting18GraphModuleState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      lastChannelLoadingLevel: event.lastChannelLoadingLevel,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: event.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+      ),
+    ));
+  }
+
+  void _onPilotFrequency1Changed(
+    PilotFrequency1Changed event,
+    Emitter<Setting18GraphModuleState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      pilotFrequency1: event.pilotFrequency1,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: event.pilotFrequency1,
+        pilotFrequency2: state.pilotFrequency2,
+      ),
+    ));
+  }
+
+  void _onPilotFrequency2Changed(
+    PilotFrequency2Changed event,
+    Emitter<Setting18GraphModuleState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      pilotFrequency2: event.pilotFrequency2,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        usTGC: state.usTGC,
+        splitOption: state.splitOption,
+        pilotFrequencyMode: state.pilotFrequencyMode,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency2: event.pilotFrequency2,
       ),
     ));
   }
@@ -1025,23 +1587,47 @@ class Setting18GraphModuleBloc
     required String dsVVA3,
     required String dsVVA4,
     required String usTGC,
+    required String splitOption,
+    required String pilotFrequencyMode,
+    required String firstChannelLoadingFrequency,
+    required String firstChannelLoadingLevel,
+    required String lastChannelLoadingFrequency,
+    required String lastChannelLoadingLevel,
+    required String pilotFrequency1,
+    required String pilotFrequency2,
   }) {
-    if (fwdInputAttenuation != state.initialValues[0] ||
-        fwdInputEQ != state.initialValues[1] ||
-        rtnInputAttenuation2 != state.initialValues[2] ||
-        rtnInputAttenuation3 != state.initialValues[3] ||
-        rtnInputAttenuation4 != state.initialValues[4] ||
-        rtnOutputLevelAttenuation != state.initialValues[5] ||
-        rtnOutputEQ != state.initialValues[6] ||
-        rtnIngressSetting2 != state.initialValues[7] ||
-        rtnIngressSetting3 != state.initialValues[8] ||
-        rtnIngressSetting4 != state.initialValues[9] ||
-        tgcCableLength != state.initialValues[10] ||
-        dsVVA2 != state.initialValues[11] ||
-        dsSlope2 != state.initialValues[12] ||
-        dsVVA3 != state.initialValues[13] ||
-        dsVVA4 != state.initialValues[14] ||
-        usTGC != state.initialValues[15]) {
+    if (fwdInputAttenuation != state.initialValues[DataKey.inputAttenuation] ||
+        fwdInputEQ != state.initialValues[DataKey.inputEqualizer] ||
+        rtnInputAttenuation2 !=
+            state.initialValues[DataKey.inputAttenuation2] ||
+        rtnInputAttenuation3 !=
+            state.initialValues[DataKey.inputAttenuation3] ||
+        rtnInputAttenuation4 !=
+            state.initialValues[DataKey.inputAttenuation4] ||
+        rtnOutputLevelAttenuation !=
+            state.initialValues[DataKey.outputAttenuation] ||
+        rtnOutputEQ != state.initialValues[DataKey.outputEqualizer] ||
+        rtnIngressSetting2 != state.initialValues[DataKey.ingressSetting2] ||
+        rtnIngressSetting3 != state.initialValues[DataKey.ingressSetting3] ||
+        rtnIngressSetting4 != state.initialValues[DataKey.ingressSetting4] ||
+        tgcCableLength != state.initialValues[DataKey.tgcCableLength] ||
+        dsVVA2 != state.initialValues[DataKey.dsVVA2] ||
+        dsSlope2 != state.initialValues[DataKey.dsSlope2] ||
+        dsVVA3 != state.initialValues[DataKey.dsVVA3] ||
+        dsVVA4 != state.initialValues[DataKey.dsVVA4] ||
+        usTGC != state.initialValues[DataKey.usTGC] ||
+        splitOption != state.initialValues[DataKey.splitOption] ||
+        firstChannelLoadingFrequency !=
+            state.initialValues[DataKey.firstChannelLoadingFrequency] ||
+        firstChannelLoadingLevel !=
+            state.initialValues[DataKey.firstChannelLoadingLevel] ||
+        lastChannelLoadingFrequency !=
+            state.initialValues[DataKey.lastChannelLoadingFrequency] ||
+        lastChannelLoadingLevel !=
+            state.initialValues[DataKey.lastChannelLoadingLevel] ||
+        pilotFrequencyMode != state.initialValues[DataKey.pilotFrequencyMode] ||
+        pilotFrequency1 != state.initialValues[DataKey.pilotFrequency1] ||
+        pilotFrequency2 != state.initialValues[DataKey.pilotFrequency2]) {
       return true;
     } else {
       return false;
@@ -1059,7 +1645,8 @@ class Setting18GraphModuleBloc
 
     List<String> settingResult = [];
 
-    if (state.fwdInputAttenuation != state.initialValues[0]) {
+    if (state.fwdInputAttenuation !=
+        state.initialValues[DataKey.inputAttenuation]) {
       bool resultOfSetForwardInputAttenuation = await _dsimRepository
           .set1p8GForwardInputAttenuation(state.fwdInputAttenuation);
 
@@ -1067,7 +1654,7 @@ class Setting18GraphModuleBloc
           '${DataKey.inputAttenuation.name},$resultOfSetForwardInputAttenuation');
     }
 
-    if (state.fwdInputEQ != state.initialValues[1]) {
+    if (state.fwdInputEQ != state.initialValues[DataKey.inputEqualizer]) {
       bool resultOfSetForwardInputEqualizer =
           await _dsimRepository.set1p8GForwardInputEqualizer(state.fwdInputEQ);
 
@@ -1075,7 +1662,8 @@ class Setting18GraphModuleBloc
           '${DataKey.inputEqualizer.name},$resultOfSetForwardInputEqualizer');
     }
 
-    if (state.rtnInputAttenuation2 != state.initialValues[2]) {
+    if (state.rtnInputAttenuation2 !=
+        state.initialValues[DataKey.inputAttenuation2]) {
       bool resultOfSetReturnInputAttenuation2 = await _dsimRepository
           .set1p8GReturnInputAttenuation2(state.rtnInputAttenuation2);
 
@@ -1083,7 +1671,8 @@ class Setting18GraphModuleBloc
           '${DataKey.inputAttenuation2.name},$resultOfSetReturnInputAttenuation2');
     }
 
-    if (state.rtnInputAttenuation3 != state.initialValues[3]) {
+    if (state.rtnInputAttenuation3 !=
+        state.initialValues[DataKey.inputAttenuation3]) {
       bool resultOfSetReturnInputAttenuation3 = await _dsimRepository
           .set1p8GReturnInputAttenuation3(state.rtnInputAttenuation3);
 
@@ -1091,7 +1680,8 @@ class Setting18GraphModuleBloc
           '${DataKey.inputAttenuation3.name},$resultOfSetReturnInputAttenuation3');
     }
 
-    if (state.rtnInputAttenuation4 != state.initialValues[4]) {
+    if (state.rtnInputAttenuation4 !=
+        state.initialValues[DataKey.inputAttenuation4]) {
       bool resultOfSetReturnInputAttenuation4 = await _dsimRepository
           .set1p8GReturnInputAttenuation4(state.rtnInputAttenuation4);
 
@@ -1099,7 +1689,8 @@ class Setting18GraphModuleBloc
           '${DataKey.inputAttenuation4.name},$resultOfSetReturnInputAttenuation4');
     }
 
-    if (state.rtnOutputLevelAttenuation != state.initialValues[5]) {
+    if (state.rtnOutputLevelAttenuation !=
+        state.initialValues[DataKey.outputAttenuation]) {
       bool resultOfSetReturnOutputAttenuation = await _dsimRepository
           .set1p8GReturnOutputAttenuation(state.rtnOutputLevelAttenuation);
 
@@ -1107,7 +1698,7 @@ class Setting18GraphModuleBloc
           '${DataKey.outputAttenuation.name},$resultOfSetReturnOutputAttenuation');
     }
 
-    if (state.rtnOutputEQ != state.initialValues[6]) {
+    if (state.rtnOutputEQ != state.initialValues[DataKey.outputEqualizer]) {
       bool resultOfSetReturnOutputEqualizer =
           await _dsimRepository.set1p8GReturnOutputEqualizer(state.rtnOutputEQ);
 
@@ -1115,7 +1706,8 @@ class Setting18GraphModuleBloc
           '${DataKey.outputEqualizer.name},$resultOfSetReturnOutputEqualizer');
     }
 
-    if (state.rtnIngressSetting2 != state.initialValues[7]) {
+    if (state.rtnIngressSetting2 !=
+        state.initialValues[DataKey.ingressSetting2]) {
       bool resultOfSetReturnIngress2 =
           await _dsimRepository.set1p8GReturnIngress2(state.rtnIngressSetting2);
 
@@ -1123,7 +1715,8 @@ class Setting18GraphModuleBloc
           .add('${DataKey.ingressSetting2.name},$resultOfSetReturnIngress2');
     }
 
-    if (state.rtnIngressSetting3 != state.initialValues[8]) {
+    if (state.rtnIngressSetting3 !=
+        state.initialValues[DataKey.ingressSetting3]) {
       bool resultOfSetReturnIngress3 =
           await _dsimRepository.set1p8GReturnIngress3(state.rtnIngressSetting3);
 
@@ -1131,7 +1724,8 @@ class Setting18GraphModuleBloc
           .add('${DataKey.ingressSetting3.name},$resultOfSetReturnIngress3');
     }
 
-    if (state.rtnIngressSetting4 != state.initialValues[9]) {
+    if (state.rtnIngressSetting4 !=
+        state.initialValues[DataKey.ingressSetting4]) {
       bool resultOfSetReturnIngress4 =
           await _dsimRepository.set1p8GReturnIngress4(state.rtnIngressSetting4);
 
@@ -1139,7 +1733,7 @@ class Setting18GraphModuleBloc
           .add('${DataKey.ingressSetting4.name},$resultOfSetReturnIngress4');
     }
 
-    if (state.tgcCableLength != state.initialValues[10]) {
+    if (state.tgcCableLength != state.initialValues[DataKey.tgcCableLength]) {
       bool resultOfSetTGCCableLength =
           await _dsimRepository.set1p8GTGCCableLength(state.tgcCableLength);
 
@@ -1147,36 +1741,106 @@ class Setting18GraphModuleBloc
           .add('${DataKey.tgcCableLength.name},$resultOfSetTGCCableLength');
     }
 
-    if (state.dsVVA2 != state.initialValues[11]) {
+    if (state.dsVVA2 != state.initialValues[DataKey.dsVVA2]) {
       bool resultOfSetDSVVA2 =
           await _dsimRepository.set1p8GDSVVA2(state.dsVVA2);
 
       settingResult.add('${DataKey.dsVVA2.name},$resultOfSetDSVVA2');
     }
 
-    if (state.dsSlope2 != state.initialValues[12]) {
+    if (state.dsSlope2 != state.initialValues[DataKey.dsSlope2]) {
       bool resultOfSetDSSlope2 =
           await _dsimRepository.set1p8GDSSlope2(state.dsSlope2);
 
       settingResult.add('${DataKey.dsSlope2.name},$resultOfSetDSSlope2');
     }
 
-    if (state.dsVVA3 != state.initialValues[13]) {
+    if (state.dsVVA3 != state.initialValues[DataKey.dsVVA3]) {
       bool resultOfSetDSVVA3 = await _dsimRepository.set1p8DSVVA3(state.dsVVA3);
 
       settingResult.add('${DataKey.dsVVA3.name},$resultOfSetDSVVA3');
     }
 
-    if (state.dsVVA4 != state.initialValues[14]) {
+    if (state.dsVVA4 != state.initialValues[DataKey.dsVVA4]) {
       bool resultOfSetDSVVA4 = await _dsimRepository.set1p8DSVVA4(state.dsVVA4);
 
       settingResult.add('${DataKey.dsVVA4.name},$resultOfSetDSVVA4');
     }
 
-    if (state.usTGC != state.initialValues[15]) {
+    if (state.usTGC != state.initialValues[DataKey.usTGC]) {
       bool resultOfSetUSTGC = await _dsimRepository.set1p8USTGC(state.usTGC);
 
       settingResult.add('${DataKey.usTGC.name},$resultOfSetUSTGC');
+    }
+
+    if (state.splitOption != state.initialValues[DataKey.splitOption]) {
+      bool resultOfSetSplitOption =
+          await _dsimRepository.set1p8GSplitOption(state.splitOption);
+
+      settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
+    }
+
+    if (state.pilotFrequencyMode !=
+        state.initialValues[DataKey.pilotFrequencyMode]) {
+      bool resultOfSetPilotFrequencyMode = await _dsimRepository
+          .set1p8GPilotFrequencyMode(state.pilotFrequencyMode);
+
+      settingResult.add(
+          '${DataKey.pilotFrequencyMode.name},$resultOfSetPilotFrequencyMode');
+    }
+
+    if (state.firstChannelLoadingFrequency !=
+        state.initialValues[DataKey.firstChannelLoadingFrequency]) {
+      bool resultOfSetFirstChannelLoadingFrequency =
+          await _dsimRepository.set1p8GFirstChannelLoadingFrequency(
+              state.firstChannelLoadingFrequency);
+
+      settingResult.add(
+          '${DataKey.firstChannelLoadingFrequency.name},$resultOfSetFirstChannelLoadingFrequency');
+    }
+
+    if (state.firstChannelLoadingLevel !=
+        state.initialValues[DataKey.firstChannelLoadingLevel]) {
+      bool resultOfSetFirstChannelLoadingLevel = await _dsimRepository
+          .set1p8GFirstChannelLoadingLevel(state.firstChannelLoadingLevel);
+
+      settingResult.add(
+          '${DataKey.firstChannelLoadingLevel.name},$resultOfSetFirstChannelLoadingLevel');
+    }
+
+    if (state.lastChannelLoadingFrequency !=
+        state.initialValues[DataKey.lastChannelLoadingFrequency]) {
+      bool resultOfSetLastChannelLoadingFrequency =
+          await _dsimRepository.set1p8GLastChannelLoadingFrequency(
+              state.lastChannelLoadingFrequency);
+
+      settingResult.add(
+          '${DataKey.lastChannelLoadingFrequency.name},$resultOfSetLastChannelLoadingFrequency');
+    }
+
+    if (state.lastChannelLoadingLevel !=
+        state.initialValues[DataKey.lastChannelLoadingLevel]) {
+      bool resultOfSetLastChannelLoadingLevel = await _dsimRepository
+          .set1p8GLastChannelLoadingLevel(state.lastChannelLoadingLevel);
+
+      settingResult.add(
+          '${DataKey.lastChannelLoadingLevel.name},$resultOfSetLastChannelLoadingLevel');
+    }
+
+    if (state.pilotFrequency1 != state.initialValues[DataKey.pilotFrequency1]) {
+      bool resultOfSetPilotFrequency1 =
+          await _dsimRepository.set1p8GPilotFrequency1(state.pilotFrequency1);
+
+      settingResult
+          .add('${DataKey.pilotFrequency1.name},$resultOfSetPilotFrequency1');
+    }
+
+    if (state.pilotFrequency2 != state.initialValues[DataKey.pilotFrequency2]) {
+      bool resultOfSetPilotFrequency2 =
+          await _dsimRepository.set1p8GPilotFrequency2(state.pilotFrequency2);
+
+      settingResult
+          .add('${DataKey.pilotFrequency2.name},$resultOfSetPilotFrequency2');
     }
 
     // 等待 device 完成更新後在讀取值

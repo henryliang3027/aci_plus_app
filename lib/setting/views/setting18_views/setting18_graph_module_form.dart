@@ -1,5 +1,6 @@
 import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
+import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_graph_module_bloc/setting18_graph_module_bloc.dart';
@@ -10,12 +11,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Setting18GraphModuleForm extends StatelessWidget {
-  const Setting18GraphModuleForm({
+  Setting18GraphModuleForm({
     super.key,
     required this.moduleId,
   });
 
   final int moduleId;
+
+  final TextEditingController
+      firstChannelLoadingFrequencyTextEditingController =
+      TextEditingController();
+  final TextEditingController firstChannelLoadingLevelTextEditingController =
+      TextEditingController();
+  final TextEditingController lastChannelLoadingFrequencyTextEditingController =
+      TextEditingController();
+  final TextEditingController lastChannelLoadingLevelTextEditingController =
+      TextEditingController();
+  final TextEditingController pilotFrequency1TextEditingController =
+      TextEditingController();
+  final TextEditingController pilotFrequency2TextEditingController =
+      TextEditingController();
+  final TextEditingController
+      manualModePilot1RFOutputPowerTextEditingController =
+      TextEditingController();
+  final TextEditingController
+      manualModePilot2RFOutputPowerTextEditingController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +69,30 @@ class Setting18GraphModuleForm extends StatelessWidget {
     String dsVVA3 = homeState.characteristicData[DataKey.dsVVA3] ?? '';
     String dsVVA4 = homeState.characteristicData[DataKey.dsVVA4] ?? '';
     String usTGC = homeState.characteristicData[DataKey.usTGC] ?? '';
+    String splitOption =
+        homeState.characteristicData[DataKey.splitOption] ?? '';
+    String firstChannelLoadingFrequency =
+        homeState.characteristicData[DataKey.firstChannelLoadingFrequency] ??
+            '';
+    String lastChannelLoadingFrequency =
+        homeState.characteristicData[DataKey.lastChannelLoadingFrequency] ?? '';
+    String firstChannelLoadingLevel =
+        homeState.characteristicData[DataKey.firstChannelLoadingLevel] ?? '';
+    String lastChannelLoadingLevel =
+        homeState.characteristicData[DataKey.lastChannelLoadingLevel] ?? '';
+    String pilotFrequencyMode =
+        homeState.characteristicData[DataKey.pilotFrequencyMode] ?? '';
+    String pilotFrequency1 =
+        homeState.characteristicData[DataKey.pilotFrequency1] ?? '';
+    String pilotFrequency2 =
+        homeState.characteristicData[DataKey.pilotFrequency2] ?? '';
+
+    String manualModePilot1RFOutputPower =
+        homeState.characteristicData[DataKey.manualModePilot1RFOutputPower] ??
+            '';
+    String manualModePilot2RFOutputPower =
+        homeState.characteristicData[DataKey.manualModePilot2RFOutputPower] ??
+            '';
 
     context.read<Setting18GraphModuleBloc>().add(Initialized(
           fwdInputAttenuation: inputAttenuation,
@@ -66,13 +111,24 @@ class Setting18GraphModuleForm extends StatelessWidget {
           dsVVA3: dsVVA3,
           dsVVA4: dsVVA4,
           usTGC: usTGC,
+          splitOption: splitOption,
+          firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+          firstChannelLoadingLevel: firstChannelLoadingLevel,
+          lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+          lastChannelLoadingLevel: lastChannelLoadingLevel,
+          pilotFrequencyMode: pilotFrequencyMode,
+          pilotFrequency1: pilotFrequency1,
+          pilotFrequency2: pilotFrequency2,
+          manualModePilot1RFOutputPower: manualModePilot1RFOutputPower,
+          manualModePilot2RFOutputPower: manualModePilot2RFOutputPower,
         ));
 
     List<Widget> getSettingWidgetByModuleId() {
       switch (moduleId) {
+        case 0:
+          return [const _SplitOption()];
         case 1:
           return [const _FwdInputAttenuation()];
-
         case 2:
           return [const _FwdInputEQ()];
         case 3:
@@ -89,6 +145,34 @@ class Setting18GraphModuleForm extends StatelessWidget {
           return [const _FwdInputEQ()];
         case 9:
           return [const _FwdInputEQ()];
+        case 10:
+          return [
+            const _PilotFrequencyMode(),
+            _FirstChannelLoading(
+              firstChannelLoadingFrequencyTextEditingController:
+                  firstChannelLoadingFrequencyTextEditingController,
+              firstChannelLoadingLevelTextEditingController:
+                  firstChannelLoadingLevelTextEditingController,
+            ),
+            _LastChannelLoading(
+              lastChannelLoadingFrequencyTextEditingController:
+                  lastChannelLoadingFrequencyTextEditingController,
+              lastChannelLoadingLevelTextEditingController:
+                  lastChannelLoadingLevelTextEditingController,
+            ),
+            _PilotFrequency1(
+              pilotFrequency1TextEditingController:
+                  pilotFrequency1TextEditingController,
+              manualModePilot1RFOutputPowerTextEditingController:
+                  manualModePilot1RFOutputPowerTextEditingController,
+            ),
+            _PilotFrequency2(
+              pilotFrequency2TextEditingController:
+                  pilotFrequency2TextEditingController,
+              manualModePilot2RFOutputPowerTextEditingController:
+                  manualModePilot2RFOutputPowerTextEditingController,
+            ),
+          ];
         default:
           return [];
       }
@@ -140,6 +224,29 @@ class Setting18GraphModuleForm extends StatelessWidget {
         return AppLocalizations.of(context)!.dialogMessageDSVVA4Setting;
       } else if (item == DataKey.usTGC.name) {
         return AppLocalizations.of(context)!.dialogMessageUSTGCSetting;
+      } else if (item == DataKey.splitOption.name) {
+        return AppLocalizations.of(context)!.dialogMessageSplitOptionSetting;
+      } else if (item == DataKey.pilotFrequencyMode.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessagePilotFrequencyModeSetting;
+      } else if (item == DataKey.firstChannelLoadingFrequency.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageFirstChannelLoadingFrequencySetting;
+      } else if (item == DataKey.firstChannelLoadingLevel.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageFirstChannelLoadingLevelSetting;
+      } else if (item == DataKey.lastChannelLoadingFrequency.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageLastChannelLoadingFrequencySetting;
+      } else if (item == DataKey.lastChannelLoadingLevel.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageLastChannelLoadingLevelSetting;
+      } else if (item == DataKey.pilotFrequency1.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessagePilotFrequency1Setting;
+      } else if (item == DataKey.pilotFrequency2.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessagePilotFrequency2Setting;
       } else {
         return '';
       }
@@ -201,20 +308,46 @@ class Setting18GraphModuleForm extends StatelessWidget {
             messageRows: rows,
           );
         }
+
+        if (state.isInitialize) {
+          firstChannelLoadingFrequencyTextEditingController.text =
+              state.firstChannelLoadingFrequency;
+          firstChannelLoadingLevelTextEditingController.text =
+              state.firstChannelLoadingLevel;
+          lastChannelLoadingFrequencyTextEditingController.text =
+              state.lastChannelLoadingFrequency;
+          lastChannelLoadingLevelTextEditingController.text =
+              state.lastChannelLoadingLevel;
+          pilotFrequency1TextEditingController.text = state.pilotFrequency1;
+          pilotFrequency2TextEditingController.text = state.pilotFrequency2;
+          manualModePilot1RFOutputPowerTextEditingController.text =
+              state.manualModePilot1RFOutputPower;
+          manualModePilot2RFOutputPowerTextEditingController.text =
+              state.manualModePilot2RFOutputPower;
+        }
       },
       child: Padding(
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ...getSettingWidgetByModuleId(),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [_SettingFloatingActionButton()],
-            ),
-          ],
-        ),
-      ),
+          padding: const EdgeInsets.all(30),
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ...getSettingWidgetByModuleId(),
+                    const SizedBox(
+                      height: 60.0,
+                    ),
+                  ],
+                ),
+              ),
+              const Positioned(
+                right: 10,
+                bottom: 10,
+                child: _SettingFloatingActionButton(),
+              ),
+            ],
+          )),
     );
   }
 }
@@ -291,6 +424,340 @@ class _FwdInputEQ extends StatelessWidget {
   }
 }
 
+class _SplitOption extends StatelessWidget {
+  const _SplitOption({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+        builder: (context, state) {
+      return Padding(
+        padding: const EdgeInsets.only(
+          bottom: 30.0,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 16.0,
+              ),
+              child: Text(
+                '${AppLocalizations.of(context)!.splitOption}:',
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            GridView.count(
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 2,
+              childAspectRatio: (MediaQuery.of(context).size.width / 100.0),
+              shrinkWrap: true,
+              children: List.generate(6, (index) {
+                if (index == 0) {
+                  return Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                        elevation: 0.0,
+                        foregroundColor: getForegroundColor(
+                          context: context,
+                          value: state.splitOption,
+                          index: index,
+                        ),
+                        backgroundColor: getNullBackgroundColor(
+                          context: context,
+                          value: state.splitOption,
+                          index: index,
+                        ),
+                        side: BorderSide(
+                          color: getNullBorderColor(
+                            context: context,
+                            value: state.splitOption,
+                            index: index,
+                          ),
+                          width: 1.0,
+                        ),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0))),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        splitOptionTexts[index],
+                        style: const TextStyle(
+                          fontSize: CustomStyle.sizeXL,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                        elevation: 0.0,
+                        foregroundColor: getForegroundColor(
+                          context: context,
+                          value: state.splitOption,
+                          index: index,
+                        ),
+                        backgroundColor: getBackgroundColor(
+                          context: context,
+                          value: state.splitOption,
+                          index: index,
+                        ),
+                        side: BorderSide(
+                          color: getBorderColor(
+                            context: context,
+                            value: state.splitOption,
+                            index: index,
+                          ),
+                          width: 1.0,
+                        ),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0))),
+                      ),
+                      onPressed: index > 0 && index < 2
+                          ? () {
+                              context.read<Setting18GraphModuleBloc>().add(
+                                  SplitOptionChanged(splitOptionValues[index]));
+                            }
+                          : () {},
+                      child: Text(
+                        splitOptionTexts[index],
+                        style: const TextStyle(
+                          fontSize: CustomStyle.sizeXL,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              }),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+}
+
+class _PilotFrequencyMode extends StatelessWidget {
+  const _PilotFrequencyMode({
+    super.key,
+  });
+
+  final List<String> pilotFrequencyModeValues = const [
+    '0',
+    '1',
+    '2',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      buildWhen: (previous, current) =>
+          previous.pilotFrequencyMode != current.pilotFrequencyMode ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return controlToggleButton(
+          context: context,
+          editMode: true,
+          title: '${AppLocalizations.of(context)!.pilotFrequencySelect}:',
+          currentValue: state.pilotFrequencyMode,
+          onChanged: (int index) {
+            context.read<Setting18GraphModuleBloc>().add(
+                PilotFrequencyModeChanged(pilotFrequencyModeValues[index]));
+          },
+          values: pilotFrequencyModeValues,
+          texts: [
+            AppLocalizations.of(context)!.pilotFrequencyFull,
+            AppLocalizations.of(context)!.pilotFrequencyManual,
+            AppLocalizations.of(context)!.pilotFrequencyScan,
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _FirstChannelLoading extends StatelessWidget {
+  const _FirstChannelLoading({
+    super.key,
+    required this.firstChannelLoadingFrequencyTextEditingController,
+    required this.firstChannelLoadingLevelTextEditingController,
+  });
+
+  final TextEditingController firstChannelLoadingFrequencyTextEditingController;
+  final TextEditingController firstChannelLoadingLevelTextEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      buildWhen: (previous, current) =>
+          previous.firstChannelLoadingFrequency !=
+              current.firstChannelLoadingFrequency ||
+          previous.firstChannelLoadingLevel != current.firstChannelLoadingLevel,
+      builder: (context, state) {
+        return twoTextField(
+          context: context,
+          title: '${AppLocalizations.of(context)!.startFrequency}:',
+          editMode1: state.pilotFrequencyMode != '2',
+          editMode2: state.pilotFrequencyMode != '2',
+          textEditingControllerName1:
+              'setting18Form_firstChannelLoadingFrequencyInput_textField',
+          textEditingControllerName2:
+              'setting18Form_firstChannelLoadingLevelInput_textField',
+          textEditingController1:
+              firstChannelLoadingFrequencyTextEditingController,
+          textEditingController2: firstChannelLoadingLevelTextEditingController,
+          onChanged1: (firstChannelLoadingFrequency) {
+            context.read<Setting18GraphModuleBloc>().add(
+                FirstChannelLoadingFrequencyChanged(
+                    firstChannelLoadingFrequency));
+          },
+          onChanged2: (firstChannelLoadingLevel) {
+            context
+                .read<Setting18GraphModuleBloc>()
+                .add(FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _LastChannelLoading extends StatelessWidget {
+  const _LastChannelLoading({
+    super.key,
+    required this.lastChannelLoadingFrequencyTextEditingController,
+    required this.lastChannelLoadingLevelTextEditingController,
+  });
+
+  final TextEditingController lastChannelLoadingFrequencyTextEditingController;
+  final TextEditingController lastChannelLoadingLevelTextEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        return twoTextField(
+          context: context,
+          title: '${AppLocalizations.of(context)!.stopFrequency}:',
+          editMode1: state.pilotFrequencyMode != '2',
+          editMode2: state.pilotFrequencyMode != '2',
+          textEditingControllerName1:
+              'setting18Form_lastChannelLoadingFrequencyInput_textField',
+          textEditingControllerName2:
+              'setting18Form_lastChannelLoadingLevelInput_textField',
+          textEditingController1:
+              lastChannelLoadingFrequencyTextEditingController,
+          textEditingController2: lastChannelLoadingLevelTextEditingController,
+          onChanged1: (lastChannelLoadingFrequency) {
+            context.read<Setting18GraphModuleBloc>().add(
+                LastChannelLoadingFrequencyChanged(
+                    lastChannelLoadingFrequency));
+          },
+          onChanged2: (lastChannelLoadingLevel) {
+            context
+                .read<Setting18GraphModuleBloc>()
+                .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _PilotFrequency1 extends StatelessWidget {
+  const _PilotFrequency1({
+    super.key,
+    required this.pilotFrequency1TextEditingController,
+    required this.manualModePilot1RFOutputPowerTextEditingController,
+  });
+
+  final TextEditingController pilotFrequency1TextEditingController;
+  final TextEditingController
+      manualModePilot1RFOutputPowerTextEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        return twoTextField(
+          context: context,
+          title: '${AppLocalizations.of(context)!.pilotFrequency1}:',
+          editMode1: state.pilotFrequencyMode == '1',
+          editMode2: false,
+          textEditingControllerName1:
+              'setting18Form_pilotFrequency1Input_textField',
+          textEditingControllerName2:
+              'setting18Form_manualModePilot1RFOutputPowerInput_textField',
+          textEditingController1: pilotFrequency1TextEditingController,
+          textEditingController2:
+              manualModePilot1RFOutputPowerTextEditingController,
+          onChanged1: (lastChannelLoadingFrequency) {
+            context.read<Setting18GraphModuleBloc>().add(
+                LastChannelLoadingFrequencyChanged(
+                    lastChannelLoadingFrequency));
+          },
+          onChanged2: (lastChannelLoadingLevel) {
+            context
+                .read<Setting18GraphModuleBloc>()
+                .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _PilotFrequency2 extends StatelessWidget {
+  const _PilotFrequency2({
+    super.key,
+    required this.pilotFrequency2TextEditingController,
+    required this.manualModePilot2RFOutputPowerTextEditingController,
+  });
+
+  final TextEditingController pilotFrequency2TextEditingController;
+  final TextEditingController
+      manualModePilot2RFOutputPowerTextEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        return twoTextField(
+          context: context,
+          title: '${AppLocalizations.of(context)!.pilotFrequency2}:',
+          editMode1: state.pilotFrequencyMode == '1',
+          editMode2: false,
+          textEditingControllerName1:
+              'setting18Form_pilotFrequency2Input_textField',
+          textEditingControllerName2:
+              'setting18Form_manualModePilot2RFOutputPowerInput_textField',
+          textEditingController1: pilotFrequency2TextEditingController,
+          textEditingController2:
+              manualModePilot2RFOutputPowerTextEditingController,
+          onChanged1: (frequency) {
+            context
+                .read<Setting18GraphModuleBloc>()
+                .add(PilotFrequency2Changed(frequency));
+          },
+          onChanged2: (_) {},
+        );
+      },
+    );
+  }
+}
+
 class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({super.key});
 
@@ -299,7 +766,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
     Widget getEditTools({
       required bool enableSubmission,
     }) {
-      return Column(
+      return Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
@@ -314,14 +781,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
             ),
             onPressed: () {
               Navigator.of(context).pop();
-              // 重新載入初始設定值
-              // context
-              //     .read<SettingListViewBloc>()
-              //     .add(const Initialized(true));
             },
           ),
           const SizedBox(
-            height: 10.0,
+            width: 10.0,
           ),
           FloatingActionButton(
             shape: const CircleBorder(

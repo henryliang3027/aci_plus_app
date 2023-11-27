@@ -25,6 +25,16 @@ class Initialized extends Setting18GraphModuleEvent {
     required this.dsVVA3,
     required this.dsVVA4,
     required this.usTGC,
+    required this.splitOption,
+    required this.firstChannelLoadingFrequency,
+    required this.firstChannelLoadingLevel,
+    required this.lastChannelLoadingFrequency,
+    required this.lastChannelLoadingLevel,
+    required this.pilotFrequencyMode,
+    required this.pilotFrequency1,
+    required this.pilotFrequency2,
+    required this.manualModePilot1RFOutputPower,
+    required this.manualModePilot2RFOutputPower,
   });
 
   final String fwdInputAttenuation;
@@ -43,6 +53,16 @@ class Initialized extends Setting18GraphModuleEvent {
   final String dsVVA3;
   final String dsVVA4;
   final String usTGC;
+  final String splitOption;
+  final String firstChannelLoadingFrequency;
+  final String firstChannelLoadingLevel;
+  final String lastChannelLoadingFrequency;
+  final String lastChannelLoadingLevel;
+  final String pilotFrequencyMode;
+  final String pilotFrequency1;
+  final String pilotFrequency2;
+  final String manualModePilot1RFOutputPower;
+  final String manualModePilot2RFOutputPower;
 
   @override
   List<Object> get props => [
@@ -62,6 +82,16 @@ class Initialized extends Setting18GraphModuleEvent {
         dsVVA3,
         dsVVA4,
         usTGC,
+        splitOption,
+        firstChannelLoadingFrequency,
+        firstChannelLoadingLevel,
+        lastChannelLoadingFrequency,
+        lastChannelLoadingLevel,
+        pilotFrequencyMode,
+        pilotFrequency1,
+        pilotFrequency2,
+        manualModePilot1RFOutputPower,
+        manualModePilot2RFOutputPower,
       ];
 }
 
@@ -305,6 +335,78 @@ class USTGCChanged extends Setting18GraphModuleEvent {
 
   @override
   List<Object> get props => [usTGC];
+}
+
+class SplitOptionChanged extends Setting18GraphModuleEvent {
+  const SplitOptionChanged(this.splitOption);
+
+  final String splitOption;
+
+  @override
+  List<Object> get props => [splitOption];
+}
+
+class FirstChannelLoadingFrequencyChanged extends Setting18GraphModuleEvent {
+  const FirstChannelLoadingFrequencyChanged(this.firstChannelLoadingFrequency);
+
+  final String firstChannelLoadingFrequency;
+
+  @override
+  List<Object> get props => [firstChannelLoadingFrequency];
+}
+
+class FirstChannelLoadingLevelChanged extends Setting18GraphModuleEvent {
+  const FirstChannelLoadingLevelChanged(this.firstChannelLoadingLevel);
+
+  final String firstChannelLoadingLevel;
+
+  @override
+  List<Object> get props => [firstChannelLoadingLevel];
+}
+
+class LastChannelLoadingFrequencyChanged extends Setting18GraphModuleEvent {
+  const LastChannelLoadingFrequencyChanged(this.lastChannelLoadingFrequency);
+
+  final String lastChannelLoadingFrequency;
+
+  @override
+  List<Object> get props => [lastChannelLoadingFrequency];
+}
+
+class LastChannelLoadingLevelChanged extends Setting18GraphModuleEvent {
+  const LastChannelLoadingLevelChanged(this.lastChannelLoadingLevel);
+
+  final String lastChannelLoadingLevel;
+
+  @override
+  List<Object> get props => [lastChannelLoadingLevel];
+}
+
+class PilotFrequencyModeChanged extends Setting18GraphModuleEvent {
+  const PilotFrequencyModeChanged(this.pilotFrequencyMode);
+
+  final String pilotFrequencyMode;
+
+  @override
+  List<Object> get props => [pilotFrequencyMode];
+}
+
+class PilotFrequency1Changed extends Setting18GraphModuleEvent {
+  const PilotFrequency1Changed(this.pilotFrequency1);
+
+  final String pilotFrequency1;
+
+  @override
+  List<Object> get props => [pilotFrequency1];
+}
+
+class PilotFrequency2Changed extends Setting18GraphModuleEvent {
+  const PilotFrequency2Changed(this.pilotFrequency2);
+
+  final String pilotFrequency2;
+
+  @override
+  List<Object> get props => [pilotFrequency2];
 }
 
 class SettingSubmitted extends Setting18GraphModuleEvent {

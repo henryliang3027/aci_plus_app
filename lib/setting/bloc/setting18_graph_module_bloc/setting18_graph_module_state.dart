@@ -19,10 +19,20 @@ class Setting18GraphModuleState extends Equatable {
     this.dsVVA3 = '',
     this.dsVVA4 = '',
     this.usTGC = '',
+    this.splitOption = '1',
+    this.firstChannelLoadingFrequency = '',
+    this.firstChannelLoadingLevel = '',
+    this.lastChannelLoadingFrequency = '',
+    this.lastChannelLoadingLevel = '',
+    this.pilotFrequencyMode = '',
+    this.pilotFrequency1 = '',
+    this.pilotFrequency2 = '',
+    this.manualModePilot1RFOutputPower = '',
+    this.manualModePilot2RFOutputPower = '',
     this.editMode = false,
     this.enableSubmission = false,
     this.isInitialize = true,
-    this.initialValues = const [],
+    this.initialValues = const {},
     this.settingResult = const [],
   });
 
@@ -43,10 +53,20 @@ class Setting18GraphModuleState extends Equatable {
   final String dsVVA3;
   final String dsVVA4;
   final String usTGC;
+  final String splitOption;
+  final String firstChannelLoadingFrequency;
+  final String firstChannelLoadingLevel;
+  final String lastChannelLoadingFrequency;
+  final String lastChannelLoadingLevel;
+  final String pilotFrequencyMode;
+  final String pilotFrequency1;
+  final String pilotFrequency2;
+  final String manualModePilot1RFOutputPower;
+  final String manualModePilot2RFOutputPower;
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
-  final List<dynamic> initialValues;
+  final Map<DataKey, String> initialValues;
   final List<String> settingResult;
 
   Setting18GraphModuleState copyWith({
@@ -67,10 +87,20 @@ class Setting18GraphModuleState extends Equatable {
     String? dsVVA3,
     String? dsVVA4,
     String? usTGC,
+    String? splitOption,
+    String? firstChannelLoadingFrequency,
+    String? firstChannelLoadingLevel,
+    String? lastChannelLoadingFrequency,
+    String? lastChannelLoadingLevel,
+    String? pilotFrequencyMode,
+    String? pilotFrequency1,
+    String? pilotFrequency2,
+    String? manualModePilot1RFOutputPower,
+    String? manualModePilot2RFOutputPower,
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
-    List<dynamic>? initialValues,
+    Map<DataKey, String>? initialValues,
     List<String>? settingResult,
   }) {
     return Setting18GraphModuleState(
@@ -92,6 +122,22 @@ class Setting18GraphModuleState extends Equatable {
       dsVVA3: dsVVA3 ?? this.dsVVA3,
       dsVVA4: dsVVA4 ?? this.dsVVA4,
       usTGC: usTGC ?? this.usTGC,
+      splitOption: splitOption ?? this.splitOption,
+      firstChannelLoadingFrequency:
+          firstChannelLoadingFrequency ?? this.firstChannelLoadingFrequency,
+      firstChannelLoadingLevel:
+          firstChannelLoadingLevel ?? this.firstChannelLoadingLevel,
+      lastChannelLoadingFrequency:
+          lastChannelLoadingFrequency ?? this.lastChannelLoadingFrequency,
+      lastChannelLoadingLevel:
+          lastChannelLoadingLevel ?? this.lastChannelLoadingLevel,
+      pilotFrequencyMode: pilotFrequencyMode ?? this.pilotFrequencyMode,
+      pilotFrequency1: pilotFrequency1 ?? this.pilotFrequency1,
+      pilotFrequency2: pilotFrequency2 ?? this.pilotFrequency2,
+      manualModePilot1RFOutputPower:
+          manualModePilot1RFOutputPower ?? this.manualModePilot1RFOutputPower,
+      manualModePilot2RFOutputPower:
+          manualModePilot2RFOutputPower ?? this.manualModePilot2RFOutputPower,
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
@@ -119,6 +165,16 @@ class Setting18GraphModuleState extends Equatable {
         dsVVA3,
         dsVVA4,
         usTGC,
+        splitOption,
+        firstChannelLoadingFrequency,
+        firstChannelLoadingLevel,
+        lastChannelLoadingFrequency,
+        lastChannelLoadingLevel,
+        pilotFrequencyMode,
+        pilotFrequency1,
+        pilotFrequency2,
+        manualModePilot1RFOutputPower,
+        manualModePilot2RFOutputPower,
         editMode,
         enableSubmission,
         isInitialize,

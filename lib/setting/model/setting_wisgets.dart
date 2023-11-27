@@ -115,7 +115,22 @@ Widget controlToggleButton({
   required String title,
   required String currentValue,
   required ValueChanged<int> onChanged,
+  required List<String> values,
+  required List<String> texts,
 }) {
+  List<bool> getSelectionState(String selectedValue) {
+    Map<String, bool> selectedValueMap = {};
+    for (String value in values) {
+      selectedValueMap[value] = false;
+    }
+
+    if (selectedValueMap.containsKey(selectedValue)) {
+      selectedValueMap[selectedValue] = true;
+    }
+
+    return selectedValueMap.values.toList();
+  }
+
   return Padding(
     padding: const EdgeInsets.only(
       bottom: 40.0,
@@ -154,14 +169,11 @@ Widget controlToggleButton({
                 : Theme.of(context).colorScheme.inversePrimary, // selected
             color: Theme.of(context).colorScheme.secondary, // not selected
             constraints: BoxConstraints.expand(
-              width: (constraints.maxWidth - 6) / rtnIngressValues.length,
+              width: (constraints.maxWidth - 6) / values.length,
             ),
             isSelected: getSelectionState(currentValue),
             children: <Widget>[
-              const Text('0'),
-              const Text('-3'),
-              const Text('-6'),
-              Text(AppLocalizations.of(context)!.ingressOpen),
+              for (String text in texts) ...[Text(text)],
             ],
           ),
         ),
@@ -170,24 +182,206 @@ Widget controlToggleButton({
   );
 }
 
-List<String> rtnIngressValues = const [
+Widget twoTextField({
+  required BuildContext context,
+  required String title,
+  required bool editMode1,
+  required bool editMode2,
+  required String textEditingControllerName1,
+  required String textEditingControllerName2,
+  required TextEditingController textEditingController1,
+  required TextEditingController textEditingController2,
+  required ValueChanged onChanged1,
+  required ValueChanged onChanged2,
+}) {
+  return Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(
+          bottom: 16.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Text(
+                '${AppLocalizations.of(context)!.startFrequency}:',
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(
+          bottom: 16.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              flex: 2,
+              child: TextField(
+                controller: textEditingController1,
+                key: Key(textEditingControllerName1),
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                ),
+                enabled: editMode1,
+                textInputAction: TextInputAction.done,
+                onChanged: onChanged1,
+                maxLength: 40,
+                decoration: InputDecoration(
+                  label: Text(
+                      '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
+                  border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  contentPadding: const EdgeInsets.all(8.0),
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
+                  counterText: '',
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            Flexible(
+              flex: 2,
+              child: TextField(
+                controller: textEditingController2,
+                key: Key(textEditingControllerName2),
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                ),
+                enabled: editMode2,
+                textInputAction: TextInputAction.done,
+                onChanged: onChanged2,
+                maxLength: 40,
+                decoration: InputDecoration(
+                  label: Text(
+                      '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})'),
+                  border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  contentPadding: const EdgeInsets.all(8.0),
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
+                  counterText: '',
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+    ],
+  );
+}
+
+const List<String> splitOptionTexts = [
+  'Null',
+  '204/258 MHz',
+  '300/372 MHz',
+  '396/492 MHz',
+  '492/606 MHz',
+  '684/834 MHz',
+];
+
+const List<String> splitOptionValues = [
   '0',
   '1',
   '2',
+  '3',
   '4',
+  '5',
 ];
 
-List<bool> getSelectionState(String selectedrtnIngress) {
-  Map<String, bool> selectedrtnIngressMap = {
-    '0': false,
-    '1': false,
-    '2': false,
-    '4': false,
-  };
+Color getNullBackgroundColor({
+  required BuildContext context,
+  required String value,
+  required int index,
+}) {
+  String strIndex = index.toString();
+  return strIndex == value
+      ? CustomStyle.customRed
+      : Theme.of(context).colorScheme.onPrimary;
+}
 
-  if (selectedrtnIngressMap.containsKey(selectedrtnIngress)) {
-    selectedrtnIngressMap[selectedrtnIngress] = true;
-  }
+Color getNullBorderColor({
+  required BuildContext context,
+  required String value,
+  required int index,
+}) {
+  String strIndex = index.toString();
+  return strIndex == value ? CustomStyle.customRed : Colors.grey;
+}
 
-  return selectedrtnIngressMap.values.toList();
+Color getBackgroundColor({
+  required BuildContext context,
+  required String value,
+  required int index,
+}) {
+  String strIndex = index.toString();
+
+  return strIndex == value
+      ? Theme.of(context).colorScheme.primary
+      : Theme.of(context).colorScheme.onPrimary;
+}
+
+Color getBorderColor({
+  required BuildContext context,
+  required String value,
+  required int index,
+}) {
+  String strIndex = index.toString();
+
+  return strIndex == value
+      ? Theme.of(context).colorScheme.primary
+      : Colors.grey;
+}
+
+Color getForegroundColor({
+  required BuildContext context,
+  required String value,
+  required int index,
+}) {
+  String strIndex = index.toString();
+  return strIndex == value
+      ? Theme.of(context).colorScheme.onPrimary
+      : Colors.grey;
+}
+
+Color getDisabledNullBackgroundColor({
+  required BuildContext context,
+  required String value,
+  required int index,
+}) {
+  String strIndex = index.toString();
+
+  return strIndex == value
+      ? const Color.fromARGB(255, 215, 82, 95)
+      : Theme.of(context).colorScheme.onPrimary;
+}
+
+Color getDisabledBackgroundColor({
+  required BuildContext context,
+  required String value,
+  required int index,
+}) {
+  String strIndex = index.toString();
+
+  return strIndex == value
+      ? Theme.of(context).colorScheme.inversePrimary
+      : Theme.of(context).colorScheme.onPrimary;
+}
+
+Color getDisabledBorderColor() {
+  return Colors.grey;
 }

@@ -608,6 +608,19 @@ class _RtnOutputEQ extends StatelessWidget {
   }
 }
 
+const List<String> rtnIngressValues = [
+  '0',
+  '1',
+  '2',
+  '4',
+];
+
+const List<String> tgcCableLengthValues = [
+  '9',
+  '18',
+  '27',
+];
+
 class _RtnIngressSetting2 extends StatelessWidget {
   const _RtnIngressSetting2({
     super.key,
@@ -630,6 +643,13 @@ class _RtnIngressSetting2 extends StatelessWidget {
                 .read<Setting18ControlBloc>()
                 .add(RtnIngressSetting2Changed(rtnIngressValues[index]));
           },
+          values: rtnIngressValues,
+          texts: [
+            '0',
+            '-3',
+            '-6',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
         );
       },
     );
@@ -658,6 +678,13 @@ class _RtnIngressSetting3 extends StatelessWidget {
                 .read<Setting18ControlBloc>()
                 .add(RtnIngressSetting3Changed(rtnIngressValues[index]));
           },
+          values: rtnIngressValues,
+          texts: [
+            '0',
+            '-3',
+            '-6',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
         );
       },
     );
@@ -686,106 +713,13 @@ class _RtnIngressSetting4 extends StatelessWidget {
                 .read<Setting18ControlBloc>()
                 .add(RtnIngressSetting4Changed(rtnIngressValues[index]));
           },
-        );
-      },
-    );
-  }
-}
-
-class _TGCCableLength extends StatelessWidget {
-  const _TGCCableLength({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    List<String> tgcCableLengthValues = const [
-      '9',
-      '18',
-      '27',
-    ];
-
-    List<bool> getTGCCableLengthSelectionState(String selectedTGCCableLength) {
-      Map<String, bool> selectedTGCCableLengthMap = {
-        '9': false,
-        '18': false,
-        '27': false,
-      };
-
-      if (selectedTGCCableLengthMap.containsKey(selectedTGCCableLength)) {
-        selectedTGCCableLengthMap[selectedTGCCableLength] = true;
-      }
-
-      return selectedTGCCableLengthMap.values.toList();
-    }
-
-    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
-      buildWhen: (previous, current) =>
-          previous.tgcCableLength != current.tgcCableLength ||
-          previous.editMode != current.editMode,
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context)!.tgcCableLength}:',
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              LayoutBuilder(
-                builder: (context, constraints) => ToggleButtons(
-                  direction: Axis.horizontal,
-                  onPressed: state.editMode
-                      ? (int index) {
-                          context.read<Setting18ControlBloc>().add(
-                              TGCCableLengthChanged(
-                                  tgcCableLengthValues[index]));
-                        }
-                      : (index) {},
-                  textStyle: const TextStyle(fontSize: 18.0),
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  selectedBorderColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // indigo border color
-                  selectedColor: Theme.of(context)
-                      .colorScheme
-                      .onPrimary, // white text color
-
-                  fillColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // selected
-                  color:
-                      Theme.of(context).colorScheme.secondary, // not selected
-                  constraints: BoxConstraints.expand(
-                    width: (constraints.maxWidth - 4) /
-                        tgcCableLengthValues.length,
-                  ),
-                  isSelected:
-                      getTGCCableLengthSelectionState(state.tgcCableLength),
-                  children: const <Widget>[
-                    Text('9'),
-                    Text('18'),
-                    Text('27'),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          values: rtnIngressValues,
+          texts: [
+            '0',
+            '-3',
+            '-6',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
         );
       },
     );

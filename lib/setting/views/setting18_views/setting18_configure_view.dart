@@ -6,6 +6,7 @@ import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_configure/setting18_configure_bloc.dart';
+import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_page.dart';
 import 'package:flutter/material.dart';
@@ -295,7 +296,7 @@ class Setting18ConfigureView extends StatelessWidget {
             widgets.add(const _LogInterval());
             break;
           case SettingConfiruration.cableLength:
-            widgets.add(const _TGCCableLength());
+            // widgets.add(const _TGCCableLength());
             break;
         }
       }
@@ -337,7 +338,7 @@ class Setting18ConfigureView extends StatelessWidget {
               const _FwdAGCMode(),
               const _AutoLevelControl(),
               const _LogInterval(),
-              const _TGCCableLength(),
+              // const _TGCCableLength(),
             ];
     }
 
@@ -585,107 +586,6 @@ class _Coordinates extends StatelessWidget {
 class _SplitOption extends StatelessWidget {
   const _SplitOption({super.key});
 
-  final List<String> splitOptionTexts = const [
-    'Null',
-    '204/258 MHz',
-    '300/372 MHz',
-    '396/492 MHz',
-    '492/606 MHz',
-    '684/834 MHz',
-  ];
-
-  final List<String> splitOptionValues = const [
-    '0',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-  ];
-
-  Color getNullBackgroundColor({
-    required BuildContext context,
-    required String value,
-    required int index,
-  }) {
-    String strIndex = index.toString();
-    return strIndex == value
-        ? CustomStyle.customRed
-        : Theme.of(context).colorScheme.onPrimary;
-  }
-
-  Color getNullBorderColor({
-    required BuildContext context,
-    required String value,
-    required int index,
-  }) {
-    String strIndex = index.toString();
-    return strIndex == value ? CustomStyle.customRed : Colors.grey;
-  }
-
-  Color getBackgroundColor({
-    required BuildContext context,
-    required String value,
-    required int index,
-  }) {
-    String strIndex = index.toString();
-
-    return strIndex == value
-        ? Theme.of(context).colorScheme.primary
-        : Theme.of(context).colorScheme.onPrimary;
-  }
-
-  Color getBorderColor({
-    required BuildContext context,
-    required String value,
-    required int index,
-  }) {
-    String strIndex = index.toString();
-
-    return strIndex == value
-        ? Theme.of(context).colorScheme.primary
-        : Colors.grey;
-  }
-
-  Color getForegroundColor({
-    required BuildContext context,
-    required String value,
-    required int index,
-  }) {
-    String strIndex = index.toString();
-    return strIndex == value
-        ? Theme.of(context).colorScheme.onPrimary
-        : Colors.grey;
-  }
-
-  Color getDisabledNullBackgroundColor({
-    required BuildContext context,
-    required String value,
-    required int index,
-  }) {
-    String strIndex = index.toString();
-
-    return strIndex == value
-        ? const Color.fromARGB(255, 215, 82, 95)
-        : Theme.of(context).colorScheme.onPrimary;
-  }
-
-  Color getDisabledBackgroundColor({
-    required BuildContext context,
-    required String value,
-    required int index,
-  }) {
-    String strIndex = index.toString();
-
-    return strIndex == value
-        ? Theme.of(context).colorScheme.inversePrimary
-        : Theme.of(context).colorScheme.onPrimary;
-  }
-
-  Color getDisabledBorderColor() {
-    return Colors.grey;
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
@@ -835,6 +735,45 @@ class _SplitOption extends StatelessWidget {
   }
 }
 
+class _PilotFrequencyMode extends StatelessWidget {
+  const _PilotFrequencyMode({
+    super.key,
+  });
+
+  final List<String> pilotFrequencyModeValues = const [
+    '0',
+    '1',
+    '2',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
+      buildWhen: (previous, current) =>
+          previous.pilotFrequencyMode != current.pilotFrequencyMode ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.pilotFrequencySelect}:',
+          currentValue: state.pilotFrequencyMode,
+          onChanged: (int index) {
+            context.read<Setting18ConfigureBloc>().add(
+                PilotFrequencyModeChanged(pilotFrequencyModeValues[index]));
+          },
+          values: pilotFrequencyModeValues,
+          texts: [
+            AppLocalizations.of(context)!.pilotFrequencyFull,
+            AppLocalizations.of(context)!.pilotFrequencyManual,
+            AppLocalizations.of(context)!.pilotFrequencyScan,
+          ],
+        );
+      },
+    );
+  }
+}
+
 class _FirstChannelLoading extends StatelessWidget {
   const _FirstChannelLoading({
     super.key,
@@ -849,109 +788,28 @@ class _FirstChannelLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: Text(
-                      '${AppLocalizations.of(context)!.startFrequency}:',
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    flex: 2,
-                    child: TextField(
-                      controller:
-                          firstChannelLoadingFrequencyTextEditingController,
-                      key: const Key(
-                          'setting18Form_firstChannelLoadingFrequencyInput_textField'),
-                      style: const TextStyle(
-                        fontSize: CustomStyle.sizeXL,
-                      ),
-                      enabled:
-                          state.editMode && state.pilotFrequencyMode == '0',
-                      textInputAction: TextInputAction.done,
-                      onChanged: (firstChannelLoadingFrequency) {
-                        context.read<Setting18ConfigureBloc>().add(
-                            FirstChannelLoadingFrequencyChanged(
-                                firstChannelLoadingFrequency));
-                      },
-                      maxLength: 40,
-                      decoration: InputDecoration(
-                        label: Text(
-                            '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
-                        border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0))),
-                        contentPadding: const EdgeInsets.all(8.0),
-                        isDense: true,
-                        filled: true,
-                        fillColor: Colors.white,
-                        counterText: '',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: TextField(
-                      controller: firstChannelLoadingLevelTextEditingController,
-                      key: const Key(
-                          'setting18Form_firstChannelLoadingLevelInput_textField'),
-                      style: const TextStyle(
-                        fontSize: CustomStyle.sizeXL,
-                      ),
-                      enabled:
-                          state.editMode && state.pilotFrequencyMode == '0',
-                      textInputAction: TextInputAction.done,
-                      onChanged: (firstChannelLoadingLevel) {
-                        context.read<Setting18ConfigureBloc>().add(
-                            FirstChannelLoadingLevelChanged(
-                                firstChannelLoadingLevel));
-                      },
-                      maxLength: 40,
-                      decoration: InputDecoration(
-                        label: Text(
-                            '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})'),
-                        border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0))),
-                        contentPadding: const EdgeInsets.all(8.0),
-                        isDense: true,
-                        filled: true,
-                        fillColor: Colors.white,
-                        counterText: '',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-          ],
+        return twoTextField(
+          context: context,
+          title: '${AppLocalizations.of(context)!.startFrequency}:',
+          editMode1: state.editMode && state.pilotFrequencyMode != '2',
+          editMode2: state.editMode && state.pilotFrequencyMode != '2',
+          textEditingControllerName1:
+              'setting18Form_firstChannelLoadingFrequencyInput_textField',
+          textEditingControllerName2:
+              'setting18Form_firstChannelLoadingLevelInput_textField',
+          textEditingController1:
+              firstChannelLoadingFrequencyTextEditingController,
+          textEditingController2: firstChannelLoadingLevelTextEditingController,
+          onChanged1: (firstChannelLoadingFrequency) {
+            context.read<Setting18ConfigureBloc>().add(
+                FirstChannelLoadingFrequencyChanged(
+                    firstChannelLoadingFrequency));
+          },
+          onChanged2: (firstChannelLoadingLevel) {
+            context
+                .read<Setting18ConfigureBloc>()
+                .add(FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
+          },
         );
       },
     );
@@ -972,210 +830,28 @@ class _LastChannelLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: Text(
-                      '${AppLocalizations.of(context)!.stopFrequency}:',
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    flex: 2,
-                    child: TextField(
-                      controller:
-                          lastChannelLoadingFrequencyTextEditingController,
-                      key: const Key(
-                          'setting18Form_lastChannelLoadingFrequencyInput_textField'),
-                      style: const TextStyle(
-                        fontSize: CustomStyle.sizeXL,
-                      ),
-                      enabled:
-                          state.editMode && state.pilotFrequencyMode == '0',
-                      textInputAction: TextInputAction.done,
-                      onChanged: (lastChannelLoadingFrequency) {
-                        context.read<Setting18ConfigureBloc>().add(
-                            LastChannelLoadingFrequencyChanged(
-                                lastChannelLoadingFrequency));
-                      },
-                      maxLength: 40,
-                      decoration: InputDecoration(
-                        label: Text(
-                            '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
-                        border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0))),
-                        contentPadding: const EdgeInsets.all(8.0),
-                        isDense: true,
-                        filled: true,
-                        fillColor: Colors.white,
-                        counterText: '',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: TextField(
-                      controller: lastChannelLoadingLevelTextEditingController,
-                      key: const Key(
-                          'setting18Form_lastChannelLoadingLevelInput_textField'),
-                      style: const TextStyle(
-                        fontSize: CustomStyle.sizeXL,
-                      ),
-                      enabled:
-                          state.editMode && state.pilotFrequencyMode == '0',
-                      textInputAction: TextInputAction.done,
-                      onChanged: (lastChannelLoadingLevel) {
-                        context.read<Setting18ConfigureBloc>().add(
-                            LastChannelLoadingLevelChanged(
-                                lastChannelLoadingLevel));
-                      },
-                      maxLength: 40,
-                      decoration: InputDecoration(
-                        label: Text(
-                            '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})'),
-                        border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0))),
-                        contentPadding: const EdgeInsets.all(8.0),
-                        isDense: true,
-                        filled: true,
-                        fillColor: Colors.white,
-                        counterText: '',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class _PilotFrequencyMode extends StatelessWidget {
-  const _PilotFrequencyMode({
-    super.key,
-  });
-
-  final List<String> pilotFrequencyModeValues = const [
-    '0',
-    '1',
-    '2',
-  ];
-
-  List<bool> getSelectionState(String selectedPilotFrequencyMode) {
-    Map<String, bool> pilotFrequencyModeMap = {
-      '0': false,
-      '1': false,
-      '2': false,
-    };
-
-    if (pilotFrequencyModeMap.containsKey(selectedPilotFrequencyMode)) {
-      pilotFrequencyModeMap[selectedPilotFrequencyMode] = true;
-    }
-
-    return pilotFrequencyModeMap.values.toList();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
-      buildWhen: (previous, current) =>
-          previous.pilotFrequencyMode != current.pilotFrequencyMode ||
-          previous.editMode != current.editMode,
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context)!.pilotFrequencySelect}:',
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              LayoutBuilder(
-                builder: (context, constraints) => ToggleButtons(
-                  direction: Axis.horizontal,
-                  onPressed: (int index) {
-                    if (state.editMode) {
-                      context.read<Setting18ConfigureBloc>().add(
-                          PilotFrequencyModeChanged(
-                              pilotFrequencyModeValues[index]));
-                    }
-                  },
-                  textStyle: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                  ),
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  selectedBorderColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // indigo border color
-                  selectedColor: Theme.of(context)
-                      .colorScheme
-                      .onPrimary, // white text color
-
-                  fillColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // selected
-                  color:
-                      Theme.of(context).colorScheme.secondary, // not selected
-                  constraints: BoxConstraints.expand(
-                    width: (constraints.maxWidth - 4) /
-                        pilotFrequencyModeValues.length,
-                  ),
-                  isSelected: getSelectionState(state.pilotFrequencyMode),
-                  children: <Widget>[
-                    Text(AppLocalizations.of(context)!.pilotFrequencyFull),
-                    Text(AppLocalizations.of(context)!.pilotFrequencyManual),
-                    Text(AppLocalizations.of(context)!.pilotFrequencyScan),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        return twoTextField(
+          context: context,
+          title: '${AppLocalizations.of(context)!.stopFrequency}:',
+          editMode1: state.editMode && state.pilotFrequencyMode != '2',
+          editMode2: state.editMode && state.pilotFrequencyMode != '2',
+          textEditingControllerName1:
+              'setting18Form_lastChannelLoadingFrequencyInput_textField',
+          textEditingControllerName2:
+              'setting18Form_lastChannelLoadingLevelInput_textField',
+          textEditingController1:
+              lastChannelLoadingFrequencyTextEditingController,
+          textEditingController2: lastChannelLoadingLevelTextEditingController,
+          onChanged1: (lastChannelLoadingFrequency) {
+            context.read<Setting18ConfigureBloc>().add(
+                LastChannelLoadingFrequencyChanged(
+                    lastChannelLoadingFrequency));
+          },
+          onChanged2: (lastChannelLoadingLevel) {
+            context
+                .read<Setting18ConfigureBloc>()
+                .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
+          },
         );
       },
     );
@@ -1197,100 +873,28 @@ class _PilotFrequency1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 16.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context)!.pilotFrequency1}:',
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 2,
-                      child: TextField(
-                        controller: pilotFrequency1TextEditingController,
-                        key: const Key(
-                            'setting18Form_pilotFrequency1Input_textField'),
-                        style: const TextStyle(
-                          fontSize: CustomStyle.sizeXL,
-                        ),
-                        enabled:
-                            state.editMode && state.pilotFrequencyMode == '1',
-                        textInputAction: TextInputAction.done,
-                        onChanged: (frequency) {
-                          context
-                              .read<Setting18ConfigureBloc>()
-                              .add(PilotFrequency1Changed(frequency));
-                        },
-                        maxLength: 40,
-                        decoration: InputDecoration(
-                          label: Text(
-                              '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(4.0))),
-                          contentPadding: const EdgeInsets.all(10.0),
-                          isDense: true,
-                          filled: true,
-                          fillColor: Colors.white,
-                          counterText: '',
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Flexible(
-                      flex: 2,
-                      child: TextField(
-                        controller:
-                            manualModePilot1RFOutputPowerTextEditingController,
-                        key: const Key(
-                            'setting18Form_manualModePilot1RFOutputPowerInput_textField'),
-                        style: const TextStyle(
-                          fontSize: CustomStyle.sizeXL,
-                        ),
-                        enabled: false,
-                        textInputAction: TextInputAction.done,
-                        onChanged: null,
-                        maxLength: 40,
-                        decoration: InputDecoration(
-                          label: Text(
-                              '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})'),
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(4.0))),
-                          contentPadding: const EdgeInsets.all(8.0),
-                          isDense: true,
-                          filled: true,
-                          fillColor: Colors.white,
-                          counterText: '',
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        return twoTextField(
+          context: context,
+          title: '${AppLocalizations.of(context)!.pilotFrequency1}:',
+          editMode1: state.editMode && state.pilotFrequencyMode == '1',
+          editMode2: false,
+          textEditingControllerName1:
+              'setting18Form_pilotFrequency1Input_textField',
+          textEditingControllerName2:
+              'setting18Form_manualModePilot1RFOutputPowerInput_textField',
+          textEditingController1: pilotFrequency1TextEditingController,
+          textEditingController2:
+              manualModePilot1RFOutputPowerTextEditingController,
+          onChanged1: (lastChannelLoadingFrequency) {
+            context.read<Setting18ConfigureBloc>().add(
+                LastChannelLoadingFrequencyChanged(
+                    lastChannelLoadingFrequency));
+          },
+          onChanged2: (lastChannelLoadingLevel) {
+            context
+                .read<Setting18ConfigureBloc>()
+                .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
+          },
         );
       },
     );
@@ -1312,100 +916,24 @@ class _PilotFrequency2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 16.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context)!.pilotFrequency2}:',
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 2,
-                      child: TextField(
-                        controller: pilotFrequency2TextEditingController,
-                        key: const Key(
-                            'setting18Form_pilotFrequency2Input_textField'),
-                        style: const TextStyle(
-                          fontSize: CustomStyle.sizeXL,
-                        ),
-                        enabled:
-                            state.editMode && state.pilotFrequencyMode == '1',
-                        textInputAction: TextInputAction.done,
-                        onChanged: (frequency) {
-                          context
-                              .read<Setting18ConfigureBloc>()
-                              .add(PilotFrequency2Changed(frequency));
-                        },
-                        maxLength: 40,
-                        decoration: InputDecoration(
-                          label: Text(
-                              '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(4.0))),
-                          contentPadding: const EdgeInsets.all(10.0),
-                          isDense: true,
-                          filled: true,
-                          fillColor: Colors.white,
-                          counterText: '',
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Flexible(
-                      flex: 2,
-                      child: TextField(
-                        controller:
-                            manualModePilot2RFOutputPowerTextEditingController,
-                        key: const Key(
-                            'setting18Form_manualModePilot2RFOutputPowerInput_textField'),
-                        style: const TextStyle(
-                          fontSize: CustomStyle.sizeXL,
-                        ),
-                        enabled: false,
-                        textInputAction: TextInputAction.done,
-                        onChanged: null,
-                        maxLength: 40,
-                        decoration: InputDecoration(
-                          label: Text(
-                              '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})'),
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(4.0))),
-                          contentPadding: const EdgeInsets.all(8.0),
-                          isDense: true,
-                          filled: true,
-                          fillColor: Colors.white,
-                          counterText: '',
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        return twoTextField(
+          context: context,
+          title: '${AppLocalizations.of(context)!.pilotFrequency2}:',
+          editMode1: state.editMode && state.pilotFrequencyMode == '1',
+          editMode2: false,
+          textEditingControllerName1:
+              'setting18Form_pilotFrequency2Input_textField',
+          textEditingControllerName2:
+              'setting18Form_manualModePilot2RFOutputPowerInput_textField',
+          textEditingController1: pilotFrequency2TextEditingController,
+          textEditingController2:
+              manualModePilot2RFOutputPowerTextEditingController,
+          onChanged1: (frequency) {
+            context
+                .read<Setting18ConfigureBloc>()
+                .add(PilotFrequency2Changed(frequency));
+          },
+          onChanged2: (_) {},
         );
       },
     );
@@ -1743,93 +1271,35 @@ class _TGCCableLength extends StatelessWidget {
     super.key,
   });
 
-  final List<String> tgcCableLengthValues = const [
-    '9',
-    '18',
-    '27',
-  ];
-
-  List<bool> getSelectionState(String selectedTGCCableLength) {
-    Map<String, bool> tgcCableLengthMap = {
-      '9': false,
-      '18': false,
-      '27': false,
-    };
-
-    if (tgcCableLengthMap.containsKey(selectedTGCCableLength)) {
-      tgcCableLengthMap[selectedTGCCableLength] = true;
-    }
-
-    return tgcCableLengthMap.values.toList();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final List<String> tgcCableLengthValues = [
+      '9',
+      '18',
+      '27',
+    ];
+
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       buildWhen: (previous, current) =>
           previous.tgcCableLength != current.tgcCableLength ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context)!.tgcCableLength}:',
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              LayoutBuilder(
-                builder: (context, constraints) => ToggleButtons(
-                  direction: Axis.horizontal,
-                  onPressed: (int index) {
-                    if (state.editMode) {
-                      context.read<Setting18ConfigureBloc>().add(
-                          TGCCableLengthChanged(tgcCableLengthValues[index]));
-                    }
-                  },
-                  textStyle: const TextStyle(fontSize: 18.0),
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  selectedBorderColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // indigo border color
-                  selectedColor: Theme.of(context)
-                      .colorScheme
-                      .onPrimary, // white text color
-
-                  fillColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // selected
-                  color:
-                      Theme.of(context).colorScheme.secondary, // not selected
-                  constraints: BoxConstraints.expand(
-                    width: (constraints.maxWidth - 4) /
-                        tgcCableLengthValues.length,
-                  ),
-                  isSelected: getSelectionState(state.tgcCableLength),
-                  children: const <Widget>[
-                    Text('9 ${CustomStyle.dB}'),
-                    Text('18 ${CustomStyle.dB}'),
-                    Text('27 ${CustomStyle.dB}'),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.tgcCableLength}:',
+          currentValue: state.tgcCableLength,
+          onChanged: (int index) {
+            context
+                .read<Setting18ConfigureBloc>()
+                .add(TGCCableLengthChanged(tgcCableLengthValues[index]));
+          },
+          values: tgcCableLengthValues,
+          texts: [
+            '9',
+            '18',
+            '27',
+          ],
         );
       },
     );

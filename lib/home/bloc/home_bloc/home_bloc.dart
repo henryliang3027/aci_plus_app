@@ -183,6 +183,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
           if (aciDeviceType == ACIDeviceType.amp1P8G) {
             print('1.8G _characteristicDataStreamSubscription');
+            _amp18Repository.createCharacteristicDataStream();
             add(const Data18Requested());
 
             //當在設定頁面設定資料時, 用來更新Information page 對應的資料欄位
@@ -195,6 +196,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             );
           } else if (aciDeviceType == ACIDeviceType.ampCCorNode1P8G) {
             print('1.8G _characteristicDataStreamSubscription');
+            _amp18CCorNodeRepository.createCharacteristicDataStream();
             add(const CCorNode18DataRequested());
             //當在設定頁面設定資料時, 用來更新Information page 對應的資料欄位
             _characteristicDataStreamSubscription =
@@ -206,6 +208,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             );
           } else {
             print('1G/1.2G _characteristicDataStreamSubscription');
+            _dsimRepository.createCharacteristicDataStream();
             add(const DataRequested());
 
             //當在設定頁面設定資料時, 用來更新Information page 對應的資料欄位

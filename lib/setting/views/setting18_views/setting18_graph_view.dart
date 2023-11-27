@@ -32,6 +32,7 @@ class Setting18GraphView extends StatelessWidget {
           Navigator.pop(context);
         },
       ),
+      resizeToAvoidBottomInset: false,
     );
   }
 }
