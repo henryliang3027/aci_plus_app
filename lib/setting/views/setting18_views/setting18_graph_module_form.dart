@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Setting18GraphModuleForm extends StatefulWidget {
-  Setting18GraphModuleForm({
+  const Setting18GraphModuleForm({
     super.key,
     required this.moduleId,
   });
@@ -958,10 +958,6 @@ class _FirstChannelLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
-      buildWhen: (previous, current) =>
-          previous.firstChannelLoadingFrequency !=
-              current.firstChannelLoadingFrequency ||
-          previous.firstChannelLoadingLevel != current.firstChannelLoadingLevel,
       builder: (context, state) {
         return twoTextField(
           context: context,

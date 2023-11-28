@@ -15,7 +15,7 @@ class Setting18GraphPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Setting18GraphViewBloc(
-        dsimRepository: RepositoryProvider.of<Amp18Repository>(context),
+        amp18Repository: RepositoryProvider.of<Amp18Repository>(context),
       ),
       child: const Setting18GraphView(),
     );

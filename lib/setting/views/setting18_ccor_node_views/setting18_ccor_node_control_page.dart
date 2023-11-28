@@ -11,7 +11,7 @@ class Setting18CCorNodeControlPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Setting18CCorNodeControlBloc(
-          dsimRepository:
+          amp18CCorNodeRepository:
               RepositoryProvider.of<Amp18CCorNodeRepository>(context)),
       child: const Setting18CCorNodeControlView(),
     );

@@ -12,7 +12,8 @@ class Setting18CCorNodeThresholdPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Setting18CCorNodeThresholdBloc(
-        dsimRepository: RepositoryProvider.of<Amp18CCorNodeRepository>(context),
+        amp18CCorNodeRepository:
+            RepositoryProvider.of<Amp18CCorNodeRepository>(context),
         unitRepository: RepositoryProvider.of<UnitRepository>(context),
       ),
       child: Setting18CCorNodeThresholdView(),

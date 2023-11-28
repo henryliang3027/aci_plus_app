@@ -11,7 +11,7 @@ class Setting18ControlPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Setting18ControlBloc(
-          dsimRepository: RepositoryProvider.of<Amp18Repository>(context)),
+          amp18repository: RepositoryProvider.of<Amp18Repository>(context)),
       child: const Setting18ControlView(),
     );
   }

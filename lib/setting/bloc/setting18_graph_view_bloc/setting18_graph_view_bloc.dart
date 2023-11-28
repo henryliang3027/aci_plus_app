@@ -12,8 +12,8 @@ part 'setting18_graph_view_state.dart';
 class Setting18GraphViewBloc
     extends Bloc<Setting18GraphViewEvent, Setting18GraphViewState> {
   Setting18GraphViewBloc({
-    required Amp18Repository dsimRepository,
-  })  : _dsimRepository = dsimRepository,
+    required Amp18Repository amp18Repository,
+  })  : _amp18Repository = amp18Repository,
         super(const Setting18GraphViewState()) {
     on<LoadGraphRequested>(_onLoadGraphRequested);
     on<AttenuatorTapped>(_onAttenuatorTapped);
@@ -21,7 +21,7 @@ class Setting18GraphViewBloc
     add(const LoadGraphRequested());
   }
 
-  final Amp18Repository _dsimRepository;
+  final Amp18Repository _amp18Repository;
 
   Future<void> _onLoadGraphRequested(
     LoadGraphRequested event,

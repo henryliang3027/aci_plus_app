@@ -377,7 +377,9 @@ class Setting18ThresholdView extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: const _SettingFloatingActionButton(),
+        floatingActionButton: _SettingFloatingActionButton(
+          partId: partId,
+        ),
       ),
     );
   }
@@ -1127,7 +1129,12 @@ class _LastChannelOutputLevelAlarmControl extends StatelessWidget {
 }
 
 class _SettingFloatingActionButton extends StatelessWidget {
-  const _SettingFloatingActionButton({super.key});
+  const _SettingFloatingActionButton({
+    super.key,
+    required this.partId,
+  });
+
+  final String partId;
 
   @override
   Widget build(BuildContext context) {
@@ -1135,6 +1142,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
       required bool editMode,
       required bool enableSubmission,
     }) {
+      String graphFilePath = settingGraphFilePath[partId] ?? '';
       return editMode
           ? Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -1187,22 +1195,29 @@ class _SettingFloatingActionButton extends StatelessWidget {
           : Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                FloatingActionButton(
-                  // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
-                  heroTag: null,
-                  shape: const CircleBorder(
-                    side: BorderSide.none,
-                  ),
-                  backgroundColor:
-                      Theme.of(context).colorScheme.primary.withAlpha(200),
-                  child: Icon(
-                    Icons.settings_input_composite,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                  onPressed: () {
-                    Navigator.push(context, Setting18GraphPage.route());
-                  },
-                ),
+                graphFilePath.isNotEmpty
+                    ? FloatingActionButton(
+                        // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
+                        heroTag: null,
+                        shape: const CircleBorder(
+                          side: BorderSide.none,
+                        ),
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withAlpha(200),
+                        child: Icon(
+                          Icons.settings_input_composite,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        onPressed: () {
+                          Navigator.push(context, Setting18GraphPage.route());
+                        },
+                      )
+                    : const SizedBox(
+                        width: 0,
+                        height: 0,
+                      ),
                 const SizedBox(
                   height: 10.0,
                 ),

@@ -9,8 +9,9 @@ part 'setting18_control_state.dart';
 
 class Setting18ControlBloc
     extends Bloc<Setting18ControlEvent, Setting18ControlState> {
-  Setting18ControlBloc({required Amp18Repository dsimRepository})
-      : _dsimRepository = dsimRepository,
+  Setting18ControlBloc({
+    required Amp18Repository amp18repository,
+  })  : _amp18repository = amp18repository,
         super(const Setting18ControlState()) {
     on<Initialized>(_onInitialized);
     on<FwdInputAttenuationChanged>(_onFwdInputAttenuationChanged);
@@ -50,7 +51,7 @@ class Setting18ControlBloc
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
-  final Amp18Repository _dsimRepository;
+  final Amp18Repository _amp18repository;
 
   void _onInitialized(
     Initialized event,
@@ -1101,7 +1102,7 @@ class Setting18ControlBloc
     List<String> settingResult = [];
 
     if (state.fwdInputAttenuation != state.initialValues[0]) {
-      bool resultOfSetForwardInputAttenuation = await _dsimRepository
+      bool resultOfSetForwardInputAttenuation = await _amp18repository
           .set1p8GForwardInputAttenuation(state.fwdInputAttenuation);
 
       settingResult.add(
@@ -1110,14 +1111,14 @@ class Setting18ControlBloc
 
     if (state.fwdInputEQ != state.initialValues[1]) {
       bool resultOfSetForwardInputEqualizer =
-          await _dsimRepository.set1p8GForwardInputEqualizer(state.fwdInputEQ);
+          await _amp18repository.set1p8GForwardInputEqualizer(state.fwdInputEQ);
 
       settingResult.add(
           '${DataKey.inputEqualizer.name},$resultOfSetForwardInputEqualizer');
     }
 
     if (state.rtnInputAttenuation2 != state.initialValues[2]) {
-      bool resultOfSetReturnInputAttenuation2 = await _dsimRepository
+      bool resultOfSetReturnInputAttenuation2 = await _amp18repository
           .set1p8GReturnInputAttenuation2(state.rtnInputAttenuation2);
 
       settingResult.add(
@@ -1125,7 +1126,7 @@ class Setting18ControlBloc
     }
 
     if (state.rtnInputAttenuation3 != state.initialValues[3]) {
-      bool resultOfSetReturnInputAttenuation3 = await _dsimRepository
+      bool resultOfSetReturnInputAttenuation3 = await _amp18repository
           .set1p8GReturnInputAttenuation3(state.rtnInputAttenuation3);
 
       settingResult.add(
@@ -1133,7 +1134,7 @@ class Setting18ControlBloc
     }
 
     if (state.rtnInputAttenuation4 != state.initialValues[4]) {
-      bool resultOfSetReturnInputAttenuation4 = await _dsimRepository
+      bool resultOfSetReturnInputAttenuation4 = await _amp18repository
           .set1p8GReturnInputAttenuation4(state.rtnInputAttenuation4);
 
       settingResult.add(
@@ -1141,7 +1142,7 @@ class Setting18ControlBloc
     }
 
     if (state.rtnOutputLevelAttenuation != state.initialValues[5]) {
-      bool resultOfSetReturnOutputAttenuation = await _dsimRepository
+      bool resultOfSetReturnOutputAttenuation = await _amp18repository
           .set1p8GReturnOutputAttenuation(state.rtnOutputLevelAttenuation);
 
       settingResult.add(
@@ -1149,32 +1150,32 @@ class Setting18ControlBloc
     }
 
     if (state.rtnOutputEQ != state.initialValues[6]) {
-      bool resultOfSetReturnOutputEqualizer =
-          await _dsimRepository.set1p8GReturnOutputEqualizer(state.rtnOutputEQ);
+      bool resultOfSetReturnOutputEqualizer = await _amp18repository
+          .set1p8GReturnOutputEqualizer(state.rtnOutputEQ);
 
       settingResult.add(
           '${DataKey.outputEqualizer.name},$resultOfSetReturnOutputEqualizer');
     }
 
     if (state.rtnIngressSetting2 != state.initialValues[7]) {
-      bool resultOfSetReturnIngress2 =
-          await _dsimRepository.set1p8GReturnIngress2(state.rtnIngressSetting2);
+      bool resultOfSetReturnIngress2 = await _amp18repository
+          .set1p8GReturnIngress2(state.rtnIngressSetting2);
 
       settingResult
           .add('${DataKey.ingressSetting2.name},$resultOfSetReturnIngress2');
     }
 
     if (state.rtnIngressSetting3 != state.initialValues[8]) {
-      bool resultOfSetReturnIngress3 =
-          await _dsimRepository.set1p8GReturnIngress3(state.rtnIngressSetting3);
+      bool resultOfSetReturnIngress3 = await _amp18repository
+          .set1p8GReturnIngress3(state.rtnIngressSetting3);
 
       settingResult
           .add('${DataKey.ingressSetting3.name},$resultOfSetReturnIngress3');
     }
 
     if (state.rtnIngressSetting4 != state.initialValues[9]) {
-      bool resultOfSetReturnIngress4 =
-          await _dsimRepository.set1p8GReturnIngress4(state.rtnIngressSetting4);
+      bool resultOfSetReturnIngress4 = await _amp18repository
+          .set1p8GReturnIngress4(state.rtnIngressSetting4);
 
       settingResult
           .add('${DataKey.ingressSetting4.name},$resultOfSetReturnIngress4');
@@ -1182,7 +1183,7 @@ class Setting18ControlBloc
 
     if (state.tgcCableLength != state.initialValues[10]) {
       bool resultOfSetTGCCableLength =
-          await _dsimRepository.set1p8GTGCCableLength(state.tgcCableLength);
+          await _amp18repository.set1p8GTGCCableLength(state.tgcCableLength);
 
       settingResult
           .add('${DataKey.tgcCableLength.name},$resultOfSetTGCCableLength');
@@ -1190,32 +1191,34 @@ class Setting18ControlBloc
 
     if (state.dsVVA2 != state.initialValues[11]) {
       bool resultOfSetDSVVA2 =
-          await _dsimRepository.set1p8GDSVVA2(state.dsVVA2);
+          await _amp18repository.set1p8GDSVVA2(state.dsVVA2);
 
       settingResult.add('${DataKey.dsVVA2.name},$resultOfSetDSVVA2');
     }
 
     if (state.dsSlope2 != state.initialValues[12]) {
       bool resultOfSetDSSlope2 =
-          await _dsimRepository.set1p8GDSSlope2(state.dsSlope2);
+          await _amp18repository.set1p8GDSSlope2(state.dsSlope2);
 
       settingResult.add('${DataKey.dsSlope2.name},$resultOfSetDSSlope2');
     }
 
     if (state.dsVVA3 != state.initialValues[13]) {
-      bool resultOfSetDSVVA3 = await _dsimRepository.set1p8DSVVA3(state.dsVVA3);
+      bool resultOfSetDSVVA3 =
+          await _amp18repository.set1p8DSVVA3(state.dsVVA3);
 
       settingResult.add('${DataKey.dsVVA3.name},$resultOfSetDSVVA3');
     }
 
     if (state.dsVVA4 != state.initialValues[14]) {
-      bool resultOfSetDSVVA4 = await _dsimRepository.set1p8DSVVA4(state.dsVVA4);
+      bool resultOfSetDSVVA4 =
+          await _amp18repository.set1p8DSVVA4(state.dsVVA4);
 
       settingResult.add('${DataKey.dsVVA4.name},$resultOfSetDSVVA4');
     }
 
     if (state.usTGC != state.initialValues[15]) {
-      bool resultOfSetUSTGC = await _dsimRepository.set1p8USTGC(state.usTGC);
+      bool resultOfSetUSTGC = await _amp18repository.set1p8USTGC(state.usTGC);
 
       settingResult.add('${DataKey.usTGC.name},$resultOfSetUSTGC');
     }
@@ -1230,6 +1233,6 @@ class Setting18ControlBloc
       editMode: false,
     ));
 
-    await _dsimRepository.updateCharacteristics();
+    await _amp18repository.updateCharacteristics();
   }
 }

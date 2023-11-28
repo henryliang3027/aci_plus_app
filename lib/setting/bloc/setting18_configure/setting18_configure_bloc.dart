@@ -11,9 +11,9 @@ part 'setting18_configure_state.dart';
 class Setting18ConfigureBloc
     extends Bloc<Setting18ConfigureEvent, Setting18ConfigureState> {
   Setting18ConfigureBloc({
-    required Amp18Repository dsimRepository,
+    required Amp18Repository amp18repository,
     required GPSRepository gpsRepository,
-  })  : _dsimRepository = dsimRepository,
+  })  : _amp18repository = amp18repository,
         _gpsRepository = gpsRepository,
         super(const Setting18ConfigureState()) {
     on<Initialized>(_onInitialized);
@@ -41,7 +41,7 @@ class Setting18ConfigureBloc
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
-  final Amp18Repository _dsimRepository;
+  final Amp18Repository _amp18repository;
   final GPSRepository _gpsRepository;
 
   Future<void> _onInitialized(
@@ -681,28 +681,28 @@ class Setting18ConfigureBloc
 
     if (state.location != state.initialValues[0]) {
       bool resultOfSetLocation =
-          await _dsimRepository.set1p8GLocation(state.location);
+          await _amp18repository.set1p8GLocation(state.location);
 
       settingResult.add('${DataKey.location.name},$resultOfSetLocation');
     }
 
     if (state.coordinates != state.initialValues[1]) {
       bool resultOfSetCoordinates =
-          await _dsimRepository.set1p8GCoordinates(state.coordinates);
+          await _amp18repository.set1p8GCoordinates(state.coordinates);
 
       settingResult.add('${DataKey.coordinates.name},$resultOfSetCoordinates');
     }
 
     if (state.splitOption != state.initialValues[2]) {
       bool resultOfSetSplitOption =
-          await _dsimRepository.set1p8GSplitOption(state.splitOption);
+          await _amp18repository.set1p8GSplitOption(state.splitOption);
 
       settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
     }
 
     if (state.firstChannelLoadingFrequency != state.initialValues[3]) {
       bool resultOfSetFirstChannelLoadingFrequency =
-          await _dsimRepository.set1p8GFirstChannelLoadingFrequency(
+          await _amp18repository.set1p8GFirstChannelLoadingFrequency(
               state.firstChannelLoadingFrequency);
 
       settingResult.add(
@@ -710,7 +710,7 @@ class Setting18ConfigureBloc
     }
 
     if (state.firstChannelLoadingLevel != state.initialValues[4]) {
-      bool resultOfSetFirstChannelLoadingLevel = await _dsimRepository
+      bool resultOfSetFirstChannelLoadingLevel = await _amp18repository
           .set1p8GFirstChannelLoadingLevel(state.firstChannelLoadingLevel);
 
       settingResult.add(
@@ -719,7 +719,7 @@ class Setting18ConfigureBloc
 
     if (state.lastChannelLoadingFrequency != state.initialValues[5]) {
       bool resultOfSetLastChannelLoadingFrequency =
-          await _dsimRepository.set1p8GLastChannelLoadingFrequency(
+          await _amp18repository.set1p8GLastChannelLoadingFrequency(
               state.lastChannelLoadingFrequency);
 
       settingResult.add(
@@ -727,7 +727,7 @@ class Setting18ConfigureBloc
     }
 
     if (state.lastChannelLoadingLevel != state.initialValues[6]) {
-      bool resultOfSetLastChannelLoadingLevel = await _dsimRepository
+      bool resultOfSetLastChannelLoadingLevel = await _amp18repository
           .set1p8GLastChannelLoadingLevel(state.lastChannelLoadingLevel);
 
       settingResult.add(
@@ -735,7 +735,7 @@ class Setting18ConfigureBloc
     }
 
     if (state.pilotFrequencyMode != state.initialValues[7]) {
-      bool resultOfSetPilotFrequencyMode = await _dsimRepository
+      bool resultOfSetPilotFrequencyMode = await _amp18repository
           .set1p8GPilotFrequencyMode(state.pilotFrequencyMode);
 
       settingResult.add(
@@ -744,7 +744,7 @@ class Setting18ConfigureBloc
 
     if (state.pilotFrequency1 != state.initialValues[8]) {
       bool resultOfSetPilotFrequency1 =
-          await _dsimRepository.set1p8GPilotFrequency1(state.pilotFrequency1);
+          await _amp18repository.set1p8GPilotFrequency1(state.pilotFrequency1);
 
       settingResult
           .add('${DataKey.pilotFrequency1.name},$resultOfSetPilotFrequency1');
@@ -752,7 +752,7 @@ class Setting18ConfigureBloc
 
     if (state.pilotFrequency2 != state.initialValues[9]) {
       bool resultOfSetPilotFrequency2 =
-          await _dsimRepository.set1p8GPilotFrequency2(state.pilotFrequency2);
+          await _amp18repository.set1p8GPilotFrequency2(state.pilotFrequency2);
 
       settingResult
           .add('${DataKey.pilotFrequency2.name},$resultOfSetPilotFrequency2');
@@ -760,28 +760,28 @@ class Setting18ConfigureBloc
 
     if (state.fwdAGCMode != state.initialValues[10]) {
       bool resultOfSetForwardAGCMode =
-          await _dsimRepository.set1p8GForwardAGCMode(state.fwdAGCMode);
+          await _amp18repository.set1p8GForwardAGCMode(state.fwdAGCMode);
 
       settingResult.add('${DataKey.agcMode.name},$resultOfSetForwardAGCMode');
     }
 
     if (state.autoLevelControl != state.initialValues[11]) {
       bool resultOfSetALCMode =
-          await _dsimRepository.set1p8GALCMode(state.autoLevelControl);
+          await _amp18repository.set1p8GALCMode(state.autoLevelControl);
 
       settingResult.add('${DataKey.alcMode.name},$resultOfSetALCMode');
     }
 
     if (state.logInterval != state.initialValues[12]) {
       bool resultOfSetLogInterval =
-          await _dsimRepository.set1p8GLogInterval(state.logInterval);
+          await _amp18repository.set1p8GLogInterval(state.logInterval);
 
       settingResult.add('${DataKey.logInterval.name},$resultOfSetLogInterval');
     }
 
     if (state.tgcCableLength != state.initialValues[13]) {
       bool resultOfSetTGCCableLength =
-          await _dsimRepository.set1p8GTGCCableLength(state.tgcCableLength);
+          await _amp18repository.set1p8GTGCCableLength(state.tgcCableLength);
 
       settingResult
           .add('${DataKey.tgcCableLength.name},$resultOfSetTGCCableLength');
@@ -797,6 +797,6 @@ class Setting18ConfigureBloc
       editMode: false,
     ));
 
-    await _dsimRepository.updateCharacteristics();
+    await _amp18repository.updateCharacteristics();
   }
 }

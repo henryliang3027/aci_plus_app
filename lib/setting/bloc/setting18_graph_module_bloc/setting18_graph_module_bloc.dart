@@ -9,8 +9,8 @@ part 'setting18_graph_module_state.dart';
 
 class Setting18GraphModuleBloc
     extends Bloc<Setting18GraphModuleEvent, Setting18GraphModuleState> {
-  Setting18GraphModuleBloc({required Amp18Repository dsimRepository})
-      : _dsimRepository = dsimRepository,
+  Setting18GraphModuleBloc({required Amp18Repository amp18Repository})
+      : _amp18Repository = amp18Repository,
         super(const Setting18GraphModuleState()) {
     on<Initialized>(_onInitialized);
     on<FwdInputAttenuationChanged>(_onFwdInputAttenuationChanged);
@@ -56,74 +56,97 @@ class Setting18GraphModuleBloc
     on<PilotFrequency1Changed>(_onPilotFrequency1Changed);
     on<PilotFrequency2Changed>(_onPilotFrequency2Changed);
     on<SettingSubmitted>(_onSettingSubmitted);
+
+    add(const Initialized());
   }
 
-  final Amp18Repository _dsimRepository;
+  final Amp18Repository _amp18Repository;
 
   void _onInitialized(
     Initialized event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
+    Map<DataKey, String> characteristicDataCache =
+        _amp18Repository.characteristicDataCache;
+    String partId = characteristicDataCache[DataKey.partId] ?? '';
+    String inputAttenuation =
+        characteristicDataCache[DataKey.inputAttenuation] ?? '';
+    String inputEqualizer =
+        characteristicDataCache[DataKey.inputEqualizer] ?? '';
+    String inputAttenuation2 =
+        characteristicDataCache[DataKey.inputAttenuation2] ?? '';
+    String inputAttenuation3 =
+        characteristicDataCache[DataKey.inputAttenuation3] ?? '';
+    String inputAttenuation4 =
+        characteristicDataCache[DataKey.inputAttenuation4] ?? '';
+    String outputAttenuation =
+        characteristicDataCache[DataKey.outputAttenuation] ?? '';
+    String outputEqualizer =
+        characteristicDataCache[DataKey.outputEqualizer] ?? '';
+    String ingressSetting2 =
+        characteristicDataCache[DataKey.ingressSetting2] ?? '';
+    String ingressSetting3 =
+        characteristicDataCache[DataKey.ingressSetting3] ?? '';
+    String ingressSetting4 =
+        characteristicDataCache[DataKey.ingressSetting4] ?? '';
+    String tgcCableLength =
+        characteristicDataCache[DataKey.tgcCableLength] ?? '';
+    String dsVVA2 = characteristicDataCache[DataKey.dsVVA2] ?? '';
+    String dsSlope2 = characteristicDataCache[DataKey.dsSlope2] ?? '';
+    String dsVVA3 = characteristicDataCache[DataKey.dsVVA3] ?? '';
+    String dsVVA4 = characteristicDataCache[DataKey.dsVVA4] ?? '';
+    String usTGC = characteristicDataCache[DataKey.usTGC] ?? '';
+    String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
+    String firstChannelLoadingFrequency =
+        characteristicDataCache[DataKey.firstChannelLoadingFrequency] ?? '';
+    String lastChannelLoadingFrequency =
+        characteristicDataCache[DataKey.lastChannelLoadingFrequency] ?? '';
+    String firstChannelLoadingLevel =
+        characteristicDataCache[DataKey.firstChannelLoadingLevel] ?? '';
+    String lastChannelLoadingLevel =
+        characteristicDataCache[DataKey.lastChannelLoadingLevel] ?? '';
+    String pilotFrequencyMode =
+        characteristicDataCache[DataKey.pilotFrequencyMode] ?? '';
+    String pilotFrequency1 =
+        characteristicDataCache[DataKey.pilotFrequency1] ?? '';
+    String pilotFrequency2 =
+        characteristicDataCache[DataKey.pilotFrequency2] ?? '';
+
+    String manualModePilot1RFOutputPower =
+        characteristicDataCache[DataKey.manualModePilot1RFOutputPower] ?? '';
+    String manualModePilot2RFOutputPower =
+        characteristicDataCache[DataKey.manualModePilot2RFOutputPower] ?? '';
+
     emit(state.copyWith(
-        fwdInputAttenuation: event.fwdInputAttenuation,
-        fwdInputEQ: event.fwdInputEQ,
-        rtnInputAttenuation2: event.rtnInputAttenuation2,
-        rtnInputAttenuation3: event.rtnInputAttenuation3,
-        rtnInputAttenuation4: event.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: event.rtnOutputLevelAttenuation,
-        rtnOutputEQ: event.rtnOutputEQ,
-        rtnIngressSetting2: event.rtnIngressSetting2,
-        rtnIngressSetting3: event.rtnIngressSetting3,
-        rtnIngressSetting4: event.rtnIngressSetting4,
-        tgcCableLength: event.tgcCableLength,
-        dsVVA2: event.dsVVA2,
-        dsSlope2: event.dsSlope2,
-        dsVVA3: event.dsVVA3,
-        dsVVA4: event.dsVVA4,
-        usTGC: event.usTGC,
-        splitOption: event.splitOption,
-        pilotFrequencyMode: event.pilotFrequencyMode,
-        firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
-        lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
-        firstChannelLoadingLevel: event.firstChannelLoadingLevel,
-        lastChannelLoadingLevel: event.lastChannelLoadingLevel,
-        pilotFrequency1: event.pilotFrequency1,
-        pilotFrequency2: event.pilotFrequency2,
-        manualModePilot1RFOutputPower: event.manualModePilot1RFOutputPower,
-        manualModePilot2RFOutputPower: event.manualModePilot2RFOutputPower,
-        isInitialize: true,
-        initialValues: {
-          DataKey.inputAttenuation: event.fwdInputAttenuation,
-          DataKey.inputEqualizer: event.fwdInputEQ,
-          DataKey.inputAttenuation2: event.rtnInputAttenuation2,
-          DataKey.inputAttenuation3: event.rtnInputAttenuation3,
-          DataKey.inputAttenuation4: event.rtnInputAttenuation4,
-          DataKey.outputAttenuation: event.rtnOutputLevelAttenuation,
-          DataKey.outputEqualizer: event.rtnOutputEQ,
-          DataKey.ingressSetting2: event.rtnIngressSetting2,
-          DataKey.ingressSetting3: event.rtnIngressSetting3,
-          DataKey.ingressSetting4: event.rtnIngressSetting4,
-          DataKey.tgcCableLength: event.tgcCableLength,
-          DataKey.dsVVA2: event.dsVVA2,
-          DataKey.dsSlope2: event.dsSlope2,
-          DataKey.dsVVA3: event.dsVVA3,
-          DataKey.dsVVA4: event.dsVVA4,
-          DataKey.usTGC: event.usTGC,
-          DataKey.splitOption: event.splitOption,
-          DataKey.pilotFrequencyMode: event.pilotFrequencyMode,
-          DataKey.firstChannelLoadingFrequency:
-              event.firstChannelLoadingFrequency,
-          DataKey.lastChannelLoadingFrequency:
-              event.lastChannelLoadingFrequency,
-          DataKey.firstChannelLoadingLevel: event.firstChannelLoadingLevel,
-          DataKey.lastChannelLoadingLevel: event.lastChannelLoadingLevel,
-          DataKey.pilotFrequency1: event.pilotFrequency1,
-          DataKey.pilotFrequency2: event.pilotFrequency2,
-          DataKey.manualModePilot1RFOutputPower:
-              event.manualModePilot1RFOutputPower,
-          DataKey.manualModePilot2RFOutputPower:
-              event.manualModePilot2RFOutputPower,
-        }));
+      fwdInputAttenuation: inputAttenuation,
+      fwdInputEQ: inputEqualizer,
+      rtnInputAttenuation2: inputAttenuation2,
+      rtnInputAttenuation3: inputAttenuation3,
+      rtnInputAttenuation4: inputAttenuation4,
+      rtnOutputLevelAttenuation: outputAttenuation,
+      rtnOutputEQ: outputEqualizer,
+      rtnIngressSetting2: ingressSetting2,
+      rtnIngressSetting3: ingressSetting3,
+      rtnIngressSetting4: ingressSetting4,
+      tgcCableLength: tgcCableLength,
+      dsVVA2: dsVVA2,
+      dsSlope2: dsSlope2,
+      dsVVA3: dsVVA3,
+      dsVVA4: dsVVA4,
+      usTGC: usTGC,
+      splitOption: splitOption,
+      pilotFrequencyMode: pilotFrequencyMode,
+      firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+      lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+      firstChannelLoadingLevel: firstChannelLoadingLevel,
+      lastChannelLoadingLevel: lastChannelLoadingLevel,
+      pilotFrequency1: pilotFrequency1,
+      pilotFrequency2: pilotFrequency2,
+      manualModePilot1RFOutputPower: manualModePilot1RFOutputPower,
+      manualModePilot2RFOutputPower: manualModePilot2RFOutputPower,
+      isInitialize: true,
+      initialValues: characteristicDataCache,
+    ));
   }
 
   String _getIncreasedNumber(String value) {
@@ -1289,6 +1312,7 @@ class Setting18GraphModuleBloc
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       splitOption: event.splitOption,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
@@ -1325,6 +1349,7 @@ class Setting18GraphModuleBloc
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       pilotFrequencyMode: event.pilotFrequencyMode,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
@@ -1361,6 +1386,7 @@ class Setting18GraphModuleBloc
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
@@ -1397,6 +1423,7 @@ class Setting18GraphModuleBloc
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       firstChannelLoadingLevel: event.firstChannelLoadingLevel,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
@@ -1433,6 +1460,7 @@ class Setting18GraphModuleBloc
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
@@ -1469,6 +1497,7 @@ class Setting18GraphModuleBloc
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       lastChannelLoadingLevel: event.lastChannelLoadingLevel,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
@@ -1505,6 +1534,7 @@ class Setting18GraphModuleBloc
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       pilotFrequency1: event.pilotFrequency1,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
@@ -1541,6 +1571,7 @@ class Setting18GraphModuleBloc
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       pilotFrequency2: event.pilotFrequency2,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
@@ -1647,7 +1678,7 @@ class Setting18GraphModuleBloc
 
     if (state.fwdInputAttenuation !=
         state.initialValues[DataKey.inputAttenuation]) {
-      bool resultOfSetForwardInputAttenuation = await _dsimRepository
+      bool resultOfSetForwardInputAttenuation = await _amp18Repository
           .set1p8GForwardInputAttenuation(state.fwdInputAttenuation);
 
       settingResult.add(
@@ -1656,7 +1687,7 @@ class Setting18GraphModuleBloc
 
     if (state.fwdInputEQ != state.initialValues[DataKey.inputEqualizer]) {
       bool resultOfSetForwardInputEqualizer =
-          await _dsimRepository.set1p8GForwardInputEqualizer(state.fwdInputEQ);
+          await _amp18Repository.set1p8GForwardInputEqualizer(state.fwdInputEQ);
 
       settingResult.add(
           '${DataKey.inputEqualizer.name},$resultOfSetForwardInputEqualizer');
@@ -1664,7 +1695,7 @@ class Setting18GraphModuleBloc
 
     if (state.rtnInputAttenuation2 !=
         state.initialValues[DataKey.inputAttenuation2]) {
-      bool resultOfSetReturnInputAttenuation2 = await _dsimRepository
+      bool resultOfSetReturnInputAttenuation2 = await _amp18Repository
           .set1p8GReturnInputAttenuation2(state.rtnInputAttenuation2);
 
       settingResult.add(
@@ -1673,7 +1704,7 @@ class Setting18GraphModuleBloc
 
     if (state.rtnInputAttenuation3 !=
         state.initialValues[DataKey.inputAttenuation3]) {
-      bool resultOfSetReturnInputAttenuation3 = await _dsimRepository
+      bool resultOfSetReturnInputAttenuation3 = await _amp18Repository
           .set1p8GReturnInputAttenuation3(state.rtnInputAttenuation3);
 
       settingResult.add(
@@ -1682,7 +1713,7 @@ class Setting18GraphModuleBloc
 
     if (state.rtnInputAttenuation4 !=
         state.initialValues[DataKey.inputAttenuation4]) {
-      bool resultOfSetReturnInputAttenuation4 = await _dsimRepository
+      bool resultOfSetReturnInputAttenuation4 = await _amp18Repository
           .set1p8GReturnInputAttenuation4(state.rtnInputAttenuation4);
 
       settingResult.add(
@@ -1691,7 +1722,7 @@ class Setting18GraphModuleBloc
 
     if (state.rtnOutputLevelAttenuation !=
         state.initialValues[DataKey.outputAttenuation]) {
-      bool resultOfSetReturnOutputAttenuation = await _dsimRepository
+      bool resultOfSetReturnOutputAttenuation = await _amp18Repository
           .set1p8GReturnOutputAttenuation(state.rtnOutputLevelAttenuation);
 
       settingResult.add(
@@ -1699,8 +1730,8 @@ class Setting18GraphModuleBloc
     }
 
     if (state.rtnOutputEQ != state.initialValues[DataKey.outputEqualizer]) {
-      bool resultOfSetReturnOutputEqualizer =
-          await _dsimRepository.set1p8GReturnOutputEqualizer(state.rtnOutputEQ);
+      bool resultOfSetReturnOutputEqualizer = await _amp18Repository
+          .set1p8GReturnOutputEqualizer(state.rtnOutputEQ);
 
       settingResult.add(
           '${DataKey.outputEqualizer.name},$resultOfSetReturnOutputEqualizer');
@@ -1708,8 +1739,8 @@ class Setting18GraphModuleBloc
 
     if (state.rtnIngressSetting2 !=
         state.initialValues[DataKey.ingressSetting2]) {
-      bool resultOfSetReturnIngress2 =
-          await _dsimRepository.set1p8GReturnIngress2(state.rtnIngressSetting2);
+      bool resultOfSetReturnIngress2 = await _amp18Repository
+          .set1p8GReturnIngress2(state.rtnIngressSetting2);
 
       settingResult
           .add('${DataKey.ingressSetting2.name},$resultOfSetReturnIngress2');
@@ -1717,8 +1748,8 @@ class Setting18GraphModuleBloc
 
     if (state.rtnIngressSetting3 !=
         state.initialValues[DataKey.ingressSetting3]) {
-      bool resultOfSetReturnIngress3 =
-          await _dsimRepository.set1p8GReturnIngress3(state.rtnIngressSetting3);
+      bool resultOfSetReturnIngress3 = await _amp18Repository
+          .set1p8GReturnIngress3(state.rtnIngressSetting3);
 
       settingResult
           .add('${DataKey.ingressSetting3.name},$resultOfSetReturnIngress3');
@@ -1726,8 +1757,8 @@ class Setting18GraphModuleBloc
 
     if (state.rtnIngressSetting4 !=
         state.initialValues[DataKey.ingressSetting4]) {
-      bool resultOfSetReturnIngress4 =
-          await _dsimRepository.set1p8GReturnIngress4(state.rtnIngressSetting4);
+      bool resultOfSetReturnIngress4 = await _amp18Repository
+          .set1p8GReturnIngress4(state.rtnIngressSetting4);
 
       settingResult
           .add('${DataKey.ingressSetting4.name},$resultOfSetReturnIngress4');
@@ -1735,7 +1766,7 @@ class Setting18GraphModuleBloc
 
     if (state.tgcCableLength != state.initialValues[DataKey.tgcCableLength]) {
       bool resultOfSetTGCCableLength =
-          await _dsimRepository.set1p8GTGCCableLength(state.tgcCableLength);
+          await _amp18Repository.set1p8GTGCCableLength(state.tgcCableLength);
 
       settingResult
           .add('${DataKey.tgcCableLength.name},$resultOfSetTGCCableLength');
@@ -1743,46 +1774,48 @@ class Setting18GraphModuleBloc
 
     if (state.dsVVA2 != state.initialValues[DataKey.dsVVA2]) {
       bool resultOfSetDSVVA2 =
-          await _dsimRepository.set1p8GDSVVA2(state.dsVVA2);
+          await _amp18Repository.set1p8GDSVVA2(state.dsVVA2);
 
       settingResult.add('${DataKey.dsVVA2.name},$resultOfSetDSVVA2');
     }
 
     if (state.dsSlope2 != state.initialValues[DataKey.dsSlope2]) {
       bool resultOfSetDSSlope2 =
-          await _dsimRepository.set1p8GDSSlope2(state.dsSlope2);
+          await _amp18Repository.set1p8GDSSlope2(state.dsSlope2);
 
       settingResult.add('${DataKey.dsSlope2.name},$resultOfSetDSSlope2');
     }
 
     if (state.dsVVA3 != state.initialValues[DataKey.dsVVA3]) {
-      bool resultOfSetDSVVA3 = await _dsimRepository.set1p8DSVVA3(state.dsVVA3);
+      bool resultOfSetDSVVA3 =
+          await _amp18Repository.set1p8DSVVA3(state.dsVVA3);
 
       settingResult.add('${DataKey.dsVVA3.name},$resultOfSetDSVVA3');
     }
 
     if (state.dsVVA4 != state.initialValues[DataKey.dsVVA4]) {
-      bool resultOfSetDSVVA4 = await _dsimRepository.set1p8DSVVA4(state.dsVVA4);
+      bool resultOfSetDSVVA4 =
+          await _amp18Repository.set1p8DSVVA4(state.dsVVA4);
 
       settingResult.add('${DataKey.dsVVA4.name},$resultOfSetDSVVA4');
     }
 
     if (state.usTGC != state.initialValues[DataKey.usTGC]) {
-      bool resultOfSetUSTGC = await _dsimRepository.set1p8USTGC(state.usTGC);
+      bool resultOfSetUSTGC = await _amp18Repository.set1p8USTGC(state.usTGC);
 
       settingResult.add('${DataKey.usTGC.name},$resultOfSetUSTGC');
     }
 
     if (state.splitOption != state.initialValues[DataKey.splitOption]) {
       bool resultOfSetSplitOption =
-          await _dsimRepository.set1p8GSplitOption(state.splitOption);
+          await _amp18Repository.set1p8GSplitOption(state.splitOption);
 
       settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
     }
 
     if (state.pilotFrequencyMode !=
         state.initialValues[DataKey.pilotFrequencyMode]) {
-      bool resultOfSetPilotFrequencyMode = await _dsimRepository
+      bool resultOfSetPilotFrequencyMode = await _amp18Repository
           .set1p8GPilotFrequencyMode(state.pilotFrequencyMode);
 
       settingResult.add(
@@ -1792,7 +1825,7 @@ class Setting18GraphModuleBloc
     if (state.firstChannelLoadingFrequency !=
         state.initialValues[DataKey.firstChannelLoadingFrequency]) {
       bool resultOfSetFirstChannelLoadingFrequency =
-          await _dsimRepository.set1p8GFirstChannelLoadingFrequency(
+          await _amp18Repository.set1p8GFirstChannelLoadingFrequency(
               state.firstChannelLoadingFrequency);
 
       settingResult.add(
@@ -1801,7 +1834,7 @@ class Setting18GraphModuleBloc
 
     if (state.firstChannelLoadingLevel !=
         state.initialValues[DataKey.firstChannelLoadingLevel]) {
-      bool resultOfSetFirstChannelLoadingLevel = await _dsimRepository
+      bool resultOfSetFirstChannelLoadingLevel = await _amp18Repository
           .set1p8GFirstChannelLoadingLevel(state.firstChannelLoadingLevel);
 
       settingResult.add(
@@ -1811,7 +1844,7 @@ class Setting18GraphModuleBloc
     if (state.lastChannelLoadingFrequency !=
         state.initialValues[DataKey.lastChannelLoadingFrequency]) {
       bool resultOfSetLastChannelLoadingFrequency =
-          await _dsimRepository.set1p8GLastChannelLoadingFrequency(
+          await _amp18Repository.set1p8GLastChannelLoadingFrequency(
               state.lastChannelLoadingFrequency);
 
       settingResult.add(
@@ -1820,7 +1853,7 @@ class Setting18GraphModuleBloc
 
     if (state.lastChannelLoadingLevel !=
         state.initialValues[DataKey.lastChannelLoadingLevel]) {
-      bool resultOfSetLastChannelLoadingLevel = await _dsimRepository
+      bool resultOfSetLastChannelLoadingLevel = await _amp18Repository
           .set1p8GLastChannelLoadingLevel(state.lastChannelLoadingLevel);
 
       settingResult.add(
@@ -1829,7 +1862,7 @@ class Setting18GraphModuleBloc
 
     if (state.pilotFrequency1 != state.initialValues[DataKey.pilotFrequency1]) {
       bool resultOfSetPilotFrequency1 =
-          await _dsimRepository.set1p8GPilotFrequency1(state.pilotFrequency1);
+          await _amp18Repository.set1p8GPilotFrequency1(state.pilotFrequency1);
 
       settingResult
           .add('${DataKey.pilotFrequency1.name},$resultOfSetPilotFrequency1');
@@ -1837,7 +1870,7 @@ class Setting18GraphModuleBloc
 
     if (state.pilotFrequency2 != state.initialValues[DataKey.pilotFrequency2]) {
       bool resultOfSetPilotFrequency2 =
-          await _dsimRepository.set1p8GPilotFrequency2(state.pilotFrequency2);
+          await _amp18Repository.set1p8GPilotFrequency2(state.pilotFrequency2);
 
       settingResult
           .add('${DataKey.pilotFrequency2.name},$resultOfSetPilotFrequency2');
@@ -1846,13 +1879,15 @@ class Setting18GraphModuleBloc
     // 等待 device 完成更新後在讀取值
     await Future.delayed(const Duration(milliseconds: 1000));
 
+    await _amp18Repository.updateCharacteristics();
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
       enableSubmission: false,
       editMode: false,
+      isInitialize: true,
+      initialValues: _amp18Repository.characteristicDataCache,
     ));
-
-    await _dsimRepository.updateCharacteristics();
   }
 }

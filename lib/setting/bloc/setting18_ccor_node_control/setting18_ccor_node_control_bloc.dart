@@ -9,8 +9,8 @@ part 'setting18_ccor_node_control_state.dart';
 class Setting18CCorNodeControlBloc
     extends Bloc<Setting18CCorNodeControlEvent, Setting18CCorNodeControlState> {
   Setting18CCorNodeControlBloc({
-    required Amp18CCorNodeRepository dsimRepository,
-  })  : _dsimRepository = dsimRepository,
+    required Amp18CCorNodeRepository amp18CCorNodeRepository,
+  })  : _amp18CCorNodeRepository = amp18CCorNodeRepository,
         super(const Setting18CCorNodeControlState()) {
     on<Initialized>(_onInitialized);
     on<ReturnInputAttenuation1Changed>(_onReturnInputAttenuation1Changed);
@@ -34,7 +34,7 @@ class Setting18CCorNodeControlBloc
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
-  final Amp18CCorNodeRepository _dsimRepository;
+  final Amp18CCorNodeRepository _amp18CCorNodeRepository;
 
   Future<void> _onInitialized(
     Initialized event,
@@ -538,6 +538,6 @@ class Setting18CCorNodeControlBloc
       editMode: false,
     ));
 
-    await _dsimRepository.update1p8GCCorNodeCharacteristics();
+    await _amp18CCorNodeRepository.update1p8GCCorNodeCharacteristics();
   }
 }

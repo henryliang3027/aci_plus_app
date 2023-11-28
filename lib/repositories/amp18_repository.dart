@@ -19,11 +19,14 @@ class Amp18Repository {
   final BLEClient _bleClient;
   final Amp18Parser _amp18Parser;
   final Amp18ChartCache _amp18ChartCache;
+  final Map<DataKey, String> _characteristicDataCache = {};
 
   late StreamController<Map<DataKey, String>>
       _characteristicDataStreamController;
 
   bool isCreateCharacteristicDataStreamController = false;
+
+  Map<DataKey, String> get characteristicDataCache => _characteristicDataCache;
 
   Stream<Map<DataKey, String>> get characteristicData async* {
     yield* _characteristicDataStreamController.stream;
@@ -61,18 +64,22 @@ class Amp18Repository {
 
       A1P8G0 a1p8g0 = _amp18Parser.decodeA1P8G0(rawData);
 
+      Map<DataKey, String> characteristicDataCache = {
+        DataKey.partName: a1p8g0.partName,
+        DataKey.partNo: a1p8g0.partNo,
+        DataKey.partId: a1p8g0.partId,
+        DataKey.serialNumber: a1p8g0.serialNumber,
+        DataKey.firmwareVersion: a1p8g0.firmwareVersion,
+        DataKey.mfgDate: a1p8g0.mfgDate,
+        DataKey.coordinates: a1p8g0.coordinate,
+        DataKey.nowDateTime: a1p8g0.nowDateTime,
+      };
+
+      _characteristicDataCache.addAll(characteristicDataCache);
+
       return [
         true,
-        <DataKey, String>{
-          DataKey.partName: a1p8g0.partName,
-          DataKey.partNo: a1p8g0.partNo,
-          DataKey.partId: a1p8g0.partId,
-          DataKey.serialNumber: a1p8g0.serialNumber,
-          DataKey.firmwareVersion: a1p8g0.firmwareVersion,
-          DataKey.mfgDate: a1p8g0.mfgDate,
-          DataKey.coordinates: a1p8g0.coordinate,
-          DataKey.nowDateTime: a1p8g0.nowDateTime,
-        },
+        characteristicDataCache,
       ];
     } catch (e) {
       return [
@@ -94,61 +101,64 @@ class Amp18Repository {
 
       A1P8G1 a1p8g1 = _amp18Parser.decodeA1P8G1(rawData);
 
+      Map<DataKey, String> characteristicDataCache = {
+        DataKey.minTemperatureC: a1p8g1.minTemperatureC,
+        DataKey.maxTemperatureC: a1p8g1.maxTemperatureC,
+        DataKey.minTemperatureF: a1p8g1.minTemperatureF,
+        DataKey.maxTemperatureF: a1p8g1.maxTemperatureF,
+        DataKey.minVoltage: a1p8g1.minVoltage,
+        DataKey.maxVoltage: a1p8g1.maxVoltage,
+        DataKey.minVoltageRipple: a1p8g1.minVoltageRipple,
+        DataKey.maxVoltageRipple: a1p8g1.maxVoltageRipple,
+        DataKey.minRFOutputPower: a1p8g1.minRFOutputPower,
+        DataKey.maxRFOutputPower: a1p8g1.maxRFOutputPower,
+        DataKey.ingressSetting2: a1p8g1.ingressSetting2,
+        DataKey.ingressSetting3: a1p8g1.ingressSetting3,
+        DataKey.ingressSetting4: a1p8g1.ingressSetting4,
+        DataKey.tgcCableLength: a1p8g1.tgcCableLength,
+        DataKey.splitOption: a1p8g1.splitOption,
+        DataKey.pilotFrequencyMode: a1p8g1.pilotFrequencyMode,
+        DataKey.agcMode: a1p8g1.agcMode,
+        DataKey.alcMode: a1p8g1.alcMode,
+        DataKey.firstChannelLoadingFrequency:
+            a1p8g1.firstChannelLoadingFrequency,
+        DataKey.lastChannelLoadingFrequency: a1p8g1.lastChannelLoadingFrequency,
+        DataKey.firstChannelLoadingLevel: a1p8g1.firstChannelLoadingLevel,
+        DataKey.lastChannelLoadingLevel: a1p8g1.lastChannelLoadingLevel,
+        DataKey.pilotFrequency1: a1p8g1.pilotFrequency1,
+        DataKey.pilotFrequency2: a1p8g1.pilotFrequency2,
+        DataKey.pilotFrequency1AlarmState: a1p8g1.pilotFrequency1AlarmState,
+        DataKey.pilotFrequency2AlarmState: a1p8g1.pilotFrequency2AlarmState,
+        DataKey.rfOutputPilotLowFrequencyAlarmState:
+            a1p8g1.rfOutputPilotLowFrequencyAlarmState,
+        DataKey.rfOutputPilotHighFrequencyAlarmState:
+            a1p8g1.rfOutputPilotHighFrequencyAlarmState,
+        DataKey.temperatureAlarmState: a1p8g1.temperatureAlarmState,
+        DataKey.voltageAlarmState: a1p8g1.voltageAlarmState,
+        DataKey.splitOptionAlarmState: a1p8g1.splitOptionAlarmState,
+        DataKey.voltageRippleAlarmState: a1p8g1.voltageRippleAlarmState,
+        DataKey.rfOutputPowerAlarmState: a1p8g1.outputPowerAlarmState,
+        DataKey.location: a1p8g1.location,
+        DataKey.logInterval: a1p8g1.logInterval,
+        DataKey.inputAttenuation: a1p8g1.inputAttenuation,
+        DataKey.inputEqualizer: a1p8g1.inputEqualizer,
+        DataKey.dsVVA2: a1p8g1.dsVVA2,
+        DataKey.dsSlope2: a1p8g1.dsSlope2,
+        DataKey.inputAttenuation2: a1p8g1.inputAttenuation2,
+        DataKey.outputEqualizer: a1p8g1.outputEqualizer,
+        DataKey.dsVVA3: a1p8g1.dsVVA3,
+        DataKey.dsVVA4: a1p8g1.dsVVA4,
+        DataKey.outputAttenuation: a1p8g1.outputAttenuation,
+        DataKey.inputAttenuation3: a1p8g1.inputAttenuation3,
+        DataKey.inputAttenuation4: a1p8g1.inputAttenuation4,
+        DataKey.usTGC: a1p8g1.usTGC,
+      };
+
+      _characteristicDataCache.addAll(characteristicDataCache);
+
       return [
         true,
-        <DataKey, String>{
-          DataKey.minTemperatureC: a1p8g1.minTemperatureC,
-          DataKey.maxTemperatureC: a1p8g1.maxTemperatureC,
-          DataKey.minTemperatureF: a1p8g1.minTemperatureF,
-          DataKey.maxTemperatureF: a1p8g1.maxTemperatureF,
-          DataKey.minVoltage: a1p8g1.minVoltage,
-          DataKey.maxVoltage: a1p8g1.maxVoltage,
-          DataKey.minVoltageRipple: a1p8g1.minVoltageRipple,
-          DataKey.maxVoltageRipple: a1p8g1.maxVoltageRipple,
-          DataKey.minRFOutputPower: a1p8g1.minRFOutputPower,
-          DataKey.maxRFOutputPower: a1p8g1.maxRFOutputPower,
-          DataKey.ingressSetting2: a1p8g1.ingressSetting2,
-          DataKey.ingressSetting3: a1p8g1.ingressSetting3,
-          DataKey.ingressSetting4: a1p8g1.ingressSetting4,
-          DataKey.tgcCableLength: a1p8g1.tgcCableLength,
-          DataKey.splitOption: a1p8g1.splitOption,
-          DataKey.pilotFrequencyMode: a1p8g1.pilotFrequencyMode,
-          DataKey.agcMode: a1p8g1.agcMode,
-          DataKey.alcMode: a1p8g1.alcMode,
-          DataKey.firstChannelLoadingFrequency:
-              a1p8g1.firstChannelLoadingFrequency,
-          DataKey.lastChannelLoadingFrequency:
-              a1p8g1.lastChannelLoadingFrequency,
-          DataKey.firstChannelLoadingLevel: a1p8g1.firstChannelLoadingLevel,
-          DataKey.lastChannelLoadingLevel: a1p8g1.lastChannelLoadingLevel,
-          DataKey.pilotFrequency1: a1p8g1.pilotFrequency1,
-          DataKey.pilotFrequency2: a1p8g1.pilotFrequency2,
-          DataKey.pilotFrequency1AlarmState: a1p8g1.pilotFrequency1AlarmState,
-          DataKey.pilotFrequency2AlarmState: a1p8g1.pilotFrequency2AlarmState,
-          DataKey.rfOutputPilotLowFrequencyAlarmState:
-              a1p8g1.rfOutputPilotLowFrequencyAlarmState,
-          DataKey.rfOutputPilotHighFrequencyAlarmState:
-              a1p8g1.rfOutputPilotHighFrequencyAlarmState,
-          DataKey.temperatureAlarmState: a1p8g1.temperatureAlarmState,
-          DataKey.voltageAlarmState: a1p8g1.voltageAlarmState,
-          DataKey.splitOptionAlarmState: a1p8g1.splitOptionAlarmState,
-          DataKey.voltageRippleAlarmState: a1p8g1.voltageRippleAlarmState,
-          DataKey.rfOutputPowerAlarmState: a1p8g1.outputPowerAlarmState,
-          DataKey.location: a1p8g1.location,
-          DataKey.logInterval: a1p8g1.logInterval,
-          DataKey.inputAttenuation: a1p8g1.inputAttenuation,
-          DataKey.inputEqualizer: a1p8g1.inputEqualizer,
-          DataKey.dsVVA2: a1p8g1.dsVVA2,
-          DataKey.dsSlope2: a1p8g1.dsSlope2,
-          DataKey.inputAttenuation2: a1p8g1.inputAttenuation2,
-          DataKey.outputEqualizer: a1p8g1.outputEqualizer,
-          DataKey.dsVVA3: a1p8g1.dsVVA3,
-          DataKey.dsVVA4: a1p8g1.dsVVA4,
-          DataKey.outputAttenuation: a1p8g1.outputAttenuation,
-          DataKey.inputAttenuation3: a1p8g1.inputAttenuation3,
-          DataKey.inputAttenuation4: a1p8g1.inputAttenuation4,
-          DataKey.usTGC: a1p8g1.usTGC,
-        }
+        characteristicDataCache,
       ];
     } catch (e) {
       return [
@@ -170,41 +180,45 @@ class Amp18Repository {
 
       A1P8G2 a1p8g2 = _amp18Parser.decodeA1P8G2(rawData);
 
+      Map<DataKey, String> characteristicDataCache = {
+        DataKey.currentTemperatureC: a1p8g2.currentTemperatureC,
+        DataKey.currentTemperatureF: a1p8g2.currentTemperatureF,
+        DataKey.currentVoltage: a1p8g2.currentVoltage,
+        DataKey.currentVoltageRipple: a1p8g2.currentVoltageRipple,
+        DataKey.currentRFInputPower: a1p8g2.currentRFInputPower,
+        DataKey.currentRFOutputPower: a1p8g2.currentRFOutputPower,
+        DataKey.currentWorkingMode: a1p8g2.currentWorkingMode,
+        DataKey.currentDetectedSplitOption: a1p8g2.currentDetectedSplitOption,
+        DataKey.rfOutputOperatingSlope: a1p8g2.rfOutputOperatingSlope,
+        DataKey.manualModePilot1RFOutputPower:
+            a1p8g2.manualModePilot1RFOutputPower,
+        DataKey.manualModePilot2RFOutputPower:
+            a1p8g2.manualModePilot2RFOutputPower,
+        DataKey.rfOutputLowChannelPower: a1p8g2.rfOutputLowChannelPower,
+        DataKey.rfOutputHighChannelPower: a1p8g2.rfOutputHighChannelPower,
+        DataKey.pilot1RFChannelFrequency: a1p8g2.pilot1RFChannelFrequency,
+        DataKey.pilot2RFChannelFrequency: a1p8g2.pilot2RFChannelFrequency,
+        DataKey.unitStatusAlarmSeverity: a1p8g2.unitStatusAlarmSeverity,
+        DataKey.rfInputPilotLowFrequencyAlarmSeverity:
+            a1p8g2.rfInputPilotLowFrequencyAlarmSeverity,
+        DataKey.rfInputPilotHighFrequencyAlarmSeverity:
+            a1p8g2.rfInputPilotHighFrequencyAlarmSeverity,
+        DataKey.rfOutputPilotLowFrequencyAlarmSeverity:
+            a1p8g2.rfOutputPilotLowFrequencyAlarmSeverity,
+        DataKey.rfOutputPilotHighFrequencyAlarmSeverity:
+            a1p8g2.rfOutputPilotHighFrequencyAlarmSeverity,
+        DataKey.temperatureAlarmSeverity: a1p8g2.temperatureAlarmSeverity,
+        DataKey.voltageAlarmSeverity: a1p8g2.voltageAlarmSeverity,
+        DataKey.splitOptionAlarmSeverity: a1p8g2.splitOptionAlarmSeverity,
+        DataKey.voltageRippleAlarmSeverity: a1p8g2.voltageRippleAlarmSeverity,
+        DataKey.outputPowerAlarmSeverity: a1p8g2.outputPowerAlarmSeverity,
+      };
+
+      _characteristicDataCache.addAll(characteristicDataCache);
+
       return [
         true,
-        <DataKey, String>{
-          DataKey.currentTemperatureC: a1p8g2.currentTemperatureC,
-          DataKey.currentTemperatureF: a1p8g2.currentTemperatureF,
-          DataKey.currentVoltage: a1p8g2.currentVoltage,
-          DataKey.currentVoltageRipple: a1p8g2.currentVoltageRipple,
-          DataKey.currentRFInputPower: a1p8g2.currentRFInputPower,
-          DataKey.currentRFOutputPower: a1p8g2.currentRFOutputPower,
-          DataKey.currentWorkingMode: a1p8g2.currentWorkingMode,
-          DataKey.currentDetectedSplitOption: a1p8g2.currentDetectedSplitOption,
-          DataKey.rfOutputOperatingSlope: a1p8g2.rfOutputOperatingSlope,
-          DataKey.manualModePilot1RFOutputPower:
-              a1p8g2.manualModePilot1RFOutputPower,
-          DataKey.manualModePilot2RFOutputPower:
-              a1p8g2.manualModePilot2RFOutputPower,
-          DataKey.rfOutputLowChannelPower: a1p8g2.rfOutputLowChannelPower,
-          DataKey.rfOutputHighChannelPower: a1p8g2.rfOutputHighChannelPower,
-          DataKey.pilot1RFChannelFrequency: a1p8g2.pilot1RFChannelFrequency,
-          DataKey.pilot2RFChannelFrequency: a1p8g2.pilot2RFChannelFrequency,
-          DataKey.unitStatusAlarmSeverity: a1p8g2.unitStatusAlarmSeverity,
-          DataKey.rfInputPilotLowFrequencyAlarmSeverity:
-              a1p8g2.rfInputPilotLowFrequencyAlarmSeverity,
-          DataKey.rfInputPilotHighFrequencyAlarmSeverity:
-              a1p8g2.rfInputPilotHighFrequencyAlarmSeverity,
-          DataKey.rfOutputPilotLowFrequencyAlarmSeverity:
-              a1p8g2.rfOutputPilotLowFrequencyAlarmSeverity,
-          DataKey.rfOutputPilotHighFrequencyAlarmSeverity:
-              a1p8g2.rfOutputPilotHighFrequencyAlarmSeverity,
-          DataKey.temperatureAlarmSeverity: a1p8g2.temperatureAlarmSeverity,
-          DataKey.voltageAlarmSeverity: a1p8g2.voltageAlarmSeverity,
-          DataKey.splitOptionAlarmSeverity: a1p8g2.splitOptionAlarmSeverity,
-          DataKey.voltageRippleAlarmSeverity: a1p8g2.voltageRippleAlarmSeverity,
-          DataKey.outputPowerAlarmSeverity: a1p8g2.outputPowerAlarmSeverity,
-        }
+        characteristicDataCache,
       ];
     } catch (e) {
       return [
@@ -1927,11 +1941,15 @@ class Amp18Repository {
   }
 
   Future<void> updateCharacteristics() async {
+    Map<DataKey, String> characteristicDataCache = {};
+
     List<dynamic> resultOf1p8G0 = await requestCommand1p8G0();
 
     if (resultOf1p8G0[0]) {
       _characteristicDataStreamController
           .add(Map<DataKey, String>.from(resultOf1p8G0[1]));
+
+      characteristicDataCache.addAll(resultOf1p8G0[1]);
     }
 
     List<dynamic> resultOf1p8G1 = await requestCommand1p8G1();
@@ -1939,12 +1957,19 @@ class Amp18Repository {
     if (resultOf1p8G1[0]) {
       _characteristicDataStreamController
           .add(Map<DataKey, String>.from(resultOf1p8G1[1]));
+
+      characteristicDataCache.addAll(resultOf1p8G1[1]);
     }
 
     List<dynamic> resultOf1p8G2 = await requestCommand1p8G2();
     if (resultOf1p8G2[0]) {
       _characteristicDataStreamController
           .add(Map<DataKey, String>.from(resultOf1p8G2[1]));
+
+      characteristicDataCache.addAll(resultOf1p8G2[1]);
     }
+
+    _characteristicDataCache.clear();
+    _characteristicDataCache.addAll(characteristicDataCache);
   }
 }

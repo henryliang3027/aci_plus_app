@@ -12,9 +12,9 @@ part 'setting18_ccor_node_configure_state.dart';
 class Setting18CCorNodeConfigureBloc extends Bloc<
     Setting18CCorNodeConfigureEvent, Setting18CCorNodeConfigureState> {
   Setting18CCorNodeConfigureBloc({
-    required Amp18CCorNodeRepository dsimRepository,
+    required Amp18CCorNodeRepository amp18CCorNodeRepository,
     required GPSRepository gpsRepository,
-  })  : _dsimRepository = dsimRepository,
+  })  : _amp18CCorNodeRepository = amp18CCorNodeRepository,
         _gpsRepository = gpsRepository,
         super(const Setting18CCorNodeConfigureState()) {
     on<Initialized>(_onInitialized);
@@ -30,7 +30,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
-  final Amp18CCorNodeRepository _dsimRepository;
+  final Amp18CCorNodeRepository _amp18CCorNodeRepository;
   final GPSRepository _gpsRepository;
 
   Future<void> _onInitialized(
@@ -267,29 +267,29 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     List<String> settingResult = [];
 
     if (state.location != state.initialValues[0]) {
-      bool resultOfSetLocation =
-          await _dsimRepository.set1p8GCCorNodeLocation(state.location);
+      bool resultOfSetLocation = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeLocation(state.location);
 
       settingResult.add('${DataKey.location.name},$resultOfSetLocation');
     }
 
     if (state.coordinates != state.initialValues[1]) {
-      bool resultOfSetCoordinates =
-          await _dsimRepository.set1p8GCCorNodeCoordinates(state.coordinates);
+      bool resultOfSetCoordinates = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeCoordinates(state.coordinates);
 
       settingResult.add('${DataKey.coordinates.name},$resultOfSetCoordinates');
     }
 
     if (state.splitOption != state.initialValues[2]) {
-      bool resultOfSetSplitOption =
-          await _dsimRepository.set1p8GCCorNodeSplitOption(state.splitOption);
+      bool resultOfSetSplitOption = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeSplitOption(state.splitOption);
 
       settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
     }
 
     if (state.logInterval != state.initialValues[3]) {
-      bool resultOfSetLogInterval =
-          await _dsimRepository.set1p8GCCorNodeLogInterval(state.logInterval);
+      bool resultOfSetLogInterval = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeLogInterval(state.logInterval);
 
       settingResult.add('${DataKey.logInterval.name},$resultOfSetLogInterval');
     }
@@ -304,6 +304,6 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       editMode: false,
     ));
 
-    await _dsimRepository.update1p8GCCorNodeCharacteristics();
+    await _amp18CCorNodeRepository.update1p8GCCorNodeCharacteristics();
   }
 }

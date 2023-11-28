@@ -12,7 +12,8 @@ class Setting18CCorNodeConfigurePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Setting18CCorNodeConfigureBloc(
-        dsimRepository: RepositoryProvider.of<Amp18CCorNodeRepository>(context),
+        amp18CCorNodeRepository:
+            RepositoryProvider.of<Amp18CCorNodeRepository>(context),
         gpsRepository: RepositoryProvider.of<GPSRepository>(context),
       ),
       child: Setting18CCorNodeConfigureView(),

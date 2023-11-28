@@ -11,9 +11,9 @@ part 'setting18_threshold_state.dart';
 class Setting18ThresholdBloc
     extends Bloc<Setting18ThresholdEvent, Setting18ThresholdState> {
   Setting18ThresholdBloc({
-    required Amp18Repository dsimRepository,
+    required Amp18Repository amp18repository,
     required UnitRepository unitRepository,
-  })  : _dsimRepository = dsimRepository,
+  })  : _amp18repository = amp18repository,
         _unitRepository = unitRepository,
         super(const Setting18ThresholdState()) {
     on<Initialized>(_onInitialized);
@@ -41,7 +41,7 @@ class Setting18ThresholdBloc
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
-  final Amp18Repository _dsimRepository;
+  final Amp18Repository _amp18repository;
   final UnitRepository _unitRepository;
 
   Future<void> _onInitialized(
@@ -754,7 +754,7 @@ class Setting18ThresholdBloc
     if (state.temperatureAlarmState != state.initialValues[0]) {
       String temperatureAlarmState =
           _boolToStringNumber(state.temperatureAlarmState);
-      bool resultOfSetTemperatureAlarmState = await _dsimRepository
+      bool resultOfSetTemperatureAlarmState = await _amp18repository
           .set1p8GTemperatureAlarmState(temperatureAlarmState);
 
       settingResult.add(
@@ -770,7 +770,7 @@ class Setting18ThresholdBloc
       }
 
       bool resultOfSetMinTemperature =
-          await _dsimRepository.set1p8GMinTemperature(minTemperature);
+          await _amp18repository.set1p8GMinTemperature(minTemperature);
 
       settingResult
           .add('${DataKey.minTemperatureC.name},$resultOfSetMinTemperature');
@@ -785,7 +785,7 @@ class Setting18ThresholdBloc
       }
 
       bool resultOfSetMaxTemperature =
-          await _dsimRepository.set1p8GMaxTemperature(maxTemperature);
+          await _amp18repository.set1p8GMaxTemperature(maxTemperature);
 
       settingResult
           .add('${DataKey.maxTemperatureC.name},$resultOfSetMaxTemperature');
@@ -794,7 +794,7 @@ class Setting18ThresholdBloc
     if (state.voltageAlarmState != state.initialValues[3]) {
       String voltageAlarmState = _boolToStringNumber(state.voltageAlarmState);
       bool resultOfSetVoltageAlarmState =
-          await _dsimRepository.set1p8GVoltageAlarmState(voltageAlarmState);
+          await _amp18repository.set1p8GVoltageAlarmState(voltageAlarmState);
 
       settingResult.add(
           '${DataKey.voltageAlarmState.name},$resultOfSetVoltageAlarmState');
@@ -802,14 +802,14 @@ class Setting18ThresholdBloc
 
     if (state.minVoltage != state.initialValues[4]) {
       bool resultOfSetMinVoltage =
-          await _dsimRepository.set1p8GMinVoltage(state.minVoltage);
+          await _amp18repository.set1p8GMinVoltage(state.minVoltage);
 
       settingResult.add('${DataKey.minVoltage.name},$resultOfSetMinVoltage');
     }
 
     if (state.maxVoltage != state.initialValues[5]) {
       bool resultOfSetMaxVoltage =
-          await _dsimRepository.set1p8GMaxVoltage(state.maxVoltage);
+          await _amp18repository.set1p8GMaxVoltage(state.maxVoltage);
 
       settingResult.add('${DataKey.maxVoltage.name},$resultOfSetMaxVoltage');
     }
@@ -817,7 +817,7 @@ class Setting18ThresholdBloc
     if (state.voltageRippleAlarmState != state.initialValues[6]) {
       String voltageRippleAlarmState =
           _boolToStringNumber(state.voltageRippleAlarmState);
-      bool resultOfSetVoltageRippleAlarmState = await _dsimRepository
+      bool resultOfSetVoltageRippleAlarmState = await _amp18repository
           .set1p8GVoltageRippleAlarmState(voltageRippleAlarmState);
 
       settingResult.add(
@@ -825,16 +825,16 @@ class Setting18ThresholdBloc
     }
 
     if (state.minVoltageRipple != state.initialValues[7]) {
-      bool resultOfSetMinVoltageRipple =
-          await _dsimRepository.set1p8GMinVoltageRipple(state.minVoltageRipple);
+      bool resultOfSetMinVoltageRipple = await _amp18repository
+          .set1p8GMinVoltageRipple(state.minVoltageRipple);
 
       settingResult
           .add('${DataKey.minVoltageRipple.name},$resultOfSetMinVoltageRipple');
     }
 
     if (state.maxVoltageRipple != state.initialValues[8]) {
-      bool resultOfSetMaxVoltageRipple =
-          await _dsimRepository.set1p8GMaxVoltageRipple(state.maxVoltageRipple);
+      bool resultOfSetMaxVoltageRipple = await _amp18repository
+          .set1p8GMaxVoltageRipple(state.maxVoltageRipple);
 
       settingResult
           .add('${DataKey.maxVoltageRipple.name},$resultOfSetMaxVoltageRipple');
@@ -843,7 +843,7 @@ class Setting18ThresholdBloc
     if (state.rfOutputPowerAlarmState != state.initialValues[9]) {
       String voltageRFOutputPowerAlarmState =
           _boolToStringNumber(state.rfOutputPowerAlarmState);
-      bool resultOfSetRFOutputPowerAlarmState = await _dsimRepository
+      bool resultOfSetRFOutputPowerAlarmState = await _amp18repository
           .set1p8GRFOutputPowerAlarmState(voltageRFOutputPowerAlarmState);
 
       settingResult.add(
@@ -851,16 +851,16 @@ class Setting18ThresholdBloc
     }
 
     if (state.minRFOutputPower != state.initialValues[10]) {
-      bool resultOfSetMinRFOutputPower =
-          await _dsimRepository.set1p8GMinRFOutputPower(state.minRFOutputPower);
+      bool resultOfSetMinRFOutputPower = await _amp18repository
+          .set1p8GMinRFOutputPower(state.minRFOutputPower);
 
       settingResult
           .add('${DataKey.minRFOutputPower.name},$resultOfSetMinRFOutputPower');
     }
 
     if (state.maxRFOutputPower != state.initialValues[11]) {
-      bool resultOfSetMaxRFOutputPower =
-          await _dsimRepository.set1p8GMaxRFOutputPower(state.maxRFOutputPower);
+      bool resultOfSetMaxRFOutputPower = await _amp18repository
+          .set1p8GMaxRFOutputPower(state.maxRFOutputPower);
 
       settingResult
           .add('${DataKey.maxRFOutputPower.name},$resultOfSetMaxRFOutputPower');
@@ -869,7 +869,7 @@ class Setting18ThresholdBloc
     if (state.splitOptionAlarmState != state.initialValues[12]) {
       String splitOptionAlarmState =
           _boolToStringNumber(state.splitOptionAlarmState);
-      bool resultOfSetSplitOptionAlarmState = await _dsimRepository
+      bool resultOfSetSplitOptionAlarmState = await _amp18repository
           .set1p8GSplitOptionAlarmState(splitOptionAlarmState);
 
       settingResult.add(
@@ -880,7 +880,7 @@ class Setting18ThresholdBloc
       String voltagePilotFrequency1AlarmState =
           _boolToStringNumber(state.pilotFrequency1AlarmState);
       bool resultOfSetPilotFrequency1AlarmState =
-          await _dsimRepository.setInputPilotLowFrequencyAlarmState(
+          await _amp18repository.setInputPilotLowFrequencyAlarmState(
               voltagePilotFrequency1AlarmState);
 
       settingResult.add(
@@ -890,7 +890,7 @@ class Setting18ThresholdBloc
     if (state.pilotFrequency2AlarmState != state.initialValues[14]) {
       String pilotFrequency2AlarmState =
           _boolToStringNumber(state.pilotFrequency2AlarmState);
-      bool resultOfSetPilotFrequency2AlarmState = await _dsimRepository
+      bool resultOfSetPilotFrequency2AlarmState = await _amp18repository
           .setInputPilotHighFrequencyAlarmState(pilotFrequency2AlarmState);
 
       settingResult.add(
@@ -907,6 +907,6 @@ class Setting18ThresholdBloc
       editMode: false,
     ));
 
-    await _dsimRepository.updateCharacteristics();
+    await _amp18repository.updateCharacteristics();
   }
 }

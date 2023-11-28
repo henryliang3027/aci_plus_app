@@ -12,7 +12,7 @@ class Setting18ThresholdPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Setting18ThresholdBloc(
-        dsimRepository: RepositoryProvider.of<Amp18Repository>(context),
+        amp18repository: RepositoryProvider.of<Amp18Repository>(context),
         unitRepository: RepositoryProvider.of<UnitRepository>(context),
       ),
       child: Setting18ThresholdView(),

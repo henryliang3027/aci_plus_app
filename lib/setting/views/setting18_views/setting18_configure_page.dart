@@ -12,7 +12,7 @@ class Setting18ConfigurePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Setting18ConfigureBloc(
-        dsimRepository: RepositoryProvider.of<Amp18Repository>(context),
+        amp18repository: RepositoryProvider.of<Amp18Repository>(context),
         gpsRepository: RepositoryProvider.of<GPSRepository>(context),
       ),
       child: Setting18ConfigureView(),

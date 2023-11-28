@@ -11,9 +11,9 @@ part 'setting18_ccor_node_threshold_state.dart';
 class Setting18CCorNodeThresholdBloc extends Bloc<
     Setting18CCorNodeThresholdEvent, Setting18CCorNodeThresholdState> {
   Setting18CCorNodeThresholdBloc({
-    required Amp18CCorNodeRepository dsimRepository,
+    required Amp18CCorNodeRepository amp18CCorNodeRepository,
     required UnitRepository unitRepository,
-  })  : _dsimRepository = dsimRepository,
+  })  : _amp18CCorNodeRepository = amp18CCorNodeRepository,
         _unitRepository = unitRepository,
         super(const Setting18CCorNodeThresholdState()) {
     on<Initialized>(_onInitialized);
@@ -54,7 +54,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
-  final Amp18CCorNodeRepository _dsimRepository;
+  final Amp18CCorNodeRepository _amp18CCorNodeRepository;
   final UnitRepository _unitRepository;
 
   Future<void> _onInitialized(
@@ -867,7 +867,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     if (state.temperatureAlarmState != state.initialValues[0]) {
       String temperatureAlarmState =
           _boolToStringNumber(state.temperatureAlarmState);
-      bool resultOfSetTemperatureAlarmState = await _dsimRepository
+      bool resultOfSetTemperatureAlarmState = await _amp18CCorNodeRepository
           .set1p8GCCorNodeTemperatureAlarmState(temperatureAlarmState);
 
       settingResult.add(
@@ -882,8 +882,8 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
             .toStringAsFixed(1);
       }
 
-      bool resultOfSetMinTemperature =
-          await _dsimRepository.set1p8GCCorNodeMinTemperature(minTemperature);
+      bool resultOfSetMinTemperature = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeMinTemperature(minTemperature);
 
       settingResult
           .add('${DataKey.minTemperatureC.name},$resultOfSetMinTemperature');
@@ -897,8 +897,8 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
             .toStringAsFixed(1);
       }
 
-      bool resultOfSetMaxTemperature =
-          await _dsimRepository.set1p8GCCorNodeMaxTemperature(maxTemperature);
+      bool resultOfSetMaxTemperature = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeMaxTemperature(maxTemperature);
 
       settingResult
           .add('${DataKey.maxTemperatureC.name},$resultOfSetMaxTemperature');
@@ -906,7 +906,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
 
     if (state.voltageAlarmState != state.initialValues[3]) {
       String voltageAlarmState = _boolToStringNumber(state.voltageAlarmState);
-      bool resultOfSetVoltageAlarmState = await _dsimRepository
+      bool resultOfSetVoltageAlarmState = await _amp18CCorNodeRepository
           .set1p8GCCorNodeVoltageAlarmState(voltageAlarmState);
 
       settingResult.add(
@@ -914,15 +914,15 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     }
 
     if (state.minVoltage != state.initialValues[4]) {
-      bool resultOfSetMinVoltage =
-          await _dsimRepository.set1p8GCCorNodeMinVoltage(state.minVoltage);
+      bool resultOfSetMinVoltage = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeMinVoltage(state.minVoltage);
 
       settingResult.add('${DataKey.minVoltage.name},$resultOfSetMinVoltage');
     }
 
     if (state.maxVoltage != state.initialValues[5]) {
-      bool resultOfSetMaxVoltage =
-          await _dsimRepository.set1p8GCCorNodeMaxVoltage(state.maxVoltage);
+      bool resultOfSetMaxVoltage = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeMaxVoltage(state.maxVoltage);
 
       settingResult.add('${DataKey.maxVoltage.name},$resultOfSetMaxVoltage');
     }
@@ -930,7 +930,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     if (state.splitOptionAlarmState != state.initialValues[6]) {
       String splitOptionAlarmState =
           _boolToStringNumber(state.splitOptionAlarmState);
-      bool resultOfSetSplitOptionAlarmState = await _dsimRepository
+      bool resultOfSetSplitOptionAlarmState = await _amp18CCorNodeRepository
           .set1p8GCCorNodeSplitOptionAlarmState(splitOptionAlarmState);
 
       settingResult.add(
@@ -940,7 +940,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     if (state.rfOutputPower1AlarmState != state.initialValues[7]) {
       String rfOutputPower1AlarmState =
           _boolToStringNumber(state.rfOutputPower1AlarmState);
-      bool resultOfSetRFOutputPower1AlarmState = await _dsimRepository
+      bool resultOfSetRFOutputPower1AlarmState = await _amp18CCorNodeRepository
           .set1p8GCCorNodeRFOutputPower1AlarmState(rfOutputPower1AlarmState);
 
       settingResult.add(
@@ -948,7 +948,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     }
 
     if (state.minRFOutputPower1 != state.initialValues[8]) {
-      bool resultOfSetMinRFOutputPower1 = await _dsimRepository
+      bool resultOfSetMinRFOutputPower1 = await _amp18CCorNodeRepository
           .set1p8GCCorNodeMinRFOutputPower1(state.minRFOutputPower1);
 
       settingResult.add(
@@ -956,7 +956,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     }
 
     if (state.maxRFOutputPower1 != state.initialValues[9]) {
-      bool resultOfSetMaxRFOutputPower1 = await _dsimRepository
+      bool resultOfSetMaxRFOutputPower1 = await _amp18CCorNodeRepository
           .set1p8GCCorNodeMaxRFOutputPower1(state.maxRFOutputPower1);
 
       settingResult.add(
@@ -966,7 +966,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     if (state.rfOutputPower3AlarmState != state.initialValues[10]) {
       String rfOutputPower3AlarmState =
           _boolToStringNumber(state.rfOutputPower3AlarmState);
-      bool resultOfSetRFOutputPower3AlarmState = await _dsimRepository
+      bool resultOfSetRFOutputPower3AlarmState = await _amp18CCorNodeRepository
           .set1p8GCCorNodeRFOutputPower3AlarmState(rfOutputPower3AlarmState);
 
       settingResult.add(
@@ -974,7 +974,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     }
 
     if (state.minRFOutputPower3 != state.initialValues[11]) {
-      bool resultOfSetMinRFOutputPower3 = await _dsimRepository
+      bool resultOfSetMinRFOutputPower3 = await _amp18CCorNodeRepository
           .set1p8GCCorNodeMinRFOutputPower3(state.minRFOutputPower3);
 
       settingResult.add(
@@ -982,7 +982,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     }
 
     if (state.maxRFOutputPower3 != state.initialValues[12]) {
-      bool resultOfSetMaxRFOutputPower3 = await _dsimRepository
+      bool resultOfSetMaxRFOutputPower3 = await _amp18CCorNodeRepository
           .set1p8GCCorNodeMaxRFOutputPower3(state.maxRFOutputPower3);
 
       settingResult.add(
@@ -992,7 +992,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     if (state.rfOutputPower4AlarmState != state.initialValues[13]) {
       String rfOutputPower4AlarmState =
           _boolToStringNumber(state.rfOutputPower4AlarmState);
-      bool resultOfSetRFOutputPower4AlarmState = await _dsimRepository
+      bool resultOfSetRFOutputPower4AlarmState = await _amp18CCorNodeRepository
           .set1p8GCCorNodeRFOutputPower4AlarmState(rfOutputPower4AlarmState);
 
       settingResult.add(
@@ -1000,7 +1000,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     }
 
     if (state.minRFOutputPower4 != state.initialValues[14]) {
-      bool resultOfSetMinRFOutputPower4 = await _dsimRepository
+      bool resultOfSetMinRFOutputPower4 = await _amp18CCorNodeRepository
           .set1p8GCCorNodeMinRFOutputPower4(state.minRFOutputPower4);
 
       settingResult.add(
@@ -1008,7 +1008,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     }
 
     if (state.maxRFOutputPower4 != state.initialValues[15]) {
-      bool resultOfSetMaxRFOutputPower4 = await _dsimRepository
+      bool resultOfSetMaxRFOutputPower4 = await _amp18CCorNodeRepository
           .set1p8GCCorNodeMaxRFOutputPower4(state.maxRFOutputPower4);
 
       settingResult.add(
@@ -1018,7 +1018,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     if (state.rfOutputPower6AlarmState != state.initialValues[16]) {
       String rfOutputPower6AlarmState =
           _boolToStringNumber(state.rfOutputPower6AlarmState);
-      bool resultOfSetRFOutputPower6AlarmState = await _dsimRepository
+      bool resultOfSetRFOutputPower6AlarmState = await _amp18CCorNodeRepository
           .set1p8GCCorNodeRFOutputPower6AlarmState(rfOutputPower6AlarmState);
 
       settingResult.add(
@@ -1026,7 +1026,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     }
 
     if (state.minRFOutputPower6 != state.initialValues[17]) {
-      bool resultOfSetMinRFOutputPower6 = await _dsimRepository
+      bool resultOfSetMinRFOutputPower6 = await _amp18CCorNodeRepository
           .set1p8GCCorNodeMinRFOutputPower6(state.minRFOutputPower6);
 
       settingResult.add(
@@ -1034,7 +1034,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     }
 
     if (state.maxRFOutputPower6 != state.initialValues[18]) {
-      bool resultOfSetMaxRFOutputPower6 = await _dsimRepository
+      bool resultOfSetMaxRFOutputPower6 = await _amp18CCorNodeRepository
           .set1p8GCCorNodeMaxRFOutputPower6(state.maxRFOutputPower6);
 
       settingResult.add(
@@ -1051,6 +1051,6 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       editMode: false,
     ));
 
-    await _dsimRepository.update1p8GCCorNodeCharacteristics();
+    await _amp18CCorNodeRepository.update1p8GCCorNodeCharacteristics();
   }
 }

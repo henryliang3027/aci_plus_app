@@ -8,90 +8,92 @@ abstract class Setting18GraphModuleEvent extends Equatable {
 }
 
 class Initialized extends Setting18GraphModuleEvent {
-  const Initialized({
-    required this.fwdInputAttenuation,
-    required this.fwdInputEQ,
-    required this.rtnInputAttenuation2,
-    required this.rtnInputAttenuation3,
-    required this.rtnInputAttenuation4,
-    required this.rtnOutputLevelAttenuation,
-    required this.rtnOutputEQ,
-    required this.rtnIngressSetting2,
-    required this.rtnIngressSetting3,
-    required this.rtnIngressSetting4,
-    required this.tgcCableLength,
-    required this.dsVVA2,
-    required this.dsSlope2,
-    required this.dsVVA3,
-    required this.dsVVA4,
-    required this.usTGC,
-    required this.splitOption,
-    required this.firstChannelLoadingFrequency,
-    required this.firstChannelLoadingLevel,
-    required this.lastChannelLoadingFrequency,
-    required this.lastChannelLoadingLevel,
-    required this.pilotFrequencyMode,
-    required this.pilotFrequency1,
-    required this.pilotFrequency2,
-    required this.manualModePilot1RFOutputPower,
-    required this.manualModePilot2RFOutputPower,
-  });
+  const Initialized(
+      // {
+      // required this.fwdInputAttenuation,
+      // required this.fwdInputEQ,
+      // required this.rtnInputAttenuation2,
+      // required this.rtnInputAttenuation3,
+      // required this.rtnInputAttenuation4,
+      // required this.rtnOutputLevelAttenuation,
+      // required this.rtnOutputEQ,
+      // required this.rtnIngressSetting2,
+      // required this.rtnIngressSetting3,
+      // required this.rtnIngressSetting4,
+      // required this.tgcCableLength,
+      // required this.dsVVA2,
+      // required this.dsSlope2,
+      // required this.dsVVA3,
+      // required this.dsVVA4,
+      // required this.usTGC,
+      // required this.splitOption,
+      // required this.firstChannelLoadingFrequency,
+      // required this.firstChannelLoadingLevel,
+      // required this.lastChannelLoadingFrequency,
+      // required this.lastChannelLoadingLevel,
+      // required this.pilotFrequencyMode,
+      // required this.pilotFrequency1,
+      // required this.pilotFrequency2,
+      // required this.manualModePilot1RFOutputPower,
+      // required this.manualModePilot2RFOutputPower,
+      // }
+      );
 
-  final String fwdInputAttenuation;
-  final String fwdInputEQ;
-  final String rtnInputAttenuation2;
-  final String rtnInputAttenuation3;
-  final String rtnInputAttenuation4;
-  final String rtnOutputLevelAttenuation;
-  final String rtnOutputEQ;
-  final String rtnIngressSetting2;
-  final String rtnIngressSetting3;
-  final String rtnIngressSetting4;
-  final String tgcCableLength;
-  final String dsVVA2;
-  final String dsSlope2;
-  final String dsVVA3;
-  final String dsVVA4;
-  final String usTGC;
-  final String splitOption;
-  final String firstChannelLoadingFrequency;
-  final String firstChannelLoadingLevel;
-  final String lastChannelLoadingFrequency;
-  final String lastChannelLoadingLevel;
-  final String pilotFrequencyMode;
-  final String pilotFrequency1;
-  final String pilotFrequency2;
-  final String manualModePilot1RFOutputPower;
-  final String manualModePilot2RFOutputPower;
+  // final String fwdInputAttenuation;
+  // final String fwdInputEQ;
+  // final String rtnInputAttenuation2;
+  // final String rtnInputAttenuation3;
+  // final String rtnInputAttenuation4;
+  // final String rtnOutputLevelAttenuation;
+  // final String rtnOutputEQ;
+  // final String rtnIngressSetting2;
+  // final String rtnIngressSetting3;
+  // final String rtnIngressSetting4;
+  // final String tgcCableLength;
+  // final String dsVVA2;
+  // final String dsSlope2;
+  // final String dsVVA3;
+  // final String dsVVA4;
+  // final String usTGC;
+  // final String splitOption;
+  // final String firstChannelLoadingFrequency;
+  // final String firstChannelLoadingLevel;
+  // final String lastChannelLoadingFrequency;
+  // final String lastChannelLoadingLevel;
+  // final String pilotFrequencyMode;
+  // final String pilotFrequency1;
+  // final String pilotFrequency2;
+  // final String manualModePilot1RFOutputPower;
+  // final String manualModePilot2RFOutputPower;
 
   @override
   List<Object> get props => [
-        fwdInputAttenuation,
-        fwdInputEQ,
-        rtnInputAttenuation2,
-        rtnInputAttenuation3,
-        rtnInputAttenuation4,
-        rtnOutputLevelAttenuation,
-        rtnOutputEQ,
-        rtnIngressSetting2,
-        rtnIngressSetting3,
-        rtnIngressSetting4,
-        tgcCableLength,
-        dsVVA2,
-        dsSlope2,
-        dsVVA3,
-        dsVVA4,
-        usTGC,
-        splitOption,
-        firstChannelLoadingFrequency,
-        firstChannelLoadingLevel,
-        lastChannelLoadingFrequency,
-        lastChannelLoadingLevel,
-        pilotFrequencyMode,
-        pilotFrequency1,
-        pilotFrequency2,
-        manualModePilot1RFOutputPower,
-        manualModePilot2RFOutputPower,
+        // fwdInputAttenuation,
+        // fwdInputEQ,
+        // rtnInputAttenuation2,
+        // rtnInputAttenuation3,
+        // rtnInputAttenuation4,
+        // rtnOutputLevelAttenuation,
+        // rtnOutputEQ,
+        // rtnIngressSetting2,
+        // rtnIngressSetting3,
+        // rtnIngressSetting4,
+        // tgcCableLength,
+        // dsVVA2,
+        // dsSlope2,
+        // dsVVA3,
+        // dsVVA4,
+        // usTGC,
+        // splitOption,
+        // firstChannelLoadingFrequency,
+        // firstChannelLoadingLevel,
+        // lastChannelLoadingFrequency,
+        // lastChannelLoadingLevel,
+        // pilotFrequencyMode,
+        // pilotFrequency1,
+        // pilotFrequency2,
+        // manualModePilot1RFOutputPower,
+        // manualModePilot2RFOutputPower,
       ];
 }
 

@@ -51,20 +51,10 @@ class _GraphInteractor extends StatelessWidget {
           onPopInvoked: (didPop) {
             setPreferredOrientation();
           },
-
           child: InteractiveViewer(
             child: Stack(
               alignment: AlignmentDirectional.center,
               children: [
-                // Container(
-                //   width: double.maxFinite,
-                //   height: double.maxFinite,
-                //   child: const Image(
-                //     image: AssetImage('assets/circuits/MB_1.8G.png'),
-                //     // fit: BoxFit.cover,
-                //   ),
-                // ),
-
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
@@ -80,73 +70,8 @@ class _GraphInteractor extends StatelessWidget {
               ],
             ),
           ),
-
-          // Stack(
-          //   alignment: AlignmentDirectional.center,
-          //   children: [
-          //     const Image(
-          //       image: AssetImage('assets/circuits/MB_1.8G.png'),
-          //       fit: BoxFit.cover,
-          //     ),
-
-          //     // Positioned(
-          //     //   left: centerX - 175,
-          //     //   top: centerY - 199,
-          //     //   child: Material(
-          //     //     color: Colors.transparent,
-          //     //     child: InkWell(
-          //     //       child: Container(
-          //     //         width: 68,
-          //     //         height: 62,
-          //     //         decoration: BoxDecoration(
-          //     //             color: Colors.transparent,
-          //     //             border: Border.all(color: Colors.blue)),
-          //     //       ),
-          //     //       onTap: () {
-          //     //         showResultDialog(context: context, message: 'Button 1');
-          //     //       },
-          //     //     ),
-          //     //   ),
-          //     // ),
-          //     // Positioned(
-          //     //   left: 352,
-          //     //   top: 18,
-          //     //   child: Material(
-          //     //     color: Colors.transparent,
-          //     //     child: InkWell(
-          //     //       child: Container(
-          //     //         width: 68,
-          //     //         height: 62,
-          //     //         decoration: BoxDecoration(
-          //     //             color: Colors.transparent,
-          //     //             border: Border.all(color: Colors.blue)),
-          //     //       ),
-          //     //       onTap: () {
-          //     //         showResultDialog(context: context, message: 'Button 2');
-          //     //       },
-          //     //     ),
-          //     //   ),
-          //     // ),
-          //   ],
-          // ),
         );
       },
     );
   }
-}
-
-Future<List<String>> loadSvgImage({required String svgImage}) async {
-  List<String> maps = [];
-  String generalString = await rootBundle.loadString(svgImage);
-
-  XmlDocument document = XmlDocument.parse(generalString);
-
-  final paths = document.findAllElements('path');
-
-  for (var element in paths) {
-    String partPath = element.getAttribute('d').toString();
-    maps.add(partPath);
-  }
-
-  return maps;
 }
