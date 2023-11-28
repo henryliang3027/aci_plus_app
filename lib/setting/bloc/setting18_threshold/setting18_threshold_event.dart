@@ -8,69 +8,71 @@ abstract class Setting18ThresholdEvent extends Equatable {
 }
 
 class Initialized extends Setting18ThresholdEvent {
-  const Initialized({
-    required this.temperatureAlarmState,
-    required this.minTemperature,
-    required this.maxTemperature,
-    required this.minTemperatureF,
-    required this.maxTemperatureF,
-    required this.voltageAlarmState,
-    required this.minVoltage,
-    required this.maxVoltage,
-    required this.voltageRippleAlarmState,
-    required this.minVoltageRipple,
-    required this.maxVoltageRipple,
-    required this.rfOutputPowerAlarmState,
-    required this.minRFOutputPower,
-    required this.maxRFOutputPower,
-    required this.splitOptionAlarmState,
-    required this.pilotFrequency1AlarmState,
-    required this.pilotFrequency2AlarmState,
-    required this.firstChannelOutputLevelAlarmState,
-    required this.lastChannelOutputLevelAlarmState,
-  });
+  const Initialized(
+      //   {
+      //   required this.temperatureAlarmState,
+      //   required this.minTemperature,
+      //   required this.maxTemperature,
+      //   required this.minTemperatureF,
+      //   required this.maxTemperatureF,
+      //   required this.voltageAlarmState,
+      //   required this.minVoltage,
+      //   required this.maxVoltage,
+      //   required this.voltageRippleAlarmState,
+      //   required this.minVoltageRipple,
+      //   required this.maxVoltageRipple,
+      //   required this.rfOutputPowerAlarmState,
+      //   required this.minRFOutputPower,
+      //   required this.maxRFOutputPower,
+      //   required this.splitOptionAlarmState,
+      //   required this.pilotFrequency1AlarmState,
+      //   required this.pilotFrequency2AlarmState,
+      //   required this.firstChannelOutputLevelAlarmState,
+      //   required this.lastChannelOutputLevelAlarmState,
+      // }
+      );
 
-  final bool temperatureAlarmState;
-  final String minTemperature;
-  final String maxTemperature;
-  final String minTemperatureF;
-  final String maxTemperatureF;
-  final bool voltageAlarmState;
-  final String minVoltage;
-  final String maxVoltage;
-  final bool voltageRippleAlarmState;
-  final String minVoltageRipple;
-  final String maxVoltageRipple;
-  final bool rfOutputPowerAlarmState;
-  final String minRFOutputPower;
-  final String maxRFOutputPower;
-  final bool splitOptionAlarmState;
-  final bool pilotFrequency1AlarmState;
-  final bool pilotFrequency2AlarmState;
-  final bool firstChannelOutputLevelAlarmState;
-  final bool lastChannelOutputLevelAlarmState;
+  // final bool temperatureAlarmState;
+  // final String minTemperature;
+  // final String maxTemperature;
+  // final String minTemperatureF;
+  // final String maxTemperatureF;
+  // final bool voltageAlarmState;
+  // final String minVoltage;
+  // final String maxVoltage;
+  // final bool voltageRippleAlarmState;
+  // final String minVoltageRipple;
+  // final String maxVoltageRipple;
+  // final bool rfOutputPowerAlarmState;
+  // final String minRFOutputPower;
+  // final String maxRFOutputPower;
+  // final bool splitOptionAlarmState;
+  // final bool pilotFrequency1AlarmState;
+  // final bool pilotFrequency2AlarmState;
+  // final bool firstChannelOutputLevelAlarmState;
+  // final bool lastChannelOutputLevelAlarmState;
 
   @override
   List<Object> get props => [
-        temperatureAlarmState,
-        minTemperature,
-        maxTemperature,
-        minTemperatureF,
-        maxTemperatureF,
-        voltageAlarmState,
-        minVoltage,
-        maxVoltage,
-        voltageRippleAlarmState,
-        minVoltageRipple,
-        maxVoltageRipple,
-        rfOutputPowerAlarmState,
-        minRFOutputPower,
-        maxRFOutputPower,
-        splitOptionAlarmState,
-        pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState,
-        firstChannelOutputLevelAlarmState,
-        lastChannelOutputLevelAlarmState,
+        // temperatureAlarmState,
+        // minTemperature,
+        // maxTemperature,
+        // minTemperatureF,
+        // maxTemperatureF,
+        // voltageAlarmState,
+        // minVoltage,
+        // maxVoltage,
+        // voltageRippleAlarmState,
+        // minVoltageRipple,
+        // maxVoltageRipple,
+        // rfOutputPowerAlarmState,
+        // minRFOutputPower,
+        // maxRFOutputPower,
+        // splitOptionAlarmState,
+        // pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState,
+        // firstChannelOutputLevelAlarmState,
+        // lastChannelOutputLevelAlarmState,
       ];
 }
 

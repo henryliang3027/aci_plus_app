@@ -114,8 +114,11 @@ class Chart18CCorNodeForm extends StatelessWidget {
             context: context,
             barrierDismissible: false, // user must tap button!
             builder: (BuildContext buildContext) {
-              return PopScope(
-                canPop: false, // 避免 Android 使用者點擊系統返回鍵關閉 dialog
+              return WillPopScope(
+                onWillPop: () async {
+                  // 避免 Android 使用者點擊系統返回鍵關閉 dialog
+                  return false;
+                },
                 child: DownloadIndicator18CCorNodeForm(
                   dsimRepository:
                       RepositoryProvider.of<Amp18CCorNodeRepository>(context),

@@ -7,8 +7,11 @@ Future<void> showInProgressDialog(BuildContext context) async {
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
-      return PopScope(
-        canPop: false, // 避免 Android 使用者點擊系統返回鍵關閉 dialog
+      return WillPopScope(
+        onWillPop: () async {
+          // 避免 Android 使用者點擊系統返回鍵關閉 dialog
+          return false;
+        },
         child: AlertDialog(
           title: Text(
             AppLocalizations.of(context)!.dialogTitleProcessing,

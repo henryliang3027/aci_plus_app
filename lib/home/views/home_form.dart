@@ -201,15 +201,10 @@ class _HomeFormState extends State<HomeForm> {
           showFailureDialog(state.errorMassage);
         }
       },
-      child: PopScope(
-        canPop: false,
-        onPopInvoked: (didPop) async {
+      child: WillPopScope(
+        onWillPop: () async {
           bool? isExit = await showExitAppDialog(context: context);
-          if (isExit != null) {
-            if (isExit) {
-              SystemNavigator.pop();
-            }
-          }
+          return isExit ?? false;
         },
         child: Scaffold(
           body: BlocBuilder<HomeBloc, HomeState>(

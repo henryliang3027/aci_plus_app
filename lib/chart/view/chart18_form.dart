@@ -131,8 +131,11 @@ class _Chart18FormState extends State<Chart18Form>
             context: context,
             barrierDismissible: false, // user must tap button!
             builder: (BuildContext buildContext) {
-              return PopScope(
-                canPop: false, // 避免 Android 使用者點擊系統返回鍵關閉 dialog
+              return WillPopScope(
+                onWillPop: () async {
+                  // 避免 Android 使用者點擊系統返回鍵關閉 dialog
+                  return false;
+                },
                 child: DownloadIndicator18Form(
                   dsimRepository:
                       RepositoryProvider.of<Amp18Repository>(context),

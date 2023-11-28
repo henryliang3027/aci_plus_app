@@ -10,8 +10,8 @@ part 'setting18_control_state.dart';
 class Setting18ControlBloc
     extends Bloc<Setting18ControlEvent, Setting18ControlState> {
   Setting18ControlBloc({
-    required Amp18Repository amp18repository,
-  })  : _amp18repository = amp18repository,
+    required Amp18Repository amp18Repository,
+  })  : _amp18Repository = amp18Repository,
         super(const Setting18ControlState()) {
     on<Initialized>(_onInitialized);
     on<FwdInputAttenuationChanged>(_onFwdInputAttenuationChanged);
@@ -51,48 +51,63 @@ class Setting18ControlBloc
     on<SettingSubmitted>(_onSettingSubmitted);
   }
 
-  final Amp18Repository _amp18repository;
+  final Amp18Repository _amp18Repository;
 
   void _onInitialized(
     Initialized event,
     Emitter<Setting18ControlState> emit,
   ) {
+    Map<DataKey, String> characteristicDataCache =
+        _amp18Repository.characteristicDataCache;
+
+    String inputAttenuation =
+        characteristicDataCache[DataKey.inputAttenuation] ?? '';
+    String inputEqualizer =
+        characteristicDataCache[DataKey.inputEqualizer] ?? '';
+    String inputAttenuation2 =
+        characteristicDataCache[DataKey.inputAttenuation2] ?? '';
+    String inputAttenuation3 =
+        characteristicDataCache[DataKey.inputAttenuation3] ?? '';
+    String inputAttenuation4 =
+        characteristicDataCache[DataKey.inputAttenuation4] ?? '';
+    String outputAttenuation =
+        characteristicDataCache[DataKey.outputAttenuation] ?? '';
+    String outputEqualizer =
+        characteristicDataCache[DataKey.outputEqualizer] ?? '';
+    String ingressSetting2 =
+        characteristicDataCache[DataKey.ingressSetting2] ?? '';
+    String ingressSetting3 =
+        characteristicDataCache[DataKey.ingressSetting3] ?? '';
+    String ingressSetting4 =
+        characteristicDataCache[DataKey.ingressSetting4] ?? '';
+    String tgcCableLength =
+        characteristicDataCache[DataKey.tgcCableLength] ?? '';
+    String dsVVA2 = characteristicDataCache[DataKey.dsVVA2] ?? '';
+    String dsSlope2 = characteristicDataCache[DataKey.dsSlope2] ?? '';
+    String dsVVA3 = characteristicDataCache[DataKey.dsVVA3] ?? '';
+    String dsVVA4 = characteristicDataCache[DataKey.dsVVA4] ?? '';
+    String usTGC = characteristicDataCache[DataKey.usTGC] ?? '';
+
     emit(state.copyWith(
-        fwdInputAttenuation: event.fwdInputAttenuation,
-        fwdInputEQ: event.fwdInputEQ,
-        rtnInputAttenuation2: event.rtnInputAttenuation2,
-        rtnInputAttenuation3: event.rtnInputAttenuation3,
-        rtnInputAttenuation4: event.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: event.rtnOutputLevelAttenuation,
-        rtnOutputEQ: event.rtnOutputEQ,
-        rtnIngressSetting2: event.rtnIngressSetting2,
-        rtnIngressSetting3: event.rtnIngressSetting3,
-        rtnIngressSetting4: event.rtnIngressSetting4,
-        tgcCableLength: event.tgcCableLength,
-        dsVVA2: event.dsVVA2,
-        dsSlope2: event.dsSlope2,
-        dsVVA3: event.dsVVA3,
-        dsVVA4: event.dsVVA4,
-        usTGC: event.usTGC,
-        isInitialize: true,
-        initialValues: [
-          event.fwdInputAttenuation,
-          event.fwdInputEQ,
-          event.rtnInputAttenuation2,
-          event.rtnInputAttenuation3,
-          event.rtnInputAttenuation4,
-          event.rtnOutputLevelAttenuation,
-          event.rtnOutputEQ,
-          event.rtnIngressSetting2,
-          event.rtnIngressSetting3,
-          event.rtnIngressSetting4,
-          event.tgcCableLength,
-          event.dsVVA2,
-          event.dsSlope2,
-          event.dsVVA3,
-          event.dsVVA4,
-          event.usTGC,
-        ]));
+      fwdInputAttenuation: inputAttenuation,
+      fwdInputEQ: inputEqualizer,
+      rtnInputAttenuation2: inputAttenuation2,
+      rtnInputAttenuation3: inputAttenuation3,
+      rtnInputAttenuation4: inputAttenuation4,
+      rtnOutputLevelAttenuation: outputAttenuation,
+      rtnOutputEQ: outputEqualizer,
+      rtnIngressSetting2: ingressSetting2,
+      rtnIngressSetting3: ingressSetting3,
+      rtnIngressSetting4: ingressSetting4,
+      tgcCableLength: tgcCableLength,
+      dsVVA2: dsVVA2,
+      dsSlope2: dsSlope2,
+      dsVVA3: dsVVA3,
+      dsVVA4: dsVVA4,
+      usTGC: usTGC,
+      isInitialize: true,
+      initialValues: characteristicDataCache,
+    ));
   }
 
   String _getIncreasedNumber(String value) {
@@ -1031,22 +1046,22 @@ class Setting18ControlBloc
       isInitialize: false,
       editMode: false,
       enableSubmission: false,
-      fwdInputAttenuation: state.initialValues[0],
-      fwdInputEQ: state.initialValues[1],
-      rtnInputAttenuation2: state.initialValues[2],
-      rtnInputAttenuation3: state.initialValues[3],
-      rtnInputAttenuation4: state.initialValues[4],
-      rtnOutputLevelAttenuation: state.initialValues[5],
-      rtnOutputEQ: state.initialValues[6],
-      rtnIngressSetting2: state.initialValues[7],
-      rtnIngressSetting3: state.initialValues[8],
-      rtnIngressSetting4: state.initialValues[9],
-      tgcCableLength: state.initialValues[10],
-      dsVVA2: state.initialValues[11],
-      dsSlope2: state.initialValues[12],
-      dsVVA3: state.initialValues[13],
-      dsVVA4: state.initialValues[14],
-      usTGC: state.initialValues[15],
+      fwdInputAttenuation: state.initialValues[DataKey.inputAttenuation],
+      fwdInputEQ: state.initialValues[DataKey.inputEqualizer],
+      rtnInputAttenuation2: state.initialValues[DataKey.inputAttenuation2],
+      rtnInputAttenuation3: state.initialValues[DataKey.inputAttenuation3],
+      rtnInputAttenuation4: state.initialValues[DataKey.inputAttenuation4],
+      rtnOutputLevelAttenuation: state.initialValues[DataKey.outputAttenuation],
+      rtnOutputEQ: state.initialValues[DataKey.outputEqualizer],
+      rtnIngressSetting2: state.initialValues[DataKey.ingressSetting2],
+      rtnIngressSetting3: state.initialValues[DataKey.ingressSetting3],
+      rtnIngressSetting4: state.initialValues[DataKey.ingressSetting4],
+      tgcCableLength: state.initialValues[DataKey.tgcCableLength],
+      dsVVA2: state.initialValues[DataKey.dsVVA2],
+      dsSlope2: state.initialValues[DataKey.dsSlope2],
+      dsVVA3: state.initialValues[DataKey.dsVVA3],
+      dsVVA4: state.initialValues[DataKey.dsVVA4],
+      usTGC: state.initialValues[DataKey.usTGC],
     ));
   }
 
@@ -1068,22 +1083,26 @@ class Setting18ControlBloc
     required String dsVVA4,
     required String usTGC,
   }) {
-    if (fwdInputAttenuation != state.initialValues[0] ||
-        fwdInputEQ != state.initialValues[1] ||
-        rtnInputAttenuation2 != state.initialValues[2] ||
-        rtnInputAttenuation3 != state.initialValues[3] ||
-        rtnInputAttenuation4 != state.initialValues[4] ||
-        rtnOutputLevelAttenuation != state.initialValues[5] ||
-        rtnOutputEQ != state.initialValues[6] ||
-        rtnIngressSetting2 != state.initialValues[7] ||
-        rtnIngressSetting3 != state.initialValues[8] ||
-        rtnIngressSetting4 != state.initialValues[9] ||
-        tgcCableLength != state.initialValues[10] ||
-        dsVVA2 != state.initialValues[11] ||
-        dsSlope2 != state.initialValues[12] ||
-        dsVVA3 != state.initialValues[13] ||
-        dsVVA4 != state.initialValues[14] ||
-        usTGC != state.initialValues[15]) {
+    if (fwdInputAttenuation != state.initialValues[DataKey.inputAttenuation] ||
+        fwdInputEQ != state.initialValues[DataKey.inputEqualizer] ||
+        rtnInputAttenuation2 !=
+            state.initialValues[DataKey.inputAttenuation2] ||
+        rtnInputAttenuation3 !=
+            state.initialValues[DataKey.inputAttenuation3] ||
+        rtnInputAttenuation4 !=
+            state.initialValues[DataKey.inputAttenuation4] ||
+        rtnOutputLevelAttenuation !=
+            state.initialValues[DataKey.outputAttenuation] ||
+        rtnOutputEQ != state.initialValues[DataKey.outputEqualizer] ||
+        rtnIngressSetting2 != state.initialValues[DataKey.ingressSetting2] ||
+        rtnIngressSetting3 != state.initialValues[DataKey.ingressSetting3] ||
+        rtnIngressSetting4 != state.initialValues[DataKey.ingressSetting4] ||
+        tgcCableLength != state.initialValues[DataKey.tgcCableLength] ||
+        dsVVA2 != state.initialValues[DataKey.dsVVA2] ||
+        dsSlope2 != state.initialValues[DataKey.dsSlope2] ||
+        dsVVA3 != state.initialValues[DataKey.dsVVA3] ||
+        dsVVA4 != state.initialValues[DataKey.dsVVA4] ||
+        usTGC != state.initialValues[DataKey.usTGC]) {
       return true;
     } else {
       return false;
@@ -1101,124 +1120,132 @@ class Setting18ControlBloc
 
     List<String> settingResult = [];
 
-    if (state.fwdInputAttenuation != state.initialValues[0]) {
-      bool resultOfSetForwardInputAttenuation = await _amp18repository
+    if (state.fwdInputAttenuation !=
+        state.initialValues[DataKey.inputAttenuation]) {
+      bool resultOfSetForwardInputAttenuation = await _amp18Repository
           .set1p8GForwardInputAttenuation(state.fwdInputAttenuation);
 
       settingResult.add(
           '${DataKey.inputAttenuation.name},$resultOfSetForwardInputAttenuation');
     }
 
-    if (state.fwdInputEQ != state.initialValues[1]) {
+    if (state.fwdInputEQ != state.initialValues[DataKey.inputEqualizer]) {
       bool resultOfSetForwardInputEqualizer =
-          await _amp18repository.set1p8GForwardInputEqualizer(state.fwdInputEQ);
+          await _amp18Repository.set1p8GForwardInputEqualizer(state.fwdInputEQ);
 
       settingResult.add(
           '${DataKey.inputEqualizer.name},$resultOfSetForwardInputEqualizer');
     }
 
-    if (state.rtnInputAttenuation2 != state.initialValues[2]) {
-      bool resultOfSetReturnInputAttenuation2 = await _amp18repository
+    if (state.rtnInputAttenuation2 !=
+        state.initialValues[DataKey.inputAttenuation2]) {
+      bool resultOfSetReturnInputAttenuation2 = await _amp18Repository
           .set1p8GReturnInputAttenuation2(state.rtnInputAttenuation2);
 
       settingResult.add(
           '${DataKey.inputAttenuation2.name},$resultOfSetReturnInputAttenuation2');
     }
 
-    if (state.rtnInputAttenuation3 != state.initialValues[3]) {
-      bool resultOfSetReturnInputAttenuation3 = await _amp18repository
+    if (state.rtnInputAttenuation3 !=
+        state.initialValues[DataKey.ingressSetting3]) {
+      bool resultOfSetReturnInputAttenuation3 = await _amp18Repository
           .set1p8GReturnInputAttenuation3(state.rtnInputAttenuation3);
 
       settingResult.add(
           '${DataKey.inputAttenuation3.name},$resultOfSetReturnInputAttenuation3');
     }
 
-    if (state.rtnInputAttenuation4 != state.initialValues[4]) {
-      bool resultOfSetReturnInputAttenuation4 = await _amp18repository
+    if (state.rtnInputAttenuation4 !=
+        state.initialValues[DataKey.ingressSetting4]) {
+      bool resultOfSetReturnInputAttenuation4 = await _amp18Repository
           .set1p8GReturnInputAttenuation4(state.rtnInputAttenuation4);
 
       settingResult.add(
           '${DataKey.inputAttenuation4.name},$resultOfSetReturnInputAttenuation4');
     }
 
-    if (state.rtnOutputLevelAttenuation != state.initialValues[5]) {
-      bool resultOfSetReturnOutputAttenuation = await _amp18repository
+    if (state.rtnOutputLevelAttenuation !=
+        state.initialValues[DataKey.outputAttenuation]) {
+      bool resultOfSetReturnOutputAttenuation = await _amp18Repository
           .set1p8GReturnOutputAttenuation(state.rtnOutputLevelAttenuation);
 
       settingResult.add(
           '${DataKey.outputAttenuation.name},$resultOfSetReturnOutputAttenuation');
     }
 
-    if (state.rtnOutputEQ != state.initialValues[6]) {
-      bool resultOfSetReturnOutputEqualizer = await _amp18repository
+    if (state.rtnOutputEQ != state.initialValues[DataKey.outputEqualizer]) {
+      bool resultOfSetReturnOutputEqualizer = await _amp18Repository
           .set1p8GReturnOutputEqualizer(state.rtnOutputEQ);
 
       settingResult.add(
           '${DataKey.outputEqualizer.name},$resultOfSetReturnOutputEqualizer');
     }
 
-    if (state.rtnIngressSetting2 != state.initialValues[7]) {
-      bool resultOfSetReturnIngress2 = await _amp18repository
+    if (state.rtnIngressSetting2 !=
+        state.initialValues[DataKey.ingressSetting2]) {
+      bool resultOfSetReturnIngress2 = await _amp18Repository
           .set1p8GReturnIngress2(state.rtnIngressSetting2);
 
       settingResult
           .add('${DataKey.ingressSetting2.name},$resultOfSetReturnIngress2');
     }
 
-    if (state.rtnIngressSetting3 != state.initialValues[8]) {
-      bool resultOfSetReturnIngress3 = await _amp18repository
+    if (state.rtnIngressSetting3 !=
+        state.initialValues[DataKey.ingressSetting3]) {
+      bool resultOfSetReturnIngress3 = await _amp18Repository
           .set1p8GReturnIngress3(state.rtnIngressSetting3);
 
       settingResult
           .add('${DataKey.ingressSetting3.name},$resultOfSetReturnIngress3');
     }
 
-    if (state.rtnIngressSetting4 != state.initialValues[9]) {
-      bool resultOfSetReturnIngress4 = await _amp18repository
+    if (state.rtnIngressSetting4 !=
+        state.initialValues[DataKey.ingressSetting4]) {
+      bool resultOfSetReturnIngress4 = await _amp18Repository
           .set1p8GReturnIngress4(state.rtnIngressSetting4);
 
       settingResult
           .add('${DataKey.ingressSetting4.name},$resultOfSetReturnIngress4');
     }
 
-    if (state.tgcCableLength != state.initialValues[10]) {
+    if (state.tgcCableLength != state.initialValues[DataKey.tgcCableLength]) {
       bool resultOfSetTGCCableLength =
-          await _amp18repository.set1p8GTGCCableLength(state.tgcCableLength);
+          await _amp18Repository.set1p8GTGCCableLength(state.tgcCableLength);
 
       settingResult
           .add('${DataKey.tgcCableLength.name},$resultOfSetTGCCableLength');
     }
 
-    if (state.dsVVA2 != state.initialValues[11]) {
+    if (state.dsVVA2 != state.initialValues[DataKey.dsVVA2]) {
       bool resultOfSetDSVVA2 =
-          await _amp18repository.set1p8GDSVVA2(state.dsVVA2);
+          await _amp18Repository.set1p8GDSVVA2(state.dsVVA2);
 
       settingResult.add('${DataKey.dsVVA2.name},$resultOfSetDSVVA2');
     }
 
-    if (state.dsSlope2 != state.initialValues[12]) {
+    if (state.dsSlope2 != state.initialValues[DataKey.dsSlope2]) {
       bool resultOfSetDSSlope2 =
-          await _amp18repository.set1p8GDSSlope2(state.dsSlope2);
+          await _amp18Repository.set1p8GDSSlope2(state.dsSlope2);
 
       settingResult.add('${DataKey.dsSlope2.name},$resultOfSetDSSlope2');
     }
 
-    if (state.dsVVA3 != state.initialValues[13]) {
+    if (state.dsVVA3 != state.initialValues[DataKey.dsVVA3]) {
       bool resultOfSetDSVVA3 =
-          await _amp18repository.set1p8DSVVA3(state.dsVVA3);
+          await _amp18Repository.set1p8DSVVA3(state.dsVVA3);
 
       settingResult.add('${DataKey.dsVVA3.name},$resultOfSetDSVVA3');
     }
 
-    if (state.dsVVA4 != state.initialValues[14]) {
+    if (state.dsVVA4 != state.initialValues[DataKey.dsVVA4]) {
       bool resultOfSetDSVVA4 =
-          await _amp18repository.set1p8DSVVA4(state.dsVVA4);
+          await _amp18Repository.set1p8DSVVA4(state.dsVVA4);
 
       settingResult.add('${DataKey.dsVVA4.name},$resultOfSetDSVVA4');
     }
 
-    if (state.usTGC != state.initialValues[15]) {
-      bool resultOfSetUSTGC = await _amp18repository.set1p8USTGC(state.usTGC);
+    if (state.usTGC != state.initialValues[DataKey.usTGC]) {
+      bool resultOfSetUSTGC = await _amp18Repository.set1p8USTGC(state.usTGC);
 
       settingResult.add('${DataKey.usTGC.name},$resultOfSetUSTGC');
     }
@@ -1226,13 +1253,15 @@ class Setting18ControlBloc
     // 等待 device 完成更新後在讀取值
     await Future.delayed(const Duration(milliseconds: 1000));
 
+    await _amp18Repository.updateCharacteristics();
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
       enableSubmission: false,
       editMode: false,
+      isInitialize: true,
+      initialValues: _amp18Repository.characteristicDataCache,
     ));
-
-    await _amp18repository.updateCharacteristics();
   }
 }

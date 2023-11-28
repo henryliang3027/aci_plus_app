@@ -8,60 +8,62 @@ class Setting18ControlEvent extends Equatable {
 }
 
 class Initialized extends Setting18ControlEvent {
-  const Initialized({
-    required this.fwdInputAttenuation,
-    required this.fwdInputEQ,
-    required this.rtnInputAttenuation2,
-    required this.rtnInputAttenuation3,
-    required this.rtnInputAttenuation4,
-    required this.rtnOutputLevelAttenuation,
-    required this.rtnOutputEQ,
-    required this.rtnIngressSetting2,
-    required this.rtnIngressSetting3,
-    required this.rtnIngressSetting4,
-    required this.tgcCableLength,
-    required this.dsVVA2,
-    required this.dsSlope2,
-    required this.dsVVA3,
-    required this.dsVVA4,
-    required this.usTGC,
-  });
+  const Initialized(
+      //   {
+      //   required this.fwdInputAttenuation,
+      //   required this.fwdInputEQ,
+      //   required this.rtnInputAttenuation2,
+      //   required this.rtnInputAttenuation3,
+      //   required this.rtnInputAttenuation4,
+      //   required this.rtnOutputLevelAttenuation,
+      //   required this.rtnOutputEQ,
+      //   required this.rtnIngressSetting2,
+      //   required this.rtnIngressSetting3,
+      //   required this.rtnIngressSetting4,
+      //   required this.tgcCableLength,
+      //   required this.dsVVA2,
+      //   required this.dsSlope2,
+      //   required this.dsVVA3,
+      //   required this.dsVVA4,
+      //   required this.usTGC,
+      // }
+      );
 
-  final String fwdInputAttenuation;
-  final String fwdInputEQ;
-  final String rtnInputAttenuation2;
-  final String rtnInputAttenuation3;
-  final String rtnInputAttenuation4;
-  final String rtnOutputLevelAttenuation;
-  final String rtnOutputEQ;
-  final String rtnIngressSetting2;
-  final String rtnIngressSetting3;
-  final String rtnIngressSetting4;
-  final String tgcCableLength;
-  final String dsVVA2;
-  final String dsSlope2;
-  final String dsVVA3;
-  final String dsVVA4;
-  final String usTGC;
+  // final String fwdInputAttenuation;
+  // final String fwdInputEQ;
+  // final String rtnInputAttenuation2;
+  // final String rtnInputAttenuation3;
+  // final String rtnInputAttenuation4;
+  // final String rtnOutputLevelAttenuation;
+  // final String rtnOutputEQ;
+  // final String rtnIngressSetting2;
+  // final String rtnIngressSetting3;
+  // final String rtnIngressSetting4;
+  // final String tgcCableLength;
+  // final String dsVVA2;
+  // final String dsSlope2;
+  // final String dsVVA3;
+  // final String dsVVA4;
+  // final String usTGC;
 
   @override
   List<Object> get props => [
-        fwdInputAttenuation,
-        fwdInputEQ,
-        rtnInputAttenuation2,
-        rtnInputAttenuation3,
-        rtnInputAttenuation4,
-        rtnOutputLevelAttenuation,
-        rtnOutputEQ,
-        rtnIngressSetting2,
-        rtnIngressSetting3,
-        rtnIngressSetting4,
-        tgcCableLength,
-        dsVVA2,
-        dsSlope2,
-        dsVVA3,
-        dsVVA4,
-        usTGC,
+        // fwdInputAttenuation,
+        // fwdInputEQ,
+        // rtnInputAttenuation2,
+        // rtnInputAttenuation3,
+        // rtnInputAttenuation4,
+        // rtnOutputLevelAttenuation,
+        // rtnOutputEQ,
+        // rtnIngressSetting2,
+        // rtnIngressSetting3,
+        // rtnIngressSetting4,
+        // tgcCableLength,
+        // dsVVA2,
+        // dsSlope2,
+        // dsVVA3,
+        // dsVVA4,
+        // usTGC,
       ];
 }
 

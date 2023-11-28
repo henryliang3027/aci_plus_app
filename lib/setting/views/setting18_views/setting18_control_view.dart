@@ -19,52 +19,52 @@ class Setting18ControlView extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
-    String inputAttenuation =
-        homeState.characteristicData[DataKey.inputAttenuation] ?? '';
-    String inputEqualizer =
-        homeState.characteristicData[DataKey.inputEqualizer] ?? '';
-    String inputAttenuation2 =
-        homeState.characteristicData[DataKey.inputAttenuation2] ?? '';
-    String inputAttenuation3 =
-        homeState.characteristicData[DataKey.inputAttenuation3] ?? '';
-    String inputAttenuation4 =
-        homeState.characteristicData[DataKey.inputAttenuation4] ?? '';
-    String outputAttenuation =
-        homeState.characteristicData[DataKey.outputAttenuation] ?? '';
-    String outputEqualizer =
-        homeState.characteristicData[DataKey.outputEqualizer] ?? '';
-    String ingressSetting2 =
-        homeState.characteristicData[DataKey.ingressSetting2] ?? '';
-    String ingressSetting3 =
-        homeState.characteristicData[DataKey.ingressSetting3] ?? '';
-    String ingressSetting4 =
-        homeState.characteristicData[DataKey.ingressSetting4] ?? '';
-    String tgcCableLength =
-        homeState.characteristicData[DataKey.tgcCableLength] ?? '';
-    String dsVVA2 = homeState.characteristicData[DataKey.dsVVA2] ?? '';
-    String dsSlope2 = homeState.characteristicData[DataKey.dsSlope2] ?? '';
-    String dsVVA3 = homeState.characteristicData[DataKey.dsVVA3] ?? '';
-    String dsVVA4 = homeState.characteristicData[DataKey.dsVVA4] ?? '';
-    String usTGC = homeState.characteristicData[DataKey.usTGC] ?? '';
+    // String inputAttenuation =
+    //     homeState.characteristicData[DataKey.inputAttenuation] ?? '';
+    // String inputEqualizer =
+    //     homeState.characteristicData[DataKey.inputEqualizer] ?? '';
+    // String inputAttenuation2 =
+    //     homeState.characteristicData[DataKey.inputAttenuation2] ?? '';
+    // String inputAttenuation3 =
+    //     homeState.characteristicData[DataKey.inputAttenuation3] ?? '';
+    // String inputAttenuation4 =
+    //     homeState.characteristicData[DataKey.inputAttenuation4] ?? '';
+    // String outputAttenuation =
+    //     homeState.characteristicData[DataKey.outputAttenuation] ?? '';
+    // String outputEqualizer =
+    //     homeState.characteristicData[DataKey.outputEqualizer] ?? '';
+    // String ingressSetting2 =
+    //     homeState.characteristicData[DataKey.ingressSetting2] ?? '';
+    // String ingressSetting3 =
+    //     homeState.characteristicData[DataKey.ingressSetting3] ?? '';
+    // String ingressSetting4 =
+    //     homeState.characteristicData[DataKey.ingressSetting4] ?? '';
+    // String tgcCableLength =
+    //     homeState.characteristicData[DataKey.tgcCableLength] ?? '';
+    // String dsVVA2 = homeState.characteristicData[DataKey.dsVVA2] ?? '';
+    // String dsSlope2 = homeState.characteristicData[DataKey.dsSlope2] ?? '';
+    // String dsVVA3 = homeState.characteristicData[DataKey.dsVVA3] ?? '';
+    // String dsVVA4 = homeState.characteristicData[DataKey.dsVVA4] ?? '';
+    // String usTGC = homeState.characteristicData[DataKey.usTGC] ?? '';
 
-    context.read<Setting18ControlBloc>().add(Initialized(
-          fwdInputAttenuation: inputAttenuation,
-          fwdInputEQ: inputEqualizer,
-          rtnInputAttenuation2: inputAttenuation2,
-          rtnInputAttenuation3: inputAttenuation3,
-          rtnInputAttenuation4: inputAttenuation4,
-          rtnOutputLevelAttenuation: outputAttenuation,
-          rtnOutputEQ: outputEqualizer,
-          rtnIngressSetting2: ingressSetting2,
-          rtnIngressSetting3: ingressSetting3,
-          rtnIngressSetting4: ingressSetting4,
-          tgcCableLength: tgcCableLength,
-          dsVVA2: dsVVA2,
-          dsSlope2: dsSlope2,
-          dsVVA3: dsVVA3,
-          dsVVA4: dsVVA4,
-          usTGC: usTGC,
-        ));
+    // context.read<Setting18ControlBloc>().add(Initialized(
+    //       fwdInputAttenuation: inputAttenuation,
+    //       fwdInputEQ: inputEqualizer,
+    //       rtnInputAttenuation2: inputAttenuation2,
+    //       rtnInputAttenuation3: inputAttenuation3,
+    //       rtnInputAttenuation4: inputAttenuation4,
+    //       rtnOutputLevelAttenuation: outputAttenuation,
+    //       rtnOutputEQ: outputEqualizer,
+    //       rtnIngressSetting2: ingressSetting2,
+    //       rtnIngressSetting3: ingressSetting3,
+    //       rtnIngressSetting4: ingressSetting4,
+    //       tgcCableLength: tgcCableLength,
+    //       dsVVA2: dsVVA2,
+    //       dsSlope2: dsSlope2,
+    //       dsVVA3: dsVVA3,
+    //       dsVVA4: dsVVA4,
+    //       usTGC: usTGC,
+    //     ));
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'

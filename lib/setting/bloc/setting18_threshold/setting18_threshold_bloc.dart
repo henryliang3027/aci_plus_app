@@ -11,9 +11,9 @@ part 'setting18_threshold_state.dart';
 class Setting18ThresholdBloc
     extends Bloc<Setting18ThresholdEvent, Setting18ThresholdState> {
   Setting18ThresholdBloc({
-    required Amp18Repository amp18repository,
+    required Amp18Repository amp18Repository,
     required UnitRepository unitRepository,
-  })  : _amp18repository = amp18repository,
+  })  : _amp18Repository = amp18Repository,
         _unitRepository = unitRepository,
         super(const Setting18ThresholdState()) {
     on<Initialized>(_onInitialized);
@@ -39,66 +39,131 @@ class Setting18ThresholdBloc
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
+
+    add(const Initialized());
   }
 
-  final Amp18Repository _amp18repository;
+  final Amp18Repository _amp18Repository;
   final UnitRepository _unitRepository;
+
+  String getMinTemperature({
+    required String minTemperatureC,
+    required String minTemperatureF,
+  }) {
+    String minTemperature = '';
+    if (_unitRepository.temperatureUnit == TemperatureUnit.celsius) {
+      minTemperature = minTemperatureC;
+    } else {
+      minTemperature = minTemperatureF;
+    }
+
+    return minTemperature;
+  }
+
+  String getMaxTemperature({
+    required String maxTemperatureC,
+    required String maxTemperatureF,
+  }) {
+    String maxTemperature = '';
+    if (_unitRepository.temperatureUnit == TemperatureUnit.celsius) {
+      maxTemperature = maxTemperatureC;
+    } else {
+      maxTemperature = maxTemperatureF;
+    }
+
+    return maxTemperature;
+  }
+
+  String _boolToStringNumber(bool value) {
+    if (value) {
+      // alarm enable
+      return '0';
+    } else {
+      // alarm mask
+      return '1';
+    }
+  }
+
+  bool _stringNumberToBool(String value) {
+    return value == '1' ? false : true;
+  }
 
   Future<void> _onInitialized(
     Initialized event,
     Emitter<Setting18ThresholdState> emit,
   ) async {
-    String minTemperature = '';
-    String maxTemperature = '';
+    Map<DataKey, String> characteristicDataCache =
+        _amp18Repository.characteristicDataCache;
 
-    if (_unitRepository.temperatureUnit == TemperatureUnit.celsius) {
-      minTemperature = event.minTemperature;
-      maxTemperature = event.maxTemperature;
-    } else {
-      minTemperature = event.minTemperatureF;
-      maxTemperature = event.maxTemperatureF;
-    }
+    String minTemperatureC =
+        characteristicDataCache[DataKey.minTemperatureC] ?? '';
+    String maxTemperatureC =
+        characteristicDataCache[DataKey.maxTemperatureC] ?? '';
+    String minTemperatureF =
+        characteristicDataCache[DataKey.minTemperatureF] ?? '';
+    String maxTemperatureF =
+        characteristicDataCache[DataKey.maxTemperatureF] ?? '';
+    String minVoltage = characteristicDataCache[DataKey.minVoltage] ?? '';
+    String maxVoltage = characteristicDataCache[DataKey.maxVoltage] ?? '';
+    String minVoltageRipple =
+        characteristicDataCache[DataKey.minVoltageRipple] ?? '';
+    String maxVoltageRipple =
+        characteristicDataCache[DataKey.maxVoltageRipple] ?? '';
+    String minRFOutputPower =
+        characteristicDataCache[DataKey.minRFOutputPower] ?? '';
+    String maxRFOutputPower =
+        characteristicDataCache[DataKey.maxRFOutputPower] ?? '';
+
+    String strTemperatureAlarmState =
+        characteristicDataCache[DataKey.temperatureAlarmState] ?? '';
+
+    String strVoltageAlarmState =
+        characteristicDataCache[DataKey.voltageAlarmState] ?? '';
+
+    String strVoltageRippleAlarmState =
+        characteristicDataCache[DataKey.voltageRippleAlarmState] ?? '';
+
+    String strRFOutputPowerAlarmState =
+        characteristicDataCache[DataKey.rfOutputPowerAlarmState] ?? '';
+
+    String strSplitOptionAlarmState =
+        characteristicDataCache[DataKey.splitOptionAlarmState] ?? '';
+
+    String strPilotFrequency1AlarmState =
+        characteristicDataCache[DataKey.pilotFrequency1AlarmState] ?? '';
+
+    String strPilotFrequency2AlarmState =
+        characteristicDataCache[DataKey.pilotFrequency2AlarmState] ?? '';
 
     emit(state.copyWith(
-      temperatureAlarmState: event.temperatureAlarmState,
-      minTemperature: minTemperature,
-      maxTemperature: maxTemperature,
+      temperatureAlarmState: _stringNumberToBool(strTemperatureAlarmState),
+      minTemperature: getMinTemperature(
+        minTemperatureC: minTemperatureC,
+        minTemperatureF: minTemperatureF,
+      ),
+      maxTemperature: getMaxTemperature(
+        maxTemperatureC: maxTemperatureC,
+        maxTemperatureF: maxTemperatureF,
+      ),
       temperatureUnit: _unitRepository.temperatureUnit,
-      voltageAlarmState: event.voltageAlarmState,
-      minVoltage: event.minVoltage,
-      maxVoltage: event.maxVoltage,
-      voltageRippleAlarmState: event.voltageRippleAlarmState,
-      minVoltageRipple: event.minVoltageRipple,
-      maxVoltageRipple: event.maxVoltageRipple,
-      rfOutputPowerAlarmState: event.rfOutputPowerAlarmState,
-      minRFOutputPower: event.minRFOutputPower,
-      maxRFOutputPower: event.maxRFOutputPower,
-      splitOptionAlarmState: event.splitOptionAlarmState,
-      pilotFrequency1AlarmState: event.pilotFrequency1AlarmState,
-      pilotFrequency2AlarmState: event.pilotFrequency2AlarmState,
-      firstChannelOutputLevelAlarmState:
-          event.firstChannelOutputLevelAlarmState,
-      lastChannelOutputLevelAlarmState: event.lastChannelOutputLevelAlarmState,
+      voltageAlarmState: _stringNumberToBool(strVoltageAlarmState),
+      minVoltage: minVoltage,
+      maxVoltage: maxVoltage,
+      voltageRippleAlarmState: _stringNumberToBool(strVoltageRippleAlarmState),
+      minVoltageRipple: minVoltageRipple,
+      maxVoltageRipple: maxVoltageRipple,
+      rfOutputPowerAlarmState: _stringNumberToBool(strRFOutputPowerAlarmState),
+      minRFOutputPower: minRFOutputPower,
+      maxRFOutputPower: maxRFOutputPower,
+      splitOptionAlarmState: _stringNumberToBool(strSplitOptionAlarmState),
+      pilotFrequency1AlarmState:
+          _stringNumberToBool(strPilotFrequency1AlarmState),
+      pilotFrequency2AlarmState:
+          _stringNumberToBool(strPilotFrequency2AlarmState),
+      firstChannelOutputLevelAlarmState: false,
+      lastChannelOutputLevelAlarmState: false,
       isInitialize: true,
-      initialValues: [
-        event.temperatureAlarmState,
-        minTemperature,
-        maxTemperature,
-        event.voltageAlarmState,
-        event.minVoltage,
-        event.maxVoltage,
-        event.voltageRippleAlarmState,
-        event.minVoltageRipple,
-        event.maxVoltageRipple,
-        event.rfOutputPowerAlarmState,
-        event.minRFOutputPower,
-        event.maxRFOutputPower,
-        event.splitOptionAlarmState,
-        event.pilotFrequency1AlarmState,
-        event.pilotFrequency2AlarmState,
-        event.firstChannelOutputLevelAlarmState,
-        event.lastChannelOutputLevelAlarmState,
-      ],
+      initialValues: characteristicDataCache,
     ));
   }
 
@@ -662,40 +727,78 @@ class Setting18ThresholdBloc
     EditModeDisabled event,
     Emitter<Setting18ThresholdState> emit,
   ) {
+    String minTemperatureC = state.initialValues[DataKey.minTemperatureC] ?? '';
+    String maxTemperatureC = state.initialValues[DataKey.maxTemperatureC] ?? '';
+    String minTemperatureF = state.initialValues[DataKey.minTemperatureF] ?? '';
+    String maxTemperatureF = state.initialValues[DataKey.maxTemperatureF] ?? '';
+    String minVoltage = state.initialValues[DataKey.minVoltage] ?? '';
+    String maxVoltage = state.initialValues[DataKey.maxVoltage] ?? '';
+    String minVoltageRipple =
+        state.initialValues[DataKey.minVoltageRipple] ?? '';
+    String maxVoltageRipple =
+        state.initialValues[DataKey.maxVoltageRipple] ?? '';
+    String minRFOutputPower =
+        state.initialValues[DataKey.minRFOutputPower] ?? '';
+    String maxRFOutputPower =
+        state.initialValues[DataKey.maxRFOutputPower] ?? '';
+
+    String strTemperatureAlarmState =
+        state.initialValues[DataKey.temperatureAlarmState] ?? '';
+    bool temperatureAlarmState = strTemperatureAlarmState == '1' ? false : true;
+    String strVoltageAlarmState =
+        state.initialValues[DataKey.voltageAlarmState] ?? '';
+    bool voltageAlarmState = strVoltageAlarmState == '1' ? false : true;
+    String strVoltageRippleAlarmState =
+        state.initialValues[DataKey.voltageRippleAlarmState] ?? '';
+    bool voltageRippleAlarmState =
+        strVoltageRippleAlarmState == '1' ? false : true;
+    String strRFOutputPowerAlarmState =
+        state.initialValues[DataKey.rfOutputPowerAlarmState] ?? '';
+    bool rfOutputPowerAlarmState =
+        strRFOutputPowerAlarmState == '1' ? false : true;
+    String strSplitOptionAlarmState =
+        state.initialValues[DataKey.splitOptionAlarmState] ?? '';
+    bool splitOptionAlarmState = strSplitOptionAlarmState == '1' ? false : true;
+
+    String strPilotFrequency1AlarmState =
+        state.initialValues[DataKey.pilotFrequency1AlarmState] ?? '';
+    bool pilotFrequency1AlarmState =
+        strPilotFrequency1AlarmState == '1' ? false : true;
+    String strPilotFrequency2AlarmState =
+        state.initialValues[DataKey.pilotFrequency2AlarmState] ?? '';
+    bool pilotFrequency2AlarmState =
+        strPilotFrequency2AlarmState == '1' ? false : true;
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       isInitialize: true,
       editMode: false,
       enableSubmission: false,
-      temperatureAlarmState: state.initialValues[0],
-      minTemperature: state.initialValues[1],
-      maxTemperature: state.initialValues[2],
+      temperatureAlarmState: temperatureAlarmState,
+      minTemperature: getMinTemperature(
+        minTemperatureC: minTemperatureC,
+        minTemperatureF: minTemperatureF,
+      ),
+      maxTemperature: getMaxTemperature(
+        maxTemperatureC: maxTemperatureC,
+        maxTemperatureF: maxTemperatureF,
+      ),
       temperatureUnit: _unitRepository.temperatureUnit,
-      voltageAlarmState: state.initialValues[3],
-      minVoltage: state.initialValues[4],
-      maxVoltage: state.initialValues[5],
-      voltageRippleAlarmState: state.initialValues[6],
-      minVoltageRipple: state.initialValues[7],
-      maxVoltageRipple: state.initialValues[8],
-      rfOutputPowerAlarmState: state.initialValues[9],
-      minRFOutputPower: state.initialValues[10],
-      maxRFOutputPower: state.initialValues[11],
-      splitOptionAlarmState: state.initialValues[12],
-      pilotFrequency1AlarmState: state.initialValues[13],
-      pilotFrequency2AlarmState: state.initialValues[14],
-      firstChannelOutputLevelAlarmState: state.initialValues[15],
-      lastChannelOutputLevelAlarmState: state.initialValues[16],
+      voltageAlarmState: voltageAlarmState,
+      minVoltage: minVoltage,
+      maxVoltage: maxVoltage,
+      voltageRippleAlarmState: voltageRippleAlarmState,
+      minVoltageRipple: minVoltageRipple,
+      maxVoltageRipple: maxVoltageRipple,
+      rfOutputPowerAlarmState: rfOutputPowerAlarmState,
+      minRFOutputPower: minRFOutputPower,
+      maxRFOutputPower: maxRFOutputPower,
+      splitOptionAlarmState: splitOptionAlarmState,
+      pilotFrequency1AlarmState: pilotFrequency1AlarmState,
+      pilotFrequency2AlarmState: pilotFrequency2AlarmState,
+      firstChannelOutputLevelAlarmState: false,
+      lastChannelOutputLevelAlarmState: false,
     ));
-  }
-
-  String _boolToStringNumber(bool value) {
-    if (value) {
-      // alarm enable
-      return '0';
-    } else {
-      // alarm mask
-      return '1';
-    }
   }
 
   bool _isEnabledSubmission({
@@ -717,23 +820,71 @@ class Setting18ThresholdBloc
     required bool firstChannelOutputLevelAlarmState,
     required bool lastChannelOutputLevelAlarmState,
   }) {
-    if (temperatureAlarmState != state.initialValues[0] ||
-        minTemperature != state.initialValues[1] ||
-        maxTemperature != state.initialValues[2] ||
-        voltageAlarmState != state.initialValues[3] ||
-        minVoltage != state.initialValues[4] ||
-        maxVoltage != state.initialValues[5] ||
-        voltageRippleAlarmState != state.initialValues[6] ||
-        minVoltageRipple != state.initialValues[7] ||
-        maxVoltageRipple != state.initialValues[8] ||
-        rfOutputPowerAlarmState != state.initialValues[9] ||
-        minRFOutputPower != state.initialValues[10] ||
-        maxRFOutputPower != state.initialValues[11] ||
-        splitOptionAlarmState != state.initialValues[12] ||
-        pilotFrequency1AlarmState != state.initialValues[13] ||
-        pilotFrequency2AlarmState != state.initialValues[14] ||
-        firstChannelOutputLevelAlarmState != state.initialValues[15] ||
-        lastChannelOutputLevelAlarmState != state.initialValues[16]) {
+    String minTemperatureC = state.initialValues[DataKey.minTemperatureC] ?? '';
+    String maxTemperatureC = state.initialValues[DataKey.maxTemperatureC] ?? '';
+    String minTemperatureF = state.initialValues[DataKey.minTemperatureF] ?? '';
+    String maxTemperatureF = state.initialValues[DataKey.maxTemperatureF] ?? '';
+    String minVoltage = state.initialValues[DataKey.minVoltage] ?? '';
+    String maxVoltage = state.initialValues[DataKey.maxVoltage] ?? '';
+    String minVoltageRipple =
+        state.initialValues[DataKey.minVoltageRipple] ?? '';
+    String maxVoltageRipple =
+        state.initialValues[DataKey.maxVoltageRipple] ?? '';
+    String minRFOutputPower =
+        state.initialValues[DataKey.minRFOutputPower] ?? '';
+    String maxRFOutputPower =
+        state.initialValues[DataKey.maxRFOutputPower] ?? '';
+
+    String strTemperatureAlarmState =
+        state.initialValues[DataKey.temperatureAlarmState] ?? '';
+
+    String strVoltageAlarmState =
+        state.initialValues[DataKey.voltageAlarmState] ?? '';
+
+    String strVoltageRippleAlarmState =
+        state.initialValues[DataKey.voltageRippleAlarmState] ?? '';
+
+    String strRFOutputPowerAlarmState =
+        state.initialValues[DataKey.rfOutputPowerAlarmState] ?? '';
+
+    String strSplitOptionAlarmState =
+        state.initialValues[DataKey.splitOptionAlarmState] ?? '';
+
+    String strPilotFrequency1AlarmState =
+        state.initialValues[DataKey.pilotFrequency1AlarmState] ?? '';
+
+    String strPilotFrequency2AlarmState =
+        state.initialValues[DataKey.pilotFrequency2AlarmState] ?? '';
+
+    if (temperatureAlarmState !=
+            _stringNumberToBool(strTemperatureAlarmState) ||
+        minTemperature !=
+            getMinTemperature(
+              minTemperatureC: minTemperatureC,
+              minTemperatureF: minTemperatureF,
+            ) ||
+        maxTemperature !=
+            getMaxTemperature(
+              maxTemperatureC: maxTemperatureC,
+              maxTemperatureF: maxTemperatureF,
+            ) ||
+        voltageAlarmState != _stringNumberToBool(strVoltageAlarmState) ||
+        minVoltage != state.initialValues[DataKey.minVoltage] ||
+        maxVoltage != state.initialValues[DataKey.maxVoltage] ||
+        voltageRippleAlarmState !=
+            _stringNumberToBool(strVoltageRippleAlarmState) ||
+        minVoltageRipple != state.initialValues[DataKey.minVoltageRipple] ||
+        maxVoltageRipple != state.initialValues[DataKey.maxVoltageRipple] ||
+        rfOutputPowerAlarmState !=
+            _stringNumberToBool(strRFOutputPowerAlarmState) ||
+        minRFOutputPower != state.initialValues[DataKey.minRFOutputPower] ||
+        maxRFOutputPower != state.initialValues[DataKey.maxRFOutputPower] ||
+        splitOptionAlarmState !=
+            _stringNumberToBool(strSplitOptionAlarmState) ||
+        pilotFrequency1AlarmState !=
+            _stringNumberToBool(strPilotFrequency1AlarmState) ||
+        pilotFrequency2AlarmState !=
+            _stringNumberToBool(strPilotFrequency2AlarmState)) {
       return true;
     } else {
       return false;
@@ -749,19 +900,70 @@ class Setting18ThresholdBloc
       submissionStatus: SubmissionStatus.submissionInProgress,
     ));
 
+    String minTemperatureC = state.initialValues[DataKey.minTemperatureC] ?? '';
+    String maxTemperatureC = state.initialValues[DataKey.maxTemperatureC] ?? '';
+    String minTemperatureF = state.initialValues[DataKey.minTemperatureF] ?? '';
+    String maxTemperatureF = state.initialValues[DataKey.maxTemperatureF] ?? '';
+    String minVoltage = state.initialValues[DataKey.minVoltage] ?? '';
+    String maxVoltage = state.initialValues[DataKey.maxVoltage] ?? '';
+    String minVoltageRipple =
+        state.initialValues[DataKey.minVoltageRipple] ?? '';
+    String maxVoltageRipple =
+        state.initialValues[DataKey.maxVoltageRipple] ?? '';
+    String minRFOutputPower =
+        state.initialValues[DataKey.minRFOutputPower] ?? '';
+    String maxRFOutputPower =
+        state.initialValues[DataKey.maxRFOutputPower] ?? '';
+
+    String strTemperatureAlarmState =
+        state.initialValues[DataKey.temperatureAlarmState] ?? '';
+    bool temperatureAlarmState = strTemperatureAlarmState == '1' ? false : true;
+    String strVoltageAlarmState =
+        state.initialValues[DataKey.voltageAlarmState] ?? '';
+    bool voltageAlarmState = strVoltageAlarmState == '1' ? false : true;
+    String strVoltageRippleAlarmState =
+        state.initialValues[DataKey.voltageRippleAlarmState] ?? '';
+    bool voltageRippleAlarmState =
+        strVoltageRippleAlarmState == '1' ? false : true;
+    String strRFOutputPowerAlarmState =
+        state.initialValues[DataKey.rfOutputPowerAlarmState] ?? '';
+    bool rfOutputPowerAlarmState =
+        strRFOutputPowerAlarmState == '1' ? false : true;
+    String strSplitOptionAlarmState =
+        state.initialValues[DataKey.splitOptionAlarmState] ?? '';
+    bool splitOptionAlarmState = strSplitOptionAlarmState == '1' ? false : true;
+
+    String strPilotFrequency1AlarmState =
+        state.initialValues[DataKey.pilotFrequency1AlarmState] ?? '';
+    bool pilotFrequency1AlarmState =
+        strPilotFrequency1AlarmState == '1' ? false : true;
+    String strPilotFrequency2AlarmState =
+        state.initialValues[DataKey.pilotFrequency2AlarmState] ?? '';
+    bool pilotFrequency2AlarmState =
+        strPilotFrequency2AlarmState == '1' ? false : true;
+
+    String minTemperature = getMinTemperature(
+      minTemperatureC: minTemperatureC,
+      minTemperatureF: minTemperatureF,
+    );
+    String maxTemperature = getMaxTemperature(
+      maxTemperatureC: maxTemperatureC,
+      maxTemperatureF: maxTemperatureF,
+    );
+
     List<String> settingResult = [];
 
-    if (state.temperatureAlarmState != state.initialValues[0]) {
+    if (state.temperatureAlarmState != temperatureAlarmState) {
       String temperatureAlarmState =
           _boolToStringNumber(state.temperatureAlarmState);
-      bool resultOfSetTemperatureAlarmState = await _amp18repository
+      bool resultOfSetTemperatureAlarmState = await _amp18Repository
           .set1p8GTemperatureAlarmState(temperatureAlarmState);
 
       settingResult.add(
           '${DataKey.temperatureAlarmState.name},$resultOfSetTemperatureAlarmState');
     }
 
-    if (state.minTemperature != state.initialValues[1]) {
+    if (state.minTemperature != minTemperature) {
       String minTemperature = state.minTemperature;
       if (state.temperatureUnit == TemperatureUnit.fahrenheit) {
         minTemperature = _unitRepository
@@ -770,13 +972,13 @@ class Setting18ThresholdBloc
       }
 
       bool resultOfSetMinTemperature =
-          await _amp18repository.set1p8GMinTemperature(minTemperature);
+          await _amp18Repository.set1p8GMinTemperature(minTemperature);
 
       settingResult
           .add('${DataKey.minTemperatureC.name},$resultOfSetMinTemperature');
     }
 
-    if (state.maxTemperature != state.initialValues[2]) {
+    if (state.maxTemperature != maxTemperature) {
       String maxTemperature = state.maxTemperature;
       if (state.temperatureUnit == TemperatureUnit.fahrenheit) {
         maxTemperature = _unitRepository
@@ -785,112 +987,112 @@ class Setting18ThresholdBloc
       }
 
       bool resultOfSetMaxTemperature =
-          await _amp18repository.set1p8GMaxTemperature(maxTemperature);
+          await _amp18Repository.set1p8GMaxTemperature(maxTemperature);
 
       settingResult
           .add('${DataKey.maxTemperatureC.name},$resultOfSetMaxTemperature');
     }
 
-    if (state.voltageAlarmState != state.initialValues[3]) {
+    if (state.voltageAlarmState != voltageAlarmState) {
       String voltageAlarmState = _boolToStringNumber(state.voltageAlarmState);
       bool resultOfSetVoltageAlarmState =
-          await _amp18repository.set1p8GVoltageAlarmState(voltageAlarmState);
+          await _amp18Repository.set1p8GVoltageAlarmState(voltageAlarmState);
 
       settingResult.add(
           '${DataKey.voltageAlarmState.name},$resultOfSetVoltageAlarmState');
     }
 
-    if (state.minVoltage != state.initialValues[4]) {
+    if (state.minVoltage != minVoltage) {
       bool resultOfSetMinVoltage =
-          await _amp18repository.set1p8GMinVoltage(state.minVoltage);
+          await _amp18Repository.set1p8GMinVoltage(state.minVoltage);
 
       settingResult.add('${DataKey.minVoltage.name},$resultOfSetMinVoltage');
     }
 
-    if (state.maxVoltage != state.initialValues[5]) {
+    if (state.maxVoltage != maxVoltage) {
       bool resultOfSetMaxVoltage =
-          await _amp18repository.set1p8GMaxVoltage(state.maxVoltage);
+          await _amp18Repository.set1p8GMaxVoltage(state.maxVoltage);
 
       settingResult.add('${DataKey.maxVoltage.name},$resultOfSetMaxVoltage');
     }
 
-    if (state.voltageRippleAlarmState != state.initialValues[6]) {
+    if (state.voltageRippleAlarmState != voltageRippleAlarmState) {
       String voltageRippleAlarmState =
           _boolToStringNumber(state.voltageRippleAlarmState);
-      bool resultOfSetVoltageRippleAlarmState = await _amp18repository
+      bool resultOfSetVoltageRippleAlarmState = await _amp18Repository
           .set1p8GVoltageRippleAlarmState(voltageRippleAlarmState);
 
       settingResult.add(
           '${DataKey.voltageRippleAlarmState.name},$resultOfSetVoltageRippleAlarmState');
     }
 
-    if (state.minVoltageRipple != state.initialValues[7]) {
-      bool resultOfSetMinVoltageRipple = await _amp18repository
+    if (state.minVoltageRipple != minVoltageRipple) {
+      bool resultOfSetMinVoltageRipple = await _amp18Repository
           .set1p8GMinVoltageRipple(state.minVoltageRipple);
 
       settingResult
           .add('${DataKey.minVoltageRipple.name},$resultOfSetMinVoltageRipple');
     }
 
-    if (state.maxVoltageRipple != state.initialValues[8]) {
-      bool resultOfSetMaxVoltageRipple = await _amp18repository
+    if (state.maxVoltageRipple != maxVoltageRipple) {
+      bool resultOfSetMaxVoltageRipple = await _amp18Repository
           .set1p8GMaxVoltageRipple(state.maxVoltageRipple);
 
       settingResult
           .add('${DataKey.maxVoltageRipple.name},$resultOfSetMaxVoltageRipple');
     }
 
-    if (state.rfOutputPowerAlarmState != state.initialValues[9]) {
+    if (state.rfOutputPowerAlarmState != rfOutputPowerAlarmState) {
       String voltageRFOutputPowerAlarmState =
           _boolToStringNumber(state.rfOutputPowerAlarmState);
-      bool resultOfSetRFOutputPowerAlarmState = await _amp18repository
+      bool resultOfSetRFOutputPowerAlarmState = await _amp18Repository
           .set1p8GRFOutputPowerAlarmState(voltageRFOutputPowerAlarmState);
 
       settingResult.add(
           '${DataKey.rfOutputPowerAlarmState.name},$resultOfSetRFOutputPowerAlarmState');
     }
 
-    if (state.minRFOutputPower != state.initialValues[10]) {
-      bool resultOfSetMinRFOutputPower = await _amp18repository
+    if (state.minRFOutputPower != minRFOutputPower) {
+      bool resultOfSetMinRFOutputPower = await _amp18Repository
           .set1p8GMinRFOutputPower(state.minRFOutputPower);
 
       settingResult
           .add('${DataKey.minRFOutputPower.name},$resultOfSetMinRFOutputPower');
     }
 
-    if (state.maxRFOutputPower != state.initialValues[11]) {
-      bool resultOfSetMaxRFOutputPower = await _amp18repository
+    if (state.maxRFOutputPower != maxRFOutputPower) {
+      bool resultOfSetMaxRFOutputPower = await _amp18Repository
           .set1p8GMaxRFOutputPower(state.maxRFOutputPower);
 
       settingResult
           .add('${DataKey.maxRFOutputPower.name},$resultOfSetMaxRFOutputPower');
     }
 
-    if (state.splitOptionAlarmState != state.initialValues[12]) {
+    if (state.splitOptionAlarmState != splitOptionAlarmState) {
       String splitOptionAlarmState =
           _boolToStringNumber(state.splitOptionAlarmState);
-      bool resultOfSetSplitOptionAlarmState = await _amp18repository
+      bool resultOfSetSplitOptionAlarmState = await _amp18Repository
           .set1p8GSplitOptionAlarmState(splitOptionAlarmState);
 
       settingResult.add(
           '${DataKey.splitOptionAlarmState.name},$resultOfSetSplitOptionAlarmState');
     }
 
-    if (state.pilotFrequency1AlarmState != state.initialValues[13]) {
+    if (state.pilotFrequency1AlarmState != pilotFrequency1AlarmState) {
       String voltagePilotFrequency1AlarmState =
           _boolToStringNumber(state.pilotFrequency1AlarmState);
       bool resultOfSetPilotFrequency1AlarmState =
-          await _amp18repository.setInputPilotLowFrequencyAlarmState(
+          await _amp18Repository.setInputPilotLowFrequencyAlarmState(
               voltagePilotFrequency1AlarmState);
 
       settingResult.add(
           '${DataKey.pilotFrequency1AlarmState.name},$resultOfSetPilotFrequency1AlarmState');
     }
 
-    if (state.pilotFrequency2AlarmState != state.initialValues[14]) {
+    if (state.pilotFrequency2AlarmState != pilotFrequency2AlarmState) {
       String pilotFrequency2AlarmState =
           _boolToStringNumber(state.pilotFrequency2AlarmState);
-      bool resultOfSetPilotFrequency2AlarmState = await _amp18repository
+      bool resultOfSetPilotFrequency2AlarmState = await _amp18Repository
           .setInputPilotHighFrequencyAlarmState(pilotFrequency2AlarmState);
 
       settingResult.add(
@@ -900,13 +1102,13 @@ class Setting18ThresholdBloc
     // 等待 device 完成更新後在讀取值
     await Future.delayed(const Duration(milliseconds: 1000));
 
+    await _amp18Repository.updateCharacteristics();
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
       enableSubmission: false,
       editMode: false,
     ));
-
-    await _amp18repository.updateCharacteristics();
   }
 }

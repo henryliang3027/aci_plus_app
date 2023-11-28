@@ -11,9 +11,9 @@ part 'setting18_configure_state.dart';
 class Setting18ConfigureBloc
     extends Bloc<Setting18ConfigureEvent, Setting18ConfigureState> {
   Setting18ConfigureBloc({
-    required Amp18Repository amp18repository,
+    required Amp18Repository amp18Repository,
     required GPSRepository gpsRepository,
-  })  : _amp18repository = amp18repository,
+  })  : _amp18Repository = amp18Repository,
         _gpsRepository = gpsRepository,
         super(const Setting18ConfigureState()) {
     on<Initialized>(_onInitialized);
@@ -39,49 +39,68 @@ class Setting18ConfigureBloc
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
+
+    add(const Initialized());
   }
 
-  final Amp18Repository _amp18repository;
+  final Amp18Repository _amp18Repository;
   final GPSRepository _gpsRepository;
 
   Future<void> _onInitialized(
     Initialized event,
     Emitter<Setting18ConfigureState> emit,
   ) async {
+    Map<DataKey, String> characteristicDataCache =
+        _amp18Repository.characteristicDataCache;
+
+    String location = characteristicDataCache[DataKey.location] ?? '';
+    String coordinates = characteristicDataCache[DataKey.coordinates] ?? '';
+    String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
+    String firstChannelLoadingFrequency =
+        characteristicDataCache[DataKey.firstChannelLoadingFrequency] ?? '';
+    String lastChannelLoadingFrequency =
+        characteristicDataCache[DataKey.lastChannelLoadingFrequency] ?? '';
+    String firstChannelLoadingLevel =
+        characteristicDataCache[DataKey.firstChannelLoadingLevel] ?? '';
+    String lastChannelLoadingLevel =
+        characteristicDataCache[DataKey.lastChannelLoadingLevel] ?? '';
+    String pilotFrequencyMode =
+        characteristicDataCache[DataKey.pilotFrequencyMode] ?? '';
+    String pilotFrequency1 =
+        characteristicDataCache[DataKey.pilotFrequency1] ?? '';
+    String pilotFrequency2 =
+        characteristicDataCache[DataKey.pilotFrequency2] ?? '';
+
+    String manualModePilot1RFOutputPower =
+        characteristicDataCache[DataKey.manualModePilot1RFOutputPower] ?? '';
+    String manualModePilot2RFOutputPower =
+        characteristicDataCache[DataKey.manualModePilot2RFOutputPower] ?? '';
+
+    String fwdAGCMode = characteristicDataCache[DataKey.agcMode] ?? '';
+    String autoLevelControl = characteristicDataCache[DataKey.alcMode] ?? '';
+    String logInterval = characteristicDataCache[DataKey.logInterval] ?? '';
+    String tgcCableLength =
+        characteristicDataCache[DataKey.tgcCableLength] ?? '';
+
     emit(state.copyWith(
-      location: event.location,
-      coordinates: event.coordinates,
-      splitOption: event.splitOption,
-      firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
-      firstChannelLoadingLevel: event.firstChannelLoadingLevel,
-      lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
-      lastChannelLoadingLevel: event.lastChannelLoadingLevel,
-      pilotFrequencyMode: event.pilotFrequencyMode,
-      pilotFrequency1: event.pilotFrequency1,
-      pilotFrequency2: event.pilotFrequency2,
-      manualModePilot1RFOutputPower: event.manualModePilot1RFOutputPower,
-      manualModePilot2RFOutputPower: event.manualModePilot2RFOutputPower,
-      fwdAGCMode: event.fwdAGCMode,
-      autoLevelControl: event.autoLevelControl,
-      logInterval: event.logInterval,
-      tgcCableLength: event.tgcCableLength,
+      location: location,
+      coordinates: coordinates,
+      splitOption: splitOption,
+      firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+      firstChannelLoadingLevel: firstChannelLoadingLevel,
+      lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+      lastChannelLoadingLevel: lastChannelLoadingLevel,
+      pilotFrequencyMode: pilotFrequencyMode,
+      pilotFrequency1: pilotFrequency1,
+      pilotFrequency2: pilotFrequency2,
+      manualModePilot1RFOutputPower: manualModePilot1RFOutputPower,
+      manualModePilot2RFOutputPower: manualModePilot2RFOutputPower,
+      fwdAGCMode: fwdAGCMode,
+      autoLevelControl: autoLevelControl,
+      logInterval: logInterval,
+      tgcCableLength: tgcCableLength,
       isInitialize: true,
-      initialValues: [
-        event.location,
-        event.coordinates,
-        event.splitOption,
-        event.firstChannelLoadingFrequency,
-        event.firstChannelLoadingLevel,
-        event.lastChannelLoadingFrequency,
-        event.lastChannelLoadingLevel,
-        event.pilotFrequencyMode,
-        event.pilotFrequency1,
-        event.pilotFrequency2,
-        event.fwdAGCMode,
-        event.autoLevelControl,
-        event.logInterval,
-        event.tgcCableLength,
-      ],
+      initialValues: characteristicDataCache,
     ));
   }
 
@@ -93,6 +112,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       location: event.location,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: event.location,
         coordinates: state.coordinates,
@@ -120,6 +140,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       coordinates: event.coordinates,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: event.coordinates,
@@ -153,6 +174,7 @@ class Setting18ConfigureBloc
       emit(state.copyWith(
         gpsStatus: FormStatus.requestSuccess,
         coordinates: coordinates,
+        isInitialize: false,
         enableSubmission: _isEnabledSubmission(
           location: state.location,
           coordinates: coordinates,
@@ -174,6 +196,7 @@ class Setting18ConfigureBloc
       emit(state.copyWith(
         gpsStatus: FormStatus.requestFailure,
         gpsCoordinateErrorMessage: error.toString(),
+        isInitialize: false,
         enableSubmission: _isEnabledSubmission(
           location: state.location,
           coordinates: state.coordinates,
@@ -202,6 +225,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       splitOption: event.splitOption,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -229,6 +253,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -256,6 +281,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       firstChannelLoadingLevel: event.firstChannelLoadingLevel,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -283,6 +309,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -310,6 +337,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       lastChannelLoadingLevel: event.lastChannelLoadingLevel,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -337,6 +365,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       pilotFrequencyMode: event.pilotFrequencyMode,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -364,6 +393,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       pilotFrequency1: event.pilotFrequency1,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -391,6 +421,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       pilotFrequency2: event.pilotFrequency2,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -418,6 +449,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       fwdAGCMode: event.fwdAGCMode,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -445,6 +477,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       autoLevelControl: event.autoLevelControl,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -472,6 +505,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       logInterval: event.logInterval,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -517,6 +551,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       logInterval: logInterval,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -546,6 +581,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       logInterval: logInterval,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -573,6 +609,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       tgcCableLength: event.tgcCableLength,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -614,20 +651,24 @@ class Setting18ConfigureBloc
       isInitialize: true,
       editMode: false,
       enableSubmission: false,
-      location: state.initialValues[0],
-      coordinates: state.initialValues[1],
-      splitOption: state.initialValues[2],
-      firstChannelLoadingFrequency: state.initialValues[3],
-      firstChannelLoadingLevel: state.initialValues[4],
-      lastChannelLoadingFrequency: state.initialValues[5],
-      lastChannelLoadingLevel: state.initialValues[6],
-      pilotFrequencyMode: state.initialValues[7],
-      pilotFrequency1: state.initialValues[8],
-      pilotFrequency2: state.initialValues[9],
-      fwdAGCMode: state.initialValues[10],
-      autoLevelControl: state.initialValues[11],
-      logInterval: state.initialValues[12],
-      tgcCableLength: state.initialValues[13],
+      location: state.initialValues[DataKey.location],
+      coordinates: state.initialValues[DataKey.coordinates],
+      splitOption: state.initialValues[DataKey.splitOption],
+      firstChannelLoadingFrequency:
+          state.initialValues[DataKey.firstChannelLoadingFrequency],
+      firstChannelLoadingLevel:
+          state.initialValues[DataKey.firstChannelLoadingLevel],
+      lastChannelLoadingFrequency:
+          state.initialValues[DataKey.lastChannelLoadingFrequency],
+      lastChannelLoadingLevel:
+          state.initialValues[DataKey.lastChannelLoadingLevel],
+      pilotFrequencyMode: state.initialValues[DataKey.pilotFrequencyMode],
+      pilotFrequency1: state.initialValues[DataKey.pilotFrequency1],
+      pilotFrequency2: state.initialValues[DataKey.pilotFrequency2],
+      fwdAGCMode: state.initialValues[DataKey.agcMode],
+      autoLevelControl: state.initialValues[DataKey.alcMode],
+      logInterval: state.initialValues[DataKey.logInterval],
+      tgcCableLength: state.initialValues[DataKey.tgcCableLength],
     ));
   }
 
@@ -647,20 +688,24 @@ class Setting18ConfigureBloc
     required String logInterval,
     required String tgcCableLength,
   }) {
-    if (location != state.initialValues[0] ||
-        coordinates != state.initialValues[1] ||
-        splitOption != state.initialValues[2] ||
-        firstChannelLoadingFrequency != state.initialValues[3] ||
-        firstChannelLoadingLevel != state.initialValues[4] ||
-        lastChannelLoadingFrequency != state.initialValues[5] ||
-        lastChannelLoadingLevel != state.initialValues[6] ||
-        pilotFrequencyMode != state.initialValues[7] ||
-        pilotFrequency1 != state.initialValues[8] ||
-        pilotFrequency2 != state.initialValues[9] ||
-        fwdAGCMode != state.initialValues[10] ||
-        autoLevelControl != state.initialValues[11] ||
-        logInterval != state.initialValues[12] ||
-        tgcCableLength != state.initialValues[13]) {
+    if (location != state.initialValues[DataKey.location] ||
+        coordinates != state.initialValues[DataKey.coordinates] ||
+        splitOption != state.initialValues[DataKey.splitOption] ||
+        firstChannelLoadingFrequency !=
+            state.initialValues[DataKey.firstChannelLoadingFrequency] ||
+        firstChannelLoadingLevel !=
+            state.initialValues[DataKey.firstChannelLoadingLevel] ||
+        lastChannelLoadingFrequency !=
+            state.initialValues[DataKey.lastChannelLoadingFrequency] ||
+        lastChannelLoadingLevel !=
+            state.initialValues[DataKey.lastChannelLoadingLevel] ||
+        pilotFrequencyMode != state.initialValues[DataKey.pilotFrequencyMode] ||
+        pilotFrequency1 != state.initialValues[DataKey.pilotFrequency1] ||
+        pilotFrequency2 != state.initialValues[DataKey.pilotFrequency2] ||
+        fwdAGCMode != state.initialValues[DataKey.agcMode] ||
+        autoLevelControl != state.initialValues[DataKey.alcMode] ||
+        logInterval != state.initialValues[DataKey.logInterval] ||
+        tgcCableLength != state.initialValues[DataKey.tgcCableLength]) {
       return true;
     } else {
       return false;
@@ -679,109 +724,114 @@ class Setting18ConfigureBloc
 
     List<String> settingResult = [];
 
-    if (state.location != state.initialValues[0]) {
+    if (state.location != state.initialValues[DataKey.location]) {
       bool resultOfSetLocation =
-          await _amp18repository.set1p8GLocation(state.location);
+          await _amp18Repository.set1p8GLocation(state.location);
 
       settingResult.add('${DataKey.location.name},$resultOfSetLocation');
     }
 
-    if (state.coordinates != state.initialValues[1]) {
+    if (state.coordinates != state.initialValues[DataKey.coordinates]) {
       bool resultOfSetCoordinates =
-          await _amp18repository.set1p8GCoordinates(state.coordinates);
+          await _amp18Repository.set1p8GCoordinates(state.coordinates);
 
       settingResult.add('${DataKey.coordinates.name},$resultOfSetCoordinates');
     }
 
-    if (state.splitOption != state.initialValues[2]) {
+    if (state.splitOption != state.initialValues[DataKey.splitOption]) {
       bool resultOfSetSplitOption =
-          await _amp18repository.set1p8GSplitOption(state.splitOption);
+          await _amp18Repository.set1p8GSplitOption(state.splitOption);
 
       settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
     }
 
-    if (state.firstChannelLoadingFrequency != state.initialValues[3]) {
+    if (state.firstChannelLoadingFrequency !=
+        state.initialValues[DataKey.firstChannelLoadingFrequency]) {
       bool resultOfSetFirstChannelLoadingFrequency =
-          await _amp18repository.set1p8GFirstChannelLoadingFrequency(
+          await _amp18Repository.set1p8GFirstChannelLoadingFrequency(
               state.firstChannelLoadingFrequency);
 
       settingResult.add(
           '${DataKey.firstChannelLoadingFrequency.name},$resultOfSetFirstChannelLoadingFrequency');
     }
 
-    if (state.firstChannelLoadingLevel != state.initialValues[4]) {
-      bool resultOfSetFirstChannelLoadingLevel = await _amp18repository
+    if (state.firstChannelLoadingLevel !=
+        state.initialValues[DataKey.firstChannelLoadingLevel]) {
+      bool resultOfSetFirstChannelLoadingLevel = await _amp18Repository
           .set1p8GFirstChannelLoadingLevel(state.firstChannelLoadingLevel);
 
       settingResult.add(
           '${DataKey.firstChannelLoadingLevel.name},$resultOfSetFirstChannelLoadingLevel');
     }
 
-    if (state.lastChannelLoadingFrequency != state.initialValues[5]) {
+    if (state.lastChannelLoadingFrequency !=
+        state.initialValues[DataKey.lastChannelLoadingFrequency]) {
       bool resultOfSetLastChannelLoadingFrequency =
-          await _amp18repository.set1p8GLastChannelLoadingFrequency(
+          await _amp18Repository.set1p8GLastChannelLoadingFrequency(
               state.lastChannelLoadingFrequency);
 
       settingResult.add(
           '${DataKey.lastChannelLoadingFrequency.name},$resultOfSetLastChannelLoadingFrequency');
     }
 
-    if (state.lastChannelLoadingLevel != state.initialValues[6]) {
-      bool resultOfSetLastChannelLoadingLevel = await _amp18repository
+    if (state.lastChannelLoadingLevel !=
+        state.initialValues[DataKey.lastChannelLoadingLevel]) {
+      bool resultOfSetLastChannelLoadingLevel = await _amp18Repository
           .set1p8GLastChannelLoadingLevel(state.lastChannelLoadingLevel);
 
       settingResult.add(
           '${DataKey.lastChannelLoadingLevel.name},$resultOfSetLastChannelLoadingLevel');
     }
 
-    if (state.pilotFrequencyMode != state.initialValues[7]) {
-      bool resultOfSetPilotFrequencyMode = await _amp18repository
+    if (state.pilotFrequencyMode !=
+        state.initialValues[DataKey.pilotFrequencyMode]) {
+      bool resultOfSetPilotFrequencyMode = await _amp18Repository
           .set1p8GPilotFrequencyMode(state.pilotFrequencyMode);
 
       settingResult.add(
           '${DataKey.pilotFrequencyMode.name},$resultOfSetPilotFrequencyMode');
     }
 
-    if (state.pilotFrequency1 != state.initialValues[8]) {
+    if (state.pilotFrequency1 != state.initialValues[DataKey.pilotFrequency1]) {
       bool resultOfSetPilotFrequency1 =
-          await _amp18repository.set1p8GPilotFrequency1(state.pilotFrequency1);
+          await _amp18Repository.set1p8GPilotFrequency1(state.pilotFrequency1);
 
       settingResult
           .add('${DataKey.pilotFrequency1.name},$resultOfSetPilotFrequency1');
     }
 
-    if (state.pilotFrequency2 != state.initialValues[9]) {
+    if (state.pilotFrequency2 != state.initialValues[DataKey.pilotFrequency2]) {
       bool resultOfSetPilotFrequency2 =
-          await _amp18repository.set1p8GPilotFrequency2(state.pilotFrequency2);
+          await _amp18Repository.set1p8GPilotFrequency2(state.pilotFrequency2);
 
       settingResult
           .add('${DataKey.pilotFrequency2.name},$resultOfSetPilotFrequency2');
     }
 
-    if (state.fwdAGCMode != state.initialValues[10]) {
+    if (state.fwdAGCMode != state.initialValues[DataKey.agcMode]) {
       bool resultOfSetForwardAGCMode =
-          await _amp18repository.set1p8GForwardAGCMode(state.fwdAGCMode);
+          await _amp18Repository.set1p8GForwardAGCMode(state.fwdAGCMode);
 
       settingResult.add('${DataKey.agcMode.name},$resultOfSetForwardAGCMode');
     }
 
-    if (state.autoLevelControl != state.initialValues[11]) {
+    if (state.autoLevelControl != state.initialValues[DataKey.alcMode]) {
       bool resultOfSetALCMode =
-          await _amp18repository.set1p8GALCMode(state.autoLevelControl);
+          await _amp18Repository.set1p8GALCMode(state.autoLevelControl);
 
       settingResult.add('${DataKey.alcMode.name},$resultOfSetALCMode');
     }
 
-    if (state.logInterval != state.initialValues[12]) {
+    if (state.logInterval != state.initialValues[DataKey.logInterval]) {
       bool resultOfSetLogInterval =
-          await _amp18repository.set1p8GLogInterval(state.logInterval);
+          await _amp18Repository.set1p8GLogInterval(state.logInterval);
 
       settingResult.add('${DataKey.logInterval.name},$resultOfSetLogInterval');
     }
 
-    if (state.tgcCableLength != state.initialValues[13]) {
+    if (state.tgcCableLength != state.initialValues[DataKey.tgcCableLength]) {
       bool resultOfSetTGCCableLength =
-          await _amp18repository.set1p8GTGCCableLength(state.tgcCableLength);
+          await _amp18Repository.set1p8GTGCCableLength(state.tgcCableLength);
 
       settingResult
           .add('${DataKey.tgcCableLength.name},$resultOfSetTGCCableLength');
@@ -790,13 +840,15 @@ class Setting18ConfigureBloc
     // 等待 device 完成更新後在讀取值
     await Future.delayed(const Duration(milliseconds: 1000));
 
+    await _amp18Repository.updateCharacteristics();
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
       enableSubmission: false,
       editMode: false,
+      isInitialize: true,
+      initialValues: _amp18Repository.characteristicDataCache,
     ));
-
-    await _amp18repository.updateCharacteristics();
   }
 }
