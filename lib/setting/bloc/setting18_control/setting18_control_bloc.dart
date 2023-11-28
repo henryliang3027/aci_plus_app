@@ -49,6 +49,8 @@ class Setting18ControlBloc
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
+
+    add(const Initialized());
   }
 
   final Amp18Repository _amp18Repository;
@@ -1260,8 +1262,6 @@ class Setting18ControlBloc
       settingResult: settingResult,
       enableSubmission: false,
       editMode: false,
-      isInitialize: true,
-      initialValues: _amp18Repository.characteristicDataCache,
     ));
   }
 }

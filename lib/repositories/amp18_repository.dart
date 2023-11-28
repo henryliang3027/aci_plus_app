@@ -19,6 +19,8 @@ class Amp18Repository {
   final BLEClient _bleClient;
   final Amp18Parser _amp18Parser;
   final Amp18ChartCache _amp18ChartCache;
+
+  // 給設定頁面用來初始化預設值用
   final Map<DataKey, String> _characteristicDataCache = {};
 
   late StreamController<Map<DataKey, String>>

@@ -331,6 +331,8 @@ class Setting18ControlView extends StatelessWidget {
             context: context,
             messageRows: rows,
           );
+
+          context.read<Setting18ControlBloc>().add(const Initialized());
         }
       },
       child: Scaffold(

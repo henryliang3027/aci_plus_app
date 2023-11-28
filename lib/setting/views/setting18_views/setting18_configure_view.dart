@@ -367,6 +367,7 @@ class Setting18ConfigureView extends StatelessWidget {
             context: context,
             messageRows: rows,
           );
+          context.read<Setting18ConfigureBloc>().add(const Initialized());
         } else if (state.gpsStatus.isRequestFailure) {
           showFailureDialog(
             getMessageLocalization(

@@ -847,8 +847,6 @@ class Setting18ConfigureBloc
       settingResult: settingResult,
       enableSubmission: false,
       editMode: false,
-      isInitialize: true,
-      initialValues: _amp18Repository.characteristicDataCache,
     ));
   }
 }

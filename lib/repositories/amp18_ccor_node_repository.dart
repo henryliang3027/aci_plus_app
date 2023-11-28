@@ -22,6 +22,9 @@ class Amp18CCorNodeRepository {
   final Amp18CCorNodeChartCache _amp18CCorNodeChartCache;
   final Amp18CCorNodeParser _amp18CCorNodeParser;
 
+  // 給設定頁面用來初始化預設值用
+  final Map<DataKey, String> _characteristicDataCache = {};
+
   late StreamController<Map<DataKey, String>>
       _characteristicDataStreamController;
 
