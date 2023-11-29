@@ -14,7 +14,7 @@ class Setting18CCorNodeControlState extends Equatable {
     this.editMode = false,
     this.enableSubmission = false,
     this.isInitialize = true,
-    this.initialValues = const [],
+    this.initialValues = const {},
     this.settingResult = const [],
   });
 
@@ -30,7 +30,7 @@ class Setting18CCorNodeControlState extends Equatable {
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
-  final List<dynamic> initialValues;
+  final Map<DataKey, String> initialValues;
   final List<String> settingResult;
 
   Setting18CCorNodeControlState copyWith({
@@ -46,7 +46,7 @@ class Setting18CCorNodeControlState extends Equatable {
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
-    List<dynamic>? initialValues,
+    Map<DataKey, String>? initialValues,
     List<String>? settingResult,
   }) {
     return Setting18CCorNodeControlState(

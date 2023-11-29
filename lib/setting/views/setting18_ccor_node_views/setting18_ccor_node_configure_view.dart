@@ -23,20 +23,20 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
-    String location = homeState.characteristicData[DataKey.location] ?? '';
-    String coordinates =
-        homeState.characteristicData[DataKey.coordinates] ?? '';
-    String splitOption =
-        homeState.characteristicData[DataKey.splitOption] ?? '';
-    String logInterval =
-        homeState.characteristicData[DataKey.logInterval] ?? '';
+    // String location = homeState.characteristicData[DataKey.location] ?? '';
+    // String coordinates =
+    //     homeState.characteristicData[DataKey.coordinates] ?? '';
+    // String splitOption =
+    //     homeState.characteristicData[DataKey.splitOption] ?? '';
+    // String logInterval =
+    //     homeState.characteristicData[DataKey.logInterval] ?? '';
 
-    context.read<Setting18CCorNodeConfigureBloc>().add(Initialized(
-          location: location,
-          coordinates: coordinates,
-          splitOption: splitOption,
-          logInterval: logInterval,
-        ));
+    // context.read<Setting18CCorNodeConfigureBloc>().add(Initialized(
+    //       location: location,
+    //       coordinates: coordinates,
+    //       splitOption: splitOption,
+    //       logInterval: logInterval,
+    //     ));
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
@@ -235,6 +235,10 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
             context: context,
             messageRows: rows,
           );
+
+          context
+              .read<Setting18CCorNodeConfigureBloc>()
+              .add(const Initialized());
         } else if (state.gpsStatus.isRequestFailure) {
           showFailureDialog(
             getMessageLocalization(

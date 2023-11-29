@@ -20,7 +20,7 @@ class _AboutPageState extends State<AboutPage> {
   void initState() {
     _kExpandedHeight = 160.0;
     _scrollController = ScrollController()..addListener(() {});
-    _dsimVersion = 'V 2.0.0';
+    _dsimVersion = 'V 2.1.0';
 
     super.initState();
   }

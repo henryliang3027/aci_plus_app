@@ -30,6 +30,8 @@ class Amp18CCorNodeRepository {
 
   bool isCreateCharacteristicDataStreamController = false;
 
+  Map<DataKey, String> get characteristicDataCache => _characteristicDataCache;
+
   Stream<Map<DataKey, String>> get characteristicData async* {
     yield* _characteristicDataStreamController.stream;
   }

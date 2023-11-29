@@ -8,75 +8,77 @@ abstract class Setting18CCorNodeThresholdEvent extends Equatable {
 }
 
 class Initialized extends Setting18CCorNodeThresholdEvent {
-  const Initialized({
-    required this.temperatureAlarmState,
-    required this.minTemperature,
-    required this.maxTemperature,
-    required this.minTemperatureF,
-    required this.maxTemperatureF,
-    required this.voltageAlarmState,
-    required this.minVoltage,
-    required this.maxVoltage,
-    required this.splitOptionAlarmState,
-    required this.rfOutputPower1AlarmState,
-    required this.minRFOutputPower1,
-    required this.maxRFOutputPower1,
-    required this.rfOutputPower3AlarmState,
-    required this.minRFOutputPower3,
-    required this.maxRFOutputPower3,
-    required this.rfOutputPower4AlarmState,
-    required this.minRFOutputPower4,
-    required this.maxRFOutputPower4,
-    required this.rfOutputPower6AlarmState,
-    required this.minRFOutputPower6,
-    required this.maxRFOutputPower6,
-  });
+  const Initialized(
+      //   {
+      //   required this.temperatureAlarmState,
+      //   required this.minTemperature,
+      //   required this.maxTemperature,
+      //   required this.minTemperatureF,
+      //   required this.maxTemperatureF,
+      //   required this.voltageAlarmState,
+      //   required this.minVoltage,
+      //   required this.maxVoltage,
+      //   required this.splitOptionAlarmState,
+      //   required this.rfOutputPower1AlarmState,
+      //   required this.minRFOutputPower1,
+      //   required this.maxRFOutputPower1,
+      //   required this.rfOutputPower3AlarmState,
+      //   required this.minRFOutputPower3,
+      //   required this.maxRFOutputPower3,
+      //   required this.rfOutputPower4AlarmState,
+      //   required this.minRFOutputPower4,
+      //   required this.maxRFOutputPower4,
+      //   required this.rfOutputPower6AlarmState,
+      //   required this.minRFOutputPower6,
+      //   required this.maxRFOutputPower6,
+      // }
+      );
 
-  final bool temperatureAlarmState;
-  final String minTemperature;
-  final String maxTemperature;
-  final String minTemperatureF;
-  final String maxTemperatureF;
-  final bool voltageAlarmState;
-  final String minVoltage;
-  final String maxVoltage;
-  final bool splitOptionAlarmState;
-  final bool rfOutputPower1AlarmState;
-  final String minRFOutputPower1;
-  final String maxRFOutputPower1;
-  final bool rfOutputPower3AlarmState;
-  final String minRFOutputPower3;
-  final String maxRFOutputPower3;
-  final bool rfOutputPower4AlarmState;
-  final String minRFOutputPower4;
-  final String maxRFOutputPower4;
-  final bool rfOutputPower6AlarmState;
-  final String minRFOutputPower6;
-  final String maxRFOutputPower6;
+  // final bool temperatureAlarmState;
+  // final String minTemperature;
+  // final String maxTemperature;
+  // final String minTemperatureF;
+  // final String maxTemperatureF;
+  // final bool voltageAlarmState;
+  // final String minVoltage;
+  // final String maxVoltage;
+  // final bool splitOptionAlarmState;
+  // final bool rfOutputPower1AlarmState;
+  // final String minRFOutputPower1;
+  // final String maxRFOutputPower1;
+  // final bool rfOutputPower3AlarmState;
+  // final String minRFOutputPower3;
+  // final String maxRFOutputPower3;
+  // final bool rfOutputPower4AlarmState;
+  // final String minRFOutputPower4;
+  // final String maxRFOutputPower4;
+  // final bool rfOutputPower6AlarmState;
+  // final String minRFOutputPower6;
+  // final String maxRFOutputPower6;
 
   @override
   List<Object> get props => [
-        temperatureAlarmState,
-        minTemperature,
-        maxTemperature,
-        minTemperatureF,
-        maxTemperatureF,
-        voltageAlarmState,
-        minVoltage,
-        maxVoltage,
-        splitOptionAlarmState,
-        rfOutputPower1AlarmState,
-        minRFOutputPower1,
-        maxRFOutputPower1,
-        rfOutputPower3AlarmState,
-        minRFOutputPower3,
-        maxRFOutputPower3,
-        rfOutputPower4AlarmState,
-        minRFOutputPower4,
-        maxRFOutputPower4,
-        rfOutputPower6AlarmState,
-        minRFOutputPower6,
-        maxRFOutputPower6,
+        // temperatureAlarmState,
+        // minTemperature,
+        // maxTemperature,
+        // minTemperatureF,
+        // maxTemperatureF,
+        // voltageAlarmState,
+        // minVoltage,
+        // maxVoltage,
+        // splitOptionAlarmState,
+        // rfOutputPower1AlarmState,
+        // minRFOutputPower1,
+        // maxRFOutputPower1,
+        // rfOutputPower3AlarmState,
+        // minRFOutputPower3,
+        // maxRFOutputPower3,
+        // rfOutputPower4AlarmState,
+        // minRFOutputPower4,
+        // maxRFOutputPower4,
+        // rfOutputPower6AlarmState,
+        // minRFOutputPower6,
+        // maxRFOutputPower6,
       ];
 }
 

@@ -8,24 +8,26 @@ class Setting18CCorNodeConfigureEvent extends Equatable {
 }
 
 class Initialized extends Setting18CCorNodeConfigureEvent {
-  const Initialized({
-    required this.location,
-    required this.coordinates,
-    required this.splitOption,
-    required this.logInterval,
-  });
+  const Initialized(
+      //   {
+      //   required this.location,
+      //   required this.coordinates,
+      //   required this.splitOption,
+      //   required this.logInterval,
+      // }
+      );
 
-  final String location;
-  final String coordinates;
-  final String splitOption;
-  final String logInterval;
+  // final String location;
+  // final String coordinates;
+  // final String splitOption;
+  // final String logInterval;
 
   @override
   List<Object> get props => [
-        location,
-        coordinates,
-        splitOption,
-        logInterval,
+        // location,
+        // coordinates,
+        // splitOption,
+        // logInterval,
       ];
 }
 

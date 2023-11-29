@@ -731,50 +731,34 @@ class Setting18ThresholdBloc
     String maxTemperatureC = state.initialValues[DataKey.maxTemperatureC] ?? '';
     String minTemperatureF = state.initialValues[DataKey.minTemperatureF] ?? '';
     String maxTemperatureF = state.initialValues[DataKey.maxTemperatureF] ?? '';
-    String minVoltage = state.initialValues[DataKey.minVoltage] ?? '';
-    String maxVoltage = state.initialValues[DataKey.maxVoltage] ?? '';
-    String minVoltageRipple =
-        state.initialValues[DataKey.minVoltageRipple] ?? '';
-    String maxVoltageRipple =
-        state.initialValues[DataKey.maxVoltageRipple] ?? '';
-    String minRFOutputPower =
-        state.initialValues[DataKey.minRFOutputPower] ?? '';
-    String maxRFOutputPower =
-        state.initialValues[DataKey.maxRFOutputPower] ?? '';
 
     String strTemperatureAlarmState =
         state.initialValues[DataKey.temperatureAlarmState] ?? '';
-    bool temperatureAlarmState = strTemperatureAlarmState == '1' ? false : true;
+
     String strVoltageAlarmState =
         state.initialValues[DataKey.voltageAlarmState] ?? '';
-    bool voltageAlarmState = strVoltageAlarmState == '1' ? false : true;
+
     String strVoltageRippleAlarmState =
         state.initialValues[DataKey.voltageRippleAlarmState] ?? '';
-    bool voltageRippleAlarmState =
-        strVoltageRippleAlarmState == '1' ? false : true;
+
     String strRFOutputPowerAlarmState =
         state.initialValues[DataKey.rfOutputPowerAlarmState] ?? '';
-    bool rfOutputPowerAlarmState =
-        strRFOutputPowerAlarmState == '1' ? false : true;
+
     String strSplitOptionAlarmState =
         state.initialValues[DataKey.splitOptionAlarmState] ?? '';
-    bool splitOptionAlarmState = strSplitOptionAlarmState == '1' ? false : true;
 
     String strPilotFrequency1AlarmState =
         state.initialValues[DataKey.pilotFrequency1AlarmState] ?? '';
-    bool pilotFrequency1AlarmState =
-        strPilotFrequency1AlarmState == '1' ? false : true;
+
     String strPilotFrequency2AlarmState =
         state.initialValues[DataKey.pilotFrequency2AlarmState] ?? '';
-    bool pilotFrequency2AlarmState =
-        strPilotFrequency2AlarmState == '1' ? false : true;
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       isInitialize: true,
       editMode: false,
       enableSubmission: false,
-      temperatureAlarmState: temperatureAlarmState,
+      temperatureAlarmState: _stringNumberToBool(strTemperatureAlarmState),
       minTemperature: getMinTemperature(
         minTemperatureC: minTemperatureC,
         minTemperatureF: minTemperatureF,
@@ -784,18 +768,20 @@ class Setting18ThresholdBloc
         maxTemperatureF: maxTemperatureF,
       ),
       temperatureUnit: _unitRepository.temperatureUnit,
-      voltageAlarmState: voltageAlarmState,
-      minVoltage: minVoltage,
-      maxVoltage: maxVoltage,
-      voltageRippleAlarmState: voltageRippleAlarmState,
-      minVoltageRipple: minVoltageRipple,
-      maxVoltageRipple: maxVoltageRipple,
-      rfOutputPowerAlarmState: rfOutputPowerAlarmState,
-      minRFOutputPower: minRFOutputPower,
-      maxRFOutputPower: maxRFOutputPower,
-      splitOptionAlarmState: splitOptionAlarmState,
-      pilotFrequency1AlarmState: pilotFrequency1AlarmState,
-      pilotFrequency2AlarmState: pilotFrequency2AlarmState,
+      voltageAlarmState: _stringNumberToBool(strVoltageAlarmState),
+      minVoltage: state.initialValues[DataKey.minVoltage],
+      maxVoltage: state.initialValues[DataKey.maxVoltage],
+      voltageRippleAlarmState: _stringNumberToBool(strVoltageRippleAlarmState),
+      minVoltageRipple: state.initialValues[DataKey.minVoltageRipple],
+      maxVoltageRipple: state.initialValues[DataKey.maxVoltageRipple],
+      rfOutputPowerAlarmState: _stringNumberToBool(strRFOutputPowerAlarmState),
+      minRFOutputPower: state.initialValues[DataKey.minRFOutputPower],
+      maxRFOutputPower: state.initialValues[DataKey.maxRFOutputPower],
+      splitOptionAlarmState: _stringNumberToBool(strSplitOptionAlarmState),
+      pilotFrequency1AlarmState:
+          _stringNumberToBool(strPilotFrequency1AlarmState),
+      pilotFrequency2AlarmState:
+          _stringNumberToBool(strPilotFrequency2AlarmState),
       firstChannelOutputLevelAlarmState: false,
       lastChannelOutputLevelAlarmState: false,
     ));
@@ -824,17 +810,6 @@ class Setting18ThresholdBloc
     String maxTemperatureC = state.initialValues[DataKey.maxTemperatureC] ?? '';
     String minTemperatureF = state.initialValues[DataKey.minTemperatureF] ?? '';
     String maxTemperatureF = state.initialValues[DataKey.maxTemperatureF] ?? '';
-    String minVoltage = state.initialValues[DataKey.minVoltage] ?? '';
-    String maxVoltage = state.initialValues[DataKey.maxVoltage] ?? '';
-    String minVoltageRipple =
-        state.initialValues[DataKey.minVoltageRipple] ?? '';
-    String maxVoltageRipple =
-        state.initialValues[DataKey.maxVoltageRipple] ?? '';
-    String minRFOutputPower =
-        state.initialValues[DataKey.minRFOutputPower] ?? '';
-    String maxRFOutputPower =
-        state.initialValues[DataKey.maxRFOutputPower] ?? '';
-
     String strTemperatureAlarmState =
         state.initialValues[DataKey.temperatureAlarmState] ?? '';
 

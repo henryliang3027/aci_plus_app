@@ -8,36 +8,38 @@ abstract class Setting18CCorNodeControlEvent extends Equatable {
 }
 
 class Initialized extends Setting18CCorNodeControlEvent {
-  const Initialized({
-    required this.returnInputAttenuation1,
-    required this.returnInputAttenuation3,
-    required this.returnInputAttenuation4,
-    required this.returnInputAttenuation6,
-    required this.returnIngressSetting1,
-    required this.returnIngressSetting3,
-    required this.returnIngressSetting4,
-    required this.returnIngressSetting6,
-  });
+  const Initialized(
+      //   {
+      //   required this.returnInputAttenuation1,
+      //   required this.returnInputAttenuation3,
+      //   required this.returnInputAttenuation4,
+      //   required this.returnInputAttenuation6,
+      //   required this.returnIngressSetting1,
+      //   required this.returnIngressSetting3,
+      //   required this.returnIngressSetting4,
+      //   required this.returnIngressSetting6,
+      // }
+      );
 
-  final String returnInputAttenuation1;
-  final String returnInputAttenuation3;
-  final String returnInputAttenuation4;
-  final String returnInputAttenuation6;
-  final String returnIngressSetting1;
-  final String returnIngressSetting3;
-  final String returnIngressSetting4;
-  final String returnIngressSetting6;
+  // final String returnInputAttenuation1;
+  // final String returnInputAttenuation3;
+  // final String returnInputAttenuation4;
+  // final String returnInputAttenuation6;
+  // final String returnIngressSetting1;
+  // final String returnIngressSetting3;
+  // final String returnIngressSetting4;
+  // final String returnIngressSetting6;
 
   @override
   List<Object> get props => [
-        returnInputAttenuation1,
-        returnInputAttenuation3,
-        returnInputAttenuation4,
-        returnInputAttenuation6,
-        returnIngressSetting1,
-        returnIngressSetting3,
-        returnIngressSetting4,
-        returnIngressSetting6,
+        // returnInputAttenuation1,
+        // returnInputAttenuation3,
+        // returnInputAttenuation4,
+        // returnInputAttenuation6,
+        // returnIngressSetting1,
+        // returnIngressSetting3,
+        // returnIngressSetting4,
+        // returnIngressSetting6,
       ];
 }
 

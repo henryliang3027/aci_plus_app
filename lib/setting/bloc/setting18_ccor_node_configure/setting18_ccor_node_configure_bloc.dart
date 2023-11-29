@@ -28,6 +28,8 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
+
+    add(const Initialized());
   }
 
   final Amp18CCorNodeRepository _amp18CCorNodeRepository;
@@ -37,18 +39,21 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     Initialized event,
     Emitter<Setting18CCorNodeConfigureState> emit,
   ) async {
+    Map<DataKey, String> characteristicDataCache =
+        _amp18CCorNodeRepository.characteristicDataCache;
+
+    String location = characteristicDataCache[DataKey.location] ?? '';
+    String coordinates = characteristicDataCache[DataKey.coordinates] ?? '';
+    String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
+    String logInterval = characteristicDataCache[DataKey.logInterval] ?? '';
+
     emit(state.copyWith(
-      location: event.location,
-      coordinates: event.coordinates,
-      splitOption: event.splitOption,
-      logInterval: event.logInterval,
+      location: location,
+      coordinates: coordinates,
+      splitOption: splitOption,
+      logInterval: logInterval,
       isInitialize: true,
-      initialValues: [
-        event.location,
-        event.coordinates,
-        event.splitOption,
-        event.logInterval,
-      ],
+      initialValues: characteristicDataCache,
     ));
   }
 
@@ -60,6 +65,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       location: event.location,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: event.location,
         coordinates: state.coordinates,
@@ -77,6 +83,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       coordinates: event.coordinates,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: event.coordinates,
@@ -93,6 +100,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.requestInProgress,
+      isInitialize: false,
     ));
 
     try {
@@ -129,6 +137,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       splitOption: event.splitOption,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -146,6 +155,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       logInterval: event.logInterval,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -181,6 +191,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       logInterval: logInterval,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -200,6 +211,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       logInterval: logInterval,
+      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -231,10 +243,10 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       isInitialize: true,
       editMode: false,
       enableSubmission: false,
-      location: state.initialValues[0],
-      coordinates: state.initialValues[1],
-      splitOption: state.initialValues[2],
-      logInterval: state.initialValues[3],
+      location: state.initialValues[DataKey.location],
+      coordinates: state.initialValues[DataKey.coordinates],
+      splitOption: state.initialValues[DataKey.splitOption],
+      logInterval: state.initialValues[DataKey.logInterval],
     ));
   }
 
@@ -244,10 +256,10 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     required String splitOption,
     required String logInterval,
   }) {
-    if (location != state.initialValues[0] ||
-        coordinates != state.initialValues[1] ||
-        splitOption != state.initialValues[2] ||
-        logInterval != state.initialValues[3]) {
+    if (location != state.initialValues[DataKey.location] ||
+        coordinates != state.initialValues[DataKey.coordinates] ||
+        splitOption != state.initialValues[DataKey.splitOption] ||
+        logInterval != state.initialValues[DataKey.logInterval]) {
       return true;
     } else {
       return false;
@@ -266,28 +278,28 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
 
     List<String> settingResult = [];
 
-    if (state.location != state.initialValues[0]) {
+    if (state.location != state.initialValues[DataKey.location]) {
       bool resultOfSetLocation = await _amp18CCorNodeRepository
           .set1p8GCCorNodeLocation(state.location);
 
       settingResult.add('${DataKey.location.name},$resultOfSetLocation');
     }
 
-    if (state.coordinates != state.initialValues[1]) {
+    if (state.coordinates != state.initialValues[DataKey.coordinates]) {
       bool resultOfSetCoordinates = await _amp18CCorNodeRepository
           .set1p8GCCorNodeCoordinates(state.coordinates);
 
       settingResult.add('${DataKey.coordinates.name},$resultOfSetCoordinates');
     }
 
-    if (state.splitOption != state.initialValues[2]) {
+    if (state.splitOption != state.initialValues[DataKey.splitOption]) {
       bool resultOfSetSplitOption = await _amp18CCorNodeRepository
           .set1p8GCCorNodeSplitOption(state.splitOption);
 
       settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
     }
 
-    if (state.logInterval != state.initialValues[3]) {
+    if (state.logInterval != state.initialValues[DataKey.logInterval]) {
       bool resultOfSetLogInterval = await _amp18CCorNodeRepository
           .set1p8GCCorNodeLogInterval(state.logInterval);
 
@@ -297,13 +309,13 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     // 等待 device 完成更新後在讀取值
     await Future.delayed(const Duration(milliseconds: 1000));
 
+    await _amp18CCorNodeRepository.update1p8GCCorNodeCharacteristics();
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
       enableSubmission: false,
       editMode: false,
     ));
-
-    await _amp18CCorNodeRepository.update1p8GCCorNodeCharacteristics();
   }
 }

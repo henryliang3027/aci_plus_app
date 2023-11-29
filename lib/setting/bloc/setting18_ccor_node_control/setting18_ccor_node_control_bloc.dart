@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -32,6 +33,8 @@ class Setting18CCorNodeControlBloc
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
+
+    add(const Initialized());
   }
 
   final Amp18CCorNodeRepository _amp18CCorNodeRepository;
@@ -40,26 +43,37 @@ class Setting18CCorNodeControlBloc
     Initialized event,
     Emitter<Setting18CCorNodeControlState> emit,
   ) async {
+    Map<DataKey, String> characteristicDataCache =
+        _amp18CCorNodeRepository.characteristicDataCache;
+
+    String returnInputAttenuation1 =
+        characteristicDataCache[DataKey.returnVCA1] ?? '';
+    String returnInputAttenuation3 =
+        characteristicDataCache[DataKey.returnVCA3] ?? '';
+    String returnInputAttenuation4 =
+        characteristicDataCache[DataKey.returnVCA4] ?? '';
+    String returnInputAttenuation6 =
+        characteristicDataCache[DataKey.returnVCA6] ?? '';
+    String returnIngressSetting1 =
+        characteristicDataCache[DataKey.ingressSetting1] ?? '';
+    String returnIngressSetting3 =
+        characteristicDataCache[DataKey.ingressSetting3] ?? '';
+    String returnIngressSetting4 =
+        characteristicDataCache[DataKey.ingressSetting4] ?? '';
+    String returnIngressSetting6 =
+        characteristicDataCache[DataKey.ingressSetting6] ?? '';
+
     emit(state.copyWith(
-      returnInputAttenuation1: event.returnInputAttenuation1,
-      returnInputAttenuation3: event.returnInputAttenuation3,
-      returnInputAttenuation4: event.returnInputAttenuation4,
-      returnInputAttenuation6: event.returnInputAttenuation6,
-      returnIngressSetting1: event.returnIngressSetting1,
-      returnIngressSetting3: event.returnIngressSetting3,
-      returnIngressSetting4: event.returnIngressSetting4,
-      returnIngressSetting6: event.returnIngressSetting6,
+      returnInputAttenuation1: returnInputAttenuation1,
+      returnInputAttenuation3: returnInputAttenuation3,
+      returnInputAttenuation4: returnInputAttenuation4,
+      returnInputAttenuation6: returnInputAttenuation6,
+      returnIngressSetting1: returnIngressSetting1,
+      returnIngressSetting3: returnIngressSetting3,
+      returnIngressSetting4: returnIngressSetting4,
+      returnIngressSetting6: returnIngressSetting6,
       isInitialize: true,
-      initialValues: [
-        event.returnInputAttenuation1,
-        event.returnInputAttenuation3,
-        event.returnInputAttenuation4,
-        event.returnInputAttenuation6,
-        event.returnIngressSetting1,
-        event.returnIngressSetting3,
-        event.returnIngressSetting4,
-        event.returnIngressSetting6,
-      ],
+      initialValues: characteristicDataCache,
     ));
   }
 
@@ -459,14 +473,14 @@ class Setting18CCorNodeControlBloc
       isInitialize: true,
       editMode: false,
       enableSubmission: false,
-      returnInputAttenuation1: state.initialValues[0],
-      returnInputAttenuation3: state.initialValues[1],
-      returnInputAttenuation4: state.initialValues[2],
-      returnInputAttenuation6: state.initialValues[3],
-      returnIngressSetting1: state.initialValues[4],
-      returnIngressSetting3: state.initialValues[5],
-      returnIngressSetting4: state.initialValues[6],
-      returnIngressSetting6: state.initialValues[7],
+      returnInputAttenuation1: state.initialValues[DataKey.returnVCA1],
+      returnInputAttenuation3: state.initialValues[DataKey.returnVCA3],
+      returnInputAttenuation4: state.initialValues[DataKey.returnVCA4],
+      returnInputAttenuation6: state.initialValues[DataKey.returnVCA6],
+      returnIngressSetting1: state.initialValues[DataKey.ingressSetting1],
+      returnIngressSetting3: state.initialValues[DataKey.ingressSetting3],
+      returnIngressSetting4: state.initialValues[DataKey.ingressSetting4],
+      returnIngressSetting6: state.initialValues[DataKey.ingressSetting6],
     ));
   }
 
@@ -490,14 +504,14 @@ class Setting18CCorNodeControlBloc
     required String returnIngressSetting4,
     required String returnIngressSetting6,
   }) {
-    if (returnInputAttenuation1 != state.initialValues[0] ||
-        returnInputAttenuation3 != state.initialValues[1] ||
-        returnInputAttenuation4 != state.initialValues[2] ||
-        returnInputAttenuation6 != state.initialValues[3] ||
-        returnIngressSetting1 != state.initialValues[4] ||
-        returnIngressSetting3 != state.initialValues[5] ||
-        returnIngressSetting4 != state.initialValues[6] ||
-        returnIngressSetting6 != state.initialValues[7]) {
+    if (returnInputAttenuation1 != state.initialValues[DataKey.returnVCA1] ||
+        returnInputAttenuation3 != state.initialValues[DataKey.returnVCA3] ||
+        returnInputAttenuation4 != state.initialValues[DataKey.returnVCA4] ||
+        returnInputAttenuation6 != state.initialValues[DataKey.returnVCA6] ||
+        returnIngressSetting1 != state.initialValues[DataKey.ingressSetting1] ||
+        returnIngressSetting3 != state.initialValues[DataKey.ingressSetting3] ||
+        returnIngressSetting4 != state.initialValues[DataKey.ingressSetting4] ||
+        returnIngressSetting6 != state.initialValues[DataKey.ingressSetting6]) {
       return true;
     } else {
       return false;
@@ -515,21 +529,31 @@ class Setting18CCorNodeControlBloc
 
     List<String> settingResult = [];
 
-    if (state.returnInputAttenuation1 != state.initialValues[0]) {}
+    if (state.returnInputAttenuation1 !=
+        state.initialValues[DataKey.returnVCA1]) {}
 
-    if (state.returnInputAttenuation3 != state.initialValues[1]) {}
+    if (state.returnInputAttenuation3 !=
+        state.initialValues[DataKey.returnVCA3]) {}
 
-    if (state.returnInputAttenuation4 != state.initialValues[2]) {}
+    if (state.returnInputAttenuation4 !=
+        state.initialValues[DataKey.returnVCA4]) {}
 
-    if (state.returnInputAttenuation6 != state.initialValues[3]) {}
+    if (state.returnInputAttenuation6 !=
+        state.initialValues[DataKey.returnVCA6]) {}
 
-    if (state.returnIngressSetting1 != state.initialValues[4]) {}
-    if (state.returnIngressSetting3 != state.initialValues[5]) {}
-    if (state.returnIngressSetting4 != state.initialValues[6]) {}
-    if (state.returnIngressSetting6 != state.initialValues[7]) {}
+    if (state.returnIngressSetting1 !=
+        state.initialValues[DataKey.ingressSetting1]) {}
+    if (state.returnIngressSetting3 !=
+        state.initialValues[DataKey.ingressSetting3]) {}
+    if (state.returnIngressSetting4 !=
+        state.initialValues[DataKey.ingressSetting4]) {}
+    if (state.returnIngressSetting6 !=
+        state.initialValues[DataKey.ingressSetting6]) {}
 
     // 等待 device 完成更新後在讀取值
     await Future.delayed(const Duration(milliseconds: 1000));
+
+    await _amp18CCorNodeRepository.update1p8GCCorNodeCharacteristics();
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
@@ -537,7 +561,5 @@ class Setting18CCorNodeControlBloc
       enableSubmission: false,
       editMode: false,
     ));
-
-    await _amp18CCorNodeRepository.update1p8GCCorNodeCharacteristics();
   }
 }

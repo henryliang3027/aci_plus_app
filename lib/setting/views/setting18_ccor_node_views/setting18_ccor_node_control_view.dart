@@ -18,33 +18,33 @@ class Setting18CCorNodeControlView extends StatelessWidget {
     HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
 
-    String returnInputAttenuation1 =
-        homeState.characteristicData[DataKey.returnVCA1] ?? '';
-    String returnInputAttenuation3 =
-        homeState.characteristicData[DataKey.returnVCA3] ?? '';
-    String returnInputAttenuation4 =
-        homeState.characteristicData[DataKey.returnVCA4] ?? '';
-    String returnInputAttenuation6 =
-        homeState.characteristicData[DataKey.returnVCA6] ?? '';
-    String returnIngressSetting1 =
-        homeState.characteristicData[DataKey.ingressSetting1] ?? '';
-    String returnIngressSetting3 =
-        homeState.characteristicData[DataKey.ingressSetting3] ?? '';
-    String returnIngressSetting4 =
-        homeState.characteristicData[DataKey.ingressSetting4] ?? '';
-    String returnIngressSetting6 =
-        homeState.characteristicData[DataKey.ingressSetting6] ?? '';
+    // String returnInputAttenuation1 =
+    //     homeState.characteristicData[DataKey.returnVCA1] ?? '';
+    // String returnInputAttenuation3 =
+    //     homeState.characteristicData[DataKey.returnVCA3] ?? '';
+    // String returnInputAttenuation4 =
+    //     homeState.characteristicData[DataKey.returnVCA4] ?? '';
+    // String returnInputAttenuation6 =
+    //     homeState.characteristicData[DataKey.returnVCA6] ?? '';
+    // String returnIngressSetting1 =
+    //     homeState.characteristicData[DataKey.ingressSetting1] ?? '';
+    // String returnIngressSetting3 =
+    //     homeState.characteristicData[DataKey.ingressSetting3] ?? '';
+    // String returnIngressSetting4 =
+    //     homeState.characteristicData[DataKey.ingressSetting4] ?? '';
+    // String returnIngressSetting6 =
+    //     homeState.characteristicData[DataKey.ingressSetting6] ?? '';
 
-    context.read<Setting18CCorNodeControlBloc>().add(Initialized(
-          returnInputAttenuation1: returnInputAttenuation1,
-          returnInputAttenuation3: returnInputAttenuation3,
-          returnInputAttenuation4: returnInputAttenuation4,
-          returnInputAttenuation6: returnInputAttenuation6,
-          returnIngressSetting1: returnIngressSetting1,
-          returnIngressSetting3: returnIngressSetting3,
-          returnIngressSetting4: returnIngressSetting4,
-          returnIngressSetting6: returnIngressSetting6,
-        ));
+    // context.read<Setting18CCorNodeControlBloc>().add(Initialized(
+    //       returnInputAttenuation1: returnInputAttenuation1,
+    //       returnInputAttenuation3: returnInputAttenuation3,
+    //       returnInputAttenuation4: returnInputAttenuation4,
+    //       returnInputAttenuation6: returnInputAttenuation6,
+    //       returnIngressSetting1: returnIngressSetting1,
+    //       returnIngressSetting3: returnIngressSetting3,
+    //       returnIngressSetting4: returnIngressSetting4,
+    //       returnIngressSetting6: returnIngressSetting6,
+    //     ));
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
@@ -243,6 +243,8 @@ class Setting18CCorNodeControlView extends StatelessWidget {
             context: context,
             messageRows: rows,
           );
+
+          context.read<Setting18CCorNodeControlBloc>().add(const Initialized());
         }
       },
       child: Scaffold(
