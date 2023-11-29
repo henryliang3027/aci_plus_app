@@ -19,17 +19,25 @@ class TabChangedDisabled extends Chart18Event {
 }
 
 class DataExported extends Chart18Event {
-  const DataExported();
+  const DataExported({required this.code});
+
+  final String code;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        code,
+      ];
 }
 
 class DataShared extends Chart18Event {
-  const DataShared();
+  const DataShared({required this.code});
+
+  final String code;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        code,
+      ];
 }
 
 class RFLevelExported extends Chart18Event {
@@ -58,16 +66,19 @@ class AllDataExported extends Chart18Event {
     this.isSuccessful,
     this.log1p8Gs,
     this.errorMessage,
+    this.code,
   );
 
   final bool isSuccessful;
   final List<Log1p8G> log1p8Gs;
   final String errorMessage;
+  final String code;
 
   @override
   List<Object?> get props => [
         isSuccessful,
         log1p8Gs,
         errorMessage,
+        code,
       ];
 }

@@ -64,7 +64,9 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       rfLevelShareStatus: FormStatus.none,
     ));
 
-    final List<dynamic> result = await _dsimRepository.export1p8GRecords();
+    final List<dynamic> result = await _dsimRepository.export1p8GRecords(
+      code: event.code,
+    );
 
     if (result[0]) {
       emit(state.copyWith(
@@ -91,7 +93,9 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       rfLevelShareStatus: FormStatus.none,
     ));
 
-    final List<dynamic> result = await _dsimRepository.export1p8GRecords();
+    final List<dynamic> result = await _dsimRepository.export1p8GRecords(
+      code: event.code,
+    );
 
     if (result[0]) {
       emit(state.copyWith(
@@ -127,7 +131,9 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
   ) async {
     if (event.isSuccessful) {
       _dsimRepository.writeAllLog1p8Gs(event.log1p8Gs);
-      final List<dynamic> result = await _dsimRepository.exportAll1p8GRecords();
+      final List<dynamic> result = await _dsimRepository.exportAll1p8GRecords(
+        code: event.code,
+      );
 
       if (result[0]) {
         emit(state.copyWith(

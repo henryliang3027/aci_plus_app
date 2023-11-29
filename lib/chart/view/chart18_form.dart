@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/chart/chart/chart18_bloc/chart18_bloc.dart';
+import 'package:aci_plus_app/chart/model/code_input_dialog.dart';
 import 'package:aci_plus_app/chart/view/data_log_chart_page.dart';
 import 'package:aci_plus_app/chart/view/download_indicator18.dart';
 import 'package:aci_plus_app/chart/view/rf_level_chart_page.dart';
@@ -127,32 +128,42 @@ class _Chart18FormState extends State<Chart18Form>
                 Rect.fromLTWH(0.0, height / 2, width, height / 2),
           );
         } else if (state.allDataExportStatus.isRequestInProgress) {
-          List<dynamic>? resultOfDownload = await showDialog<List<dynamic>>(
-            context: context,
-            barrierDismissible: false, // user must tap button!
-            builder: (BuildContext buildContext) {
-              return WillPopScope(
-                onWillPop: () async {
-                  // 避免 Android 使用者點擊系統返回鍵關閉 dialog
-                  return false;
-                },
-                child: DownloadIndicator18Form(
-                  dsimRepository:
-                      RepositoryProvider.of<Amp18Repository>(context),
-                ),
-              );
-            },
-          );
+          String? code = await showEnterCodeDialog(context: context);
 
-          if (resultOfDownload != null) {
-            bool isSuccessful = resultOfDownload[0];
-            List<Log1p8G> log1p8Gs = resultOfDownload[1];
-            String errorMessage = resultOfDownload[2];
-            context.read<Chart18Bloc>().add(AllDataExported(
-                  isSuccessful,
-                  log1p8Gs,
-                  errorMessage,
-                ));
+          if (code != null) {
+            if (code.isNotEmpty) {
+              if (context.mounted) {
+                List<dynamic>? resultOfDownload =
+                    await showDialog<List<dynamic>>(
+                  context: context,
+                  barrierDismissible: false, // user must tap button!
+                  builder: (BuildContext buildContext) {
+                    return WillPopScope(
+                      onWillPop: () async {
+                        // 避免 Android 使用者點擊系統返回鍵關閉 dialog
+                        return false;
+                      },
+                      child: DownloadIndicator18Form(
+                        dsimRepository:
+                            RepositoryProvider.of<Amp18Repository>(context),
+                      ),
+                    );
+                  },
+                );
+
+                if (resultOfDownload != null) {
+                  bool isSuccessful = resultOfDownload[0];
+                  List<Log1p8G> log1p8Gs = resultOfDownload[1];
+                  String errorMessage = resultOfDownload[2];
+                  context.read<Chart18Bloc>().add(AllDataExported(
+                        isSuccessful,
+                        log1p8Gs,
+                        errorMessage,
+                        code,
+                      ));
+                }
+              }
+            }
           }
         } else if (state.allDataExportStatus.isRequestSuccess) {
           ScaffoldMessenger.of(context)
@@ -306,13 +317,25 @@ enum RFLevelMenu {
   export,
 }
 
+Future<String?> showEnterCodeDialog({
+  required BuildContext context,
+}) async {
+  return showDialog<String?>(
+      context: context,
+      builder: (context) {
+        return const CodeInputDialog();
+      });
+}
+
 class _PopupMenu extends StatelessWidget {
-  const _PopupMenu({
+  _PopupMenu({
     Key? key,
     required this.tabController,
   }) : super(key: key);
 
   final TabController tabController;
+  final TextEditingController codeTextEditingController =
+      TextEditingController();
 
   Widget buildDataLogPageMenu(BuildContext context) {
     return BlocBuilder<Chart18Bloc, Chart18State>(
@@ -330,15 +353,38 @@ class _PopupMenu extends StatelessWidget {
                       context.read<HomeBloc>().add(const DeviceRefreshed());
                       break;
                     case DataLogMenu.share:
-                      context.read<Chart18Bloc>().add(const DataShared());
+                      String? code =
+                          await showEnterCodeDialog(context: context);
+                      if (code != null) {
+                        if (code.isNotEmpty) {
+                          if (context.mounted) {
+                            context
+                                .read<Chart18Bloc>()
+                                .add(DataShared(code: code));
+                          }
+                        }
+                      }
                       break;
                     case DataLogMenu.export:
-                      context.read<Chart18Bloc>().add(const DataExported());
+                      String? code =
+                          await showEnterCodeDialog(context: context);
+                      if (context.mounted) {
+                        if (code != null) {
+                          if (code.isNotEmpty) {
+                            context
+                                .read<Chart18Bloc>()
+                                .add(DataExported(code: code));
+                          }
+                        }
+                      }
+
                       break;
                     case DataLogMenu.downloadAll:
-                      context
-                          .read<Chart18Bloc>()
-                          .add(const AllDataDownloaded());
+                      if (context.mounted) {
+                        context
+                            .read<Chart18Bloc>()
+                            .add(const AllDataDownloaded());
+                      }
                       break;
                     default:
                       break;

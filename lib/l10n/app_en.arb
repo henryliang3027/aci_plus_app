@@ -129,6 +129,7 @@
 
     "dataLog": "Device Log",
     "rfLevel": "RF Level",
+    
 
 
     "aboutUs": "About Us",
@@ -150,6 +151,7 @@
     "dialogTitleError": "Error",
     "dialogTitleSettingResult": "Result",
     "dialogTitleSuccess": "Success",
+    "dialogTitleEnterYourCode": "Enter Your Code",
     "dialogMessageDeviceNotFound": "Device not found.",
     "dialogMessageBluetoothDisabled": "Bluetooth is disabled.",
     "dialogMessageConnectionFailure": "Device connection failed",
@@ -237,5 +239,6 @@
     "dialogMessageOk": "OK",
     "dialogMessagePilotSearchFailed": "Pilot not found, Please type correct code.",
     "dialogMessageDataExportSuccessful": "Data export successful.",
-    "dialogMessageNoMoreLogs": "No more logs."
+    "dialogMessageNoMoreLogs": "No more logs.",
+    "dialogMessageEnterYourCode": "Please enter your code:"
 }

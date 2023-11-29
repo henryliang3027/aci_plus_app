@@ -150,6 +150,7 @@
     "dialogTitleError": "Error",
     "dialogTitleSettingResult": "Resultado",
     "dialogTitleSuccess": "Éxito",
+    "dialogTitleEnterYourCode": "Ingrese Su Código",
     "dialogMessageDeviceNotFound": "Dispositivo no encontrado.",
     "dialogMessageBluetoothDisabled": "Bluetooth está deshabilitado.",
     "dialogMessageConnectionFailure": "Fallo en la conexión del dispositivo",
@@ -236,5 +237,6 @@
     "dialogMessageOk": "OK",
     "dialogMessagePilotSearchFailed": "Piloto no encontrado, Favor de insertar el código correcto.",
     "dialogMessageDataExportSuccessful": "Exportación de datos exitosa.",
-    "dialogMessageNoMoreLogs": "No hay más registros."
+    "dialogMessageNoMoreLogs": "No hay más registros.",
+    "dialogMessageEnterYourCode": "Por favor ingresa tu código:"
 }

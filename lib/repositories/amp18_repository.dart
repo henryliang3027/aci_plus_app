@@ -427,22 +427,38 @@ class Amp18Repository {
     _amp18ChartCache.writeRFInOuts(rfInOuts);
   }
 
-  Future<dynamic> export1p8GRecords() async {
+  Future<dynamic> export1p8GRecords({
+    required String code,
+  }) async {
     List<Log1p8G> log1p8Gs = _amp18ChartCache.readLoadMoreLog1p8Gs();
     List<Event1p8G> event1p8Gs = _amp18ChartCache.readEvent1p8Gs();
 
+    String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
+    String location = _characteristicDataCache[DataKey.location] ?? '';
+
     List<dynamic> result = await _amp18Parser.export1p8GRecords(
+      code: code,
+      coordinate: coordinate,
+      location: location,
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
     );
     return result;
   }
 
-  Future<dynamic> exportAll1p8GRecords() async {
+  Future<dynamic> exportAll1p8GRecords({
+    required String code,
+  }) async {
     List<Log1p8G> log1p8Gs = _amp18ChartCache.readAllLog1p8Gs();
     List<Event1p8G> event1p8Gs = _amp18ChartCache.readEvent1p8Gs();
 
+    String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
+    String location = _characteristicDataCache[DataKey.location] ?? '';
+
     List<dynamic> result = await _amp18Parser.export1p8GRecords(
+      code: code,
+      coordinate: coordinate,
+      location: location,
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
     );

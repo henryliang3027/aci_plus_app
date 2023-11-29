@@ -148,6 +148,7 @@
     "dialogTitleError": "Erreur de titre",
     "dialogTitleSettingResult": "Résultat",
     "dialogTitleSuccess": "Succès",
+    "dialogTitleEnterYourCode": "Entrez Votre Code",
     "dialogMessageDeviceNotFound": "Erreur de titre",
     "dialogMessageBluetoothDisabled": "Résultat du réglage du titre",
     "dialogMessageConnectionFailure": "La connexion de l'appareil a échoué",
@@ -234,5 +235,6 @@
     "dialogMessageOk": "OK",
     "dialogMessagePilotSearchFailed": "Échec de la recherche pilote",
     "dialogMessageDataExportSuccessful": "Exportation réussie des données",
-    "dialogMessageNoMoreLogs": "Plus de journaux."
+    "dialogMessageNoMoreLogs": "Plus de journaux.",
+    "dialogMessageEnterYourCode": "Veuillez entrer votre code:"
 }

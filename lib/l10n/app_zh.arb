@@ -149,6 +149,7 @@
     "dialogTitleError": "錯誤",
     "dialogTitleSettingResult": "結果",
     "dialogTitleSuccess": "成功",
+    "dialogTitleEnterYourCode": "輸入代碼",
     "dialogMessageDeviceNotFound": "未發現任何裝置",
     "dialogMessageBluetoothDisabled": "藍芽未開啟",
     "dialogMessageConnectionFailure": "裝置連線失敗",
@@ -236,7 +237,8 @@
     "dialogMessageOk": "OK",
     "dialogMessagePilotSearchFailed": "找不到此導航頻率，請輸入正確的代碼",
     "dialogMessageDataExportSuccessful": "資料匯出成功",
-    "dialogMessageNoMoreLogs": "無法載入更多紀錄。"
+    "dialogMessageNoMoreLogs": "無法載入更多紀錄。",
+    "dialogMessageEnterYourCode": "請輸入您的代碼:"
 
 
 }
