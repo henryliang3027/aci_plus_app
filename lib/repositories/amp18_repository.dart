@@ -1969,19 +1969,6 @@ class Amp18Repository {
     }
   }
 
-  Future<bool> writeUserCode(String userCode) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool result =
-        await prefs.setString(SharedPreferenceKey.userCode.name, userCode);
-    return result;
-  }
-
-  Future<String> readUserCode() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userCode = prefs.getString(SharedPreferenceKey.userCode.name) ?? '';
-    return userCode;
-  }
-
   Future<void> updateCharacteristics() async {
     Map<DataKey, String> characteristicDataCache = {};
 

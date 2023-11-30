@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:aci_plus_app/chart/chart/chart18_ccor_node_bloc/chart18_ccor_node_bloc.dart';
-import 'package:aci_plus_app/chart/model/code_input_dialog.dart';
+import 'package:aci_plus_app/chart/view/code_input_page.dart';
 import 'package:aci_plus_app/chart/view/download_indicator18_ccor_node.dart';
 import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
 import 'package:aci_plus_app/core/command.dart';
@@ -220,7 +220,7 @@ Future<String?> showEnterCodeDialog({
   return showDialog<String?>(
       context: context,
       builder: (context) {
-        return const CodeInputDialog();
+        return const CodeInputPage();
       });
 }
 

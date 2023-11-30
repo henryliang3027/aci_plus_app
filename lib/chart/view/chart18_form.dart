@@ -1,5 +1,5 @@
 import 'package:aci_plus_app/chart/chart/chart18_bloc/chart18_bloc.dart';
-import 'package:aci_plus_app/chart/model/code_input_dialog.dart';
+import 'package:aci_plus_app/chart/view/code_input_page.dart';
 import 'package:aci_plus_app/chart/view/data_log_chart_page.dart';
 import 'package:aci_plus_app/chart/view/download_indicator18.dart';
 import 'package:aci_plus_app/chart/view/rf_level_chart_page.dart';
@@ -285,7 +285,7 @@ Future<String?> showEnterCodeDialog({
   return showDialog<String?>(
       context: context,
       builder: (context) {
-        return const CodeInputDialog();
+        return const CodeInputPage();
       });
 }
 
