@@ -10,13 +10,13 @@ part 'rf_level_chart_state.dart';
 
 class RFLevelChartBloc extends Bloc<RFLevelChartEvent, RFLevelChartState> {
   RFLevelChartBloc({
-    required Amp18Repository dsimRepository,
-  })  : _dsimRepository = dsimRepository,
+    required Amp18Repository amp18Repository,
+  })  : _amp18Repository = amp18Repository,
         super(const RFLevelChartState()) {
     on<RFInOutRequested>(_onRFInOutRequested);
   }
 
-  final Amp18Repository _dsimRepository;
+  final Amp18Repository _amp18Repository;
 
   Future<void> _onRFInOutRequested(
     RFInOutRequested event,
@@ -33,19 +33,20 @@ class RFLevelChartBloc extends Bloc<RFLevelChartEvent, RFLevelChartState> {
     List<RFInOut> rfInOuts = [];
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
-      List<dynamic> resultOf1p8G3 = await _dsimRepository.requestCommand1p8G3();
+      List<dynamic> resultOf1p8G3 =
+          await _amp18Repository.requestCommand1p8G3();
 
       if (resultOf1p8G3[0]) {
         rfInOuts.addAll(resultOf1p8G3[1]);
 
         // 清除 cache
-        _dsimRepository.clearRFInOuts();
+        _amp18Repository.clearRFInOuts();
 
         // 將 RFInOuts 寫入 cache
-        _dsimRepository.writeRFInOuts(rfInOuts);
+        _amp18Repository.writeRFInOuts(rfInOuts);
 
         List<List<ValuePair>> dateValueCollectionOfLog =
-            _dsimRepository.get1p8GValueCollectionOfRFInOut(rfInOuts);
+            _amp18Repository.get1p8GValueCollectionOfRFInOut(rfInOuts);
 
         emit(
           state.copyWith(

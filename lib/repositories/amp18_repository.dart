@@ -465,11 +465,20 @@ class Amp18Repository {
     return result;
   }
 
-  Future<dynamic> export1p8GRFInOuts() async {
+  Future<dynamic> export1p8GRFInOuts({
+    required String code,
+  }) async {
     List<RFInOut> rfInOuts = _amp18ChartCache.readRFInOuts();
 
-    List<dynamic> result =
-        await _amp18Parser.export1p8GRFInOuts(rfInOuts: rfInOuts);
+    String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
+    String location = _characteristicDataCache[DataKey.location] ?? '';
+
+    List<dynamic> result = await _amp18Parser.export1p8GRFInOuts(
+      rfInOuts: rfInOuts,
+      code: code,
+      coordinate: coordinate,
+      location: location,
+    );
     return result;
   }
 

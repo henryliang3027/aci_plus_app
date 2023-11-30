@@ -4,9 +4,6 @@ class DataLogChartState extends Equatable {
   const DataLogChartState({
     this.logRequestStatus = FormStatus.none,
     this.eventRequestStatus = FormStatus.none,
-    // this.dataShareStatus = FormStatus.none,
-    // this.dataExportStatus = FormStatus.none,
-    // this.allDataExportStatus = FormStatus.none,
     this.chunkIndex = 0,
     this.hasNextChunk = false,
     this.event1p8Gs = const [],
@@ -19,9 +16,6 @@ class DataLogChartState extends Equatable {
 
   final FormStatus logRequestStatus;
   final FormStatus eventRequestStatus;
-  // final FormStatus dataShareStatus;
-  // final FormStatus dataExportStatus;
-  // final FormStatus allDataExportStatus;
   final int chunkIndex;
   final bool hasNextChunk;
   final List<Event1p8G> event1p8Gs;
@@ -34,9 +28,6 @@ class DataLogChartState extends Equatable {
   DataLogChartState copyWith({
     FormStatus? logRequestStatus,
     FormStatus? eventRequestStatus,
-    // FormStatus? dataShareStatus,
-    // FormStatus? dataExportStatus,
-    // FormStatus? allDataExportStatus,
     int? chunkIndex,
     bool? hasNextChunk,
     List<Event1p8G>? event1p8Gs,
@@ -49,9 +40,6 @@ class DataLogChartState extends Equatable {
     return DataLogChartState(
       logRequestStatus: logRequestStatus ?? this.logRequestStatus,
       eventRequestStatus: eventRequestStatus ?? this.eventRequestStatus,
-      // dataShareStatus: dataShareStatus ?? this.dataShareStatus,
-      // dataExportStatus: dataExportStatus ?? this.dataExportStatus,
-      // allDataExportStatus: allDataExportStatus ?? this.allDataExportStatus,
       chunkIndex: chunkIndex ?? this.chunkIndex,
       hasNextChunk: hasNextChunk ?? this.hasNextChunk,
       event1p8Gs: event1p8Gs ?? this.event1p8Gs,
@@ -68,9 +56,6 @@ class DataLogChartState extends Equatable {
   List<Object> get props => [
         logRequestStatus,
         eventRequestStatus,
-        // dataShareStatus,
-        // dataExportStatus,
-        // allDataExportStatus,
         chunkIndex,
         hasNextChunk,
         event1p8Gs,

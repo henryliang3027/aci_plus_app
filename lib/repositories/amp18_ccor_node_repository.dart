@@ -392,10 +392,20 @@ class Amp18CCorNodeRepository {
   }
 
   Future<dynamic> export1p8GCCorNodeRecords({
-    required List<Log1p8GCCorNode> log1p8Gs,
-    required List<Event1p8GCCorNode> event1p8Gs,
+    required String code,
   }) async {
+    List<Log1p8GCCorNode> log1p8Gs =
+        _amp18CCorNodeChartCache.readLoadMoreLog1p8Gs();
+    List<Event1p8GCCorNode> event1p8Gs =
+        _amp18CCorNodeChartCache.readEvent1p8Gs();
+
+    String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
+    String location = _characteristicDataCache[DataKey.location] ?? '';
+
     List<dynamic> result = await _amp18CCorNodeParser.export1p8GCCorNodeRecords(
+      code: code,
+      coordinate: coordinate,
+      location: location,
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
     );
@@ -403,10 +413,18 @@ class Amp18CCorNodeRepository {
   }
 
   Future<dynamic> exportAll1p8GCCorNodeRecords({
-    required List<Log1p8GCCorNode> log1p8Gs,
-    required List<Event1p8GCCorNode> event1p8Gs,
+    required String code,
   }) async {
+    List<Log1p8GCCorNode> log1p8Gs = _amp18CCorNodeChartCache.readAllLog1p8Gs();
+    List<Event1p8GCCorNode> event1p8Gs =
+        _amp18CCorNodeChartCache.readEvent1p8Gs();
+
+    String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
+    String location = _characteristicDataCache[DataKey.location] ?? '';
     List<dynamic> result = await _amp18CCorNodeParser.export1p8GCCorNodeRecords(
+      code: code,
+      coordinate: coordinate,
+      location: location,
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
     );

@@ -232,7 +232,7 @@
     "dialogMessageFailed": "Échoué",
     "dialogMessageCancel": "Annuler",
     "dialogMessageExit": "Sortie",
-    "dialogMessageOk": "OK",
+    "dialogMessageOk": "D'accord",
     "dialogMessagePilotSearchFailed": "Échec de la recherche pilote",
     "dialogMessageDataExportSuccessful": "Exportation réussie des données",
     "dialogMessageNoMoreLogs": "Plus de journaux.",

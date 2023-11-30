@@ -6,10 +6,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class DownloadIndicator18Form extends StatefulWidget {
   const DownloadIndicator18Form({
     super.key,
-    required this.dsimRepository,
+    required this.amp18Repository,
   });
 
-  final Amp18Repository dsimRepository;
+  final Amp18Repository amp18Repository;
 
   @override
   State<DownloadIndicator18Form> createState() =>
@@ -38,8 +38,8 @@ class _DownloadIndicator18FormState extends State<DownloadIndicator18Form>
   Future<List> getLogChunkWithRetry(int chunkIndex) async {
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int j = 0; j < 3; j++) {
-      List<dynamic> resultOfLog =
-          await widget.dsimRepository.requestCommand1p8GForLogChunk(chunkIndex);
+      List<dynamic> resultOfLog = await widget.amp18Repository
+          .requestCommand1p8GForLogChunk(chunkIndex);
 
       if (resultOfLog[0]) {
         return resultOfLog;
@@ -113,7 +113,9 @@ class _DownloadIndicator18FormState extends State<DownloadIndicator18Form>
   @override
   Widget build(BuildContext context) {
     if (!isStart) {
-      downloadLogs().then((result) => Navigator.of(context).pop(result));
+      downloadLogs().then((result) {
+        Navigator.of(context).pop(result);
+      });
 
       isStart = true;
     }

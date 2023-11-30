@@ -8,8 +8,8 @@ part 'information18_state.dart';
 
 class Information18Bloc extends Bloc<Information18Event, Information18State> {
   Information18Bloc({
-    required Amp18Repository dsimRepository,
-  })  : _dsimRepository = dsimRepository,
+    required Amp18Repository amp18Repository,
+  })  : _amp18Repository = amp18Repository,
         super(const Information18State()) {
     on<AlarmUpdated>(_onAlarmUpdated);
     on<AlarmPeriodicUpdateRequested>(_onAlarmPeriodicUpdateRequested);
@@ -17,7 +17,7 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
   }
 
   Timer? _timer;
-  final Amp18Repository _dsimRepository;
+  final Amp18Repository _amp18Repository;
 
   void _onAlarmPeriodicUpdateRequested(
     AlarmPeriodicUpdateRequested event,
@@ -43,7 +43,7 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     AlarmUpdated event,
     Emitter<Information18State> emit,
   ) async {
-    List<dynamic> result = await _dsimRepository.requestCommand1p8GAlarm();
+    List<dynamic> result = await _amp18Repository.requestCommand1p8GAlarm();
 
     if (result[0]) {
       String alarmUServerity = result[1];

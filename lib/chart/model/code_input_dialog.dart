@@ -1,5 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CodeInputDialog extends StatefulWidget {
   const CodeInputDialog({super.key});
@@ -22,30 +23,45 @@ class _CodeInputDialogState extends State<CodeInputDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('TextField in Dialog'),
+      title: Text(AppLocalizations.of(context)!.dialogTitleEnterYourCode),
       content: TextField(
         onChanged: (text) {
           setState(() {
             code = text;
           });
         },
+        inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
         controller: _codeTextEditingController,
-        decoration: const InputDecoration(hintText: "Text Field in Dialog"),
+        maxLength: 8,
+        decoration: InputDecoration(
+          hintText: AppLocalizations.of(context)!.dialogMessageEnterYourCode,
+          border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(4.0))),
+          contentPadding: const EdgeInsets.all(8.0),
+          isDense: true,
+          filled: true,
+          fillColor: Colors.white,
+          counterText: '',
+        ),
       ),
       actions: <Widget>[
         ElevatedButton(
-          child: const Text('CANCEL'),
           onPressed: () {
             Navigator.pop(context);
           },
+          child: Text(
+            AppLocalizations.of(context)!.dialogMessageCancel,
+          ),
         ),
         ElevatedButton(
-          child: const Text('OK'),
           onPressed: code.isNotEmpty
               ? () {
                   Navigator.pop(context, code);
                 }
               : null,
+          child: Text(
+            AppLocalizations.of(context)!.dialogMessageOk,
+          ),
         ),
       ],
     );

@@ -13,7 +13,7 @@ class Information18Page extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Information18Bloc(
-        dsimRepository: RepositoryProvider.of<Amp18Repository>(context),
+        amp18Repository: RepositoryProvider.of<Amp18Repository>(context),
       ),
       child: Information18Form(
         pageController: pageController,

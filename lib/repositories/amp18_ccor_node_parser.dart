@@ -1055,10 +1055,20 @@ class Amp18CCorNodeParser {
   }
 
   Future<dynamic> export1p8GCCorNodeRecords({
+    required String code,
+    required String coordinate,
+    required String location,
     required List<Log1p8GCCorNode> log1p8Gs,
     required List<Event1p8GCCorNode> event1p8Gs,
   }) async {
     Excel excel = Excel.createExcel();
+
+    List<String> userInformationHeader = [
+      'Code Number',
+      'Coordinate',
+      'Location',
+    ];
+
     List<String> log1p8GHeader = [
       'Time',
       'Temperature(C)',
@@ -1085,8 +1095,12 @@ class Amp18CCorNodeParser {
       'Amplifier Power On',
     ];
 
+    Sheet userInformationSheet = excel['User Information'];
     Sheet log1p8GSheet = excel['Log'];
     Sheet eventSheet = excel['Event'];
+
+    userInformationSheet.insertRowIterables(userInformationHeader, 0);
+    userInformationSheet.insertRowIterables([code, coordinate, location], 1);
 
     eventSheet.insertRowIterables(eventHeader, 0);
     List<List<String>> eventContent = formatEvent1p8G(event1p8Gs);

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:aci_plus_app/chart/chart/chart18_ccor_node_bloc/chart18_ccor_node_bloc.dart';
+import 'package:aci_plus_app/chart/model/code_input_dialog.dart';
 import 'package:aci_plus_app/chart/view/download_indicator18_ccor_node.dart';
 import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
 import 'package:aci_plus_app/core/command.dart';
@@ -109,34 +110,6 @@ class Chart18CCorNodeForm extends StatelessWidget {
             sharePositionOrigin:
                 Rect.fromLTWH(0.0, height / 2, width, height / 2),
           );
-        } else if (state.allDataExportStatus.isRequestInProgress) {
-          List<dynamic>? resultOfDownload = await showDialog<List<dynamic>>(
-            context: context,
-            barrierDismissible: false, // user must tap button!
-            builder: (BuildContext buildContext) {
-              return WillPopScope(
-                onWillPop: () async {
-                  // 避免 Android 使用者點擊系統返回鍵關閉 dialog
-                  return false;
-                },
-                child: DownloadIndicator18CCorNodeForm(
-                  dsimRepository:
-                      RepositoryProvider.of<Amp18CCorNodeRepository>(context),
-                ),
-              );
-            },
-          );
-
-          if (resultOfDownload != null) {
-            bool isSuccessful = resultOfDownload[0];
-            List<Log1p8GCCorNode> log1p8Gs = resultOfDownload[1];
-            String errorMessage = resultOfDownload[2];
-            context.read<Chart18CCorNodeBloc>().add(AllDataExported(
-                  isSuccessful,
-                  log1p8Gs,
-                  errorMessage,
-                ));
-          }
         } else if (state.allDataExportStatus.isRequestSuccess) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -241,6 +214,16 @@ enum DataLogMenu {
   downloadAll,
 }
 
+Future<String?> showEnterCodeDialog({
+  required BuildContext context,
+}) async {
+  return showDialog<String?>(
+      context: context,
+      builder: (context) {
+        return const CodeInputDialog();
+      });
+}
+
 class MyWidget extends StatelessWidget {
   const MyWidget({super.key});
 
@@ -268,15 +251,72 @@ class _PopupMenu extends StatelessWidget {
                 context.read<HomeBloc>().add(const DeviceRefreshed());
                 break;
               case DataLogMenu.share:
-                context.read<Chart18CCorNodeBloc>().add(const DataShared());
+                String? code = await showEnterCodeDialog(context: context);
+                if (code != null) {
+                  if (code.isNotEmpty) {
+                    if (context.mounted) {
+                      context
+                          .read<Chart18CCorNodeBloc>()
+                          .add(DataShared(code: code));
+                    }
+                  }
+                }
                 break;
               case DataLogMenu.export:
-                context.read<Chart18CCorNodeBloc>().add(const DataExported());
+                String? code = await showEnterCodeDialog(context: context);
+                if (code != null) {
+                  if (code.isNotEmpty) {
+                    if (context.mounted) {
+                      context
+                          .read<Chart18CCorNodeBloc>()
+                          .add(DataExported(code: code));
+                    }
+                  }
+                }
                 break;
               case DataLogMenu.downloadAll:
-                context
-                    .read<Chart18CCorNodeBloc>()
-                    .add(const AllDataDownloaded());
+                String? code = await showEnterCodeDialog(context: context);
+
+                if (code != null) {
+                  if (code.isNotEmpty) {
+                    if (context.mounted) {
+                      List<dynamic>? resultOfDownload =
+                          await showDialog<List<dynamic>>(
+                        context: context,
+                        barrierDismissible: false, // user must tap button!
+                        builder: (BuildContext buildContext) {
+                          return WillPopScope(
+                            onWillPop: () async {
+                              // 避免 Android 使用者點擊系統返回鍵關閉 dialog
+                              return false;
+                            },
+                            child: DownloadIndicator18CCorNodeForm(
+                              dsimRepository: RepositoryProvider.of<
+                                  Amp18CCorNodeRepository>(context),
+                            ),
+                          );
+                        },
+                      );
+
+                      if (resultOfDownload != null) {
+                        bool isSuccessful = resultOfDownload[0];
+                        List<Log1p8GCCorNode> log1p8Gs = resultOfDownload[1];
+                        String errorMessage = resultOfDownload[2];
+                        if (context.mounted) {
+                          context
+                              .read<Chart18CCorNodeBloc>()
+                              .add(AllDataExported(
+                                isSuccessful,
+                                log1p8Gs,
+                                errorMessage,
+                                code,
+                              ));
+                        }
+                      }
+                    }
+                  }
+                }
+
                 break;
               default:
                 break;

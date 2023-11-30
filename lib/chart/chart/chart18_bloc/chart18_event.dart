@@ -41,24 +41,25 @@ class DataShared extends Chart18Event {
 }
 
 class RFLevelExported extends Chart18Event {
-  const RFLevelExported();
+  const RFLevelExported({required this.code});
+
+  final String code;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        code,
+      ];
 }
 
 class RFLevelShared extends Chart18Event {
-  const RFLevelShared();
+  const RFLevelShared({required this.code});
+
+  final String code;
 
   @override
-  List<Object?> get props => [];
-}
-
-class AllDataDownloaded extends Chart18Event {
-  const AllDataDownloaded();
-
-  @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        code,
+      ];
 }
 
 class AllDataExported extends Chart18Event {

@@ -997,16 +997,30 @@ class Amp18Parser {
   }
 
   Future<dynamic> export1p8GRFInOuts({
+    required String code,
+    required String coordinate,
+    required String location,
     required List<RFInOut> rfInOuts,
   }) async {
     Excel excel = Excel.createExcel();
+
+    List<String> userInformationHeader = [
+      'Code Number',
+      'Coordinate',
+      'Location',
+    ];
+
     List<String> rfInOutHeader = [
       'Frequency (MHz)',
       'Level (dBmV)',
     ];
 
+    Sheet userInformationSheet = excel['User Information'];
     Sheet rfInSheet = excel['Input Levels'];
     Sheet rfOutSheet = excel['Output Levels'];
+
+    userInformationSheet.insertRowIterables(userInformationHeader, 0);
+    userInformationSheet.insertRowIterables([code, coordinate, location], 1);
 
     rfInSheet.insertRowIterables(rfInOutHeader, 0);
     for (int i = 0; i < rfInOuts.length; i++) {

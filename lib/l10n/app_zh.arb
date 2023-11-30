@@ -234,7 +234,7 @@
     "dialogMessageFailed": "失敗",
     "dialogMessageCancel": "取消",
     "dialogMessageExit": "離開",
-    "dialogMessageOk": "OK",
+    "dialogMessageOk": "確定",
     "dialogMessagePilotSearchFailed": "找不到此導航頻率，請輸入正確的代碼",
     "dialogMessageDataExportSuccessful": "資料匯出成功",
     "dialogMessageNoMoreLogs": "無法載入更多紀錄。",

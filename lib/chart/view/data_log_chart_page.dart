@@ -16,7 +16,7 @@ class DataLogChartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => DataLogChartBloc(
-        dsimRepository: RepositoryProvider.of<Amp18Repository>(context),
+        amp18Repository: RepositoryProvider.of<Amp18Repository>(context),
       ),
       child: DataLogChartView(
         pageController: pageController,

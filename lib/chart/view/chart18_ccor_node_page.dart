@@ -18,7 +18,7 @@ class Chart18CCorNodePage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => Chart18CCorNodeBloc(
-            dsimRepository:
+            amp18CCorNodeRepository:
                 RepositoryProvider.of<Amp18CCorNodeRepository>(context),
           ),
         ),

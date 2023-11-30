@@ -127,44 +127,6 @@ class _Chart18FormState extends State<Chart18Form>
             sharePositionOrigin:
                 Rect.fromLTWH(0.0, height / 2, width, height / 2),
           );
-        } else if (state.allDataExportStatus.isRequestInProgress) {
-          String? code = await showEnterCodeDialog(context: context);
-
-          if (code != null) {
-            if (code.isNotEmpty) {
-              if (context.mounted) {
-                List<dynamic>? resultOfDownload =
-                    await showDialog<List<dynamic>>(
-                  context: context,
-                  barrierDismissible: false, // user must tap button!
-                  builder: (BuildContext buildContext) {
-                    return WillPopScope(
-                      onWillPop: () async {
-                        // 避免 Android 使用者點擊系統返回鍵關閉 dialog
-                        return false;
-                      },
-                      child: DownloadIndicator18Form(
-                        dsimRepository:
-                            RepositoryProvider.of<Amp18Repository>(context),
-                      ),
-                    );
-                  },
-                );
-
-                if (resultOfDownload != null) {
-                  bool isSuccessful = resultOfDownload[0];
-                  List<Log1p8G> log1p8Gs = resultOfDownload[1];
-                  String errorMessage = resultOfDownload[2];
-                  context.read<Chart18Bloc>().add(AllDataExported(
-                        isSuccessful,
-                        log1p8Gs,
-                        errorMessage,
-                        code,
-                      ));
-                }
-              }
-            }
-          }
         } else if (state.allDataExportStatus.isRequestSuccess) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -380,11 +342,49 @@ class _PopupMenu extends StatelessWidget {
 
                       break;
                     case DataLogMenu.downloadAll:
-                      if (context.mounted) {
-                        context
-                            .read<Chart18Bloc>()
-                            .add(const AllDataDownloaded());
+                      String? code =
+                          await showEnterCodeDialog(context: context);
+
+                      if (code != null) {
+                        if (code.isNotEmpty) {
+                          if (context.mounted) {
+                            List<dynamic>? resultOfDownload =
+                                await showDialog<List<dynamic>>(
+                              context: context,
+                              barrierDismissible:
+                                  false, // user must tap button!
+                              builder: (BuildContext buildContext) {
+                                return WillPopScope(
+                                  onWillPop: () async {
+                                    // 避免 Android 使用者點擊系統返回鍵關閉 dialog
+                                    return false;
+                                  },
+                                  child: DownloadIndicator18Form(
+                                    amp18Repository:
+                                        RepositoryProvider.of<Amp18Repository>(
+                                            context),
+                                  ),
+                                );
+                              },
+                            );
+
+                            if (resultOfDownload != null) {
+                              bool isSuccessful = resultOfDownload[0];
+                              List<Log1p8G> log1p8Gs = resultOfDownload[1];
+                              String errorMessage = resultOfDownload[2];
+                              if (context.mounted) {
+                                context.read<Chart18Bloc>().add(AllDataExported(
+                                      isSuccessful,
+                                      log1p8Gs,
+                                      errorMessage,
+                                      code,
+                                    ));
+                              }
+                            }
+                          }
+                        }
                       }
+
                       break;
                     default:
                       break;
@@ -494,11 +494,30 @@ class _PopupMenu extends StatelessWidget {
                       context.read<HomeBloc>().add(const DeviceRefreshed());
                       break;
                     case RFLevelMenu.share:
-                      context.read<Chart18Bloc>().add(const RFLevelShared());
+                      String? code =
+                          await showEnterCodeDialog(context: context);
+                      if (context.mounted) {
+                        if (code != null) {
+                          if (code.isNotEmpty) {
+                            context
+                                .read<Chart18Bloc>()
+                                .add(RFLevelShared(code: code));
+                          }
+                        }
+                      }
                       break;
                     case RFLevelMenu.export:
-                      context.read<Chart18Bloc>().add(const RFLevelExported());
-                      break;
+                      String? code =
+                          await showEnterCodeDialog(context: context);
+                      if (context.mounted) {
+                        if (code != null) {
+                          if (code.isNotEmpty) {
+                            context
+                                .read<Chart18Bloc>()
+                                .add(RFLevelExported(code: code));
+                          }
+                        }
+                      }
 
                     default:
                       break;

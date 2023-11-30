@@ -9,20 +9,19 @@ part 'chart18_state.dart';
 
 class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
   Chart18Bloc({
-    required Amp18Repository dsimRepository,
-  })  : _dsimRepository = dsimRepository,
+    required Amp18Repository amp18Repository,
+  })  : _amp18Repository = amp18Repository,
         super(const Chart18State()) {
     on<TabChangedEnabled>(_onTabChangedEnabled);
     on<TabChangedDisabled>(_onTabChangedDisabled);
     on<DataExported>(_onDataExported);
     on<DataShared>(_onDataShared);
-    on<AllDataDownloaded>(_onAllDataDownloaded);
     on<AllDataExported>(_onAllDataExported);
     on<RFLevelShared>(_onRFLevelShared);
     on<RFLevelExported>(_onRFLevelExported);
   }
 
-  final Amp18Repository _dsimRepository;
+  final Amp18Repository _amp18Repository;
 
   void _onTabChangedEnabled(
     TabChangedEnabled event,
@@ -64,7 +63,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       rfLevelShareStatus: FormStatus.none,
     ));
 
-    final List<dynamic> result = await _dsimRepository.export1p8GRecords(
+    final List<dynamic> result = await _amp18Repository.export1p8GRecords(
       code: event.code,
     );
 
@@ -93,7 +92,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       rfLevelShareStatus: FormStatus.none,
     ));
 
-    final List<dynamic> result = await _dsimRepository.export1p8GRecords(
+    final List<dynamic> result = await _amp18Repository.export1p8GRecords(
       code: event.code,
     );
 
@@ -112,26 +111,17 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     }
   }
 
-  void _onAllDataDownloaded(
-    AllDataDownloaded event,
-    Emitter<Chart18State> emit,
-  ) async {
-    emit(state.copyWith(
-      dataExportStatus: FormStatus.none,
-      dataShareStatus: FormStatus.none,
-      allDataExportStatus: FormStatus.requestInProgress,
-      rfLevelExportStatus: FormStatus.none,
-      rfLevelShareStatus: FormStatus.none,
-    ));
-  }
-
   void _onAllDataExported(
     AllDataExported event,
     Emitter<Chart18State> emit,
   ) async {
     if (event.isSuccessful) {
-      _dsimRepository.writeAllLog1p8Gs(event.log1p8Gs);
-      final List<dynamic> result = await _dsimRepository.exportAll1p8GRecords(
+      // 清除 cache
+      _amp18Repository.clearAllLog1p8Gs();
+
+      // 將所有 log 寫入 cache
+      _amp18Repository.writeAllLog1p8Gs(event.log1p8Gs);
+      final List<dynamic> result = await _amp18Repository.exportAll1p8GRecords(
         code: event.code,
       );
 
@@ -166,7 +156,9 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       rfLevelShareStatus: FormStatus.none,
     ));
 
-    final List<dynamic> result = await _dsimRepository.export1p8GRFInOuts();
+    final List<dynamic> result = await _amp18Repository.export1p8GRFInOuts(
+      code: event.code,
+    );
 
     if (result[0]) {
       emit(state.copyWith(
@@ -193,7 +185,9 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       rfLevelShareStatus: FormStatus.requestInProgress,
     ));
 
-    final List<dynamic> result = await _dsimRepository.export1p8GRFInOuts();
+    final List<dynamic> result = await _amp18Repository.export1p8GRFInOuts(
+      code: event.code,
+    );
 
     if (result[0]) {
       emit(state.copyWith(
