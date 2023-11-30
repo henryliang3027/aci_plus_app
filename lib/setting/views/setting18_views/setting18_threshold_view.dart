@@ -1213,7 +1213,11 @@ class _SettingFloatingActionButton extends StatelessWidget {
                           color: Theme.of(context).colorScheme.onPrimary,
                         ),
                         onPressed: () {
-                          Navigator.push(context, Setting18GraphPage.route());
+                          // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
+                          Navigator.push(context, Setting18GraphPage.route())
+                              .then((value) => context
+                                  .read<Setting18ThresholdBloc>()
+                                  .add(const Initialized()));
                         },
                       )
                     : const SizedBox(

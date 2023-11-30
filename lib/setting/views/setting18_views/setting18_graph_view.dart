@@ -2,10 +2,8 @@ import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_graph_view_bloc/setting18_graph_view_bloc.dart';
 import 'package:aci_plus_app/setting/views/circuit_painter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:touchable/touchable.dart';
-import 'package:xml/xml.dart';
 
 class Setting18GraphView extends StatelessWidget {
   const Setting18GraphView({super.key});

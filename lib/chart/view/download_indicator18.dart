@@ -113,9 +113,7 @@ class _DownloadIndicator18FormState extends State<DownloadIndicator18Form>
   @override
   Widget build(BuildContext context) {
     if (!isStart) {
-      downloadLogs().then((result) {
-        Navigator.of(context).pop(result);
-      });
+      downloadLogs().then((result) => Navigator.of(context).pop(result));
 
       isStart = true;
     }

@@ -4,11 +4,13 @@ import 'dart:typed_data';
 import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/command18.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
+import 'package:aci_plus_app/core/shared_preference_key.dart';
 import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Amp18Repository {
   Amp18Repository()
@@ -1965,6 +1967,19 @@ class Amp18Repository {
     } else {
       return true;
     }
+  }
+
+  Future<bool> writeUserCode(String userCode) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool result =
+        await prefs.setString(SharedPreferenceKey.userCode.name, userCode);
+    return result;
+  }
+
+  Future<String> readUserCode() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userCode = prefs.getString(SharedPreferenceKey.userCode.name) ?? '';
+    return userCode;
   }
 
   Future<void> updateCharacteristics() async {
