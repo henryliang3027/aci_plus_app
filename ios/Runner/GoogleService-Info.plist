@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyBoQKifxwJGI0uszq_iSEYWCfVFeq2CH_0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>816407451444</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.aci.aciPlusApp1</string>
+	<key>PROJECT_ID</key>
+	<string>aci-plus-61974</string>
+	<key>STORAGE_BUCKET</key>
+	<string>aci-plus-61974.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:816407451444:ios:006a8d7462b08ba037b761</string>
+</dict>
+</plist>

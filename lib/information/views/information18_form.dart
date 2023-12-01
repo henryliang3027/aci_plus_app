@@ -26,9 +26,13 @@ class Information18Form extends StatelessWidget {
         leading: const _DeviceStatus(),
         actions: const [_DeviceRefresh()],
       ),
-      body: const SingleChildScrollView(
+      body:  SingleChildScrollView(
         child: Column(
           children: [
+            TextButton(
+    onPressed: () => throw Exception(),
+    child:  Text("Throw Test Exception"),
+),
             _ConnectionCard(),
             _BasicCard(),
             _AlarmCard(),

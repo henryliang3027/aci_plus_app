@@ -73,6 +73,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   
   flutter_native_splash: ^2.3.1
+  firebase_crashlytics: ^3.4.6
+  firebase_core: ^2.24.0
 
 
 
