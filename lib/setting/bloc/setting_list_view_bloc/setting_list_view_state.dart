@@ -4,7 +4,7 @@ class SettingListViewState extends Equatable {
   const SettingListViewState({
     this.submissionStatus = SubmissionStatus.none,
     this.initialValues = const [],
-    this.location = const Location.pure(),
+    this.location = const LocationInpput.pure(),
     this.selectedTGCCableLength = const {
       '9': false,
       '18': false,
@@ -39,7 +39,7 @@ class SettingListViewState extends Equatable {
 
   final SubmissionStatus submissionStatus;
   final List<dynamic> initialValues;
-  final Location location;
+  final LocationInpput location;
   final Map<String, bool> selectedTGCCableLength;
   final Map<String, bool> selectedWorkingMode;
   final String logIntervalId;
@@ -66,7 +66,7 @@ class SettingListViewState extends Equatable {
   SettingListViewState copyWith({
     SubmissionStatus? submissionStatus,
     List<dynamic>? initialValues,
-    Location? location,
+    LocationInpput? location,
     Map<String, bool>? selectedTGCCableLength,
     Map<String, bool>? selectedWorkingMode,
     String? logIntervalId,

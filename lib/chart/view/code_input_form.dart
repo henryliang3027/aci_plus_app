@@ -39,26 +39,36 @@ class _CodeInputDialog extends StatelessWidget {
       builder: (context, state) {
         return AlertDialog(
           title: Text(AppLocalizations.of(context)!.dialogTitleEnterYourCode),
-          content: TextField(
-            onChanged: (code) {
-              context.read<CodeInputBloc>().add(CodeChanged(code: code));
-            },
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.dialogMessageEnterYourCode,
+              ),
+              const SizedBox(
+                height: 6.0,
+              ),
+              TextField(
+                onChanged: (code) {
+                  context.read<CodeInputBloc>().add(CodeChanged(code: code));
+                },
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                ],
+                controller: codeTextEditingController,
+                maxLength: 8,
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)!.dialogMessageCodeHint,
+                  border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  contentPadding: const EdgeInsets.all(8.0),
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
+                  counterText: '',
+                ),
+              ),
             ],
-            controller: codeTextEditingController,
-            maxLength: 8,
-            decoration: InputDecoration(
-              hintText:
-                  AppLocalizations.of(context)!.dialogMessageEnterYourCode,
-              border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4.0))),
-              contentPadding: const EdgeInsets.all(8.0),
-              isDense: true,
-              filled: true,
-              fillColor: Colors.white,
-              counterText: '',
-            ),
           ),
           actions: <Widget>[
             ElevatedButton(

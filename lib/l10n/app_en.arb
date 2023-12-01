@@ -152,6 +152,7 @@
     "dialogTitleSettingResult": "Result",
     "dialogTitleSuccess": "Success",
     "dialogTitleEnterYourCode": "Enter Your Code",
+    "dialogTitleEnterConfirm": "Confirm",
     "dialogMessageDeviceNotFound": "Device not found.",
     "dialogMessageBluetoothDisabled": "Bluetooth is disabled.",
     "dialogMessageConnectionFailure": "Device connection failed",
@@ -240,5 +241,7 @@
     "dialogMessagePilotSearchFailed": "Pilot not found, Please type correct code.",
     "dialogMessageDataExportSuccessful": "Data export successful.",
     "dialogMessageNoMoreLogs": "No more logs.",
-    "dialogMessageEnterYourCode": "Please enter your code:"
+    "dialogMessageEnterConfirm": "To confirm, enter \"confirm\" in the box below",
+    "dialogMessageCodeHint": "Please enter your code",
+    "dialogMessageEnterYourCode": "The code can only be Arabic numerals and up to eight characters:"
 }

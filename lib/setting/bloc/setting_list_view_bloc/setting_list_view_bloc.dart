@@ -3,7 +3,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/pilot_channel.dart';
 import 'package:aci_plus_app/core/shared_preference_key.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
-import 'package:aci_plus_app/setting/model/location.dart';
+import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:aci_plus_app/setting/model/pilot_code.dart';
 import 'package:equatable/equatable.dart';
 
@@ -121,7 +121,7 @@ class SettingListViewBloc
     Emitter<SettingListViewState> emit,
   ) async {
     // SettingData settingData = await _dsimRepository.getSettingData();
-    final Location location = Location.dirty(event.location);
+    final LocationInpput location = LocationInpput.dirty(event.location);
 
     final Map<String, bool> newSelectedTGCCableLength = {
       '9': false,
@@ -210,7 +210,7 @@ class SettingListViewBloc
     LocationChanged event,
     Emitter<SettingListViewState> emit,
   ) {
-    final Location location = Location.dirty(event.location);
+    final LocationInpput location = LocationInpput.dirty(event.location);
 
     emit(state.copyWith(
       isInitialize: false,
