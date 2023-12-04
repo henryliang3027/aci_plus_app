@@ -1063,12 +1063,6 @@ class Amp18CCorNodeParser {
   }) async {
     Excel excel = Excel.createExcel();
 
-    List<String> userInformationHeader = [
-      'Code Number',
-      'Coordinate',
-      'Location',
-    ];
-
     List<String> log1p8GHeader = [
       'Time',
       'Temperature(C)',
@@ -1099,8 +1093,9 @@ class Amp18CCorNodeParser {
     Sheet log1p8GSheet = excel['Log'];
     Sheet eventSheet = excel['Event'];
 
-    userInformationSheet.insertRowIterables(userInformationHeader, 0);
-    userInformationSheet.insertRowIterables([code, coordinate, location], 1);
+    userInformationSheet.insertRowIterables(['Code Number', code], 0);
+    userInformationSheet.insertRowIterables(['Coordinate', coordinate], 3);
+    userInformationSheet.insertRowIterables(['Location', location], 6);
 
     eventSheet.insertRowIterables(eventHeader, 0);
     List<List<String>> eventContent = formatEvent1p8G(event1p8Gs);
