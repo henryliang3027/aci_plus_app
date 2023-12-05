@@ -151,9 +151,12 @@ class Setting18ThresholdView extends StatelessWidget {
       } else if (item == DataKey.pilotFrequency1AlarmState.name) {
         return AppLocalizations.of(context)!
             .dialogMessagePilotFrequency1AlarmStateSetting;
-      } else if (item == DataKey.pilotFrequency2AlarmState.name) {
+      } else if (item == DataKey.rfOutputPilotLowFrequencyAlarmState.name) {
         return AppLocalizations.of(context)!
-            .dialogMessagePilotFrequency2AlarmStateSetting;
+            .dialogMessageRFOutputPilotLowFrequencyAlarmStateSetting;
+      } else if (item == DataKey.rfOutputPilotHighFrequencyAlarmState.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageRFOutputPilotHighFrequencyAlarmStateSetting;
       } else {
         return '';
       }
@@ -300,10 +303,10 @@ class Setting18ThresholdView extends StatelessWidget {
             widgets.add(const _PilotFrequency2AlarmControl());
             break;
           case SettingThreshold.startFrequencyOutputLevel:
-            widgets.add(const _FirstChannelOutputLevelAlarmControl());
+            widgets.add(const _StartFrequencyOutputLevelAlarmControl());
             break;
           case SettingThreshold.stopFrequencyOutputLevel:
-            widgets.add(const _LastChannelOutputLevelAlarmControl());
+            widgets.add(const _StopFrequencyOutputLevelAlarmControl());
             break;
         }
       }
@@ -314,8 +317,8 @@ class Setting18ThresholdView extends StatelessWidget {
               const _SplitOptionAlarmControl(),
               const _PilotFrequency1AlarmControl(),
               const _PilotFrequency2AlarmControl(),
-              const _FirstChannelOutputLevelAlarmControl(),
-              const _LastChannelOutputLevelAlarmControl(),
+              const _StartFrequencyOutputLevelAlarmControl(),
+              const _StopFrequencyOutputLevelAlarmControl(),
             ];
     }
 
@@ -1084,8 +1087,8 @@ class _PilotFrequency2AlarmControl extends StatelessWidget {
   }
 }
 
-class _FirstChannelOutputLevelAlarmControl extends StatelessWidget {
-  const _FirstChannelOutputLevelAlarmControl({super.key});
+class _StartFrequencyOutputLevelAlarmControl extends StatelessWidget {
+  const _StartFrequencyOutputLevelAlarmControl({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -1093,13 +1096,13 @@ class _FirstChannelOutputLevelAlarmControl extends StatelessWidget {
       builder: (context, state) {
         return controlParameterSwitch(
           context: context,
-          editMode: false,
-          title: AppLocalizations.of(context)!.startFrequencyLoading,
-          value: state.firstChannelOutputLevelAlarmState,
+          editMode: state.editMode,
+          title: AppLocalizations.of(context)!.startFrequencyOutputLevelStatus,
+          value: state.startFrequencyOutputLevelAlarmState,
           onChanged: (bool value) {
             context
                 .read<Setting18ThresholdBloc>()
-                .add(FirstChannelOutputLevelAlarmChanged(value));
+                .add(StartFrequencyOutputLevelAlarmStateChanged(value));
           },
         );
       },
@@ -1107,8 +1110,8 @@ class _FirstChannelOutputLevelAlarmControl extends StatelessWidget {
   }
 }
 
-class _LastChannelOutputLevelAlarmControl extends StatelessWidget {
-  const _LastChannelOutputLevelAlarmControl({super.key});
+class _StopFrequencyOutputLevelAlarmControl extends StatelessWidget {
+  const _StopFrequencyOutputLevelAlarmControl({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -1116,13 +1119,13 @@ class _LastChannelOutputLevelAlarmControl extends StatelessWidget {
       builder: (context, state) {
         return controlParameterSwitch(
           context: context,
-          editMode: false,
-          title: AppLocalizations.of(context)!.stopFrequencyLoading,
-          value: state.lastChannelOutputLevelAlarmState,
+          editMode: state.editMode,
+          title: AppLocalizations.of(context)!.stopFrequencyOutputLevelStatus,
+          value: state.stopFrequencyOutputLevelAlarmState,
           onChanged: (bool value) {
             context
                 .read<Setting18ThresholdBloc>()
-                .add(LastChannelOutputLevelAlarmChanged(value));
+                .add(StopFrequencyOutputLevelAlarmStateChanged(value));
           },
         );
       },

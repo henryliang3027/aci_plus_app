@@ -2131,7 +2131,7 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
                 child: Text(
-                  AppLocalizations.of(context)!.firstChannelPowerLevel,
+                  AppLocalizations.of(context)!.startFrequencyOutputLevelStatus,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
@@ -2331,7 +2331,7 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
                 child: Text(
-                  AppLocalizations.of(context)!.lastChannelPowerLevel,
+                  AppLocalizations.of(context)!.stopFrequencyOutputLevelStatus,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),

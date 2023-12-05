@@ -55,8 +55,8 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
 
   @override
   Widget build(BuildContext context) {
-    // HomeState homeState = context.watch<HomeBloc>().state;
-    // String partId = homeState.characteristicData[DataKey.partId] ?? '';
+    HomeState homeState = context.watch<HomeBloc>().state;
+    String partId = homeState.characteristicData[DataKey.partId] ?? '';
     // String inputAttenuation =
     //     homeState.characteristicData[DataKey.inputAttenuation] ?? '';
     // String inputEqualizer =
@@ -236,10 +236,18 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       } else if (item == DataKey.dsVVA3.name) {
         return AppLocalizations.of(context)!.dialogMessageDSVVA3Setting;
       } else if (item == DataKey.dsVVA4.name) {
-        return AppLocalizations.of(context)!.dialogMessageDSVVA4Setting;
-      } else if (item == DataKey.usTGC.name) {
-        return AppLocalizations.of(context)!.dialogMessageUSTGCSetting;
-      } else if (item == DataKey.splitOption.name) {
+        if (partId == '5' || partId == '6') {
+          return AppLocalizations.of(context)!
+              .dialogMessageForwardOutputEqualizer2And3Setting;
+        } else {
+          return AppLocalizations.of(context)!
+              .dialogMessageForwardOutputEqualizer3And4Setting;
+        }
+      }
+      // else if (item == DataKey.usTGC.name) {
+      //   return AppLocalizations.of(context)!.dialogMessageUSTGCSetting;
+      // }
+      else if (item == DataKey.splitOption.name) {
         return AppLocalizations.of(context)!.dialogMessageSplitOptionSetting;
       } else if (item == DataKey.pilotFrequencyMode.name) {
         return AppLocalizations.of(context)!

@@ -44,7 +44,7 @@ class Setting18GraphModuleBloc
     on<DSSlope2Changed>(_onDSSlope2Changed);
     on<DSVVA3Changed>(_onDSVVA3Changed);
     on<DSVVA4Changed>(_onDSVVA4Changed);
-    on<USTGCChanged>(_onUSTGCChanged);
+    // on<USTGCChanged>(_onUSTGCChanged);
     on<SplitOptionChanged>(_onSplitOptionChanged);
     on<PilotFrequencyModeChanged>(_onPilotFrequencyModeChanged);
     on<FirstChannelLoadingFrequencyChanged>(
@@ -95,7 +95,7 @@ class Setting18GraphModuleBloc
     String dsSlope2 = characteristicDataCache[DataKey.dsSlope2] ?? '';
     String dsVVA3 = characteristicDataCache[DataKey.dsVVA3] ?? '';
     String dsVVA4 = characteristicDataCache[DataKey.dsVVA4] ?? '';
-    String usTGC = characteristicDataCache[DataKey.usTGC] ?? '';
+    // String usTGC = characteristicDataCache[DataKey.usTGC] ?? '';
     String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
     String firstChannelLoadingFrequency =
         characteristicDataCache[DataKey.firstChannelLoadingFrequency] ?? '';
@@ -133,7 +133,7 @@ class Setting18GraphModuleBloc
       dsSlope2: dsSlope2,
       dsVVA3: dsVVA3,
       dsVVA4: dsVVA4,
-      usTGC: usTGC,
+      // usTGC: usTGC,
       splitOption: splitOption,
       pilotFrequencyMode: pilotFrequencyMode,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
@@ -189,7 +189,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -228,7 +228,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -267,7 +267,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -304,7 +304,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -343,7 +343,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -382,7 +382,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -419,7 +419,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -458,7 +458,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -497,7 +497,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -534,7 +534,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -574,7 +574,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -614,7 +614,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -651,7 +651,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -690,7 +690,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -729,7 +729,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -766,7 +766,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -806,7 +806,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -846,7 +846,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -883,7 +883,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -921,7 +921,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -959,7 +959,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -996,7 +996,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -1033,7 +1033,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -1070,7 +1070,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -1107,7 +1107,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -1144,7 +1144,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -1181,7 +1181,7 @@ class Setting18GraphModuleBloc
         dsSlope2: event.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -1218,7 +1218,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: event.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -1255,7 +1255,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: event.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -1268,42 +1268,42 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onUSTGCChanged(
-    USTGCChanged event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      usTGC: event.usTGC,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
-        fwdInputEQ: state.fwdInputEQ,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
-        rtnIngressSetting2: state.rtnIngressSetting2,
-        rtnIngressSetting3: state.rtnIngressSetting3,
-        rtnIngressSetting4: state.rtnIngressSetting4,
-        tgcCableLength: state.tgcCableLength,
-        dsVVA2: state.dsVVA2,
-        dsSlope2: state.dsSlope2,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        usTGC: event.usTGC,
-        splitOption: state.splitOption,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-      ),
-    ));
-  }
+  // void _onUSTGCChanged(
+  //   USTGCChanged event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     usTGC: event.usTGC,
+  //     isInitialize: false,
+  //     enableSubmission: _isEnabledSubmission(
+  //       fwdInputAttenuation: state.fwdInputAttenuation,
+  //       fwdInputEQ: state.fwdInputEQ,
+  //       rtnInputAttenuation2: state.rtnInputAttenuation2,
+  //       rtnInputAttenuation3: state.rtnInputAttenuation3,
+  //       rtnInputAttenuation4: state.rtnInputAttenuation4,
+  //       rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+  //       rtnOutputEQ: state.rtnOutputEQ,
+  //       rtnIngressSetting2: state.rtnIngressSetting2,
+  //       rtnIngressSetting3: state.rtnIngressSetting3,
+  //       rtnIngressSetting4: state.rtnIngressSetting4,
+  //       tgcCableLength: state.tgcCableLength,
+  //       dsVVA2: state.dsVVA2,
+  //       dsSlope2: state.dsSlope2,
+  //       dsVVA3: state.dsVVA3,
+  //       dsVVA4: state.dsVVA4,
+  //       usTGC: event.usTGC,
+  //       splitOption: state.splitOption,
+  //       pilotFrequencyMode: state.pilotFrequencyMode,
+  //       firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+  //       firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+  //       lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+  //       lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+  //       pilotFrequency1: state.pilotFrequency1,
+  //       pilotFrequency2: state.pilotFrequency2,
+  //     ),
+  //   ));
+  // }
 
   void _onSplitOptionChanged(
     SplitOptionChanged event,
@@ -1329,7 +1329,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: event.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -1366,7 +1366,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: event.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -1403,7 +1403,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
@@ -1440,7 +1440,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -1477,7 +1477,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -1514,7 +1514,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -1551,7 +1551,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -1588,7 +1588,7 @@ class Setting18GraphModuleBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        // usTGC: state.usTGC,
         splitOption: state.splitOption,
         pilotFrequencyMode: state.pilotFrequencyMode,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -1617,7 +1617,7 @@ class Setting18GraphModuleBloc
     required String dsSlope2,
     required String dsVVA3,
     required String dsVVA4,
-    required String usTGC,
+    // required String usTGC,
     required String splitOption,
     required String pilotFrequencyMode,
     required String firstChannelLoadingFrequency,
@@ -1646,7 +1646,7 @@ class Setting18GraphModuleBloc
         dsSlope2 != state.initialValues[DataKey.dsSlope2] ||
         dsVVA3 != state.initialValues[DataKey.dsVVA3] ||
         dsVVA4 != state.initialValues[DataKey.dsVVA4] ||
-        usTGC != state.initialValues[DataKey.usTGC] ||
+        // usTGC != state.initialValues[DataKey.usTGC] ||
         splitOption != state.initialValues[DataKey.splitOption] ||
         firstChannelLoadingFrequency !=
             state.initialValues[DataKey.firstChannelLoadingFrequency] ||
@@ -1800,11 +1800,11 @@ class Setting18GraphModuleBloc
       settingResult.add('${DataKey.dsVVA4.name},$resultOfSetDSVVA4');
     }
 
-    if (state.usTGC != state.initialValues[DataKey.usTGC]) {
-      bool resultOfSetUSTGC = await _amp18Repository.set1p8USTGC(state.usTGC);
+    // if (state.usTGC != state.initialValues[DataKey.usTGC]) {
+    //   bool resultOfSetUSTGC = await _amp18Repository.set1p8USTGC(state.usTGC);
 
-      settingResult.add('${DataKey.usTGC.name},$resultOfSetUSTGC');
-    }
+    //   settingResult.add('${DataKey.usTGC.name},$resultOfSetUSTGC');
+    // }
 
     if (state.splitOption != state.initialValues[DataKey.splitOption]) {
       bool resultOfSetSplitOption =

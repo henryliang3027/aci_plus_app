@@ -19,8 +19,8 @@ class Setting18ThresholdState extends Equatable {
     this.splitOptionAlarmState = false,
     this.pilotFrequency1AlarmState = false,
     this.pilotFrequency2AlarmState = false,
-    this.firstChannelOutputLevelAlarmState = false,
-    this.lastChannelOutputLevelAlarmState = false,
+    this.startFrequencyOutputLevelAlarmState = false,
+    this.stopFrequencyOutputLevelAlarmState = false,
     this.editMode = false,
     this.enableSubmission = false,
     this.isInitialize = true,
@@ -46,8 +46,8 @@ class Setting18ThresholdState extends Equatable {
   final bool splitOptionAlarmState;
   final bool pilotFrequency1AlarmState;
   final bool pilotFrequency2AlarmState;
-  final bool firstChannelOutputLevelAlarmState;
-  final bool lastChannelOutputLevelAlarmState;
+  final bool startFrequencyOutputLevelAlarmState;
+  final bool stopFrequencyOutputLevelAlarmState;
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
@@ -72,8 +72,8 @@ class Setting18ThresholdState extends Equatable {
     bool? splitOptionAlarmState,
     bool? pilotFrequency1AlarmState,
     bool? pilotFrequency2AlarmState,
-    bool? firstChannelOutputLevelAlarmState,
-    bool? lastChannelOutputLevelAlarmState,
+    bool? startFrequencyOutputLevelAlarmState,
+    bool? stopFrequencyOutputLevelAlarmState,
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
@@ -104,10 +104,11 @@ class Setting18ThresholdState extends Equatable {
           pilotFrequency1AlarmState ?? this.pilotFrequency1AlarmState,
       pilotFrequency2AlarmState:
           pilotFrequency2AlarmState ?? this.pilotFrequency2AlarmState,
-      firstChannelOutputLevelAlarmState: firstChannelOutputLevelAlarmState ??
-          this.firstChannelOutputLevelAlarmState,
-      lastChannelOutputLevelAlarmState: lastChannelOutputLevelAlarmState ??
-          this.lastChannelOutputLevelAlarmState,
+      startFrequencyOutputLevelAlarmState:
+          startFrequencyOutputLevelAlarmState ??
+              this.startFrequencyOutputLevelAlarmState,
+      stopFrequencyOutputLevelAlarmState: stopFrequencyOutputLevelAlarmState ??
+          this.stopFrequencyOutputLevelAlarmState,
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
@@ -135,8 +136,8 @@ class Setting18ThresholdState extends Equatable {
         splitOptionAlarmState,
         pilotFrequency1AlarmState,
         pilotFrequency2AlarmState,
-        firstChannelOutputLevelAlarmState,
-        lastChannelOutputLevelAlarmState,
+        startFrequencyOutputLevelAlarmState,
+        stopFrequencyOutputLevelAlarmState,
         editMode,
         enableSubmission,
         isInitialize,

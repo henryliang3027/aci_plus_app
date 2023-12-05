@@ -8,63 +8,10 @@ class Setting18ControlEvent extends Equatable {
 }
 
 class Initialized extends Setting18ControlEvent {
-  const Initialized(
-      //   {
-      //   required this.fwdInputAttenuation,
-      //   required this.fwdInputEQ,
-      //   required this.rtnInputAttenuation2,
-      //   required this.rtnInputAttenuation3,
-      //   required this.rtnInputAttenuation4,
-      //   required this.rtnOutputLevelAttenuation,
-      //   required this.rtnOutputEQ,
-      //   required this.rtnIngressSetting2,
-      //   required this.rtnIngressSetting3,
-      //   required this.rtnIngressSetting4,
-      //   required this.tgcCableLength,
-      //   required this.dsVVA2,
-      //   required this.dsSlope2,
-      //   required this.dsVVA3,
-      //   required this.dsVVA4,
-      //   required this.usTGC,
-      // }
-      );
-
-  // final String fwdInputAttenuation;
-  // final String fwdInputEQ;
-  // final String rtnInputAttenuation2;
-  // final String rtnInputAttenuation3;
-  // final String rtnInputAttenuation4;
-  // final String rtnOutputLevelAttenuation;
-  // final String rtnOutputEQ;
-  // final String rtnIngressSetting2;
-  // final String rtnIngressSetting3;
-  // final String rtnIngressSetting4;
-  // final String tgcCableLength;
-  // final String dsVVA2;
-  // final String dsSlope2;
-  // final String dsVVA3;
-  // final String dsVVA4;
-  // final String usTGC;
+  const Initialized();
 
   @override
-  List<Object> get props => [
-        // fwdInputAttenuation,
-        // fwdInputEQ,
-        // rtnInputAttenuation2,
-        // rtnInputAttenuation3,
-        // rtnInputAttenuation4,
-        // rtnOutputLevelAttenuation,
-        // rtnOutputEQ,
-        // rtnIngressSetting2,
-        // rtnIngressSetting3,
-        // rtnIngressSetting4,
-        // tgcCableLength,
-        // dsVVA2,
-        // dsSlope2,
-        // dsVVA3,
-        // dsVVA4,
-        // usTGC,
-      ];
+  List<Object> get props => [];
 }
 
 class FwdInputAttenuationChanged extends Setting18ControlEvent {
@@ -282,6 +229,29 @@ class DSSlope2Changed extends Setting18ControlEvent {
   List<Object> get props => [dsSlope2];
 }
 
+class DSSlope3Changed extends Setting18ControlEvent {
+  const DSSlope3Changed(this.dsSlope3);
+
+  final String dsSlope3;
+
+  @override
+  List<Object> get props => [dsSlope3];
+}
+
+class DSSlope3Increased extends Setting18ControlEvent {
+  const DSSlope3Increased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DSSlope3Decreased extends Setting18ControlEvent {
+  const DSSlope3Decreased();
+
+  @override
+  List<Object> get props => [];
+}
+
 class DSVVA3Changed extends Setting18ControlEvent {
   const DSVVA3Changed(this.dsVVA3);
 
@@ -298,6 +268,20 @@ class DSVVA4Changed extends Setting18ControlEvent {
 
   @override
   List<Object> get props => [dsVVA4];
+}
+
+class DSVVA4Increased extends Setting18ControlEvent {
+  const DSVVA4Increased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DSVVA4Decreased extends Setting18ControlEvent {
+  const DSVVA4Decreased();
+
+  @override
+  List<Object> get props => [];
 }
 
 class USTGCChanged extends Setting18ControlEvent {

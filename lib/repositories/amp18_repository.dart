@@ -155,7 +155,8 @@ class Amp18Repository {
         DataKey.outputAttenuation: a1p8g1.outputAttenuation,
         DataKey.inputAttenuation3: a1p8g1.inputAttenuation3,
         DataKey.inputAttenuation4: a1p8g1.inputAttenuation4,
-        DataKey.usTGC: a1p8g1.usTGC,
+        DataKey.dsSlope3: a1p8g1.dsSlope3,
+        // DataKey.usTGC: a1p8g1.usTGC,
       };
 
       _characteristicDataCache.addAll(characteristicDataCache);
@@ -1803,7 +1804,7 @@ class Amp18Repository {
     }
   }
 
-  Future<dynamic> set1p8USTGC(String strValue) async {
+  Future<dynamic> set1p8DSVVA5(String strValue) async {
     int commandIndex = 350;
 
     print('get data from request command 1p8G$commandIndex');
@@ -1817,17 +1818,81 @@ class Amp18Repository {
     byteData.setInt16(0, intValue, Endian.little); // little endian
     Uint8List bytes = Uint8List.view(byteData.buffer);
 
-    Command18.setUSTGCCmd[7] = bytes[0];
-    Command18.setUSTGCCmd[8] = bytes[1];
+    Command18.setDSVVA5Cmd[7] = bytes[0];
+    Command18.setDSVVA5Cmd[8] = bytes[1];
 
     CRC16.calculateCRC16(
-      command: Command18.setUSTGCCmd,
-      usDataLength: Command18.setUSTGCCmd.length - 2,
+      command: Command18.setDSVVA5Cmd,
+      usDataLength: Command18.setDSVVA5Cmd.length - 2,
     );
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: Command18.setUSTGCCmd,
+        value: Command18.setDSVVA5Cmd,
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8DSSlope3(String strValue) async {
+    int commandIndex = 351;
+
+    print('get data from request command 1p8G$commandIndex');
+
+    double doubleValue = double.parse(strValue);
+
+    int intValue = (doubleValue * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, intValue, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setDSSlope3Cmd[7] = bytes[0];
+    Command18.setDSSlope3Cmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setDSSlope3Cmd,
+      usDataLength: Command18.setDSSlope3Cmd.length - 2,
+    );
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setDSSlope3Cmd,
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8DSSlope4(String strValue) async {
+    int commandIndex = 352;
+
+    print('get data from request command 1p8G$commandIndex');
+
+    double doubleValue = double.parse(strValue);
+
+    int intValue = (doubleValue * 10).toInt();
+
+    // Convert the integer to bytes
+    ByteData byteData = ByteData(2);
+    byteData.setInt16(0, intValue, Endian.little); // little endian
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    Command18.setDSSlope4Cmd[7] = bytes[0];
+    Command18.setDSSlope4Cmd[8] = bytes[1];
+
+    CRC16.calculateCRC16(
+      command: Command18.setDSSlope4Cmd,
+      usDataLength: Command18.setDSSlope4Cmd.length - 2,
+    );
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setDSSlope4Cmd,
       );
       return true;
     } catch (e) {
@@ -1836,7 +1901,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8GCoordinates(String coordinates) async {
-    int commandIndex = 352;
+    int commandIndex = 353;
 
     List<int> coordinatesBytes = [];
 
@@ -1871,7 +1936,7 @@ class Amp18Repository {
   // 設定藍芽串口的資料傳輸延遲時間, 單位為 ms
   // 例如 MTU = 244, 則每傳輸244byte 就會休息 ms 時間再傳下一筆
   Future<dynamic> set1p8GTransmitDelayTime() async {
-    int commandIndex = 353;
+    int commandIndex = 354;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -1920,7 +1985,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8GNowDateTime(String deviceNowDateTime) async {
-    int commandIndex = 354;
+    int commandIndex = 355;
 
     print('get data from request command 1p8G$commandIndex');
 

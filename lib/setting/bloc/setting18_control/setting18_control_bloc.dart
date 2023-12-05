@@ -45,7 +45,12 @@ class Setting18ControlBloc
     on<DSSlope2Changed>(_onDSSlope2Changed);
     on<DSVVA3Changed>(_onDSVVA3Changed);
     on<DSVVA4Changed>(_onDSVVA4Changed);
-    on<USTGCChanged>(_onUSTGCChanged);
+    on<DSVVA4Increased>(_onDSVVA4Increased);
+    on<DSVVA4Decreased>(_onDSVVA4Decreased);
+    on<DSSlope3Changed>(_onDSSlope3Changed);
+    on<DSSlope3Increased>(_onDSSlope3Increased);
+    on<DSSlope3Decreased>(_onDSSlope3Decreased);
+    // on<USTGCChanged>(_onUSTGCChanged);
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
@@ -88,7 +93,8 @@ class Setting18ControlBloc
     String dsSlope2 = characteristicDataCache[DataKey.dsSlope2] ?? '';
     String dsVVA3 = characteristicDataCache[DataKey.dsVVA3] ?? '';
     String dsVVA4 = characteristicDataCache[DataKey.dsVVA4] ?? '';
-    String usTGC = characteristicDataCache[DataKey.usTGC] ?? '';
+    String dsVVA5 = characteristicDataCache[DataKey.dsVVA5] ?? '';
+    String dsSlope3 = characteristicDataCache[DataKey.dsSlope3] ?? '';
 
     emit(state.copyWith(
       fwdInputAttenuation: inputAttenuation,
@@ -106,7 +112,8 @@ class Setting18ControlBloc
       dsSlope2: dsSlope2,
       dsVVA3: dsVVA3,
       dsVVA4: dsVVA4,
-      usTGC: usTGC,
+      dsVVA5: dsVVA5,
+      dsSlope3: dsSlope3,
       isInitialize: true,
       initialValues: characteristicDataCache,
     ));
@@ -152,7 +159,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -183,7 +191,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -214,7 +223,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -243,7 +253,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -274,7 +285,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -305,7 +317,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -334,7 +347,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -365,7 +379,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -396,7 +411,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -425,7 +441,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -457,7 +474,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -489,7 +507,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -518,7 +537,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -549,7 +569,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -580,7 +601,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -609,7 +631,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -641,7 +664,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -673,7 +697,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -702,7 +727,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -732,7 +758,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -762,7 +789,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -791,7 +819,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -820,7 +849,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -849,7 +879,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -878,7 +909,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -907,7 +939,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -936,7 +969,8 @@ class Setting18ControlBloc
         dsSlope2: event.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -965,7 +999,8 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: event.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
@@ -994,18 +1029,83 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: event.dsVVA4,
-        usTGC: state.usTGC,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
 
-  void _onUSTGCChanged(
-    USTGCChanged event,
+  void _onDSVVA4Increased(
+    DSVVA4Increased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String dsVVA4 = _getIncreasedNumber(state.dsVVA4);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsVVA4: dsVVA4,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: dsVVA4,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onDSVVA4Decreased(
+    DSVVA4Decreased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String dsVVA4 = _getDecreasedNumber(state.dsVVA4);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsVVA4: dsVVA4,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: dsVVA4,
+        dsSlope3: state.dsSlope3,
+        // usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onDSSlope3Changed(
+    DSSlope3Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      usTGC: event.usTGC,
+      dsSlope3: event.dsSlope3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: state.fwdInputAttenuation,
@@ -1023,10 +1123,104 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        usTGC: event.usTGC,
+        dsSlope3: event.dsSlope3,
+        // usTGC: state.usTGC,
       ),
     ));
   }
+
+  void _onDSSlope3Increased(
+    DSSlope3Increased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String dsSlope3 = _getIncreasedNumber(state.dsSlope3);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsSlope3: dsSlope3,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsSlope3: dsSlope3,
+        // usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onDSSlope3Decreased(
+    DSSlope3Decreased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String dsSlope3 = _getDecreasedNumber(state.dsSlope3);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsSlope3: dsSlope3,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        rtnInputAttenuation3: state.rtnInputAttenuation3,
+        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsSlope3: dsSlope3,
+        // usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  // void _onUSTGCChanged(
+  //   USTGCChanged event,
+  //   Emitter<Setting18ControlState> emit,
+  // ) {
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     usTGC: event.usTGC,
+  //     isInitialize: false,
+  //     enableSubmission: _isEnabledSubmission(
+  //       fwdInputAttenuation: state.fwdInputAttenuation,
+  //       fwdInputEQ: state.fwdInputEQ,
+  //       rtnInputAttenuation2: state.rtnInputAttenuation2,
+  //       rtnInputAttenuation3: state.rtnInputAttenuation3,
+  //       rtnInputAttenuation4: state.rtnInputAttenuation4,
+  //       rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+  //       rtnOutputEQ: state.rtnOutputEQ,
+  //       rtnIngressSetting2: state.rtnIngressSetting2,
+  //       rtnIngressSetting3: state.rtnIngressSetting3,
+  //       rtnIngressSetting4: state.rtnIngressSetting4,
+  //       tgcCableLength: state.tgcCableLength,
+  //       dsVVA2: state.dsVVA2,
+  //       dsSlope2: state.dsSlope2,
+  //       dsVVA3: state.dsVVA3,
+  //       dsVVA4: state.dsVVA4,
+  //       usTGC: event.usTGC,
+  //     ),
+  //   ));
+  // }
 
   void _onEditModeEnabled(
     EditModeEnabled event,
@@ -1063,7 +1257,8 @@ class Setting18ControlBloc
       dsSlope2: state.initialValues[DataKey.dsSlope2],
       dsVVA3: state.initialValues[DataKey.dsVVA3],
       dsVVA4: state.initialValues[DataKey.dsVVA4],
-      usTGC: state.initialValues[DataKey.usTGC],
+      dsSlope3: state.initialValues[DataKey.dsSlope3],
+      // usTGC: state.initialValues[DataKey.usTGC],
     ));
   }
 
@@ -1083,28 +1278,34 @@ class Setting18ControlBloc
     required String dsSlope2,
     required String dsVVA3,
     required String dsVVA4,
-    required String usTGC,
+    required String dsSlope3,
+    // required String usTGC,
   }) {
     if (fwdInputAttenuation != state.initialValues[DataKey.inputAttenuation] ||
-        fwdInputEQ != state.initialValues[DataKey.inputEqualizer] ||
-        rtnInputAttenuation2 !=
-            state.initialValues[DataKey.inputAttenuation2] ||
-        rtnInputAttenuation3 !=
-            state.initialValues[DataKey.inputAttenuation3] ||
-        rtnInputAttenuation4 !=
-            state.initialValues[DataKey.inputAttenuation4] ||
-        rtnOutputLevelAttenuation !=
-            state.initialValues[DataKey.outputAttenuation] ||
-        rtnOutputEQ != state.initialValues[DataKey.outputEqualizer] ||
-        rtnIngressSetting2 != state.initialValues[DataKey.ingressSetting2] ||
-        rtnIngressSetting3 != state.initialValues[DataKey.ingressSetting3] ||
-        rtnIngressSetting4 != state.initialValues[DataKey.ingressSetting4] ||
-        tgcCableLength != state.initialValues[DataKey.tgcCableLength] ||
-        dsVVA2 != state.initialValues[DataKey.dsVVA2] ||
-        dsSlope2 != state.initialValues[DataKey.dsSlope2] ||
-        dsVVA3 != state.initialValues[DataKey.dsVVA3] ||
-        dsVVA4 != state.initialValues[DataKey.dsVVA4] ||
-        usTGC != state.initialValues[DataKey.usTGC]) {
+            fwdInputEQ != state.initialValues[DataKey.inputEqualizer] ||
+            rtnInputAttenuation2 !=
+                state.initialValues[DataKey.inputAttenuation2] ||
+            rtnInputAttenuation3 !=
+                state.initialValues[DataKey.inputAttenuation3] ||
+            rtnInputAttenuation4 !=
+                state.initialValues[DataKey.inputAttenuation4] ||
+            rtnOutputLevelAttenuation !=
+                state.initialValues[DataKey.outputAttenuation] ||
+            rtnOutputEQ != state.initialValues[DataKey.outputEqualizer] ||
+            rtnIngressSetting2 !=
+                state.initialValues[DataKey.ingressSetting2] ||
+            rtnIngressSetting3 !=
+                state.initialValues[DataKey.ingressSetting3] ||
+            rtnIngressSetting4 !=
+                state.initialValues[DataKey.ingressSetting4] ||
+            tgcCableLength != state.initialValues[DataKey.tgcCableLength] ||
+            dsVVA2 != state.initialValues[DataKey.dsVVA2] ||
+            dsSlope2 != state.initialValues[DataKey.dsSlope2] ||
+            dsVVA3 != state.initialValues[DataKey.dsVVA3] ||
+            dsVVA4 != state.initialValues[DataKey.dsVVA4] ||
+            dsSlope3 != state.initialValues[DataKey.dsSlope3]
+        // usTGC != state.initialValues[DataKey.usTGC]
+        ) {
       return true;
     } else {
       return false;
@@ -1149,7 +1350,7 @@ class Setting18ControlBloc
     }
 
     if (state.rtnInputAttenuation3 !=
-        state.initialValues[DataKey.ingressSetting3]) {
+        state.initialValues[DataKey.inputAttenuation3]) {
       bool resultOfSetReturnInputAttenuation3 = await _amp18Repository
           .set1p8GReturnInputAttenuation3(state.rtnInputAttenuation3);
 
@@ -1158,7 +1359,7 @@ class Setting18ControlBloc
     }
 
     if (state.rtnInputAttenuation4 !=
-        state.initialValues[DataKey.ingressSetting4]) {
+        state.initialValues[DataKey.inputAttenuation4]) {
       bool resultOfSetReturnInputAttenuation4 = await _amp18Repository
           .set1p8GReturnInputAttenuation4(state.rtnInputAttenuation4);
 
@@ -1246,11 +1447,18 @@ class Setting18ControlBloc
       settingResult.add('${DataKey.dsVVA4.name},$resultOfSetDSVVA4');
     }
 
-    if (state.usTGC != state.initialValues[DataKey.usTGC]) {
-      bool resultOfSetUSTGC = await _amp18Repository.set1p8USTGC(state.usTGC);
+    if (state.dsSlope3 != state.initialValues[DataKey.dsSlope3]) {
+      bool resultOfSetDSSlope3 =
+          await _amp18Repository.set1p8DSSlope3(state.dsSlope3);
 
-      settingResult.add('${DataKey.usTGC.name},$resultOfSetUSTGC');
+      settingResult.add('${DataKey.dsSlope3.name},$resultOfSetDSSlope3');
     }
+
+    // if (state.usTGC != state.initialValues[DataKey.usTGC]) {
+    //   bool resultOfSetUSTGC = await _amp18Repository.set1p8USTGC(state.usTGC);
+
+    //   settingResult.add('${DataKey.usTGC.name},$resultOfSetUSTGC');
+    // }
 
     // 等待 device 完成更新後在讀取值
     await Future.delayed(const Duration(milliseconds: 1000));

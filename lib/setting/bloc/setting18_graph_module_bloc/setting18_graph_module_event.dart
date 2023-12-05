@@ -330,14 +330,14 @@ class DSVVA4Changed extends Setting18GraphModuleEvent {
   List<Object> get props => [dsVVA4];
 }
 
-class USTGCChanged extends Setting18GraphModuleEvent {
-  const USTGCChanged(this.usTGC);
+// class USTGCChanged extends Setting18GraphModuleEvent {
+//   const USTGCChanged(this.usTGC);
 
-  final String usTGC;
+//   final String usTGC;
 
-  @override
-  List<Object> get props => [usTGC];
-}
+//   @override
+//   List<Object> get props => [usTGC];
+// }
 
 class SplitOptionChanged extends Setting18GraphModuleEvent {
   const SplitOptionChanged(this.splitOption);

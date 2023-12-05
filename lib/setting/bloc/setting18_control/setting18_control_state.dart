@@ -18,7 +18,8 @@ class Setting18ControlState extends Equatable {
     this.dsSlope2 = '',
     this.dsVVA3 = '',
     this.dsVVA4 = '',
-    this.usTGC = '',
+    this.dsVVA5 = '',
+    this.dsSlope3 = '',
     this.editMode = false,
     this.enableSubmission = false,
     this.isInitialize = true,
@@ -42,7 +43,8 @@ class Setting18ControlState extends Equatable {
   final String dsSlope2;
   final String dsVVA3;
   final String dsVVA4;
-  final String usTGC;
+  final String dsVVA5;
+  final String dsSlope3;
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
@@ -66,7 +68,8 @@ class Setting18ControlState extends Equatable {
     String? dsSlope2,
     String? dsVVA3,
     String? dsVVA4,
-    String? usTGC,
+    String? dsVVA5,
+    String? dsSlope3,
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
@@ -91,7 +94,8 @@ class Setting18ControlState extends Equatable {
       dsSlope2: dsSlope2 ?? this.dsSlope2,
       dsVVA3: dsVVA3 ?? this.dsVVA3,
       dsVVA4: dsVVA4 ?? this.dsVVA4,
-      usTGC: usTGC ?? this.usTGC,
+      dsVVA5: dsVVA5 ?? this.dsVVA5,
+      dsSlope3: dsSlope3 ?? this.dsSlope3,
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
@@ -118,7 +122,8 @@ class Setting18ControlState extends Equatable {
         dsSlope2,
         dsVVA3,
         dsVVA4,
-        usTGC,
+        dsVVA5,
+        dsSlope3,
         editMode,
         enableSubmission,
         isInitialize,

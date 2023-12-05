@@ -152,7 +152,8 @@ class Amp18Parser {
     String outputEqualizer = '';
     String dsVVA3 = '';
     String dsVVA4 = '';
-    String usTGC = '';
+    String dsSlope3 = '';
+    // String usTGC = '';
     String location = '';
     String logInterval = '';
 
@@ -296,10 +297,10 @@ class Amp18Parser {
     // 解析 pilotFrequency2AlarmState
     pilotFrequency2AlarmState = rawData[42].toString();
 
-    // 解析 pilotFrequency1AlarmState
+    // 解析 rfOutputPilotLowFrequencyAlarmState
     rfOutputPilotLowFrequencyAlarmState = rawData[43].toString();
 
-    // 解析 pilotFrequency2AlarmState
+    // 解析 rfOutputPilotHighFrequencyAlarmState
     rfOutputPilotHighFrequencyAlarmState = rawData[44].toString();
 
     // 解析 temperatureAlarmState
@@ -421,11 +422,18 @@ class Amp18Parser {
             .toStringAsFixed(1);
 
     // 解析 usTGC (0xAA US TGC Set dB)
-    List<int> rawUSTGC = rawData.sublist(173, 175);
-    ByteData rawUSTGCByteData =
-        ByteData.sublistView(Uint8List.fromList(rawUSTGC));
-    usTGC =
-        (rawUSTGCByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
+    // List<int> rawUSTGC = rawData.sublist(173, 175);
+    // ByteData rawUSTGCByteData =
+    //     ByteData.sublistView(Uint8List.fromList(rawUSTGC));
+    // usTGC =
+    //     (rawUSTGCByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
+
+    // 解析 dsSlope3 (0xAC DS Slope3 Set dB)
+    List<int> rawDSSlope3 = rawData.sublist(175, 177);
+    ByteData rawDSSlope3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSSlope3));
+    dsSlope3 = (rawDSSlope3ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
 
     return A1P8G1(
       maxTemperatureC: maxTemperatureC,
@@ -473,7 +481,8 @@ class Amp18Parser {
       outputEqualizer: outputEqualizer,
       dsVVA3: dsVVA3,
       dsVVA4: dsVVA4,
-      usTGC: usTGC,
+      dsSlope3: dsSlope3,
+      // usTGC: usTGC,
       location: location,
       logInterval: logInterval,
     );
@@ -1606,7 +1615,8 @@ class A1P8G1 {
     required this.outputEqualizer,
     required this.dsVVA3,
     required this.dsVVA4,
-    required this.usTGC,
+    required this.dsSlope3,
+    // required this.usTGC,
     required this.location,
     required this.logInterval,
   });
@@ -1655,7 +1665,8 @@ class A1P8G1 {
   final String outputEqualizer;
   final String dsVVA3;
   final String dsVVA4;
-  final String usTGC;
+  final String dsSlope3;
+  // final String usTGC;
   final String location;
   final String logInterval;
 }

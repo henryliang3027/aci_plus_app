@@ -211,24 +211,26 @@ class PilotFrequency2AlarmChanged extends Setting18ThresholdEvent {
   List<Object> get props => [pilotFrequency2AlarmState];
 }
 
-class FirstChannelOutputLevelAlarmChanged extends Setting18ThresholdEvent {
-  const FirstChannelOutputLevelAlarmChanged(
-      this.firstChannelOutputLevelAlarmState);
+class StartFrequencyOutputLevelAlarmStateChanged
+    extends Setting18ThresholdEvent {
+  const StartFrequencyOutputLevelAlarmStateChanged(
+      this.startFrequencyOutputLevelAlarmState);
 
-  final bool firstChannelOutputLevelAlarmState;
+  final bool startFrequencyOutputLevelAlarmState;
 
   @override
-  List<Object> get props => [firstChannelOutputLevelAlarmState];
+  List<Object> get props => [startFrequencyOutputLevelAlarmState];
 }
 
-class LastChannelOutputLevelAlarmChanged extends Setting18ThresholdEvent {
-  const LastChannelOutputLevelAlarmChanged(
-      this.lastChannelOutputLevelAlarmState);
+class StopFrequencyOutputLevelAlarmStateChanged
+    extends Setting18ThresholdEvent {
+  const StopFrequencyOutputLevelAlarmStateChanged(
+      this.stopFrequencyOutputLevelAlarmState);
 
-  final bool lastChannelOutputLevelAlarmState;
+  final bool stopFrequencyOutputLevelAlarmState;
 
   @override
-  List<Object> get props => [lastChannelOutputLevelAlarmState];
+  List<Object> get props => [stopFrequencyOutputLevelAlarmState];
 }
 
 class EditModeEnabled extends Setting18ThresholdEvent {

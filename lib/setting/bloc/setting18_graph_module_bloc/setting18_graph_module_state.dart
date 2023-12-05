@@ -18,7 +18,7 @@ class Setting18GraphModuleState extends Equatable {
     this.dsSlope2 = '',
     this.dsVVA3 = '',
     this.dsVVA4 = '',
-    this.usTGC = '',
+    // this.usTGC = '',
     this.splitOption = '1',
     this.firstChannelLoadingFrequency = '',
     this.firstChannelLoadingLevel = '',
@@ -52,7 +52,7 @@ class Setting18GraphModuleState extends Equatable {
   final String dsSlope2;
   final String dsVVA3;
   final String dsVVA4;
-  final String usTGC;
+  // final String usTGC;
   final String splitOption;
   final String firstChannelLoadingFrequency;
   final String firstChannelLoadingLevel;
@@ -86,7 +86,7 @@ class Setting18GraphModuleState extends Equatable {
     String? dsSlope2,
     String? dsVVA3,
     String? dsVVA4,
-    String? usTGC,
+    // String? usTGC,
     String? splitOption,
     String? firstChannelLoadingFrequency,
     String? firstChannelLoadingLevel,
@@ -121,7 +121,7 @@ class Setting18GraphModuleState extends Equatable {
       dsSlope2: dsSlope2 ?? this.dsSlope2,
       dsVVA3: dsVVA3 ?? this.dsVVA3,
       dsVVA4: dsVVA4 ?? this.dsVVA4,
-      usTGC: usTGC ?? this.usTGC,
+      // usTGC: usTGC ?? this.usTGC,
       splitOption: splitOption ?? this.splitOption,
       firstChannelLoadingFrequency:
           firstChannelLoadingFrequency ?? this.firstChannelLoadingFrequency,
@@ -164,7 +164,7 @@ class Setting18GraphModuleState extends Equatable {
         dsSlope2,
         dsVVA3,
         dsVVA4,
-        usTGC,
+        // usTGC,
         splitOption,
         firstChannelLoadingFrequency,
         firstChannelLoadingLevel,
