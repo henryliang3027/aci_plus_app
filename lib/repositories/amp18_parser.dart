@@ -495,6 +495,8 @@ class Amp18Parser {
     String currentVoltageRipple = '';
     String currentRFInputPower = '';
     String currentRFOutputPower = '';
+    String currentDSVVA1;
+    String currentDSSlope1;
     String currentWorkingMode = '';
     String currentDetectedSplitOption = '';
     String rfOutputOperatingSlope = '';
@@ -563,6 +565,23 @@ class Amp18Parser {
 
     currentRFOutputPower =
         (rawCurrentRFOutputPowerByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
+
+    // 解析 currentDSVVA1
+    List<int> rawCurrentDSVVA1 = rawData.sublist(34, 36);
+    ByteData rawCurrentDSVVA1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentDSVVA1));
+
+    currentDSVVA1 = (rawCurrentDSVVA1ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 currentDSSlope1
+    List<int> rawCurrentDSSlope1 = rawData.sublist(36, 38);
+    ByteData rawCurrentDSSlope1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentDSSlope1));
+
+    currentDSSlope1 =
+        (rawCurrentDSSlope1ByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
 
     // 解析 currentWorkingMode
@@ -696,6 +715,8 @@ class Amp18Parser {
       currentVoltageRipple: currentVoltageRipple,
       currentRFInputPower: currentRFInputPower,
       currentRFOutputPower: currentRFOutputPower,
+      currentDSVVA1: currentDSVVA1,
+      currentDSSlope1: currentDSSlope1,
       currentWorkingMode: currentWorkingMode,
       currentDetectedSplitOption: currentDetectedSplitOption,
       currentRFInputPower1p8G: currentRFInputPower1p8G,
@@ -1690,6 +1711,8 @@ class A1P8G2 {
     required this.currentVoltageRipple,
     required this.currentRFInputPower,
     required this.currentRFOutputPower,
+    required this.currentDSVVA1,
+    required this.currentDSSlope1,
     required this.currentWorkingMode,
     required this.currentDetectedSplitOption,
     required this.currentRFInputPower1p8G,
@@ -1718,6 +1741,8 @@ class A1P8G2 {
   final String currentVoltageRipple;
   final String currentRFInputPower;
   final String currentRFOutputPower;
+  final String currentDSVVA1;
+  final String currentDSSlope1;
   final String currentWorkingMode;
   final String currentDetectedSplitOption;
   final String rfOutputOperatingSlope;

@@ -6,8 +6,10 @@ import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_threshold/setting18_threshold_bloc.dart';
+import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -1181,10 +1183,25 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       ? Theme.of(context).colorScheme.primary.withAlpha(200)
                       : Colors.grey.withAlpha(200),
                   onPressed: enableSubmission
-                      ? () {
-                          context
-                              .read<Setting18ThresholdBloc>()
-                              .add(const SettingSubmitted());
+                      ? () async {
+                          if (kDebugMode) {
+                            context
+                                .read<Setting18ThresholdBloc>()
+                                .add(const SettingSubmitted());
+                          } else {
+                            bool? isMatch =
+                                await showConfirmInputDialog(context: context);
+
+                            if (context.mounted) {
+                              if (isMatch != null) {
+                                if (isMatch) {
+                                  context
+                                      .read<Setting18ThresholdBloc>()
+                                      .add(const SettingSubmitted());
+                                }
+                              }
+                            }
+                          }
                         }
                       : null,
                   child: Icon(

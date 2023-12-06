@@ -4,8 +4,10 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_graph_module_bloc/setting18_graph_module_bloc.dart';
+import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -1126,6 +1128,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget getEditTools({
       required bool enableSubmission,
+      required bool editable,
     }) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -1151,14 +1154,30 @@ class _SettingFloatingActionButton extends StatelessWidget {
             shape: const CircleBorder(
               side: BorderSide.none,
             ),
-            backgroundColor: enableSubmission
+            backgroundColor: enableSubmission && editable
                 ? Theme.of(context).colorScheme.primary.withAlpha(200)
                 : Colors.grey.withAlpha(200),
-            onPressed: enableSubmission
-                ? () {
-                    context
-                        .read<Setting18GraphModuleBloc>()
-                        .add(const SettingSubmitted());
+            onPressed: enableSubmission && editable
+                ? () async {
+                    print(editable);
+                    if (kDebugMode) {
+                      context
+                          .read<Setting18GraphModuleBloc>()
+                          .add(const SettingSubmitted());
+                    } else {
+                      bool? isMatch =
+                          await showConfirmInputDialog(context: context);
+
+                      if (context.mounted) {
+                        if (isMatch != null) {
+                          if (isMatch) {
+                            context
+                                .read<Setting18GraphModuleBloc>()
+                                .add(const SettingSubmitted());
+                          }
+                        }
+                      }
+                    }
                   }
                 : null,
             child: Icon(
@@ -1189,11 +1208,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
           context.watch<Setting18GraphModuleBloc>().state;
 
       bool editable = getEditable(homeState.loadingStatus);
-      return editable
-          ? getEditTools(
-              enableSubmission: setting18graphModuleState.enableSubmission,
-            )
-          : Container();
+      return getEditTools(
+        enableSubmission: setting18graphModuleState.enableSubmission,
+        editable: editable,
+      );
     });
   }
 }

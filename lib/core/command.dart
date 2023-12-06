@@ -155,6 +155,8 @@ enum DataKey {
   forwardInSlope6,
   forwardOutSlope6,
   returnVCA6,
+  currentDSVVA1,
+  currentDSSlope1,
   currentForwardVVA1,
   currentForwardInSlope1,
   currentForwardOutSlope1,

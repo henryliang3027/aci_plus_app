@@ -5,9 +5,11 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_control/setting18_control_bloc.dart';
+import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -19,52 +21,12 @@ class Setting18ControlView extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
-    // String inputAttenuation =
-    //     homeState.characteristicData[DataKey.inputAttenuation] ?? '';
-    // String inputEqualizer =
-    //     homeState.characteristicData[DataKey.inputEqualizer] ?? '';
-    // String inputAttenuation2 =
-    //     homeState.characteristicData[DataKey.inputAttenuation2] ?? '';
-    // String inputAttenuation3 =
-    //     homeState.characteristicData[DataKey.inputAttenuation3] ?? '';
-    // String inputAttenuation4 =
-    //     homeState.characteristicData[DataKey.inputAttenuation4] ?? '';
-    // String outputAttenuation =
-    //     homeState.characteristicData[DataKey.outputAttenuation] ?? '';
-    // String outputEqualizer =
-    //     homeState.characteristicData[DataKey.outputEqualizer] ?? '';
-    // String ingressSetting2 =
-    //     homeState.characteristicData[DataKey.ingressSetting2] ?? '';
-    // String ingressSetting3 =
-    //     homeState.characteristicData[DataKey.ingressSetting3] ?? '';
-    // String ingressSetting4 =
-    //     homeState.characteristicData[DataKey.ingressSetting4] ?? '';
-    // String tgcCableLength =
-    //     homeState.characteristicData[DataKey.tgcCableLength] ?? '';
-    // String dsVVA2 = homeState.characteristicData[DataKey.dsVVA2] ?? '';
-    // String dsSlope2 = homeState.characteristicData[DataKey.dsSlope2] ?? '';
-    // String dsVVA3 = homeState.characteristicData[DataKey.dsVVA3] ?? '';
-    // String dsVVA4 = homeState.characteristicData[DataKey.dsVVA4] ?? '';
-    // String usTGC = homeState.characteristicData[DataKey.usTGC] ?? '';
-
-    // context.read<Setting18ControlBloc>().add(Initialized(
-    //       fwdInputAttenuation: inputAttenuation,
-    //       fwdInputEQ: inputEqualizer,
-    //       rtnInputAttenuation2: inputAttenuation2,
-    //       rtnInputAttenuation3: inputAttenuation3,
-    //       rtnInputAttenuation4: inputAttenuation4,
-    //       rtnOutputLevelAttenuation: outputAttenuation,
-    //       rtnOutputEQ: outputEqualizer,
-    //       rtnIngressSetting2: ingressSetting2,
-    //       rtnIngressSetting3: ingressSetting3,
-    //       rtnIngressSetting4: ingressSetting4,
-    //       tgcCableLength: tgcCableLength,
-    //       dsVVA2: dsVVA2,
-    //       dsSlope2: dsSlope2,
-    //       dsVVA3: dsVVA3,
-    //       dsVVA4: dsVVA4,
-    //       usTGC: usTGC,
-    //     ));
+    String agcMode = homeState.characteristicData[DataKey.agcMode] ?? '0';
+    String alcMode = homeState.characteristicData[DataKey.alcMode] ?? '0';
+    String currentInputAttenuation =
+        homeState.characteristicData[DataKey.currentDSVVA1] ?? '';
+    String currentInputEqualizer =
+        homeState.characteristicData[DataKey.currentDSSlope1] ?? '';
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
@@ -190,12 +152,19 @@ class Setting18ControlView extends StatelessWidget {
         switch (name) {
           case SettingControl.forwardInputAttenuation:
             widgets.add(
-              const _FwdInputAttenuation(),
+              _FwdInputAttenuation(
+                alcMode: alcMode,
+                currentInputAttenuation: currentInputAttenuation,
+              ),
             );
             break;
           case SettingControl.forwardInputEqualizer:
             widgets.add(
-              const _FwdInputEQ(),
+              _FwdInputEQ(
+                alcMode: alcMode,
+                agcMode: agcMode,
+                currentInputEqualizer: currentInputEqualizer,
+              ),
             );
             break;
           case SettingControl.forwardOutputAttenuation3And4:
@@ -234,8 +203,15 @@ class Setting18ControlView extends StatelessWidget {
       return widgets.isNotEmpty
           ? widgets
           : [
-              const _FwdInputAttenuation(),
-              const _FwdInputEQ(),
+              _FwdInputAttenuation(
+                alcMode: alcMode,
+                currentInputAttenuation: currentInputAttenuation,
+              ),
+              _FwdInputEQ(
+                alcMode: alcMode,
+                agcMode: agcMode,
+                currentInputEqualizer: currentInputEqualizer,
+              ),
               const _ForwardOutputAttenuation3And4(),
               const _ForwardOutputEqualizer3And4(),
             ];
@@ -430,20 +406,33 @@ class _ClusterTitle extends StatelessWidget {
 }
 
 class _FwdInputAttenuation extends StatelessWidget {
-  const _FwdInputAttenuation({super.key});
+  const _FwdInputAttenuation({
+    super.key,
+    required this.alcMode,
+    required this.currentInputAttenuation,
+  });
+
+  final String alcMode;
+  final String currentInputAttenuation;
 
   @override
   Widget build(BuildContext context) {
+    double getCurrentValue(String fwdInputAttenuation) {
+      return alcMode == '0'
+          ? _getValue(fwdInputAttenuation)
+          : _getValue(currentInputAttenuation);
+    }
+
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         return controlParameterSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: state.editMode && alcMode == '0',
           title:
-              '${AppLocalizations.of(context)!.fwdInputAttenuation}: ${state.fwdInputAttenuation} dB',
+              '${AppLocalizations.of(context)!.fwdInputAttenuation}: ${getCurrentValue(state.fwdInputAttenuation)} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: _getValue(state.fwdInputAttenuation),
+          currentValue: getCurrentValue(state.fwdInputAttenuation),
           onChanged: (fwdInputAttenuation) {
             context.read<Setting18ControlBloc>().add(FwdInputAttenuationChanged(
                 fwdInputAttenuation.toStringAsFixed(1)));
@@ -461,20 +450,35 @@ class _FwdInputAttenuation extends StatelessWidget {
 }
 
 class _FwdInputEQ extends StatelessWidget {
-  const _FwdInputEQ({super.key});
+  const _FwdInputEQ({
+    super.key,
+    required this.alcMode,
+    required this.agcMode,
+    required this.currentInputEqualizer,
+  });
+
+  final String alcMode;
+  final String agcMode;
+  final String currentInputEqualizer;
 
   @override
   Widget build(BuildContext context) {
+    double getCurrentValue(String fwdInputEQ) {
+      return alcMode == '0' && agcMode == '0'
+          ? _getValue(fwdInputEQ)
+          : _getValue(currentInputEqualizer);
+    }
+
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         return controlParameterSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: state.editMode && alcMode == '0' && agcMode == '0',
           title:
-              '${AppLocalizations.of(context)!.fwdInputEQ}: ${state.fwdInputEQ} dB',
+              '${AppLocalizations.of(context)!.fwdInputEQ}: ${getCurrentValue(state.fwdInputEQ)} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: _getValue(state.fwdInputEQ),
+          currentValue: getCurrentValue(state.fwdInputEQ),
           onChanged: (fwdInputEQ) {
             context
                 .read<Setting18ControlBloc>()
@@ -1041,10 +1045,25 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       ? Theme.of(context).colorScheme.primary.withAlpha(200)
                       : Colors.grey.withAlpha(200),
                   onPressed: enableSubmission
-                      ? () {
-                          context
-                              .read<Setting18ControlBloc>()
-                              .add(const SettingSubmitted());
+                      ? () async {
+                          if (kDebugMode) {
+                            context
+                                .read<Setting18ControlBloc>()
+                                .add(const SettingSubmitted());
+                          } else {
+                            bool? isMatch =
+                                await showConfirmInputDialog(context: context);
+
+                            if (context.mounted) {
+                              if (isMatch != null) {
+                                if (isMatch) {
+                                  context
+                                      .read<Setting18ControlBloc>()
+                                      .add(const SettingSubmitted());
+                                }
+                              }
+                            }
+                          }
                         }
                       : null,
                   child: Icon(

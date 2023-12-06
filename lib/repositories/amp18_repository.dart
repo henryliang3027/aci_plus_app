@@ -192,6 +192,8 @@ class Amp18Repository {
         DataKey.currentVoltageRipple: a1p8g2.currentVoltageRipple,
         DataKey.currentRFInputPower: a1p8g2.currentRFInputPower,
         DataKey.currentRFOutputPower: a1p8g2.currentRFOutputPower,
+        DataKey.currentDSVVA1: a1p8g2.currentDSVVA1,
+        DataKey.currentDSSlope1: a1p8g2.currentDSSlope1,
         DataKey.currentWorkingMode: a1p8g2.currentWorkingMode,
         DataKey.currentDetectedSplitOption: a1p8g2.currentDetectedSplitOption,
         DataKey.rfOutputOperatingSlope: a1p8g2.rfOutputOperatingSlope,
