@@ -131,8 +131,8 @@ class Amp18Repository {
         DataKey.lastChannelLoadingLevel: a1p8g1.lastChannelLoadingLevel,
         DataKey.pilotFrequency1: a1p8g1.pilotFrequency1,
         DataKey.pilotFrequency2: a1p8g1.pilotFrequency2,
-        DataKey.pilotFrequency1AlarmState: a1p8g1.pilotFrequency1AlarmState,
-        DataKey.pilotFrequency2AlarmState: a1p8g1.pilotFrequency2AlarmState,
+        // DataKey.pilotFrequency1AlarmState: a1p8g1.pilotFrequency1AlarmState,
+        // DataKey.pilotFrequency2AlarmState: a1p8g1.pilotFrequency2AlarmState,
         DataKey.rfOutputPilotLowFrequencyAlarmState:
             a1p8g1.rfOutputPilotLowFrequencyAlarmState,
         DataKey.rfOutputPilotHighFrequencyAlarmState:
@@ -195,6 +195,7 @@ class Amp18Repository {
         DataKey.currentWorkingMode: a1p8g2.currentWorkingMode,
         DataKey.currentDetectedSplitOption: a1p8g2.currentDetectedSplitOption,
         DataKey.rfOutputOperatingSlope: a1p8g2.rfOutputOperatingSlope,
+        DataKey.currentRFInputPower1p8G: a1p8g2.currentRFInputPower1p8G,
         DataKey.manualModePilot1RFOutputPower:
             a1p8g2.manualModePilot1RFOutputPower,
         DataKey.manualModePilot2RFOutputPower:

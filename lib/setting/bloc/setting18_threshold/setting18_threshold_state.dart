@@ -17,8 +17,8 @@ class Setting18ThresholdState extends Equatable {
     this.minRFOutputPower = '',
     this.maxRFOutputPower = '',
     this.splitOptionAlarmState = false,
-    this.pilotFrequency1AlarmState = false,
-    this.pilotFrequency2AlarmState = false,
+    // this.pilotFrequency1AlarmState = false,
+    // this.pilotFrequency2AlarmState = false,
     this.startFrequencyOutputLevelAlarmState = false,
     this.stopFrequencyOutputLevelAlarmState = false,
     this.editMode = false,
@@ -44,8 +44,8 @@ class Setting18ThresholdState extends Equatable {
   final String minRFOutputPower;
   final String maxRFOutputPower;
   final bool splitOptionAlarmState;
-  final bool pilotFrequency1AlarmState;
-  final bool pilotFrequency2AlarmState;
+  // final bool pilotFrequency1AlarmState;
+  // final bool pilotFrequency2AlarmState;
   final bool startFrequencyOutputLevelAlarmState;
   final bool stopFrequencyOutputLevelAlarmState;
   final bool editMode;
@@ -70,8 +70,8 @@ class Setting18ThresholdState extends Equatable {
     String? minRFOutputPower,
     String? maxRFOutputPower,
     bool? splitOptionAlarmState,
-    bool? pilotFrequency1AlarmState,
-    bool? pilotFrequency2AlarmState,
+    // bool? pilotFrequency1AlarmState,
+    // bool? pilotFrequency2AlarmState,
     bool? startFrequencyOutputLevelAlarmState,
     bool? stopFrequencyOutputLevelAlarmState,
     bool? editMode,
@@ -100,10 +100,10 @@ class Setting18ThresholdState extends Equatable {
       maxRFOutputPower: maxRFOutputPower ?? this.maxRFOutputPower,
       splitOptionAlarmState:
           splitOptionAlarmState ?? this.splitOptionAlarmState,
-      pilotFrequency1AlarmState:
-          pilotFrequency1AlarmState ?? this.pilotFrequency1AlarmState,
-      pilotFrequency2AlarmState:
-          pilotFrequency2AlarmState ?? this.pilotFrequency2AlarmState,
+      // pilotFrequency1AlarmState:
+      //     pilotFrequency1AlarmState ?? this.pilotFrequency1AlarmState,
+      // pilotFrequency2AlarmState:
+      //     pilotFrequency2AlarmState ?? this.pilotFrequency2AlarmState,
       startFrequencyOutputLevelAlarmState:
           startFrequencyOutputLevelAlarmState ??
               this.startFrequencyOutputLevelAlarmState,
@@ -134,8 +134,8 @@ class Setting18ThresholdState extends Equatable {
         minRFOutputPower,
         maxRFOutputPower,
         splitOptionAlarmState,
-        pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState,
         editMode,

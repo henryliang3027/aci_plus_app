@@ -500,6 +500,7 @@ class Amp18Parser {
     String rfOutputOperatingSlope = '';
     String manualModePilot1RFOutputPower = '';
     String manualModePilot2RFOutputPower = '';
+    String currentRFInputPower1p8G = '';
     String rfOutputLowChannelPower = '';
     String rfOutputHighChannelPower = '';
     String pilot1RFChannelFrequency = '';
@@ -569,6 +570,15 @@ class Amp18Parser {
 
     // 解析 currentDetectedSplitOption
     currentDetectedSplitOption = rawData[71].toString();
+
+    // 解析 currentRFInputPower1p8G
+    List<int> rawCurrentRFInputPower1p8G = rawData.sublist(76, 78);
+    ByteData rawCurrentRFInputPower1p8GByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentRFInputPower1p8G));
+
+    currentRFInputPower1p8G =
+        (rawCurrentRFInputPower1p8GByteData.getInt16(0, Endian.little) / 10)
+            .toStringAsFixed(1);
 
     // 解析 rfOutputLowChannelPower
     List<int> rawRFOutputLowChannelPower = rawData.sublist(92, 94);
@@ -688,6 +698,7 @@ class Amp18Parser {
       currentRFOutputPower: currentRFOutputPower,
       currentWorkingMode: currentWorkingMode,
       currentDetectedSplitOption: currentDetectedSplitOption,
+      currentRFInputPower1p8G: currentRFInputPower1p8G,
       rfOutputOperatingSlope: rfOutputOperatingSlope,
       manualModePilot1RFOutputPower: manualModePilot1RFOutputPower,
       manualModePilot2RFOutputPower: manualModePilot2RFOutputPower,
@@ -1681,6 +1692,7 @@ class A1P8G2 {
     required this.currentRFOutputPower,
     required this.currentWorkingMode,
     required this.currentDetectedSplitOption,
+    required this.currentRFInputPower1p8G,
     required this.rfOutputOperatingSlope,
     required this.manualModePilot1RFOutputPower,
     required this.manualModePilot2RFOutputPower,
@@ -1709,6 +1721,7 @@ class A1P8G2 {
   final String currentWorkingMode;
   final String currentDetectedSplitOption;
   final String rfOutputOperatingSlope;
+  final String currentRFInputPower1p8G;
   final String manualModePilot1RFOutputPower;
   final String manualModePilot2RFOutputPower;
   final String rfOutputLowChannelPower;

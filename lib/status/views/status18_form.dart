@@ -56,6 +56,9 @@ class Status18Form extends StatelessWidget {
           case SettingThreshold.outputPower:
             widgets.add(const _RFOutputPowerCard());
             break;
+          case SettingThreshold.inputPower1p8G:
+            widgets.add(const _RFInputPower1p8GCard());
+            break;
           case SettingThreshold.pilot1Status:
             widgets.add(const _PilotFrequency1Card());
             break;
@@ -91,6 +94,7 @@ class Status18Form extends StatelessWidget {
                   _PowerSupplyCard(),
                   _VoltageRippleCard(),
                   _RFOutputPowerCard(),
+                  _RFInputPower1p8GCard(),
                   _PilotFrequency1Card(),
                   _PilotFrequency2Card(),
                   _FirstChannelPowerLevelCard(),
@@ -1708,6 +1712,112 @@ String _getPilotFrequencyAlarmSeverityText(String pilotFrequencyStatus) {
   }
 }
 
+class _RFInputPower1p8GCard extends StatelessWidget {
+  const _RFInputPower1p8GCard({super.key});
+
+  Widget getCurrentRFInputPower1p8G({
+    required FormStatus loadingStatus,
+    required String currentRFInputPower1p8G,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return const Center(
+        child: SizedBox(
+          width: CustomStyle.diameter,
+          height: CustomStyle.diameter,
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        currentRFInputPower1p8G.isEmpty ? 'N/A' : currentRFInputPower1p8G,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    } else {
+      return Text(
+        currentRFInputPower1p8G.isEmpty ? 'N/A' : currentRFInputPower1p8G,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget currentRFInputPower1p8GBlock({
+    required FormStatus loadingStatus,
+    required String currentRFInputPower1p8G,
+    required String currentRFInputPower1p8GTitle,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getCurrentRFInputPower1p8G(
+                      loadingStatus: loadingStatus,
+                      currentRFInputPower1p8G: currentRFInputPower1p8G,
+                      fontSize: 40,
+                    ),
+                    Text(
+                      currentRFInputPower1p8GTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      String currentRFInputPower1p8G =
+          state.characteristicData[DataKey.currentRFInputPower1p8G] ?? '1';
+
+      return Card(
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
+              child: Text(
+                '${AppLocalizations.of(context)!.rfInputPower} @ 1794 MHz',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            currentRFInputPower1p8GBlock(
+              loadingStatus: state.loadingStatus,
+              currentRFInputPower1p8G: currentRFInputPower1p8G,
+              currentRFInputPower1p8GTitle:
+                  AppLocalizations.of(context)!.currentRFInputPower,
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+          ],
+        ),
+      );
+    });
+  }
+}
+
 class _PilotFrequency1Card extends StatelessWidget {
   const _PilotFrequency1Card({super.key});
 
@@ -1792,8 +1902,9 @@ class _PilotFrequency1Card extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      String pilotFrequency1AlarmState =
-          state.characteristicData[DataKey.pilotFrequency1AlarmState] ?? '1';
+      String pilotFrequency1AlarmState = state.characteristicData[
+              DataKey.rfOutputPilotLowFrequencyAlarmState] ??
+          '1';
 
       String pilotFrequency1AlarmSeverity = state.characteristicData[
               DataKey.rfOutputPilotLowFrequencyAlarmSeverity] ??
@@ -1915,8 +2026,9 @@ class _PilotFrequency2Card extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      String pilotFrequency2AlarmState =
-          state.characteristicData[DataKey.pilotFrequency2AlarmState] ?? '1';
+      String pilotFrequency2AlarmState = state.characteristicData[
+              DataKey.rfOutputPilotHighFrequencyAlarmState] ??
+          '1';
 
       String pilotFrequency2AlarmSeverity = state.characteristicData[
               DataKey.rfOutputPilotHighFrequencyAlarmSeverity] ??
@@ -2116,8 +2228,9 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
           state.characteristicData[DataKey.pilot1RFChannelFrequency] ?? '';
       String rfOutputLowChannelPower =
           state.characteristicData[DataKey.rfOutputLowChannelPower] ?? '';
-      String pilotFrequency1AlarmState =
-          state.characteristicData[DataKey.pilotFrequency1AlarmState] ?? '1';
+      String pilotFrequency1AlarmState = state.characteristicData[
+              DataKey.rfOutputPilotLowFrequencyAlarmState] ??
+          '1';
       String pilotFrequency1AlarmSeverity = state.characteristicData[
               DataKey.rfOutputPilotLowFrequencyAlarmSeverity] ??
           '0';
@@ -2179,10 +2292,9 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       int intFrequency = int.parse(frequency);
-      frequency = intFrequency >= 1209 ? '1785~1791' : frequency;
 
       return Text(
-        frequency.isEmpty ? 'N/A' : frequency,
+        frequency.isEmpty ? 'N/A' : '$frequency~${intFrequency + 6}',
         style: TextStyle(
           fontSize: fontSize,
           // color: _getCurrentValueColor(
@@ -2316,8 +2428,9 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
       String rfOutputHighChannelPower =
           state.characteristicData[DataKey.rfOutputHighChannelPower] ?? '';
 
-      String pilotFrequency2AlarmState =
-          state.characteristicData[DataKey.pilotFrequency1AlarmState] ?? '1';
+      String pilotFrequency2AlarmState = state.characteristicData[
+              DataKey.rfOutputPilotHighFrequencyAlarmState] ??
+          '1';
       String pilotFrequency2AlarmSeverity = state.characteristicData[
               DataKey.rfOutputPilotLowFrequencyAlarmSeverity] ??
           '0';

@@ -30,8 +30,8 @@ class Setting18ThresholdBloc
     on<MinRFOutputPowerChanged>(_onMinRFOutputPowerChanged);
     on<MaxRFOutputPowerChanged>(_onMaxRFOutputPowerChanged);
     on<SplitOptionAlarmChanged>(_onSplitOptionAlarmChanged);
-    on<PilotFrequency1AlarmChanged>(_onPilotFrequency1AlarmChanged);
-    on<PilotFrequency2AlarmChanged>(_onPilotFrequency2AlarmChanged);
+    // on<PilotFrequency1AlarmChanged>(_onPilotFrequency1AlarmChanged);
+    // on<PilotFrequency2AlarmChanged>(_onPilotFrequency2AlarmChanged);
     on<StartFrequencyOutputLevelAlarmStateChanged>(
         _onStartFrequencyOutputLevelAlarmStateChanged);
     on<StopFrequencyOutputLevelAlarmStateChanged>(
@@ -129,11 +129,11 @@ class Setting18ThresholdBloc
     String strSplitOptionAlarmState =
         characteristicDataCache[DataKey.splitOptionAlarmState] ?? '';
 
-    String strPilotFrequency1AlarmState =
-        characteristicDataCache[DataKey.pilotFrequency1AlarmState] ?? '';
+    // String strPilotFrequency1AlarmState =
+    //     characteristicDataCache[DataKey.pilotFrequency1AlarmState] ?? '';
 
-    String strPilotFrequency2AlarmState =
-        characteristicDataCache[DataKey.pilotFrequency2AlarmState] ?? '';
+    // String strPilotFrequency2AlarmState =
+    //     characteristicDataCache[DataKey.pilotFrequency2AlarmState] ?? '';
 
     String strStartFrequencyOutputLevelAlarmState =
         characteristicDataCache[DataKey.rfOutputPilotLowFrequencyAlarmState] ??
@@ -164,10 +164,10 @@ class Setting18ThresholdBloc
       minRFOutputPower: minRFOutputPower,
       maxRFOutputPower: maxRFOutputPower,
       splitOptionAlarmState: _stringNumberToBool(strSplitOptionAlarmState),
-      pilotFrequency1AlarmState:
-          _stringNumberToBool(strPilotFrequency1AlarmState),
-      pilotFrequency2AlarmState:
-          _stringNumberToBool(strPilotFrequency2AlarmState),
+      // pilotFrequency1AlarmState:
+      //     _stringNumberToBool(strPilotFrequency1AlarmState),
+      // pilotFrequency2AlarmState:
+      //     _stringNumberToBool(strPilotFrequency2AlarmState),
       startFrequencyOutputLevelAlarmState:
           _stringNumberToBool(strStartFrequencyOutputLevelAlarmState),
       stopFrequencyOutputLevelAlarmState:
@@ -199,8 +199,8 @@ class Setting18ThresholdBloc
         minRFOutputPower: state.minRFOutputPower,
         maxRFOutputPower: state.maxRFOutputPower,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState:
             state.startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState:
@@ -231,8 +231,8 @@ class Setting18ThresholdBloc
         minRFOutputPower: state.minRFOutputPower,
         maxRFOutputPower: state.maxRFOutputPower,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState:
             state.startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState:
@@ -263,8 +263,8 @@ class Setting18ThresholdBloc
         minRFOutputPower: state.minRFOutputPower,
         maxRFOutputPower: state.maxRFOutputPower,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState:
             state.startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState:
@@ -295,8 +295,8 @@ class Setting18ThresholdBloc
         minRFOutputPower: state.minRFOutputPower,
         maxRFOutputPower: state.maxRFOutputPower,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState:
             state.startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState:
@@ -327,8 +327,8 @@ class Setting18ThresholdBloc
         minRFOutputPower: state.minRFOutputPower,
         maxRFOutputPower: state.maxRFOutputPower,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState:
             state.startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState:
@@ -359,8 +359,8 @@ class Setting18ThresholdBloc
         minRFOutputPower: state.minRFOutputPower,
         maxRFOutputPower: state.maxRFOutputPower,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState:
             state.startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState:
@@ -391,8 +391,8 @@ class Setting18ThresholdBloc
         minRFOutputPower: state.minRFOutputPower,
         maxRFOutputPower: state.maxRFOutputPower,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState:
             state.startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState:
@@ -423,8 +423,8 @@ class Setting18ThresholdBloc
         minRFOutputPower: state.minRFOutputPower,
         maxRFOutputPower: state.maxRFOutputPower,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState:
             state.startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState:
@@ -455,8 +455,8 @@ class Setting18ThresholdBloc
         minRFOutputPower: state.minRFOutputPower,
         maxRFOutputPower: state.maxRFOutputPower,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState:
             state.startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState:
@@ -487,8 +487,8 @@ class Setting18ThresholdBloc
         minRFOutputPower: state.minRFOutputPower,
         maxRFOutputPower: state.maxRFOutputPower,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState:
             state.startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState:
@@ -519,8 +519,8 @@ class Setting18ThresholdBloc
         minRFOutputPower: event.minRFOutputPower,
         maxRFOutputPower: state.maxRFOutputPower,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState:
             state.startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState:
@@ -551,8 +551,8 @@ class Setting18ThresholdBloc
         minRFOutputPower: state.minRFOutputPower,
         maxRFOutputPower: event.maxRFOutputPower,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState:
             state.startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState:
@@ -583,8 +583,8 @@ class Setting18ThresholdBloc
         minRFOutputPower: state.minRFOutputPower,
         maxRFOutputPower: state.maxRFOutputPower,
         splitOptionAlarmState: event.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState:
             state.startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState:
@@ -593,69 +593,69 @@ class Setting18ThresholdBloc
     ));
   }
 
-  void _onPilotFrequency1AlarmChanged(
-    PilotFrequency1AlarmChanged event,
-    Emitter<Setting18ThresholdState> emit,
-  ) {
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      pilotFrequency1AlarmState: event.pilotFrequency1AlarmState,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        temperatureAlarmState: state.temperatureAlarmState,
-        minTemperature: state.minTemperature,
-        maxTemperature: state.maxTemperature,
-        voltageAlarmState: state.voltageAlarmState,
-        minVoltage: state.minVoltage,
-        maxVoltage: state.maxVoltage,
-        voltageRippleAlarmState: state.voltageRippleAlarmState,
-        minVoltageRipple: state.minVoltageRipple,
-        maxVoltageRipple: state.maxVoltageRipple,
-        rfOutputPowerAlarmState: state.rfOutputPowerAlarmState,
-        minRFOutputPower: state.minRFOutputPower,
-        maxRFOutputPower: state.maxRFOutputPower,
-        splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: event.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
-        startFrequencyOutputLevelAlarmState:
-            state.startFrequencyOutputLevelAlarmState,
-        stopFrequencyOutputLevelAlarmState:
-            state.stopFrequencyOutputLevelAlarmState,
-      ),
-    ));
-  }
+  // void _onPilotFrequency1AlarmChanged(
+  //   PilotFrequency1AlarmChanged event,
+  //   Emitter<Setting18ThresholdState> emit,
+  // ) {
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     pilotFrequency1AlarmState: event.pilotFrequency1AlarmState,
+  //     isInitialize: false,
+  //     enableSubmission: _isEnabledSubmission(
+  //       temperatureAlarmState: state.temperatureAlarmState,
+  //       minTemperature: state.minTemperature,
+  //       maxTemperature: state.maxTemperature,
+  //       voltageAlarmState: state.voltageAlarmState,
+  //       minVoltage: state.minVoltage,
+  //       maxVoltage: state.maxVoltage,
+  //       voltageRippleAlarmState: state.voltageRippleAlarmState,
+  //       minVoltageRipple: state.minVoltageRipple,
+  //       maxVoltageRipple: state.maxVoltageRipple,
+  //       rfOutputPowerAlarmState: state.rfOutputPowerAlarmState,
+  //       minRFOutputPower: state.minRFOutputPower,
+  //       maxRFOutputPower: state.maxRFOutputPower,
+  //       splitOptionAlarmState: state.splitOptionAlarmState,
+  //       // pilotFrequency1AlarmState: event.pilotFrequency1AlarmState,
+  //       // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+  //       startFrequencyOutputLevelAlarmState:
+  //           state.startFrequencyOutputLevelAlarmState,
+  //       stopFrequencyOutputLevelAlarmState:
+  //           state.stopFrequencyOutputLevelAlarmState,
+  //     ),
+  //   ));
+  // }
 
-  void _onPilotFrequency2AlarmChanged(
-    PilotFrequency2AlarmChanged event,
-    Emitter<Setting18ThresholdState> emit,
-  ) {
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      pilotFrequency2AlarmState: event.pilotFrequency2AlarmState,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        temperatureAlarmState: state.temperatureAlarmState,
-        minTemperature: state.minTemperature,
-        maxTemperature: state.maxTemperature,
-        voltageAlarmState: state.voltageAlarmState,
-        minVoltage: state.minVoltage,
-        maxVoltage: state.maxVoltage,
-        voltageRippleAlarmState: state.voltageRippleAlarmState,
-        minVoltageRipple: state.minVoltageRipple,
-        maxVoltageRipple: state.maxVoltageRipple,
-        rfOutputPowerAlarmState: state.rfOutputPowerAlarmState,
-        minRFOutputPower: state.minRFOutputPower,
-        maxRFOutputPower: state.maxRFOutputPower,
-        splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: event.pilotFrequency2AlarmState,
-        startFrequencyOutputLevelAlarmState:
-            state.startFrequencyOutputLevelAlarmState,
-        stopFrequencyOutputLevelAlarmState:
-            state.stopFrequencyOutputLevelAlarmState,
-      ),
-    ));
-  }
+  // void _onPilotFrequency2AlarmChanged(
+  //   PilotFrequency2AlarmChanged event,
+  //   Emitter<Setting18ThresholdState> emit,
+  // ) {
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     pilotFrequency2AlarmState: event.pilotFrequency2AlarmState,
+  //     isInitialize: false,
+  //     enableSubmission: _isEnabledSubmission(
+  //       temperatureAlarmState: state.temperatureAlarmState,
+  //       minTemperature: state.minTemperature,
+  //       maxTemperature: state.maxTemperature,
+  //       voltageAlarmState: state.voltageAlarmState,
+  //       minVoltage: state.minVoltage,
+  //       maxVoltage: state.maxVoltage,
+  //       voltageRippleAlarmState: state.voltageRippleAlarmState,
+  //       minVoltageRipple: state.minVoltageRipple,
+  //       maxVoltageRipple: state.maxVoltageRipple,
+  //       rfOutputPowerAlarmState: state.rfOutputPowerAlarmState,
+  //       minRFOutputPower: state.minRFOutputPower,
+  //       maxRFOutputPower: state.maxRFOutputPower,
+  //       splitOptionAlarmState: state.splitOptionAlarmState,
+  //       // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+  //       // pilotFrequency2AlarmState: event.pilotFrequency2AlarmState,
+  //       startFrequencyOutputLevelAlarmState:
+  //           state.startFrequencyOutputLevelAlarmState,
+  //       stopFrequencyOutputLevelAlarmState:
+  //           state.stopFrequencyOutputLevelAlarmState,
+  //     ),
+  //   ));
+  // }
 
   void _onStartFrequencyOutputLevelAlarmStateChanged(
     StartFrequencyOutputLevelAlarmStateChanged event,
@@ -680,8 +680,8 @@ class Setting18ThresholdBloc
         minRFOutputPower: state.minRFOutputPower,
         maxRFOutputPower: state.maxRFOutputPower,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState:
             event.startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState:
@@ -713,8 +713,8 @@ class Setting18ThresholdBloc
         minRFOutputPower: state.minRFOutputPower,
         maxRFOutputPower: state.maxRFOutputPower,
         splitOptionAlarmState: state.splitOptionAlarmState,
-        pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
-        pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
+        // pilotFrequency1AlarmState: state.pilotFrequency1AlarmState,
+        // pilotFrequency2AlarmState: state.pilotFrequency2AlarmState,
         startFrequencyOutputLevelAlarmState:
             state.startFrequencyOutputLevelAlarmState,
         stopFrequencyOutputLevelAlarmState:
@@ -758,11 +758,11 @@ class Setting18ThresholdBloc
     String strSplitOptionAlarmState =
         state.initialValues[DataKey.splitOptionAlarmState] ?? '';
 
-    String strPilotFrequency1AlarmState =
-        state.initialValues[DataKey.pilotFrequency1AlarmState] ?? '';
+    // String strPilotFrequency1AlarmState =
+    //     state.initialValues[DataKey.pilotFrequency1AlarmState] ?? '';
 
-    String strPilotFrequency2AlarmState =
-        state.initialValues[DataKey.pilotFrequency2AlarmState] ?? '';
+    // String strPilotFrequency2AlarmState =
+    //     state.initialValues[DataKey.pilotFrequency2AlarmState] ?? '';
 
     String strStartFrequencyOutputLevelAlarmState =
         state.initialValues[DataKey.rfOutputPilotLowFrequencyAlarmState] ?? '';
@@ -795,10 +795,10 @@ class Setting18ThresholdBloc
       minRFOutputPower: state.initialValues[DataKey.minRFOutputPower],
       maxRFOutputPower: state.initialValues[DataKey.maxRFOutputPower],
       splitOptionAlarmState: _stringNumberToBool(strSplitOptionAlarmState),
-      pilotFrequency1AlarmState:
-          _stringNumberToBool(strPilotFrequency1AlarmState),
-      pilotFrequency2AlarmState:
-          _stringNumberToBool(strPilotFrequency2AlarmState),
+      // pilotFrequency1AlarmState:
+      //     _stringNumberToBool(strPilotFrequency1AlarmState),
+      // pilotFrequency2AlarmState:
+      //     _stringNumberToBool(strPilotFrequency2AlarmState),
       startFrequencyOutputLevelAlarmState:
           _stringNumberToBool(strStartFrequencyOutputLevelAlarmState),
       stopFrequencyOutputLevelAlarmState:
@@ -820,8 +820,8 @@ class Setting18ThresholdBloc
     required String minRFOutputPower,
     required String maxRFOutputPower,
     required bool splitOptionAlarmState,
-    required bool pilotFrequency1AlarmState,
-    required bool pilotFrequency2AlarmState,
+    // required bool pilotFrequency1AlarmState,
+    // required bool pilotFrequency2AlarmState,
     required bool startFrequencyOutputLevelAlarmState,
     required bool stopFrequencyOutputLevelAlarmState,
   }) {
@@ -844,11 +844,11 @@ class Setting18ThresholdBloc
     String strSplitOptionAlarmState =
         state.initialValues[DataKey.splitOptionAlarmState] ?? '';
 
-    String strPilotFrequency1AlarmState =
-        state.initialValues[DataKey.pilotFrequency1AlarmState] ?? '';
+    // String strPilotFrequency1AlarmState =
+    //     state.initialValues[DataKey.pilotFrequency1AlarmState] ?? '';
 
-    String strPilotFrequency2AlarmState =
-        state.initialValues[DataKey.pilotFrequency2AlarmState] ?? '';
+    // String strPilotFrequency2AlarmState =
+    //     state.initialValues[DataKey.pilotFrequency2AlarmState] ?? '';
 
     String strStartFrequencyOutputLevelAlarmState =
         state.initialValues[DataKey.rfOutputPilotLowFrequencyAlarmState] ?? '';
@@ -881,10 +881,10 @@ class Setting18ThresholdBloc
         maxRFOutputPower != state.initialValues[DataKey.maxRFOutputPower] ||
         splitOptionAlarmState !=
             _stringNumberToBool(strSplitOptionAlarmState) ||
-        pilotFrequency1AlarmState !=
-            _stringNumberToBool(strPilotFrequency1AlarmState) ||
-        pilotFrequency2AlarmState !=
-            _stringNumberToBool(strPilotFrequency2AlarmState) ||
+        // pilotFrequency1AlarmState !=
+        //     _stringNumberToBool(strPilotFrequency1AlarmState) ||
+        // pilotFrequency2AlarmState !=
+        //     _stringNumberToBool(strPilotFrequency2AlarmState) ||
         startFrequencyOutputLevelAlarmState !=
             _stringNumberToBool(strStartFrequencyOutputLevelAlarmState) ||
         stopFrequencyOutputLevelAlarmState !=
@@ -937,14 +937,14 @@ class Setting18ThresholdBloc
         state.initialValues[DataKey.splitOptionAlarmState] ?? '';
     bool splitOptionAlarmState = strSplitOptionAlarmState == '1' ? false : true;
 
-    String strPilotFrequency1AlarmState =
-        state.initialValues[DataKey.pilotFrequency1AlarmState] ?? '';
-    bool pilotFrequency1AlarmState =
-        strPilotFrequency1AlarmState == '1' ? false : true;
-    String strPilotFrequency2AlarmState =
-        state.initialValues[DataKey.pilotFrequency2AlarmState] ?? '';
-    bool pilotFrequency2AlarmState =
-        strPilotFrequency2AlarmState == '1' ? false : true;
+    // String strPilotFrequency1AlarmState =
+    //     state.initialValues[DataKey.pilotFrequency1AlarmState] ?? '';
+    // bool pilotFrequency1AlarmState =
+    //     strPilotFrequency1AlarmState == '1' ? false : true;
+    // String strPilotFrequency2AlarmState =
+    //     state.initialValues[DataKey.pilotFrequency2AlarmState] ?? '';
+    // bool pilotFrequency2AlarmState =
+    //     strPilotFrequency2AlarmState == '1' ? false : true;
 
     String strStartFrequencyOutputLevelAlarmState =
         state.initialValues[DataKey.rfOutputPilotLowFrequencyAlarmState] ?? '';
@@ -1092,26 +1092,26 @@ class Setting18ThresholdBloc
           '${DataKey.splitOptionAlarmState.name},$resultOfSetSplitOptionAlarmState');
     }
 
-    if (state.pilotFrequency1AlarmState != pilotFrequency1AlarmState) {
-      String voltagePilotFrequency1AlarmState =
-          _boolToStringNumber(state.pilotFrequency1AlarmState);
-      bool resultOfSetPilotFrequency1AlarmState =
-          await _amp18Repository.setInputPilotLowFrequencyAlarmState(
-              voltagePilotFrequency1AlarmState);
+    // if (state.pilotFrequency1AlarmState != pilotFrequency1AlarmState) {
+    //   String voltagePilotFrequency1AlarmState =
+    //       _boolToStringNumber(state.pilotFrequency1AlarmState);
+    //   bool resultOfSetPilotFrequency1AlarmState =
+    //       await _amp18Repository.setInputPilotLowFrequencyAlarmState(
+    //           voltagePilotFrequency1AlarmState);
 
-      settingResult.add(
-          '${DataKey.pilotFrequency1AlarmState.name},$resultOfSetPilotFrequency1AlarmState');
-    }
+    //   settingResult.add(
+    //       '${DataKey.pilotFrequency1AlarmState.name},$resultOfSetPilotFrequency1AlarmState');
+    // }
 
-    if (state.pilotFrequency2AlarmState != pilotFrequency2AlarmState) {
-      String pilotFrequency2AlarmState =
-          _boolToStringNumber(state.pilotFrequency2AlarmState);
-      bool resultOfSetPilotFrequency2AlarmState = await _amp18Repository
-          .setInputPilotHighFrequencyAlarmState(pilotFrequency2AlarmState);
+    // if (state.pilotFrequency2AlarmState != pilotFrequency2AlarmState) {
+    //   String pilotFrequency2AlarmState =
+    //       _boolToStringNumber(state.pilotFrequency2AlarmState);
+    //   bool resultOfSetPilotFrequency2AlarmState = await _amp18Repository
+    //       .setInputPilotHighFrequencyAlarmState(pilotFrequency2AlarmState);
 
-      settingResult.add(
-          '${DataKey.pilotFrequency2AlarmState.name},$resultOfSetPilotFrequency2AlarmState');
-    }
+    //   settingResult.add(
+    //       '${DataKey.pilotFrequency2AlarmState.name},$resultOfSetPilotFrequency2AlarmState');
+    // }
 
     if (state.startFrequencyOutputLevelAlarmState !=
         startFrequencyOutputLevelAlarmState) {

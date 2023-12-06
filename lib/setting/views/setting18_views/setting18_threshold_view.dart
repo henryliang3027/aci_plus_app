@@ -24,8 +24,8 @@ class Setting18ThresholdView extends StatelessWidget {
   final TextEditingController maxVoltageTextEditingController =
       TextEditingController();
 
-  final TextEditingController minVoltageRippleTextEditingController =
-      TextEditingController();
+  // final TextEditingController minVoltageRippleTextEditingController =
+  //     TextEditingController();
   final TextEditingController maxVoltageRippleTextEditingController =
       TextEditingController();
 
@@ -148,9 +148,6 @@ class Setting18ThresholdView extends StatelessWidget {
       } else if (item == DataKey.splitOptionAlarmState.name) {
         return AppLocalizations.of(context)!
             .dialogMessageSplitOptionAlarmStateSetting;
-      } else if (item == DataKey.pilotFrequency1AlarmState.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessagePilotFrequency1AlarmStateSetting;
       } else if (item == DataKey.rfOutputPilotLowFrequencyAlarmState.name) {
         return AppLocalizations.of(context)!
             .dialogMessageRFOutputPilotLowFrequencyAlarmStateSetting;
@@ -233,8 +230,8 @@ class Setting18ThresholdView extends StatelessWidget {
             break;
           case SettingThreshold.inputVoltageRipple24V:
             widgets.add(_VoltageRippleAlarmControl(
-              minVoltageRippleTextEditingController:
-                  minVoltageRippleTextEditingController,
+              // minVoltageRippleTextEditingController:
+              //     minVoltageRippleTextEditingController,
               maxVoltageRippleTextEditingController:
                   maxVoltageRippleTextEditingController,
             ));
@@ -266,8 +263,8 @@ class Setting18ThresholdView extends StatelessWidget {
                     maxVoltageTextEditingController,
               ),
               _VoltageRippleAlarmControl(
-                minVoltageRippleTextEditingController:
-                    minVoltageRippleTextEditingController,
+                // minVoltageRippleTextEditingController:
+                //     minVoltageRippleTextEditingController,
                 maxVoltageRippleTextEditingController:
                     maxVoltageRippleTextEditingController,
               ),
@@ -296,12 +293,12 @@ class Setting18ThresholdView extends StatelessWidget {
           case SettingThreshold.splitOptions:
             widgets.add(const _SplitOptionAlarmControl());
             break;
-          case SettingThreshold.pilot1Status:
-            widgets.add(const _PilotFrequency1AlarmControl());
-            break;
-          case SettingThreshold.pilot2Status:
-            widgets.add(const _PilotFrequency2AlarmControl());
-            break;
+          // case SettingThreshold.pilot1Status:
+          //   widgets.add(const _PilotFrequency1AlarmControl());
+          //   break;
+          // case SettingThreshold.pilot2Status:
+          //   widgets.add(const _PilotFrequency2AlarmControl());
+          //   break;
           case SettingThreshold.startFrequencyOutputLevel:
             widgets.add(const _StartFrequencyOutputLevelAlarmControl());
             break;
@@ -315,8 +312,8 @@ class Setting18ThresholdView extends StatelessWidget {
           ? widgets
           : [
               const _SplitOptionAlarmControl(),
-              const _PilotFrequency1AlarmControl(),
-              const _PilotFrequency2AlarmControl(),
+              // const _PilotFrequency1AlarmControl(),
+              // const _PilotFrequency2AlarmControl(),
               const _StartFrequencyOutputLevelAlarmControl(),
               const _StopFrequencyOutputLevelAlarmControl(),
             ];
@@ -365,7 +362,7 @@ class Setting18ThresholdView extends StatelessWidget {
           maxTemperatureTextEditingController.text = state.maxTemperature;
           minVoltageTextEditingController.text = state.minVoltage;
           maxVoltageTextEditingController.text = state.maxVoltage;
-          minVoltageRippleTextEditingController.text = state.minVoltageRipple;
+          // minVoltageRippleTextEditingController.text = state.minVoltageRipple;
           maxVoltageRippleTextEditingController.text = state.maxVoltageRipple;
           minRFOutputPowerTextEditingController.text = state.minRFOutputPower;
           maxRFOutputPowerTextEditingController.text = state.maxRFOutputPower;
@@ -706,11 +703,11 @@ class _VoltageAlarmControl extends StatelessWidget {
 class _VoltageRippleAlarmControl extends StatelessWidget {
   const _VoltageRippleAlarmControl({
     super.key,
-    required this.minVoltageRippleTextEditingController,
+    // required this.minVoltageRippleTextEditingController,
     required this.maxVoltageRippleTextEditingController,
   });
 
-  final TextEditingController minVoltageRippleTextEditingController;
+  // final TextEditingController minVoltageRippleTextEditingController;
   final TextEditingController maxVoltageRippleTextEditingController;
 
   @override
@@ -766,40 +763,40 @@ class _VoltageRippleAlarmControl extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flexible(
-                    flex: 2,
-                    child: TextField(
-                      controller: minVoltageRippleTextEditingController,
-                      key: const Key(
-                          'setting18Form_minVoltageRippleInput_textField'),
-                      style: const TextStyle(
-                        fontSize: CustomStyle.sizeXL,
-                      ),
-                      enabled: state.editMode,
-                      textInputAction: TextInputAction.done,
-                      onChanged: (minVoltageRipple) {
-                        context
-                            .read<Setting18ThresholdBloc>()
-                            .add(MinVoltageRippleChanged(minVoltageRipple));
-                      },
-                      maxLength: 40,
-                      decoration: InputDecoration(
-                        label: Text(
-                            AppLocalizations.of(context)!.minVoltageRipple),
-                        border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0))),
-                        contentPadding: EdgeInsets.all(8.0),
-                        isDense: true,
-                        filled: true,
-                        fillColor: Colors.white,
-                        counterText: '',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
+                  // Flexible(
+                  //   flex: 2,
+                  //   child: TextField(
+                  //     controller: minVoltageRippleTextEditingController,
+                  //     key: const Key(
+                  //         'setting18Form_minVoltageRippleInput_textField'),
+                  //     style: const TextStyle(
+                  //       fontSize: CustomStyle.sizeXL,
+                  //     ),
+                  //     enabled: state.editMode,
+                  //     textInputAction: TextInputAction.done,
+                  //     onChanged: (minVoltageRipple) {
+                  //       context
+                  //           .read<Setting18ThresholdBloc>()
+                  //           .add(MinVoltageRippleChanged(minVoltageRipple));
+                  //     },
+                  //     maxLength: 40,
+                  //     decoration: InputDecoration(
+                  //       label: Text(
+                  //           AppLocalizations.of(context)!.minVoltageRipple),
+                  //       border: const OutlineInputBorder(
+                  //           borderRadius:
+                  //               BorderRadius.all(Radius.circular(4.0))),
+                  //       contentPadding: EdgeInsets.all(8.0),
+                  //       isDense: true,
+                  //       filled: true,
+                  //       fillColor: Colors.white,
+                  //       counterText: '',
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(
+                  //   width: 20,
+                  // ),
                   Flexible(
                     flex: 2,
                     child: TextField(
@@ -1041,51 +1038,51 @@ class _SplitOptionAlarmControl extends StatelessWidget {
   }
 }
 
-class _PilotFrequency1AlarmControl extends StatelessWidget {
-  const _PilotFrequency1AlarmControl({super.key});
+// class _PilotFrequency1AlarmControl extends StatelessWidget {
+//   const _PilotFrequency1AlarmControl({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
-      builder: (context, state) {
-        return controlParameterSwitch(
-          context: context,
-          editMode: state.editMode,
-          title: AppLocalizations.of(context)!.pilotFrequency1Status,
-          value: state.pilotFrequency1AlarmState,
-          onChanged: (bool value) {
-            context
-                .read<Setting18ThresholdBloc>()
-                .add(PilotFrequency1AlarmChanged(value));
-          },
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
+//       builder: (context, state) {
+//         return controlParameterSwitch(
+//           context: context,
+//           editMode: state.editMode,
+//           title: AppLocalizations.of(context)!.pilotFrequency1Status,
+//           value: state.pilotFrequency1AlarmState,
+//           onChanged: (bool value) {
+//             context
+//                 .read<Setting18ThresholdBloc>()
+//                 .add(PilotFrequency1AlarmChanged(value));
+//           },
+//         );
+//       },
+//     );
+//   }
+// }
 
-class _PilotFrequency2AlarmControl extends StatelessWidget {
-  const _PilotFrequency2AlarmControl({super.key});
+// class _PilotFrequency2AlarmControl extends StatelessWidget {
+//   const _PilotFrequency2AlarmControl({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
-      builder: (context, state) {
-        return controlParameterSwitch(
-          context: context,
-          editMode: state.editMode,
-          title: AppLocalizations.of(context)!.pilotFrequency2Status,
-          value: state.pilotFrequency2AlarmState,
-          onChanged: (bool value) {
-            context
-                .read<Setting18ThresholdBloc>()
-                .add(PilotFrequency2AlarmChanged(value));
-          },
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
+//       builder: (context, state) {
+//         return controlParameterSwitch(
+//           context: context,
+//           editMode: state.editMode,
+//           title: AppLocalizations.of(context)!.pilotFrequency2Status,
+//           value: state.pilotFrequency2AlarmState,
+//           onChanged: (bool value) {
+//             context
+//                 .read<Setting18ThresholdBloc>()
+//                 .add(PilotFrequency2AlarmChanged(value));
+//           },
+//         );
+//       },
+//     );
+//   }
+// }
 
 class _StartFrequencyOutputLevelAlarmControl extends StatelessWidget {
   const _StartFrequencyOutputLevelAlarmControl({super.key});

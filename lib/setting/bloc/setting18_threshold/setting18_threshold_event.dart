@@ -193,23 +193,23 @@ class SplitOptionAlarmChanged extends Setting18ThresholdEvent {
   List<Object> get props => [splitOptionAlarmState];
 }
 
-class PilotFrequency1AlarmChanged extends Setting18ThresholdEvent {
-  const PilotFrequency1AlarmChanged(this.pilotFrequency1AlarmState);
+// class PilotFrequency1AlarmChanged extends Setting18ThresholdEvent {
+//   const PilotFrequency1AlarmChanged(this.pilotFrequency1AlarmState);
 
-  final bool pilotFrequency1AlarmState;
+//   final bool pilotFrequency1AlarmState;
 
-  @override
-  List<Object> get props => [pilotFrequency1AlarmState];
-}
+//   @override
+//   List<Object> get props => [pilotFrequency1AlarmState];
+// }
 
-class PilotFrequency2AlarmChanged extends Setting18ThresholdEvent {
-  const PilotFrequency2AlarmChanged(this.pilotFrequency2AlarmState);
+// class PilotFrequency2AlarmChanged extends Setting18ThresholdEvent {
+//   const PilotFrequency2AlarmChanged(this.pilotFrequency2AlarmState);
 
-  final bool pilotFrequency2AlarmState;
+//   final bool pilotFrequency2AlarmState;
 
-  @override
-  List<Object> get props => [pilotFrequency2AlarmState];
-}
+//   @override
+//   List<Object> get props => [pilotFrequency2AlarmState];
+// }
 
 class StartFrequencyOutputLevelAlarmStateChanged
     extends Setting18ThresholdEvent {
