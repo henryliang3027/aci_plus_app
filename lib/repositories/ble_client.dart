@@ -58,14 +58,14 @@ class BLEClient {
   final _serviceId = 'ffe0';
   final _characteristicId = 'ffe1';
 
-  late Completer<dynamic> _completer;
+  Completer<dynamic>? _completer;
 
   int _currentCommandIndex = 0;
 
   Timer? _timeoutTimer;
 
-  List<int> _combinedRawData = [];
-  int _totalBytesPerCommand = 261;
+  final List<int> _combinedRawData = [];
+  final int _totalBytesPerCommand = 261;
 
   // 1p8G variables
   // List<int> _rawRFInOut = [];
@@ -191,12 +191,12 @@ class BLEClient {
 
               bool isValidCRC = checkCRC(rawData);
               if (isValidCRC) {
-                if (!_completer.isCompleted) {
-                  _completer.complete(rawData);
+                if (!_completer!.isCompleted) {
+                  _completer!.complete(rawData);
                 }
               } else {
-                if (!_completer.isCompleted) {
-                  _completer.completeError('Invalid data');
+                if (!_completer!.isCompleted) {
+                  _completer!.completeError('Invalid data');
                 }
               }
             } else if (_currentCommandIndex >= 14 &&
@@ -209,20 +209,20 @@ class BLEClient {
                   List<int> combinedRawData = List.from(_combinedRawData);
                   _combinedRawData.clear();
                   cancelTimeout(name: 'cmd $_currentCommandIndex');
-                  if (!_completer.isCompleted) {
-                    _completer.complete(combinedRawData);
+                  if (!_completer!.isCompleted) {
+                    _completer!.complete(combinedRawData);
                   }
                 } else {
-                  if (!_completer.isCompleted) {
-                    _completer.completeError('Invalid data');
+                  if (!_completer!.isCompleted) {
+                    _completer!.completeError('Invalid data');
                   }
                 }
               }
             } else if (_currentCommandIndex >= 40 &&
                 _currentCommandIndex <= 46) {
               cancelTimeout(name: 'cmd $_currentCommandIndex');
-              if (!_completer.isCompleted) {
-                _completer.complete(rawData);
+              if (!_completer!.isCompleted) {
+                _completer!.complete(rawData);
               }
             } else if (_currentCommandIndex >= 180 &&
                 _currentCommandIndex <= 182) {
@@ -230,39 +230,43 @@ class BLEClient {
 
               bool isValidCRC = checkCRC(rawData);
               if (isValidCRC) {
-                if (!_completer.isCompleted) {
-                  _completer.complete(rawData);
+                if (!_completer!.isCompleted) {
+                  _completer!.complete(rawData);
                 }
               } else {
-                if (!_completer.isCompleted) {
-                  _completer.completeError('Invalid data');
+                if (!_completer!.isCompleted) {
+                  _completer!.completeError('Invalid data');
                 }
               }
             } else if (_currentCommandIndex == 183) {
+              // 接收 RF input/output power 資料流
               List<int> header = [0xB0, 0x03, 0x00];
               if (listEquals(rawData.sublist(0, 3), header)) {
                 _combinedRawData.clear();
               }
 
               _combinedRawData.addAll(rawData);
-              print(_combinedRawData.length);
+              // print(_combinedRawData.length);
 
               if (_combinedRawData.length == 1029) {
+                // RF input/output power 資料流總長度 1029
                 bool isValidCRC = checkCRC(_combinedRawData);
                 if (isValidCRC) {
                   List<int> rawRFInOuts = List.from(_combinedRawData);
                   cancelTimeout(name: 'cmd $_currentCommandIndex');
-                  if (!_completer.isCompleted) {
-                    _completer.complete(rawRFInOuts);
+                  if (!_completer!.isCompleted) {
+                    _completer!.complete(rawRFInOuts);
                   }
                 } else {
-                  if (!_completer.isCompleted) {
-                    _completer.completeError('Invalid data');
+                  if (!_completer!.isCompleted) {
+                    _completer!.completeError('Invalid data');
                   }
                 }
               }
             } else if (_currentCommandIndex >= 184 &&
                 _currentCommandIndex <= 194) {
+              // _currentCommandIndex 184 ~ 193 用來接收 10 組 Log 資料流, 每一組 Log 總長 16389
+              // _currentCommandIndex 194 用來接收 1 組 Event 資料流, Event 總長 16389
               List<int> header = [0xB0, 0x03, 0x00];
               if (listEquals(rawData.sublist(0, 3), header)) {
                 _combinedRawData.clear();
@@ -276,19 +280,19 @@ class BLEClient {
                 if (isValidCRC) {
                   List<int> rawLogs = List.from(_combinedRawData);
                   cancelTimeout(name: 'cmd $_currentCommandIndex');
-                  if (!_completer.isCompleted) {
-                    _completer.complete(rawLogs);
+                  if (!_completer!.isCompleted) {
+                    _completer!.complete(rawLogs);
                   }
                 } else {
-                  if (!_completer.isCompleted) {
-                    _completer.completeError('Invalid data');
+                  if (!_completer!.isCompleted) {
+                    _completer!.completeError('Invalid data');
                   }
                 }
               }
             } else if (_currentCommandIndex >= 300) {
               cancelTimeout(name: 'cmd $_currentCommandIndex');
-              if (!_completer.isCompleted) {
-                _completer.complete(rawData);
+              if (!_completer!.isCompleted) {
+                _completer!.complete(rawData);
               }
             }
           }, onError: (error) {
@@ -307,19 +311,22 @@ class BLEClient {
         // ));
         // break;
         case DeviceConnectionState.disconnected:
+          cancelTimeout(name: 'connection closed');
+          cancelCompleterOnDisconnected();
           _connectionReportStreamController.add(const ConnectionReport(
             connectionState: DeviceConnectionState.disconnected,
-            errorMessage: 'disconnected',
+            errorMessage: 'Device connection failed',
           ));
           break;
         default:
           break;
       }
     }, onError: (error) {
-      print('Error: $error');
-      _connectionReportStreamController.add(const ConnectionReport(
+      cancelTimeout(name: 'connection closed');
+      cancelCompleterOnDisconnected();
+      _connectionReportStreamController.add(ConnectionReport(
         connectionState: DeviceConnectionState.disconnected,
-        errorMessage: 'disconnected',
+        errorMessage: error.toString(),
       ));
     });
   }
@@ -346,18 +353,13 @@ class BLEClient {
   Future<void> closeConnectionStream() async {
     print('close _characteristicStreamSubscription');
     cancelTimeout(name: 'connection closed');
+    cancelCompleterOnDisconnected();
 
     if (_connectionReportStreamController.hasListener) {
       if (!_connectionReportStreamController.isClosed) {
         await _connectionReportStreamController.close();
       }
     }
-
-    // if (_characteristicDataStreamController.hasListener) {
-    //   if (!_characteristicDataStreamController.isClosed) {
-    //     await _characteristicDataStreamController.close();
-    //   }
-    // }
 
     await _characteristicStreamSubscription?.cancel();
     _characteristicStreamSubscription = null;
@@ -459,6 +461,7 @@ class BLEClient {
     Duration timeout = const Duration(seconds: 10),
   }) async {
     _currentCommandIndex = commandIndex;
+
     _completer = Completer<dynamic>();
 
     try {
@@ -474,18 +477,16 @@ class BLEClient {
         );
       } else {}
 
-      _timeoutTimer = Timer(timeout, () {
-        if (!_completer.isCompleted) {
-          _completer.completeError('Timeout occurred');
-          print('cmd:$commandIndex Timeout occurred');
-        }
-      });
+      startTimer(
+        timeout: timeout,
+        commandIndex: commandIndex,
+      );
     } catch (e) {
-      if (!_completer.isCompleted) {
-        _completer.completeError(e.toString());
+      if (!_completer!.isCompleted) {
+        _completer!.completeError(e.toString());
       }
     }
-    return _completer.future;
+    return _completer!.future;
   }
 
   // Future getCompleter() {
@@ -513,12 +514,32 @@ class BLEClient {
   //   });
   // }
 
+  void startTimer({
+    required Duration timeout,
+    required int commandIndex,
+  }) {
+    _timeoutTimer = Timer(timeout, () {
+      if (!_completer!.isCompleted) {
+        _completer!.completeError('Timeout occurred');
+        print('cmd:$commandIndex Timeout occurred');
+      }
+    });
+  }
+
   void cancelTimeout({required String name}) {
     if (_timeoutTimer != null) {
       _timeoutTimer!.cancel();
     }
 
     print('$name completed (timeout canceled)');
+  }
+
+  void cancelCompleterOnDisconnected() {
+    if (_completer != null) {
+      if (!_completer!.isCompleted) {
+        _completer!.completeError(false);
+      }
+    }
   }
 
   Future<bool> _requestPermission() async {

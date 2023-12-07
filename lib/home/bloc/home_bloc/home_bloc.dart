@@ -239,12 +239,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         // ));
         break;
       case DeviceConnectionState.disconnected:
+        // emit(state.copyWith(
+        //   scanStatus: FormStatus.requestSuccess,
+        //   connectionStatus: FormStatus.requestFailure,
+        //   loadingStatus: FormStatus.none,
+        //   errorMassage: 'Device connection failed',
+        // ));
+
         emit(state.copyWith(
           scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestFailure,
           loadingStatus: FormStatus.none,
-          errorMassage: 'Device connection failed',
+          errorMassage: event.connectionReport.errorMessage,
         ));
+
         break;
     }
   }
