@@ -59,6 +59,7 @@ class _DownloadIndicator18FormState extends State<DownloadIndicator18Form>
     bool isSuccessful = false;
     for (int i = 0; i < 10; i++) {
       List<dynamic> resultOfLog = await getLogChunkWithRetry(i);
+      print('resultOfLog: ${resultOfLog[0]}');
 
       if (resultOfLog[0]) {
         log1p8Gs.addAll(resultOfLog[2]);
@@ -113,7 +114,8 @@ class _DownloadIndicator18FormState extends State<DownloadIndicator18Form>
   @override
   Widget build(BuildContext context) {
     if (!isStart) {
-      downloadLogs().then((result) => Navigator.of(context).pop(result));
+      downloadLogs().then(
+          (result) => Navigator.of(context).popUntil((route) => route.isFirst));
 
       isStart = true;
     }

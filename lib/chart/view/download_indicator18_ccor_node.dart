@@ -114,7 +114,8 @@ class _DownloadIndicator18CCorNodeFormState
   @override
   Widget build(BuildContext context) {
     if (!isStart) {
-      downloadLogs().then((result) => Navigator.of(context).pop(result));
+      downloadLogs().then(
+          (result) => Navigator.of(context).popUntil((route) => route.isFirst));
 
       isStart = true;
     }
