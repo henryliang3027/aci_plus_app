@@ -439,6 +439,24 @@ class Amp18Repository {
     List<Log1p8G> log1p8Gs = _amp18ChartCache.readLoadMoreLog1p8Gs();
     List<Event1p8G> event1p8Gs = _amp18ChartCache.readEvent1p8Gs();
 
+    // List<DateTime> datetimes = [];
+
+    // for (Log1p8G log1p8G in log1p8Gs) {
+    //   datetimes.add(log1p8G.dateTime);
+
+    // }
+
+    // Set<DateTime> uniqueDatetimes = Set<DateTime>();
+    // List<DateTime> duplicates = [];
+
+    // for (DateTime datetime in datetimes) {
+    //   if (!uniqueDatetimes.add(datetime)) {
+    //     duplicates.add(datetime);
+    //   }
+    // }
+
+    // print("Duplicate elements: $duplicates");
+
     String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
     String location = _characteristicDataCache[DataKey.location] ?? '';
 
