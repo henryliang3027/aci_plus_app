@@ -61,7 +61,7 @@ class RFLevelChartBloc extends Bloc<RFLevelChartEvent, RFLevelChartState> {
         if (i == 2) {
           emit(state.copyWith(
             rfInOutRequestStatus: FormStatus.requestFailure,
-            errorMessage: 'Data loading failed',
+            errorMessage: 'Failed to load data',
           ));
         } else {
           continue;

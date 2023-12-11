@@ -226,7 +226,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             connectionStatus: FormStatus.requestSuccess,
             loadingStatus: FormStatus.requestFailure,
             characteristicData: state.characteristicData,
-            errorMassage: 'Data loading failed',
+            errorMassage: 'Failed to load data',
           ));
         }
 
@@ -470,7 +470,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           loadingStatus: FormStatus.requestFailure,
           characteristicData: state.characteristicData,
-          errorMassage: 'Data loading failed',
+          errorMassage: 'Failed to load data',
         ));
         break;
       }
@@ -506,7 +506,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(state.copyWith(
         loadingStatus: FormStatus.requestFailure,
         characteristicData: state.characteristicData,
-        errorMassage: 'Data loading failed',
+        errorMassage: 'Failed to load data',
       ));
     }
 
@@ -525,7 +525,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             emit(state.copyWith(
               loadingStatus: FormStatus.requestFailure,
               characteristicData: state.characteristicData,
-              errorMassage: 'Setting the log interval to 30 minutes failed.',
+              errorMassage: 'Failed to initialize the log interval.',
             ));
           } else {
             List<dynamic> newResultOf1p8G1 =
@@ -540,7 +540,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               emit(state.copyWith(
                 loadingStatus: FormStatus.requestFailure,
                 characteristicData: state.characteristicData,
-                errorMassage: 'Data loading failed',
+                errorMassage: 'Failed to load data',
               ));
             }
           }
@@ -555,7 +555,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           loadingStatus: FormStatus.requestFailure,
           characteristicData: state.characteristicData,
-          errorMassage: 'Data loading failed',
+          errorMassage: 'Failed to load data',
         ));
       }
     }
@@ -572,7 +572,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           loadingStatus: FormStatus.requestFailure,
           characteristicData: state.characteristicData,
-          errorMassage: 'Data loading failed',
+          errorMassage: 'Failed to load data',
         ));
       }
     }
@@ -595,7 +595,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             emit(state.copyWith(
               loadingStatus: FormStatus.requestFailure,
               characteristicData: state.characteristicData,
-              errorMassage: 'Data loading failed',
+              errorMassage: 'Failed to load data',
             ));
           } else {
             continue;
@@ -623,7 +623,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             emit(state.copyWith(
               loadingStatus: FormStatus.requestFailure,
               characteristicData: state.characteristicData,
-              errorMassage: 'Data loading failed',
+              errorMassage: 'Failed to load data',
             ));
           } else {
             continue;
@@ -674,7 +674,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(state.copyWith(
         loadingStatus: FormStatus.requestFailure,
         characteristicData: state.characteristicData,
-        errorMassage: 'Data loading failed',
+        errorMassage: 'Failed to load data',
       ));
     }
 
@@ -695,7 +695,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             emit(state.copyWith(
               loadingStatus: FormStatus.requestFailure,
               characteristicData: state.characteristicData,
-              errorMassage: 'Setting the log interval to 30 minutes failed.',
+              errorMassage: 'Failed to initialize the log interval.',
             ));
           } else {
             List<dynamic> newResultOf1p8GCCorNode91 =
@@ -710,7 +710,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               emit(state.copyWith(
                 loadingStatus: FormStatus.requestFailure,
                 characteristicData: state.characteristicData,
-                errorMassage: 'Data loading failed',
+                errorMassage: 'Failed to load data',
               ));
             }
           }
@@ -725,7 +725,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           loadingStatus: FormStatus.requestFailure,
           characteristicData: state.characteristicData,
-          errorMassage: 'Data loading failed',
+          errorMassage: 'Failed to load data',
         ));
       }
     }
@@ -743,7 +743,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           loadingStatus: FormStatus.requestFailure,
           characteristicData: state.characteristicData,
-          errorMassage: 'Data loading failed',
+          errorMassage: 'Failed to load data',
         ));
       }
     }
@@ -767,7 +767,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             emit(state.copyWith(
               loadingStatus: FormStatus.requestFailure,
               characteristicData: state.characteristicData,
-              errorMassage: 'Data loading failed',
+              errorMassage: 'Failed to load data',
             ));
           } else {
             continue;

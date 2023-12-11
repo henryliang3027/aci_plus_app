@@ -121,6 +121,8 @@ class _LogChartView extends StatelessWidget {
           }
         } else if (state.logRequestStatus.isRequestFailure) {
           showFailureDialog(state.errorMessage);
+        } else if (state.eventRequestStatus.isRequestFailure) {
+          showFailureDialog(state.errorMessage);
         }
       },
       child: Scaffold(

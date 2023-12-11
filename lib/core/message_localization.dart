@@ -11,9 +11,13 @@ String getMessageLocalization({
     return AppLocalizations.of(context)!.dialogMessageBluetoothDisabled;
   } else if (msg == 'Device connection failed') {
     return AppLocalizations.of(context)!.dialogMessageConnectionFailure;
-  } else if (msg == 'Data loading failed') {
-    return AppLocalizations.of(context)!.dialogMessageLoadingDataFailure;
-  } else if (msg == 'Setting the log interval to 30 minutes failed.') {
+  } else if (msg == 'Failed to load data') {
+    return AppLocalizations.of(context)!.dialogMessageLoadDataFailure;
+  } else if (msg == 'Failed to load logs') {
+    return AppLocalizations.of(context)!.dialogMessageLoadLogFailure;
+  } else if (msg == 'Failed to load events') {
+    return AppLocalizations.of(context)!.dialogMessageLoadEventFailure;
+  } else if (msg == 'Failed to initialize the log interval.') {
     return AppLocalizations.of(context)!
         .dialogMessageAutoSettingLogIntervalFailed;
   } else if (msg ==

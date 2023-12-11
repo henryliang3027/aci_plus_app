@@ -106,7 +106,7 @@ class _DownloadIndicator18FormState extends State<DownloadIndicator18Form>
       return ([
         false,
         log1p8Gs,
-        'Data loading failed',
+        'Failed to load data',
       ]);
     }
   }

@@ -174,7 +174,9 @@
     "dialogMessageDeviceNotFound": "未發現任何裝置",
     "dialogMessageBluetoothDisabled": "藍芽未開啟",
     "dialogMessageConnectionFailure": "裝置連線失敗",
-    "dialogMessageLoadingDataFailure": "加載資料失敗",
+    "dialogMessageLoadDataFailure": "加載資料失敗",
+    "dialogMessageLoadLogFailure": "加載記錄資料失敗",
+    "dialogMessageLoadEventFailure": "加載事件資料失敗",
     "dialogMessageLocationSetting": "位置設定",
     "dialogMessageTGCCableLengthSetting": "TGC纜線衰減值設定",
     "dialogMessageLogIntervalSetting": "記錄間隔設定",
@@ -256,7 +258,7 @@
     "dialogMessageUSTGCSetting": "US TGC setting",
     "dialogMessageGPSServiceDisabled": "定位服務已關閉, 請開啟定位服務。",
     "dialogMessageGPSPermissionDenied": "無法取得定位權限, 請允許定位權限。",
-    "dialogMessageAutoSettingLogIntervalFailed": "設定記錄間隔為 30 分鐘失敗",
+    "dialogMessageAutoSettingLogIntervalFailed": "初始化記錄間隔失敗",
 
 
     "dialogMessageSuccessful": "成功",

@@ -176,7 +176,9 @@
     "dialogMessageDeviceNotFound": "Device not found.",
     "dialogMessageBluetoothDisabled": "Bluetooth is disabled.",
     "dialogMessageConnectionFailure": "Device connection failed",
-    "dialogMessageLoadingDataFailure": "Data loading failed",
+    "dialogMessageLoadDataFailure": "Failed to load data",
+    "dialogMessageLoadLogFailure": "Failed to load logs",
+    "dialogMessageLoadEventFailure": "Failed to load events",
     "dialogMessageLocationSetting": "Location setting",
     "dialogMessageTGCCableLengthSetting": "TGC cable length setting",
     "dialogMessageLogIntervalSetting": "Log interval setting",
@@ -258,7 +260,7 @@
     "dialogMessageUSTGCSetting": "US TGC setting",
     "dialogMessageGPSServiceDisabled": "Location services are disabled. Please enable location services.",
     "dialogMessageGPSPermissionDenied": "Location permissions are denied. Please provide permission.",
-    "dialogMessageAutoSettingLogIntervalFailed": "Setting the log interval to 30 minutes failed.",
+    "dialogMessageAutoSettingLogIntervalFailed": "Failed to initialize the log interval.",
 
 
     "dialogMessageSuccessful": "OK",
