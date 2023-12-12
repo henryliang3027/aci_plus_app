@@ -623,7 +623,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             emit(state.copyWith(
               loadingStatus: FormStatus.requestFailure,
               characteristicData: state.characteristicData,
-              errorMassage: 'Failed to load data',
+              errorMassage: 'Failed to load logs',
             ));
           } else {
             continue;
@@ -767,7 +767,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             emit(state.copyWith(
               loadingStatus: FormStatus.requestFailure,
               characteristicData: state.characteristicData,
-              errorMassage: 'Failed to load data',
+              errorMassage: 'Failed to load logs',
             ));
           } else {
             continue;

@@ -407,7 +407,8 @@ class _PopupMenu extends StatelessWidget {
       if (state.loadingStatus.isRequestSuccess) {
         return buildDataLogPageMenu(context);
       } else {
-        if (!state.connectionStatus.isRequestInProgress) {
+        if (state.loadingStatus.isRequestSuccess ||
+            state.connectionStatus.isRequestFailure) {
           return IconButton(
               onPressed: () {
                 context.read<HomeBloc>().add(const DeviceRefreshed());

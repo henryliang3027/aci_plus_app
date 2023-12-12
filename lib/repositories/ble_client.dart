@@ -62,7 +62,7 @@ class BLEClient {
 
   int _currentCommandIndex = 0;
 
-  Timer? _timeoutTimer;
+  Timer? _characteristicDataTimer;
   Timer? _connectionTimer;
 
   final List<int> _combinedRawData = [];
@@ -155,7 +155,7 @@ class BLEClient {
       id: discoveredDevice.id,
     )
         .listen((connectionStateUpdate) async {
-      print('connectionStateUpdateXXXXXX: $connectionStateUpdate');
+      print('current connection state: $connectionStateUpdate');
       switch (connectionStateUpdate.connectionState) {
         case DeviceConnectionState.connecting:
           break;
@@ -179,7 +179,7 @@ class BLEClient {
             // print('data length: ${rawData.length}');
 
             if (_currentCommandIndex <= 13) {
-              cancelTimeout(name: 'cmd $_currentCommandIndex');
+              cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
 
               bool isValidCRC = checkCRC(rawData);
               if (isValidCRC) {
@@ -200,7 +200,8 @@ class BLEClient {
                 if (isValidCRC) {
                   List<int> combinedRawData = List.from(_combinedRawData);
                   _combinedRawData.clear();
-                  cancelTimeout(name: 'cmd $_currentCommandIndex');
+                  cancelCharacteristicDataTimer(
+                      name: 'cmd $_currentCommandIndex');
                   if (!_completer!.isCompleted) {
                     _completer!.complete(combinedRawData);
                   }
@@ -212,13 +213,13 @@ class BLEClient {
               }
             } else if (_currentCommandIndex >= 40 &&
                 _currentCommandIndex <= 46) {
-              cancelTimeout(name: 'cmd $_currentCommandIndex');
+              cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
               if (!_completer!.isCompleted) {
                 _completer!.complete(rawData);
               }
             } else if (_currentCommandIndex >= 180 &&
                 _currentCommandIndex <= 182) {
-              cancelTimeout(name: 'cmd $_currentCommandIndex');
+              cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
 
               bool isValidCRC = checkCRC(rawData);
               if (isValidCRC) {
@@ -245,7 +246,8 @@ class BLEClient {
                 bool isValidCRC = checkCRC(_combinedRawData);
                 if (isValidCRC) {
                   List<int> rawRFInOuts = List.from(_combinedRawData);
-                  cancelTimeout(name: 'cmd $_currentCommandIndex');
+                  cancelCharacteristicDataTimer(
+                      name: 'cmd $_currentCommandIndex');
                   if (!_completer!.isCompleted) {
                     _completer!.complete(rawRFInOuts);
                   }
@@ -271,7 +273,8 @@ class BLEClient {
                 bool isValidCRC = checkCRC(_combinedRawData);
                 if (isValidCRC) {
                   List<int> rawLogs = List.from(_combinedRawData);
-                  cancelTimeout(name: 'cmd $_currentCommandIndex');
+                  cancelCharacteristicDataTimer(
+                      name: 'cmd $_currentCommandIndex');
                   if (!_completer!.isCompleted) {
                     _completer!.complete(rawLogs);
                   }
@@ -282,7 +285,7 @@ class BLEClient {
                 }
               }
             } else if (_currentCommandIndex >= 300) {
-              cancelTimeout(name: 'cmd $_currentCommandIndex');
+              cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
               if (!_completer!.isCompleted) {
                 _completer!.complete(rawData);
               }
@@ -303,7 +306,8 @@ class BLEClient {
         // ));
         // break;
         case DeviceConnectionState.disconnected:
-          cancelTimeout(name: 'connection closed');
+          cancelConnectionTimer();
+          cancelCharacteristicDataTimer(name: 'connection closed');
           cancelCompleterOnDisconnected();
           _connectionReportStreamController.add(const ConnectionReport(
             connectionState: DeviceConnectionState.disconnected,
@@ -314,7 +318,8 @@ class BLEClient {
           break;
       }
     }, onError: (error) {
-      cancelTimeout(name: 'connection closed');
+      cancelConnectionTimer();
+      cancelCharacteristicDataTimer(name: 'connection closed');
       cancelCompleterOnDisconnected();
       _connectionReportStreamController.add(ConnectionReport(
         connectionState: DeviceConnectionState.disconnected,
@@ -344,8 +349,9 @@ class BLEClient {
 
   Future<void> closeConnectionStream() async {
     print('close _characteristicStreamSubscription');
+
     cancelConnectionTimer();
-    cancelTimeout(name: 'connection closed');
+    cancelCharacteristicDataTimer(name: 'connection closed');
     cancelCompleterOnDisconnected();
 
     if (_connectionReportStreamController.hasListener) {
@@ -470,7 +476,7 @@ class BLEClient {
         );
       } else {}
 
-      startTimer(
+      startCharacteristicDataTimer(
         timeout: timeout,
         commandIndex: commandIndex,
       );
@@ -489,7 +495,7 @@ class BLEClient {
 
   // void testTimeout() {
   //   print(1111);
-  //   _timeoutTimer = Timer(Duration(seconds: 1), () {
+  //   _characteristicDataTimer = Timer(Duration(seconds: 1), () {
   //     if (!_completer.isCompleted) {
   //       _completer.completeError('Timeout occurred');
   //     }
@@ -498,8 +504,8 @@ class BLEClient {
   // }
 
   // void setTimeout({required Duration duration, required String name}) {
-  //   _timeoutTimer = Timer(duration, () {
-  //     print('$name: ${_timeoutTimer!.tick.toString()}');
+  //   _characteristicDataTimer = Timer(duration, () {
+  //     print('$name: ${_characteristicDataTimer!.tick.toString()}');
   //     if (!_completer.isCompleted) {
   //       _completer.completeError('Timeout occurred');
   //       print('$name Timeout occurred');
@@ -525,24 +531,24 @@ class BLEClient {
     }
   }
 
-  void startTimer({
+  void startCharacteristicDataTimer({
     required Duration timeout,
     required int commandIndex,
   }) {
-    _timeoutTimer = Timer(timeout, () {
+    _characteristicDataTimer = Timer(timeout, () {
       if (!_completer!.isCompleted) {
-        _completer!.completeError('Timeout occurred');
+        _completer!.completeError('cmd:$commandIndex Timeout occurred');
         print('cmd:$commandIndex Timeout occurred');
       }
     });
   }
 
-  void cancelTimeout({required String name}) {
-    if (_timeoutTimer != null) {
-      _timeoutTimer!.cancel();
+  void cancelCharacteristicDataTimer({required String name}) {
+    if (_characteristicDataTimer != null) {
+      _characteristicDataTimer!.cancel();
     }
 
-    print('$name completed (timeout canceled)');
+    print('$name CharacteristicDataTimer has been canceled');
   }
 
   void cancelCompleterOnDisconnected() {

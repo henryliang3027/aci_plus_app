@@ -106,7 +106,7 @@ class _DownloadIndicator18CCorNodeFormState
       return ([
         false,
         log1p8Gs,
-        'Failed to load data',
+        'Failed to load logs',
       ]);
     }
   }

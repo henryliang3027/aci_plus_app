@@ -39,7 +39,7 @@ dependencies:
   bloc_concurrency: ^0.2.2
   formz: ^0.6.0
   permission_handler: ^10.2.0
-  flutter_reactive_ble: ^5.0.3
+  flutter_reactive_ble: ^5.2.0
   bluetooth_enable_fork: ^0.1.6 # check if bluetooth is enabled
   location: ^5.0.3
   equatable: ^2.0.5

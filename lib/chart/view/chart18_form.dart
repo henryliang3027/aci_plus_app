@@ -466,14 +466,7 @@ class _PopupMenu extends StatelessWidget {
                   ),
                 ],
               )
-            : IconButton(
-                onPressed: () {
-                  context.read<HomeBloc>().add(const DeviceRefreshed());
-                },
-                icon: Icon(
-                  Icons.refresh,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ));
+            : Container();
       },
     );
   }
@@ -581,14 +574,7 @@ class _PopupMenu extends StatelessWidget {
                   ),
                 ],
               )
-            : IconButton(
-                onPressed: () {
-                  context.read<HomeBloc>().add(const DeviceRefreshed());
-                },
-                icon: Icon(
-                  Icons.refresh,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ));
+            : Container();
       },
     );
   }
@@ -609,7 +595,8 @@ class _PopupMenu extends StatelessWidget {
       if (state.loadingStatus.isRequestSuccess) {
         return getLoadingSuccessMenu(context);
       } else {
-        if (!state.connectionStatus.isRequestInProgress) {
+        if (state.loadingStatus.isRequestSuccess ||
+            state.connectionStatus.isRequestFailure) {
           return IconButton(
               onPressed: () {
                 context.read<HomeBloc>().add(const DeviceRefreshed());

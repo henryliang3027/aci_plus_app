@@ -62,7 +62,7 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
         if (i == 2) {
           emit(state.copyWith(
             logRequestStatus: FormStatus.requestFailure,
-            errorMessage: 'load logs failed',
+            errorMessage: 'Failed to load logs',
           ));
         } else {
           continue;
@@ -105,7 +105,7 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
         if (i == 2) {
           emit(state.copyWith(
             eventRequestStatus: FormStatus.requestFailure,
-            errorMessage: 'load events failed',
+            errorMessage: 'Failed to load events',
           ));
         } else {
           continue;
@@ -154,7 +154,7 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
         if (i == 2) {
           emit(state.copyWith(
             logRequestStatus: FormStatus.requestFailure,
-            errorMessage: 'load logs failed',
+            errorMessage: 'Failed to load logs',
           ));
         } else {
           continue;
