@@ -184,18 +184,6 @@ class _ChartView extends StatelessWidget {
             children: [
               buildLoadingFormWithProgressiveChartView(
                   rfLevelChartState.valueCollectionOfRFInOut),
-              Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(70, 158, 158, 158),
-                ),
-                child: const Center(
-                  child: SizedBox(
-                    width: CustomStyle.diameter,
-                    height: CustomStyle.diameter,
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-              ),
             ],
           );
         } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
@@ -208,18 +196,6 @@ class _ChartView extends StatelessWidget {
               children: [
                 buildLoadingFormWithProgressiveChartView(
                     rfLevelChartState.valueCollectionOfRFInOut),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(70, 158, 158, 158),
-                  ),
-                  child: const Center(
-                    child: SizedBox(
-                      width: CustomStyle.diameter,
-                      height: CustomStyle.diameter,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                ),
               ],
             );
           } else if (rfLevelChartState
@@ -229,18 +205,6 @@ class _ChartView extends StatelessWidget {
               children: [
                 buildLoadingFormWithProgressiveChartView(
                     rfLevelChartState.valueCollectionOfRFInOut),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(70, 158, 158, 158),
-                  ),
-                  child: const Center(
-                    child: SizedBox(
-                      width: CustomStyle.diameter,
-                      height: CustomStyle.diameter,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                ),
               ],
             );
           } else if (rfLevelChartState.rfInOutRequestStatus.isRequestFailure) {
@@ -250,25 +214,13 @@ class _ChartView extends StatelessWidget {
               children: [
                 buildLoadingFormWithProgressiveChartView(
                     rfLevelChartState.valueCollectionOfRFInOut),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(70, 158, 158, 158),
-                  ),
-                  child: const Center(
-                    child: SizedBox(
-                      width: CustomStyle.diameter,
-                      height: CustomStyle.diameter,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                ),
               ],
             );
           } else {
             context.read<Chart18Bloc>().add(const TabChangedEnabled());
             return Center(
               child: SingleChildScrollView(
-                // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+                // 設定 key, 讓 chart 可以 rebuild
                 // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
                 key: const Key('ChartForm_Chart'),
                 child: Padding(
@@ -276,19 +228,6 @@ class _ChartView extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      // ElevatedButton(
-                      //     onPressed: () async {
-                      //       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-                      //       // AndroidDeviceInfo androidInfo =
-                      //       //     await deviceInfo.androidInfo;
-
-                      //       IosDeviceInfo iosDeviceInfo =
-                      //           await deviceInfo.iosInfo;
-
-                      //       // print(androidInfo.model + ' ' + iosDeviceInfo.model);
-                      //       print(iosDeviceInfo.model);
-                      //     },
-                      //     child: Text('Mobile info')),
                       buildChart(
                         getChartDataOfOutputRFLevel(
                             dateValueCollectionOfLog:

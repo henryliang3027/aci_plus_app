@@ -407,8 +407,8 @@ class _PopupMenu extends StatelessWidget {
       if (state.loadingStatus.isRequestSuccess) {
         return buildDataLogPageMenu(context);
       } else {
-        if (state.loadingStatus.isRequestSuccess ||
-            state.connectionStatus.isRequestFailure) {
+        if (!state.loadingStatus.isRequestInProgress &&
+            !state.connectionStatus.isRequestInProgress) {
           return IconButton(
               onPressed: () {
                 context.read<HomeBloc>().add(const DeviceRefreshed());
@@ -619,7 +619,7 @@ class _LogChartListView extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           SingleChildScrollView(
-            // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+            // 設定 key, 讓 chart 可以 rebuild
             // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
             key: Key('ChartForm_${intValue}_Chart'),
             child: Padding(
@@ -664,18 +664,6 @@ class _LogChartListView extends StatelessWidget {
             children: [
               buildLoadingFormWithProgressiveChartView(
                   dataLogChartState.dateValueCollectionOfLog),
-              Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(70, 158, 158, 158),
-                ),
-                child: const Center(
-                  child: SizedBox(
-                    width: CustomStyle.diameter,
-                    height: CustomStyle.diameter,
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-              ),
             ],
           );
         } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
@@ -687,18 +675,6 @@ class _LogChartListView extends StatelessWidget {
               children: [
                 buildLoadingFormWithProgressiveChartView(
                     dataLogChartState.dateValueCollectionOfLog),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(70, 158, 158, 158),
-                  ),
-                  child: const Center(
-                    child: SizedBox(
-                      width: CustomStyle.diameter,
-                      height: CustomStyle.diameter,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                ),
               ],
             );
           } else if (dataLogChartState.logRequestStatus.isRequestInProgress) {
@@ -707,18 +683,6 @@ class _LogChartListView extends StatelessWidget {
               children: [
                 buildLoadingFormWithProgressiveChartView(
                     dataLogChartState.dateValueCollectionOfLog),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(70, 158, 158, 158),
-                  ),
-                  child: const Center(
-                    child: SizedBox(
-                      width: CustomStyle.diameter,
-                      height: CustomStyle.diameter,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                ),
               ],
             );
           } else if (dataLogChartState.logRequestStatus.isRequestFailure) {
@@ -727,18 +691,6 @@ class _LogChartListView extends StatelessWidget {
               children: [
                 buildLoadingFormWithProgressiveChartView(
                     dataLogChartState.dateValueCollectionOfLog),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(70, 158, 158, 158),
-                  ),
-                  child: const Center(
-                    child: SizedBox(
-                      width: CustomStyle.diameter,
-                      height: CustomStyle.diameter,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                ),
               ],
             );
           } else {
@@ -752,18 +704,6 @@ class _LogChartListView extends StatelessWidget {
                 children: [
                   buildLoadingFormWithProgressiveChartView(
                       dataLogChartState.dateValueCollectionOfLog),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(70, 158, 158, 158),
-                    ),
-                    child: const Center(
-                      child: SizedBox(
-                        width: CustomStyle.diameter,
-                        height: CustomStyle.diameter,
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ),
                 ],
               );
             } else if (dataLogChartState
@@ -773,18 +713,6 @@ class _LogChartListView extends StatelessWidget {
                 children: [
                   buildLoadingFormWithProgressiveChartView(
                       dataLogChartState.dateValueCollectionOfLog),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(70, 158, 158, 158),
-                    ),
-                    child: const Center(
-                      child: SizedBox(
-                        width: CustomStyle.diameter,
-                        height: CustomStyle.diameter,
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ),
                 ],
               );
             } else if (dataLogChartState.eventRequestStatus.isRequestFailure) {
@@ -793,24 +721,12 @@ class _LogChartListView extends StatelessWidget {
                 children: [
                   buildLoadingFormWithProgressiveChartView(
                       dataLogChartState.dateValueCollectionOfLog),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(70, 158, 158, 158),
-                    ),
-                    child: const Center(
-                      child: SizedBox(
-                        width: CustomStyle.diameter,
-                        height: CustomStyle.diameter,
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ),
                 ],
               );
             } else {
               return Center(
                 child: SingleChildScrollView(
-                  // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+                  // 設定 key, 讓 chart 可以 rebuild
                   // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
                   key: const Key('ChartForm_Chart'),
                   child: Padding(
@@ -818,19 +734,6 @@ class _LogChartListView extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        // ElevatedButton(
-                        //     onPressed: () async {
-                        //       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-                        //       // AndroidDeviceInfo androidInfo =
-                        //       //     await deviceInfo.androidInfo;
-
-                        //       IosDeviceInfo iosDeviceInfo =
-                        //           await deviceInfo.iosInfo;
-
-                        //       // print(androidInfo.model + ' ' + iosDeviceInfo.model);
-                        //       print(iosDeviceInfo.model);
-                        //     },
-                        //     child: Text('Mobile info')),
                         buildChart(
                           getChartDataOfLog1(
                               dateValueCollectionOfLog:

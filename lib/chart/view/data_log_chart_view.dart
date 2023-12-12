@@ -379,18 +379,6 @@ class _LogChartListView extends StatelessWidget {
             children: [
               buildLoadingFormWithProgressiveChartView(
                   dataLogChartState.dateValueCollectionOfLog),
-              Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(70, 158, 158, 158),
-                ),
-                child: const Center(
-                  child: SizedBox(
-                    width: CustomStyle.diameter,
-                    height: CustomStyle.diameter,
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-              ),
             ],
           );
         } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
@@ -403,18 +391,6 @@ class _LogChartListView extends StatelessWidget {
               children: [
                 buildLoadingFormWithProgressiveChartView(
                     dataLogChartState.dateValueCollectionOfLog),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(70, 158, 158, 158),
-                  ),
-                  child: const Center(
-                    child: SizedBox(
-                      width: CustomStyle.diameter,
-                      height: CustomStyle.diameter,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                ),
               ],
             );
           } else if (dataLogChartState.logRequestStatus.isRequestInProgress) {
@@ -423,18 +399,6 @@ class _LogChartListView extends StatelessWidget {
               children: [
                 buildLoadingFormWithProgressiveChartView(
                     dataLogChartState.dateValueCollectionOfLog),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(70, 158, 158, 158),
-                  ),
-                  child: const Center(
-                    child: SizedBox(
-                      width: CustomStyle.diameter,
-                      height: CustomStyle.diameter,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                ),
               ],
             );
           } else if (dataLogChartState.logRequestStatus.isRequestFailure) {
@@ -476,18 +440,6 @@ class _LogChartListView extends StatelessWidget {
                 children: [
                   buildLoadingFormWithProgressiveChartView(
                       dataLogChartState.dateValueCollectionOfLog),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(70, 158, 158, 158),
-                    ),
-                    child: const Center(
-                      child: SizedBox(
-                        width: CustomStyle.diameter,
-                        height: CustomStyle.diameter,
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ),
                 ],
               );
             } else if (dataLogChartState
@@ -497,18 +449,6 @@ class _LogChartListView extends StatelessWidget {
                 children: [
                   buildLoadingFormWithProgressiveChartView(
                       dataLogChartState.dateValueCollectionOfLog),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(70, 158, 158, 158),
-                    ),
-                    child: const Center(
-                      child: SizedBox(
-                        width: CustomStyle.diameter,
-                        height: CustomStyle.diameter,
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ),
                 ],
               );
             } else if (dataLogChartState.eventRequestStatus.isRequestFailure) {

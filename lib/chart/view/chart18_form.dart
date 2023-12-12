@@ -595,8 +595,8 @@ class _PopupMenu extends StatelessWidget {
       if (state.loadingStatus.isRequestSuccess) {
         return getLoadingSuccessMenu(context);
       } else {
-        if (state.loadingStatus.isRequestSuccess ||
-            state.connectionStatus.isRequestFailure) {
+        if (!state.loadingStatus.isRequestInProgress &&
+            !state.connectionStatus.isRequestInProgress) {
           return IconButton(
               onPressed: () {
                 context.read<HomeBloc>().add(const DeviceRefreshed());

@@ -109,8 +109,8 @@ class _DeviceRefresh extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (state.loadingStatus.isRequestSuccess ||
-            state.connectionStatus.isRequestFailure) {
+        if (!state.loadingStatus.isRequestInProgress &&
+            !state.connectionStatus.isRequestInProgress) {
           return IconButton(
               onPressed: () {
                 context.read<HomeBloc>().add(const DeviceRefreshed());
