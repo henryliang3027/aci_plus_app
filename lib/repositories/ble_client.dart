@@ -63,6 +63,7 @@ class BLEClient {
   int _currentCommandIndex = 0;
 
   Timer? _timeoutTimer;
+  Timer? _connectionTimer;
 
   final List<int> _combinedRawData = [];
   final int _totalBytesPerCommand = 261;
@@ -146,16 +147,7 @@ class BLEClient {
   }
 
   Future<void> connectToDevice(DiscoveredDevice discoveredDevice) async {
-    Timer connectionTimer =
-        Timer(Duration(seconds: _connectionTimeout), () async {
-      _connectionReportStreamController.add(const ConnectionReport(
-        connectionState: DeviceConnectionState.disconnected,
-        errorMessage: 'disconnected',
-      ));
-
-      await closeScanStream();
-      await closeConnectionStream();
-    });
+    startConnectionTimer();
 
     _connectionReportStreamController = StreamController<ConnectionReport>();
     _connectionStreamSubscription = _ble!
@@ -168,7 +160,7 @@ class BLEClient {
         case DeviceConnectionState.connecting:
           break;
         case DeviceConnectionState.connected:
-          connectionTimer.cancel();
+          cancelConnectionTimer();
 
           // _characteristicDataStreamController =
           //     StreamController<Map<DataKey, String>>();
@@ -352,6 +344,7 @@ class BLEClient {
 
   Future<void> closeConnectionStream() async {
     print('close _characteristicStreamSubscription');
+    cancelConnectionTimer();
     cancelTimeout(name: 'connection closed');
     cancelCompleterOnDisconnected();
 
@@ -513,6 +506,24 @@ class BLEClient {
   //     }
   //   });
   // }
+
+  void startConnectionTimer() {
+    _connectionTimer = Timer(Duration(seconds: _connectionTimeout), () async {
+      _connectionReportStreamController.add(const ConnectionReport(
+        connectionState: DeviceConnectionState.disconnected,
+        errorMessage: 'disconnected',
+      ));
+
+      await closeScanStream();
+      await closeConnectionStream();
+    });
+  }
+
+  void cancelConnectionTimer() {
+    if (_connectionTimer != null) {
+      _connectionTimer!.cancel();
+    }
+  }
 
   void startTimer({
     required Duration timeout,
