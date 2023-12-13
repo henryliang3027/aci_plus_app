@@ -35,7 +35,7 @@ class Setting18ControlView extends StatelessWidget {
     }
 
     String formatResultItem(String item) {
-      if (item == DataKey.inputAttenuation.name) {
+      if (item == DataKey.dsVVA1.name) {
         return AppLocalizations.of(context)!
             .dialogMessageForwardInputAttenuationSetting;
       } else if (item == DataKey.inputEqualizer.name) {
@@ -441,20 +441,19 @@ class _FwdInputAttenuation extends StatelessWidget {
           context: context,
           editMode: state.editMode && alcMode == '0',
           title:
-              '${AppLocalizations.of(context)!.fwdInputAttenuation}: ${getCurrentValue(state.fwdInputAttenuation)} dB',
+              '${AppLocalizations.of(context)!.fwdInputAttenuation}: ${getCurrentValue(state.dsVVA1)} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: getCurrentValue(state.fwdInputAttenuation),
-          onChanged: (fwdInputAttenuation) {
-            context.read<Setting18ControlBloc>().add(FwdInputAttenuationChanged(
-                fwdInputAttenuation.toStringAsFixed(1)));
+          currentValue: getCurrentValue(state.dsVVA1),
+          onChanged: (dsVVA1) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(DSVVA1Changed(dsVVA1.toStringAsFixed(1)));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(const FwdInputAttenuationDecreased()),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(const FwdInputAttenuationIncreased()),
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(const DSVVA1Decreased()),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(const DSVVA1Increased()),
         );
       },
     );

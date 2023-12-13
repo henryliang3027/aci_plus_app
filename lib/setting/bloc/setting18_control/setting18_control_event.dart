@@ -14,24 +14,24 @@ class Initialized extends Setting18ControlEvent {
   List<Object> get props => [];
 }
 
-class FwdInputAttenuationChanged extends Setting18ControlEvent {
-  const FwdInputAttenuationChanged(this.fwdInputAttenuation);
+class DSVVA1Changed extends Setting18ControlEvent {
+  const DSVVA1Changed(this.dsVVA1);
 
-  final String fwdInputAttenuation;
+  final String dsVVA1;
 
   @override
-  List<Object> get props => [fwdInputAttenuation];
+  List<Object> get props => [dsVVA1];
 }
 
-class FwdInputAttenuationIncreased extends Setting18ControlEvent {
-  const FwdInputAttenuationIncreased();
+class DSVVA1Increased extends Setting18ControlEvent {
+  const DSVVA1Increased();
 
   @override
   List<Object> get props => [];
 }
 
-class FwdInputAttenuationDecreased extends Setting18ControlEvent {
-  const FwdInputAttenuationDecreased();
+class DSVVA1Decreased extends Setting18ControlEvent {
+  const DSVVA1Decreased();
 
   @override
   List<Object> get props => [];

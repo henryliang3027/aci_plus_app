@@ -264,7 +264,7 @@ class Command18 {
     0x00,
   ];
 
-  static List<int> setForwardInputAttenuationCmd = [
+  static List<int> setDSVVA1Cmd = [
     0xB0,
     0x10,
     0x00,

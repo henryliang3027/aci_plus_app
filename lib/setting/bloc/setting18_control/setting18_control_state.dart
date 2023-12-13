@@ -3,7 +3,7 @@ part of 'setting18_control_bloc.dart';
 class Setting18ControlState extends Equatable {
   const Setting18ControlState({
     this.submissionStatus = SubmissionStatus.none,
-    this.fwdInputAttenuation = '',
+    this.dsVVA1 = '',
     this.fwdInputEQ = '',
     this.rtnInputAttenuation2 = '',
     this.usVCA3 = '',
@@ -29,7 +29,7 @@ class Setting18ControlState extends Equatable {
   });
 
   final SubmissionStatus submissionStatus;
-  final String fwdInputAttenuation;
+  final String dsVVA1;
   final String fwdInputEQ;
   final String rtnInputAttenuation2;
   final String usVCA3;
@@ -55,7 +55,7 @@ class Setting18ControlState extends Equatable {
 
   Setting18ControlState copyWith({
     SubmissionStatus? submissionStatus,
-    String? fwdInputAttenuation,
+    String? dsVVA1,
     String? fwdInputEQ,
     String? rtnInputAttenuation2,
     String? usVCA3,
@@ -81,7 +81,7 @@ class Setting18ControlState extends Equatable {
   }) {
     return Setting18ControlState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
-      fwdInputAttenuation: fwdInputAttenuation ?? this.fwdInputAttenuation,
+      dsVVA1: dsVVA1 ?? this.dsVVA1,
       fwdInputEQ: fwdInputEQ ?? this.fwdInputEQ,
       rtnInputAttenuation2: rtnInputAttenuation2 ?? this.rtnInputAttenuation2,
       usVCA3: usVCA3 ?? this.usVCA3,
@@ -111,7 +111,7 @@ class Setting18ControlState extends Equatable {
   @override
   List<Object> get props => [
         submissionStatus,
-        fwdInputAttenuation,
+        dsVVA1,
         fwdInputEQ,
         rtnInputAttenuation2,
         usVCA3,

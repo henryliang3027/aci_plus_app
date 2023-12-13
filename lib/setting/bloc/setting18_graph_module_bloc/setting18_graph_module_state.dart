@@ -3,7 +3,7 @@ part of 'setting18_graph_module_bloc.dart';
 class Setting18GraphModuleState extends Equatable {
   const Setting18GraphModuleState({
     this.submissionStatus = SubmissionStatus.none,
-    this.fwdInputAttenuation = '',
+    this.dsVVA1 = '',
     this.fwdInputEQ = '',
     this.rtnInputAttenuation2 = '',
     this.rtnInputAttenuation3 = '',
@@ -37,7 +37,7 @@ class Setting18GraphModuleState extends Equatable {
   });
 
   final SubmissionStatus submissionStatus;
-  final String fwdInputAttenuation;
+  final String dsVVA1;
   final String fwdInputEQ;
   final String rtnInputAttenuation2;
   final String rtnInputAttenuation3;
@@ -71,7 +71,7 @@ class Setting18GraphModuleState extends Equatable {
 
   Setting18GraphModuleState copyWith({
     SubmissionStatus? submissionStatus,
-    String? fwdInputAttenuation,
+    String? dsVVA1,
     String? fwdInputEQ,
     String? rtnInputAttenuation2,
     String? rtnInputAttenuation3,
@@ -105,7 +105,7 @@ class Setting18GraphModuleState extends Equatable {
   }) {
     return Setting18GraphModuleState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
-      fwdInputAttenuation: fwdInputAttenuation ?? this.fwdInputAttenuation,
+      dsVVA1: dsVVA1 ?? this.dsVVA1,
       fwdInputEQ: fwdInputEQ ?? this.fwdInputEQ,
       rtnInputAttenuation2: rtnInputAttenuation2 ?? this.rtnInputAttenuation2,
       rtnInputAttenuation3: rtnInputAttenuation3 ?? this.rtnInputAttenuation3,
@@ -149,7 +149,7 @@ class Setting18GraphModuleState extends Equatable {
   @override
   List<Object> get props => [
         submissionStatus,
-        fwdInputAttenuation,
+        dsVVA1,
         fwdInputEQ,
         rtnInputAttenuation2,
         rtnInputAttenuation3,

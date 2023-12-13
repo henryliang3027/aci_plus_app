@@ -142,7 +142,7 @@ class Amp18Repository {
         DataKey.rfOutputPowerAlarmState: a1p8g1.outputPowerAlarmState,
         DataKey.location: a1p8g1.location,
         DataKey.logInterval: a1p8g1.logInterval,
-        DataKey.inputAttenuation: a1p8g1.inputAttenuation,
+        DataKey.dsVVA1: a1p8g1.dsVVA1,
         DataKey.inputEqualizer: a1p8g1.inputEqualizer,
         DataKey.dsVVA2: a1p8g1.dsVVA2,
         DataKey.dsSlope2: a1p8g1.dsSlope2,
@@ -1460,7 +1460,7 @@ class Amp18Repository {
     }
   }
 
-  Future<dynamic> set1p8GForwardInputAttenuation(String strValue) async {
+  Future<dynamic> set1p8GDSVVA1(String strValue) async {
     int commandIndex = 339;
 
     print('get data from request command 1p8G$commandIndex');
@@ -1474,18 +1474,18 @@ class Amp18Repository {
     byteData.setInt16(0, intValue, Endian.little); // little endian
     Uint8List bytes = Uint8List.view(byteData.buffer);
 
-    Command18.setForwardInputAttenuationCmd[7] = bytes[0];
-    Command18.setForwardInputAttenuationCmd[8] = bytes[1];
+    Command18.setDSVVA1Cmd[7] = bytes[0];
+    Command18.setDSVVA1Cmd[8] = bytes[1];
 
     CRC16.calculateCRC16(
-      command: Command18.setForwardInputAttenuationCmd,
-      usDataLength: Command18.setForwardInputAttenuationCmd.length - 2,
+      command: Command18.setDSVVA1Cmd,
+      usDataLength: Command18.setDSVVA1Cmd.length - 2,
     );
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: Command18.setForwardInputAttenuationCmd,
+        value: Command18.setDSVVA1Cmd,
       );
       return true;
     } catch (e) {

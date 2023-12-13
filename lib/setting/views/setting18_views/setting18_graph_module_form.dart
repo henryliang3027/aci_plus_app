@@ -202,7 +202,7 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
     }
 
     String formatResultItem(String item) {
-      if (item == DataKey.inputAttenuation.name) {
+      if (item == DataKey.dsVVA1.name) {
         return AppLocalizations.of(context)!
             .dialogMessageForwardInputAttenuationSetting;
       } else if (item == DataKey.inputEqualizer.name) {
@@ -738,21 +738,21 @@ class _FwdInputAttenuation extends StatelessWidget {
           context: context,
           editMode: true,
           title:
-              '${AppLocalizations.of(context)!.fwdInputAttenuation}: ${state.fwdInputAttenuation} dB',
+              '${AppLocalizations.of(context)!.fwdInputAttenuation}: ${state.dsVVA1} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: _getValue(state.fwdInputAttenuation),
-          onChanged: (fwdInputAttenuation) {
-            context.read<Setting18GraphModuleBloc>().add(
-                FwdInputAttenuationChanged(
-                    fwdInputAttenuation.toStringAsFixed(1)));
+          currentValue: _getValue(state.dsVVA1),
+          onChanged: (dsVVA1) {
+            context
+                .read<Setting18GraphModuleBloc>()
+                .add(DSVVA1Changed(dsVVA1.toStringAsFixed(1)));
           },
           onDecreased: () => context
               .read<Setting18GraphModuleBloc>()
-              .add(const FwdInputAttenuationDecreased()),
+              .add(const DSVVA1Decreased()),
           onIncreased: () => context
               .read<Setting18GraphModuleBloc>()
-              .add(const FwdInputAttenuationIncreased()),
+              .add(const DSVVA1Increased()),
         );
       },
     );

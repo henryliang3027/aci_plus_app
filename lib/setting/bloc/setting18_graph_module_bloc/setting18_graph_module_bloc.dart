@@ -13,9 +13,9 @@ class Setting18GraphModuleBloc
       : _amp18Repository = amp18Repository,
         super(const Setting18GraphModuleState()) {
     on<Initialized>(_onInitialized);
-    on<FwdInputAttenuationChanged>(_onFwdInputAttenuationChanged);
-    on<FwdInputAttenuationIncreased>(_onFwdInputAttenuationIncreased);
-    on<FwdInputAttenuationDecreased>(_onFwdInputAttenuationDecreased);
+    on<DSVVA1Changed>(_onDSVVA1Changed);
+    on<DSVVA1Increased>(_onDSVVA1Increased);
+    on<DSVVA1Decreased>(_onDSVVA1Decreased);
     on<FwdInputEQChanged>(_onFwdInputEQChanged);
     on<FwdInputEQIncreased>(_onFwdInputEQIncreased);
     on<FwdInputEQDecreased>(_onFwdInputEQDecreased);
@@ -69,8 +69,7 @@ class Setting18GraphModuleBloc
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
     String partId = characteristicDataCache[DataKey.partId] ?? '';
-    String inputAttenuation =
-        characteristicDataCache[DataKey.inputAttenuation] ?? '';
+    String dsVVA1 = characteristicDataCache[DataKey.dsVVA1] ?? '';
     String inputEqualizer =
         characteristicDataCache[DataKey.inputEqualizer] ?? '';
     String inputAttenuation2 =
@@ -116,7 +115,7 @@ class Setting18GraphModuleBloc
         characteristicDataCache[DataKey.manualModePilot2RFOutputPower] ?? '';
 
     emit(state.copyWith(
-      fwdInputAttenuation: inputAttenuation,
+      dsVVA1: dsVVA1,
       fwdInputEQ: inputEqualizer,
       rtnInputAttenuation2: inputAttenuation2,
       rtnInputAttenuation3: inputAttenuation3,
@@ -163,16 +162,16 @@ class Setting18GraphModuleBloc
     return strValue;
   }
 
-  void _onFwdInputAttenuationChanged(
-    FwdInputAttenuationChanged event,
+  void _onDSVVA1Changed(
+    DSVVA1Changed event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      fwdInputAttenuation: event.fwdInputAttenuation,
+      dsVVA1: event.dsVVA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: event.fwdInputAttenuation,
+        dsVVA1: event.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -200,18 +199,18 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onFwdInputAttenuationIncreased(
-    FwdInputAttenuationIncreased event,
+  void _onDSVVA1Increased(
+    DSVVA1Increased event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
-    String fwdInputAttenuation = _getIncreasedNumber(state.fwdInputAttenuation);
+    String dsVVA1 = _getIncreasedNumber(state.dsVVA1);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      fwdInputAttenuation: fwdInputAttenuation,
+      dsVVA1: dsVVA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: fwdInputAttenuation,
+        dsVVA1: dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -239,18 +238,18 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onFwdInputAttenuationDecreased(
-    FwdInputAttenuationDecreased event,
+  void _onDSVVA1Decreased(
+    DSVVA1Decreased event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
-    String fwdInputAttenuation = _getDecreasedNumber(state.fwdInputAttenuation);
+    String dsVVA1 = _getDecreasedNumber(state.dsVVA1);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      fwdInputAttenuation: fwdInputAttenuation,
+      dsVVA1: dsVVA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: fwdInputAttenuation,
+        dsVVA1: dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -287,7 +286,7 @@ class Setting18GraphModuleBloc
       fwdInputEQ: event.fwdInputEQ,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: event.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -326,7 +325,7 @@ class Setting18GraphModuleBloc
       fwdInputEQ: fwdInputEQ,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -365,7 +364,7 @@ class Setting18GraphModuleBloc
       fwdInputEQ: fwdInputEQ,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -402,7 +401,7 @@ class Setting18GraphModuleBloc
       rtnInputAttenuation2: event.rtnInputAttenuation2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: event.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -441,7 +440,7 @@ class Setting18GraphModuleBloc
       rtnInputAttenuation2: rtnInputAttenuation2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -480,7 +479,7 @@ class Setting18GraphModuleBloc
       rtnInputAttenuation2: rtnInputAttenuation2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -517,7 +516,7 @@ class Setting18GraphModuleBloc
       rtnInputAttenuation3: event.rtnInputAttenuation3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: event.rtnInputAttenuation3,
@@ -557,7 +556,7 @@ class Setting18GraphModuleBloc
       rtnInputAttenuation3: rtnInputAttenuation3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: rtnInputAttenuation3,
@@ -597,7 +596,7 @@ class Setting18GraphModuleBloc
       rtnInputAttenuation3: rtnInputAttenuation3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: rtnInputAttenuation3,
@@ -634,7 +633,7 @@ class Setting18GraphModuleBloc
       rtnInputAttenuation4: event.rtnInputAttenuation4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -673,7 +672,7 @@ class Setting18GraphModuleBloc
       rtnInputAttenuation4: rtnInputAttenuation4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -712,7 +711,7 @@ class Setting18GraphModuleBloc
       rtnInputAttenuation4: rtnInputAttenuation4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -749,7 +748,7 @@ class Setting18GraphModuleBloc
       rtnOutputLevelAttenuation: event.rtnOutputLevelAttenuation,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -789,7 +788,7 @@ class Setting18GraphModuleBloc
       rtnOutputLevelAttenuation: rtnOutputLevelAttenuation,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -829,7 +828,7 @@ class Setting18GraphModuleBloc
       rtnOutputLevelAttenuation: rtnOutputLevelAttenuation,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -866,7 +865,7 @@ class Setting18GraphModuleBloc
       rtnOutputEQ: event.rtnOutputEQ,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -904,7 +903,7 @@ class Setting18GraphModuleBloc
       rtnOutputEQ: rtnOutputEQ,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -942,7 +941,7 @@ class Setting18GraphModuleBloc
       rtnOutputEQ: rtnOutputEQ,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -979,7 +978,7 @@ class Setting18GraphModuleBloc
       rtnIngressSetting2: event.rtnIngressSetting2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1016,7 +1015,7 @@ class Setting18GraphModuleBloc
       rtnIngressSetting3: event.rtnIngressSetting3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1053,7 +1052,7 @@ class Setting18GraphModuleBloc
       rtnIngressSetting4: event.rtnIngressSetting4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1090,7 +1089,7 @@ class Setting18GraphModuleBloc
       tgcCableLength: event.tgcCableLength,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1127,7 +1126,7 @@ class Setting18GraphModuleBloc
       dsVVA2: event.dsVVA2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1164,7 +1163,7 @@ class Setting18GraphModuleBloc
       dsSlope2: event.dsSlope2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1201,7 +1200,7 @@ class Setting18GraphModuleBloc
       dsVVA3: event.dsVVA3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1238,7 +1237,7 @@ class Setting18GraphModuleBloc
       dsVVA4: event.dsVVA4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1312,7 +1311,7 @@ class Setting18GraphModuleBloc
       splitOption: event.splitOption,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1349,7 +1348,7 @@ class Setting18GraphModuleBloc
       pilotFrequencyMode: event.pilotFrequencyMode,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1386,7 +1385,7 @@ class Setting18GraphModuleBloc
       firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1423,7 +1422,7 @@ class Setting18GraphModuleBloc
       firstChannelLoadingLevel: event.firstChannelLoadingLevel,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1460,7 +1459,7 @@ class Setting18GraphModuleBloc
       lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1497,7 +1496,7 @@ class Setting18GraphModuleBloc
       lastChannelLoadingLevel: event.lastChannelLoadingLevel,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1534,7 +1533,7 @@ class Setting18GraphModuleBloc
       pilotFrequency1: event.pilotFrequency1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1571,7 +1570,7 @@ class Setting18GraphModuleBloc
       pilotFrequency2: event.pilotFrequency2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        fwdInputAttenuation: state.fwdInputAttenuation,
+        dsVVA1: state.dsVVA1,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
@@ -1600,7 +1599,7 @@ class Setting18GraphModuleBloc
   }
 
   bool _isEnabledSubmission({
-    required String fwdInputAttenuation,
+    required String dsVVA1,
     required String fwdInputEQ,
     required String rtnInputAttenuation2,
     required String rtnInputAttenuation3,
@@ -1625,7 +1624,7 @@ class Setting18GraphModuleBloc
     required String pilotFrequency1,
     required String pilotFrequency2,
   }) {
-    if (fwdInputAttenuation != state.initialValues[DataKey.inputAttenuation] ||
+    if (dsVVA1 != state.initialValues[DataKey.dsVVA1] ||
         fwdInputEQ != state.initialValues[DataKey.inputEqualizer] ||
         rtnInputAttenuation2 !=
             state.initialValues[DataKey.inputAttenuation2] ||
@@ -1672,13 +1671,11 @@ class Setting18GraphModuleBloc
 
     List<String> settingResult = [];
 
-    if (state.fwdInputAttenuation !=
-        state.initialValues[DataKey.inputAttenuation]) {
-      bool resultOfSetForwardInputAttenuation = await _amp18Repository
-          .set1p8GForwardInputAttenuation(state.fwdInputAttenuation);
+    if (state.dsVVA1 != state.initialValues[DataKey.dsVVA1]) {
+      bool resultOfSet1p8GDSVVA1 =
+          await _amp18Repository.set1p8GDSVVA1(state.dsVVA1);
 
-      settingResult.add(
-          '${DataKey.inputAttenuation.name},$resultOfSetForwardInputAttenuation');
+      settingResult.add('${DataKey.dsVVA1.name},$resultOfSet1p8GDSVVA1');
     }
 
     if (state.fwdInputEQ != state.initialValues[DataKey.inputEqualizer]) {

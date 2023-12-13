@@ -97,24 +97,24 @@ class Initialized extends Setting18GraphModuleEvent {
       ];
 }
 
-class FwdInputAttenuationChanged extends Setting18GraphModuleEvent {
-  const FwdInputAttenuationChanged(this.fwdInputAttenuation);
+class DSVVA1Changed extends Setting18GraphModuleEvent {
+  const DSVVA1Changed(this.dsVVA1);
 
-  final String fwdInputAttenuation;
+  final String dsVVA1;
 
   @override
-  List<Object> get props => [fwdInputAttenuation];
+  List<Object> get props => [dsVVA1];
 }
 
-class FwdInputAttenuationIncreased extends Setting18GraphModuleEvent {
-  const FwdInputAttenuationIncreased();
+class DSVVA1Increased extends Setting18GraphModuleEvent {
+  const DSVVA1Increased();
 
   @override
   List<Object> get props => [];
 }
 
-class FwdInputAttenuationDecreased extends Setting18GraphModuleEvent {
-  const FwdInputAttenuationDecreased();
+class DSVVA1Decreased extends Setting18GraphModuleEvent {
+  const DSVVA1Decreased();
 
   @override
   List<Object> get props => [];

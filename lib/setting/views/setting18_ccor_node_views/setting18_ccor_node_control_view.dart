@@ -55,7 +55,7 @@ class Setting18CCorNodeControlView extends StatelessWidget {
     }
 
     String formatResultItem(String item) {
-      if (item == DataKey.inputAttenuation.name) {
+      if (item == DataKey.dsVVA1.name) {
         return AppLocalizations.of(context)!
             .dialogMessageForwardInputAttenuationSetting;
       } else if (item == DataKey.inputAttenuation1.name) {
