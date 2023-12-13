@@ -211,10 +211,10 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       } else if (item == DataKey.inputAttenuation2.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation2Setting;
-      } else if (item == DataKey.inputAttenuation3.name) {
+      } else if (item == DataKey.usVCA3.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation3Setting;
-      } else if (item == DataKey.inputAttenuation4.name) {
+      } else if (item == DataKey.usVCA4.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation4Setting;
       } else if (item == DataKey.outputAttenuation.name) {

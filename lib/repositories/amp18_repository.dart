@@ -151,8 +151,8 @@ class Amp18Repository {
         DataKey.dsVVA3: a1p8g1.dsVVA3,
         DataKey.dsVVA4: a1p8g1.dsVVA4,
         DataKey.outputAttenuation: a1p8g1.outputAttenuation,
-        DataKey.inputAttenuation3: a1p8g1.inputAttenuation3,
-        DataKey.inputAttenuation4: a1p8g1.inputAttenuation4,
+        DataKey.usVCA3: a1p8g1.usVCA3,
+        DataKey.usVCA4: a1p8g1.usVCA4,
         DataKey.dsSlope3: a1p8g1.dsSlope3,
         // DataKey.usTGC: a1p8g1.usTGC,
       };
@@ -1757,7 +1757,7 @@ class Amp18Repository {
     }
   }
 
-  Future<dynamic> set1p8GReturnInputAttenuation3(String strValue) async {
+  Future<dynamic> set1p8GUSVCA3(String strValue) async {
     int commandIndex = 348;
 
     print('get data from request command 1p8G$commandIndex');
@@ -1771,18 +1771,18 @@ class Amp18Repository {
     byteData.setInt16(0, intValue, Endian.little); // little endian
     Uint8List bytes = Uint8List.view(byteData.buffer);
 
-    Command18.setReturnInputAttenuation3Cmd[7] = bytes[0];
-    Command18.setReturnInputAttenuation3Cmd[8] = bytes[1];
+    Command18.setUSVCA3Cmd[7] = bytes[0];
+    Command18.setUSVCA3Cmd[8] = bytes[1];
 
     CRC16.calculateCRC16(
-      command: Command18.setReturnInputAttenuation3Cmd,
-      usDataLength: Command18.setReturnInputAttenuation3Cmd.length - 2,
+      command: Command18.setUSVCA3Cmd,
+      usDataLength: Command18.setUSVCA3Cmd.length - 2,
     );
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: Command18.setReturnInputAttenuation3Cmd,
+        value: Command18.setUSVCA3Cmd,
       );
       return true;
     } catch (e) {
@@ -1790,7 +1790,7 @@ class Amp18Repository {
     }
   }
 
-  Future<dynamic> set1p8GReturnInputAttenuation4(String strValue) async {
+  Future<dynamic> set1p8GUSVCA4(String strValue) async {
     int commandIndex = 349;
 
     print('get data from request command 1p8G$commandIndex');
@@ -1804,18 +1804,18 @@ class Amp18Repository {
     byteData.setInt16(0, intValue, Endian.little); // little endian
     Uint8List bytes = Uint8List.view(byteData.buffer);
 
-    Command18.setReturnInputAttenuation4Cmd[7] = bytes[0];
-    Command18.setReturnInputAttenuation4Cmd[8] = bytes[1];
+    Command18.setUSVCA4Cmd[7] = bytes[0];
+    Command18.setUSVCA4Cmd[8] = bytes[1];
 
     CRC16.calculateCRC16(
-      command: Command18.setReturnInputAttenuation4Cmd,
-      usDataLength: Command18.setReturnInputAttenuation4Cmd.length - 2,
+      command: Command18.setUSVCA4Cmd,
+      usDataLength: Command18.setUSVCA4Cmd.length - 2,
     );
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: Command18.setReturnInputAttenuation4Cmd,
+        value: Command18.setUSVCA4Cmd,
       );
       return true;
     } catch (e) {

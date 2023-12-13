@@ -61,10 +61,10 @@ class Setting18CCorNodeControlView extends StatelessWidget {
       } else if (item == DataKey.inputAttenuation1.name) {
         return AppLocalizations.of(context)!
             .dialogMessageForwardInputEqualizerSetting;
-      } else if (item == DataKey.inputAttenuation3.name) {
+      } else if (item == DataKey.usVCA3.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation3Setting;
-      } else if (item == DataKey.inputAttenuation4.name) {
+      } else if (item == DataKey.usVCA4.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation4Setting;
       } else if (item == DataKey.inputAttenuation6.name) {

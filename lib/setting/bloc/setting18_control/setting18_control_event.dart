@@ -83,47 +83,47 @@ class RtnInputAttenuation2Decreased extends Setting18ControlEvent {
   List<Object> get props => [];
 }
 
-class RtnInputAttenuation3Changed extends Setting18ControlEvent {
-  const RtnInputAttenuation3Changed(this.rtnInputAttenuation3);
+class USVCA3Changed extends Setting18ControlEvent {
+  const USVCA3Changed(this.usVCA3);
 
-  final String rtnInputAttenuation3;
-
-  @override
-  List<Object> get props => [rtnInputAttenuation3];
-}
-
-class RtnInputAttenuation3Increased extends Setting18ControlEvent {
-  const RtnInputAttenuation3Increased();
+  final String usVCA3;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [usVCA3];
 }
 
-class RtnInputAttenuation3Decreased extends Setting18ControlEvent {
-  const RtnInputAttenuation3Decreased();
+class USVCA3Increased extends Setting18ControlEvent {
+  const USVCA3Increased();
 
   @override
   List<Object> get props => [];
 }
 
-class RtnInputAttenuation4Changed extends Setting18ControlEvent {
-  const RtnInputAttenuation4Changed(this.rtnInputAttenuation4);
-
-  final String rtnInputAttenuation4;
-
-  @override
-  List<Object> get props => [rtnInputAttenuation4];
-}
-
-class RtnInputAttenuation4Increased extends Setting18ControlEvent {
-  const RtnInputAttenuation4Increased();
+class USVCA3Decreased extends Setting18ControlEvent {
+  const USVCA3Decreased();
 
   @override
   List<Object> get props => [];
 }
 
-class RtnInputAttenuation4Decreased extends Setting18ControlEvent {
-  const RtnInputAttenuation4Decreased();
+class USVCA4Changed extends Setting18ControlEvent {
+  const USVCA4Changed(this.usVCA4);
+
+  final String usVCA4;
+
+  @override
+  List<Object> get props => [usVCA4];
+}
+
+class USVCA4Increased extends Setting18ControlEvent {
+  const USVCA4Increased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class USVCA4Decreased extends Setting18ControlEvent {
+  const USVCA4Decreased();
 
   @override
   List<Object> get props => [];
@@ -252,6 +252,29 @@ class DSSlope3Decreased extends Setting18ControlEvent {
   List<Object> get props => [];
 }
 
+class DSSlope4Changed extends Setting18ControlEvent {
+  const DSSlope4Changed(this.dsSlope4);
+
+  final String dsSlope4;
+
+  @override
+  List<Object> get props => [dsSlope4];
+}
+
+class DSSlope4Increased extends Setting18ControlEvent {
+  const DSSlope4Increased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DSSlope4Decreased extends Setting18ControlEvent {
+  const DSSlope4Decreased();
+
+  @override
+  List<Object> get props => [];
+}
+
 class DSVVA3Changed extends Setting18ControlEvent {
   const DSVVA3Changed(this.dsVVA3);
 
@@ -279,6 +302,29 @@ class DSVVA4Increased extends Setting18ControlEvent {
 
 class DSVVA4Decreased extends Setting18ControlEvent {
   const DSVVA4Decreased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DSVVA5Changed extends Setting18ControlEvent {
+  const DSVVA5Changed(this.dsVVA5);
+
+  final String dsVVA5;
+
+  @override
+  List<Object> get props => [dsVVA5];
+}
+
+class DSVVA5Increased extends Setting18ControlEvent {
+  const DSVVA5Increased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DSVVA5Decreased extends Setting18ControlEvent {
+  const DSVVA5Decreased();
 
   @override
   List<Object> get props => [];

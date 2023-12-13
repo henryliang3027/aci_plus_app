@@ -6,8 +6,8 @@ class Setting18ControlState extends Equatable {
     this.fwdInputAttenuation = '',
     this.fwdInputEQ = '',
     this.rtnInputAttenuation2 = '',
-    this.rtnInputAttenuation3 = '',
-    this.rtnInputAttenuation4 = '',
+    this.usVCA3 = '',
+    this.usVCA4 = '',
     this.rtnOutputLevelAttenuation = '',
     this.rtnOutputEQ = '',
     this.rtnIngressSetting2 = '',
@@ -20,6 +20,7 @@ class Setting18ControlState extends Equatable {
     this.dsVVA4 = '',
     this.dsVVA5 = '',
     this.dsSlope3 = '',
+    this.dsSlope4 = '',
     this.editMode = false,
     this.enableSubmission = false,
     this.isInitialize = true,
@@ -31,8 +32,8 @@ class Setting18ControlState extends Equatable {
   final String fwdInputAttenuation;
   final String fwdInputEQ;
   final String rtnInputAttenuation2;
-  final String rtnInputAttenuation3;
-  final String rtnInputAttenuation4;
+  final String usVCA3;
+  final String usVCA4;
   final String rtnOutputLevelAttenuation;
   final String rtnOutputEQ;
   final String rtnIngressSetting2;
@@ -45,6 +46,7 @@ class Setting18ControlState extends Equatable {
   final String dsVVA4;
   final String dsVVA5;
   final String dsSlope3;
+  final String dsSlope4;
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
@@ -56,8 +58,8 @@ class Setting18ControlState extends Equatable {
     String? fwdInputAttenuation,
     String? fwdInputEQ,
     String? rtnInputAttenuation2,
-    String? rtnInputAttenuation3,
-    String? rtnInputAttenuation4,
+    String? usVCA3,
+    String? usVCA4,
     String? rtnOutputLevelAttenuation,
     String? rtnOutputEQ,
     String? rtnIngressSetting2,
@@ -70,6 +72,7 @@ class Setting18ControlState extends Equatable {
     String? dsVVA4,
     String? dsVVA5,
     String? dsSlope3,
+    String? dsSlope4,
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
@@ -81,8 +84,8 @@ class Setting18ControlState extends Equatable {
       fwdInputAttenuation: fwdInputAttenuation ?? this.fwdInputAttenuation,
       fwdInputEQ: fwdInputEQ ?? this.fwdInputEQ,
       rtnInputAttenuation2: rtnInputAttenuation2 ?? this.rtnInputAttenuation2,
-      rtnInputAttenuation3: rtnInputAttenuation3 ?? this.rtnInputAttenuation3,
-      rtnInputAttenuation4: rtnInputAttenuation4 ?? this.rtnInputAttenuation4,
+      usVCA3: usVCA3 ?? this.usVCA3,
+      usVCA4: usVCA4 ?? this.usVCA4,
       rtnOutputLevelAttenuation:
           rtnOutputLevelAttenuation ?? this.rtnOutputLevelAttenuation,
       rtnOutputEQ: rtnOutputEQ ?? this.rtnOutputEQ,
@@ -96,6 +99,7 @@ class Setting18ControlState extends Equatable {
       dsVVA4: dsVVA4 ?? this.dsVVA4,
       dsVVA5: dsVVA5 ?? this.dsVVA5,
       dsSlope3: dsSlope3 ?? this.dsSlope3,
+      dsSlope4: dsSlope4 ?? this.dsSlope4,
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
@@ -110,8 +114,8 @@ class Setting18ControlState extends Equatable {
         fwdInputAttenuation,
         fwdInputEQ,
         rtnInputAttenuation2,
-        rtnInputAttenuation3,
-        rtnInputAttenuation4,
+        usVCA3,
+        usVCA4,
         rtnOutputLevelAttenuation,
         rtnOutputEQ,
         rtnIngressSetting2,
@@ -124,6 +128,7 @@ class Setting18ControlState extends Equatable {
         dsVVA4,
         dsVVA5,
         dsSlope3,
+        dsSlope4,
         editMode,
         enableSubmission,
         isInitialize,

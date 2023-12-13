@@ -72,6 +72,8 @@
     "rtnInputAttenuation4": "Port 4 輸入衰減量",
     "rtnInputAttenuation5": "Port 5 輸入衰減量",
     "rtnInputAttenuation6": "Port 6 輸入衰減量",
+    "rtnInputAttenuation2And3": "Port 2 & Port 3 輸入衰減量",
+    "rtnInputAttenuation5And6": "Port 5 & Port 6 輸入衰減量",
     "rtnOutputLevelAttenuation": "輸出衰減量",
     "rtnOutputEQ": "輸出等化器",
     "rtnIngressSetting1": "Port 1 訊號通過量",
@@ -80,6 +82,8 @@
     "rtnIngressSetting4": "Port 4 訊號通過量",
     "rtnIngressSetting5": "Port 5 訊號通過量",
     "rtnIngressSetting6": "Port 6 訊號通過量",
+    "rtnIngressSetting2And3": "Port 2 & Port 3 訊號通過量",
+    "rtnIngressSetting5And6": "Port 5 & Port 6 訊號通過量",
     "ingressOpen": "斷開",
 
 

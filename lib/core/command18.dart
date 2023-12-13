@@ -306,7 +306,7 @@ class Command18 {
     0x00,
   ];
 
-  static List<int> setReturnInputAttenuation3Cmd = [
+  static List<int> setUSVCA3Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -320,7 +320,7 @@ class Command18 {
     0x00,
   ];
 
-  static List<int> setReturnInputAttenuation4Cmd = [
+  static List<int> setUSVCA4Cmd = [
     0xB0,
     0x10,
     0x00,

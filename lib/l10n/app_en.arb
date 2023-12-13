@@ -72,6 +72,8 @@
     "rtnInputAttenuation4": "Port 4 Input Attenuation",
     "rtnInputAttenuation5": "Port 5 Input Attenuation",
     "rtnInputAttenuation6": "Port 6 Input Attenuation",
+    "rtnInputAttenuation2And3": "Port 2 & Port 3 Input Attenuation",
+    "rtnInputAttenuation5And6": "Port 5 & Port 6 Input Attenuation",
     "rtnOutputLevelAttenuation": "Output Attenuation",
     "rtnOutputEQ": "Output Equalizer",
     "rtnIngressSetting1": "Port 1 Ingress Setting",
@@ -80,6 +82,8 @@
     "rtnIngressSetting4": "Port 4 Ingress Setting",
     "rtnIngressSetting5": "Port 5 Ingress Setting",
     "rtnIngressSetting6": "Port 6 Ingress Setting",
+    "rtnIngressSetting2And3": "Port 2 & Port 3 Ingress Setting",
+    "rtnIngressSetting5And6": "Port 5 & Port 6 Ingress Setting",
     "ingressOpen": "Open",
 
     

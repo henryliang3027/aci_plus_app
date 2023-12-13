@@ -23,12 +23,12 @@ class Setting18ControlBloc
     on<RtnInputAttenuation2Changed>(_onRtnInputAttenuation2Changed);
     on<RtnInputAttenuation2Increased>(_onRtnInputAttenuation2Increased);
     on<RtnInputAttenuation2Decreased>(_onRtnInputAttenuation2Decreased);
-    on<RtnInputAttenuation3Changed>(_onRtnInputAttenuation3Changed);
-    on<RtnInputAttenuation3Increased>(_onRtnInputAttenuation3Increased);
-    on<RtnInputAttenuation3Decreased>(_onRtnInputAttenuation3Decreased);
-    on<RtnInputAttenuation4Changed>(_onRtnInputAttenuation4Changed);
-    on<RtnInputAttenuation4Increased>(_onRtnInputAttenuation4Increased);
-    on<RtnInputAttenuation4Decreased>(_onRtnInputAttenuation4Decreased);
+    on<USVCA3Changed>(_onUSVCA3Changed);
+    on<USVCA3Increased>(_onUSVCA3Increased);
+    on<USVCA3Decreased>(_onUSVCA3Decreased);
+    on<USVCA4Changed>(_onUSVCA4Changed);
+    on<USVCA4Increased>(_onUSVCA4Increased);
+    on<USVCA4Decreased>(_onUSVCA4Decreased);
     on<RtnOutputLevelAttenuationChanged>(_onRtnOutputLevelAttenuationChanged);
     on<RtnOutputLevelAttenuationIncreased>(
         _onRtnOutputLevelAttenuationIncreased);
@@ -47,9 +47,15 @@ class Setting18ControlBloc
     on<DSVVA4Changed>(_onDSVVA4Changed);
     on<DSVVA4Increased>(_onDSVVA4Increased);
     on<DSVVA4Decreased>(_onDSVVA4Decreased);
+    on<DSVVA5Changed>(_onDSVVA5Changed);
+    on<DSVVA5Increased>(_onDSVVA5Increased);
+    on<DSVVA5Decreased>(_onDSVVA5Decreased);
     on<DSSlope3Changed>(_onDSSlope3Changed);
     on<DSSlope3Increased>(_onDSSlope3Increased);
     on<DSSlope3Decreased>(_onDSSlope3Decreased);
+    on<DSSlope4Changed>(_onDSSlope4Changed);
+    on<DSSlope4Increased>(_onDSSlope4Increased);
+    on<DSSlope4Decreased>(_onDSSlope4Decreased);
     // on<USTGCChanged>(_onUSTGCChanged);
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
@@ -73,10 +79,8 @@ class Setting18ControlBloc
         characteristicDataCache[DataKey.inputEqualizer] ?? '';
     String inputAttenuation2 =
         characteristicDataCache[DataKey.inputAttenuation2] ?? '';
-    String inputAttenuation3 =
-        characteristicDataCache[DataKey.inputAttenuation3] ?? '';
-    String inputAttenuation4 =
-        characteristicDataCache[DataKey.inputAttenuation4] ?? '';
+    String usVCA3 = characteristicDataCache[DataKey.usVCA3] ?? '';
+    String usVCA4 = characteristicDataCache[DataKey.usVCA4] ?? '';
     String outputAttenuation =
         characteristicDataCache[DataKey.outputAttenuation] ?? '';
     String outputEqualizer =
@@ -100,8 +104,8 @@ class Setting18ControlBloc
       fwdInputAttenuation: inputAttenuation,
       fwdInputEQ: inputEqualizer,
       rtnInputAttenuation2: inputAttenuation2,
-      rtnInputAttenuation3: inputAttenuation3,
-      rtnInputAttenuation4: inputAttenuation4,
+      usVCA3: usVCA3,
+      usVCA4: usVCA4,
       rtnOutputLevelAttenuation: outputAttenuation,
       rtnOutputEQ: outputEqualizer,
       rtnIngressSetting2: ingressSetting2,
@@ -147,8 +151,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: event.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -159,7 +163,9 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
         // usTGC: state.usTGC,
       ),
     ));
@@ -179,8 +185,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -191,7 +197,9 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
         // usTGC: state.usTGC,
       ),
     ));
@@ -211,8 +219,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -223,7 +231,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -241,8 +252,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: event.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -253,7 +264,9 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
         // usTGC: state.usTGC,
       ),
     ));
@@ -273,8 +286,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -285,7 +298,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -305,8 +321,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -317,7 +333,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -335,8 +354,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: event.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -347,7 +366,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -367,8 +389,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -379,7 +401,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -399,8 +424,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -411,26 +436,28 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
         // usTGC: state.usTGC,
       ),
     ));
   }
 
-  void _onRtnInputAttenuation3Changed(
-    RtnInputAttenuation3Changed event,
+  void _onUSVCA3Changed(
+    USVCA3Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rtnInputAttenuation3: event.rtnInputAttenuation3,
+      usVCA3: event.usVCA3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: event.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: event.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -441,29 +468,30 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
         // usTGC: state.usTGC,
       ),
     ));
   }
 
-  void _onRtnInputAttenuation3Increased(
-    RtnInputAttenuation3Increased event,
+  void _onUSVCA3Increased(
+    USVCA3Increased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String rtnInputAttenuation3 =
-        _getIncreasedNumber(state.rtnInputAttenuation3);
+    String usVCA3 = _getIncreasedNumber(state.usVCA3);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rtnInputAttenuation3: rtnInputAttenuation3,
+      usVCA3: usVCA3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -474,29 +502,30 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
         // usTGC: state.usTGC,
       ),
     ));
   }
 
-  void _onRtnInputAttenuation3Decreased(
-    RtnInputAttenuation3Decreased event,
+  void _onUSVCA3Decreased(
+    USVCA3Decreased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String rtnInputAttenuation3 =
-        _getDecreasedNumber(state.rtnInputAttenuation3);
+    String usVCA3 = _getDecreasedNumber(state.usVCA3);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rtnInputAttenuation3: rtnInputAttenuation3,
+      usVCA3: usVCA3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -507,26 +536,28 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
         // usTGC: state.usTGC,
       ),
     ));
   }
 
-  void _onRtnInputAttenuation4Changed(
-    RtnInputAttenuation4Changed event,
+  void _onUSVCA4Changed(
+    USVCA4Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rtnInputAttenuation4: event.rtnInputAttenuation4,
+      usVCA4: event.usVCA4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: event.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: event.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -537,28 +568,31 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
   }
 
-  void _onRtnInputAttenuation4Increased(
-    RtnInputAttenuation4Increased event,
+  void _onUSVCA4Increased(
+    USVCA4Increased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String rtnInputAttenuation4 =
-        _getIncreasedNumber(state.rtnInputAttenuation4);
+    String usVCA4 = _getIncreasedNumber(state.usVCA4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rtnInputAttenuation4: rtnInputAttenuation4,
+      usVCA4: usVCA4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -569,28 +603,30 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
         // usTGC: state.usTGC,
       ),
     ));
   }
 
-  void _onRtnInputAttenuation4Decreased(
-    RtnInputAttenuation4Decreased event,
+  void _onUSVCA4Decreased(
+    USVCA4Decreased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String rtnInputAttenuation4 =
-        _getDecreasedNumber(state.rtnInputAttenuation4);
+    String usVCA4 = _getDecreasedNumber(state.usVCA4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rtnInputAttenuation4: rtnInputAttenuation4,
+      usVCA4: usVCA4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -601,7 +637,9 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
         // usTGC: state.usTGC,
       ),
     ));
@@ -619,8 +657,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: event.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -631,7 +669,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -652,8 +693,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -664,7 +705,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -685,8 +729,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -697,7 +741,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -715,8 +762,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: event.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -727,7 +774,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -746,8 +796,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -758,7 +808,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -777,8 +830,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -789,7 +842,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -807,8 +863,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: event.rtnIngressSetting2,
@@ -819,7 +875,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -837,8 +896,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -849,7 +908,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -867,8 +929,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -879,7 +941,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -897,8 +962,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -909,7 +974,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -927,8 +995,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -939,7 +1007,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -957,8 +1028,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -969,7 +1040,10 @@ class Setting18ControlBloc
         dsSlope2: event.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -987,8 +1061,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -999,7 +1073,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: event.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -1017,8 +1094,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -1029,7 +1106,10 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: event.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -1049,8 +1129,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -1061,7 +1141,9 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
         // usTGC: state.usTGC,
       ),
     ));
@@ -1081,8 +1163,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -1093,7 +1175,110 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+        // usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onDSVVA5Changed(
+    DSVVA5Changed event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsVVA5: event.dsVVA5,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA5: event.dsVVA5,
+        dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+        // usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onDSVVA5Increased(
+    DSVVA5Increased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String dsVVA5 = _getIncreasedNumber(state.dsVVA5);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsVVA5: dsVVA5,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA5: dsVVA5,
+        dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+        // usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onDSVVA5Decreased(
+    DSVVA5Decreased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String dsVVA5 = _getDecreasedNumber(state.dsVVA5);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsVVA5: dsVVA5,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA5: dsVVA5,
+        dsSlope3: state.dsSlope3,
+        dsSlope4: state.dsSlope4,
+
         // usTGC: state.usTGC,
       ),
     ));
@@ -1111,8 +1296,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -1123,7 +1308,9 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: event.dsSlope3,
+        dsSlope4: state.dsSlope4,
         // usTGC: state.usTGC,
       ),
     ));
@@ -1143,8 +1330,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -1155,7 +1342,9 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: dsSlope3,
+        dsSlope4: state.dsSlope4,
         // usTGC: state.usTGC,
       ),
     ));
@@ -1175,8 +1364,8 @@ class Setting18ControlBloc
         fwdInputAttenuation: state.fwdInputAttenuation,
         fwdInputEQ: state.fwdInputEQ,
         rtnInputAttenuation2: state.rtnInputAttenuation2,
-        rtnInputAttenuation3: state.rtnInputAttenuation3,
-        rtnInputAttenuation4: state.rtnInputAttenuation4,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
         rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
         rtnOutputEQ: state.rtnOutputEQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
@@ -1187,7 +1376,109 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
         dsSlope3: dsSlope3,
+        dsSlope4: state.dsSlope4,
+        // usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onDSSlope4Changed(
+    DSSlope4Changed event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsSlope4: event.dsSlope4,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
+        dsSlope3: state.dsSlope3,
+        dsSlope4: event.dsSlope4,
+        // usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onDSSlope4Increased(
+    DSSlope4Increased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String dsSlope4 = _getIncreasedNumber(state.dsSlope4);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsSlope4: dsSlope4,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
+        dsSlope3: state.dsSlope3,
+        dsSlope4: dsSlope4,
+        // usTGC: state.usTGC,
+      ),
+    ));
+  }
+
+  void _onDSSlope4Decreased(
+    DSSlope4Decreased event,
+    Emitter<Setting18ControlState> emit,
+  ) {
+    String dsSlope4 = _getDecreasedNumber(state.dsSlope4);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsSlope4: dsSlope4,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        fwdInputAttenuation: state.fwdInputAttenuation,
+        fwdInputEQ: state.fwdInputEQ,
+        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
+        rtnOutputEQ: state.rtnOutputEQ,
+        rtnIngressSetting2: state.rtnIngressSetting2,
+        rtnIngressSetting3: state.rtnIngressSetting3,
+        rtnIngressSetting4: state.rtnIngressSetting4,
+        tgcCableLength: state.tgcCableLength,
+        dsVVA2: state.dsVVA2,
+        dsSlope2: state.dsSlope2,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA5: state.dsVVA5,
+        dsSlope3: state.dsSlope3,
+        dsSlope4: dsSlope4,
         // usTGC: state.usTGC,
       ),
     ));
@@ -1245,8 +1536,8 @@ class Setting18ControlBloc
       fwdInputAttenuation: state.initialValues[DataKey.inputAttenuation],
       fwdInputEQ: state.initialValues[DataKey.inputEqualizer],
       rtnInputAttenuation2: state.initialValues[DataKey.inputAttenuation2],
-      rtnInputAttenuation3: state.initialValues[DataKey.inputAttenuation3],
-      rtnInputAttenuation4: state.initialValues[DataKey.inputAttenuation4],
+      usVCA3: state.initialValues[DataKey.usVCA3],
+      usVCA4: state.initialValues[DataKey.usVCA4],
       rtnOutputLevelAttenuation: state.initialValues[DataKey.outputAttenuation],
       rtnOutputEQ: state.initialValues[DataKey.outputEqualizer],
       rtnIngressSetting2: state.initialValues[DataKey.ingressSetting2],
@@ -1266,8 +1557,8 @@ class Setting18ControlBloc
     required String fwdInputAttenuation,
     required String fwdInputEQ,
     required String rtnInputAttenuation2,
-    required String rtnInputAttenuation3,
-    required String rtnInputAttenuation4,
+    required String usVCA3,
+    required String usVCA4,
     required String rtnOutputLevelAttenuation,
     required String rtnOutputEQ,
     required String rtnIngressSetting2,
@@ -1278,17 +1569,17 @@ class Setting18ControlBloc
     required String dsSlope2,
     required String dsVVA3,
     required String dsVVA4,
+    required String dsVVA5,
     required String dsSlope3,
+    required String dsSlope4,
     // required String usTGC,
   }) {
     if (fwdInputAttenuation != state.initialValues[DataKey.inputAttenuation] ||
             fwdInputEQ != state.initialValues[DataKey.inputEqualizer] ||
             rtnInputAttenuation2 !=
                 state.initialValues[DataKey.inputAttenuation2] ||
-            rtnInputAttenuation3 !=
-                state.initialValues[DataKey.inputAttenuation3] ||
-            rtnInputAttenuation4 !=
-                state.initialValues[DataKey.inputAttenuation4] ||
+            usVCA3 != state.initialValues[DataKey.usVCA3] ||
+            usVCA4 != state.initialValues[DataKey.usVCA4] ||
             rtnOutputLevelAttenuation !=
                 state.initialValues[DataKey.outputAttenuation] ||
             rtnOutputEQ != state.initialValues[DataKey.outputEqualizer] ||
@@ -1303,7 +1594,11 @@ class Setting18ControlBloc
             dsSlope2 != state.initialValues[DataKey.dsSlope2] ||
             dsVVA3 != state.initialValues[DataKey.dsVVA3] ||
             dsVVA4 != state.initialValues[DataKey.dsVVA4] ||
-            dsSlope3 != state.initialValues[DataKey.dsSlope3]
+            dsVVA5 != state.initialValues[DataKey.dsVVA5] ||
+            dsSlope3 != state.initialValues[DataKey.dsSlope3] ||
+            dsSlope4 != state.initialValues[DataKey.dsSlope4] ||
+            usVCA3 != state.initialValues[DataKey.usVCA3] ||
+            usVCA3 != state.initialValues[DataKey.usVCA4]
         // usTGC != state.initialValues[DataKey.usTGC]
         ) {
       return true;
@@ -1349,22 +1644,18 @@ class Setting18ControlBloc
           '${DataKey.inputAttenuation2.name},$resultOfSetReturnInputAttenuation2');
     }
 
-    if (state.rtnInputAttenuation3 !=
-        state.initialValues[DataKey.inputAttenuation3]) {
-      bool resultOfSetReturnInputAttenuation3 = await _amp18Repository
-          .set1p8GReturnInputAttenuation3(state.rtnInputAttenuation3);
+    if (state.usVCA3 != state.initialValues[DataKey.usVCA3]) {
+      bool resultOfSetReturnUSVCA3 =
+          await _amp18Repository.set1p8GUSVCA3(state.usVCA3);
 
-      settingResult.add(
-          '${DataKey.inputAttenuation3.name},$resultOfSetReturnInputAttenuation3');
+      settingResult.add('${DataKey.usVCA3.name},$resultOfSetReturnUSVCA3');
     }
 
-    if (state.rtnInputAttenuation4 !=
-        state.initialValues[DataKey.inputAttenuation4]) {
-      bool resultOfSetReturnInputAttenuation4 = await _amp18Repository
-          .set1p8GReturnInputAttenuation4(state.rtnInputAttenuation4);
+    if (state.usVCA4 != state.initialValues[DataKey.usVCA4]) {
+      bool resultOfSetUSVCA4 =
+          await _amp18Repository.set1p8GUSVCA4(state.usVCA4);
 
-      settingResult.add(
-          '${DataKey.inputAttenuation4.name},$resultOfSetReturnInputAttenuation4');
+      settingResult.add('${DataKey.usVCA4.name},$resultOfSetUSVCA4');
     }
 
     if (state.rtnOutputLevelAttenuation !=

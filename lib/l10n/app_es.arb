@@ -72,6 +72,8 @@
     "rtnInputAttenuation4": "Puerto 4 Entrada Atenuación",
     "rtnInputAttenuation5": "Puerto 5 Entrada Atenuación",
     "rtnInputAttenuation6": "Puerto 6 Entrada Atenuación",
+    "rtnInputAttenuation2And3": "Puerto 2 & Puerto 3 Entrada Atenuación",
+    "rtnInputAttenuation5And6": "Puerto 5 & Puerto 6 Entrada Atenuación",
     "rtnOutputLevelAttenuation": "Salida Atenuación",
     "rtnOutputEQ": "Salida Ecualizador",
     "rtnIngressSetting1": "Puerto 1 Ingreso Configuración",
@@ -80,6 +82,8 @@
     "rtnIngressSetting4": "Puerto 4 Ingreso Configuración",
     "rtnIngressSetting5": "Puerto 5 Ingreso Configuración",
     "rtnIngressSetting6": "Puerto 6 Ingreso Configuración",
+    "rtnIngressSetting2And3": "Puerto 2 & Puerto 3 Ingreso Configuración",
+    "rtnIngressSetting5And6": "Puerto 5 & Puerto 6 Ingreso Configuración",
     "ingressOpen": "Abierto",
 
 

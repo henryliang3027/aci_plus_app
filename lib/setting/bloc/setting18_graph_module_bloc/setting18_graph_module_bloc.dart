@@ -75,10 +75,8 @@ class Setting18GraphModuleBloc
         characteristicDataCache[DataKey.inputEqualizer] ?? '';
     String inputAttenuation2 =
         characteristicDataCache[DataKey.inputAttenuation2] ?? '';
-    String inputAttenuation3 =
-        characteristicDataCache[DataKey.inputAttenuation3] ?? '';
-    String inputAttenuation4 =
-        characteristicDataCache[DataKey.inputAttenuation4] ?? '';
+    String inputAttenuation3 = characteristicDataCache[DataKey.usVCA3] ?? '';
+    String inputAttenuation4 = characteristicDataCache[DataKey.usVCA4] ?? '';
     String outputAttenuation =
         characteristicDataCache[DataKey.outputAttenuation] ?? '';
     String outputEqualizer =
@@ -1631,10 +1629,8 @@ class Setting18GraphModuleBloc
         fwdInputEQ != state.initialValues[DataKey.inputEqualizer] ||
         rtnInputAttenuation2 !=
             state.initialValues[DataKey.inputAttenuation2] ||
-        rtnInputAttenuation3 !=
-            state.initialValues[DataKey.inputAttenuation3] ||
-        rtnInputAttenuation4 !=
-            state.initialValues[DataKey.inputAttenuation4] ||
+        rtnInputAttenuation3 != state.initialValues[DataKey.usVCA3] ||
+        rtnInputAttenuation4 != state.initialValues[DataKey.usVCA4] ||
         rtnOutputLevelAttenuation !=
             state.initialValues[DataKey.outputAttenuation] ||
         rtnOutputEQ != state.initialValues[DataKey.outputEqualizer] ||
@@ -1702,22 +1698,20 @@ class Setting18GraphModuleBloc
           '${DataKey.inputAttenuation2.name},$resultOfSetReturnInputAttenuation2');
     }
 
-    if (state.rtnInputAttenuation3 !=
-        state.initialValues[DataKey.inputAttenuation3]) {
-      bool resultOfSetReturnInputAttenuation3 = await _amp18Repository
-          .set1p8GReturnInputAttenuation3(state.rtnInputAttenuation3);
+    if (state.rtnInputAttenuation3 != state.initialValues[DataKey.usVCA3]) {
+      bool resultOfSetReturnInputAttenuation3 =
+          await _amp18Repository.set1p8GUSVCA3(state.rtnInputAttenuation3);
 
-      settingResult.add(
-          '${DataKey.inputAttenuation3.name},$resultOfSetReturnInputAttenuation3');
+      settingResult
+          .add('${DataKey.usVCA3.name},$resultOfSetReturnInputAttenuation3');
     }
 
-    if (state.rtnInputAttenuation4 !=
-        state.initialValues[DataKey.inputAttenuation4]) {
-      bool resultOfSetReturnInputAttenuation4 = await _amp18Repository
-          .set1p8GReturnInputAttenuation4(state.rtnInputAttenuation4);
+    if (state.rtnInputAttenuation4 != state.initialValues[DataKey.usVCA4]) {
+      bool resultOfSetReturnInputAttenuation4 =
+          await _amp18Repository.set1p8GUSVCA4(state.rtnInputAttenuation4);
 
-      settingResult.add(
-          '${DataKey.inputAttenuation4.name},$resultOfSetReturnInputAttenuation4');
+      settingResult
+          .add('${DataKey.usVCA4.name},$resultOfSetReturnInputAttenuation4');
     }
 
     if (state.rtnOutputLevelAttenuation !=

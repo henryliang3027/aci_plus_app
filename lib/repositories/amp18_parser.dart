@@ -146,8 +146,8 @@ class Amp18Parser {
     String dsVVA2 = '';
     String dsSlope2 = '';
     String inputAttenuation2 = '';
-    String inputAttenuation3 = '';
-    String inputAttenuation4 = '';
+    String usVCA3 = '';
+    String usVCA4 = '';
     String outputAttenuation = '';
     String outputEqualizer = '';
     String dsVVA3 = '';
@@ -405,21 +405,19 @@ class Amp18Parser {
         (rawOutputAttenuationByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
 
-    // 解析 inputAttenuation3 (0xA6 US VCA3 Set dB)
-    List<int> rawInputAttenuation3 = rawData.sublist(169, 171);
-    ByteData rawInputAttenuation3ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawInputAttenuation3));
-    inputAttenuation3 =
-        (rawInputAttenuation3ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
+    // 解析 usVCA3 (0xA6 US VCA3 Set dB)
+    List<int> rawUSVCA3 = rawData.sublist(169, 171);
+    ByteData rawUSVCA3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawUSVCA3));
+    usVCA3 =
+        (rawUSVCA3ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
 
-    // 解析 inputAttenuation4 (0xA8 US VCA4 Set dB)
-    List<int> rawInputAttenuation4 = rawData.sublist(171, 173);
-    ByteData rawInputAttenuation4ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawInputAttenuation4));
-    inputAttenuation4 =
-        (rawInputAttenuation4ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
+    // 解析 usVCA4 (0xA8 US VCA4 Set dB)
+    List<int> rawUSVCA4 = rawData.sublist(171, 173);
+    ByteData rawUSVCA4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawUSVCA4));
+    usVCA4 =
+        (rawUSVCA4ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
 
     // 解析 usTGC (0xAA US TGC Set dB)
     // List<int> rawUSTGC = rawData.sublist(173, 175);
@@ -475,8 +473,8 @@ class Amp18Parser {
       dsVVA2: dsVVA2,
       dsSlope2: dsSlope2,
       inputAttenuation2: inputAttenuation2,
-      inputAttenuation3: inputAttenuation3,
-      inputAttenuation4: inputAttenuation4,
+      usVCA3: usVCA3,
+      usVCA4: usVCA4,
       outputAttenuation: outputAttenuation,
       outputEqualizer: outputEqualizer,
       dsVVA3: dsVVA3,
@@ -1641,8 +1639,8 @@ class A1P8G1 {
     required this.dsVVA2,
     required this.dsSlope2,
     required this.inputAttenuation2,
-    required this.inputAttenuation3,
-    required this.inputAttenuation4,
+    required this.usVCA3,
+    required this.usVCA4,
     required this.outputAttenuation,
     required this.outputEqualizer,
     required this.dsVVA3,
@@ -1691,8 +1689,8 @@ class A1P8G1 {
   final String dsVVA2;
   final String dsSlope2;
   final String inputAttenuation2;
-  final String inputAttenuation3;
-  final String inputAttenuation4;
+  final String usVCA3;
+  final String usVCA4;
   final String outputAttenuation;
   final String outputEqualizer;
   final String dsVVA3;

@@ -44,10 +44,10 @@ class Setting18ControlView extends StatelessWidget {
       } else if (item == DataKey.inputAttenuation2.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation2Setting;
-      } else if (item == DataKey.inputAttenuation3.name) {
+      } else if (item == DataKey.usVCA3.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation3Setting;
-      } else if (item == DataKey.inputAttenuation4.name) {
+      } else if (item == DataKey.usVCA4.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation4Setting;
       } else if (item == DataKey.outputAttenuation.name) {
@@ -177,26 +177,26 @@ class Setting18ControlView extends StatelessWidget {
               const _ForwardOutputEqualizer3And4(),
             );
             break;
-          // case SettingControl.forwardOutputAttenuation2And3:
-          //   widgets.add(
-          //     const _ForwardOutputAttenuation2And3(),
-          //   );
-          //   break;
-          // case SettingControl.forwardOutputEqualizer2And3:
-          //   widgets.add(
-          //     const _ForwardOutputEqualizer2And3(),
-          //   );
-          //   break;
-          // case SettingControl.forwardOutputAttenuation5And6:
-          //   widgets.add(
-          //     const _ForwardOutputAttenuation5And6(),
-          //   );
-          //   break;
-          // case SettingControl.forwardOutputEqualizer5And6:
-          //   widgets.add(
-          //     const _ForwardOutputEqualizer5And6(),
-          //   );
-          //   break;
+          case SettingControl.forwardOutputAttenuation2And3:
+            widgets.add(
+              const _ForwardOutputAttenuation2And3(),
+            );
+            break;
+          case SettingControl.forwardOutputAttenuation5And6:
+            widgets.add(
+              const _ForwardOutputAttenuation5And6(),
+            );
+            break;
+          case SettingControl.forwardOutputEqualizer2And3:
+            widgets.add(
+              const _ForwardOutputEqualizer2And3(),
+            );
+            break;
+          case SettingControl.forwardOutputEqualizer5And6:
+            widgets.add(
+              const _ForwardOutputEqualizer5And6(),
+            );
+            break;
         }
       }
 
@@ -252,8 +252,14 @@ class Setting18ControlView extends StatelessWidget {
           case SettingControl.returnInputAttenuation6:
             break;
           case SettingControl.returnInputAttenuation2And3:
+            widgets.add(
+              const _RtnInputAttenuation2And3(),
+            );
             break;
           case SettingControl.returnInputAttenuation5And6:
+            widgets.add(
+              const _RtnInputAttenuation5And6(),
+            );
             break;
           case SettingControl.returnOutputAttenuation:
             widgets.add(
@@ -287,8 +293,14 @@ class Setting18ControlView extends StatelessWidget {
           case SettingControl.returnIngressSetting6:
             break;
           case SettingControl.returnIngressSetting2And3:
+            widgets.add(
+              const _RtnIngressSetting2And3(),
+            );
             break;
           case SettingControl.returnIngressSetting5And6:
+            widgets.add(
+              const _RtnIngressSetting5And6(),
+            );
             break;
         }
       }
@@ -496,6 +508,36 @@ class _FwdInputEQ extends StatelessWidget {
   }
 }
 
+class _ForwardOutputAttenuation2And3 extends StatelessWidget {
+  const _ForwardOutputAttenuation2And3({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation2And3}: ${state.dsVVA4} dB',
+          minValue: 0.0,
+          maxValue: 15.0,
+          currentValue: _getValue(state.dsVVA4),
+          onChanged: (dsVVA4) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(DSVVA4Changed(dsVVA4.toStringAsFixed(1)));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(const DSVVA4Decreased()),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(const DSVVA4Increased()),
+        );
+      },
+    );
+  }
+}
+
 class _ForwardOutputAttenuation3And4 extends StatelessWidget {
   const _ForwardOutputAttenuation3And4({super.key});
 
@@ -520,6 +562,68 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
               context.read<Setting18ControlBloc>().add(const DSVVA4Decreased()),
           onIncreased: () =>
               context.read<Setting18ControlBloc>().add(const DSVVA4Increased()),
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputAttenuation5And6 extends StatelessWidget {
+  const _ForwardOutputAttenuation5And6({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6}: ${state.dsVVA5} dB',
+          minValue: 0.0,
+          maxValue: 15.0,
+          currentValue: _getValue(state.dsVVA5),
+          onChanged: (dsVVA4) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(DSVVA5Changed(dsVVA4.toStringAsFixed(1)));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(const DSVVA5Decreased()),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(const DSVVA5Increased()),
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputEqualizer2And3 extends StatelessWidget {
+  const _ForwardOutputEqualizer2And3({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer2And3}: ${state.dsSlope3} dB',
+          minValue: 0.0,
+          maxValue: 15.0,
+          currentValue: _getValue(state.dsSlope3),
+          onChanged: (dsSlope3) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(DSSlope3Changed(dsSlope3.toStringAsFixed(1)));
+          },
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const DSSlope3Decreased()),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const DSSlope3Increased()),
         );
       },
     );
@@ -558,37 +662,37 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
   }
 }
 
-// class _ForwardOutputEqualizer2And3 extends StatelessWidget {
-//   const _ForwardOutputEqualizer2And3({super.key});
+class _ForwardOutputEqualizer5And6 extends StatelessWidget {
+  const _ForwardOutputEqualizer5And6({super.key});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
-//       builder: (context, state) {
-//         return controlParameterSlider(
-//           context: context,
-//           editMode: state.editMode,
-//           title:
-//               '${AppLocalizations.of(context)!.forwardOutputEqualizer2And3}: ${state.dsSlope3} dB',
-//           minValue: 0.0,
-//           maxValue: 15.0,
-//           currentValue: _getValue(state.dsSlope3),
-//           onChanged: (dsSlope3) {
-//             context
-//                 .read<Setting18ControlBloc>()
-//                 .add(DSSlope3Changed(dsSlope3.toStringAsFixed(1)));
-//           },
-//           onDecreased: () => context
-//               .read<Setting18ControlBloc>()
-//               .add(const DSSlope3Decreased()),
-//           onIncreased: () => context
-//               .read<Setting18ControlBloc>()
-//               .add(const DSSlope3Increased()),
-//         );
-//       },
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer5And6}: ${state.dsSlope4} dB',
+          minValue: 0.0,
+          maxValue: 15.0,
+          currentValue: _getValue(state.dsSlope4),
+          onChanged: (dsSlope4) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(DSSlope4Changed(dsSlope4.toStringAsFixed(1)));
+          },
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const DSSlope4Decreased()),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(const DSSlope4Increased()),
+        );
+      },
+    );
+  }
+}
 
 class _RtnInputAttenuation2 extends StatelessWidget {
   const _RtnInputAttenuation2({super.key});
@@ -633,21 +737,49 @@ class _RtnInputAttenuation3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.rtnInputAttenuation3}: ${state.rtnInputAttenuation3} dB',
+              '${AppLocalizations.of(context)!.rtnInputAttenuation3}: ${state.usVCA3} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: _getValue(state.rtnInputAttenuation3),
+          currentValue: _getValue(state.usVCA3),
           onChanged: (rtnInputAttenuation) {
-            context.read<Setting18ControlBloc>().add(
-                RtnInputAttenuation3Changed(
-                    rtnInputAttenuation.toStringAsFixed(1)));
+            context
+                .read<Setting18ControlBloc>()
+                .add(USVCA3Changed(rtnInputAttenuation.toStringAsFixed(1)));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(const RtnInputAttenuation3Decreased()),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(const RtnInputAttenuation3Increased()),
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(const USVCA3Decreased()),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(const USVCA3Increased()),
+        );
+      },
+    );
+  }
+}
+
+class _RtnInputAttenuation2And3 extends StatelessWidget {
+  const _RtnInputAttenuation2And3({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.rtnInputAttenuation2And3}: ${state.usVCA3} dB',
+          minValue: 0.0,
+          maxValue: 15.0,
+          currentValue: _getValue(state.usVCA3),
+          onChanged: (rtnInputAttenuation) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(USVCA3Changed(rtnInputAttenuation.toStringAsFixed(1)));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(const USVCA3Decreased()),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(const USVCA3Increased()),
         );
       },
     );
@@ -665,21 +797,49 @@ class _RtnInputAttenuation4 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.rtnInputAttenuation4}: ${state.rtnInputAttenuation4} dB',
+              '${AppLocalizations.of(context)!.rtnInputAttenuation4}: ${state.usVCA4} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: _getValue(state.rtnInputAttenuation4),
+          currentValue: _getValue(state.usVCA4),
           onChanged: (rtnInputAttenuation) {
-            context.read<Setting18ControlBloc>().add(
-                RtnInputAttenuation4Changed(
-                    rtnInputAttenuation.toStringAsFixed(1)));
+            context
+                .read<Setting18ControlBloc>()
+                .add(USVCA4Changed(rtnInputAttenuation.toStringAsFixed(1)));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(const RtnInputAttenuation4Decreased()),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(const RtnInputAttenuation4Increased()),
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(const USVCA4Decreased()),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(const USVCA4Increased()),
+        );
+      },
+    );
+  }
+}
+
+class _RtnInputAttenuation5And6 extends StatelessWidget {
+  const _RtnInputAttenuation5And6({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.rtnInputAttenuation5And6}: ${state.usVCA4} dB',
+          minValue: 0.0,
+          maxValue: 15.0,
+          currentValue: _getValue(state.usVCA4),
+          onChanged: (rtnInputAttenuation) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(USVCA4Changed(rtnInputAttenuation.toStringAsFixed(1)));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(const USVCA4Decreased()),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(const USVCA4Increased()),
         );
       },
     );
@@ -849,6 +1009,76 @@ class _RtnIngressSetting4 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.rtnIngressSetting4}:',
+          currentValue: state.rtnIngressSetting4,
+          onChanged: (int index) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(RtnIngressSetting4Changed(rtnIngressValues[index]));
+          },
+          values: rtnIngressValues,
+          texts: [
+            '0',
+            '-3',
+            '-6',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _RtnIngressSetting2And3 extends StatelessWidget {
+  const _RtnIngressSetting2And3({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+      buildWhen: (previous, current) =>
+          previous.rtnIngressSetting3 != current.rtnIngressSetting3 ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.rtnIngressSetting2And3}:',
+          currentValue: state.rtnIngressSetting3,
+          onChanged: (int index) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(RtnIngressSetting3Changed(rtnIngressValues[index]));
+          },
+          values: rtnIngressValues,
+          texts: [
+            '0',
+            '-3',
+            '-6',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _RtnIngressSetting5And6 extends StatelessWidget {
+  const _RtnIngressSetting5And6({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+      buildWhen: (previous, current) =>
+          previous.rtnIngressSetting4 != current.rtnIngressSetting4 ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.rtnIngressSetting5And6}:',
           currentValue: state.rtnIngressSetting4,
           onChanged: (int index) {
             context
