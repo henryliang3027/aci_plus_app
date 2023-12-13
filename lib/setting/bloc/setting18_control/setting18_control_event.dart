@@ -37,24 +37,24 @@ class DSVVA1Decreased extends Setting18ControlEvent {
   List<Object> get props => [];
 }
 
-class FwdInputEQChanged extends Setting18ControlEvent {
-  const FwdInputEQChanged(this.fwdInputEQ);
+class DSSlope1Changed extends Setting18ControlEvent {
+  const DSSlope1Changed(this.dsSlope1);
 
-  final String fwdInputEQ;
+  final String dsSlope1;
 
   @override
-  List<Object> get props => [fwdInputEQ];
+  List<Object> get props => [dsSlope1];
 }
 
-class FwdInputEQIncreased extends Setting18ControlEvent {
-  const FwdInputEQIncreased();
+class DSSlope1Increased extends Setting18ControlEvent {
+  const DSSlope1Increased();
 
   @override
   List<Object> get props => [];
 }
 
-class FwdInputEQDecreased extends Setting18ControlEvent {
-  const FwdInputEQDecreased();
+class DSSlope1Decreased extends Setting18ControlEvent {
+  const DSSlope1Decreased();
 
   @override
   List<Object> get props => [];

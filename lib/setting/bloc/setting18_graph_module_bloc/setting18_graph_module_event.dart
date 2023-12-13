@@ -120,24 +120,24 @@ class DSVVA1Decreased extends Setting18GraphModuleEvent {
   List<Object> get props => [];
 }
 
-class FwdInputEQChanged extends Setting18GraphModuleEvent {
-  const FwdInputEQChanged(this.fwdInputEQ);
+class DSSlope1Changed extends Setting18GraphModuleEvent {
+  const DSSlope1Changed(this.dsSlope1);
 
-  final String fwdInputEQ;
+  final String dsSlope1;
 
   @override
-  List<Object> get props => [fwdInputEQ];
+  List<Object> get props => [dsSlope1];
 }
 
-class FwdInputEQIncreased extends Setting18GraphModuleEvent {
-  const FwdInputEQIncreased();
+class DSSlope1Increased extends Setting18GraphModuleEvent {
+  const DSSlope1Increased();
 
   @override
   List<Object> get props => [];
 }
 
-class FwdInputEQDecreased extends Setting18GraphModuleEvent {
-  const FwdInputEQDecreased();
+class DSSlope1Decreased extends Setting18GraphModuleEvent {
+  const DSSlope1Decreased();
 
   @override
   List<Object> get props => [];

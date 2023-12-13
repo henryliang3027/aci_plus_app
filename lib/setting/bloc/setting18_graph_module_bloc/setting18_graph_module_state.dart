@@ -4,7 +4,7 @@ class Setting18GraphModuleState extends Equatable {
   const Setting18GraphModuleState({
     this.submissionStatus = SubmissionStatus.none,
     this.dsVVA1 = '',
-    this.fwdInputEQ = '',
+    this.dsSlope1 = '',
     this.rtnInputAttenuation2 = '',
     this.rtnInputAttenuation3 = '',
     this.rtnInputAttenuation4 = '',
@@ -38,7 +38,7 @@ class Setting18GraphModuleState extends Equatable {
 
   final SubmissionStatus submissionStatus;
   final String dsVVA1;
-  final String fwdInputEQ;
+  final String dsSlope1;
   final String rtnInputAttenuation2;
   final String rtnInputAttenuation3;
   final String rtnInputAttenuation4;
@@ -72,7 +72,7 @@ class Setting18GraphModuleState extends Equatable {
   Setting18GraphModuleState copyWith({
     SubmissionStatus? submissionStatus,
     String? dsVVA1,
-    String? fwdInputEQ,
+    String? dsSlope1,
     String? rtnInputAttenuation2,
     String? rtnInputAttenuation3,
     String? rtnInputAttenuation4,
@@ -106,7 +106,7 @@ class Setting18GraphModuleState extends Equatable {
     return Setting18GraphModuleState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
       dsVVA1: dsVVA1 ?? this.dsVVA1,
-      fwdInputEQ: fwdInputEQ ?? this.fwdInputEQ,
+      dsSlope1: dsSlope1 ?? this.dsSlope1,
       rtnInputAttenuation2: rtnInputAttenuation2 ?? this.rtnInputAttenuation2,
       rtnInputAttenuation3: rtnInputAttenuation3 ?? this.rtnInputAttenuation3,
       rtnInputAttenuation4: rtnInputAttenuation4 ?? this.rtnInputAttenuation4,
@@ -150,7 +150,7 @@ class Setting18GraphModuleState extends Equatable {
   List<Object> get props => [
         submissionStatus,
         dsVVA1,
-        fwdInputEQ,
+        dsSlope1,
         rtnInputAttenuation2,
         rtnInputAttenuation3,
         rtnInputAttenuation4,

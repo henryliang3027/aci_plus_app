@@ -4,7 +4,7 @@ class Setting18ControlState extends Equatable {
   const Setting18ControlState({
     this.submissionStatus = SubmissionStatus.none,
     this.dsVVA1 = '',
-    this.fwdInputEQ = '',
+    this.dsSlope1 = '',
     this.rtnInputAttenuation2 = '',
     this.usVCA3 = '',
     this.usVCA4 = '',
@@ -30,7 +30,7 @@ class Setting18ControlState extends Equatable {
 
   final SubmissionStatus submissionStatus;
   final String dsVVA1;
-  final String fwdInputEQ;
+  final String dsSlope1;
   final String rtnInputAttenuation2;
   final String usVCA3;
   final String usVCA4;
@@ -56,7 +56,7 @@ class Setting18ControlState extends Equatable {
   Setting18ControlState copyWith({
     SubmissionStatus? submissionStatus,
     String? dsVVA1,
-    String? fwdInputEQ,
+    String? dsSlope1,
     String? rtnInputAttenuation2,
     String? usVCA3,
     String? usVCA4,
@@ -82,7 +82,7 @@ class Setting18ControlState extends Equatable {
     return Setting18ControlState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
       dsVVA1: dsVVA1 ?? this.dsVVA1,
-      fwdInputEQ: fwdInputEQ ?? this.fwdInputEQ,
+      dsSlope1: dsSlope1 ?? this.dsSlope1,
       rtnInputAttenuation2: rtnInputAttenuation2 ?? this.rtnInputAttenuation2,
       usVCA3: usVCA3 ?? this.usVCA3,
       usVCA4: usVCA4 ?? this.usVCA4,
@@ -112,7 +112,7 @@ class Setting18ControlState extends Equatable {
   List<Object> get props => [
         submissionStatus,
         dsVVA1,
-        fwdInputEQ,
+        dsSlope1,
         rtnInputAttenuation2,
         usVCA3,
         usVCA4,

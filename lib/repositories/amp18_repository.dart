@@ -143,7 +143,7 @@ class Amp18Repository {
         DataKey.location: a1p8g1.location,
         DataKey.logInterval: a1p8g1.logInterval,
         DataKey.dsVVA1: a1p8g1.dsVVA1,
-        DataKey.inputEqualizer: a1p8g1.inputEqualizer,
+        DataKey.dsSlope1: a1p8g1.dsSlope1,
         DataKey.dsVVA2: a1p8g1.dsVVA2,
         DataKey.dsSlope2: a1p8g1.dsSlope2,
         DataKey.inputAttenuation2: a1p8g1.inputAttenuation2,
@@ -1493,7 +1493,7 @@ class Amp18Repository {
     }
   }
 
-  Future<dynamic> set1p8GForwardInputEqualizer(String strValue) async {
+  Future<dynamic> set1p8GDSSlope1(String strValue) async {
     int commandIndex = 340;
 
     print('get data from request command 1p8G$commandIndex');
@@ -1507,18 +1507,18 @@ class Amp18Repository {
     byteData.setInt16(0, intValue, Endian.little); // little endian
     Uint8List bytes = Uint8List.view(byteData.buffer);
 
-    Command18.setForwardInputEqualizerCmd[7] = bytes[0];
-    Command18.setForwardInputEqualizerCmd[8] = bytes[1];
+    Command18.setDSSlope1Cmd[7] = bytes[0];
+    Command18.setDSSlope1Cmd[8] = bytes[1];
 
     CRC16.calculateCRC16(
-      command: Command18.setForwardInputEqualizerCmd,
-      usDataLength: Command18.setForwardInputEqualizerCmd.length - 2,
+      command: Command18.setDSSlope1Cmd,
+      usDataLength: Command18.setDSSlope1Cmd.length - 2,
     );
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: Command18.setForwardInputEqualizerCmd,
+        value: Command18.setDSSlope1Cmd,
       );
       return true;
     } catch (e) {

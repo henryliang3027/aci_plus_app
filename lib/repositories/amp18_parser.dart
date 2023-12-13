@@ -142,7 +142,7 @@ class Amp18Parser {
     String voltageRippleAlarmState = '';
     String outputPowerAlarmState = '';
     String dsVVA1 = '';
-    String inputEqualizer = '';
+    String dsSlope1 = '';
     String dsVVA2 = '';
     String dsSlope2 = '';
     String inputAttenuation2 = '';
@@ -345,11 +345,11 @@ class Amp18Parser {
     dsVVA1 = (rawInputAttenuationByteData.getInt16(0, Endian.little) / 10)
         .toStringAsFixed(1);
 
-    // 解析 inputEqualizer (0x96 DS Slope1 Set dB)
-    List<int> rawInputEqualizer = rawData.sublist(153, 155);
-    ByteData rawInputEqualizerByteData =
-        ByteData.sublistView(Uint8List.fromList(rawInputEqualizer));
-    inputEqualizer = (rawInputEqualizerByteData.getInt16(0, Endian.little) / 10)
+    // 解析 dsSlope1 (0x96 DS Slope1 Set dB)
+    List<int> rawDSSlope1 = rawData.sublist(153, 155);
+    ByteData rawDSSlope1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSSlope1));
+    dsSlope1 = (rawDSSlope1ByteData.getInt16(0, Endian.little) / 10)
         .toStringAsFixed(1);
 
     // 解析 dsVVA2 (0x98 DS VVA2 Set dB)
@@ -468,7 +468,7 @@ class Amp18Parser {
       voltageRippleAlarmState: voltageRippleAlarmState,
       outputPowerAlarmState: outputPowerAlarmState,
       dsVVA1: dsVVA1,
-      inputEqualizer: inputEqualizer,
+      dsSlope1: dsSlope1,
       dsVVA2: dsVVA2,
       dsSlope2: dsSlope2,
       inputAttenuation2: inputAttenuation2,
@@ -1634,7 +1634,7 @@ class A1P8G1 {
     required this.voltageRippleAlarmState,
     required this.outputPowerAlarmState,
     required this.dsVVA1,
-    required this.inputEqualizer,
+    required this.dsSlope1,
     required this.dsVVA2,
     required this.dsSlope2,
     required this.inputAttenuation2,
@@ -1684,7 +1684,7 @@ class A1P8G1 {
   final String voltageRippleAlarmState;
   final String outputPowerAlarmState;
   final String dsVVA1;
-  final String inputEqualizer;
+  final String dsSlope1;
   final String dsVVA2;
   final String dsSlope2;
   final String inputAttenuation2;

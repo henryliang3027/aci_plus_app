@@ -205,7 +205,7 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       if (item == DataKey.dsVVA1.name) {
         return AppLocalizations.of(context)!
             .dialogMessageForwardInputAttenuationSetting;
-      } else if (item == DataKey.inputEqualizer.name) {
+      } else if (item == DataKey.dsSlope1.name) {
         return AppLocalizations.of(context)!
             .dialogMessageForwardInputEqualizerSetting;
       } else if (item == DataKey.inputAttenuation2.name) {
@@ -770,21 +770,21 @@ class _FwdInputEQ extends StatelessWidget {
           context: context,
           editMode: true,
           title:
-              '${AppLocalizations.of(context)!.fwdInputEQ}: ${state.fwdInputEQ} dB',
+              '${AppLocalizations.of(context)!.fwdInputEQ}: ${state.dsSlope1} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: _getValue(state.fwdInputEQ),
-          onChanged: (fwdInputEQ) {
+          currentValue: _getValue(state.dsSlope1),
+          onChanged: (dsSlope1) {
             context
                 .read<Setting18GraphModuleBloc>()
-                .add(FwdInputEQChanged(fwdInputEQ.toStringAsFixed(1)));
+                .add(DSSlope1Changed(dsSlope1.toStringAsFixed(1)));
           },
           onDecreased: () => context
               .read<Setting18GraphModuleBloc>()
-              .add(const FwdInputEQDecreased()),
+              .add(const DSSlope1Decreased()),
           onIncreased: () => context
               .read<Setting18GraphModuleBloc>()
-              .add(const FwdInputEQIncreased()),
+              .add(const DSSlope1Increased()),
         );
       },
     );

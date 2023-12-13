@@ -278,7 +278,7 @@ class Command18 {
     0x00,
   ];
 
-  static List<int> setForwardInputEqualizerCmd = [
+  static List<int> setDSSlope1Cmd = [
     0xB0,
     0x10,
     0x00,

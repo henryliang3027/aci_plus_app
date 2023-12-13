@@ -122,7 +122,6 @@ enum DataKey {
   rfOutputPower3AlarmState,
   rfOutputPower4AlarmState,
   rfOutputPower6AlarmState,
-  inputEqualizer,
   dsVVA1,
   inputAttenuation1,
   inputAttenuation2,

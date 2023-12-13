@@ -38,7 +38,7 @@ class Setting18ControlView extends StatelessWidget {
       if (item == DataKey.dsVVA1.name) {
         return AppLocalizations.of(context)!
             .dialogMessageForwardInputAttenuationSetting;
-      } else if (item == DataKey.inputEqualizer.name) {
+      } else if (item == DataKey.dsSlope1.name) {
         return AppLocalizations.of(context)!
             .dialogMessageForwardInputEqualizerSetting;
       } else if (item == DataKey.inputAttenuation2.name) {
@@ -486,21 +486,21 @@ class _FwdInputEQ extends StatelessWidget {
           context: context,
           editMode: state.editMode && alcMode == '0' && agcMode == '0',
           title:
-              '${AppLocalizations.of(context)!.fwdInputEQ}: ${getCurrentValue(state.fwdInputEQ)} dB',
+              '${AppLocalizations.of(context)!.fwdInputEQ}: ${getCurrentValue(state.dsSlope1)} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: getCurrentValue(state.fwdInputEQ),
-          onChanged: (fwdInputEQ) {
+          currentValue: getCurrentValue(state.dsSlope1),
+          onChanged: (dsSlope1) {
             context
                 .read<Setting18ControlBloc>()
-                .add(FwdInputEQChanged(fwdInputEQ.toStringAsFixed(1)));
+                .add(DSSlope1Changed(dsSlope1.toStringAsFixed(1)));
           },
           onDecreased: () => context
               .read<Setting18ControlBloc>()
-              .add(const FwdInputEQDecreased()),
+              .add(const DSSlope1Decreased()),
           onIncreased: () => context
               .read<Setting18ControlBloc>()
-              .add(const FwdInputEQIncreased()),
+              .add(const DSSlope1Increased()),
         );
       },
     );
