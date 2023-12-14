@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
+import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/shared_preference_key.dart';
 import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/dsim_parser.dart';

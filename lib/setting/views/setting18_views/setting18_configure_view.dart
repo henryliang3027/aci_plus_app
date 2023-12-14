@@ -1,6 +1,6 @@
-import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
+import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
@@ -46,60 +46,6 @@ class Setting18ConfigureView extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
-    // String location = homeState.characteristicData[DataKey.location] ?? '';
-    // String coordinates =
-    //     homeState.characteristicData[DataKey.coordinates] ?? '';
-    // String splitOption =
-    //     homeState.characteristicData[DataKey.splitOption] ?? '';
-    // String firstChannelLoadingFrequency =
-    //     homeState.characteristicData[DataKey.firstChannelLoadingFrequency] ??
-    //         '';
-    // String lastChannelLoadingFrequency =
-    //     homeState.characteristicData[DataKey.lastChannelLoadingFrequency] ?? '';
-    // String firstChannelLoadingLevel =
-    //     homeState.characteristicData[DataKey.firstChannelLoadingLevel] ?? '';
-    // String lastChannelLoadingLevel =
-    //     homeState.characteristicData[DataKey.lastChannelLoadingLevel] ?? '';
-    // String pilotFrequencyMode =
-    //     homeState.characteristicData[DataKey.pilotFrequencyMode] ?? '';
-    // String pilotFrequency1 =
-    //     homeState.characteristicData[DataKey.pilotFrequency1] ?? '';
-    // String pilotFrequency2 =
-    //     homeState.characteristicData[DataKey.pilotFrequency2] ?? '';
-
-    // String manualModePilot1RFOutputPower =
-    //     homeState.characteristicData[DataKey.manualModePilot1RFOutputPower] ??
-    //         '';
-    // String manualModePilot2RFOutputPower =
-    //     homeState.characteristicData[DataKey.manualModePilot2RFOutputPower] ??
-    //         '';
-
-    // String fwdAgcMode = homeState.characteristicData[DataKey.agcMode] ?? '';
-    // String autoLevelControl =
-    //     homeState.characteristicData[DataKey.alcMode] ?? '';
-    // String logInterval =
-    //     homeState.characteristicData[DataKey.logInterval] ?? '';
-    // String tgcCableLength =
-    //     homeState.characteristicData[DataKey.tgcCableLength] ?? '';
-
-    // context.read<Setting18ConfigureBloc>().add(Initialized(
-    //       location: location,
-    //       coordinates: coordinates,
-    //       splitOption: splitOption,
-    //       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-    //       firstChannelLoadingLevel: firstChannelLoadingLevel,
-    //       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-    //       lastChannelLoadingLevel: lastChannelLoadingLevel,
-    //       pilotFrequencyMode: pilotFrequencyMode,
-    //       pilotFrequency1: pilotFrequency1,
-    //       pilotFrequency2: pilotFrequency2,
-    //       manualModePilot1RFOutputPower: manualModePilot1RFOutputPower,
-    //       manualModePilot2RFOutputPower: manualModePilot2RFOutputPower,
-    //       fwdAGCMode: fwdAgcMode,
-    //       autoLevelControl: autoLevelControl,
-    //       logInterval: logInterval,
-    //       tgcCableLength: tgcCableLength,
-    //     ));
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'

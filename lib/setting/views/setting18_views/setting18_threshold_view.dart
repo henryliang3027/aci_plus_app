@@ -1,6 +1,6 @@
-import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
+import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
@@ -40,73 +40,6 @@ class Setting18ThresholdView extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
-    // String minTemperature =
-    //     homeState.characteristicData[DataKey.minTemperatureC] ?? '';
-    // String maxTemperature =
-    //     homeState.characteristicData[DataKey.maxTemperatureC] ?? '';
-    // String minTemperatureF =
-    //     homeState.characteristicData[DataKey.minTemperatureF] ?? '';
-    // String maxTemperatureF =
-    //     homeState.characteristicData[DataKey.maxTemperatureF] ?? '';
-    // String minVoltage = homeState.characteristicData[DataKey.minVoltage] ?? '';
-    // String maxVoltage = homeState.characteristicData[DataKey.maxVoltage] ?? '';
-    // String minVoltageRipple =
-    //     homeState.characteristicData[DataKey.minVoltageRipple] ?? '';
-    // String maxVoltageRipple =
-    //     homeState.characteristicData[DataKey.maxVoltageRipple] ?? '';
-    // String minRFOutputPower =
-    //     homeState.characteristicData[DataKey.minRFOutputPower] ?? '';
-    // String maxRFOutputPower =
-    //     homeState.characteristicData[DataKey.maxRFOutputPower] ?? '';
-
-    // String strTemperatureAlarmState =
-    //     homeState.characteristicData[DataKey.temperatureAlarmState] ?? '';
-    // bool temperatureAlarmState = strTemperatureAlarmState == '1' ? false : true;
-    // String strVoltageAlarmState =
-    //     homeState.characteristicData[DataKey.voltageAlarmState] ?? '';
-    // bool voltageAlarmState = strVoltageAlarmState == '1' ? false : true;
-    // String strVoltageRippleAlarmState =
-    //     homeState.characteristicData[DataKey.voltageRippleAlarmState] ?? '';
-    // bool voltageRippleAlarmState =
-    //     strVoltageRippleAlarmState == '1' ? false : true;
-    // String strRFOutputPowerAlarmState =
-    //     homeState.characteristicData[DataKey.rfOutputPowerAlarmState] ?? '';
-    // bool rfOutputPowerAlarmState =
-    //     strRFOutputPowerAlarmState == '1' ? false : true;
-    // String strSplitOptionAlarmState =
-    //     homeState.characteristicData[DataKey.splitOptionAlarmState] ?? '';
-    // bool splitOptionAlarmState = strSplitOptionAlarmState == '1' ? false : true;
-
-    // String strPilotFrequency1AlarmState =
-    //     homeState.characteristicData[DataKey.pilotFrequency1AlarmState] ?? '';
-    // bool pilotFrequency1AlarmState =
-    //     strPilotFrequency1AlarmState == '1' ? false : true;
-    // String strPilotFrequency2AlarmState =
-    //     homeState.characteristicData[DataKey.pilotFrequency2AlarmState] ?? '';
-    // bool pilotFrequency2AlarmState =
-    //     strPilotFrequency2AlarmState == '1' ? false : true;
-
-    // context.read<Setting18ThresholdBloc>().add(Initialized(
-    //       temperatureAlarmState: temperatureAlarmState,
-    //       minTemperature: minTemperature,
-    //       maxTemperature: maxTemperature,
-    //       minTemperatureF: minTemperatureF,
-    //       maxTemperatureF: maxTemperatureF,
-    //       voltageAlarmState: voltageAlarmState,
-    //       minVoltage: minVoltage,
-    //       maxVoltage: maxVoltage,
-    //       voltageRippleAlarmState: voltageRippleAlarmState,
-    //       minVoltageRipple: minVoltageRipple,
-    //       maxVoltageRipple: maxVoltageRipple,
-    //       rfOutputPowerAlarmState: rfOutputPowerAlarmState,
-    //       minRFOutputPower: minRFOutputPower,
-    //       maxRFOutputPower: maxRFOutputPower,
-    //       splitOptionAlarmState: splitOptionAlarmState,
-    //       pilotFrequency1AlarmState: pilotFrequency1AlarmState,
-    //       pilotFrequency2AlarmState: pilotFrequency2AlarmState,
-    //       firstChannelOutputLevelAlarmState: false,
-    //       lastChannelOutputLevelAlarmState: false,
-    //     ));
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
