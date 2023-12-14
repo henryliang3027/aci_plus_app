@@ -56,7 +56,6 @@ enum DataKey {
   currentVoltageRipple,
   minVoltageRipple,
   maxVoltageRipple,
-  logs,
   tgcCableLength,
   splitOption,
   currentRFInputPower1p8G,
