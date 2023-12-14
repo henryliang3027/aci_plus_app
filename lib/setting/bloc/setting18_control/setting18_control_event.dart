@@ -60,24 +60,24 @@ class DSSlope1Decreased extends Setting18ControlEvent {
   List<Object> get props => [];
 }
 
-class RtnInputAttenuation2Changed extends Setting18ControlEvent {
-  const RtnInputAttenuation2Changed(this.rtnInputAttenuation2);
+class USVCA1Changed extends Setting18ControlEvent {
+  const USVCA1Changed(this.usVCA1);
 
-  final String rtnInputAttenuation2;
+  final String usVCA1;
 
   @override
-  List<Object> get props => [rtnInputAttenuation2];
+  List<Object> get props => [usVCA1];
 }
 
-class RtnInputAttenuation2Increased extends Setting18ControlEvent {
-  const RtnInputAttenuation2Increased();
+class USVCA1Increased extends Setting18ControlEvent {
+  const USVCA1Increased();
 
   @override
   List<Object> get props => [];
 }
 
-class RtnInputAttenuation2Decreased extends Setting18ControlEvent {
-  const RtnInputAttenuation2Decreased();
+class USVCA1Decreased extends Setting18ControlEvent {
+  const USVCA1Decreased();
 
   @override
   List<Object> get props => [];
@@ -129,47 +129,47 @@ class USVCA4Decreased extends Setting18ControlEvent {
   List<Object> get props => [];
 }
 
-class RtnOutputLevelAttenuationChanged extends Setting18ControlEvent {
-  const RtnOutputLevelAttenuationChanged(this.rtnOutputLevelAttenuation);
+class USVCA2Changed extends Setting18ControlEvent {
+  const USVCA2Changed(this.usVCA2);
 
-  final String rtnOutputLevelAttenuation;
-
-  @override
-  List<Object> get props => [rtnOutputLevelAttenuation];
-}
-
-class RtnOutputLevelAttenuationIncreased extends Setting18ControlEvent {
-  const RtnOutputLevelAttenuationIncreased();
+  final String usVCA2;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [usVCA2];
 }
 
-class RtnOutputLevelAttenuationDecreased extends Setting18ControlEvent {
-  const RtnOutputLevelAttenuationDecreased();
+class USVCA2Increased extends Setting18ControlEvent {
+  const USVCA2Increased();
 
   @override
   List<Object> get props => [];
 }
 
-class RtnOutputEQChanged extends Setting18ControlEvent {
-  const RtnOutputEQChanged(this.rtnOutputEQ);
-
-  final String rtnOutputEQ;
-
-  @override
-  List<Object> get props => [rtnOutputEQ];
-}
-
-class RtnOutputEQIncreased extends Setting18ControlEvent {
-  const RtnOutputEQIncreased();
+class USVCA2Decreased extends Setting18ControlEvent {
+  const USVCA2Decreased();
 
   @override
   List<Object> get props => [];
 }
 
-class RtnOutputEQDecreased extends Setting18ControlEvent {
-  const RtnOutputEQDecreased();
+class EREQChanged extends Setting18ControlEvent {
+  const EREQChanged(this.eREQ);
+
+  final String eREQ;
+
+  @override
+  List<Object> get props => [eREQ];
+}
+
+class EREQIncreased extends Setting18ControlEvent {
+  const EREQIncreased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class EREQDecreased extends Setting18ControlEvent {
+  const EREQDecreased();
 
   @override
   List<Object> get props => [];

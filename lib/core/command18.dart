@@ -292,7 +292,7 @@ class Command18 {
     0x00,
   ];
 
-  static List<int> setReturnInputAttenuation2Cmd = [
+  static List<int> setUSVCA1Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -334,7 +334,7 @@ class Command18 {
     0x00,
   ];
 
-  static List<int> setReturnOutputAttenuationCmd = [
+  static List<int> setUSVCA2Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -348,7 +348,7 @@ class Command18 {
     0x00,
   ];
 
-  static List<int> setReturnOutputEqualizerCmd = [
+  static List<int> setEREQCmd = [
     0xB0,
     0x10,
     0x00,

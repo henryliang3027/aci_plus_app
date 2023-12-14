@@ -145,11 +145,11 @@ class Amp18Parser {
     String dsSlope1 = '';
     String dsVVA2 = '';
     String dsSlope2 = '';
-    String inputAttenuation2 = '';
+    String usVCA1 = '';
     String usVCA3 = '';
     String usVCA4 = '';
-    String outputAttenuation = '';
-    String outputEqualizer = '';
+    String usVCA2 = '';
+    String eREQ = '';
     String dsVVA3 = '';
     String dsVVA4 = '';
     String dsSlope3 = '';
@@ -366,21 +366,18 @@ class Amp18Parser {
     dsSlope2 = (rawDSSlope2ByteData.getInt16(0, Endian.little) / 10)
         .toStringAsFixed(1);
 
-    // 解析 inputAttenuation2 (0x9C US VCA1 Set dB)
-    List<int> rawInputAttenuation2 = rawData.sublist(159, 161);
-    ByteData rawInputAttenuation2ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawInputAttenuation2));
-    inputAttenuation2 =
-        (rawInputAttenuation2ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
+    // 解析 usVCA1 (0x9C US VCA1 Set dB)
+    List<int> rawUSVCA1 = rawData.sublist(159, 161);
+    ByteData rawUSVCA1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawUSVCA1));
+    usVCA1 =
+        (rawUSVCA1ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
 
-    // 解析 outputEqualizer (0x9E US E-REQ Set dB)
-    List<int> rawOutputEqualizer = rawData.sublist(161, 163);
-    ByteData rawOutputEqualizerByteData =
-        ByteData.sublistView(Uint8List.fromList(rawOutputEqualizer));
-    outputEqualizer =
-        (rawOutputEqualizerByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
+    // 解析 eREQ (0x9E US E-REQ Set dB)
+    List<int> rawEREQ = rawData.sublist(161, 163);
+    ByteData rawEREQByteData =
+        ByteData.sublistView(Uint8List.fromList(rawEREQ));
+    eREQ = (rawEREQByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
 
     // 解析 dsVVA3 (0xA0 DS VVA3 Set dB)
     List<int> rawDSVVA3 = rawData.sublist(163, 165);
@@ -396,13 +393,12 @@ class Amp18Parser {
     dsVVA4 =
         (rawDSVVA4ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
 
-    // 解析 outputAttenuation (0xA4 US VCA2 Set dB)
-    List<int> rawOutputAttenuation = rawData.sublist(167, 169);
-    ByteData rawOutputAttenuationByteData =
-        ByteData.sublistView(Uint8List.fromList(rawOutputAttenuation));
-    outputAttenuation =
-        (rawOutputAttenuationByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
+    // 解析 usVCA2 (0xA4 US VCA2 Set dB)
+    List<int> rawUSVCA2 = rawData.sublist(167, 169);
+    ByteData rawUSVCA2ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawUSVCA2));
+    usVCA2 =
+        (rawUSVCA2ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
 
     // 解析 usVCA3 (0xA6 US VCA3 Set dB)
     List<int> rawUSVCA3 = rawData.sublist(169, 171);
@@ -471,11 +467,11 @@ class Amp18Parser {
       dsSlope1: dsSlope1,
       dsVVA2: dsVVA2,
       dsSlope2: dsSlope2,
-      inputAttenuation2: inputAttenuation2,
+      usVCA1: usVCA1,
       usVCA3: usVCA3,
       usVCA4: usVCA4,
-      outputAttenuation: outputAttenuation,
-      outputEqualizer: outputEqualizer,
+      usVCA2: usVCA2,
+      eREQ: eREQ,
       dsVVA3: dsVVA3,
       dsVVA4: dsVVA4,
       dsSlope3: dsSlope3,
@@ -1637,11 +1633,11 @@ class A1P8G1 {
     required this.dsSlope1,
     required this.dsVVA2,
     required this.dsSlope2,
-    required this.inputAttenuation2,
+    required this.usVCA1,
     required this.usVCA3,
     required this.usVCA4,
-    required this.outputAttenuation,
-    required this.outputEqualizer,
+    required this.usVCA2,
+    required this.eREQ,
     required this.dsVVA3,
     required this.dsVVA4,
     required this.dsSlope3,
@@ -1687,11 +1683,11 @@ class A1P8G1 {
   final String dsSlope1;
   final String dsVVA2;
   final String dsSlope2;
-  final String inputAttenuation2;
+  final String usVCA1;
   final String usVCA3;
   final String usVCA4;
-  final String outputAttenuation;
-  final String outputEqualizer;
+  final String usVCA2;
+  final String eREQ;
   final String dsVVA3;
   final String dsVVA4;
   final String dsSlope3;

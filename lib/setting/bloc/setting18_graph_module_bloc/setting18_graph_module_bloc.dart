@@ -19,23 +19,21 @@ class Setting18GraphModuleBloc
     on<DSSlope1Changed>(_onDSSlope1Changed);
     on<DSSlope1Increased>(_onDSSlope1Increased);
     on<DSSlope1Decreased>(_onDSSlope1Decreased);
-    on<RtnInputAttenuation2Changed>(_onRtnInputAttenuation2Changed);
-    on<RtnInputAttenuation2Increased>(_onRtnInputAttenuation2Increased);
-    on<RtnInputAttenuation2Decreased>(_onRtnInputAttenuation2Decreased);
+    on<USVCA1Changed>(_onUSVCA1Changed);
+    on<USVCA1Increased>(_onUSVCA1Increased);
+    on<USVCA1Decreased>(_onUSVCA1Decreased);
     on<RtnInputAttenuation3Changed>(_onRtnInputAttenuation3Changed);
     on<RtnInputAttenuation3Increased>(_onRtnInputAttenuation3Increased);
     on<RtnInputAttenuation3Decreased>(_onRtnInputAttenuation3Decreased);
     on<RtnInputAttenuation4Changed>(_onRtnInputAttenuation4Changed);
     on<RtnInputAttenuation4Increased>(_onRtnInputAttenuation4Increased);
     on<RtnInputAttenuation4Decreased>(_onRtnInputAttenuation4Decreased);
-    on<RtnOutputLevelAttenuationChanged>(_onRtnOutputLevelAttenuationChanged);
-    on<RtnOutputLevelAttenuationIncreased>(
-        _onRtnOutputLevelAttenuationIncreased);
-    on<RtnOutputLevelAttenuationDecreased>(
-        _onRtnOutputLevelAttenuationDecreased);
-    on<RtnOutputEQChanged>(_onRtnOutputEQChanged);
-    on<RtnOutputEQIncreased>(_onRtnOutputEQIncreased);
-    on<RtnOutputEQDecreased>(_onRtnOutputEQDecreased);
+    on<USVCA2Changed>(_onUSVCA2Changed);
+    on<USVCA2Increased>(_onUSVCA2Increased);
+    on<USVCA2Decreased>(_onUSVCA2Decreased);
+    on<EREQChanged>(_onEREQChanged);
+    on<EREQIncreased>(_onEREQIncreased);
+    on<EREQDecreased>(_onEREQDecreased);
     on<RtnIngressSetting2Changed>(_onRtnIngressSetting2Changed);
     on<RtnIngressSetting3Changed>(_onRtnIngressSetting3Changed);
     on<RtnIngressSetting4Changed>(_onRtnIngressSetting4Changed);
@@ -71,14 +69,11 @@ class Setting18GraphModuleBloc
     String partId = characteristicDataCache[DataKey.partId] ?? '';
     String dsVVA1 = characteristicDataCache[DataKey.dsVVA1] ?? '';
     String dsSlope1 = characteristicDataCache[DataKey.dsSlope1] ?? '';
-    String inputAttenuation2 =
-        characteristicDataCache[DataKey.inputAttenuation2] ?? '';
+    String inputAttenuation2 = characteristicDataCache[DataKey.usVCA1] ?? '';
     String inputAttenuation3 = characteristicDataCache[DataKey.usVCA3] ?? '';
     String inputAttenuation4 = characteristicDataCache[DataKey.usVCA4] ?? '';
-    String outputAttenuation =
-        characteristicDataCache[DataKey.outputAttenuation] ?? '';
-    String outputEqualizer =
-        characteristicDataCache[DataKey.outputEqualizer] ?? '';
+    String usVCA2 = characteristicDataCache[DataKey.usVCA2] ?? '';
+    String eREQ = characteristicDataCache[DataKey.eREQ] ?? '';
     String ingressSetting2 =
         characteristicDataCache[DataKey.ingressSetting2] ?? '';
     String ingressSetting3 =
@@ -116,11 +111,11 @@ class Setting18GraphModuleBloc
     emit(state.copyWith(
       dsVVA1: dsVVA1,
       dsSlope1: dsSlope1,
-      rtnInputAttenuation2: inputAttenuation2,
+      usVCA1: inputAttenuation2,
       rtnInputAttenuation3: inputAttenuation3,
       rtnInputAttenuation4: inputAttenuation4,
-      rtnOutputLevelAttenuation: outputAttenuation,
-      rtnOutputEQ: outputEqualizer,
+      usVCA2: usVCA2,
+      eREQ: eREQ,
       rtnIngressSetting2: ingressSetting2,
       rtnIngressSetting3: ingressSetting3,
       rtnIngressSetting4: ingressSetting4,
@@ -172,11 +167,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: event.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -211,11 +206,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -250,11 +245,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -287,11 +282,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: event.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -326,11 +321,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -365,11 +360,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -391,22 +386,22 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onRtnInputAttenuation2Changed(
-    RtnInputAttenuation2Changed event,
+  void _onUSVCA1Changed(
+    USVCA1Changed event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rtnInputAttenuation2: event.rtnInputAttenuation2,
+      usVCA1: event.usVCA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: event.rtnInputAttenuation2,
+        usVCA1: event.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -428,24 +423,23 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onRtnInputAttenuation2Increased(
-    RtnInputAttenuation2Increased event,
+  void _onUSVCA1Increased(
+    USVCA1Increased event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
-    String rtnInputAttenuation2 =
-        _getIncreasedNumber(state.rtnInputAttenuation2);
+    String usVCA1 = _getIncreasedNumber(state.usVCA1);
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rtnInputAttenuation2: rtnInputAttenuation2,
+      usVCA1: usVCA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: rtnInputAttenuation2,
+        usVCA1: usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -467,24 +461,23 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onRtnInputAttenuation2Decreased(
-    RtnInputAttenuation2Decreased event,
+  void _onUSVCA1Decreased(
+    USVCA1Decreased event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
-    String rtnInputAttenuation2 =
-        _getDecreasedNumber(state.rtnInputAttenuation2);
+    String usVCA1 = _getDecreasedNumber(state.usVCA1);
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rtnInputAttenuation2: rtnInputAttenuation2,
+      usVCA1: usVCA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: rtnInputAttenuation2,
+        usVCA1: usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -517,11 +510,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: event.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -557,11 +550,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -597,11 +590,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -634,11 +627,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: event.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -673,11 +666,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -712,11 +705,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -738,22 +731,22 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onRtnOutputLevelAttenuationChanged(
-    RtnOutputLevelAttenuationChanged event,
+  void _onUSVCA2Changed(
+    USVCA2Changed event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rtnOutputLevelAttenuation: event.rtnOutputLevelAttenuation,
+      usVCA2: event.usVCA2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: event.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: event.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -775,25 +768,24 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onRtnOutputLevelAttenuationIncreased(
-    RtnOutputLevelAttenuationIncreased event,
+  void _onUSVCA2Increased(
+    USVCA2Increased event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
-    String rtnOutputLevelAttenuation =
-        _getIncreasedNumber(state.rtnOutputLevelAttenuation);
+    String usVCA2 = _getIncreasedNumber(state.usVCA2);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rtnOutputLevelAttenuation: rtnOutputLevelAttenuation,
+      usVCA2: usVCA2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -815,25 +807,24 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onRtnOutputLevelAttenuationDecreased(
-    RtnOutputLevelAttenuationDecreased event,
+  void _onUSVCA2Decreased(
+    USVCA2Decreased event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
-    String rtnOutputLevelAttenuation =
-        _getDecreasedNumber(state.rtnOutputLevelAttenuation);
+    String usVCA2 = _getDecreasedNumber(state.usVCA2);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rtnOutputLevelAttenuation: rtnOutputLevelAttenuation,
+      usVCA2: usVCA2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -855,22 +846,22 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onRtnOutputEQChanged(
-    RtnOutputEQChanged event,
+  void _onEREQChanged(
+    EREQChanged event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rtnOutputEQ: event.rtnOutputEQ,
+      eREQ: event.eREQ,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: event.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: event.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -892,23 +883,23 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onRtnOutputEQIncreased(
-    RtnOutputEQIncreased event,
+  void _onEREQIncreased(
+    EREQIncreased event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
-    String rtnOutputEQ = _getIncreasedNumber(state.rtnOutputEQ);
+    String eREQ = _getIncreasedNumber(state.eREQ);
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rtnOutputEQ: rtnOutputEQ,
+      eREQ: eREQ,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -930,23 +921,23 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onRtnOutputEQDecreased(
-    RtnOutputEQDecreased event,
+  void _onEREQDecreased(
+    EREQDecreased event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
-    String rtnOutputEQ = _getDecreasedNumber(state.rtnOutputEQ);
+    String eREQ = _getDecreasedNumber(state.eREQ);
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      rtnOutputEQ: rtnOutputEQ,
+      eREQ: eREQ,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -979,11 +970,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: event.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1016,11 +1007,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: event.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1053,11 +1044,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: event.rtnIngressSetting4,
@@ -1090,11 +1081,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1127,11 +1118,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1164,11 +1155,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1201,11 +1192,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1238,11 +1229,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1275,11 +1266,11 @@ class Setting18GraphModuleBloc
   //     enableSubmission: _isEnabledSubmission(
   //       fwdInputAttenuation: state.fwdInputAttenuation,
   //       dsSlope1: state.dsSlope1,
-  //       rtnInputAttenuation2: state.rtnInputAttenuation2,
+  //       usVCA1: state.usVCA1,
   //       rtnInputAttenuation3: state.rtnInputAttenuation3,
   //       rtnInputAttenuation4: state.rtnInputAttenuation4,
-  //       rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-  //       rtnOutputEQ: state.rtnOutputEQ,
+  //       usVCA2: state.usVCA2,
+  //       eREQ: state.eREQ,
   //       rtnIngressSetting2: state.rtnIngressSetting2,
   //       rtnIngressSetting3: state.rtnIngressSetting3,
   //       rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1312,11 +1303,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1349,11 +1340,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1386,11 +1377,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1423,11 +1414,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1460,11 +1451,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1497,11 +1488,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1534,11 +1525,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1571,11 +1562,11 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        rtnInputAttenuation2: state.rtnInputAttenuation2,
+        usVCA1: state.usVCA1,
         rtnInputAttenuation3: state.rtnInputAttenuation3,
         rtnInputAttenuation4: state.rtnInputAttenuation4,
-        rtnOutputLevelAttenuation: state.rtnOutputLevelAttenuation,
-        rtnOutputEQ: state.rtnOutputEQ,
+        usVCA2: state.usVCA2,
+        eREQ: state.eREQ,
         rtnIngressSetting2: state.rtnIngressSetting2,
         rtnIngressSetting3: state.rtnIngressSetting3,
         rtnIngressSetting4: state.rtnIngressSetting4,
@@ -1600,11 +1591,11 @@ class Setting18GraphModuleBloc
   bool _isEnabledSubmission({
     required String dsVVA1,
     required String dsSlope1,
-    required String rtnInputAttenuation2,
+    required String usVCA1,
     required String rtnInputAttenuation3,
     required String rtnInputAttenuation4,
-    required String rtnOutputLevelAttenuation,
-    required String rtnOutputEQ,
+    required String usVCA2,
+    required String eREQ,
     required String rtnIngressSetting2,
     required String rtnIngressSetting3,
     required String rtnIngressSetting4,
@@ -1625,13 +1616,11 @@ class Setting18GraphModuleBloc
   }) {
     if (dsVVA1 != state.initialValues[DataKey.dsVVA1] ||
         dsSlope1 != state.initialValues[DataKey.dsSlope1] ||
-        rtnInputAttenuation2 !=
-            state.initialValues[DataKey.inputAttenuation2] ||
+        usVCA1 != state.initialValues[DataKey.usVCA1] ||
         rtnInputAttenuation3 != state.initialValues[DataKey.usVCA3] ||
         rtnInputAttenuation4 != state.initialValues[DataKey.usVCA4] ||
-        rtnOutputLevelAttenuation !=
-            state.initialValues[DataKey.outputAttenuation] ||
-        rtnOutputEQ != state.initialValues[DataKey.outputEqualizer] ||
+        usVCA2 != state.initialValues[DataKey.usVCA2] ||
+        eREQ != state.initialValues[DataKey.eREQ] ||
         rtnIngressSetting2 != state.initialValues[DataKey.ingressSetting2] ||
         rtnIngressSetting3 != state.initialValues[DataKey.ingressSetting3] ||
         rtnIngressSetting4 != state.initialValues[DataKey.ingressSetting4] ||
@@ -1685,13 +1674,12 @@ class Setting18GraphModuleBloc
           .add('${DataKey.dsSlope1.name},$resultOfSetForwardInputEqualizer');
     }
 
-    if (state.rtnInputAttenuation2 !=
-        state.initialValues[DataKey.inputAttenuation2]) {
-      bool resultOfSetReturnInputAttenuation2 = await _amp18Repository
-          .set1p8GReturnInputAttenuation2(state.rtnInputAttenuation2);
+    if (state.usVCA1 != state.initialValues[DataKey.usVCA1]) {
+      bool resultOfSetReturnInputAttenuation2 =
+          await _amp18Repository.set1p8GUSVCA1(state.usVCA1);
 
-      settingResult.add(
-          '${DataKey.inputAttenuation2.name},$resultOfSetReturnInputAttenuation2');
+      settingResult
+          .add('${DataKey.usVCA1.name},$resultOfSetReturnInputAttenuation2');
     }
 
     if (state.rtnInputAttenuation3 != state.initialValues[DataKey.usVCA3]) {
@@ -1710,21 +1698,17 @@ class Setting18GraphModuleBloc
           .add('${DataKey.usVCA4.name},$resultOfSetReturnInputAttenuation4');
     }
 
-    if (state.rtnOutputLevelAttenuation !=
-        state.initialValues[DataKey.outputAttenuation]) {
-      bool resultOfSetReturnOutputAttenuation = await _amp18Repository
-          .set1p8GReturnOutputAttenuation(state.rtnOutputLevelAttenuation);
+    if (state.usVCA2 != state.initialValues[DataKey.usVCA2]) {
+      bool resultOfSetUSVCA2 =
+          await _amp18Repository.set1p8GUSVCA2(state.usVCA2);
 
-      settingResult.add(
-          '${DataKey.outputAttenuation.name},$resultOfSetReturnOutputAttenuation');
+      settingResult.add('${DataKey.usVCA2.name},$resultOfSetUSVCA2');
     }
 
-    if (state.rtnOutputEQ != state.initialValues[DataKey.outputEqualizer]) {
-      bool resultOfSetReturnOutputEqualizer = await _amp18Repository
-          .set1p8GReturnOutputEqualizer(state.rtnOutputEQ);
+    if (state.eREQ != state.initialValues[DataKey.eREQ]) {
+      bool resultOfSetEREQ = await _amp18Repository.set1p8GEREQ(state.eREQ);
 
-      settingResult.add(
-          '${DataKey.outputEqualizer.name},$resultOfSetReturnOutputEqualizer');
+      settingResult.add('${DataKey.eREQ.name},$resultOfSetEREQ');
     }
 
     if (state.rtnIngressSetting2 !=

@@ -746,7 +746,7 @@ class _PilotFrequencyMode extends StatelessWidget {
   final List<String> pilotFrequencyModeValues = const [
     '0',
     '1',
-    '2',
+    // '2',
   ];
 
   @override
@@ -769,7 +769,7 @@ class _PilotFrequencyMode extends StatelessWidget {
           texts: [
             AppLocalizations.of(context)!.pilotFrequencyFull,
             AppLocalizations.of(context)!.pilotFrequencyManual,
-            AppLocalizations.of(context)!.pilotFrequencyScan,
+            // AppLocalizations.of(context)!.pilotFrequencyScan,
           ],
         );
       },

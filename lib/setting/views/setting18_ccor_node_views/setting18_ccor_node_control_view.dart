@@ -20,34 +20,6 @@ class Setting18CCorNodeControlView extends StatelessWidget {
     HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
 
-    // String returnInputAttenuation1 =
-    //     homeState.characteristicData[DataKey.returnVCA1] ?? '';
-    // String returnInputAttenuation3 =
-    //     homeState.characteristicData[DataKey.returnVCA3] ?? '';
-    // String returnInputAttenuation4 =
-    //     homeState.characteristicData[DataKey.returnVCA4] ?? '';
-    // String returnInputAttenuation6 =
-    //     homeState.characteristicData[DataKey.returnVCA6] ?? '';
-    // String returnIngressSetting1 =
-    //     homeState.characteristicData[DataKey.ingressSetting1] ?? '';
-    // String returnIngressSetting3 =
-    //     homeState.characteristicData[DataKey.ingressSetting3] ?? '';
-    // String returnIngressSetting4 =
-    //     homeState.characteristicData[DataKey.ingressSetting4] ?? '';
-    // String returnIngressSetting6 =
-    //     homeState.characteristicData[DataKey.ingressSetting6] ?? '';
-
-    // context.read<Setting18CCorNodeControlBloc>().add(Initialized(
-    //       returnInputAttenuation1: returnInputAttenuation1,
-    //       returnInputAttenuation3: returnInputAttenuation3,
-    //       returnInputAttenuation4: returnInputAttenuation4,
-    //       returnInputAttenuation6: returnInputAttenuation6,
-    //       returnIngressSetting1: returnIngressSetting1,
-    //       returnIngressSetting3: returnIngressSetting3,
-    //       returnIngressSetting4: returnIngressSetting4,
-    //       returnIngressSetting6: returnIngressSetting6,
-    //     ));
-
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
           ? AppLocalizations.of(context)!.dialogMessageSuccessful
@@ -58,18 +30,12 @@ class Setting18CCorNodeControlView extends StatelessWidget {
       if (item == DataKey.dsVVA1.name) {
         return AppLocalizations.of(context)!
             .dialogMessageForwardInputAttenuationSetting;
-      } else if (item == DataKey.inputAttenuation1.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardInputEqualizerSetting;
       } else if (item == DataKey.usVCA3.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation3Setting;
       } else if (item == DataKey.usVCA4.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation4Setting;
-      } else if (item == DataKey.inputAttenuation6.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnInputAttenuation6Setting;
       } else if (item == DataKey.ingressSetting1.name) {
         return AppLocalizations.of(context)!.dialogMessageReturnIngress1Setting;
       } else if (item == DataKey.ingressSetting3.name) {
@@ -505,7 +471,7 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
           title:
               '${AppLocalizations.of(context)!.rtnInputAttenuation1}: ${state.returnInputAttenuation1} dB',
           minValue: 0.0,
-          maxValue: 15.0,
+          maxValue: 25.0,
           currentValue: _getValue(state.returnInputAttenuation1),
           onChanged: (rtnInputAttenuation) {
             context.read<Setting18CCorNodeControlBloc>().add(
@@ -538,7 +504,7 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
           title:
               '${AppLocalizations.of(context)!.rtnInputAttenuation3}: ${state.returnInputAttenuation3} dB',
           minValue: 0.0,
-          maxValue: 15.0,
+          maxValue: 25.0,
           currentValue: _getValue(state.returnInputAttenuation3),
           onChanged: (rtnInputAttenuation) {
             context.read<Setting18CCorNodeControlBloc>().add(
@@ -571,7 +537,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
           title:
               '${AppLocalizations.of(context)!.rtnInputAttenuation4}: ${state.returnInputAttenuation4} dB',
           minValue: 0.0,
-          maxValue: 15.0,
+          maxValue: 25.0,
           currentValue: _getValue(state.returnInputAttenuation4),
           onChanged: (rtnInputAttenuation) {
             context.read<Setting18CCorNodeControlBloc>().add(
@@ -604,7 +570,7 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
           title:
               '${AppLocalizations.of(context)!.rtnInputAttenuation6}: ${state.returnInputAttenuation6} dB',
           minValue: 0.0,
-          maxValue: 15.0,
+          maxValue: 25.0,
           currentValue: _getValue(state.returnInputAttenuation6),
           onChanged: (rtnInputAttenuation) {
             context.read<Setting18CCorNodeControlBloc>().add(

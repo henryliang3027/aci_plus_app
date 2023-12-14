@@ -50,7 +50,10 @@ Widget controlParameterSlider({
                     alignment: Alignment.bottomCenter,
                     height: 22,
                     child: Text(
-                      '${(List.from([0, 15])[index]).toStringAsFixed(0)}',
+                      '${(List.from([
+                            minValue,
+                            maxValue
+                          ])[index]).toStringAsFixed(0)}',
                       style: const TextStyle(
                         fontSize: CustomStyle.sizeM,
                       ),
@@ -78,8 +81,8 @@ Widget controlParameterSlider({
             overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
           ),
           child: Slider(
-            min: 0.0,
-            max: 15.0,
+            min: minValue,
+            max: maxValue,
             divisions: 150,
             value: currentValue,
             onChanged: editMode ? onChanged : null,

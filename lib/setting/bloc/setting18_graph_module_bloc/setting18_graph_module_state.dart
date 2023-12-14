@@ -5,11 +5,11 @@ class Setting18GraphModuleState extends Equatable {
     this.submissionStatus = SubmissionStatus.none,
     this.dsVVA1 = '',
     this.dsSlope1 = '',
-    this.rtnInputAttenuation2 = '',
+    this.usVCA1 = '',
     this.rtnInputAttenuation3 = '',
     this.rtnInputAttenuation4 = '',
-    this.rtnOutputLevelAttenuation = '',
-    this.rtnOutputEQ = '',
+    this.usVCA2 = '',
+    this.eREQ = '',
     this.rtnIngressSetting2 = '',
     this.rtnIngressSetting3 = '',
     this.rtnIngressSetting4 = '',
@@ -39,11 +39,11 @@ class Setting18GraphModuleState extends Equatable {
   final SubmissionStatus submissionStatus;
   final String dsVVA1;
   final String dsSlope1;
-  final String rtnInputAttenuation2;
+  final String usVCA1;
   final String rtnInputAttenuation3;
   final String rtnInputAttenuation4;
-  final String rtnOutputLevelAttenuation;
-  final String rtnOutputEQ;
+  final String usVCA2;
+  final String eREQ;
   final String rtnIngressSetting2;
   final String rtnIngressSetting3;
   final String rtnIngressSetting4;
@@ -73,11 +73,11 @@ class Setting18GraphModuleState extends Equatable {
     SubmissionStatus? submissionStatus,
     String? dsVVA1,
     String? dsSlope1,
-    String? rtnInputAttenuation2,
+    String? usVCA1,
     String? rtnInputAttenuation3,
     String? rtnInputAttenuation4,
-    String? rtnOutputLevelAttenuation,
-    String? rtnOutputEQ,
+    String? usVCA2,
+    String? eREQ,
     String? rtnIngressSetting2,
     String? rtnIngressSetting3,
     String? rtnIngressSetting4,
@@ -107,12 +107,11 @@ class Setting18GraphModuleState extends Equatable {
       submissionStatus: submissionStatus ?? this.submissionStatus,
       dsVVA1: dsVVA1 ?? this.dsVVA1,
       dsSlope1: dsSlope1 ?? this.dsSlope1,
-      rtnInputAttenuation2: rtnInputAttenuation2 ?? this.rtnInputAttenuation2,
+      usVCA1: usVCA1 ?? this.usVCA1,
       rtnInputAttenuation3: rtnInputAttenuation3 ?? this.rtnInputAttenuation3,
       rtnInputAttenuation4: rtnInputAttenuation4 ?? this.rtnInputAttenuation4,
-      rtnOutputLevelAttenuation:
-          rtnOutputLevelAttenuation ?? this.rtnOutputLevelAttenuation,
-      rtnOutputEQ: rtnOutputEQ ?? this.rtnOutputEQ,
+      usVCA2: usVCA2 ?? this.usVCA2,
+      eREQ: eREQ ?? this.eREQ,
       rtnIngressSetting2: rtnIngressSetting2 ?? this.rtnIngressSetting2,
       rtnIngressSetting3: rtnIngressSetting3 ?? this.rtnIngressSetting3,
       rtnIngressSetting4: rtnIngressSetting4 ?? this.rtnIngressSetting4,
@@ -151,11 +150,11 @@ class Setting18GraphModuleState extends Equatable {
         submissionStatus,
         dsVVA1,
         dsSlope1,
-        rtnInputAttenuation2,
+        usVCA1,
         rtnInputAttenuation3,
         rtnInputAttenuation4,
-        rtnOutputLevelAttenuation,
-        rtnOutputEQ,
+        usVCA2,
+        eREQ,
         rtnIngressSetting2,
         rtnIngressSetting3,
         rtnIngressSetting4,

@@ -146,11 +146,11 @@ class Amp18Repository {
         DataKey.dsSlope1: a1p8g1.dsSlope1,
         DataKey.dsVVA2: a1p8g1.dsVVA2,
         DataKey.dsSlope2: a1p8g1.dsSlope2,
-        DataKey.inputAttenuation2: a1p8g1.inputAttenuation2,
-        DataKey.outputEqualizer: a1p8g1.outputEqualizer,
+        DataKey.usVCA1: a1p8g1.usVCA1,
+        DataKey.eREQ: a1p8g1.eREQ,
         DataKey.dsVVA3: a1p8g1.dsVVA3,
         DataKey.dsVVA4: a1p8g1.dsVVA4,
-        DataKey.outputAttenuation: a1p8g1.outputAttenuation,
+        DataKey.usVCA2: a1p8g1.usVCA2,
         DataKey.usVCA3: a1p8g1.usVCA3,
         DataKey.usVCA4: a1p8g1.usVCA4,
         DataKey.dsSlope3: a1p8g1.dsSlope3,
@@ -1592,7 +1592,7 @@ class Amp18Repository {
     }
   }
 
-  Future<dynamic> set1p8GReturnInputAttenuation2(String strValue) async {
+  Future<dynamic> set1p8GUSVCA1(String strValue) async {
     int commandIndex = 343;
 
     print('get data from request command 1p8G$commandIndex');
@@ -1606,18 +1606,18 @@ class Amp18Repository {
     byteData.setInt16(0, intValue, Endian.little); // little endian
     Uint8List bytes = Uint8List.view(byteData.buffer);
 
-    Command18.setReturnInputAttenuation2Cmd[7] = bytes[0];
-    Command18.setReturnInputAttenuation2Cmd[8] = bytes[1];
+    Command18.setUSVCA1Cmd[7] = bytes[0];
+    Command18.setUSVCA1Cmd[8] = bytes[1];
 
     CRC16.calculateCRC16(
-      command: Command18.setReturnInputAttenuation2Cmd,
-      usDataLength: Command18.setReturnInputAttenuation2Cmd.length - 2,
+      command: Command18.setUSVCA1Cmd,
+      usDataLength: Command18.setUSVCA1Cmd.length - 2,
     );
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: Command18.setReturnInputAttenuation2Cmd,
+        value: Command18.setUSVCA1Cmd,
       );
       return true;
     } catch (e) {
@@ -1625,7 +1625,7 @@ class Amp18Repository {
     }
   }
 
-  Future<dynamic> set1p8GReturnOutputEqualizer(String strValue) async {
+  Future<dynamic> set1p8GEREQ(String strValue) async {
     int commandIndex = 344;
 
     print('get data from request command 1p8G$commandIndex');
@@ -1639,18 +1639,18 @@ class Amp18Repository {
     byteData.setInt16(0, intValue, Endian.little); // little endian
     Uint8List bytes = Uint8List.view(byteData.buffer);
 
-    Command18.setReturnOutputEqualizerCmd[7] = bytes[0];
-    Command18.setReturnOutputEqualizerCmd[8] = bytes[1];
+    Command18.setEREQCmd[7] = bytes[0];
+    Command18.setEREQCmd[8] = bytes[1];
 
     CRC16.calculateCRC16(
-      command: Command18.setReturnOutputEqualizerCmd,
-      usDataLength: Command18.setReturnOutputEqualizerCmd.length - 2,
+      command: Command18.setEREQCmd,
+      usDataLength: Command18.setEREQCmd.length - 2,
     );
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: Command18.setReturnOutputEqualizerCmd,
+        value: Command18.setEREQCmd,
       );
       return true;
     } catch (e) {
@@ -1724,7 +1724,7 @@ class Amp18Repository {
     }
   }
 
-  Future<dynamic> set1p8GReturnOutputAttenuation(String strValue) async {
+  Future<dynamic> set1p8GUSVCA2(String strValue) async {
     int commandIndex = 347;
 
     print('get data from request command 1p8G$commandIndex');
@@ -1738,18 +1738,18 @@ class Amp18Repository {
     byteData.setInt16(0, intValue, Endian.little); // little endian
     Uint8List bytes = Uint8List.view(byteData.buffer);
 
-    Command18.setReturnOutputAttenuationCmd[7] = bytes[0];
-    Command18.setReturnOutputAttenuationCmd[8] = bytes[1];
+    Command18.setUSVCA2Cmd[7] = bytes[0];
+    Command18.setUSVCA2Cmd[8] = bytes[1];
 
     CRC16.calculateCRC16(
-      command: Command18.setReturnOutputAttenuationCmd,
-      usDataLength: Command18.setReturnOutputAttenuationCmd.length - 2,
+      command: Command18.setUSVCA2Cmd,
+      usDataLength: Command18.setUSVCA2Cmd.length - 2,
     );
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: Command18.setReturnOutputAttenuationCmd,
+        value: Command18.setUSVCA2Cmd,
       );
       return true;
     } catch (e) {

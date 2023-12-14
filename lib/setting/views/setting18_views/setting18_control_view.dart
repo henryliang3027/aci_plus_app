@@ -41,7 +41,7 @@ class Setting18ControlView extends StatelessWidget {
       } else if (item == DataKey.dsSlope1.name) {
         return AppLocalizations.of(context)!
             .dialogMessageForwardInputEqualizerSetting;
-      } else if (item == DataKey.inputAttenuation2.name) {
+      } else if (item == DataKey.usVCA1.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation2Setting;
       } else if (item == DataKey.usVCA3.name) {
@@ -50,10 +50,10 @@ class Setting18ControlView extends StatelessWidget {
       } else if (item == DataKey.usVCA4.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation4Setting;
-      } else if (item == DataKey.outputAttenuation.name) {
+      } else if (item == DataKey.usVCA2.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnOutputAttenuationSetting;
-      } else if (item == DataKey.outputEqualizer.name) {
+      } else if (item == DataKey.eREQ.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnOutputEqualizerSetting;
       } else if (item == DataKey.ingressSetting2.name) {
@@ -443,7 +443,7 @@ class _FwdInputAttenuation extends StatelessWidget {
           title:
               '${AppLocalizations.of(context)!.fwdInputAttenuation}: ${getCurrentValue(state.dsVVA1)} dB',
           minValue: 0.0,
-          maxValue: 15.0,
+          maxValue: 25.0,
           currentValue: getCurrentValue(state.dsVVA1),
           onChanged: (dsVVA1) {
             context
@@ -520,7 +520,7 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation2And3}: ${state.dsVVA4} dB',
           minValue: 0.0,
-          maxValue: 15.0,
+          maxValue: 25.0,
           currentValue: _getValue(state.dsVVA4),
           onChanged: (dsVVA4) {
             context
@@ -550,7 +550,7 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation3And4}: ${state.dsVVA4} dB',
           minValue: 0.0,
-          maxValue: 15.0,
+          maxValue: 25.0,
           currentValue: _getValue(state.dsVVA4),
           onChanged: (dsVVA4) {
             context
@@ -704,21 +704,19 @@ class _RtnInputAttenuation2 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.rtnInputAttenuation2}: ${state.rtnInputAttenuation2} dB',
+              '${AppLocalizations.of(context)!.rtnInputAttenuation2}: ${state.usVCA1} dB',
           minValue: 0.0,
-          maxValue: 15.0,
-          currentValue: _getValue(state.rtnInputAttenuation2),
-          onChanged: (rtnInputAttenuation) {
-            context.read<Setting18ControlBloc>().add(
-                RtnInputAttenuation2Changed(
-                    rtnInputAttenuation.toStringAsFixed(1)));
+          maxValue: 25.0,
+          currentValue: _getValue(state.usVCA1),
+          onChanged: (usVCA1) {
+            context
+                .read<Setting18ControlBloc>()
+                .add(USVCA1Changed(usVCA1.toStringAsFixed(1)));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(const RtnInputAttenuation2Decreased()),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(const RtnInputAttenuation2Increased()),
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(const USVCA1Decreased()),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(const USVCA1Increased()),
         );
       },
     );
@@ -738,7 +736,7 @@ class _RtnInputAttenuation3 extends StatelessWidget {
           title:
               '${AppLocalizations.of(context)!.rtnInputAttenuation3}: ${state.usVCA3} dB',
           minValue: 0.0,
-          maxValue: 15.0,
+          maxValue: 25.0,
           currentValue: _getValue(state.usVCA3),
           onChanged: (rtnInputAttenuation) {
             context
@@ -768,7 +766,7 @@ class _RtnInputAttenuation2And3 extends StatelessWidget {
           title:
               '${AppLocalizations.of(context)!.rtnInputAttenuation2And3}: ${state.usVCA3} dB',
           minValue: 0.0,
-          maxValue: 15.0,
+          maxValue: 25.0,
           currentValue: _getValue(state.usVCA3),
           onChanged: (rtnInputAttenuation) {
             context
@@ -798,7 +796,7 @@ class _RtnInputAttenuation4 extends StatelessWidget {
           title:
               '${AppLocalizations.of(context)!.rtnInputAttenuation4}: ${state.usVCA4} dB',
           minValue: 0.0,
-          maxValue: 15.0,
+          maxValue: 25.0,
           currentValue: _getValue(state.usVCA4),
           onChanged: (rtnInputAttenuation) {
             context
@@ -828,7 +826,7 @@ class _RtnInputAttenuation5And6 extends StatelessWidget {
           title:
               '${AppLocalizations.of(context)!.rtnInputAttenuation5And6}: ${state.usVCA4} dB',
           minValue: 0.0,
-          maxValue: 15.0,
+          maxValue: 25.0,
           currentValue: _getValue(state.usVCA4),
           onChanged: (rtnInputAttenuation) {
             context
@@ -856,21 +854,19 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.rtnOutputLevelAttenuation}: ${state.rtnOutputLevelAttenuation} dB',
+              '${AppLocalizations.of(context)!.rtnOutputLevelAttenuation}: ${state.usVCA2} dB',
           minValue: 0.0,
-          maxValue: 15.0,
-          currentValue: _getValue(state.rtnOutputLevelAttenuation),
+          maxValue: 25.0,
+          currentValue: _getValue(state.usVCA2),
           onChanged: (rtnInputAttenuation) {
-            context.read<Setting18ControlBloc>().add(
-                RtnOutputLevelAttenuationChanged(
-                    rtnInputAttenuation.toStringAsFixed(1)));
+            context
+                .read<Setting18ControlBloc>()
+                .add(USVCA2Changed(rtnInputAttenuation.toStringAsFixed(1)));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(const RtnOutputLevelAttenuationDecreased()),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(const RtnOutputLevelAttenuationIncreased()),
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(const USVCA2Decreased()),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(const USVCA2Increased()),
         );
       },
     );
@@ -888,21 +884,19 @@ class _RtnOutputEQ extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.rtnOutputEQ}: ${state.rtnOutputEQ} dB',
+              '${AppLocalizations.of(context)!.rtnOutputEQ}: ${state.eREQ} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: _getValue(state.rtnOutputEQ),
+          currentValue: _getValue(state.eREQ),
           onChanged: (rtnOutputEQ) {
             context
                 .read<Setting18ControlBloc>()
-                .add(RtnOutputEQChanged(rtnOutputEQ.toStringAsFixed(1)));
+                .add(EREQChanged(rtnOutputEQ.toStringAsFixed(1)));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(const RtnOutputEQDecreased()),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(const RtnOutputEQIncreased()),
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(const EREQDecreased()),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(const EREQIncreased()),
         );
       },
     );

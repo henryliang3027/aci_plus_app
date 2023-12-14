@@ -12,11 +12,11 @@ class Initialized extends Setting18GraphModuleEvent {
       // {
       // required this.fwdInputAttenuation,
       // required this.fwdInputEQ,
-      // required this.rtnInputAttenuation2,
+      // required this.usVCA1,
       // required this.rtnInputAttenuation3,
       // required this.rtnInputAttenuation4,
-      // required this.rtnOutputLevelAttenuation,
-      // required this.rtnOutputEQ,
+      // required this.usVCA2,
+      // required this.eREQ,
       // required this.rtnIngressSetting2,
       // required this.rtnIngressSetting3,
       // required this.rtnIngressSetting4,
@@ -41,11 +41,11 @@ class Initialized extends Setting18GraphModuleEvent {
 
   // final String fwdInputAttenuation;
   // final String fwdInputEQ;
-  // final String rtnInputAttenuation2;
+  // final String usVCA1;
   // final String rtnInputAttenuation3;
   // final String rtnInputAttenuation4;
-  // final String rtnOutputLevelAttenuation;
-  // final String rtnOutputEQ;
+  // final String usVCA2;
+  // final String eREQ;
   // final String rtnIngressSetting2;
   // final String rtnIngressSetting3;
   // final String rtnIngressSetting4;
@@ -70,11 +70,11 @@ class Initialized extends Setting18GraphModuleEvent {
   List<Object> get props => [
         // fwdInputAttenuation,
         // fwdInputEQ,
-        // rtnInputAttenuation2,
+        // usVCA1,
         // rtnInputAttenuation3,
         // rtnInputAttenuation4,
-        // rtnOutputLevelAttenuation,
-        // rtnOutputEQ,
+        // usVCA2,
+        // eREQ,
         // rtnIngressSetting2,
         // rtnIngressSetting3,
         // rtnIngressSetting4,
@@ -143,24 +143,24 @@ class DSSlope1Decreased extends Setting18GraphModuleEvent {
   List<Object> get props => [];
 }
 
-class RtnInputAttenuation2Changed extends Setting18GraphModuleEvent {
-  const RtnInputAttenuation2Changed(this.rtnInputAttenuation2);
+class USVCA1Changed extends Setting18GraphModuleEvent {
+  const USVCA1Changed(this.usVCA1);
 
-  final String rtnInputAttenuation2;
+  final String usVCA1;
 
   @override
-  List<Object> get props => [rtnInputAttenuation2];
+  List<Object> get props => [usVCA1];
 }
 
-class RtnInputAttenuation2Increased extends Setting18GraphModuleEvent {
-  const RtnInputAttenuation2Increased();
+class USVCA1Increased extends Setting18GraphModuleEvent {
+  const USVCA1Increased();
 
   @override
   List<Object> get props => [];
 }
 
-class RtnInputAttenuation2Decreased extends Setting18GraphModuleEvent {
-  const RtnInputAttenuation2Decreased();
+class USVCA1Decreased extends Setting18GraphModuleEvent {
+  const USVCA1Decreased();
 
   @override
   List<Object> get props => [];
@@ -212,47 +212,47 @@ class RtnInputAttenuation4Decreased extends Setting18GraphModuleEvent {
   List<Object> get props => [];
 }
 
-class RtnOutputLevelAttenuationChanged extends Setting18GraphModuleEvent {
-  const RtnOutputLevelAttenuationChanged(this.rtnOutputLevelAttenuation);
+class USVCA2Changed extends Setting18GraphModuleEvent {
+  const USVCA2Changed(this.usVCA2);
 
-  final String rtnOutputLevelAttenuation;
-
-  @override
-  List<Object> get props => [rtnOutputLevelAttenuation];
-}
-
-class RtnOutputLevelAttenuationIncreased extends Setting18GraphModuleEvent {
-  const RtnOutputLevelAttenuationIncreased();
+  final String usVCA2;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [usVCA2];
 }
 
-class RtnOutputLevelAttenuationDecreased extends Setting18GraphModuleEvent {
-  const RtnOutputLevelAttenuationDecreased();
+class USVCA2Increased extends Setting18GraphModuleEvent {
+  const USVCA2Increased();
 
   @override
   List<Object> get props => [];
 }
 
-class RtnOutputEQChanged extends Setting18GraphModuleEvent {
-  const RtnOutputEQChanged(this.rtnOutputEQ);
-
-  final String rtnOutputEQ;
-
-  @override
-  List<Object> get props => [rtnOutputEQ];
-}
-
-class RtnOutputEQIncreased extends Setting18GraphModuleEvent {
-  const RtnOutputEQIncreased();
+class USVCA2Decreased extends Setting18GraphModuleEvent {
+  const USVCA2Decreased();
 
   @override
   List<Object> get props => [];
 }
 
-class RtnOutputEQDecreased extends Setting18GraphModuleEvent {
-  const RtnOutputEQDecreased();
+class EREQChanged extends Setting18GraphModuleEvent {
+  const EREQChanged(this.eREQ);
+
+  final String eREQ;
+
+  @override
+  List<Object> get props => [eREQ];
+}
+
+class EREQIncreased extends Setting18GraphModuleEvent {
+  const EREQIncreased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class EREQDecreased extends Setting18GraphModuleEvent {
+  const EREQDecreased();
 
   @override
   List<Object> get props => [];
