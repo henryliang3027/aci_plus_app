@@ -238,6 +238,9 @@
     "dialogMessageReturnInputAttenuation3Setting": "Port 3 輸入衰減量設定",
     "dialogMessageReturnInputAttenuation4Setting": "Port 4 輸入衰減量設定",
     "dialogMessageReturnInputAttenuation6Setting": "Port 6 輸入衰減量設定",
+    "dialogMessageReturnInputAttenuation2And3Setting": "Port 2 & Port 3 輸入衰減量設定",
+    "dialogMessageReturnInputAttenuation5And6Setting": "Port 5 & Port 6 輸入衰減量設定",
+
     "dialogMessageReturnOutputAttenuationSetting": "輸出衰減量設定",
     "dialogMessageReturnOutputEqualizerSetting": "輸出等化器設定",
     "dialogMessageReturnOutputEqualizer1Setting": "Port 1 輸出等化器設定",
@@ -250,6 +253,8 @@
     "dialogMessageReturnIngress4Setting": "Port 4 輸入衰減量設定",
     "dialogMessageReturnIngress5Setting": "Port 5 輸入衰減量設定",
     "dialogMessageReturnIngress6Setting": "Port 6 輸入衰減量設定",
+    "dialogMessageReturnIngress2And3Setting": "Port 2 & Port 3 輸入衰減量設定",
+    "dialogMessageReturnIngress5And6Setting": "Port 5 & Port 6 輸入衰減量設定",
     "dialogMessageDSVVA2Setting": "DS VVA2 setting",
     "dialogMessageDSSlope2Setting": "DS Slope2 setting",
     "dialogMessageDSVVA3Setting": "DS VVA3 setting",

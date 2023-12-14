@@ -42,14 +42,29 @@ class Setting18ControlView extends StatelessWidget {
         return AppLocalizations.of(context)!
             .dialogMessageForwardInputEqualizerSetting;
       } else if (item == DataKey.usVCA1.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnInputAttenuation2Setting;
+        if (partId == '5' || partId == '6') {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnInputAttenuation4Setting;
+        } else {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnInputAttenuation2Setting;
+        }
       } else if (item == DataKey.usVCA3.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnInputAttenuation3Setting;
+        if (partId == '5' || partId == '6') {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnInputAttenuation2And3Setting;
+        } else {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnInputAttenuation3Setting;
+        }
       } else if (item == DataKey.usVCA4.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnInputAttenuation4Setting;
+        if (partId == '5' || partId == '6') {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnInputAttenuation5And6Setting;
+        } else {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnInputAttenuation4Setting;
+        }
       } else if (item == DataKey.usVCA2.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnOutputAttenuationSetting;
@@ -57,11 +72,29 @@ class Setting18ControlView extends StatelessWidget {
         return AppLocalizations.of(context)!
             .dialogMessageReturnOutputEqualizerSetting;
       } else if (item == DataKey.ingressSetting2.name) {
-        return AppLocalizations.of(context)!.dialogMessageReturnIngress2Setting;
+        if (partId == '5' || partId == '6') {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnIngress4Setting;
+        } else {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnIngress2Setting;
+        }
       } else if (item == DataKey.ingressSetting3.name) {
-        return AppLocalizations.of(context)!.dialogMessageReturnIngress3Setting;
+        if (partId == '5' || partId == '6') {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnIngress2And3Setting;
+        } else {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnIngress3Setting;
+        }
       } else if (item == DataKey.ingressSetting4.name) {
-        return AppLocalizations.of(context)!.dialogMessageReturnIngress4Setting;
+        if (partId == '5' || partId == '6') {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnIngress5And6Setting;
+        } else {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnIngress4Setting;
+        }
       } else if (item == DataKey.tgcCableLength.name) {
         return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
       } else if (item == DataKey.dsVVA2.name) {
@@ -78,6 +111,9 @@ class Setting18ControlView extends StatelessWidget {
           return AppLocalizations.of(context)!
               .dialogMessageForwardOutputAttenuation3And4Setting;
         }
+      } else if (item == DataKey.dsVVA5.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardOutputAttenuation5And6Setting;
       } else if (item == DataKey.dsSlope3.name) {
         if (partId == '5' || partId == '6') {
           return AppLocalizations.of(context)!
@@ -244,7 +280,9 @@ class Setting18ControlView extends StatelessWidget {
             break;
           case SettingControl.returnInputAttenuation4:
             widgets.add(
-              const _RtnInputAttenuation4(),
+              _RtnInputAttenuation4(
+                partId: partId,
+              ),
             );
             break;
           case SettingControl.returnInputAttenuation5:
@@ -285,7 +323,9 @@ class Setting18ControlView extends StatelessWidget {
             break;
           case SettingControl.returnIngressSetting4:
             widgets.add(
-              const _RtnIngressSetting4(),
+              _RtnIngressSetting4(
+                partId: partId,
+              ),
             );
             break;
           case SettingControl.returnIngressSetting5:
@@ -309,12 +349,16 @@ class Setting18ControlView extends StatelessWidget {
           : [
               const _RtnInputAttenuation2(),
               const _RtnInputAttenuation3(),
-              const _RtnInputAttenuation4(),
+              _RtnInputAttenuation4(
+                partId: partId,
+              ),
               const _RtnOutputLevelAttenuation(),
               const _RtnOutputEQ(),
               const _RtnIngressSetting2(),
               const _RtnIngressSetting3(),
-              const _RtnIngressSetting4(),
+              _RtnIngressSetting4(
+                partId: partId,
+              ),
             ];
     }
 
@@ -784,32 +828,66 @@ class _RtnInputAttenuation2And3 extends StatelessWidget {
 }
 
 class _RtnInputAttenuation4 extends StatelessWidget {
-  const _RtnInputAttenuation4({super.key});
+  const _RtnInputAttenuation4({
+    super.key,
+    required this.partId,
+  });
+
+  final String partId;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
-      builder: (context, state) {
-        return controlParameterSlider(
-          context: context,
-          editMode: state.editMode,
-          title:
-              '${AppLocalizations.of(context)!.rtnInputAttenuation4}: ${state.usVCA4} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
-          currentValue: _getValue(state.usVCA4),
-          onChanged: (rtnInputAttenuation) {
-            context
+    if (partId == '5') {
+      return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+        builder: (context, state) {
+          return controlParameterSlider(
+            context: context,
+            editMode: state.editMode,
+            title:
+                '${AppLocalizations.of(context)!.rtnInputAttenuation4}: ${state.usVCA1} dB',
+            minValue: 0.0,
+            maxValue: 25.0,
+            currentValue: _getValue(state.usVCA1),
+            onChanged: (usVCA1) {
+              context
+                  .read<Setting18ControlBloc>()
+                  .add(USVCA1Changed(usVCA1.toStringAsFixed(1)));
+            },
+            onDecreased: () => context
                 .read<Setting18ControlBloc>()
-                .add(USVCA4Changed(rtnInputAttenuation.toStringAsFixed(1)));
-          },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(const USVCA4Decreased()),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(const USVCA4Increased()),
-        );
-      },
-    );
+                .add(const USVCA1Decreased()),
+            onIncreased: () => context
+                .read<Setting18ControlBloc>()
+                .add(const USVCA1Increased()),
+          );
+        },
+      );
+    } else {
+      return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+        builder: (context, state) {
+          return controlParameterSlider(
+            context: context,
+            editMode: state.editMode,
+            title:
+                '${AppLocalizations.of(context)!.rtnInputAttenuation4}: ${state.usVCA4} dB',
+            minValue: 0.0,
+            maxValue: 25.0,
+            currentValue: _getValue(state.usVCA4),
+            onChanged: (usVCA4) {
+              context
+                  .read<Setting18ControlBloc>()
+                  .add(USVCA4Changed(usVCA4.toStringAsFixed(1)));
+            },
+            onDecreased: () => context
+                .read<Setting18ControlBloc>()
+                .add(const USVCA4Decreased()),
+            onIncreased: () => context
+                .read<Setting18ControlBloc>()
+                .add(const USVCA4Increased()),
+          );
+        },
+      );
+    }
   }
 }
 
@@ -989,35 +1067,66 @@ class _RtnIngressSetting3 extends StatelessWidget {
 class _RtnIngressSetting4 extends StatelessWidget {
   const _RtnIngressSetting4({
     super.key,
+    required this.partId,
   });
+
+  final String partId;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
-      buildWhen: (previous, current) =>
-          previous.rtnIngressSetting4 != current.rtnIngressSetting4 ||
-          previous.editMode != current.editMode,
-      builder: (context, state) {
-        return controlToggleButton(
-          context: context,
-          editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.rtnIngressSetting4}:',
-          currentValue: state.rtnIngressSetting4,
-          onChanged: (int index) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(RtnIngressSetting4Changed(rtnIngressValues[index]));
-          },
-          values: rtnIngressValues,
-          texts: [
-            '0',
-            '-3',
-            '-6',
-            AppLocalizations.of(context)!.ingressOpen,
-          ],
-        );
-      },
-    );
+    if (partId == '5') {
+      return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+        buildWhen: (previous, current) =>
+            previous.rtnIngressSetting2 != current.rtnIngressSetting2 ||
+            previous.editMode != current.editMode,
+        builder: (context, state) {
+          return controlToggleButton(
+            context: context,
+            editMode: state.editMode,
+            title: '${AppLocalizations.of(context)!.rtnIngressSetting4}:',
+            currentValue: state.rtnIngressSetting2,
+            onChanged: (int index) {
+              context
+                  .read<Setting18ControlBloc>()
+                  .add(RtnIngressSetting2Changed(rtnIngressValues[index]));
+            },
+            values: rtnIngressValues,
+            texts: [
+              '0',
+              '-3',
+              '-6',
+              AppLocalizations.of(context)!.ingressOpen,
+            ],
+          );
+        },
+      );
+    } else {
+      return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+        buildWhen: (previous, current) =>
+            previous.rtnIngressSetting4 != current.rtnIngressSetting4 ||
+            previous.editMode != current.editMode,
+        builder: (context, state) {
+          return controlToggleButton(
+            context: context,
+            editMode: state.editMode,
+            title: '${AppLocalizations.of(context)!.rtnIngressSetting4}:',
+            currentValue: state.rtnIngressSetting4,
+            onChanged: (int index) {
+              context
+                  .read<Setting18ControlBloc>()
+                  .add(RtnIngressSetting4Changed(rtnIngressValues[index]));
+            },
+            values: rtnIngressValues,
+            texts: [
+              '0',
+              '-3',
+              '-6',
+              AppLocalizations.of(context)!.ingressOpen,
+            ],
+          );
+        },
+      );
+    }
   }
 }
 

@@ -92,6 +92,7 @@ class Setting18ControlBloc
     String dsVVA4 = characteristicDataCache[DataKey.dsVVA4] ?? '';
     String dsVVA5 = characteristicDataCache[DataKey.dsVVA5] ?? '';
     String dsSlope3 = characteristicDataCache[DataKey.dsSlope3] ?? '';
+    String dsSlope4 = characteristicDataCache[DataKey.dsSlope4] ?? '';
 
     emit(state.copyWith(
       dsVVA1: dsVVA1,
@@ -111,6 +112,7 @@ class Setting18ControlBloc
       dsVVA4: dsVVA4,
       dsVVA5: dsVVA5,
       dsSlope3: dsSlope3,
+      dsSlope4: dsSlope4,
       isInitialize: true,
       initialValues: characteristicDataCache,
     ));
@@ -1619,6 +1621,32 @@ class Setting18ControlBloc
       settingResult.add('${DataKey.dsSlope1.name},$resultOfDSSlope1');
     }
 
+    if (state.dsVVA4 != state.initialValues[DataKey.dsVVA4]) {
+      bool resultOfDSVVA4 = await _amp18Repository.set1p8GDSVVA4(state.dsVVA4);
+
+      settingResult.add('${DataKey.dsVVA4.name},$resultOfDSVVA4');
+    }
+
+    if (state.dsVVA5 != state.initialValues[DataKey.dsVVA5]) {
+      bool resultOfDSVVA5 = await _amp18Repository.set1p8GDSVVA5(state.dsVVA5);
+
+      settingResult.add('${DataKey.dsVVA5.name},$resultOfDSVVA5');
+    }
+
+    if (state.dsSlope3 != state.initialValues[DataKey.dsSlope3]) {
+      bool resultOfSetDSSlope3 =
+          await _amp18Repository.set1p8DSSlope3(state.dsSlope3);
+
+      settingResult.add('${DataKey.dsSlope3.name},$resultOfSetDSSlope3');
+    }
+
+    if (state.dsSlope4 != state.initialValues[DataKey.dsSlope4]) {
+      bool resultOfSetDSSlope4 =
+          await _amp18Repository.set1p8DSSlope4(state.dsSlope4);
+
+      settingResult.add('${DataKey.dsSlope4.name},$resultOfSetDSSlope4');
+    }
+
     if (state.usVCA1 != state.initialValues[DataKey.usVCA1]) {
       bool resultOfSetUSVCA1Cmd =
           await _amp18Repository.set1p8GUSVCA1(state.usVCA1);
@@ -1707,20 +1735,6 @@ class Setting18ControlBloc
           await _amp18Repository.set1p8DSVVA3(state.dsVVA3);
 
       settingResult.add('${DataKey.dsVVA3.name},$resultOfSetDSVVA3');
-    }
-
-    if (state.dsVVA4 != state.initialValues[DataKey.dsVVA4]) {
-      bool resultOfSetDSVVA4 =
-          await _amp18Repository.set1p8DSVVA4(state.dsVVA4);
-
-      settingResult.add('${DataKey.dsVVA4.name},$resultOfSetDSVVA4');
-    }
-
-    if (state.dsSlope3 != state.initialValues[DataKey.dsSlope3]) {
-      bool resultOfSetDSSlope3 =
-          await _amp18Repository.set1p8DSSlope3(state.dsSlope3);
-
-      settingResult.add('${DataKey.dsSlope3.name},$resultOfSetDSSlope3');
     }
 
     // if (state.usTGC != state.initialValues[DataKey.usTGC]) {

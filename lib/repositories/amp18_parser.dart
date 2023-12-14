@@ -152,8 +152,11 @@ class Amp18Parser {
     String eREQ = '';
     String dsVVA3 = '';
     String dsVVA4 = '';
+    String dsVVA5 = '';
     String dsSlope3 = '';
+    String dsSlope4 = '';
     // String usTGC = '';
+
     String location = '';
     String logInterval = '';
 
@@ -414,18 +417,25 @@ class Amp18Parser {
     usVCA4 =
         (rawUSVCA4ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
 
-    // 解析 usTGC (0xAA US TGC Set dB)
-    // List<int> rawUSTGC = rawData.sublist(173, 175);
-    // ByteData rawUSTGCByteData =
-    //     ByteData.sublistView(Uint8List.fromList(rawUSTGC));
-    // usTGC =
-    //     (rawUSTGCByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
+    // 解析 dsVVA5 (0xAA DS VVA5 Set dB)
+    List<int> rawDSVVA5 = rawData.sublist(173, 175);
+    ByteData rawDSVVA5ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSVVA5));
+    dsVVA5 =
+        (rawDSVVA5ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
 
     // 解析 dsSlope3 (0xAC DS Slope3 Set dB)
     List<int> rawDSSlope3 = rawData.sublist(175, 177);
     ByteData rawDSSlope3ByteData =
         ByteData.sublistView(Uint8List.fromList(rawDSSlope3));
     dsSlope3 = (rawDSSlope3ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 dsSlope4 (0xAC DS Slope4 Set dB)
+    List<int> rawDSSlope4 = rawData.sublist(177, 179);
+    ByteData rawDSSlope4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSSlope4));
+    dsSlope4 = (rawDSSlope4ByteData.getInt16(0, Endian.little) / 10)
         .toStringAsFixed(1);
 
     return A1P8G1(
@@ -474,7 +484,9 @@ class Amp18Parser {
       eREQ: eREQ,
       dsVVA3: dsVVA3,
       dsVVA4: dsVVA4,
+      dsVVA5: dsVVA5,
       dsSlope3: dsSlope3,
+      dsSlope4: dsSlope4,
       // usTGC: usTGC,
       location: location,
       logInterval: logInterval,
@@ -1640,7 +1652,9 @@ class A1P8G1 {
     required this.eREQ,
     required this.dsVVA3,
     required this.dsVVA4,
+    required this.dsVVA5,
     required this.dsSlope3,
+    required this.dsSlope4,
     // required this.usTGC,
     required this.location,
     required this.logInterval,
@@ -1690,7 +1704,9 @@ class A1P8G1 {
   final String eREQ;
   final String dsVVA3;
   final String dsVVA4;
+  final String dsVVA5;
   final String dsSlope3;
+  final String dsSlope4;
   // final String usTGC;
   final String location;
   final String logInterval;

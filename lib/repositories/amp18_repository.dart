@@ -150,10 +150,12 @@ class Amp18Repository {
         DataKey.eREQ: a1p8g1.eREQ,
         DataKey.dsVVA3: a1p8g1.dsVVA3,
         DataKey.dsVVA4: a1p8g1.dsVVA4,
+        DataKey.dsVVA5: a1p8g1.dsVVA5,
         DataKey.usVCA2: a1p8g1.usVCA2,
         DataKey.usVCA3: a1p8g1.usVCA3,
         DataKey.usVCA4: a1p8g1.usVCA4,
         DataKey.dsSlope3: a1p8g1.dsSlope3,
+        DataKey.dsSlope4: a1p8g1.dsSlope4,
         // DataKey.usTGC: a1p8g1.usTGC,
       };
 
@@ -1691,7 +1693,7 @@ class Amp18Repository {
     }
   }
 
-  Future<dynamic> set1p8DSVVA4(String strValue) async {
+  Future<dynamic> set1p8GDSVVA4(String strValue) async {
     int commandIndex = 346;
 
     print('get data from request command 1p8G$commandIndex');
@@ -1823,7 +1825,7 @@ class Amp18Repository {
     }
   }
 
-  Future<dynamic> set1p8DSVVA5(String strValue) async {
+  Future<dynamic> set1p8GDSVVA5(String strValue) async {
     int commandIndex = 350;
 
     print('get data from request command 1p8G$commandIndex');
@@ -2037,7 +2039,7 @@ class Amp18Repository {
 
     int difference = dateTime.difference(deviceDateTime).inMinutes.abs();
 
-    // 如果 device 的now time 跟 目前時間相差大於5分鐘, 則寫入目前時間
+    // 如果 device 的 now time 跟 目前時間相差大於5分鐘, 則寫入目前時間
     if (difference > 5) {
       try {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
