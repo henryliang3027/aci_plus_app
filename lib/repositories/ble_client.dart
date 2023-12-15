@@ -176,7 +176,7 @@ class BLEClient {
               .listen((data) async {
             List<int> rawData = data;
             print(_currentCommandIndex);
-            // print('data length: ${rawData.length}');
+            // print('data length: ${rawData.length}, $rawData');
 
             if (_currentCommandIndex <= 13) {
               cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
@@ -382,10 +382,15 @@ class BLEClient {
   ) {
     List<int> crcData = List<int>.from(rawData);
     CRC16.calculateCRC16(command: crcData, usDataLength: crcData.length - 2);
-    if (crcData[crcData.length - 1] == rawData[rawData.length - 1] &&
-        crcData[crcData.length - 2] == rawData[rawData.length - 2]) {
-      return true;
+    if (rawData.isNotEmpty) {
+      if (crcData[crcData.length - 1] == rawData[rawData.length - 1] &&
+          crcData[crcData.length - 2] == rawData[rawData.length - 2]) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
+      // 如果 rawData 是空的
       return false;
     }
   }
