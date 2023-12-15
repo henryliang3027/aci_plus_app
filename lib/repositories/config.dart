@@ -2,6 +2,7 @@ import 'package:hive/hive.dart';
 part 'config.g.dart';
 
 /// 定義使用者的設定檔資料結構
+@HiveType(typeId: 1)
 class Config {
   const Config({
     required this.partId,
