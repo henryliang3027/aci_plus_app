@@ -267,7 +267,7 @@ class BLEClient {
               }
 
               _combinedRawData.addAll(rawData);
-              // print(_combinedRawData.length);
+              print(_combinedRawData.length);
 
               if (_combinedRawData.length == 16389) {
                 bool isValidCRC = checkCRC(_combinedRawData);

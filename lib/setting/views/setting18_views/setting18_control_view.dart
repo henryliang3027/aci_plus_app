@@ -122,6 +122,9 @@ class Setting18ControlView extends StatelessWidget {
           return AppLocalizations.of(context)!
               .dialogMessageForwardOutputEqualizer3And4Setting;
         }
+      } else if (item == DataKey.dsSlope4.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardOutputEqualizer5And6Setting;
       }
       // else if (item == DataKey.usTGC.name) {
       //   return AppLocalizations.of(context)!.dialogMessageUSTGCSetting;

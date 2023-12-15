@@ -632,11 +632,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     if (resultOf1p8GForLogChunk[0]) {
-      String deviceNowTime = state.characteristicData[DataKey.nowDateTime] ??
-          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+      String deviceNowDateTime =
+          state.characteristicData[DataKey.nowDateTime] ??
+              DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
       // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
-      await _amp18Repository.set1p8GNowDateTime(deviceNowTime);
+      String partId = state.characteristicData[DataKey.partId] ?? '';
+      await _amp18Repository.set1p8GNowDateTime(
+        partId: partId,
+        deviceNowDateTime: deviceNowDateTime,
+      );
     }
 
     emit(state.copyWith(

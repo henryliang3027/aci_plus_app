@@ -2005,7 +2005,10 @@ class Amp18Repository {
     }
   }
 
-  Future<dynamic> set1p8GNowDateTime(String deviceNowDateTime) async {
+  Future<dynamic> set1p8GNowDateTime({
+    required String partId,
+    required String deviceNowDateTime,
+  }) async {
     int commandIndex = 355;
 
     print('get data from request command 1p8G$commandIndex');
@@ -2039,8 +2042,9 @@ class Amp18Repository {
 
     int difference = dateTime.difference(deviceDateTime).inMinutes.abs();
 
-    // 如果 device 的 now time 跟 目前時間相差大於5分鐘, 則寫入目前時間
-    if (difference > 5) {
+    // 如果 device 的 now time 跟 目前時間相差大於1440分鐘(24 小時), 則寫入目前時間
+    if (difference > 1440) {
+      print('sync time on device id $partId');
       try {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
