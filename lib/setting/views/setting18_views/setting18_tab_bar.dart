@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/setting/views/setting18_views/setting18_config_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_configure_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_control_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_threshold_page.dart';
@@ -10,7 +11,7 @@ class Setting18TabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -62,6 +63,16 @@ class Setting18TabBar extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Tab(
+                    child: SizedBox(
+                      width: 110,
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.advanced,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -73,6 +84,7 @@ class Setting18TabBar extends StatelessWidget {
                 Setting18ConfigurePage(),
                 Setting18ThresholdPage(),
                 Setting18ControlPage(),
+                Setting18ConfigPage(),
               ],
             ),
           ),

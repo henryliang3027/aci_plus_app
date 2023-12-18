@@ -107,6 +107,17 @@ enum SettingControl {
 // 6: C-Cor BR
 // 7: C-Cor LE
 
+const Map<String, String> partIdMap = {
+  '0': 'MFTJ',
+  '1': 'SDLE',
+  '2': 'MOTO BLE',
+  '3': 'MOTO MB',
+  '4': 'C-Cor Node',
+  '5': 'C-Cor TR',
+  '6': 'C-Cor BR',
+  '7': 'C-Cor LE',
+};
+
 const Map<String, String> settingGraphFilePath = {
   '1': '',
   '2': '',

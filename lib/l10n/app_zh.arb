@@ -10,6 +10,7 @@
     "configuration": "組態",
     "threshold": "告警範圍",
     "control": "控制",
+    "advanced": "進階",
     
     "splitOption": "上下行截止頻率",
     "forwardSetting": "下行設定",

@@ -10,6 +10,7 @@
     "configuration": "Configuration",
     "threshold": "Seuil",
     "control": "Contrôle",
+    "advanced": "Avancé",
    
     "splitOption": "Option de division",
     "forwardSetting": "Réglage du signal d'aval",

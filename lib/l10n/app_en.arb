@@ -10,6 +10,7 @@
     "configuration": "Configuration",
     "threshold": "Threshold",
     "control": "Control",
+    "advanced": "Advanced",
    
     "splitOption": "Split Options",
     "forwardSetting": "Forward Setting",

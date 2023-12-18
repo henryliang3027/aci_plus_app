@@ -8,63 +8,10 @@ class Setting18ConfigureEvent extends Equatable {
 }
 
 class Initialized extends Setting18ConfigureEvent {
-  const Initialized(
-      // {
-      // required this.location,
-      // required this.coordinates,
-      // required this.splitOption,
-      // required this.firstChannelLoadingFrequency,
-      // required this.firstChannelLoadingLevel,
-      // required this.lastChannelLoadingFrequency,
-      // required this.lastChannelLoadingLevel,
-      // required this.pilotFrequencyMode,
-      // required this.pilotFrequency1,
-      // required this.pilotFrequency2,
-      // required this.manualModePilot1RFOutputPower,
-      // required this.manualModePilot2RFOutputPower,
-      // required this.fwdAGCMode,
-      // required this.autoLevelControl,
-      // required this.logInterval,
-      // required this.tgcCableLength,
-      // }
-      );
-
-  // final String location;
-  // final String coordinates;
-  // final String splitOption;
-  // final String firstChannelLoadingFrequency;
-  // final String firstChannelLoadingLevel;
-  // final String lastChannelLoadingFrequency;
-  // final String lastChannelLoadingLevel;
-  // final String pilotFrequencyMode;
-  // final String pilotFrequency1;
-  // final String pilotFrequency2;
-  // final String manualModePilot1RFOutputPower;
-  // final String manualModePilot2RFOutputPower;
-  // final String fwdAGCMode;
-  // final String autoLevelControl;
-  // final String logInterval;
-  // final String tgcCableLength;
+  const Initialized();
 
   @override
-  List<Object> get props => [
-        // location,
-        // coordinates,
-        // splitOption,
-        // firstChannelLoadingFrequency,
-        // firstChannelLoadingLevel,
-        // lastChannelLoadingFrequency,
-        // lastChannelLoadingLevel,
-        // pilotFrequencyMode,
-        // pilotFrequency1,
-        // pilotFrequency2,
-        // manualModePilot1RFOutputPower,
-        // manualModePilot2RFOutputPower,
-        // fwdAGCMode,
-        // autoLevelControl,
-        // logInterval,
-        // tgcCableLength,
-      ];
+  List<Object> get props => [];
 }
 
 class LocationChanged extends Setting18ConfigureEvent {

@@ -4,6 +4,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
+import 'package:aci_plus_app/core/working_mode_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
@@ -298,16 +299,6 @@ class _WorkingModeCard extends StatelessWidget {
     );
   }
 
-  String getWorkingModeText(String workingMode) {
-    if (workingMode == '13') {
-      return 'AGC';
-    } else if (workingMode == '14') {
-      return 'TGC';
-    } else {
-      return workingMode;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
@@ -316,7 +307,8 @@ class _WorkingModeCard extends StatelessWidget {
 
       String workingMode = currentWorkingMode == '0'
           ? 'N/A'
-          : getWorkingModeText(currentWorkingMode);
+          : WorkingModeTable.workingModeMap[currentWorkingMode] ??
+              currentWorkingMode;
 
       return Card(
         color: Theme.of(context).colorScheme.onPrimary,

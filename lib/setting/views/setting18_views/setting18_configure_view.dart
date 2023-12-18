@@ -348,9 +348,7 @@ class Setting18ConfigureView extends StatelessWidget {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(
-                CustomStyle.sizeXL,
-              ),
+              padding: const EdgeInsets.all(18.0),
               child: buildConfigurationWidget(partId),
             ),
           ),
