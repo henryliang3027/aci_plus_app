@@ -276,6 +276,8 @@
     "dialogMessageCancel": "Cancelar",
     "dialogMessageExit": "Salir",
     "dialogMessageOk": "Bueno",
+    "dialogMessageSave": "Salvado",
+    "dialogMessageExecute": "Ejecutar",
     "dialogMessagePilotSearchFailed": "Piloto no encontrado, Favor de insertar el código correcto.",
     "dialogMessageDataExportSuccessful": "Exportación de datos exitosa.",
     "dialogMessageNoMoreLogs": "No hay más registros.",

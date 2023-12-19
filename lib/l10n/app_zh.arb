@@ -276,6 +276,8 @@
     "dialogMessageCancel": "取消",
     "dialogMessageExit": "離開",
     "dialogMessageOk": "確定",
+    "dialogMessageSave": "儲存",
+    "dialogMessageExecute": "執行",
     "dialogMessagePilotSearchFailed": "找不到此導航頻率，請輸入正確的代碼",
     "dialogMessageDataExportSuccessful": "資料匯出成功",
     "dialogMessageNoMoreLogs": "無法載入更多紀錄。",

@@ -17,10 +17,9 @@ class Setting18ConfigEditPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => Setting18ConfigEditBloc(
         amp18Repository: RepositoryProvider.of<Amp18Repository>(context),
-      ),
-      child: Setting18ConfigEditForm(
         selectedPartId: selectedPartId,
       ),
+      child: const Setting18ConfigEditForm(),
     );
   }
 }

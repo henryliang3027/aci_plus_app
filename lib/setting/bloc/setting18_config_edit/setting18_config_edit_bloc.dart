@@ -13,7 +13,9 @@ class Setting18ConfigEditBloc
     extends Bloc<Setting18ConfigEditEvent, Setting18ConfigEditState> {
   Setting18ConfigEditBloc({
     required Amp18Repository amp18Repository,
+    required String selectedPartId,
   })  : _amp18Repository = amp18Repository,
+        _selectedPartId = selectedPartId,
         _configApi = ConfigApi(),
         super(const Setting18ConfigEditState()) {
     on<ConfigIntitialized>(_onConfigIntitialized);
@@ -25,9 +27,12 @@ class Setting18ConfigEditBloc
     on<LastChannelLoadingFrequencyChanged>(
         _onLastChannelLoadingFrequencyChanged);
     on<LastChannelLoadingLevelChanged>(_onLastChannelLoadingLevelChanged);
+
+    add(const ConfigIntitialized());
   }
 
   final Amp18Repository _amp18Repository;
+  final String _selectedPartId;
   final ConfigApi _configApi;
 
   Future<void> _onConfigIntitialized(
@@ -39,13 +44,15 @@ class Setting18ConfigEditBloc
         saveStatus: SubmissionStatus.none,
         settingStatus: SubmissionStatus.none));
 
-    List<dynamic> result = _configApi.getConfigByPartId(event.selectedPartId);
+    List<dynamic> result = _configApi.getConfigByPartId(_selectedPartId);
 
     if (result[0]) {
       Config config = result[1];
       emit(state.copyWith(
         formStatus: FormStatus.requestSuccess,
-        selectedPartId: event.selectedPartId,
+        saveStatus: SubmissionStatus.none,
+        settingStatus: SubmissionStatus.none,
+        selectedPartId: _selectedPartId,
         firstChannelLoadingFrequency: config.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: config.firstChannelLoadingLevel,
         lastChannelLoadingFrequency: config.lastChannelLoadingFrequency,
@@ -76,9 +83,9 @@ class Setting18ConfigEditBloc
 
       // 如果 config 不存在, 則寫入 device 上的參數值到手機端資料庫
 
-      if (partId == event.selectedPartId) {
+      if (partId == _selectedPartId) {
         await _configApi.addConfigByPartId(
-          partId: event.selectedPartId,
+          partId: _selectedPartId,
           firstChannelLoadingFrequency: firstChannelLoadingFrequency,
           firstChannelLoadingLevel: firstChannelLoadingLevel,
           lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -87,7 +94,9 @@ class Setting18ConfigEditBloc
 
         emit(state.copyWith(
           formStatus: FormStatus.requestSuccess,
-          selectedPartId: event.selectedPartId,
+          saveStatus: SubmissionStatus.none,
+          settingStatus: SubmissionStatus.none,
+          selectedPartId: _selectedPartId,
           firstChannelLoadingFrequency: firstChannelLoadingFrequency,
           firstChannelLoadingLevel: firstChannelLoadingLevel,
           lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -103,7 +112,9 @@ class Setting18ConfigEditBloc
       } else {
         emit(state.copyWith(
           formStatus: FormStatus.requestSuccess,
-          selectedPartId: event.selectedPartId,
+          saveStatus: SubmissionStatus.none,
+          settingStatus: SubmissionStatus.none,
+          selectedPartId: _selectedPartId,
           firstChannelLoadingFrequency: '',
           firstChannelLoadingLevel: '',
           lastChannelLoadingFrequency: '',
@@ -207,7 +218,7 @@ class Setting18ConfigEditBloc
     ));
 
     await _configApi.addConfigByPartId(
-      partId: state.selectedPartId,
+      partId: _selectedPartId,
       firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
       firstChannelLoadingLevel: state.firstChannelLoadingLevel,
       lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
@@ -232,7 +243,7 @@ class Setting18ConfigEditBloc
     List<String> settingResult = [];
 
     await _configApi.addConfigByPartId(
-      partId: state.selectedPartId,
+      partId: _selectedPartId,
       firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
       firstChannelLoadingLevel: state.firstChannelLoadingLevel,
       lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
@@ -263,6 +274,11 @@ class Setting18ConfigEditBloc
 
     settingResult.add(
         '${DataKey.lastChannelLoadingLevel.name},$resultOfSetLastChannelLoadingLevel');
+
+    // 等待 device 完成更新後在讀取值
+    await Future.delayed(const Duration(milliseconds: 1000));
+
+    await _amp18Repository.updateCharacteristics();
 
     emit(state.copyWith(
       settingStatus: SubmissionStatus.submissionSuccess,

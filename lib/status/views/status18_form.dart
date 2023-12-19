@@ -241,6 +241,7 @@ class _WorkingModeCard extends StatelessWidget {
             )
           : Text(
               currentWorkingMode,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: fontSize,
               ),
@@ -248,6 +249,7 @@ class _WorkingModeCard extends StatelessWidget {
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
         currentWorkingMode.isEmpty ? 'N/A' : currentWorkingMode,
+        textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: fontSize,
           // color: currentWorkingModeColor(
@@ -273,28 +275,19 @@ class _WorkingModeCard extends StatelessWidget {
     required String currentWorkingMode,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 16.0,
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    getCurrentWorkingMode(
-                      loadingStatus: loadingStatus,
-                      currentWorkingMode: currentWorkingMode,
-                      fontSize: 40,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
+      padding: const EdgeInsets.all(16.0),
+      child: SizedBox(
+        width: double.maxFinite,
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          children: [
+            getCurrentWorkingMode(
+              loadingStatus: loadingStatus,
+              currentWorkingMode: currentWorkingMode,
+              fontSize: 28,
+            ),
+          ],
+        ),
       ),
     );
   }

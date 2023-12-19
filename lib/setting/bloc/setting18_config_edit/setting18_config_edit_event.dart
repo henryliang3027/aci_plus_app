@@ -8,14 +8,10 @@ sealed class Setting18ConfigEditEvent extends Equatable {
 }
 
 class ConfigIntitialized extends Setting18ConfigEditEvent {
-  const ConfigIntitialized({
-    required this.selectedPartId,
-  });
-
-  final String selectedPartId;
+  const ConfigIntitialized();
 
   @override
-  List<Object> get props => [selectedPartId];
+  List<Object> get props => [];
 }
 
 class ConfigSaved extends Setting18ConfigEditEvent {

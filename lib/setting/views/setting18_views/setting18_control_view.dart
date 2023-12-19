@@ -1021,9 +1021,9 @@ class _RtnIngressSetting2 extends StatelessWidget {
           },
           values: rtnIngressValues,
           texts: [
-            '0',
-            '-3',
-            '-6',
+            '0dB',
+            '-3dB',
+            '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
         );
@@ -1056,9 +1056,9 @@ class _RtnIngressSetting3 extends StatelessWidget {
           },
           values: rtnIngressValues,
           texts: [
-            '0',
-            '-3',
-            '-6',
+            '0dB',
+            '-3dB',
+            '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
         );
@@ -1095,9 +1095,9 @@ class _RtnIngressSetting4 extends StatelessWidget {
             },
             values: rtnIngressValues,
             texts: [
-              '0',
-              '-3',
-              '-6',
+              '0dB',
+              '-3dB',
+              '-6dB',
               AppLocalizations.of(context)!.ingressOpen,
             ],
           );
@@ -1121,9 +1121,9 @@ class _RtnIngressSetting4 extends StatelessWidget {
             },
             values: rtnIngressValues,
             texts: [
-              '0',
-              '-3',
-              '-6',
+              '0dB',
+              '-3dB',
+              '-6dB',
               AppLocalizations.of(context)!.ingressOpen,
             ],
           );
@@ -1157,9 +1157,9 @@ class _RtnIngressSetting2And3 extends StatelessWidget {
           },
           values: rtnIngressValues,
           texts: [
-            '0',
-            '-3',
-            '-6',
+            '0dB',
+            '-3dB',
+            '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
         );
@@ -1192,9 +1192,9 @@ class _RtnIngressSetting5And6 extends StatelessWidget {
           },
           values: rtnIngressValues,
           texts: [
-            '0',
-            '-3',
-            '-6',
+            '0dB',
+            '-3dB',
+            '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
         );
@@ -1202,107 +1202,6 @@ class _RtnIngressSetting5And6 extends StatelessWidget {
     );
   }
 }
-
-// class _DSVVA2 extends StatelessWidget {
-//   const _DSVVA2({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
-//       builder: (context, state) {
-//         return controlParameterSlider(
-//           context: context,
-//           editMode: state.editMode,
-//           title: 'DS VVA2: ${state.dsVVA2} dB',
-//           minValue: 0.0,
-//           maxValue: 15.0,
-//           currentValue: _getValue(state.dsVVA2),
-//           onChanged: (value) {
-//             context
-//                 .read<Setting18ControlBloc>()
-//                 .add(DSVVA2Changed(value.toStringAsFixed(1)));
-//           },
-
-//         );
-//       },
-//     );
-//   }
-// }
-
-// class _DSSlope2 extends StatelessWidget {
-//   const _DSSlope2({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
-//       builder: (context, state) {
-//         return controlParameterSlider(
-//           context: context,
-//           editMode: state.editMode,
-//           title: 'DS Slope2: ${state.dsSlope2} dB',
-//           minValue: 0.0,
-//           maxValue: 15.0,
-//           currentValue: _getValue(state.dsSlope2),
-//           onChanged: (value) {
-//             context
-//                 .read<Setting18ControlBloc>()
-//                 .add(DSSlope2Changed(value.toStringAsFixed(1)));
-//           },
-//         );
-//       },
-//     );
-//   }
-// }
-
-// class _DSVVA3 extends StatelessWidget {
-//   const _DSVVA3({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
-//       builder: (context, state) {
-//         return controlParameterSlider(
-//           context: context,
-//           editMode: state.editMode,
-//           title: 'DS VVA3: ${state.dsVVA3} dB',
-//           minValue: 0.0,
-//           maxValue: 15.0,
-//           currentValue: _getValue(state.dsVVA3),
-//           onChanged: (value) {
-//             context
-//                 .read<Setting18ControlBloc>()
-//                 .add(DSVVA3Changed(value.toStringAsFixed(1)));
-//           },
-//         );
-//       },
-//     );
-//   }
-// }
-
-// class _DSVVA4 extends StatelessWidget {
-//   const _DSVVA4({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
-//       builder: (context, state) {
-//         return controlParameterSlider(
-//           context: context,
-//           editMode: state.editMode,
-//           title: 'DS VVA4: ${state.dsVVA4} dB',
-//           minValue: 0.0,
-//           maxValue: 15.0,
-//           currentValue: _getValue(state.dsVVA4),
-//           onChanged: (value) {
-//             context
-//                 .read<Setting18ControlBloc>()
-//                 .add(DSVVA4Changed(value.toStringAsFixed(1)));
-//           },
-//         );
-//       },
-//     );
-//   }
-// }
 
 // class _USTGC extends StatelessWidget {
 //   const _USTGC({super.key});

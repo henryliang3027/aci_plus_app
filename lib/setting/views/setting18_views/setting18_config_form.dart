@@ -35,6 +35,9 @@ class _ConfigListView extends StatelessWidget {
           // var height = MediaQuery.of(context).size.height;
 
           return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.01,
+            ),
             child: Setting18ConfigEditPage(
               selectedPartId: selectedPartId,
             ),
@@ -88,7 +91,9 @@ class _ConfigListView extends StatelessWidget {
             setting18configState: setting18configState,
           );
         } else {
-          return Container();
+          return buildConfigListView(
+            setting18configState: setting18configState,
+          );
         }
       },
     );

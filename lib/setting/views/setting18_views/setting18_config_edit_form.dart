@@ -1,5 +1,6 @@
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_config_edit/setting18_config_edit_bloc.dart';
 import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
@@ -7,29 +8,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Setting18ConfigEditForm extends StatelessWidget {
-  Setting18ConfigEditForm({
+class Setting18ConfigEditForm extends StatefulWidget {
+  const Setting18ConfigEditForm({
     super.key,
-    required this.selectedPartId,
   });
 
-  final String selectedPartId;
-  final TextEditingController
-      firstChannelLoadingFrequencyTextEditingController =
-      TextEditingController();
-  final TextEditingController firstChannelLoadingLevelTextEditingController =
-      TextEditingController();
-  final TextEditingController lastChannelLoadingFrequencyTextEditingController =
-      TextEditingController();
-  final TextEditingController lastChannelLoadingLevelTextEditingController =
-      TextEditingController();
+  @override
+  State<Setting18ConfigEditForm> createState() =>
+      _Setting18ConfigEditFormState();
+}
+
+class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
+  late final TextEditingController
+      firstChannelLoadingFrequencyTextEditingController;
+  late final TextEditingController
+      firstChannelLoadingLevelTextEditingController;
+  late final TextEditingController
+      lastChannelLoadingFrequencyTextEditingController;
+  late final TextEditingController lastChannelLoadingLevelTextEditingController;
+
+  @override
+  void initState() {
+    firstChannelLoadingFrequencyTextEditingController = TextEditingController();
+    firstChannelLoadingLevelTextEditingController = TextEditingController();
+    lastChannelLoadingFrequencyTextEditingController = TextEditingController();
+    lastChannelLoadingLevelTextEditingController = TextEditingController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    context.read<Setting18ConfigEditBloc>().add(ConfigIntitialized(
-          selectedPartId: selectedPartId,
-        ));
-
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
           ? AppLocalizations.of(context)!.dialogMessageSuccessful
@@ -125,9 +133,7 @@ class Setting18ConfigEditForm extends StatelessWidget {
       child: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(
-              18.0,
-            ),
+            padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
             child: Column(
               children: [
                 _FirstChannelLoading(
@@ -141,12 +147,115 @@ class Setting18ConfigEditForm extends StatelessWidget {
                       lastChannelLoadingFrequencyTextEditingController,
                   lastChannelLoadingLevelTextEditingController:
                       lastChannelLoadingLevelTextEditingController,
-                )
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const _ActionButton(),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ActionButton extends StatelessWidget {
+  const _ActionButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget buildButtons({
+      required enableExecute,
+    }) {
+      return Align(
+        alignment: Alignment.centerRight,
+        child: Wrap(
+          alignment: WrapAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 0.0,
+                    horizontal: 20.0,
+                  ),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageCancel,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  context
+                      .read<Setting18ConfigEditBloc>()
+                      .add(const ConfigSaved());
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 0.0,
+                    horizontal: 20.0,
+                  ),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageSave,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6.0),
+              child: ElevatedButton(
+                onPressed: enableExecute
+                    ? () {
+                        context
+                            .read<Setting18ConfigEditBloc>()
+                            .add(const ConfigSavedAndSubmitted());
+                      }
+                    : null,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 0.0,
+                    horizontal: 20.0,
+                  ),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageExecute,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Builder(
+      builder: (context) {
+        HomeState homeState = context.watch<HomeBloc>().state;
+        Setting18ConfigEditState setting18configEditState =
+            context.watch<Setting18ConfigEditBloc>().state;
+
+        if (homeState.loadingStatus.isRequestSuccess) {
+          String partId = homeState.characteristicData[DataKey.partId] ?? '';
+          return buildButtons(
+            enableExecute: partId == setting18configEditState.selectedPartId
+                ? true
+                : false,
+          );
+        } else {
+          return buildButtons(enableExecute: false);
+        }
+      },
     );
   }
 }

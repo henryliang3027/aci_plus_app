@@ -277,6 +277,8 @@
     "dialogMessageCancel": "Cancel",
     "dialogMessageExit": "Exit",
     "dialogMessageOk": "OK",
+    "dialogMessageSave": "Save",
+    "dialogMessageExecute": "Execute",
     "dialogMessagePilotSearchFailed": "Pilot not found, Please type correct code.",
     "dialogMessageDataExportSuccessful": "Data export successful.",
     "dialogMessageNoMoreLogs": "No more logs.",

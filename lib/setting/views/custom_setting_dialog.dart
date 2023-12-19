@@ -94,6 +94,9 @@ Future<void> showSuccessDialog(
         ),
         title: Text(
           AppLocalizations.of(context)!.dialogTitleSuccess,
+          style: const TextStyle(
+            color: Colors.green,
+          ),
         ),
         content: SizedBox(
           width: width,
