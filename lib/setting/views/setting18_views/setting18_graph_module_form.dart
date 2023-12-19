@@ -151,12 +151,6 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         return AppLocalizations.of(context)!.dialogMessageReturnIngress4Setting;
       } else if (item == DataKey.tgcCableLength.name) {
         return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
-      } else if (item == DataKey.dsVVA2.name) {
-        return AppLocalizations.of(context)!.dialogMessageDSVVA2Setting;
-      } else if (item == DataKey.dsSlope2.name) {
-        return AppLocalizations.of(context)!.dialogMessageDSSlope2Setting;
-      } else if (item == DataKey.dsVVA3.name) {
-        return AppLocalizations.of(context)!.dialogMessageDSVVA3Setting;
       } else if (item == DataKey.dsVVA4.name) {
         if (partId == '5' || partId == '6') {
           return AppLocalizations.of(context)!
