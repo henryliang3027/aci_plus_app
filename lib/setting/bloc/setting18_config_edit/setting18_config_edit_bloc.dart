@@ -35,20 +35,22 @@ class Setting18ConfigEditBloc
     Emitter<Setting18ConfigEditState> emit,
   ) async {
     emit(state.copyWith(
-      formStatus: FormStatus.requestInProgress,
-    ));
+        formStatus: FormStatus.requestInProgress,
+        saveStatus: SubmissionStatus.none,
+        settingStatus: SubmissionStatus.none));
 
-    List<dynamic> result = _configApi.getConfigByPartId(event.partId);
+    List<dynamic> result = _configApi.getConfigByPartId(event.selectedPartId);
 
     if (result[0]) {
       Config config = result[1];
       emit(state.copyWith(
         formStatus: FormStatus.requestSuccess,
-        partId: event.partId,
+        selectedPartId: event.selectedPartId,
         firstChannelLoadingFrequency: config.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: config.firstChannelLoadingLevel,
         lastChannelLoadingFrequency: config.lastChannelLoadingFrequency,
         lastChannelLoadingLevel: config.lastChannelLoadingLevel,
+        isInitialize: true,
         initialValues: {
           DataKey.firstChannelLoadingFrequency:
               config.firstChannelLoadingFrequency,
@@ -61,6 +63,8 @@ class Setting18ConfigEditBloc
     } else {
       Map<DataKey, String> characteristicDataCache =
           _amp18Repository.characteristicDataCache;
+
+      String partId = characteristicDataCache[DataKey.partId] ?? '';
       String firstChannelLoadingFrequency =
           characteristicDataCache[DataKey.firstChannelLoadingFrequency] ?? '';
       String lastChannelLoadingFrequency =
@@ -71,28 +75,48 @@ class Setting18ConfigEditBloc
           characteristicDataCache[DataKey.lastChannelLoadingLevel] ?? '';
 
       // 如果 config 不存在, 則寫入 device 上的參數值到手機端資料庫
-      await _configApi.addConfigByPartId(
-        partId: event.partId,
-        firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: lastChannelLoadingLevel,
-      );
 
-      emit(state.copyWith(
-        formStatus: FormStatus.requestSuccess,
-        partId: event.partId,
-        firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: lastChannelLoadingLevel,
-        initialValues: {
-          DataKey.firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-          DataKey.firstChannelLoadingLevel: firstChannelLoadingFrequency,
-          DataKey.lastChannelLoadingFrequency: firstChannelLoadingFrequency,
-          DataKey.lastChannelLoadingLevel: firstChannelLoadingFrequency,
-        },
-      ));
+      if (partId == event.selectedPartId) {
+        await _configApi.addConfigByPartId(
+          partId: event.selectedPartId,
+          firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+          firstChannelLoadingLevel: firstChannelLoadingLevel,
+          lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+          lastChannelLoadingLevel: lastChannelLoadingLevel,
+        );
+
+        emit(state.copyWith(
+          formStatus: FormStatus.requestSuccess,
+          selectedPartId: event.selectedPartId,
+          firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+          firstChannelLoadingLevel: firstChannelLoadingLevel,
+          lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+          lastChannelLoadingLevel: lastChannelLoadingLevel,
+          isInitialize: true,
+          initialValues: {
+            DataKey.firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+            DataKey.firstChannelLoadingLevel: firstChannelLoadingFrequency,
+            DataKey.lastChannelLoadingFrequency: firstChannelLoadingFrequency,
+            DataKey.lastChannelLoadingLevel: firstChannelLoadingFrequency,
+          },
+        ));
+      } else {
+        emit(state.copyWith(
+          formStatus: FormStatus.requestSuccess,
+          selectedPartId: event.selectedPartId,
+          firstChannelLoadingFrequency: '',
+          firstChannelLoadingLevel: '',
+          lastChannelLoadingFrequency: '',
+          lastChannelLoadingLevel: '',
+          isInitialize: true,
+          initialValues: {
+            DataKey.firstChannelLoadingFrequency: '',
+            DataKey.firstChannelLoadingLevel: '',
+            DataKey.lastChannelLoadingFrequency: '',
+            DataKey.lastChannelLoadingLevel: '',
+          },
+        ));
+      }
     }
   }
 
@@ -102,7 +126,9 @@ class Setting18ConfigEditBloc
   ) {
     emit(state.copyWith(
       formStatus: FormStatus.none,
+      saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
+      isInitialize: false,
       firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
       enableSubmission: _isEnabledSubmission(
         firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
@@ -119,7 +145,9 @@ class Setting18ConfigEditBloc
   ) {
     emit(state.copyWith(
       formStatus: FormStatus.none,
+      saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
+      isInitialize: false,
       firstChannelLoadingLevel: event.firstChannelLoadingLevel,
       enableSubmission: _isEnabledSubmission(
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -136,7 +164,9 @@ class Setting18ConfigEditBloc
   ) {
     emit(state.copyWith(
       formStatus: FormStatus.none,
+      saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
+      isInitialize: false,
       lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
       enableSubmission: _isEnabledSubmission(
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -153,7 +183,9 @@ class Setting18ConfigEditBloc
   ) {
     emit(state.copyWith(
       formStatus: FormStatus.none,
+      saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
+      isInitialize: false,
       lastChannelLoadingLevel: event.lastChannelLoadingLevel,
       enableSubmission: _isEnabledSubmission(
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
@@ -171,10 +203,11 @@ class Setting18ConfigEditBloc
     emit(state.copyWith(
       saveStatus: SubmissionStatus.submissionInProgress,
       settingStatus: SubmissionStatus.none,
+      isInitialize: false,
     ));
 
     await _configApi.addConfigByPartId(
-      partId: state.partId,
+      partId: state.selectedPartId,
       firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
       firstChannelLoadingLevel: state.firstChannelLoadingLevel,
       lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
@@ -193,12 +226,13 @@ class Setting18ConfigEditBloc
     emit(state.copyWith(
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.submissionInProgress,
+      isInitialize: false,
     ));
 
     List<String> settingResult = [];
 
     await _configApi.addConfigByPartId(
-      partId: state.partId,
+      partId: state.selectedPartId,
       firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
       firstChannelLoadingLevel: state.firstChannelLoadingLevel,
       lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
@@ -242,14 +276,10 @@ class Setting18ConfigEditBloc
     required String lastChannelLoadingFrequency,
     required String lastChannelLoadingLevel,
   }) {
-    if (firstChannelLoadingFrequency !=
-            state.initialValues[DataKey.firstChannelLoadingFrequency] ||
-        firstChannelLoadingLevel !=
-            state.initialValues[DataKey.firstChannelLoadingLevel] ||
-        lastChannelLoadingFrequency !=
-            state.initialValues[DataKey.lastChannelLoadingFrequency] ||
-        lastChannelLoadingLevel !=
-            state.initialValues[DataKey.lastChannelLoadingLevel]) {
+    if (firstChannelLoadingFrequency.isNotEmpty &&
+        firstChannelLoadingLevel.isNotEmpty &&
+        lastChannelLoadingFrequency.isNotEmpty &&
+        lastChannelLoadingLevel.isNotEmpty) {
       return true;
     } else {
       return false;

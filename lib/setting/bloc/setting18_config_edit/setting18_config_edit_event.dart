@@ -9,13 +9,13 @@ sealed class Setting18ConfigEditEvent extends Equatable {
 
 class ConfigIntitialized extends Setting18ConfigEditEvent {
   const ConfigIntitialized({
-    required this.partId,
+    required this.selectedPartId,
   });
 
-  final String partId;
+  final String selectedPartId;
 
   @override
-  List<Object> get props => [partId];
+  List<Object> get props => [selectedPartId];
 }
 
 class ConfigSaved extends Setting18ConfigEditEvent {

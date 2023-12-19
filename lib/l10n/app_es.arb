@@ -240,6 +240,8 @@
     "dialogMessageReturnInputAttenuation3Setting": "Ajuste entrada atenuación 3",
     "dialogMessageReturnInputAttenuation4Setting": "Ajuste entrada atenuación 4",
     "dialogMessageReturnInputAttenuation6Setting": "Ajuste entrada atenuación 6",
+    "dialogMessageReturnInputAttenuation2And3Setting": "Ajuste puerto 2 & puerto 3 entrada atenuación",
+    "dialogMessageReturnInputAttenuation5And6Setting": "Ajuste puerto 5 & puerto 6 entrada atenuación",
     "dialogMessageReturnOutputAttenuationSetting": "Ajuste salida atenuación",
     "dialogMessageReturnOutputEqualizerSetting": "Ajuste salida ecualizador",
     "dialogMessageReturnOutputEqualizer1Setting": "Ajuste salida ecualizador 1",
@@ -268,6 +270,7 @@
     "dialogMessageGPSPermissionDenied": "Se deniegan los permisos de ubicación. Por favor proporcione permiso.",
     "dialogMessageAutoSettingLogIntervalFailed": "Error al inicializar el intervalo de registro.",
 
+    "dialogMessageSaveSuccessful": "Guardado exitosamente",
     "dialogMessageSuccessful": "Exitoso",
     "dialogMessageFailed": "Fallido",
     "dialogMessageCancel": "Cancelar",

@@ -271,7 +271,7 @@
     "dialogMessageGPSPermissionDenied": "Location permissions are denied. Please provide permission.",
     "dialogMessageAutoSettingLogIntervalFailed": "Failed to initialize the log interval.",
 
-
+    "dialogMessageSaveSuccessful" : "Saved Successfully",
     "dialogMessageSuccessful": "OK",
     "dialogMessageFailed": "Fail",
     "dialogMessageCancel": "Cancel",

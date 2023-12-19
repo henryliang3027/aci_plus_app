@@ -2,6 +2,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_config/setting18_config_bloc.dart';
+import 'package:aci_plus_app/setting/views/setting18_views/setting18_config_edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,6 +23,26 @@ class _ConfigListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> showModuleSettingDialog({
+      required String selectedPartId,
+    }) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return Dialog(
+            child: Setting18ConfigEditPage(
+              selectedPartId: selectedPartId,
+            ),
+          );
+        },
+      );
+    }
+
     Widget buildConfigListView({
       required Setting18ConfigState setting18configState,
     }) {
@@ -37,12 +58,15 @@ class _ConfigListView extends StatelessWidget {
               title: Text(partIdMap[setting18configState.partIds[index]]!),
               trailing: const Icon(Icons.edit),
               tileColor: index % 2 == 0
-                  ? Color.fromARGB(255, 197, 204, 246)
-                  : Color.fromARGB(255, 222, 227, 255),
+                  ? const Color.fromARGB(255, 197, 204, 246)
+                  : const Color.fromARGB(255, 222, 227, 255),
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8.0)),
               ),
-              onTap: () {},
+              onTap: () {
+                showModuleSettingDialog(
+                    selectedPartId: setting18configState.partIds[index]);
+              },
             );
           },
         ),

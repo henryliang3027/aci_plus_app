@@ -77,3 +77,45 @@ Future<void> showResultDialog({
     },
   );
 }
+
+Future<void> showSuccessDialog(
+  BuildContext context,
+) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      var width = MediaQuery.of(context).size.width;
+      // var height = MediaQuery.of(context).size.height;
+
+      return AlertDialog(
+        insetPadding: EdgeInsets.symmetric(
+          horizontal: width * 0.1,
+        ),
+        title: Text(
+          AppLocalizations.of(context)!.dialogTitleSuccess,
+        ),
+        content: SizedBox(
+          width: width,
+          child: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.dialogMessageSaveSuccessful,
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop(true); // pop dialog
+            },
+          ),
+        ],
+      );
+    },
+  );
+}

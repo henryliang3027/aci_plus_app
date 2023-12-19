@@ -5,11 +5,12 @@ class Setting18ConfigEditState extends Equatable {
     this.formStatus = FormStatus.none,
     this.saveStatus = SubmissionStatus.none,
     this.settingStatus = SubmissionStatus.none,
-    this.partId = '',
+    this.selectedPartId = '',
     this.firstChannelLoadingFrequency = '',
     this.lastChannelLoadingFrequency = '',
     this.firstChannelLoadingLevel = '',
     this.lastChannelLoadingLevel = '',
+    this.isInitialize = false,
     this.initialValues = const {},
     this.settingResult = const [],
     this.enableSubmission = false,
@@ -18,11 +19,12 @@ class Setting18ConfigEditState extends Equatable {
   final FormStatus formStatus;
   final SubmissionStatus saveStatus;
   final SubmissionStatus settingStatus;
-  final String partId;
+  final String selectedPartId;
   final String firstChannelLoadingFrequency;
   final String firstChannelLoadingLevel;
   final String lastChannelLoadingFrequency;
   final String lastChannelLoadingLevel;
+  final bool isInitialize;
   final Map<DataKey, String> initialValues;
   final List<String> settingResult;
   final bool enableSubmission;
@@ -31,11 +33,12 @@ class Setting18ConfigEditState extends Equatable {
     FormStatus? formStatus,
     SubmissionStatus? saveStatus,
     SubmissionStatus? settingStatus,
-    String? partId,
+    String? selectedPartId,
     String? firstChannelLoadingFrequency,
     String? firstChannelLoadingLevel,
     String? lastChannelLoadingFrequency,
     String? lastChannelLoadingLevel,
+    bool? isInitialize,
     Map<DataKey, String>? initialValues,
     List<String>? settingResult,
     bool? enableSubmission,
@@ -44,7 +47,7 @@ class Setting18ConfigEditState extends Equatable {
       formStatus: formStatus ?? this.formStatus,
       saveStatus: saveStatus ?? this.saveStatus,
       settingStatus: settingStatus ?? this.settingStatus,
-      partId: partId ?? this.partId,
+      selectedPartId: selectedPartId ?? this.selectedPartId,
       firstChannelLoadingFrequency:
           firstChannelLoadingFrequency ?? this.firstChannelLoadingFrequency,
       firstChannelLoadingLevel:
@@ -53,6 +56,7 @@ class Setting18ConfigEditState extends Equatable {
           lastChannelLoadingFrequency ?? this.lastChannelLoadingFrequency,
       lastChannelLoadingLevel:
           lastChannelLoadingLevel ?? this.lastChannelLoadingLevel,
+      isInitialize: isInitialize ?? this.isInitialize,
       initialValues: initialValues ?? this.initialValues,
       settingResult: settingResult ?? this.settingResult,
       enableSubmission: enableSubmission ?? this.enableSubmission,
@@ -64,11 +68,12 @@ class Setting18ConfigEditState extends Equatable {
         formStatus,
         saveStatus,
         settingStatus,
-        partId,
+        selectedPartId,
         firstChannelLoadingFrequency,
         firstChannelLoadingLevel,
         lastChannelLoadingFrequency,
         lastChannelLoadingLevel,
+        isInitialize,
         initialValues,
         settingResult,
         enableSubmission,

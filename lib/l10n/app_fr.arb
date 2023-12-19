@@ -268,7 +268,7 @@
     "dialogMessageGPSPermissionDenied": "Les autorisations de localisation sont refusées. Veuillez fournir l'autorisation.",
     "dialogMessageAutoSettingLogIntervalFailed": "L'initialisation de l'intervalle de journalisation a échoué.",
 
-
+    "dialogMessageSaveSuccessful" : "Enregistré avec succès",
     "dialogMessageSuccessful": "Réussi",
     "dialogMessageFailed": "Échoué",
     "dialogMessageCancel": "Annuler",
