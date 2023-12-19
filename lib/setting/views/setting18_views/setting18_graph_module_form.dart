@@ -65,23 +65,23 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         case 0:
           return [const _SplitOption()];
         case 1:
-          return [const _FwdInputAttenuation()];
+          return [const _ForwardInputAttenuation()];
         case 2:
-          return [const _FwdInputEQ()];
+          return [const _ForwardInputEqualizer()];
         case 3:
-          return [const _FwdInputEQ()];
+          return [const _ForwardInputEqualizer()];
         case 4:
-          return [const _FwdInputEQ()];
+          return [const _ForwardInputEqualizer()];
         case 5:
-          return [const _FwdInputEQ()];
+          return [const _ForwardInputEqualizer()];
         case 6:
-          return [const _FwdInputEQ()];
+          return [const _ForwardInputEqualizer()];
         case 7:
-          return [const _FwdInputEQ()];
+          return [const _ForwardInputEqualizer()];
         case 8:
-          return [const _FwdInputEQ()];
+          return [const _ForwardInputEqualizer()];
         case 9:
-          return [const _FwdInputEQ()];
+          return [const _ForwardInputEqualizer()];
         case 10:
           return [
             const _PilotFrequencyMode(),
@@ -305,8 +305,8 @@ double _getValue(String value) {
   }
 }
 
-class _FwdInputAttenuation extends StatelessWidget {
-  const _FwdInputAttenuation({super.key});
+class _ForwardInputAttenuation extends StatelessWidget {
+  const _ForwardInputAttenuation({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -316,7 +316,7 @@ class _FwdInputAttenuation extends StatelessWidget {
           context: context,
           editMode: true,
           title:
-              '${AppLocalizations.of(context)!.fwdInputAttenuation}: ${state.dsVVA1} dB',
+              '${AppLocalizations.of(context)!.forwardInputAttenuation1}: ${state.dsVVA1} dB',
           minValue: 0.0,
           maxValue: 25.0,
           currentValue: _getValue(state.dsVVA1),
@@ -337,8 +337,8 @@ class _FwdInputAttenuation extends StatelessWidget {
   }
 }
 
-class _FwdInputEQ extends StatelessWidget {
-  const _FwdInputEQ({super.key});
+class _ForwardInputEqualizer extends StatelessWidget {
+  const _ForwardInputEqualizer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -348,7 +348,7 @@ class _FwdInputEQ extends StatelessWidget {
           context: context,
           editMode: true,
           title:
-              '${AppLocalizations.of(context)!.fwdInputEQ}: ${state.dsSlope1} dB',
+              '${AppLocalizations.of(context)!.forwardInputEqualizer1}: ${state.dsSlope1} dB',
           minValue: 0.0,
           maxValue: 15.0,
           currentValue: _getValue(state.dsSlope1),

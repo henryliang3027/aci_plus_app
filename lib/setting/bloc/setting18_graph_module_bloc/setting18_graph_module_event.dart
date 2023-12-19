@@ -8,93 +8,10 @@ abstract class Setting18GraphModuleEvent extends Equatable {
 }
 
 class Initialized extends Setting18GraphModuleEvent {
-  const Initialized(
-      // {
-      // required this.fwdInputAttenuation,
-      // required this.fwdInputEQ,
-      // required this.usVCA1,
-      // required this.rtnInputAttenuation3,
-      // required this.rtnInputAttenuation4,
-      // required this.usVCA2,
-      // required this.eREQ,
-      // required this.rtnIngressSetting2,
-      // required this.rtnIngressSetting3,
-      // required this.rtnIngressSetting4,
-      // required this.tgcCableLength,
-      // required this.dsVVA2,
-      // required this.dsSlope2,
-      // required this.dsVVA3,
-      // required this.dsVVA4,
-      // required this.usTGC,
-      // required this.splitOption,
-      // required this.firstChannelLoadingFrequency,
-      // required this.firstChannelLoadingLevel,
-      // required this.lastChannelLoadingFrequency,
-      // required this.lastChannelLoadingLevel,
-      // required this.pilotFrequencyMode,
-      // required this.pilotFrequency1,
-      // required this.pilotFrequency2,
-      // required this.manualModePilot1RFOutputPower,
-      // required this.manualModePilot2RFOutputPower,
-      // }
-      );
-
-  // final String fwdInputAttenuation;
-  // final String fwdInputEQ;
-  // final String usVCA1;
-  // final String rtnInputAttenuation3;
-  // final String rtnInputAttenuation4;
-  // final String usVCA2;
-  // final String eREQ;
-  // final String rtnIngressSetting2;
-  // final String rtnIngressSetting3;
-  // final String rtnIngressSetting4;
-  // final String tgcCableLength;
-  // final String dsVVA2;
-  // final String dsSlope2;
-  // final String dsVVA3;
-  // final String dsVVA4;
-  // final String usTGC;
-  // final String splitOption;
-  // final String firstChannelLoadingFrequency;
-  // final String firstChannelLoadingLevel;
-  // final String lastChannelLoadingFrequency;
-  // final String lastChannelLoadingLevel;
-  // final String pilotFrequencyMode;
-  // final String pilotFrequency1;
-  // final String pilotFrequency2;
-  // final String manualModePilot1RFOutputPower;
-  // final String manualModePilot2RFOutputPower;
+  const Initialized();
 
   @override
-  List<Object> get props => [
-        // fwdInputAttenuation,
-        // fwdInputEQ,
-        // usVCA1,
-        // rtnInputAttenuation3,
-        // rtnInputAttenuation4,
-        // usVCA2,
-        // eREQ,
-        // rtnIngressSetting2,
-        // rtnIngressSetting3,
-        // rtnIngressSetting4,
-        // tgcCableLength,
-        // dsVVA2,
-        // dsSlope2,
-        // dsVVA3,
-        // dsVVA4,
-        // usTGC,
-        // splitOption,
-        // firstChannelLoadingFrequency,
-        // firstChannelLoadingLevel,
-        // lastChannelLoadingFrequency,
-        // lastChannelLoadingLevel,
-        // pilotFrequencyMode,
-        // pilotFrequency1,
-        // pilotFrequency2,
-        // manualModePilot1RFOutputPower,
-        // manualModePilot2RFOutputPower,
-      ];
+  List<Object> get props => [];
 }
 
 class DSVVA1Changed extends Setting18GraphModuleEvent {
@@ -167,12 +84,12 @@ class USVCA1Decreased extends Setting18GraphModuleEvent {
 }
 
 class RtnInputAttenuation3Changed extends Setting18GraphModuleEvent {
-  const RtnInputAttenuation3Changed(this.rtnInputAttenuation3);
+  const RtnInputAttenuation3Changed(this.returnInputAttenuation3);
 
-  final String rtnInputAttenuation3;
+  final String returnInputAttenuation3;
 
   @override
-  List<Object> get props => [rtnInputAttenuation3];
+  List<Object> get props => [returnInputAttenuation3];
 }
 
 class RtnInputAttenuation3Increased extends Setting18GraphModuleEvent {
@@ -190,12 +107,12 @@ class RtnInputAttenuation3Decreased extends Setting18GraphModuleEvent {
 }
 
 class RtnInputAttenuation4Changed extends Setting18GraphModuleEvent {
-  const RtnInputAttenuation4Changed(this.rtnInputAttenuation4);
+  const RtnInputAttenuation4Changed(this.returnInputAttenuation4);
 
-  final String rtnInputAttenuation4;
+  final String returnInputAttenuation4;
 
   @override
-  List<Object> get props => [rtnInputAttenuation4];
+  List<Object> get props => [returnInputAttenuation4];
 }
 
 class RtnInputAttenuation4Increased extends Setting18GraphModuleEvent {
@@ -259,30 +176,30 @@ class EREQDecreased extends Setting18GraphModuleEvent {
 }
 
 class RtnIngressSetting2Changed extends Setting18GraphModuleEvent {
-  const RtnIngressSetting2Changed(this.rtnIngressSetting2);
+  const RtnIngressSetting2Changed(this.returnIngressSetting2);
 
-  final String rtnIngressSetting2;
+  final String returnIngressSetting2;
 
   @override
-  List<Object> get props => [rtnIngressSetting2];
+  List<Object> get props => [returnIngressSetting2];
 }
 
 class RtnIngressSetting3Changed extends Setting18GraphModuleEvent {
-  const RtnIngressSetting3Changed(this.rtnIngressSetting3);
+  const RtnIngressSetting3Changed(this.returnIngressSetting3);
 
-  final String rtnIngressSetting3;
+  final String returnIngressSetting3;
 
   @override
-  List<Object> get props => [rtnIngressSetting3];
+  List<Object> get props => [returnIngressSetting3];
 }
 
 class RtnIngressSetting4Changed extends Setting18GraphModuleEvent {
-  const RtnIngressSetting4Changed(this.rtnIngressSetting4);
+  const RtnIngressSetting4Changed(this.returnIngressSetting4);
 
-  final String rtnIngressSetting4;
+  final String returnIngressSetting4;
 
   @override
-  List<Object> get props => [rtnIngressSetting4];
+  List<Object> get props => [returnIngressSetting4];
 }
 
 class TGCCableLengthChanged extends Setting18GraphModuleEvent {

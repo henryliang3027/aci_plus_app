@@ -6,13 +6,13 @@ class Setting18GraphModuleState extends Equatable {
     this.dsVVA1 = '',
     this.dsSlope1 = '',
     this.usVCA1 = '',
-    this.rtnInputAttenuation3 = '',
-    this.rtnInputAttenuation4 = '',
+    this.returnInputAttenuation3 = '',
+    this.returnInputAttenuation4 = '',
     this.usVCA2 = '',
     this.eREQ = '',
-    this.rtnIngressSetting2 = '',
-    this.rtnIngressSetting3 = '',
-    this.rtnIngressSetting4 = '',
+    this.returnIngressSetting2 = '',
+    this.returnIngressSetting3 = '',
+    this.returnIngressSetting4 = '',
     this.tgcCableLength = '',
     this.dsVVA2 = '',
     this.dsSlope2 = '',
@@ -40,13 +40,13 @@ class Setting18GraphModuleState extends Equatable {
   final String dsVVA1;
   final String dsSlope1;
   final String usVCA1;
-  final String rtnInputAttenuation3;
-  final String rtnInputAttenuation4;
+  final String returnInputAttenuation3;
+  final String returnInputAttenuation4;
   final String usVCA2;
   final String eREQ;
-  final String rtnIngressSetting2;
-  final String rtnIngressSetting3;
-  final String rtnIngressSetting4;
+  final String returnIngressSetting2;
+  final String returnIngressSetting3;
+  final String returnIngressSetting4;
   final String tgcCableLength;
   final String dsVVA2;
   final String dsSlope2;
@@ -74,13 +74,13 @@ class Setting18GraphModuleState extends Equatable {
     String? dsVVA1,
     String? dsSlope1,
     String? usVCA1,
-    String? rtnInputAttenuation3,
-    String? rtnInputAttenuation4,
+    String? returnInputAttenuation3,
+    String? returnInputAttenuation4,
     String? usVCA2,
     String? eREQ,
-    String? rtnIngressSetting2,
-    String? rtnIngressSetting3,
-    String? rtnIngressSetting4,
+    String? returnIngressSetting2,
+    String? returnIngressSetting3,
+    String? returnIngressSetting4,
     String? tgcCableLength,
     String? dsVVA2,
     String? dsSlope2,
@@ -108,13 +108,18 @@ class Setting18GraphModuleState extends Equatable {
       dsVVA1: dsVVA1 ?? this.dsVVA1,
       dsSlope1: dsSlope1 ?? this.dsSlope1,
       usVCA1: usVCA1 ?? this.usVCA1,
-      rtnInputAttenuation3: rtnInputAttenuation3 ?? this.rtnInputAttenuation3,
-      rtnInputAttenuation4: rtnInputAttenuation4 ?? this.rtnInputAttenuation4,
+      returnInputAttenuation3:
+          returnInputAttenuation3 ?? this.returnInputAttenuation3,
+      returnInputAttenuation4:
+          returnInputAttenuation4 ?? this.returnInputAttenuation4,
       usVCA2: usVCA2 ?? this.usVCA2,
       eREQ: eREQ ?? this.eREQ,
-      rtnIngressSetting2: rtnIngressSetting2 ?? this.rtnIngressSetting2,
-      rtnIngressSetting3: rtnIngressSetting3 ?? this.rtnIngressSetting3,
-      rtnIngressSetting4: rtnIngressSetting4 ?? this.rtnIngressSetting4,
+      returnIngressSetting2:
+          returnIngressSetting2 ?? this.returnIngressSetting2,
+      returnIngressSetting3:
+          returnIngressSetting3 ?? this.returnIngressSetting3,
+      returnIngressSetting4:
+          returnIngressSetting4 ?? this.returnIngressSetting4,
       tgcCableLength: tgcCableLength ?? this.tgcCableLength,
       dsVVA2: dsVVA2 ?? this.dsVVA2,
       dsSlope2: dsSlope2 ?? this.dsSlope2,
@@ -151,13 +156,13 @@ class Setting18GraphModuleState extends Equatable {
         dsVVA1,
         dsSlope1,
         usVCA1,
-        rtnInputAttenuation3,
-        rtnInputAttenuation4,
+        returnInputAttenuation3,
+        returnInputAttenuation4,
         usVCA2,
         eREQ,
-        rtnIngressSetting2,
-        rtnIngressSetting3,
-        rtnIngressSetting4,
+        returnIngressSetting2,
+        returnIngressSetting3,
+        returnIngressSetting4,
         tgcCableLength,
         dsVVA2,
         dsSlope2,

@@ -191,7 +191,7 @@ class Setting18ControlView extends StatelessWidget {
         switch (name) {
           case SettingControl.forwardInputAttenuation:
             widgets.add(
-              _FwdInputAttenuation(
+              _ForwardInputAttenuation(
                 alcMode: alcMode,
                 currentInputAttenuation: currentInputAttenuation,
               ),
@@ -199,7 +199,7 @@ class Setting18ControlView extends StatelessWidget {
             break;
           case SettingControl.forwardInputEqualizer:
             widgets.add(
-              _FwdInputEQ(
+              _ForwardInputEqualizer(
                 alcMode: alcMode,
                 agcMode: agcMode,
                 currentInputEqualizer: currentInputEqualizer,
@@ -242,11 +242,11 @@ class Setting18ControlView extends StatelessWidget {
       return widgets.isNotEmpty
           ? widgets
           : [
-              _FwdInputAttenuation(
+              _ForwardInputAttenuation(
                 alcMode: alcMode,
                 currentInputAttenuation: currentInputAttenuation,
               ),
-              _FwdInputEQ(
+              _ForwardInputEqualizer(
                 alcMode: alcMode,
                 agcMode: agcMode,
                 currentInputEqualizer: currentInputEqualizer,
@@ -302,12 +302,12 @@ class Setting18ControlView extends StatelessWidget {
               const _RtnInputAttenuation5And6(),
             );
             break;
-          case SettingControl.returnOutputAttenuation:
+          case SettingControl.returnOutputAttenuation1:
             widgets.add(
               const _RtnOutputLevelAttenuation(),
             );
             break;
-          case SettingControl.returnOutputEqualizer:
+          case SettingControl.returnOutputEqualizer1:
             widgets.add(
               const _RtnOutputEQ(),
             );
@@ -464,8 +464,8 @@ class _ClusterTitle extends StatelessWidget {
   }
 }
 
-class _FwdInputAttenuation extends StatelessWidget {
-  const _FwdInputAttenuation({
+class _ForwardInputAttenuation extends StatelessWidget {
+  const _ForwardInputAttenuation({
     super.key,
     required this.alcMode,
     required this.currentInputAttenuation,
@@ -488,7 +488,7 @@ class _FwdInputAttenuation extends StatelessWidget {
           context: context,
           editMode: state.editMode && alcMode == '0',
           title:
-              '${AppLocalizations.of(context)!.fwdInputAttenuation}: ${getCurrentValue(state.dsVVA1)} dB',
+              '${AppLocalizations.of(context)!.forwardInputAttenuation1}: ${getCurrentValue(state.dsVVA1)} dB',
           minValue: 0.0,
           maxValue: 25.0,
           currentValue: getCurrentValue(state.dsVVA1),
@@ -507,8 +507,8 @@ class _FwdInputAttenuation extends StatelessWidget {
   }
 }
 
-class _FwdInputEQ extends StatelessWidget {
-  const _FwdInputEQ({
+class _ForwardInputEqualizer extends StatelessWidget {
+  const _ForwardInputEqualizer({
     super.key,
     required this.alcMode,
     required this.agcMode,
@@ -521,9 +521,9 @@ class _FwdInputEQ extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double getCurrentValue(String fwdInputEQ) {
+    double getCurrentValue(String forwardInputEqualizer) {
       return alcMode == '0' && agcMode == '0'
-          ? _getValue(fwdInputEQ)
+          ? _getValue(forwardInputEqualizer)
           : _getValue(currentInputEqualizer);
     }
 
@@ -533,7 +533,7 @@ class _FwdInputEQ extends StatelessWidget {
           context: context,
           editMode: state.editMode && alcMode == '0' && agcMode == '0',
           title:
-              '${AppLocalizations.of(context)!.fwdInputEQ}: ${getCurrentValue(state.dsSlope1)} dB',
+              '${AppLocalizations.of(context)!.forwardInputEqualizer1}: ${getCurrentValue(state.dsSlope1)} dB',
           minValue: 0.0,
           maxValue: 15.0,
           currentValue: getCurrentValue(state.dsSlope1),
@@ -751,7 +751,7 @@ class _RtnInputAttenuation2 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.rtnInputAttenuation2}: ${state.usVCA1} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation2}: ${state.usVCA1} dB',
           minValue: 0.0,
           maxValue: 25.0,
           currentValue: _getValue(state.usVCA1),
@@ -781,7 +781,7 @@ class _RtnInputAttenuation3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.rtnInputAttenuation3}: ${state.usVCA3} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation3}: ${state.usVCA3} dB',
           minValue: 0.0,
           maxValue: 25.0,
           currentValue: _getValue(state.usVCA3),
@@ -811,7 +811,7 @@ class _RtnInputAttenuation2And3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.rtnInputAttenuation2And3}: ${state.usVCA3} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation2And3}: ${state.usVCA3} dB',
           minValue: 0.0,
           maxValue: 25.0,
           currentValue: _getValue(state.usVCA3),
@@ -847,7 +847,7 @@ class _RtnInputAttenuation4 extends StatelessWidget {
             context: context,
             editMode: state.editMode,
             title:
-                '${AppLocalizations.of(context)!.rtnInputAttenuation4}: ${state.usVCA1} dB',
+                '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.usVCA1} dB',
             minValue: 0.0,
             maxValue: 25.0,
             currentValue: _getValue(state.usVCA1),
@@ -872,7 +872,7 @@ class _RtnInputAttenuation4 extends StatelessWidget {
             context: context,
             editMode: state.editMode,
             title:
-                '${AppLocalizations.of(context)!.rtnInputAttenuation4}: ${state.usVCA4} dB',
+                '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.usVCA4} dB',
             minValue: 0.0,
             maxValue: 25.0,
             currentValue: _getValue(state.usVCA4),
@@ -905,7 +905,7 @@ class _RtnInputAttenuation5And6 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.rtnInputAttenuation5And6}: ${state.usVCA4} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation5And6}: ${state.usVCA4} dB',
           minValue: 0.0,
           maxValue: 25.0,
           currentValue: _getValue(state.usVCA4),
@@ -935,7 +935,7 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.rtnOutputLevelAttenuation}: ${state.usVCA2} dB',
+              '${AppLocalizations.of(context)!.returnOutputAttenuation1}: ${state.usVCA2} dB',
           minValue: 0.0,
           maxValue: 25.0,
           currentValue: _getValue(state.usVCA2),
@@ -965,14 +965,14 @@ class _RtnOutputEQ extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.rtnOutputEQ}: ${state.eREQ} dB',
+              '${AppLocalizations.of(context)!.returnOutputEqualizer1}: ${state.eREQ} dB',
           minValue: 0.0,
           maxValue: 15.0,
           currentValue: _getValue(state.eREQ),
-          onChanged: (rtnOutputEQ) {
+          onChanged: (returnOutputEqualizer1) {
             context
                 .read<Setting18ControlBloc>()
-                .add(EREQChanged(rtnOutputEQ.toStringAsFixed(1)));
+                .add(EREQChanged(returnOutputEqualizer1.toStringAsFixed(1)));
           },
           onDecreased: () =>
               context.read<Setting18ControlBloc>().add(const EREQDecreased()),
@@ -1006,14 +1006,14 @@ class _RtnIngressSetting2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       buildWhen: (previous, current) =>
-          previous.rtnIngressSetting2 != current.rtnIngressSetting2 ||
+          previous.returnIngressSetting2 != current.returnIngressSetting2 ||
           previous.editMode != current.editMode,
       builder: (context, state) {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.rtnIngressSetting2}:',
-          currentValue: state.rtnIngressSetting2,
+          title: '${AppLocalizations.of(context)!.returnIngressSetting2}:',
+          currentValue: state.returnIngressSetting2,
           onChanged: (int index) {
             context
                 .read<Setting18ControlBloc>()
@@ -1041,14 +1041,14 @@ class _RtnIngressSetting3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       buildWhen: (previous, current) =>
-          previous.rtnIngressSetting3 != current.rtnIngressSetting3 ||
+          previous.returnIngressSetting3 != current.returnIngressSetting3 ||
           previous.editMode != current.editMode,
       builder: (context, state) {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.rtnIngressSetting3}:',
-          currentValue: state.rtnIngressSetting3,
+          title: '${AppLocalizations.of(context)!.returnIngressSetting3}:',
+          currentValue: state.returnIngressSetting3,
           onChanged: (int index) {
             context
                 .read<Setting18ControlBloc>()
@@ -1080,14 +1080,14 @@ class _RtnIngressSetting4 extends StatelessWidget {
     if (partId == '5') {
       return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
         buildWhen: (previous, current) =>
-            previous.rtnIngressSetting2 != current.rtnIngressSetting2 ||
+            previous.returnIngressSetting2 != current.returnIngressSetting2 ||
             previous.editMode != current.editMode,
         builder: (context, state) {
           return controlToggleButton(
             context: context,
             editMode: state.editMode,
-            title: '${AppLocalizations.of(context)!.rtnIngressSetting4}:',
-            currentValue: state.rtnIngressSetting2,
+            title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
+            currentValue: state.returnIngressSetting2,
             onChanged: (int index) {
               context
                   .read<Setting18ControlBloc>()
@@ -1106,14 +1106,14 @@ class _RtnIngressSetting4 extends StatelessWidget {
     } else {
       return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
         buildWhen: (previous, current) =>
-            previous.rtnIngressSetting4 != current.rtnIngressSetting4 ||
+            previous.returnIngressSetting4 != current.returnIngressSetting4 ||
             previous.editMode != current.editMode,
         builder: (context, state) {
           return controlToggleButton(
             context: context,
             editMode: state.editMode,
-            title: '${AppLocalizations.of(context)!.rtnIngressSetting4}:',
-            currentValue: state.rtnIngressSetting4,
+            title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
+            currentValue: state.returnIngressSetting4,
             onChanged: (int index) {
               context
                   .read<Setting18ControlBloc>()
@@ -1142,14 +1142,14 @@ class _RtnIngressSetting2And3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       buildWhen: (previous, current) =>
-          previous.rtnIngressSetting3 != current.rtnIngressSetting3 ||
+          previous.returnIngressSetting3 != current.returnIngressSetting3 ||
           previous.editMode != current.editMode,
       builder: (context, state) {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.rtnIngressSetting2And3}:',
-          currentValue: state.rtnIngressSetting3,
+          title: '${AppLocalizations.of(context)!.returnIngressSetting2And3}:',
+          currentValue: state.returnIngressSetting3,
           onChanged: (int index) {
             context
                 .read<Setting18ControlBloc>()
@@ -1177,14 +1177,14 @@ class _RtnIngressSetting5And6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       buildWhen: (previous, current) =>
-          previous.rtnIngressSetting4 != current.rtnIngressSetting4 ||
+          previous.returnIngressSetting4 != current.returnIngressSetting4 ||
           previous.editMode != current.editMode,
       builder: (context, state) {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.rtnIngressSetting5And6}:',
-          currentValue: state.rtnIngressSetting4,
+          title: '${AppLocalizations.of(context)!.returnIngressSetting5And6}:',
+          currentValue: state.returnIngressSetting4,
           onChanged: (int index) {
             context
                 .read<Setting18ControlBloc>()

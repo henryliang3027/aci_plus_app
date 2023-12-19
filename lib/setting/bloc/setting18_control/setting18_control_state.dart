@@ -10,9 +10,9 @@ class Setting18ControlState extends Equatable {
     this.usVCA4 = '',
     this.usVCA2 = '',
     this.eREQ = '',
-    this.rtnIngressSetting2 = '',
-    this.rtnIngressSetting3 = '',
-    this.rtnIngressSetting4 = '',
+    this.returnIngressSetting2 = '',
+    this.returnIngressSetting3 = '',
+    this.returnIngressSetting4 = '',
     this.tgcCableLength = '',
     this.dsVVA2 = '',
     this.dsSlope2 = '',
@@ -36,9 +36,9 @@ class Setting18ControlState extends Equatable {
   final String usVCA4;
   final String usVCA2;
   final String eREQ;
-  final String rtnIngressSetting2;
-  final String rtnIngressSetting3;
-  final String rtnIngressSetting4;
+  final String returnIngressSetting2;
+  final String returnIngressSetting3;
+  final String returnIngressSetting4;
   final String tgcCableLength;
   final String dsVVA2;
   final String dsSlope2;
@@ -62,9 +62,9 @@ class Setting18ControlState extends Equatable {
     String? usVCA4,
     String? usVCA2,
     String? eREQ,
-    String? rtnIngressSetting2,
-    String? rtnIngressSetting3,
-    String? rtnIngressSetting4,
+    String? returnIngressSetting2,
+    String? returnIngressSetting3,
+    String? returnIngressSetting4,
     String? tgcCableLength,
     String? dsVVA2,
     String? dsSlope2,
@@ -88,9 +88,12 @@ class Setting18ControlState extends Equatable {
       usVCA4: usVCA4 ?? this.usVCA4,
       usVCA2: usVCA2 ?? this.usVCA2,
       eREQ: eREQ ?? this.eREQ,
-      rtnIngressSetting2: rtnIngressSetting2 ?? this.rtnIngressSetting2,
-      rtnIngressSetting3: rtnIngressSetting3 ?? this.rtnIngressSetting3,
-      rtnIngressSetting4: rtnIngressSetting4 ?? this.rtnIngressSetting4,
+      returnIngressSetting2:
+          returnIngressSetting2 ?? this.returnIngressSetting2,
+      returnIngressSetting3:
+          returnIngressSetting3 ?? this.returnIngressSetting3,
+      returnIngressSetting4:
+          returnIngressSetting4 ?? this.returnIngressSetting4,
       tgcCableLength: tgcCableLength ?? this.tgcCableLength,
       dsVVA2: dsVVA2 ?? this.dsVVA2,
       dsSlope2: dsSlope2 ?? this.dsSlope2,
@@ -117,9 +120,9 @@ class Setting18ControlState extends Equatable {
         usVCA4,
         usVCA2,
         eREQ,
-        rtnIngressSetting2,
-        rtnIngressSetting3,
-        rtnIngressSetting4,
+        returnIngressSetting2,
+        returnIngressSetting3,
+        returnIngressSetting4,
         tgcCableLength,
         dsVVA2,
         dsSlope2,

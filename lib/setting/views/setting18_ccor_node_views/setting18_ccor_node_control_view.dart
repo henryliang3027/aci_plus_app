@@ -133,9 +133,9 @@ class Setting18CCorNodeControlView extends StatelessWidget {
             break;
           case SettingControl.returnInputAttenuation5And6:
             break;
-          case SettingControl.returnOutputAttenuation:
+          case SettingControl.returnOutputAttenuation1:
             break;
-          case SettingControl.returnOutputEqualizer:
+          case SettingControl.returnOutputEqualizer1:
             break;
           case SettingControl.returnIngressSetting1:
             widgets.add(
@@ -470,7 +470,7 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.rtnInputAttenuation1}: ${state.returnInputAttenuation1} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation1}: ${state.returnInputAttenuation1} dB',
           minValue: 0.0,
           maxValue: 25.0,
           currentValue: _getValue(state.returnInputAttenuation1),
@@ -503,7 +503,7 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.rtnInputAttenuation3}: ${state.returnInputAttenuation3} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation3}: ${state.returnInputAttenuation3} dB',
           minValue: 0.0,
           maxValue: 25.0,
           currentValue: _getValue(state.returnInputAttenuation3),
@@ -536,7 +536,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.rtnInputAttenuation4}: ${state.returnInputAttenuation4} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.returnInputAttenuation4} dB',
           minValue: 0.0,
           maxValue: 25.0,
           currentValue: _getValue(state.returnInputAttenuation4),
@@ -569,7 +569,7 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.rtnInputAttenuation6}: ${state.returnInputAttenuation6} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation6}: ${state.returnInputAttenuation6} dB',
           minValue: 0.0,
           maxValue: 25.0,
           currentValue: _getValue(state.returnInputAttenuation6),
@@ -606,7 +606,7 @@ class _ReturnIngressSetting1 extends StatelessWidget {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.rtnIngressSetting1}:',
+          title: '${AppLocalizations.of(context)!.returnIngressSetting1}:',
           currentValue: state.returnIngressSetting1,
           onChanged: (int index) {
             context
@@ -635,7 +635,7 @@ class _ReturnIngressSetting3 extends StatelessWidget {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.rtnIngressSetting3}:',
+          title: '${AppLocalizations.of(context)!.returnIngressSetting3}:',
           currentValue: state.returnIngressSetting3,
           onChanged: (int index) {
             context
@@ -664,7 +664,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.rtnIngressSetting4}:',
+          title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
           currentValue: state.returnIngressSetting4,
           onChanged: (int index) {
             context
@@ -693,7 +693,7 @@ class _ReturnIngressSetting6 extends StatelessWidget {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.rtnIngressSetting6}:',
+          title: '${AppLocalizations.of(context)!.returnIngressSetting6}:',
           currentValue: state.returnIngressSetting6,
           onChanged: (int index) {
             context

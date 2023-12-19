@@ -176,30 +176,30 @@ class EREQDecreased extends Setting18ControlEvent {
 }
 
 class RtnIngressSetting2Changed extends Setting18ControlEvent {
-  const RtnIngressSetting2Changed(this.rtnIngressSetting2);
+  const RtnIngressSetting2Changed(this.returnIngressSetting2);
 
-  final String rtnIngressSetting2;
+  final String returnIngressSetting2;
 
   @override
-  List<Object> get props => [rtnIngressSetting2];
+  List<Object> get props => [returnIngressSetting2];
 }
 
 class RtnIngressSetting3Changed extends Setting18ControlEvent {
-  const RtnIngressSetting3Changed(this.rtnIngressSetting3);
+  const RtnIngressSetting3Changed(this.returnIngressSetting3);
 
-  final String rtnIngressSetting3;
+  final String returnIngressSetting3;
 
   @override
-  List<Object> get props => [rtnIngressSetting3];
+  List<Object> get props => [returnIngressSetting3];
 }
 
 class RtnIngressSetting4Changed extends Setting18ControlEvent {
-  const RtnIngressSetting4Changed(this.rtnIngressSetting4);
+  const RtnIngressSetting4Changed(this.returnIngressSetting4);
 
-  final String rtnIngressSetting4;
+  final String returnIngressSetting4;
 
   @override
-  List<Object> get props => [rtnIngressSetting4];
+  List<Object> get props => [returnIngressSetting4];
 }
 
 class TGCCableLengthChanged extends Setting18ControlEvent {
