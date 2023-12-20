@@ -47,7 +47,13 @@
     "returnControlParameters": "Return Control Parameters",
 
     "forwardInputAttenuation1": "Port 1 Input Attenuation",
+    "forwardInputAttenuation3": "Port 3 Input Attenuation",
+    "forwardInputAttenuation4": "Port 4 Input Attenuation",
+    "forwardInputAttenuation6": "Port 6 Input Attenuation",
     "forwardInputEqualizer1": "Port 1 Input Equalizer",
+    "forwardInputEqualizer3": "Port 3 Input Equalizer",
+    "forwardInputEqualizer4": "Port 4 Input Equalizer",
+    "forwardInputEqualizer6": "Port 6 Input Equalizer",
     "forwardOutputAttenuation1": "Port 1 Output Attenuation",
     "forwardOutputAttenuation2": "Port 2 Output Attenuation",
     "forwardOutputAttenuation3": "Port 3 Output Attenuation",

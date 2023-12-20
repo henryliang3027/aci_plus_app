@@ -125,10 +125,10 @@ class Amp18CCorNodeParser {
     String splitOption = '';
     String maxRFOutputPower3 = '';
     String minRFOutputPower3 = '';
-    String forwardVVA1 = '';
-    String forwardInSlope1 = '';
-    String forwardOutSlope1 = '';
-    String returnVCA1 = '';
+    String dsVVA1 = '';
+    String dsInSlope1 = '';
+    String dsOutSlope1 = '';
+    String usVCA1 = '';
     String rfOutputPower1AlarmState = '';
     String rfOutputPower3AlarmState = '';
     String rfOutputPower4AlarmState = '';
@@ -140,18 +140,18 @@ class Amp18CCorNodeParser {
     String splitOptionAlarmState = '';
     String location = '';
     String logInterval = '';
-    String forwardVVA3 = '';
-    String forwardInSlope3 = '';
-    String forwardOutSlope3 = '';
-    String returnVCA3 = '';
-    String forwardVVA4 = '';
-    String forwardInSlope4 = '';
-    String forwardOutSlope4 = '';
-    String returnVCA4 = '';
-    String forwardVVA6 = '';
-    String forwardInSlope6 = '';
-    String forwardOutSlope6 = '';
-    String returnVCA6 = '';
+    String dsVVA3 = '';
+    String dsInSlope3 = '';
+    String dsOutSlope3 = '';
+    String usVCA3 = '';
+    String dsVVA4 = '';
+    String dsInSlope4 = '';
+    String dsOutSlope4 = '';
+    String usVCA4 = '';
+    String dsVVA6 = '';
+    String dsInSlope6 = '';
+    String dsOutSlope6 = '';
+    String usVCA6 = '';
     String maxRFOutputPower6 = '';
     String minRFOutputPower6 = '';
 
@@ -237,34 +237,32 @@ class Amp18CCorNodeParser {
             .toStringAsFixed(1);
 
     // 解析 fowwardVVA1
-    List<int> rawForwardVVA1 = rawData.sublist(33, 35);
-    ByteData rawForwardVVA1ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawForwardVVA1));
-    forwardVVA1 = (rawForwardVVA1ByteData.getInt16(0, Endian.little) / 10)
-        .toStringAsFixed(1);
+    List<int> rawDSVVA1 = rawData.sublist(33, 35);
+    ByteData rawDSVVA1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSVVA1));
+    dsVVA1 =
+        (rawDSVVA1ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
 
     // 解析 fowwardInSlope1
-    List<int> rawForwardInSlope1 = rawData.sublist(35, 37);
-    ByteData rawForwardInSlope1ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawForwardInSlope1));
-    forwardInSlope1 =
-        (rawForwardInSlope1ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
-
-    // 解析 forwardOutSlope1
-    List<int> rawForwardOutSlope1 = rawData.sublist(37, 39);
-    ByteData rawForwardOutSlope1ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawForwardOutSlope1));
-    forwardOutSlope1 =
-        (rawForwardOutSlope1ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
-
-    // 解析 returnVCA1
-    List<int> rawReturnVCA1 = rawData.sublist(39, 41);
-    ByteData rawReturnVCA1ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawReturnVCA1));
-    returnVCA1 = (rawReturnVCA1ByteData.getInt16(0, Endian.little) / 10)
+    List<int> rawDSInSlope1 = rawData.sublist(35, 37);
+    ByteData rawDSInSlope1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSInSlope1));
+    dsInSlope1 = (rawDSInSlope1ByteData.getInt16(0, Endian.little) / 10)
         .toStringAsFixed(1);
+
+    // 解析 dsOutSlope1
+    List<int> rawDSOutSlope1 = rawData.sublist(37, 39);
+    ByteData rawDSOutSlope1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSOutSlope1));
+    dsOutSlope1 = (rawDSOutSlope1ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 usVCA1
+    List<int> rawUSVCA1 = rawData.sublist(39, 41);
+    ByteData rawUSVCA1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawUSVCA1));
+    usVCA1 =
+        (rawUSVCA1ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
 
     // 解析 rfOutputPower1AlarmState
     rfOutputPower1AlarmState = rawData[41].toString();
@@ -323,95 +321,89 @@ class Amp18CCorNodeParser {
     logInterval = rawData[150].toString();
     print('LOG interval: $logInterval');
 
-    // 解析 forwardVVA3
-    List<int> rawForwardVVA3 = rawData.sublist(151, 153);
-    ByteData rawForwardVVA3ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawForwardVVA3));
-    forwardVVA3 = (rawForwardVVA3ByteData.getInt16(0, Endian.little) / 10)
+    // 解析 dsVVA3
+    List<int> rawDSVVA3 = rawData.sublist(151, 153);
+    ByteData rawDSVVA3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSVVA3));
+    dsVVA3 =
+        (rawDSVVA3ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
+
+    // 解析 dsInSlope3
+    List<int> rawDSInSlope3 = rawData.sublist(153, 155);
+    ByteData rawDSInSlope3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSInSlope3));
+    dsInSlope3 = (rawDSInSlope3ByteData.getInt16(0, Endian.little) / 10)
         .toStringAsFixed(1);
 
-    // 解析 forwardInSlope3
-    List<int> rawForwardInSlope3 = rawData.sublist(153, 155);
-    ByteData rawForwardInSlope3ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawForwardInSlope3));
-    forwardInSlope3 =
-        (rawForwardInSlope3ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
-
-    // 解析 forwardOutSlope3
-    List<int> rawForwardOutSlope3 = rawData.sublist(155, 157);
-    ByteData rawForwardOutSlope3ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawForwardOutSlope3));
-    forwardOutSlope3 =
-        (rawForwardOutSlope3ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
-
-    // 解析 returnVCA3
-    List<int> rawReturnVCA3 = rawData.sublist(157, 159);
-    ByteData rawReturnVCA3ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawReturnVCA3));
-    returnVCA3 = (rawReturnVCA3ByteData.getInt16(0, Endian.little) / 10)
+    // 解析 dsOutSlope3
+    List<int> rawDSOutSlope3 = rawData.sublist(155, 157);
+    ByteData rawDSOutSlope3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSOutSlope3));
+    dsOutSlope3 = (rawDSOutSlope3ByteData.getInt16(0, Endian.little) / 10)
         .toStringAsFixed(1);
 
-    // 解析 forwardVVA4
-    List<int> rawForwardVVA4 = rawData.sublist(159, 161);
-    ByteData rawForwardVVA4ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawForwardVVA4));
-    forwardVVA4 = (rawForwardVVA4ByteData.getInt16(0, Endian.little) / 10)
+    // 解析 usVCA3
+    List<int> rawUSVCA3 = rawData.sublist(157, 159);
+    ByteData rawUSVCA3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawUSVCA3));
+    usVCA3 =
+        (rawUSVCA3ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
+
+    // 解析 dsVVA4
+    List<int> rawDSVVA4 = rawData.sublist(159, 161);
+    ByteData rawDSVVA4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSVVA4));
+    dsVVA4 =
+        (rawDSVVA4ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
+
+    // 解析 dsInSlope4
+    List<int> rawDSInSlope4 = rawData.sublist(161, 163);
+    ByteData rawDSInSlope4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSInSlope4));
+    dsInSlope4 = (rawDSInSlope4ByteData.getInt16(0, Endian.little) / 10)
         .toStringAsFixed(1);
 
-    // 解析 forwardInSlope4
-    List<int> rawForwardInSlope4 = rawData.sublist(161, 163);
-    ByteData rawForwardInSlope4ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawForwardInSlope4));
-    forwardInSlope4 =
-        (rawForwardInSlope4ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
-
-    // 解析 forwardOutSlope4
-    List<int> rawForwardOutSlope4 = rawData.sublist(163, 165);
-    ByteData rawForwardOutSlope4ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawForwardOutSlope4));
-    forwardOutSlope4 =
-        (rawForwardOutSlope4ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
-
-    // 解析 returnVCA4 (0xA2 DS VVA4 Set dB)
-    List<int> rawReturnVCA4 = rawData.sublist(165, 167);
-    ByteData rawReturnVCA4ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawReturnVCA4));
-    returnVCA4 = (rawReturnVCA4ByteData.getInt16(0, Endian.little) / 10)
+    // 解析 dsOutSlope4
+    List<int> rawDSOutSlope4 = rawData.sublist(163, 165);
+    ByteData rawDSOutSlope4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSOutSlope4));
+    dsOutSlope4 = (rawDSOutSlope4ByteData.getInt16(0, Endian.little) / 10)
         .toStringAsFixed(1);
 
-    // 解析 forwardVVA6
-    List<int> rawForwardVVA6 = rawData.sublist(167, 169);
-    ByteData rawForwardVVA6ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawForwardVVA6));
-    forwardVVA6 = (rawForwardVVA6ByteData.getInt16(0, Endian.little) / 10)
+    // 解析 usVCA4 (0xA2 DS VVA4 Set dB)
+    List<int> rawUSVCA4 = rawData.sublist(165, 167);
+    ByteData rawUSVCA4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawUSVCA4));
+    usVCA4 =
+        (rawUSVCA4ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
+
+    // 解析 dsVVA6
+    List<int> rawDSVVA6 = rawData.sublist(167, 169);
+    ByteData rawDSVVA6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSVVA6));
+    dsVVA6 =
+        (rawDSVVA6ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
+
+    // 解析 dsInSlope6
+    List<int> rawDSInSlope6 = rawData.sublist(169, 171);
+    ByteData rawDSInSlope6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSInSlope6));
+    dsInSlope6 = (rawDSInSlope6ByteData.getInt16(0, Endian.little) / 10)
         .toStringAsFixed(1);
 
-    // 解析 forwardInSlope6
-    List<int> rawForwardInSlope6 = rawData.sublist(169, 171);
-    ByteData rawForwardInSlope6ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawForwardInSlope6));
-    forwardInSlope6 =
-        (rawForwardInSlope6ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
-
-    // 解析 forwardOutSlope6
-    List<int> rawForwardOutSlope6 = rawData.sublist(171, 173);
-    ByteData rawForwardOutSlope6ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawForwardOutSlope6));
-    forwardOutSlope6 =
-        (rawForwardOutSlope6ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
-
-    // 解析 returnVCA6
-    List<int> rawReturnVCA6 = rawData.sublist(173, 175);
-    ByteData rawReturnVCA6ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawReturnVCA6));
-    returnVCA6 = (rawReturnVCA6ByteData.getInt16(0, Endian.little) / 10)
+    // 解析 dsOutSlope6
+    List<int> rawDSOutSlope6 = rawData.sublist(171, 173);
+    ByteData rawDSOutSlope6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawDSOutSlope6));
+    dsOutSlope6 = (rawDSOutSlope6ByteData.getInt16(0, Endian.little) / 10)
         .toStringAsFixed(1);
+
+    // 解析 usVCA6
+    List<int> rawUSVCA6 = rawData.sublist(173, 175);
+    ByteData rawUSVCA6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawUSVCA6));
+    usVCA6 =
+        (rawUSVCA6ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
 
     // 解析 maxRFOutputPower6
     List<int> rawMaxRFOutputPower6 = rawData.sublist(175, 177);
@@ -445,10 +437,10 @@ class Amp18CCorNodeParser {
       splitOption: splitOption,
       maxRFOutputPower3: maxRFOutputPower3,
       minRFOutputPower3: minRFOutputPower3,
-      forwardVVA1: forwardVVA1,
-      forwardInSlope1: forwardInSlope1,
-      forwardOutSlope1: forwardOutSlope1,
-      returnVCA1: returnVCA1,
+      dsVVA1: dsVVA1,
+      dsInSlope1: dsInSlope1,
+      dsOutSlope1: dsOutSlope1,
+      usVCA1: usVCA1,
       rfOutputPower1AlarmState: rfOutputPower1AlarmState,
       rfOutputPower3AlarmState: rfOutputPower3AlarmState,
       rfOutputPower4AlarmState: rfOutputPower4AlarmState,
@@ -460,18 +452,18 @@ class Amp18CCorNodeParser {
       splitOptionAlarmState: splitOptionAlarmState,
       location: location,
       logInterval: logInterval,
-      forwardVVA3: forwardVVA3,
-      forwardInSlope3: forwardInSlope3,
-      forwardOutSlope3: forwardOutSlope3,
-      returnVCA3: returnVCA3,
-      forwardVVA4: forwardVVA4,
-      forwardInSlope4: forwardInSlope4,
-      forwardOutSlope4: forwardOutSlope4,
-      returnVCA4: returnVCA4,
-      forwardVVA6: forwardVVA6,
-      forwardInSlope6: forwardInSlope6,
-      forwardOutSlope6: forwardOutSlope6,
-      returnVCA6: returnVCA6,
+      dsVVA3: dsVVA3,
+      dsInSlope3: dsInSlope3,
+      dsOutSlope3: dsOutSlope3,
+      usVCA3: usVCA3,
+      dsVVA4: dsVVA4,
+      dsInSlope4: dsInSlope4,
+      dsOutSlope4: dsOutSlope4,
+      usVCA4: usVCA4,
+      dsVVA6: dsVVA6,
+      dsInSlope6: dsInSlope6,
+      dsOutSlope6: dsOutSlope6,
+      usVCA6: usVCA6,
       maxRFOutputPower6: maxRFOutputPower6,
       minRFOutputPower6: minRFOutputPower6,
     );
@@ -486,22 +478,22 @@ class Amp18CCorNodeParser {
     String currentRFOutputPower3;
     String currentRFOutputPower4;
     String currentRFOutputPower6;
-    String currentForwardVVA1;
-    String currentForwardInSlope1;
-    String currentForwardOutSlope1;
-    String currentReturnVCA1;
-    String currentForwardVVA3;
-    String currentForwardInSlope3;
-    String currentForwardOutSlope3;
-    String currentReturnVCA3;
-    String currentForwardVVA4;
-    String currentForwardInSlope4;
-    String currentForwardOutSlope4;
-    String currentReturnVCA4;
-    String currentForwardVVA6;
-    String currentForwardInSlope6;
-    String currentForwardOutSlope6;
-    String currentReturnVCA6;
+    String currentDSVVA1;
+    String currentDSInSlope1;
+    String currentDSOutSlope1;
+    String currentUSVCA1;
+    String currentDSVVA3;
+    String currentDSInSlope3;
+    String currentDSOutSlope3;
+    String currentUSVCA3;
+    String currentDSVVA4;
+    String currentDSInSlope4;
+    String currentDSOutSlope4;
+    String currentUSVCA4;
+    String currentDSVVA6;
+    String currentDSInSlope6;
+    String currentDSOutSlope6;
+    String currentUSVCA6;
     String currentWorkingMode;
     String currentDetectedSplitOption;
     Alarm unitStatusAlarmSeverity = Alarm.medium;
@@ -581,149 +573,141 @@ class Amp18CCorNodeParser {
         (rawCurrentRFOutputPower6ByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
 
-    // 解析 currentForwardVVA1
-    List<int> rawCurrentForwardVVA1 = rawData.sublist(34, 36);
-    ByteData rawCurrentForwardVVA1ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardVVA1));
+    // 解析 currentDSVVA1
+    List<int> rawCurrentDSVVA1 = rawData.sublist(34, 36);
+    ByteData rawCurrentDSVVA1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentDSVVA1));
 
-    currentForwardVVA1 =
-        (rawCurrentForwardVVA1ByteData.getInt16(0, Endian.little) / 10)
+    currentDSVVA1 = (rawCurrentDSVVA1ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 currentDSInSlope1
+    List<int> rawCurrentDSInSlope1 = rawData.sublist(36, 38);
+    ByteData rawCurrentDSInSlope1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentDSInSlope1));
+
+    currentDSInSlope1 =
+        (rawCurrentDSInSlope1ByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
 
-    // 解析 currentForwardInSlope1
-    List<int> rawCurrentForwardInSlope1 = rawData.sublist(36, 38);
-    ByteData rawCurrentForwardInSlope1ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardInSlope1));
+    // 解析 currentDSOutSlope1
+    List<int> rawCurrentDSOutSlope1 = rawData.sublist(38, 40);
+    ByteData rawCurrentDSOutSlope1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentDSOutSlope1));
 
-    currentForwardInSlope1 =
-        (rawCurrentForwardInSlope1ByteData.getInt16(0, Endian.little) / 10)
+    currentDSOutSlope1 =
+        (rawCurrentDSOutSlope1ByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
 
-    // 解析 currentForwardOutSlope1
-    List<int> rawCurrentForwardOutSlope1 = rawData.sublist(38, 40);
-    ByteData rawCurrentForwardOutSlope1ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardOutSlope1));
+    // 解析 currentUSVCA1
+    List<int> rawCurrentUSVCA1 = rawData.sublist(40, 42);
+    ByteData rawCurrentUSVCA1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentUSVCA1));
 
-    currentForwardOutSlope1 =
-        (rawCurrentForwardOutSlope1ByteData.getInt16(0, Endian.little) / 10)
+    currentUSVCA1 = (rawCurrentUSVCA1ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 currentDSVVA3
+    List<int> rawCurrentDSVVA3 = rawData.sublist(42, 44);
+    ByteData rawCurrentDSVVA3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentDSVVA3));
+
+    currentDSVVA3 = (rawCurrentDSVVA3ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 currentDSInSlope3
+    List<int> rawCurrentDSInSlope3 = rawData.sublist(44, 46);
+    ByteData rawCurrentDSInSlope3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentDSInSlope3));
+
+    currentDSInSlope3 =
+        (rawCurrentDSInSlope3ByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
 
-    // 解析 currentReturnVCA1
-    List<int> rawCurrentReturnVCA1 = rawData.sublist(40, 42);
-    ByteData rawCurrentReturnVCA1ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentReturnVCA1));
+    // 解析 currentDSOutSlope3
+    List<int> rawCurrentDSOutSlope3 = rawData.sublist(46, 48);
+    ByteData rawCurrentDSOutSlope3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentDSOutSlope3));
 
-    currentReturnVCA1 =
-        (rawCurrentReturnVCA1ByteData.getInt16(0, Endian.little) / 10)
+    currentDSOutSlope3 =
+        (rawCurrentDSOutSlope3ByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
 
-    // 解析 currentForwardVVA3
-    List<int> rawCurrentForwardVVA3 = rawData.sublist(42, 44);
-    ByteData rawCurrentForwardVVA3ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardVVA3));
+    // 解析 currentUSVCA3
+    List<int> rawCurrentUSVCA3 = rawData.sublist(48, 50);
+    ByteData rawCurrentUSVCA3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentUSVCA3));
 
-    currentForwardVVA3 =
-        (rawCurrentForwardVVA3ByteData.getInt16(0, Endian.little) / 10)
+    currentUSVCA3 = (rawCurrentUSVCA3ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 currentDSVVA4
+    List<int> rawCurrentDSVVA4 = rawData.sublist(50, 52);
+    ByteData rawCurrentDSVVA4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentDSVVA4));
+
+    currentDSVVA4 = (rawCurrentDSVVA4ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 currentDSInSlope4
+    List<int> rawCurrentDSInSlope4 = rawData.sublist(52, 54);
+    ByteData rawCurrentDSInSlope4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentDSInSlope4));
+
+    currentDSInSlope4 =
+        (rawCurrentDSInSlope4ByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
 
-    // 解析 currentForwardInSlope3
-    List<int> rawCurrentForwardInSlope3 = rawData.sublist(44, 46);
-    ByteData rawCurrentForwardInSlope3ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardInSlope3));
+    // 解析 currentDSOutSlope4
+    List<int> rawCurrentDSOutSlope4 = rawData.sublist(54, 56);
+    ByteData rawCurrentDSOutSlope4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentDSOutSlope4));
 
-    currentForwardInSlope3 =
-        (rawCurrentForwardInSlope3ByteData.getInt16(0, Endian.little) / 10)
+    currentDSOutSlope4 =
+        (rawCurrentDSOutSlope4ByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
 
-    // 解析 currentForwardOutSlope3
-    List<int> rawCurrentForwardOutSlope3 = rawData.sublist(46, 48);
-    ByteData rawCurrentForwardOutSlope3ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardOutSlope3));
+    // 解析 currentUSVCA4
+    List<int> rawCurrentUSVCA4 = rawData.sublist(56, 58);
+    ByteData rawCurrentUSVCA4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentUSVCA4));
 
-    currentForwardOutSlope3 =
-        (rawCurrentForwardOutSlope3ByteData.getInt16(0, Endian.little) / 10)
+    currentUSVCA4 = (rawCurrentUSVCA4ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 currentDSVVA6
+    List<int> rawCurrentDSVVA6 = rawData.sublist(58, 60);
+    ByteData rawCurrentDSVVA6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentDSVVA6));
+
+    currentDSVVA6 = (rawCurrentDSVVA6ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 currentDSInSlope6
+    List<int> rawCurrentDSInSlope6 = rawData.sublist(60, 62);
+    ByteData rawCurrentDSInSlope6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentDSInSlope6));
+
+    currentDSInSlope6 =
+        (rawCurrentDSInSlope6ByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
 
-    // 解析 currentReturnVCA3
-    List<int> rawCurrentReturnVCA3 = rawData.sublist(48, 50);
-    ByteData rawCurrentReturnVCA3ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentReturnVCA3));
+    // 解析 currentDSOutSlope6
+    List<int> rawCurrentDSOutSlope6 = rawData.sublist(62, 64);
+    ByteData rawCurrentDSOutSlope6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentDSOutSlope6));
 
-    currentReturnVCA3 =
-        (rawCurrentReturnVCA3ByteData.getInt16(0, Endian.little) / 10)
+    currentDSOutSlope6 =
+        (rawCurrentDSOutSlope6ByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
 
-    // 解析 currentForwardVVA4
-    List<int> rawCurrentForwardVVA4 = rawData.sublist(50, 52);
-    ByteData rawCurrentForwardVVA4ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardVVA4));
+    // 解析 currentUSVCA6
+    List<int> rawCurrentUSVCA6 = rawData.sublist(64, 66);
+    ByteData rawCurrentUSVCA6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawCurrentUSVCA6));
 
-    currentForwardVVA4 =
-        (rawCurrentForwardVVA4ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
-
-    // 解析 currentForwardInSlope4
-    List<int> rawCurrentForwardInSlope4 = rawData.sublist(52, 54);
-    ByteData rawCurrentForwardInSlope4ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardInSlope4));
-
-    currentForwardInSlope4 =
-        (rawCurrentForwardInSlope4ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
-
-    // 解析 currentForwardOutSlope4
-    List<int> rawCurrentForwardOutSlope4 = rawData.sublist(54, 56);
-    ByteData rawCurrentForwardOutSlope4ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardOutSlope4));
-
-    currentForwardOutSlope4 =
-        (rawCurrentForwardOutSlope4ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
-
-    // 解析 currentReturnVCA4
-    List<int> rawCurrentReturnVCA4 = rawData.sublist(56, 58);
-    ByteData rawCurrentReturnVCA4ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentReturnVCA4));
-
-    currentReturnVCA4 =
-        (rawCurrentReturnVCA4ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
-
-    // 解析 currentForwardVVA6
-    List<int> rawCurrentForwardVVA6 = rawData.sublist(58, 60);
-    ByteData rawCurrentForwardVVA6ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardVVA6));
-
-    currentForwardVVA6 =
-        (rawCurrentForwardVVA6ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
-
-    // 解析 currentForwardInSlope6
-    List<int> rawCurrentForwardInSlope6 = rawData.sublist(60, 62);
-    ByteData rawCurrentForwardInSlope6ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardInSlope6));
-
-    currentForwardInSlope6 =
-        (rawCurrentForwardInSlope6ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
-
-    // 解析 currentForwardOutSlope6
-    List<int> rawCurrentForwardOutSlope6 = rawData.sublist(62, 64);
-    ByteData rawCurrentForwardOutSlope6ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentForwardOutSlope6));
-
-    currentForwardOutSlope6 =
-        (rawCurrentForwardOutSlope6ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
-
-    // 解析 currentReturnVCA6
-    List<int> rawCurrentReturnVCA6 = rawData.sublist(64, 66);
-    ByteData rawCurrentReturnVCA6ByteData =
-        ByteData.sublistView(Uint8List.fromList(rawCurrentReturnVCA6));
-
-    currentReturnVCA6 =
-        (rawCurrentReturnVCA6ByteData.getInt16(0, Endian.little) / 10)
-            .toStringAsFixed(1);
+    currentUSVCA6 = (rawCurrentUSVCA6ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
 
     // 解析 currentWorkingMode
     currentWorkingMode = rawData[70].toString();
@@ -779,22 +763,22 @@ class Amp18CCorNodeParser {
       currentRFOutputPower3: currentRFOutputPower3,
       currentRFOutputPower4: currentRFOutputPower4,
       currentRFOutputPower6: currentRFOutputPower6,
-      currentForwardVVA1: currentForwardVVA1,
-      currentForwardInSlope1: currentForwardInSlope1,
-      currentForwardOutSlope1: currentForwardOutSlope1,
-      currentReturnVCA1: currentReturnVCA1,
-      currentForwardVVA3: currentForwardVVA3,
-      currentForwardInSlope3: currentForwardInSlope3,
-      currentForwardOutSlope3: currentForwardOutSlope3,
-      currentReturnVCA3: currentReturnVCA3,
-      currentForwardVVA4: currentForwardVVA4,
-      currentForwardInSlope4: currentForwardInSlope4,
-      currentForwardOutSlope4: currentForwardOutSlope4,
-      currentReturnVCA4: currentReturnVCA4,
-      currentForwardVVA6: currentForwardVVA6,
-      currentForwardInSlope6: currentForwardInSlope6,
-      currentForwardOutSlope6: currentForwardOutSlope6,
-      currentReturnVCA6: currentReturnVCA6,
+      currentDSVVA1: currentDSVVA1,
+      currentDSInSlope1: currentDSInSlope1,
+      currentDSOutSlope1: currentDSOutSlope1,
+      currentUSVCA1: currentUSVCA1,
+      currentDSVVA3: currentDSVVA3,
+      currentDSInSlope3: currentDSInSlope3,
+      currentDSOutSlope3: currentDSOutSlope3,
+      currentUSVCA3: currentUSVCA3,
+      currentDSVVA4: currentDSVVA4,
+      currentDSInSlope4: currentDSInSlope4,
+      currentDSOutSlope4: currentDSOutSlope4,
+      currentUSVCA4: currentUSVCA4,
+      currentDSVVA6: currentDSVVA6,
+      currentDSInSlope6: currentDSInSlope6,
+      currentDSOutSlope6: currentDSOutSlope6,
+      currentUSVCA6: currentUSVCA6,
       currentWorkingMode: currentWorkingMode,
       currentDetectedSplitOption: currentDetectedSplitOption,
       unitStatusAlarmSeverity: unitStatusAlarmSeverity.name,
@@ -1559,10 +1543,10 @@ class A1P8GCCorNode91 {
     required this.splitOption,
     required this.maxRFOutputPower3,
     required this.minRFOutputPower3,
-    required this.forwardVVA1,
-    required this.forwardInSlope1,
-    required this.forwardOutSlope1,
-    required this.returnVCA1,
+    required this.dsVVA1,
+    required this.dsInSlope1,
+    required this.dsOutSlope1,
+    required this.usVCA1,
     required this.rfOutputPower1AlarmState,
     required this.rfOutputPower3AlarmState,
     required this.rfOutputPower4AlarmState,
@@ -1574,18 +1558,18 @@ class A1P8GCCorNode91 {
     required this.splitOptionAlarmState,
     required this.location,
     required this.logInterval,
-    required this.forwardVVA3,
-    required this.forwardInSlope3,
-    required this.forwardOutSlope3,
-    required this.returnVCA3,
-    required this.forwardVVA4,
-    required this.forwardInSlope4,
-    required this.forwardOutSlope4,
-    required this.returnVCA4,
-    required this.forwardVVA6,
-    required this.forwardInSlope6,
-    required this.forwardOutSlope6,
-    required this.returnVCA6,
+    required this.dsVVA3,
+    required this.dsInSlope3,
+    required this.dsOutSlope3,
+    required this.usVCA3,
+    required this.dsVVA4,
+    required this.dsInSlope4,
+    required this.dsOutSlope4,
+    required this.usVCA4,
+    required this.dsVVA6,
+    required this.dsInSlope6,
+    required this.dsOutSlope6,
+    required this.usVCA6,
     required this.maxRFOutputPower6,
     required this.minRFOutputPower6,
   });
@@ -1605,10 +1589,10 @@ class A1P8GCCorNode91 {
   final String splitOption;
   final String maxRFOutputPower3;
   final String minRFOutputPower3;
-  final String forwardVVA1;
-  final String forwardInSlope1;
-  final String forwardOutSlope1;
-  final String returnVCA1;
+  final String dsVVA1;
+  final String dsInSlope1;
+  final String dsOutSlope1;
+  final String usVCA1;
   final String rfOutputPower1AlarmState;
   final String rfOutputPower3AlarmState;
   final String rfOutputPower4AlarmState;
@@ -1620,18 +1604,18 @@ class A1P8GCCorNode91 {
   final String splitOptionAlarmState;
   final String location;
   final String logInterval;
-  final String forwardVVA3;
-  final String forwardInSlope3;
-  final String forwardOutSlope3;
-  final String returnVCA3;
-  final String forwardVVA4;
-  final String forwardInSlope4;
-  final String forwardOutSlope4;
-  final String returnVCA4;
-  final String forwardVVA6;
-  final String forwardInSlope6;
-  final String forwardOutSlope6;
-  final String returnVCA6;
+  final String dsVVA3;
+  final String dsInSlope3;
+  final String dsOutSlope3;
+  final String usVCA3;
+  final String dsVVA4;
+  final String dsInSlope4;
+  final String dsOutSlope4;
+  final String usVCA4;
+  final String dsVVA6;
+  final String dsInSlope6;
+  final String dsOutSlope6;
+  final String usVCA6;
   final String maxRFOutputPower6;
   final String minRFOutputPower6;
 }
@@ -1646,22 +1630,22 @@ class A1P8GCCorNodeA1 {
     required this.currentRFOutputPower3,
     required this.currentRFOutputPower4,
     required this.currentRFOutputPower6,
-    required this.currentForwardVVA1,
-    required this.currentForwardInSlope1,
-    required this.currentForwardOutSlope1,
-    required this.currentReturnVCA1,
-    required this.currentForwardVVA3,
-    required this.currentForwardInSlope3,
-    required this.currentForwardOutSlope3,
-    required this.currentReturnVCA3,
-    required this.currentForwardVVA4,
-    required this.currentForwardInSlope4,
-    required this.currentForwardOutSlope4,
-    required this.currentReturnVCA4,
-    required this.currentForwardVVA6,
-    required this.currentForwardInSlope6,
-    required this.currentForwardOutSlope6,
-    required this.currentReturnVCA6,
+    required this.currentDSVVA1,
+    required this.currentDSInSlope1,
+    required this.currentDSOutSlope1,
+    required this.currentUSVCA1,
+    required this.currentDSVVA3,
+    required this.currentDSInSlope3,
+    required this.currentDSOutSlope3,
+    required this.currentUSVCA3,
+    required this.currentDSVVA4,
+    required this.currentDSInSlope4,
+    required this.currentDSOutSlope4,
+    required this.currentUSVCA4,
+    required this.currentDSVVA6,
+    required this.currentDSInSlope6,
+    required this.currentDSOutSlope6,
+    required this.currentUSVCA6,
     required this.currentWorkingMode,
     required this.currentDetectedSplitOption,
     required this.unitStatusAlarmSeverity,
@@ -1683,22 +1667,22 @@ class A1P8GCCorNodeA1 {
   final String currentRFOutputPower3;
   final String currentRFOutputPower4;
   final String currentRFOutputPower6;
-  final String currentForwardVVA1;
-  final String currentForwardInSlope1;
-  final String currentForwardOutSlope1;
-  final String currentReturnVCA1;
-  final String currentForwardVVA3;
-  final String currentForwardInSlope3;
-  final String currentForwardOutSlope3;
-  final String currentReturnVCA3;
-  final String currentForwardVVA4;
-  final String currentForwardInSlope4;
-  final String currentForwardOutSlope4;
-  final String currentReturnVCA4;
-  final String currentForwardVVA6;
-  final String currentForwardInSlope6;
-  final String currentForwardOutSlope6;
-  final String currentReturnVCA6;
+  final String currentDSVVA1;
+  final String currentDSInSlope1;
+  final String currentDSOutSlope1;
+  final String currentUSVCA1;
+  final String currentDSVVA3;
+  final String currentDSInSlope3;
+  final String currentDSOutSlope3;
+  final String currentUSVCA3;
+  final String currentDSVVA4;
+  final String currentDSInSlope4;
+  final String currentDSOutSlope4;
+  final String currentUSVCA4;
+  final String currentDSVVA6;
+  final String currentDSInSlope6;
+  final String currentDSOutSlope6;
+  final String currentUSVCA6;
   final String currentWorkingMode;
   final String currentDetectedSplitOption;
   final String unitStatusAlarmSeverity;

@@ -14,18 +14,42 @@ class Setting18CCorNodeControlBloc
   })  : _amp18CCorNodeRepository = amp18CCorNodeRepository,
         super(const Setting18CCorNodeControlState()) {
     on<Initialized>(_onInitialized);
-    on<ReturnInputAttenuation1Changed>(_onReturnInputAttenuation1Changed);
-    on<ReturnInputAttenuation1Increased>(_onReturnInputAttenuation1Increased);
-    on<ReturnInputAttenuation1Decreased>(_onReturnInputAttenuation1Decreased);
-    on<ReturnInputAttenuation3Changed>(_onReturnInputAttenuation3Changed);
-    on<ReturnInputAttenuation3Increased>(_onReturnInputAttenuation3Increased);
-    on<ReturnInputAttenuation3Decreased>(_onReturnInputAttenuation3Decreased);
-    on<ReturnInputAttenuation4Changed>(_onReturnInputAttenuation4Changed);
-    on<ReturnInputAttenuation4Increased>(_onReturnInputAttenuation4Increased);
-    on<ReturnInputAttenuation4Decreased>(_onReturnInputAttenuation4Decreased);
-    on<ReturnInputAttenuation6Changed>(_onReturnInputAttenuation6Changed);
-    on<ReturnInputAttenuation6Increased>(_onReturnInputAttenuation6Increased);
-    on<ReturnInputAttenuation6Decreased>(_onReturnInputAttenuation6Decreased);
+    on<DSVVA1Changed>(_onDSVVA1Changed);
+    on<DSVVA1Increased>(_onDSVVA1Increased);
+    on<DSVVA1Decreased>(_onDSVVA1Decreased);
+    on<DSVVA3Changed>(_onDSVVA3Changed);
+    on<DSVVA3Increased>(_onDSVVA3Increased);
+    on<DSVVA3Decreased>(_onDSVVA3Decreased);
+    on<DSVVA4Changed>(_onDSVVA4Changed);
+    on<DSVVA4Increased>(_onDSVVA4Increased);
+    on<DSVVA4Decreased>(_onDSVVA4Decreased);
+    on<DSVVA6Changed>(_onDSVVA6Changed);
+    on<DSVVA6Increased>(_onDSVVA6Increased);
+    on<DSVVA6Decreased>(_onDSVVA6Decreased);
+    on<DSInSlope1Changed>(_onDSInSlope1Changed);
+    on<DSInSlope1Increased>(_onDSInSlope1Increased);
+    on<DSInSlope1Decreased>(_onDSInSlope1Decreased);
+    on<DSInSlope3Changed>(_onDSInSlope3Changed);
+    on<DSInSlope3Increased>(_onDSInSlope3Increased);
+    on<DSInSlope3Decreased>(_onDSInSlope3Decreased);
+    on<DSInSlope4Changed>(_onDSInSlope4Changed);
+    on<DSInSlope4Increased>(_onDSInSlope4Increased);
+    on<DSInSlope4Decreased>(_onDSInSlope4Decreased);
+    on<DSInSlope6Changed>(_onDSInSlope6Changed);
+    on<DSInSlope6Increased>(_onDSInSlope6Increased);
+    on<DSInSlope6Decreased>(_onDSInSlope6Decreased);
+    on<USVCA1Changed>(_onUSVCA1Changed);
+    on<USVCA1Increased>(_onUSVCA1Increased);
+    on<USVCA1Decreased>(_onUSVCA1Decreased);
+    on<USVCA3Changed>(_onUSVCA3Changed);
+    on<USVCA3Increased>(_onUSVCA3Increased);
+    on<USVCA3Decreased>(_onUSVCA3Decreased);
+    on<USVCA4Changed>(_onUSVCA4Changed);
+    on<USVCA4Increased>(_onUSVCA4Increased);
+    on<USVCA4Decreased>(_onUSVCA4Decreased);
+    on<USVCA6Changed>(_onUSVCA6Changed);
+    on<USVCA6Increased>(_onUSVCA6Increased);
+    on<USVCA6Decreased>(_onUSVCA6Decreased);
     on<ReturnIngressSetting1Changed>(_onReturnIngressSetting1Changed);
     on<ReturnIngressSetting3Changed>(_onReturnIngressSetting3Changed);
     on<ReturnIngressSetting4Changed>(_onReturnIngressSetting4Changed);
@@ -46,14 +70,18 @@ class Setting18CCorNodeControlBloc
     Map<DataKey, String> characteristicDataCache =
         _amp18CCorNodeRepository.characteristicDataCache;
 
-    String returnInputAttenuation1 =
-        characteristicDataCache[DataKey.returnVCA1] ?? '';
-    String returnInputAttenuation3 =
-        characteristicDataCache[DataKey.returnVCA3] ?? '';
-    String returnInputAttenuation4 =
-        characteristicDataCache[DataKey.returnVCA4] ?? '';
-    String returnInputAttenuation6 =
-        characteristicDataCache[DataKey.returnVCA6] ?? '';
+    String dsVVA1 = characteristicDataCache[DataKey.dsVVA1] ?? '';
+    String dsVVA3 = characteristicDataCache[DataKey.dsVVA3] ?? '';
+    String dsVVA4 = characteristicDataCache[DataKey.dsVVA4] ?? '';
+    String dsVVA6 = characteristicDataCache[DataKey.dsVVA6] ?? '';
+    String dsInSlope1 = characteristicDataCache[DataKey.dsInSlope1] ?? '';
+    String dsInSlope3 = characteristicDataCache[DataKey.dsInSlope3] ?? '';
+    String dsInSlope4 = characteristicDataCache[DataKey.dsInSlope4] ?? '';
+    String dsInSlope6 = characteristicDataCache[DataKey.dsInSlope6] ?? '';
+    String usVCA1 = characteristicDataCache[DataKey.usVCA1] ?? '';
+    String usVCA3 = characteristicDataCache[DataKey.usVCA3] ?? '';
+    String usVCA4 = characteristicDataCache[DataKey.usVCA4] ?? '';
+    String usVCA6 = characteristicDataCache[DataKey.usVCA6] ?? '';
     String returnIngressSetting1 =
         characteristicDataCache[DataKey.ingressSetting1] ?? '';
     String returnIngressSetting3 =
@@ -64,10 +92,18 @@ class Setting18CCorNodeControlBloc
         characteristicDataCache[DataKey.ingressSetting6] ?? '';
 
     emit(state.copyWith(
-      returnInputAttenuation1: returnInputAttenuation1,
-      returnInputAttenuation3: returnInputAttenuation3,
-      returnInputAttenuation4: returnInputAttenuation4,
-      returnInputAttenuation6: returnInputAttenuation6,
+      dsVVA1: dsVVA1,
+      dsVVA3: dsVVA3,
+      dsVVA4: dsVVA4,
+      dsVVA6: dsVVA6,
+      dsInSlope1: dsInSlope1,
+      dsInSlope3: dsInSlope3,
+      dsInSlope4: dsInSlope4,
+      dsInSlope6: dsInSlope6,
+      usVCA1: usVCA1,
+      usVCA3: usVCA3,
+      usVCA4: usVCA4,
+      usVCA6: usVCA6,
       returnIngressSetting1: returnIngressSetting1,
       returnIngressSetting3: returnIngressSetting3,
       returnIngressSetting4: returnIngressSetting4,
@@ -93,19 +129,27 @@ class Setting18CCorNodeControlBloc
     return strValue;
   }
 
-  void _onReturnInputAttenuation1Changed(
-    ReturnInputAttenuation1Changed event,
+  void _onDSVVA1Changed(
+    DSVVA1Changed event,
     Emitter<Setting18CCorNodeControlState> emit,
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation1: event.returnInputAttenuation1,
+      dsVVA1: event.dsVVA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: event.returnInputAttenuation1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        returnInputAttenuation6: state.returnInputAttenuation6,
+        dsVVA1: event.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
         returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -114,22 +158,29 @@ class Setting18CCorNodeControlBloc
     ));
   }
 
-  void _onReturnInputAttenuation1Increased(
-    ReturnInputAttenuation1Increased event,
+  void _onDSVVA1Increased(
+    DSVVA1Increased event,
     Emitter<Setting18CCorNodeControlState> emit,
   ) {
-    String returnInputAttenuation1 =
-        _getIncreasedNumber(state.returnInputAttenuation1);
+    String dsVVA1 = _getIncreasedNumber(state.dsVVA1);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation1: returnInputAttenuation1,
+      dsVVA1: dsVVA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: returnInputAttenuation1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        returnInputAttenuation6: state.returnInputAttenuation6,
+        dsVVA1: dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
         returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -138,22 +189,29 @@ class Setting18CCorNodeControlBloc
     ));
   }
 
-  void _onReturnInputAttenuation1Decreased(
-    ReturnInputAttenuation1Decreased event,
+  void _onDSVVA1Decreased(
+    DSVVA1Decreased event,
     Emitter<Setting18CCorNodeControlState> emit,
   ) {
-    String returnInputAttenuation1 =
-        _getDecreasedNumber(state.returnInputAttenuation1);
+    String dsVVA1 = _getDecreasedNumber(state.dsVVA1);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation1: returnInputAttenuation1,
+      dsVVA1: dsVVA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: returnInputAttenuation1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        returnInputAttenuation6: state.returnInputAttenuation6,
+        dsVVA1: dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
         returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -162,19 +220,27 @@ class Setting18CCorNodeControlBloc
     ));
   }
 
-  void _onReturnInputAttenuation3Changed(
-    ReturnInputAttenuation3Changed event,
+  void _onDSVVA3Changed(
+    DSVVA3Changed event,
     Emitter<Setting18CCorNodeControlState> emit,
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation3: event.returnInputAttenuation3,
+      dsVVA3: event.dsVVA3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: state.returnInputAttenuation1,
-        returnInputAttenuation3: event.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        returnInputAttenuation6: state.returnInputAttenuation6,
+        dsVVA1: state.dsVVA1,
+        dsVVA3: event.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
         returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -183,22 +249,29 @@ class Setting18CCorNodeControlBloc
     ));
   }
 
-  void _onReturnInputAttenuation3Increased(
-    ReturnInputAttenuation3Increased event,
+  void _onDSVVA3Increased(
+    DSVVA3Increased event,
     Emitter<Setting18CCorNodeControlState> emit,
   ) {
-    String returnInputAttenuation3 =
-        _getIncreasedNumber(state.returnInputAttenuation3);
+    String dsVVA3 = _getIncreasedNumber(state.dsVVA3);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation3: returnInputAttenuation3,
+      dsVVA3: dsVVA3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: state.returnInputAttenuation1,
-        returnInputAttenuation3: returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        returnInputAttenuation6: state.returnInputAttenuation6,
+        dsVVA1: state.dsVVA1,
+        dsVVA3: dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
         returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -207,22 +280,29 @@ class Setting18CCorNodeControlBloc
     ));
   }
 
-  void _onReturnInputAttenuation3Decreased(
-    ReturnInputAttenuation3Decreased event,
+  void _onDSVVA3Decreased(
+    DSVVA3Decreased event,
     Emitter<Setting18CCorNodeControlState> emit,
   ) {
-    String returnInputAttenuation3 =
-        _getDecreasedNumber(state.returnInputAttenuation3);
+    String dsVVA3 = _getDecreasedNumber(state.dsVVA3);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation3: returnInputAttenuation3,
+      dsVVA3: dsVVA3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: state.returnInputAttenuation1,
-        returnInputAttenuation3: returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        returnInputAttenuation6: state.returnInputAttenuation6,
+        dsVVA1: state.dsVVA1,
+        dsVVA3: dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
         returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -231,19 +311,27 @@ class Setting18CCorNodeControlBloc
     ));
   }
 
-  void _onReturnInputAttenuation4Changed(
-    ReturnInputAttenuation4Changed event,
+  void _onDSVVA4Changed(
+    DSVVA4Changed event,
     Emitter<Setting18CCorNodeControlState> emit,
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation4: event.returnInputAttenuation4,
+      dsVVA4: event.dsVVA4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: state.returnInputAttenuation1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: event.returnInputAttenuation4,
-        returnInputAttenuation6: state.returnInputAttenuation6,
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: event.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
         returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -252,22 +340,29 @@ class Setting18CCorNodeControlBloc
     ));
   }
 
-  void _onReturnInputAttenuation4Increased(
-    ReturnInputAttenuation4Increased event,
+  void _onDSVVA4Increased(
+    DSVVA4Increased event,
     Emitter<Setting18CCorNodeControlState> emit,
   ) {
-    String returnInputAttenuation4 =
-        _getIncreasedNumber(state.returnInputAttenuation4);
+    String dsVVA4 = _getIncreasedNumber(state.dsVVA4);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation4: returnInputAttenuation4,
+      dsVVA4: dsVVA4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: state.returnInputAttenuation1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: returnInputAttenuation4,
-        returnInputAttenuation6: state.returnInputAttenuation6,
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
         returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -276,22 +371,29 @@ class Setting18CCorNodeControlBloc
     ));
   }
 
-  void _onReturnInputAttenuation4Decreased(
-    ReturnInputAttenuation4Decreased event,
+  void _onDSVVA4Decreased(
+    DSVVA4Decreased event,
     Emitter<Setting18CCorNodeControlState> emit,
   ) {
-    String returnInputAttenuation4 =
-        _getDecreasedNumber(state.returnInputAttenuation4);
+    String dsVVA4 = _getDecreasedNumber(state.dsVVA4);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation4: returnInputAttenuation4,
+      dsVVA4: dsVVA4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: state.returnInputAttenuation1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: returnInputAttenuation4,
-        returnInputAttenuation6: state.returnInputAttenuation6,
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
         returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -300,19 +402,27 @@ class Setting18CCorNodeControlBloc
     ));
   }
 
-  void _onReturnInputAttenuation6Changed(
-    ReturnInputAttenuation6Changed event,
+  void _onDSVVA6Changed(
+    DSVVA6Changed event,
     Emitter<Setting18CCorNodeControlState> emit,
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation6: event.returnInputAttenuation6,
+      dsVVA6: event.dsVVA6,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: state.returnInputAttenuation1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        returnInputAttenuation6: event.returnInputAttenuation6,
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: event.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
         returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -321,22 +431,29 @@ class Setting18CCorNodeControlBloc
     ));
   }
 
-  void _onReturnInputAttenuation6Increased(
-    ReturnInputAttenuation6Increased event,
+  void _onDSVVA6Increased(
+    DSVVA6Increased event,
     Emitter<Setting18CCorNodeControlState> emit,
   ) {
-    String returnInputAttenuation6 =
-        _getIncreasedNumber(state.returnInputAttenuation6);
+    String dsVVA6 = _getIncreasedNumber(state.dsVVA6);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation6: returnInputAttenuation6,
+      dsVVA6: dsVVA6,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: state.returnInputAttenuation1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        returnInputAttenuation6: returnInputAttenuation6,
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
         returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -345,22 +462,757 @@ class Setting18CCorNodeControlBloc
     ));
   }
 
-  void _onReturnInputAttenuation6Decreased(
-    ReturnInputAttenuation6Decreased event,
+  void _onDSVVA6Decreased(
+    DSVVA6Decreased event,
     Emitter<Setting18CCorNodeControlState> emit,
   ) {
-    String returnInputAttenuation6 =
-        _getDecreasedNumber(state.returnInputAttenuation6);
+    String dsVVA6 = _getDecreasedNumber(state.dsVVA6);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation6: returnInputAttenuation6,
+      dsVVA6: dsVVA6,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: state.returnInputAttenuation1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        returnInputAttenuation6: returnInputAttenuation6,
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSInSlope1Changed(
+    DSInSlope1Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsInSlope1: event.dsInSlope1,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: event.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSInSlope1Increased(
+    DSInSlope1Increased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String dsInSlope1 = _getIncreasedNumber(state.dsInSlope1);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsInSlope1: dsInSlope1,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSInSlope1Decreased(
+    DSInSlope1Decreased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String dsInSlope1 = _getDecreasedNumber(state.dsInSlope1);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsInSlope1: dsInSlope1,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSInSlope3Changed(
+    DSInSlope3Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsInSlope3: event.dsInSlope3,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: event.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSInSlope3Increased(
+    DSInSlope3Increased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String dsInSlope3 = _getIncreasedNumber(state.dsInSlope3);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsInSlope3: dsInSlope3,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSInSlope3Decreased(
+    DSInSlope3Decreased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String dsInSlope3 = _getDecreasedNumber(state.dsInSlope3);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsInSlope3: dsInSlope3,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSInSlope4Changed(
+    DSInSlope4Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsInSlope4: event.dsInSlope4,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: event.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSInSlope4Increased(
+    DSInSlope4Increased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String dsInSlope4 = _getIncreasedNumber(state.dsInSlope4);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsInSlope4: dsInSlope4,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSInSlope4Decreased(
+    DSInSlope4Decreased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String dsInSlope4 = _getDecreasedNumber(state.dsInSlope4);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsInSlope4: dsInSlope4,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSInSlope6Changed(
+    DSInSlope6Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsInSlope6: event.dsInSlope6,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: event.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSInSlope6Increased(
+    DSInSlope6Increased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String dsInSlope6 = _getIncreasedNumber(state.dsInSlope6);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsInSlope6: dsInSlope6,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSInSlope6Decreased(
+    DSInSlope6Decreased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String dsInSlope6 = _getDecreasedNumber(state.dsInSlope6);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsInSlope6: dsInSlope6,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onUSVCA1Changed(
+    USVCA1Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      usVCA1: event.usVCA1,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: event.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onUSVCA1Increased(
+    USVCA1Increased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String usVCA1 = _getIncreasedNumber(state.usVCA1);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      usVCA1: usVCA1,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onUSVCA1Decreased(
+    USVCA1Decreased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String usVCA1 = _getDecreasedNumber(state.usVCA1);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      usVCA1: usVCA1,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onUSVCA3Changed(
+    USVCA3Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      usVCA3: event.usVCA3,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: event.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onUSVCA3Increased(
+    USVCA3Increased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String usVCA3 = _getIncreasedNumber(state.usVCA3);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      usVCA3: usVCA3,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onUSVCA3Decreased(
+    USVCA3Decreased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String usVCA3 = _getDecreasedNumber(state.usVCA3);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      usVCA3: usVCA3,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onUSVCA4Changed(
+    USVCA4Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      usVCA4: event.usVCA4,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: event.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onUSVCA4Increased(
+    USVCA4Increased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String usVCA4 = _getIncreasedNumber(state.usVCA4);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      usVCA4: usVCA4,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onUSVCA4Decreased(
+    USVCA4Decreased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String usVCA4 = _getDecreasedNumber(state.usVCA4);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      usVCA4: usVCA4,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onUSVCA6Changed(
+    USVCA6Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      usVCA6: event.usVCA6,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: event.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onUSVCA6Increased(
+    USVCA6Increased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String usVCA6 = _getIncreasedNumber(state.usVCA6);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      usVCA6: usVCA6,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onUSVCA6Decreased(
+    USVCA6Decreased event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    String usVCA6 = _getDecreasedNumber(state.usVCA6);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      usVCA6: usVCA6,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: usVCA6,
         returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -378,10 +1230,18 @@ class Setting18CCorNodeControlBloc
       returnIngressSetting1: event.returnIngressSetting1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: state.returnInputAttenuation1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        returnInputAttenuation6: state.returnInputAttenuation6,
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
         returnIngressSetting1: event.returnIngressSetting1,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -399,10 +1259,18 @@ class Setting18CCorNodeControlBloc
       returnIngressSetting3: event.returnIngressSetting3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: state.returnInputAttenuation1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        returnInputAttenuation6: state.returnInputAttenuation6,
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
         returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: event.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -420,10 +1288,18 @@ class Setting18CCorNodeControlBloc
       returnIngressSetting4: event.returnIngressSetting4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: state.returnInputAttenuation1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        returnInputAttenuation6: state.returnInputAttenuation6,
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
         returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: event.returnIngressSetting4,
@@ -441,10 +1317,18 @@ class Setting18CCorNodeControlBloc
       returnIngressSetting6: event.returnIngressSetting6,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        returnInputAttenuation1: state.returnInputAttenuation1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        returnInputAttenuation6: state.returnInputAttenuation6,
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
         returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -473,10 +1357,18 @@ class Setting18CCorNodeControlBloc
       isInitialize: true,
       editMode: false,
       enableSubmission: false,
-      returnInputAttenuation1: state.initialValues[DataKey.returnVCA1],
-      returnInputAttenuation3: state.initialValues[DataKey.returnVCA3],
-      returnInputAttenuation4: state.initialValues[DataKey.returnVCA4],
-      returnInputAttenuation6: state.initialValues[DataKey.returnVCA6],
+      dsVVA1: state.initialValues[DataKey.dsVVA1],
+      dsVVA3: state.initialValues[DataKey.dsVVA3],
+      dsVVA4: state.initialValues[DataKey.dsVVA4],
+      dsVVA6: state.initialValues[DataKey.dsVVA6],
+      dsInSlope1: state.initialValues[DataKey.dsInSlope1],
+      dsInSlope3: state.initialValues[DataKey.dsInSlope3],
+      dsInSlope4: state.initialValues[DataKey.dsInSlope4],
+      dsInSlope6: state.initialValues[DataKey.dsInSlope6],
+      usVCA1: state.initialValues[DataKey.usVCA1],
+      usVCA3: state.initialValues[DataKey.usVCA3],
+      usVCA4: state.initialValues[DataKey.usVCA4],
+      usVCA6: state.initialValues[DataKey.usVCA6],
       returnIngressSetting1: state.initialValues[DataKey.ingressSetting1],
       returnIngressSetting3: state.initialValues[DataKey.ingressSetting3],
       returnIngressSetting4: state.initialValues[DataKey.ingressSetting4],
@@ -495,19 +1387,35 @@ class Setting18CCorNodeControlBloc
   }
 
   bool _isEnabledSubmission({
-    required String returnInputAttenuation1,
-    required String returnInputAttenuation3,
-    required String returnInputAttenuation4,
-    required String returnInputAttenuation6,
+    required String dsVVA1,
+    required String dsVVA3,
+    required String dsVVA4,
+    required String dsVVA6,
+    required String dsInSlope1,
+    required String dsInSlope3,
+    required String dsInSlope4,
+    required String dsInSlope6,
+    required String usVCA1,
+    required String usVCA3,
+    required String usVCA4,
+    required String usVCA6,
     required String returnIngressSetting1,
     required String returnIngressSetting3,
     required String returnIngressSetting4,
     required String returnIngressSetting6,
   }) {
-    if (returnInputAttenuation1 != state.initialValues[DataKey.returnVCA1] ||
-        returnInputAttenuation3 != state.initialValues[DataKey.returnVCA3] ||
-        returnInputAttenuation4 != state.initialValues[DataKey.returnVCA4] ||
-        returnInputAttenuation6 != state.initialValues[DataKey.returnVCA6] ||
+    if (dsVVA1 != state.initialValues[DataKey.dsVVA1] ||
+        dsVVA3 != state.initialValues[DataKey.dsVVA3] ||
+        dsVVA4 != state.initialValues[DataKey.dsVVA4] ||
+        dsVVA6 != state.initialValues[DataKey.dsVVA6] ||
+        dsInSlope1 != state.initialValues[DataKey.dsInSlope1] ||
+        dsInSlope3 != state.initialValues[DataKey.dsInSlope3] ||
+        dsInSlope4 != state.initialValues[DataKey.dsInSlope4] ||
+        dsInSlope6 != state.initialValues[DataKey.dsInSlope6] ||
+        usVCA1 != state.initialValues[DataKey.usVCA1] ||
+        usVCA3 != state.initialValues[DataKey.usVCA3] ||
+        usVCA4 != state.initialValues[DataKey.usVCA4] ||
+        usVCA6 != state.initialValues[DataKey.usVCA6] ||
         returnIngressSetting1 != state.initialValues[DataKey.ingressSetting1] ||
         returnIngressSetting3 != state.initialValues[DataKey.ingressSetting3] ||
         returnIngressSetting4 != state.initialValues[DataKey.ingressSetting4] ||
@@ -529,26 +1437,122 @@ class Setting18CCorNodeControlBloc
 
     List<String> settingResult = [];
 
-    if (state.returnInputAttenuation1 !=
-        state.initialValues[DataKey.returnVCA1]) {}
+    if (state.dsVVA1 != state.initialValues[DataKey.dsVVA1]) {
+      bool resultOfSetDSVVA1 =
+          await _amp18CCorNodeRepository.set1p8GCCorNodeDSVVA1(state.dsVVA1);
 
-    if (state.returnInputAttenuation3 !=
-        state.initialValues[DataKey.returnVCA3]) {}
+      settingResult.add('${DataKey.dsVVA1.name},$resultOfSetDSVVA1');
+    }
 
-    if (state.returnInputAttenuation4 !=
-        state.initialValues[DataKey.returnVCA4]) {}
+    if (state.dsVVA3 != state.initialValues[DataKey.dsVVA3]) {
+      bool resultOfSetDSVVA3 =
+          await _amp18CCorNodeRepository.set1p8GCCorNodeDSVVA3(state.dsVVA3);
 
-    if (state.returnInputAttenuation6 !=
-        state.initialValues[DataKey.returnVCA6]) {}
+      settingResult.add('${DataKey.dsVVA3.name},$resultOfSetDSVVA3');
+    }
+
+    if (state.dsVVA4 != state.initialValues[DataKey.dsVVA4]) {
+      bool resultOfSetDSVVA4 =
+          await _amp18CCorNodeRepository.set1p8GCCorNodeDSVVA4(state.dsVVA4);
+
+      settingResult.add('${DataKey.dsVVA4.name},$resultOfSetDSVVA4');
+    }
+
+    if (state.dsVVA6 != state.initialValues[DataKey.dsVVA6]) {
+      bool resultOfSetDSVVA6 =
+          await _amp18CCorNodeRepository.set1p8GCCorNodeDSVVA6(state.dsVVA6);
+
+      settingResult.add('${DataKey.dsVVA6.name},$resultOfSetDSVVA6');
+    }
+
+    if (state.dsInSlope1 != state.initialValues[DataKey.dsInSlope1]) {
+      bool resultOfSetDSInSlope1 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeDSInSlope1(state.dsInSlope1);
+
+      settingResult.add('${DataKey.dsInSlope1.name},$resultOfSetDSInSlope1');
+    }
+
+    if (state.dsInSlope3 != state.initialValues[DataKey.dsInSlope3]) {
+      bool resultOfSetDSInSlope3 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeDSInSlope3(state.dsInSlope3);
+
+      settingResult.add('${DataKey.dsInSlope3.name},$resultOfSetDSInSlope3');
+    }
+
+    if (state.dsInSlope4 != state.initialValues[DataKey.dsInSlope4]) {
+      bool resultOfSetDSInSlope4 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeDSInSlope4(state.dsInSlope4);
+
+      settingResult.add('${DataKey.dsInSlope4.name},$resultOfSetDSInSlope4');
+    }
+
+    if (state.dsInSlope6 != state.initialValues[DataKey.dsInSlope6]) {
+      bool resultOfSetDSInSlope6 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeDSInSlope6(state.dsInSlope6);
+
+      settingResult.add('${DataKey.dsInSlope6.name},$resultOfSetDSInSlope6');
+    }
+
+    if (state.usVCA1 != state.initialValues[DataKey.usVCA1]) {
+      bool resultOfSetUSVCA1 =
+          await _amp18CCorNodeRepository.set1p8GCCorNodeUSVCA1(state.usVCA1);
+
+      settingResult.add('${DataKey.usVCA1.name},$resultOfSetUSVCA1');
+    }
+
+    if (state.usVCA3 != state.initialValues[DataKey.usVCA3]) {
+      bool resultOfSetUSVCA3 =
+          await _amp18CCorNodeRepository.set1p8GCCorNodeUSVCA3(state.usVCA3);
+
+      settingResult.add('${DataKey.usVCA3.name},$resultOfSetUSVCA3');
+    }
+
+    if (state.usVCA4 != state.initialValues[DataKey.usVCA4]) {
+      bool resultOfSetUSVCA4 =
+          await _amp18CCorNodeRepository.set1p8GCCorNodeUSVCA4(state.usVCA4);
+
+      settingResult.add('${DataKey.usVCA4.name},$resultOfSetUSVCA4');
+    }
+
+    if (state.usVCA6 != state.initialValues[DataKey.usVCA6]) {
+      bool resultOfSetUSVCA6 =
+          await _amp18CCorNodeRepository.set1p8GCCorNodeUSVCA6(state.usVCA6);
+
+      settingResult.add('${DataKey.usVCA6.name},$resultOfSetUSVCA6');
+    }
 
     if (state.returnIngressSetting1 !=
-        state.initialValues[DataKey.ingressSetting1]) {}
+        state.initialValues[DataKey.ingressSetting1]) {
+      bool resultOfSetReturnIngress1 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeReturnIngress1(state.returnIngressSetting1);
+
+      settingResult
+          .add('${DataKey.ingressSetting1.name},$resultOfSetReturnIngress1');
+    }
     if (state.returnIngressSetting3 !=
-        state.initialValues[DataKey.ingressSetting3]) {}
+        state.initialValues[DataKey.ingressSetting3]) {
+      bool resultOfSetReturnIngress3 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeReturnIngress3(state.returnIngressSetting3);
+
+      settingResult
+          .add('${DataKey.ingressSetting3.name},$resultOfSetReturnIngress3');
+    }
     if (state.returnIngressSetting4 !=
-        state.initialValues[DataKey.ingressSetting4]) {}
+        state.initialValues[DataKey.ingressSetting4]) {
+      bool resultOfSetReturnIngress4 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeReturnIngress4(state.returnIngressSetting4);
+
+      settingResult
+          .add('${DataKey.ingressSetting4.name},$resultOfSetReturnIngress4');
+    }
     if (state.returnIngressSetting6 !=
-        state.initialValues[DataKey.ingressSetting6]) {}
+        state.initialValues[DataKey.ingressSetting6]) {
+      bool resultOfSetReturnIngress6 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeReturnIngress6(state.returnIngressSetting6);
+
+      settingResult
+          .add('${DataKey.ingressSetting6.name},$resultOfSetReturnIngress6');
+    }
 
     // 等待 device 完成更新後在讀取值
     await Future.delayed(const Duration(milliseconds: 1000));

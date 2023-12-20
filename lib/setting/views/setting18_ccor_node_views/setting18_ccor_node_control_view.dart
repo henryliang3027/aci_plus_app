@@ -7,6 +7,7 @@ import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_control/setting18_ccor_node_control_bloc.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
+import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -241,113 +242,6 @@ double _getValue(String value) {
   }
 }
 
-Widget controlParameterSlider({
-  required BuildContext context,
-  required bool editMode,
-  required String title,
-  required double minValue,
-  required double currentValue,
-  required double maxValue,
-  required ValueChanged<double> onChanged,
-  required VoidCallback onIncreased,
-  required VoidCallback onDecreased,
-}) {
-  return Padding(
-    padding: const EdgeInsets.only(
-      bottom: 30.0,
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: 16.0,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(
-              2,
-              (index) => Column(
-                children: [
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 22,
-                    child: Text(
-                      '${(List.from([0, 15])[index]).toStringAsFixed(0)}',
-                      style: const TextStyle(
-                        fontSize: CustomStyle.sizeM,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 16,
-                    child: VerticalDivider(
-                      indent: 0,
-                      thickness: 1.2,
-                      color: Colors.grey.shade300,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        SliderTheme(
-          data: const SliderThemeData(
-            valueIndicatorColor: Colors.red,
-            showValueIndicator: ShowValueIndicator.always,
-            overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
-          ),
-          child: Slider(
-            min: 0.0,
-            max: 15.0,
-            divisions: 150,
-            value: currentValue,
-            onChanged: editMode ? onChanged : null,
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton.filled(
-              visualDensity: const VisualDensity(horizontal: -4.0),
-              icon: const Icon(
-                Icons.remove,
-              ),
-              onPressed: editMode ? onDecreased : null,
-            ),
-            IconButton.filled(
-              visualDensity: const VisualDensity(horizontal: -4.0),
-              icon: const Icon(
-                Icons.add,
-              ),
-              onPressed: editMode ? onIncreased : null,
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
-
 List<String> rtnIngressValues = const [
   '0',
   '1',
@@ -458,6 +352,270 @@ class _ClusterTitle extends StatelessWidget {
   }
 }
 
+class _ForwardInputAttenuation1 extends StatelessWidget {
+  const _ForwardInputAttenuation1({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardInputAttenuation1}: ${state.dsVVA1} dB',
+          minValue: 0.0,
+          maxValue: 25.0,
+          currentValue: _getValue(state.dsVVA1),
+          onChanged: (dsVVA1) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(DSVVA1Changed(dsVVA1.toStringAsFixed(1)));
+          },
+          onDecreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSVVA1Decreased()),
+          onIncreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSVVA1Increased()),
+        );
+      },
+    );
+  }
+}
+
+class _ForwardInputAttenuation3 extends StatelessWidget {
+  const _ForwardInputAttenuation3({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardInputAttenuation3}: ${state.dsVVA3} dB',
+          minValue: 0.0,
+          maxValue: 25.0,
+          currentValue: _getValue(state.dsVVA3),
+          onChanged: (dsVVA3) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(DSVVA3Changed(dsVVA3.toStringAsFixed(1)));
+          },
+          onDecreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSVVA3Decreased()),
+          onIncreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSVVA3Increased()),
+        );
+      },
+    );
+  }
+}
+
+class _ForwardInputAttenuation4 extends StatelessWidget {
+  const _ForwardInputAttenuation4({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.dsVVA4} dB',
+          minValue: 0.0,
+          maxValue: 25.0,
+          currentValue: _getValue(state.dsVVA4),
+          onChanged: (dsVVA4) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(DSVVA4Changed(dsVVA4.toStringAsFixed(1)));
+          },
+          onDecreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSVVA4Decreased()),
+          onIncreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSVVA4Increased()),
+        );
+      },
+    );
+  }
+}
+
+class _ForwardInputAttenuation6 extends StatelessWidget {
+  const _ForwardInputAttenuation6({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.returnInputAttenuation6}: ${state.dsVVA6} dB',
+          minValue: 0.0,
+          maxValue: 25.0,
+          currentValue: _getValue(state.dsVVA6),
+          onChanged: (dsVVA6) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(DSVVA6Changed(dsVVA6.toStringAsFixed(1)));
+          },
+          onDecreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSVVA6Decreased()),
+          onIncreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSVVA6Increased()),
+        );
+      },
+    );
+  }
+}
+
+class _ForwardInputEqualizer1 extends StatelessWidget {
+  const _ForwardInputEqualizer1({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardInputEqualizer1}: ${state.dsInSlope1} dB',
+          minValue: 0.0,
+          maxValue: 15.0,
+          currentValue: _getValue(state.dsInSlope1),
+          onChanged: (dsInSlope1) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(DSInSlope1Changed(dsInSlope1.toStringAsFixed(1)));
+          },
+          onDecreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSInSlope1Decreased()),
+          onIncreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSInSlope1Increased()),
+        );
+      },
+    );
+  }
+}
+
+class _ForwardInputEqualizer3 extends StatelessWidget {
+  const _ForwardInputEqualizer3({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardInputEqualizer3}: ${state.dsInSlope3} dB',
+          minValue: 0.0,
+          maxValue: 15.0,
+          currentValue: _getValue(state.dsInSlope3),
+          onChanged: (dsInSlope3) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(DSInSlope3Changed(dsInSlope3.toStringAsFixed(1)));
+          },
+          onDecreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSInSlope3Decreased()),
+          onIncreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSInSlope3Increased()),
+        );
+      },
+    );
+  }
+}
+
+class _ForwardInputEqualizer4 extends StatelessWidget {
+  const _ForwardInputEqualizer4({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardInputEqualizer4}: ${state.dsInSlope4} dB',
+          minValue: 0.0,
+          maxValue: 15.0,
+          currentValue: _getValue(state.dsInSlope4),
+          onChanged: (dsInSlope4) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(DSInSlope4Changed(dsInSlope4.toStringAsFixed(1)));
+          },
+          onDecreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSInSlope4Decreased()),
+          onIncreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSInSlope4Increased()),
+        );
+      },
+    );
+  }
+}
+
+class _ForwardInputEqualizer6 extends StatelessWidget {
+  const _ForwardInputEqualizer6({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        return controlParameterSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardInputEqualizer6}: ${state.dsInSlope6} dB',
+          minValue: 0.0,
+          maxValue: 15.0,
+          currentValue: _getValue(state.dsInSlope6),
+          onChanged: (dsInSlope6) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(DSInSlope6Changed(dsInSlope6.toStringAsFixed(1)));
+          },
+          onDecreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSInSlope6Decreased()),
+          onIncreased: () => context
+              .read<Setting18CCorNodeControlBloc>()
+              .add(const DSInSlope6Increased()),
+        );
+      },
+    );
+  }
+}
+
 class _ReturnInputAttenuation1 extends StatelessWidget {
   const _ReturnInputAttenuation1({super.key});
 
@@ -470,21 +628,21 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation1}: ${state.returnInputAttenuation1} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation1}: ${state.usVCA1} dB',
           minValue: 0.0,
           maxValue: 25.0,
-          currentValue: _getValue(state.returnInputAttenuation1),
-          onChanged: (rtnInputAttenuation) {
-            context.read<Setting18CCorNodeControlBloc>().add(
-                ReturnInputAttenuation1Changed(
-                    rtnInputAttenuation.toStringAsFixed(1)));
+          currentValue: _getValue(state.usVCA1),
+          onChanged: (usVCA1) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(USVCA1Changed(usVCA1.toStringAsFixed(1)));
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const ReturnInputAttenuation1Decreased()),
+              .add(const USVCA1Decreased()),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const ReturnInputAttenuation1Increased()),
+              .add(const USVCA1Increased()),
         );
       },
     );
@@ -503,21 +661,21 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation3}: ${state.returnInputAttenuation3} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation3}: ${state.usVCA3} dB',
           minValue: 0.0,
           maxValue: 25.0,
-          currentValue: _getValue(state.returnInputAttenuation3),
-          onChanged: (rtnInputAttenuation) {
-            context.read<Setting18CCorNodeControlBloc>().add(
-                ReturnInputAttenuation3Changed(
-                    rtnInputAttenuation.toStringAsFixed(1)));
+          currentValue: _getValue(state.usVCA3),
+          onChanged: (usVCA3) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(USVCA3Changed(usVCA3.toStringAsFixed(1)));
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const ReturnInputAttenuation3Decreased()),
+              .add(const USVCA3Decreased()),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const ReturnInputAttenuation3Increased()),
+              .add(const USVCA3Increased()),
         );
       },
     );
@@ -536,21 +694,21 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.returnInputAttenuation4} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.usVCA4} dB',
           minValue: 0.0,
           maxValue: 25.0,
-          currentValue: _getValue(state.returnInputAttenuation4),
-          onChanged: (rtnInputAttenuation) {
-            context.read<Setting18CCorNodeControlBloc>().add(
-                ReturnInputAttenuation4Changed(
-                    rtnInputAttenuation.toStringAsFixed(1)));
+          currentValue: _getValue(state.usVCA4),
+          onChanged: (usVCA4) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(USVCA4Changed(usVCA4.toStringAsFixed(1)));
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const ReturnInputAttenuation4Decreased()),
+              .add(const USVCA4Decreased()),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const ReturnInputAttenuation4Increased()),
+              .add(const USVCA4Increased()),
         );
       },
     );
@@ -569,21 +727,21 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation6}: ${state.returnInputAttenuation6} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation6}: ${state.usVCA6} dB',
           minValue: 0.0,
           maxValue: 25.0,
-          currentValue: _getValue(state.returnInputAttenuation6),
-          onChanged: (rtnInputAttenuation) {
-            context.read<Setting18CCorNodeControlBloc>().add(
-                ReturnInputAttenuation6Changed(
-                    rtnInputAttenuation.toStringAsFixed(1)));
+          currentValue: _getValue(state.usVCA6),
+          onChanged: (usVCA6) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(USVCA6Changed(usVCA6.toStringAsFixed(1)));
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const ReturnInputAttenuation6Decreased()),
+              .add(const USVCA6Decreased()),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const ReturnInputAttenuation6Increased()),
+              .add(const USVCA6Increased()),
         );
       },
     );

@@ -281,7 +281,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setForwardInputAttenuation1Cmd = [
+  static List<int> setDSVVA1Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -295,7 +295,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setForwardInputEqualizer1Cmd = [
+  static List<int> setDSInSlope1Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -309,7 +309,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setForwardOutputEqualizer1Cmd = [
+  static List<int> setDSOutSlope1Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -323,7 +323,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setReturnInputAttenuation1Cmd = [
+  static List<int> setUSVCA1Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -577,7 +577,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setForwardInputAttenuation3Cmd = [
+  static List<int> setDSVVA3Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -591,7 +591,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setForwardInputEqualizer3Cmd = [
+  static List<int> setDSInSlope3Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -605,7 +605,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setForwardOutputEqualizer3Cmd = [
+  static List<int> setDSOutSlope3Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -619,7 +619,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setReturnInputAttenuation3Cmd = [
+  static List<int> setUSVCA3Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -633,7 +633,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setForwardInputAttenuation4Cmd = [
+  static List<int> setDSVVA4Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -647,7 +647,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setForwardInputEqualizer4Cmd = [
+  static List<int> setDSInSlope4Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -661,7 +661,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setForwardOutputEqualizer4Cmd = [
+  static List<int> setDSOutSlope4Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -675,7 +675,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setReturnInputAttenuation4Cmd = [
+  static List<int> setUSVCA4Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -689,7 +689,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setForwardInputAttenuation6Cmd = [
+  static List<int> setDSVVA6Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -703,7 +703,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setForwardInputEqualizer6Cmd = [
+  static List<int> setDSInSlope6Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -717,7 +717,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setForwardOutputEqualizer6Cmd = [
+  static List<int> setDSOutSlope6Cmd = [
     0xB0,
     0x10,
     0x00,
@@ -731,7 +731,7 @@ class Command18CCorNode {
     0x00,
   ];
 
-  static List<int> setReturnInputAttenuation6Cmd = [
+  static List<int> setUSVCA6Cmd = [
     0xB0,
     0x10,
     0x00,

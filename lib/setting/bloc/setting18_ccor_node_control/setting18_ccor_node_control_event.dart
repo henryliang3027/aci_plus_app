@@ -8,128 +8,283 @@ abstract class Setting18CCorNodeControlEvent extends Equatable {
 }
 
 class Initialized extends Setting18CCorNodeControlEvent {
-  const Initialized(
-      //   {
-      //   required this.returnInputAttenuation1,
-      //   required this.returnInputAttenuation3,
-      //   required this.returnInputAttenuation4,
-      //   required this.returnInputAttenuation6,
-      //   required this.returnIngressSetting1,
-      //   required this.returnIngressSetting3,
-      //   required this.returnIngressSetting4,
-      //   required this.returnIngressSetting6,
-      // }
-      );
-
-  // final String returnInputAttenuation1;
-  // final String returnInputAttenuation3;
-  // final String returnInputAttenuation4;
-  // final String returnInputAttenuation6;
-  // final String returnIngressSetting1;
-  // final String returnIngressSetting3;
-  // final String returnIngressSetting4;
-  // final String returnIngressSetting6;
-
-  @override
-  List<Object> get props => [
-        // returnInputAttenuation1,
-        // returnInputAttenuation3,
-        // returnInputAttenuation4,
-        // returnInputAttenuation6,
-        // returnIngressSetting1,
-        // returnIngressSetting3,
-        // returnIngressSetting4,
-        // returnIngressSetting6,
-      ];
-}
-
-class ReturnInputAttenuation1Changed extends Setting18CCorNodeControlEvent {
-  const ReturnInputAttenuation1Changed(this.returnInputAttenuation1);
-
-  final String returnInputAttenuation1;
-
-  @override
-  List<Object> get props => [returnInputAttenuation1];
-}
-
-class ReturnInputAttenuation1Increased extends Setting18CCorNodeControlEvent {
-  const ReturnInputAttenuation1Increased();
+  const Initialized();
 
   @override
   List<Object> get props => [];
 }
 
-class ReturnInputAttenuation1Decreased extends Setting18CCorNodeControlEvent {
-  const ReturnInputAttenuation1Decreased();
+class DSVVA1Changed extends Setting18CCorNodeControlEvent {
+  const DSVVA1Changed(this.dsVVA1);
+
+  final String dsVVA1;
+
+  @override
+  List<Object> get props => [dsVVA1];
+}
+
+class DSVVA1Increased extends Setting18CCorNodeControlEvent {
+  const DSVVA1Increased();
 
   @override
   List<Object> get props => [];
 }
 
-class ReturnInputAttenuation3Changed extends Setting18CCorNodeControlEvent {
-  const ReturnInputAttenuation3Changed(this.returnInputAttenuation3);
-
-  final String returnInputAttenuation3;
-
-  @override
-  List<Object> get props => [returnInputAttenuation3];
-}
-
-class ReturnInputAttenuation3Increased extends Setting18CCorNodeControlEvent {
-  const ReturnInputAttenuation3Increased();
+class DSVVA1Decreased extends Setting18CCorNodeControlEvent {
+  const DSVVA1Decreased();
 
   @override
   List<Object> get props => [];
 }
 
-class ReturnInputAttenuation3Decreased extends Setting18CCorNodeControlEvent {
-  const ReturnInputAttenuation3Decreased();
+class DSVVA3Changed extends Setting18CCorNodeControlEvent {
+  const DSVVA3Changed(this.dsVVA3);
+
+  final String dsVVA3;
+
+  @override
+  List<Object> get props => [dsVVA3];
+}
+
+class DSVVA3Increased extends Setting18CCorNodeControlEvent {
+  const DSVVA3Increased();
 
   @override
   List<Object> get props => [];
 }
 
-class ReturnInputAttenuation4Changed extends Setting18CCorNodeControlEvent {
-  const ReturnInputAttenuation4Changed(this.returnInputAttenuation4);
-
-  final String returnInputAttenuation4;
-
-  @override
-  List<Object> get props => [returnInputAttenuation4];
-}
-
-class ReturnInputAttenuation4Increased extends Setting18CCorNodeControlEvent {
-  const ReturnInputAttenuation4Increased();
+class DSVVA3Decreased extends Setting18CCorNodeControlEvent {
+  const DSVVA3Decreased();
 
   @override
   List<Object> get props => [];
 }
 
-class ReturnInputAttenuation4Decreased extends Setting18CCorNodeControlEvent {
-  const ReturnInputAttenuation4Decreased();
+class DSVVA4Changed extends Setting18CCorNodeControlEvent {
+  const DSVVA4Changed(this.dsVVA4);
+
+  final String dsVVA4;
+
+  @override
+  List<Object> get props => [dsVVA4];
+}
+
+class DSVVA4Increased extends Setting18CCorNodeControlEvent {
+  const DSVVA4Increased();
 
   @override
   List<Object> get props => [];
 }
 
-class ReturnInputAttenuation6Changed extends Setting18CCorNodeControlEvent {
-  const ReturnInputAttenuation6Changed(this.returnInputAttenuation6);
-
-  final String returnInputAttenuation6;
-
-  @override
-  List<Object> get props => [returnInputAttenuation6];
-}
-
-class ReturnInputAttenuation6Increased extends Setting18CCorNodeControlEvent {
-  const ReturnInputAttenuation6Increased();
+class DSVVA4Decreased extends Setting18CCorNodeControlEvent {
+  const DSVVA4Decreased();
 
   @override
   List<Object> get props => [];
 }
 
-class ReturnInputAttenuation6Decreased extends Setting18CCorNodeControlEvent {
-  const ReturnInputAttenuation6Decreased();
+class DSVVA6Changed extends Setting18CCorNodeControlEvent {
+  const DSVVA6Changed(this.dsVVA6);
+
+  final String dsVVA6;
+
+  @override
+  List<Object> get props => [dsVVA6];
+}
+
+class DSVVA6Increased extends Setting18CCorNodeControlEvent {
+  const DSVVA6Increased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DSVVA6Decreased extends Setting18CCorNodeControlEvent {
+  const DSVVA6Decreased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DSInSlope1Changed extends Setting18CCorNodeControlEvent {
+  const DSInSlope1Changed(this.dsInSlope1);
+
+  final String dsInSlope1;
+
+  @override
+  List<Object> get props => [dsInSlope1];
+}
+
+class DSInSlope1Increased extends Setting18CCorNodeControlEvent {
+  const DSInSlope1Increased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DSInSlope1Decreased extends Setting18CCorNodeControlEvent {
+  const DSInSlope1Decreased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DSInSlope3Changed extends Setting18CCorNodeControlEvent {
+  const DSInSlope3Changed(this.dsInSlope3);
+
+  final String dsInSlope3;
+
+  @override
+  List<Object> get props => [dsInSlope3];
+}
+
+class DSInSlope3Increased extends Setting18CCorNodeControlEvent {
+  const DSInSlope3Increased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DSInSlope3Decreased extends Setting18CCorNodeControlEvent {
+  const DSInSlope3Decreased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DSInSlope4Changed extends Setting18CCorNodeControlEvent {
+  const DSInSlope4Changed(this.dsInSlope4);
+
+  final String dsInSlope4;
+
+  @override
+  List<Object> get props => [dsInSlope4];
+}
+
+class DSInSlope4Increased extends Setting18CCorNodeControlEvent {
+  const DSInSlope4Increased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DSInSlope4Decreased extends Setting18CCorNodeControlEvent {
+  const DSInSlope4Decreased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DSInSlope6Changed extends Setting18CCorNodeControlEvent {
+  const DSInSlope6Changed(this.dsInSlope6);
+
+  final String dsInSlope6;
+
+  @override
+  List<Object> get props => [dsInSlope6];
+}
+
+class DSInSlope6Increased extends Setting18CCorNodeControlEvent {
+  const DSInSlope6Increased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DSInSlope6Decreased extends Setting18CCorNodeControlEvent {
+  const DSInSlope6Decreased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class USVCA1Changed extends Setting18CCorNodeControlEvent {
+  const USVCA1Changed(this.usVCA1);
+
+  final String usVCA1;
+
+  @override
+  List<Object> get props => [usVCA1];
+}
+
+class USVCA1Increased extends Setting18CCorNodeControlEvent {
+  const USVCA1Increased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class USVCA1Decreased extends Setting18CCorNodeControlEvent {
+  const USVCA1Decreased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class USVCA3Changed extends Setting18CCorNodeControlEvent {
+  const USVCA3Changed(this.usVCA3);
+
+  final String usVCA3;
+
+  @override
+  List<Object> get props => [usVCA3];
+}
+
+class USVCA3Increased extends Setting18CCorNodeControlEvent {
+  const USVCA3Increased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class USVCA3Decreased extends Setting18CCorNodeControlEvent {
+  const USVCA3Decreased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class USVCA4Changed extends Setting18CCorNodeControlEvent {
+  const USVCA4Changed(this.usVCA4);
+
+  final String usVCA4;
+
+  @override
+  List<Object> get props => [usVCA4];
+}
+
+class USVCA4Increased extends Setting18CCorNodeControlEvent {
+  const USVCA4Increased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class USVCA4Decreased extends Setting18CCorNodeControlEvent {
+  const USVCA4Decreased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class USVCA6Changed extends Setting18CCorNodeControlEvent {
+  const USVCA6Changed(this.usVCA6);
+
+  final String usVCA6;
+
+  @override
+  List<Object> get props => [usVCA6];
+}
+
+class USVCA6Increased extends Setting18CCorNodeControlEvent {
+  const USVCA6Increased();
+
+  @override
+  List<Object> get props => [];
+}
+
+class USVCA6Decreased extends Setting18CCorNodeControlEvent {
+  const USVCA6Decreased();
 
   @override
   List<Object> get props => [];

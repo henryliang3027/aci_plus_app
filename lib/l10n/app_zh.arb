@@ -47,7 +47,13 @@
     "returnControlParameters": "上行控制參數",
 
     "forwardInputAttenuation1": "Port 1 輸入衰減量",
+    "forwardInputAttenuation3": "Port 3 輸入衰減量",
+    "forwardInputAttenuation4": "Port 4 輸入衰減量",
+    "forwardInputAttenuation6": "Port 6 輸入衰減量",
     "forwardInputEqualizer1": "Port 1 輸入等化器",
+    "forwardInputEqualizer3": "Port 3 輸入等化器",
+    "forwardInputEqualizer4": "Port 4 輸入等化器",
+    "forwardInputEqualizer6": "Port 6 輸入等化器",
     "forwardOutputAttenuation1": "Port 1 輸出衰減量",
     "forwardOutputAttenuation2": "Port 2 輸出衰減量",
     "forwardOutputAttenuation3": "Port 3 輸出衰減量",
