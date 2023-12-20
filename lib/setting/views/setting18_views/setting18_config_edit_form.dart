@@ -1,5 +1,7 @@
+import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_config_edit/setting18_config_edit_bloc.dart';
 import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
@@ -45,7 +47,10 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
     }
 
     String formatResultItem(String item) {
-      if (item == DataKey.firstChannelLoadingFrequency.name) {
+      if (item == DataKey.pilotFrequencyMode.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessagePilotFrequencyModeSetting;
+      } else if (item == DataKey.firstChannelLoadingFrequency.name) {
         return AppLocalizations.of(context)!
             .dialogMessageFirstChannelLoadingFrequencySetting;
       } else if (item == DataKey.firstChannelLoadingLevel.name) {
@@ -130,33 +135,67 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
               state.lastChannelLoadingLevel;
         }
       },
-      child: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
-            child: Column(
-              children: [
-                _FirstChannelLoading(
-                  firstChannelLoadingFrequencyTextEditingController:
-                      firstChannelLoadingFrequencyTextEditingController,
-                  firstChannelLoadingLevelTextEditingController:
-                      firstChannelLoadingLevelTextEditingController,
-                ),
-                _LastChannelLoading(
-                  lastChannelLoadingFrequencyTextEditingController:
-                      lastChannelLoadingFrequencyTextEditingController,
-                  lastChannelLoadingLevelTextEditingController:
-                      lastChannelLoadingLevelTextEditingController,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const _ActionButton(),
-              ],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            width: double.maxFinite,
+            height: 58,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0)),
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            child: _PartName(),
+          ),
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
+              child: Column(
+                children: [
+                  _FirstChannelLoading(
+                    firstChannelLoadingFrequencyTextEditingController:
+                        firstChannelLoadingFrequencyTextEditingController,
+                    firstChannelLoadingLevelTextEditingController:
+                        firstChannelLoadingLevelTextEditingController,
+                  ),
+                  _LastChannelLoading(
+                    lastChannelLoadingFrequencyTextEditingController:
+                        lastChannelLoadingFrequencyTextEditingController,
+                    lastChannelLoadingLevelTextEditingController:
+                        lastChannelLoadingLevelTextEditingController,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const _ActionButton(),
+                ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
+    );
+  }
+}
+
+class _PartName extends StatelessWidget {
+  const _PartName({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ConfigEditBloc, Setting18ConfigEditState>(
+      builder: (context, state) {
+        return Text(
+          partIdMap[state.selectedPartId] ?? '',
+          style: TextStyle(
+            fontSize: CustomStyle.sizeXXL,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        );
+      },
     );
   }
 }
@@ -167,6 +206,7 @@ class _ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget buildButtons({
+      required enableSaving,
       required enableExecute,
     }) {
       return Align(
@@ -195,11 +235,13 @@ class _ActionButton extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 6.0),
               child: ElevatedButton(
-                onPressed: () {
-                  context
-                      .read<Setting18ConfigEditBloc>()
-                      .add(const ConfigSaved());
-                },
+                onPressed: enableSaving
+                    ? () {
+                        context
+                            .read<Setting18ConfigEditBloc>()
+                            .add(const ConfigSaved());
+                      }
+                    : null,
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     vertical: 0.0,
@@ -248,12 +290,17 @@ class _ActionButton extends StatelessWidget {
         if (homeState.loadingStatus.isRequestSuccess) {
           String partId = homeState.characteristicData[DataKey.partId] ?? '';
           return buildButtons(
-            enableExecute: partId == setting18configEditState.selectedPartId
+            enableSaving: setting18configEditState.enableSubmission,
+            enableExecute: partId == setting18configEditState.selectedPartId &&
+                    setting18configEditState.enableSubmission
                 ? true
                 : false,
           );
         } else {
-          return buildButtons(enableExecute: false);
+          return buildButtons(
+            enableSaving: setting18configEditState.enableSubmission,
+            enableExecute: false,
+          );
         }
       },
     );

@@ -66,6 +66,12 @@ class Setting18ConfigEditBloc
               config.firstChannelLoadingFrequency,
           DataKey.lastChannelLoadingLevel: config.firstChannelLoadingFrequency,
         },
+        enableSubmission: _isEnabledSubmission(
+          firstChannelLoadingFrequency: config.firstChannelLoadingFrequency,
+          firstChannelLoadingLevel: config.firstChannelLoadingLevel,
+          lastChannelLoadingFrequency: config.lastChannelLoadingFrequency,
+          lastChannelLoadingLevel: config.lastChannelLoadingLevel,
+        ),
       ));
     } else {
       Map<DataKey, String> characteristicDataCache =
@@ -81,8 +87,8 @@ class Setting18ConfigEditBloc
       String lastChannelLoadingLevel =
           characteristicDataCache[DataKey.lastChannelLoadingLevel] ?? '';
 
-      // 如果 config 不存在, 則寫入 device 上的參數值到手機端資料庫
-
+      // 如果 config 不存在而且 partId == _selectedPartId,
+      // 則寫入 device 上的參數值到手機端資料庫, 並使用 device 上的參數值為初始值
       if (partId == _selectedPartId) {
         await _configApi.addConfigByPartId(
           partId: _selectedPartId,
@@ -108,8 +114,16 @@ class Setting18ConfigEditBloc
             DataKey.lastChannelLoadingFrequency: firstChannelLoadingFrequency,
             DataKey.lastChannelLoadingLevel: firstChannelLoadingFrequency,
           },
+          enableSubmission: _isEnabledSubmission(
+            firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+            firstChannelLoadingLevel: firstChannelLoadingLevel,
+            lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+            lastChannelLoadingLevel: lastChannelLoadingLevel,
+          ),
         ));
       } else {
+        // 如果 config 不存在而且 partId != _selectedPartId,
+        // 則初始化為空值
         emit(state.copyWith(
           formStatus: FormStatus.requestSuccess,
           saveStatus: SubmissionStatus.none,
@@ -126,6 +140,12 @@ class Setting18ConfigEditBloc
             DataKey.lastChannelLoadingFrequency: '',
             DataKey.lastChannelLoadingLevel: '',
           },
+          enableSubmission: _isEnabledSubmission(
+            firstChannelLoadingFrequency: '',
+            firstChannelLoadingLevel: '',
+            lastChannelLoadingFrequency: '',
+            lastChannelLoadingLevel: '',
+          ),
         ));
       }
     }
@@ -250,30 +270,45 @@ class Setting18ConfigEditBloc
       lastChannelLoadingLevel: state.lastChannelLoadingLevel,
     );
 
-    bool resultOfSetFirstChannelLoadingFrequency =
-        await _amp18Repository.set1p8GFirstChannelLoadingFrequency(
-            state.firstChannelLoadingFrequency);
+    bool resultOfSetPilotFrequencyMode = await _amp18Repository
+        .set1p8GPilotFrequencyMode('0'); // Full mode (auto mode)
 
     settingResult.add(
-        '${DataKey.firstChannelLoadingFrequency.name},$resultOfSetFirstChannelLoadingFrequency');
+        '${DataKey.pilotFrequencyMode.name},$resultOfSetPilotFrequencyMode');
 
-    bool resultOfSetFirstChannelLoadingLevel = await _amp18Repository
-        .set1p8GFirstChannelLoadingLevel(state.firstChannelLoadingLevel);
+    if (state.firstChannelLoadingFrequency.isNotEmpty) {
+      bool resultOfSetFirstChannelLoadingFrequency =
+          await _amp18Repository.set1p8GFirstChannelLoadingFrequency(
+              state.firstChannelLoadingFrequency);
 
-    settingResult.add(
-        '${DataKey.firstChannelLoadingLevel.name},$resultOfSetFirstChannelLoadingLevel');
+      settingResult.add(
+          '${DataKey.firstChannelLoadingFrequency.name},$resultOfSetFirstChannelLoadingFrequency');
+    }
 
-    bool resultOfSetLastChannelLoadingFrequency = await _amp18Repository
-        .set1p8GLastChannelLoadingFrequency(state.lastChannelLoadingFrequency);
+    if (state.firstChannelLoadingLevel.isNotEmpty) {
+      bool resultOfSetFirstChannelLoadingLevel = await _amp18Repository
+          .set1p8GFirstChannelLoadingLevel(state.firstChannelLoadingLevel);
 
-    settingResult.add(
-        '${DataKey.lastChannelLoadingFrequency.name},$resultOfSetLastChannelLoadingFrequency');
+      settingResult.add(
+          '${DataKey.firstChannelLoadingLevel.name},$resultOfSetFirstChannelLoadingLevel');
+    }
 
-    bool resultOfSetLastChannelLoadingLevel = await _amp18Repository
-        .set1p8GLastChannelLoadingLevel(state.lastChannelLoadingLevel);
+    if (state.lastChannelLoadingFrequency.isNotEmpty) {
+      bool resultOfSetLastChannelLoadingFrequency =
+          await _amp18Repository.set1p8GLastChannelLoadingFrequency(
+              state.lastChannelLoadingFrequency);
 
-    settingResult.add(
-        '${DataKey.lastChannelLoadingLevel.name},$resultOfSetLastChannelLoadingLevel');
+      settingResult.add(
+          '${DataKey.lastChannelLoadingFrequency.name},$resultOfSetLastChannelLoadingFrequency');
+    }
+
+    if (state.lastChannelLoadingLevel.isNotEmpty) {
+      bool resultOfSetLastChannelLoadingLevel = await _amp18Repository
+          .set1p8GLastChannelLoadingLevel(state.lastChannelLoadingLevel);
+
+      settingResult.add(
+          '${DataKey.lastChannelLoadingLevel.name},$resultOfSetLastChannelLoadingLevel');
+    }
 
     // 等待 device 完成更新後在讀取值
     await Future.delayed(const Duration(milliseconds: 1000));
@@ -292,9 +327,9 @@ class Setting18ConfigEditBloc
     required String lastChannelLoadingFrequency,
     required String lastChannelLoadingLevel,
   }) {
-    if (firstChannelLoadingFrequency.isNotEmpty &&
-        firstChannelLoadingLevel.isNotEmpty &&
-        lastChannelLoadingFrequency.isNotEmpty &&
+    if (firstChannelLoadingFrequency.isNotEmpty ||
+        firstChannelLoadingLevel.isNotEmpty ||
+        lastChannelLoadingFrequency.isNotEmpty ||
         lastChannelLoadingLevel.isNotEmpty) {
       return true;
     } else {

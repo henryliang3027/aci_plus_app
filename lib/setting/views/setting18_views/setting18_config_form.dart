@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
@@ -58,7 +59,16 @@ class _ConfigListView extends StatelessWidget {
           ),
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text(partIdMap[setting18configState.partIds[index]]!),
+              title: Text(
+                partIdMap[setting18configState.partIds[index]]!,
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXXXL,
+                ),
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 20.0,
+                horizontal: 16.0,
+              ),
               trailing: const Icon(Icons.edit),
               tileColor: index % 2 == 0
                   ? const Color.fromARGB(255, 197, 204, 246)
