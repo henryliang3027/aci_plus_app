@@ -1,5 +1,8 @@
 part of 'setting18_ccor_node_control_bloc.dart';
 
+// C-Cor Node 的 dsVVA{x}, dsInSlope{x}, usVCA{x}, returnIngressSetting{x}
+// x 代表的是 port 的數字
+
 class Setting18CCorNodeControlState extends Equatable {
   const Setting18CCorNodeControlState({
     this.submissionStatus = SubmissionStatus.none,

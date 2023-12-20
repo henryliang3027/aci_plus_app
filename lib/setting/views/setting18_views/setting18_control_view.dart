@@ -183,7 +183,7 @@ class Setting18ControlView extends StatelessWidget {
 
       for (Enum name in enabledItems) {
         switch (name) {
-          case SettingControl.forwardInputAttenuation:
+          case SettingControl.forwardInputAttenuation1:
             widgets.add(
               _ForwardInputAttenuation(
                 alcMode: alcMode,
@@ -191,7 +191,7 @@ class Setting18ControlView extends StatelessWidget {
               ),
             );
             break;
-          case SettingControl.forwardInputEqualizer:
+          case SettingControl.forwardInputEqualizer1:
             widgets.add(
               _ForwardInputEqualizer(
                 alcMode: alcMode,

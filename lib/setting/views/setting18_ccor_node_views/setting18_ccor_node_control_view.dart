@@ -93,6 +93,84 @@ class Setting18CCorNodeControlView extends StatelessWidget {
       return rows;
     }
 
+    List<Widget> getForwardControlParameterWidgetsByPartId(String partId) {
+      Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
+      List<Widget> widgets = [];
+
+      List<Enum> enabledItems =
+          itemsMap.keys.where((key) => itemsMap[key] == true).toList();
+
+      enabledItems = enabledItems
+          .where((item) => item.runtimeType == SettingControl)
+          .toList();
+
+      for (Enum name in enabledItems) {
+        switch (name) {
+          case SettingControl.forwardInputAttenuation1:
+            widgets.add(
+              const _ForwardInputAttenuation1(),
+            );
+            break;
+          case SettingControl.forwardInputAttenuation2:
+            break;
+          case SettingControl.forwardInputAttenuation3:
+            widgets.add(
+              const _ForwardInputAttenuation3(),
+            );
+            break;
+          case SettingControl.forwardInputAttenuation4:
+            widgets.add(
+              const _ForwardInputAttenuation4(),
+            );
+            break;
+          case SettingControl.forwardInputAttenuation5:
+            break;
+          case SettingControl.forwardInputAttenuation6:
+            widgets.add(
+              const _ForwardInputAttenuation6(),
+            );
+            break;
+          case SettingControl.forwardInputEqualizer1:
+            widgets.add(
+              const _ForwardInputEqualizer1(),
+            );
+            break;
+          case SettingControl.forwardInputEqualizer2:
+            break;
+          case SettingControl.forwardInputEqualizer3:
+            widgets.add(
+              const _ForwardInputEqualizer3(),
+            );
+            break;
+          case SettingControl.forwardInputEqualizer4:
+            widgets.add(
+              const _ForwardInputEqualizer4(),
+            );
+            break;
+          case SettingControl.forwardInputEqualizer5:
+            break;
+          case SettingControl.forwardInputEqualizer6:
+            widgets.add(
+              const _ForwardInputEqualizer6(),
+            );
+            break;
+        }
+      }
+
+      return widgets.isNotEmpty
+          ? widgets
+          : [
+              const _ForwardInputAttenuation1(),
+              const _ForwardInputAttenuation3(),
+              const _ForwardInputAttenuation4(),
+              const _ForwardInputAttenuation6(),
+              const _ForwardInputEqualizer1(),
+              const _ForwardInputEqualizer3(),
+              const _ForwardInputEqualizer4(),
+              const _ForwardInputEqualizer6(),
+            ];
+    }
+
     List<Widget> getReturnControlParameterWidgetsByPartId(String partId) {
       Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
       List<Widget> widgets = [];
@@ -183,10 +261,18 @@ class Setting18CCorNodeControlView extends StatelessWidget {
     }
 
     Widget buildControlWidget(String partId) {
+      List<Widget> forwardControlParameters =
+          getForwardControlParameterWidgetsByPartId(partId);
       List<Widget> returnControlParameters =
           getReturnControlParameterWidgetsByPartId(partId);
 
       return Column(children: [
+        forwardControlParameters.isNotEmpty
+            ? _ClusterTitle(
+                title: AppLocalizations.of(context)!.forwardControlParameters,
+              )
+            : Container(),
+        ...forwardControlParameters,
         returnControlParameters.isNotEmpty
             ? _ClusterTitle(
                 title: AppLocalizations.of(context)!.returnControlParameters,
