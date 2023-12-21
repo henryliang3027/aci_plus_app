@@ -337,7 +337,7 @@ class _ClusterTitle extends StatelessWidget {
             child: Text(
               title,
               style: TextStyle(
-                fontSize: 16.0,
+                fontSize: CustomStyle.sizeXL,
                 fontWeight: FontWeight.w500,
                 color: Theme.of(context).colorScheme.primary,
               ),
@@ -375,7 +375,7 @@ class _TemperatureAlarmControl extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                bottom: 16.0,
+                bottom: CustomStyle.sizeL,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -385,7 +385,7 @@ class _TemperatureAlarmControl extends StatelessWidget {
                     child: Text(
                       AppLocalizations.of(context)!.temperatureFC,
                       style: const TextStyle(
-                        fontSize: 16.0,
+                        fontSize: CustomStyle.sizeXL,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -415,7 +415,7 @@ class _TemperatureAlarmControl extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                bottom: 16.0,
+                bottom: CustomStyle.sizeL,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -516,7 +516,7 @@ class _VoltageAlarmControl extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                bottom: 16.0,
+                bottom: CustomStyle.sizeL,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -526,7 +526,7 @@ class _VoltageAlarmControl extends StatelessWidget {
                     child: Text(
                       '${AppLocalizations.of(context)!.voltageLevel} (${CustomStyle.volt})',
                       style: const TextStyle(
-                        fontSize: 16.0,
+                        fontSize: CustomStyle.sizeXL,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -556,7 +556,7 @@ class _VoltageAlarmControl extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                bottom: 16.0,
+                bottom: CustomStyle.sizeL,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -653,7 +653,7 @@ class _VoltageRippleAlarmControl extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                bottom: 16.0,
+                bottom: CustomStyle.sizeL,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -663,7 +663,7 @@ class _VoltageRippleAlarmControl extends StatelessWidget {
                     child: Text(
                       '${AppLocalizations.of(context)!.voltageRipple} (${CustomStyle.milliVolt})',
                       style: const TextStyle(
-                        fontSize: 16.0,
+                        fontSize: CustomStyle.sizeXL,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -693,7 +693,7 @@ class _VoltageRippleAlarmControl extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                bottom: 16.0,
+                bottom: CustomStyle.sizeL,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -794,7 +794,7 @@ class _RFOutputPowerAlarmControl extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                bottom: 16.0,
+                bottom: CustomStyle.sizeL,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -804,7 +804,7 @@ class _RFOutputPowerAlarmControl extends StatelessWidget {
                     child: Text(
                       '${AppLocalizations.of(context)!.rfOutputPower} (${CustomStyle.dBmV})',
                       style: const TextStyle(
-                        fontSize: 16.0,
+                        fontSize: CustomStyle.sizeXL,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -915,7 +915,7 @@ Widget controlParameterSwitch({
 }) {
   return Padding(
     padding: const EdgeInsets.only(
-      bottom: 16.0,
+      bottom: CustomStyle.sizeL,
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -925,7 +925,7 @@ Widget controlParameterSwitch({
           child: Text(
             title,
             style: const TextStyle(
-              fontSize: 16.0,
+              fontSize: CustomStyle.sizeXL,
               fontWeight: FontWeight.w500,
             ),
           ),

@@ -7,6 +7,7 @@ import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_threshold/setting18_ccor_node_threshold_bloc.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
+import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -378,7 +379,7 @@ class _ClusterTitle extends StatelessWidget {
             child: Text(
               title,
               style: TextStyle(
-                fontSize: 16.0,
+                fontSize: CustomStyle.sizeXL,
                 fontWeight: FontWeight.w500,
                 color: Theme.of(context).colorScheme.primary,
               ),
@@ -413,127 +414,32 @@ class _TemperatureAlarmControl extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeThresholdBloc,
         Setting18CCorNodeThresholdState>(
       builder: (context, state) {
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    flex: 3,
-                    child: Text(
-                      AppLocalizations.of(context)!.temperatureFC,
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: Switch(
-                      thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
-                        (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.selected)) {
-                            return const Icon(Icons.check);
-                          }
-                          return const Icon(Icons.close);
-                        },
-                      ),
-                      value: state.temperatureAlarmState,
-                      onChanged: state.editMode
-                          ? (bool value) {
-                              context
-                                  .read<Setting18CCorNodeThresholdBloc>()
-                                  .add(TemperatureAlarmChanged(value));
-                            }
-                          : null,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    flex: 2,
-                    child: TextField(
-                      controller: minTemperatureTextEditingController,
-                      key: const Key(
-                          'setting18Form_minTemperatureInput_textField'),
-                      style: const TextStyle(
-                        fontSize: CustomStyle.sizeXL,
-                      ),
-                      enabled: state.editMode,
-                      textInputAction: TextInputAction.done,
-                      onChanged: (minTemperature) {
-                        context
-                            .read<Setting18CCorNodeThresholdBloc>()
-                            .add(MinTemperatureChanged(minTemperature));
-                      },
-                      maxLength: 40,
-                      decoration: InputDecoration(
-                        label: Text(
-                            '${AppLocalizations.of(context)!.minTemperature}(${getTemperatureUnit(state.temperatureUnit)})'),
-                        border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0))),
-                        contentPadding: const EdgeInsets.all(8.0),
-                        isDense: true,
-                        filled: true,
-                        fillColor: Colors.white,
-                        counterText: '',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: TextField(
-                      controller: maxTemperatureTextEditingController,
-                      key: const Key(
-                          'setting18Form_maxTemperatureInput_textField'),
-                      style: const TextStyle(
-                        fontSize: CustomStyle.sizeXL,
-                      ),
-                      enabled: state.editMode,
-                      textInputAction: TextInputAction.done,
-                      onChanged: (maxTemperature) {
-                        context
-                            .read<Setting18CCorNodeThresholdBloc>()
-                            .add(MaxTemperatureChanged(maxTemperature));
-                      },
-                      maxLength: 40,
-                      decoration: InputDecoration(
-                        label: Text(
-                            '${AppLocalizations.of(context)!.maxTemperature}(${getTemperatureUnit(state.temperatureUnit)})'),
-                        border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0))),
-                        contentPadding: const EdgeInsets.all(8.0),
-                        isDense: true,
-                        filled: true,
-                        fillColor: Colors.white,
-                        counterText: '',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-          ],
+        return thresholdAlarmParameterWidget(
+          context: context,
+          minValueTextEditingControllerName:
+              'setting18_ccor_node_temperature_minValue_textField',
+          maxValueTextEditingControllerName:
+              'setting18_ccor_node_temperature_maxValue_textField',
+          minValueTextEditingController: minTemperatureTextEditingController,
+          maxValueTextEditingController: maxTemperatureTextEditingController,
+          editMode: state.editMode,
+          title: AppLocalizations.of(context)!.temperatureFC,
+          enabledAlarmState: state.temperatureAlarmState,
+          onChangedAlarmState: (value) {
+            context
+                .read<Setting18CCorNodeThresholdBloc>()
+                .add(TemperatureAlarmChanged(value));
+          },
+          onChangedMinValue: (minTemperature) {
+            context
+                .read<Setting18CCorNodeThresholdBloc>()
+                .add(MinTemperatureChanged(minTemperature));
+          },
+          onChangedMaxValue: (maxTemperature) {
+            context
+                .read<Setting18CCorNodeThresholdBloc>()
+                .add(MaxTemperatureChanged(maxTemperature));
+          },
         );
       },
     );
@@ -555,244 +461,37 @@ class _VoltageAlarmControl extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeThresholdBloc,
         Setting18CCorNodeThresholdState>(
       builder: (context, state) {
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    flex: 3,
-                    child: Text(
-                      '${AppLocalizations.of(context)!.voltageLevel} (${CustomStyle.volt})',
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: Switch(
-                      thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
-                        (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.selected)) {
-                            return const Icon(Icons.check);
-                          }
-                          return const Icon(Icons.close);
-                        },
-                      ),
-                      value: state.voltageAlarmState,
-                      onChanged: state.editMode
-                          ? (bool value) {
-                              context
-                                  .read<Setting18CCorNodeThresholdBloc>()
-                                  .add(VoltageAlarmChanged(value));
-                            }
-                          : null,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    flex: 2,
-                    child: TextField(
-                      controller: minVoltageTextEditingController,
-                      key: const Key('setting18Form_minVoltageInput_textField'),
-                      style: const TextStyle(
-                        fontSize: CustomStyle.sizeXL,
-                      ),
-                      enabled: state.editMode,
-                      textInputAction: TextInputAction.done,
-                      onChanged: (minVoltage) {
-                        context
-                            .read<Setting18CCorNodeThresholdBloc>()
-                            .add(MinVoltageChanged(minVoltage));
-                      },
-                      maxLength: 40,
-                      decoration: InputDecoration(
-                        label: Text(AppLocalizations.of(context)!.minVoltage),
-                        border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0))),
-                        contentPadding: EdgeInsets.all(8.0),
-                        isDense: true,
-                        filled: true,
-                        fillColor: Colors.white,
-                        counterText: '',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: TextField(
-                      controller: maxVoltageTextEditingController,
-                      key: const Key('setting18Form_maxVoltageInput_textField'),
-                      style: const TextStyle(
-                        fontSize: CustomStyle.sizeXL,
-                      ),
-                      enabled: state.editMode,
-                      textInputAction: TextInputAction.done,
-                      onChanged: (maxVoltage) {
-                        context
-                            .read<Setting18CCorNodeThresholdBloc>()
-                            .add(MaxVoltageChanged(maxVoltage));
-                      },
-                      maxLength: 40,
-                      decoration: InputDecoration(
-                        label: Text(AppLocalizations.of(context)!.maxVoltage),
-                        border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0))),
-                        contentPadding: EdgeInsets.all(8.0),
-                        isDense: true,
-                        filled: true,
-                        fillColor: Colors.white,
-                        counterText: '',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-          ],
+        return thresholdAlarmParameterWidget(
+          context: context,
+          minValueTextEditingControllerName:
+              'setting18_ccor_node_voltage_minValue_textField',
+          maxValueTextEditingControllerName:
+              'setting18_ccor_node_voltage_maxValue_textField',
+          minValueTextEditingController: minVoltageTextEditingController,
+          maxValueTextEditingController: maxVoltageTextEditingController,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.voltageLevel} (${CustomStyle.volt})',
+          enabledAlarmState: state.voltageAlarmState,
+          onChangedAlarmState: (value) {
+            context
+                .read<Setting18CCorNodeThresholdBloc>()
+                .add(VoltageAlarmChanged(value));
+          },
+          onChangedMinValue: (minVoltage) {
+            context
+                .read<Setting18CCorNodeThresholdBloc>()
+                .add(MinVoltageChanged(minVoltage));
+          },
+          onChangedMaxValue: (maxVoltage) {
+            context
+                .read<Setting18CCorNodeThresholdBloc>()
+                .add(MaxVoltageChanged(maxVoltage));
+          },
         );
       },
     );
   }
-}
-
-Widget alarmControl({
-  required BuildContext context,
-  required TextEditingController minValueTextEditingController,
-  required TextEditingController maxValueTextEditingController,
-  required bool editMode,
-  required String title,
-  required bool enabledAlarmState,
-  required String minValue,
-  required String maxValue,
-  required ValueChanged<bool> onChangedAlarmState,
-  required ValueChanged<String> onChangedMinValue,
-  required ValueChanged<String> onChangedMaxValue,
-}) {
-  return Column(
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(
-          bottom: 16.0,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              flex: 3,
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            Flexible(
-              child: Switch(
-                thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
-                  (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.selected)) {
-                      return const Icon(Icons.check);
-                    }
-                    return const Icon(Icons.close);
-                  },
-                ),
-                value: enabledAlarmState,
-                onChanged: editMode ? onChangedAlarmState : null,
-              ),
-            ),
-          ],
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(
-          bottom: 16.0,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              flex: 2,
-              child: TextField(
-                controller: minValueTextEditingController,
-                key: const Key('setting18CCorNodeForm_minValue_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                ),
-                enabled: editMode,
-                textInputAction: TextInputAction.done,
-                onChanged: onChangedMinValue,
-                maxLength: 40,
-                decoration: InputDecoration(
-                  label: Text(AppLocalizations.of(context)!.minVoltage),
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(8.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.white,
-                  counterText: '',
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            Flexible(
-              flex: 2,
-              child: TextField(
-                controller: maxValueTextEditingController,
-                key: const Key('setting18Form_maxValue_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                ),
-                enabled: editMode,
-                textInputAction: TextInputAction.done,
-                onChanged: onChangedMaxValue,
-                maxLength: 40,
-                decoration: InputDecoration(
-                  label: Text(AppLocalizations.of(context)!.maxVoltage),
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(8.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Colors.white,
-                  counterText: '',
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-    ],
-  );
 }
 
 class _RFOutputPower1AlarmControl extends StatelessWidget {
@@ -810,15 +509,17 @@ class _RFOutputPower1AlarmControl extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeThresholdBloc,
         Setting18CCorNodeThresholdState>(
       builder: (context, state) {
-        return alarmControl(
+        return thresholdAlarmParameterWidget(
           context: context,
+          minValueTextEditingControllerName:
+              'setting18_ccor_node_rfOutputPower1_minValue_textField',
+          maxValueTextEditingControllerName:
+              'setting18_ccor_node_rfOutputPower1_maxValue_textField',
           minValueTextEditingController: minRFOutputPower1TextEditingController,
           maxValueTextEditingController: maxRFOutputPower1TextEditingController,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.rfOutputPower1}',
+          title: AppLocalizations.of(context)!.rfOutputPower1,
           enabledAlarmState: state.rfOutputPower1AlarmState,
-          minValue: state.minRFOutputPower1,
-          maxValue: state.maxRFOutputPower1,
           onChangedAlarmState: (value) {
             context
                 .read<Setting18CCorNodeThresholdBloc>()
@@ -855,15 +556,17 @@ class _RFOutputPower3AlarmControl extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeThresholdBloc,
         Setting18CCorNodeThresholdState>(
       builder: (context, state) {
-        return alarmControl(
+        return thresholdAlarmParameterWidget(
           context: context,
+          minValueTextEditingControllerName:
+              'setting18_ccor_node_rfOutputPower3_minValue_textField',
+          maxValueTextEditingControllerName:
+              'setting18_ccor_node_rfOutputPower3_maxValue_textField',
           minValueTextEditingController: minRFOutputPower3TextEditingController,
           maxValueTextEditingController: maxRFOutputPower3TextEditingController,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.rfOutputPower3}',
+          title: AppLocalizations.of(context)!.rfOutputPower3,
           enabledAlarmState: state.rfOutputPower3AlarmState,
-          minValue: state.minRFOutputPower3,
-          maxValue: state.maxRFOutputPower3,
           onChangedAlarmState: (value) {
             context
                 .read<Setting18CCorNodeThresholdBloc>()
@@ -900,15 +603,17 @@ class _RFOutputPower4AlarmControl extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeThresholdBloc,
         Setting18CCorNodeThresholdState>(
       builder: (context, state) {
-        return alarmControl(
+        return thresholdAlarmParameterWidget(
           context: context,
+          minValueTextEditingControllerName:
+              'setting18_ccor_node_rfOutputPower4_minValue_textField',
+          maxValueTextEditingControllerName:
+              'setting18_ccor_node_rfOutputPower4_maxValue_textField',
           minValueTextEditingController: minRFOutputPower4TextEditingController,
           maxValueTextEditingController: maxRFOutputPower4TextEditingController,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.rfOutputPower4}',
+          title: AppLocalizations.of(context)!.rfOutputPower4,
           enabledAlarmState: state.rfOutputPower4AlarmState,
-          minValue: state.minRFOutputPower4,
-          maxValue: state.maxRFOutputPower4,
           onChangedAlarmState: (value) {
             context
                 .read<Setting18CCorNodeThresholdBloc>()
@@ -945,15 +650,17 @@ class _RFOutputPower6AlarmControl extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeThresholdBloc,
         Setting18CCorNodeThresholdState>(
       builder: (context, state) {
-        return alarmControl(
+        return thresholdAlarmParameterWidget(
           context: context,
+          minValueTextEditingControllerName:
+              'setting18_ccor_node_rfOutputPower6_minValue_textField',
+          maxValueTextEditingControllerName:
+              'setting18_ccor_node_rfOutputPower6_maxValue_textField',
           minValueTextEditingController: minRFOutputPower6TextEditingController,
           maxValueTextEditingController: maxRFOutputPower6TextEditingController,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.rfOutputPower6}',
+          title: AppLocalizations.of(context)!.rfOutputPower6,
           enabledAlarmState: state.rfOutputPower6AlarmState,
-          minValue: state.minRFOutputPower6,
-          maxValue: state.maxRFOutputPower6,
           onChangedAlarmState: (value) {
             context
                 .read<Setting18CCorNodeThresholdBloc>()
@@ -975,50 +682,6 @@ class _RFOutputPower6AlarmControl extends StatelessWidget {
   }
 }
 
-Widget controlParameterSwitch({
-  required BuildContext context,
-  required bool editMode,
-  required String title,
-  required bool value,
-  required ValueChanged<bool> onChanged,
-}) {
-  return Padding(
-    padding: const EdgeInsets.only(
-      bottom: 16.0,
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Flexible(
-          flex: 2,
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        Flexible(
-          child: Switch(
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
-              (Set<MaterialState> states) {
-                if (states.contains(MaterialState.selected)) {
-                  return const Icon(Icons.check);
-                }
-                return const Icon(Icons.close);
-              },
-            ),
-            value: value,
-            onChanged: editMode ? onChanged : null,
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
 class _SplitOptionAlarmControl extends StatelessWidget {
   const _SplitOptionAlarmControl({super.key});
 
@@ -1027,7 +690,7 @@ class _SplitOptionAlarmControl extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeThresholdBloc,
         Setting18CCorNodeThresholdState>(
       builder: (context, state) {
-        return controlParameterSwitch(
+        return thresholdAlarmSwitch(
           context: context,
           editMode: state.editMode,
           title: AppLocalizations.of(context)!.splitOption,

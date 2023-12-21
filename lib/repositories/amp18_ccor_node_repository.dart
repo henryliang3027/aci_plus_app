@@ -271,9 +271,6 @@ class Amp18CCorNodeRepository {
     } catch (e) {
       return [
         false,
-        '',
-        '',
-        '',
       ];
     }
   }

@@ -446,7 +446,7 @@ class _ClusterTitle extends StatelessWidget {
             child: Text(
               title,
               style: TextStyle(
-                fontSize: 16.0,
+                fontSize: CustomStyle.sizeXL,
                 fontWeight: FontWeight.w500,
                 color: Theme.of(context).colorScheme.primary,
               ),

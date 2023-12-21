@@ -7,6 +7,7 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:aci_plus_app/information/views/information18_ccor_node_page.dart';
 import 'package:aci_plus_app/information/views/information18_page.dart';
 import 'package:aci_plus_app/information/views/information_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_page.dart';
@@ -159,7 +160,7 @@ class _HomeFormState extends State<HomeForm> {
           Status18CCorNodePage(
             pageController: _pageController,
           ),
-          Information18Page(
+          Information18CCorNodePage(
             pageController: _pageController,
           ),
           Chart18CCorNodePage(

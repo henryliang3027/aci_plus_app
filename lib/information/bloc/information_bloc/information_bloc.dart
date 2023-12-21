@@ -81,4 +81,15 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
       isTimerStarted: false,
     ));
   }
+
+  @override
+  Future<void> close() {
+    if (_timer != null) {
+      _timer!.cancel();
+
+      print('alarm trigger timer is canceled due to bloc closing.');
+    }
+
+    return super.close();
+  }
 }

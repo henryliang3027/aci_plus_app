@@ -1,27 +1,28 @@
 import 'dart:async';
-import 'package:aci_plus_app/repositories/amp18_repository.dart';
+import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'information18_event.dart';
-part 'information18_state.dart';
+part 'information18_ccor_node_event.dart';
+part 'information18_ccor_node_state.dart';
 
-class Information18Bloc extends Bloc<Information18Event, Information18State> {
-  Information18Bloc({
-    required Amp18Repository amp18Repository,
-  })  : _amp18Repository = amp18Repository,
-        super(const Information18State()) {
+class Information18CCorNodeBloc
+    extends Bloc<Information18CCorNodeEvent, Information18CCorNodeState> {
+  Information18CCorNodeBloc({
+    required Amp18CCorNodeRepository amp18CCorNodeRepository,
+  })  : _amp18CCorNodeRepository = amp18CCorNodeRepository,
+        super(const Information18CCorNodeState()) {
     on<AlarmUpdated>(_onAlarmUpdated);
     on<AlarmPeriodicUpdateRequested>(_onAlarmPeriodicUpdateRequested);
     on<AlarmPeriodicUpdateCanceled>(_onAlarmPeriodicUpdateCanceled);
   }
 
   Timer? _timer;
-  final Amp18Repository _amp18Repository;
+  final Amp18CCorNodeRepository _amp18CCorNodeRepository;
 
   void _onAlarmPeriodicUpdateRequested(
     AlarmPeriodicUpdateRequested event,
-    Emitter<Information18State> emit,
+    Emitter<Information18CCorNodeState> emit,
   ) {
     if (_timer != null) {
       _timer!.cancel();
@@ -44,9 +45,10 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
 
   Future<void> _onAlarmUpdated(
     AlarmUpdated event,
-    Emitter<Information18State> emit,
+    Emitter<Information18CCorNodeState> emit,
   ) async {
-    List<dynamic> result = await _amp18Repository.requestCommand1p8GAlarm();
+    List<dynamic> result =
+        await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeAlarm();
 
     if (result[0]) {
       String alarmUServerity = result[1];
@@ -65,7 +67,7 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
 
   Future<void> _onAlarmPeriodicUpdateCanceled(
     AlarmPeriodicUpdateCanceled event,
-    Emitter<Information18State> emit,
+    Emitter<Information18CCorNodeState> emit,
   ) async {
     if (_timer != null) {
       _timer!.cancel();

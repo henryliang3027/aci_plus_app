@@ -25,20 +25,6 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
-    // String location = homeState.characteristicData[DataKey.location] ?? '';
-    // String coordinates =
-    //     homeState.characteristicData[DataKey.coordinates] ?? '';
-    // String splitOption =
-    //     homeState.characteristicData[DataKey.splitOption] ?? '';
-    // String logInterval =
-    //     homeState.characteristicData[DataKey.logInterval] ?? '';
-
-    // context.read<Setting18CCorNodeConfigureBloc>().add(Initialized(
-    //       location: location,
-    //       coordinates: coordinates,
-    //       splitOption: splitOption,
-    //       logInterval: logInterval,
-    //     ));
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
@@ -293,13 +279,11 @@ class _Location extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
+                padding: const EdgeInsets.only(bottom: CustomStyle.sizeL),
                 child: Text(
                   '${AppLocalizations.of(context)!.location}:',
                   style: const TextStyle(
-                    fontSize: 16.0,
+                    fontSize: CustomStyle.sizeXL,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -357,13 +341,11 @@ class _Coordinates extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
+                padding: const EdgeInsets.only(bottom: CustomStyle.sizeL),
                 child: Text(
                   '${AppLocalizations.of(context)!.coordinates}:',
                   style: const TextStyle(
-                    fontSize: 16.0,
+                    fontSize: CustomStyle.sizeXL,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -566,13 +548,11 @@ class _SplitOption extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 16.0,
-                  ),
+                  padding: const EdgeInsets.only(bottom: CustomStyle.sizeL),
                   child: Text(
                     '${AppLocalizations.of(context)!.splitOption}:',
                     style: const TextStyle(
-                      fontSize: 16.0,
+                      fontSize: CustomStyle.sizeXL,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -729,16 +709,14 @@ class _LogInterval extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 16.0,
-                ),
+                padding: const EdgeInsets.only(bottom: CustomStyle.sizeL),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
                         '${AppLocalizations.of(context)!.logInterval}: ${state.logInterval} ${AppLocalizations.of(context)!.minute}',
                         style: const TextStyle(
-                          fontSize: 16.0,
+                          fontSize: CustomStyle.sizeXL,
                           fontWeight: FontWeight.w500,
                         ),
                       ),

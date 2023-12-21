@@ -290,6 +290,167 @@ Widget twoTextField({
   );
 }
 
+Widget thresholdAlarmParameterWidget({
+  required BuildContext context,
+  required String minValueTextEditingControllerName,
+  required String maxValueTextEditingControllerName,
+  required TextEditingController minValueTextEditingController,
+  required TextEditingController maxValueTextEditingController,
+  required bool editMode,
+  required String title,
+  required bool enabledAlarmState,
+  required ValueChanged<bool> onChangedAlarmState,
+  required ValueChanged<String> onChangedMinValue,
+  required ValueChanged<String> onChangedMaxValue,
+}) {
+  return Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(
+          bottom: CustomStyle.sizeL,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              flex: 3,
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Flexible(
+              child: Switch(
+                thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
+                  (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.selected)) {
+                      return const Icon(Icons.check);
+                    }
+                    return const Icon(Icons.close);
+                  },
+                ),
+                value: enabledAlarmState,
+                onChanged: editMode ? onChangedAlarmState : null,
+              ),
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(
+          bottom: CustomStyle.sizeL,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              flex: 2,
+              child: TextField(
+                controller: minValueTextEditingController,
+                key: Key(minValueTextEditingControllerName),
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                ),
+                enabled: editMode,
+                textInputAction: TextInputAction.done,
+                onChanged: onChangedMinValue,
+                maxLength: 40,
+                decoration: InputDecoration(
+                  label: Text(AppLocalizations.of(context)!.minVoltage),
+                  border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  contentPadding: EdgeInsets.all(8.0),
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
+                  counterText: '',
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            Flexible(
+              flex: 2,
+              child: TextField(
+                controller: maxValueTextEditingController,
+                key: Key(maxValueTextEditingControllerName),
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                ),
+                enabled: editMode,
+                textInputAction: TextInputAction.done,
+                onChanged: onChangedMaxValue,
+                maxLength: 40,
+                decoration: InputDecoration(
+                  label: Text(AppLocalizations.of(context)!.maxVoltage),
+                  border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  contentPadding: EdgeInsets.all(8.0),
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
+                  counterText: '',
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+    ],
+  );
+}
+
+Widget thresholdAlarmSwitch({
+  required BuildContext context,
+  required bool editMode,
+  required String title,
+  required bool value,
+  required ValueChanged<bool> onChanged,
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(
+      bottom: CustomStyle.sizeL,
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          flex: 2,
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: CustomStyle.sizeXL,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Flexible(
+          child: Switch(
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
+              (Set<MaterialState> states) {
+                if (states.contains(MaterialState.selected)) {
+                  return const Icon(Icons.check);
+                }
+                return const Icon(Icons.close);
+              },
+            ),
+            value: value,
+            onChanged: editMode ? onChanged : null,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 const List<String> splitOptionTexts = [
   'Null',
   '204/258 MHz',

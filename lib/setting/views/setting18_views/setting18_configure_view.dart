@@ -380,12 +380,12 @@ class _Location extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(
-                  bottom: 16.0,
+                  bottom: CustomStyle.sizeL,
                 ),
                 child: Text(
                   '${AppLocalizations.of(context)!.location}:',
                   style: const TextStyle(
-                    fontSize: 16.0,
+                    fontSize: CustomStyle.sizeXL,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -443,12 +443,12 @@ class _Coordinates extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(
-                  bottom: 16.0,
+                  bottom: CustomStyle.sizeL,
                 ),
                 child: Text(
                   '${AppLocalizations.of(context)!.coordinates}:',
                   style: const TextStyle(
-                    fontSize: 16.0,
+                    fontSize: CustomStyle.sizeXL,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -549,12 +549,12 @@ class _SplitOption extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(
-                    bottom: 16.0,
+                    bottom: CustomStyle.sizeL,
                   ),
                   child: Text(
                     '${AppLocalizations.of(context)!.splitOption}:',
                     style: const TextStyle(
-                      fontSize: 16.0,
+                      fontSize: CustomStyle.sizeXL,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -926,12 +926,12 @@ class _FwdAGCMode extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(
-                  bottom: 16.0,
+                  bottom: CustomStyle.sizeL,
                 ),
                 child: Text(
                   '${AppLocalizations.of(context)!.agcMode}:',
                   style: const TextStyle(
-                    fontSize: 16.0,
+                    fontSize: CustomStyle.sizeXL,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -1021,12 +1021,12 @@ class _AutoLevelControl extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(
-                  bottom: 16.0,
+                  bottom: CustomStyle.sizeL,
                 ),
                 child: Text(
                   '${AppLocalizations.of(context)!.alcMode}:',
                   style: const TextStyle(
-                    fontSize: 16.0,
+                    fontSize: CustomStyle.sizeXL,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -1105,7 +1105,7 @@ class _LogInterval extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(
-                  bottom: 16.0,
+                  bottom: CustomStyle.sizeL,
                 ),
                 child: Row(
                   children: [
@@ -1113,7 +1113,7 @@ class _LogInterval extends StatelessWidget {
                       child: Text(
                         '${AppLocalizations.of(context)!.logInterval}: ${state.logInterval} ${AppLocalizations.of(context)!.minute}',
                         style: const TextStyle(
-                          fontSize: 16.0,
+                          fontSize: CustomStyle.sizeXL,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
