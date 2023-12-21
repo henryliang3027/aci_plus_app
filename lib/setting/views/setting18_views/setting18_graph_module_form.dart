@@ -124,10 +124,10 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
     String formatResultItem(String item) {
       if (item == DataKey.dsVVA1.name) {
         return AppLocalizations.of(context)!
-            .dialogMessageForwardInputAttenuationSetting;
+            .dialogMessageForwardInputAttenuation1Setting;
       } else if (item == DataKey.dsSlope1.name) {
         return AppLocalizations.of(context)!
-            .dialogMessageForwardInputEqualizerSetting;
+            .dialogMessageForwardInputEqualizer1Setting;
       } else if (item == DataKey.usVCA1.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation2Setting;
@@ -139,10 +139,10 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
             .dialogMessageReturnInputAttenuation4Setting;
       } else if (item == DataKey.usVCA2.name) {
         return AppLocalizations.of(context)!
-            .dialogMessageReturnOutputAttenuationSetting;
+            .dialogMessageReturnOutputAttenuation1Setting;
       } else if (item == DataKey.eREQ.name) {
         return AppLocalizations.of(context)!
-            .dialogMessageReturnOutputEqualizerSetting;
+            .dialogMessageReturnOutputEqualizer1Setting;
       } else if (item == DataKey.ingressSetting2.name) {
         return AppLocalizations.of(context)!.dialogMessageReturnIngress2Setting;
       } else if (item == DataKey.ingressSetting3.name) {

@@ -1868,8 +1868,8 @@ class Amp18CCorNodeRepository {
 
     int difference = dateTime.difference(deviceDateTime).inMinutes.abs();
 
-    // 如果 device 的now time 跟 目前時間相差大於5分鐘, 則寫入目前時間
-    if (difference > 5) {
+    // 如果 device 的 now time 跟 目前時間相差大於1440分鐘(24 小時), 則寫入目前時間
+    if (difference > 1440) {
       try {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,

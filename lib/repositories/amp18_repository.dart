@@ -384,9 +384,6 @@ class Amp18Repository {
     } catch (e) {
       return [
         false,
-        '',
-        '',
-        '',
       ];
     }
   }

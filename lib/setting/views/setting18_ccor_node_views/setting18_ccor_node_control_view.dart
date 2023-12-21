@@ -31,13 +31,40 @@ class Setting18CCorNodeControlView extends StatelessWidget {
     String formatResultItem(String item) {
       if (item == DataKey.dsVVA1.name) {
         return AppLocalizations.of(context)!
-            .dialogMessageForwardInputAttenuationSetting;
+            .dialogMessageForwardInputAttenuation1Setting;
+      } else if (item == DataKey.dsVVA3.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageReturnInputAttenuation3Setting;
+      } else if (item == DataKey.dsVVA4.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageReturnInputAttenuation4Setting;
+      } else if (item == DataKey.dsVVA6.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageReturnInputAttenuation6Setting;
+      } else if (item == DataKey.dsInSlope1.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardInputEqualizer1Setting;
+      } else if (item == DataKey.dsInSlope3.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardInputEqualizer3Setting;
+      } else if (item == DataKey.dsInSlope4.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardInputEqualizer4Setting;
+      } else if (item == DataKey.dsInSlope6.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardInputEqualizer6Setting;
+      } else if (item == DataKey.usVCA1.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageReturnInputAttenuation1Setting;
       } else if (item == DataKey.usVCA3.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation3Setting;
       } else if (item == DataKey.usVCA4.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation4Setting;
+      } else if (item == DataKey.usVCA6.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageReturnInputAttenuation6Setting;
       } else if (item == DataKey.ingressSetting1.name) {
         return AppLocalizations.of(context)!.dialogMessageReturnIngress1Setting;
       } else if (item == DataKey.ingressSetting3.name) {
@@ -348,67 +375,6 @@ List<bool> getSelectionState(String selectedrtnIngress) {
   }
 
   return selectedrtnIngressMap.values.toList();
-}
-
-Widget controlToggleButton({
-  required BuildContext context,
-  required bool editMode,
-  required String title,
-  required String currentValue,
-  required ValueChanged<int> onChanged,
-}) {
-  return Padding(
-    padding: const EdgeInsets.only(
-      bottom: 40.0,
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: 16.0,
-          ),
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        LayoutBuilder(
-          builder: (context, constraints) => ToggleButtons(
-            direction: Axis.horizontal,
-            onPressed: editMode ? onChanged : (index) {},
-            textStyle: const TextStyle(fontSize: 18.0),
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            selectedBorderColor: editMode
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context)
-                    .colorScheme
-                    .inversePrimary, // indigo border color
-            selectedColor:
-                Theme.of(context).colorScheme.onPrimary, // white text color
-
-            fillColor: editMode
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.inversePrimary, // selected
-            color: Theme.of(context).colorScheme.secondary, // not selected
-            constraints: BoxConstraints.expand(
-              width: (constraints.maxWidth - 6) / rtnIngressValues.length,
-            ),
-            isSelected: getSelectionState(currentValue),
-            children: <Widget>[
-              const Text('0'),
-              const Text('-3'),
-              const Text('-6'),
-              Text(AppLocalizations.of(context)!.ingressOpen),
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
 }
 
 class _ClusterTitle extends StatelessWidget {
@@ -850,13 +816,20 @@ class _ReturnIngressSetting1 extends StatelessWidget {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.returnIngressSetting1}:',
+          title: '${AppLocalizations.of(context)!.returnIngressSetting2}:',
           currentValue: state.returnIngressSetting1,
           onChanged: (int index) {
             context
                 .read<Setting18CCorNodeControlBloc>()
                 .add(ReturnIngressSetting1Changed(rtnIngressValues[index]));
           },
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
         );
       },
     );
@@ -886,6 +859,13 @@ class _ReturnIngressSetting3 extends StatelessWidget {
                 .read<Setting18CCorNodeControlBloc>()
                 .add(ReturnIngressSetting3Changed(rtnIngressValues[index]));
           },
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
         );
       },
     );
@@ -915,6 +895,13 @@ class _ReturnIngressSetting4 extends StatelessWidget {
                 .read<Setting18CCorNodeControlBloc>()
                 .add(ReturnIngressSetting4Changed(rtnIngressValues[index]));
           },
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
         );
       },
     );
@@ -944,6 +931,13 @@ class _ReturnIngressSetting6 extends StatelessWidget {
                 .read<Setting18CCorNodeControlBloc>()
                 .add(ReturnIngressSetting6Changed(rtnIngressValues[index]));
           },
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
         );
       },
     );

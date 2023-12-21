@@ -58,28 +58,52 @@ class _ConfigListView extends StatelessWidget {
             height: 8.0,
           ),
           itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(
-                partIdMap[setting18configState.partIds[index]]!,
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXXXL,
+            return Card(
+              margin: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: index % 2 == 0
+                      ? const Color.fromARGB(255, 197, 204, 246)
+                      : const Color.fromARGB(255, 222, 227, 255),
+                ),
+                height: 100,
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(10),
+                    onTap: () {
+                      showModuleSettingDialog(
+                          selectedPartId: setting18configState.partIds[index]);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: CustomStyle.sizeXXL,
+                          ),
+                          child: Text(
+                            partIdMap[setting18configState.partIds[index]]!,
+                            style: const TextStyle(
+                              fontSize: CustomStyle.sizeXXXL,
+                            ),
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: CustomStyle.sizeXXL,
+                          ),
+                          child: Icon(Icons.edit),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-              contentPadding: const EdgeInsets.symmetric(
-                vertical: 20.0,
-                horizontal: 16.0,
-              ),
-              trailing: const Icon(Icons.edit),
-              tileColor: index % 2 == 0
-                  ? const Color.fromARGB(255, 197, 204, 246)
-                  : const Color.fromARGB(255, 222, 227, 255),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8.0)),
-              ),
-              onTap: () {
-                showModuleSettingDialog(
-                    selectedPartId: setting18configState.partIds[index]);
-              },
             );
           },
         ),

@@ -37,10 +37,10 @@ class Setting18ControlView extends StatelessWidget {
     String formatResultItem(String item) {
       if (item == DataKey.dsVVA1.name) {
         return AppLocalizations.of(context)!
-            .dialogMessageForwardInputAttenuationSetting;
+            .dialogMessageForwardInputAttenuation1Setting;
       } else if (item == DataKey.dsSlope1.name) {
         return AppLocalizations.of(context)!
-            .dialogMessageForwardInputEqualizerSetting;
+            .dialogMessageForwardInputEqualizer1Setting;
       } else if (item == DataKey.usVCA1.name) {
         if (partId == '5' || partId == '6') {
           return AppLocalizations.of(context)!
@@ -67,10 +67,10 @@ class Setting18ControlView extends StatelessWidget {
         }
       } else if (item == DataKey.usVCA2.name) {
         return AppLocalizations.of(context)!
-            .dialogMessageReturnOutputAttenuationSetting;
+            .dialogMessageReturnOutputAttenuation1Setting;
       } else if (item == DataKey.eREQ.name) {
         return AppLocalizations.of(context)!
-            .dialogMessageReturnOutputEqualizerSetting;
+            .dialogMessageReturnOutputEqualizer1Setting;
       } else if (item == DataKey.ingressSetting2.name) {
         if (partId == '5' || partId == '6') {
           return AppLocalizations.of(context)!

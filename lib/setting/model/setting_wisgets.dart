@@ -22,7 +22,7 @@ Widget controlParameterSlider({
       children: [
         Padding(
           padding: const EdgeInsets.only(
-            bottom: 16.0,
+            bottom: CustomStyle.sizeL,
           ),
           child: Row(
             children: [
@@ -30,7 +30,7 @@ Widget controlParameterSlider({
                 child: Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 16.0,
+                    fontSize: CustomStyle.sizeXL,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -136,19 +136,19 @@ Widget controlToggleButton({
 
   return Padding(
     padding: const EdgeInsets.only(
-      bottom: 40.0,
+      bottom: CustomStyle.sizeXXXL,
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.only(
-            bottom: 16.0,
+            bottom: CustomStyle.sizeL,
           ),
           child: Text(
             title,
             style: const TextStyle(
-              fontSize: 16.0,
+              fontSize: CustomStyle.sizeXL,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -157,7 +157,9 @@ Widget controlToggleButton({
           builder: (context, constraints) => ToggleButtons(
             direction: Axis.horizontal,
             onPressed: editMode ? onChanged : (index) {},
-            textStyle: const TextStyle(fontSize: 18.0),
+            textStyle: const TextStyle(
+              fontSize: CustomStyle.sizeL,
+            ),
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             selectedBorderColor: editMode
                 ? Theme.of(context).colorScheme.primary
@@ -201,7 +203,7 @@ Widget twoTextField({
     children: [
       Padding(
         padding: const EdgeInsets.only(
-          bottom: 16.0,
+          bottom: CustomStyle.sizeL,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -210,7 +212,7 @@ Widget twoTextField({
               child: Text(
                 title,
                 style: const TextStyle(
-                  fontSize: 16.0,
+                  fontSize: CustomStyle.sizeXL,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -220,7 +222,7 @@ Widget twoTextField({
       ),
       Padding(
         padding: const EdgeInsets.only(
-          bottom: 16.0,
+          bottom: CustomStyle.sizeL,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
