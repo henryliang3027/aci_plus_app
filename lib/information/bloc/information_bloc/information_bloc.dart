@@ -28,6 +28,9 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
       _timer!.cancel();
     }
 
+    // timer 啟動後 5 秒才會發 AlarmUpdated, 所以第0秒時先 AlarmUpdated
+    add(const AlarmUpdated());
+
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       print('alarm trigger timer: ${timer.tick}');
       add(const AlarmUpdated());

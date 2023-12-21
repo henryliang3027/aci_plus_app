@@ -224,21 +224,6 @@ class _BasicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String getCurrentPilot({
-      required String currentPilot,
-      required String currentPilotMode,
-    }) {
-      if (currentPilot.isEmpty) {
-        return '';
-      } else if (currentPilot == 'Loss') {
-        return currentPilot;
-      } else if (currentPilotMode.isEmpty) {
-        return '';
-      } else {
-        return '$currentPilot $currentPilotMode';
-      }
-    }
-
     String getCurrentLogInterval(String logInterval) {
       if (logInterval.isEmpty) {
         return '';
@@ -313,129 +298,134 @@ class _BasicCard extends StatelessWidget {
   }
 }
 
-class _AlarmCard extends StatelessWidget {
-  const _AlarmCard({super.key});
-
-  Widget alarmItem({
-    required IconData iconData,
-    required String title,
-    Color? iconColor,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Icon(
-            iconData,
-            color: iconColor,
-          ),
-          const SizedBox(
-            width: 10.0,
-          ),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+class _AlarmIndicator extends StatelessWidget {
+  const _AlarmIndicator({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    Widget buildAlarmCard({
-      required String alarmUSeverity,
-      required String alarmTSeverity,
-      required String alarmPSeverity,
-    }) {
-      return Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.alarm,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              alarmItem(
-                iconData: Icons.circle,
-                iconColor: CustomStyle.alarmColor[alarmUSeverity],
-                title: AppLocalizations.of(context)!.unitStatusAlarm,
-              ),
-              alarmItem(
-                iconData: Icons.circle,
-                iconColor: CustomStyle.alarmColor[alarmTSeverity],
-                title: AppLocalizations.of(context)!.temperatureAlarm,
-              ),
-              alarmItem(
-                iconData: Icons.circle,
-                iconColor: CustomStyle.alarmColor[alarmPSeverity],
-                title: AppLocalizations.of(context)!.powerSupplyAlarm,
-              ),
-            ],
-          ),
-        ),
-      );
-    }
+    return BlocBuilder<Information18Bloc, Information18State>(
+      builder: (context, state) {
+        return buildAlarmCard(
+          context: context,
+          alarmUSeverity: state.alarmUSeverity,
+          alarmTSeverity: state.alarmTSeverity,
+          alarmPSeverity: state.alarmPSeverity,
+        );
+      },
+    );
+  }
+}
 
-    return Builder(builder: (context) {
-      HomeState homeState = context.watch<HomeBloc>().state;
-      Information18State information18State =
-          context.watch<Information18Bloc>().state;
-      String alarmUSeverity =
-          homeState.characteristicData[DataKey.unitStatusAlarmSeverity] ??
-              'default';
-      String alarmTSeverity =
-          homeState.characteristicData[DataKey.temperatureAlarmSeverity] ??
-              'default';
-      String alarmPSeverity =
-          homeState.characteristicData[DataKey.voltageAlarmSeverity] ??
-              'default';
+class _AlarmCard extends StatelessWidget {
+  const _AlarmCard({super.key});
 
-      if (homeState.loadingStatus.isRequestSuccess) {
-        if (!information18State.isTimerStarted) {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.loadingStatus.isRequestSuccess) {
           context
               .read<Information18Bloc>()
               .add(const AlarmPeriodicUpdateRequested());
-        }
 
-        return buildAlarmCard(
-          alarmUSeverity: information18State.alarmUSeverity == 'default'
-              ? alarmUSeverity
-              : information18State.alarmUSeverity,
-          alarmTSeverity: information18State.alarmTSeverity == 'default'
-              ? alarmTSeverity
-              : information18State.alarmTSeverity,
-          alarmPSeverity: information18State.alarmPSeverity == 'default'
-              ? alarmPSeverity
-              : information18State.alarmPSeverity,
-        );
-      } else {
-        // homeState formStatus failure or inProgress 時都用 homeState 讀到的值來顯示
-
-        if (information18State.isTimerStarted) {
+          return const _AlarmIndicator();
+        } else {
           context
               .read<Information18Bloc>()
               .add(const AlarmPeriodicUpdateCanceled());
-        }
 
-        return buildAlarmCard(
-          alarmUSeverity: alarmUSeverity,
-          alarmTSeverity: alarmTSeverity,
-          alarmPSeverity: alarmPSeverity,
-        );
-      }
-    });
+          String alarmUSeverity =
+              state.characteristicData[DataKey.unitStatusAlarmSeverity] ??
+                  'default';
+          String alarmTSeverity =
+              state.characteristicData[DataKey.temperatureAlarmSeverity] ??
+                  'default';
+          String alarmPSeverity =
+              state.characteristicData[DataKey.voltageAlarmSeverity] ??
+                  'default';
+
+          return buildAlarmCard(
+            context: context,
+            alarmUSeverity: alarmUSeverity,
+            alarmTSeverity: alarmTSeverity,
+            alarmPSeverity: alarmPSeverity,
+          );
+        }
+      },
+    );
   }
+}
+
+Widget alarmItem({
+  required IconData iconData,
+  required String title,
+  Color? iconColor,
+}) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Icon(
+          iconData,
+          color: iconColor,
+        ),
+        const SizedBox(
+          width: 10.0,
+        ),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 16,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget buildAlarmCard({
+  required BuildContext context,
+  required String alarmUSeverity,
+  required String alarmTSeverity,
+  required String alarmPSeverity,
+}) {
+  return Card(
+    color: Theme.of(context).colorScheme.onPrimary,
+    surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+    child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.alarm,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          alarmItem(
+            iconData: Icons.circle,
+            iconColor: CustomStyle.alarmColor[alarmUSeverity],
+            title: AppLocalizations.of(context)!.unitStatusAlarm,
+          ),
+          alarmItem(
+            iconData: Icons.circle,
+            iconColor: CustomStyle.alarmColor[alarmTSeverity],
+            title: AppLocalizations.of(context)!.temperatureAlarm,
+          ),
+          alarmItem(
+            iconData: Icons.circle,
+            iconColor: CustomStyle.alarmColor[alarmPSeverity],
+            title: AppLocalizations.of(context)!.powerSupplyAlarm,
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 Widget getContent({

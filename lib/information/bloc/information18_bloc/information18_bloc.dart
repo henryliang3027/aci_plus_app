@@ -27,6 +27,9 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
       _timer!.cancel();
     }
 
+    // timer 啟動後 5 秒才會發 AlarmUpdated, 所以第0秒時先 AlarmUpdated
+    add(const AlarmUpdated());
+
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       print('alarm trigger timer: ${timer.tick}');
       add(const AlarmUpdated());
@@ -68,7 +71,7 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     }
 
     // 等待兩秒再將 isTimerStarted = false, 避免當使用者切到別的頁面時，目前的頁面還沒被 dispose又馬上又觸發 _AlarmCard rebuild 並觸發 event 重新創建 timer
-    await Future.delayed(const Duration(seconds: 2));
+    // await Future.delayed(const Duration(seconds: 2));
 
     emit(state.copyWith(
       isTimerStarted: false,
