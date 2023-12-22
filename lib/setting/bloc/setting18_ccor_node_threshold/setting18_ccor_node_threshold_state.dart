@@ -4,25 +4,25 @@ class Setting18CCorNodeThresholdState extends Equatable {
   const Setting18CCorNodeThresholdState({
     this.submissionStatus = SubmissionStatus.none,
     this.temperatureAlarmState = false,
-    this.minTemperature = '',
-    this.maxTemperature = '',
+    this.minTemperature = const FloatPointInput.pure(),
+    this.maxTemperature = const FloatPointInput.pure(),
     this.temperatureUnit = TemperatureUnit.fahrenheit,
     this.voltageAlarmState = false,
-    this.minVoltage = '',
-    this.maxVoltage = '',
+    this.minVoltage = const FloatPointInput.pure(),
+    this.maxVoltage = const FloatPointInput.pure(),
     this.splitOptionAlarmState = false,
     this.rfOutputPower1AlarmState = false,
-    this.minRFOutputPower1 = '',
-    this.maxRFOutputPower1 = '',
+    this.minRFOutputPower1 = const FloatPointInput.pure(),
+    this.maxRFOutputPower1 = const FloatPointInput.pure(),
     this.rfOutputPower3AlarmState = false,
-    this.minRFOutputPower3 = '',
-    this.maxRFOutputPower3 = '',
+    this.minRFOutputPower3 = const FloatPointInput.pure(),
+    this.maxRFOutputPower3 = const FloatPointInput.pure(),
     this.rfOutputPower4AlarmState = false,
-    this.minRFOutputPower4 = '',
-    this.maxRFOutputPower4 = '',
+    this.minRFOutputPower4 = const FloatPointInput.pure(),
+    this.maxRFOutputPower4 = const FloatPointInput.pure(),
     this.rfOutputPower6AlarmState = false,
-    this.minRFOutputPower6 = '',
-    this.maxRFOutputPower6 = '',
+    this.minRFOutputPower6 = const FloatPointInput.pure(),
+    this.maxRFOutputPower6 = const FloatPointInput.pure(),
     this.editMode = false,
     this.enableSubmission = false,
     this.isInitialize = true,
@@ -32,25 +32,25 @@ class Setting18CCorNodeThresholdState extends Equatable {
 
   final SubmissionStatus submissionStatus;
   final bool temperatureAlarmState;
-  final String minTemperature;
-  final String maxTemperature;
+  final FloatPointInput minTemperature;
+  final FloatPointInput maxTemperature;
   final TemperatureUnit temperatureUnit;
   final bool voltageAlarmState;
-  final String minVoltage;
-  final String maxVoltage;
+  final FloatPointInput minVoltage;
+  final FloatPointInput maxVoltage;
   final bool splitOptionAlarmState;
   final bool rfOutputPower1AlarmState;
-  final String minRFOutputPower1;
-  final String maxRFOutputPower1;
+  final FloatPointInput minRFOutputPower1;
+  final FloatPointInput maxRFOutputPower1;
   final bool rfOutputPower3AlarmState;
-  final String minRFOutputPower3;
-  final String maxRFOutputPower3;
+  final FloatPointInput minRFOutputPower3;
+  final FloatPointInput maxRFOutputPower3;
   final bool rfOutputPower4AlarmState;
-  final String minRFOutputPower4;
-  final String maxRFOutputPower4;
+  final FloatPointInput minRFOutputPower4;
+  final FloatPointInput maxRFOutputPower4;
   final bool rfOutputPower6AlarmState;
-  final String minRFOutputPower6;
-  final String maxRFOutputPower6;
+  final FloatPointInput minRFOutputPower6;
+  final FloatPointInput maxRFOutputPower6;
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
@@ -60,25 +60,25 @@ class Setting18CCorNodeThresholdState extends Equatable {
   Setting18CCorNodeThresholdState copyWith({
     SubmissionStatus? submissionStatus,
     bool? temperatureAlarmState,
-    String? minTemperature,
-    String? maxTemperature,
+    FloatPointInput? minTemperature,
+    FloatPointInput? maxTemperature,
     TemperatureUnit? temperatureUnit,
     bool? voltageAlarmState,
-    String? minVoltage,
-    String? maxVoltage,
+    FloatPointInput? minVoltage,
+    FloatPointInput? maxVoltage,
     bool? splitOptionAlarmState,
     bool? rfOutputPower1AlarmState,
-    String? minRFOutputPower1,
-    String? maxRFOutputPower1,
+    FloatPointInput? minRFOutputPower1,
+    FloatPointInput? maxRFOutputPower1,
     bool? rfOutputPower3AlarmState,
-    String? minRFOutputPower3,
-    String? maxRFOutputPower3,
+    FloatPointInput? minRFOutputPower3,
+    FloatPointInput? maxRFOutputPower3,
     bool? rfOutputPower4AlarmState,
-    String? minRFOutputPower4,
-    String? maxRFOutputPower4,
+    FloatPointInput? minRFOutputPower4,
+    FloatPointInput? maxRFOutputPower4,
     bool? rfOutputPower6AlarmState,
-    String? minRFOutputPower6,
-    String? maxRFOutputPower6,
+    FloatPointInput? minRFOutputPower6,
+    FloatPointInput? maxRFOutputPower6,
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,

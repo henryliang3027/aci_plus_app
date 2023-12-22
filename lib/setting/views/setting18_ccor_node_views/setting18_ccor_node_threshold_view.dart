@@ -333,18 +333,26 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
         }
 
         if (state.isInitialize) {
-          minTemperatureTextEditingController.text = state.minTemperature;
-          maxTemperatureTextEditingController.text = state.maxTemperature;
-          minVoltageTextEditingController.text = state.minVoltage;
-          maxVoltageTextEditingController.text = state.maxVoltage;
-          minRFOutputPower1TextEditingController.text = state.minRFOutputPower1;
-          maxRFOutputPower1TextEditingController.text = state.maxRFOutputPower1;
-          minRFOutputPower3TextEditingController.text = state.minRFOutputPower3;
-          maxRFOutputPower3TextEditingController.text = state.maxRFOutputPower3;
-          minRFOutputPower4TextEditingController.text = state.minRFOutputPower4;
-          maxRFOutputPower4TextEditingController.text = state.maxRFOutputPower4;
-          minRFOutputPower6TextEditingController.text = state.minRFOutputPower6;
-          maxRFOutputPower6TextEditingController.text = state.maxRFOutputPower6;
+          minTemperatureTextEditingController.text = state.minTemperature.value;
+          maxTemperatureTextEditingController.text = state.maxTemperature.value;
+          minVoltageTextEditingController.text = state.minVoltage.value;
+          maxVoltageTextEditingController.text = state.maxVoltage.value;
+          minRFOutputPower1TextEditingController.text =
+              state.minRFOutputPower1.value;
+          maxRFOutputPower1TextEditingController.text =
+              state.maxRFOutputPower1.value;
+          minRFOutputPower3TextEditingController.text =
+              state.minRFOutputPower3.value;
+          maxRFOutputPower3TextEditingController.text =
+              state.maxRFOutputPower3.value;
+          minRFOutputPower4TextEditingController.text =
+              state.minRFOutputPower4.value;
+          maxRFOutputPower4TextEditingController.text =
+              state.maxRFOutputPower4.value;
+          minRFOutputPower6TextEditingController.text =
+              state.minRFOutputPower6.value;
+          maxRFOutputPower6TextEditingController.text =
+              state.maxRFOutputPower6.value;
         }
       },
       child: Scaffold(
@@ -444,6 +452,12 @@ class _TemperatureAlarmControl extends StatelessWidget {
                 .read<Setting18CCorNodeThresholdBloc>()
                 .add(MaxTemperatureChanged(maxTemperature));
           },
+          minValueErrorText: state.minTemperature.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          maxValueErrorText: state.maxTemperature.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -494,6 +508,12 @@ class _VoltageAlarmControl extends StatelessWidget {
                 .read<Setting18CCorNodeThresholdBloc>()
                 .add(MaxVoltageChanged(maxVoltage));
           },
+          minValueErrorText: state.minVoltage.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          maxValueErrorText: state.maxVoltage.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -524,7 +544,8 @@ class _RFOutputPower1AlarmControl extends StatelessWidget {
           minValueTextEditingController: minRFOutputPower1TextEditingController,
           maxValueTextEditingController: maxRFOutputPower1TextEditingController,
           editMode: state.editMode,
-          title: AppLocalizations.of(context)!.rfOutputPower1,
+          title:
+              '${AppLocalizations.of(context)!.rfOutputPower1} (${CustomStyle.dBmV})',
           minValueLabel: AppLocalizations.of(context)!.minRFOutputPower,
           maxValueLabel: AppLocalizations.of(context)!.maxRFOutputPower,
           enabledAlarmState: state.rfOutputPower1AlarmState,
@@ -543,6 +564,12 @@ class _RFOutputPower1AlarmControl extends StatelessWidget {
                 .read<Setting18CCorNodeThresholdBloc>()
                 .add(MaxRFOutputPower1Changed(value));
           },
+          minValueErrorText: state.minRFOutputPower1.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          maxValueErrorText: state.maxRFOutputPower1.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -573,7 +600,8 @@ class _RFOutputPower3AlarmControl extends StatelessWidget {
           minValueTextEditingController: minRFOutputPower3TextEditingController,
           maxValueTextEditingController: maxRFOutputPower3TextEditingController,
           editMode: state.editMode,
-          title: AppLocalizations.of(context)!.rfOutputPower3,
+          title:
+              '${AppLocalizations.of(context)!.rfOutputPower3} (${CustomStyle.dBmV})',
           minValueLabel: AppLocalizations.of(context)!.minRFOutputPower,
           maxValueLabel: AppLocalizations.of(context)!.maxRFOutputPower,
           enabledAlarmState: state.rfOutputPower3AlarmState,
@@ -592,6 +620,12 @@ class _RFOutputPower3AlarmControl extends StatelessWidget {
                 .read<Setting18CCorNodeThresholdBloc>()
                 .add(MaxRFOutputPower3Changed(value));
           },
+          minValueErrorText: state.minRFOutputPower3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          maxValueErrorText: state.maxRFOutputPower3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -622,7 +656,8 @@ class _RFOutputPower4AlarmControl extends StatelessWidget {
           minValueTextEditingController: minRFOutputPower4TextEditingController,
           maxValueTextEditingController: maxRFOutputPower4TextEditingController,
           editMode: state.editMode,
-          title: AppLocalizations.of(context)!.rfOutputPower4,
+          title:
+              '${AppLocalizations.of(context)!.rfOutputPower4} (${CustomStyle.dBmV})',
           minValueLabel: AppLocalizations.of(context)!.minRFOutputPower,
           maxValueLabel: AppLocalizations.of(context)!.maxRFOutputPower,
           enabledAlarmState: state.rfOutputPower4AlarmState,
@@ -641,6 +676,12 @@ class _RFOutputPower4AlarmControl extends StatelessWidget {
                 .read<Setting18CCorNodeThresholdBloc>()
                 .add(MaxRFOutputPower4Changed(value));
           },
+          minValueErrorText: state.minRFOutputPower4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          maxValueErrorText: state.maxRFOutputPower4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -671,7 +712,8 @@ class _RFOutputPower6AlarmControl extends StatelessWidget {
           minValueTextEditingController: minRFOutputPower6TextEditingController,
           maxValueTextEditingController: maxRFOutputPower6TextEditingController,
           editMode: state.editMode,
-          title: AppLocalizations.of(context)!.rfOutputPower6,
+          title:
+              '${AppLocalizations.of(context)!.rfOutputPower6} (${CustomStyle.dBmV})',
           minValueLabel: AppLocalizations.of(context)!.minRFOutputPower,
           maxValueLabel: AppLocalizations.of(context)!.maxRFOutputPower,
           enabledAlarmState: state.rfOutputPower6AlarmState,
@@ -690,6 +732,12 @@ class _RFOutputPower6AlarmControl extends StatelessWidget {
                 .read<Setting18CCorNodeThresholdBloc>()
                 .add(MaxRFOutputPower6Changed(value));
           },
+          minValueErrorText: state.minRFOutputPower6.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          maxValueErrorText: state.maxRFOutputPower6.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
