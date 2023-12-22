@@ -424,6 +424,10 @@ class _TemperatureAlarmControl extends StatelessWidget {
           maxValueTextEditingController: maxTemperatureTextEditingController,
           editMode: state.editMode,
           title: AppLocalizations.of(context)!.temperatureFC,
+          minValueLabel:
+              '${AppLocalizations.of(context)!.minTemperature}(${getTemperatureUnit(state.temperatureUnit)})',
+          maxValueLabel:
+              '${AppLocalizations.of(context)!.maxTemperature}(${getTemperatureUnit(state.temperatureUnit)})',
           enabledAlarmState: state.temperatureAlarmState,
           onChangedAlarmState: (value) {
             context
@@ -469,6 +473,8 @@ class _VoltageAlarmControl extends StatelessWidget {
               'setting18_ccor_node_voltage_maxValue_textField',
           minValueTextEditingController: minVoltageTextEditingController,
           maxValueTextEditingController: maxVoltageTextEditingController,
+          minValueLabel: AppLocalizations.of(context)!.minVoltage,
+          maxValueLabel: AppLocalizations.of(context)!.maxVoltage,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.voltageLevel} (${CustomStyle.volt})',
@@ -519,6 +525,8 @@ class _RFOutputPower1AlarmControl extends StatelessWidget {
           maxValueTextEditingController: maxRFOutputPower1TextEditingController,
           editMode: state.editMode,
           title: AppLocalizations.of(context)!.rfOutputPower1,
+          minValueLabel: AppLocalizations.of(context)!.minRFOutputPower,
+          maxValueLabel: AppLocalizations.of(context)!.maxRFOutputPower,
           enabledAlarmState: state.rfOutputPower1AlarmState,
           onChangedAlarmState: (value) {
             context
@@ -566,6 +574,8 @@ class _RFOutputPower3AlarmControl extends StatelessWidget {
           maxValueTextEditingController: maxRFOutputPower3TextEditingController,
           editMode: state.editMode,
           title: AppLocalizations.of(context)!.rfOutputPower3,
+          minValueLabel: AppLocalizations.of(context)!.minRFOutputPower,
+          maxValueLabel: AppLocalizations.of(context)!.maxRFOutputPower,
           enabledAlarmState: state.rfOutputPower3AlarmState,
           onChangedAlarmState: (value) {
             context
@@ -613,6 +623,8 @@ class _RFOutputPower4AlarmControl extends StatelessWidget {
           maxValueTextEditingController: maxRFOutputPower4TextEditingController,
           editMode: state.editMode,
           title: AppLocalizations.of(context)!.rfOutputPower4,
+          minValueLabel: AppLocalizations.of(context)!.minRFOutputPower,
+          maxValueLabel: AppLocalizations.of(context)!.maxRFOutputPower,
           enabledAlarmState: state.rfOutputPower4AlarmState,
           onChangedAlarmState: (value) {
             context
@@ -660,6 +672,8 @@ class _RFOutputPower6AlarmControl extends StatelessWidget {
           maxValueTextEditingController: maxRFOutputPower6TextEditingController,
           editMode: state.editMode,
           title: AppLocalizations.of(context)!.rfOutputPower6,
+          minValueLabel: AppLocalizations.of(context)!.minRFOutputPower,
+          maxValueLabel: AppLocalizations.of(context)!.maxRFOutputPower,
           enabledAlarmState: state.rfOutputPower6AlarmState,
           onChangedAlarmState: (value) {
             context

@@ -307,10 +307,14 @@ Widget thresholdAlarmParameterWidget({
   required TextEditingController maxValueTextEditingController,
   required bool editMode,
   required String title,
+  required String minValueLabel,
+  required String maxValueLabel,
   required bool enabledAlarmState,
   required ValueChanged<bool> onChangedAlarmState,
   required ValueChanged<String> onChangedMinValue,
   required ValueChanged<String> onChangedMaxValue,
+  String? minValueErrorText,
+  String? maxValueErrorText,
 }) {
   return Column(
     children: [
@@ -354,6 +358,7 @@ Widget thresholdAlarmParameterWidget({
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
               flex: 2,
@@ -368,14 +373,17 @@ Widget thresholdAlarmParameterWidget({
                 onChanged: onChangedMinValue,
                 maxLength: 40,
                 decoration: InputDecoration(
-                  label: Text(AppLocalizations.of(context)!.minVoltage),
+                  label: Text(minValueLabel),
                   border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(8.0),
+                  contentPadding: const EdgeInsets.all(8.0),
                   isDense: true,
                   filled: true,
                   fillColor: Colors.white,
                   counterText: '',
+                  errorMaxLines: 2,
+                  errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
+                  errorText: minValueErrorText,
                 ),
               ),
             ),
@@ -395,14 +403,17 @@ Widget thresholdAlarmParameterWidget({
                 onChanged: onChangedMaxValue,
                 maxLength: 40,
                 decoration: InputDecoration(
-                  label: Text(AppLocalizations.of(context)!.maxVoltage),
+                  label: Text(maxValueLabel),
                   border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(8.0),
+                  contentPadding: const EdgeInsets.all(8.0),
                   isDense: true,
                   filled: true,
                   fillColor: Colors.white,
                   counterText: '',
+                  errorMaxLines: 2,
+                  errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
+                  errorText: maxValueErrorText,
                 ),
               ),
             ),
