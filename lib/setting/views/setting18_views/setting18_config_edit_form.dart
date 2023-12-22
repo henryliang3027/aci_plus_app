@@ -126,13 +126,13 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
 
         if (state.isInitialize) {
           firstChannelLoadingFrequencyTextEditingController.text =
-              state.firstChannelLoadingFrequency;
+              state.firstChannelLoadingFrequency.value;
           firstChannelLoadingLevelTextEditingController.text =
-              state.firstChannelLoadingLevel;
+              state.firstChannelLoadingLevel.value;
           lastChannelLoadingFrequencyTextEditingController.text =
-              state.lastChannelLoadingFrequency;
+              state.lastChannelLoadingFrequency.value;
           lastChannelLoadingLevelTextEditingController.text =
-              state.lastChannelLoadingLevel;
+              state.lastChannelLoadingLevel.value;
         }
       },
       child: Column(
@@ -143,12 +143,12 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
             width: double.maxFinite,
             height: 58,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20.0),
                   topRight: Radius.circular(20.0)),
               color: Theme.of(context).colorScheme.primary,
             ),
-            child: _PartName(),
+            child: const _PartName(),
           ),
           SingleChildScrollView(
             child: Padding(
@@ -343,6 +343,12 @@ class _FirstChannelLoading extends StatelessWidget {
                 .read<Setting18ConfigEditBloc>()
                 .add(FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
           },
+          errorText1: state.firstChannelLoadingFrequency.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          errorText2: state.firstChannelLoadingLevel.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -385,6 +391,12 @@ class _LastChannelLoading extends StatelessWidget {
                 .read<Setting18ConfigEditBloc>()
                 .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
           },
+          errorText1: state.lastChannelLoadingFrequency.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          errorText2: state.lastChannelLoadingLevel.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );

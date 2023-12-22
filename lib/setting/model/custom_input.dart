@@ -29,7 +29,8 @@ class IntegerInput extends FormzInput<String, ValidationError> {
   ValidationError? validator(String value) {
     RegExp integerRegex = RegExp(r'^-?\d+$');
 
-    if (!integerRegex.hasMatch(value)) {
+    // 如果 value 尚未被更改過(isPure), 則不會跑下列的格式檢查
+    if (!integerRegex.hasMatch(value) && !isPure) {
       return ValidationError.formatError;
     } else {
       return null;
@@ -51,7 +52,8 @@ class FloatPointInput extends FormzInput<String, ValidationError> {
   ValidationError? validator(String value) {
     RegExp floatPointRegex = RegExp(r'^[+-]?\d+(\.\d+)?$');
 
-    if (!floatPointRegex.hasMatch(value)) {
+    // 如果 value 尚未被更改過(isPure), 則不會跑下列的格式檢查
+    if (!floatPointRegex.hasMatch(value) && !isPure) {
       return ValidationError.formatError;
     } else {
       return null;

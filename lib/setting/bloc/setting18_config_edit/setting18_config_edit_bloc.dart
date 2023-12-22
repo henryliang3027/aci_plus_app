@@ -3,8 +3,10 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:aci_plus_app/repositories/config_api.dart';
+import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 
 part 'setting18_config_edit_event.dart';
 part 'setting18_config_edit_state.dart';
@@ -48,15 +50,24 @@ class Setting18ConfigEditBloc
 
     if (result[0]) {
       Config config = result[1];
+      IntegerInput firstChannelLoadingFrequency =
+          IntegerInput.dirty(config.firstChannelLoadingFrequency);
+      FloatPointInput firstChannelLoadingLevel =
+          FloatPointInput.dirty(config.firstChannelLoadingLevel);
+      IntegerInput lastChannelLoadingFrequency =
+          IntegerInput.dirty(config.lastChannelLoadingFrequency);
+      FloatPointInput lastChannelLoadingLevel =
+          FloatPointInput.dirty(config.lastChannelLoadingLevel);
+
       emit(state.copyWith(
         formStatus: FormStatus.requestSuccess,
         saveStatus: SubmissionStatus.none,
         settingStatus: SubmissionStatus.none,
         selectedPartId: _selectedPartId,
-        firstChannelLoadingFrequency: config.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: config.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: config.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: config.lastChannelLoadingLevel,
+        firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: lastChannelLoadingLevel,
         isInitialize: true,
         initialValues: {
           DataKey.firstChannelLoadingFrequency:
@@ -67,10 +78,10 @@ class Setting18ConfigEditBloc
           DataKey.lastChannelLoadingLevel: config.firstChannelLoadingFrequency,
         },
         enableSubmission: _isEnabledSubmission(
-          firstChannelLoadingFrequency: config.firstChannelLoadingFrequency,
-          firstChannelLoadingLevel: config.firstChannelLoadingLevel,
-          lastChannelLoadingFrequency: config.lastChannelLoadingFrequency,
-          lastChannelLoadingLevel: config.lastChannelLoadingLevel,
+          firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+          firstChannelLoadingLevel: firstChannelLoadingLevel,
+          lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+          lastChannelLoadingLevel: lastChannelLoadingLevel,
         ),
       ));
     } else {
@@ -78,13 +89,13 @@ class Setting18ConfigEditBloc
           _amp18Repository.characteristicDataCache;
 
       String partId = characteristicDataCache[DataKey.partId] ?? '';
-      String firstChannelLoadingFrequency =
+      String initFirstChannelLoadingFrequency =
           characteristicDataCache[DataKey.firstChannelLoadingFrequency] ?? '';
-      String lastChannelLoadingFrequency =
+      String initLastChannelLoadingFrequency =
           characteristicDataCache[DataKey.lastChannelLoadingFrequency] ?? '';
-      String firstChannelLoadingLevel =
+      String initFirstChannelLoadingLevel =
           characteristicDataCache[DataKey.firstChannelLoadingLevel] ?? '';
-      String lastChannelLoadingLevel =
+      String initLastChannelLoadingLevel =
           characteristicDataCache[DataKey.lastChannelLoadingLevel] ?? '';
 
       // 如果 config 不存在而且 partId == _selectedPartId,
@@ -92,11 +103,20 @@ class Setting18ConfigEditBloc
       if (partId == _selectedPartId) {
         await _configApi.addConfigByPartId(
           partId: _selectedPartId,
-          firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-          firstChannelLoadingLevel: firstChannelLoadingLevel,
-          lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-          lastChannelLoadingLevel: lastChannelLoadingLevel,
+          firstChannelLoadingFrequency: initFirstChannelLoadingFrequency,
+          firstChannelLoadingLevel: initLastChannelLoadingFrequency,
+          lastChannelLoadingFrequency: initFirstChannelLoadingLevel,
+          lastChannelLoadingLevel: initLastChannelLoadingLevel,
         );
+
+        IntegerInput firstChannelLoadingFrequency =
+            IntegerInput.dirty(initFirstChannelLoadingFrequency);
+        FloatPointInput firstChannelLoadingLevel =
+            FloatPointInput.dirty(initLastChannelLoadingFrequency);
+        IntegerInput lastChannelLoadingFrequency =
+            IntegerInput.dirty(initFirstChannelLoadingLevel);
+        FloatPointInput lastChannelLoadingLevel =
+            FloatPointInput.dirty(initLastChannelLoadingLevel);
 
         emit(state.copyWith(
           formStatus: FormStatus.requestSuccess,
@@ -109,10 +129,12 @@ class Setting18ConfigEditBloc
           lastChannelLoadingLevel: lastChannelLoadingLevel,
           isInitialize: true,
           initialValues: {
-            DataKey.firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-            DataKey.firstChannelLoadingLevel: firstChannelLoadingFrequency,
-            DataKey.lastChannelLoadingFrequency: firstChannelLoadingFrequency,
-            DataKey.lastChannelLoadingLevel: firstChannelLoadingFrequency,
+            DataKey.firstChannelLoadingFrequency:
+                initFirstChannelLoadingFrequency,
+            DataKey.firstChannelLoadingLevel: initFirstChannelLoadingLevel,
+            DataKey.lastChannelLoadingFrequency:
+                initLastChannelLoadingFrequency,
+            DataKey.lastChannelLoadingLevel: initLastChannelLoadingLevel,
           },
           enableSubmission: _isEnabledSubmission(
             firstChannelLoadingFrequency: firstChannelLoadingFrequency,
@@ -124,15 +146,12 @@ class Setting18ConfigEditBloc
       } else {
         // 如果 config 不存在而且 partId != _selectedPartId,
         // 則初始化為空值
+
         emit(state.copyWith(
           formStatus: FormStatus.requestSuccess,
           saveStatus: SubmissionStatus.none,
           settingStatus: SubmissionStatus.none,
           selectedPartId: _selectedPartId,
-          firstChannelLoadingFrequency: '',
-          firstChannelLoadingLevel: '',
-          lastChannelLoadingFrequency: '',
-          lastChannelLoadingLevel: '',
           isInitialize: true,
           initialValues: {
             DataKey.firstChannelLoadingFrequency: '',
@@ -141,10 +160,10 @@ class Setting18ConfigEditBloc
             DataKey.lastChannelLoadingLevel: '',
           },
           enableSubmission: _isEnabledSubmission(
-            firstChannelLoadingFrequency: '',
-            firstChannelLoadingLevel: '',
-            lastChannelLoadingFrequency: '',
-            lastChannelLoadingLevel: '',
+            firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+            firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+            lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+            lastChannelLoadingLevel: state.lastChannelLoadingLevel,
           ),
         ));
       }
@@ -155,14 +174,16 @@ class Setting18ConfigEditBloc
     FirstChannelLoadingFrequencyChanged event,
     Emitter<Setting18ConfigEditState> emit,
   ) {
+    IntegerInput firstChannelLoadingFrequency =
+        IntegerInput.dirty(event.firstChannelLoadingFrequency);
     emit(state.copyWith(
       formStatus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
-      firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
+      firstChannelLoadingFrequency: firstChannelLoadingFrequency,
       enableSubmission: _isEnabledSubmission(
-        firstChannelLoadingFrequency: event.firstChannelLoadingFrequency,
+        firstChannelLoadingFrequency: firstChannelLoadingFrequency,
         firstChannelLoadingLevel: state.firstChannelLoadingLevel,
         lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
         lastChannelLoadingLevel: state.lastChannelLoadingLevel,
@@ -174,15 +195,17 @@ class Setting18ConfigEditBloc
     FirstChannelLoadingLevelChanged event,
     Emitter<Setting18ConfigEditState> emit,
   ) {
+    FloatPointInput firstChannelLoadingLevel =
+        FloatPointInput.dirty(event.firstChannelLoadingLevel);
     emit(state.copyWith(
       formStatus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
-      firstChannelLoadingLevel: event.firstChannelLoadingLevel,
+      firstChannelLoadingLevel: firstChannelLoadingLevel,
       enableSubmission: _isEnabledSubmission(
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: event.firstChannelLoadingLevel,
+        firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
         lastChannelLoadingLevel: state.lastChannelLoadingLevel,
       ),
@@ -193,16 +216,18 @@ class Setting18ConfigEditBloc
     LastChannelLoadingFrequencyChanged event,
     Emitter<Setting18ConfigEditState> emit,
   ) {
+    IntegerInput lastChannelLoadingFrequency =
+        IntegerInput.dirty(event.lastChannelLoadingFrequency);
     emit(state.copyWith(
       formStatus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
-      lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
+      lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       enableSubmission: _isEnabledSubmission(
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: event.lastChannelLoadingFrequency,
+        lastChannelLoadingFrequency: lastChannelLoadingFrequency,
         lastChannelLoadingLevel: state.lastChannelLoadingLevel,
       ),
     ));
@@ -212,17 +237,19 @@ class Setting18ConfigEditBloc
     LastChannelLoadingLevelChanged event,
     Emitter<Setting18ConfigEditState> emit,
   ) {
+    FloatPointInput lastChannelLoadingLevel =
+        FloatPointInput.dirty(event.lastChannelLoadingLevel);
     emit(state.copyWith(
       formStatus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
-      lastChannelLoadingLevel: event.lastChannelLoadingLevel,
+      lastChannelLoadingLevel: lastChannelLoadingLevel,
       enableSubmission: _isEnabledSubmission(
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: state.firstChannelLoadingLevel,
         lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: event.lastChannelLoadingLevel,
+        lastChannelLoadingLevel: lastChannelLoadingLevel,
       ),
     ));
   }
@@ -239,10 +266,10 @@ class Setting18ConfigEditBloc
 
     await _configApi.addConfigByPartId(
       partId: _selectedPartId,
-      firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-      firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-      lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-      lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+      firstChannelLoadingFrequency: state.firstChannelLoadingFrequency.value,
+      firstChannelLoadingLevel: state.firstChannelLoadingLevel.value,
+      lastChannelLoadingFrequency: state.lastChannelLoadingFrequency.value,
+      lastChannelLoadingLevel: state.lastChannelLoadingLevel.value,
     );
 
     emit(state.copyWith(
@@ -264,10 +291,10 @@ class Setting18ConfigEditBloc
 
     await _configApi.addConfigByPartId(
       partId: _selectedPartId,
-      firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-      firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-      lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-      lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+      firstChannelLoadingFrequency: state.firstChannelLoadingFrequency.value,
+      firstChannelLoadingLevel: state.firstChannelLoadingLevel.value,
+      lastChannelLoadingFrequency: state.lastChannelLoadingFrequency.value,
+      lastChannelLoadingLevel: state.lastChannelLoadingLevel.value,
     );
 
     bool resultOfSetPilotFrequencyMode = await _amp18Repository
@@ -276,35 +303,36 @@ class Setting18ConfigEditBloc
     settingResult.add(
         '${DataKey.pilotFrequencyMode.name},$resultOfSetPilotFrequencyMode');
 
-    if (state.firstChannelLoadingFrequency.isNotEmpty) {
+    if (state.firstChannelLoadingFrequency.value.isNotEmpty) {
       bool resultOfSetFirstChannelLoadingFrequency =
           await _amp18Repository.set1p8GFirstChannelLoadingFrequency(
-              state.firstChannelLoadingFrequency);
+              state.firstChannelLoadingFrequency.value);
 
       settingResult.add(
           '${DataKey.firstChannelLoadingFrequency.name},$resultOfSetFirstChannelLoadingFrequency');
     }
 
-    if (state.firstChannelLoadingLevel.isNotEmpty) {
-      bool resultOfSetFirstChannelLoadingLevel = await _amp18Repository
-          .set1p8GFirstChannelLoadingLevel(state.firstChannelLoadingLevel);
+    if (state.firstChannelLoadingLevel.value.isNotEmpty) {
+      bool resultOfSetFirstChannelLoadingLevel =
+          await _amp18Repository.set1p8GFirstChannelLoadingLevel(
+              state.firstChannelLoadingLevel.value);
 
       settingResult.add(
           '${DataKey.firstChannelLoadingLevel.name},$resultOfSetFirstChannelLoadingLevel');
     }
 
-    if (state.lastChannelLoadingFrequency.isNotEmpty) {
+    if (state.lastChannelLoadingFrequency.value.isNotEmpty) {
       bool resultOfSetLastChannelLoadingFrequency =
           await _amp18Repository.set1p8GLastChannelLoadingFrequency(
-              state.lastChannelLoadingFrequency);
+              state.lastChannelLoadingFrequency.value);
 
       settingResult.add(
           '${DataKey.lastChannelLoadingFrequency.name},$resultOfSetLastChannelLoadingFrequency');
     }
 
-    if (state.lastChannelLoadingLevel.isNotEmpty) {
+    if (state.lastChannelLoadingLevel.value.isNotEmpty) {
       bool resultOfSetLastChannelLoadingLevel = await _amp18Repository
-          .set1p8GLastChannelLoadingLevel(state.lastChannelLoadingLevel);
+          .set1p8GLastChannelLoadingLevel(state.lastChannelLoadingLevel.value);
 
       settingResult.add(
           '${DataKey.lastChannelLoadingLevel.name},$resultOfSetLastChannelLoadingLevel');
@@ -322,16 +350,27 @@ class Setting18ConfigEditBloc
   }
 
   bool _isEnabledSubmission({
-    required String firstChannelLoadingFrequency,
-    required String firstChannelLoadingLevel,
-    required String lastChannelLoadingFrequency,
-    required String lastChannelLoadingLevel,
+    required IntegerInput firstChannelLoadingFrequency,
+    required FloatPointInput firstChannelLoadingLevel,
+    required IntegerInput lastChannelLoadingFrequency,
+    required FloatPointInput lastChannelLoadingLevel,
   }) {
-    if (firstChannelLoadingFrequency.isNotEmpty ||
-        firstChannelLoadingLevel.isNotEmpty ||
-        lastChannelLoadingFrequency.isNotEmpty ||
-        lastChannelLoadingLevel.isNotEmpty) {
-      return true;
+    bool isValid = Formz.validate([
+      firstChannelLoadingFrequency,
+      firstChannelLoadingLevel,
+      lastChannelLoadingFrequency,
+      lastChannelLoadingLevel,
+    ]);
+
+    if (isValid) {
+      if (firstChannelLoadingFrequency.value.isNotEmpty ||
+          firstChannelLoadingLevel.value.isNotEmpty ||
+          lastChannelLoadingFrequency.value.isNotEmpty ||
+          lastChannelLoadingLevel.value.isNotEmpty) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }

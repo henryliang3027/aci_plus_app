@@ -6,10 +6,10 @@ class Setting18ConfigEditState extends Equatable {
     this.saveStatus = SubmissionStatus.none,
     this.settingStatus = SubmissionStatus.none,
     this.selectedPartId = '',
-    this.firstChannelLoadingFrequency = '',
-    this.lastChannelLoadingFrequency = '',
-    this.firstChannelLoadingLevel = '',
-    this.lastChannelLoadingLevel = '',
+    this.firstChannelLoadingFrequency = const IntegerInput.pure(),
+    this.firstChannelLoadingLevel = const FloatPointInput.pure(),
+    this.lastChannelLoadingFrequency = const IntegerInput.pure(),
+    this.lastChannelLoadingLevel = const FloatPointInput.pure(),
     this.isInitialize = false,
     this.initialValues = const {},
     this.settingResult = const [],
@@ -20,10 +20,10 @@ class Setting18ConfigEditState extends Equatable {
   final SubmissionStatus saveStatus;
   final SubmissionStatus settingStatus;
   final String selectedPartId;
-  final String firstChannelLoadingFrequency;
-  final String firstChannelLoadingLevel;
-  final String lastChannelLoadingFrequency;
-  final String lastChannelLoadingLevel;
+  final IntegerInput firstChannelLoadingFrequency;
+  final FloatPointInput firstChannelLoadingLevel;
+  final IntegerInput lastChannelLoadingFrequency;
+  final FloatPointInput lastChannelLoadingLevel;
   final bool isInitialize;
   final Map<DataKey, String> initialValues;
   final List<String> settingResult;
@@ -34,10 +34,10 @@ class Setting18ConfigEditState extends Equatable {
     SubmissionStatus? saveStatus,
     SubmissionStatus? settingStatus,
     String? selectedPartId,
-    String? firstChannelLoadingFrequency,
-    String? firstChannelLoadingLevel,
-    String? lastChannelLoadingFrequency,
-    String? lastChannelLoadingLevel,
+    IntegerInput? firstChannelLoadingFrequency,
+    FloatPointInput? firstChannelLoadingLevel,
+    IntegerInput? lastChannelLoadingFrequency,
+    FloatPointInput? lastChannelLoadingLevel,
     bool? isInitialize,
     Map<DataKey, String>? initialValues,
     List<String>? settingResult,

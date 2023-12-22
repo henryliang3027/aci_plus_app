@@ -431,11 +431,10 @@ class _TemperatureAlarmControl extends StatelessWidget {
           minValueTextEditingController: minTemperatureTextEditingController,
           maxValueTextEditingController: maxTemperatureTextEditingController,
           editMode: state.editMode,
-          title: AppLocalizations.of(context)!.temperatureFC,
-          minValueLabel:
-              '${AppLocalizations.of(context)!.minTemperature}(${getTemperatureUnit(state.temperatureUnit)})',
-          maxValueLabel:
-              '${AppLocalizations.of(context)!.maxTemperature}(${getTemperatureUnit(state.temperatureUnit)})',
+          title:
+              '${AppLocalizations.of(context)!.temperatureFC} (${getTemperatureUnit(state.temperatureUnit)})',
+          minValueLabel: AppLocalizations.of(context)!.minTemperature,
+          maxValueLabel: AppLocalizations.of(context)!.maxTemperature,
           enabledAlarmState: state.temperatureAlarmState,
           onChangedAlarmState: (value) {
             context
