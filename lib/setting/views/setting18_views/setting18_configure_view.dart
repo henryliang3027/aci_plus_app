@@ -329,15 +329,17 @@ class Setting18ConfigureView extends StatelessWidget {
           locationTextEditingController.text = state.location;
           coordinateTextEditingController.text = state.coordinates;
           firstChannelLoadingFrequencyTextEditingController.text =
-              state.firstChannelLoadingFrequency;
+              state.firstChannelLoadingFrequency.value;
           firstChannelLoadingLevelTextEditingController.text =
-              state.firstChannelLoadingLevel;
+              state.firstChannelLoadingLevel.value;
           lastChannelLoadingFrequencyTextEditingController.text =
-              state.lastChannelLoadingFrequency;
+              state.lastChannelLoadingFrequency.value;
           lastChannelLoadingLevelTextEditingController.text =
-              state.lastChannelLoadingLevel;
-          pilotFrequency1TextEditingController.text = state.pilotFrequency1;
-          pilotFrequency2TextEditingController.text = state.pilotFrequency2;
+              state.lastChannelLoadingLevel.value;
+          pilotFrequency1TextEditingController.text =
+              state.pilotFrequency1.value;
+          pilotFrequency2TextEditingController.text =
+              state.pilotFrequency2.value;
           manualModePilot1RFOutputPowerTextEditingController.text =
               state.manualModePilot1RFOutputPower;
           manualModePilot2RFOutputPowerTextEditingController.text =
@@ -757,6 +759,12 @@ class _FirstChannelLoading extends StatelessWidget {
                 .read<Setting18ConfigureBloc>()
                 .add(FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
           },
+          errorText1: state.firstChannelLoadingFrequency.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          errorText2: state.firstChannelLoadingLevel.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -799,6 +807,12 @@ class _LastChannelLoading extends StatelessWidget {
                 .read<Setting18ConfigureBloc>()
                 .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
           },
+          errorText1: state.lastChannelLoadingFrequency.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          errorText2: state.lastChannelLoadingLevel.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -832,16 +846,15 @@ class _PilotFrequency1 extends StatelessWidget {
           textEditingController1: pilotFrequency1TextEditingController,
           textEditingController2:
               manualModePilot1RFOutputPowerTextEditingController,
-          onChanged1: (lastChannelLoadingFrequency) {
-            context.read<Setting18ConfigureBloc>().add(
-                LastChannelLoadingFrequencyChanged(
-                    lastChannelLoadingFrequency));
-          },
-          onChanged2: (lastChannelLoadingLevel) {
+          onChanged1: (frequency) {
             context
                 .read<Setting18ConfigureBloc>()
-                .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
+                .add(PilotFrequency1Changed(frequency));
           },
+          onChanged2: (_) {},
+          errorText1: state.pilotFrequency1.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -881,6 +894,9 @@ class _PilotFrequency2 extends StatelessWidget {
                 .add(PilotFrequency2Changed(frequency));
           },
           onChanged2: (_) {},
+          errorText1: state.pilotFrequency2.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );

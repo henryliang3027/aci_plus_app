@@ -175,6 +175,8 @@
     "websiteDesigner": "Website Designer",
     "frontendBackendEngineer": "Front-end / Back-end Engineer",
     "systemEngineer": "System Engineer",
+
+    "textFieldErrorMessage": "Invalid format",
     
     "dialogTitleAskBeforeExitApp": "Do you want to exit the app ?",
     "dialogTitleDownloading": "Downloading...",
@@ -293,4 +295,6 @@
     "dialogMessageEnterConfirm": "To confirm, enter \"confirm\" in the box below",
     "dialogMessageCodeHint": "Please enter your code",
     "dialogMessageEnterYourCode": "The code can only be Arabic numerals and up to eight characters:"
+
+    
 }

@@ -175,6 +175,8 @@
     "frontendBackendEngineer": "Ingeniero Front-end/Back-end",
     "systemEngineer": "Ingeniero de Sistemas",
 
+    "textFieldErrorMessage": "Formato inválido",
+
     "dialogTitleAskBeforeExitApp": "¿Quieres salir de la aplicación?",
     "dialogTitleDownloading": "Descargando...",
     "dialogTitleProcessing": "configurando...",

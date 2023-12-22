@@ -172,6 +172,8 @@
     "websiteDesigner": "Concepteur de site Web",
     "frontendBackendEngineer": "Ingénieur Frontend Backend",
     "systemEngineer": "Ingénieur système",
+
+    "textFieldErrorMessage": "Format invalide",
     
     "dialogTitleAskBeforeExitApp": "Voulez-vous quitter l’application ?",
     "dialogTitleDownloading": "téléchargement...",

@@ -198,6 +198,8 @@ Widget twoTextField({
   required TextEditingController textEditingController2,
   required ValueChanged onChanged1,
   required ValueChanged onChanged2,
+  String? errorText1,
+  String? errorText2,
 }) {
   return Column(
     children: [
@@ -226,6 +228,7 @@ Widget twoTextField({
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
               flex: 2,
@@ -249,6 +252,9 @@ Widget twoTextField({
                   filled: true,
                   fillColor: Colors.white,
                   counterText: '',
+                  errorMaxLines: 2,
+                  errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
+                  errorText: errorText1,
                 ),
               ),
             ),
@@ -277,6 +283,9 @@ Widget twoTextField({
                   filled: true,
                   fillColor: Colors.white,
                   counterText: '',
+                  errorMaxLines: 2,
+                  errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
+                  errorText: errorText2,
                 ),
               ),
             ),

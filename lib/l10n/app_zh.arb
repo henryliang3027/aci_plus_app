@@ -173,6 +173,8 @@
     "websiteDesigner": "網頁設計師",
     "frontendBackendEngineer": "程式設計師",
     "systemEngineer": "系統工程師",
+
+    "textFieldErrorMessage": "格式不正確",
     
     "dialogTitleAskBeforeExitApp": "您確定要退出應用程式嗎？",
     "dialogTitleDownloading": "下載中...",

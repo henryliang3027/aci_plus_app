@@ -293,14 +293,17 @@ class Setting18ThresholdView extends StatelessWidget {
         }
 
         if (state.isInitialize) {
-          minTemperatureTextEditingController.text = state.minTemperature;
-          maxTemperatureTextEditingController.text = state.maxTemperature;
-          minVoltageTextEditingController.text = state.minVoltage;
-          maxVoltageTextEditingController.text = state.maxVoltage;
+          minTemperatureTextEditingController.text = state.minTemperature.value;
+          maxTemperatureTextEditingController.text = state.maxTemperature.value;
+          minVoltageTextEditingController.text = state.minVoltage.value;
+          maxVoltageTextEditingController.text = state.maxVoltage.value;
           // minVoltageRippleTextEditingController.text = state.minVoltageRipple;
-          maxVoltageRippleTextEditingController.text = state.maxVoltageRipple;
-          minRFOutputPowerTextEditingController.text = state.minRFOutputPower;
-          maxRFOutputPowerTextEditingController.text = state.maxRFOutputPower;
+          maxVoltageRippleTextEditingController.text =
+              state.maxVoltageRipple.value;
+          minRFOutputPowerTextEditingController.text =
+              state.minRFOutputPower.value;
+          maxRFOutputPowerTextEditingController.text =
+              state.maxRFOutputPower.value;
         }
       },
       child: Scaffold(

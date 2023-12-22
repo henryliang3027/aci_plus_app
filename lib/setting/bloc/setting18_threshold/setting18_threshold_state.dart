@@ -4,18 +4,18 @@ class Setting18ThresholdState extends Equatable {
   const Setting18ThresholdState({
     this.submissionStatus = SubmissionStatus.none,
     this.temperatureAlarmState = false,
-    this.minTemperature = '',
-    this.maxTemperature = '',
+    this.minTemperature = const FloatPointInput.pure(),
+    this.maxTemperature = const FloatPointInput.pure(),
     this.temperatureUnit = TemperatureUnit.fahrenheit,
     this.voltageAlarmState = false,
-    this.minVoltage = '',
-    this.maxVoltage = '',
+    this.minVoltage = const FloatPointInput.pure(),
+    this.maxVoltage = const FloatPointInput.pure(),
     this.voltageRippleAlarmState = false,
-    this.minVoltageRipple = '',
-    this.maxVoltageRipple = '',
+    this.minVoltageRipple = const IntegerInput.pure(),
+    this.maxVoltageRipple = const IntegerInput.pure(),
     this.rfOutputPowerAlarmState = false,
-    this.minRFOutputPower = '',
-    this.maxRFOutputPower = '',
+    this.minRFOutputPower = const FloatPointInput.pure(),
+    this.maxRFOutputPower = const FloatPointInput.pure(),
     this.splitOptionAlarmState = false,
     // this.pilotFrequency1AlarmState = false,
     // this.pilotFrequency2AlarmState = false,
@@ -31,18 +31,18 @@ class Setting18ThresholdState extends Equatable {
   final SubmissionStatus submissionStatus;
 
   final bool temperatureAlarmState;
-  final String minTemperature;
-  final String maxTemperature;
+  final FloatPointInput minTemperature;
+  final FloatPointInput maxTemperature;
   final TemperatureUnit temperatureUnit;
   final bool voltageAlarmState;
-  final String minVoltage;
-  final String maxVoltage;
+  final FloatPointInput minVoltage;
+  final FloatPointInput maxVoltage;
   final bool voltageRippleAlarmState;
-  final String minVoltageRipple;
-  final String maxVoltageRipple;
+  final IntegerInput minVoltageRipple;
+  final IntegerInput maxVoltageRipple;
   final bool rfOutputPowerAlarmState;
-  final String minRFOutputPower;
-  final String maxRFOutputPower;
+  final FloatPointInput minRFOutputPower;
+  final FloatPointInput maxRFOutputPower;
   final bool splitOptionAlarmState;
   // final bool pilotFrequency1AlarmState;
   // final bool pilotFrequency2AlarmState;
@@ -57,18 +57,18 @@ class Setting18ThresholdState extends Equatable {
   Setting18ThresholdState copyWith({
     SubmissionStatus? submissionStatus,
     bool? temperatureAlarmState,
-    String? minTemperature,
-    String? maxTemperature,
+    FloatPointInput? minTemperature,
+    FloatPointInput? maxTemperature,
     TemperatureUnit? temperatureUnit,
     bool? voltageAlarmState,
-    String? minVoltage,
-    String? maxVoltage,
+    FloatPointInput? minVoltage,
+    FloatPointInput? maxVoltage,
     bool? voltageRippleAlarmState,
-    String? minVoltageRipple,
-    String? maxVoltageRipple,
+    IntegerInput? minVoltageRipple,
+    IntegerInput? maxVoltageRipple,
     bool? rfOutputPowerAlarmState,
-    String? minRFOutputPower,
-    String? maxRFOutputPower,
+    FloatPointInput? minRFOutputPower,
+    FloatPointInput? maxRFOutputPower,
     bool? splitOptionAlarmState,
     // bool? pilotFrequency1AlarmState,
     // bool? pilotFrequency2AlarmState,
