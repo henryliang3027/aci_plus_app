@@ -72,10 +72,10 @@ class Setting18ConfigEditBloc
         initialValues: {
           DataKey.firstChannelLoadingFrequency:
               config.firstChannelLoadingFrequency,
-          DataKey.firstChannelLoadingLevel: config.firstChannelLoadingFrequency,
+          DataKey.firstChannelLoadingLevel: config.firstChannelLoadingLevel,
           DataKey.lastChannelLoadingFrequency:
-              config.firstChannelLoadingFrequency,
-          DataKey.lastChannelLoadingLevel: config.firstChannelLoadingFrequency,
+              config.lastChannelLoadingFrequency,
+          DataKey.lastChannelLoadingLevel: config.lastChannelLoadingLevel,
         },
         enableSubmission: _isEnabledSubmission(
           firstChannelLoadingFrequency: firstChannelLoadingFrequency,
@@ -91,10 +91,10 @@ class Setting18ConfigEditBloc
       String partId = characteristicDataCache[DataKey.partId] ?? '';
       String initFirstChannelLoadingFrequency =
           characteristicDataCache[DataKey.firstChannelLoadingFrequency] ?? '';
-      String initLastChannelLoadingFrequency =
-          characteristicDataCache[DataKey.lastChannelLoadingFrequency] ?? '';
       String initFirstChannelLoadingLevel =
           characteristicDataCache[DataKey.firstChannelLoadingLevel] ?? '';
+      String initLastChannelLoadingFrequency =
+          characteristicDataCache[DataKey.lastChannelLoadingFrequency] ?? '';
       String initLastChannelLoadingLevel =
           characteristicDataCache[DataKey.lastChannelLoadingLevel] ?? '';
 
@@ -104,17 +104,17 @@ class Setting18ConfigEditBloc
         await _configApi.addConfigByPartId(
           partId: _selectedPartId,
           firstChannelLoadingFrequency: initFirstChannelLoadingFrequency,
-          firstChannelLoadingLevel: initLastChannelLoadingFrequency,
-          lastChannelLoadingFrequency: initFirstChannelLoadingLevel,
+          firstChannelLoadingLevel: initFirstChannelLoadingLevel,
+          lastChannelLoadingFrequency: initLastChannelLoadingFrequency,
           lastChannelLoadingLevel: initLastChannelLoadingLevel,
         );
 
         IntegerInput firstChannelLoadingFrequency =
             IntegerInput.dirty(initFirstChannelLoadingFrequency);
         FloatPointInput firstChannelLoadingLevel =
-            FloatPointInput.dirty(initLastChannelLoadingFrequency);
+            FloatPointInput.dirty(initFirstChannelLoadingLevel);
         IntegerInput lastChannelLoadingFrequency =
-            IntegerInput.dirty(initFirstChannelLoadingLevel);
+            IntegerInput.dirty(initLastChannelLoadingFrequency);
         FloatPointInput lastChannelLoadingLevel =
             FloatPointInput.dirty(initLastChannelLoadingLevel);
 

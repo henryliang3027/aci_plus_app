@@ -220,7 +220,7 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
                 child: Text(
                   formatResultValue(value),
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: CustomStyle.sizeL,
                     color: valueColor,
                   ),
                   textAlign: TextAlign.end,

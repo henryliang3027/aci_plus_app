@@ -50,63 +50,60 @@ class _ConfigListView extends StatelessWidget {
     Widget buildConfigListView({
       required Setting18ConfigState setting18configState,
     }) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.separated(
-          itemCount: setting18configState.partIds.length,
-          separatorBuilder: (context, index) => const SizedBox(
-            height: 8.0,
-          ),
-          itemBuilder: (context, index) {
-            return Card(
-              margin: EdgeInsets.zero,
-              shape: RoundedRectangleBorder(
+      return ListView.separated(
+        itemCount: setting18configState.partIds.length,
+        separatorBuilder: (context, index) => const SizedBox(),
+        itemBuilder: (context, index) {
+          return Card(
+            // margin: EdgeInsets.zero,
+            color: Theme.of(context).colorScheme.onPrimary,
+            surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Container(
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
+                // color: index % 2 == 0
+                //     ? const Color.fromARGB(255, 197, 204, 246)
+                //     : const Color.fromARGB(255, 222, 227, 255),
               ),
-              child: Container(
-                decoration: BoxDecoration(
+              height: 100,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
                   borderRadius: BorderRadius.circular(10),
-                  color: index % 2 == 0
-                      ? const Color.fromARGB(255, 197, 204, 246)
-                      : const Color.fromARGB(255, 222, 227, 255),
-                ),
-                height: 100,
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(10),
-                    onTap: () {
-                      showModuleSettingDialog(
-                          selectedPartId: setting18configState.partIds[index]);
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: CustomStyle.sizeXXL,
-                          ),
-                          child: Text(
-                            partIdMap[setting18configState.partIds[index]]!,
-                            style: const TextStyle(
-                              fontSize: CustomStyle.sizeXXXL,
-                            ),
+                  onTap: () {
+                    showModuleSettingDialog(
+                        selectedPartId: setting18configState.partIds[index]);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 26.0,
+                        ),
+                        child: Text(
+                          partIdMap[setting18configState.partIds[index]]!,
+                          style: const TextStyle(
+                            fontSize: CustomStyle.size36,
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: CustomStyle.sizeXXL,
-                          ),
-                          child: Icon(Icons.edit),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 26.0,
                         ),
-                      ],
-                    ),
+                        child: Icon(Icons.edit),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       );
     }
 

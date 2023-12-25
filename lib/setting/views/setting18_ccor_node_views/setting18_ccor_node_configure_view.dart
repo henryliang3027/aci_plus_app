@@ -102,7 +102,7 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
                 child: Text(
                   formatResultValue(value),
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: CustomStyle.sizeL,
                     color: valueColor,
                   ),
                   textAlign: TextAlign.end,

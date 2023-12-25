@@ -321,7 +321,7 @@ class _WorkingModeCard extends StatelessWidget {
               currentWorkingMode: workingMode,
             ),
             const SizedBox(
-              height: 20.0,
+              height: CustomStyle.sizeXXL,
             ),
           ],
         ),
@@ -399,7 +399,7 @@ class _SplitOptionCard extends StatelessWidget {
                       splitOptionAlarmState: splitOptionAlarmState,
                       splitOptionAlarmSeverity: splitOptionAlarmSeverity,
                       currentSplitOption: currentSplitOption,
-                      fontSize: 40,
+                      fontSize: CustomStyle.size4XL,
                     ),
                   ],
                 ),
@@ -455,7 +455,7 @@ class _SplitOptionCard extends StatelessWidget {
               currentSplitOption: splitOption,
             ),
             const SizedBox(
-              height: 20.0,
+              height: CustomStyle.sizeXXL,
             ),
           ],
         ),
@@ -637,12 +637,12 @@ class _TemperatureCard extends StatelessWidget {
                       maxTemperature: maxTemperature,
                       currentTemperature: currentTemperature,
                       unit: unit,
-                      fontSize: 40,
+                      fontSize: CustomStyle.size4XL,
                     ),
                     Text(
                       currentTemperatureTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -650,7 +650,7 @@ class _TemperatureCard extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 20.0,
+              height: CustomStyle.sizeXXL,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -663,12 +663,12 @@ class _TemperatureCard extends StatelessWidget {
                         loadingStatus: loadingStatus,
                         minTemperature: historicalMinTemperature,
                         unit: unit,
-                        fontSize: 32,
+                        fontSize: CustomStyle.size32,
                       ),
                       Text(
                         minTemperatureTitle,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: CustomStyle.sizeL,
                         ),
                       ),
                     ],
@@ -682,12 +682,12 @@ class _TemperatureCard extends StatelessWidget {
                         loadingStatus: loadingStatus,
                         maxTemperature: historicalMaxTemperature,
                         unit: unit,
-                        fontSize: 32,
+                        fontSize: CustomStyle.size32,
                       ),
                       Text(
                         maxTemperatureTitle,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: CustomStyle.sizeL,
                         ),
                       ),
                     ],
@@ -1015,12 +1015,12 @@ class _PowerSupplyCard extends StatelessWidget {
                       minVoltage: minVoltage,
                       maxVoltage: maxVoltage,
                       currentVoltage: currentVoltage,
-                      fontSize: 40,
+                      fontSize: CustomStyle.size4XL,
                     ),
                     Text(
                       currentVoltageTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -1029,7 +1029,7 @@ class _PowerSupplyCard extends StatelessWidget {
             ],
           ),
           const SizedBox(
-            height: 20.0,
+            height: CustomStyle.sizeXXL,
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -1041,12 +1041,12 @@ class _PowerSupplyCard extends StatelessWidget {
                     getHistoricalMinVoltage(
                       loadingStatus: loadingStatus,
                       minVoltage: historicalMinVoltage,
-                      fontSize: 32,
+                      fontSize: CustomStyle.size32,
                     ),
                     Text(
                       minVoltageTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -1059,12 +1059,12 @@ class _PowerSupplyCard extends StatelessWidget {
                     getHistoricalMaxVoltage(
                       loadingStatus: loadingStatus,
                       maxVoltage: historicalMaxVoltage,
-                      fontSize: 32,
+                      fontSize: CustomStyle.size32,
                     ),
                     Text(
                       maxVoltageTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -1113,7 +1113,7 @@ class _PowerSupplyCard extends StatelessWidget {
               borderColor: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(
-              height: 20.0,
+              height: CustomStyle.sizeXXL,
             ),
           ],
         ),
@@ -1290,12 +1290,12 @@ class _VoltageRippleCard extends StatelessWidget {
                       minVoltageRipple: minVoltageRipple,
                       maxVoltageRipple: maxVoltageRipple,
                       currentVoltageRipple: currentVoltageRipple,
-                      fontSize: 40,
+                      fontSize: CustomStyle.size4XL,
                     ),
                     Text(
                       currentVoltageRippleTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -1304,7 +1304,7 @@ class _VoltageRippleCard extends StatelessWidget {
             ],
           ),
           const SizedBox(
-            height: 20.0,
+            height: CustomStyle.sizeXXL,
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -1316,12 +1316,12 @@ class _VoltageRippleCard extends StatelessWidget {
                     getHistoricalMinVoltageRipple(
                       loadingStatus: loadingStatus,
                       minVoltageRipple: historicalMinVoltageRipple,
-                      fontSize: 32,
+                      fontSize: CustomStyle.size32,
                     ),
                     Text(
                       minVoltageRippleTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -1334,12 +1334,12 @@ class _VoltageRippleCard extends StatelessWidget {
                     getHistoricalMaxVoltageRipple(
                       loadingStatus: loadingStatus,
                       maxVoltageRipple: historicalMaxVoltageRipple,
-                      fontSize: 32,
+                      fontSize: CustomStyle.size32,
                     ),
                     Text(
                       maxVoltageRippleTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -1396,7 +1396,7 @@ class _VoltageRippleCard extends StatelessWidget {
               borderColor: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(
-              height: 20.0,
+              height: CustomStyle.sizeXXL,
             ),
           ],
         ),
@@ -1573,12 +1573,12 @@ class _RFOutputPowerCard extends StatelessWidget {
                       minRFOutputPower: minRFOutputPower,
                       maxRFOutputPower: maxRFOutputPower,
                       currentRFOutputPower: currentRFOutputPower,
-                      fontSize: 40,
+                      fontSize: CustomStyle.size4XL,
                     ),
                     Text(
                       currentRFOutputPowerTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -1587,7 +1587,7 @@ class _RFOutputPowerCard extends StatelessWidget {
             ],
           ),
           const SizedBox(
-            height: 20.0,
+            height: CustomStyle.sizeXXL,
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -1599,12 +1599,12 @@ class _RFOutputPowerCard extends StatelessWidget {
                     getMinRFOutputPower(
                       loadingStatus: loadingStatus,
                       minRFOutputPower: historicalMinRFOutputPower,
-                      fontSize: 32,
+                      fontSize: CustomStyle.size32,
                     ),
                     Text(
                       minRFOutputPowerTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -1617,12 +1617,12 @@ class _RFOutputPowerCard extends StatelessWidget {
                     getMaxRFOutputPower(
                       loadingStatus: loadingStatus,
                       maxRFOutputPower: historicalMaxRFOutputPower,
-                      fontSize: 32,
+                      fontSize: CustomStyle.size32,
                     ),
                     Text(
                       maxRFOutputPowerTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -1679,7 +1679,7 @@ class _RFOutputPowerCard extends StatelessWidget {
               borderColor: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(
-              height: 20.0,
+              height: CustomStyle.sizeXXL,
             ),
           ],
         ),
@@ -1751,12 +1751,12 @@ class _RFInputPower1p8GCard extends StatelessWidget {
                     getCurrentRFInputPower1p8G(
                       loadingStatus: loadingStatus,
                       currentRFInputPower1p8G: currentRFInputPower1p8G,
-                      fontSize: 40,
+                      fontSize: CustomStyle.size4XL,
                     ),
                     Text(
                       currentRFInputPower1p8GTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -1795,7 +1795,7 @@ class _RFInputPower1p8GCard extends StatelessWidget {
                   AppLocalizations.of(context)!.currentRFInputPower,
             ),
             const SizedBox(
-              height: 20.0,
+              height: CustomStyle.sizeXXL,
             ),
           ],
         ),
@@ -1873,7 +1873,7 @@ class _PilotFrequency1Card extends StatelessWidget {
                       pilotFrequencyAlarmState: pilotFrequencyAlarmState,
                       pilotFrequencyAlarmSeverity: pilotFrequencyAlarmSeverity,
                       currentPilotFrequency: currentPilotFrequency,
-                      fontSize: 40,
+                      fontSize: CustomStyle.size4XL,
                     ),
                   ],
                 ),
@@ -1919,7 +1919,7 @@ class _PilotFrequency1Card extends StatelessWidget {
               currentPilotFrequency: currentPilotFrequency1,
             ),
             const SizedBox(
-              height: 20.0,
+              height: CustomStyle.sizeXXL,
             ),
           ],
         ),
@@ -1997,7 +1997,7 @@ class _PilotFrequency2Card extends StatelessWidget {
                       pilotFrequencyAlarmState: pilotFrequencyAlarmState,
                       pilotFrequencyAlarmSeverity: pilotFrequencyAlarmSeverity,
                       currentPilotFrequency: currentPilotFrequency,
-                      fontSize: 40,
+                      fontSize: CustomStyle.size4XL,
                     ),
                   ],
                 ),
@@ -2043,7 +2043,7 @@ class _PilotFrequency2Card extends StatelessWidget {
               currentPilotFrequency: currentPilotFrequency2,
             ),
             const SizedBox(
-              height: 20.0,
+              height: CustomStyle.sizeXXL,
             ),
           ],
         ),
@@ -2169,12 +2169,12 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
                     getFrequency(
                       loadingStatus: loadingStatus,
                       frequency: firstChannelFrequency,
-                      fontSize: 32,
+                      fontSize: CustomStyle.size32,
                     ),
                     Text(
                       frequencyTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -2189,12 +2189,12 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
                       pilotFrequencyAlarmState: pilotFrequencyAlarmState,
                       pilotFrequencyAlarmSeverity: pilotFrequencyAlarmSeverity,
                       outputPower: rfOutputLowChannelPower,
-                      fontSize: 32,
+                      fontSize: CustomStyle.size32,
                     ),
                     Text(
                       outputPowerTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -2367,12 +2367,12 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
                     getFrequency(
                       loadingStatus: loadingStatus,
                       frequency: lastChannelFrequency,
-                      fontSize: 32,
+                      fontSize: CustomStyle.size32,
                     ),
                     Text(
                       frequencyTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -2387,12 +2387,12 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
                       pilotFrequencyAlarmState: pilotFrequencyAlarmState,
                       pilotFrequencyAlarmSeverity: pilotFrequencyAlarmSeverity,
                       outputPower: rfOutputHighChannelPower,
-                      fontSize: 32,
+                      fontSize: CustomStyle.size32,
                     ),
                     Text(
                       outputPowerTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -2514,7 +2514,7 @@ class _OutputOperatingSlopeCard extends StatelessWidget {
                     getOutputOperatingSlope(
                       loadingStatus: loadingStatus,
                       outputOperatingSlope: outputOperatingSlope,
-                      fontSize: 40,
+                      fontSize: CustomStyle.size4XL,
                     ),
                   ],
                 ),
@@ -2550,7 +2550,7 @@ class _OutputOperatingSlopeCard extends StatelessWidget {
               outputOperatingSlope: outputOperatingSlope,
             ),
             const SizedBox(
-              height: 20.0,
+              height: CustomStyle.sizeXXL,
             ),
           ],
         ),

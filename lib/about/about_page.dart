@@ -351,7 +351,7 @@ class _AboutPageState extends State<AboutPage> {
                         ],
                       ),
                       const SizedBox(
-                        height: 20.0,
+                        height: CustomStyle.sizeXXL,
                       ),
                       const SizedBox(
                         height: 10,
@@ -361,7 +361,7 @@ class _AboutPageState extends State<AboutPage> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20.0,
+                        height: CustomStyle.sizeXXL,
                       ),
                       const SizedBox(
                         height: 9,
@@ -371,7 +371,7 @@ class _AboutPageState extends State<AboutPage> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20.0,
+                        height: CustomStyle.sizeXXL,
                       ),
                     ],
                   ),

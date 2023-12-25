@@ -145,14 +145,14 @@ class _ConnectionCard extends StatelessWidget {
       return const Text(
         'N/A',
         style: TextStyle(
-          fontSize: 16,
+          fontSize: CustomStyle.sizeL,
         ),
       );
     } else {
       return Text(
         name,
         style: const TextStyle(
-          fontSize: 16,
+          fontSize: CustomStyle.sizeL,
         ),
       );
     }
@@ -171,7 +171,7 @@ class _ConnectionCard extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: CustomStyle.sizeL,
             ),
           ),
           getBluetoothName(
@@ -378,7 +378,7 @@ Widget alarmItem({
         Text(
           title,
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: CustomStyle.sizeL,
           ),
         ),
       ],
@@ -479,7 +479,7 @@ Widget itemText({
         Text(
           title,
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: CustomStyle.sizeL,
           ),
         ),
         const SizedBox(
@@ -507,7 +507,7 @@ Widget itemMultipleLineText({
             Text(
               title,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: CustomStyle.sizeL,
               ),
             ),
           ],
@@ -531,7 +531,7 @@ Widget itemMultipleLineText({
                   //   textAlign: TextAlign.right,
                   //   // textDirection: TextDirection.rtl,
                   //   style: TextStyle(
-                  //     fontSize: 16,
+                  //     fontSize: CustomStyle.sizeL,
                   //   ),
                   // ),
                 ),
@@ -556,7 +556,7 @@ Widget itemLinkText({
         Text(
           title,
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: CustomStyle.sizeL,
           ),
         ),
         TextButton(
@@ -569,7 +569,7 @@ Widget itemLinkText({
           child: Text(
             content,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: CustomStyle.sizeL,
             ),
             textAlign: TextAlign.end,
           ),

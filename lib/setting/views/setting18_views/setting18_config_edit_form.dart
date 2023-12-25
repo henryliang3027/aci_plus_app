@@ -96,7 +96,7 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
                 child: Text(
                   formatResultValue(value),
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: CustomStyle.sizeL,
                     color: valueColor,
                   ),
                   textAlign: TextAlign.end,
@@ -191,7 +191,7 @@ class _PartName extends StatelessWidget {
         return Text(
           partIdMap[state.selectedPartId] ?? '',
           style: TextStyle(
-            fontSize: CustomStyle.sizeXXL,
+            height: CustomStyle.sizeXXL,
             color: Theme.of(context).colorScheme.onPrimary,
           ),
         );

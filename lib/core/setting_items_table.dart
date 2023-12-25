@@ -423,7 +423,7 @@ class SettingItemTable {
       SettingControl.forwardOutputEqualizer5: false,
       SettingControl.forwardOutputEqualizer6: false,
       SettingControl.forwardOutputEqualizer2And3: false,
-      SettingControl.forwardOutputEqualizer3And4: true,
+      SettingControl.forwardOutputEqualizer3And4: false,
       SettingControl.forwardOutputEqualizer5And6: false,
       SettingControl.returnOutputAttenuation1: true,
       SettingControl.returnOutputEqualizer1: true,

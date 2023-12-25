@@ -6,7 +6,9 @@ class CustomStyle {
   static const double sizeL = 16.0;
   static const double sizeXL = 18.0;
   static const double sizeXXL = 20.0; // app bar title
-  static const double sizeXXXL = 40.0; // status page's current value
+  static const double size32 = 32.0;
+  static const double size36 = 36.0;
+  static const double size4XL = 40.0;
   static const double diameter = 23;
 
   static const Color customRed = Color(0xffdc3545);

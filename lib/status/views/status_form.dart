@@ -203,12 +203,12 @@ class _TemperatureCard extends StatelessWidget {
                     getContent(
                       loadingStatus: loadingStatus,
                       content: currentTemperature,
-                      fontSize: 40,
+                      fontSize: CustomStyle.size4XL,
                     ),
                     Text(
                       currentTemperatureTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                       ),
                     ),
                   ],
@@ -216,7 +216,7 @@ class _TemperatureCard extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 20.0,
+              height: CustomStyle.sizeXXL,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -228,12 +228,12 @@ class _TemperatureCard extends StatelessWidget {
                       getContent(
                         loadingStatus: loadingStatus,
                         content: minTemperature,
-                        fontSize: 32,
+                        fontSize: CustomStyle.size32,
                       ),
                       Text(
                         minTemperatureTitle,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: CustomStyle.sizeL,
                         ),
                       ),
                     ],
@@ -246,12 +246,12 @@ class _TemperatureCard extends StatelessWidget {
                       getContent(
                         loadingStatus: loadingStatus,
                         content: maxTemperature,
-                        fontSize: 32,
+                        fontSize: CustomStyle.size32,
                       ),
                       Text(
                         maxTemperatureTitle,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: CustomStyle.sizeL,
                         ),
                       ),
                     ],
@@ -407,7 +407,7 @@ class _AttenuationCard extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: CustomStyle.sizeL,
             ),
           ),
         ],
@@ -452,7 +452,7 @@ class _AttenuationCard extends StatelessWidget {
                     Text(
                       title,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -468,7 +468,7 @@ class _AttenuationCard extends StatelessWidget {
                       loadingStatus: loadingStatus,
                       title: currentAttenuationTitle,
                       content: currentAttenuation,
-                      fontSize: 40,
+                      fontSize: CustomStyle.size4XL,
                     )
                   ],
                 ),
@@ -480,7 +480,7 @@ class _AttenuationCard extends StatelessWidget {
                         loadingStatus: loadingStatus,
                         title: minAttenuationTitle,
                         content: minAttenuation,
-                        fontSize: 32,
+                        fontSize: CustomStyle.size32,
                       ),
                     ),
                     Expanded(
@@ -488,7 +488,7 @@ class _AttenuationCard extends StatelessWidget {
                         loadingStatus: loadingStatus,
                         title: centerAttenuationTitle,
                         content: centerAttenuation,
-                        fontSize: 32,
+                        fontSize: CustomStyle.size32,
                       ),
                     ),
                     Expanded(
@@ -496,7 +496,7 @@ class _AttenuationCard extends StatelessWidget {
                         loadingStatus: loadingStatus,
                         title: maxAttenuationTitle,
                         content: maxAttenuation,
-                        fontSize: 32,
+                        fontSize: CustomStyle.size32,
                       ),
                     ),
                   ],
@@ -542,7 +542,7 @@ class _AttenuationCard extends StatelessWidget {
                     Text(
                       title,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -558,13 +558,13 @@ class _AttenuationCard extends StatelessWidget {
                       loadingStatus: loadingStatus,
                       title: historicalMinAttenuationTitle,
                       content: historicalMinAttenuation,
-                      fontSize: 32,
+                      fontSize: CustomStyle.size32,
                     ),
                     tile(
                       loadingStatus: loadingStatus,
                       title: historicalMaxAttenuationTitle,
                       content: historicalMaxAttenuation,
-                      fontSize: 32,
+                      fontSize: CustomStyle.size32,
                     )
                   ],
                 ),
@@ -612,7 +612,7 @@ class _AttenuationCard extends StatelessWidget {
               borderColor: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(
-              height: 20.0,
+              height: CustomStyle.sizeXXL,
             ),
             historicalBlock(
               loadingStatus: state.loadingStatus,
@@ -662,7 +662,7 @@ class _PowerSupplyCard extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: CustomStyle.sizeL,
             ),
           ),
         ],
@@ -716,7 +716,7 @@ class _PowerSupplyCard extends StatelessWidget {
                     Text(
                       title,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -733,7 +733,7 @@ class _PowerSupplyCard extends StatelessWidget {
                         loadingStatus: loadingStatus,
                         title: minVoltageTitle,
                         content: minVoltage,
-                        fontSize: 32,
+                        fontSize: CustomStyle.size32,
                       ),
                     ),
                     Expanded(
@@ -741,7 +741,7 @@ class _PowerSupplyCard extends StatelessWidget {
                         loadingStatus: loadingStatus,
                         title: currentVoltageTitle,
                         content: currentVoltage,
-                        fontSize: 40,
+                        fontSize: CustomStyle.size4XL,
                         fontHeight: 1.3,
                       ),
                     ),
@@ -750,7 +750,7 @@ class _PowerSupplyCard extends StatelessWidget {
                         loadingStatus: loadingStatus,
                         title: maxVoltageTitle,
                         content: maxVoltage,
-                        fontSize: 32,
+                        fontSize: CustomStyle.size32,
                       ),
                     ),
                   ],
@@ -811,7 +811,7 @@ class _PowerSupplyCard extends StatelessWidget {
                     Text(
                       title,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: CustomStyle.sizeL,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -828,7 +828,7 @@ class _PowerSupplyCard extends StatelessWidget {
                         loadingStatus: loadingStatus,
                         title: minVoltageRippleTitle,
                         content: minVoltageRipple,
-                        fontSize: 32,
+                        fontSize: CustomStyle.size32,
                       ),
                     ),
                     Expanded(
@@ -836,7 +836,7 @@ class _PowerSupplyCard extends StatelessWidget {
                         loadingStatus: loadingStatus,
                         title: currentVoltageRippleTitle,
                         content: currentVoltageRipple,
-                        fontSize: 40,
+                        fontSize: CustomStyle.size4XL,
                         fontHeight: 1.3,
                       ),
                     ),
@@ -845,7 +845,7 @@ class _PowerSupplyCard extends StatelessWidget {
                         loadingStatus: loadingStatus,
                         title: maxVoltageRippleTitle,
                         content: maxVoltageRipple,
-                        fontSize: 32,
+                        fontSize: CustomStyle.size32,
                       ),
                     ),
                   ],
@@ -888,7 +888,7 @@ class _PowerSupplyCard extends StatelessWidget {
               borderColor: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(
-              height: 20.0,
+              height: CustomStyle.sizeXXL,
             ),
             voltageRippleBlock(
               loadingStatus: state.loadingStatus,
@@ -968,7 +968,7 @@ Widget itemText({
         Text(
           title,
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: CustomStyle.sizeL,
           ),
         ),
         const SizedBox(
