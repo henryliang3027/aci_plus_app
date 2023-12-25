@@ -4,11 +4,11 @@ class Setting18ConfigState extends Equatable {
   const Setting18ConfigState({
     this.formStatus = FormStatus.none,
     this.partIds = const [
-      '2',
-      '3',
-      '5',
-      '6',
-      '7',
+      '3', // MOTO MB
+      '2', // MOTO BLE
+      '5', // C-Cor TR
+      '6', // C-Cor BR
+      '7', // C-Cor LE
     ],
   });
 
