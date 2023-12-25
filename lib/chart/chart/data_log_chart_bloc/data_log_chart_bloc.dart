@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
@@ -37,9 +38,12 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
       if (resultOfLog1p8G[0]) {
         bool hasNextChunk = resultOfLog1p8G[1];
         List<Log1p8G> log1p8Gs = resultOfLog1p8G[2];
+        Map<DataKey, String> logStatistics = resultOfLog1p8G[3];
 
         List<List<ValuePair>> dateValueCollectionOfLog =
             _amp18Repository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
+
+        _amp18Repository.updateDataWithGivenValuePairs(logStatistics);
 
         // 清除 cache
         _amp18Repository.clearLoadMoreLog1p8Gs();

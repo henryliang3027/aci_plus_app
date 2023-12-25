@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
@@ -44,10 +45,13 @@ class Chart18CCorNodeBloc
       if (resultOfLog1p8G[0]) {
         bool hasNextChunk = resultOfLog1p8G[1];
         List<Log1p8GCCorNode> log1p8Gs = resultOfLog1p8G[2];
+        Map<DataKey, String> logStatistics = resultOfLog1p8G[3];
 
         List<List<ValuePair>> dateValueCollectionOfLog =
             _amp18CCorNodeRepository
                 .get1p8GCCorNodeDateValueCollectionOfLogs(log1p8Gs);
+
+        _amp18CCorNodeRepository.updateDataWithGivenValuePairs(logStatistics);
 
         // 清除 cache
         _amp18CCorNodeRepository.clearLoadMoreLog1p8GCCorNodes();

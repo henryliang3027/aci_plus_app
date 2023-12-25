@@ -136,7 +136,7 @@ Widget controlToggleButton({
 
   return Padding(
     padding: const EdgeInsets.only(
-      bottom: CustomStyle.size40,
+      bottom: CustomStyle.size4XL,
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -2056,6 +2056,12 @@ class Amp18Repository {
     }
   }
 
+  Future<void> updateDataWithGivenValuePairs(
+      Map<DataKey, String> valuePairs) async {
+    _characteristicDataStreamController
+        .add(Map<DataKey, String>.from(valuePairs));
+  }
+
   Future<void> updateCharacteristics() async {
     Map<DataKey, String> characteristicDataCache = {};
 

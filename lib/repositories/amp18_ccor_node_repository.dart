@@ -1881,6 +1881,12 @@ class Amp18CCorNodeRepository {
     }
   }
 
+  Future<void> updateDataWithGivenValuePairs(
+      Map<DataKey, String> valuePairs) async {
+    _characteristicDataStreamController
+        .add(Map<DataKey, String>.from(valuePairs));
+  }
+
   Future<void> update1p8GCCorNodeCharacteristics() async {
     Map<DataKey, String> characteristicDataCache = {};
 

@@ -69,6 +69,7 @@ class Status18CCorNodeForm extends StatelessWidget {
           ? SingleChildScrollView(
               child: Column(
                 children: [
+                  const _HiddenUpdater(),
                   ...widgets,
                 ],
               ),
@@ -152,6 +153,31 @@ class _DeviceStatus extends StatelessWidget {
               ),
             ),
           );
+        }
+      },
+    );
+  }
+}
+
+class _HiddenUpdater extends StatelessWidget {
+  const _HiddenUpdater({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.loadingStatus.isRequestSuccess) {
+          context
+              .read<Status18Bloc>()
+              .add(const StatusPeriodicUpdateRequested());
+
+          return const SizedBox();
+        } else {
+          context
+              .read<Status18Bloc>()
+              .add(const StatusPeriodicUpdateCanceled());
+
+          return const SizedBox();
         }
       },
     );
