@@ -188,6 +188,8 @@ class _HiddenUpdater extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.loadingStatus != current.loadingStatus,
       builder: (context, state) {
         if (state.loadingStatus.isRequestSuccess) {
           context
@@ -227,6 +229,9 @@ class _DeviceRefresh extends StatelessWidget {
             !state.connectionStatus.isRequestInProgress) {
           return IconButton(
               onPressed: () {
+                context
+                    .read<Status18Bloc>()
+                    .add(const StatusPeriodicUpdateCanceled());
                 context.read<HomeBloc>().add(const DeviceRefreshed());
               },
               icon: Icon(

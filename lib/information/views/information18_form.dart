@@ -113,6 +113,9 @@ class _DeviceRefresh extends StatelessWidget {
             !state.connectionStatus.isRequestInProgress) {
           return IconButton(
               onPressed: () {
+                context
+                    .read<Information18Bloc>()
+                    .add(const AlarmPeriodicUpdateCanceled());
                 context.read<HomeBloc>().add(const DeviceRefreshed());
               },
               icon: Icon(

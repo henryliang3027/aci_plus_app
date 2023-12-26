@@ -7,7 +7,7 @@ import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
-import 'package:aci_plus_app/status/bloc/status18_bloc/status18_bloc.dart';
+import 'package:aci_plus_app/status/bloc/status18_ccor_node_bloc/status18_ccor_node_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -102,6 +102,10 @@ class Status18CCorNodeForm extends StatelessWidget {
         pageController: pageController,
         selectedIndex: 1,
         onTap: (int index) {
+          context
+              .read<Status18CCorNodeBloc>()
+              .add(const StatusPeriodicUpdateCanceled());
+
           pageController.jumpToPage(
             index,
           );
@@ -165,16 +169,18 @@ class _HiddenUpdater extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.loadingStatus != current.loadingStatus,
       builder: (context, state) {
         if (state.loadingStatus.isRequestSuccess) {
           context
-              .read<Status18Bloc>()
+              .read<Status18CCorNodeBloc>()
               .add(const StatusPeriodicUpdateRequested());
 
           return const SizedBox();
         } else {
           context
-              .read<Status18Bloc>()
+              .read<Status18CCorNodeBloc>()
               .add(const StatusPeriodicUpdateCanceled());
 
           return const SizedBox();
@@ -202,6 +208,9 @@ class _DeviceRefresh extends StatelessWidget {
             !state.connectionStatus.isRequestInProgress) {
           return IconButton(
               onPressed: () {
+                context
+                    .read<Status18CCorNodeBloc>()
+                    .add(const StatusPeriodicUpdateCanceled());
                 context.read<HomeBloc>().add(const DeviceRefreshed());
               },
               icon: Icon(
@@ -746,7 +755,8 @@ class _TemperatureCard extends StatelessWidget {
     return Builder(
       builder: (context) {
         final HomeState homeState = context.watch<HomeBloc>().state;
-        final Status18State status18State = context.watch<Status18Bloc>().state;
+        final Status18CCorNodeState status18State =
+            context.watch<Status18CCorNodeBloc>().state;
         String temperatureAlarmState =
             homeState.characteristicData[DataKey.temperatureAlarmState] ?? '1';
         String temperatureAlarmSeverity =
@@ -808,7 +818,7 @@ class _TemperatureCard extends StatelessWidget {
                         builder: (context, constraints) => ToggleButtons(
                           direction: Axis.horizontal,
                           onPressed: (int index) {
-                            context.read<Status18Bloc>().add(
+                            context.read<Status18CCorNodeBloc>().add(
                                 TemperatureUnitChanged(
                                     temperatureUnitTexts[index]));
                           },

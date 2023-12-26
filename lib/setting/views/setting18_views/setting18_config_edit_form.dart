@@ -191,7 +191,7 @@ class _PartName extends StatelessWidget {
         return Text(
           partIdMap[state.selectedPartId] ?? '',
           style: TextStyle(
-            height: CustomStyle.sizeXXL,
+            fontSize: CustomStyle.sizeXXL,
             color: Theme.of(context).colorScheme.onPrimary,
           ),
         );

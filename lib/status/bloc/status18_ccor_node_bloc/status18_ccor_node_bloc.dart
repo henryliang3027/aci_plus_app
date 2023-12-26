@@ -51,11 +51,11 @@ class Status18CCorNodeBloc
     add(const StatusUpdated());
 
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      print('alarm trigger timer: ${timer.tick}');
+      print('Status timer: ${timer.tick}');
       add(const StatusUpdated());
     });
 
-    print('alarm trigger started');
+    print('Status started');
   }
 
   Future<void> _onStatusUpdated(
@@ -79,7 +79,7 @@ class Status18CCorNodeBloc
   ) async {
     if (_timer != null) {
       _timer!.cancel();
-      print('alarm trigger timer is canceled');
+      print('Status timer is canceled');
     }
   }
 
@@ -88,7 +88,7 @@ class Status18CCorNodeBloc
     if (_timer != null) {
       _timer!.cancel();
 
-      print('alarm trigger timer is canceled due to bloc closing.');
+      print('Status timer is canceled due to bloc closing.');
     }
 
     return super.close();
