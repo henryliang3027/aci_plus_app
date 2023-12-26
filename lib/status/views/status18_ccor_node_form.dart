@@ -22,9 +22,36 @@ class Status18CCorNodeForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomeState homeState = context.watch<HomeBloc>().state;
-    String partId = homeState.characteristicData[DataKey.partId] ?? '';
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.status),
+        centerTitle: true,
+        leading: const _DeviceStatus(),
+        actions: const [_DeviceRefresh()],
+      ),
+      body: const _CardView(),
+      bottomNavigationBar: HomeBottomNavigationBar(
+        pageController: pageController,
+        selectedIndex: 1,
+        onTap: (int index) {
+          context
+              .read<Status18CCorNodeBloc>()
+              .add(const StatusPeriodicUpdateCanceled());
 
+          pageController.jumpToPage(
+            index,
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _CardView extends StatelessWidget {
+  const _CardView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     Widget getWidgetsByPartId(String partId) {
       Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
       List<Widget> widgets = [];
@@ -69,7 +96,6 @@ class Status18CCorNodeForm extends StatelessWidget {
           ? SingleChildScrollView(
               child: Column(
                 children: [
-                  const _HiddenUpdater(),
                   ...widgets,
                 ],
               ),
@@ -90,27 +116,25 @@ class Status18CCorNodeForm extends StatelessWidget {
             );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.status),
-        centerTitle: true,
-        leading: const _DeviceStatus(),
-        actions: const [_DeviceRefresh()],
-      ),
-      body: getWidgetsByPartId(partId),
-      bottomNavigationBar: HomeBottomNavigationBar(
-        pageController: pageController,
-        selectedIndex: 1,
-        onTap: (int index) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.loadingStatus != current.loadingStatus,
+      builder: (context, state) {
+        String partId = state.characteristicData[DataKey.partId] ?? '';
+        if (state.loadingStatus.isRequestSuccess) {
+          context
+              .read<Status18CCorNodeBloc>()
+              .add(const StatusPeriodicUpdateRequested());
+
+          return getWidgetsByPartId(partId);
+        } else {
           context
               .read<Status18CCorNodeBloc>()
               .add(const StatusPeriodicUpdateCanceled());
 
-          pageController.jumpToPage(
-            index,
-          );
-        },
-      ),
+          return getWidgetsByPartId(partId);
+        }
+      },
     );
   }
 }
@@ -157,33 +181,6 @@ class _DeviceStatus extends StatelessWidget {
               ),
             ),
           );
-        }
-      },
-    );
-  }
-}
-
-class _HiddenUpdater extends StatelessWidget {
-  const _HiddenUpdater({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      buildWhen: (previous, current) =>
-          previous.loadingStatus != current.loadingStatus,
-      builder: (context, state) {
-        if (state.loadingStatus.isRequestSuccess) {
-          context
-              .read<Status18CCorNodeBloc>()
-              .add(const StatusPeriodicUpdateRequested());
-
-          return const SizedBox();
-        } else {
-          context
-              .read<Status18CCorNodeBloc>()
-              .add(const StatusPeriodicUpdateCanceled());
-
-          return const SizedBox();
         }
       },
     );

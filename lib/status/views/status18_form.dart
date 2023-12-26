@@ -23,9 +23,38 @@ class Status18Form extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomeState homeState = context.watch<HomeBloc>().state;
-    String partId = homeState.characteristicData[DataKey.partId] ?? '';
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.status),
+        centerTitle: true,
+        leading: const _DeviceStatus(),
+        actions: const [_DeviceRefresh()],
+      ),
+      body: const _CardView(),
+      bottomNavigationBar: HomeBottomNavigationBar(
+        pageController: pageController,
+        selectedIndex: 1,
+        onTap: (int index) {
+          if (index != 1) {
+            context
+                .read<Status18Bloc>()
+                .add(const StatusPeriodicUpdateCanceled());
+          }
 
+          pageController.jumpToPage(
+            index,
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _CardView extends StatelessWidget {
+  const _CardView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     Widget getWidgetsByPartId(String partId) {
       Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
       List<Widget> widgets = [];
@@ -82,7 +111,6 @@ class Status18Form extends StatelessWidget {
           ? SingleChildScrollView(
               child: Column(
                 children: [
-                  const _HiddenUpdater(),
                   ...widgets,
                 ],
               ),
@@ -107,29 +135,25 @@ class Status18Form extends StatelessWidget {
             );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.status),
-        centerTitle: true,
-        leading: const _DeviceStatus(),
-        actions: const [_DeviceRefresh()],
-      ),
-      body: getWidgetsByPartId(partId),
-      bottomNavigationBar: HomeBottomNavigationBar(
-        pageController: pageController,
-        selectedIndex: 1,
-        onTap: (int index) {
-          if (index != 1) {
-            context
-                .read<Status18Bloc>()
-                .add(const StatusPeriodicUpdateCanceled());
-          }
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.loadingStatus != current.loadingStatus,
+      builder: (context, state) {
+        String partId = state.characteristicData[DataKey.partId] ?? '';
+        if (state.loadingStatus.isRequestSuccess) {
+          context
+              .read<Status18Bloc>()
+              .add(const StatusPeriodicUpdateRequested());
 
-          pageController.jumpToPage(
-            index,
-          );
-        },
-      ),
+          return getWidgetsByPartId(partId);
+        } else {
+          context
+              .read<Status18Bloc>()
+              .add(const StatusPeriodicUpdateCanceled());
+
+          return getWidgetsByPartId(partId);
+        }
+      },
     );
   }
 }
@@ -182,33 +206,6 @@ class _DeviceStatus extends StatelessWidget {
   }
 }
 
-class _HiddenUpdater extends StatelessWidget {
-  const _HiddenUpdater({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      buildWhen: (previous, current) =>
-          previous.loadingStatus != current.loadingStatus,
-      builder: (context, state) {
-        if (state.loadingStatus.isRequestSuccess) {
-          context
-              .read<Status18Bloc>()
-              .add(const StatusPeriodicUpdateRequested());
-
-          return const SizedBox();
-        } else {
-          context
-              .read<Status18Bloc>()
-              .add(const StatusPeriodicUpdateCanceled());
-
-          return const SizedBox();
-        }
-      },
-    );
-  }
-}
-
 Color _getCurrentValueColor({
   required String alarmState,
   required String alarmSeverity,
@@ -245,348 +242,6 @@ class _DeviceRefresh extends StatelessWidget {
     );
   }
 }
-
-Widget oneValueCard({
-  required BuildContext context,
-  required String title,
-  required Widget indicator,
-}) {
-  return Card(
-    color: Theme.of(context).colorScheme.onPrimary,
-    surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-        ),
-        indicator,
-        const SizedBox(
-          height: CustomStyle.sizeXXL,
-        ),
-      ],
-    ),
-  );
-}
-
-Widget twoValueCard({
-  required BuildContext context,
-  required String alarmState,
-  required String alarmSeverity,
-  required String frequency,
-  required String outputPower,
-  required String frequencyTitle,
-  required String outputPowerTitle,
-  double fontSize = 16,
-}) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(
-      vertical: 16.0,
-    ),
-    child: Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Flexible(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    frequency,
-                    style: TextStyle(
-                      fontSize: fontSize,
-                    ),
-                  ),
-                  Text(
-                    frequencyTitle,
-                    style: const TextStyle(
-                      fontSize: CustomStyle.sizeL,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Flexible(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    outputPower,
-                    style: TextStyle(
-                      fontSize: fontSize,
-                      color: _getCurrentValueColor(
-                        alarmState: alarmState,
-                        alarmSeverity: alarmSeverity,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    outputPowerTitle,
-                    style: const TextStyle(
-                      fontSize: CustomStyle.sizeL,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
-
-Widget threeValueCard({
-  required String alarmState,
-  required String alarmSeverity,
-  required String currentValueTitle,
-  required String currentValue,
-  required String minValueTitle,
-  required String historicalMinValue,
-  required String maxValueTitle,
-  required String historicalMaxValue,
-  required Color borderColor,
-  double fontSize = 16,
-}) {
-  historicalMinValue = adjustMinIntValue(
-    current: currentValue,
-    min: historicalMinValue,
-  );
-  historicalMaxValue = adjustMaxIntValue(
-    current: currentValue,
-    max: historicalMaxValue,
-  );
-
-  return Padding(
-    padding: const EdgeInsets.symmetric(
-      vertical: 16.0,
-    ),
-    child: Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    currentValue,
-                    style: TextStyle(
-                      fontSize: fontSize,
-                      color: _getCurrentValueColor(
-                        alarmState: alarmState,
-                        alarmSeverity: alarmSeverity,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    currentValueTitle,
-                    style: const TextStyle(
-                      fontSize: CustomStyle.sizeL,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: CustomStyle.sizeXXL,
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    historicalMinValue,
-                    style: TextStyle(
-                      fontSize: fontSize,
-                    ),
-                  ),
-                  Text(
-                    minValueTitle,
-                    style: const TextStyle(
-                      fontSize: CustomStyle.sizeL,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    historicalMaxValue,
-                    style: TextStyle(
-                      fontSize: fontSize,
-                    ),
-                  ),
-                  Text(
-                    maxValueTitle,
-                    style: const TextStyle(
-                      fontSize: CustomStyle.sizeL,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        )
-      ],
-    ),
-  );
-}
-
-// class _WorkingModeIndicator extends StatelessWidget {
-//   const _WorkingModeIndicator({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<Status18Bloc, Status18State>(
-//       builder: (context, state) {
-//         return Text(
-//           // state.currentWorkingMode.isEmpty ? 'N/A' : state.currentWorkingMode,
-//           'N/A',
-//           textAlign: TextAlign.center,
-//           style: const TextStyle(
-//             fontSize: 28.0,
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
-
-// class _WorkingModeCard extends StatelessWidget {
-//   const _WorkingModeCard({super.key});
-
-//   Widget workingModeBlock({
-//     required BuildContext context,
-//     required FormStatus loadingStatus,
-//     required String title,
-//     required String currentWorkingMode,
-//   }) {
-//     if (loadingStatus.isRequestSuccess) {
-//       return oneValueCard(
-//         context: context,
-//         title: title,
-//         indicator: Padding(
-//           padding: const EdgeInsets.all(16.0),
-//           child: SizedBox(
-//             width: double.maxFinite,
-//             child: Wrap(
-//               alignment: WrapAlignment.center,
-//               children: [
-//                 Text(
-//                   currentWorkingMode.isEmpty ? 'N/A' : currentWorkingMode,
-//                   textAlign: TextAlign.center,
-//                   style: const TextStyle(
-//                     fontSize: 28.0,
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       );
-//     } else {
-//       return oneValueCard(
-//         context: context,
-//         title: title,
-//         indicator: const Padding(
-//           padding: EdgeInsets.all(16.0),
-//           child: SizedBox(
-//             width: double.maxFinite,
-//             child: Wrap(
-//               alignment: WrapAlignment.center,
-//               children: [
-//                 _WorkingModeIndicator(),
-//               ],
-//             ),
-//           ),
-//         ),
-//       );
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<HomeBloc, HomeState>(
-//       builder: (context, state) {
-//         String currentWorkingMode =
-//             state.characteristicData[DataKey.currentWorkingMode] ?? '';
-
-//         String workingMode = currentWorkingMode == '0'
-//             ? 'N/A'
-//             : WorkingModeTable.workingModeMap[currentWorkingMode] ??
-//                 currentWorkingMode;
-
-//         return workingModeBlock(
-//           context: context,
-//           title: AppLocalizations.of(context)!.workingMode,
-//           loadingStatus: state.loadingStatus,
-//           currentWorkingMode: workingMode,
-//         );
-//       },
-//     );
-//   }
-// }
-// return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-//   String currentWorkingMode =
-//       state.characteristicData[DataKey.currentWorkingMode] ?? '';
-
-//   String workingMode = currentWorkingMode == '0'
-//       ? 'N/A'
-//       : WorkingModeTable.workingModeMap[currentWorkingMode] ??
-//           currentWorkingMode;
-
-//       return Card(
-//         color: Theme.of(context).colorScheme.onPrimary,
-//         surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Padding(
-//               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
-//               child: Text(
-//                 AppLocalizations.of(context)!.workingMode,
-//                 style: Theme.of(context).textTheme.titleLarge,
-//               ),
-//             ),
-//             Padding(
-//       padding: const EdgeInsets.all(16.0),
-//       child: SizedBox(
-//         width: double.maxFinite,
-//         child: Wrap(
-//           alignment: WrapAlignment.center,
-//           children: [
-//             workingModeBlock(
-//               loadingStatus: state.loadingStatus,
-//               currentWorkingMode: workingMode,
-//             ),
-//           ],
-//         ),
-//       ),
-//     ),
-
-//             const SizedBox(
-//               height: CustomStyle.sizeXXL,
-//             ),
-//           ],
-//         ),
-//       );
-//     });
-//   }
-// }
 
 class _WorkingModeCard extends StatelessWidget {
   const _WorkingModeCard({super.key});

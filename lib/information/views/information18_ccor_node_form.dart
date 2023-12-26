@@ -327,6 +327,10 @@ class _AlarmCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
+      // 上一個狀態跟目前狀態的 loadingStatus 不一樣時才要rebuild,
+      // 否則切到 status page 時會更新 HomeState 而重複觸發 AlarmPeriodicUpdateRequested
+      buildWhen: (previous, current) =>
+          previous.loadingStatus != current.loadingStatus,
       builder: (context, state) {
         if (state.loadingStatus.isRequestSuccess) {
           context
