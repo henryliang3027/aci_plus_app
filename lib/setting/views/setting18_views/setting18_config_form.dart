@@ -47,63 +47,116 @@ class _ConfigListView extends StatelessWidget {
       );
     }
 
-    Widget buildConfigListView({
-      required Setting18ConfigState setting18configState,
+    Widget configCard({
+      required String partId,
     }) {
-      return ListView.separated(
-        itemCount: setting18configState.partIds.length,
-        separatorBuilder: (context, index) => const SizedBox(),
-        itemBuilder: (context, index) {
-          return Card(
-            // margin: EdgeInsets.zero,
-            color: Theme.of(context).colorScheme.onPrimary,
-            surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
-            shape: RoundedRectangleBorder(
+      return Card(
+        // margin: EdgeInsets.zero,
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            // color: index % 2 == 0
+            //     ? const Color.fromARGB(255, 197, 204, 246)
+            //     : const Color.fromARGB(255, 222, 227, 255),
+          ),
+          height: 100,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
               borderRadius: BorderRadius.circular(10),
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                // color: index % 2 == 0
-                //     ? const Color.fromARGB(255, 197, 204, 246)
-                //     : const Color.fromARGB(255, 222, 227, 255),
-              ),
-              height: 100,
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  onTap: () {
-                    showModuleSettingDialog(
-                        selectedPartId: setting18configState.partIds[index]);
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 26.0,
-                        ),
-                        child: Text(
-                          partIdMap[setting18configState.partIds[index]]!,
-                          style: const TextStyle(
-                            fontSize: CustomStyle.size36,
-                          ),
-                        ),
+              onTap: () {
+                showModuleSettingDialog(selectedPartId: partId);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 26.0,
+                    ),
+                    child: Text(
+                      partIdMap[partId]!,
+                      style: const TextStyle(
+                        fontSize: CustomStyle.size36,
                       ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 26.0,
-                        ),
-                        child: Icon(Icons.edit),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 26.0,
+                    ),
+                    child: Icon(Icons.edit),
+                  ),
+                ],
               ),
             ),
-          );
-        },
+          ),
+        ),
+      );
+    }
+
+    List<Widget> buildMOTOConfigListView({
+      required List<String> partIds,
+    }) {
+      return [
+        const Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: 20.0,
+            horizontal: 20.0,
+          ),
+          child: Text(
+            'MOTO',
+            style: TextStyle(
+              fontSize: CustomStyle.sizeXL,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        for (String partId in partIds) ...[
+          configCard(partId: partId),
+        ],
+      ];
+    }
+
+    List<Widget> buildCCorConfigListView({
+      required List<String> partIds,
+    }) {
+      return [
+        const Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: 20.0,
+            horizontal: 20.0,
+          ),
+          child: Text(
+            'C-Cor',
+            style: TextStyle(
+              fontSize: CustomStyle.sizeXL,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        for (String partId in partIds) ...[
+          configCard(partId: partId),
+        ],
+      ];
+    }
+
+    Widget buildConfigListView({
+      required List<String> partIds,
+    }) {
+      return SingleChildScrollView(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          ...buildMOTOConfigListView(partIds: partIds.sublist(0, 2)),
+          const SizedBox(
+            height: 20,
+          ),
+          ...buildCCorConfigListView(partIds: partIds.sublist(2)),
+        ]),
       );
     }
 
@@ -117,14 +170,8 @@ class _ConfigListView extends StatelessWidget {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else if (homeState.loadingStatus.isRequestSuccess) {
-          return buildConfigListView(
-            setting18configState: setting18configState,
-          );
         } else {
-          return buildConfigListView(
-            setting18configState: setting18configState,
-          );
+          return buildConfigListView(partIds: setting18configState.partIds);
         }
       },
     );
