@@ -417,7 +417,7 @@ class Setting18ControlView extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: _SettingFloatingActionButton(partId: partId),
+        floatingActionButton: const _SettingFloatingActionButton(),
       ),
     );
   }
@@ -1225,16 +1225,14 @@ class _RtnIngressSetting5And6 extends StatelessWidget {
 class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({
     super.key,
-    required this.partId,
   });
-
-  final String partId;
 
   @override
   Widget build(BuildContext context) {
     Widget getEditTools({
       required bool editMode,
       required bool enableSubmission,
+      required String partId,
     }) {
       String graphFilePath = settingGraphFilePath[partId] ?? '';
       return editMode
@@ -1354,9 +1352,16 @@ class _SettingFloatingActionButton extends StatelessWidget {
             );
     }
 
-    bool getEditable(FormStatus loadingStatus) {
+    bool getEditable({
+      required FormStatus loadingStatus,
+      required String currentDetectedSplitOption,
+    }) {
       if (loadingStatus.isRequestSuccess) {
-        return true;
+        if (currentDetectedSplitOption != '0') {
+          return true;
+        } else {
+          return false;
+        }
       } else if (loadingStatus.isRequestFailure) {
         return false;
       } else {
@@ -1369,14 +1374,23 @@ class _SettingFloatingActionButton extends StatelessWidget {
     // settingListViewState 管理編輯模式或是觀看模式
     return Builder(builder: (context) {
       final HomeState homeState = context.watch<HomeBloc>().state;
-      final Setting18ControlState setting18ListViewState =
+      final Setting18ControlState setting18ControlState =
           context.watch<Setting18ControlBloc>().state;
 
-      bool editable = getEditable(homeState.loadingStatus);
+      String partId = homeState.characteristicData[DataKey.partId] ?? '';
+      String currentDetectedSplitOption =
+          homeState.characteristicData[DataKey.currentDetectedSplitOption] ??
+              '0';
+
+      bool editable = getEditable(
+        loadingStatus: homeState.loadingStatus,
+        currentDetectedSplitOption: currentDetectedSplitOption,
+      );
       return editable
           ? getEditTools(
-              editMode: setting18ListViewState.editMode,
-              enableSubmission: setting18ListViewState.enableSubmission,
+              editMode: setting18ControlState.editMode,
+              enableSubmission: setting18ControlState.enableSubmission,
+              partId: partId,
             )
           : Container();
     });

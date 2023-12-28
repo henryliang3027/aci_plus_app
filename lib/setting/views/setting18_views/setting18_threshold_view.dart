@@ -802,6 +802,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
     Widget getEditTools({
       required bool editMode,
       required bool enableSubmission,
+      required String partId,
     }) {
       String graphFilePath = settingGraphFilePath[partId] ?? '';
       return editMode
@@ -921,9 +922,16 @@ class _SettingFloatingActionButton extends StatelessWidget {
             );
     }
 
-    bool getEditable(FormStatus loadingStatus) {
+    bool getEditable({
+      required FormStatus loadingStatus,
+      required String currentDetectedSplitOption,
+    }) {
       if (loadingStatus.isRequestSuccess) {
-        return true;
+        if (currentDetectedSplitOption != '0') {
+          return true;
+        } else {
+          return false;
+        }
       } else if (loadingStatus.isRequestFailure) {
         return false;
       } else {
@@ -939,11 +947,20 @@ class _SettingFloatingActionButton extends StatelessWidget {
       final Setting18ThresholdState setting18thresholdState =
           context.watch<Setting18ThresholdBloc>().state;
 
-      bool editable = getEditable(homeState.loadingStatus);
+      String partId = homeState.characteristicData[DataKey.partId] ?? '';
+      String currentDetectedSplitOption =
+          homeState.characteristicData[DataKey.currentDetectedSplitOption] ??
+              '0';
+
+      bool editable = getEditable(
+        loadingStatus: homeState.loadingStatus,
+        currentDetectedSplitOption: currentDetectedSplitOption,
+      );
       return editable
           ? getEditTools(
               editMode: setting18thresholdState.editMode,
               enableSubmission: setting18thresholdState.enableSubmission,
+              partId: partId,
             )
           : Container();
     });

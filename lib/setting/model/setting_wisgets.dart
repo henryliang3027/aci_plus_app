@@ -471,13 +471,24 @@ Widget thresholdAlarmSwitch({
   );
 }
 
-const List<String> splitOptionTexts = [
-  'Null',
-  '204/258 MHz',
-  '300/372 MHz',
-  '396/492 MHz',
-  '492/606 MHz',
-  '684/834 MHz',
+// const List<String> splitOptionTexts = [
+//   'Null',
+//   '204/258 MHz',
+//   '300/372 MHz',
+//   '396/492 MHz',
+//   '492/606 MHz',
+//   '684/834 MHz',
+// ];
+
+// List<Record>
+// Record, a new variable type of Dart 3
+const List<(int?, int?)> splitBaseLine = [
+  (null, null), // 0
+  (204, 258), // 1
+  (300, 372), // 2
+  (396, 492), // 3
+  (492, 606), // 4
+  (684, 834), // 5
 ];
 
 const List<String> splitOptionValues = [

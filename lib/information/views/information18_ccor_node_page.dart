@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/information/bloc/bloc/information18_ccor_node_bloc.dart';
+import 'package:aci_plus_app/information/bloc/information18_ccor_node_bloc/information18_ccor_node_bloc.dart';
 import 'package:aci_plus_app/information/views/information18_ccor_node_form.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:flutter/material.dart';

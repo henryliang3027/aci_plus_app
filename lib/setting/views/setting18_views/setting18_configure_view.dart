@@ -14,6 +14,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
 class Setting18ConfigureView extends StatelessWidget {
   Setting18ConfigureView({super.key});
@@ -355,7 +356,7 @@ class Setting18ConfigureView extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: _SettingFloatingActionButton(partId: partId),
+        floatingActionButton: const _SettingFloatingActionButton(),
       ),
     );
   }
@@ -611,9 +612,9 @@ class _SplitOption extends StatelessWidget {
                                           splitOptionValues[index]));
                                 }
                               : () {},
-                          child: Text(
-                            splitOptionTexts[index],
-                            style: const TextStyle(
+                          child: const Text(
+                            'Null',
+                            style: TextStyle(
                               fontSize: CustomStyle.sizeXL,
                               fontWeight: FontWeight.normal,
                             ),
@@ -666,7 +667,7 @@ class _SplitOption extends StatelessWidget {
                                 }
                               : () {},
                           child: Text(
-                            splitOptionTexts[index],
+                            '${splitBaseLine[index].$1}/${splitBaseLine[index].$2} ${CustomStyle.mHz}',
                             style: const TextStyle(
                               fontSize: CustomStyle.sizeXL,
                               fontWeight: FontWeight.normal,
@@ -1272,16 +1273,14 @@ class _TGCCableLength extends StatelessWidget {
 class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({
     super.key,
-    required this.partId,
   });
-
-  final String partId;
 
   @override
   Widget build(BuildContext context) {
     Widget getEditTools({
       required bool editMode,
       required bool enableSubmission,
+      required String partId,
     }) {
       String graphFilePath = settingGraphFilePath[partId] ?? '';
       return editMode
@@ -1401,9 +1400,16 @@ class _SettingFloatingActionButton extends StatelessWidget {
             );
     }
 
-    bool getEditable(FormStatus loadingStatus) {
+    bool getEditable({
+      required FormStatus loadingStatus,
+      required String currentDetectedSplitOption,
+    }) {
       if (loadingStatus.isRequestSuccess) {
-        return true;
+        if (currentDetectedSplitOption != '0') {
+          return true;
+        } else {
+          return false;
+        }
       } else if (loadingStatus.isRequestFailure) {
         return false;
       } else {
@@ -1419,12 +1425,20 @@ class _SettingFloatingActionButton extends StatelessWidget {
       final Setting18ConfigureState setting18ListViewState =
           context.watch<Setting18ConfigureBloc>().state;
 
-      bool editable = getEditable(homeState.loadingStatus);
+      String partId = homeState.characteristicData[DataKey.partId] ?? '';
+      String currentDetectedSplitOption =
+          homeState.characteristicData[DataKey.currentDetectedSplitOption] ??
+              '0';
+
+      bool editable = getEditable(
+        loadingStatus: homeState.loadingStatus,
+        currentDetectedSplitOption: currentDetectedSplitOption,
+      );
       return editable
           ? getEditTools(
               editMode: setting18ListViewState.editMode,
               enableSubmission: setting18ListViewState.enableSubmission,
-            )
+              partId: partId)
           : Container();
     });
   }

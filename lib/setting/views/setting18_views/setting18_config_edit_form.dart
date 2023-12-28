@@ -289,9 +289,13 @@ class _ActionButton extends StatelessWidget {
 
         if (homeState.loadingStatus.isRequestSuccess) {
           String partId = homeState.characteristicData[DataKey.partId] ?? '';
+          String currentDetectedSplitOption = homeState
+                  .characteristicData[DataKey.currentDetectedSplitOption] ??
+              '0';
           return buildButtons(
             enableSaving: setting18configEditState.enableSubmission,
             enableExecute: partId == setting18configEditState.selectedPartId &&
+                    currentDetectedSplitOption != '0' &&
                     setting18configEditState.enableSubmission
                 ? true
                 : false,

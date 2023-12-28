@@ -425,9 +425,9 @@ class _SplitOption extends StatelessWidget {
                                 BorderRadius.all(Radius.circular(10.0))),
                       ),
                       onPressed: () {},
-                      child: Text(
-                        splitOptionTexts[index],
-                        style: const TextStyle(
+                      child: const Text(
+                        'Null',
+                        style: TextStyle(
                           fontSize: CustomStyle.sizeXL,
                           fontWeight: FontWeight.normal,
                         ),
@@ -470,7 +470,7 @@ class _SplitOption extends StatelessWidget {
                             }
                           : () {},
                       child: Text(
-                        splitOptionTexts[index],
+                        '${splitBaseLine[index].$1}/${splitBaseLine[index].$2} ${CustomStyle.mHz}',
                         style: const TextStyle(
                           fontSize: CustomStyle.sizeXL,
                           fontWeight: FontWeight.normal,
