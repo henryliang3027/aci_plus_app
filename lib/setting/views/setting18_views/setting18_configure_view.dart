@@ -14,7 +14,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
 class Setting18ConfigureView extends StatelessWidget {
   Setting18ConfigureView({super.key});
@@ -47,6 +46,8 @@ class Setting18ConfigureView extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
+    String currentDetectedSplitOption =
+        homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
@@ -204,11 +205,14 @@ class Setting18ConfigureView extends StatelessWidget {
             widgets.add(const _PilotFrequencyMode());
             break;
           case SettingConfiruration.startFrequency:
+            int intCurrentDetectedSplitOption =
+                int.parse(currentDetectedSplitOption);
             widgets.add(_FirstChannelLoading(
               firstChannelLoadingFrequencyTextEditingController:
                   firstChannelLoadingFrequencyTextEditingController,
               firstChannelLoadingLevelTextEditingController:
                   firstChannelLoadingLevelTextEditingController,
+              currentDetectedSplitOption: intCurrentDetectedSplitOption,
             ));
             break;
           case SettingConfiruration.stopFrequency:
@@ -265,6 +269,7 @@ class Setting18ConfigureView extends StatelessWidget {
                     firstChannelLoadingFrequencyTextEditingController,
                 firstChannelLoadingLevelTextEditingController:
                     firstChannelLoadingLevelTextEditingController,
+                currentDetectedSplitOption: 0, // null
               ),
               _LastChannelLoading(
                 lastChannelLoadingFrequencyTextEditingController:
@@ -356,7 +361,10 @@ class Setting18ConfigureView extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: const _SettingFloatingActionButton(),
+        floatingActionButton: _SettingFloatingActionButton(
+          partId: partId,
+          currentDetectedSplitOption: currentDetectedSplitOption,
+        ),
       ),
     );
   }
@@ -729,10 +737,12 @@ class _FirstChannelLoading extends StatelessWidget {
     super.key,
     required this.firstChannelLoadingFrequencyTextEditingController,
     required this.firstChannelLoadingLevelTextEditingController,
+    required this.currentDetectedSplitOption,
   });
 
   final TextEditingController firstChannelLoadingFrequencyTextEditingController;
   final TextEditingController firstChannelLoadingLevelTextEditingController;
+  final int currentDetectedSplitOption;
 
   @override
   Widget build(BuildContext context) {
@@ -760,7 +770,10 @@ class _FirstChannelLoading extends StatelessWidget {
                 .read<Setting18ConfigureBloc>()
                 .add(FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
           },
-          errorText1: state.firstChannelLoadingFrequency.isNotValid
+          errorText1: !isValidFirstChannelLoadingFrequency(
+            currentDetectedSplitOption: currentDetectedSplitOption,
+            firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+          )
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           errorText2: state.firstChannelLoadingLevel.isNotValid
@@ -1273,14 +1286,18 @@ class _TGCCableLength extends StatelessWidget {
 class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({
     super.key,
+    required this.partId,
+    required this.currentDetectedSplitOption,
   });
+
+  final String partId;
+  final String currentDetectedSplitOption;
 
   @override
   Widget build(BuildContext context) {
     Widget getEditTools({
       required bool editMode,
       required bool enableSubmission,
-      required String partId,
     }) {
       String graphFilePath = settingGraphFilePath[partId] ?? '';
       return editMode
@@ -1402,7 +1419,6 @@ class _SettingFloatingActionButton extends StatelessWidget {
 
     bool getEditable({
       required FormStatus loadingStatus,
-      required String currentDetectedSplitOption,
     }) {
       if (loadingStatus.isRequestSuccess) {
         if (currentDetectedSplitOption != '0') {
@@ -1422,23 +1438,17 @@ class _SettingFloatingActionButton extends StatelessWidget {
     // settingListViewState 管理編輯模式或是觀看模式
     return Builder(builder: (context) {
       final HomeState homeState = context.watch<HomeBloc>().state;
-      final Setting18ConfigureState setting18ListViewState =
+      final Setting18ConfigureState setting18ConfigureState =
           context.watch<Setting18ConfigureBloc>().state;
-
-      String partId = homeState.characteristicData[DataKey.partId] ?? '';
-      String currentDetectedSplitOption =
-          homeState.characteristicData[DataKey.currentDetectedSplitOption] ??
-              '0';
 
       bool editable = getEditable(
         loadingStatus: homeState.loadingStatus,
-        currentDetectedSplitOption: currentDetectedSplitOption,
       );
       return editable
           ? getEditTools(
-              editMode: setting18ListViewState.editMode,
-              enableSubmission: setting18ListViewState.enableSubmission,
-              partId: partId)
+              editMode: setting18ConfigureState.editMode,
+              enableSubmission: setting18ConfigureState.enableSubmission,
+            )
           : Container();
     });
   }

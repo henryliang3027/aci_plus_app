@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/core/custom_style.dart';
+import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -471,15 +472,6 @@ Widget thresholdAlarmSwitch({
   );
 }
 
-// const List<String> splitOptionTexts = [
-//   'Null',
-//   '204/258 MHz',
-//   '300/372 MHz',
-//   '396/492 MHz',
-//   '492/606 MHz',
-//   '684/834 MHz',
-// ];
-
 // List<Record>
 // Record, a new variable type of Dart 3
 const List<(int?, int?)> splitBaseLine = [
@@ -499,6 +491,26 @@ const List<String> splitOptionValues = [
   '4',
   '5',
 ];
+
+bool isValidFirstChannelLoadingFrequency({
+  required int currentDetectedSplitOption,
+  required IntegerInput firstChannelLoadingFrequency,
+}) {
+  int? forwardStartFrequency = splitBaseLine[currentDetectedSplitOption].$2;
+  if (firstChannelLoadingFrequency.isNotValid) {
+    return false;
+  } else {
+    if (forwardStartFrequency == null) {
+      return true;
+    } else {
+      int intFirstChannelLoadingFrequency =
+          int.parse(firstChannelLoadingFrequency.value);
+      return intFirstChannelLoadingFrequency >= forwardStartFrequency
+          ? true
+          : false;
+    }
+  }
+}
 
 Color getNullBackgroundColor({
   required BuildContext context,

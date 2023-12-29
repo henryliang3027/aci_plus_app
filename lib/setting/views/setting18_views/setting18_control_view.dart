@@ -21,6 +21,8 @@ class Setting18ControlView extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
+    String currentDetectedSplitOption =
+        homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
     String agcMode = homeState.characteristicData[DataKey.agcMode] ?? '0';
     String alcMode = homeState.characteristicData[DataKey.alcMode] ?? '0';
     String currentInputAttenuation =
@@ -417,7 +419,9 @@ class Setting18ControlView extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: const _SettingFloatingActionButton(),
+        floatingActionButton: _SettingFloatingActionButton(
+            partId: partId,
+            currentDetectedSplitOption: currentDetectedSplitOption),
       ),
     );
   }
@@ -1225,14 +1229,18 @@ class _RtnIngressSetting5And6 extends StatelessWidget {
 class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({
     super.key,
+    required this.partId,
+    required this.currentDetectedSplitOption,
   });
+
+  final String partId;
+  final String currentDetectedSplitOption;
 
   @override
   Widget build(BuildContext context) {
     Widget getEditTools({
       required bool editMode,
       required bool enableSubmission,
-      required String partId,
     }) {
       String graphFilePath = settingGraphFilePath[partId] ?? '';
       return editMode
@@ -1354,7 +1362,6 @@ class _SettingFloatingActionButton extends StatelessWidget {
 
     bool getEditable({
       required FormStatus loadingStatus,
-      required String currentDetectedSplitOption,
     }) {
       if (loadingStatus.isRequestSuccess) {
         if (currentDetectedSplitOption != '0') {
@@ -1377,21 +1384,13 @@ class _SettingFloatingActionButton extends StatelessWidget {
       final Setting18ControlState setting18ControlState =
           context.watch<Setting18ControlBloc>().state;
 
-      String partId = homeState.characteristicData[DataKey.partId] ?? '';
-      String currentDetectedSplitOption =
-          homeState.characteristicData[DataKey.currentDetectedSplitOption] ??
-              '0';
-
       bool editable = getEditable(
         loadingStatus: homeState.loadingStatus,
-        currentDetectedSplitOption: currentDetectedSplitOption,
       );
       return editable
           ? getEditTools(
               editMode: setting18ControlState.editMode,
-              enableSubmission: setting18ControlState.enableSubmission,
-              partId: partId,
-            )
+              enableSubmission: setting18ControlState.enableSubmission)
           : Container();
     });
   }

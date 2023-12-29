@@ -41,6 +41,8 @@ class Setting18ThresholdView extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
+    String currentDetectedSplitOption =
+        homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
@@ -320,6 +322,7 @@ class Setting18ThresholdView extends StatelessWidget {
         ),
         floatingActionButton: _SettingFloatingActionButton(
           partId: partId,
+          currentDetectedSplitOption: currentDetectedSplitOption,
         ),
       ),
     );
@@ -793,16 +796,17 @@ class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({
     super.key,
     required this.partId,
+    required this.currentDetectedSplitOption,
   });
 
   final String partId;
+  final String currentDetectedSplitOption;
 
   @override
   Widget build(BuildContext context) {
     Widget getEditTools({
       required bool editMode,
       required bool enableSubmission,
-      required String partId,
     }) {
       String graphFilePath = settingGraphFilePath[partId] ?? '';
       return editMode
@@ -924,7 +928,6 @@ class _SettingFloatingActionButton extends StatelessWidget {
 
     bool getEditable({
       required FormStatus loadingStatus,
-      required String currentDetectedSplitOption,
     }) {
       if (loadingStatus.isRequestSuccess) {
         if (currentDetectedSplitOption != '0') {
@@ -947,20 +950,13 @@ class _SettingFloatingActionButton extends StatelessWidget {
       final Setting18ThresholdState setting18thresholdState =
           context.watch<Setting18ThresholdBloc>().state;
 
-      String partId = homeState.characteristicData[DataKey.partId] ?? '';
-      String currentDetectedSplitOption =
-          homeState.characteristicData[DataKey.currentDetectedSplitOption] ??
-              '0';
-
       bool editable = getEditable(
         loadingStatus: homeState.loadingStatus,
-        currentDetectedSplitOption: currentDetectedSplitOption,
       );
       return editable
           ? getEditTools(
               editMode: setting18thresholdState.editMode,
               enableSubmission: setting18thresholdState.enableSubmission,
-              partId: partId,
             )
           : Container();
     });
