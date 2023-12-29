@@ -2,6 +2,7 @@ import 'package:aci_plus_app/chart/chart/chart18_bloc/chart18_bloc.dart';
 import 'package:aci_plus_app/chart/view/code_input_page.dart';
 import 'package:aci_plus_app/chart/view/data_log_chart_page.dart';
 import 'package:aci_plus_app/chart/view/download_indicator18.dart';
+import 'package:aci_plus_app/chart/view/downloader_page.dart';
 import 'package:aci_plus_app/chart/view/rf_level_chart_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
@@ -302,6 +303,19 @@ class _PopupMenu extends StatelessWidget {
   Widget buildDataLogPageMenu(BuildContext context) {
     return BlocBuilder<Chart18Bloc, Chart18State>(
       builder: (context, state) {
+        Future<List<dynamic>?> showDownloadDialog() async {
+          return showDialog<List<dynamic>>(
+            context: context,
+            barrierDismissible: false, // user must tap button!
+
+            builder: (BuildContext context) {
+              return const Dialog(
+                child: DownloaderPage(),
+              );
+            },
+          );
+        }
+
         return state.enableTabChange
             ? PopupMenuButton<DataLogMenu>(
                 icon: const Icon(
@@ -347,39 +361,20 @@ class _PopupMenu extends StatelessWidget {
 
                       if (code != null) {
                         if (code.isNotEmpty) {
-                          if (context.mounted) {
-                            List<dynamic>? resultOfDownload =
-                                await showDialog<List<dynamic>>(
-                              context: context,
-                              barrierDismissible:
-                                  false, // user must tap button!
-                              builder: (BuildContext buildContext) {
-                                return WillPopScope(
-                                  onWillPop: () async {
-                                    // 避免 Android 使用者點擊系統返回鍵關閉 dialog
-                                    return false;
-                                  },
-                                  child: DownloadIndicator18Form(
-                                    amp18Repository:
-                                        RepositoryProvider.of<Amp18Repository>(
-                                            context),
-                                  ),
-                                );
-                              },
-                            );
+                          List<dynamic>? resultOfDownload =
+                              await showDownloadDialog();
 
-                            if (resultOfDownload != null) {
-                              bool isSuccessful = resultOfDownload[0];
-                              List<Log1p8G> log1p8Gs = resultOfDownload[1];
-                              String errorMessage = resultOfDownload[2];
-                              if (context.mounted) {
-                                context.read<Chart18Bloc>().add(AllDataExported(
-                                      isSuccessful,
-                                      log1p8Gs,
-                                      errorMessage,
-                                      code,
-                                    ));
-                              }
+                          if (resultOfDownload != null) {
+                            bool isSuccessful = resultOfDownload[0];
+                            List<Log1p8G> log1p8Gs = resultOfDownload[1];
+                            String errorMessage = resultOfDownload[2];
+                            if (context.mounted) {
+                              context.read<Chart18Bloc>().add(AllDataExported(
+                                    isSuccessful,
+                                    log1p8Gs,
+                                    errorMessage,
+                                    code,
+                                  ));
                             }
                           }
                         }

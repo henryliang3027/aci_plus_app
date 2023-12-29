@@ -272,7 +272,7 @@ class Amp18Repository {
   Future<dynamic> requestCommand1p8GForLogChunk(int chunkIndex) async {
     int commandIndex = chunkIndex + 184;
 
-    print('get data from request command 1p8GForLogChunk');
+    print('get data from request command 1p8GForLogChunk $chunkIndex');
 
     if (commandIndex == 184) {
       try {
