@@ -28,21 +28,6 @@ class DataLogChartView extends StatelessWidget {
   }
 }
 
-class _TestButton extends StatelessWidget {
-  const _TestButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () {
-          context.read<DataLogChartBloc>().add(const TestLogRequested());
-        },
-        child: const Icon(
-          Icons.abc,
-        ));
-  }
-}
-
 class _LogChartView extends StatelessWidget {
   const _LogChartView({
     super.key,
@@ -507,7 +492,6 @@ class _LogChartListView extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        _TestButton(),
                         buildChart(
                           getChartDataOfLog1(
                               dateValueCollectionOfLog:

@@ -4,6 +4,7 @@ import 'package:aci_plus_app/chart/view/data_log_chart_page.dart';
 import 'package:aci_plus_app/chart/view/download_indicator18.dart';
 import 'package:aci_plus_app/chart/view/downloader_page.dart';
 import 'package:aci_plus_app/chart/view/rf_level_chart_page.dart';
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -310,7 +311,9 @@ class _PopupMenu extends StatelessWidget {
 
             builder: (BuildContext context) {
               return const Dialog(
-                child: DownloaderPage(),
+                child: DownloaderPage(
+                  aciDeviceType: ACIDeviceType.amp1P8G,
+                ),
               );
             },
           );

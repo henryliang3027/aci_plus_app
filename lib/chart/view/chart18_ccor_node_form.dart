@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:aci_plus_app/chart/chart/chart18_ccor_node_bloc/chart18_ccor_node_bloc.dart';
 import 'package:aci_plus_app/chart/view/code_input_page.dart';
 import 'package:aci_plus_app/chart/view/download_indicator18_ccor_node.dart';
+import 'package:aci_plus_app/chart/view/downloader_page.dart';
 import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -237,6 +239,21 @@ class _PopupMenu extends StatelessWidget {
   const _PopupMenu({super.key});
 
   Widget buildDataLogPageMenu(BuildContext context) {
+    Future<List<dynamic>?> showDownloadDialog() async {
+      return showDialog<List<dynamic>>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          return const Dialog(
+            child: DownloaderPage(
+              aciDeviceType: ACIDeviceType.ampCCorNode1P8G,
+            ),
+          );
+        },
+      );
+    }
+
     return BlocBuilder<Chart18CCorNodeBloc, Chart18CCorNodeState>(
       builder: (context, state) {
         return PopupMenuButton<DataLogMenu>(
@@ -279,39 +296,20 @@ class _PopupMenu extends StatelessWidget {
 
                 if (code != null) {
                   if (code.isNotEmpty) {
-                    if (context.mounted) {
-                      List<dynamic>? resultOfDownload =
-                          await showDialog<List<dynamic>>(
-                        context: context,
-                        barrierDismissible: false, // user must tap button!
-                        builder: (BuildContext buildContext) {
-                          return WillPopScope(
-                            onWillPop: () async {
-                              // 避免 Android 使用者點擊系統返回鍵關閉 dialog
-                              return false;
-                            },
-                            child: DownloadIndicator18CCorNodeForm(
-                              dsimRepository: RepositoryProvider.of<
-                                  Amp18CCorNodeRepository>(context),
-                            ),
-                          );
-                        },
-                      );
+                    List<dynamic>? resultOfDownload =
+                        await showDownloadDialog();
 
-                      if (resultOfDownload != null) {
-                        bool isSuccessful = resultOfDownload[0];
-                        List<Log1p8GCCorNode> log1p8Gs = resultOfDownload[1];
-                        String errorMessage = resultOfDownload[2];
-                        if (context.mounted) {
-                          context
-                              .read<Chart18CCorNodeBloc>()
-                              .add(AllDataExported(
-                                isSuccessful,
-                                log1p8Gs,
-                                errorMessage,
-                                code,
-                              ));
-                        }
+                    if (resultOfDownload != null) {
+                      bool isSuccessful = resultOfDownload[0];
+                      List<Log1p8GCCorNode> log1p8Gs = resultOfDownload[1];
+                      String errorMessage = resultOfDownload[2];
+                      if (context.mounted) {
+                        context.read<Chart18CCorNodeBloc>().add(AllDataExported(
+                              isSuccessful,
+                              log1p8Gs,
+                              errorMessage,
+                              code,
+                            ));
                       }
                     }
                   }

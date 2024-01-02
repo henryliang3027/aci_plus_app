@@ -24,10 +24,3 @@ class Event1P8GRequested extends DataLogChartEvent {
   @override
   List<Object?> get props => [];
 }
-
-class TestLogRequested extends DataLogChartEvent {
-  const TestLogRequested();
-
-  @override
-  List<Object?> get props => [];
-}

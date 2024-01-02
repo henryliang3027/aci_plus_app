@@ -1424,7 +1424,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
         if (currentDetectedSplitOption != '0') {
           return true;
         } else {
-          return true;
+          return false;
         }
       } else if (loadingStatus.isRequestFailure) {
         return false;

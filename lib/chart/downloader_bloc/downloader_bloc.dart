@@ -1,7 +1,6 @@
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
-import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,21 +9,21 @@ part 'downloader_state.dart';
 
 class DownloaderBloc extends Bloc<DownloaderEvent, DownloaderState> {
   DownloaderBloc({
-    required Amp18Repository amp18Repository,
-  })  : _amp18Repository = amp18Repository,
+    required Function(int) requestLogChunk,
+  })  : _requestLogChunk = requestLogChunk,
         super(const DownloaderState()) {
     on<DownloadStarted>(_onDownloadStarted);
 
     add(const DownloadStarted());
   }
 
-  final Amp18Repository _amp18Repository;
+  // final Amp18Repository _amp18Repository;
+  final Function(int) _requestLogChunk;
 
   Future<List> getLogChunkWithRetry(int chunkIndex) async {
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int j = 0; j < 3; j++) {
-      List<dynamic> resultOfLog =
-          await _amp18Repository.requestCommand1p8GForLogChunk(chunkIndex);
+      List<dynamic> resultOfLog = await _requestLogChunk(chunkIndex);
 
       if (resultOfLog[0]) {
         return resultOfLog;

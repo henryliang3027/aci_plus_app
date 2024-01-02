@@ -18,20 +18,9 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
     on<LogRequested>(_onLogRequested);
     on<Event1P8GRequested>(_onEvent1P8GDataRequested);
     on<MoreLogRequested>(_onMoreLogRequested);
-    on<TestLogRequested>(_onTestLogRequested);
   }
 
   final Amp18Repository _amp18Repository;
-
-  Future<void> _onTestLogRequested(
-    TestLogRequested event,
-    Emitter<DataLogChartState> emit,
-  ) async {
-    List<dynamic> resultOfLog1p8G =
-        await _amp18Repository.requestCommand1p8GForLogChunk(0);
-
-    print(resultOfLog1p8G[0]);
-  }
 
   Future<void> _onLogRequested(
     LogRequested event,
