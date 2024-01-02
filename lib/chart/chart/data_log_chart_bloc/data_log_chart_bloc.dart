@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
@@ -16,11 +17,21 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
         super(const DataLogChartState()) {
     on<LogRequested>(_onLogRequested);
     on<Event1P8GRequested>(_onEvent1P8GDataRequested);
-
     on<MoreLogRequested>(_onMoreLogRequested);
+    on<TestLogRequested>(_onTestLogRequested);
   }
 
   final Amp18Repository _amp18Repository;
+
+  Future<void> _onTestLogRequested(
+    TestLogRequested event,
+    Emitter<DataLogChartState> emit,
+  ) async {
+    List<dynamic> resultOfLog1p8G =
+        await _amp18Repository.requestCommand1p8GForLogChunk(0);
+
+    print(resultOfLog1p8G[0]);
+  }
 
   Future<void> _onLogRequested(
     LogRequested event,
@@ -69,7 +80,15 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
             errorMessage: 'Failed to load logs',
           ));
         } else {
-          continue;
+          if (resultOfLog1p8G[2] == CharacteristicError.writeDataError.name) {
+            emit(state.copyWith(
+              logRequestStatus: FormStatus.requestFailure,
+              errorMessage: 'Failed to load logs',
+            ));
+            break;
+          } else {
+            continue;
+          }
         }
       }
     }
@@ -112,7 +131,15 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
             errorMessage: 'Failed to load events',
           ));
         } else {
-          continue;
+          if (resultOfEvent1p8G[1] == CharacteristicError.writeDataError.name) {
+            emit(state.copyWith(
+              eventRequestStatus: FormStatus.requestFailure,
+              errorMessage: 'Failed to load events',
+            ));
+            break;
+          } else {
+            continue;
+          }
         }
       }
     }
@@ -161,7 +188,15 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
             errorMessage: 'Failed to load logs',
           ));
         } else {
-          continue;
+          if (resultOfLog1p8G[2] == CharacteristicError.writeDataError.name) {
+            emit(state.copyWith(
+              logRequestStatus: FormStatus.requestFailure,
+              errorMessage: 'Failed to load logs',
+            ));
+            break;
+          } else {
+            continue;
+          }
         }
       }
     }

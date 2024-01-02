@@ -330,7 +330,8 @@ class Amp18CCorNodeRepository {
       } catch (e) {
         return [
           false,
-          false,
+          false, // hasNextChunk
+          e.toString(),
         ];
       }
     } else {
@@ -353,7 +354,8 @@ class Amp18CCorNodeRepository {
       } catch (e) {
         return [
           false,
-          false,
+          false, // hasNextChunk
+          e.toString(),
         ];
       }
     }
@@ -380,6 +382,7 @@ class Amp18CCorNodeRepository {
     } catch (e) {
       return [
         false,
+        e.toString(),
       ];
     }
   }
@@ -1239,6 +1242,7 @@ class Amp18CCorNodeRepository {
       Command18CCorNode.setLocationCmd[i + 7] = locationBytes[i];
     }
 
+    // 填入空白
     for (int i = locationBytes.length; i < 96; i += 2) {
       Command18CCorNode.setLocationCmd[i + 7] = 0x20;
       Command18CCorNode.setLocationCmd[i + 8] = 0x00;

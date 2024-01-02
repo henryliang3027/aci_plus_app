@@ -188,7 +188,7 @@ class BLEClient {
                 }
               } else {
                 if (!_completer!.isCompleted) {
-                  _completer!.completeError('Invalid data');
+                  _completer!.completeError(CharacteristicError.invalidData);
                 }
               }
             } else if (_currentCommandIndex >= 14 &&
@@ -207,7 +207,7 @@ class BLEClient {
                   }
                 } else {
                   if (!_completer!.isCompleted) {
-                    _completer!.completeError('Invalid data');
+                    _completer!.completeError(CharacteristicError.invalidData);
                   }
                 }
               }
@@ -228,7 +228,7 @@ class BLEClient {
                 }
               } else {
                 if (!_completer!.isCompleted) {
-                  _completer!.completeError('Invalid data');
+                  _completer!.completeError(CharacteristicError.invalidData);
                 }
               }
             } else if (_currentCommandIndex == 183) {
@@ -253,7 +253,7 @@ class BLEClient {
                   }
                 } else {
                   if (!_completer!.isCompleted) {
-                    _completer!.completeError('Invalid data');
+                    _completer!.completeError(CharacteristicError.invalidData);
                   }
                 }
               }
@@ -280,7 +280,7 @@ class BLEClient {
                   }
                 } else {
                   if (!_completer!.isCompleted) {
-                    _completer!.completeError('Invalid data');
+                    _completer!.completeError(CharacteristicError.invalidData);
                   }
                 }
               }
@@ -306,13 +306,16 @@ class BLEClient {
         // ));
         // break;
         case DeviceConnectionState.disconnected:
-          cancelConnectionTimer();
-          cancelCharacteristicDataTimer(name: 'connection closed');
-          cancelCompleterOnDisconnected();
+          // cancelConnectionTimer();
+          // cancelCharacteristicDataTimer(name: 'connection closed');
+          // cancelCompleterOnDisconnected();
+
           _connectionReportStreamController.add(const ConnectionReport(
             connectionState: DeviceConnectionState.disconnected,
             errorMessage: 'Device connection failed',
           ));
+
+          await closeConnectionStream();
           break;
         default:
           break;
@@ -487,7 +490,8 @@ class BLEClient {
       );
     } catch (e) {
       if (!_completer!.isCompleted) {
-        _completer!.completeError(e.toString());
+        print('writeCharacteristic failed: ${e.toString()}');
+        _completer!.completeError(CharacteristicError.writeDataError.name);
       }
     }
     return _completer!.future;
@@ -542,7 +546,7 @@ class BLEClient {
   }) {
     _characteristicDataTimer = Timer(timeout, () {
       if (!_completer!.isCompleted) {
-        _completer!.completeError('cmd:$commandIndex Timeout occurred');
+        _completer!.completeError(CharacteristicError.timeoutOccured);
         print('cmd:$commandIndex Timeout occurred');
       }
     });

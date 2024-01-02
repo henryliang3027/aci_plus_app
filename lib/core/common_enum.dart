@@ -10,3 +10,9 @@ enum ACIDeviceType {
   amp1P8G,
   ampCCorNode1P8G,
 }
+
+enum CharacteristicError {
+  writeDataError,
+  invalidData,
+  timeoutOccured,
+}

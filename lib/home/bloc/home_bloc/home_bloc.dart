@@ -597,7 +597,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               errorMassage: 'Failed to load data',
             ));
           } else {
-            continue;
+            if (resultOf1p8G3[1] == CharacteristicError.writeDataError.name) {
+              emit(state.copyWith(
+                loadingStatus: FormStatus.requestFailure,
+                characteristicData: state.characteristicData,
+                errorMassage: 'Failed to load data',
+              ));
+              break;
+            } else {
+              continue;
+            }
           }
         }
       }
@@ -625,7 +634,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               errorMassage: 'Failed to load logs',
             ));
           } else {
-            continue;
+            if (resultOf1p8GForLogChunk[2] ==
+                CharacteristicError.writeDataError.name) {
+              emit(state.copyWith(
+                loadingStatus: FormStatus.requestFailure,
+                characteristicData: state.characteristicData,
+                errorMassage: 'Failed to load logs',
+              ));
+              break;
+            } else {
+              continue;
+            }
           }
         }
       }
@@ -774,7 +793,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               errorMassage: 'Failed to load logs',
             ));
           } else {
-            continue;
+            if (resultOf1p8GCCorNodeLogChunk[2] ==
+                CharacteristicError.writeDataError.name) {
+              emit(state.copyWith(
+                loadingStatus: FormStatus.requestFailure,
+                characteristicData: state.characteristicData,
+                errorMassage: 'Failed to load logs',
+              ));
+              break;
+            } else {
+              continue;
+            }
           }
         }
       }

@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
@@ -77,7 +78,15 @@ class Chart18CCorNodeBloc
             errorMessage: 'load logs failed',
           ));
         } else {
-          continue;
+          if (resultOfLog1p8G[2] == CharacteristicError.writeDataError.name) {
+            emit(state.copyWith(
+              logRequestStatus: FormStatus.requestFailure,
+              errorMessage: 'load logs failed',
+            ));
+            break;
+          } else {
+            continue;
+          }
         }
       }
     }
@@ -131,7 +140,15 @@ class Chart18CCorNodeBloc
             errorMessage: 'load logs failed',
           ));
         } else {
-          continue;
+          if (resultOfLog1p8G[2] == CharacteristicError.writeDataError.name) {
+            emit(state.copyWith(
+              logRequestStatus: FormStatus.requestFailure,
+              errorMessage: 'load logs failed',
+            ));
+            break;
+          } else {
+            continue;
+          }
         }
       }
     }
@@ -177,7 +194,15 @@ class Chart18CCorNodeBloc
             errorMessage: 'load events failed',
           ));
         } else {
-          continue;
+          if (resultOfEvent1p8G[1] == CharacteristicError.writeDataError.name) {
+            emit(state.copyWith(
+              eventRequestStatus: FormStatus.requestFailure,
+              errorMessage: 'load events failed',
+            ));
+            break;
+          } else {
+            continue;
+          }
         }
       }
     }

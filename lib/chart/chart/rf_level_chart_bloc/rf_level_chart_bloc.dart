@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
@@ -64,7 +65,15 @@ class RFLevelChartBloc extends Bloc<RFLevelChartEvent, RFLevelChartState> {
             errorMessage: 'Failed to load data',
           ));
         } else {
-          continue;
+          if (resultOf1p8G3[1] == CharacteristicError.writeDataError.name) {
+            emit(state.copyWith(
+              rfInOutRequestStatus: FormStatus.requestFailure,
+              errorMessage: 'Failed to load data',
+            ));
+            break;
+          } else {
+            continue;
+          }
         }
       }
     }

@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
@@ -31,7 +32,11 @@ class DownloaderBloc extends Bloc<DownloaderEvent, DownloaderState> {
         if (j == 2) {
           break;
         } else {
-          continue;
+          if (resultOfLog[2] == CharacteristicError.writeDataError.name) {
+            break;
+          } else {
+            continue;
+          }
         }
       }
     }

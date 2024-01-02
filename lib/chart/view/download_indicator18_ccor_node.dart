@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,11 @@ class _DownloadIndicator18CCorNodeFormState
         if (j == 2) {
           break;
         } else {
-          continue;
+          if (resultOfLog[2] == CharacteristicError.writeDataError.name) {
+            break;
+          } else {
+            continue;
+          }
         }
       }
     }
