@@ -1,17 +1,14 @@
 import 'package:aci_plus_app/chart/chart/chart18_bloc/chart18_bloc.dart';
 import 'package:aci_plus_app/chart/view/code_input_page.dart';
 import 'package:aci_plus_app/chart/view/data_log_chart_page.dart';
-import 'package:aci_plus_app/chart/view/download_indicator18.dart';
-import 'package:aci_plus_app/chart/view/downloader_page.dart';
+import 'package:aci_plus_app/chart/view/downloader18_page.dart';
 import 'package:aci_plus_app/chart/view/rf_level_chart_page.dart';
-import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
-import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -311,9 +308,7 @@ class _PopupMenu extends StatelessWidget {
 
             builder: (BuildContext context) {
               return const Dialog(
-                child: DownloaderPage(
-                  aciDeviceType: ACIDeviceType.amp1P8G,
-                ),
+                child: Downloader18Page(),
               );
             },
           );

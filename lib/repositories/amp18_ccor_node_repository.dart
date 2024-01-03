@@ -344,7 +344,10 @@ class Amp18CCorNodeRepository {
 
         List<Log1p8GCCorNode> log1p8Gs =
             _amp18CCorNodeParser.parse1P8GCCorNodeLog(rawData);
-        bool hasNextChunk = log1p8Gs.isNotEmpty ? true : false;
+
+        // 如果 log1p8Gs 不為空, 而且不是最後一個 command (index = 193), 就視為還有更多的 log
+        bool hasNextChunk =
+            log1p8Gs.isNotEmpty && commandIndex != 193 ? true : false;
 
         return [
           true,

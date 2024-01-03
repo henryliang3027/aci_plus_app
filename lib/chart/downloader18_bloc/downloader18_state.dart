@@ -1,7 +1,7 @@
-part of 'downloader_bloc.dart';
+part of 'downloader18_bloc.dart';
 
-class DownloaderState extends Equatable {
-  const DownloaderState({
+class Downloader18State extends Equatable {
+  const Downloader18State({
     this.status = FormStatus.none,
     this.currentProgress = 0,
     this.log1p8Gs = const [],
@@ -13,13 +13,13 @@ class DownloaderState extends Equatable {
   final List<Log1p8G> log1p8Gs;
   final String errorMessage;
 
-  DownloaderState copyWith({
+  Downloader18State copyWith({
     FormStatus? status,
     int? currentProgress,
     List<Log1p8G>? log1p8Gs,
     String? errorMessage,
   }) {
-    return DownloaderState(
+    return Downloader18State(
       status: status ?? this.status,
       currentProgress: currentProgress ?? this.currentProgress,
       log1p8Gs: log1p8Gs ?? this.log1p8Gs,

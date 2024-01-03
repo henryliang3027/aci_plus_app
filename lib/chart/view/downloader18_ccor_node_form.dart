@@ -1,18 +1,19 @@
-import 'package:aci_plus_app/chart/downloader_bloc/downloader_bloc.dart';
+import 'package:aci_plus_app/chart/downloader18_ccor_node_bloc/downloader18_ccor_node_bloc.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DownloaderForm extends StatefulWidget {
-  const DownloaderForm({super.key});
+class Downloader18CCorNodeForm extends StatefulWidget {
+  const Downloader18CCorNodeForm({super.key});
 
   @override
-  State<DownloaderForm> createState() => _DownloaderFormState();
+  State<Downloader18CCorNodeForm> createState() =>
+      _Downloader18CCorNodeFormState();
 }
 
-class _DownloaderFormState extends State<DownloaderForm>
+class _Downloader18CCorNodeFormState extends State<Downloader18CCorNodeForm>
     with TickerProviderStateMixin {
   late AnimationController animationController;
 
@@ -22,7 +23,8 @@ class _DownloaderFormState extends State<DownloaderForm>
 
     animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        DownloaderState downloaderState = context.read<DownloaderBloc>().state;
+        Downloader18CCorNodeState downloaderState =
+            context.read<Downloader18CCorNodeBloc>().state;
         if (downloaderState.status.isRequestSuccess) {
           Navigator.of(context).pop([
             true,
@@ -35,7 +37,7 @@ class _DownloaderFormState extends State<DownloaderForm>
       }
     });
 
-    context.read<DownloaderBloc>().stream.listen((state) {
+    context.read<Downloader18CCorNodeBloc>().stream.listen((state) {
       print('currentProgress: ${state.currentProgress}');
       animationController.animateTo(
         state.currentProgress / 10,
@@ -66,8 +68,8 @@ class _DownloaderFormState extends State<DownloaderForm>
           AnimatedBuilder(
             animation: animationController,
             builder: (context, child) {
-              DownloaderState downloaderState =
-                  context.read<DownloaderBloc>().state;
+              Downloader18CCorNodeState downloaderState =
+                  context.read<Downloader18CCorNodeBloc>().state;
               return SingleChildScrollView(
                 child: ListBody(
                   children: <Widget>[
