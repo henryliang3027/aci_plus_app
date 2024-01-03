@@ -44,15 +44,12 @@ class CodeInputBloc extends Bloc<CodeInputEvent, CodeInputState> {
     emit(state.copyWith(
       isInitialize: false,
     ));
-
-    bool result = await writeUserCode(state.code);
+    await writeUserCode(state.code);
   }
 
-  Future<bool> writeUserCode(String userCode) async {
+  Future<void> writeUserCode(String userCode) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool result =
-        await prefs.setString(SharedPreferenceKey.userCode.name, userCode);
-    return result;
+    await prefs.setString(SharedPreferenceKey.userCode.name, userCode);
   }
 
   Future<String> readUserCode() async {
