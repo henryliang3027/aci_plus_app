@@ -79,7 +79,8 @@ class Downloader18CCorNodeBloc
         emit(state.copyWith(
           status: FormStatus.requestFailure,
           currentProgress: 0,
-          errorMessage: 'Failed to load logs',
+          log1p8Gs: const [],
+          errorMessage: 'Failed to download logs',
         ));
         break;
       }

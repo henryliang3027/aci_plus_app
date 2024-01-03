@@ -190,6 +190,7 @@
     "dialogMessageConnectionFailure": "Fallo en la conexión del dispositivo",
     "dialogMessageLoadDataFailure": "No se pudieron cargar los datos",
     "dialogMessageLoadLogFailure": "No se pudieron cargar los registros",
+    "dialogMessageDownloadLogFailure": "No se pudieron descargar los registros",
     "dialogMessageLoadEventFailure": "No se pudieron cargar eventos",
     "dialogMessageLocationSetting": "Ajuste ubicación",
     "dialogMessageTGCCableLengthSetting": "Ajuste longitud cable TGC",

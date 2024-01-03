@@ -77,7 +77,8 @@ class Downloader18Bloc extends Bloc<Downloader18Event, Downloader18State> {
         emit(state.copyWith(
           status: FormStatus.requestFailure,
           currentProgress: 0,
-          errorMessage: 'Failed to load logs',
+          log1p8Gs: const [],
+          errorMessage: 'Failed to download logs',
         ));
         break;
       }

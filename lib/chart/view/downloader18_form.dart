@@ -31,6 +31,15 @@ class _DownloaderFormState extends State<DownloaderForm>
             downloaderState.errorMessage,
           ]);
         } else if (downloaderState.status.isRequestFailure) {
+          // if (ModalRoute.of(context)?.isCurrent == false) {
+          //   Navigator.of(context).pop();
+          // }
+          // Navigator.of(context).pop([
+          //   false,
+          //   downloaderState.log1p8Gs,
+          //   downloaderState.errorMessage,
+          // ]);
+
           Navigator.of(context).popUntil((route) => route.isFirst);
         } else {}
       }

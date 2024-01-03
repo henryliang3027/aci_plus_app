@@ -63,12 +63,12 @@ class RFLevelShared extends Chart18Event {
 }
 
 class AllDataExported extends Chart18Event {
-  const AllDataExported(
-    this.isSuccessful,
-    this.log1p8Gs,
-    this.errorMessage,
-    this.code,
-  );
+  const AllDataExported({
+    required this.isSuccessful,
+    required this.log1p8Gs,
+    required this.errorMessage,
+    required this.code,
+  });
 
   final bool isSuccessful;
   final List<Log1p8G> log1p8Gs;

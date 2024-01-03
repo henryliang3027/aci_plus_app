@@ -188,6 +188,7 @@
     "dialogMessageConnectionFailure": "La connexion de l'appareil a échoué",
     "dialogMessageLoadDataFailure": "Échec du chargement des données",
     "dialogMessageLoadLogFailure": "Échec du chargement des journaux",
+    "dialogMessageDownloadLogFailure": "Échec du téléchargement des journaux",
     "dialogMessageLoadEventFailure": "Échec du chargement des événements",
     "dialogMessageLocationSetting": "Réglage localisation",
     "dialogMessageTGCCableLengthSetting": "Réglage longueur du câble TGC",

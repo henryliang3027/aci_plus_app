@@ -15,6 +15,8 @@ String getMessageLocalization({
     return AppLocalizations.of(context)!.dialogMessageLoadDataFailure;
   } else if (msg == 'Failed to load logs') {
     return AppLocalizations.of(context)!.dialogMessageLoadLogFailure;
+  } else if (msg == 'Failed to download logs') {
+    return AppLocalizations.of(context)!.dialogMessageDownloadLogFailure;
   } else if (msg == 'Failed to load events') {
     return AppLocalizations.of(context)!.dialogMessageLoadEventFailure;
   } else if (msg == 'Failed to initialize the log interval.') {

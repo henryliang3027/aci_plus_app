@@ -191,6 +191,7 @@
     "dialogMessageConnectionFailure": "Device connection failed",
     "dialogMessageLoadDataFailure": "Failed to load data",
     "dialogMessageLoadLogFailure": "Failed to load logs",
+    "dialogMessageDownloadLogFailure": "Failed to download logs",
     "dialogMessageLoadEventFailure": "Failed to load events",
     "dialogMessageLocationSetting": "Location setting",
     "dialogMessageTGCCableLengthSetting": "TGC cable length setting",

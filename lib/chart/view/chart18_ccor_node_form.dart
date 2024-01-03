@@ -300,10 +300,19 @@ class _PopupMenu extends StatelessWidget {
                       String errorMessage = resultOfDownload[2];
                       if (context.mounted) {
                         context.read<Chart18CCorNodeBloc>().add(AllDataExported(
-                              isSuccessful,
-                              log1p8Gs,
-                              errorMessage,
-                              code,
+                              isSuccessful: isSuccessful,
+                              log1p8Gs: log1p8Gs,
+                              errorMessage: errorMessage,
+                              code: code,
+                            ));
+                      }
+                    } else {
+                      if (context.mounted) {
+                        context.read<Chart18CCorNodeBloc>().add(AllDataExported(
+                              isSuccessful: false,
+                              log1p8Gs: const [],
+                              errorMessage: 'Failed to download logs',
+                              code: code,
                             ));
                       }
                     }

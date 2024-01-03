@@ -189,6 +189,7 @@
     "dialogMessageConnectionFailure": "裝置連線失敗",
     "dialogMessageLoadDataFailure": "加載資料失敗",
     "dialogMessageLoadLogFailure": "加載記錄資料失敗",
+    "dialogMessageDownloadLogFailure": "下載記錄資料失敗",
     "dialogMessageLoadEventFailure": "加載事件資料失敗",
     "dialogMessageLocationSetting": "位置設定",
     "dialogMessageTGCCableLengthSetting": "TGC纜線衰減值設定",
