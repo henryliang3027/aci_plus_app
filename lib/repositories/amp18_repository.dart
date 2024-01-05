@@ -1321,6 +1321,31 @@ class Amp18Repository {
     }
   }
 
+  Future<dynamic> set1p8GFactoryDefault(String number) async {
+    int commandIndex = 333;
+
+    print('get data from request command 1p8G$commandIndex');
+
+    int intNumber = int.parse(number);
+
+    Command18.setFactoryDefaultCmd[7] = intNumber;
+
+    CRC16.calculateCRC16(
+      command: Command18.setFactoryDefaultCmd,
+      usDataLength: Command18.setFactoryDefaultCmd.length - 2,
+    );
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setFactoryDefaultCmd,
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<dynamic> set1p8GSplitOptionAlarmState(String isEnable) async {
     int commandIndex = 334;
 

@@ -306,15 +306,6 @@ class _PopupMenu extends StatelessWidget {
                               code: code,
                             ));
                       }
-                    } else {
-                      if (context.mounted) {
-                        context.read<Chart18CCorNodeBloc>().add(AllDataExported(
-                              isSuccessful: false,
-                              log1p8Gs: const [],
-                              errorMessage: 'Failed to download logs',
-                              code: code,
-                            ));
-                      }
                     }
                   }
                 }

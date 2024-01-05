@@ -3,6 +3,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
+import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -255,27 +256,34 @@ class Setting18ConfigureBloc
   ) {
     IntegerInput firstChannelLoadingFrequency =
         IntegerInput.dirty(event.firstChannelLoadingFrequency);
+
+    bool isValid = isValidFirstChannelLoadingFrequency(
+      currentDetectedSplitOption: event.currentDetectedSplitOption,
+      firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
       isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
-        logInterval: state.logInterval,
-        tgcCableLength: state.tgcCableLength,
-      ),
+      enableSubmission: isValid &&
+          _isEnabledSubmission(
+            location: state.location,
+            coordinates: state.coordinates,
+            splitOption: state.splitOption,
+            firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+            firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+            lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+            lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+            pilotFrequencyMode: state.pilotFrequencyMode,
+            pilotFrequency1: state.pilotFrequency1,
+            pilotFrequency2: state.pilotFrequency2,
+            fwdAGCMode: state.fwdAGCMode,
+            autoLevelControl: state.autoLevelControl,
+            logInterval: state.logInterval,
+            tgcCableLength: state.tgcCableLength,
+          ),
     ));
   }
 

@@ -138,6 +138,7 @@ class Amp18Parser {
     String rfOutputPilotHighFrequencyAlarmState = '';
     String temperatureAlarmState = '';
     String voltageAlarmState = '';
+    String factoryDefaultNumber = '';
     String splitOptionAlarmState = '';
     String voltageRippleAlarmState = '';
     String outputPowerAlarmState = '';
@@ -311,6 +312,9 @@ class Amp18Parser {
 
     // 解析 voltageAlarmState
     voltageAlarmState = rawData[46].toString();
+
+    // 解析 factoryDefaultNumber
+    factoryDefaultNumber = rawData[50].toString();
 
     // 解析 splitOptionAlarmState
     splitOptionAlarmState = rawData[51].toString();

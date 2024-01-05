@@ -502,6 +502,8 @@ bool isValidFirstChannelLoadingFrequency({
   } else {
     if (forwardStartFrequency == null) {
       return true;
+    } else if (firstChannelLoadingFrequency.value.isEmpty) {
+      return true;
     } else {
       int intFirstChannelLoadingFrequency =
           int.parse(firstChannelLoadingFrequency.value);

@@ -761,9 +761,12 @@ class _FirstChannelLoading extends StatelessWidget {
               firstChannelLoadingFrequencyTextEditingController,
           textEditingController2: firstChannelLoadingLevelTextEditingController,
           onChanged1: (firstChannelLoadingFrequency) {
-            context.read<Setting18ConfigureBloc>().add(
-                FirstChannelLoadingFrequencyChanged(
-                    firstChannelLoadingFrequency));
+            context
+                .read<Setting18ConfigureBloc>()
+                .add(FirstChannelLoadingFrequencyChanged(
+                  firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+                  currentDetectedSplitOption: currentDetectedSplitOption,
+                ));
           },
           onChanged2: (firstChannelLoadingLevel) {
             context

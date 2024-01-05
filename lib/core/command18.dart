@@ -102,6 +102,19 @@ class Command18 {
     0x00,
   ];
 
+  static List<int> setFactoryDefaultCmd = [
+    0xB0,
+    0x10,
+    0x00,
+    0x90,
+    0x00,
+    0x2F,
+    0x01,
+    0x00,
+    0x00,
+    0x00,
+  ];
+
   static List<int> setSplitOptionAlarmStateCmd = [
     0xB0,
     0x10,
