@@ -50,6 +50,8 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
+    String currentDetectedSplitOption =
+        homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
@@ -366,7 +368,10 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: const _SettingFloatingActionButton(),
+        floatingActionButton: _SettingFloatingActionButton(
+          partId: partId,
+          currentDetectedSplitOption: currentDetectedSplitOption,
+        ),
       ),
     );
   }
@@ -768,7 +773,14 @@ class _SplitOptionAlarmControl extends StatelessWidget {
 }
 
 class _SettingFloatingActionButton extends StatelessWidget {
-  const _SettingFloatingActionButton({super.key});
+  const _SettingFloatingActionButton({
+    super.key,
+    required this.partId,
+    required this.currentDetectedSplitOption,
+  });
+
+  final String partId;
+  final String currentDetectedSplitOption;
 
   @override
   Widget build(BuildContext context) {
@@ -879,9 +891,15 @@ class _SettingFloatingActionButton extends StatelessWidget {
             );
     }
 
-    bool getEditable(FormStatus loadingStatus) {
+    bool getEditable({
+      required FormStatus loadingStatus,
+    }) {
       if (loadingStatus.isRequestSuccess) {
-        return true;
+        if (currentDetectedSplitOption != '0') {
+          return true;
+        } else {
+          return false;
+        }
       } else if (loadingStatus.isRequestFailure) {
         return false;
       } else {
@@ -897,7 +915,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
       final Setting18CCorNodeThresholdState setting18thresholdState =
           context.watch<Setting18CCorNodeThresholdBloc>().state;
 
-      bool editable = getEditable(homeState.loadingStatus);
+      bool editable = getEditable(loadingStatus: homeState.loadingStatus);
       return editable
           ? getEditTools(
               editMode: setting18thresholdState.editMode,
