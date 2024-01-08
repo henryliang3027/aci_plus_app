@@ -23,7 +23,9 @@ class Setting18Form extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
         leading: const _DeviceStatus(),
-        actions: const [_DeviceRefresh()],
+        actions: const [
+          _PopupMenu(),
+        ],
       ),
       body: const _ViewLayout(),
       bottomNavigationBar: HomeBottomNavigationBar(
@@ -82,6 +84,108 @@ class _DeviceStatus extends StatelessWidget {
               ),
             ),
           );
+        }
+      },
+    );
+  }
+}
+
+enum Setting18Menu {
+  refresh,
+  resetForward,
+  resetReverse,
+}
+
+class _PopupMenu extends StatelessWidget {
+  const _PopupMenu({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (!state.loadingStatus.isRequestInProgress &&
+            !state.connectionStatus.isRequestInProgress) {
+          return PopupMenuButton<Setting18Menu>(
+            onSelected: (Setting18Menu item) {
+              switch (item) {
+                case Setting18Menu.refresh:
+                  context.read<HomeBloc>().add(const DeviceRefreshed());
+                  break;
+                case Setting18Menu.resetForward:
+                  break;
+                case Setting18Menu.resetReverse:
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) =>
+                <PopupMenuEntry<Setting18Menu>>[
+              PopupMenuItem<Setting18Menu>(
+                value: Setting18Menu.refresh,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.refresh,
+                      size: 20.0,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    Text(AppLocalizations.of(context)!.reconnect),
+                  ],
+                ),
+              ),
+              PopupMenuItem<Setting18Menu>(
+                value: Setting18Menu.resetForward,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.arrow_circle_down,
+                      size: 20.0,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    Text(AppLocalizations.of(context)!.resetForward),
+                  ],
+                ),
+              ),
+              PopupMenuItem<Setting18Menu>(
+                value: Setting18Menu.resetReverse,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.arrow_circle_up,
+                      size: 20.0,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    Text(AppLocalizations.of(context)!.resetReverse),
+                  ],
+                ),
+              ),
+            ],
+          );
+          // IconButton(
+          //   onPressed: () {
+          //     context.read<HomeBloc>().add(const DeviceRefreshed());
+          //   },
+          //   icon: Icon(
+          //     Icons.refresh,
+          //     color: Theme.of(context).colorScheme.onPrimary,
+          //   ),
+          // );
+        } else {
+          return Container();
         }
       },
     );

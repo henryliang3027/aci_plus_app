@@ -153,6 +153,8 @@
 
     "monitoringChart": "Monitoring Chart",
     "reconnect": "Reconnect",
+    "resetForward": "Reset Forward",
+    "resetReverse": "Reset Reverse",
     "share": "Share",
     "export": "Export",
     "downloadAll": "Download All",
