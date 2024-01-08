@@ -44,7 +44,7 @@
     "startFrequencyOutputLevelStatus": "Nivel de salida de frecuencia inicial",
     "stopFrequencyOutputLevelStatus": "Nivel de salida de frecuencia de parada",
     "forwardControlParameters": "Adelante Control Parámetros",
-    "returnControlParameters": "Retorno Control Parámetros",
+    "returnControlParameters": "Inverso Control Parámetros",
     
     "forwardInputAttenuation1": "Puerto 1 Entrada Atenuación",
     "forwardInputAttenuation3": "Puerto 3 Entrada Atenuación",

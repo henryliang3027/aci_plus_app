@@ -44,7 +44,7 @@
     "startFrequencyOutputLevelStatus": "Niveau de sortie de fréquence de démarrage",
     "stopFrequencyOutputLevelStatus": "Niveau de sortie de fréquence d'arrêt",
     "forwardControlParameters": "Paramètres de contrôle avant",
-    "returnControlParameters": "Paramètres de contrôle de retour",
+    "returnControlParameters": "Paramètres de contrôle de inverse",
     
     "forwardInputAttenuation1": "Port 1 Atténuation d'entrée",
     "forwardInputAttenuation3": "Port 3 Atténuation d'entrée",
