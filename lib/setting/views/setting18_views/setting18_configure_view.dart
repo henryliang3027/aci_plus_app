@@ -363,7 +363,7 @@ class Setting18ConfigureView extends StatelessWidget {
         ),
         floatingActionButton: _SettingFloatingActionButton(
           partId: partId,
-          currentDetectedSplitOption: currentDetectedSplitOption,
+          // currentDetectedSplitOption: currentDetectedSplitOption,
         ),
       ),
     );
@@ -1290,11 +1290,11 @@ class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({
     super.key,
     required this.partId,
-    required this.currentDetectedSplitOption,
+    // required this.currentDetectedSplitOption,
   });
 
   final String partId;
-  final String currentDetectedSplitOption;
+  // final String currentDetectedSplitOption;
 
   @override
   Widget build(BuildContext context) {
@@ -1424,11 +1424,12 @@ class _SettingFloatingActionButton extends StatelessWidget {
       required FormStatus loadingStatus,
     }) {
       if (loadingStatus.isRequestSuccess) {
-        if (currentDetectedSplitOption != '0') {
-          return true;
-        } else {
-          return false;
-        }
+        return true;
+        // if (currentDetectedSplitOption != '0') {
+        //   return true;
+        // } else {
+        //   return false;
+        // }
       } else if (loadingStatus.isRequestFailure) {
         return false;
       } else {
