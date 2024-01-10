@@ -21,7 +21,7 @@ class Information18CCorNodeForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.information),
+        title: Text(AppLocalizations.of(context)!.home),
         centerTitle: true,
         leading: const _DeviceStatus(),
         actions: const [_DeviceRefresh()],
@@ -245,7 +245,7 @@ class _BasicCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                AppLocalizations.of(context)!.basic,
+                AppLocalizations.of(context)!.basicInformation,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(
@@ -408,7 +408,7 @@ Widget buildAlarmCard({
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            AppLocalizations.of(context)!.alarm,
+            AppLocalizations.of(context)!.alarmIndicator,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(

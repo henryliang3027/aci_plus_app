@@ -7,9 +7,9 @@
     "workingMode": "Working Mode",
     "pilotCodeFormatError": "Invalid pilot code",
 
-    "configuration": "Configuration",
-    "threshold": "Threshold",
-    "control": "Control",
+    "device": "Device",
+    "alarm": "Alarm",
+    "balance": "Balance",
     "advanced": "Advanced",
    
     "splitOption": "Split Options",
@@ -94,7 +94,7 @@
     "ingressOpen": "Open",
 
     
-    "status": "Status",
+    "status": "Device Status",
     "serialNumber": "Serial Number",
     "firmwareVersion": "Firmware Version",
     "attenuation": "Attenuation",
@@ -131,18 +131,18 @@
     "maxRFOutputPower": "Maximum",
     
     
-    "information": "Information",
+    "home": "Home",
     "connection": "Connection",
     "bluetooth": "Bluetooth",
     "visitWebsite": "Visit ACI website",
-    "basic": "Basic",
+    "basicInformation": "Basic Information",
     "typeNo": "Type No",
     "partNo": "Part No",
     "location": "Location",
     "dsimMode": "DSIM Mode",
     "currentPilot": "Current Pilot",
     "logInterval": "Log Interval",
-    "alarm": "Alarm",
+    "alarmIndicator": "Alarm",
     "rfPilotLevelAlarm": "RF Pilot Level",
     "temperatureAlarm": "Temperature",
     "powerSupplyAlarm": "Power Supply",

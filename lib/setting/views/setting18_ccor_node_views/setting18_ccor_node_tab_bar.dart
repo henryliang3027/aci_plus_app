@@ -38,7 +38,7 @@ class Setting18CCorNodeTabBar extends StatelessWidget {
                       width: 110,
                       child: Center(
                         child: Text(
-                          AppLocalizations.of(context)!.configuration,
+                          AppLocalizations.of(context)!.device,
                         ),
                       ),
                     ),
@@ -48,7 +48,7 @@ class Setting18CCorNodeTabBar extends StatelessWidget {
                       width: 110,
                       child: Center(
                         child: Text(
-                          AppLocalizations.of(context)!.threshold,
+                          AppLocalizations.of(context)!.alarm,
                         ),
                       ),
                     ),
@@ -58,7 +58,7 @@ class Setting18CCorNodeTabBar extends StatelessWidget {
                       width: 110,
                       child: Center(
                         child: Text(
-                          AppLocalizations.of(context)!.control,
+                          AppLocalizations.of(context)!.balance,
                         ),
                       ),
                     ),
