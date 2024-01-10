@@ -152,8 +152,6 @@
     
     "monitoringChart": "監控圖表",
     "reconnect": "重新連線",
-    "resetForward": "重置上行",
-    "resetReverse": "重置下行",
     "reset": "重置",
     "share": "分享",
     "export": "匯出",

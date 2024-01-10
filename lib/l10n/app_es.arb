@@ -153,8 +153,6 @@
 
     "monitoringChart": "Gráfico de Monitoreo",
     "reconnect": "Reconectar",
-    "resetForward": "Restablecer adelante",
-    "resetReverse": "Restablecer reversa",
     "reset": "Restablecer",
     "share": "Compartir",
     "export": "Exportar",

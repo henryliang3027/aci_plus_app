@@ -151,8 +151,6 @@
 
     "monitoringChart": "Graphique moniteur",
     "reconnect": "reconnecter",
-    "resetForward": "Réinitialiser en avant",
-    "resetReverse": "Réinitialiser l'inversion",
     "reset": "Réinitialiser",
     "share": "Partager",
     "export": "Exportation",
