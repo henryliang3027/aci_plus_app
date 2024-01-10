@@ -155,6 +155,7 @@
     "reconnect": "Reconectar",
     "resetForward": "Restablecer adelante",
     "resetReverse": "Restablecer reversa",
+    "reset": "Restablecer",
     "share": "Compartir",
     "export": "Exportar",
     "downloadAll": "Descargar todo",
@@ -286,6 +287,8 @@
     "dialogMessageGPSPermissionDenied": "Se deniegan los permisos de ubicación. Por favor proporcione permiso.",
     "dialogMessageAutoSettingLogIntervalFailed": "Error al inicializar el intervalo de registro.",
 
+    "dialogMessageResetToDefaultSuccessful" : "Restablecer al valor predeterminado exitoso",
+    "dialogMessageResetToDefaultFailed" : "Error al restablecer el valor predeterminado",
     "dialogMessageSaveSuccessful": "Guardado exitosamente",
     "dialogMessageSuccessful": "Exitoso",
     "dialogMessageFailed": "Fallido",

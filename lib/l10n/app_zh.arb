@@ -154,6 +154,7 @@
     "reconnect": "重新連線",
     "resetForward": "重置上行",
     "resetReverse": "重置下行",
+    "reset": "重置",
     "share": "分享",
     "export": "匯出",
     "downloadAll": "下載全部",
@@ -285,6 +286,8 @@
     "dialogMessageGPSPermissionDenied": "無法取得定位權限, 請允許定位權限。",
     "dialogMessageAutoSettingLogIntervalFailed": "初始化記錄間隔失敗",
 
+    "dialogMessageResetToDefaultSuccessful" : "重置參數成功",
+    "dialogMessageResetToDefaultFailed" : "重置參數失敗",
     "dialogMessageSaveSuccessful" : "儲存成功",
     "dialogMessageSuccessful": "成功",
     "dialogMessageFailed": "失敗",

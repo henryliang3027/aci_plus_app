@@ -153,6 +153,7 @@
     "reconnect": "reconnecter",
     "resetForward": "Réinitialiser en avant",
     "resetReverse": "Réinitialiser l'inversion",
+    "reset": "Réinitialiser",
     "share": "Partager",
     "export": "Exportation",
     "open": "Ouvrir",
@@ -285,6 +286,8 @@
     "dialogMessageGPSPermissionDenied": "Les autorisations de localisation sont refusées. Veuillez fournir l'autorisation.",
     "dialogMessageAutoSettingLogIntervalFailed": "L'initialisation de l'intervalle de journalisation a échoué.",
 
+    "dialogMessageResetToDefaultSuccessful" : "Réinitialisation à la valeur par défaut réussie",
+    "dialogMessageResetToDefaultFailed" : "Échec de la réinitialisation à la valeur par défaut",
     "dialogMessageSaveSuccessful" : "Enregistré avec succès",
     "dialogMessageSuccessful": "D'accord",
     "dialogMessageFailed": "Échoué",

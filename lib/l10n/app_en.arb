@@ -155,6 +155,7 @@
     "reconnect": "Reconnect",
     "resetForward": "Reset Forward",
     "resetReverse": "Reset Reverse",
+    "reset": "Reset",
     "share": "Share",
     "export": "Export",
     "downloadAll": "Download All",
@@ -286,7 +287,9 @@
     "dialogMessageGPSPermissionDenied": "Location permissions are denied. Please provide permission.",
     "dialogMessageAutoSettingLogIntervalFailed": "Failed to initialize the log interval.",
 
-    "dialogMessageSaveSuccessful" : "Saved Successfully",
+    "dialogMessageResetToDefaultSuccessful" : "Reset to default value successful",
+    "dialogMessageResetToDefaultFailed" : "Reset to default value failed",
+    "dialogMessageSaveSuccessful" : "Saved Successful",
     "dialogMessageSuccessful": "OK",
     "dialogMessageFailed": "Fail",
     "dialogMessageCancel": "Cancel",

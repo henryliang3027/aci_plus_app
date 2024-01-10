@@ -339,15 +339,15 @@ class USTGCChanged extends Setting18ControlEvent {
   List<Object> get props => [usTGC];
 }
 
-class ResetForwardParameterRequested extends Setting18ControlEvent {
-  const ResetForwardParameterRequested();
+class ResetForwardValuesRequested extends Setting18ControlEvent {
+  const ResetForwardValuesRequested();
 
   @override
   List<Object> get props => [];
 }
 
-class ResetReverseParameterRequested extends Setting18ControlEvent {
-  const ResetReverseParameterRequested();
+class ResetReverseValuesRequested extends Setting18ControlEvent {
+  const ResetReverseValuesRequested();
 
   @override
   List<Object> get props => [];

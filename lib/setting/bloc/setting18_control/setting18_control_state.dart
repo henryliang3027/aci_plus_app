@@ -3,6 +3,8 @@ part of 'setting18_control_bloc.dart';
 class Setting18ControlState extends Equatable {
   const Setting18ControlState({
     this.submissionStatus = SubmissionStatus.none,
+    this.resetForwardValuesSubmissionStatus = SubmissionStatus.none,
+    this.resetReverseValuesSubmissionStatus = SubmissionStatus.none,
     this.dsVVA1 = '',
     this.dsSlope1 = '',
     this.usVCA1 = '',
@@ -29,6 +31,8 @@ class Setting18ControlState extends Equatable {
   });
 
   final SubmissionStatus submissionStatus;
+  final SubmissionStatus resetForwardValuesSubmissionStatus;
+  final SubmissionStatus resetReverseValuesSubmissionStatus;
   final String dsVVA1;
   final String dsSlope1;
   final String usVCA1;
@@ -55,6 +59,8 @@ class Setting18ControlState extends Equatable {
 
   Setting18ControlState copyWith({
     SubmissionStatus? submissionStatus,
+    SubmissionStatus? resetForwardValuesSubmissionStatus,
+    SubmissionStatus? resetReverseValuesSubmissionStatus,
     String? dsVVA1,
     String? dsSlope1,
     String? usVCA1,
@@ -81,6 +87,10 @@ class Setting18ControlState extends Equatable {
   }) {
     return Setting18ControlState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
+      resetForwardValuesSubmissionStatus: resetForwardValuesSubmissionStatus ??
+          this.resetForwardValuesSubmissionStatus,
+      resetReverseValuesSubmissionStatus: resetReverseValuesSubmissionStatus ??
+          this.resetReverseValuesSubmissionStatus,
       dsVVA1: dsVVA1 ?? this.dsVVA1,
       dsSlope1: dsSlope1 ?? this.dsSlope1,
       usVCA1: usVCA1 ?? this.usVCA1,
@@ -113,6 +123,8 @@ class Setting18ControlState extends Equatable {
   @override
   List<Object> get props => [
         submissionStatus,
+        resetForwardValuesSubmissionStatus,
+        resetReverseValuesSubmissionStatus,
         dsVVA1,
         dsSlope1,
         usVCA1,

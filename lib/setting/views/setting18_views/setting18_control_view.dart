@@ -31,6 +31,9 @@ class Setting18ControlView extends StatelessWidget {
     String currentInputEqualizer =
         homeState.characteristicData[DataKey.currentDSSlope1] ?? '';
 
+    String factoryDefaultNumber =
+        homeState.characteristicData[DataKey.factoryDefaultNumber] ?? '';
+
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
           ? AppLocalizations.of(context)!.dialogMessageSuccessful
@@ -370,19 +373,22 @@ class Setting18ControlView extends StatelessWidget {
 
       return Column(children: [
         forwardControlParameters.isNotEmpty
-            ? _ClusterTitle(
-                title: AppLocalizations.of(context)!.forwardControlParameters,
+            ? _ForwardControlHeader(
+                factoryDefaultNumber: factoryDefaultNumber,
               )
             : Container(),
         ...forwardControlParameters,
         forwardControlParameters.isNotEmpty
-            ? const SizedBox(
-                height: 30,
+            ? const Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 20.0),
+                child: Divider(
+                  height: 10.0,
+                ),
               )
             : Container(),
         returnControlParameters.isNotEmpty
-            ? _ClusterTitle(
-                title: AppLocalizations.of(context)!.returnControlParameters,
+            ? _ReverseControlHeader(
+                factoryDefaultNumber: factoryDefaultNumber,
               )
             : Container(),
         ...returnControlParameters,
@@ -394,7 +400,9 @@ class Setting18ControlView extends StatelessWidget {
 
     return BlocListener<Setting18ControlBloc, Setting18ControlState>(
       listener: (context, state) async {
-        if (state.submissionStatus.isSubmissionInProgress) {
+        if (state.submissionStatus.isSubmissionInProgress ||
+            state.resetForwardValuesSubmissionStatus.isSubmissionInProgress ||
+            state.resetReverseValuesSubmissionStatus.isSubmissionInProgress) {
           await showInProgressDialog(context);
         } else if (state.submissionStatus.isSubmissionSuccess) {
           if (ModalRoute.of(context)?.isCurrent != true) {
@@ -407,6 +415,32 @@ class Setting18ControlView extends StatelessWidget {
           );
 
           context.read<Setting18ControlBloc>().add(const Initialized());
+        } else if (state
+            .resetForwardValuesSubmissionStatus.isSubmissionSuccess) {
+          if (ModalRoute.of(context)?.isCurrent != true) {
+            Navigator.of(context).pop();
+          }
+          showResetToDefaultSuccessDialog(context);
+          context.read<Setting18ControlBloc>().add(const Initialized());
+        } else if (state
+            .resetForwardValuesSubmissionStatus.isSubmissionFailure) {
+          if (ModalRoute.of(context)?.isCurrent != true) {
+            Navigator.of(context).pop();
+          }
+          showResetToDefaultFailureDialog(context);
+        } else if (state
+            .resetReverseValuesSubmissionStatus.isSubmissionSuccess) {
+          if (ModalRoute.of(context)?.isCurrent != true) {
+            Navigator.of(context).pop();
+          }
+          showResetToDefaultSuccessDialog(context);
+          context.read<Setting18ControlBloc>().add(const Initialized());
+        } else if (state
+            .resetReverseValuesSubmissionStatus.isSubmissionFailure) {
+          if (ModalRoute.of(context)?.isCurrent != true) {
+            Navigator.of(context).pop();
+          }
+          showResetToDefaultFailureDialog(context);
         }
       },
       child: Scaffold(
@@ -437,30 +471,276 @@ double _getValue(String value) {
   }
 }
 
-class _ClusterTitle extends StatelessWidget {
-  const _ClusterTitle({super.key, required this.title});
+class _ForwardControlHeader extends StatelessWidget {
+  const _ForwardControlHeader({
+    super.key,
+    required this.factoryDefaultNumber,
+  });
 
-  final String title;
+  final String factoryDefaultNumber;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              title,
-              style: TextStyle(
-                fontSize: CustomStyle.sizeXL,
-                fontWeight: FontWeight.w500,
-                color: Theme.of(context).colorScheme.primary,
+    Future<bool?> showNoticeDialog({
+      required String message,
+    }) async {
+      return showDialog<bool?>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return AlertDialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.1,
+            ),
+            title: Text(
+              AppLocalizations.of(context)!.dialogTitleNotice,
+              style: const TextStyle(
+                color: CustomStyle.customYellow,
               ),
             ),
+            content: SizedBox(
+              width: width,
+              child: SingleChildScrollView(
+                child: ListBody(
+                  children: [
+                    Text(
+                      message,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageOk,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // pop dialog
+                },
+              ),
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageCancel,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(false); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    // '11' same as factory default
+    // '12' up stream has changed
+    // '21' down stream has changed
+    // '22' not factory default
+    bool isShowResetButton() {
+      if (factoryDefaultNumber == '21' || factoryDefaultNumber == '22') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Text(
+                  AppLocalizations.of(context)!.forwardControlParameters,
+                  style: TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ),
+              isShowResetButton()
+                  ? ElevatedButton(
+                      onPressed: state.editMode
+                          ? () {
+                              showNoticeDialog(
+                                message: AppLocalizations.of(context)!
+                                    .dialogMessageResetForwardToDefault,
+                              ).then((isConfirm) {
+                                if (isConfirm != null) {
+                                  if (isConfirm) {
+                                    if (kDebugMode) {
+                                      context.read<Setting18ControlBloc>().add(
+                                          const ResetForwardValuesRequested());
+                                    } else {
+                                      showConfirmInputDialog(context: context)
+                                          .then((isMatch) {
+                                        if (isMatch != null) {
+                                          if (isMatch) {
+                                            context
+                                                .read<Setting18ControlBloc>()
+                                                .add(
+                                                    const ResetForwardValuesRequested());
+                                          }
+                                        }
+                                      });
+                                    }
+                                  }
+                                }
+                              });
+                            }
+                          : null,
+                      child: Text(
+                        AppLocalizations.of(context)!.reset,
+                      ),
+                    )
+                  : Container(),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
+  }
+}
+
+class _ReverseControlHeader extends StatelessWidget {
+  const _ReverseControlHeader({
+    super.key,
+    required this.factoryDefaultNumber,
+  });
+
+  final String factoryDefaultNumber;
+
+  @override
+  Widget build(BuildContext context) {
+    Future<bool?> showNoticeDialog({
+      required String message,
+    }) async {
+      return showDialog<bool?>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return AlertDialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.1,
+            ),
+            title: Text(
+              AppLocalizations.of(context)!.dialogTitleNotice,
+              style: const TextStyle(
+                color: CustomStyle.customYellow,
+              ),
+            ),
+            content: SizedBox(
+              width: width,
+              child: SingleChildScrollView(
+                child: ListBody(
+                  children: [
+                    Text(
+                      message,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageOk,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // pop dialog
+                },
+              ),
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageCancel,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(false); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    // '11' same as factory default
+    // '12' up stream has changed
+    // '21' down stream has changed
+    // '22' not factory default
+    bool isShowResetButton() {
+      if (factoryDefaultNumber == '12' || factoryDefaultNumber == '22') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
+        builder: (context, state) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                AppLocalizations.of(context)!.returnControlParameters,
+                style: TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ),
+            isShowResetButton()
+                ? ElevatedButton(
+                    onPressed: state.editMode
+                        ? () {
+                            showNoticeDialog(
+                              message: AppLocalizations.of(context)!
+                                  .dialogMessageResetReverseToDefault,
+                            ).then((isConfirm) {
+                              if (isConfirm != null) {
+                                if (isConfirm) {
+                                  if (kDebugMode) {
+                                    context.read<Setting18ControlBloc>().add(
+                                        const ResetReverseValuesRequested());
+                                  } else {
+                                    showConfirmInputDialog(context: context)
+                                        .then((isMatch) {
+                                      if (isMatch != null) {
+                                        if (isMatch) {
+                                          context.read<Setting18ControlBloc>().add(
+                                              const ResetReverseValuesRequested());
+                                        }
+                                      }
+                                    });
+                                  }
+                                }
+                              }
+                            });
+                          }
+                        : null,
+                    child: Text(
+                      AppLocalizations.of(context)!.reset,
+                    ),
+                  )
+                : Container(),
+          ],
+        ),
+      );
+    });
   }
 }
 

@@ -126,3 +126,99 @@ Future<void> showSuccessDialog(
     },
   );
 }
+
+Future<void> showResetToDefaultSuccessDialog(
+  BuildContext context,
+) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      var width = MediaQuery.of(context).size.width;
+      // var height = MediaQuery.of(context).size.height;
+
+      return AlertDialog(
+        insetPadding: EdgeInsets.symmetric(
+          horizontal: width * 0.1,
+        ),
+        title: Text(
+          AppLocalizations.of(context)!.dialogTitleSuccess,
+          style: const TextStyle(
+            color: Colors.green,
+          ),
+        ),
+        content: SizedBox(
+          width: width,
+          child: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                Text(
+                  AppLocalizations.of(context)!
+                      .dialogMessageResetToDefaultSuccessful,
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              AppLocalizations.of(context)!.dialogMessageOk,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop(true); // pop dialog
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<void> showResetToDefaultFailureDialog(
+  BuildContext context,
+) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      var width = MediaQuery.of(context).size.width;
+      // var height = MediaQuery.of(context).size.height;
+
+      return AlertDialog(
+        insetPadding: EdgeInsets.symmetric(
+          horizontal: width * 0.1,
+        ),
+        title: Text(
+          AppLocalizations.of(context)!.dialogTitleSuccess,
+          style: const TextStyle(
+            color: Colors.green,
+          ),
+        ),
+        content: SizedBox(
+          width: width,
+          child: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                Text(
+                  AppLocalizations.of(context)!
+                      .dialogMessageResetToDefaultFailed,
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              AppLocalizations.of(context)!.dialogMessageOk,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop(true); // pop dialog
+            },
+          ),
+        ],
+      );
+    },
+  );
+}

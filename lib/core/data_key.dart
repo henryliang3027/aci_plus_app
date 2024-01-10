@@ -110,6 +110,7 @@ enum DataKey {
   ingressSetting6,
   // pilotFrequency1AlarmState,
   // pilotFrequency2AlarmState,
+  factoryDefaultNumber,
   rfOutputPilotLowFrequencyAlarmState,
   rfOutputPilotHighFrequencyAlarmState,
   temperatureAlarmState,

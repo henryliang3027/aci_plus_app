@@ -137,6 +137,7 @@ class Amp18Repository {
             a1p8g1.rfOutputPilotHighFrequencyAlarmState,
         DataKey.temperatureAlarmState: a1p8g1.temperatureAlarmState,
         DataKey.voltageAlarmState: a1p8g1.voltageAlarmState,
+        DataKey.factoryDefaultNumber: a1p8g1.factoryDefaultNumber,
         DataKey.splitOptionAlarmState: a1p8g1.splitOptionAlarmState,
         DataKey.voltageRippleAlarmState: a1p8g1.voltageRippleAlarmState,
         DataKey.rfOutputPowerAlarmState: a1p8g1.outputPowerAlarmState,

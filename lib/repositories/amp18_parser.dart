@@ -474,6 +474,7 @@ class Amp18Parser {
           rfOutputPilotHighFrequencyAlarmState,
       temperatureAlarmState: temperatureAlarmState,
       voltageAlarmState: voltageAlarmState,
+      factoryDefaultNumber: factoryDefaultNumber,
       splitOptionAlarmState: splitOptionAlarmState,
       voltageRippleAlarmState: voltageRippleAlarmState,
       outputPowerAlarmState: outputPowerAlarmState,
@@ -1642,6 +1643,7 @@ class A1P8G1 {
     required this.rfOutputPilotHighFrequencyAlarmState,
     required this.temperatureAlarmState,
     required this.voltageAlarmState,
+    required this.factoryDefaultNumber,
     required this.splitOptionAlarmState,
     required this.voltageRippleAlarmState,
     required this.outputPowerAlarmState,
@@ -1694,6 +1696,7 @@ class A1P8G1 {
   final String rfOutputPilotHighFrequencyAlarmState;
   final String temperatureAlarmState;
   final String voltageAlarmState;
+  final String factoryDefaultNumber;
   final String splitOptionAlarmState;
   final String voltageRippleAlarmState;
   final String outputPowerAlarmState;

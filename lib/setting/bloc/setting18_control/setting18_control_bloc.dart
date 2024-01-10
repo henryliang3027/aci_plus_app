@@ -55,8 +55,8 @@ class Setting18ControlBloc
     on<DSSlope4Increased>(_onDSSlope4Increased);
     on<DSSlope4Decreased>(_onDSSlope4Decreased);
     // on<USTGCChanged>(_onUSTGCChanged);
-    on<ResetForwardParameterRequested>(_onResetForwardParameterRequested);
-    on<ResetReverseParameterRequested>(_onResetReverseParameterRequested);
+    on<ResetForwardValuesRequested>(_onResetForwardValuesRequested);
+    on<ResetReverseValuesRequested>(_onResetReverseValuesRequested);
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
@@ -97,6 +97,9 @@ class Setting18ControlBloc
     String dsSlope4 = characteristicDataCache[DataKey.dsSlope4] ?? '';
 
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA1: dsVVA1,
       dsSlope1: dsSlope1,
       usVCA1: usVCA1,
@@ -142,6 +145,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA1: event.dsVVA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -176,6 +181,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA1: dsVVA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -210,6 +217,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA1: dsVVA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -243,6 +252,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope1: event.dsSlope1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -277,6 +288,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope1: dsSlope1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -312,6 +325,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope1: dsSlope1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -345,6 +360,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA1: event.usVCA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -379,6 +396,8 @@ class Setting18ControlBloc
     String usVCA1 = _getIncreasedNumber(state.usVCA1);
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA1: usVCA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -413,6 +432,8 @@ class Setting18ControlBloc
     String usVCA1 = _getDecreasedNumber(state.usVCA1);
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA1: usVCA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -445,6 +466,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA3: event.usVCA3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -479,6 +502,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA3: usVCA3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -513,6 +538,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA3: usVCA3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -545,6 +572,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA4: event.usVCA4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -580,6 +609,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA4: usVCA4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -614,6 +645,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA4: usVCA4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -646,6 +679,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA2: event.usVCA2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -681,6 +716,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA2: usVCA2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -716,6 +753,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA2: usVCA2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -749,6 +788,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       eREQ: event.eREQ,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -783,6 +824,8 @@ class Setting18ControlBloc
     String eREQ = _getIncreasedNumber(state.eREQ);
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       eREQ: eREQ,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -817,6 +860,8 @@ class Setting18ControlBloc
     String eREQ = _getDecreasedNumber(state.eREQ);
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       eREQ: eREQ,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -850,6 +895,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       returnIngressSetting2: event.returnIngressSetting2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -883,6 +930,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       returnIngressSetting3: event.returnIngressSetting3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -916,6 +965,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       returnIngressSetting4: event.returnIngressSetting4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -949,6 +1000,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       tgcCableLength: event.tgcCableLength,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -982,6 +1035,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA2: event.dsVVA2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -1015,6 +1070,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope2: event.dsSlope2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -1048,6 +1105,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA3: event.dsVVA3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -1081,6 +1140,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA4: event.dsVVA4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -1116,6 +1177,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA4: dsVVA4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -1150,6 +1213,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA4: dsVVA4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -1182,6 +1247,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA5: event.dsVVA5,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -1216,6 +1283,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA5: dsVVA5,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -1250,6 +1319,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA5: dsVVA5,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -1283,6 +1354,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope3: event.dsSlope3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -1317,6 +1390,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope3: dsSlope3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -1351,6 +1426,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope3: dsSlope3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -1383,6 +1460,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope4: event.dsSlope4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -1417,6 +1496,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope4: dsSlope4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -1451,6 +1532,8 @@ class Setting18ControlBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope4: dsSlope4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
@@ -1506,46 +1589,66 @@ class Setting18ControlBloc
   //   ));
   // }
 
-  void _onResetForwardParameterRequested(
-    ResetForwardParameterRequested event,
+  void _onResetForwardValuesRequested(
+    ResetForwardValuesRequested event,
     Emitter<Setting18ControlState> emit,
   ) async {
     emit(state.copyWith(
       isInitialize: false,
-      submissionStatus: SubmissionStatus.submissionInProgress,
+      submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.submissionInProgress,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
     ));
 
-    _amp18Repository.set1p8GFactoryDefault(43); // load downstream only
+    bool result = await _amp18Repository
+        .set1p8GFactoryDefault(43); // load downstream only
 
-    // 等待 device 完成更新後在讀取值
-    await Future.delayed(const Duration(milliseconds: 1000));
+    if (result) {
+      // 等待 device 完成更新後在讀取值
+      await Future.delayed(const Duration(milliseconds: 1000));
+      await _amp18Repository.updateCharacteristics();
 
-    await _amp18Repository.updateCharacteristics();
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.submissionSuccess,
-    ));
+      emit(state.copyWith(
+        resetForwardValuesSubmissionStatus: SubmissionStatus.submissionSuccess,
+        editMode: false,
+      ));
+    } else {
+      emit(state.copyWith(
+        resetForwardValuesSubmissionStatus: SubmissionStatus.submissionFailure,
+        editMode: false,
+      ));
+    }
   }
 
-  void _onResetReverseParameterRequested(
-    ResetReverseParameterRequested event,
+  void _onResetReverseValuesRequested(
+    ResetReverseValuesRequested event,
     Emitter<Setting18ControlState> emit,
   ) async {
     emit(state.copyWith(
       isInitialize: false,
-      submissionStatus: SubmissionStatus.submissionInProgress,
+      submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.submissionInProgress,
     ));
 
-    _amp18Repository.set1p8GFactoryDefault(34); // load upstream only
+    bool result =
+        await _amp18Repository.set1p8GFactoryDefault(34); // load upstream only
 
-    // 等待 device 完成更新後在讀取值
-    await Future.delayed(const Duration(milliseconds: 1000));
+    if (result) {
+      // 等待 device 完成更新後在讀取值
+      await Future.delayed(const Duration(milliseconds: 1000));
+      await _amp18Repository.updateCharacteristics();
 
-    await _amp18Repository.updateCharacteristics();
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.submissionSuccess,
-    ));
+      emit(state.copyWith(
+        resetReverseValuesSubmissionStatus: SubmissionStatus.submissionSuccess,
+        editMode: false,
+      ));
+    } else {
+      emit(state.copyWith(
+        resetReverseValuesSubmissionStatus: SubmissionStatus.submissionFailure,
+        editMode: false,
+      ));
+    }
   }
 
   void _onEditModeEnabled(
@@ -1554,6 +1657,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       isInitialize: false,
       editMode: true,
     ));
@@ -1565,6 +1670,8 @@ class Setting18ControlBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      resetForwardValuesSubmissionStatus: SubmissionStatus.none,
+      resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       isInitialize: false,
       editMode: false,
       enableSubmission: false,
