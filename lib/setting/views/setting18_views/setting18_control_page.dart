@@ -9,6 +9,7 @@ class Setting18ControlPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return const Setting18ControlView();
     return BlocProvider(
       create: (context) => Setting18ControlBloc(
           amp18Repository: RepositoryProvider.of<Amp18Repository>(context)),

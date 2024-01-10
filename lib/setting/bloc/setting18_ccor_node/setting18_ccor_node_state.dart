@@ -1,22 +1,20 @@
-part of 'setting18_bloc.dart';
+part of 'setting18_ccor_node_bloc.dart';
 
-class Setting18State extends Equatable {
-  const Setting18State({
+class Setting18CCorNodeState extends Equatable {
+  const Setting18CCorNodeState({
     this.submissionStatus = SubmissionStatus.none,
   });
 
   final SubmissionStatus submissionStatus;
 
-  Setting18State copyWith({
+  Setting18CCorNodeState copyWith({
     SubmissionStatus? submissionStatus,
   }) {
-    return Setting18State(
+    return Setting18CCorNodeState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
     );
   }
 
   @override
-  List<Object?> get props => [
-        submissionStatus,
-      ];
+  List<Object> get props => [submissionStatus];
 }

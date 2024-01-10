@@ -183,6 +183,7 @@
     "dialogTitleAskBeforeExitApp": "Do you want to exit the app ?",
     "dialogTitleDownloading": "Downloading...",
     "dialogTitleProcessing": "Setting up...",
+    "dialogTitleNotice": "Notice",
     "dialogTitleError": "Error",
     "dialogTitleSettingResult": "Result",
     "dialogTitleSuccess": "Success",
@@ -202,7 +203,8 @@
     "dialogMessageSaveUserPilot": "Save user pilot",
     "dialogMessageSaveUserPilot2": "Save User Pilot2",
 
-
+    "dialogMessageResetForwardToDefault": "Do you want to reset fowrard parameters to default ?",
+    "dialogMessageResetReverseToDefault": "Do you want to reset reverse parameters to default ?",
     "dialogMessageAGCModeSetting": "AGC mode setting",
     "dialogMessageALCModeSetting": "ALC mode setting",
     "dialogMessageFirstChannelLoadingFrequencySetting": "Start frequency setting",

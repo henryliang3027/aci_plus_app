@@ -55,6 +55,8 @@ class Setting18ControlBloc
     on<DSSlope4Increased>(_onDSSlope4Increased);
     on<DSSlope4Decreased>(_onDSSlope4Decreased);
     // on<USTGCChanged>(_onUSTGCChanged);
+    on<ResetForwardParameterRequested>(_onResetForwardParameterRequested);
+    on<ResetReverseParameterRequested>(_onResetReverseParameterRequested);
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
@@ -1503,6 +1505,48 @@ class Setting18ControlBloc
   //     ),
   //   ));
   // }
+
+  void _onResetForwardParameterRequested(
+    ResetForwardParameterRequested event,
+    Emitter<Setting18ControlState> emit,
+  ) async {
+    emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.submissionInProgress,
+    ));
+
+    _amp18Repository.set1p8GFactoryDefault(43); // load downstream only
+
+    // 等待 device 完成更新後在讀取值
+    await Future.delayed(const Duration(milliseconds: 1000));
+
+    await _amp18Repository.updateCharacteristics();
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.submissionSuccess,
+    ));
+  }
+
+  void _onResetReverseParameterRequested(
+    ResetReverseParameterRequested event,
+    Emitter<Setting18ControlState> emit,
+  ) async {
+    emit(state.copyWith(
+      isInitialize: false,
+      submissionStatus: SubmissionStatus.submissionInProgress,
+    ));
+
+    _amp18Repository.set1p8GFactoryDefault(34); // load upstream only
+
+    // 等待 device 完成更新後在讀取值
+    await Future.delayed(const Duration(milliseconds: 1000));
+
+    await _amp18Repository.updateCharacteristics();
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.submissionSuccess,
+    ));
+  }
 
   void _onEditModeEnabled(
     EditModeEnabled event,

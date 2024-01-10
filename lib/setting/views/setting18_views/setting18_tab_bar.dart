@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Setting18TabBar extends StatelessWidget {
-  const Setting18TabBar({super.key});
+  const Setting18TabBar({
+    super.key,
+    // required this.tabController,
+  });
+
+  // final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +26,7 @@ class Setting18TabBar extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: TabBar(
+                // controller: tabController,
                 unselectedLabelColor: Colors.white,
                 labelColor: Theme.of(context).colorScheme.primary,
                 isScrollable: true,
@@ -80,6 +86,7 @@ class Setting18TabBar extends StatelessWidget {
           const Expanded(
             child: TabBarView(
               // physics: NeverScrollableScrollPhysics(),
+              // controller: tabController,
               children: [
                 Setting18ConfigurePage(),
                 Setting18ThresholdPage(),

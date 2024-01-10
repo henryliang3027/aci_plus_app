@@ -181,6 +181,7 @@
     "dialogTitleAskBeforeExitApp": "您確定要退出應用程式嗎？",
     "dialogTitleDownloading": "下載中...",
     "dialogTitleProcessing": "設定中...",
+    "dialogTitleNotice": "提醒",
     "dialogTitleError": "錯誤",
     "dialogTitleSettingResult": "結果",
     "dialogTitleSuccess": "成功",
@@ -200,7 +201,8 @@
     "dialogMessageSaveUserPilot": "儲存導航頻率",
     "dialogMessageSaveUserPilot2": "儲存導航頻率2",
 
-
+    "dialogMessageResetForwardToDefault": "您確定要重置上行參數設定嗎 ?",
+    "dialogMessageResetReverseToDefault": "您確定要重置下行參數設定嗎 ?",
     "dialogMessageAGCModeSetting": "AGC 模式設定",
     "dialogMessageALCModeSetting": "ALC 模式設定",
     "dialogMessageFirstChannelLoadingFrequencySetting": "起始頻率設定",

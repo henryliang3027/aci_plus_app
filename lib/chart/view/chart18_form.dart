@@ -295,8 +295,6 @@ class _PopupMenu extends StatelessWidget {
   }) : super(key: key);
 
   final TabController tabController;
-  final TextEditingController codeTextEditingController =
-      TextEditingController();
 
   Widget buildDataLogPageMenu(BuildContext context) {
     return BlocBuilder<Chart18Bloc, Chart18State>(

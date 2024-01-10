@@ -1,42 +1,51 @@
-import 'package:aci_plus_app/core/utils.dart';
+import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'setting18_event.dart';
 part 'setting18_state.dart';
 
 class Setting18Bloc extends Bloc<Setting18Event, Setting18State> {
-  Setting18Bloc() : super(const Setting18State()) {
-    on<GraphViewToggled>(_onGraphViewToggled);
-    on<ListViewToggled>(_onListViewToggled);
+  Setting18Bloc({
+    required Amp18Repository amp18Repository,
+  })  : _amp18Repository = amp18Repository,
+        super(const Setting18State()) {
+    // on<ResetForwardParameterRequested>(_onResetForwardParameterRequested);
+    // on<ResetReverseParameterRequested>(_onResetReverseParameterRequested);
   }
 
-  void _onGraphViewToggled(
-    GraphViewToggled event,
-    Emitter<Setting18State> emit,
-  ) {
-    setFullScreenOrientation();
+  final Amp18Repository _amp18Repository;
 
-    // hide system status bar
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.bottom]);
-    emit(state.copyWith(
-      isGraphType: true,
-    ));
-  }
+  // void _onResetForwardParameterRequested(
+  //   ResetForwardParameterRequested event,
+  //   Emitter<Setting18State> emit,
+  // ) async {
+  //   _amp18Repository.set1p8GFactoryDefault(43); // load downstream only
 
-  void _onListViewToggled(
-    ListViewToggled event,
-    Emitter<Setting18State> emit,
-  ) {
-    setPreferredOrientation();
+  //   // 等待 device 完成更新後在讀取值
+  //   await Future.delayed(const Duration(milliseconds: 1000));
 
-    // display system status bar
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
-    emit(state.copyWith(
-      isGraphType: false,
-    ));
-  }
+  //   await _amp18Repository.updateCharacteristics();
+
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.submissionSuccess,
+  //   ));
+  // }
+
+  // void _onResetReverseParameterRequested(
+  //   ResetReverseParameterRequested event,
+  //   Emitter<Setting18State> emit,
+  // ) async {
+  //   _amp18Repository.set1p8GFactoryDefault(34); // load upstream only
+
+  //   // 等待 device 完成更新後在讀取值
+  //   await Future.delayed(const Duration(milliseconds: 1000));
+
+  //   await _amp18Repository.updateCharacteristics();
+
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.submissionSuccess,
+  //   ));
+  // }
 }

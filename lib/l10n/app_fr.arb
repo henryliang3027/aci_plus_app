@@ -180,6 +180,7 @@
     "dialogTitleAskBeforeExitApp": "Voulez-vous quitter l’application ?",
     "dialogTitleDownloading": "téléchargement...",
     "dialogTitleProcessing": "Traitement des titres...",
+    "dialogTitleNotice": "Avis",
     "dialogTitleError": "Erreur de titre",
     "dialogTitleSettingResult": "Résultat",
     "dialogTitleSuccess": "Succès",
@@ -199,6 +200,9 @@
     "dialogMessageSaveUserPilot": "Pilote utilisateur",
     "dialogMessageSaveUserPilot2": "Pilote utilisateur 2",
 
+
+    "dialogMessageResetForwardToDefault": "Voulez-vous réinitialiser les paramètres de transfert par défaut ?",
+    "dialogMessageResetReverseToDefault": "Voulez-vous réinitialiser les paramètres inverses par défaut ?",
     "dialogMessageAGCModeSetting": "Réglage du mode AGC",
     "dialogMessageALCModeSetting": "Réglage du mode ALC",
     "dialogMessageFirstChannelLoadingFrequencySetting": "Réglage de la fréquence de début",

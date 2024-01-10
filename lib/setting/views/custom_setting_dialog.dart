@@ -67,7 +67,9 @@ Future<void> showResultDialog({
         ),
         actions: <Widget>[
           TextButton(
-            child: const Text('OK'),
+            child: Text(
+              AppLocalizations.of(context)!.dialogMessageOk,
+            ),
             onPressed: () {
               Navigator.of(context).pop(true); // pop dialog
             },
@@ -112,7 +114,9 @@ Future<void> showSuccessDialog(
         ),
         actions: <Widget>[
           TextButton(
-            child: const Text('OK'),
+            child: Text(
+              AppLocalizations.of(context)!.dialogMessageOk,
+            ),
             onPressed: () {
               Navigator.of(context).pop(true); // pop dialog
             },

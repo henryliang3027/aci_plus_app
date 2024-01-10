@@ -126,7 +126,7 @@ class _ViewLayout extends StatelessWidget {
           return Stack(
             alignment: Alignment.center,
             children: [
-              const Setting18TabBar(),
+              const Setting18CCorNodeTabBar(),
               Container(
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(70, 158, 158, 158),

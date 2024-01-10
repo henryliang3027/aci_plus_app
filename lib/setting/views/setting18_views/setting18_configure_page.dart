@@ -10,6 +10,7 @@ class Setting18ConfigurePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return Setting18ConfigureView();
     return BlocProvider(
       create: (context) => Setting18ConfigureBloc(
         amp18Repository: RepositoryProvider.of<Amp18Repository>(context),

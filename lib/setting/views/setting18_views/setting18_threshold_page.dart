@@ -10,6 +10,7 @@ class Setting18ThresholdPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return Setting18ThresholdView();
     return BlocProvider(
       create: (context) => Setting18ThresholdBloc(
         amp18Repository: RepositoryProvider.of<Amp18Repository>(context),

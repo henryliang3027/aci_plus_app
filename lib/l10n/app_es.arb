@@ -182,6 +182,7 @@
     "dialogTitleAskBeforeExitApp": "¿Quieres salir de la aplicación?",
     "dialogTitleDownloading": "Descargando...",
     "dialogTitleProcessing": "configurando...",
+    "dialogTitleNotice": "Aviso",
     "dialogTitleError": "Error",
     "dialogTitleSettingResult": "Resultado",
     "dialogTitleSuccess": "Éxito",
@@ -202,6 +203,8 @@
     "dialogMessageSaveUserPilot2": "Guardar piloto de usuario 2",
 
 
+    "dialogMessageResetForwardToDefault": "¿Quieres restablecer los parámetros de reenvío a los valores predeterminados?",
+    "dialogMessageResetReverseToDefault": "¿Quiere restablecer los parámetros inversos a los valores predeterminados?",
     "dialogMessageAGCModeSetting": "Ajuste AGC modo",
     "dialogMessageALCModeSetting": "Ajuste ALC modo",
     "dialogMessageFirstChannelLoadingFrequencySetting": "Ajuste inicio frecuencia",

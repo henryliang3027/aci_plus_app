@@ -20,6 +20,7 @@ class Setting18ControlView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeState homeState = context.watch<HomeBloc>().state;
+
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
     // String currentDetectedSplitOption =
     //     homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';

@@ -1321,14 +1321,12 @@ class Amp18Repository {
     }
   }
 
-  Future<dynamic> set1p8GFactoryDefault(String number) async {
+  Future<dynamic> set1p8GFactoryDefault(int number) async {
     int commandIndex = 333;
 
     print('get data from request command 1p8G$commandIndex');
 
-    int intNumber = int.parse(number);
-
-    Command18.setFactoryDefaultCmd[7] = intNumber;
+    Command18.setFactoryDefaultCmd[7] = number;
 
     CRC16.calculateCRC16(
       command: Command18.setFactoryDefaultCmd,
