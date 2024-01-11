@@ -21,6 +21,7 @@ class SplashView extends StatelessWidget {
         child: Column(
           children: [
             _ConnectionCard(),
+            _ShortcutCard(),
             _BasicCard(),
             _AlarmCard(),
           ],
@@ -169,14 +170,68 @@ class _ConnectionCard extends StatelessWidget {
             const SizedBox(
               height: 10.0,
             ),
-            itemLinkText(
-              title: '',
-              content: AppLocalizations.of(context)!.visitWebsite,
-            ),
+            // itemLinkText(
+            //   title: '',
+            //   content: AppLocalizations.of(context)!.visitWebsite,
+            // ),
             bluetoothText(
               scanStatus: FormStatus.requestInProgress,
               title: AppLocalizations.of(context)!.bluetooth,
               name: '',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ShortcutCard extends StatelessWidget {
+  const _ShortcutCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Theme.of(context).colorScheme.onPrimary,
+      surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.shortcut,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.loadPreset,
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeL,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)!.load,
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeL,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

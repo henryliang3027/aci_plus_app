@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/about/about_page.dart';
+import 'package:aci_plus_app/advanced/view/setting18_advanced_page.dart';
 import 'package:aci_plus_app/chart/view/chart18_ccor_node_page.dart';
 import 'package:aci_plus_app/chart/view/chart18_page.dart';
 import 'package:aci_plus_app/chart/view/chart_page.dart';
@@ -148,7 +149,7 @@ class _HomeFormState extends State<HomeForm> {
           Chart18Page(
             pageController: _pageController,
           ),
-          AboutPage(
+          Setting18AdvancedPage(
             pageController: _pageController,
           ),
         ];
@@ -166,7 +167,10 @@ class _HomeFormState extends State<HomeForm> {
           Chart18CCorNodePage(
             pageController: _pageController,
           ),
-          AboutPage(
+          // AboutPage(
+          //   pageController: _pageController,
+          // ),
+          Setting18AdvancedPage(
             pageController: _pageController,
           ),
         ];
@@ -184,7 +188,10 @@ class _HomeFormState extends State<HomeForm> {
           Chart18Page(
             pageController: _pageController,
           ),
-          AboutPage(
+          // AboutPage(
+          //   pageController: _pageController,
+          // ),
+          Setting18AdvancedPage(
             pageController: _pageController,
           ),
         ];

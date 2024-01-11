@@ -11,7 +11,7 @@ class Setting18CCorNodeTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -63,16 +63,16 @@ class Setting18CCorNodeTabBar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Tab(
-                    child: SizedBox(
-                      width: 110,
-                      child: Center(
-                        child: Text(
-                          AppLocalizations.of(context)!.advanced,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Tab(
+                  //   child: SizedBox(
+                  //     width: 110,
+                  //     child: Center(
+                  //       child: Text(
+                  //         AppLocalizations.of(context)!.advanced,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -84,7 +84,7 @@ class Setting18CCorNodeTabBar extends StatelessWidget {
                 Setting18CCorNodeConfigurePage(),
                 Setting18CCorNodeThresholdPage(),
                 Setting18CCorNodeControlPage(),
-                Setting18ConfigPage(),
+                // Setting18ConfigPage(),
               ],
             ),
           ),

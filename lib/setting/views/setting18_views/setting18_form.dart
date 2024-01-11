@@ -408,7 +408,7 @@ class _ViewLayout extends StatelessWidget {
           return Stack(
             alignment: Alignment.center,
             children: [
-              Setting18TabBar(
+              const Setting18TabBar(
                   // tabController: tabController,
                   ),
               Container(
@@ -426,7 +426,7 @@ class _ViewLayout extends StatelessWidget {
             ],
           );
         } else {
-          return Setting18TabBar(
+          return const Setting18TabBar(
               // tabController: tabController,
               );
         }
