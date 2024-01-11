@@ -34,7 +34,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
           tooltip: '',
         ),
         BottomNavigationBarItem(
-          icon: Icon(CustomIcons.information),
+          icon: Icon(CustomIcons.home),
           label: 'Information',
           tooltip: '',
         ),
@@ -44,7 +44,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
           tooltip: '',
         ),
         BottomNavigationBarItem(
-          icon: Icon(CustomIcons.about),
+          icon: Icon(CustomIcons.advanced),
           label: 'About',
           tooltip: '',
         ),

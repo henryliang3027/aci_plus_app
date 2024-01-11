@@ -16,8 +16,10 @@ class Setting18ConfigEditBloc
   Setting18ConfigEditBloc({
     required Amp18Repository amp18Repository,
     required String selectedPartId,
+    required bool isShortcut,
   })  : _amp18Repository = amp18Repository,
         _selectedPartId = selectedPartId,
+        _isShortcut = isShortcut,
         _configApi = ConfigApi(),
         super(const Setting18ConfigEditState()) {
     on<ConfigIntitialized>(_onConfigIntitialized);
@@ -36,15 +38,17 @@ class Setting18ConfigEditBloc
   final Amp18Repository _amp18Repository;
   final String _selectedPartId;
   final ConfigApi _configApi;
+  final bool _isShortcut;
 
   Future<void> _onConfigIntitialized(
     ConfigIntitialized event,
     Emitter<Setting18ConfigEditState> emit,
   ) async {
     emit(state.copyWith(
-        formStatus: FormStatus.requestInProgress,
-        saveStatus: SubmissionStatus.none,
-        settingStatus: SubmissionStatus.none));
+      formStatus: FormStatus.requestInProgress,
+      saveStatus: SubmissionStatus.none,
+      settingStatus: SubmissionStatus.none,
+    ));
 
     List<dynamic> result = _configApi.getConfigByPartId(_selectedPartId);
 
@@ -64,6 +68,7 @@ class Setting18ConfigEditBloc
         saveStatus: SubmissionStatus.none,
         settingStatus: SubmissionStatus.none,
         selectedPartId: _selectedPartId,
+        isShortcut: _isShortcut,
         firstChannelLoadingFrequency: firstChannelLoadingFrequency,
         firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,

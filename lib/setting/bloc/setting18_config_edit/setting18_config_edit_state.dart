@@ -6,6 +6,7 @@ class Setting18ConfigEditState extends Equatable {
     this.saveStatus = SubmissionStatus.none,
     this.settingStatus = SubmissionStatus.none,
     this.selectedPartId = '',
+    this.isShortcut = false,
     this.firstChannelLoadingFrequency = const IntegerInput.pure(),
     this.firstChannelLoadingLevel = const FloatPointInput.pure(),
     this.lastChannelLoadingFrequency = const IntegerInput.pure(),
@@ -20,6 +21,7 @@ class Setting18ConfigEditState extends Equatable {
   final SubmissionStatus saveStatus;
   final SubmissionStatus settingStatus;
   final String selectedPartId;
+  final bool isShortcut;
   final IntegerInput firstChannelLoadingFrequency;
   final FloatPointInput firstChannelLoadingLevel;
   final IntegerInput lastChannelLoadingFrequency;
@@ -34,6 +36,7 @@ class Setting18ConfigEditState extends Equatable {
     SubmissionStatus? saveStatus,
     SubmissionStatus? settingStatus,
     String? selectedPartId,
+    bool? isShortcut,
     IntegerInput? firstChannelLoadingFrequency,
     FloatPointInput? firstChannelLoadingLevel,
     IntegerInput? lastChannelLoadingFrequency,
@@ -48,6 +51,7 @@ class Setting18ConfigEditState extends Equatable {
       saveStatus: saveStatus ?? this.saveStatus,
       settingStatus: settingStatus ?? this.settingStatus,
       selectedPartId: selectedPartId ?? this.selectedPartId,
+      isShortcut: isShortcut ?? this.isShortcut,
       firstChannelLoadingFrequency:
           firstChannelLoadingFrequency ?? this.firstChannelLoadingFrequency,
       firstChannelLoadingLevel:
@@ -69,6 +73,7 @@ class Setting18ConfigEditState extends Equatable {
         saveStatus,
         settingStatus,
         selectedPartId,
+        isShortcut,
         firstChannelLoadingFrequency,
         firstChannelLoadingLevel,
         lastChannelLoadingFrequency,

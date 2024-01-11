@@ -8,9 +8,11 @@ class Setting18ConfigEditPage extends StatelessWidget {
   const Setting18ConfigEditPage({
     super.key,
     required this.selectedPartId,
+    this.isShortcut = false,
   });
 
   final String selectedPartId;
+  final bool isShortcut;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +20,7 @@ class Setting18ConfigEditPage extends StatelessWidget {
       create: (context) => Setting18ConfigEditBloc(
         amp18Repository: RepositoryProvider.of<Amp18Repository>(context),
         selectedPartId: selectedPartId,
+        isShortcut: isShortcut,
       ),
       child: const Setting18ConfigEditForm(),
     );

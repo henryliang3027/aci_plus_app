@@ -205,9 +205,61 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget buildButtons({
-      required enableSaving,
+    Widget buildExecuteButtons({
       required enableExecute,
+    }) {
+      return Align(
+        alignment: Alignment.centerRight,
+        child: Wrap(
+          alignment: WrapAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 0.0,
+                    horizontal: 20.0,
+                  ),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageCancel,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6.0),
+              child: ElevatedButton(
+                onPressed: enableExecute
+                    ? () {
+                        context
+                            .read<Setting18ConfigEditBloc>()
+                            .add(const ConfigSavedAndSubmitted());
+                      }
+                    : null,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 0.0,
+                    horizontal: 20.0,
+                  ),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageExecute,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    Widget buildSavingButtons({
+      required enableSaving,
     }) {
       return Align(
         alignment: Alignment.centerRight,
@@ -254,31 +306,25 @@ class _ActionButton extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ElevatedButton(
-                onPressed: enableExecute
-                    ? () {
-                        context
-                            .read<Setting18ConfigEditBloc>()
-                            .add(const ConfigSavedAndSubmitted());
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 0.0,
-                    horizontal: 20.0,
-                  ),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.dialogMessageExecute,
-                ),
-              ),
-            ),
           ],
         ),
       );
+    }
+
+    Widget buildButtons({
+      required bool isShortcut,
+      required bool enableExecute,
+      required bool enableSaving,
+    }) {
+      if (isShortcut) {
+        return buildExecuteButtons(
+          enableExecute: enableExecute,
+        );
+      } else {
+        return buildSavingButtons(
+          enableSaving: enableSaving,
+        );
+      }
     }
 
     return Builder(
@@ -289,19 +335,18 @@ class _ActionButton extends StatelessWidget {
 
         if (homeState.loadingStatus.isRequestSuccess) {
           String partId = homeState.characteristicData[DataKey.partId] ?? '';
-          String currentDetectedSplitOption = homeState
-                  .characteristicData[DataKey.currentDetectedSplitOption] ??
-              '0';
+
           return buildButtons(
+            isShortcut: setting18configEditState.isShortcut,
             enableSaving: setting18configEditState.enableSubmission,
             enableExecute: partId == setting18configEditState.selectedPartId &&
-                    currentDetectedSplitOption != '0' &&
                     setting18configEditState.enableSubmission
                 ? true
                 : false,
           );
         } else {
           return buildButtons(
+            isShortcut: setting18configEditState.isShortcut,
             enableSaving: setting18configEditState.enableSubmission,
             enableExecute: false,
           );

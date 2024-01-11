@@ -4,6 +4,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:aci_plus_app/information/bloc/information18_bloc/information18_bloc.dart';
+import 'package:aci_plus_app/setting/views/setting18_views/setting18_config_edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -30,6 +31,7 @@ class Information18Form extends StatelessWidget {
         child: Column(
           children: [
             _ConnectionCard(),
+            _ShortcutCard(),
             _BasicCard(),
             _AlarmCard(),
           ],
@@ -205,10 +207,10 @@ class _ConnectionCard extends StatelessWidget {
               const SizedBox(
                 height: 10.0,
               ),
-              itemLinkText(
-                title: '',
-                content: AppLocalizations.of(context)!.visitWebsite,
-              ),
+              // itemLinkText(
+              //   title: '',
+              //   content: AppLocalizations.of(context)!.visitWebsite,
+              // ),
               bluetoothText(
                 scanStatus: state.scanStatus,
                 title: AppLocalizations.of(context)!.bluetooth,
@@ -218,6 +220,98 @@ class _ConnectionCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ShortcutCard extends StatelessWidget {
+  const _ShortcutCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    Future<void> showModuleSettingDialog({
+      required String selectedPartId,
+    }) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.01,
+            ),
+            child: Setting18ConfigEditPage(
+              selectedPartId: selectedPartId,
+              isShortcut: true,
+            ),
+          );
+        },
+      );
+    }
+
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        HomeState homeState = context.read<HomeBloc>().state;
+        String partId = homeState.characteristicData[DataKey.partId] ?? '';
+
+        return Card(
+          color: Theme.of(context).colorScheme.onPrimary,
+          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.shortcut,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.loadPreset,
+                        style: const TextStyle(
+                          fontSize: CustomStyle.sizeL,
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: homeState.loadingStatus.isRequestSuccess
+                            ? () {
+                                showModuleSettingDialog(
+                                  selectedPartId: partId,
+                                );
+                              }
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          foregroundColor: Colors.white,
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context)!.load,
+                          style: const TextStyle(
+                            fontSize: CustomStyle.sizeL,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
