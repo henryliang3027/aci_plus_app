@@ -55,13 +55,21 @@ class Setting18ConfigEditBloc
     if (result[0]) {
       Config config = result[1];
       IntegerInput firstChannelLoadingFrequency =
-          IntegerInput.dirty(config.firstChannelLoadingFrequency);
+          config.firstChannelLoadingFrequency.isNotEmpty
+              ? IntegerInput.dirty(config.firstChannelLoadingFrequency)
+              : const IntegerInput.pure();
       FloatPointInput firstChannelLoadingLevel =
-          FloatPointInput.dirty(config.firstChannelLoadingLevel);
+          config.firstChannelLoadingLevel.isNotEmpty
+              ? FloatPointInput.dirty(config.firstChannelLoadingLevel)
+              : const FloatPointInput.pure();
       IntegerInput lastChannelLoadingFrequency =
-          IntegerInput.dirty(config.lastChannelLoadingFrequency);
+          config.lastChannelLoadingFrequency.isNotEmpty
+              ? IntegerInput.dirty(config.lastChannelLoadingFrequency)
+              : const IntegerInput.pure();
       FloatPointInput lastChannelLoadingLevel =
-          FloatPointInput.dirty(config.lastChannelLoadingLevel);
+          config.lastChannelLoadingLevel.isNotEmpty
+              ? FloatPointInput.dirty(config.lastChannelLoadingLevel)
+              : const FloatPointInput.pure();
 
       emit(state.copyWith(
         formStatus: FormStatus.requestSuccess,

@@ -1,4 +1,3 @@
-import 'package:aci_plus_app/setting/views/setting18_views/setting18_config_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_configure_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_control_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_threshold_page.dart';

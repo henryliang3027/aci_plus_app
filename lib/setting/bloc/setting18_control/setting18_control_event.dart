@@ -24,17 +24,21 @@ class DSVVA1Changed extends Setting18ControlEvent {
 }
 
 class DSVVA1Increased extends Setting18ControlEvent {
-  const DSVVA1Increased();
+  const DSVVA1Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class DSVVA1Decreased extends Setting18ControlEvent {
-  const DSVVA1Decreased();
+  const DSVVA1Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class DSSlope1Changed extends Setting18ControlEvent {
@@ -47,17 +51,21 @@ class DSSlope1Changed extends Setting18ControlEvent {
 }
 
 class DSSlope1Increased extends Setting18ControlEvent {
-  const DSSlope1Increased();
+  const DSSlope1Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class DSSlope1Decreased extends Setting18ControlEvent {
-  const DSSlope1Decreased();
+  const DSSlope1Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class USVCA1Changed extends Setting18ControlEvent {
@@ -70,17 +78,21 @@ class USVCA1Changed extends Setting18ControlEvent {
 }
 
 class USVCA1Increased extends Setting18ControlEvent {
-  const USVCA1Increased();
+  const USVCA1Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class USVCA1Decreased extends Setting18ControlEvent {
-  const USVCA1Decreased();
+  const USVCA1Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class USVCA3Changed extends Setting18ControlEvent {
@@ -93,17 +105,21 @@ class USVCA3Changed extends Setting18ControlEvent {
 }
 
 class USVCA3Increased extends Setting18ControlEvent {
-  const USVCA3Increased();
+  const USVCA3Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class USVCA3Decreased extends Setting18ControlEvent {
-  const USVCA3Decreased();
+  const USVCA3Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class USVCA4Changed extends Setting18ControlEvent {
@@ -116,17 +132,21 @@ class USVCA4Changed extends Setting18ControlEvent {
 }
 
 class USVCA4Increased extends Setting18ControlEvent {
-  const USVCA4Increased();
+  const USVCA4Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class USVCA4Decreased extends Setting18ControlEvent {
-  const USVCA4Decreased();
+  const USVCA4Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class USVCA2Changed extends Setting18ControlEvent {
@@ -139,17 +159,21 @@ class USVCA2Changed extends Setting18ControlEvent {
 }
 
 class USVCA2Increased extends Setting18ControlEvent {
-  const USVCA2Increased();
+  const USVCA2Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class USVCA2Decreased extends Setting18ControlEvent {
-  const USVCA2Decreased();
+  const USVCA2Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class EREQChanged extends Setting18ControlEvent {
@@ -162,17 +186,21 @@ class EREQChanged extends Setting18ControlEvent {
 }
 
 class EREQIncreased extends Setting18ControlEvent {
-  const EREQIncreased();
+  const EREQIncreased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class EREQDecreased extends Setting18ControlEvent {
-  const EREQDecreased();
+  const EREQDecreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class RtnIngressSetting2Changed extends Setting18ControlEvent {
@@ -239,17 +267,21 @@ class DSSlope3Changed extends Setting18ControlEvent {
 }
 
 class DSSlope3Increased extends Setting18ControlEvent {
-  const DSSlope3Increased();
+  const DSSlope3Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class DSSlope3Decreased extends Setting18ControlEvent {
-  const DSSlope3Decreased();
+  const DSSlope3Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class DSSlope4Changed extends Setting18ControlEvent {
@@ -262,17 +294,21 @@ class DSSlope4Changed extends Setting18ControlEvent {
 }
 
 class DSSlope4Increased extends Setting18ControlEvent {
-  const DSSlope4Increased();
+  const DSSlope4Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class DSSlope4Decreased extends Setting18ControlEvent {
-  const DSSlope4Decreased();
+  const DSSlope4Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class DSVVA3Changed extends Setting18ControlEvent {
@@ -294,17 +330,21 @@ class DSVVA4Changed extends Setting18ControlEvent {
 }
 
 class DSVVA4Increased extends Setting18ControlEvent {
-  const DSVVA4Increased();
+  const DSVVA4Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class DSVVA4Decreased extends Setting18ControlEvent {
-  const DSVVA4Decreased();
+  const DSVVA4Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class DSVVA5Changed extends Setting18ControlEvent {
@@ -317,17 +357,21 @@ class DSVVA5Changed extends Setting18ControlEvent {
 }
 
 class DSVVA5Increased extends Setting18ControlEvent {
-  const DSVVA5Increased();
+  const DSVVA5Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class DSVVA5Decreased extends Setting18ControlEvent {
-  const DSVVA5Decreased();
+  const DSVVA5Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class USTGCChanged extends Setting18ControlEvent {

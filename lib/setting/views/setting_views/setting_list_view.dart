@@ -62,37 +62,6 @@ class SettingListView extends StatelessWidget {
           ));
     }
 
-    Future<void> showResultDialog(List<Widget> messageRows) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            contentPadding: const EdgeInsets.all(16.0),
-            titlePadding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 0.0),
-            buttonPadding: const EdgeInsets.all(0.0),
-            actionsPadding: const EdgeInsets.all(16.0),
-            title: Text(
-              AppLocalizations.of(context)!.dialogTitleSettingResult,
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: messageRows,
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
     Future<void> showPilotSearchFailedDialog() async {
       return showDialog<void>(
         context: context,
@@ -200,7 +169,10 @@ class SettingListView extends StatelessWidget {
         } else if (state.submissionStatus.isSubmissionSuccess) {
           Navigator.of(context).pop();
           List<Widget> rows = getMessageRows(state.settingResult);
-          showResultDialog(rows);
+          showResultDialog(
+            context: context,
+            messageRows: rows,
+          );
 
           // 設定完成後不論成功或失敗都重新載入初始設定值
           // 這樣可以達到設定 tgc cable length 完成時, working mode 跟著更新為 tgc mode

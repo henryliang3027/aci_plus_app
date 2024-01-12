@@ -667,7 +667,7 @@ class _SplitOption extends StatelessWidget {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10.0))),
                           ),
-                          onPressed: state.editMode && index > 0 && index < 2
+                          onPressed: state.editMode
                               ? () {
                                   context.read<Setting18ConfigureBloc>().add(
                                       SplitOptionChanged(

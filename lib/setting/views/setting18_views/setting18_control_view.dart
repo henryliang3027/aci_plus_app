@@ -764,23 +764,27 @@ class _ForwardInputAttenuation extends StatelessWidget {
 
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode && alcMode == '0',
           title:
               '${AppLocalizations.of(context)!.forwardInputAttenuation1}: ${getCurrentValue(state.dsVVA1)} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: getCurrentValue(state.dsVVA1),
           onChanged: (dsVVA1) {
             context
                 .read<Setting18ControlBloc>()
                 .add(DSVVA1Changed(dsVVA1.toStringAsFixed(1)));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(const DSVVA1Decreased()),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(const DSVVA1Increased()),
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(DSVVA1Decreased(minValue)),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(DSVVA1Increased(maxValue)),
         );
       },
     );
@@ -809,13 +813,15 @@ class _ForwardInputEqualizer extends StatelessWidget {
 
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 15.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode && alcMode == '0' && agcMode == '0',
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer1}: ${getCurrentValue(state.dsSlope1)} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: getCurrentValue(state.dsSlope1),
           onChanged: (dsSlope1) {
             context
@@ -824,10 +830,10 @@ class _ForwardInputEqualizer extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18ControlBloc>()
-              .add(const DSSlope1Decreased()),
+              .add(DSSlope1Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18ControlBloc>()
-              .add(const DSSlope1Increased()),
+              .add(DSSlope1Increased(maxValue)),
         );
       },
     );
@@ -841,23 +847,27 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation2And3}: ${state.dsVVA4} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.dsVVA4),
           onChanged: (dsVVA4) {
             context
                 .read<Setting18ControlBloc>()
                 .add(DSVVA4Changed(dsVVA4.toStringAsFixed(1)));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(const DSVVA4Decreased()),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(const DSVVA4Increased()),
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(DSVVA4Decreased(minValue)),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(DSVVA4Increased(maxValue)),
         );
       },
     );
@@ -871,23 +881,27 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation3And4}: ${state.dsVVA4} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.dsVVA4),
           onChanged: (dsVVA4) {
             context
                 .read<Setting18ControlBloc>()
                 .add(DSVVA4Changed(dsVVA4.toStringAsFixed(1)));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(const DSVVA4Decreased()),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(const DSVVA4Increased()),
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(DSVVA4Decreased(minValue)),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(DSVVA4Increased(maxValue)),
         );
       },
     );
@@ -901,23 +915,27 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6}: ${state.dsVVA5} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.dsVVA5),
           onChanged: (dsVVA4) {
             context
                 .read<Setting18ControlBloc>()
                 .add(DSVVA5Changed(dsVVA4.toStringAsFixed(1)));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(const DSVVA5Decreased()),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(const DSVVA5Increased()),
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(DSVVA5Decreased(minValue)),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(DSVVA5Increased(maxValue)),
         );
       },
     );
@@ -931,13 +949,15 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 15.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer2And3}: ${state.dsSlope3} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.dsSlope3),
           onChanged: (dsSlope3) {
             context
@@ -946,10 +966,10 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18ControlBloc>()
-              .add(const DSSlope3Decreased()),
+              .add(DSSlope3Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18ControlBloc>()
-              .add(const DSSlope3Increased()),
+              .add(DSSlope3Increased(maxValue)),
         );
       },
     );
@@ -963,13 +983,15 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 15.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer3And4}: ${state.dsSlope3} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.dsSlope3),
           onChanged: (dsSlope3) {
             context
@@ -978,10 +1000,10 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18ControlBloc>()
-              .add(const DSSlope3Decreased()),
+              .add(DSSlope3Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18ControlBloc>()
-              .add(const DSSlope3Increased()),
+              .add(DSSlope3Increased(maxValue)),
         );
       },
     );
@@ -995,13 +1017,15 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 15.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer5And6}: ${state.dsSlope4} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.dsSlope4),
           onChanged: (dsSlope4) {
             context
@@ -1010,10 +1034,10 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18ControlBloc>()
-              .add(const DSSlope4Decreased()),
+              .add(DSSlope4Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18ControlBloc>()
-              .add(const DSSlope4Increased()),
+              .add(DSSlope4Increased(maxValue)),
         );
       },
     );
@@ -1027,23 +1051,27 @@ class _RtnInputAttenuation2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation2}: ${state.usVCA1} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.usVCA1),
           onChanged: (usVCA1) {
             context
                 .read<Setting18ControlBloc>()
                 .add(USVCA1Changed(usVCA1.toStringAsFixed(1)));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(const USVCA1Decreased()),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(const USVCA1Increased()),
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(USVCA1Decreased(minValue)),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(USVCA1Increased(maxValue)),
         );
       },
     );
@@ -1057,23 +1085,27 @@ class _RtnInputAttenuation3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation3}: ${state.usVCA3} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.usVCA3),
           onChanged: (rtnInputAttenuation) {
             context
                 .read<Setting18ControlBloc>()
                 .add(USVCA3Changed(rtnInputAttenuation.toStringAsFixed(1)));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(const USVCA3Decreased()),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(const USVCA3Increased()),
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(USVCA3Decreased(minValue)),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(USVCA3Increased(maxValue)),
         );
       },
     );
@@ -1087,23 +1119,27 @@ class _RtnInputAttenuation2And3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation2And3}: ${state.usVCA3} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.usVCA3),
           onChanged: (rtnInputAttenuation) {
             context
                 .read<Setting18ControlBloc>()
                 .add(USVCA3Changed(rtnInputAttenuation.toStringAsFixed(1)));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(const USVCA3Decreased()),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(const USVCA3Increased()),
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(USVCA3Decreased(minValue)),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(USVCA3Increased(maxValue)),
         );
       },
     );
@@ -1123,13 +1159,15 @@ class _RtnInputAttenuation4 extends StatelessWidget {
     if (partId == '5') {
       return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
         builder: (context, state) {
+          double minValue = 0.0;
+          double maxValue = 25.0;
           return controlParameterSlider(
             context: context,
             editMode: state.editMode,
             title:
                 '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.usVCA1} dB',
-            minValue: 0.0,
-            maxValue: 25.0,
+            minValue: minValue,
+            maxValue: maxValue,
             currentValue: _getValue(state.usVCA1),
             onChanged: (usVCA1) {
               context
@@ -1138,23 +1176,25 @@ class _RtnInputAttenuation4 extends StatelessWidget {
             },
             onDecreased: () => context
                 .read<Setting18ControlBloc>()
-                .add(const USVCA1Decreased()),
+                .add(USVCA1Decreased(minValue)),
             onIncreased: () => context
                 .read<Setting18ControlBloc>()
-                .add(const USVCA1Increased()),
+                .add(USVCA1Increased(maxValue)),
           );
         },
       );
     } else {
       return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
         builder: (context, state) {
+          double minValue = 0.0;
+          double maxValue = 25.0;
           return controlParameterSlider(
             context: context,
             editMode: state.editMode,
             title:
                 '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.usVCA4} dB',
-            minValue: 0.0,
-            maxValue: 25.0,
+            minValue: minValue,
+            maxValue: maxValue,
             currentValue: _getValue(state.usVCA4),
             onChanged: (usVCA4) {
               context
@@ -1163,10 +1203,10 @@ class _RtnInputAttenuation4 extends StatelessWidget {
             },
             onDecreased: () => context
                 .read<Setting18ControlBloc>()
-                .add(const USVCA4Decreased()),
+                .add(USVCA4Decreased(minValue)),
             onIncreased: () => context
                 .read<Setting18ControlBloc>()
-                .add(const USVCA4Increased()),
+                .add(USVCA4Increased(maxValue)),
           );
         },
       );
@@ -1181,23 +1221,27 @@ class _RtnInputAttenuation5And6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation5And6}: ${state.usVCA4} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.usVCA4),
           onChanged: (rtnInputAttenuation) {
             context
                 .read<Setting18ControlBloc>()
                 .add(USVCA4Changed(rtnInputAttenuation.toStringAsFixed(1)));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(const USVCA4Decreased()),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(const USVCA4Increased()),
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(USVCA4Decreased(minValue)),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(USVCA4Increased(maxValue)),
         );
       },
     );
@@ -1211,23 +1255,27 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnOutputAttenuation1}: ${state.usVCA2} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.usVCA2),
           onChanged: (rtnInputAttenuation) {
             context
                 .read<Setting18ControlBloc>()
                 .add(USVCA2Changed(rtnInputAttenuation.toStringAsFixed(1)));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(const USVCA2Decreased()),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(const USVCA2Increased()),
+          onDecreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(USVCA2Decreased(minValue)),
+          onIncreased: () => context
+              .read<Setting18ControlBloc>()
+              .add(USVCA2Increased(maxValue)),
         );
       },
     );
@@ -1241,13 +1289,15 @@ class _RtnOutputEQ extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 15.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnOutputEqualizer1}: ${state.eREQ} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.eREQ),
           onChanged: (returnOutputEqualizer1) {
             context
@@ -1255,9 +1305,9 @@ class _RtnOutputEQ extends StatelessWidget {
                 .add(EREQChanged(returnOutputEqualizer1.toStringAsFixed(1)));
           },
           onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(const EREQDecreased()),
+              context.read<Setting18ControlBloc>().add(EREQDecreased(minValue)),
           onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(const EREQIncreased()),
+              context.read<Setting18ControlBloc>().add(EREQIncreased(maxValue)),
         );
       },
     );

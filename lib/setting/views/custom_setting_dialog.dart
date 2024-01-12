@@ -52,7 +52,7 @@ Future<void> showResultDialog({
 
       return AlertDialog(
         insetPadding: EdgeInsets.symmetric(
-          horizontal: width * 0.1,
+          horizontal: width * 0.08,
         ),
         title: Text(
           AppLocalizations.of(context)!.dialogTitleSettingResult,

@@ -24,17 +24,21 @@ class DSVVA1Changed extends Setting18CCorNodeControlEvent {
 }
 
 class DSVVA1Increased extends Setting18CCorNodeControlEvent {
-  const DSVVA1Increased();
+  const DSVVA1Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class DSVVA1Decreased extends Setting18CCorNodeControlEvent {
-  const DSVVA1Decreased();
+  const DSVVA1Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class DSVVA3Changed extends Setting18CCorNodeControlEvent {
@@ -47,17 +51,21 @@ class DSVVA3Changed extends Setting18CCorNodeControlEvent {
 }
 
 class DSVVA3Increased extends Setting18CCorNodeControlEvent {
-  const DSVVA3Increased();
+  const DSVVA3Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class DSVVA3Decreased extends Setting18CCorNodeControlEvent {
-  const DSVVA3Decreased();
+  const DSVVA3Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class DSVVA4Changed extends Setting18CCorNodeControlEvent {
@@ -70,17 +78,21 @@ class DSVVA4Changed extends Setting18CCorNodeControlEvent {
 }
 
 class DSVVA4Increased extends Setting18CCorNodeControlEvent {
-  const DSVVA4Increased();
+  const DSVVA4Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class DSVVA4Decreased extends Setting18CCorNodeControlEvent {
-  const DSVVA4Decreased();
+  const DSVVA4Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class DSVVA6Changed extends Setting18CCorNodeControlEvent {
@@ -93,17 +105,21 @@ class DSVVA6Changed extends Setting18CCorNodeControlEvent {
 }
 
 class DSVVA6Increased extends Setting18CCorNodeControlEvent {
-  const DSVVA6Increased();
+  const DSVVA6Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class DSVVA6Decreased extends Setting18CCorNodeControlEvent {
-  const DSVVA6Decreased();
+  const DSVVA6Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class DSInSlope1Changed extends Setting18CCorNodeControlEvent {
@@ -116,17 +132,21 @@ class DSInSlope1Changed extends Setting18CCorNodeControlEvent {
 }
 
 class DSInSlope1Increased extends Setting18CCorNodeControlEvent {
-  const DSInSlope1Increased();
+  const DSInSlope1Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class DSInSlope1Decreased extends Setting18CCorNodeControlEvent {
-  const DSInSlope1Decreased();
+  const DSInSlope1Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class DSInSlope3Changed extends Setting18CCorNodeControlEvent {
@@ -139,17 +159,21 @@ class DSInSlope3Changed extends Setting18CCorNodeControlEvent {
 }
 
 class DSInSlope3Increased extends Setting18CCorNodeControlEvent {
-  const DSInSlope3Increased();
+  const DSInSlope3Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class DSInSlope3Decreased extends Setting18CCorNodeControlEvent {
-  const DSInSlope3Decreased();
+  const DSInSlope3Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class DSInSlope4Changed extends Setting18CCorNodeControlEvent {
@@ -162,17 +186,21 @@ class DSInSlope4Changed extends Setting18CCorNodeControlEvent {
 }
 
 class DSInSlope4Increased extends Setting18CCorNodeControlEvent {
-  const DSInSlope4Increased();
+  const DSInSlope4Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class DSInSlope4Decreased extends Setting18CCorNodeControlEvent {
-  const DSInSlope4Decreased();
+  const DSInSlope4Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class DSInSlope6Changed extends Setting18CCorNodeControlEvent {
@@ -185,17 +213,21 @@ class DSInSlope6Changed extends Setting18CCorNodeControlEvent {
 }
 
 class DSInSlope6Increased extends Setting18CCorNodeControlEvent {
-  const DSInSlope6Increased();
+  const DSInSlope6Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class DSInSlope6Decreased extends Setting18CCorNodeControlEvent {
-  const DSInSlope6Decreased();
+  const DSInSlope6Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class USVCA1Changed extends Setting18CCorNodeControlEvent {
@@ -208,17 +240,21 @@ class USVCA1Changed extends Setting18CCorNodeControlEvent {
 }
 
 class USVCA1Increased extends Setting18CCorNodeControlEvent {
-  const USVCA1Increased();
+  const USVCA1Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class USVCA1Decreased extends Setting18CCorNodeControlEvent {
-  const USVCA1Decreased();
+  const USVCA1Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class USVCA3Changed extends Setting18CCorNodeControlEvent {
@@ -231,17 +267,21 @@ class USVCA3Changed extends Setting18CCorNodeControlEvent {
 }
 
 class USVCA3Increased extends Setting18CCorNodeControlEvent {
-  const USVCA3Increased();
+  const USVCA3Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class USVCA3Decreased extends Setting18CCorNodeControlEvent {
-  const USVCA3Decreased();
+  const USVCA3Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class USVCA4Changed extends Setting18CCorNodeControlEvent {
@@ -254,17 +294,21 @@ class USVCA4Changed extends Setting18CCorNodeControlEvent {
 }
 
 class USVCA4Increased extends Setting18CCorNodeControlEvent {
-  const USVCA4Increased();
+  const USVCA4Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class USVCA4Decreased extends Setting18CCorNodeControlEvent {
-  const USVCA4Decreased();
+  const USVCA4Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class USVCA6Changed extends Setting18CCorNodeControlEvent {
@@ -277,17 +321,21 @@ class USVCA6Changed extends Setting18CCorNodeControlEvent {
 }
 
 class USVCA6Increased extends Setting18CCorNodeControlEvent {
-  const USVCA6Increased();
+  const USVCA6Increased(this.maxValue);
+
+  final double maxValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [maxValue];
 }
 
 class USVCA6Decreased extends Setting18CCorNodeControlEvent {
-  const USVCA6Decreased();
+  const USVCA6Decreased(this.minValue);
+
+  final double minValue;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [minValue];
 }
 
 class ReturnIngressSetting1Changed extends Setting18CCorNodeControlEvent {

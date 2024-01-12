@@ -1,4 +1,3 @@
-import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
@@ -417,13 +416,15 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeControlBloc,
         Setting18CCorNodeControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputAttenuation1}: ${state.dsVVA1} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.dsVVA1),
           onChanged: (dsVVA1) {
             context
@@ -432,10 +433,10 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSVVA1Decreased()),
+              .add(DSVVA1Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSVVA1Increased()),
+              .add(DSVVA1Increased(maxValue)),
         );
       },
     );
@@ -450,13 +451,15 @@ class _ForwardInputAttenuation3 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeControlBloc,
         Setting18CCorNodeControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputAttenuation3}: ${state.dsVVA3} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.dsVVA3),
           onChanged: (dsVVA3) {
             context
@@ -465,10 +468,10 @@ class _ForwardInputAttenuation3 extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSVVA3Decreased()),
+              .add(DSVVA3Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSVVA3Increased()),
+              .add(DSVVA3Increased(maxValue)),
         );
       },
     );
@@ -483,13 +486,15 @@ class _ForwardInputAttenuation4 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeControlBloc,
         Setting18CCorNodeControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.dsVVA4} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.dsVVA4),
           onChanged: (dsVVA4) {
             context
@@ -498,10 +503,10 @@ class _ForwardInputAttenuation4 extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSVVA4Decreased()),
+              .add(DSVVA4Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSVVA4Increased()),
+              .add(DSVVA4Increased(maxValue)),
         );
       },
     );
@@ -516,13 +521,15 @@ class _ForwardInputAttenuation6 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeControlBloc,
         Setting18CCorNodeControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation6}: ${state.dsVVA6} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.dsVVA6),
           onChanged: (dsVVA6) {
             context
@@ -531,10 +538,10 @@ class _ForwardInputAttenuation6 extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSVVA6Decreased()),
+              .add(DSVVA6Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSVVA6Increased()),
+              .add(DSVVA6Increased(maxValue)),
         );
       },
     );
@@ -549,13 +556,15 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeControlBloc,
         Setting18CCorNodeControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 15.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer1}: ${state.dsInSlope1} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.dsInSlope1),
           onChanged: (dsInSlope1) {
             context
@@ -564,10 +573,10 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSInSlope1Decreased()),
+              .add(DSInSlope1Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSInSlope1Increased()),
+              .add(DSInSlope1Increased(maxValue)),
         );
       },
     );
@@ -582,13 +591,15 @@ class _ForwardInputEqualizer3 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeControlBloc,
         Setting18CCorNodeControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 15.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer3}: ${state.dsInSlope3} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.dsInSlope3),
           onChanged: (dsInSlope3) {
             context
@@ -597,10 +608,10 @@ class _ForwardInputEqualizer3 extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSInSlope3Decreased()),
+              .add(DSInSlope3Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSInSlope3Increased()),
+              .add(DSInSlope3Increased(maxValue)),
         );
       },
     );
@@ -615,13 +626,15 @@ class _ForwardInputEqualizer4 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeControlBloc,
         Setting18CCorNodeControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 15.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer4}: ${state.dsInSlope4} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.dsInSlope4),
           onChanged: (dsInSlope4) {
             context
@@ -630,10 +643,10 @@ class _ForwardInputEqualizer4 extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSInSlope4Decreased()),
+              .add(DSInSlope4Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSInSlope4Increased()),
+              .add(DSInSlope4Increased(maxValue)),
         );
       },
     );
@@ -648,13 +661,15 @@ class _ForwardInputEqualizer6 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeControlBloc,
         Setting18CCorNodeControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 15.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer6}: ${state.dsInSlope6} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.dsInSlope6),
           onChanged: (dsInSlope6) {
             context
@@ -663,10 +678,10 @@ class _ForwardInputEqualizer6 extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSInSlope6Decreased()),
+              .add(DSInSlope6Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const DSInSlope6Increased()),
+              .add(DSInSlope6Increased(maxValue)),
         );
       },
     );
@@ -681,13 +696,15 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeControlBloc,
         Setting18CCorNodeControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation1}: ${state.usVCA1} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.usVCA1),
           onChanged: (usVCA1) {
             context
@@ -696,10 +713,10 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const USVCA1Decreased()),
+              .add(USVCA1Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const USVCA1Increased()),
+              .add(USVCA1Increased(maxValue)),
         );
       },
     );
@@ -714,13 +731,15 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeControlBloc,
         Setting18CCorNodeControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation3}: ${state.usVCA3} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.usVCA3),
           onChanged: (usVCA3) {
             context
@@ -729,10 +748,10 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const USVCA3Decreased()),
+              .add(USVCA3Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const USVCA3Increased()),
+              .add(USVCA3Increased(maxValue)),
         );
       },
     );
@@ -747,13 +766,15 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeControlBloc,
         Setting18CCorNodeControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.usVCA4} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.usVCA4),
           onChanged: (usVCA4) {
             context
@@ -762,10 +783,10 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const USVCA4Decreased()),
+              .add(USVCA4Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const USVCA4Increased()),
+              .add(USVCA4Increased(maxValue)),
         );
       },
     );
@@ -780,13 +801,15 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeControlBloc,
         Setting18CCorNodeControlState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation6}: ${state.usVCA6} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
+          minValue: minValue,
+          maxValue: maxValue,
           currentValue: _getValue(state.usVCA6),
           onChanged: (usVCA6) {
             context
@@ -795,10 +818,10 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const USVCA6Decreased()),
+              .add(USVCA6Decreased(minValue)),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(const USVCA6Increased()),
+              .add(USVCA6Increased(maxValue)),
         );
       },
     );

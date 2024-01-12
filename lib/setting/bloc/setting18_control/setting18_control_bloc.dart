@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
@@ -123,17 +125,25 @@ class Setting18ControlBloc
     ));
   }
 
-  String _getIncreasedNumber(String value) {
+  String _getIncreasedNumber({
+    required String value,
+    required double maxValue,
+  }) {
     double doubleValue = double.parse(value);
-    doubleValue = doubleValue + 0.1 <= 15.0 ? doubleValue + 0.1 : doubleValue;
+    doubleValue =
+        doubleValue + 0.1 <= maxValue ? doubleValue + 0.1 : doubleValue;
     String strValue = doubleValue.toStringAsFixed(1);
 
     return strValue;
   }
 
-  String _getDecreasedNumber(String value) {
+  String _getDecreasedNumber({
+    required String value,
+    required double minValue,
+  }) {
     double doubleValue = double.parse(value);
-    doubleValue = doubleValue - 0.1 >= 0.0 ? doubleValue - 0.1 : doubleValue;
+    doubleValue =
+        doubleValue - 0.1 >= minValue ? doubleValue - 0.1 : doubleValue;
     String strValue = doubleValue.toStringAsFixed(1);
 
     return strValue;
@@ -177,7 +187,10 @@ class Setting18ControlBloc
     DSVVA1Increased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String dsVVA1 = _getIncreasedNumber(state.dsVVA1);
+    String dsVVA1 = _getIncreasedNumber(
+      value: state.dsVVA1,
+      maxValue: event.maxValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -213,7 +226,10 @@ class Setting18ControlBloc
     DSVVA1Decreased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String dsVVA1 = _getDecreasedNumber(state.dsVVA1);
+    String dsVVA1 = _getDecreasedNumber(
+      value: state.dsVVA1,
+      minValue: event.minValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -284,7 +300,10 @@ class Setting18ControlBloc
     DSSlope1Increased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String dsSlope1 = _getIncreasedNumber(state.dsSlope1);
+    String dsSlope1 = _getIncreasedNumber(
+      value: state.dsSlope1,
+      maxValue: event.maxValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -321,7 +340,10 @@ class Setting18ControlBloc
     DSSlope1Decreased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String dsSlope1 = _getDecreasedNumber(state.dsSlope1);
+    String dsSlope1 = _getDecreasedNumber(
+      value: state.dsSlope1,
+      minValue: event.minValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -393,7 +415,10 @@ class Setting18ControlBloc
     USVCA1Increased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String usVCA1 = _getIncreasedNumber(state.usVCA1);
+    String usVCA1 = _getIncreasedNumber(
+      value: state.usVCA1,
+      maxValue: event.maxValue,
+    );
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
@@ -429,7 +454,10 @@ class Setting18ControlBloc
     USVCA1Decreased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String usVCA1 = _getDecreasedNumber(state.usVCA1);
+    String usVCA1 = _getDecreasedNumber(
+      value: state.usVCA1,
+      minValue: event.minValue,
+    );
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
@@ -498,7 +526,10 @@ class Setting18ControlBloc
     USVCA3Increased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String usVCA3 = _getIncreasedNumber(state.usVCA3);
+    String usVCA3 = _getIncreasedNumber(
+      value: state.usVCA3,
+      maxValue: event.maxValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -534,7 +565,10 @@ class Setting18ControlBloc
     USVCA3Decreased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String usVCA3 = _getDecreasedNumber(state.usVCA3);
+    String usVCA3 = _getDecreasedNumber(
+      value: state.usVCA3,
+      minValue: event.minValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -605,7 +639,10 @@ class Setting18ControlBloc
     USVCA4Increased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String usVCA4 = _getIncreasedNumber(state.usVCA4);
+    String usVCA4 = _getIncreasedNumber(
+      value: state.usVCA4,
+      maxValue: event.maxValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -641,7 +678,10 @@ class Setting18ControlBloc
     USVCA4Decreased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String usVCA4 = _getDecreasedNumber(state.usVCA4);
+    String usVCA4 = _getDecreasedNumber(
+      value: state.usVCA4,
+      minValue: event.minValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -712,7 +752,10 @@ class Setting18ControlBloc
     USVCA2Increased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String usVCA2 = _getIncreasedNumber(state.usVCA2);
+    String usVCA2 = _getIncreasedNumber(
+      value: state.usVCA2,
+      maxValue: event.maxValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -749,7 +792,10 @@ class Setting18ControlBloc
     USVCA2Decreased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String usVCA2 = _getDecreasedNumber(state.usVCA2);
+    String usVCA2 = _getDecreasedNumber(
+      value: state.usVCA2,
+      minValue: event.minValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -821,7 +867,10 @@ class Setting18ControlBloc
     EREQIncreased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String eREQ = _getIncreasedNumber(state.eREQ);
+    String eREQ = _getIncreasedNumber(
+      value: state.eREQ,
+      maxValue: event.maxValue,
+    );
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
@@ -857,7 +906,10 @@ class Setting18ControlBloc
     EREQDecreased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String eREQ = _getDecreasedNumber(state.eREQ);
+    String eREQ = _getDecreasedNumber(
+      value: state.eREQ,
+      minValue: event.minValue,
+    );
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
@@ -1173,7 +1225,10 @@ class Setting18ControlBloc
     DSVVA4Increased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String dsVVA4 = _getIncreasedNumber(state.dsVVA4);
+    String dsVVA4 = _getIncreasedNumber(
+      value: state.dsVVA4,
+      maxValue: event.maxValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -1209,7 +1264,10 @@ class Setting18ControlBloc
     DSVVA4Decreased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String dsVVA4 = _getDecreasedNumber(state.dsVVA4);
+    String dsVVA4 = _getDecreasedNumber(
+      value: state.dsVVA4,
+      minValue: event.minValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -1279,7 +1337,10 @@ class Setting18ControlBloc
     DSVVA5Increased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String dsVVA5 = _getIncreasedNumber(state.dsVVA5);
+    String dsVVA5 = _getIncreasedNumber(
+      value: state.dsVVA5,
+      maxValue: event.maxValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -1315,7 +1376,10 @@ class Setting18ControlBloc
     DSVVA5Decreased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String dsVVA5 = _getDecreasedNumber(state.dsVVA5);
+    String dsVVA5 = _getDecreasedNumber(
+      value: state.dsVVA5,
+      minValue: event.minValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -1386,7 +1450,10 @@ class Setting18ControlBloc
     DSSlope3Increased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String dsSlope3 = _getIncreasedNumber(state.dsSlope3);
+    String dsSlope3 = _getIncreasedNumber(
+      value: state.dsSlope3,
+      maxValue: event.maxValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -1422,7 +1489,10 @@ class Setting18ControlBloc
     DSSlope3Decreased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String dsSlope3 = _getDecreasedNumber(state.dsSlope3);
+    String dsSlope3 = _getDecreasedNumber(
+      value: state.dsSlope3,
+      minValue: event.minValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -1492,7 +1562,10 @@ class Setting18ControlBloc
     DSSlope4Increased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String dsSlope4 = _getIncreasedNumber(state.dsSlope4);
+    String dsSlope4 = _getIncreasedNumber(
+      value: state.dsSlope4,
+      maxValue: event.maxValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -1528,7 +1601,10 @@ class Setting18ControlBloc
     DSSlope4Decreased event,
     Emitter<Setting18ControlState> emit,
   ) {
-    String dsSlope4 = _getDecreasedNumber(state.dsSlope4);
+    String dsSlope4 = _getDecreasedNumber(
+      value: state.dsSlope4,
+      minValue: event.minValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,

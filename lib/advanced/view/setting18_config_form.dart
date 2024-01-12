@@ -1,9 +1,9 @@
+import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_bloc.dart';
+import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:aci_plus_app/setting/bloc/setting18_config/setting18_config_bloc.dart';
-import 'package:aci_plus_app/setting/views/setting18_views/setting18_config_edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
