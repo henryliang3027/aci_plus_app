@@ -12,6 +12,7 @@ class Setting18GraphView extends StatelessWidget {
   Widget build(BuildContext context) {
     setFullScreenOrientation();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         toolbarHeight: 0,
       ),

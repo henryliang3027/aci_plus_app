@@ -300,6 +300,193 @@ Widget twoTextField({
   );
 }
 
+Widget splitOptionGridViewButton({
+  required BuildContext context,
+  required bool editMode,
+  required String splitOption,
+  required ValueChanged onGridPressed,
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(
+      bottom: 40.0,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: CustomStyle.sizeL,
+          ),
+          child: Text(
+            '${AppLocalizations.of(context)!.pilotFrequencySelect}:',
+            style: const TextStyle(
+              fontSize: CustomStyle.sizeXL,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: (MediaQuery.of(context).size.width / 110.0),
+          ),
+          itemCount: splitOptionValues.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  // padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                  elevation: 0.0,
+                  foregroundColor: getForegroundColor(
+                    context: context,
+                    value: splitOption,
+                    index: index,
+                  ),
+                  backgroundColor: editMode
+                      ? getBackgroundColor(
+                          context: context,
+                          value: splitOption,
+                          index: index,
+                        )
+                      : getDisabledBackgroundColor(
+                          context: context,
+                          value: splitOption,
+                          index: index,
+                        ),
+                  side: BorderSide(
+                    color: editMode
+                        ? getBorderColor(
+                            context: context,
+                            value: splitOption,
+                            index: index,
+                          )
+                        : getDisabledBorderColor(),
+                    width: 1.0,
+                  ),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                ),
+                onPressed: editMode
+                    ? () {
+                        if (index != 0) {
+                          onGridPressed(index);
+                        }
+                      }
+                    : () {},
+                child: Text(
+                  index == 0
+                      ? 'Null'
+                      : '${splitBaseLine[index].$1}/${splitBaseLine[index].$2} ${CustomStyle.mHz}',
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    ),
+  );
+}
+
+Widget gridViewButton({
+  required BuildContext context,
+  required int crossAxisCount,
+  required List<String> values,
+  required List<String> texts,
+  required bool editMode,
+  required String pilotFrequencyMode,
+  required ValueChanged onGridPressed,
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(
+      bottom: 40.0,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: CustomStyle.sizeL,
+          ),
+          child: Text(
+            '${AppLocalizations.of(context)!.pilotFrequencySelect}:',
+            style: const TextStyle(
+              fontSize: CustomStyle.sizeXL,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            childAspectRatio: (MediaQuery.of(context).size.width / 56.0),
+          ),
+          itemCount: values.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  // padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                  elevation: 0.0,
+                  foregroundColor: getForegroundColor(
+                    context: context,
+                    value: pilotFrequencyMode,
+                    index: index,
+                  ),
+                  backgroundColor: editMode
+                      ? getBackgroundColor(
+                          context: context,
+                          value: pilotFrequencyMode,
+                          index: index,
+                        )
+                      : getDisabledBackgroundColor(
+                          context: context,
+                          value: pilotFrequencyMode,
+                          index: index,
+                        ),
+                  side: BorderSide(
+                    color: editMode
+                        ? getBorderColor(
+                            context: context,
+                            value: pilotFrequencyMode,
+                            index: index,
+                          )
+                        : getDisabledBorderColor(),
+                    width: 1.0,
+                  ),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                ),
+                onPressed: editMode
+                    ? () {
+                        onGridPressed(index);
+                      }
+                    : () {},
+                child: Text(
+                  texts[index],
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    ),
+  );
+}
+
 Widget thresholdAlarmParameterWidget({
   required BuildContext context,
   required String minValueTextEditingControllerName,

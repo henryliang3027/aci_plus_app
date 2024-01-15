@@ -110,7 +110,7 @@ class _ConfigListView extends StatelessWidget {
             horizontal: 20.0,
           ),
           child: Text(
-            'MOTO',
+            'AMT',
             style: TextStyle(
               fontSize: CustomStyle.sizeXL,
               fontWeight: FontWeight.w500,
@@ -133,7 +133,7 @@ class _ConfigListView extends StatelessWidget {
             horizontal: 20.0,
           ),
           child: Text(
-            'C-Cor',
+            'AMF',
             style: TextStyle(
               fontSize: CustomStyle.sizeXL,
               fontWeight: FontWeight.w500,

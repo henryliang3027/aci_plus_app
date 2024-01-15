@@ -26,9 +26,13 @@ class CircuitPainter extends CustomPainter {
 
       builder: (BuildContext context) {
         var width = MediaQuery.of(context).size.width;
-        // var height = MediaQuery.of(context).size.height;
+        var height = MediaQuery.of(context).size.height;
 
         return Dialog(
+          insetPadding: EdgeInsets.symmetric(
+            horizontal: width * 0.01,
+            vertical: height * 0.01,
+          ),
           child: Setting18GraphModulePage(moduleId: moduleId),
         );
       },

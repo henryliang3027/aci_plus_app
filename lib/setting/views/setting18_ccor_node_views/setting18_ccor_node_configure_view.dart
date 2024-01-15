@@ -7,6 +7,7 @@ import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_configure/setting18_ccor_node_configure_bloc.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
+import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -436,254 +437,24 @@ class _Coordinates extends StatelessWidget {
 class _SplitOption extends StatelessWidget {
   const _SplitOption({super.key});
 
-  final List<String> splitOptionTexts = const [
-    'Null',
-    '204/258 MHz',
-    '300/372 MHz',
-    '396/492 MHz',
-    '492/606 MHz',
-    '684/834 MHz',
-  ];
-
-  final List<String> splitOptionValues = const [
-    '0',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-  ];
-
-  Color getNullBackgroundColor({
-    required BuildContext context,
-    required String value,
-    required int index,
-  }) {
-    String strIndex = index.toString();
-    return strIndex == value
-        ? CustomStyle.customRed
-        : Theme.of(context).colorScheme.onPrimary;
-  }
-
-  Color getNullBorderColor({
-    required BuildContext context,
-    required String value,
-    required int index,
-  }) {
-    String strIndex = index.toString();
-    return strIndex == value ? CustomStyle.customRed : Colors.grey;
-  }
-
-  Color getBackgroundColor({
-    required BuildContext context,
-    required String value,
-    required int index,
-  }) {
-    String strIndex = index.toString();
-
-    return strIndex == value
-        ? Theme.of(context).colorScheme.primary
-        : Theme.of(context).colorScheme.onPrimary;
-  }
-
-  Color getBorderColor({
-    required BuildContext context,
-    required String value,
-    required int index,
-  }) {
-    String strIndex = index.toString();
-
-    return strIndex == value
-        ? Theme.of(context).colorScheme.primary
-        : Colors.grey;
-  }
-
-  Color getForegroundColor({
-    required BuildContext context,
-    required String value,
-    required int index,
-  }) {
-    String strIndex = index.toString();
-    return strIndex == value
-        ? Theme.of(context).colorScheme.onPrimary
-        : Colors.grey;
-  }
-
-  Color getDisabledNullBackgroundColor({
-    required BuildContext context,
-    required String value,
-    required int index,
-  }) {
-    String strIndex = index.toString();
-
-    return strIndex == value
-        ? const Color.fromARGB(255, 215, 82, 95)
-        : Theme.of(context).colorScheme.onPrimary;
-  }
-
-  Color getDisabledBackgroundColor({
-    required BuildContext context,
-    required String value,
-    required int index,
-  }) {
-    String strIndex = index.toString();
-
-    return strIndex == value
-        ? Theme.of(context).colorScheme.inversePrimary
-        : Theme.of(context).colorScheme.onPrimary;
-  }
-
-  Color getDisabledBorderColor() {
-    return Colors.grey;
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18CCorNodeConfigureBloc,
-            Setting18CCorNodeConfigureState>(
-        buildWhen: (previous, current) =>
-            previous.splitOption != current.splitOption ||
-            previous.editMode != current.editMode,
-        builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.only(
-              bottom: 40.0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: CustomStyle.sizeL),
-                  child: Text(
-                    '${AppLocalizations.of(context)!.splitOption}:',
-                    style: const TextStyle(
-                      fontSize: CustomStyle.sizeXL,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                GridView.count(
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 2,
-                  childAspectRatio: (MediaQuery.of(context).size.width / 100.0),
-                  shrinkWrap: true,
-                  children: List.generate(6, (index) {
-                    if (index == 0) {
-                      return Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 6.0),
-                            elevation: 0.0,
-                            foregroundColor: getForegroundColor(
-                              context: context,
-                              value: state.splitOption,
-                              index: index,
-                            ),
-                            backgroundColor: state.editMode
-                                ? getNullBackgroundColor(
-                                    context: context,
-                                    value: state.splitOption,
-                                    index: index,
-                                  )
-                                : getDisabledNullBackgroundColor(
-                                    context: context,
-                                    value: state.splitOption,
-                                    index: index),
-                            side: BorderSide(
-                              color: state.editMode
-                                  ? getNullBorderColor(
-                                      context: context,
-                                      value: state.splitOption,
-                                      index: index,
-                                    )
-                                  : getDisabledBorderColor(),
-                              width: 1.0,
-                            ),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0))),
-                          ),
-                          onPressed: state.editMode && index != 0
-                              ? () {
-                                  context
-                                      .read<Setting18CCorNodeConfigureBloc>()
-                                      .add(SplitOptionChanged(
-                                          splitOptionValues[index]));
-                                }
-                              : () {},
-                          child: Text(
-                            splitOptionTexts[index],
-                            style: const TextStyle(
-                              fontSize: CustomStyle.sizeXL,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      );
-                    } else {
-                      return Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 6.0),
-                            elevation: 0.0,
-                            foregroundColor: getForegroundColor(
-                              context: context,
-                              value: state.splitOption,
-                              index: index,
-                            ),
-                            backgroundColor: state.editMode
-                                ? getBackgroundColor(
-                                    context: context,
-                                    value: state.splitOption,
-                                    index: index,
-                                  )
-                                : getDisabledBackgroundColor(
-                                    context: context,
-                                    value: state.splitOption,
-                                    index: index,
-                                  ),
-                            side: BorderSide(
-                              color: state.editMode
-                                  ? getBorderColor(
-                                      context: context,
-                                      value: state.splitOption,
-                                      index: index,
-                                    )
-                                  : getDisabledBorderColor(),
-                              width: 1.0,
-                            ),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0))),
-                          ),
-                          onPressed: state.editMode
-                              ? () {
-                                  context
-                                      .read<Setting18CCorNodeConfigureBloc>()
-                                      .add(SplitOptionChanged(
-                                          splitOptionValues[index]));
-                                }
-                              : () {},
-                          child: Text(
-                            splitOptionTexts[index],
-                            style: const TextStyle(
-                              fontSize: CustomStyle.sizeXL,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                  }),
-                ),
-              ],
-            ),
-          );
-        });
+        Setting18CCorNodeConfigureState>(
+      buildWhen: (previous, current) =>
+          previous.splitOption != current.splitOption ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return splitOptionGridViewButton(
+          context: context,
+          editMode: state.editMode,
+          splitOption: state.splitOption,
+          onGridPressed: (index) => context
+              .read<Setting18CCorNodeConfigureBloc>()
+              .add(SplitOptionChanged(splitOptionValues[index])),
+        );
+      },
+    );
   }
 }
 

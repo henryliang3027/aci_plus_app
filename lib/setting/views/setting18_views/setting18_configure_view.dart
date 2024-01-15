@@ -547,149 +547,20 @@ class _SplitOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
-        buildWhen: (previous, current) =>
-            previous.splitOption != current.splitOption ||
-            previous.editMode != current.editMode,
-        builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.only(
-              bottom: 40.0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: CustomStyle.sizeL,
-                  ),
-                  child: Text(
-                    '${AppLocalizations.of(context)!.splitOption}:',
-                    style: const TextStyle(
-                      fontSize: CustomStyle.sizeXL,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                GridView.count(
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 2,
-                  childAspectRatio: (MediaQuery.of(context).size.width / 100.0),
-                  shrinkWrap: true,
-                  children: List.generate(6, (index) {
-                    if (index == 0) {
-                      return Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 6.0),
-                            elevation: 0.0,
-                            foregroundColor: getForegroundColor(
-                              context: context,
-                              value: state.splitOption,
-                              index: index,
-                            ),
-                            backgroundColor: state.editMode
-                                ? getNullBackgroundColor(
-                                    context: context,
-                                    value: state.splitOption,
-                                    index: index,
-                                  )
-                                : getDisabledNullBackgroundColor(
-                                    context: context,
-                                    value: state.splitOption,
-                                    index: index),
-                            side: BorderSide(
-                              color: state.editMode
-                                  ? getNullBorderColor(
-                                      context: context,
-                                      value: state.splitOption,
-                                      index: index,
-                                    )
-                                  : getDisabledBorderColor(),
-                              width: 1.0,
-                            ),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0))),
-                          ),
-                          onPressed: state.editMode && index != 0
-                              ? () {
-                                  context.read<Setting18ConfigureBloc>().add(
-                                      SplitOptionChanged(
-                                          splitOptionValues[index]));
-                                }
-                              : () {},
-                          child: const Text(
-                            'Null',
-                            style: TextStyle(
-                              fontSize: CustomStyle.sizeXL,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      );
-                    } else {
-                      return Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 6.0),
-                            elevation: 0.0,
-                            foregroundColor: getForegroundColor(
-                              context: context,
-                              value: state.splitOption,
-                              index: index,
-                            ),
-                            backgroundColor: state.editMode
-                                ? getBackgroundColor(
-                                    context: context,
-                                    value: state.splitOption,
-                                    index: index,
-                                  )
-                                : getDisabledBackgroundColor(
-                                    context: context,
-                                    value: state.splitOption,
-                                    index: index,
-                                  ),
-                            side: BorderSide(
-                              color: state.editMode
-                                  ? getBorderColor(
-                                      context: context,
-                                      value: state.splitOption,
-                                      index: index,
-                                    )
-                                  : getDisabledBorderColor(),
-                              width: 1.0,
-                            ),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0))),
-                          ),
-                          onPressed: state.editMode
-                              ? () {
-                                  context.read<Setting18ConfigureBloc>().add(
-                                      SplitOptionChanged(
-                                          splitOptionValues[index]));
-                                }
-                              : () {},
-                          child: Text(
-                            '${splitBaseLine[index].$1}/${splitBaseLine[index].$2} ${CustomStyle.mHz}',
-                            style: const TextStyle(
-                              fontSize: CustomStyle.sizeXL,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                  }),
-                ),
-              ],
-            ),
-          );
-        });
+      buildWhen: (previous, current) =>
+          previous.splitOption != current.splitOption ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return splitOptionGridViewButton(
+          context: context,
+          editMode: state.editMode,
+          splitOption: state.splitOption,
+          onGridPressed: (index) => context
+              .read<Setting18ConfigureBloc>()
+              .add(SplitOptionChanged(splitOptionValues[index])),
+        );
+      },
+    );
   }
 }
 
@@ -698,34 +569,35 @@ class _PilotFrequencyMode extends StatelessWidget {
     super.key,
   });
 
-  final List<String> pilotFrequencyModeValues = const [
-    '0',
-    '1',
-    // '2',
-  ];
-
   @override
   Widget build(BuildContext context) {
+    List<String> pilotFrequencyModeValues = const [
+      '0',
+      '1',
+      // '2',
+    ];
+
+    List<String> pilotFrequencyModeTexts = [
+      AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
+      AppLocalizations.of(context)!.pilotFrequencyUserSettings,
+      //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
+    ];
+
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       buildWhen: (previous, current) =>
           previous.pilotFrequencyMode != current.pilotFrequencyMode ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return controlToggleButton(
+        return gridViewButton(
           context: context,
-          editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.pilotFrequencySelect}:',
-          currentValue: state.pilotFrequencyMode,
-          onChanged: (int index) {
-            context.read<Setting18ConfigureBloc>().add(
-                PilotFrequencyModeChanged(pilotFrequencyModeValues[index]));
-          },
+          crossAxisCount: 1,
+          texts: pilotFrequencyModeTexts,
           values: pilotFrequencyModeValues,
-          texts: [
-            AppLocalizations.of(context)!.pilotFrequencyFull,
-            AppLocalizations.of(context)!.pilotFrequencyManual,
-            // AppLocalizations.of(context)!.pilotFrequencyScan,
-          ],
+          editMode: state.editMode,
+          pilotFrequencyMode: state.pilotFrequencyMode,
+          onGridPressed: (index) => context
+              .read<Setting18ConfigureBloc>()
+              .add(PilotFrequencyModeChanged(pilotFrequencyModeValues[index])),
         );
       },
     );

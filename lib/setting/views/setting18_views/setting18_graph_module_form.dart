@@ -281,8 +281,8 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
                 ),
               ),
               const Positioned(
-                right: 10,
-                bottom: 10,
+                right: 4.0,
+                bottom: 4.0,
                 child: _SettingFloatingActionButton(),
               ),
             ],
@@ -370,119 +370,13 @@ class _SplitOption extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
         builder: (context, state) {
-      return Padding(
-        padding: const EdgeInsets.only(
-          bottom: 30.0,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-              ),
-              child: Text(
-                '${AppLocalizations.of(context)!.splitOption}:',
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            GridView.count(
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              childAspectRatio: (MediaQuery.of(context).size.width / 100.0),
-              shrinkWrap: true,
-              children: List.generate(6, (index) {
-                if (index == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                        elevation: 0.0,
-                        foregroundColor: getForegroundColor(
-                          context: context,
-                          value: state.splitOption,
-                          index: index,
-                        ),
-                        backgroundColor: getNullBackgroundColor(
-                          context: context,
-                          value: state.splitOption,
-                          index: index,
-                        ),
-                        side: BorderSide(
-                          color: getNullBorderColor(
-                            context: context,
-                            value: state.splitOption,
-                            index: index,
-                          ),
-                          width: 1.0,
-                        ),
-                        shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0))),
-                      ),
-                      onPressed: () {},
-                      child: const Text(
-                        'Null',
-                        style: TextStyle(
-                          fontSize: CustomStyle.sizeXL,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                  );
-                } else {
-                  return Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                        elevation: 0.0,
-                        foregroundColor: getForegroundColor(
-                          context: context,
-                          value: state.splitOption,
-                          index: index,
-                        ),
-                        backgroundColor: getBackgroundColor(
-                          context: context,
-                          value: state.splitOption,
-                          index: index,
-                        ),
-                        side: BorderSide(
-                          color: getBorderColor(
-                            context: context,
-                            value: state.splitOption,
-                            index: index,
-                          ),
-                          width: 1.0,
-                        ),
-                        shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0))),
-                      ),
-                      onPressed: index > 0 && index < 2
-                          ? () {
-                              context.read<Setting18GraphModuleBloc>().add(
-                                  SplitOptionChanged(splitOptionValues[index]));
-                            }
-                          : () {},
-                      child: Text(
-                        '${splitBaseLine[index].$1}/${splitBaseLine[index].$2} ${CustomStyle.mHz}',
-                        style: const TextStyle(
-                          fontSize: CustomStyle.sizeXL,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                  );
-                }
-              }),
-            ),
-          ],
-        ),
+      return splitOptionGridViewButton(
+        context: context,
+        editMode: true,
+        splitOption: state.splitOption,
+        onGridPressed: (index) => context
+            .read<Setting18GraphModuleBloc>()
+            .add(SplitOptionChanged(splitOptionValues[index])),
       );
     });
   }
@@ -493,34 +387,35 @@ class _PilotFrequencyMode extends StatelessWidget {
     super.key,
   });
 
-  final List<String> pilotFrequencyModeValues = const [
-    '0',
-    '1',
-    '2',
-  ];
-
   @override
   Widget build(BuildContext context) {
+    List<String> pilotFrequencyModeValues = const [
+      '0',
+      '1',
+      // '2',
+    ];
+
+    List<String> pilotFrequencyModeTexts = [
+      AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
+      AppLocalizations.of(context)!.pilotFrequencyUserSettings,
+      //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
+    ];
+
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       buildWhen: (previous, current) =>
           previous.pilotFrequencyMode != current.pilotFrequencyMode ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return controlToggleButton(
+        return gridViewButton(
           context: context,
-          editMode: true,
-          title: '${AppLocalizations.of(context)!.pilotFrequencySelect}:',
-          currentValue: state.pilotFrequencyMode,
-          onChanged: (int index) {
-            context.read<Setting18GraphModuleBloc>().add(
-                PilotFrequencyModeChanged(pilotFrequencyModeValues[index]));
-          },
+          crossAxisCount: 1,
+          texts: pilotFrequencyModeTexts,
           values: pilotFrequencyModeValues,
-          texts: [
-            AppLocalizations.of(context)!.pilotFrequencyFull,
-            AppLocalizations.of(context)!.pilotFrequencyManual,
-            AppLocalizations.of(context)!.pilotFrequencyScan,
-          ],
+          editMode: true,
+          pilotFrequencyMode: state.pilotFrequencyMode,
+          onGridPressed: (index) => context
+              .read<Setting18GraphModuleBloc>()
+              .add(PilotFrequencyModeChanged(pilotFrequencyModeValues[index])),
         );
       },
     );
