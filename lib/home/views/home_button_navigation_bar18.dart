@@ -1,8 +1,8 @@
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:flutter/material.dart';
 
-class HomeBottomNavigationBar extends StatelessWidget {
-  const HomeBottomNavigationBar({
+class HomeBottomNavigationBar18 extends StatelessWidget {
+  const HomeBottomNavigationBar18({
     Key? key,
     required this.selectedIndex,
     required this.pageController,
@@ -44,7 +44,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
           tooltip: '',
         ),
         BottomNavigationBarItem(
-          icon: Icon(CustomIcons.about),
+          icon: Icon(CustomIcons.advanced),
           label: 'About',
           tooltip: '',
         ),

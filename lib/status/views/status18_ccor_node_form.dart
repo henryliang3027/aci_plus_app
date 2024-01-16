@@ -5,7 +5,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
+import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/status/bloc/status18_ccor_node_bloc/status18_ccor_node_bloc.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +30,7 @@ class Status18CCorNodeForm extends StatelessWidget {
         actions: const [_DeviceRefresh()],
       ),
       body: const _CardView(),
-      bottomNavigationBar: HomeBottomNavigationBar(
+      bottomNavigationBar: HomeBottomNavigationBar18(
         pageController: pageController,
         selectedIndex: 1,
         onTap: (int index) {

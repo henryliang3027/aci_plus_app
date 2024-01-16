@@ -3,7 +3,7 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
+import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/information/bloc/information18_bloc/information18_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,7 +37,7 @@ class Information18Form extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: HomeBottomNavigationBar(
+      bottomNavigationBar: HomeBottomNavigationBar18(
         pageController: pageController,
         selectedIndex: 2,
         onTap: (int index) {

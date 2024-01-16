@@ -2,7 +2,7 @@ import 'package:aci_plus_app/advanced/view/setting18_config_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
+import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -28,7 +28,7 @@ class Setting18AdvancedForm extends StatelessWidget {
         ],
       ),
       body: const Setting18ConfigPage(),
-      bottomNavigationBar: HomeBottomNavigationBar(
+      bottomNavigationBar: HomeBottomNavigationBar18(
         pageController: pageController,
         selectedIndex: 4,
         onTap: (int index) {
