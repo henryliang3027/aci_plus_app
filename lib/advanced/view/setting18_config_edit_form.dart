@@ -4,8 +4,10 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -13,7 +15,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class Setting18ConfigEditForm extends StatefulWidget {
   const Setting18ConfigEditForm({
     super.key,
+    required this.isShortcut,
   });
+
+  final bool isShortcut;
 
   @override
   State<Setting18ConfigEditForm> createState() =>
@@ -40,6 +45,11 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
 
   @override
   Widget build(BuildContext context) {
+    HomeState homeState = context.read<HomeBloc>().state;
+    String currentDetectedSplitOption =
+        homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
+    int intCurrentDetectedSplitOption = int.parse(currentDetectedSplitOption);
+
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
           ? AppLocalizations.of(context)!.dialogMessageSuccessful
@@ -150,28 +160,33 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
             ),
             child: const _PartName(),
           ),
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
-              child: Column(
-                children: [
-                  _FirstChannelLoading(
-                    firstChannelLoadingFrequencyTextEditingController:
-                        firstChannelLoadingFrequencyTextEditingController,
-                    firstChannelLoadingLevelTextEditingController:
-                        firstChannelLoadingLevelTextEditingController,
-                  ),
-                  _LastChannelLoading(
-                    lastChannelLoadingFrequencyTextEditingController:
-                        lastChannelLoadingFrequencyTextEditingController,
-                    lastChannelLoadingLevelTextEditingController:
-                        lastChannelLoadingLevelTextEditingController,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const _ActionButton(),
-                ],
+          Flexible(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
+                child: Column(
+                  children: [
+                    _FirstChannelLoading(
+                      firstChannelLoadingFrequencyTextEditingController:
+                          firstChannelLoadingFrequencyTextEditingController,
+                      firstChannelLoadingLevelTextEditingController:
+                          firstChannelLoadingLevelTextEditingController,
+                      currentDetectedSplitOption: intCurrentDetectedSplitOption,
+                    ),
+                    _LastChannelLoading(
+                      lastChannelLoadingFrequencyTextEditingController:
+                          lastChannelLoadingFrequencyTextEditingController,
+                      lastChannelLoadingLevelTextEditingController:
+                          lastChannelLoadingLevelTextEditingController,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    _ActionTool(
+                      isShortcut: widget.isShortcut,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -200,157 +215,187 @@ class _PartName extends StatelessWidget {
   }
 }
 
-class _ActionButton extends StatelessWidget {
-  const _ActionButton({super.key});
+class _ActionTool extends StatelessWidget {
+  const _ActionTool({
+    super.key,
+    required this.isShortcut,
+  });
+
+  final bool isShortcut;
 
   @override
   Widget build(BuildContext context) {
-    Widget buildExecuteButtons({
-      required enableExecute,
-    }) {
-      return Align(
-        alignment: Alignment.centerRight,
-        child: Wrap(
-          alignment: WrapAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 0.0,
-                    horizontal: 20.0,
-                  ),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.dialogMessageCancel,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ElevatedButton(
-                onPressed: enableExecute
-                    ? () {
-                        context
-                            .read<Setting18ConfigEditBloc>()
-                            .add(const ConfigSavedAndSubmitted());
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 0.0,
-                    horizontal: 20.0,
-                  ),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.dialogMessageExecute,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    Widget buildSavingButtons({
-      required enableSaving,
-    }) {
-      return Align(
-        alignment: Alignment.centerRight,
-        child: Wrap(
-          alignment: WrapAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 0.0,
-                    horizontal: 20.0,
-                  ),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.dialogMessageCancel,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ElevatedButton(
-                onPressed: enableSaving
-                    ? () {
-                        context
-                            .read<Setting18ConfigEditBloc>()
-                            .add(const ConfigSaved());
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 0.0,
-                    horizontal: 20.0,
-                  ),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.dialogMessageSave,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    Widget buildButtons({
-      required bool isShortcut,
-      required bool enableExecute,
-      required bool enableSaving,
-    }) {
-      if (isShortcut) {
-        return buildExecuteButtons(
-          enableExecute: enableExecute,
-        );
-      } else {
-        return buildSavingButtons(
-          enableSaving: enableSaving,
-        );
-      }
-    }
-
-    return Builder(
-      builder: (context) {
-        HomeState homeState = context.watch<HomeBloc>().state;
-        Setting18ConfigEditState setting18configEditState =
-            context.watch<Setting18ConfigEditBloc>().state;
-
-        if (homeState.loadingStatus.isRequestSuccess) {
-          String partId = homeState.characteristicData[DataKey.partId] ?? '';
-
-          return buildButtons(
-            isShortcut: setting18configEditState.isShortcut,
-            enableSaving: setting18configEditState.enableSubmission,
-            enableExecute: partId == setting18configEditState.selectedPartId &&
-                    setting18configEditState.enableSubmission
-                ? true
-                : false,
-          );
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        String partId = state.characteristicData[DataKey.partId] ?? '';
+        if (state.loadingStatus.isRequestSuccess) {
+          if (isShortcut) {
+            return _ExecuteActionButton(
+              partId: partId,
+            );
+          } else {
+            return const _SavingActionButton();
+          }
         } else {
-          return buildButtons(
-            isShortcut: setting18configEditState.isShortcut,
-            enableSaving: setting18configEditState.enableSubmission,
-            enableExecute: false,
-          );
+          if (isShortcut) {
+            return _ExecuteActionButton(
+              partId: partId,
+              isEnable: false,
+            );
+          } else {
+            return const _SavingActionButton();
+          }
         }
+      },
+    );
+  }
+}
+
+class _ExecuteActionButton extends StatelessWidget {
+  const _ExecuteActionButton({
+    super.key,
+    required this.partId,
+    this.isEnable = true,
+  });
+
+  final String partId;
+  final bool isEnable;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ConfigEditBloc, Setting18ConfigEditState>(
+      builder: (context, state) {
+        bool isEnableExecete() {
+          return isEnable &&
+                  partId == state.selectedPartId &&
+                  state.enableSubmission
+              ? true
+              : false;
+        }
+
+        return Align(
+          alignment: Alignment.centerRight,
+          child: Wrap(
+            alignment: WrapAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 0.0,
+                      horizontal: 20.0,
+                    ),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.dialogMessageCancel,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                child: ElevatedButton(
+                  onPressed: isEnableExecete()
+                      ? () async {
+                          if (kDebugMode) {
+                            context
+                                .read<Setting18ConfigEditBloc>()
+                                .add(const ConfigSavedAndSubmitted());
+                          } else {
+                            bool? isMatch =
+                                await showConfirmInputDialog(context: context);
+
+                            if (context.mounted) {
+                              if (isMatch != null) {
+                                if (isMatch) {
+                                  context
+                                      .read<Setting18ConfigEditBloc>()
+                                      .add(const ConfigSavedAndSubmitted());
+                                }
+                              }
+                            }
+                          }
+                        }
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 0.0,
+                      horizontal: 20.0,
+                    ),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.dialogMessageExecute,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _SavingActionButton extends StatelessWidget {
+  const _SavingActionButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ConfigEditBloc, Setting18ConfigEditState>(
+      builder: (context, state) {
+        return Align(
+          alignment: Alignment.centerRight,
+          child: Wrap(
+            alignment: WrapAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 0.0,
+                      horizontal: 20.0,
+                    ),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.dialogMessageCancel,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                child: ElevatedButton(
+                  onPressed: state.enableSubmission
+                      ? () {
+                          context
+                              .read<Setting18ConfigEditBloc>()
+                              .add(const ConfigSaved());
+                        }
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 0.0,
+                      horizontal: 20.0,
+                    ),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.dialogMessageSave,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
       },
     );
   }
@@ -361,10 +406,12 @@ class _FirstChannelLoading extends StatelessWidget {
     super.key,
     required this.firstChannelLoadingFrequencyTextEditingController,
     required this.firstChannelLoadingLevelTextEditingController,
+    required this.currentDetectedSplitOption,
   });
 
   final TextEditingController firstChannelLoadingFrequencyTextEditingController;
   final TextEditingController firstChannelLoadingLevelTextEditingController;
+  final int currentDetectedSplitOption;
 
   @override
   Widget build(BuildContext context) {
@@ -383,16 +430,22 @@ class _FirstChannelLoading extends StatelessWidget {
               firstChannelLoadingFrequencyTextEditingController,
           textEditingController2: firstChannelLoadingLevelTextEditingController,
           onChanged1: (firstChannelLoadingFrequency) {
-            context.read<Setting18ConfigEditBloc>().add(
-                FirstChannelLoadingFrequencyChanged(
-                    firstChannelLoadingFrequency));
+            context
+                .read<Setting18ConfigEditBloc>()
+                .add(FirstChannelLoadingFrequencyChanged(
+                  firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+                  currentDetectedSplitOption: currentDetectedSplitOption,
+                ));
           },
           onChanged2: (firstChannelLoadingLevel) {
             context
                 .read<Setting18ConfigEditBloc>()
                 .add(FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
           },
-          errorText1: state.firstChannelLoadingFrequency.isNotValid
+          errorText1: !isValidFirstChannelLoadingFrequency(
+            currentDetectedSplitOption: currentDetectedSplitOption,
+            firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+          )
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           errorText2: state.firstChannelLoadingLevel.isNotValid

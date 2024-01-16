@@ -29,12 +29,19 @@ class ConfigSavedAndSubmitted extends Setting18ConfigEditEvent {
 }
 
 class FirstChannelLoadingFrequencyChanged extends Setting18ConfigEditEvent {
-  const FirstChannelLoadingFrequencyChanged(this.firstChannelLoadingFrequency);
+  const FirstChannelLoadingFrequencyChanged({
+    required this.firstChannelLoadingFrequency,
+    required this.currentDetectedSplitOption,
+  });
 
   final String firstChannelLoadingFrequency;
+  final int currentDetectedSplitOption;
 
   @override
-  List<Object> get props => [firstChannelLoadingFrequency];
+  List<Object> get props => [
+        firstChannelLoadingFrequency,
+        currentDetectedSplitOption,
+      ];
 }
 
 class FirstChannelLoadingLevelChanged extends Setting18ConfigEditEvent {

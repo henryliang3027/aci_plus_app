@@ -203,10 +203,11 @@ class _HomeFormState extends State<HomeForm> {
         if (state.scanStatus.isRequestFailure) {
           showFailureDialog(state.errorMassage);
         } else if (state.connectionStatus.isRequestFailure) {
-          // 當下載全部 log (download all) 時斷線, 關閉 download dialog
+          // 當下載全部 log (download all) 或 load preset 時斷線, 關閉 download dialog
           if (ModalRoute.of(context)?.isCurrent == false) {
             Navigator.of(context).pop();
           }
+
           showFailureDialog(state.errorMassage);
         } else if (state.loadingStatus.isRequestFailure) {
           showFailureDialog(state.errorMassage);

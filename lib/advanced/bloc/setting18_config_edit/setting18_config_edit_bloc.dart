@@ -4,6 +4,7 @@ import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:aci_plus_app/repositories/config_api.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
+import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -16,10 +17,8 @@ class Setting18ConfigEditBloc
   Setting18ConfigEditBloc({
     required Amp18Repository amp18Repository,
     required String selectedPartId,
-    required bool isShortcut,
   })  : _amp18Repository = amp18Repository,
         _selectedPartId = selectedPartId,
-        _isShortcut = isShortcut,
         _configApi = ConfigApi(),
         super(const Setting18ConfigEditState()) {
     on<ConfigIntitialized>(_onConfigIntitialized);
@@ -38,7 +37,6 @@ class Setting18ConfigEditBloc
   final Amp18Repository _amp18Repository;
   final String _selectedPartId;
   final ConfigApi _configApi;
-  final bool _isShortcut;
 
   Future<void> _onConfigIntitialized(
     ConfigIntitialized event,
@@ -76,7 +74,6 @@ class Setting18ConfigEditBloc
         saveStatus: SubmissionStatus.none,
         settingStatus: SubmissionStatus.none,
         selectedPartId: _selectedPartId,
-        isShortcut: _isShortcut,
         firstChannelLoadingFrequency: firstChannelLoadingFrequency,
         firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -189,18 +186,25 @@ class Setting18ConfigEditBloc
   ) {
     IntegerInput firstChannelLoadingFrequency =
         IntegerInput.dirty(event.firstChannelLoadingFrequency);
+
+    bool isValid = isValidFirstChannelLoadingFrequency(
+      currentDetectedSplitOption: event.currentDetectedSplitOption,
+      firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+    );
+
     emit(state.copyWith(
       formStatus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-      enableSubmission: _isEnabledSubmission(
-        firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-      ),
+      enableSubmission: isValid &&
+          _isEnabledSubmission(
+            firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+            firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+            lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+            lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+          ),
     ));
   }
 

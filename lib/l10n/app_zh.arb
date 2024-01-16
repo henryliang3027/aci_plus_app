@@ -94,7 +94,7 @@
     "ingressOpen": "斷開",
 
 
-    "status": "狀態",
+    "status": "設備狀態",
     "serialNumber": "序號",
     "firmwareVersion": "韌體版本",
     "attenuation": "衰減值",
