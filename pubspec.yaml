@@ -56,6 +56,7 @@ dependencies:
   geolocator: ^10.1.0
   touchable: ^1.0.2
   xml: ^6.3.0
+  qr_code_scanner: ^1.0.1
   path_drawing:
     git:
       url: https://github.com/dnfield/flutter_path_drawing.git

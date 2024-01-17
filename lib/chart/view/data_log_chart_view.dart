@@ -130,7 +130,7 @@ class _LogChartView extends StatelessWidget {
       },
       child: Scaffold(
         body: const _LogChartListView(),
-        floatingActionButton: const _MoreDataFloatingActionButton(),
+        floatingActionButton: const _DataLogFloatingActionButton(),
         bottomNavigationBar: _DynamicBottomNavigationBar(
           pageController: pageController,
           selectedIndex: 3,
@@ -182,6 +182,23 @@ class _DynamicBottomNavigationBar extends StatelessWidget {
   }
 }
 
+class _DataLogFloatingActionButton extends StatelessWidget {
+  const _DataLogFloatingActionButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.loadingStatus.isRequestSuccess) {
+          return const _MoreDataFloatingActionButton();
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
+}
+
 class _MoreDataFloatingActionButton extends StatelessWidget {
   const _MoreDataFloatingActionButton({super.key});
 
@@ -189,7 +206,10 @@ class _MoreDataFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DataLogChartBloc, DataLogChartState>(
       builder: (context, state) {
-        if (state.logRequestStatus.isRequestInProgress) {
+        if (state.logRequestStatus.isNone ||
+            state.logRequestStatus.isRequestInProgress ||
+            state.eventRequestStatus.isNone ||
+            state.eventRequestStatus.isRequestInProgress) {
           return Container();
         } else {
           return FloatingActionButton(
