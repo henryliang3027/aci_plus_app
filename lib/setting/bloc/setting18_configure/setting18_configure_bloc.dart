@@ -89,8 +89,9 @@ class Setting18ConfigureBloc
       location: location,
       coordinates: coordinates,
       splitOption: splitOption,
-      firstChannelLoadingFrequency:
-          IntegerInput.dirty(firstChannelLoadingFrequency),
+      firstChannelLoadingFrequency: firstChannelLoadingFrequency.isNotEmpty
+          ? IntegerInput.dirty(firstChannelLoadingFrequency)
+          : const IntegerInput.pure(),
       firstChannelLoadingLevel: FloatPointInput.dirty(firstChannelLoadingLevel),
       lastChannelLoadingFrequency:
           IntegerInput.dirty(lastChannelLoadingFrequency),

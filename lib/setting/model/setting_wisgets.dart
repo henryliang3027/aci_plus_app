@@ -255,7 +255,7 @@ Widget twoTextField({
                   counterText: '',
                   errorMaxLines: 2,
                   errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
-                  errorText: errorText1,
+                  errorText: editMode1 ? errorText1 : null,
                 ),
               ),
             ),
@@ -286,7 +286,7 @@ Widget twoTextField({
                   counterText: '',
                   errorMaxLines: 2,
                   errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
-                  errorText: errorText2,
+                  errorText: editMode2 ? errorText2 : null,
                 ),
               ),
             ),
@@ -318,7 +318,7 @@ Widget splitOptionGridViewButton({
             bottom: CustomStyle.sizeL,
           ),
           child: Text(
-            '${AppLocalizations.of(context)!.pilotFrequencySelect}:',
+            '${AppLocalizations.of(context)!.splitOption}:',
             style: const TextStyle(
               fontSize: CustomStyle.sizeXL,
               fontWeight: FontWeight.w500,
@@ -338,7 +338,7 @@ Widget splitOptionGridViewButton({
               padding: const EdgeInsets.all(2.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  // padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   elevation: 0.0,
                   foregroundColor: getForegroundColor(
                     context: context,
@@ -571,7 +571,7 @@ Widget thresholdAlarmParameterWidget({
                   counterText: '',
                   errorMaxLines: 2,
                   errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
-                  errorText: minValueErrorText,
+                  errorText: editMode ? minValueErrorText : null,
                 ),
               ),
             ),
@@ -601,7 +601,7 @@ Widget thresholdAlarmParameterWidget({
                   counterText: '',
                   errorMaxLines: 2,
                   errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
-                  errorText: maxValueErrorText,
+                  errorText: editMode ? maxValueErrorText : null,
                 ),
               ),
             ),

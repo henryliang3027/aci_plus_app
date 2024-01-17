@@ -602,9 +602,11 @@ class _VoltageRippleAlarmControl extends StatelessWidget {
                         errorMaxLines: 2,
                         errorStyle:
                             const TextStyle(fontSize: CustomStyle.sizeS),
-                        errorText: state.maxVoltageRipple.isNotValid
-                            ? AppLocalizations.of(context)!
-                                .textFieldErrorMessage
+                        errorText: state.editMode
+                            ? state.maxVoltageRipple.isNotValid
+                                ? AppLocalizations.of(context)!
+                                    .textFieldErrorMessage
+                                : null
                             : null,
                       ),
                     ),
