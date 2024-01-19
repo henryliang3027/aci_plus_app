@@ -1,4 +1,6 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_config_edit/setting18_config_edit_bloc.dart';
+import 'package:aci_plus_app/advanced/view/qr_code_generator_page.dart';
+import 'package:aci_plus_app/advanced/view/qr_code_scanner.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -160,6 +162,9 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
             ),
             child: const _PartName(),
           ),
+          _QRCodeCard(
+            isShortcut: widget.isShortcut,
+          ),
           Flexible(
             child: SingleChildScrollView(
               child: Padding(
@@ -210,6 +215,93 @@ class _PartName extends StatelessWidget {
             color: Theme.of(context).colorScheme.onPrimary,
           ),
         );
+      },
+    );
+  }
+}
+
+class _QRCodeCard extends StatelessWidget {
+  const _QRCodeCard({
+    super.key,
+    required this.isShortcut,
+  });
+
+  final bool isShortcut;
+
+  @override
+  Widget build(BuildContext context) {
+    Future<void> showGeneratedQRCodeDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.01,
+            ),
+            child: const QRCodeGeneratorPage(),
+          );
+        },
+      );
+    }
+
+    return BlocBuilder<Setting18ConfigEditBloc, Setting18ConfigEditState>(
+      builder: (context, state) {
+        return !isShortcut
+            ? Card(
+                // elevation: 0.0,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 14.0, horizontal: 20.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'QR Code',
+                          style: TextStyle(
+                            fontSize: CustomStyle.sizeXL,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            IconButton(
+                              iconSize: 30.0,
+                              visualDensity: const VisualDensity(
+                                  horizontal: -4.0, vertical: -4.0),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  QRViewExample.route(),
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.qr_code_scanner,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10.0,
+                            ),
+                            IconButton(
+                              iconSize: 30.0,
+                              visualDensity: const VisualDensity(
+                                  horizontal: -4.0, vertical: -4.0),
+                              onPressed: () {
+                                showGeneratedQRCodeDialog();
+                              },
+                              icon: const Icon(
+                                Icons.qr_code,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ]),
+                ),
+              )
+            : Container();
       },
     );
   }

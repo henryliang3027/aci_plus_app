@@ -10,3 +10,4 @@ NSBluetoothPeripheralUsageDescription = "ACI+ App 需要使用藍芽連線與傳
 NSLocationAlwaysAndWhenInUseUsageDescription = "ACI+ App 需要您的允許才能使用定位";
 NSLocationAlwaysUsageDescription = "ACI+ App 需要您的允許才能使用定位";
 NSLocationWhenInUseUsageDescription = "ACI+ App 需要您的允許才能使用定位";
+NSCameraUsageDescription = "ACI+ App 需要您的允許才能使用相機掃描 QR 碼";

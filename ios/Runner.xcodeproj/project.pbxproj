@@ -56,6 +56,9 @@
 		BFB496FB2A0CDA63007276D1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		BFB496FE2A0CDCDC007276D1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		BFB496FF2A0CDCDC007276D1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		BFBC1D212B5A1AEB00950C30 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
+		BFBC1D222B5A1AEB00950C30 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		BFBC1D232B5A1AEB00950C30 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CB4AFD0C30E64AC815F62677 /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EB6811479AB9579FF2281414 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -188,6 +191,7 @@
 				Base,
 				"zh-Hant",
 				es,
+				fr,
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
@@ -335,6 +339,7 @@
 				97C146FB1CF9000F007C117D /* Base */,
 				BFB496FE2A0CDCDC007276D1 /* zh-Hant */,
 				BF3846C02A833469000CB16A /* es */,
+				BFBC1D212B5A1AEB00950C30 /* fr */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -345,6 +350,7 @@
 				97C147001CF9000F007C117D /* Base */,
 				BFB496FF2A0CDCDC007276D1 /* zh-Hant */,
 				BF3846C12A83346A000CB16A /* es */,
+				BFBC1D222B5A1AEB00950C30 /* fr */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -355,6 +361,7 @@
 				BFB496F92A0CDA5F007276D1 /* en */,
 				BFB496FB2A0CDA63007276D1 /* zh-Hant */,
 				BF3846C22A83346A000CB16A /* es */,
+				BFBC1D232B5A1AEB00950C30 /* fr */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

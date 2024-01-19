@@ -10,3 +10,4 @@ NSBluetoothAlwaysUsageDescription = "ACI+ App uses bluetooth to find, connect an
 NSLocationAlwaysAndWhenInUseUsageDescription = "ACI+ App wants your consent to use location";
 NSLocationAlwaysUsageDescription = "ACI+ App wants your consent to use location";
 NSLocationWhenInUseUsageDescription = "ACI+ App wants your consent to use location";
+NSCameraUsageDescription = "ACI+ App wants camera access to scan QR codes";
