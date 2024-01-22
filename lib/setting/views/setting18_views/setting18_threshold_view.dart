@@ -758,7 +758,7 @@ class _StartFrequencyOutputLevelAlarmControl extends StatelessWidget {
         return thresholdAlarmSwitch(
           context: context,
           editMode: state.editMode,
-          title: AppLocalizations.of(context)!.startFrequencyOutputLevelStatus,
+          title: AppLocalizations.of(context)!.startFrequencyOutputLevel,
           value: state.startFrequencyOutputLevelAlarmState,
           onChanged: (bool value) {
             context
@@ -781,7 +781,7 @@ class _StopFrequencyOutputLevelAlarmControl extends StatelessWidget {
         return thresholdAlarmSwitch(
           context: context,
           editMode: state.editMode,
-          title: AppLocalizations.of(context)!.stopFrequencyOutputLevelStatus,
+          title: AppLocalizations.of(context)!.stopFrequencyOutputLevel,
           value: state.stopFrequencyOutputLevelAlarmState,
           onChanged: (bool value) {
             context
