@@ -1097,7 +1097,6 @@ class Amp18CCorNodeParser {
 
     excel.unLink('Sheet1'); // Excel 預設會自動產生 Sheet1, 所以先unlink
     excel.delete('Sheet1'); // 再刪除 Sheet1
-    excel.link('Log', log1p8GSheet);
     var fileBytes = excel.save();
 
     String timeStamp =
