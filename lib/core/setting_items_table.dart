@@ -497,7 +497,7 @@ class SettingItemTable {
       SettingControl.returnInputEqualizer5And6: false,
     },
     '5': {
-      // C-Coor TR
+      // C-Cor TR
       SettingConfiruration.location: true,
       SettingConfiruration.coordinates: true,
       SettingConfiruration.splitOptions: true,
