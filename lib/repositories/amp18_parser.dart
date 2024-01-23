@@ -1055,12 +1055,6 @@ class Amp18Parser {
   }) async {
     Excel excel = Excel.createExcel();
 
-    List<String> userInformationHeader = [
-      'Code Number',
-      'Coordinate',
-      'Location',
-    ];
-
     List<String> rfInOutHeader = [
       'Frequency (MHz)',
       'Level (dBmV)',
@@ -1070,8 +1064,9 @@ class Amp18Parser {
     Sheet rfInSheet = excel['Input Levels'];
     Sheet rfOutSheet = excel['Output Levels'];
 
-    userInformationSheet.insertRowIterables(userInformationHeader, 0);
-    userInformationSheet.insertRowIterables([code, coordinate, location], 1);
+    userInformationSheet.insertRowIterables(['Code Number', code], 0);
+    userInformationSheet.insertRowIterables(['Coordinate', coordinate], 3);
+    userInformationSheet.insertRowIterables(['Location', location], 6);
 
     rfInSheet.insertRowIterables(rfInOutHeader, 0);
     for (int i = 0; i < rfInOuts.length; i++) {
@@ -1098,7 +1093,7 @@ class Amp18Parser {
 
     String timeStamp =
         DateFormat('yyyy_MM_dd_HH_mm_ss').format(DateTime.now()).toString();
-    String filename = 'log_$timeStamp';
+    String filename = 'rf_levels_$timeStamp';
     String extension = '.xlsx';
 
     if (Platform.isIOS) {

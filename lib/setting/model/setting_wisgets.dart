@@ -630,7 +630,7 @@ Widget thresholdAlarmSwitch({
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Flexible(
-          flex: 3,
+          flex: 4,
           child: Text(
             title,
             style: const TextStyle(

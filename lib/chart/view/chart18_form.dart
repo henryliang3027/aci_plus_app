@@ -373,17 +373,6 @@ class _PopupMenu extends StatelessWidget {
                                   ));
                             }
                           }
-                          // else {
-                          //   print('received downloader has been popped');
-                          //   if (context.mounted) {
-                          //     context.read<Chart18Bloc>().add(AllDataExported(
-                          //           isSuccessful: false,
-                          //           log1p8Gs: const [],
-                          //           errorMessage: 'Failed to download logs',
-                          //           code: code,
-                          //         ));
-                          //   }
-                          // }
                         }
                       }
 
