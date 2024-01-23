@@ -844,7 +844,7 @@ class _ReturnIngressSetting1 extends StatelessWidget {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.returnIngressSetting2}:',
+          title: '${AppLocalizations.of(context)!.returnIngressSetting1}:',
           currentValue: state.returnIngressSetting1,
           onChanged: (int index) {
             context
