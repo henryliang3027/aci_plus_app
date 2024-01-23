@@ -262,7 +262,6 @@
     "dialogMessageForwardOutputEqualizer2And3Setting": "Port 2 & Port 3 下行輸出等化器設定",
     "dialogMessageForwardOutputEqualizer3And4Setting": "Port 3 & Port 4 下行輸出等化器設定",
     "dialogMessageForwardOutputEqualizer5And6Setting": "Port 5 & Port 6 下行輸出等化器設定",
-    "dialogMessageUSTGCSetting": "US TGC setting",
     "dialogMessageGPSServiceDisabled": "定位服務已關閉, 請開啟定位服務。",
     "dialogMessageGPSPermissionDenied": "無法取得定位權限, 請允許定位權限。",
     "dialogMessageAutoSettingLogIntervalFailed": "初始化記錄間隔失敗",

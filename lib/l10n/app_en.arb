@@ -264,7 +264,6 @@
     "dialogMessageForwardOutputEqualizer2And3Setting": "Port 2 & Port 3 forward output equalizer setting",
     "dialogMessageForwardOutputEqualizer3And4Setting": "Port 3 & Port 4 forward output equalizer setting",
     "dialogMessageForwardOutputEqualizer5And6Setting": "Port 5 & Port 6 forward output equalizer setting",
-    "dialogMessageUSTGCSetting": "US TGC setting",
     "dialogMessageGPSServiceDisabled": "Location services are disabled. Please enable location services.",
     "dialogMessageGPSPermissionDenied": "Location permissions are denied. Please provide permission.",
     "dialogMessageAutoSettingLogIntervalFailed": "Failed to initialize the log interval.",

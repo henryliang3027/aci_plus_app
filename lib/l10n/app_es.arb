@@ -264,7 +264,6 @@
     "dialogMessageForwardOutputEqualizer2And3Setting": "Ajuste puerto 2 & puerto 3 adelante salida ecualizador",
     "dialogMessageForwardOutputEqualizer3And4Setting": "Ajuste puerto 3 & puerto 4 adelante salida ecualizador",
     "dialogMessageForwardOutputEqualizer5And6Setting": "Ajuste puerto 5 & puerto 6 adelante salida ecualizador",
-    "dialogMessageUSTGCSetting": "US TGC setting",
     "dialogMessageGPSServiceDisabled": "Los servicios de ubicación están deshabilitados. Habilite los servicios de ubicación.",
     "dialogMessageGPSPermissionDenied": "Se deniegan los permisos de ubicación. Por favor proporcione permiso.",
     "dialogMessageAutoSettingLogIntervalFailed": "Error al inicializar el intervalo de registro.",

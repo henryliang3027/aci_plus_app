@@ -159,11 +159,7 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
           return AppLocalizations.of(context)!
               .dialogMessageForwardOutputEqualizer3And4Setting;
         }
-      }
-      // else if (item == DataKey.usTGC.name) {
-      //   return AppLocalizations.of(context)!.dialogMessageUSTGCSetting;
-      // }
-      else if (item == DataKey.splitOption.name) {
+      } else if (item == DataKey.splitOption.name) {
         return AppLocalizations.of(context)!.dialogMessageSplitOptionSetting;
       } else if (item == DataKey.pilotFrequencyMode.name) {
         return AppLocalizations.of(context)!

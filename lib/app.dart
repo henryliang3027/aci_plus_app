@@ -74,14 +74,10 @@ class _AppView extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       // locale: const Locale('en'),'
       supportedLocales: const <Locale>[
-        Locale('en'),
-        Locale('es'),
-        Locale('fr'),
-        Locale('zh'),
-        // Locale.fromSubtags(
-        //   languageCode: 'zh',
-        //   scriptCode: 'Hant',
-        // ),
+        Locale('en', 'US'),
+        Locale('es', 'ES'),
+        Locale('fr', 'FR'),
+        Locale('zh', 'TW'),
       ],
       theme: ThemeData(
         // This is the theme of your application.
@@ -102,7 +98,6 @@ class _AppView extends StatelessWidget {
           foregroundColor: Colors.white,
           backgroundColor: Colors.indigo,
         ),
-
         useMaterial3: true,
       ),
       home: BlocBuilder<HomeBloc, HomeState>(
