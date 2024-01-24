@@ -162,9 +162,9 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
             ),
             child: const _PartName(),
           ),
-          _QRCodeCard(
-            isShortcut: widget.isShortcut,
-          ),
+          // _QRCodeCard(
+          //   isShortcut: widget.isShortcut,
+          // ),
           Flexible(
             child: SingleChildScrollView(
               child: Padding(
