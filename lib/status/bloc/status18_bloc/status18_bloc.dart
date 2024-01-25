@@ -61,7 +61,9 @@ class Status18Bloc extends Bloc<Status18Event, Status18State> {
     StatusUpdated event,
     Emitter<Status18State> emit,
   ) async {
-    List<dynamic> result = await _amp18Repository.requestCommand1p8G2();
+    List<dynamic> result = await _amp18Repository.requestCommand1p8G2(
+      timeout: const Duration(seconds: 1),
+    );
 
     if (result[0]) {
       Map<DataKey, String> currentValues = result[1];

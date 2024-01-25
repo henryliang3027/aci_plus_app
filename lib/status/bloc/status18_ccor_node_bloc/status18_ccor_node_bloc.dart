@@ -63,7 +63,9 @@ class Status18CCorNodeBloc
     Emitter<Status18CCorNodeState> emit,
   ) async {
     List<dynamic> result =
-        await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeA1();
+        await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeA1(
+      timeout: const Duration(seconds: 1),
+    );
 
     if (result[0]) {
       Map<DataKey, String> currentValues = result[1];

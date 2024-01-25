@@ -173,7 +173,9 @@ class Amp18CCorNodeRepository {
     }
   }
 
-  Future<dynamic> requestCommand1p8GCCorNodeA1() async {
+  Future<dynamic> requestCommand1p8GCCorNodeA1({
+    Duration timeout = const Duration(seconds: 10),
+  }) async {
     int commandIndex = 182;
 
     print('get data from request command 1p8G0');
@@ -183,6 +185,7 @@ class Amp18CCorNodeRepository {
         commandIndex: commandIndex,
         value: _amp18CCorNodeParser
             .command18CCorNodeCollection[commandIndex - 180],
+        timeout: timeout,
       );
 
       A1P8GCCorNodeA1 a1p8gcCorNodeA1 =
@@ -258,6 +261,7 @@ class Amp18CCorNodeRepository {
         commandIndex: commandIndex,
         value: _amp18CCorNodeParser
             .command18CCorNodeCollection[commandIndex - 180],
+        timeout: const Duration(seconds: 1),
       );
 
       A1P8GAlarm a1p8gAlarm = _amp18CCorNodeParser.decodeAlarmSeverity(rawData);
