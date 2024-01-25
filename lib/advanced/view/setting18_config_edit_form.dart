@@ -121,6 +121,29 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
       return rows;
     }
 
+    Future<void> showGeneratedQRCodeDialog({
+      required String encodedData,
+    }) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.01,
+            ),
+            child: QRCodeGeneratorPage(
+              encodedData: encodedData,
+            ),
+          );
+        },
+      );
+    }
+
     return BlocListener<Setting18ConfigEditBloc, Setting18ConfigEditState>(
       listener: (context, state) async {
         if (state.settingStatus.isSubmissionInProgress) {
@@ -134,6 +157,10 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
           );
         } else if (state.saveStatus.isSubmissionSuccess) {
           showSuccessDialog(context);
+        } else if (state.encodeStaus.isRequestSuccess) {
+          showGeneratedQRCodeDialog(
+            encodedData: state.encodedData,
+          );
         }
 
         if (state.isInitialize) {
@@ -162,9 +189,9 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
             ),
             child: const _PartName(),
           ),
-          // _QRCodeCard(
-          //   isShortcut: widget.isShortcut,
-          // ),
+          _QRCodeCard(
+            isShortcut: widget.isShortcut,
+          ),
           Flexible(
             child: SingleChildScrollView(
               child: Padding(
@@ -230,25 +257,6 @@ class _QRCodeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> showGeneratedQRCodeDialog() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-
-        builder: (BuildContext context) {
-          var width = MediaQuery.of(context).size.width;
-          // var height = MediaQuery.of(context).size.height;
-
-          return Dialog(
-            insetPadding: EdgeInsets.symmetric(
-              horizontal: width * 0.01,
-            ),
-            child: const QRCodeGeneratorPage(),
-          );
-        },
-      );
-    }
-
     return BlocBuilder<Setting18ConfigEditBloc, Setting18ConfigEditState>(
       builder: (context, state) {
         return !isShortcut
@@ -272,11 +280,20 @@ class _QRCodeCard extends StatelessWidget {
                               iconSize: 30.0,
                               visualDensity: const VisualDensity(
                                   horizontal: -4.0, vertical: -4.0),
-                              onPressed: () {
+                              onPressed: () async {
                                 Navigator.push(
                                   context,
-                                  QRViewExample.route(),
-                                );
+                                  QRCodeScanner.route(),
+                                ).then((rawData) {
+                                  if (rawData != null) {
+                                    if (rawData.isNotEmpty) {
+                                      context
+                                          .read<Setting18ConfigEditBloc>()
+                                          .add(QRCodeDataScanned(
+                                              rawData: rawData));
+                                    }
+                                  }
+                                });
                               },
                               icon: const Icon(
                                 Icons.qr_code_scanner,
@@ -290,7 +307,9 @@ class _QRCodeCard extends StatelessWidget {
                               visualDensity: const VisualDensity(
                                   horizontal: -4.0, vertical: -4.0),
                               onPressed: () {
-                                showGeneratedQRCodeDialog();
+                                context
+                                    .read<Setting18ConfigEditBloc>()
+                                    .add(const QRCodeDataGenerated());
                               },
                               icon: const Icon(
                                 Icons.qr_code,

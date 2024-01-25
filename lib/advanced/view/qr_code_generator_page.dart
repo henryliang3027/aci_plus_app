@@ -5,13 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class QRCodeGeneratorPage extends StatelessWidget {
-  const QRCodeGeneratorPage({super.key});
+  const QRCodeGeneratorPage({
+    super.key,
+    required this.encodedData,
+  });
+
+  final String encodedData;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => QRCodeGeneratorBloc(),
-      child: const QRCodeGeneratorForm(),
+      child: QRCodeGeneratorForm(
+        encodedData: encodedData,
+      ),
     );
   }
 }
