@@ -46,6 +46,7 @@ class Setting18ConfigEditBloc
   ) async {
     emit(state.copyWith(
       formStatus: FormStatus.requestInProgress,
+      encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
     ));
@@ -188,6 +189,7 @@ class Setting18ConfigEditBloc
   ) {
     emit(state.copyWith(
       isInitialize: false,
+      encodeStaus: FormStatus.none,
     ));
     List<String> raws = event.rawData.split(',');
 
@@ -259,7 +261,6 @@ class Setting18ConfigEditBloc
     );
 
     emit(state.copyWith(
-      formStatus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
@@ -281,7 +282,7 @@ class Setting18ConfigEditBloc
     FloatPointInput firstChannelLoadingLevel =
         FloatPointInput.dirty(event.firstChannelLoadingLevel);
     emit(state.copyWith(
-      formStatus: FormStatus.none,
+      encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
@@ -302,7 +303,7 @@ class Setting18ConfigEditBloc
     IntegerInput lastChannelLoadingFrequency =
         IntegerInput.dirty(event.lastChannelLoadingFrequency);
     emit(state.copyWith(
-      formStatus: FormStatus.none,
+      encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
@@ -323,7 +324,7 @@ class Setting18ConfigEditBloc
     FloatPointInput lastChannelLoadingLevel =
         FloatPointInput.dirty(event.lastChannelLoadingLevel);
     emit(state.copyWith(
-      formStatus: FormStatus.none,
+      encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
@@ -342,6 +343,7 @@ class Setting18ConfigEditBloc
     Emitter<Setting18ConfigEditState> emit,
   ) async {
     emit(state.copyWith(
+      encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.submissionInProgress,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
@@ -365,6 +367,7 @@ class Setting18ConfigEditBloc
     Emitter<Setting18ConfigEditState> emit,
   ) async {
     emit(state.copyWith(
+      encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.submissionInProgress,
       isInitialize: false,

@@ -67,7 +67,7 @@ class _QrCodeTool extends StatelessWidget {
         children: [
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(context, false);
+              Navigator.pop(context);
             },
             child: Text(
               AppLocalizations.of(context)!.dialogMessageCancel,
