@@ -1,6 +1,6 @@
 part of 'setting18_config_edit_bloc.dart';
 
-sealed class Setting18ConfigEditEvent extends Equatable {
+abstract class Setting18ConfigEditEvent extends Equatable {
   const Setting18ConfigEditEvent();
 
   @override

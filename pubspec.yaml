@@ -58,6 +58,7 @@ dependencies:
   xml: ^6.3.0
   qr_code_scanner: ^1.0.1
   qr_flutter: ^4.1.0
+  screenshot: ^2.1.0
   path_drawing:
     git:
       url: https://github.com/dnfield/flutter_path_drawing.git

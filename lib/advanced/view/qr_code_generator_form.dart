@@ -2,14 +2,16 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:screenshot/screenshot.dart';
 
 class QRCodeGeneratorForm extends StatelessWidget {
-  const QRCodeGeneratorForm({
+  QRCodeGeneratorForm({
     super.key,
     required this.encodedData,
   });
 
   final String encodedData;
+  final ScreenshotController screenshotController = ScreenshotController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +22,14 @@ class QRCodeGeneratorForm extends StatelessWidget {
         children: [
           _QRCodeViewer(
             encodedData: encodedData,
+            screenshotController: screenshotController,
           ),
           const SizedBox(
             height: 28,
           ),
-          const _QrCodeTool(),
+          _QrCodeTool(
+            screenshotController: screenshotController,
+          ),
         ],
       ),
     );
@@ -32,31 +37,43 @@ class QRCodeGeneratorForm extends StatelessWidget {
 }
 
 class _QRCodeViewer extends StatelessWidget {
-  const _QRCodeViewer({
+  _QRCodeViewer({
     super.key,
     required this.encodedData,
+    required this.screenshotController,
   });
 
   final String encodedData;
+  final ScreenshotController screenshotController;
 
   @override
   Widget build(BuildContext context) {
-    return QrImageView(
-      data: encodedData,
-      version: QrVersions.auto,
-      errorCorrectionLevel: QrErrorCorrectLevel.H,
-      size: 360,
-      gapless: false,
-      embeddedImage: const AssetImage('assets/qr_logo.png'),
-      embeddedImageStyle: const QrEmbeddedImageStyle(
-        size: Size(50, 50),
+    // String test = [
+    //   for (int i = 0; i < 2953; i++) ...['1']
+    // ].join();
+
+    // print(test.length);
+
+    return Screenshot(
+      controller: screenshotController,
+      child: QrImageView(
+        data: encodedData,
+        version: QrVersions.auto,
+        errorCorrectionLevel: QrErrorCorrectLevel.L,
+        size: 360,
+        gapless: false,
       ),
     );
   }
 }
 
 class _QrCodeTool extends StatelessWidget {
-  const _QrCodeTool({super.key});
+  const _QrCodeTool({
+    super.key,
+    required this.screenshotController,
+  });
+
+  final ScreenshotController screenshotController;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +95,7 @@ class _QrCodeTool extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(context, false);
+              // screenshotController
             },
             child: Text(
               AppLocalizations.of(context)!.share,
