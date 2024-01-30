@@ -1,8 +1,12 @@
-import 'package:aci_plus_app/core/custom_style.dart';
+import 'dart:ui' as ui;
+import 'package:aci_plus_app/advanced/bloc/qr_code_generator/qr_code_generator_bloc.dart';
+import 'package:aci_plus_app/core/form_status.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 
 class QRCodeGeneratorForm extends StatelessWidget {
   QRCodeGeneratorForm({
@@ -11,26 +15,41 @@ class QRCodeGeneratorForm extends StatelessWidget {
   });
 
   final String encodedData;
-  final ScreenshotController screenshotController = ScreenshotController();
+  final GlobalKey globalKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(14.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _QRCodeViewer(
-            encodedData: encodedData,
-            screenshotController: screenshotController,
-          ),
-          const SizedBox(
-            height: 28,
-          ),
-          _QrCodeTool(
-            screenshotController: screenshotController,
-          ),
-        ],
+    return BlocListener<QRCodeGeneratorBloc, QRCodeGeneratorState>(
+      listener: (context, state) {
+        if (state.imageSaveStatus.isRequestSuccess) {
+          double width = MediaQuery.of(context).size.width;
+          double height = MediaQuery.of(context).size.height;
+          Share.shareXFiles(
+            [XFile(state.imageFilePath)],
+            subject: 'QR Code',
+            text: 'QR Code',
+            sharePositionOrigin:
+                Rect.fromLTWH(0.0, height / 2, width, height / 2),
+          );
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(14.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _QRCodeViewer(
+              encodedData: encodedData,
+              globalKey: globalKey,
+            ),
+            const SizedBox(
+              height: 28,
+            ),
+            _QrCodeTool(
+              globalKey: globalKey,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -40,11 +59,11 @@ class _QRCodeViewer extends StatelessWidget {
   _QRCodeViewer({
     super.key,
     required this.encodedData,
-    required this.screenshotController,
+    required this.globalKey,
   });
 
   final String encodedData;
-  final ScreenshotController screenshotController;
+  final GlobalKey globalKey;
 
   @override
   Widget build(BuildContext context) {
@@ -54,14 +73,19 @@ class _QRCodeViewer extends StatelessWidget {
 
     // print(test.length);
 
-    return Screenshot(
-      controller: screenshotController,
+    return RepaintBoundary(
+      key: globalKey,
       child: QrImageView(
         data: encodedData,
         version: QrVersions.auto,
         errorCorrectionLevel: QrErrorCorrectLevel.L,
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
         size: 360,
         gapless: false,
+        embeddedImage: const AssetImage('assets/qr_logo.png'),
+        embeddedImageStyle: const QrEmbeddedImageStyle(
+          size: Size(50, 50),
+        ),
       ),
     );
   }
@@ -70,10 +94,10 @@ class _QRCodeViewer extends StatelessWidget {
 class _QrCodeTool extends StatelessWidget {
   const _QrCodeTool({
     super.key,
-    required this.screenshotController,
+    required this.globalKey,
   });
 
-  final ScreenshotController screenshotController;
+  final GlobalKey globalKey;
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +118,18 @@ class _QrCodeTool extends StatelessWidget {
             width: 20.0,
           ),
           ElevatedButton(
-            onPressed: () {
-              // screenshotController
+            onPressed: () async {
+              final RenderRepaintBoundary boundary = globalKey.currentContext!
+                  .findRenderObject() as RenderRepaintBoundary;
+              final ui.Image image = await boundary.toImage();
+
+              image.toByteData(format: ui.ImageByteFormat.png).then((byteData) {
+                if (byteData != null) {
+                  context
+                      .read<QRCodeGeneratorBloc>()
+                      .add(QRCodeSaved(byteData));
+                }
+              });
             },
             child: Text(
               AppLocalizations.of(context)!.share,

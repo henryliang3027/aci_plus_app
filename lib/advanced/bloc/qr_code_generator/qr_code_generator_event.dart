@@ -7,11 +7,11 @@ abstract class QRCodeGeneratorEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class QRCodeShared extends QRCodeGeneratorEvent {
-  const QRCodeShared(this.rawImage);
+class QRCodeSaved extends QRCodeGeneratorEvent {
+  const QRCodeSaved(this.byteData);
 
-  final Uint8List rawImage;
+  final ByteData byteData;
 
   @override
-  List<Object> get props => [rawImage];
+  List<Object> get props => [byteData];
 }

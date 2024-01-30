@@ -50,7 +50,7 @@ dependencies:
   excel: ^2.0.1
   path_provider: ^2.0.15
   open_filex: ^4.3.1
-  share_plus: ^7.0.2
+  share_plus: ^7.0.0
   shared_preferences: ^2.2.0 # for persist two pilotCodes
   device_info_plus: ^9.0.3
   geolocator: ^10.1.0
@@ -58,7 +58,6 @@ dependencies:
   xml: ^6.3.0
   qr_code_scanner: ^1.0.1
   qr_flutter: ^4.1.0
-  screenshot: ^2.1.0
   path_drawing:
     git:
       url: https://github.com/dnfield/flutter_path_drawing.git
