@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_bloc.dart';
+import 'package:aci_plus_app/advanced/view/edit_items_form.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -150,13 +151,21 @@ class _ConfigListView extends StatelessWidget {
       required List<String> partIds,
     }) {
       return SingleChildScrollView(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          ...buildMOTOConfigListView(partIds: partIds.sublist(0, 2)),
-          const SizedBox(
-            height: 20,
-          ),
-          ...buildCCorConfigListView(partIds: partIds.sublist(2)),
-        ]),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, EditItemsForm.route());
+                },
+                child: Icon(Icons.abc)),
+            ...buildMOTOConfigListView(partIds: partIds.sublist(0, 2)),
+            const SizedBox(
+              height: 20,
+            ),
+            ...buildCCorConfigListView(partIds: partIds.sublist(2)),
+          ],
+        ),
       );
     }
 
