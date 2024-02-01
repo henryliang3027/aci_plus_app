@@ -17,10 +17,13 @@ class Setting18ConfigEditBloc
   Setting18ConfigEditBloc({
     required Amp18Repository amp18Repository,
     required String selectedPartId,
+    required bool isShortcut,
   })  : _amp18Repository = amp18Repository,
         _selectedPartId = selectedPartId,
         _configApi = ConfigApi(),
-        super(const Setting18ConfigEditState()) {
+        super(Setting18ConfigEditState(
+          isShortcut: isShortcut,
+        )) {
     on<ConfigIntitialized>(_onConfigIntitialized);
     on<ConfigSaved>(_onConfigSaved);
     on<ConfigSavedAndSubmitted>(_onConfigSavedAndSubmitted);
@@ -160,23 +163,43 @@ class Setting18ConfigEditBloc
         // 如果 config 不存在而且 partId != _selectedPartId,
         // 則初始化為空值
 
+        String initFirstChannelLoadingFrequency = '258';
+        String initFirstChannelLoadingLevel = '34.0';
+        String initLastChannelLoadingFrequency = '1794';
+        String initLastChannelLoadingLevel = '51.1';
+
+        IntegerInput firstChannelLoadingFrequency =
+            IntegerInput.dirty(initFirstChannelLoadingFrequency);
+        FloatPointInput firstChannelLoadingLevel =
+            FloatPointInput.dirty(initFirstChannelLoadingLevel);
+        IntegerInput lastChannelLoadingFrequency =
+            IntegerInput.dirty(initLastChannelLoadingFrequency);
+        FloatPointInput lastChannelLoadingLevel =
+            FloatPointInput.dirty(initLastChannelLoadingLevel);
+
         emit(state.copyWith(
           formStatus: FormStatus.requestSuccess,
           saveStatus: SubmissionStatus.none,
           settingStatus: SubmissionStatus.none,
           selectedPartId: _selectedPartId,
+          firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+          firstChannelLoadingLevel: firstChannelLoadingLevel,
+          lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+          lastChannelLoadingLevel: lastChannelLoadingLevel,
           isInitialize: true,
           initialValues: {
-            DataKey.firstChannelLoadingFrequency: '',
-            DataKey.firstChannelLoadingLevel: '',
-            DataKey.lastChannelLoadingFrequency: '',
-            DataKey.lastChannelLoadingLevel: '',
+            DataKey.firstChannelLoadingFrequency:
+                initFirstChannelLoadingFrequency,
+            DataKey.firstChannelLoadingLevel: initFirstChannelLoadingLevel,
+            DataKey.lastChannelLoadingFrequency:
+                initLastChannelLoadingFrequency,
+            DataKey.lastChannelLoadingLevel: initLastChannelLoadingLevel,
           },
           enableSubmission: _isEnabledSubmission(
-            firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-            firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-            lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-            lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+            firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+            firstChannelLoadingLevel: firstChannelLoadingLevel,
+            lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+            lastChannelLoadingLevel: lastChannelLoadingLevel,
           ),
         ));
       }
