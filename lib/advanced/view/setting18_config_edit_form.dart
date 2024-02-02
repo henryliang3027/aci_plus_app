@@ -325,41 +325,6 @@ class _QRCodeCard extends StatelessWidget {
   }
 }
 
-class _ActionTool extends StatelessWidget {
-  const _ActionTool({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        String partId = state.characteristicData[DataKey.partId] ?? '';
-        bool isShortcut =
-            context.read<Setting18ConfigEditBloc>().state.isShortcut;
-        if (state.loadingStatus.isRequestSuccess) {
-          if (isShortcut) {
-            return _ExecuteActionButton(
-              partId: partId,
-            );
-          } else {
-            return const _SavingActionButton();
-          }
-        } else {
-          if (isShortcut) {
-            return _ExecuteActionButton(
-              partId: partId,
-              isEnable: false,
-            );
-          } else {
-            return const _SavingActionButton();
-          }
-        }
-      },
-    );
-  }
-}
-
 class _ActionButton extends StatelessWidget {
   const _ActionButton({
     super.key,
@@ -664,8 +629,10 @@ class _FirstChannelLoading extends StatelessWidget {
         return twoTextField(
           context: context,
           title: '${AppLocalizations.of(context)!.startFrequency}:',
-          editMode1: state.isShortcut ? false : true,
-          editMode2: state.isShortcut ? false : true,
+          editMode1: true,
+          editMode2: true,
+          reaOnly1: state.isShortcut ? true : false,
+          reaOnly2: state.isShortcut ? true : false,
           textEditingControllerName1:
               'setting18Form_firstChannelLoadingFrequencyInput_textField',
           textEditingControllerName2:
@@ -718,8 +685,10 @@ class _LastChannelLoading extends StatelessWidget {
         return twoTextField(
           context: context,
           title: '${AppLocalizations.of(context)!.stopFrequency}:',
-          editMode1: state.isShortcut ? false : true,
-          editMode2: state.isShortcut ? false : true,
+          editMode1: true,
+          editMode2: true,
+          reaOnly1: state.isShortcut ? true : false,
+          reaOnly2: state.isShortcut ? true : false,
           textEditingControllerName1:
               'setting18Form_lastChannelLoadingFrequencyInput_textField',
           textEditingControllerName2:
