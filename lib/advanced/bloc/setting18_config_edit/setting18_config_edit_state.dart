@@ -12,6 +12,7 @@ class Setting18ConfigEditState extends Equatable {
     this.lastChannelLoadingFrequency = const IntegerInput.pure(),
     this.lastChannelLoadingLevel = const FloatPointInput.pure(),
     this.encodedData = '',
+    this.isShortcut = false,
     this.isInitialize = false,
     this.initialValues = const {},
     this.settingResult = const [],
@@ -29,6 +30,7 @@ class Setting18ConfigEditState extends Equatable {
   final IntegerInput lastChannelLoadingFrequency;
   final FloatPointInput lastChannelLoadingLevel;
   final String encodedData;
+  final bool isShortcut;
   final bool isInitialize;
   final Map<DataKey, String> initialValues;
   final List<String> settingResult;
@@ -45,6 +47,7 @@ class Setting18ConfigEditState extends Equatable {
     IntegerInput? lastChannelLoadingFrequency,
     FloatPointInput? lastChannelLoadingLevel,
     String? encodedData,
+    bool? isShortcut,
     bool? isInitialize,
     Map<DataKey, String>? initialValues,
     List<String>? settingResult,
@@ -65,6 +68,7 @@ class Setting18ConfigEditState extends Equatable {
       lastChannelLoadingLevel:
           lastChannelLoadingLevel ?? this.lastChannelLoadingLevel,
       encodedData: encodedData ?? this.encodedData,
+      isShortcut: isShortcut ?? this.isShortcut,
       isInitialize: isInitialize ?? this.isInitialize,
       initialValues: initialValues ?? this.initialValues,
       settingResult: settingResult ?? this.settingResult,
@@ -84,6 +88,7 @@ class Setting18ConfigEditState extends Equatable {
         lastChannelLoadingFrequency,
         lastChannelLoadingLevel,
         encodedData,
+        isShortcut,
         isInitialize,
         initialValues,
         settingResult,

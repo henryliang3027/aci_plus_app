@@ -17,10 +17,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class Setting18ConfigEditForm extends StatefulWidget {
   const Setting18ConfigEditForm({
     super.key,
-    required this.isShortcut,
   });
-
-  final bool isShortcut;
 
   @override
   State<Setting18ConfigEditForm> createState() =>
@@ -51,6 +48,7 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
     String currentDetectedSplitOption =
         homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
     int intCurrentDetectedSplitOption = int.parse(currentDetectedSplitOption);
+    String partId = homeState.characteristicData[DataKey.partId] ?? '';
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
@@ -214,8 +212,9 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
                     const SizedBox(
                       height: 20,
                     ),
-                    _ActionTool(
-                      isShortcut: widget.isShortcut,
+                    // const _ActionTool(),
+                    _ActionButton(
+                      partId: partId,
                     ),
                   ],
                 ),
@@ -326,37 +325,136 @@ class _QRCodeCard extends StatelessWidget {
   }
 }
 
-class _ActionTool extends StatelessWidget {
-  const _ActionTool({
+class _ActionButton extends StatelessWidget {
+  const _ActionButton({
     super.key,
-    required this.isShortcut,
+    required this.partId,
   });
 
-  final bool isShortcut;
+  final String partId;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
+    Widget getCancelButton() {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6.0),
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(
+              vertical: 0.0,
+              horizontal: 20.0,
+            ),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Text(
+            AppLocalizations.of(context)!.dialogMessageCancel,
+          ),
+        ),
+      );
+    }
+
+    Widget getSavingButton({
+      required bool enableSubmission,
+    }) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6.0),
+        child: ElevatedButton(
+          onPressed: enableSubmission
+              ? () {
+                  context
+                      .read<Setting18ConfigEditBloc>()
+                      .add(const ConfigSaved());
+                }
+              : null,
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(
+              vertical: 0.0,
+              horizontal: 20.0,
+            ),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Text(
+            AppLocalizations.of(context)!.dialogMessageSave,
+          ),
+        ),
+      );
+    }
+
+    bool isEnableExecete({
+      required String selectedPartId,
+      required bool enableSubmission,
+    }) {
+      return partId == selectedPartId && enableSubmission ? true : false;
+    }
+
+    Widget getExecuteButton({
+      required String selectedPartId,
+      required bool enableSubmission,
+    }) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6.0),
+        child: ElevatedButton(
+          onPressed: isEnableExecete(
+            selectedPartId: selectedPartId,
+            enableSubmission: enableSubmission,
+          )
+              ? () async {
+                  if (kDebugMode) {
+                    context
+                        .read<Setting18ConfigEditBloc>()
+                        .add(const ConfigSavedAndSubmitted());
+                  } else {
+                    bool? isMatch =
+                        await showConfirmInputDialog(context: context);
+
+                    if (context.mounted) {
+                      if (isMatch != null) {
+                        if (isMatch) {
+                          context
+                              .read<Setting18ConfigEditBloc>()
+                              .add(const ConfigSavedAndSubmitted());
+                        }
+                      }
+                    }
+                  }
+                }
+              : null,
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(
+              vertical: 0.0,
+              horizontal: 20.0,
+            ),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Text(
+            AppLocalizations.of(context)!.dialogMessageExecute,
+          ),
+        ),
+      );
+    }
+
+    return BlocBuilder<Setting18ConfigEditBloc, Setting18ConfigEditState>(
       builder: (context, state) {
-        String partId = state.characteristicData[DataKey.partId] ?? '';
-        if (state.loadingStatus.isRequestSuccess) {
-          if (isShortcut) {
-            return _ExecuteActionButton(
-              partId: partId,
-            );
-          } else {
-            return const _SavingActionButton();
-          }
-        } else {
-          if (isShortcut) {
-            return _ExecuteActionButton(
-              partId: partId,
-              isEnable: false,
-            );
-          } else {
-            return const _SavingActionButton();
-          }
-        }
+        return Align(
+          alignment: Alignment.centerRight,
+          child: Wrap(
+            alignment: WrapAlignment.end,
+            children: [
+              getCancelButton(),
+              state.isShortcut
+                  ? getExecuteButton(
+                      selectedPartId: state.selectedPartId,
+                      enableSubmission: state.enableSubmission,
+                    )
+                  : getSavingButton(
+                      enableSubmission: state.enableSubmission,
+                    ),
+            ],
+          ),
+        );
       },
     );
   }
@@ -533,6 +631,8 @@ class _FirstChannelLoading extends StatelessWidget {
           title: '${AppLocalizations.of(context)!.startFrequency}:',
           editMode1: true,
           editMode2: true,
+          reaOnly1: state.isShortcut ? true : false,
+          reaOnly2: state.isShortcut ? true : false,
           textEditingControllerName1:
               'setting18Form_firstChannelLoadingFrequencyInput_textField',
           textEditingControllerName2:
@@ -587,6 +687,8 @@ class _LastChannelLoading extends StatelessWidget {
           title: '${AppLocalizations.of(context)!.stopFrequency}:',
           editMode1: true,
           editMode2: true,
+          reaOnly1: state.isShortcut ? true : false,
+          reaOnly2: state.isShortcut ? true : false,
           textEditingControllerName1:
               'setting18Form_lastChannelLoadingFrequencyInput_textField',
           textEditingControllerName2:

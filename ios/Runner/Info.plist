@@ -38,6 +38,8 @@
 	<string>ACI+ App wants your consent to use location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>ACI+ App wants your consent to use location</string>
+	<key>NSCameraUsageDescription</key>
+	<string>ACI+ App wants camera access to scan QR codes</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
