@@ -27,8 +27,8 @@ class Setting18ConfigEditBloc
     on<ConfigIntitialized>(_onConfigIntitialized);
     on<ConfigSaved>(_onConfigSaved);
     on<ConfigSavedAndSubmitted>(_onConfigSavedAndSubmitted);
-    on<QRCodeDataScanned>(_onQRCodeDataScanned);
-    on<QRCodeDataGenerated>(_onQRCodeDataGenerated);
+    // on<QRCodeDataScanned>(_onQRCodeDataScanned);
+    // on<QRCodeDataGenerated>(_onQRCodeDataGenerated);
     on<FirstChannelLoadingFrequencyChanged>(
         _onFirstChannelLoadingFrequencyChanged);
     on<FirstChannelLoadingLevelChanged>(_onFirstChannelLoadingLevelChanged);
@@ -49,7 +49,7 @@ class Setting18ConfigEditBloc
   ) async {
     emit(state.copyWith(
       formStatus: FormStatus.requestInProgress,
-      encodeStaus: FormStatus.none,
+      // encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
     ));
@@ -206,70 +206,70 @@ class Setting18ConfigEditBloc
     }
   }
 
-  void _onQRCodeDataScanned(
-    QRCodeDataScanned event,
-    Emitter<Setting18ConfigEditState> emit,
-  ) {
-    emit(state.copyWith(
-      isInitialize: false,
-      encodeStaus: FormStatus.none,
-    ));
-    List<String> raws = event.rawData.split(',');
+  // void _onQRCodeDataScanned(
+  //   QRCodeDataScanned event,
+  //   Emitter<Setting18ConfigEditState> emit,
+  // ) {
+  //   emit(state.copyWith(
+  //     isInitialize: false,
+  //     encodeStaus: FormStatus.none,
+  //   ));
+  //   List<String> raws = event.rawData.split(',');
 
-    if (raws.length == 4) {
-      IntegerInput firstChannelLoadingFrequency = raws[0].isNotEmpty
-          ? IntegerInput.dirty(raws[0])
-          : const IntegerInput.pure();
-      FloatPointInput firstChannelLoadingLevel = raws[1].isNotEmpty
-          ? FloatPointInput.dirty(raws[1])
-          : const FloatPointInput.pure();
-      IntegerInput lastChannelLoadingFrequency = raws[2].isNotEmpty
-          ? IntegerInput.dirty(raws[2])
-          : const IntegerInput.pure();
-      FloatPointInput lastChannelLoadingLevel = raws[3].isNotEmpty
-          ? FloatPointInput.dirty(raws[3])
-          : const FloatPointInput.pure();
+  //   if (raws.length == 4) {
+  //     IntegerInput firstChannelLoadingFrequency = raws[0].isNotEmpty
+  //         ? IntegerInput.dirty(raws[0])
+  //         : const IntegerInput.pure();
+  //     FloatPointInput firstChannelLoadingLevel = raws[1].isNotEmpty
+  //         ? FloatPointInput.dirty(raws[1])
+  //         : const FloatPointInput.pure();
+  //     IntegerInput lastChannelLoadingFrequency = raws[2].isNotEmpty
+  //         ? IntegerInput.dirty(raws[2])
+  //         : const IntegerInput.pure();
+  //     FloatPointInput lastChannelLoadingLevel = raws[3].isNotEmpty
+  //         ? FloatPointInput.dirty(raws[3])
+  //         : const FloatPointInput.pure();
 
-      emit(
-        state.copyWith(
-          firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-          firstChannelLoadingLevel: firstChannelLoadingLevel,
-          lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-          lastChannelLoadingLevel: lastChannelLoadingLevel,
-          isInitialize: true,
-          enableSubmission: _isEnabledSubmission(
-            firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-            firstChannelLoadingLevel: firstChannelLoadingLevel,
-            lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-            lastChannelLoadingLevel: lastChannelLoadingLevel,
-          ),
-        ),
-      );
-    }
-  }
+  //     emit(
+  //       state.copyWith(
+  //         firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+  //         firstChannelLoadingLevel: firstChannelLoadingLevel,
+  //         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+  //         lastChannelLoadingLevel: lastChannelLoadingLevel,
+  //         isInitialize: true,
+  //         enableSubmission: _isEnabledSubmission(
+  //           firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+  //           firstChannelLoadingLevel: firstChannelLoadingLevel,
+  //           lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+  //           lastChannelLoadingLevel: lastChannelLoadingLevel,
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
 
-  void _onQRCodeDataGenerated(
-    QRCodeDataGenerated event,
-    Emitter<Setting18ConfigEditState> emit,
-  ) {
-    emit(state.copyWith(
-      encodeStaus: FormStatus.requestInProgress,
-    ));
+  // void _onQRCodeDataGenerated(
+  //   QRCodeDataGenerated event,
+  //   Emitter<Setting18ConfigEditState> emit,
+  // ) {
+  //   emit(state.copyWith(
+  //     encodeStaus: FormStatus.requestInProgress,
+  //   ));
 
-    StringBuffer stringBuffer = StringBuffer();
+  //   StringBuffer stringBuffer = StringBuffer();
 
-    stringBuffer.write('${state.firstChannelLoadingFrequency.value},');
-    stringBuffer.write('${state.firstChannelLoadingLevel.value},');
-    stringBuffer.write('${state.lastChannelLoadingFrequency.value},');
-    stringBuffer.write(state.lastChannelLoadingLevel.value);
+  //   stringBuffer.write('${state.firstChannelLoadingFrequency.value},');
+  //   stringBuffer.write('${state.firstChannelLoadingLevel.value},');
+  //   stringBuffer.write('${state.lastChannelLoadingFrequency.value},');
+  //   stringBuffer.write(state.lastChannelLoadingLevel.value);
 
-    String encodedData = stringBuffer.toString();
+  //   String encodedData = stringBuffer.toString();
 
-    emit(state.copyWith(
-      encodeStaus: FormStatus.requestSuccess,
-      encodedData: encodedData,
-    ));
-  }
+  //   emit(state.copyWith(
+  //     encodeStaus: FormStatus.requestSuccess,
+  //     encodedData: encodedData,
+  //   ));
+  // }
 
   void _onFirstChannelLoadingFrequencyChanged(
     FirstChannelLoadingFrequencyChanged event,
@@ -305,7 +305,7 @@ class Setting18ConfigEditBloc
     FloatPointInput firstChannelLoadingLevel =
         FloatPointInput.dirty(event.firstChannelLoadingLevel);
     emit(state.copyWith(
-      encodeStaus: FormStatus.none,
+      // encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
@@ -326,7 +326,7 @@ class Setting18ConfigEditBloc
     IntegerInput lastChannelLoadingFrequency =
         IntegerInput.dirty(event.lastChannelLoadingFrequency);
     emit(state.copyWith(
-      encodeStaus: FormStatus.none,
+      // encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
@@ -347,7 +347,7 @@ class Setting18ConfigEditBloc
     FloatPointInput lastChannelLoadingLevel =
         FloatPointInput.dirty(event.lastChannelLoadingLevel);
     emit(state.copyWith(
-      encodeStaus: FormStatus.none,
+      // encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
@@ -366,7 +366,7 @@ class Setting18ConfigEditBloc
     Emitter<Setting18ConfigEditState> emit,
   ) async {
     emit(state.copyWith(
-      encodeStaus: FormStatus.none,
+      // encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.submissionInProgress,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
@@ -390,7 +390,7 @@ class Setting18ConfigEditBloc
     Emitter<Setting18ConfigEditState> emit,
   ) async {
     emit(state.copyWith(
-      encodeStaus: FormStatus.none,
+      // encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.submissionInProgress,
       isInitialize: false,

@@ -7,6 +7,11 @@ sealed class Setting18ConfigEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class ConfigsInitialized extends Setting18ConfigEvent {
-  const ConfigsInitialized();
+class QRDataGenerated extends Setting18ConfigEvent {
+  const QRDataGenerated(this.selectedPartId);
+
+  final String selectedPartId;
+
+  @override
+  List<Object> get props => [];
 }

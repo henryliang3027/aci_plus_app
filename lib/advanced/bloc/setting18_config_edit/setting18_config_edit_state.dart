@@ -3,7 +3,7 @@ part of 'setting18_config_edit_bloc.dart';
 class Setting18ConfigEditState extends Equatable {
   const Setting18ConfigEditState({
     this.formStatus = FormStatus.none,
-    this.encodeStaus = FormStatus.none,
+    // this.encodeStaus = FormStatus.none,
     this.saveStatus = SubmissionStatus.none,
     this.settingStatus = SubmissionStatus.none,
     this.selectedPartId = '',
@@ -11,7 +11,7 @@ class Setting18ConfigEditState extends Equatable {
     this.firstChannelLoadingLevel = const FloatPointInput.pure(),
     this.lastChannelLoadingFrequency = const IntegerInput.pure(),
     this.lastChannelLoadingLevel = const FloatPointInput.pure(),
-    this.encodedData = '',
+    // this.encodedData = '',
     this.isShortcut = false,
     this.isInitialize = false,
     this.initialValues = const {},
@@ -20,7 +20,7 @@ class Setting18ConfigEditState extends Equatable {
   });
 
   final FormStatus formStatus;
-  final FormStatus encodeStaus;
+  // final FormStatus encodeStaus;
   final SubmissionStatus saveStatus;
   final SubmissionStatus settingStatus;
 
@@ -29,7 +29,7 @@ class Setting18ConfigEditState extends Equatable {
   final FloatPointInput firstChannelLoadingLevel;
   final IntegerInput lastChannelLoadingFrequency;
   final FloatPointInput lastChannelLoadingLevel;
-  final String encodedData;
+  // final String encodedData;
   final bool isShortcut;
   final bool isInitialize;
   final Map<DataKey, String> initialValues;
@@ -38,7 +38,7 @@ class Setting18ConfigEditState extends Equatable {
 
   Setting18ConfigEditState copyWith({
     FormStatus? formStatus,
-    FormStatus? encodeStaus,
+    // FormStatus? encodeStaus,
     SubmissionStatus? saveStatus,
     SubmissionStatus? settingStatus,
     String? selectedPartId,
@@ -46,7 +46,7 @@ class Setting18ConfigEditState extends Equatable {
     FloatPointInput? firstChannelLoadingLevel,
     IntegerInput? lastChannelLoadingFrequency,
     FloatPointInput? lastChannelLoadingLevel,
-    String? encodedData,
+    // String? encodedData,
     bool? isShortcut,
     bool? isInitialize,
     Map<DataKey, String>? initialValues,
@@ -55,7 +55,7 @@ class Setting18ConfigEditState extends Equatable {
   }) {
     return Setting18ConfigEditState(
       formStatus: formStatus ?? this.formStatus,
-      encodeStaus: encodeStaus ?? this.encodeStaus,
+      // encodeStaus: encodeStaus ?? this.encodeStaus,
       saveStatus: saveStatus ?? this.saveStatus,
       settingStatus: settingStatus ?? this.settingStatus,
       selectedPartId: selectedPartId ?? this.selectedPartId,
@@ -67,7 +67,7 @@ class Setting18ConfigEditState extends Equatable {
           lastChannelLoadingFrequency ?? this.lastChannelLoadingFrequency,
       lastChannelLoadingLevel:
           lastChannelLoadingLevel ?? this.lastChannelLoadingLevel,
-      encodedData: encodedData ?? this.encodedData,
+      // encodedData: encodedData ?? this.encodedData,
       isShortcut: isShortcut ?? this.isShortcut,
       isInitialize: isInitialize ?? this.isInitialize,
       initialValues: initialValues ?? this.initialValues,
@@ -79,7 +79,7 @@ class Setting18ConfigEditState extends Equatable {
   @override
   List<Object> get props => [
         formStatus,
-        encodeStaus,
+        // encodeStaus,
         saveStatus,
         settingStatus,
         selectedPartId,
@@ -87,7 +87,7 @@ class Setting18ConfigEditState extends Equatable {
         firstChannelLoadingLevel,
         lastChannelLoadingFrequency,
         lastChannelLoadingLevel,
-        encodedData,
+        // encodedData,
         isShortcut,
         isInitialize,
         initialValues,

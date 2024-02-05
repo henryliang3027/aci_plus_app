@@ -34,7 +34,7 @@ class QRCodeGeneratorForm extends StatelessWidget {
         }
       },
       child: Padding(
-        padding: const EdgeInsets.all(14.0),
+        padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 14.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

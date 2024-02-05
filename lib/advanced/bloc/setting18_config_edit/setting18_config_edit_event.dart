@@ -28,23 +28,23 @@ class ConfigSavedAndSubmitted extends Setting18ConfigEditEvent {
   List<Object> get props => [];
 }
 
-class QRCodeDataScanned extends Setting18ConfigEditEvent {
-  const QRCodeDataScanned({required this.rawData});
+// class QRCodeDataScanned extends Setting18ConfigEditEvent {
+//   const QRCodeDataScanned({required this.rawData});
 
-  final String rawData;
+//   final String rawData;
 
-  @override
-  List<Object> get props => [
-        rawData,
-      ];
-}
+//   @override
+//   List<Object> get props => [
+//         rawData,
+//       ];
+// }
 
-class QRCodeDataGenerated extends Setting18ConfigEditEvent {
-  const QRCodeDataGenerated();
+// class QRCodeDataGenerated extends Setting18ConfigEditEvent {
+//   const QRCodeDataGenerated();
 
-  @override
-  List<Object> get props => [];
-}
+//   @override
+//   List<Object> get props => [];
+// }
 
 class FirstChannelLoadingFrequencyChanged extends Setting18ConfigEditEvent {
   const FirstChannelLoadingFrequencyChanged({

@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_bloc.dart';
+import 'package:aci_plus_app/advanced/view/qr_code_generator_page.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -12,8 +13,35 @@ class Setting18ConfigForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> showGeneratedQRCodeDialog({
+      required String encodedData,
+    }) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.01,
+            ),
+            child: QRCodeGeneratorPage(
+              encodedData: encodedData,
+            ),
+          );
+        },
+      );
+    }
+
     return BlocListener<Setting18ConfigBloc, Setting18ConfigState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state.encodeStaus == FormStatus.requestSuccess) {
+          showGeneratedQRCodeDialog(encodedData: state.encodedData);
+        }
+      },
       child: const _ConfigListView(),
     );
   }
@@ -65,36 +93,57 @@ class _ConfigListView extends StatelessWidget {
             //     : const Color.fromARGB(255, 222, 227, 255),
           ),
           height: 100,
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(10),
-              onTap: () {
-                showModuleSettingDialog(selectedPartId: partId);
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 26.0,
-                    ),
-                    child: Text(
-                      partIdMap[partId]!,
-                      style: const TextStyle(
-                        fontSize: CustomStyle.size36,
-                      ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 26.0,
+                  ),
+                  child: Text(
+                    partIdMap[partId]!,
+                    style: const TextStyle(
+                      fontSize: CustomStyle.size36,
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 26.0,
-                    ),
-                    child: Icon(Icons.edit),
-                  ),
-                ],
+                ),
               ),
-            ),
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 12,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          context
+                              .read<Setting18ConfigBloc>()
+                              .add(QRDataGenerated(partId));
+                        },
+                        icon: const Icon(
+                          Icons.qr_code_2,
+                          size: 26,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          showModuleSettingDialog(selectedPartId: partId);
+                        },
+                        icon: const Icon(
+                          Icons.edit,
+                          size: 26,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       );
