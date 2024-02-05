@@ -46,6 +46,18 @@ class RFLevelChartBloc extends Bloc<RFLevelChartEvent, RFLevelChartState> {
         // 將 RFInOuts 寫入 cache
         _amp18Repository.writeRFInOuts(rfInOuts);
 
+        // parse sample rf data
+        // for (i = 0; i < 256; i++) {
+        //   int frequency = 261 + i * 6;
+        //   double rfIn = rfInputs[frequency] ?? 0.0;
+        //   double rfOut = rfOutputs[frequency] ?? 0.0;
+        //   rfInOuts.add(RFInOut(
+        //     frequency: frequency,
+        //     input: rfIn,
+        //     output: rfOut,
+        //   ));
+        // }
+
         List<List<ValuePair>> dateValueCollectionOfLog =
             _amp18Repository.get1p8GValueCollectionOfRFInOut(rfInOuts);
 
