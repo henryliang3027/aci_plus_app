@@ -1,7 +1,7 @@
 {
     "setting": "Setting",
     "tgcCableLength" : "TGC Cable Length",
-    "agcPrepAttenuator" : "AGC PREP attenuator",
+    "agcPrepAttenuator" : "AGC PREP Attenuator",
     "userPilot": "User Pilot",
     "userPilot2": "2nd User Pilot",
     "workingMode": "Working Mode",
@@ -39,8 +39,6 @@
     "operatingSlope": "Operating Slope",
     "rfOutputPilotLowFrequencyStatus": "Low Frequency Output Status",
     "rfOutputPilotHighFrequencyStatus": "High Frequency Output Status",
-    "startFrequencyOutputLevel": "Start Frequency Output Level",
-    "stopFrequencyOutputLevel": "Stop Frequency Output Level",
     "forwardControlParameters": "Forward Control Parameters",
     "returnControlParameters": "Reverse Control Parameters",
 
@@ -154,13 +152,13 @@
 
 
     "aboutUs": "About Us",
-    "aboutArticleParagraph1": "Twoway Communications, Inc., founded in October 1992, is Taiwan's largest broadband amplifier and optical workstation equipment corporation, as well as Asia's first HFC ( Hybrid Fiber-Coaxial ) transmission equipment R&D manufacturer that has passed the certification of major North American MSO ( Multiple-System Operators ).",
-    "aboutArticleParagraph2": "In 1999, Twoway Group established the American subsidiary \"ACI Communications, Inc.\" and merged the \"Augat\" product line which from the United States, applying the \"ACI\" brand to sell globally. Twoway Group concentrates on R&D and production of high-quality wide-area broadband optical fiber outdoor network equipment, high-performance broadband amplifier products, optical nodes, and head-end optoelectronics equipment. Twoway Group offers a comprehensive selection of high-quality products to deliver the finest services to the worldwide cable television and telecoms sectors.",
-    "aboutArticleParagraph3": "With its advantages in network technology and equipment, and apply years of experience to \"IoT\" artificial Intelligence of Things related solutions, Twoway Group also provides digital convergence and smart value-added services for major telecommunications carriers in response to the wave of digital transformation. Twoway Group promotes the smart cloud platform in various fields, grasp network system integration application services business opportunities, and also expands the business of urban security network system, develops smart monitoring solutions, integrates cable and optical fiber transmission technology, expands smart home, medical care services and new business opportunities in disaster prevention management.",
-    "aboutArticleParagraph4": "Twoway Group's highest principle and objective is \"global cross-border logistics, local and timely service,\" and it seeks to construct the finest customized services. Twoway Group presently has branches in the United States, Indonesia, Vietnam, Thailand, and Philippine. Establish the representative office in Japan, South Korea, Chile, and other locations. At the same time, Twoway group works closely with regional distribution partners in several countries throughout the world and improve the quality of services to meet the diverse demands of clients.",
-    "aboutArticleParagraph5": "The Taiwan Global Headquarters of Twoway Group has received [ ISO 9001 Quality Management System ] and [ ISO 14001 Environmental Management System ] certification.",
+    "aboutArticleParagraph1": "Twoway Communications, Inc., founded in October 1992, is Taiwan's largest broadband amplifier and optical workstation equipment provider. It is also the only company in Asia certified by major North American MSOs (Multiple-System Operators) for the development and manufacturing of HFC (Hybrid Fiber-Coaxial) transmission equipment.",
+    "aboutArticleParagraph2": "The Twoway Communications Group established its U.S. subsidiary, \"ACI Communications, Inc.,\" in 1999. It acquired the \"Augat\" product line in the United States and marketed it globally under the \"ACI\" brand. The company focuses on researching and manufacturing high-quality wide-area broadband fiber outdoor network equipment, high-performance broadband amplifier products, optical nodes, and head-end optoelectronic equipment. With its excellent quality product range, the company provides the best service to the global cable TV and telecommunications industries.",
+    "aboutArticleParagraph3": "In response to the digital transformation trend, the Twoway Communications Group leverages its advantages in network technology and equipment to provide major telecom operators with digital convergence and smart value-added services. It also applies years of experience to IoT artificial intelligence and Internet of Things-related solutions, promoting smart cloud platforms across various fields. The company seizes opportunities as a network system integration service provider, expands its urban security network system business, develops smart monitoring solutions, integrates fiber and cable transmission technologies, and explores new opportunities in smart homes, medical care services, and disaster prevention management.",
+    "aboutArticleParagraph4": "The Twoway Communications Group upholds \"global cross-border logistics, local real-time service\" as its highest principle and goal, striving to build the highest quality customized services. Currently, the company has subsidiaries in the United States, Indonesia, Vietnam, Thailand, the Philippines, and offices in Japan, South Korea, Chile, and other countries. It collaborates closely with distributors and partners in various regions globally to enhance service quality and meet the diverse needs of customers.",
+    "aboutArticleParagraph5": "The Twoway Communications Group's global headquarters in Taiwan has been certified for ISO 9001 Quality Management System and ISO 14001 Environmental Management System.",
     "aboutArticleDigitalTeamTitle": "DIGITAL TEAM",
-    "aboutArticleDigitalTeamParagraph": "Our development team includes web project managers, web designers, Front-end / Back-end programmers and system engineers. Twoway Group believes that the correctly designed network management system will help clients in executing accurate, timely, and quick-response monitoring jobs, as well as reaping other benefits. And we will keep improving our ability to gain experience, learn and grow, develop creativity, keep up with the times and integrate with new technologies, absorb the customer feedback, develop more professional equipment monitoring products and global services, and realize the concept of remote monitoring services.",
+    "aboutArticleDigitalTeamParagraph": "Our work team consists of the web project manager, web designer, programmer, and system engineer. Twoway Communications believes that a well-designed network device management system will enable customers to execute monitoring tasks correctly, promptly, and with quick responses, bringing subsequent benefits. We will continuously improve our capabilities, accumulate experience, learn and grow creatively, keep pace with new technologies, solicit customer feedback, produce more professional equipment monitoring products and globalized services, and realize the concept of remote monitoring services.",
     "projectManager": "Project Manager",
     "websiteDesigner": "Website Designer",
     "frontendBackendEngineer": "Front-end / Back-end Engineer",
@@ -177,9 +175,9 @@
     "dialogTitleSuccess": "Success",
     "dialogTitleEnterYourCode": "Enter Your Code",
     "dialogTitleEnterConfirm": "Confirm",
-    "dialogMessageDeviceNotFound": "Device not found.",
-    "dialogMessageBluetoothDisabled": "Bluetooth is disabled.",
-    "dialogMessageConnectionFailure": "Device connection failed",
+    "dialogMessageDeviceNotFound": "Device Not Found",
+    "dialogMessageBluetoothDisabled": "Bluetooth Is Disabled",
+    "dialogMessageConnectionFailure": "Device Connection Failed",
     "dialogMessageLoadDataFailure": "Failed to load data",
     "dialogMessageLoadLogFailure": "Failed to load logs",
     "dialogMessageDownloadLogFailure": "Failed to download logs",
@@ -188,10 +186,10 @@
     "dialogMessageTGCCableLengthSetting": "TGC cable length setting",
     "dialogMessageLogIntervalSetting": "Log interval setting",
     "dialogMessageWorkingModeSetting": "Working mode setting",
-    "dialogMessageSaveUserPilot": "Save user pilot",
-    "dialogMessageSaveUserPilot2": "Save User Pilot2",
+    "dialogMessageSaveUserPilot": "Save User Pilot",
+    "dialogMessageSaveUserPilot2": "Save User Pilot 2",
 
-    "dialogMessageResetForwardToDefault": "Do you want to reset fowrard parameters to default ?",
+    "dialogMessageResetForwardToDefault": "Do you want to reset forward parameters to default ?",
     "dialogMessageResetReverseToDefault": "Do you want to reset reverse parameters to default ?",
     "dialogMessageAGCModeSetting": "AGC mode setting",
     "dialogMessageALCModeSetting": "ALC mode setting",
@@ -281,9 +279,9 @@
     "dialogMessagePilotSearchFailed": "Pilot not found, Please type correct code.",
     "dialogMessageDataExportSuccessful": "Data export successful.",
     "dialogMessageNoMoreLogs": "No more logs.",
-    "dialogMessageEnterConfirm": "To confirm, enter \"confirm\" in the box below",
+    "dialogMessageEnterConfirm": "To confirm, type \"confirm\" below.",
     "dialogMessageCodeHint": "Please enter your code",
-    "dialogMessageEnterYourCode": "The code can only be Arabic numerals and up to eight characters:"
+    "dialogMessageEnterYourCode": "Only Arabic numerals, maximum 8 characters:"
 
     
 }

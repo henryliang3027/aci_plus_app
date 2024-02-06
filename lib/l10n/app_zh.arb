@@ -39,8 +39,6 @@
     "operatingSlope": "操作斜率",
     "rfOutputPilotLowFrequencyStatus": "低頻輸出狀態",
     "rfOutputPilotHighFrequencyStatus": "高頻輸出狀態",
-    "startFrequencyOutputLevel": "起始頻率輸出強度",
-    "stopFrequencyOutputLevel": "截止頻率輸出強度",
     "forwardControlParameters": "下行控制參數",
     "returnControlParameters": "上行控制參數",
 
