@@ -104,14 +104,14 @@ class _ConfigListView extends StatelessWidget {
       required List<String> partIds,
     }) {
       return [
-        const Padding(
-          padding: EdgeInsets.symmetric(
+        Padding(
+          padding: const EdgeInsets.symmetric(
             vertical: 20.0,
             horizontal: 20.0,
           ),
           child: Text(
-            'AMT',
-            style: TextStyle(
+            partIdMap[partIds[0]]!.split(' ')[0],
+            style: const TextStyle(
               fontSize: CustomStyle.sizeXL,
               fontWeight: FontWeight.w500,
             ),
@@ -127,14 +127,14 @@ class _ConfigListView extends StatelessWidget {
       required List<String> partIds,
     }) {
       return [
-        const Padding(
-          padding: EdgeInsets.symmetric(
+        Padding(
+          padding: const EdgeInsets.symmetric(
             vertical: 20.0,
             horizontal: 20.0,
           ),
           child: Text(
-            'AMF',
-            style: TextStyle(
+            partIdMap[partIds[0]]!.split(' ')[0],
+            style: const TextStyle(
               fontSize: CustomStyle.sizeXL,
               fontWeight: FontWeight.w500,
             ),

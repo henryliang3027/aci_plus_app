@@ -110,10 +110,10 @@ const Map<String, String> partIdMap = {
   '1': 'SDLE',
   '2': 'AMT BLE',
   '3': 'AMT MB',
-  '4': 'AMF Node',
-  '5': 'AMF TR',
-  '6': 'AMF BR',
-  '7': 'AMF LE',
+  '4': 'AFM Node',
+  '5': 'AFM TR',
+  '6': 'AFM BR',
+  '7': 'AFM LE',
 };
 
 const Map<String, String> settingGraphFilePath = {
