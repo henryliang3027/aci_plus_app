@@ -148,6 +148,8 @@
     "dataLog": "Registro",
     "rfLevel": "Nivel RF",
 
+    "deviceSetting": "Configuración Dispositivo",
+    "bluetoothSetting": "Configuración Bluetooth",
 
     "aboutUs": "Acerca Nosotros",
     "aboutArticleParagraph1": "Twoway Communications, Inc., fundada en octubre de 1992, es el mayor proveedor de amplificadores de banda ancha y equipos de estación de trabajo ópticos de Taiwán. También es la única empresa en Asia certificada por los principales operadores de sistemas múltiples (MSOs) de América del Norte para el desarrollo y fabricación de equipos de transmisión HFC (Híbrido Fibra-Coaxial).",

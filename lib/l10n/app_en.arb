@@ -149,7 +149,8 @@
     "dataLog": "Device Log",
     "rfLevel": "RF Level",
     
-
+    "deviceSetting": "Device Setting",
+    "bluetoothSetting": "Bluetooth Setting",
 
     "aboutUs": "About Us",
     "aboutArticleParagraph1": "Twoway Communications, Inc., founded in October 1992, is Taiwan's largest broadband amplifier and optical workstation equipment provider. It is also the only company in Asia certified by major North American MSOs (Multiple-System Operators) for the development and manufacturing of HFC (Hybrid Fiber-Coaxial) transmission equipment.",

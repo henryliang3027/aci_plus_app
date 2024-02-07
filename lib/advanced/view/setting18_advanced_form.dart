@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/advanced/view/setting18_advanced_tab_bar.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -27,7 +28,7 @@ class Setting18AdvancedForm extends StatelessWidget {
           _DeviceRefresh(),
         ],
       ),
-      body: const Setting18ConfigPage(),
+      body: const Setting18AdvancedTabBar(),
       bottomNavigationBar: HomeBottomNavigationBar18(
         pageController: pageController,
         selectedIndex: 4,

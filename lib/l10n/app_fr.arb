@@ -147,6 +147,8 @@
     "dataLog": "Journal",
     "rfLevel": "Niveau RF",
 
+    "deviceSetting": "Paramètres de l'appareil",
+    "bluetoothSetting": "Paramètres Bluetooth",
 
     "aboutUs": "À propos nous",
     "aboutArticleParagraph1": "Twoway Communications, Inc., fondée en octobre 1992, est le principal fournisseur taïwanais d'amplificateurs à large bande et d'équipements de poste de travail optique. Elle est également la seule entreprise en Asie certifiée par les principaux opérateurs de systèmes multiples nord-américains pour le développement et la fabrication d'équipements de transmission HFC (Hybrid Fiber-Coaxial).",

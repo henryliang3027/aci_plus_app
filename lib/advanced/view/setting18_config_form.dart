@@ -182,7 +182,7 @@ class _ConfigListView extends StatelessWidget {
             horizontal: 20.0,
           ),
           child: Text(
-            'AMF',
+            'AFM',
             style: TextStyle(
               fontSize: CustomStyle.sizeXL,
               fontWeight: FontWeight.w500,
