@@ -4,9 +4,9 @@ import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
-import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Setting18ConfigForm extends StatelessWidget {
   const Setting18ConfigForm({super.key});
@@ -42,13 +42,90 @@ class Setting18ConfigForm extends StatelessWidget {
           showGeneratedQRCodeDialog(encodedData: state.encodedData);
         }
       },
-      child: const _ConfigListView(),
+      child: const SingleChildScrollView(
+        child: Column(
+          children: [
+            _QRDataScanner(),
+            _DeviceListView(),
+          ],
+        ),
+      ),
     );
   }
 }
 
-class _ConfigListView extends StatelessWidget {
-  const _ConfigListView({super.key});
+class _QRDataScanner extends StatelessWidget {
+  const _QRDataScanner({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 18.0),
+          child: Card(
+            color: Theme.of(context).colorScheme.onPrimary,
+            surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                // color: index % 2 == 0
+                //     ? const Color.fromARGB(255, 197, 204, 246)
+                //     : const Color.fromARGB(255, 222, 227, 255),
+              ),
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 26.0,
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.scanQRCode,
+                        style: const TextStyle(
+                          fontSize: CustomStyle.sizeXL,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        right: 12,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.qr_code_scanner_sharp,
+                              size: 26,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _DeviceListView extends StatelessWidget {
+  const _DeviceListView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -195,50 +272,18 @@ class _ConfigListView extends StatelessWidget {
       ];
     }
 
-    Widget buildConfigListView({
-      required List<String> partIds,
-    }) {
-      return SingleChildScrollView(
-        child: Column(
+    return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
+      builder: (context, state) {
+        return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ...buildMOTOConfigListView(partIds: partIds.sublist(0, 2)),
+            ...buildMOTOConfigListView(partIds: state.partIds.sublist(0, 2)),
             const SizedBox(
               height: 20,
             ),
-            ...buildCCorConfigListView(partIds: partIds.sublist(2)),
+            ...buildCCorConfigListView(partIds: state.partIds.sublist(2)),
           ],
-        ),
-      );
-    }
-
-    return Builder(
-      builder: (context) {
-        HomeState homeState = context.watch<HomeBloc>().state;
-        Setting18ConfigState setting18configState =
-            context.read<Setting18ConfigBloc>().state;
-
-        if (homeState.loadingStatus.isRequestInProgress) {
-          return Stack(
-            children: [
-              buildConfigListView(partIds: setting18configState.partIds),
-              Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(70, 158, 158, 158),
-                ),
-                child: const Center(
-                  child: SizedBox(
-                    width: CustomStyle.diameter,
-                    height: CustomStyle.diameter,
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-              ),
-            ],
-          );
-        } else {
-          return buildConfigListView(partIds: setting18configState.partIds);
-        }
+        );
       },
     );
   }

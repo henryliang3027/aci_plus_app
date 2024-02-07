@@ -1,5 +1,4 @@
 import 'package:aci_plus_app/advanced/view/setting18_advanced_tab_bar.dart';
-import 'package:aci_plus_app/advanced/view/setting18_config_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
@@ -28,7 +27,7 @@ class Setting18AdvancedForm extends StatelessWidget {
           _DeviceRefresh(),
         ],
       ),
-      body: const Setting18AdvancedTabBar(),
+      body: const _ViewLayout(),
       bottomNavigationBar: HomeBottomNavigationBar18(
         pageController: pageController,
         selectedIndex: 4,
@@ -38,7 +37,6 @@ class Setting18AdvancedForm extends StatelessWidget {
           );
         },
       ),
-      // floatingActionButton: const _Setting18FloatingActionButton(),
     );
   }
 }
@@ -116,45 +114,42 @@ class _DeviceRefresh extends StatelessWidget {
   }
 }
 
-// class _ViewLayout extends StatelessWidget {
-//   const _ViewLayout({
-//     super.key,
-//     // required this.tabController,
-//   });
+class _ViewLayout extends StatelessWidget {
+  const _ViewLayout({
+    super.key,
+  });
 
-//   // final TabController tabController;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<HomeBloc, HomeState>(
-//       builder: (context, state) {
-//         if (state.loadingStatus.isRequestInProgress) {
-//           return Stack(
-//             alignment: Alignment.center,
-//             children: [
-//               const Setting18ConfigPage(
-//                   // tabController: tabController,
-//                   ),
-//               Container(
-//                 decoration: const BoxDecoration(
-//                   color: Color.fromARGB(70, 158, 158, 158),
-//                 ),
-//                 child: const Center(
-//                   child: SizedBox(
-//                     width: CustomStyle.diameter,
-//                     height: CustomStyle.diameter,
-//                     child: CircularProgressIndicator(),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           );
-//         } else {
-//           return const Setting18ConfigPage(
-//               // tabController: tabController,
-//               );
-//         }
-//       },
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.loadingStatus.isRequestInProgress) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              const Setting18AdvancedTabBar(
+                  // tabController: tabController,
+                  ),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(70, 158, 158, 158),
+                ),
+                child: const Center(
+                  child: SizedBox(
+                    width: CustomStyle.diameter,
+                    height: CustomStyle.diameter,
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return const Setting18AdvancedTabBar(
+              // tabController: tabController,
+              );
+        }
+      },
+    );
+  }
+}
