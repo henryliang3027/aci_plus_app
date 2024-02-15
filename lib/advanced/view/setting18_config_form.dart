@@ -1,5 +1,6 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_bloc.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_generator_page.dart';
+import 'package:aci_plus_app/advanced/view/qr_code_scanner.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -72,9 +73,6 @@ class _QRDataScanner extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                // color: index % 2 == 0
-                //     ? const Color.fromARGB(255, 197, 204, 246)
-                //     : const Color.fromARGB(255, 222, 227, 255),
               ),
               height: 60,
               child: Row(
@@ -104,7 +102,16 @@ class _QRDataScanner extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                QRCodeScanner.route(),
+                              ).then((rawData) {
+                                if (rawData != null) {
+                                  if (rawData.isNotEmpty) {}
+                                }
+                              });
+                            },
                             icon: const Icon(
                               Icons.qr_code_scanner_sharp,
                               size: 26,

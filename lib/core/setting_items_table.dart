@@ -106,6 +106,7 @@ enum SettingControl {
 // 7: C-Cor LE
 
 const Map<String, String> partIdMap = {
+  'd': 'DSIM',
   '0': 'MFTJ',
   '1': 'SDLE',
   '2': 'AMT BLE',

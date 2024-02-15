@@ -4,6 +4,7 @@ class Setting18DongleState extends Equatable {
   const Setting18DongleState({
     this.formStatus = FormStatus.none,
     this.partIds = const [
+      'd', // DSIM
       '3', // MOTO MB
       '2', // MOTO BLE
       '5', // C-Cor TR

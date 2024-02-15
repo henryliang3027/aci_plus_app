@@ -226,6 +226,29 @@ class _DeviceListView extends StatelessWidget {
       );
     }
 
+    List<Widget> buildDSIMConfigListView({
+      required List<String> partIds,
+    }) {
+      return [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 20.0,
+            horizontal: 20.0,
+          ),
+          child: Text(
+            partIdMap[partIds[0]]!,
+            style: const TextStyle(
+              fontSize: CustomStyle.sizeXL,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        for (String partId in partIds) ...[
+          configCard(partId: partId),
+        ],
+      ];
+    }
+
     List<Widget> buildMOTOConfigListView({
       required List<String> partIds,
     }) {
@@ -277,11 +300,15 @@ class _DeviceListView extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ...buildMOTOConfigListView(partIds: state.partIds.sublist(0, 2)),
+            ...buildDSIMConfigListView(partIds: state.partIds.sublist(0, 1)),
             const SizedBox(
               height: 20,
             ),
-            ...buildCCorConfigListView(partIds: state.partIds.sublist(2)),
+            ...buildMOTOConfigListView(partIds: state.partIds.sublist(1, 3)),
+            const SizedBox(
+              height: 20,
+            ),
+            ...buildCCorConfigListView(partIds: state.partIds.sublist(3)),
           ],
         );
       },
