@@ -2,7 +2,6 @@ import 'package:aci_plus_app/advanced/bloc/setting18_dongle/setting18_dongle_blo
 import 'package:aci_plus_app/advanced/view/qr_code_generator_page.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
-import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
