@@ -107,10 +107,10 @@ class _Chart18FormState extends State<Chart18Form>
               ),
             );
         } else if (state.dataShareStatus.isRequestSuccess) {
-          String partNo = context
+          String partName = context
               .read<HomeBloc>()
               .state
-              .characteristicData[DataKey.partNo]!;
+              .characteristicData[DataKey.partName]!;
           String location = context
               .read<HomeBloc>()
               .state
@@ -121,7 +121,7 @@ class _Chart18FormState extends State<Chart18Form>
           Share.shareXFiles(
             [XFile(state.dataExportPath)],
             subject: state.exportFileName,
-            text: '$partNo / $location',
+            text: '$partName / $location',
             sharePositionOrigin:
                 Rect.fromLTWH(0.0, height / 2, width, height / 2),
           );
