@@ -164,6 +164,13 @@
     "frontendBackendEngineer": "Ingénieur frontal / dorsal",
     "systemEngineer": "Ingénieur Système",
 
+
+    "instruction" : "Instruction",
+    "dongleSettingDirectionStep1" : "Please plug the BT 5.1 USB Bluetooth adapter into any 1.8G amplifier.",
+    "dongleSettingDirectionStep2" : "After plugging in and powering on, please tap the button below.",
+    "dongleSettingDirectionStep3" : "After the setting is completed, please restart the App.",
+
+
     "textFieldErrorMessage": "Format invalide",
     
     "dialogTitleAskBeforeExitApp": "Voulez-vous quitter l’application ?",

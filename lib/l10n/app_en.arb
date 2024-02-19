@@ -166,8 +166,15 @@
     "frontendBackendEngineer": "Front-end / Back-end Engineer",
     "systemEngineer": "System Engineer",
 
+
+    "instruction" : "Instruction",
+    "dongleSettingDirectionStep1" : "Veuillez brancher l'adaptateur Bluetooth USB BT 5.1 dans n'importe quel amplificateur 1.8G.",
+    "dongleSettingDirectionStep2" : "Après avoir branché et allumé, veuillez appuyer sur le bouton ci-dessous.",
+    "dongleSettingDirectionStep3" : "Après que le réglage soit terminé, veuillez redémarrer l'application.",
+
+
     "textFieldErrorMessage": "Invalid format",
-    
+
     "dialogTitleAskBeforeExitApp": "Do you want to exit the app ?",
     "dialogTitleDownloading": "Downloading...",
     "dialogTitleProcessing": "Setting up...",

@@ -165,6 +165,13 @@
     "frontendBackendEngineer": "程式設計師",
     "systemEngineer": "系統工程師",
 
+
+    "instruction" : "說明：",
+    "dongleSettingDirectionStep1" : "請將 BT 5.1 USB 藍牙適配器插入任一台 1.8G 放大器",
+    "dongleSettingDirectionStep2" : "插入通電後，請點擊下方按鈕",
+    "dongleSettingDirectionStep3" : "設定完成後請重新啟動 App",
+
+
     "textFieldErrorMessage": "格式不正確",
     
     "dialogTitleAskBeforeExitApp": "您確定要退出應用程式嗎？",
