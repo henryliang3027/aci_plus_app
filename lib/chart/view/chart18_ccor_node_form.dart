@@ -91,10 +91,10 @@ class Chart18CCorNodeForm extends StatelessWidget {
               ),
             );
         } else if (state.dataShareStatus.isRequestSuccess) {
-          String partNo = context
+          String partName = context
               .read<HomeBloc>()
               .state
-              .characteristicData[DataKey.partNo]!;
+              .characteristicData[DataKey.partName]!;
           String location = context
               .read<HomeBloc>()
               .state
@@ -105,7 +105,7 @@ class Chart18CCorNodeForm extends StatelessWidget {
           Share.shareXFiles(
             [XFile(state.dataExportPath)],
             subject: state.exportFileName,
-            text: '$partNo / $location',
+            text: '$partName / $location',
             sharePositionOrigin:
                 Rect.fromLTWH(0.0, height / 2, width, height / 2),
           );
