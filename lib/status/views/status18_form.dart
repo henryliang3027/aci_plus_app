@@ -1820,7 +1820,7 @@ class _RFInputPower1p8GCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
               child: Text(
-                '${AppLocalizations.of(context)!.rfInputPower} @ 1794 MHz',
+                '${AppLocalizations.of(context)!.rfInputPower} @ 1794 MHz (${CustomStyle.dBmV})',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),

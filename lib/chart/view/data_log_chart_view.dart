@@ -273,7 +273,7 @@ class _LogChartListView extends StatelessWidget {
       required List<List<ValuePair>> dateValueCollectionOfLog,
     }) {
       LineSeries voltageLineSeries = LineSeries(
-        name: '24V',
+        name: '24 (${CustomStyle.volt})',
         dataList: dateValueCollectionOfLog[3],
         color: const Color(0xffff5963),
         minYAxisValue: 0.0,

@@ -346,26 +346,26 @@ Widget splitOptionGridViewButton({
                   elevation: 0.0,
                   foregroundColor: getForegroundColor(
                     context: context,
-                    value: splitOption,
-                    index: index,
+                    targetValue: splitOption,
+                    value: splitOptionValues[index],
                   ),
                   backgroundColor: editMode
                       ? getBackgroundColor(
                           context: context,
-                          value: splitOption,
-                          index: index,
+                          targetValue: splitOption,
+                          value: splitOptionValues[index],
                         )
                       : getDisabledBackgroundColor(
                           context: context,
-                          value: splitOption,
-                          index: index,
+                          targetValue: splitOption,
+                          value: splitOptionValues[index],
                         ),
                   side: BorderSide(
                     color: editMode
                         ? getBorderColor(
                             context: context,
-                            value: splitOption,
-                            index: index,
+                            targetValue: splitOption,
+                            value: splitOptionValues[index],
                           )
                         : getDisabledBorderColor(),
                     width: 1.0,
@@ -375,15 +375,11 @@ Widget splitOptionGridViewButton({
                 ),
                 onPressed: editMode
                     ? () {
-                        if (index != 0) {
-                          onGridPressed(index);
-                        }
+                        onGridPressed(index);
                       }
                     : () {},
                 child: Text(
-                  index == 0
-                      ? 'Null'
-                      : '${splitBaseLine[index].$1}/${splitBaseLine[index].$2} ${CustomStyle.mHz}',
+                  '${splitBaseLine[splitOptionValues[index]]!.$1}/${splitBaseLine[splitOptionValues[index]]!.$2} ${CustomStyle.mHz}',
                   style: const TextStyle(
                     fontSize: CustomStyle.sizeXL,
                     fontWeight: FontWeight.normal,
@@ -443,26 +439,26 @@ Widget gridViewButton({
                   elevation: 0.0,
                   foregroundColor: getForegroundColor(
                     context: context,
-                    value: pilotFrequencyMode,
-                    index: index,
+                    targetValue: pilotFrequencyMode,
+                    value: pilotFrequencyModeValues[index],
                   ),
                   backgroundColor: editMode
                       ? getBackgroundColor(
                           context: context,
-                          value: pilotFrequencyMode,
-                          index: index,
+                          targetValue: pilotFrequencyMode,
+                          value: pilotFrequencyModeValues[index],
                         )
                       : getDisabledBackgroundColor(
                           context: context,
-                          value: pilotFrequencyMode,
-                          index: index,
+                          targetValue: pilotFrequencyMode,
+                          value: pilotFrequencyModeValues[index],
                         ),
                   side: BorderSide(
                     color: editMode
                         ? getBorderColor(
                             context: context,
-                            value: pilotFrequencyMode,
-                            index: index,
+                            targetValue: pilotFrequencyMode,
+                            value: pilotFrequencyModeValues[index],
                           )
                         : getDisabledBorderColor(),
                     width: 1.0,
@@ -665,29 +661,35 @@ Widget thresholdAlarmSwitch({
 
 // List<Record>
 // Record, a new variable type of Dart 3
-const List<(int?, int?)> splitBaseLine = [
-  (null, null), // 0
-  (204, 258), // 1
-  (300, 372), // 2
-  (396, 492), // 3
-  (492, 606), // 4
-  (684, 834), // 5
-];
+const Map<String, (int?, int?)> splitBaseLine = {
+  // (null, null), // 0
+  '1': (204, 258), // 1
+  // (300, 372), // 2
+  '3': (396, 492), // 3
+  // (492, 606), // 4
+  // (684, 834), // 5
+};
 
 const List<String> splitOptionValues = [
+  // '0',
+  '1',
+  // '2',
+  '3',
+  // '4',
+  // '5',
+];
+
+List<String> pilotFrequencyModeValues = const [
   '0',
   '1',
-  '2',
-  '3',
-  '4',
-  '5',
+  // '2',
 ];
 
 bool isValidFirstChannelLoadingFrequency({
   required int currentDetectedSplitOption,
   required IntegerInput firstChannelLoadingFrequency,
 }) {
-  int? forwardStartFrequency = splitBaseLine[currentDetectedSplitOption].$2;
+  int? forwardStartFrequency = splitBaseLine[currentDetectedSplitOption]!.$2;
   if (firstChannelLoadingFrequency.isNotValid) {
     return false;
   } else {
@@ -707,79 +709,68 @@ bool isValidFirstChannelLoadingFrequency({
 
 Color getNullBackgroundColor({
   required BuildContext context,
+  required String targetValue,
   required String value,
-  required int index,
 }) {
-  String strIndex = index.toString();
-  return strIndex == value
+  return targetValue == value
       ? CustomStyle.customRed
       : Theme.of(context).colorScheme.onPrimary;
 }
 
 Color getNullBorderColor({
   required BuildContext context,
+  required String targetValue,
   required String value,
-  required int index,
 }) {
-  String strIndex = index.toString();
-  return strIndex == value ? CustomStyle.customRed : Colors.grey;
+  return targetValue == value ? CustomStyle.customRed : Colors.grey;
 }
 
 Color getBackgroundColor({
   required BuildContext context,
+  required String targetValue,
   required String value,
-  required int index,
 }) {
-  String strIndex = index.toString();
-
-  return strIndex == value
+  return targetValue == value
       ? Theme.of(context).colorScheme.primary
       : Theme.of(context).colorScheme.onPrimary;
 }
 
 Color getBorderColor({
   required BuildContext context,
+  required String targetValue,
   required String value,
-  required int index,
 }) {
-  String strIndex = index.toString();
-
-  return strIndex == value
+  return targetValue == value
       ? Theme.of(context).colorScheme.primary
       : Colors.grey;
 }
 
 Color getForegroundColor({
   required BuildContext context,
+  required String targetValue,
   required String value,
-  required int index,
 }) {
-  String strIndex = index.toString();
-  return strIndex == value
+  return targetValue == value
       ? Theme.of(context).colorScheme.onPrimary
       : Colors.grey;
 }
 
 Color getDisabledNullBackgroundColor({
   required BuildContext context,
+  required String targetValue,
   required String value,
-  required int index,
 }) {
-  String strIndex = index.toString();
-
-  return strIndex == value
+  return targetValue == value
       ? const Color.fromARGB(255, 215, 82, 95)
       : Theme.of(context).colorScheme.onPrimary;
 }
 
 Color getDisabledBackgroundColor({
   required BuildContext context,
+  required String targetValue,
   required String value,
-  required int index,
 }) {
-  String strIndex = index.toString();
-
-  return strIndex == value
+  return targetValue == value
       ? Theme.of(context).colorScheme.inversePrimary
       : Theme.of(context).colorScheme.onPrimary;
 }
