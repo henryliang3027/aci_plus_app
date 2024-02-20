@@ -662,12 +662,12 @@ Widget thresholdAlarmSwitch({
 // List<Record>
 // Record, a new variable type of Dart 3
 const Map<String, (int?, int?)> splitBaseLine = {
-  // (null, null), // 0
-  '1': (204, 258), // 1
-  // (300, 372), // 2
-  '3': (396, 492), // 3
-  // (492, 606), // 4
-  // (684, 834), // 5
+  // '0': (null, null),
+  '1': (204, 258),
+  // '2': (300, 372),
+  '3': (396, 492),
+  // '4': (492, 606),
+  // '5': (684, 834),
 };
 
 const List<String> splitOptionValues = [
@@ -689,7 +689,7 @@ bool isValidFirstChannelLoadingFrequency({
   required int currentDetectedSplitOption,
   required IntegerInput firstChannelLoadingFrequency,
 }) {
-  int? forwardStartFrequency = splitBaseLine[currentDetectedSplitOption]!.$2;
+  int? forwardStartFrequency = splitBaseLine[currentDetectedSplitOption]?.$2;
   if (firstChannelLoadingFrequency.isNotValid) {
     return false;
   } else {
