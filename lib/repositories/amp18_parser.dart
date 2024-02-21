@@ -628,7 +628,9 @@ class Amp18Parser {
             .toStringAsFixed(1);
 
     // 解析 rfOutputOperatingSlope
-    List<int> rawRFOutputOperatingSlope = rawData.sublist(96, 98);
+    // [84, 85] for debug
+    // [96, 97] now does not work
+    List<int> rawRFOutputOperatingSlope = rawData.sublist(84, 86);
     ByteData rawRFOutputOperatingSlopeByteData =
         ByteData.sublistView(Uint8List.fromList(rawRFOutputOperatingSlope));
 

@@ -571,12 +571,6 @@ class _PilotFrequencyMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> pilotFrequencyModeValues = const [
-      '0',
-      '1',
-      // '2',
-    ];
-
     List<String> pilotFrequencyModeTexts = [
       AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
       AppLocalizations.of(context)!.pilotFrequencyUserSettings,
