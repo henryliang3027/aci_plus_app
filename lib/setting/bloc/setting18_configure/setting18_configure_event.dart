@@ -55,7 +55,7 @@ class FirstChannelLoadingFrequencyChanged extends Setting18ConfigureEvent {
   });
 
   final String firstChannelLoadingFrequency;
-  final int currentDetectedSplitOption;
+  final String currentDetectedSplitOption;
 
   @override
   List<Object> get props => [

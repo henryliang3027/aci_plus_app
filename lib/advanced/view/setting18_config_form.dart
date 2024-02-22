@@ -46,7 +46,7 @@ class Setting18ConfigForm extends StatelessWidget {
       child: const SingleChildScrollView(
         child: Column(
           children: [
-            _QRDataScanner(),
+            _QRToolbar(),
             _DeviceListView(),
           ],
         ),
@@ -55,8 +55,8 @@ class Setting18ConfigForm extends StatelessWidget {
   }
 }
 
-class _QRDataScanner extends StatelessWidget {
-  const _QRDataScanner({super.key});
+class _QRToolbar extends StatelessWidget {
+  const _QRToolbar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -94,31 +94,57 @@ class _QRDataScanner extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        right: 12,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                QRCodeScanner.route(),
-                              ).then((rawData) {
-                                if (rawData != null) {
-                                  if (rawData.isNotEmpty) {}
-                                }
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.qr_code_scanner_sharp,
-                              size: 26,
-                            ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 0,
                           ),
-                        ],
-                      ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  context
+                                      .read<Setting18ConfigBloc>()
+                                      .add(QRDataGenerated('3'));
+                                },
+                                icon: const Icon(
+                                  Icons.qr_code_2,
+                                  size: 26,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 12,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    QRCodeScanner.route(),
+                                  ).then((rawData) {
+                                    if (rawData != null) {
+                                      if (rawData.isNotEmpty) {}
+                                    }
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.qr_code_scanner_sharp,
+                                  size: 26,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

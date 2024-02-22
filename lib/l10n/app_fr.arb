@@ -147,9 +147,16 @@
     "dataLog": "Journal",
     "rfLevel": "Niveau RF",
 
+    "trunkAmplifier": "Amplificateur de coffre",
+    "distributionAmplifier": "Amplificateur de distribution",
+
+    "scanQRCode": "Scanner code QR",
     "deviceSetting": "Paramètres de l'appareil",
     "bluetoothSetting": "Paramètres Bluetooth",
-    "scanQRCode": "Scanner code QR",
+    "instruction" : "Instruction",
+    "instructionStep1": "Veuillez brancher l'adaptateur Bluetooth USB BT 5.1 dans n'importe quel amplificateur 1.8G.",
+    "instructionStep2": "Après l'avoir branché et allumé, veuillez appuyer sur le bouton ci-dessous.",
+    "instructionStep3": "Une fois les réglages terminés, veuillez redémarrer l'application.",
 
     "aboutUs": "À propos nous",
     "aboutArticleParagraph1": "Twoway Communications, Inc., fondée en octobre 1992, est le principal fournisseur taïwanais d'amplificateurs à large bande et d'équipements de poste de travail optique. Elle est également la seule entreprise en Asie certifiée par les principaux opérateurs de systèmes multiples nord-américains pour le développement et la fabrication d'équipements de transmission HFC (Hybrid Fiber-Coaxial).",
@@ -163,12 +170,6 @@
     "websiteDesigner": "Concepteur de site Web",
     "frontendBackendEngineer": "Ingénieur frontal / dorsal",
     "systemEngineer": "Ingénieur Système",
-
-
-    "instruction" : "Instruction",
-    "dongleSettingDirectionStep1" : "Please plug the BT 5.1 USB Bluetooth adapter into any 1.8G amplifier.",
-    "dongleSettingDirectionStep2" : "After plugging in and powering on, please tap the button below.",
-    "dongleSettingDirectionStep3" : "After the setting is completed, please restart the App.",
 
 
     "textFieldErrorMessage": "Format invalide",

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/config.dart';
@@ -34,15 +36,15 @@ class Setting18ConfigBloc
     if (result[0]) {
       Config config = result[1];
 
-      StringBuffer stringBuffer = StringBuffer();
+      // StringBuffer stringBuffer = StringBuffer();
 
-      stringBuffer.write('${event.selectedPartId},');
-      stringBuffer.write('${config.firstChannelLoadingFrequency},');
-      stringBuffer.write('${config.firstChannelLoadingLevel},');
-      stringBuffer.write('${config.lastChannelLoadingFrequency},');
-      stringBuffer.write(config.lastChannelLoadingLevel);
+      // stringBuffer.write('${event.selectedPartId},');
+      // stringBuffer.write('${config.firstChannelLoadingFrequency},');
+      // stringBuffer.write('${config.firstChannelLoadingLevel},');
+      // stringBuffer.write('${config.lastChannelLoadingFrequency},');
+      // stringBuffer.write(config.lastChannelLoadingLevel);
 
-      String encodedData = stringBuffer.toString();
+      String encodedData = jsonEncode(config.toJson());
 
       emit(state.copyWith(
         encodeStaus: FormStatus.requestSuccess,

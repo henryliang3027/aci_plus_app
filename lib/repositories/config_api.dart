@@ -9,16 +9,18 @@ class ConfigApi {
   /// 新增 config 到手機端資料庫, 如果該 part id 已存在, 則 put() 會更新其資料
   Future<void> addConfigByPartId({
     required String partId,
+    required String splitOption,
     required String firstChannelLoadingFrequency,
-    required String lastChannelLoadingFrequency,
     required String firstChannelLoadingLevel,
+    required String lastChannelLoadingFrequency,
     required String lastChannelLoadingLevel,
   }) async {
     Config newConfig = Config(
       partId: partId,
+      splitOption: splitOption,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-      lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       firstChannelLoadingLevel: firstChannelLoadingLevel,
+      lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       lastChannelLoadingLevel: lastChannelLoadingLevel,
     );
     await _configBox.put(partId, newConfig);

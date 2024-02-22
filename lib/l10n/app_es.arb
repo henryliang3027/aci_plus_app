@@ -148,9 +148,16 @@
     "dataLog": "Registro",
     "rfLevel": "Nivel RF",
 
+    "trunkAmplifier": "Amplificador de maletero",
+    "distributionAmplifier": "Amplificador de distribución",
+
+    "scanQRCode": "Escanear código QR",
     "deviceSetting": "Configuración Dispositivo",
     "bluetoothSetting": "Configuración Bluetooth",
-    "scanQRCode": "Escanear código QR",
+    "instruction" : "Instrucción",
+    "instructionStep1": "Por favor, enchufe el adaptador Bluetooth USB BT 5.1 en cualquier amplificador 1.8G.",
+    "instructionStep2": "Después de enchufarlo y encenderlo, por favor toque el botón debajo.",
+    "instructionStep3": "Después de que la configuración esté completada, por favor reinicie la aplicación.",
 
     "aboutUs": "Acerca Nosotros",
     "aboutArticleParagraph1": "Twoway Communications, Inc., fundada en octubre de 1992, es el mayor proveedor de amplificadores de banda ancha y equipos de estación de trabajo ópticos de Taiwán. También es la única empresa en Asia certificada por los principales operadores de sistemas múltiples (MSOs) de América del Norte para el desarrollo y fabricación de equipos de transmisión HFC (Híbrido Fibra-Coaxial).",
@@ -164,12 +171,6 @@
     "websiteDesigner": "Diseñador Sitios Web",
     "frontendBackendEngineer": "Ingeniero Front-end/Back-end",
     "systemEngineer": "Ingeniero Sistemas",
-
-
-    "instruction" : "Instrucción",
-    "dongleSettingDirectionStep1" : "Por favor, enchufe el adaptador Bluetooth USB BT 5.1 en cualquier amplificador 1.8G.",
-    "dongleSettingDirectionStep2" : "Después de enchufar y encender, por favor toque el botón debajo.",
-    "dongleSettingDirectionStep3" : "Después de que la configuración esté completa, por favor reinicie la aplicación.",
 
 
     "textFieldErrorMessage": "Formato inválido",

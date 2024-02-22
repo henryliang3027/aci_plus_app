@@ -21,8 +21,8 @@ class ConfigSaved extends Setting18ConfigEditEvent {
   List<Object> get props => [];
 }
 
-class ConfigSavedAndSubmitted extends Setting18ConfigEditEvent {
-  const ConfigSavedAndSubmitted();
+class ConfigSubmitted extends Setting18ConfigEditEvent {
+  const ConfigSubmitted();
 
   @override
   List<Object> get props => [];
@@ -46,6 +46,15 @@ class ConfigSavedAndSubmitted extends Setting18ConfigEditEvent {
 //   List<Object> get props => [];
 // }
 
+class SplitOptionChanged extends Setting18ConfigEditEvent {
+  const SplitOptionChanged(this.splitOption);
+
+  final String splitOption;
+
+  @override
+  List<Object> get props => [splitOption];
+}
+
 class FirstChannelLoadingFrequencyChanged extends Setting18ConfigEditEvent {
   const FirstChannelLoadingFrequencyChanged({
     required this.firstChannelLoadingFrequency,
@@ -53,7 +62,7 @@ class FirstChannelLoadingFrequencyChanged extends Setting18ConfigEditEvent {
   });
 
   final String firstChannelLoadingFrequency;
-  final int currentDetectedSplitOption;
+  final String currentDetectedSplitOption;
 
   @override
   List<Object> get props => [

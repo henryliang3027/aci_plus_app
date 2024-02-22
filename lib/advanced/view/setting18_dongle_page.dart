@@ -7,6 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class Setting18DonglePage extends StatelessWidget {
   const Setting18DonglePage({super.key});
 
+  static Route route() {
+    return MaterialPageRoute(
+      builder: (_) => const Setting18DonglePage(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

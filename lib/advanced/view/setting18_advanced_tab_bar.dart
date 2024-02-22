@@ -1,8 +1,5 @@
 import 'package:aci_plus_app/advanced/view/setting18_config_page.dart';
-import 'package:aci_plus_app/advanced/view/setting18_dongle_page.dart';
-import 'package:aci_plus_app/setting/views/setting18_views/setting18_configure_page.dart';
-import 'package:aci_plus_app/setting/views/setting18_views/setting18_control_page.dart';
-import 'package:aci_plus_app/setting/views/setting18_views/setting18_threshold_page.dart';
+import 'package:aci_plus_app/advanced/view/setting18_instruction_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -71,7 +68,7 @@ class Setting18AdvancedTabBar extends StatelessWidget {
               // controller: tabController,
               children: [
                 Setting18ConfigPage(),
-                Setting18DonglePage(),
+                Setting18InstructionPage(),
               ],
             ),
           ),

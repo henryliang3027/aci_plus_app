@@ -26,9 +26,10 @@ class Setting18ConfigEditBloc
         )) {
     on<ConfigIntitialized>(_onConfigIntitialized);
     on<ConfigSaved>(_onConfigSaved);
-    on<ConfigSavedAndSubmitted>(_onConfigSavedAndSubmitted);
+    on<ConfigSubmitted>(_onConfigSubmitted);
     // on<QRCodeDataScanned>(_onQRCodeDataScanned);
     // on<QRCodeDataGenerated>(_onQRCodeDataGenerated);
+    on<SplitOptionChanged>(_onSplitOptionChanged);
     on<FirstChannelLoadingFrequencyChanged>(
         _onFirstChannelLoadingFrequencyChanged);
     on<FirstChannelLoadingLevelChanged>(_onFirstChannelLoadingLevelChanged);
@@ -80,6 +81,7 @@ class Setting18ConfigEditBloc
         saveStatus: SubmissionStatus.none,
         settingStatus: SubmissionStatus.none,
         selectedPartId: _selectedPartId,
+        splitOption: config.splitOption,
         firstChannelLoadingFrequency: firstChannelLoadingFrequency,
         firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -94,6 +96,7 @@ class Setting18ConfigEditBloc
           DataKey.lastChannelLoadingLevel: config.lastChannelLoadingLevel,
         },
         enableSubmission: _isEnabledSubmission(
+          splitOption: config.splitOption,
           firstChannelLoadingFrequency: firstChannelLoadingFrequency,
           firstChannelLoadingLevel: firstChannelLoadingLevel,
           lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -105,6 +108,7 @@ class Setting18ConfigEditBloc
           _amp18Repository.characteristicDataCache;
 
       String partId = characteristicDataCache[DataKey.partId] ?? '';
+      String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
       String initFirstChannelLoadingFrequency =
           characteristicDataCache[DataKey.firstChannelLoadingFrequency] ?? '';
       String initFirstChannelLoadingLevel =
@@ -119,6 +123,7 @@ class Setting18ConfigEditBloc
       if (partId == _selectedPartId) {
         await _configApi.addConfigByPartId(
           partId: _selectedPartId,
+          splitOption: splitOption,
           firstChannelLoadingFrequency: initFirstChannelLoadingFrequency,
           firstChannelLoadingLevel: initFirstChannelLoadingLevel,
           lastChannelLoadingFrequency: initLastChannelLoadingFrequency,
@@ -139,6 +144,7 @@ class Setting18ConfigEditBloc
           saveStatus: SubmissionStatus.none,
           settingStatus: SubmissionStatus.none,
           selectedPartId: _selectedPartId,
+          splitOption: splitOption,
           firstChannelLoadingFrequency: firstChannelLoadingFrequency,
           firstChannelLoadingLevel: firstChannelLoadingLevel,
           lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -153,6 +159,7 @@ class Setting18ConfigEditBloc
             DataKey.lastChannelLoadingLevel: initLastChannelLoadingLevel,
           },
           enableSubmission: _isEnabledSubmission(
+            splitOption: splitOption,
             firstChannelLoadingFrequency: firstChannelLoadingFrequency,
             firstChannelLoadingLevel: firstChannelLoadingLevel,
             lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -163,6 +170,7 @@ class Setting18ConfigEditBloc
         // 如果 config 不存在而且 partId != _selectedPartId,
         // 則初始化為空值
 
+        String splitOption = '0';
         String initFirstChannelLoadingFrequency = '258';
         String initFirstChannelLoadingLevel = '34.0';
         String initLastChannelLoadingFrequency = '1794';
@@ -196,6 +204,7 @@ class Setting18ConfigEditBloc
             DataKey.lastChannelLoadingLevel: initLastChannelLoadingLevel,
           },
           enableSubmission: _isEnabledSubmission(
+            splitOption: splitOption,
             firstChannelLoadingFrequency: firstChannelLoadingFrequency,
             firstChannelLoadingLevel: firstChannelLoadingLevel,
             lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -271,6 +280,25 @@ class Setting18ConfigEditBloc
   //   ));
   // }
 
+  void _onSplitOptionChanged(
+    SplitOptionChanged event,
+    Emitter<Setting18ConfigEditState> emit,
+  ) {
+    emit(state.copyWith(
+      saveStatus: SubmissionStatus.none,
+      settingStatus: SubmissionStatus.none,
+      isInitialize: false,
+      splitOption: event.splitOption,
+      enableSubmission: _isEnabledSubmission(
+        splitOption: event.splitOption,
+        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+      ),
+    ));
+  }
+
   void _onFirstChannelLoadingFrequencyChanged(
     FirstChannelLoadingFrequencyChanged event,
     Emitter<Setting18ConfigEditState> emit,
@@ -290,6 +318,7 @@ class Setting18ConfigEditBloc
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
       enableSubmission: isValid &&
           _isEnabledSubmission(
+            splitOption: state.splitOption,
             firstChannelLoadingFrequency: firstChannelLoadingFrequency,
             firstChannelLoadingLevel: state.firstChannelLoadingLevel,
             lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
@@ -311,6 +340,7 @@ class Setting18ConfigEditBloc
       isInitialize: false,
       firstChannelLoadingLevel: firstChannelLoadingLevel,
       enableSubmission: _isEnabledSubmission(
+        splitOption: state.splitOption,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
@@ -332,6 +362,7 @@ class Setting18ConfigEditBloc
       isInitialize: false,
       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       enableSubmission: _isEnabledSubmission(
+        splitOption: state.splitOption,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: state.firstChannelLoadingLevel,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -353,6 +384,7 @@ class Setting18ConfigEditBloc
       isInitialize: false,
       lastChannelLoadingLevel: lastChannelLoadingLevel,
       enableSubmission: _isEnabledSubmission(
+        splitOption: state.splitOption,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: state.firstChannelLoadingLevel,
         lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
@@ -374,6 +406,7 @@ class Setting18ConfigEditBloc
 
     await _configApi.addConfigByPartId(
       partId: _selectedPartId,
+      splitOption: state.splitOption,
       firstChannelLoadingFrequency: state.firstChannelLoadingFrequency.value,
       firstChannelLoadingLevel: state.firstChannelLoadingLevel.value,
       lastChannelLoadingFrequency: state.lastChannelLoadingFrequency.value,
@@ -385,8 +418,8 @@ class Setting18ConfigEditBloc
     ));
   }
 
-  Future<void> _onConfigSavedAndSubmitted(
-    ConfigSavedAndSubmitted event,
+  Future<void> _onConfigSubmitted(
+    ConfigSubmitted event,
     Emitter<Setting18ConfigEditState> emit,
   ) async {
     emit(state.copyWith(
@@ -397,14 +430,6 @@ class Setting18ConfigEditBloc
     ));
 
     List<String> settingResult = [];
-
-    await _configApi.addConfigByPartId(
-      partId: _selectedPartId,
-      firstChannelLoadingFrequency: state.firstChannelLoadingFrequency.value,
-      firstChannelLoadingLevel: state.firstChannelLoadingLevel.value,
-      lastChannelLoadingFrequency: state.lastChannelLoadingFrequency.value,
-      lastChannelLoadingLevel: state.lastChannelLoadingLevel.value,
-    );
 
     bool resultOfSetPilotFrequencyMode = await _amp18Repository
         .set1p8GPilotFrequencyMode('0'); // Full mode (auto mode)
@@ -459,6 +484,7 @@ class Setting18ConfigEditBloc
   }
 
   bool _isEnabledSubmission({
+    required String splitOption,
     required IntegerInput firstChannelLoadingFrequency,
     required FloatPointInput firstChannelLoadingLevel,
     required IntegerInput lastChannelLoadingFrequency,
@@ -472,9 +498,10 @@ class Setting18ConfigEditBloc
     ]);
 
     if (isValid) {
-      if (firstChannelLoadingFrequency.value.isNotEmpty ||
-          firstChannelLoadingLevel.value.isNotEmpty ||
-          lastChannelLoadingFrequency.value.isNotEmpty ||
+      if (splitOption != '0' &&
+          firstChannelLoadingFrequency.value.isNotEmpty &&
+          firstChannelLoadingLevel.value.isNotEmpty &&
+          lastChannelLoadingFrequency.value.isNotEmpty &&
           lastChannelLoadingLevel.value.isNotEmpty) {
         return true;
       } else {

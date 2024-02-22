@@ -205,14 +205,12 @@ class Setting18ConfigureView extends StatelessWidget {
             widgets.add(const _PilotFrequencyMode());
             break;
           case SettingConfiruration.startFrequency:
-            int intCurrentDetectedSplitOption =
-                int.parse(currentDetectedSplitOption);
             widgets.add(_FirstChannelLoading(
               firstChannelLoadingFrequencyTextEditingController:
                   firstChannelLoadingFrequencyTextEditingController,
               firstChannelLoadingLevelTextEditingController:
                   firstChannelLoadingLevelTextEditingController,
-              currentDetectedSplitOption: intCurrentDetectedSplitOption,
+              currentDetectedSplitOption: currentDetectedSplitOption,
             ));
             break;
           case SettingConfiruration.stopFrequency:
@@ -269,7 +267,7 @@ class Setting18ConfigureView extends StatelessWidget {
                     firstChannelLoadingFrequencyTextEditingController,
                 firstChannelLoadingLevelTextEditingController:
                     firstChannelLoadingLevelTextEditingController,
-                currentDetectedSplitOption: 0, // null
+                currentDetectedSplitOption: '0', // null
               ),
               _LastChannelLoading(
                 lastChannelLoadingFrequencyTextEditingController:
@@ -608,7 +606,7 @@ class _FirstChannelLoading extends StatelessWidget {
 
   final TextEditingController firstChannelLoadingFrequencyTextEditingController;
   final TextEditingController firstChannelLoadingLevelTextEditingController;
-  final int currentDetectedSplitOption;
+  final String currentDetectedSplitOption;
 
   @override
   Widget build(BuildContext context) {

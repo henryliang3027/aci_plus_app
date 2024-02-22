@@ -686,7 +686,7 @@ List<String> pilotFrequencyModeValues = const [
 ];
 
 bool isValidFirstChannelLoadingFrequency({
-  required int currentDetectedSplitOption,
+  required String currentDetectedSplitOption,
   required IntegerInput firstChannelLoadingFrequency,
 }) {
   int? forwardStartFrequency = splitBaseLine[currentDetectedSplitOption]?.$2;

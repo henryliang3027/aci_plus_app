@@ -41,12 +41,18 @@ class Setting18DongleForm extends StatelessWidget {
         //   showGeneratedQRCodeDialog(encodedData: state.encodedData);
         // }
       },
-      child: const SingleChildScrollView(
-        child: Column(
-          children: [
-            _QRDataScanner(),
-            _DeviceListView(),
-          ],
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.deviceSetting),
+          centerTitle: true,
+        ),
+        body: const SingleChildScrollView(
+          child: Column(
+            children: [
+              _QRDataScanner(),
+              _DeviceListView(),
+            ],
+          ),
         ),
       ),
     );

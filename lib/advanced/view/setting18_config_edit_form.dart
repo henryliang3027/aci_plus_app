@@ -47,7 +47,6 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
     HomeState homeState = context.read<HomeBloc>().state;
     String currentDetectedSplitOption =
         homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
-    int intCurrentDetectedSplitOption = int.parse(currentDetectedSplitOption);
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
 
     String formatResultValue(String boolValue) {
@@ -197,12 +196,13 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
                 padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
                 child: Column(
                   children: [
+                    const _SplitOption(),
                     _FirstChannelLoading(
                       firstChannelLoadingFrequencyTextEditingController:
                           firstChannelLoadingFrequencyTextEditingController,
                       firstChannelLoadingLevelTextEditingController:
                           firstChannelLoadingLevelTextEditingController,
-                      currentDetectedSplitOption: intCurrentDetectedSplitOption,
+                      currentDetectedSplitOption: currentDetectedSplitOption,
                     ),
                     _LastChannelLoading(
                       lastChannelLoadingFrequencyTextEditingController:
@@ -406,7 +406,7 @@ class _ActionButton extends StatelessWidget {
                   if (kDebugMode) {
                     context
                         .read<Setting18ConfigEditBloc>()
-                        .add(const ConfigSavedAndSubmitted());
+                        .add(const ConfigSubmitted());
                   } else {
                     bool? isMatch =
                         await showConfirmInputDialog(context: context);
@@ -416,7 +416,7 @@ class _ActionButton extends StatelessWidget {
                         if (isMatch) {
                           context
                               .read<Setting18ConfigEditBloc>()
-                              .add(const ConfigSavedAndSubmitted());
+                              .add(const ConfigSubmitted());
                         }
                       }
                     }
@@ -461,6 +461,28 @@ class _ActionButton extends StatelessWidget {
   }
 }
 
+class _SplitOption extends StatelessWidget {
+  const _SplitOption({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ConfigEditBloc, Setting18ConfigEditState>(
+      buildWhen: (previous, current) =>
+          previous.splitOption != current.splitOption,
+      builder: (context, state) {
+        return splitOptionGridViewButton(
+          context: context,
+          editMode: true,
+          splitOption: state.splitOption,
+          onGridPressed: (index) => context
+              .read<Setting18ConfigEditBloc>()
+              .add(SplitOptionChanged(splitOptionValues[index])),
+        );
+      },
+    );
+  }
+}
+
 class _FirstChannelLoading extends StatelessWidget {
   const _FirstChannelLoading({
     super.key,
@@ -471,7 +493,7 @@ class _FirstChannelLoading extends StatelessWidget {
 
   final TextEditingController firstChannelLoadingFrequencyTextEditingController;
   final TextEditingController firstChannelLoadingLevelTextEditingController;
-  final int currentDetectedSplitOption;
+  final String currentDetectedSplitOption;
 
   @override
   Widget build(BuildContext context) {
