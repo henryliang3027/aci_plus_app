@@ -149,9 +149,10 @@ class _DeviceListView extends StatelessWidget {
             insetPadding: EdgeInsets.symmetric(
               horizontal: width * 0.01,
             ),
-            child: Setting18ConfigEditPage(
-              selectedPartId: selectedPartId,
-            ),
+            child: Text('123'),
+            // Setting18ConfigEditPage(
+            //   selectedPartId: selectedPartId,
+            // ),
           );
         },
       );

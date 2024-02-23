@@ -2,9 +2,10 @@ import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_blo
 import 'package:aci_plus_app/advanced/view/qr_code_generator_page.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_scanner.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
+import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/setting_items_table.dart';
+import 'package:aci_plus_app/repositories/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -162,10 +163,10 @@ class _DeviceListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> showModuleSettingDialog({
-      required String selectedPartId,
+    Future<bool?> showAddConfigDialog({
+      required String groupId,
     }) async {
-      return showDialog<void>(
+      return showDialog<bool>(
         context: context,
         barrierDismissible: false, // user must tap button!
 
@@ -178,15 +179,148 @@ class _DeviceListView extends StatelessWidget {
               horizontal: width * 0.01,
             ),
             child: Setting18ConfigEditPage(
-              selectedPartId: selectedPartId,
+              groupId: groupId,
             ),
           );
         },
       );
     }
 
+    Future<bool?> showEditConfigDialog({
+      Config? config,
+    }) async {
+      return showDialog<bool>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.01,
+            ),
+            child: Setting18ConfigEditPage(
+              config: config,
+              isEdit: true,
+            ),
+          );
+        },
+      );
+    }
+
+    Future<bool?> showConfirmDeleteDialog({required String configName}) {
+      return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context)!.dialogTitleDeleteConfig,
+            ),
+            content: Row(
+              children: [
+                Text(AppLocalizations.of(context)!.dialogMessageDeleteConfig),
+                Text(
+                  '$configName ',
+                  style: const TextStyle(color: CustomStyle.customRed),
+                ),
+                const Text(
+                  '?',
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageCancel,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(false); // pop dialog
+                },
+              ),
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageOk,
+                  style: const TextStyle(color: CustomStyle.customRed),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<bool?> showSetAsDefaultDialog({
+      required String configName,
+    }) {
+      String localizedText = AppLocalizations.of(context)!
+          .dialogMessageSetAsDefaultConfig(configName);
+      int configNameIndex = localizedText.indexOf(configName);
+
+      return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context)!.dialogTitleNotice,
+            ),
+            content: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: localizedText.substring(0, configNameIndex),
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  TextSpan(
+                    text: localizedText.substring(
+                        configNameIndex, configNameIndex + configName.length),
+                    style: const TextStyle(
+                      color: CustomStyle.customRed,
+                    ),
+                  ),
+                  TextSpan(
+                    text: localizedText.substring(
+                        configNameIndex + configName.length,
+                        localizedText.length),
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageCancel,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(false); // pop dialog
+                },
+              ),
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageOk,
+                  style: const TextStyle(color: CustomStyle.customRed),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     Widget configCard({
-      required String partId,
+      required Config config,
     }) {
       return Card(
         // margin: EdgeInsets.zero,
@@ -198,109 +332,179 @@ class _DeviceListView extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            // color: index % 2 == 0
-            //     ? const Color.fromARGB(255, 197, 204, 246)
-            //     : const Color.fromARGB(255, 222, 227, 255),
+            color: config.isDefault == '1'
+                ? CustomStyle.customGreen
+                : Theme.of(context).colorScheme.onPrimary,
           ),
           height: 100,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 26.0,
-                  ),
-                  child: Text(
-                    partIdMap[partId]!,
-                    style: const TextStyle(
-                      fontSize: CustomStyle.size36,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(8.0),
+            onLongPress: () {
+              showSetAsDefaultDialog(configName: config.name).then((result) {
+                if (result != null) {
+                  if (result) {
+                    context
+                        .read<Setting18ConfigBloc>()
+                        .add(DefaultConfigChanged(config.id));
+                  }
+                }
+              });
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 26.0,
+                    ),
+                    child: Text(
+                      config.name,
+                      style: const TextStyle(
+                        fontSize: CustomStyle.size36,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 12,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          context
-                              .read<Setting18ConfigBloc>()
-                              .add(QRDataGenerated(partId));
-                        },
-                        icon: const Icon(
-                          Icons.qr_code_2,
-                          size: 26,
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      right: 12,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            showConfirmDeleteDialog(
+                              configName: config.name,
+                            ).then((result) {
+                              if (result != null) {
+                                if (result) {
+                                  context
+                                      .read<Setting18ConfigBloc>()
+                                      .add(ConfigDeleted(config.id));
+                                }
+                              }
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            size: 26,
+                          ),
                         ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          showModuleSettingDialog(selectedPartId: partId);
-                        },
-                        icon: const Icon(
-                          Icons.edit,
-                          size: 26,
+                        IconButton(
+                          onPressed: () async {
+                            showEditConfigDialog(config: config).then((result) {
+                              context
+                                  .read<Setting18ConfigBloc>()
+                                  .add(const ConfigsRequested());
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            size: 26,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
     }
 
-    List<Widget> buildMOTOConfigListView({
-      required List<String> partIds,
+    List<Widget> buildTrunkConfigListView({
+      required List<Config> configs,
     }) {
+      List<Config> trunkConfigs =
+          configs.where((config) => config.groupId == '0').toList();
+
       return [
         Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 20.0,
             horizontal: 20.0,
           ),
-          child: Text(
-            partIdMap[partIds[0]]!.split(' ')[0],
-            style: const TextStyle(
-              fontSize: CustomStyle.sizeXL,
-              fontWeight: FontWeight.w500,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.trunkAmplifier,
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              IconButton(
+                onPressed: () async {
+                  showAddConfigDialog(groupId: '0').then(
+                    (result) {
+                      context
+                          .read<Setting18ConfigBloc>()
+                          .add(const ConfigsRequested());
+                    },
+                  );
+                },
+                icon: const Icon(
+                  Icons.add,
+                ),
+              ),
+            ],
           ),
         ),
-        for (String partId in partIds) ...[
-          configCard(partId: partId),
+        for (Config trunkConfig in trunkConfigs) ...[
+          configCard(config: trunkConfig),
         ],
       ];
     }
 
-    List<Widget> buildCCorConfigListView({
-      required List<String> partIds,
+    List<Widget> buildDistributionConfigListView({
+      required List<Config> configs,
     }) {
+      List<Config> distributionConfigs =
+          configs.where((config) => config.groupId == '1').toList();
+
       return [
         Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 20.0,
             horizontal: 20.0,
           ),
-          child: Text(
-            partIdMap[partIds[0]]!.split(' ')[0],
-            style: const TextStyle(
-              fontSize: CustomStyle.sizeXL,
-              fontWeight: FontWeight.w500,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.distributionAmplifier,
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              IconButton(
+                onPressed: () async {
+                  showAddConfigDialog(groupId: '1').then(
+                    (result) {
+                      context
+                          .read<Setting18ConfigBloc>()
+                          .add(const ConfigsRequested());
+                    },
+                  );
+                },
+                icon: const Icon(
+                  Icons.add,
+                ),
+              ),
+            ],
           ),
         ),
-        for (String partId in partIds) ...[
-          configCard(partId: partId),
+        for (Config distributionConfig in distributionConfigs) ...[
+          configCard(config: distributionConfig),
         ],
       ];
     }
@@ -310,11 +514,11 @@ class _DeviceListView extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ...buildMOTOConfigListView(partIds: state.partIds.sublist(0, 2)),
+            ...buildTrunkConfigListView(configs: state.configs),
             const SizedBox(
               height: 20,
             ),
-            ...buildCCorConfigListView(partIds: state.partIds.sublist(2)),
+            ...buildDistributionConfigListView(configs: state.configs),
           ],
         );
       },

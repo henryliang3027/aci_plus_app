@@ -16,17 +16,17 @@ class Setting18ConfigEditBloc
     extends Bloc<Setting18ConfigEditEvent, Setting18ConfigEditState> {
   Setting18ConfigEditBloc({
     required Amp18Repository amp18Repository,
-    required String selectedPartId,
-    required bool isShortcut,
+    Config? config,
+    String? groupId,
   })  : _amp18Repository = amp18Repository,
-        _selectedPartId = selectedPartId,
+        _config = config,
+        _groupId = groupId,
         _configApi = ConfigApi(),
-        super(Setting18ConfigEditState(
-          isShortcut: isShortcut,
-        )) {
+        super(const Setting18ConfigEditState()) {
     on<ConfigIntitialized>(_onConfigIntitialized);
-    on<ConfigSaved>(_onConfigSaved);
+    on<ConfigAdded>(_onConfigAdded);
     on<ConfigSubmitted>(_onConfigSubmitted);
+    on<ConfigUpdated>(_onConfigUpdated);
     // on<QRCodeDataScanned>(_onQRCodeDataScanned);
     // on<QRCodeDataGenerated>(_onQRCodeDataGenerated);
     on<SplitOptionChanged>(_onSplitOptionChanged);
@@ -41,7 +41,8 @@ class Setting18ConfigEditBloc
   }
 
   final Amp18Repository _amp18Repository;
-  final String _selectedPartId;
+  final Config? _config;
+  final String? _groupId;
   final ConfigApi _configApi;
 
   Future<void> _onConfigIntitialized(
@@ -55,164 +56,73 @@ class Setting18ConfigEditBloc
       settingStatus: SubmissionStatus.none,
     ));
 
-    List<dynamic> result = _configApi.getConfigByPartId(_selectedPartId);
+    int id = await _configApi.getConfigAutoIncrementId();
 
-    if (result[0]) {
-      Config config = result[1];
-      IntegerInput firstChannelLoadingFrequency =
-          config.firstChannelLoadingFrequency.isNotEmpty
-              ? IntegerInput.dirty(config.firstChannelLoadingFrequency)
-              : const IntegerInput.pure();
-      FloatPointInput firstChannelLoadingLevel =
-          config.firstChannelLoadingLevel.isNotEmpty
-              ? FloatPointInput.dirty(config.firstChannelLoadingLevel)
-              : const FloatPointInput.pure();
-      IntegerInput lastChannelLoadingFrequency =
-          config.lastChannelLoadingFrequency.isNotEmpty
-              ? IntegerInput.dirty(config.lastChannelLoadingFrequency)
-              : const IntegerInput.pure();
-      FloatPointInput lastChannelLoadingLevel =
-          config.lastChannelLoadingLevel.isNotEmpty
-              ? FloatPointInput.dirty(config.lastChannelLoadingLevel)
-              : const FloatPointInput.pure();
+    String groupId = '';
+    String name = 'Config$id';
+    String splitOption = '';
+    String rawFirstChannelLoadingFrequency = '258';
+    String rawFirstChannelLoadingLevel = '34.0';
+    String rawLastChannelLoadingFrequency = '1794';
+    String rawLastChannelLoadingLevel = '51.1';
+    String isDefault = '0';
 
-      emit(state.copyWith(
-        formStatus: FormStatus.requestSuccess,
-        saveStatus: SubmissionStatus.none,
-        settingStatus: SubmissionStatus.none,
-        selectedPartId: _selectedPartId,
-        splitOption: config.splitOption,
+    if (_config != null) {
+      groupId = _config!.groupId;
+      name = _config!.name;
+      splitOption = _config!.splitOption;
+      rawFirstChannelLoadingFrequency = _config!.firstChannelLoadingFrequency;
+      rawFirstChannelLoadingLevel = _config!.firstChannelLoadingLevel;
+      rawLastChannelLoadingFrequency = _config!.lastChannelLoadingFrequency;
+      rawLastChannelLoadingLevel = _config!.lastChannelLoadingLevel;
+      isDefault = _config!.isDefault;
+    } else {
+      groupId = _groupId ?? '';
+    }
+
+    IntegerInput firstChannelLoadingFrequency =
+        rawFirstChannelLoadingFrequency.isNotEmpty
+            ? IntegerInput.dirty(rawFirstChannelLoadingFrequency)
+            : const IntegerInput.pure();
+    FloatPointInput firstChannelLoadingLevel =
+        rawFirstChannelLoadingLevel.isNotEmpty
+            ? FloatPointInput.dirty(rawFirstChannelLoadingLevel)
+            : const FloatPointInput.pure();
+    IntegerInput lastChannelLoadingFrequency =
+        rawLastChannelLoadingFrequency.isNotEmpty
+            ? IntegerInput.dirty(rawLastChannelLoadingFrequency)
+            : const IntegerInput.pure();
+    FloatPointInput lastChannelLoadingLevel =
+        rawLastChannelLoadingLevel.isNotEmpty
+            ? FloatPointInput.dirty(rawLastChannelLoadingLevel)
+            : const FloatPointInput.pure();
+
+    emit(state.copyWith(
+      formStatus: FormStatus.requestSuccess,
+      saveStatus: SubmissionStatus.none,
+      settingStatus: SubmissionStatus.none,
+      groupId: groupId,
+      name: name,
+      splitOption: splitOption,
+      firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+      firstChannelLoadingLevel: firstChannelLoadingLevel,
+      lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+      lastChannelLoadingLevel: lastChannelLoadingLevel,
+      isInitialize: true,
+      initialValues: {
+        DataKey.firstChannelLoadingFrequency: rawFirstChannelLoadingFrequency,
+        DataKey.firstChannelLoadingLevel: rawFirstChannelLoadingLevel,
+        DataKey.lastChannelLoadingFrequency: rawLastChannelLoadingFrequency,
+        DataKey.lastChannelLoadingLevel: rawLastChannelLoadingLevel,
+      },
+      enableSubmission: _isEnabledSubmission(
+        splitOption: splitOption,
         firstChannelLoadingFrequency: firstChannelLoadingFrequency,
         firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
         lastChannelLoadingLevel: lastChannelLoadingLevel,
-        isInitialize: true,
-        initialValues: {
-          DataKey.firstChannelLoadingFrequency:
-              config.firstChannelLoadingFrequency,
-          DataKey.firstChannelLoadingLevel: config.firstChannelLoadingLevel,
-          DataKey.lastChannelLoadingFrequency:
-              config.lastChannelLoadingFrequency,
-          DataKey.lastChannelLoadingLevel: config.lastChannelLoadingLevel,
-        },
-        enableSubmission: _isEnabledSubmission(
-          splitOption: config.splitOption,
-          firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-          firstChannelLoadingLevel: firstChannelLoadingLevel,
-          lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-          lastChannelLoadingLevel: lastChannelLoadingLevel,
-        ),
-      ));
-    } else {
-      Map<DataKey, String> characteristicDataCache =
-          _amp18Repository.characteristicDataCache;
-
-      String partId = characteristicDataCache[DataKey.partId] ?? '';
-      String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
-      String initFirstChannelLoadingFrequency =
-          characteristicDataCache[DataKey.firstChannelLoadingFrequency] ?? '';
-      String initFirstChannelLoadingLevel =
-          characteristicDataCache[DataKey.firstChannelLoadingLevel] ?? '';
-      String initLastChannelLoadingFrequency =
-          characteristicDataCache[DataKey.lastChannelLoadingFrequency] ?? '';
-      String initLastChannelLoadingLevel =
-          characteristicDataCache[DataKey.lastChannelLoadingLevel] ?? '';
-
-      // 如果 config 不存在而且 partId == _selectedPartId,
-      // 則寫入 device 上的參數值到手機端資料庫, 並使用 device 上的參數值為初始值
-      if (partId == _selectedPartId) {
-        await _configApi.addConfigByPartId(
-          partId: _selectedPartId,
-          splitOption: splitOption,
-          firstChannelLoadingFrequency: initFirstChannelLoadingFrequency,
-          firstChannelLoadingLevel: initFirstChannelLoadingLevel,
-          lastChannelLoadingFrequency: initLastChannelLoadingFrequency,
-          lastChannelLoadingLevel: initLastChannelLoadingLevel,
-        );
-
-        IntegerInput firstChannelLoadingFrequency =
-            IntegerInput.dirty(initFirstChannelLoadingFrequency);
-        FloatPointInput firstChannelLoadingLevel =
-            FloatPointInput.dirty(initFirstChannelLoadingLevel);
-        IntegerInput lastChannelLoadingFrequency =
-            IntegerInput.dirty(initLastChannelLoadingFrequency);
-        FloatPointInput lastChannelLoadingLevel =
-            FloatPointInput.dirty(initLastChannelLoadingLevel);
-
-        emit(state.copyWith(
-          formStatus: FormStatus.requestSuccess,
-          saveStatus: SubmissionStatus.none,
-          settingStatus: SubmissionStatus.none,
-          selectedPartId: _selectedPartId,
-          splitOption: splitOption,
-          firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-          firstChannelLoadingLevel: firstChannelLoadingLevel,
-          lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-          lastChannelLoadingLevel: lastChannelLoadingLevel,
-          isInitialize: true,
-          initialValues: {
-            DataKey.firstChannelLoadingFrequency:
-                initFirstChannelLoadingFrequency,
-            DataKey.firstChannelLoadingLevel: initFirstChannelLoadingLevel,
-            DataKey.lastChannelLoadingFrequency:
-                initLastChannelLoadingFrequency,
-            DataKey.lastChannelLoadingLevel: initLastChannelLoadingLevel,
-          },
-          enableSubmission: _isEnabledSubmission(
-            splitOption: splitOption,
-            firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-            firstChannelLoadingLevel: firstChannelLoadingLevel,
-            lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-            lastChannelLoadingLevel: lastChannelLoadingLevel,
-          ),
-        ));
-      } else {
-        // 如果 config 不存在而且 partId != _selectedPartId,
-        // 則初始化為空值
-
-        String splitOption = '0';
-        String initFirstChannelLoadingFrequency = '258';
-        String initFirstChannelLoadingLevel = '34.0';
-        String initLastChannelLoadingFrequency = '1794';
-        String initLastChannelLoadingLevel = '51.1';
-
-        IntegerInput firstChannelLoadingFrequency =
-            IntegerInput.dirty(initFirstChannelLoadingFrequency);
-        FloatPointInput firstChannelLoadingLevel =
-            FloatPointInput.dirty(initFirstChannelLoadingLevel);
-        IntegerInput lastChannelLoadingFrequency =
-            IntegerInput.dirty(initLastChannelLoadingFrequency);
-        FloatPointInput lastChannelLoadingLevel =
-            FloatPointInput.dirty(initLastChannelLoadingLevel);
-
-        emit(state.copyWith(
-          formStatus: FormStatus.requestSuccess,
-          saveStatus: SubmissionStatus.none,
-          settingStatus: SubmissionStatus.none,
-          selectedPartId: _selectedPartId,
-          firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-          firstChannelLoadingLevel: firstChannelLoadingLevel,
-          lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-          lastChannelLoadingLevel: lastChannelLoadingLevel,
-          isInitialize: true,
-          initialValues: {
-            DataKey.firstChannelLoadingFrequency:
-                initFirstChannelLoadingFrequency,
-            DataKey.firstChannelLoadingLevel: initFirstChannelLoadingLevel,
-            DataKey.lastChannelLoadingFrequency:
-                initLastChannelLoadingFrequency,
-            DataKey.lastChannelLoadingLevel: initLastChannelLoadingLevel,
-          },
-          enableSubmission: _isEnabledSubmission(
-            splitOption: splitOption,
-            firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-            firstChannelLoadingLevel: firstChannelLoadingLevel,
-            lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-            lastChannelLoadingLevel: lastChannelLoadingLevel,
-          ),
-        ));
-      }
-    }
+      ),
+    ));
   }
 
   // void _onQRCodeDataScanned(
@@ -393,8 +303,8 @@ class Setting18ConfigEditBloc
     ));
   }
 
-  Future<void> _onConfigSaved(
-    ConfigSaved event,
+  Future<void> _onConfigAdded(
+    ConfigAdded event,
     Emitter<Setting18ConfigEditState> emit,
   ) async {
     emit(state.copyWith(
@@ -404,14 +314,46 @@ class Setting18ConfigEditBloc
       isInitialize: false,
     ));
 
-    await _configApi.addConfigByPartId(
-      partId: _selectedPartId,
+    await _configApi.addConfig(
+      groupId: state.groupId,
+      name: state.name,
       splitOption: state.splitOption,
       firstChannelLoadingFrequency: state.firstChannelLoadingFrequency.value,
       firstChannelLoadingLevel: state.firstChannelLoadingLevel.value,
       lastChannelLoadingFrequency: state.lastChannelLoadingFrequency.value,
       lastChannelLoadingLevel: state.lastChannelLoadingLevel.value,
+      isDefault: '0',
     );
+
+    emit(state.copyWith(
+      saveStatus: SubmissionStatus.submissionSuccess,
+    ));
+  }
+
+  void _onConfigUpdated(
+    ConfigUpdated event,
+    Emitter<Setting18ConfigEditState> emit,
+  ) {
+    emit(state.copyWith(
+      // encodeStaus: FormStatus.none,
+      saveStatus: SubmissionStatus.submissionInProgress,
+      settingStatus: SubmissionStatus.none,
+      isInitialize: false,
+    ));
+
+    Config config = Config(
+      id: _config!.id,
+      groupId: _config!.groupId,
+      name: state.name,
+      splitOption: state.splitOption,
+      firstChannelLoadingFrequency: state.firstChannelLoadingFrequency.value,
+      firstChannelLoadingLevel: state.firstChannelLoadingLevel.value,
+      lastChannelLoadingFrequency: state.lastChannelLoadingFrequency.value,
+      lastChannelLoadingLevel: state.lastChannelLoadingLevel.value,
+      isDefault: _config!.isDefault,
+    );
+
+    _configApi.updateConfig(config: config);
 
     emit(state.copyWith(
       saveStatus: SubmissionStatus.submissionSuccess,

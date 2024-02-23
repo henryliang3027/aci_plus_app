@@ -12,6 +12,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+void openHiveBox() {}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -27,7 +29,8 @@ Future<void> main() async {
 
   await Hive.initFlutter('.db');
   Hive.registerAdapter<Config>(ConfigAdapter());
-  await Hive.openBox<Config>('UserData');
+
+  await Hive.openBox<Config>('ConfigData');
 
   runApp(App(
     aciDeviceRepository: ACIDeviceRepository(),

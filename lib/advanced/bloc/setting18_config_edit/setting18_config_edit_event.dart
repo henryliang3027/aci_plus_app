@@ -14,8 +14,15 @@ class ConfigIntitialized extends Setting18ConfigEditEvent {
   List<Object> get props => [];
 }
 
-class ConfigSaved extends Setting18ConfigEditEvent {
-  const ConfigSaved();
+class ConfigAdded extends Setting18ConfigEditEvent {
+  const ConfigAdded();
+
+  @override
+  List<Object> get props => [];
+}
+
+class ConfigUpdated extends Setting18ConfigEditEvent {
+  const ConfigUpdated();
 
   @override
   List<Object> get props => [];

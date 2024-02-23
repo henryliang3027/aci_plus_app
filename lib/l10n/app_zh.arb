@@ -184,6 +184,19 @@
     "dialogTitleSuccess": "成功",
     "dialogTitleEnterYourCode": "輸入代碼",
     "dialogTitleEnterConfirm": "確認",
+    "dialogTitleDeleteConfig": "刪除",
+    "dialogMessageDeleteConfig": "您確定要刪除 ",
+
+    "dialogMessageSetAsDefaultConfig": "您確定要將 {configName} 設為預設嗎 ?",
+    "@dialogMessageSetAsDefaultConfig": {
+        "placeholders": {
+                "configName": {
+                "type": "String",
+                "example": "Config0"
+            }
+        }
+    },
+
     "dialogMessageDeviceNotFound": "未發現任何裝置",
     "dialogMessageBluetoothDisabled": "藍牙未開啟",
     "dialogMessageConnectionFailure": "裝置連線失敗",

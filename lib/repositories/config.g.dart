@@ -17,34 +17,43 @@ class ConfigAdapter extends TypeAdapter<Config> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Config(
-      partId: fields[0] == null ? '' : fields[0] as String,
-      splitOption: fields[1] == null ? '0' : fields[1] as String,
+      id: fields[0] == null ? -1 : fields[0] as int,
+      groupId: fields[1] == null ? '' : fields[1] as String,
+      name: fields[2] == null ? '' : fields[2] as String,
+      splitOption: fields[3] == null ? '0' : fields[3] as String,
       firstChannelLoadingFrequency:
-          fields[2] == null ? '258' : fields[2] as String,
+          fields[4] == null ? '258' : fields[4] as String,
       firstChannelLoadingLevel:
-          fields[3] == null ? '34.0' : fields[3] as String,
+          fields[5] == null ? '34.0' : fields[5] as String,
       lastChannelLoadingFrequency:
-          fields[4] == null ? '1794' : fields[4] as String,
-      lastChannelLoadingLevel: fields[5] == null ? '51.1' : fields[5] as String,
+          fields[6] == null ? '1794' : fields[6] as String,
+      lastChannelLoadingLevel: fields[7] == null ? '51.1' : fields[7] as String,
+      isDefault: fields[8] == null ? '0' : fields[8] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Config obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(9)
       ..writeByte(0)
-      ..write(obj.partId)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.splitOption)
+      ..write(obj.groupId)
       ..writeByte(2)
-      ..write(obj.firstChannelLoadingFrequency)
+      ..write(obj.name)
       ..writeByte(3)
-      ..write(obj.firstChannelLoadingLevel)
+      ..write(obj.splitOption)
       ..writeByte(4)
-      ..write(obj.lastChannelLoadingFrequency)
+      ..write(obj.firstChannelLoadingFrequency)
       ..writeByte(5)
-      ..write(obj.lastChannelLoadingLevel);
+      ..write(obj.firstChannelLoadingLevel)
+      ..writeByte(6)
+      ..write(obj.lastChannelLoadingFrequency)
+      ..writeByte(7)
+      ..write(obj.lastChannelLoadingLevel)
+      ..writeByte(8)
+      ..write(obj.isDefault);
   }
 
   @override
@@ -63,19 +72,25 @@ class ConfigAdapter extends TypeAdapter<Config> {
 // **************************************************************************
 
 Config _$ConfigFromJson(Map<String, dynamic> json) => Config(
-      partId: json['0'] as String,
-      splitOption: json['1'] as String,
-      firstChannelLoadingFrequency: json['2'] as String,
-      firstChannelLoadingLevel: json['3'] as String,
-      lastChannelLoadingFrequency: json['4'] as String,
-      lastChannelLoadingLevel: json['5'] as String,
+      id: json['0'] as int,
+      groupId: json['1'] as String,
+      name: json['2'] as String,
+      splitOption: json['3'] as String,
+      firstChannelLoadingFrequency: json['4'] as String,
+      firstChannelLoadingLevel: json['5'] as String,
+      lastChannelLoadingFrequency: json['6'] as String,
+      lastChannelLoadingLevel: json['7'] as String,
+      isDefault: json['8'] as String,
     );
 
 Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
-      '0': instance.partId,
-      '1': instance.splitOption,
-      '2': instance.firstChannelLoadingFrequency,
-      '3': instance.firstChannelLoadingLevel,
-      '4': instance.lastChannelLoadingFrequency,
-      '5': instance.lastChannelLoadingLevel,
+      '0': instance.id,
+      '1': instance.groupId,
+      '2': instance.name,
+      '3': instance.splitOption,
+      '4': instance.firstChannelLoadingFrequency,
+      '5': instance.firstChannelLoadingLevel,
+      '6': instance.lastChannelLoadingFrequency,
+      '7': instance.lastChannelLoadingLevel,
+      '8': instance.isDefault,
     };

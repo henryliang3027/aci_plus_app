@@ -244,10 +244,10 @@ class _ShortcutCard extends StatelessWidget {
             insetPadding: EdgeInsets.symmetric(
               horizontal: width * 0.01,
             ),
-            child: Setting18ConfigEditPage(
-              selectedPartId: selectedPartId,
-              isShortcut: true,
-            ),
+            child: Text('123'),
+            // const Setting18ConfigEditPage(
+            //   isShortcut: true,
+            // ),
           );
         },
       );

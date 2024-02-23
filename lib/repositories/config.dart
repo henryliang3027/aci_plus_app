@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,37 +9,52 @@ part 'config.g.dart';
 @HiveType(typeId: 1)
 class Config {
   const Config({
-    required this.partId,
+    required this.id,
+    required this.groupId,
+    required this.name,
     required this.splitOption,
     required this.firstChannelLoadingFrequency,
     required this.firstChannelLoadingLevel,
     required this.lastChannelLoadingFrequency,
     required this.lastChannelLoadingLevel,
+    required this.isDefault,
   });
 
   @JsonKey(name: '0')
-  @HiveField(0, defaultValue: '')
-  final String partId;
+  @HiveField(0, defaultValue: -1)
+  final int id;
 
   @JsonKey(name: '1')
-  @HiveField(1, defaultValue: '0')
-  final String splitOption;
+  @HiveField(1, defaultValue: '')
+  final String groupId;
 
   @JsonKey(name: '2')
-  @HiveField(2, defaultValue: '258')
-  final String firstChannelLoadingFrequency;
+  @HiveField(2, defaultValue: '')
+  final String name;
 
   @JsonKey(name: '3')
-  @HiveField(3, defaultValue: '34.0')
-  final String firstChannelLoadingLevel;
+  @HiveField(3, defaultValue: '0')
+  final String splitOption;
 
   @JsonKey(name: '4')
-  @HiveField(4, defaultValue: '1794')
-  final String lastChannelLoadingFrequency;
+  @HiveField(4, defaultValue: '258')
+  final String firstChannelLoadingFrequency;
 
   @JsonKey(name: '5')
-  @HiveField(5, defaultValue: '51.1')
+  @HiveField(5, defaultValue: '34.0')
+  final String firstChannelLoadingLevel;
+
+  @JsonKey(name: '6')
+  @HiveField(6, defaultValue: '1794')
+  final String lastChannelLoadingFrequency;
+
+  @JsonKey(name: '7')
+  @HiveField(7, defaultValue: '51.1')
   final String lastChannelLoadingLevel;
+
+  @JsonKey(name: '8')
+  @HiveField(8, defaultValue: '0')
+  final String isDefault;
 
   factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
 

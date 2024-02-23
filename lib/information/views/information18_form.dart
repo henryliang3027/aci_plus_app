@@ -229,9 +229,7 @@ class _ShortcutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> showModuleSettingDialog({
-      required String selectedPartId,
-    }) async {
+    Future<void> showModuleSettingDialog() async {
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
@@ -244,10 +242,11 @@ class _ShortcutCard extends StatelessWidget {
             insetPadding: EdgeInsets.symmetric(
               horizontal: width * 0.01,
             ),
-            child: Setting18ConfigEditPage(
-              selectedPartId: selectedPartId,
-              isShortcut: true,
-            ),
+            child: Text('123'),
+
+            // const Setting18ConfigEditPage(
+            //   isShortcut: true,
+            // ),
           );
         },
       );
@@ -291,9 +290,7 @@ class _ShortcutCard extends StatelessWidget {
                                 context
                                     .read<Information18Bloc>()
                                     .add(const AlarmPeriodicUpdateCanceled());
-                                await showModuleSettingDialog(
-                                  selectedPartId: partId,
-                                );
+                                await showModuleSettingDialog();
 
                                 // 設定結束後, 恢復 alarm 定期更新
                                 if (context.mounted) {

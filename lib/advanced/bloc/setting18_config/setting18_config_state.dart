@@ -4,31 +4,25 @@ class Setting18ConfigState extends Equatable {
   const Setting18ConfigState({
     this.formStatus = FormStatus.none,
     this.encodeStaus = FormStatus.none,
-    this.partIds = const [
-      '3', // MOTO MB
-      '2', // MOTO BLE
-      '5', // C-Cor TR
-      '6', // C-Cor BR
-      '7', // C-Cor LE
-    ],
+    this.configs = const [],
     this.encodedData = '',
   });
 
   final FormStatus formStatus;
   final FormStatus encodeStaus;
-  final List<String> partIds;
+  final List<Config> configs;
   final String encodedData;
 
   Setting18ConfigState copyWith({
     FormStatus? formStatus,
     FormStatus? encodeStaus,
-    List<String>? partIds,
+    List<Config>? configs,
     String? encodedData,
   }) {
     return Setting18ConfigState(
       formStatus: formStatus ?? this.formStatus,
       encodeStaus: encodeStaus ?? this.encodeStaus,
-      partIds: partIds ?? this.partIds,
+      configs: configs ?? this.configs,
       encodedData: encodedData ?? this.encodedData,
     );
   }
@@ -37,7 +31,7 @@ class Setting18ConfigState extends Equatable {
   List<Object> get props => [
         formStatus,
         encodeStaus,
-        partIds,
+        configs,
         encodedData,
       ];
 }

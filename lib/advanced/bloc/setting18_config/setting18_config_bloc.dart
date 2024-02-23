@@ -17,11 +17,59 @@ class Setting18ConfigBloc
   })  : _amp18repository = amp18repository,
         _configApi = ConfigApi(),
         super(const Setting18ConfigState()) {
+    on<ConfigsRequested>(_onConfigsRequested);
+    on<ConfigDeleted>(_onConfigDeleted);
+    on<DefaultConfigChanged>(_onDefaultConfigChanged);
     on<QRDataGenerated>(_onQRDataGenerated);
+
+    add(const ConfigsRequested());
   }
 
   final Amp18Repository _amp18repository;
   final ConfigApi _configApi;
+
+  void _onConfigsRequested(
+    ConfigsRequested event,
+    Emitter<Setting18ConfigState> emit,
+  ) {
+    emit(state.copyWith(
+      formStatus: FormStatus.requestInProgress,
+    ));
+
+    List<Config> configs = _configApi.getAllConfigs();
+
+    emit(state.copyWith(
+      formStatus: FormStatus.requestSuccess,
+      configs: configs,
+    ));
+  }
+
+  void _onConfigDeleted(
+    ConfigDeleted event,
+    Emitter<Setting18ConfigState> emit,
+  ) {
+    _configApi.deleteConfigByid(event.id);
+
+    List<Config> configs = _configApi.getAllConfigs();
+
+    emit(state.copyWith(
+      formStatus: FormStatus.requestSuccess,
+      configs: configs,
+    ));
+  }
+
+  void _onDefaultConfigChanged(
+    DefaultConfigChanged event,
+    Emitter<Setting18ConfigState> emit,
+  ) {
+    _configApi.setDefaultConfigById(event.id);
+
+    List<Config> configs = _configApi.getAllConfigs();
+
+    emit(state.copyWith(
+      configs: configs,
+    ));
+  }
 
   void _onQRDataGenerated(
     QRDataGenerated event,
@@ -31,40 +79,40 @@ class Setting18ConfigBloc
       encodeStaus: FormStatus.requestInProgress,
     ));
 
-    List<dynamic> result = _configApi.getConfigByPartId(event.selectedPartId);
+    // List<dynamic> result = _configApi.getConfigByKey(event.selectedPartId);
 
-    if (result[0]) {
-      Config config = result[1];
+    // if (result[0]) {
+    //   Config config = result[1];
 
-      // StringBuffer stringBuffer = StringBuffer();
+    //   // StringBuffer stringBuffer = StringBuffer();
 
-      // stringBuffer.write('${event.selectedPartId},');
-      // stringBuffer.write('${config.firstChannelLoadingFrequency},');
-      // stringBuffer.write('${config.firstChannelLoadingLevel},');
-      // stringBuffer.write('${config.lastChannelLoadingFrequency},');
-      // stringBuffer.write(config.lastChannelLoadingLevel);
+    //   // stringBuffer.write('${event.selectedPartId},');
+    //   // stringBuffer.write('${config.firstChannelLoadingFrequency},');
+    //   // stringBuffer.write('${config.firstChannelLoadingLevel},');
+    //   // stringBuffer.write('${config.lastChannelLoadingFrequency},');
+    //   // stringBuffer.write(config.lastChannelLoadingLevel);
 
-      String encodedData = jsonEncode(config.toJson());
+    //   String encodedData = jsonEncode(config.toJson());
 
-      emit(state.copyWith(
-        encodeStaus: FormStatus.requestSuccess,
-        encodedData: encodedData,
-      ));
-    } else {
-      StringBuffer stringBuffer = StringBuffer();
+    //   emit(state.copyWith(
+    //     encodeStaus: FormStatus.requestSuccess,
+    //     encodedData: encodedData,
+    //   ));
+    // } else {
+    //   StringBuffer stringBuffer = StringBuffer();
 
-      stringBuffer.write('${event.selectedPartId},');
-      stringBuffer.write('258,');
-      stringBuffer.write('34.0,');
-      stringBuffer.write('1794,');
-      stringBuffer.write('51.1');
+    //   stringBuffer.write('${event.selectedPartId},');
+    //   stringBuffer.write('258,');
+    //   stringBuffer.write('34.0,');
+    //   stringBuffer.write('1794,');
+    //   stringBuffer.write('51.1');
 
-      String encodedData = stringBuffer.toString();
+    //   String encodedData = stringBuffer.toString();
 
-      emit(state.copyWith(
-        encodeStaus: FormStatus.requestSuccess,
-        encodedData: encodedData,
-      ));
-    }
+    //   emit(state.copyWith(
+    //     encodeStaus: FormStatus.requestSuccess,
+    //     encodedData: encodedData,
+    //   ));
+    // }
   }
 }

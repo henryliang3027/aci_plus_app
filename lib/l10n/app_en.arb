@@ -185,6 +185,19 @@
     "dialogTitleSuccess": "Success",
     "dialogTitleEnterYourCode": "Enter Your Code",
     "dialogTitleEnterConfirm": "Confirm",
+    "dialogTitleDeleteConfig": "Delete",
+    "dialogMessageDeleteConfig": "Do you want to delete ",
+
+    "dialogMessageSetAsDefaultConfig": "Do you want to set {configName} as default ?",
+    "@dialogMessageSetAsDefaultConfig": {
+        "placeholders": {
+                "configName": {
+                "type": "String",
+                "example": "Config0"
+            }
+        }
+    },
+
     "dialogMessageDeviceNotFound": "Device Not Found",
     "dialogMessageBluetoothDisabled": "Bluetooth Is Disabled",
     "dialogMessageConnectionFailure": "Device Connection Failed",

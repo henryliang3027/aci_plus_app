@@ -1,10 +1,7 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_config_edit/setting18_config_edit_bloc.dart';
-// import 'package:aci_plus_app/advanced/view/qr_code_generator_page.dart';
-// import 'package:aci_plus_app/advanced/view/qr_code_scanner.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
@@ -17,7 +14,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class Setting18ConfigEditForm extends StatefulWidget {
   const Setting18ConfigEditForm({
     super.key,
+    required this.isEdit,
   });
+
+  final bool isEdit;
 
   @override
   State<Setting18ConfigEditForm> createState() =>
@@ -216,6 +216,7 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
                     // const _ActionTool(),
                     _ActionButton(
                       partId: partId,
+                      isEdit: widget.isEdit,
                     ),
                   ],
                 ),
@@ -236,7 +237,7 @@ class _PartName extends StatelessWidget {
     return BlocBuilder<Setting18ConfigEditBloc, Setting18ConfigEditState>(
       builder: (context, state) {
         return Text(
-          partIdMap[state.selectedPartId] ?? '',
+          state.name,
           style: TextStyle(
             fontSize: CustomStyle.sizeXXL,
             color: Theme.of(context).colorScheme.onPrimary,
@@ -330,9 +331,11 @@ class _ActionButton extends StatelessWidget {
   const _ActionButton({
     super.key,
     required this.partId,
+    required this.isEdit,
   });
 
   final String partId;
+  final bool isEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -365,9 +368,17 @@ class _ActionButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: enableSubmission
               ? () {
-                  context
-                      .read<Setting18ConfigEditBloc>()
-                      .add(const ConfigSaved());
+                  if (isEdit) {
+                    context
+                        .read<Setting18ConfigEditBloc>()
+                        .add(const ConfigUpdated());
+                  } else {
+                    context
+                        .read<Setting18ConfigEditBloc>()
+                        .add(const ConfigAdded());
+
+                    Navigator.pop(context);
+                  }
                 }
               : null,
           style: ElevatedButton.styleFrom(
@@ -445,14 +456,9 @@ class _ActionButton extends StatelessWidget {
             alignment: WrapAlignment.end,
             children: [
               getCancelButton(),
-              state.isShortcut
-                  ? getExecuteButton(
-                      selectedPartId: state.selectedPartId,
-                      enableSubmission: state.enableSubmission,
-                    )
-                  : getSavingButton(
-                      enableSubmission: state.enableSubmission,
-                    ),
+              getSavingButton(
+                enableSubmission: state.enableSubmission,
+              ),
             ],
           ),
         );
@@ -504,8 +510,6 @@ class _FirstChannelLoading extends StatelessWidget {
           title: '${AppLocalizations.of(context)!.startFrequency}:',
           editMode1: true,
           editMode2: true,
-          reaOnly1: state.isShortcut ? true : false,
-          reaOnly2: state.isShortcut ? true : false,
           textEditingControllerName1:
               'setting18Form_firstChannelLoadingFrequencyInput_textField',
           textEditingControllerName2:
@@ -560,8 +564,6 @@ class _LastChannelLoading extends StatelessWidget {
           title: '${AppLocalizations.of(context)!.stopFrequency}:',
           editMode1: true,
           editMode2: true,
-          reaOnly1: state.isShortcut ? true : false,
-          reaOnly2: state.isShortcut ? true : false,
           textEditingControllerName1:
               'setting18Form_lastChannelLoadingFrequencyInput_textField',
           textEditingControllerName2:

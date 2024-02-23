@@ -184,6 +184,19 @@
     "dialogTitleSuccess": "Éxito",
     "dialogTitleEnterYourCode": "Ingrese Su Código",
     "dialogTitleEnterConfirm": "Confirmar",
+    "dialogTitleDeleteConfig": "Eliminar",
+    "dialogMessageDeleteConfig": "¿Quieres eliminar ",
+
+    "dialogMessageSetAsDefaultConfig": "¿Quieres establecer {configName} como predeterminado?",
+    "@dialogMessageSetAsDefaultConfig": {
+        "placeholders": {
+                "configName": {
+                "type": "String",
+                "example": "Config0"
+            }
+        }
+    },
+
     "dialogMessageDeviceNotFound": "Dispositivo no encontrado",
     "dialogMessageBluetoothDisabled": "Bluetooth está deshabilitado",
     "dialogMessageConnectionFailure": "Fallo en la conexión del dispositivo",
