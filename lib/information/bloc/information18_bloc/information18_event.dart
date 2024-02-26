@@ -7,6 +7,15 @@ abstract class Information18Event extends Equatable {
   List<Object> get props => [];
 }
 
+class ConfigLoaded extends Information18Event {
+  const ConfigLoaded(this.partId);
+
+  final String partId;
+
+  @override
+  List<Object> get props => [partId];
+}
+
 class AlarmUpdated extends Information18Event {
   const AlarmUpdated();
 

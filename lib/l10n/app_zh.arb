@@ -150,6 +150,7 @@
 
     "trunkAmplifier": "幹線放大器",
     "distributionAmplifier": "支線放大器",
+    "name": "名稱",
 
     "scanQRCode": "掃描條碼",
     "deviceSetting": "設備設定",
@@ -196,6 +197,7 @@
             }
         }
     },
+    "dialogMessageDefaultConfigNotFound": "未找到預設資料, 請新增預設設定檔",
 
     "dialogMessageDeviceNotFound": "未發現任何裝置",
     "dialogMessageBluetoothDisabled": "藍牙未開啟",

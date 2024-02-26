@@ -53,6 +53,15 @@ class ConfigSubmitted extends Setting18ConfigEditEvent {
 //   List<Object> get props => [];
 // }
 
+class NameChanged extends Setting18ConfigEditEvent {
+  const NameChanged(this.name);
+
+  final String name;
+
+  @override
+  List<Object> get props => [name];
+}
+
 class SplitOptionChanged extends Setting18ConfigEditEvent {
   const SplitOptionChanged(this.splitOption);
 

@@ -28,6 +28,8 @@ String getMessageLocalization({
   } else if (msg ==
       'Location permissions are denied. Please provide permission.') {
     return AppLocalizations.of(context)!.dialogMessageGPSPermissionDenied;
+  } else if (msg == 'Preset data not found, please add new preset profiles.') {
+    return AppLocalizations.of(context)!.dialogMessageDefaultConfigNotFound;
   } else {
     return msg;
   }

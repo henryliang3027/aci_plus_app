@@ -65,3 +65,24 @@ class FloatPointInput extends FormzInput<String, ValidationError> {
     return value;
   }
 }
+
+class NameInput extends FormzInput<String, ValidationError> {
+  const NameInput.pure() : super.pure('');
+  const NameInput.dirty([String value = '']) : super.dirty(value);
+
+  @override
+  ValidationError? validator(String value) {
+    RegExp nameRegex = RegExp(r'^[a-zA-Z0-9]{1,10}$');
+
+    if (!nameRegex.hasMatch(value)) {
+      return ValidationError.formatError;
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  String toString() {
+    return value;
+  }
+}

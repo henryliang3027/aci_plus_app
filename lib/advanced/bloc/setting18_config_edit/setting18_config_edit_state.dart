@@ -8,14 +8,13 @@ class Setting18ConfigEditState extends Equatable {
     this.settingStatus = SubmissionStatus.none,
     this.splitOption = '0',
     this.groupId = '',
-    this.name = '',
+    this.name = const NameInput.pure(),
     this.firstChannelLoadingFrequency = const IntegerInput.pure(),
     this.firstChannelLoadingLevel = const FloatPointInput.pure(),
     this.lastChannelLoadingFrequency = const IntegerInput.pure(),
     this.lastChannelLoadingLevel = const FloatPointInput.pure(),
     // this.encodedData = '',
     this.isInitialize = false,
-    this.initialValues = const {},
     this.settingResult = const [],
     this.enableSubmission = false,
   });
@@ -26,7 +25,7 @@ class Setting18ConfigEditState extends Equatable {
   final SubmissionStatus settingStatus;
 
   final String groupId;
-  final String name;
+  final NameInput name;
   final String splitOption;
   final IntegerInput firstChannelLoadingFrequency;
   final FloatPointInput firstChannelLoadingLevel;
@@ -34,7 +33,6 @@ class Setting18ConfigEditState extends Equatable {
   final FloatPointInput lastChannelLoadingLevel;
   // final String encodedData;
   final bool isInitialize;
-  final Map<DataKey, String> initialValues;
   final List<String> settingResult;
   final bool enableSubmission;
 
@@ -44,7 +42,7 @@ class Setting18ConfigEditState extends Equatable {
     SubmissionStatus? saveStatus,
     SubmissionStatus? settingStatus,
     String? groupId,
-    String? name,
+    NameInput? name,
     String? splitOption,
     IntegerInput? firstChannelLoadingFrequency,
     FloatPointInput? firstChannelLoadingLevel,
@@ -52,7 +50,6 @@ class Setting18ConfigEditState extends Equatable {
     FloatPointInput? lastChannelLoadingLevel,
     // String? encodedData,
     bool? isInitialize,
-    Map<DataKey, String>? initialValues,
     List<String>? settingResult,
     bool? enableSubmission,
   }) {
@@ -74,7 +71,6 @@ class Setting18ConfigEditState extends Equatable {
           lastChannelLoadingLevel ?? this.lastChannelLoadingLevel,
       // encodedData: encodedData ?? this.encodedData,
       isInitialize: isInitialize ?? this.isInitialize,
-      initialValues: initialValues ?? this.initialValues,
       settingResult: settingResult ?? this.settingResult,
       enableSubmission: enableSubmission ?? this.enableSubmission,
     );
@@ -95,7 +91,6 @@ class Setting18ConfigEditState extends Equatable {
         lastChannelLoadingLevel,
         // encodedData,
         isInitialize,
-        initialValues,
         settingResult,
         enableSubmission,
       ];

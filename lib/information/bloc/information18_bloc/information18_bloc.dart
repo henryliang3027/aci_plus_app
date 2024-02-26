@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
+import 'package:aci_plus_app/repositories/config.dart';
+import 'package:aci_plus_app/repositories/config_api.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,7 +13,9 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
   Information18Bloc({
     required Amp18Repository amp18Repository,
   })  : _amp18Repository = amp18Repository,
+        _configApi = ConfigApi(),
         super(const Information18State()) {
+    on<ConfigLoaded>(_onConfigLoaded);
     on<AlarmUpdated>(_onAlarmUpdated);
     on<AlarmPeriodicUpdateRequested>(_onAlarmPeriodicUpdateRequested);
     on<AlarmPeriodicUpdateCanceled>(_onAlarmPeriodicUpdateCanceled);
@@ -18,6 +23,34 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
 
   Timer? _timer;
   final Amp18Repository _amp18Repository;
+  final ConfigApi _configApi;
+
+  void _onConfigLoaded(
+    ConfigLoaded event,
+    Emitter<Information18State> emit,
+  ) {
+    emit(state.copyWith(
+      loadConfigStatus: FormStatus.requestInProgress,
+    ));
+
+    String groupId = event.partId == '5' ? '0' : '1';
+
+    List<dynamic> result = _configApi.getDefaultConfigByGroupId(groupId);
+
+    if (result[0]) {
+      Config defaultConfig = result[1];
+
+      emit(state.copyWith(
+        loadConfigStatus: FormStatus.requestSuccess,
+        defaultConfig: defaultConfig,
+      ));
+    } else {
+      emit(state.copyWith(
+        loadConfigStatus: FormStatus.requestFailure,
+        errorMessage: 'Preset data not found, please add new preset profiles.',
+      ));
+    }
+  }
 
   void _onAlarmPeriodicUpdateRequested(
     AlarmPeriodicUpdateRequested event,

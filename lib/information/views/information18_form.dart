@@ -1,10 +1,12 @@
-import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/information/bloc/information18_bloc/information18_bloc.dart';
+import 'package:aci_plus_app/information/views/information18_preset_page.dart';
+import 'package:aci_plus_app/repositories/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -20,37 +22,116 @@ class Information18Form extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.home),
-        centerTitle: true,
-        leading: const _DeviceStatus(),
-        actions: const [_DeviceRefresh()],
-      ),
-      body: const SingleChildScrollView(
-        child: Column(
-          children: [
-            _ConnectionCard(),
-            _ShortcutCard(),
-            _BasicCard(),
-            _AlarmCard(),
-          ],
-        ),
-      ),
-      bottomNavigationBar: HomeBottomNavigationBar18(
-        pageController: pageController,
-        selectedIndex: 2,
-        onTap: (int index) {
-          if (index != 2) {
-            context
-                .read<Information18Bloc>()
-                .add(const AlarmPeriodicUpdateCanceled());
-          }
+    Future<void> showModuleSettingDialog({
+      required Config defaultConfig,
+    }) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
 
-          pageController.jumpToPage(
-            index,
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.01,
+            ),
+            child: Information18PresetPage(
+              defaultConfig: defaultConfig,
+            ),
           );
         },
+      );
+    }
+
+    Future<bool?> showDefaultConfigNotFoundDialog({
+      required String message,
+    }) {
+      return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context)!.dialogTitleNotice,
+            ),
+            content: Text(
+              getMessageLocalization(
+                msg: message,
+                context: context,
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageOk,
+                  // style: const TextStyle(color: CustomStyle.customRed),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    return BlocListener<Information18Bloc, Information18State>(
+      listener: (context, state) async {
+        if (state.loadConfigStatus == FormStatus.requestSuccess) {
+          showModuleSettingDialog(
+            defaultConfig: state.defaultConfig,
+          ).then((value) {
+            // 設定結束後, 恢復 alarm 定期更新
+            context
+                .read<Information18Bloc>()
+                .add(const AlarmPeriodicUpdateRequested());
+          });
+        } else if (state.loadConfigStatus == FormStatus.requestFailure) {
+          showDefaultConfigNotFoundDialog(
+            message: state.errorMessage,
+          ).then((value) {
+            // 設定結束後, 恢復 alarm 定期更新
+
+            context
+                .read<Information18Bloc>()
+                .add(const AlarmPeriodicUpdateRequested());
+          });
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.home),
+          centerTitle: true,
+          leading: const _DeviceStatus(),
+          actions: const [_DeviceRefresh()],
+        ),
+        body: const SingleChildScrollView(
+          child: Column(
+            children: [
+              _ConnectionCard(),
+              _ShortcutCard(),
+              _BasicCard(),
+              _AlarmCard(),
+            ],
+          ),
+        ),
+        bottomNavigationBar: HomeBottomNavigationBar18(
+          pageController: pageController,
+          selectedIndex: 2,
+          onTap: (int index) {
+            if (index != 2) {
+              context
+                  .read<Information18Bloc>()
+                  .add(const AlarmPeriodicUpdateCanceled());
+            }
+
+            pageController.jumpToPage(
+              index,
+            );
+          },
+        ),
       ),
     );
   }
@@ -229,29 +310,6 @@ class _ShortcutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> showModuleSettingDialog() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-
-        builder: (BuildContext context) {
-          var width = MediaQuery.of(context).size.width;
-          // var height = MediaQuery.of(context).size.height;
-
-          return Dialog(
-            insetPadding: EdgeInsets.symmetric(
-              horizontal: width * 0.01,
-            ),
-            child: Text('123'),
-
-            // const Setting18ConfigEditPage(
-            //   isShortcut: true,
-            // ),
-          );
-        },
-      );
-    }
-
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         HomeState homeState = context.read<HomeBloc>().state;
@@ -290,13 +348,10 @@ class _ShortcutCard extends StatelessWidget {
                                 context
                                     .read<Information18Bloc>()
                                     .add(const AlarmPeriodicUpdateCanceled());
-                                await showModuleSettingDialog();
 
-                                // 設定結束後, 恢復 alarm 定期更新
-                                if (context.mounted) {
-                                  context.read<Information18Bloc>().add(
-                                      const AlarmPeriodicUpdateRequested());
-                                }
+                                context
+                                    .read<Information18Bloc>()
+                                    .add(ConfigLoaded(partId));
                               }
                             : null,
                         style: ElevatedButton.styleFrom(

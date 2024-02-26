@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/config.dart';
@@ -28,18 +27,22 @@ class Setting18ConfigBloc
   final Amp18Repository _amp18repository;
   final ConfigApi _configApi;
 
-  void _onConfigsRequested(
+  Future<void> _onConfigsRequested(
     ConfigsRequested event,
     Emitter<Setting18ConfigState> emit,
-  ) {
+  ) async {
     emit(state.copyWith(
       formStatus: FormStatus.requestInProgress,
     ));
+
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String buildVersion = 'V ${packageInfo.version}';
 
     List<Config> configs = _configApi.getAllConfigs();
 
     emit(state.copyWith(
       formStatus: FormStatus.requestSuccess,
+      buildVersion: buildVersion,
       configs: configs,
     ));
   }
@@ -62,7 +65,10 @@ class Setting18ConfigBloc
     DefaultConfigChanged event,
     Emitter<Setting18ConfigState> emit,
   ) {
-    _configApi.setDefaultConfigById(event.id);
+    _configApi.setDefaultConfigById(
+      groupId: event.groupId,
+      id: event.id,
+    );
 
     List<Config> configs = _configApi.getAllConfigs();
 

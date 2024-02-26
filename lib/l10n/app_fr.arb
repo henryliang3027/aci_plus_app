@@ -149,6 +149,7 @@
 
     "trunkAmplifier": "Amplificateur de coffre",
     "distributionAmplifier": "Amplificateur de distribution",
+    "name": "Nom",
 
     "scanQRCode": "Scanner code QR",
     "deviceSetting": "Paramètres de l'appareil",
@@ -195,6 +196,7 @@
             }
         }
     },
+    "dialogMessageDefaultConfigNotFound": "Données prédéfinies non trouvées! Veuillez ajouter de nouveaux profils prédéfinis.",
 
     "dialogMessageDeviceNotFound": "Appareil non trouvé",
     "dialogMessageBluetoothDisabled": "Bluetooth est désactivé",

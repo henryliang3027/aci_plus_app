@@ -2,7 +2,6 @@ import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_blo
 import 'package:aci_plus_app/advanced/view/qr_code_generator_page.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_scanner.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
-import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/config.dart';
@@ -47,11 +46,35 @@ class Setting18ConfigForm extends StatelessWidget {
       child: const SingleChildScrollView(
         child: Column(
           children: [
-            _QRToolbar(),
+            // _QRToolbar(),
+            _BuildVersion(),
             _DeviceListView(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _BuildVersion extends StatelessWidget {
+  const _BuildVersion({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                state.buildVersion,
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -333,7 +356,7 @@ class _DeviceListView extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: config.isDefault == '1'
-                ? CustomStyle.customGreen
+                ? Colors.green.shade400
                 : Theme.of(context).colorScheme.onPrimary,
           ),
           height: 100,
@@ -345,7 +368,10 @@ class _DeviceListView extends StatelessWidget {
                   if (result) {
                     context
                         .read<Setting18ConfigBloc>()
-                        .add(DefaultConfigChanged(config.id));
+                        .add(DefaultConfigChanged(
+                          groupId: config.groupId,
+                          id: config.id,
+                        ));
                   }
                 }
               });
@@ -419,6 +445,40 @@ class _DeviceListView extends StatelessWidget {
       );
     }
 
+    Widget addButton({
+      required List<Config> filteredConfigs,
+      required String groupId,
+    }) {
+      return Material(
+        color: Colors.transparent,
+        child: Ink(
+          decoration: ShapeDecoration(
+            color: filteredConfigs.length < 5
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.inversePrimary,
+            shape: const CircleBorder(),
+          ),
+          child: IconButton(
+            onPressed: filteredConfigs.length < 5
+                ? () async {
+                    showAddConfigDialog(groupId: groupId).then(
+                      (result) {
+                        context
+                            .read<Setting18ConfigBloc>()
+                            .add(const ConfigsRequested());
+                      },
+                    );
+                  }
+                : null,
+            icon: Icon(
+              Icons.add,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
+        ),
+      );
+    }
+
     List<Widget> buildTrunkConfigListView({
       required List<Config> configs,
     }) {
@@ -441,19 +501,9 @@ class _DeviceListView extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              IconButton(
-                onPressed: () async {
-                  showAddConfigDialog(groupId: '0').then(
-                    (result) {
-                      context
-                          .read<Setting18ConfigBloc>()
-                          .add(const ConfigsRequested());
-                    },
-                  );
-                },
-                icon: const Icon(
-                  Icons.add,
-                ),
+              addButton(
+                filteredConfigs: trunkConfigs,
+                groupId: '0',
               ),
             ],
           ),
@@ -486,19 +536,9 @@ class _DeviceListView extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              IconButton(
-                onPressed: () async {
-                  showAddConfigDialog(groupId: '1').then(
-                    (result) {
-                      context
-                          .read<Setting18ConfigBloc>()
-                          .add(const ConfigsRequested());
-                    },
-                  );
-                },
-                icon: const Icon(
-                  Icons.add,
-                ),
+              addButton(
+                filteredConfigs: distributionConfigs,
+                groupId: '1',
               ),
             ],
           ),
