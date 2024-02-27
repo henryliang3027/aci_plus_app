@@ -62,7 +62,7 @@ class _ViewLayout extends StatelessWidget {
           return Stack(
             alignment: Alignment.center,
             children: [
-              const _DeviceListView(),
+              const _Content(),
               Container(
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(70, 158, 158, 158),
@@ -78,8 +78,69 @@ class _ViewLayout extends StatelessWidget {
             ],
           );
         } else {
-          return const _DeviceListView();
+          return const _Content();
         }
+      },
+    );
+  }
+}
+
+class _Content extends StatelessWidget {
+  const _Content({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
+      buildWhen: (previous, current) =>
+          previous.formStatus != current.formStatus,
+      builder: (context, state) {
+        if (state.formStatus.isNone || state.formStatus.isRequestInProgress) {
+          return Center(
+            child: SizedBox(
+              width: CustomStyle.diameter,
+              height: CustomStyle.diameter,
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          );
+        } else {
+          return const SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _Version(),
+                // _QRToolbar(),
+                _DeviceListView(),
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+}
+
+class _Version extends StatelessWidget {
+  const _Version({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
+      buildWhen: (previous, current) =>
+          previous.buildVersion != current.buildVersion,
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                state.buildVersion,
+              )
+            ],
+          ),
+        );
       },
     );
   }
@@ -588,42 +649,19 @@ class _DeviceListView extends StatelessWidget {
     }
 
     return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
-        builder: (context, state) {
-      if (state.formStatus.isNone || state.formStatus.isRequestInProgress) {
-        return Center(
-          child: SizedBox(
-            width: CustomStyle.diameter,
-            height: CustomStyle.diameter,
-            child: CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        );
-      }
-      return SingleChildScrollView(
-        child: Column(
+      buildWhen: (previous, current) => previous.configs != current.configs,
+      builder: (context, state) {
+        return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    state.buildVersion,
-                  )
-                ],
-              ),
-            ),
             ...buildTrunkConfigListView(configs: state.configs),
             const SizedBox(
               height: 20,
             ),
             ...buildDistributionConfigListView(configs: state.configs),
           ],
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }
