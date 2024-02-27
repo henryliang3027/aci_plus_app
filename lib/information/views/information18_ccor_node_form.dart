@@ -229,34 +229,34 @@ class _ShortcutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> showModuleSettingDialog({
-      required String selectedPartId,
-    }) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
+    // Future<void> showModuleSettingDialog({
+    //   required String selectedPartId,
+    // }) async {
+    //   return showDialog<void>(
+    //     context: context,
+    //     barrierDismissible: false, // user must tap button!
 
-        builder: (BuildContext context) {
-          var width = MediaQuery.of(context).size.width;
-          // var height = MediaQuery.of(context).size.height;
+    //     builder: (BuildContext context) {
+    //       var width = MediaQuery.of(context).size.width;
+    //       // var height = MediaQuery.of(context).size.height;
 
-          return Dialog(
-            insetPadding: EdgeInsets.symmetric(
-              horizontal: width * 0.01,
-            ),
-            child: Text('123'),
-            // const Setting18ConfigEditPage(
-            //   isShortcut: true,
-            // ),
-          );
-        },
-      );
-    }
+    //       return Dialog(
+    //         insetPadding: EdgeInsets.symmetric(
+    //           horizontal: width * 0.01,
+    //         ),
+    //         child:
+    //         const Setting18ConfigEditPage(
+    //           isShortcut: true,
+    //         ),
+    //       );
+    //     },
+    //   );
+    // }
 
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         HomeState homeState = context.read<HomeBloc>().state;
-        String partId = homeState.characteristicData[DataKey.partId] ?? '';
+        // String partId = homeState.characteristicData[DataKey.partId] ?? '';
 
         return Card(
           color: Theme.of(context).colorScheme.onPrimary,

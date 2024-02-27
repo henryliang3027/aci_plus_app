@@ -54,11 +54,17 @@ class Information18Form extends StatelessWidget {
           return AlertDialog(
             title: Text(
               AppLocalizations.of(context)!.dialogTitleNotice,
+              style: const TextStyle(
+                color: CustomStyle.customYellow,
+              ),
             ),
             content: Text(
               getMessageLocalization(
                 msg: message,
                 context: context,
+              ),
+              style: const TextStyle(
+                fontSize: CustomStyle.sizeL,
               ),
             ),
             actions: <Widget>[

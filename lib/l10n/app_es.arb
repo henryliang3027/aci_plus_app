@@ -186,7 +186,16 @@
     "dialogTitleEnterYourCode": "Ingrese Su Código",
     "dialogTitleEnterConfirm": "Confirmar",
     "dialogTitleDeleteConfig": "Eliminar",
-    "dialogMessageDeleteConfig": "¿Quieres eliminar ",
+
+    "dialogMessageDeleteConfig": "¿Quieres eliminar {configName}?",
+    "@dialogMessageDeleteConfig": {
+        "placeholders": {
+                "configName": {
+                "type": "String",
+                "example": "Config0"
+            }
+        }
+    },
 
     "dialogMessageSetAsDefaultConfig": "¿Quieres establecer {configName} como predeterminado?",
     "@dialogMessageSetAsDefaultConfig": {

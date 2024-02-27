@@ -186,7 +186,16 @@
     "dialogTitleEnterYourCode": "輸入代碼",
     "dialogTitleEnterConfirm": "確認",
     "dialogTitleDeleteConfig": "刪除",
-    "dialogMessageDeleteConfig": "您確定要刪除 ",
+
+    "dialogMessageDeleteConfig": "您確定要刪除 {configName} 嗎 ?",
+    "@dialogMessageDeleteConfig": {
+        "placeholders": {
+                "configName": {
+                "type": "String",
+                "example": "Config0"
+            }
+        }
+    },
 
     "dialogMessageSetAsDefaultConfig": "您確定要將 {configName} 設為預設嗎 ?",
     "@dialogMessageSetAsDefaultConfig": {

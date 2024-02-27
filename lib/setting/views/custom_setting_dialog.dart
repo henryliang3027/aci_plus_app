@@ -7,11 +7,8 @@ Future<void> showInProgressDialog(BuildContext context) async {
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
-      return WillPopScope(
-        onWillPop: () async {
-          // 避免 Android 使用者點擊系統返回鍵關閉 dialog
-          return false;
-        },
+      return PopScope(
+        canPop: false,
         child: AlertDialog(
           title: Text(
             AppLocalizations.of(context)!.dialogTitleProcessing,
@@ -107,6 +104,9 @@ Future<void> showSuccessDialog(
               children: [
                 Text(
                   AppLocalizations.of(context)!.dialogMessageSaveSuccessful,
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeL,
+                  ),
                 ),
               ],
             ),
@@ -155,6 +155,9 @@ Future<void> showResetToDefaultSuccessDialog(
                 Text(
                   AppLocalizations.of(context)!
                       .dialogMessageResetToDefaultSuccessful,
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeL,
+                  ),
                 ),
               ],
             ),
@@ -203,6 +206,9 @@ Future<void> showResetToDefaultFailureDialog(
                 Text(
                   AppLocalizations.of(context)!
                       .dialogMessageResetToDefaultFailed,
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeL,
+                  ),
                 ),
               ],
             ),

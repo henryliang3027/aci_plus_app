@@ -504,6 +504,9 @@ class _ForwardControlHeader extends StatelessWidget {
                   children: [
                     Text(
                       message,
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeL,
+                      ),
                     ),
                   ],
                 ),
@@ -512,18 +515,18 @@ class _ForwardControlHeader extends StatelessWidget {
             actions: <Widget>[
               TextButton(
                 child: Text(
-                  AppLocalizations.of(context)!.dialogMessageOk,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop(true); // pop dialog
-                },
-              ),
-              TextButton(
-                child: Text(
                   AppLocalizations.of(context)!.dialogMessageCancel,
                 ),
                 onPressed: () {
                   Navigator.of(context).pop(false); // pop dialog
+                },
+              ),
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageOk,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // pop dialog
                 },
               ),
             ],
@@ -643,6 +646,9 @@ class _ReverseControlHeader extends StatelessWidget {
                   children: [
                     Text(
                       message,
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeL,
+                      ),
                     ),
                   ],
                 ),
@@ -651,18 +657,18 @@ class _ReverseControlHeader extends StatelessWidget {
             actions: <Widget>[
               TextButton(
                 child: Text(
-                  AppLocalizations.of(context)!.dialogMessageOk,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop(true); // pop dialog
-                },
-              ),
-              TextButton(
-                child: Text(
                   AppLocalizations.of(context)!.dialogMessageCancel,
                 ),
                 onPressed: () {
                   Navigator.of(context).pop(false); // pop dialog
+                },
+              ),
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageOk,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // pop dialog
                 },
               ),
             ],

@@ -14,7 +14,7 @@ class CustomStyle {
   static const Color customRed = Color(0xffdc3545);
   static const Color customGreen = Color(0xff28a745);
   static const Color customGrey = Color(0xff6c757d);
-  static const Color customYellow = Color(0xffffc107);
+  static const Color customYellow = Color(0xFFFFAA00);
 
   static const String fahrenheitUnit = 'ºF';
   static const String celciusUnit = 'ºC';

@@ -234,6 +234,10 @@ class _DeviceListView extends StatelessWidget {
     }
 
     Future<bool?> showConfirmDeleteDialog({required String configName}) {
+      String localizedText =
+          AppLocalizations.of(context)!.dialogMessageDeleteConfig(configName);
+      int configNameIndex = localizedText.indexOf(configName);
+
       return showDialog<bool>(
         context: context,
         builder: (BuildContext context) {
@@ -241,17 +245,35 @@ class _DeviceListView extends StatelessWidget {
             title: Text(
               AppLocalizations.of(context)!.dialogTitleDeleteConfig,
             ),
-            content: Row(
-              children: [
-                Text(AppLocalizations.of(context)!.dialogMessageDeleteConfig),
-                Text(
-                  '$configName ',
-                  style: const TextStyle(color: CustomStyle.customRed),
-                ),
-                const Text(
-                  '?',
-                ),
-              ],
+            content: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: localizedText.substring(0, configNameIndex),
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  TextSpan(
+                    text: localizedText.substring(
+                        configNameIndex, configNameIndex + configName.length),
+                    style: const TextStyle(
+                      color: CustomStyle.customRed,
+                    ),
+                  ),
+                  TextSpan(
+                    text: localizedText.substring(
+                        configNameIndex + configName.length,
+                        localizedText.length),
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+              style: const TextStyle(
+                fontSize: CustomStyle.sizeL,
+              ),
             ),
             actions: <Widget>[
               TextButton(
@@ -290,6 +312,9 @@ class _DeviceListView extends StatelessWidget {
           return AlertDialog(
             title: Text(
               AppLocalizations.of(context)!.dialogTitleNotice,
+              style: const TextStyle(
+                color: CustomStyle.customYellow,
+              ),
             ),
             content: Text.rich(
               TextSpan(
@@ -316,6 +341,9 @@ class _DeviceListView extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+              style: const TextStyle(
+                fontSize: CustomStyle.sizeL,
               ),
             ),
             actions: <Widget>[
@@ -360,85 +388,89 @@ class _DeviceListView extends StatelessWidget {
                 : Theme.of(context).colorScheme.onPrimary,
           ),
           height: 100,
-          child: InkWell(
-            borderRadius: BorderRadius.circular(8.0),
-            onLongPress: () {
-              showSetAsDefaultDialog(configName: config.name).then((result) {
-                if (result != null) {
-                  if (result) {
-                    context
-                        .read<Setting18ConfigBloc>()
-                        .add(DefaultConfigChanged(
-                          groupId: config.groupId,
-                          id: config.id,
-                        ));
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(8.0),
+              onLongPress: () {
+                showSetAsDefaultDialog(configName: config.name).then((result) {
+                  if (result != null) {
+                    if (result) {
+                      context
+                          .read<Setting18ConfigBloc>()
+                          .add(DefaultConfigChanged(
+                            groupId: config.groupId,
+                            id: config.id,
+                          ));
+                    }
                   }
-                }
-              });
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 26.0,
-                    ),
-                    child: Text(
-                      config.name,
-                      style: const TextStyle(
-                        fontSize: CustomStyle.size36,
+                });
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 26.0,
+                      ),
+                      child: Text(
+                        config.name,
+                        style: const TextStyle(
+                          fontSize: CustomStyle.size36,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      right: 12,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            showConfirmDeleteDialog(
-                              configName: config.name,
-                            ).then((result) {
-                              if (result != null) {
-                                if (result) {
-                                  context
-                                      .read<Setting18ConfigBloc>()
-                                      .add(ConfigDeleted(config.id));
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        right: 12,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              showConfirmDeleteDialog(
+                                configName: config.name,
+                              ).then((result) {
+                                if (result != null) {
+                                  if (result) {
+                                    context
+                                        .read<Setting18ConfigBloc>()
+                                        .add(ConfigDeleted(config.id));
+                                  }
                                 }
-                              }
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.delete,
-                            size: 26,
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.delete,
+                              size: 26,
+                            ),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () async {
-                            showEditConfigDialog(config: config).then((result) {
-                              context
-                                  .read<Setting18ConfigBloc>()
-                                  .add(const ConfigsRequested());
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.edit,
-                            size: 26,
+                          IconButton(
+                            onPressed: () async {
+                              showEditConfigDialog(config: config)
+                                  .then((result) {
+                                context
+                                    .read<Setting18ConfigBloc>()
+                                    .add(const ConfigsRequested());
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.edit,
+                              size: 26,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -454,8 +486,8 @@ class _DeviceListView extends StatelessWidget {
         child: Ink(
           decoration: ShapeDecoration(
             color: filteredConfigs.length < 5
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.inversePrimary,
+                ? Theme.of(context).colorScheme.primary.withAlpha(200)
+                : Colors.grey.withAlpha(200),
             shape: const CircleBorder(),
           ),
           child: IconButton(
