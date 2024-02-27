@@ -91,6 +91,10 @@ class BLEClient {
     }
   }
 
+  Future<int> getRSSI() {
+    return _ble!.readRssi(_qualifiedCharacteristic.deviceId);
+  }
+
   Stream<ScanReport> get scanReport async* {
     _ble ??= FlutterReactiveBle();
     _scanReportStreamController = StreamController<ScanReport>();

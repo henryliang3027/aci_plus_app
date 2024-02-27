@@ -1987,14 +1987,17 @@ class Amp18Repository {
     }
   }
 
-  // 設定藍芽串口的資料傳輸延遲時間, 單位為 ms
+  // 設定藍牙串口的資料傳輸延遲時間, 單位為 ms
   // 例如 MTU = 244, 則每傳輸244byte 就會休息 ms 時間再傳下一筆
   Future<dynamic> set1p8GTransmitDelayTime() async {
     int commandIndex = 354;
 
     print('get data from request command 1p8G$commandIndex');
 
-    int ms = 26;
+    int rssi = await _bleClient.getRSSI();
+
+    // 依據藍牙訊號強度來決定延遲時間
+    int ms = rssi >= -65 ? 26 : 27;
 
     if (Platform.isIOS) {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -2004,15 +2007,12 @@ class Amp18Repository {
       // ios version ex: 16.5
       double version = double.parse(iosDeviceInfo.systemVersion.split('.')[0]);
 
-      if (version >= 16) {
-        ms = 26;
-      } else {
+      if (version < 16) {
         ms = 59;
       }
-    } else {
-      // Android
-      ms = 26;
     }
+
+    print('RSSI: $rssi, Delay: $ms');
 
     // Convert the integer to bytes
     ByteData byteData = ByteData(2);

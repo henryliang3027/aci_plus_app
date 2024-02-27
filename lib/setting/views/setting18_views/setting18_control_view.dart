@@ -1292,7 +1292,7 @@ class _RtnOutputEQ extends StatelessWidget {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         double minValue = 0.0;
-        double maxValue = 15.0;
+        double maxValue = 27.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,

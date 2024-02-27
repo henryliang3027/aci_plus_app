@@ -4,6 +4,7 @@ import 'package:aci_plus_app/advanced/view/qr_code_scanner.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,37 +44,42 @@ class Setting18ConfigForm extends StatelessWidget {
           showGeneratedQRCodeDialog(encodedData: state.encodedData);
         }
       },
-      child: const SingleChildScrollView(
-        child: Column(
-          children: [
-            // _QRToolbar(),
-            _BuildVersion(),
-            _DeviceListView(),
-          ],
-        ),
-      ),
+      child: const _ViewLayout(),
     );
   }
 }
 
-class _BuildVersion extends StatelessWidget {
-  const _BuildVersion({super.key});
+class _ViewLayout extends StatelessWidget {
+  const _ViewLayout({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
+    return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+        if (state.loadingStatus.isRequestInProgress) {
+          return Stack(
+            alignment: Alignment.center,
             children: [
-              Text(
-                state.buildVersion,
-              )
+              const _DeviceListView(),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(70, 158, 158, 158),
+                ),
+                child: const Center(
+                  child: SizedBox(
+                    width: CustomStyle.diameter,
+                    height: CustomStyle.diameter,
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ),
             ],
-          ),
-        );
+          );
+        } else {
+          return const _DeviceListView();
+        }
       },
     );
   }
@@ -582,18 +588,42 @@ class _DeviceListView extends StatelessWidget {
     }
 
     return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
-      builder: (context, state) {
-        return Column(
+        builder: (context, state) {
+      if (state.formStatus.isNone || state.formStatus.isRequestInProgress) {
+        return Center(
+          child: SizedBox(
+            width: CustomStyle.diameter,
+            height: CustomStyle.diameter,
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+        );
+      }
+      return SingleChildScrollView(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    state.buildVersion,
+                  )
+                ],
+              ),
+            ),
             ...buildTrunkConfigListView(configs: state.configs),
             const SizedBox(
               height: 20,
             ),
             ...buildDistributionConfigListView(configs: state.configs),
           ],
-        );
-      },
-    );
+        ),
+      );
+    });
   }
 }

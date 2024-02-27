@@ -365,7 +365,7 @@ class _SplitOption extends StatelessWidget {
       builder: (context, state) {
         return splitOptionGridViewButton(
           context: context,
-          editMode: false,
+          editMode: true,
           splitOption: state.config.splitOption,
           onGridPressed: (index) {},
         );
@@ -393,8 +393,10 @@ class _FirstChannelLoading extends StatelessWidget {
         return twoTextField(
           context: context,
           title: '${AppLocalizations.of(context)!.startFrequency}:',
-          editMode1: false,
-          editMode2: false,
+          editMode1: true,
+          editMode2: true,
+          reaOnly1: true,
+          reaOnly2: true,
           textEditingControllerName1:
               'information18PresetForm_firstChannelLoadingFrequencyInput_textField',
           textEditingControllerName2:
@@ -427,8 +429,10 @@ class _LastChannelLoading extends StatelessWidget {
         return twoTextField(
           context: context,
           title: '${AppLocalizations.of(context)!.stopFrequency}:',
-          editMode1: false,
-          editMode2: false,
+          editMode1: true,
+          editMode2: true,
+          reaOnly1: true,
+          reaOnly2: true,
           textEditingControllerName1:
               'information18PresetForm_lastChannelLoadingFrequencyInput_textField',
           textEditingControllerName2:
