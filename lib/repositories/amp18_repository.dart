@@ -1996,7 +1996,7 @@ class Amp18Repository {
 
     int rssi = await _bleClient.getRSSI();
 
-    // 依據藍牙訊號強度來決定延遲時間
+    // 依據藍牙訊號強度來決定延遲時間, RSSI 為一個負的數值
     int ms = rssi >= -65 ? 26 : 27;
 
     if (Platform.isIOS) {

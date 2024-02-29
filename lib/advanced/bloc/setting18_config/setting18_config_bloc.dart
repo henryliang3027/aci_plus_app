@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
@@ -20,6 +22,7 @@ class Setting18ConfigBloc
     on<ConfigDeleted>(_onConfigDeleted);
     on<DefaultConfigChanged>(_onDefaultConfigChanged);
     on<QRDataGenerated>(_onQRDataGenerated);
+    on<QRDataScanned>(_onQRDataScanned);
 
     add(const ConfigsRequested());
   }
@@ -32,6 +35,8 @@ class Setting18ConfigBloc
     Emitter<Setting18ConfigState> emit,
   ) async {
     emit(state.copyWith(
+      encodeStaus: FormStatus.none,
+      decodeStatus: FormStatus.none,
       formStatus: FormStatus.requestInProgress,
     ));
 
@@ -56,6 +61,8 @@ class Setting18ConfigBloc
     List<Config> configs = _configApi.getAllConfigs();
 
     emit(state.copyWith(
+      encodeStaus: FormStatus.none,
+      decodeStatus: FormStatus.none,
       formStatus: FormStatus.requestSuccess,
       configs: configs,
     ));
@@ -73,6 +80,8 @@ class Setting18ConfigBloc
     List<Config> configs = _configApi.getAllConfigs();
 
     emit(state.copyWith(
+      encodeStaus: FormStatus.none,
+      decodeStatus: FormStatus.none,
       configs: configs,
     ));
   }
@@ -83,42 +92,51 @@ class Setting18ConfigBloc
   ) {
     emit(state.copyWith(
       encodeStaus: FormStatus.requestInProgress,
+      decodeStatus: FormStatus.none,
     ));
 
-    // List<dynamic> result = _configApi.getConfigByKey(event.selectedPartId);
+    List<String> jsons = [
+      for (Config config in state.configs) ...[jsonEncode(config.toJson())]
+    ];
 
-    // if (result[0]) {
-    //   Config config = result[1];
+    emit(state.copyWith(
+      encodeStaus: FormStatus.requestSuccess,
+      encodedData: jsons.join(','),
+    ));
+  }
 
-    //   // StringBuffer stringBuffer = StringBuffer();
+  void _onQRDataScanned(
+    QRDataScanned event,
+    Emitter<Setting18ConfigState> emit,
+  ) {
+    emit(state.copyWith(
+      encodeStaus: FormStatus.none,
+      decodeStatus: FormStatus.requestInProgress,
+    ));
 
-    //   // stringBuffer.write('${event.selectedPartId},');
-    //   // stringBuffer.write('${config.firstChannelLoadingFrequency},');
-    //   // stringBuffer.write('${config.firstChannelLoadingLevel},');
-    //   // stringBuffer.write('${config.lastChannelLoadingFrequency},');
-    //   // stringBuffer.write(config.lastChannelLoadingLevel);
+    List<Config> configs = [];
 
-    //   String encodedData = jsonEncode(config.toJson());
+    RegExp configJsonRegex = RegExp(r'({[^{}]+})');
 
-    //   emit(state.copyWith(
-    //     encodeStaus: FormStatus.requestSuccess,
-    //     encodedData: encodedData,
-    //   ));
-    // } else {
-    //   StringBuffer stringBuffer = StringBuffer();
+    Iterable<Match> matches = configJsonRegex.allMatches(event.rawData);
 
-    //   stringBuffer.write('${event.selectedPartId},');
-    //   stringBuffer.write('258,');
-    //   stringBuffer.write('34.0,');
-    //   stringBuffer.write('1794,');
-    //   stringBuffer.write('51.1');
+    print(event.rawData);
 
-    //   String encodedData = stringBuffer.toString();
+    for (Match match in matches) {
+      String json = match[0]!;
+      print(json);
+      Config config = Config.fromJson(jsonDecode(json));
+      configs.add(config);
+    }
 
-    //   emit(state.copyWith(
-    //     encodeStaus: FormStatus.requestSuccess,
-    //     encodedData: encodedData,
-    //   ));
+    // for (String json in jsons) {
+    //   Config config = jsonDecode(json);
+    //   configs.add(config);
     // }
+
+    emit(state.copyWith(
+      decodeStatus: FormStatus.requestSuccess,
+      configs: configs,
+    ));
   }
 }

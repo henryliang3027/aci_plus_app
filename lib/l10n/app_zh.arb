@@ -207,6 +207,7 @@
         }
     },
     "dialogMessageDefaultConfigNotFound": "未找到預設資料, 請新增預設設定檔",
+    "dialogMessageAllConfigsUpdated": "已更新所有設定檔",
 
     "dialogMessageDeviceNotFound": "未發現任何裝置",
     "dialogMessageBluetoothDisabled": "藍牙未開啟",

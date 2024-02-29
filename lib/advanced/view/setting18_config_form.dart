@@ -38,10 +38,50 @@ class Setting18ConfigForm extends StatelessWidget {
       );
     }
 
+    Future<bool?> showAllConfigUpdatedDialog({
+      Config? config,
+    }) async {
+      return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context)!.dialogTitleSuccess,
+              style: const TextStyle(
+                color: CustomStyle.customGreen,
+              ),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                    AppLocalizations.of(context)!
+                        .dialogMessageAllConfigsUpdated,
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageOk,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return BlocListener<Setting18ConfigBloc, Setting18ConfigState>(
       listener: (context, state) {
         if (state.encodeStaus == FormStatus.requestSuccess) {
           showGeneratedQRCodeDialog(encodedData: state.encodedData);
+        } else if (state.decodeStatus == FormStatus.requestSuccess) {
+          showAllConfigUpdatedDialog();
         }
       },
       child: const _ViewLayout(),
@@ -60,7 +100,7 @@ class _ViewLayout extends StatelessWidget {
       builder: (context, state) {
         if (state.loadingStatus.isRequestInProgress) {
           return Stack(
-            alignment: Alignment.center,
+            alignment: Alignment.topCenter,
             children: [
               const _Content(),
               Container(
@@ -199,7 +239,7 @@ class _QRToolbar extends StatelessWidget {
                                 onPressed: () {
                                   context
                                       .read<Setting18ConfigBloc>()
-                                      .add(QRDataGenerated('3'));
+                                      .add(const QRDataGenerated());
                                 },
                                 icon: const Icon(
                                   Icons.qr_code_2,
@@ -223,7 +263,11 @@ class _QRToolbar extends StatelessWidget {
                                     QRCodeScanner.route(),
                                   ).then((rawData) {
                                     if (rawData != null) {
-                                      if (rawData.isNotEmpty) {}
+                                      if (rawData.isNotEmpty) {
+                                        context
+                                            .read<Setting18ConfigBloc>()
+                                            .add(QRDataScanned(rawData));
+                                      }
                                     }
                                   });
                                 },
@@ -451,7 +495,7 @@ class _DeviceListView extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: config.isDefault == '1'
-                ? Colors.green.shade400
+                ? CustomStyle.customBlue
                 : Theme.of(context).colorScheme.onPrimary,
           ),
           height: 100,
@@ -459,20 +503,23 @@ class _DeviceListView extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(8.0),
-              onLongPress: () {
-                showSetAsDefaultDialog(configName: config.name).then((result) {
-                  if (result != null) {
-                    if (result) {
-                      context
-                          .read<Setting18ConfigBloc>()
-                          .add(DefaultConfigChanged(
-                            groupId: config.groupId,
-                            id: config.id,
-                          ));
+              onLongPress: config.isDefault == '0'
+                  ? () {
+                      showSetAsDefaultDialog(configName: config.name)
+                          .then((result) {
+                        if (result != null) {
+                          if (result) {
+                            context
+                                .read<Setting18ConfigBloc>()
+                                .add(DefaultConfigChanged(
+                                  groupId: config.groupId,
+                                  id: config.id,
+                                ));
+                          }
+                        }
+                      });
                     }
-                  }
-                });
-              },
+                  : null,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -500,19 +547,21 @@ class _DeviceListView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           IconButton(
-                            onPressed: () {
-                              showConfirmDeleteDialog(
-                                configName: config.name,
-                              ).then((result) {
-                                if (result != null) {
-                                  if (result) {
-                                    context
-                                        .read<Setting18ConfigBloc>()
-                                        .add(ConfigDeleted(config.id));
+                            onPressed: config.isDefault == '0'
+                                ? () {
+                                    showConfirmDeleteDialog(
+                                      configName: config.name,
+                                    ).then((result) {
+                                      if (result != null) {
+                                        if (result) {
+                                          context
+                                              .read<Setting18ConfigBloc>()
+                                              .add(ConfigDeleted(config.id));
+                                        }
+                                      }
+                                    });
                                   }
-                                }
-                              });
-                            },
+                                : null,
                             icon: const Icon(
                               Icons.delete,
                               size: 26,

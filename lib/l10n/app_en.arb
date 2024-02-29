@@ -208,6 +208,7 @@
         }
     },
     "dialogMessageDefaultConfigNotFound": "Preset data not found! Please add new preset profiles.",
+    "dialogMessageAllConfigsUpdated": "All preset profiles have been updated.",
 
     "dialogMessageDeviceNotFound": "Device Not Found",
     "dialogMessageBluetoothDisabled": "Bluetooth Is Disabled",

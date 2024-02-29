@@ -29,10 +29,6 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     ConfigLoaded event,
     Emitter<Information18State> emit,
   ) {
-    emit(state.copyWith(
-      loadConfigStatus: FormStatus.requestInProgress,
-    ));
-
     String groupId = event.partId == '5' ? '0' : '1';
 
     List<dynamic> result = _configApi.getDefaultConfigByGroupId(groupId);
@@ -41,12 +37,12 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
       Config defaultConfig = result[1];
 
       emit(state.copyWith(
-        loadConfigStatus: FormStatus.requestSuccess,
+        isLoadConfigEnabled: true,
         defaultConfig: defaultConfig,
       ));
     } else {
       emit(state.copyWith(
-        loadConfigStatus: FormStatus.requestFailure,
+        isLoadConfigEnabled: false,
         errorMessage: 'Preset data not found, please add new preset profiles.',
       ));
     }

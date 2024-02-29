@@ -2,7 +2,7 @@ part of 'information18_bloc.dart';
 
 class Information18State extends Equatable {
   const Information18State({
-    this.loadConfigStatus = FormStatus.none,
+    this.isLoadConfigEnabled = false,
     this.defaultConfig = const Config(
       id: -1,
       groupId: '-1',
@@ -20,7 +20,7 @@ class Information18State extends Equatable {
     this.errorMessage = '',
   });
 
-  final FormStatus loadConfigStatus;
+  final bool isLoadConfigEnabled;
   final Config defaultConfig;
   final String alarmUSeverity;
   final String alarmTSeverity;
@@ -28,7 +28,7 @@ class Information18State extends Equatable {
   final String errorMessage;
 
   Information18State copyWith({
-    FormStatus? loadConfigStatus,
+    bool? isLoadConfigEnabled,
     Config? defaultConfig,
     String? alarmUSeverity,
     String? alarmTSeverity,
@@ -36,7 +36,7 @@ class Information18State extends Equatable {
     String? errorMessage,
   }) {
     return Information18State(
-      loadConfigStatus: loadConfigStatus ?? this.loadConfigStatus,
+      isLoadConfigEnabled: isLoadConfigEnabled ?? this.isLoadConfigEnabled,
       defaultConfig: defaultConfig ?? this.defaultConfig,
       alarmUSeverity: alarmUSeverity ?? this.alarmUSeverity,
       alarmTSeverity: alarmTSeverity ?? this.alarmTSeverity,
@@ -47,7 +47,7 @@ class Information18State extends Equatable {
 
   @override
   List<Object?> get props => [
-        loadConfigStatus,
+        isLoadConfigEnabled,
         defaultConfig,
         alarmUSeverity,
         alarmTSeverity,

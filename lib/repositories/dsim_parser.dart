@@ -879,9 +879,14 @@ class DsimParser {
       logSheet.insertRowIterables(row, i + 1);
     }
 
-    excel.unLink('Sheet1'); // Excel 預設會自動產生 Sheet1, 所以先unlink
-    excel.delete('Sheet1'); // 再刪除 Sheet1
-    excel.link('Log', logSheet);
+    try {
+      excel.unLink('Sheet1'); // Excel 預設會自動產生 Sheet1, 所以先unlink
+      excel.delete('Sheet1'); // 再刪除 Sheet1
+    } catch (e) {
+      // check issue on https://github.com/justkawal/excel/issues/309
+      // 使用 try-catch 避免無法刪除 Sheet1
+    }
+
     var fileBytes = excel.save();
 
     String timeStamp =

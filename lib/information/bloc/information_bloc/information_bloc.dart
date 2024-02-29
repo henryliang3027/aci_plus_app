@@ -37,10 +37,6 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
     });
 
     print('alarm trigger started');
-
-    emit(state.copyWith(
-      isTimerStarted: true,
-    ));
   }
 
   Future<void> _onAlarmUpdated(
@@ -76,10 +72,6 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
 
     // 等待兩秒再將 isTimerStarted = false, 避免當使用者切到別的頁面時，目前的頁面還沒被 dispose又馬上又觸發 _AlarmCard rebuild 並觸發 event 重新創建 timer
     await Future.delayed(const Duration(seconds: 2));
-
-    emit(state.copyWith(
-      isTimerStarted: false,
-    ));
   }
 
   @override

@@ -5,25 +5,21 @@ class InformationState extends Equatable {
     this.alarmRSeverity = 'default',
     this.alarmTSeverity = 'default',
     this.alarmPSeverity = 'default',
-    this.isTimerStarted = false,
   });
 
   final String alarmRSeverity;
   final String alarmTSeverity;
   final String alarmPSeverity;
-  final bool isTimerStarted;
 
   InformationState copyWith({
     String? alarmRSeverity,
     String? alarmTSeverity,
     String? alarmPSeverity,
-    bool? isTimerStarted,
   }) {
     return InformationState(
       alarmRSeverity: alarmRSeverity ?? this.alarmRSeverity,
       alarmTSeverity: alarmTSeverity ?? this.alarmTSeverity,
       alarmPSeverity: alarmPSeverity ?? this.alarmPSeverity,
-      isTimerStarted: isTimerStarted ?? this.isTimerStarted,
     );
   }
 
@@ -32,6 +28,5 @@ class InformationState extends Equatable {
         alarmRSeverity,
         alarmTSeverity,
         alarmPSeverity,
-        isTimerStarted,
       ];
 }

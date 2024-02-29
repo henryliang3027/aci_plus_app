@@ -40,12 +40,12 @@ class _QRViewExampleState extends State<QRCodeScanner> {
         alignment: AlignmentDirectional.bottomCenter,
         children: <Widget>[
           _buildQrView(context),
-
           Positioned(
             bottom: 50,
             child: Row(
               children: [
                 FloatingActionButton(
+                  heroTag: null,
                   shape: const CircleBorder(
                     side: BorderSide.none,
                   ),
@@ -62,6 +62,7 @@ class _QRViewExampleState extends State<QRCodeScanner> {
                   width: 20.0,
                 ),
                 FloatingActionButton(
+                  heroTag: null,
                   shape: const CircleBorder(
                     side: BorderSide.none,
                   ),
@@ -82,88 +83,6 @@ class _QRViewExampleState extends State<QRCodeScanner> {
               ],
             ),
           ),
-
-          // Expanded(
-          //   flex: 1,
-          //   child: FittedBox(
-          //     fit: BoxFit.contain,
-          //     child: Column(
-          //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //       children: <Widget>[
-          //         if (result != null)
-          //           Text(
-          //               'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
-          //         else
-          //           const Text('Scan a code'),
-          //         Row(
-          //           mainAxisAlignment: MainAxisAlignment.center,
-          //           crossAxisAlignment: CrossAxisAlignment.center,
-          //           children: <Widget>[
-          //             Container(
-          //               margin: const EdgeInsets.all(8),
-          //               child: ElevatedButton(
-          //                   onPressed: () async {
-          //                     await controller?.toggleFlash();
-          //                     setState(() {});
-          //                   },
-          //                   child: FutureBuilder(
-          //                     future: controller?.getFlashStatus(),
-          //                     builder: (context, snapshot) {
-          //                       return Text('Flash: ${snapshot.data}');
-          //                     },
-          //                   )),
-          //             ),
-          //             Container(
-          //               margin: const EdgeInsets.all(8),
-          //               child: ElevatedButton(
-          //                   onPressed: () async {
-          //                     await controller?.flipCamera();
-          //                     setState(() {});
-          //                   },
-          //                   child: FutureBuilder(
-          //                     future: controller?.getCameraInfo(),
-          //                     builder: (context, snapshot) {
-          //                       if (snapshot.data != null) {
-          //                         return Text(
-          //                             'Camera facing ${describeEnum(snapshot.data!)}');
-          //                       } else {
-          //                         return const Text('loading');
-          //                       }
-          //                     },
-          //                   )),
-          //             )
-          //           ],
-          //         ),
-          //         Row(
-          //           mainAxisAlignment: MainAxisAlignment.center,
-          //           crossAxisAlignment: CrossAxisAlignment.center,
-          //           children: <Widget>[
-          //             Container(
-          //               margin: const EdgeInsets.all(8),
-          //               child: ElevatedButton(
-          //                 onPressed: () async {
-          //                   await controller?.pauseCamera();
-          //                 },
-          //                 child: const Text('pause',
-          //                     style: TextStyle(fontSize: 20)),
-          //               ),
-          //             ),
-          //             Container(
-          //               margin: const EdgeInsets.all(8),
-          //               child: ElevatedButton(
-          //                 onPressed: () async {
-          //                   await controller?.resumeCamera();
-          //                 },
-          //                 child: const Text('resume',
-          //                     style: TextStyle(fontSize: 20)),
-          //               ),
-          //             )
-          //           ],
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // )
         ],
       ),
     );
@@ -190,7 +109,7 @@ class _QRViewExampleState extends State<QRCodeScanner> {
     });
     controller.scannedDataStream.listen((scanData) {
       print('pop scan');
-      print(scanData.code);
+
       if (ModalRoute.of(context)?.isCurrent == true) {
         Navigator.pop(context, scanData.code);
       }

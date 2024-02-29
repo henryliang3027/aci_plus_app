@@ -22,122 +22,75 @@ class Information18Form extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> showModuleSettingDialog({
-      required Config defaultConfig,
-    }) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
+    // Future<bool?> showDefaultConfigNotFoundDialog({
+    //   required String message,
+    // }) {
+    //   return showDialog<bool>(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return AlertDialog(
+    //         title: Text(
+    //           AppLocalizations.of(context)!.dialogTitleNotice,
+    //           style: const TextStyle(
+    //             color: CustomStyle.customYellow,
+    //           ),
+    //         ),
+    //         content: Text(
+    //           getMessageLocalization(
+    //             msg: message,
+    //             context: context,
+    //           ),
+    //           style: const TextStyle(
+    //             fontSize: CustomStyle.sizeL,
+    //           ),
+    //         ),
+    //         actions: <Widget>[
+    //           TextButton(
+    //             child: Text(
+    //               AppLocalizations.of(context)!.dialogMessageOk,
+    //               // style: const TextStyle(color: CustomStyle.customRed),
+    //             ),
+    //             onPressed: () {
+    //               Navigator.of(context).pop(true); // pop dialog
+    //             },
+    //           ),
+    //         ],
+    //       );
+    //     },
+    //   );
+    // }
 
-        builder: (BuildContext context) {
-          var width = MediaQuery.of(context).size.width;
-          // var height = MediaQuery.of(context).size.height;
-
-          return Dialog(
-            insetPadding: EdgeInsets.symmetric(
-              horizontal: width * 0.01,
-            ),
-            child: Information18PresetPage(
-              defaultConfig: defaultConfig,
-            ),
-          );
-        },
-      );
-    }
-
-    Future<bool?> showDefaultConfigNotFoundDialog({
-      required String message,
-    }) {
-      return showDialog<bool>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context)!.dialogTitleNotice,
-              style: const TextStyle(
-                color: CustomStyle.customYellow,
-              ),
-            ),
-            content: Text(
-              getMessageLocalization(
-                msg: message,
-                context: context,
-              ),
-              style: const TextStyle(
-                fontSize: CustomStyle.sizeL,
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(
-                  AppLocalizations.of(context)!.dialogMessageOk,
-                  // style: const TextStyle(color: CustomStyle.customRed),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop(true); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    return BlocListener<Information18Bloc, Information18State>(
-      listener: (context, state) async {
-        if (state.loadConfigStatus == FormStatus.requestSuccess) {
-          showModuleSettingDialog(
-            defaultConfig: state.defaultConfig,
-          ).then((value) {
-            // 設定結束後, 恢復 alarm 定期更新
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.home),
+        centerTitle: true,
+        leading: const _DeviceStatus(),
+        actions: const [_DeviceRefresh()],
+      ),
+      body: const SingleChildScrollView(
+        child: Column(
+          children: [
+            _ConnectionCard(),
+            _ShortcutCard(),
+            _BasicCard(),
+            _AlarmCard(),
+          ],
+        ),
+      ),
+      bottomNavigationBar: HomeBottomNavigationBar18(
+        pageController: pageController,
+        selectedIndex: 2,
+        onTap: (int index) {
+          if (index != 2) {
             context
                 .read<Information18Bloc>()
-                .add(const AlarmPeriodicUpdateRequested());
-          });
-        } else if (state.loadConfigStatus == FormStatus.requestFailure) {
-          showDefaultConfigNotFoundDialog(
-            message: state.errorMessage,
-          ).then((value) {
-            // 設定結束後, 恢復 alarm 定期更新
+                .add(const AlarmPeriodicUpdateCanceled());
+          }
 
-            context
-                .read<Information18Bloc>()
-                .add(const AlarmPeriodicUpdateRequested());
-          });
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.home),
-          centerTitle: true,
-          leading: const _DeviceStatus(),
-          actions: const [_DeviceRefresh()],
-        ),
-        body: const SingleChildScrollView(
-          child: Column(
-            children: [
-              _ConnectionCard(),
-              _ShortcutCard(),
-              _BasicCard(),
-              _AlarmCard(),
-            ],
-          ),
-        ),
-        bottomNavigationBar: HomeBottomNavigationBar18(
-          pageController: pageController,
-          selectedIndex: 2,
-          onTap: (int index) {
-            if (index != 2) {
-              context
-                  .read<Information18Bloc>()
-                  .add(const AlarmPeriodicUpdateCanceled());
-            }
-
-            pageController.jumpToPage(
-              index,
-            );
-          },
-        ),
+          pageController.jumpToPage(
+            index,
+          );
+        },
       ),
     );
   }
@@ -318,8 +271,7 @@ class _ShortcutCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        HomeState homeState = context.read<HomeBloc>().state;
-        String partId = homeState.characteristicData[DataKey.partId] ?? '';
+        String partId = state.characteristicData[DataKey.partId] ?? '';
 
         return Card(
           color: Theme.of(context).colorScheme.onPrimary,
@@ -347,35 +299,113 @@ class _ShortcutCard extends StatelessWidget {
                           fontSize: CustomStyle.sizeL,
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: homeState.loadingStatus.isRequestSuccess
-                            ? () async {
-                                // 要進行設定前先暫停 alarm 定期更新, 避免設定過程中同時要求 alarm 資訊
-                                context
-                                    .read<Information18Bloc>()
-                                    .add(const AlarmPeriodicUpdateCanceled());
-
-                                context
-                                    .read<Information18Bloc>()
-                                    .add(ConfigLoaded(partId));
-                              }
-                            : null,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          foregroundColor: Colors.white,
-                        ),
-                        child: Text(
-                          AppLocalizations.of(context)!.load,
-                          style: const TextStyle(
-                            fontSize: CustomStyle.sizeL,
-                          ),
-                        ),
+                      _LoadPresetButton(
+                        loadingStatus: state.loadingStatus,
+                        partId: partId,
                       ),
+                      // ElevatedButton(
+                      //   onPressed: state.loadingStatus.isRequestSuccess
+                      //       ? () async {
+                      //           // 要進行設定前先暫停 alarm 定期更新, 避免設定過程中同時要求 alarm 資訊
+                      //           context
+                      //               .read<Information18Bloc>()
+                      //               .add(const AlarmPeriodicUpdateCanceled());
+
+                      //           context
+                      //               .read<Information18Bloc>()
+                      //               .add(ConfigLoaded(partId));
+                      //         }
+                      //       : null,
+                      //   style: ElevatedButton.styleFrom(
+                      //     backgroundColor:
+                      //         Theme.of(context).colorScheme.primary,
+                      //     foregroundColor: Colors.white,
+                      //   ),
+                      //   child: Text(
+                      //     AppLocalizations.of(context)!.load,
+                      //     style: const TextStyle(
+                      //       fontSize: CustomStyle.sizeL,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
               ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _LoadPresetButton extends StatelessWidget {
+  const _LoadPresetButton({
+    super.key,
+    required this.loadingStatus,
+    required this.partId,
+  });
+
+  final FormStatus loadingStatus;
+  final String partId;
+
+  @override
+  Widget build(BuildContext context) {
+    Future<void> showModuleSettingDialog({
+      required Config defaultConfig,
+    }) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.01,
+            ),
+            child: Information18PresetPage(
+              defaultConfig: defaultConfig,
+            ),
+          );
+        },
+      );
+    }
+
+    return BlocBuilder<Information18Bloc, Information18State>(
+      builder: (context, state) {
+        context.read<Information18Bloc>().add(ConfigLoaded(partId));
+
+        return ElevatedButton(
+          onPressed:
+              !loadingStatus.isRequestInProgress && state.isLoadConfigEnabled
+                  ? () async {
+                      // 要進行設定前先暫停 alarm 定期更新, 避免設定過程中同時要求 alarm 資訊
+                      context
+                          .read<Information18Bloc>()
+                          .add(const AlarmPeriodicUpdateCanceled());
+
+                      showModuleSettingDialog(
+                        defaultConfig: state.defaultConfig,
+                      ).then((value) {
+                        // 設定結束後, 恢復 alarm 定期更新
+                        context
+                            .read<Information18Bloc>()
+                            .add(const AlarmPeriodicUpdateRequested());
+                      });
+                    }
+                  : null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Colors.white,
+          ),
+          child: Text(
+            AppLocalizations.of(context)!.load,
+            style: const TextStyle(
+              fontSize: CustomStyle.sizeL,
             ),
           ),
         );

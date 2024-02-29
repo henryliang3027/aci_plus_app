@@ -207,6 +207,7 @@
         }
     },
     "dialogMessageDefaultConfigNotFound": "¡Datos predefinidos no encontrados! Por favor, añada nuevos perfiles predefinidos.",
+    "dialogMessageAllConfigsUpdated": "Todos los perfiles predefinidos han sido actualizados.",
 
     "dialogMessageDeviceNotFound": "Dispositivo no encontrado",
     "dialogMessageBluetoothDisabled": "Bluetooth está deshabilitado",

@@ -40,10 +40,17 @@ class DefaultConfigChanged extends Setting18ConfigEvent {
 }
 
 class QRDataGenerated extends Setting18ConfigEvent {
-  const QRDataGenerated(this.selectedPartId);
-
-  final String selectedPartId;
+  const QRDataGenerated();
 
   @override
   List<Object> get props => [];
+}
+
+class QRDataScanned extends Setting18ConfigEvent {
+  const QRDataScanned(this.rawData);
+
+  final String rawData;
+
+  @override
+  List<Object> get props => [rawData];
 }
