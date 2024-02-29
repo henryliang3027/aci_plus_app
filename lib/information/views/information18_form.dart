@@ -380,24 +380,25 @@ class _LoadPresetButton extends StatelessWidget {
         context.read<Information18Bloc>().add(ConfigLoaded(partId));
 
         return ElevatedButton(
-          onPressed:
-              !loadingStatus.isRequestInProgress && state.isLoadConfigEnabled
-                  ? () async {
-                      // 要進行設定前先暫停 alarm 定期更新, 避免設定過程中同時要求 alarm 資訊
-                      context
-                          .read<Information18Bloc>()
-                          .add(const AlarmPeriodicUpdateCanceled());
+          onPressed: !loadingStatus.isRequestInProgress &&
+                  !loadingStatus.isNone &&
+                  state.isLoadConfigEnabled
+              ? () async {
+                  // 要進行設定前先暫停 alarm 定期更新, 避免設定過程中同時要求 alarm 資訊
+                  context
+                      .read<Information18Bloc>()
+                      .add(const AlarmPeriodicUpdateCanceled());
 
-                      showModuleSettingDialog(
-                        defaultConfig: state.defaultConfig,
-                      ).then((value) {
-                        // 設定結束後, 恢復 alarm 定期更新
-                        context
-                            .read<Information18Bloc>()
-                            .add(const AlarmPeriodicUpdateRequested());
-                      });
-                    }
-                  : null,
+                  showModuleSettingDialog(
+                    defaultConfig: state.defaultConfig,
+                  ).then((value) {
+                    // 設定結束後, 恢復 alarm 定期更新
+                    context
+                        .read<Information18Bloc>()
+                        .add(const AlarmPeriodicUpdateRequested());
+                  });
+                }
+              : null,
           style: ElevatedButton.styleFrom(
             backgroundColor: Theme.of(context).colorScheme.primary,
             foregroundColor: Colors.white,
