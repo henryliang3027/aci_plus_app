@@ -155,6 +155,7 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
             messageRows: rows,
           );
         } else if (state.saveStatus.isSubmissionSuccess) {
+          Navigator.pop(context);
           showSuccessDialog(context);
         }
         // else if (state.encodeStaus.isRequestSuccess) {
@@ -250,12 +251,12 @@ class _PartName extends StatelessWidget {
           data: ThemeData(
             textSelectionTheme: TextSelectionThemeData(
               cursorColor: Theme.of(context).colorScheme.onPrimary,
-              selectionColor: Color.fromARGB(128, 255, 255, 255),
+              selectionColor: const Color(0x80ffffff),
             ),
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 140.0,
+              horizontal: 96.0,
             ),
             child: TextField(
               controller: nameTextEditingController,
@@ -433,8 +434,6 @@ class _ActionButton extends StatelessWidget {
                     context
                         .read<Setting18ConfigEditBloc>()
                         .add(const ConfigAdded());
-
-                    Navigator.pop(context);
                   }
                 }
               : null,

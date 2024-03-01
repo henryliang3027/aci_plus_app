@@ -20,7 +20,9 @@ class Setting18AdvancedForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.advanced),
+        title: Text(
+          AppLocalizations.of(context)!.advanced,
+        ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
         leading: const _DeviceStatus(),

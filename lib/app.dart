@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_page.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
+import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
@@ -20,6 +21,7 @@ class App extends StatelessWidget {
     required this.amp18CCorNodeRepository,
     required this.unitRepository,
     required this.gpsRepository,
+    required this.configRepository,
   });
 
   final ACIDeviceRepository aciDeviceRepository;
@@ -28,6 +30,7 @@ class App extends StatelessWidget {
   final Amp18CCorNodeRepository amp18CCorNodeRepository;
   final UnitRepository unitRepository;
   final GPSRepository gpsRepository;
+  final ConfigRepository configRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +53,9 @@ class App extends StatelessWidget {
         ),
         RepositoryProvider<GPSRepository>(
           create: (context) => gpsRepository,
+        ),
+        RepositoryProvider<ConfigRepository>(
+          create: (context) => configRepository,
         ),
       ],
       child: BlocProvider(

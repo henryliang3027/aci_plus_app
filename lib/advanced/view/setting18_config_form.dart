@@ -498,7 +498,7 @@ class _DeviceListView extends StatelessWidget {
                 ? CustomStyle.customBlue
                 : Theme.of(context).colorScheme.onPrimary,
           ),
-          height: 100,
+          // height: 80,
           child: Material(
             color: Colors.transparent,
             child: InkWell(
@@ -524,15 +524,16 @@ class _DeviceListView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    flex: 2,
+                    flex: 3,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 26.0,
+                        vertical: 24.0,
                       ),
                       child: Text(
                         config.name,
                         style: const TextStyle(
-                          fontSize: CustomStyle.size36,
+                          fontSize: 24,
                         ),
                       ),
                     ),
@@ -546,39 +547,43 @@ class _DeviceListView extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          IconButton(
-                            onPressed: config.isDefault == '0'
-                                ? () {
-                                    showConfirmDeleteDialog(
-                                      configName: config.name,
-                                    ).then((result) {
-                                      if (result != null) {
-                                        if (result) {
-                                          context
-                                              .read<Setting18ConfigBloc>()
-                                              .add(ConfigDeleted(config.id));
+                          Expanded(
+                            child: IconButton(
+                              onPressed: config.isDefault == '0'
+                                  ? () {
+                                      showConfirmDeleteDialog(
+                                        configName: config.name,
+                                      ).then((result) {
+                                        if (result != null) {
+                                          if (result) {
+                                            context
+                                                .read<Setting18ConfigBloc>()
+                                                .add(ConfigDeleted(config.id));
+                                          }
                                         }
-                                      }
-                                    });
-                                  }
-                                : null,
-                            icon: const Icon(
-                              Icons.delete,
-                              size: 26,
+                                      });
+                                    }
+                                  : null,
+                              icon: const Icon(
+                                Icons.delete,
+                                size: 26,
+                              ),
                             ),
                           ),
-                          IconButton(
-                            onPressed: () async {
-                              showEditConfigDialog(config: config)
-                                  .then((result) {
-                                context
-                                    .read<Setting18ConfigBloc>()
-                                    .add(const ConfigsRequested());
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.edit,
-                              size: 26,
+                          Expanded(
+                            child: IconButton(
+                              onPressed: () async {
+                                showEditConfigDialog(config: config)
+                                    .then((result) {
+                                  context
+                                      .read<Setting18ConfigBloc>()
+                                      .add(const ConfigsRequested());
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.edit,
+                                size: 26,
+                              ),
                             ),
                           ),
                         ],
@@ -610,7 +615,8 @@ class _DeviceListView extends StatelessWidget {
             onPressed: filteredConfigs.length < 5
                 ? () async {
                     showAddConfigDialog(groupId: groupId).then(
-                      (result) {
+                      (result) async {
+                        // await Future.delayed(Duration(seconds: 1));
                         context
                             .read<Setting18ConfigBloc>()
                             .add(const ConfigsRequested());

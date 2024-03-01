@@ -2,7 +2,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/config.dart';
-import 'package:aci_plus_app/repositories/config_api.dart';
+import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
 import 'package:equatable/equatable.dart';
@@ -16,12 +16,13 @@ class Setting18ConfigEditBloc
     extends Bloc<Setting18ConfigEditEvent, Setting18ConfigEditState> {
   Setting18ConfigEditBloc({
     required Amp18Repository amp18Repository,
+    required ConfigRepository configRepository,
     Config? config,
     String? groupId,
   })  : _amp18Repository = amp18Repository,
+        _configRepository = configRepository,
         _config = config,
         _groupId = groupId,
-        _configApi = ConfigApi(),
         super(const Setting18ConfigEditState()) {
     on<ConfigIntitialized>(_onConfigIntitialized);
     on<ConfigAdded>(_onConfigAdded);
@@ -42,9 +43,9 @@ class Setting18ConfigEditBloc
   }
 
   final Amp18Repository _amp18Repository;
+  final ConfigRepository _configRepository;
   final Config? _config;
   final String? _groupId;
-  final ConfigApi _configApi;
 
   Future<void> _onConfigIntitialized(
     ConfigIntitialized event,
@@ -57,10 +58,10 @@ class Setting18ConfigEditBloc
       settingStatus: SubmissionStatus.none,
     ));
 
-    int id = await _configApi.getConfigAutoIncrementId();
+    // int id = await _configRepository.getConfigAutoIncrementId();
 
     String groupId = '';
-    String rawName = 'Config$id';
+    String rawName = '';
     String splitOption = '1';
     String rawFirstChannelLoadingFrequency = '258';
     String rawFirstChannelLoadingLevel = '34.0';
@@ -77,6 +78,8 @@ class Setting18ConfigEditBloc
       rawLastChannelLoadingLevel = _config!.lastChannelLoadingLevel;
     } else {
       groupId = _groupId ?? '';
+      String unusedConfigName = _configRepository.getUnusedConfigName();
+      rawName = unusedConfigName;
     }
 
     NameInput name = NameInput.dirty(rawName);
@@ -336,11 +339,11 @@ class Setting18ConfigEditBloc
       isInitialize: false,
     ));
 
-    List<Config> configs = _configApi.getAllConfigs();
+    List<Config> configs = _configRepository.getAllConfigs();
     List<Config> filteredConfigs =
         configs.where((config) => config.groupId == state.groupId).toList();
 
-    await _configApi.addConfig(
+    await _configRepository.addConfig(
       groupId: state.groupId,
       name: state.name.value,
       splitOption: state.splitOption,
@@ -379,7 +382,7 @@ class Setting18ConfigEditBloc
       isDefault: _config!.isDefault,
     );
 
-    _configApi.updateConfig(config: config);
+    _configRepository.updateConfig(config: config);
 
     emit(state.copyWith(
       saveStatus: SubmissionStatus.submissionSuccess,
