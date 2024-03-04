@@ -6,6 +6,8 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/repositories/config.dart';
+import 'package:aci_plus_app/repositories/distribution_config.dart';
+import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -321,7 +323,8 @@ class _DeviceListView extends StatelessWidget {
     }
 
     Future<bool?> showEditConfigDialog({
-      Config? config,
+      required Config config,
+      required String groupId,
     }) async {
       return showDialog<bool>(
         context: context,
@@ -337,6 +340,7 @@ class _DeviceListView extends StatelessWidget {
             ),
             child: Setting18ConfigEditPage(
               config: config,
+              groupId: groupId,
               isEdit: true,
             ),
           );
@@ -483,6 +487,7 @@ class _DeviceListView extends StatelessWidget {
 
     Widget configCard({
       required Config config,
+      required String groupId,
     }) {
       return Card(
         // margin: EdgeInsets.zero,
@@ -512,7 +517,7 @@ class _DeviceListView extends StatelessWidget {
                             context
                                 .read<Setting18ConfigBloc>()
                                 .add(DefaultConfigChanged(
-                                  groupId: config.groupId,
+                                  groupId: groupId,
                                   id: config.id,
                                 ));
                           }
@@ -558,7 +563,10 @@ class _DeviceListView extends StatelessWidget {
                                           if (result) {
                                             context
                                                 .read<Setting18ConfigBloc>()
-                                                .add(ConfigDeleted(config.id));
+                                                .add(ConfigDeleted(
+                                                  id: config.id,
+                                                  groupId: groupId,
+                                                ));
                                           }
                                         }
                                       });
@@ -573,8 +581,10 @@ class _DeviceListView extends StatelessWidget {
                           Expanded(
                             child: IconButton(
                               onPressed: () async {
-                                showEditConfigDialog(config: config)
-                                    .then((result) {
+                                showEditConfigDialog(
+                                  config: config,
+                                  groupId: groupId,
+                                ).then((result) {
                                   context
                                       .read<Setting18ConfigBloc>()
                                       .add(const ConfigsRequested());
@@ -599,20 +609,20 @@ class _DeviceListView extends StatelessWidget {
     }
 
     Widget addButton({
-      required List<Config> filteredConfigs,
+      required List<Config> configs,
       required String groupId,
     }) {
       return Material(
         color: Colors.transparent,
         child: Ink(
           decoration: ShapeDecoration(
-            color: filteredConfigs.length < 5
+            color: configs.length < 5
                 ? Theme.of(context).colorScheme.primary.withAlpha(200)
                 : Colors.grey.withAlpha(200),
             shape: const CircleBorder(),
           ),
           child: IconButton(
-            onPressed: filteredConfigs.length < 5
+            onPressed: configs.length < 5
                 ? () async {
                     showAddConfigDialog(groupId: groupId).then(
                       (result) async {
@@ -634,11 +644,9 @@ class _DeviceListView extends StatelessWidget {
     }
 
     List<Widget> buildTrunkConfigListView({
-      required List<Config> configs,
+      required List<TrunkConfig> trunkConfigs,
     }) {
-      List<Config> trunkConfigs =
-          configs.where((config) => config.groupId == '0').toList();
-
+      String groupId = '0';
       return [
         Padding(
           padding: const EdgeInsets.symmetric(
@@ -656,24 +664,25 @@ class _DeviceListView extends StatelessWidget {
                 ),
               ),
               addButton(
-                filteredConfigs: trunkConfigs,
-                groupId: '0',
+                configs: trunkConfigs,
+                groupId: groupId,
               ),
             ],
           ),
         ),
         for (Config trunkConfig in trunkConfigs) ...[
-          configCard(config: trunkConfig),
+          configCard(
+            config: trunkConfig,
+            groupId: groupId,
+          ),
         ],
       ];
     }
 
     List<Widget> buildDistributionConfigListView({
-      required List<Config> configs,
+      required List<DistributionConfig> distributionConfigs,
     }) {
-      List<Config> distributionConfigs =
-          configs.where((config) => config.groupId == '1').toList();
-
+      String groupId = '1';
       return [
         Padding(
           padding: const EdgeInsets.symmetric(
@@ -691,29 +700,35 @@ class _DeviceListView extends StatelessWidget {
                 ),
               ),
               addButton(
-                filteredConfigs: distributionConfigs,
-                groupId: '1',
+                configs: distributionConfigs,
+                groupId: groupId,
               ),
             ],
           ),
         ),
         for (Config distributionConfig in distributionConfigs) ...[
-          configCard(config: distributionConfig),
+          configCard(
+            config: distributionConfig,
+            groupId: groupId,
+          ),
         ],
       ];
     }
 
     return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
-      buildWhen: (previous, current) => previous.configs != current.configs,
+      buildWhen: (previous, current) =>
+          previous.trunkConfigs != current.trunkConfigs ||
+          previous.distributionConfigs != current.distributionConfigs,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ...buildTrunkConfigListView(configs: state.configs),
+            ...buildTrunkConfigListView(trunkConfigs: state.trunkConfigs),
             const SizedBox(
               height: 20,
             ),
-            ...buildDistributionConfigListView(configs: state.configs),
+            ...buildDistributionConfigListView(
+                distributionConfigs: state.distributionConfigs),
           ],
         );
       },

@@ -5,9 +5,8 @@ class Information18State extends Equatable {
     this.isLoadConfigEnabled = false,
     this.defaultConfig = const Config(
       id: -1,
-      groupId: '-1',
       name: '',
-      splitOption: '',
+      splitOption: '0',
       firstChannelLoadingFrequency: '',
       firstChannelLoadingLevel: '',
       lastChannelLoadingFrequency: '',

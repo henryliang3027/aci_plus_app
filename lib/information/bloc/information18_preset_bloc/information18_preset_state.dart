@@ -6,9 +6,8 @@ class Information18PresetState extends Equatable {
     this.isInitialize = false,
     this.config = const Config(
       id: -1,
-      groupId: '-1',
       name: '',
-      splitOption: '',
+      splitOption: '0',
       firstChannelLoadingFrequency: '',
       firstChannelLoadingLevel: '',
       lastChannelLoadingFrequency: '',

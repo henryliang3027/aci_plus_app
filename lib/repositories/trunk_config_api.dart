@@ -1,15 +1,17 @@
-import 'package:aci_plus_app/core/shared_preference_key.dart';
-import 'package:aci_plus_app/repositories/config.dart';
+import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class ConfigApi {
-  ConfigApi() : _configBox = Hive.box('ConfigData');
-  final Box<Config> _configBox;
+class TrunkConfigApi {
+  TrunkConfigApi() : _trunkConfigBox = Hive.box('TrunkConfigData');
+  final Box<TrunkConfig> _trunkConfigBox;
+
+  List<TrunkConfig> getAllConfigs() {
+    return _trunkConfigBox.values.toList();
+  }
 
   /// 新增 config 到手機端資料庫, 如果該 part id 已存在, 則 put() 會更新其資料
-  Future<void> addConfig({
-    required String groupId,
+  Future<void> putConfig({
+    required int id,
     required String name,
     required String splitOption,
     required String firstChannelLoadingFrequency,
@@ -18,11 +20,8 @@ class ConfigApi {
     required String lastChannelLoadingLevel,
     required String isDefault,
   }) async {
-    int id = await getConfigAutoIncrementId();
-
-    Config newConfig = Config(
+    TrunkConfig newConfig = TrunkConfig(
       id: id,
-      groupId: groupId,
       name: name,
       splitOption: splitOption,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
@@ -31,38 +30,26 @@ class ConfigApi {
       lastChannelLoadingLevel: lastChannelLoadingLevel,
       isDefault: isDefault,
     );
-    await _configBox.put(id, newConfig);
-    await writeConfigAutoIncrementId();
-  }
-
-  Future<void> updateConfig({
-    required Config config,
-  }) async {
-    await _configBox.put(config.id, config);
+    await _trunkConfigBox.put(id, newConfig);
   }
 
   Future<void> setDefaultConfigById({
-    required String groupId,
     required int id,
   }) async {
-    List<Config> configs = getAllConfigs();
+    List<TrunkConfig> configs = getAllConfigs();
 
-    Config? defaultConfig;
+    TrunkConfig? defaultConfig;
 
-    List<Config> filteredConfig =
-        configs.where((config) => config.groupId == groupId).toList();
-
-    for (Config config in filteredConfig) {
+    for (TrunkConfig config in configs) {
       if (config.isDefault == '1') {
         defaultConfig = config;
       }
     }
 
-    // 如果在該 group 裡已經有預設的 config, 則先將該 config 改為非預設
+    // 如果已經有預設的 config, 則先將該 config 改為非預設
     if (defaultConfig != null) {
-      Config canceledDefaultConfig = Config(
+      TrunkConfig canceledDefaultConfig = TrunkConfig(
         id: defaultConfig.id,
-        groupId: defaultConfig.groupId,
         name: defaultConfig.name,
         splitOption: defaultConfig.splitOption,
         firstChannelLoadingFrequency:
@@ -73,17 +60,16 @@ class ConfigApi {
         isDefault: '0',
       );
 
-      updateConfig(config: canceledDefaultConfig);
+      await _trunkConfigBox.put(defaultConfig.id, canceledDefaultConfig);
     }
 
     List<dynamic> result = getConfigById(id);
 
     if (result[0]) {
-      Config targetConfig = result[1];
+      TrunkConfig targetConfig = result[1];
 
-      Config newDefaultConfig = Config(
+      TrunkConfig newDefaultConfig = TrunkConfig(
         id: targetConfig.id,
-        groupId: targetConfig.groupId,
         name: targetConfig.name,
         splitOption: targetConfig.splitOption,
         firstChannelLoadingFrequency: targetConfig.firstChannelLoadingFrequency,
@@ -93,19 +79,14 @@ class ConfigApi {
         isDefault: '1',
       );
 
-      updateConfig(config: newDefaultConfig);
+      await _trunkConfigBox.put(targetConfig.id, newDefaultConfig);
     }
   }
 
-  List<dynamic> getDefaultConfigByGroupId(
-    String groupId,
-  ) {
-    List<Config> configs = getAllConfigs();
+  List<dynamic> getDefaultConfig() {
+    List<TrunkConfig> configs = getAllConfigs();
 
-    List<Config> filteredConfigs =
-        configs.where((config) => config.groupId == groupId).toList();
-
-    for (Config config in filteredConfigs) {
+    for (TrunkConfig config in configs) {
       if (config.isDefault == '1') {
         return [true, config];
       }
@@ -118,7 +99,8 @@ class ConfigApi {
   List<dynamic> getConfigById(
     int id,
   ) {
-    Config? config = _configBox.get(id); //get config if it already exists
+    TrunkConfig? config =
+        _trunkConfigBox.get(id); //get config if it already exists
 
     if (config != null) {
       return [true, config];
@@ -127,27 +109,7 @@ class ConfigApi {
     }
   }
 
-  List<Config> getAllConfigs() {
-    return _configBox.values.toList();
-  }
-
-  void deleteConfigByid(int id) {
-    _configBox.delete(id);
-  }
-
-  Future<void> writeConfigAutoIncrementId() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    int id = prefs.getInt(SharedPreferenceKey.configAutoIncrementId.name) ?? 0;
-
-    id = id + 1;
-
-    await prefs.setInt(SharedPreferenceKey.configAutoIncrementId.name, id);
-  }
-
-  Future<int> getConfigAutoIncrementId() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    int id = prefs.getInt(SharedPreferenceKey.configAutoIncrementId.name) ?? 0;
-    return id;
+  Future<void> deleteConfigByid(int id) async {
+    await _trunkConfigBox.delete(id);
   }
 }

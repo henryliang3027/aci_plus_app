@@ -2,7 +2,8 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/config.dart';
-import 'package:aci_plus_app/repositories/config_api.dart';
+import 'package:aci_plus_app/repositories/distribution_config.dart';
+import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +17,6 @@ class Information18PresetBloc
     required Config defaultConfig,
   })  : _amp18Repository = amp18repository,
         _defaultConfig = defaultConfig,
-        _configApi = ConfigApi(),
         super(const Information18PresetState()) {
     on<DefaultConfigRequested>(_onDefaultConfigRequested);
     on<ConfigExecuted>(_onConfigExecuted);
@@ -26,7 +26,6 @@ class Information18PresetBloc
 
   final Amp18Repository _amp18Repository;
   final Config _defaultConfig;
-  final ConfigApi _configApi;
 
   void _onDefaultConfigRequested(
     DefaultConfigRequested event,
@@ -48,7 +47,14 @@ class Information18PresetBloc
     ));
 
     List<String> settingResult = [];
-    Config config = state.config;
+
+    dynamic config;
+
+    if (state.config is TrunkConfig) {
+      config = state.config as TrunkConfig;
+    } else {
+      config = state.config as DistributionConfig;
+    }
 
     bool resultOfSetSplitOption =
         await _amp18Repository.set1p8GSplitOption(config.splitOption);

@@ -1,36 +1,56 @@
-import 'package:aci_plus_app/repositories/config.dart';
-import 'package:aci_plus_app/repositories/config_api.dart';
+import 'package:aci_plus_app/repositories/distribution_config.dart';
+import 'package:aci_plus_app/repositories/distribution_config_api.dart';
+import 'package:aci_plus_app/repositories/trunk_config.dart';
+import 'package:aci_plus_app/repositories/trunk_config_api.dart';
 
 class ConfigRepository {
-  ConfigRepository() : _configApi = ConfigApi();
+  ConfigRepository()
+      : _trunkConfigApi = TrunkConfigApi(),
+        _distributionConfigApi = DistributionConfigApi();
 
-  final ConfigApi _configApi;
-  final Map<int, ConfigName> _nameCandidates = {
-    0: const ConfigName(name: 'Config0'),
-    1: const ConfigName(name: 'Config1'),
-    2: const ConfigName(name: 'Config2'),
-    3: const ConfigName(name: 'Config3'),
-    4: const ConfigName(name: 'Config4'),
-    5: const ConfigName(name: 'Config5'),
-    6: const ConfigName(name: 'Config6'),
-    7: const ConfigName(name: 'Config7'),
-    8: const ConfigName(name: 'Config8'),
-    9: const ConfigName(name: 'Config9'),
+  final TrunkConfigApi _trunkConfigApi;
+  final DistributionConfigApi _distributionConfigApi;
+
+  final Map<int, String> _trunkConfigNames = {
+    0: '',
+    1: '',
+    2: '',
+    3: '',
+    4: '',
   };
 
-  String getUnusedConfigName() {
-    for (int i = 0; i < _nameCandidates.length; i++) {
-      if (_nameCandidates[i]!.isUsed == false) {
-        ConfigName configName = _nameCandidates[i]!;
-        return configName.name;
+  final Map<int, String> _distributionConfigNames = {
+    0: '',
+    1: '',
+    2: '',
+    3: '',
+    4: '',
+  };
+
+  int? getEmptyNameId({
+    required String groupId,
+  }) {
+    int? firstEmptyId;
+    if (groupId == '0') {
+      for (var entry in _trunkConfigNames.entries) {
+        if (entry.value.isEmpty) {
+          firstEmptyId = entry.key;
+          break;
+        }
+      }
+    } else {
+      for (var entry in _distributionConfigNames.entries) {
+        if (entry.value.isEmpty) {
+          firstEmptyId = entry.key;
+          break;
+        }
       }
     }
-
-    return '';
+    return firstEmptyId;
   }
 
   /// 新增 config 到手機端資料庫, 如果該 part id 已存在, 則 put() 會更新其資料
-  Future<void> addConfig({
+  Future<void> putConfig({
     required String groupId,
     required String name,
     required String splitOption,
@@ -40,95 +60,161 @@ class ConfigRepository {
     required String lastChannelLoadingLevel,
     required String isDefault,
   }) async {
-    List<Config> configs = getAllConfigs();
-    int length = configs.length;
+    if (groupId == '0') {
+      int? firstEmptyId = getEmptyNameId(groupId: groupId);
 
-    _nameCandidates[length] = ConfigName(
-      name: name,
-      isUsed: true,
-    );
+      if (firstEmptyId != null) {
+        await _trunkConfigApi.putConfig(
+          id: firstEmptyId,
+          name: name,
+          splitOption: splitOption,
+          firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+          firstChannelLoadingLevel: firstChannelLoadingLevel,
+          lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+          lastChannelLoadingLevel: lastChannelLoadingLevel,
+          isDefault: isDefault,
+        );
+        _trunkConfigNames[firstEmptyId] = name;
+      }
+    } else {
+      int? firstEmptyId = getEmptyNameId(groupId: groupId);
 
-    await _configApi.addConfig(
-      groupId: groupId,
-      name: name,
-      splitOption: splitOption,
-      firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-      firstChannelLoadingLevel: firstChannelLoadingLevel,
-      lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-      lastChannelLoadingLevel: lastChannelLoadingLevel,
-      isDefault: isDefault,
-    );
+      if (firstEmptyId != null) {
+        await _distributionConfigApi.putConfig(
+          id: firstEmptyId,
+          name: name,
+          splitOption: splitOption,
+          firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+          firstChannelLoadingLevel: firstChannelLoadingLevel,
+          lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+          lastChannelLoadingLevel: lastChannelLoadingLevel,
+          isDefault: isDefault,
+        );
+        _distributionConfigNames[firstEmptyId] = name;
+      }
+    }
   }
 
   Future<void> updateConfig({
-    required Config config,
+    required int id,
+    required String groupId,
+    required String name,
+    required String splitOption,
+    required String firstChannelLoadingFrequency,
+    required String firstChannelLoadingLevel,
+    required String lastChannelLoadingFrequency,
+    required String lastChannelLoadingLevel,
+    required String isDefault,
   }) async {
-    _nameCandidates[config.id] = ConfigName(
-      name: config.name,
-      isUsed: true,
-    );
-
-    _configApi.updateConfig(config: config);
+    if (groupId == '0') {
+      await _trunkConfigApi.putConfig(
+        id: id,
+        name: name,
+        splitOption: splitOption,
+        firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: lastChannelLoadingLevel,
+        isDefault: isDefault,
+      );
+      _trunkConfigNames[id] = name;
+    } else {
+      await _distributionConfigApi.putConfig(
+        id: id,
+        name: name,
+        splitOption: splitOption,
+        firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: lastChannelLoadingLevel,
+        isDefault: isDefault,
+      );
+      _distributionConfigNames[id] = name;
+    }
   }
 
   Future<void> setDefaultConfigById({
     required String groupId,
     required int id,
   }) async {
-    _configApi.setDefaultConfigById(
-      groupId: groupId,
-      id: id,
-    );
+    if (groupId == '0') {
+      await _trunkConfigApi.setDefaultConfigById(id: id);
+    } else {
+      await _distributionConfigApi.setDefaultConfigById(id: id);
+    }
   }
 
   List<dynamic> getDefaultConfigByGroupId(
     String groupId,
   ) {
-    return _configApi.getDefaultConfigByGroupId(groupId);
-  }
-
-  /// 藉由 config id 取得 config 參數
-  List<dynamic> getConfigById(
-    int id,
-  ) {
-    return _configApi.getConfigById(id);
-  }
-
-  List<Config> getAllConfigs() {
-    List<Config> configs = _configApi.getAllConfigs();
-
-    for (int i = 0; i < configs.length; i++) {
-      Config config = configs[i];
-      _nameCandidates[i] = ConfigName(
-        name: config.name,
-        isUsed: true,
-      );
+    if (groupId == '0') {
+      return _trunkConfigApi.getDefaultConfig();
+    } else {
+      return _distributionConfigApi.getDefaultConfig();
     }
+  }
 
-    for (MapEntry entry in _nameCandidates.entries) {
-      ConfigName configName = entry.value;
-      print('${entry.key}: ${configName.name}, ${configName.isUsed}');
+  /// 藉由 groupId 與 config id 取得 config 參數
+  List<dynamic> getConfig({
+    required int id,
+    required String groupId,
+  }) {
+    if (groupId == '0') {
+      return _trunkConfigApi.getConfigById(id);
+    } else {
+      return _distributionConfigApi.getConfigById(id);
     }
-
-    return configs;
   }
 
-  void deleteConfigByid(int id) {
-    _nameCandidates[id] = ConfigName(
-      name: 'Config$id',
-      isUsed: false,
-    );
+  List<TrunkConfig> getAllTrunkConfigs() {
+    List<TrunkConfig> trunkConfigs = _trunkConfigApi.getAllConfigs();
 
-    _configApi.deleteConfigByid(id);
+    print('db trunkConfig:');
+    for (TrunkConfig trunkConfig in trunkConfigs) {
+      print('${trunkConfig.id} : ${trunkConfig.name}');
+      _trunkConfigNames[trunkConfig.id] = trunkConfig.name;
+    }
+    print('=============');
+    print(' _trunkConfigNames:');
+    for (MapEntry entry in _trunkConfigNames.entries) {
+      print('${entry.key} : ${entry.value}');
+    }
+    print('=============');
+
+    return trunkConfigs;
   }
 
-  // Future<void> writeConfigAutoIncrementId() async {
-  //   _configApi.writeConfigAutoIncrementId();
-  // }
+  List<DistributionConfig> getAllDistributionConfigs() {
+    List<DistributionConfig> distributionConfigs =
+        _distributionConfigApi.getAllConfigs();
 
-  // Future<int> getConfigAutoIncrementId() async {
-  //   return _configApi.getConfigAutoIncrementId();
-  // }
+    print('db distributionConfig:');
+    for (DistributionConfig distributionConfig in distributionConfigs) {
+      print('${distributionConfig.id} : ${distributionConfig.name}');
+      _distributionConfigNames[distributionConfig.id] = distributionConfig.name;
+    }
+    print('=============');
+    print(' _distributionConfigNames:');
+    for (MapEntry entry in _distributionConfigNames.entries) {
+      print('${entry.key} : ${entry.value}');
+    }
+    print('=============');
+
+    return distributionConfigs;
+  }
+
+  Future<void> deleteConfig({
+    required int id,
+    required String groupId,
+  }) async {
+    if (groupId == '0') {
+      _trunkConfigNames[id] = '';
+      await _trunkConfigApi.deleteConfigByid(id);
+    } else {
+      _distributionConfigNames[id] = '';
+      await _distributionConfigApi.deleteConfigByid(id);
+    }
+  }
 }
 
 class ConfigName {

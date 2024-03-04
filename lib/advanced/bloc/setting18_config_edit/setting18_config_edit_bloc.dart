@@ -17,8 +17,8 @@ class Setting18ConfigEditBloc
   Setting18ConfigEditBloc({
     required Amp18Repository amp18Repository,
     required ConfigRepository configRepository,
+    required String groupId,
     Config? config,
-    String? groupId,
   })  : _amp18Repository = amp18Repository,
         _configRepository = configRepository,
         _config = config,
@@ -45,7 +45,7 @@ class Setting18ConfigEditBloc
   final Amp18Repository _amp18Repository;
   final ConfigRepository _configRepository;
   final Config? _config;
-  final String? _groupId;
+  final String _groupId;
 
   Future<void> _onConfigIntitialized(
     ConfigIntitialized event,
@@ -60,7 +60,7 @@ class Setting18ConfigEditBloc
 
     // int id = await _configRepository.getConfigAutoIncrementId();
 
-    String groupId = '';
+    String groupId = _groupId;
     String rawName = '';
     String splitOption = '1';
     String rawFirstChannelLoadingFrequency = '258';
@@ -69,7 +69,6 @@ class Setting18ConfigEditBloc
     String rawLastChannelLoadingLevel = '51.1';
 
     if (_config != null) {
-      groupId = _config!.groupId;
       rawName = _config!.name;
       splitOption = _config!.splitOption;
       rawFirstChannelLoadingFrequency = _config!.firstChannelLoadingFrequency;
@@ -77,9 +76,8 @@ class Setting18ConfigEditBloc
       rawLastChannelLoadingFrequency = _config!.lastChannelLoadingFrequency;
       rawLastChannelLoadingLevel = _config!.lastChannelLoadingLevel;
     } else {
-      groupId = _groupId ?? '';
-      String unusedConfigName = _configRepository.getUnusedConfigName();
-      rawName = unusedConfigName;
+      int newId = _configRepository.getEmptyNameId(groupId: groupId) ?? -1;
+      rawName = 'Config$newId';
     }
 
     NameInput name = NameInput.dirty(rawName);
@@ -339,11 +337,14 @@ class Setting18ConfigEditBloc
       isInitialize: false,
     ));
 
-    List<Config> configs = _configRepository.getAllConfigs();
-    List<Config> filteredConfigs =
-        configs.where((config) => config.groupId == state.groupId).toList();
+    List<dynamic> configs = [];
+    if (state.groupId == '0') {
+      configs = _configRepository.getAllTrunkConfigs();
+    } else {
+      configs = _configRepository.getAllDistributionConfigs();
+    }
 
-    await _configRepository.addConfig(
+    await _configRepository.putConfig(
       groupId: state.groupId,
       name: state.name.value,
       splitOption: state.splitOption,
@@ -351,7 +352,7 @@ class Setting18ConfigEditBloc
       firstChannelLoadingLevel: state.firstChannelLoadingLevel.value,
       lastChannelLoadingFrequency: state.lastChannelLoadingFrequency.value,
       lastChannelLoadingLevel: state.lastChannelLoadingLevel.value,
-      isDefault: filteredConfigs.isEmpty ? '1' : '0',
+      isDefault: configs.isEmpty ? '1' : '0',
     );
 
     emit(state.copyWith(
@@ -362,7 +363,7 @@ class Setting18ConfigEditBloc
   void _onConfigUpdated(
     ConfigUpdated event,
     Emitter<Setting18ConfigEditState> emit,
-  ) {
+  ) async {
     emit(state.copyWith(
       // encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.submissionInProgress,
@@ -370,9 +371,9 @@ class Setting18ConfigEditBloc
       isInitialize: false,
     ));
 
-    Config config = Config(
+    await _configRepository.updateConfig(
       id: _config!.id,
-      groupId: _config!.groupId,
+      groupId: _groupId,
       name: state.name.value,
       splitOption: state.splitOption,
       firstChannelLoadingFrequency: state.firstChannelLoadingFrequency.value,
@@ -381,8 +382,6 @@ class Setting18ConfigEditBloc
       lastChannelLoadingLevel: state.lastChannelLoadingLevel.value,
       isDefault: _config!.isDefault,
     );
-
-    _configRepository.updateConfig(config: config);
 
     emit(state.copyWith(
       saveStatus: SubmissionStatus.submissionSuccess,

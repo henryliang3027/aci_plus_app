@@ -4,6 +4,8 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/information/bloc/information18_preset_bloc/information18_preset_bloc.dart';
 import 'package:aci_plus_app/repositories/config.dart';
+import 'package:aci_plus_app/repositories/distribution_config.dart';
+import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
@@ -135,6 +137,7 @@ class _Information18PresetFormState extends State<Information18PresetForm> {
 
         if (state.isInitialize) {
           Config config = state.config;
+
           nameTextEditingController.text = config.name;
           firstChannelLoadingFrequencyTextEditingController.text =
               config.firstChannelLoadingFrequency;

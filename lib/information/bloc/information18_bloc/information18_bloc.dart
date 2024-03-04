@@ -1,19 +1,18 @@
 import 'dart:async';
-import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/config.dart';
-import 'package:aci_plus_app/repositories/config_api.dart';
+import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 part 'information18_event.dart';
 part 'information18_state.dart';
 
 class Information18Bloc extends Bloc<Information18Event, Information18State> {
   Information18Bloc({
     required Amp18Repository amp18Repository,
+    required ConfigRepository configRepository,
   })  : _amp18Repository = amp18Repository,
-        _configApi = ConfigApi(),
+        _configRepository = configRepository,
         super(const Information18State()) {
     on<ConfigLoaded>(_onConfigLoaded);
     on<AlarmUpdated>(_onAlarmUpdated);
@@ -23,7 +22,7 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
 
   Timer? _timer;
   final Amp18Repository _amp18Repository;
-  final ConfigApi _configApi;
+  final ConfigRepository _configRepository;
 
   void _onConfigLoaded(
     ConfigLoaded event,
@@ -31,10 +30,10 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
   ) {
     String groupId = event.partId == '5' ? '0' : '1';
 
-    List<dynamic> result = _configApi.getDefaultConfigByGroupId(groupId);
+    List<dynamic> result = _configRepository.getDefaultConfigByGroupId(groupId);
 
     if (result[0]) {
-      Config defaultConfig = result[1];
+      dynamic defaultConfig = result[1];
 
       emit(state.copyWith(
         isLoadConfigEnabled: true,

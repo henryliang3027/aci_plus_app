@@ -15,12 +15,19 @@ class ConfigsRequested extends Setting18ConfigEvent {
 }
 
 class ConfigDeleted extends Setting18ConfigEvent {
-  const ConfigDeleted(this.id);
+  const ConfigDeleted({
+    required this.id,
+    required this.groupId,
+  });
 
   final int id;
+  final String groupId;
 
   @override
-  List<Object> get props => [id];
+  List<Object> get props => [
+        id,
+        groupId,
+      ];
 }
 
 class DefaultConfigChanged extends Setting18ConfigEvent {
