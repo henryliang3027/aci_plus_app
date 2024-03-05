@@ -398,9 +398,11 @@ packages:
   flutter_speed_chart:
     dependency: "direct main"
     description:
-      path: "/Users/henry.liang/projects/flutter_speed_chart"
-      relative: false
-    source: path
+      path: "."
+      ref: discreteX
+      resolved-ref: "146ec829118d2dc31ad9c687dce8395a366a49e2"
+      url: "https://github.com/henryliang3027/flutter_speed_chart.git"
+    source: git
     version: "0.0.1"
   flutter_test:
     dependency: "direct dev"
@@ -738,7 +740,7 @@ packages:
       path: "."
       ref: master
       resolved-ref: "27ce967273429ce505962d4cf68c17a5b16b5aef"
-      url: "https://github.com/dnfield/flutter_path_drawing.git"
+      url: "https://github.com/henryliang3027/flutter_path_drawing.git"
     source: git
     version: "1.0.1"
   path_parsing:

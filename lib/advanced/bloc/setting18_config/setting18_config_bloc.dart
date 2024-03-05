@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
 import 'package:package_info_plus/package_info_plus.dart';

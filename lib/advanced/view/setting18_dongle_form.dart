@@ -1,6 +1,5 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_dongle/setting18_dongle_bloc.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_generator_page.dart';
-import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:flutter/material.dart';

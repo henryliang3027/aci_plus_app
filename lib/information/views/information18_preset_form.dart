@@ -4,8 +4,6 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/information/bloc/information18_preset_bloc/information18_preset_bloc.dart';
 import 'package:aci_plus_app/repositories/config.dart';
-import 'package:aci_plus_app/repositories/distribution_config.dart';
-import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
@@ -49,7 +47,6 @@ class _Information18PresetFormState extends State<Information18PresetForm> {
     HomeState homeState = context.read<HomeBloc>().state;
     String currentDetectedSplitOption =
         homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
-    String partId = homeState.characteristicData[DataKey.partId] ?? '';
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
@@ -221,51 +218,66 @@ class _PartName extends StatelessWidget {
           data: ThemeData(
             textSelectionTheme: TextSelectionThemeData(
               cursorColor: Theme.of(context).colorScheme.onPrimary,
-              selectionColor: Color.fromARGB(128, 255, 255, 255),
+              selectionColor: const Color(0x80ffffff),
             ),
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 140.0,
             ),
-            child: TextField(
-              controller: nameTextEditingController,
-              key: const Key('Information18PresetForm_nameInput_textField'),
-              style: TextStyle(
-                fontSize: CustomStyle.sizeXL,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-              textInputAction: TextInputAction.done,
-              onChanged: null,
-              textAlign: TextAlign.center,
-              maxLength: 10,
-              decoration: InputDecoration(
-                // label: Text(AppLocalizations.of(context)!.name),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      width: 2.0,
-                      color: Theme.of(context).colorScheme.onPrimary),
-                  borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+            child: Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                Positioned(
+                  right: 14.0,
+                  child: Icon(
+                    Icons.edit,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Theme.of(context).colorScheme.primary),
-                  borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                ),
+                TextField(
+                  controller: nameTextEditingController,
+                  key: const Key('Information18PresetForm_nameInput_textField'),
+                  style: TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                  textInputAction: TextInputAction.done,
+                  enabled: false,
+                  onChanged: null,
+                  textAlign: TextAlign.center,
+                  maxLength: 10,
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 2.0,
+                          color: Theme.of(context).colorScheme.onPrimary),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(4.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.primary),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(4.0)),
+                    ),
 
-                border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                contentPadding: const EdgeInsets.fromLTRB(4.0, 8.0, 0.0, 8.0),
-                isDense: true,
-                filled: true,
-                fillColor: Theme.of(context).colorScheme.primary,
-                counterText: '',
-                errorMaxLines: 2,
-                errorStyle: const TextStyle(
-                  fontSize: CustomStyle.sizeS,
+                    border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                    contentPadding:
+                        const EdgeInsets.fromLTRB(4.0, 8.0, 0.0, 8.0),
+                    isDense: true,
+                    filled: true,
+                    fillColor: Theme.of(context).colorScheme.primary,
+                    counterText: '',
+                    errorMaxLines: 2,
+                    errorStyle: const TextStyle(
+                      fontSize: CustomStyle.sizeS,
+                    ),
+                    // errorText: editMode1 ? errorText1 : null,
+                  ),
                 ),
-                // errorText: editMode1 ? errorText1 : null,
-              ),
+              ],
             ),
           ),
         );
