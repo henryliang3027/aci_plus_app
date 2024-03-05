@@ -3,10 +3,8 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -256,48 +254,69 @@ class _PartName extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 96.0,
+              horizontal: 24.0,
             ),
-            child: TextField(
-              controller: nameTextEditingController,
-              key: const Key('setting18ConfigEditForm_nameInput_textField'),
-              style: TextStyle(
-                fontSize: CustomStyle.sizeXL,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-              textInputAction: TextInputAction.done,
-              onChanged: (name) {
-                context.read<Setting18ConfigEditBloc>().add(NameChanged(name));
-              },
-              textAlign: TextAlign.center,
-              maxLength: 10,
-              decoration: InputDecoration(
-                // label: Text(AppLocalizations.of(context)!.name),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      width: 2.0,
-                      color: Theme.of(context).colorScheme.onPrimary),
-                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
+            child: Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                Positioned(
+                  right: 14.0,
+                  child: Icon(
+                    Icons.edit,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Theme.of(context).colorScheme.primary),
-                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                ),
+                TextField(
+                  controller: nameTextEditingController,
+                  key: const Key('setting18ConfigEditForm_nameInput_textField'),
+                  style: TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                  textInputAction: TextInputAction.done,
+                  onChanged: (name) {
+                    context
+                        .read<Setting18ConfigEditBloc>()
+                        .add(NameChanged(name));
+                  },
+                  textAlign: TextAlign.center,
+                  maxLength: 10,
+                  decoration: InputDecoration(
+                    // label: Text(AppLocalizations.of(context)!.name),
+                    // suffixIcon: Icon(
+                    //   Icons.edit,
+                    //   color: Theme.of(context).colorScheme.onPrimary,
+                    // ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 2.0,
+                          color: Theme.of(context).colorScheme.onPrimary),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(4.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.primary),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(4.0)),
+                    ),
 
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                contentPadding: EdgeInsets.fromLTRB(4.0, 8.0, 0.0, 8.0),
-                isDense: true,
-                filled: true,
-                fillColor: Theme.of(context).colorScheme.primary,
-                counterText: '',
-                errorMaxLines: 2,
-                errorStyle: TextStyle(
-                  fontSize: CustomStyle.sizeS,
+                    border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                    contentPadding:
+                        const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
+                    isDense: true,
+                    // filled: true,
+                    // fillColor: Theme.of(context).colorScheme.primary,
+                    counterText: '',
+                    errorMaxLines: 2,
+                    errorStyle: const TextStyle(
+                      fontSize: CustomStyle.sizeS,
+                    ),
+                    // errorText: editMode1 ? errorText1 : null,
+                  ),
                 ),
-                // errorText: editMode1 ? errorText1 : null,
-              ),
+              ],
             ),
           ),
         );

@@ -1,4 +1,3 @@
-import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -255,9 +254,6 @@ class _ShortcutCard extends StatelessWidget {
 
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        HomeState homeState = context.read<HomeBloc>().state;
-        // String partId = homeState.characteristicData[DataKey.partId] ?? '';
-
         return Card(
           color: Theme.of(context).colorScheme.onPrimary,
           surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
