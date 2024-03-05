@@ -4,9 +4,12 @@ import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:aci_plus_app/repositories/trunk_config_api.dart';
 
 class ConfigRepository {
-  ConfigRepository()
-      : _trunkConfigApi = TrunkConfigApi(),
-        _distributionConfigApi = DistributionConfigApi();
+  ConfigRepository({
+    TrunkConfigApi? trunkConfigApi,
+    DistributionConfigApi? distributionConfigApi,
+  })  : _trunkConfigApi = trunkConfigApi ?? TrunkConfigApi(),
+        _distributionConfigApi =
+            distributionConfigApi ?? DistributionConfigApi();
 
   final TrunkConfigApi _trunkConfigApi;
   final DistributionConfigApi _distributionConfigApi;
