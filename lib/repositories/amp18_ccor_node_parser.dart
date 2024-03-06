@@ -1073,6 +1073,7 @@ class Amp18CCorNodeParser {
       'Amplifier Power On',
     ];
 
+    excel.rename('Sheet1', 'User Information');
     Sheet userInformationSheet = excel['User Information'];
     Sheet log1p8GSheet = excel['Log'];
     Sheet eventSheet = excel['Event'];
@@ -1093,14 +1094,6 @@ class Amp18CCorNodeParser {
       Log1p8GCCorNode log1p8G = log1p8Gs[i];
       List<String> row = formatLog1p8G(log1p8G);
       log1p8GSheet.insertRowIterables(row, i + 1);
-    }
-
-    try {
-      excel.unLink('Sheet1'); // Excel 預設會自動產生 Sheet1, 所以先unlink
-      excel.delete('Sheet1'); // 再刪除 Sheet1
-    } catch (e) {
-      // check issue on https://github.com/justkawal/excel/issues/309
-      // 使用 try-catch 避免無法刪除 Sheet1
     }
 
     var fileBytes = excel.save();

@@ -37,10 +37,10 @@ packages:
     dependency: transitive
     description:
       name: archive
-      sha256: "22600aa1e926be775fa5fe7e6894e7fb3df9efda8891c73f70fb3262399a432d"
+      sha256: "7b875fd4a20b165a3084bd2d210439b22ebc653f21cea4842729c0c30c82596b"
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.10"
+    version: "3.4.9"
   args:
     dependency: transitive
     description:
@@ -276,11 +276,12 @@ packages:
   excel:
     dependency: "direct main"
     description:
-      name: excel
-      sha256: f6a76fff6ac14f48fd44a6528e72705965e02cbc593e00427ab1d9a9f5d3bffa
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
+      path: "."
+      ref: master
+      resolved-ref: "4f39f19bb3ad39c2a9d067f10603a6d12ae9a6c6"
+      url: "https://github.com/henryliang3027/excel.git"
+    source: git
+    version: "2.0.1"
   fake_async:
     dependency: transitive
     description:

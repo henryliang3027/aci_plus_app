@@ -47,7 +47,10 @@ dependencies:
   equatable: ^2.0.5
   dropdown_button2: ^1.4.0 # custom dropdownButton and dropdownMenuItems
   url_launcher: ^6.2.5 # for launch dsim website
-  excel: ^2.0.1
+  excel:
+    git:
+      url: https://github.com/henryliang3027/excel.git
+      ref: master
   path_provider: ^2.0.15
   open_filex: ^4.3.1
   share_plus: ^7.0.0
