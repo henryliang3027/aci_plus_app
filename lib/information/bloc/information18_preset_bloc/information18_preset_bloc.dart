@@ -48,13 +48,7 @@ class Information18PresetBloc
 
     List<String> settingResult = [];
 
-    dynamic config;
-
-    if (state.config is TrunkConfig) {
-      config = state.config as TrunkConfig;
-    } else {
-      config = state.config as DistributionConfig;
-    }
+    Config config = state.config;
 
     bool resultOfSetSplitOption =
         await _amp18Repository.set1p8GSplitOption(config.splitOption);
@@ -100,6 +94,13 @@ class Information18PresetBloc
       settingResult.add(
           '${DataKey.lastChannelLoadingLevel.name},$resultOfSetLastChannelLoadingLevel');
     }
+
+    bool resultOfSetForwardAGCMode =
+        await _amp18Repository.set1p8GForwardAGCMode('1');
+    settingResult.add('${DataKey.agcMode.name},$resultOfSetForwardAGCMode');
+
+    bool resultOfSetALCMode = await _amp18Repository.set1p8GALCMode('1');
+    settingResult.add('${DataKey.alcMode.name},$resultOfSetALCMode');
 
     // 等待 device 完成更新後在讀取值
     await Future.delayed(const Duration(milliseconds: 1000));

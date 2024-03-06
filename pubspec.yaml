@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.1.0+16
+version: 2.1.0+17
 
 environment:
   sdk: ">=3.1.5 <4.0.0"
@@ -47,7 +47,10 @@ dependencies:
   equatable: ^2.0.5
   dropdown_button2: ^1.4.0 # custom dropdownButton and dropdownMenuItems
   url_launcher: ^6.2.5 # for launch dsim website
-  excel: ^2.0.1
+  excel:
+    git:
+      url: https://github.com/henryliang3027/excel.git
+      ref: master
   path_provider: ^2.0.15
   open_filex: ^4.3.1
   share_plus: ^7.0.0

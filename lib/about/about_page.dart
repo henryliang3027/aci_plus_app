@@ -2,6 +2,7 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key, required this.pageController});
@@ -39,6 +40,13 @@ class _AboutPageState extends State<AboutPage> {
           style: TextStyle(fontSize: fontSize),
         ),
       );
+    }
+
+    Future<String> getVersion() async {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      String buildVersion =
+          'V ${packageInfo.version}-beta${packageInfo.buildNumber}';
+      return buildVersion;
     }
 
     return Scaffold(
@@ -93,11 +101,22 @@ class _AboutPageState extends State<AboutPage> {
                           ),
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
-                        child: Text(
-                          _dsimVersion,
-                          style: const TextStyle(
-                            color: Colors.white,
-                          ),
+                        child: FutureBuilder<String>(
+                          future: getVersion(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              return Text(
+                                snapshot.data,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              );
+                            } else {
+                              return Container();
+                            }
+                          },
                         ),
                         onPressed: () async {},
                       ),
