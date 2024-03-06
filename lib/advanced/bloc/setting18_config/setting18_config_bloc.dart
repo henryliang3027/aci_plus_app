@@ -37,7 +37,8 @@ class Setting18ConfigBloc
     ));
 
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String buildVersion = 'V ${packageInfo.version}';
+    String buildVersion =
+        'V ${packageInfo.version}-beta${packageInfo.buildNumber}';
 
     List<TrunkConfig> trunkConfigs = _configRepository.getAllTrunkConfigs();
     List<DistributionConfig> distributionConfigs =

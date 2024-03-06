@@ -72,6 +72,10 @@ class _Information18PresetFormState extends State<Information18PresetForm> {
       } else if (item == DataKey.lastChannelLoadingLevel.name) {
         return AppLocalizations.of(context)!
             .dialogMessageLastChannelLoadingLevelSetting;
+      } else if (item == DataKey.agcMode.name) {
+        return AppLocalizations.of(context)!.dialogMessageAGCModeSetting;
+      } else if (item == DataKey.alcMode.name) {
+        return AppLocalizations.of(context)!.dialogMessageALCModeSetting;
       } else {
         return '';
       }
@@ -250,20 +254,29 @@ class _PartName extends StatelessWidget {
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                          width: 2.0,
-                          color: Theme.of(context).colorScheme.onPrimary),
+                        width: 2.0,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                       borderRadius:
                           const BorderRadius.all(Radius.circular(4.0)),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.primary),
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                       borderRadius:
                           const BorderRadius.all(Radius.circular(4.0)),
                     ),
+                    disabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                    ),
 
                     border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                    ),
                     contentPadding:
                         const EdgeInsets.fromLTRB(4.0, 8.0, 0.0, 8.0),
                     isDense: true,
