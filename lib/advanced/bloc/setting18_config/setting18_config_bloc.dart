@@ -128,10 +128,10 @@ class Setting18ConfigBloc
     ));
   }
 
-  void _onQRDataScanned(
+  Future<void> _onQRDataScanned(
     QRDataScanned event,
     Emitter<Setting18ConfigState> emit,
-  ) {
+  ) async {
     emit(state.copyWith(
       encodeStaus: FormStatus.none,
       decodeStatus: FormStatus.requestInProgress,
@@ -174,35 +174,10 @@ class Setting18ConfigBloc
       distributionConfigs.add(distributionConfig);
     }
 
-    for (TrunkConfig trunkConfig in trunkConfigs) {
-      _configRepository.updateConfig(
-        id: trunkConfig.id,
-        groupId: '0',
-        name: trunkConfig.name,
-        splitOption: trunkConfig.splitOption,
-        firstChannelLoadingFrequency: trunkConfig.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: trunkConfig.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: trunkConfig.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: trunkConfig.lastChannelLoadingLevel,
-        isDefault: trunkConfig.isDefault,
-      );
-    }
-
-    for (DistributionConfig distributionConfig in distributionConfigs) {
-      _configRepository.updateConfig(
-        id: distributionConfig.id,
-        groupId: '1',
-        name: distributionConfig.name,
-        splitOption: distributionConfig.splitOption,
-        firstChannelLoadingFrequency:
-            distributionConfig.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: distributionConfig.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency:
-            distributionConfig.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: distributionConfig.lastChannelLoadingLevel,
-        isDefault: distributionConfig.isDefault,
-      );
-    }
+    await _configRepository.updateConfigsByQRCode(
+      trunkConfigs: trunkConfigs,
+      distributionConfigs: distributionConfigs,
+    );
 
     emit(state.copyWith(
       decodeStatus: FormStatus.requestSuccess,

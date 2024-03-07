@@ -133,6 +133,46 @@ class ConfigRepository {
     }
   }
 
+  Future<void> updateConfigsByQRCode({
+    required List<TrunkConfig> trunkConfigs,
+    required List<DistributionConfig> distributionConfigs,
+  }) async {
+    for (int i = 0; i < 5; i++) {
+      _trunkConfigNames[i] = '';
+      _distributionConfigNames[i] = '';
+    }
+
+    for (TrunkConfig trunkConfig in trunkConfigs) {
+      await _trunkConfigApi.putConfig(
+        id: trunkConfig.id,
+        name: trunkConfig.name,
+        splitOption: trunkConfig.splitOption,
+        firstChannelLoadingFrequency: trunkConfig.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: trunkConfig.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: trunkConfig.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: trunkConfig.lastChannelLoadingLevel,
+        isDefault: trunkConfig.isDefault,
+      );
+      _trunkConfigNames[trunkConfig.id] = trunkConfig.name;
+    }
+
+    for (DistributionConfig distributionConfig in distributionConfigs) {
+      await _distributionConfigApi.putConfig(
+        id: distributionConfig.id,
+        name: distributionConfig.name,
+        splitOption: distributionConfig.splitOption,
+        firstChannelLoadingFrequency:
+            distributionConfig.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: distributionConfig.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency:
+            distributionConfig.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: distributionConfig.lastChannelLoadingLevel,
+        isDefault: distributionConfig.isDefault,
+      );
+      _distributionConfigNames[distributionConfig.id] = distributionConfig.name;
+    }
+  }
+
   Future<void> setDefaultConfigById({
     required String groupId,
     required int id,
