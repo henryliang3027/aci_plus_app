@@ -80,7 +80,7 @@ class _QRCodeViewer extends StatelessWidget {
         version: QrVersions.auto,
         errorCorrectionLevel: QrErrorCorrectLevel.L,
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
-        size: 360,
+        // size: 360,
         gapless: false,
         embeddedImage: const AssetImage('assets/qr_logo.png'),
         embeddedImageStyle: const QrEmbeddedImageStyle(

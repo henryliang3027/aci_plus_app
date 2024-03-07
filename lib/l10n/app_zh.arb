@@ -152,7 +152,7 @@
     "distributionAmplifier": "支線放大器",
     "name": "名稱",
 
-    "scanQRCode": "掃描條碼",
+    "scanQRCode": "掃描二維碼",
     "deviceSetting": "設備設定",
     "bluetoothSetting": "藍牙設定",
     "instruction" : "說明",
@@ -209,6 +209,7 @@
     "dialogMessageDefaultConfigNotFound": "未找到預設資料, 請新增預設設定檔",
     "dialogMessageAllConfigsUpdated": "已更新所有設定檔",
 
+    "dialogMessageInvalidQRCode": "無效的二維碼",
     "dialogMessageDeviceNotFound": "未發現任何裝置",
     "dialogMessageBluetoothDisabled": "藍牙未開啟",
     "dialogMessageConnectionFailure": "裝置連線失敗",

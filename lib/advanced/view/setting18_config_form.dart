@@ -78,12 +78,48 @@ class Setting18ConfigForm extends StatelessWidget {
       );
     }
 
+    Future<void> showDecodeFailureDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context)!.dialogTitleError,
+              style: const TextStyle(
+                color: CustomStyle.customRed,
+              ),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                    AppLocalizations.of(context)!.dialogMessageInvalidQRCode,
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return BlocListener<Setting18ConfigBloc, Setting18ConfigState>(
       listener: (context, state) {
-        if (state.encodeStaus == FormStatus.requestSuccess) {
+        if (state.encodeStaus.isRequestSuccess) {
           showGeneratedQRCodeDialog(encodedData: state.encodedData);
-        } else if (state.decodeStatus == FormStatus.requestSuccess) {
+        } else if (state.decodeStatus.isRequestSuccess) {
           showAllConfigUpdatedDialog();
+        } else if (state.decodeStatus.isRequestFailure) {
+          showDecodeFailureDialog();
         }
       },
       child: const _ViewLayout(),
@@ -152,7 +188,7 @@ class _Content extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _Version(),
-                // _QRToolbar(),
+                _QRToolbar(),
                 _DeviceListView(),
               ],
             ),
@@ -194,6 +230,9 @@ class _QRToolbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
+      buildWhen: (previous, current) =>
+          previous.trunkConfigs != current.trunkConfigs ||
+          previous.distributionConfigs != current.distributionConfigs,
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 18.0),
@@ -238,11 +277,16 @@ class _QRToolbar extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               IconButton(
-                                onPressed: () {
-                                  context
-                                      .read<Setting18ConfigBloc>()
-                                      .add(const QRDataGenerated());
-                                },
+                                onPressed: [
+                                  ...state.trunkConfigs,
+                                  ...state.distributionConfigs
+                                ].isNotEmpty
+                                    ? () {
+                                        context
+                                            .read<Setting18ConfigBloc>()
+                                            .add(const QRDataGenerated());
+                                      }
+                                    : null,
                                 icon: const Icon(
                                   Icons.qr_code_2,
                                   size: 26,

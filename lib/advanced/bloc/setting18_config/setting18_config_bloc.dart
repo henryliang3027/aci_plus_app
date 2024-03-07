@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -99,43 +101,138 @@ class Setting18ConfigBloc
     QRDataGenerated event,
     Emitter<Setting18ConfigState> emit,
   ) {
-    // emit(state.copyWith(
-    //   encodeStaus: FormStatus.requestInProgress,
-    //   decodeStatus: FormStatus.none,
-    // ));
+    emit(state.copyWith(
+      encodeStaus: FormStatus.requestInProgress,
+      decodeStatus: FormStatus.none,
+    ));
 
-    // List<String> jsons = [
-    //   for (Config config in state.configs) ...[jsonEncode(config.toJson())]
-    // ];
+    List<String> trunkConfigJsons = [
+      for (TrunkConfig trunkConfig in state.trunkConfigs) ...[
+        jsonEncode(trunkConfig.toJson())
+      ]
+    ];
 
-    // emit(state.copyWith(
-    //   encodeStaus: FormStatus.requestSuccess,
-    //   encodedData: jsons.join(','),
-    // ));
+    List<String> distributionConfigJsons = [
+      for (DistributionConfig distributionConfig in state
+          .distributionConfigs) ...[jsonEncode(distributionConfig.toJson())]
+    ];
+
+    String encodedData =
+        '${trunkConfigJsons.join(',')} ${distributionConfigJsons.join(',')}';
+
+    print(encodedData);
+
+    emit(state.copyWith(
+      encodeStaus: FormStatus.requestSuccess,
+      encodedData: encodedData,
+    ));
   }
 
   void _onQRDataScanned(
     QRDataScanned event,
     Emitter<Setting18ConfigState> emit,
   ) {
-    // emit(state.copyWith(
-    //   encodeStaus: FormStatus.none,
-    //   decodeStatus: FormStatus.requestInProgress,
-    // ));
+    emit(state.copyWith(
+      encodeStaus: FormStatus.none,
+      decodeStatus: FormStatus.requestInProgress,
+    ));
 
-    // List<Config> configs = [];
+    List<TrunkConfig> trunkConfigs = [];
+    List<DistributionConfig> distributionConfigs = [];
 
-    // RegExp configJsonRegex = RegExp(r'({[^{}]+})');
+    RegExp mapRegex = RegExp(r'(\{[^{}]*\})');
 
-    // Iterable<Match> matches = configJsonRegex.allMatches(event.rawData);
+    List<String> splitRawData = event.rawData.split(' ');
 
-    // print(event.rawData);
+    String trunkRawData = splitRawData[0];
+    String distributionRawData = splitRawData[1];
+    print('-----trunk------');
+    print(trunkRawData);
+    print('-----distribution------');
+    print(distributionRawData);
 
-    // for (Match match in matches) {
+    Iterable<Match> trunkConfigMatches = mapRegex.allMatches(trunkRawData);
+    Iterable<Match> distributionConfigMatches =
+        mapRegex.allMatches(distributionRawData);
+
+    print('-----trunk------');
+
+    for (Match match in trunkConfigMatches) {
+      String json = match[0]!;
+      print(json);
+      TrunkConfig trunkConfig = TrunkConfig.fromJson(jsonDecode(json));
+      trunkConfigs.add(trunkConfig);
+    }
+
+    print('-----distribution------');
+
+    for (Match match in distributionConfigMatches) {
+      String json = match[0]!;
+      print(json);
+      DistributionConfig distributionConfig =
+          DistributionConfig.fromJson(jsonDecode(json));
+      distributionConfigs.add(distributionConfig);
+    }
+
+    for (TrunkConfig trunkConfig in trunkConfigs) {
+      _configRepository.updateConfig(
+        id: trunkConfig.id,
+        groupId: '0',
+        name: trunkConfig.name,
+        splitOption: trunkConfig.splitOption,
+        firstChannelLoadingFrequency: trunkConfig.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: trunkConfig.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: trunkConfig.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: trunkConfig.lastChannelLoadingLevel,
+        isDefault: trunkConfig.isDefault,
+      );
+    }
+
+    for (DistributionConfig distributionConfig in distributionConfigs) {
+      _configRepository.updateConfig(
+        id: distributionConfig.id,
+        groupId: '1',
+        name: distributionConfig.name,
+        splitOption: distributionConfig.splitOption,
+        firstChannelLoadingFrequency:
+            distributionConfig.firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: distributionConfig.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency:
+            distributionConfig.lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: distributionConfig.lastChannelLoadingLevel,
+        isDefault: distributionConfig.isDefault,
+      );
+    }
+
+    emit(state.copyWith(
+      decodeStatus: FormStatus.requestSuccess,
+      trunkConfigs: trunkConfigs,
+      distributionConfigs: distributionConfigs,
+    ));
+
+    // List<String> splitRawData = event.rawData.split(' ');
+
+    // Iterable<Match> trunkConfigMatches =
+    //     configJsonRegex.allMatches(splitRawData[0]);
+    // Iterable<Match> distributionConfigMatches =
+    //     configJsonRegex.allMatches(splitRawData[1]);
+
+    // print('-----trunk------');
+
+    // for (Match match in trunkConfigMatches) {
     //   String json = match[0]!;
     //   print(json);
-    //   Config config = Config.fromJson(jsonDecode(json));
-    //   configs.add(config);
+    //   // Config config = Config.fromJson(jsonDecode(json));
+    //   // configs.add(config);
+    // }
+
+    // print('-----distribution------');
+
+    // for (Match match in distributionConfigMatches) {
+    //   String json = match[0]!;
+    //   print(json);
+    //   // Config config = Config.fromJson(jsonDecode(json));
+    //   // configs.add(config);
     // }
 
     // // for (String json in jsons) {

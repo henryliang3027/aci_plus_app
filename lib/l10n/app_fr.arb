@@ -208,6 +208,7 @@
     "dialogMessageDefaultConfigNotFound": "Données prédéfinies non trouvées! Veuillez ajouter de nouveaux profils prédéfinis.",
     "dialogMessageAllConfigsUpdated": "Tous les profils prédéfinis ont été mis à jour.",
 
+    "dialogMessageInvalidQRCode": "Code QR invalide",
     "dialogMessageDeviceNotFound": "Appareil non trouvé",
     "dialogMessageBluetoothDisabled": "Bluetooth est désactivé",
     "dialogMessageConnectionFailure": "Connexion dispositif échouée",

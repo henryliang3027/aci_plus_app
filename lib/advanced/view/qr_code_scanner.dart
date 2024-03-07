@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
+import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class QRCodeScanner extends StatefulWidget {
   const QRCodeScanner({Key? key}) : super(key: key);
@@ -20,7 +22,16 @@ class _QRViewExampleState extends State<QRCodeScanner> {
   Barcode? result;
   QRViewController? controller;
   bool isOpenFlash = false;
+  bool isInvalid = false;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  // (?:\{[^{}]*\}) matches one instance of the map pattern.
+  // \{ matches the opening curly brace {.
+  // [^{}]* matches any characters except { and } zero or more times.
+  // \} matches the closing curly brace }.
+  // (?:,\{[^{}]*\}){0,4} matches zero to four instances of the pattern preceded by a comma ,.
+  final RegExp configJsonRegex = RegExp(
+      r'^((?:\{[^{}]*\})(?:,\{[^{}]*\}){0,4})\s((?:\{[^{}]*\})(?:,\{[^{}]*\}){0,4})$');
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -40,6 +51,31 @@ class _QRViewExampleState extends State<QRCodeScanner> {
         alignment: AlignmentDirectional.bottomCenter,
         children: <Widget>[
           _buildQrView(context),
+          isInvalid
+              ? Positioned(
+                  bottom: 200,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(26),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 26, vertical: 10),
+                      child: Text(
+                        AppLocalizations.of(context)!
+                            .dialogMessageInvalidQRCode,
+                        style: const TextStyle(
+                          fontSize: CustomStyle.sizeXL,
+                          color: CustomStyle.customRed,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : Container(),
           Positioned(
             bottom: 50,
             child: Row(
@@ -93,7 +129,7 @@ class _QRViewExampleState extends State<QRCodeScanner> {
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
       overlay: QrScannerOverlayShape(
-        borderColor: Colors.red,
+        borderColor: Theme.of(context).colorScheme.onPrimary,
         borderRadius: 10,
         borderLength: 30,
         borderWidth: 10,
@@ -103,16 +139,69 @@ class _QRViewExampleState extends State<QRCodeScanner> {
     );
   }
 
+  Future<void> showDecodeFailureDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            AppLocalizations.of(context)!.dialogTitleError,
+            style: const TextStyle(
+              color: CustomStyle.customRed,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  AppLocalizations.of(context)!.dialogMessageInvalidQRCode,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // pop dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _onQRViewCreated(QRViewController controller) {
     setState(() {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      print('pop scan');
+      print('${scanData.code}');
 
-      if (ModalRoute.of(context)?.isCurrent == true) {
-        Navigator.pop(context, scanData.code);
+      if (scanData.code != null) {
+        if (configJsonRegex.hasMatch(scanData.code!)) {
+          if (isInvalid) {
+            setState(() {
+              isInvalid = false;
+            });
+          }
+          if (ModalRoute.of(context)?.isCurrent == true) {
+            Navigator.pop(context, scanData.code);
+          }
+        } else {
+          if (!isInvalid) {
+            setState(() {
+              isInvalid = true;
+            });
+          }
+        }
       }
+
+      // if (ModalRoute.of(context)?.isCurrent == true) {
+      //   Navigator.pop(context, scanData.code);
+      // }
 
       // setState(() {
       //   result = scanData;
