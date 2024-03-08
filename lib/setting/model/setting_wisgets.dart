@@ -84,7 +84,7 @@ Widget controlParameterSlider({
           child: Slider(
             min: minValue,
             max: maxValue,
-            divisions: 150,
+            divisions: (maxValue - minValue) ~/ 0.5,
             value: currentValue,
             onChanged: editMode ? onChanged : null,
           ),

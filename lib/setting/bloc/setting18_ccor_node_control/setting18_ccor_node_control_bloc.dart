@@ -119,7 +119,7 @@ class Setting18CCorNodeControlBloc
   }) {
     double doubleValue = double.parse(value);
     doubleValue =
-        doubleValue + 0.1 <= maxValue ? doubleValue + 0.1 : doubleValue;
+        doubleValue + 0.5 <= maxValue ? doubleValue + 0.5 : doubleValue;
     String strValue = doubleValue.toStringAsFixed(1);
 
     return strValue;
@@ -131,7 +131,7 @@ class Setting18CCorNodeControlBloc
   }) {
     double doubleValue = double.parse(value);
     doubleValue =
-        doubleValue - 0.1 >= minValue ? doubleValue - 0.1 : doubleValue;
+        doubleValue - 0.5 >= minValue ? doubleValue - 0.5 : doubleValue;
     String strValue = doubleValue.toStringAsFixed(1);
 
     return strValue;

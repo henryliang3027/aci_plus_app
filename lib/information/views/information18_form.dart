@@ -71,6 +71,7 @@ class Information18Form extends StatelessWidget {
           children: [
             _ConnectionCard(),
             _ShortcutCard(),
+            // _BlockDiagramCard(),
             _BasicCard(),
             _AlarmCard(),
           ],
@@ -327,6 +328,68 @@ class _ShortcutCard extends StatelessWidget {
                       //     ),
                       //   ),
                       // ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _BlockDiagramCard extends StatelessWidget {
+  const _BlockDiagramCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        String partId = state.characteristicData[DataKey.partId] ?? '';
+
+        return Card(
+          color: Theme.of(context).colorScheme.onPrimary,
+          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Block Diagram',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        // AppLocalizations.of(context)!.loadPreset,
+                        'Show Diagram',
+                        style: const TextStyle(
+                          fontSize: CustomStyle.sizeL,
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          foregroundColor: Colors.white,
+                        ),
+                        child: Text(
+                          'Show',
+                          style: const TextStyle(
+                            fontSize: CustomStyle.sizeL,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
