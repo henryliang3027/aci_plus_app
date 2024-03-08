@@ -146,10 +146,10 @@ class Setting18ConfigBloc
 
     String trunkRawData = splitRawData[0];
     String distributionRawData = splitRawData[1];
-    print('-----trunk------');
-    print(trunkRawData);
-    print('-----distribution------');
-    print(distributionRawData);
+    // print('-----trunk------');
+    // print(trunkRawData);
+    // print('-----distribution------');
+    // print(distributionRawData);
 
     Iterable<Match> trunkConfigMatches = mapRegex.allMatches(trunkRawData);
     Iterable<Match> distributionConfigMatches =
@@ -178,6 +178,10 @@ class Setting18ConfigBloc
       trunkConfigs: trunkConfigs,
       distributionConfigs: distributionConfigs,
     );
+
+    List<TrunkConfig> test1 = _configRepository.getAllTrunkConfigs();
+    List<DistributionConfig> test2 =
+        _configRepository.getAllDistributionConfigs();
 
     emit(state.copyWith(
       decodeStatus: FormStatus.requestSuccess,

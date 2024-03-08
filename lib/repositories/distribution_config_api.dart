@@ -113,4 +113,8 @@ class DistributionConfigApi {
   Future<void> deleteConfigByid(int id) async {
     await _distributionConfigBox.delete(id);
   }
+
+  Future<void> deleteAllConfig() async {
+    await _distributionConfigBox.deleteAll(_distributionConfigBox.keys);
+  }
 }

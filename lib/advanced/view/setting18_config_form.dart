@@ -598,7 +598,7 @@ class _DeviceListView extends StatelessWidget {
                         children: [
                           Expanded(
                             child: IconButton(
-                              onPressed: config.isDefault == '0'
+                              onPressed: config.isDefault == '0' || true
                                   ? () {
                                       showConfirmDeleteDialog(
                                         configName: config.name,

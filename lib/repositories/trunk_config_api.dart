@@ -112,4 +112,8 @@ class TrunkConfigApi {
   Future<void> deleteConfigByid(int id) async {
     await _trunkConfigBox.delete(id);
   }
+
+  Future<void> deleteAllConfig() async {
+    await _trunkConfigBox.deleteAll(_trunkConfigBox.keys);
+  }
 }

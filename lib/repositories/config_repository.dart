@@ -137,6 +137,9 @@ class ConfigRepository {
     required List<TrunkConfig> trunkConfigs,
     required List<DistributionConfig> distributionConfigs,
   }) async {
+    // clear all configs in the hive box
+    await deleteAllConfig();
+
     for (int i = 0; i < 5; i++) {
       _trunkConfigNames[i] = '';
       _distributionConfigNames[i] = '';
@@ -254,6 +257,11 @@ class ConfigRepository {
       _distributionConfigNames[id] = '';
       await _distributionConfigApi.deleteConfigByid(id);
     }
+  }
+
+  Future<void> deleteAllConfig() async {
+    await _trunkConfigApi.deleteAllConfig();
+    await _distributionConfigApi.deleteAllConfig();
   }
 }
 
