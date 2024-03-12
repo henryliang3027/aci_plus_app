@@ -30,21 +30,26 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
   ) {
     String groupId = event.partId == '5' ? '0' : '1';
 
-    List<dynamic> result = _configRepository.getDefaultConfigByGroupId(groupId);
+    List<Config> configs = _configRepository.getConfigsByGroupId(groupId);
 
-    if (result[0]) {
-      dynamic defaultConfig = result[1];
+    emit(state.copyWith(
+      isLoadConfigEnabled: configs.isNotEmpty ? true : false,
+      configs: configs,
+    ));
 
-      emit(state.copyWith(
-        isLoadConfigEnabled: true,
-        defaultConfig: defaultConfig,
-      ));
-    } else {
-      emit(state.copyWith(
-        isLoadConfigEnabled: false,
-        errorMessage: 'Preset data not found, please add new preset profiles.',
-      ));
-    }
+    // if (result[0]) {
+    //   dynamic defaultConfig = result[1];
+
+    //   emit(state.copyWith(
+    //     isLoadConfigEnabled: true,
+    //     defaultConfig: defaultConfig,
+    //   ));
+    // } else {
+    //   emit(state.copyWith(
+    //     isLoadConfigEnabled: false,
+    //     errorMessage: 'Preset data not found, please add new preset profiles.',
+    //   ));
+    // }
   }
 
   void _onAlarmPeriodicUpdateRequested(

@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/repositories/config.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
 import 'package:aci_plus_app/repositories/distribution_config_api.dart';
 import 'package:aci_plus_app/repositories/trunk_config.dart';
@@ -194,6 +195,16 @@ class ConfigRepository {
       return _trunkConfigApi.getDefaultConfig();
     } else {
       return _distributionConfigApi.getDefaultConfig();
+    }
+  }
+
+  List<Config> getConfigsByGroupId(
+    String groupId,
+  ) {
+    if (groupId == '0') {
+      return _trunkConfigApi.getAllConfigs();
+    } else {
+      return _distributionConfigApi.getAllConfigs();
     }
   }
 

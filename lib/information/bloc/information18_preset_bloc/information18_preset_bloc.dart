@@ -14,9 +14,9 @@ class Information18PresetBloc
     extends Bloc<Information18PresetEvent, Information18PresetState> {
   Information18PresetBloc({
     required Amp18Repository amp18repository,
-    required Config defaultConfig,
+    required Config config,
   })  : _amp18Repository = amp18repository,
-        _defaultConfig = defaultConfig,
+        _config = config,
         super(const Information18PresetState()) {
     on<DefaultConfigRequested>(_onDefaultConfigRequested);
     on<ConfigExecuted>(_onConfigExecuted);
@@ -25,7 +25,7 @@ class Information18PresetBloc
   }
 
   final Amp18Repository _amp18Repository;
-  final Config _defaultConfig;
+  final Config _config;
 
   void _onDefaultConfigRequested(
     DefaultConfigRequested event,
@@ -33,7 +33,7 @@ class Information18PresetBloc
   ) {
     emit(state.copyWith(
       isInitialize: true,
-      config: _defaultConfig,
+      config: _config,
     ));
   }
 

@@ -4,6 +4,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/information/bloc/information18_bloc/information18_bloc.dart';
+import 'package:aci_plus_app/information/views/information18_config_list_view.dart';
 import 'package:aci_plus_app/information/views/information18_preset_page.dart';
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:flutter/material.dart';
@@ -414,8 +415,31 @@ class _LoadPresetButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> showModuleSettingDialog({
-      required Config defaultConfig,
+    // Future<void> showModuleSettingDialog({
+    //   required Config defaultConfig,
+    // }) async {
+    //   return showDialog<void>(
+    //     context: context,
+    //     barrierDismissible: false, // user must tap button!
+
+    //     builder: (BuildContext context) {
+    //       var width = MediaQuery.of(context).size.width;
+    //       // var height = MediaQuery.of(context).size.height;
+
+    //       return Dialog(
+    //         insetPadding: EdgeInsets.symmetric(
+    //           horizontal: width * 0.01,
+    //         ),
+    //         child: Information18PresetPage(
+    //           defaultConfig: defaultConfig,
+    //         ),
+    //       );
+    //     },
+    //   );
+    // }
+
+    Future<void> showSelectConfigDialog({
+      required List<Config> configs,
     }) async {
       return showDialog<void>(
         context: context,
@@ -429,8 +453,8 @@ class _LoadPresetButton extends StatelessWidget {
             insetPadding: EdgeInsets.symmetric(
               horizontal: width * 0.01,
             ),
-            child: Information18PresetPage(
-              defaultConfig: defaultConfig,
+            child: Informtion18ConfigListView(
+              configs: configs,
             ),
           );
         },
@@ -451,8 +475,8 @@ class _LoadPresetButton extends StatelessWidget {
                       .read<Information18Bloc>()
                       .add(const AlarmPeriodicUpdateCanceled());
 
-                  showModuleSettingDialog(
-                    defaultConfig: state.defaultConfig,
+                  showSelectConfigDialog(
+                    configs: state.configs,
                   ).then((value) {
                     // 設定結束後, 恢復 alarm 定期更新
                     context

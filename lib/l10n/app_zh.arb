@@ -186,6 +186,7 @@
     "dialogTitleEnterYourCode": "輸入代碼",
     "dialogTitleEnterConfirm": "確認",
     "dialogTitleDeleteConfig": "刪除",
+    "dialogTitleSelectConfig": "選擇設定檔",
 
     "dialogMessageDeleteConfig": "您確定要刪除 {configName} 嗎 ?",
     "@dialogMessageDeleteConfig": {

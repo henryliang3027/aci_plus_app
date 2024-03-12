@@ -185,6 +185,7 @@
     "dialogTitleEnterYourCode": "Entrez Votre Code",
     "dialogTitleEnterConfirm": "Confirmer",
     "dialogTitleDeleteConfig": "Supprimer",
+    "dialogTitleSelectConfig": "Sélectionner le préréglage",
 
     "dialogMessageDeleteConfig": "Voulez-vous supprimer {configName} ?",
     "@dialogMessageDeleteConfig": {

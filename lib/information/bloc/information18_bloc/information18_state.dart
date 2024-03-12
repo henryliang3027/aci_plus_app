@@ -3,16 +3,7 @@ part of 'information18_bloc.dart';
 class Information18State extends Equatable {
   const Information18State({
     this.isLoadConfigEnabled = false,
-    this.defaultConfig = const Config(
-      id: -1,
-      name: '',
-      splitOption: '0',
-      firstChannelLoadingFrequency: '',
-      firstChannelLoadingLevel: '',
-      lastChannelLoadingFrequency: '',
-      lastChannelLoadingLevel: '',
-      isDefault: '0',
-    ),
+    this.configs = const [],
     this.alarmUSeverity = 'default',
     this.alarmTSeverity = 'default',
     this.alarmPSeverity = 'default',
@@ -20,7 +11,7 @@ class Information18State extends Equatable {
   });
 
   final bool isLoadConfigEnabled;
-  final Config defaultConfig;
+  final List<Config> configs;
   final String alarmUSeverity;
   final String alarmTSeverity;
   final String alarmPSeverity;
@@ -28,7 +19,7 @@ class Information18State extends Equatable {
 
   Information18State copyWith({
     bool? isLoadConfigEnabled,
-    Config? defaultConfig,
+    List<Config>? configs,
     String? alarmUSeverity,
     String? alarmTSeverity,
     String? alarmPSeverity,
@@ -36,7 +27,7 @@ class Information18State extends Equatable {
   }) {
     return Information18State(
       isLoadConfigEnabled: isLoadConfigEnabled ?? this.isLoadConfigEnabled,
-      defaultConfig: defaultConfig ?? this.defaultConfig,
+      configs: configs ?? this.configs,
       alarmUSeverity: alarmUSeverity ?? this.alarmUSeverity,
       alarmTSeverity: alarmTSeverity ?? this.alarmTSeverity,
       alarmPSeverity: alarmPSeverity ?? this.alarmPSeverity,
@@ -47,7 +38,7 @@ class Information18State extends Equatable {
   @override
   List<Object?> get props => [
         isLoadConfigEnabled,
-        defaultConfig,
+        configs,
         alarmUSeverity,
         alarmTSeverity,
         alarmPSeverity,

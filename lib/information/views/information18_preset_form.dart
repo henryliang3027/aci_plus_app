@@ -150,57 +150,66 @@ class _Information18PresetFormState extends State<Information18PresetForm> {
               config.lastChannelLoadingLevel;
         }
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            alignment: Alignment.center,
-            width: double.maxFinite,
-            height: 58,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20.0),
-                  topRight: Radius.circular(20.0)),
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            child: _PartName(
-              nameTextEditingController: nameTextEditingController,
-            ),
+      child: Scaffold(
+        appBar: AppBar(
+          leading: Container(),
+          title: _PartName(
+            nameTextEditingController: nameTextEditingController,
           ),
-          // _QRCodeCard(
-          //   isShortcut: widget.isShortcut,
-          // ),
-          Flexible(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
-                child: Column(
-                  children: [
-                    const _SplitOption(),
-                    _FirstChannelLoading(
-                      firstChannelLoadingFrequencyTextEditingController:
-                          firstChannelLoadingFrequencyTextEditingController,
-                      firstChannelLoadingLevelTextEditingController:
-                          firstChannelLoadingLevelTextEditingController,
-                      currentDetectedSplitOption: currentDetectedSplitOption,
-                    ),
-                    _LastChannelLoading(
-                      lastChannelLoadingFrequencyTextEditingController:
-                          lastChannelLoadingFrequencyTextEditingController,
-                      lastChannelLoadingLevelTextEditingController:
-                          lastChannelLoadingLevelTextEditingController,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    // const _ActionTool(),
-                    const _ActionButton(),
-                  ],
+          centerTitle: true,
+        ),
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Container(
+            //   alignment: Alignment.center,
+            //   width: double.maxFinite,
+            //   height: 58,
+            //   decoration: BoxDecoration(
+            //     borderRadius: const BorderRadius.only(
+            //         topLeft: Radius.circular(20.0),
+            //         topRight: Radius.circular(20.0)),
+            //     color: Theme.of(context).colorScheme.primary,
+            //   ),
+            //   child: _PartName(
+            //     nameTextEditingController: nameTextEditingController,
+            //   ),
+            // ),
+            // _QRCodeCard(
+            //   isShortcut: widget.isShortcut,
+            // ),
+            Flexible(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
+                  child: Column(
+                    children: [
+                      const _SplitOption(),
+                      _FirstChannelLoading(
+                        firstChannelLoadingFrequencyTextEditingController:
+                            firstChannelLoadingFrequencyTextEditingController,
+                        firstChannelLoadingLevelTextEditingController:
+                            firstChannelLoadingLevelTextEditingController,
+                        currentDetectedSplitOption: currentDetectedSplitOption,
+                      ),
+                      _LastChannelLoading(
+                        lastChannelLoadingFrequencyTextEditingController:
+                            lastChannelLoadingFrequencyTextEditingController,
+                        lastChannelLoadingLevelTextEditingController:
+                            lastChannelLoadingLevelTextEditingController,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      // const _ActionTool(),
+                      const _ActionButton(),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -218,82 +227,85 @@ class _PartName extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Information18PresetBloc, Information18PresetState>(
       builder: (context, state) {
-        return Theme(
-          data: ThemeData(
-            textSelectionTheme: TextSelectionThemeData(
-              cursorColor: Theme.of(context).colorScheme.onPrimary,
-              selectionColor: const Color(0x80ffffff),
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 140.0,
-            ),
-            child: Stack(
-              alignment: AlignmentDirectional.center,
-              children: [
-                Positioned(
-                  right: 14.0,
-                  child: Icon(
-                    Icons.edit,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                ),
-                TextField(
-                  controller: nameTextEditingController,
-                  key: const Key('Information18PresetForm_nameInput_textField'),
-                  style: TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                  textInputAction: TextInputAction.done,
-                  enabled: false,
-                  onChanged: null,
-                  textAlign: TextAlign.center,
-                  maxLength: 10,
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 2.0,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(4.0)),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(4.0)),
-                    ),
-                    disabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.transparent,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                    ),
-
-                    border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                    ),
-                    contentPadding:
-                        const EdgeInsets.fromLTRB(4.0, 8.0, 0.0, 8.0),
-                    isDense: true,
-                    filled: true,
-                    fillColor: Theme.of(context).colorScheme.primary,
-                    counterText: '',
-                    errorMaxLines: 2,
-                    errorStyle: const TextStyle(
-                      fontSize: CustomStyle.sizeS,
-                    ),
-                    // errorText: editMode1 ? errorText1 : null,
-                  ),
-                ),
-              ],
-            ),
-          ),
+        return Text(
+          state.config.name,
         );
+        // return Theme(
+        //   data: ThemeData(
+        //     textSelectionTheme: TextSelectionThemeData(
+        //       cursorColor: Theme.of(context).colorScheme.onPrimary,
+        //       selectionColor: const Color(0x80ffffff),
+        //     ),
+        //   ),
+        //   child: Padding(
+        //     padding: const EdgeInsets.symmetric(
+        //       horizontal: 0.0,
+        //     ),
+        //     child: Stack(
+        //       alignment: AlignmentDirectional.center,
+        //       children: [
+        //         // Positioned(
+        //         //   right: 14.0,
+        //         //   child: Icon(
+        //         //     Icons.edit,
+        //         //     color: Theme.of(context).colorScheme.onPrimary,
+        //         //   ),
+        //         // ),
+        //         TextField(
+        //           controller: nameTextEditingController,
+        //           key: const Key('Information18PresetForm_nameInput_textField'),
+        //           style: TextStyle(
+        //             fontSize: CustomStyle.sizeXL,
+        //             color: Theme.of(context).colorScheme.onPrimary,
+        //           ),
+        //           textInputAction: TextInputAction.done,
+        //           enabled: false,
+        //           onChanged: null,
+        //           textAlign: TextAlign.center,
+        //           maxLength: 10,
+        //           decoration: InputDecoration(
+        //             focusedBorder: OutlineInputBorder(
+        //               borderSide: BorderSide(
+        //                 width: 2.0,
+        //                 color: Theme.of(context).colorScheme.onPrimary,
+        //               ),
+        //               borderRadius:
+        //                   const BorderRadius.all(Radius.circular(4.0)),
+        //             ),
+        //             enabledBorder: OutlineInputBorder(
+        //               borderSide: BorderSide(
+        //                 color: Theme.of(context).colorScheme.primary,
+        //               ),
+        //               borderRadius:
+        //                   const BorderRadius.all(Radius.circular(4.0)),
+        //             ),
+        //             disabledBorder: const OutlineInputBorder(
+        //               borderSide: BorderSide(
+        //                 color: Colors.transparent,
+        //               ),
+        //               borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        //             ),
+
+        //             border: const OutlineInputBorder(
+        //               borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        //             ),
+        //             // contentPadding:
+        //             //     const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+        //             isDense: true,
+        //             filled: true,
+        //             fillColor: Theme.of(context).colorScheme.primary,
+        //             counterText: '',
+        //             errorMaxLines: 2,
+        //             errorStyle: const TextStyle(
+        //               fontSize: CustomStyle.sizeS,
+        //             ),
+        //             // errorText: editMode1 ? errorText1 : null,
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // );
       },
     );
   }
