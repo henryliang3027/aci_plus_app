@@ -13,7 +13,7 @@ class Setting18ControlPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => Setting18ControlBloc(
           amp18Repository: RepositoryProvider.of<Amp18Repository>(context)),
-      child: const Setting18ControlView(),
+      child: Setting18ControlView(),
     );
   }
 }

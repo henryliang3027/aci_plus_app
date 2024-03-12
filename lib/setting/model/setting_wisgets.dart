@@ -2,18 +2,30 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter/services.dart';
+
+double _getValue(String value) {
+  if (value.isNotEmpty) {
+    return double.parse(value);
+  } else {
+    return 0.0;
+  }
+}
 
 Widget controlParameterSlider({
   required BuildContext context,
   required bool editMode,
   required String title,
   required double minValue,
-  required double currentValue,
+  required String currentValue,
   required double maxValue,
   required ValueChanged<double> onChanged,
+  required TextEditingController textEditingController,
+  required ValueChanged<String> onTextChanged,
   required VoidCallback onIncreased,
   required VoidCallback onDecreased,
 }) {
+  // textEditingController.text = currentValue;
   return Padding(
     padding: const EdgeInsets.only(
       bottom: 30.0,
@@ -85,28 +97,68 @@ Widget controlParameterSlider({
             min: minValue,
             max: maxValue,
             divisions: (maxValue - minValue) ~/ 0.5,
-            value: currentValue,
+            value: _getValue(currentValue),
             onChanged: editMode ? onChanged : null,
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton.filled(
-              visualDensity: const VisualDensity(horizontal: -4.0),
-              icon: const Icon(
-                Icons.remove,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 30.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton.filled(
+                visualDensity: const VisualDensity(horizontal: -4.0),
+                icon: const Icon(
+                  Icons.remove,
+                ),
+                onPressed: editMode ? onDecreased : null,
               ),
-              onPressed: editMode ? onDecreased : null,
-            ),
-            IconButton.filled(
-              visualDensity: const VisualDensity(horizontal: -4.0),
-              icon: const Icon(
-                Icons.add,
+              Flexible(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 60.0,
+                  ),
+                  child: TextField(
+                    controller: textEditingController,
+                    // key: Key(textEditingControllerName1),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                    ),
+                    textAlign: TextAlign.center,
+                    enabled: editMode,
+                    textInputAction: TextInputAction.done,
+                    onChanged: onTextChanged,
+                    maxLength: 40,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d?'))
+                    ],
+                    decoration: const InputDecoration(
+                      // label: Text(
+                      //     '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: EdgeInsets.all(8.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor: Colors.white,
+                      counterText: '',
+                      errorMaxLines: 2,
+                      errorStyle: TextStyle(fontSize: CustomStyle.sizeS),
+                      // errorText: editMode1 ? errorText1 : null,
+                    ),
+                  ),
+                ),
               ),
-              onPressed: editMode ? onIncreased : null,
-            ),
-          ],
+              IconButton.filled(
+                visualDensity: const VisualDensity(horizontal: -4.0),
+                icon: const Icon(
+                  Icons.add,
+                ),
+                onPressed: editMode ? onIncreased : null,
+              ),
+            ],
+          ),
         ),
       ],
     ),

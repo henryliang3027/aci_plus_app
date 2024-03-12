@@ -15,7 +15,42 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Setting18ControlView extends StatelessWidget {
-  const Setting18ControlView({super.key});
+  Setting18ControlView({super.key});
+
+  final TextEditingController forwardInputAttenuation1TextEditingController =
+      TextEditingController();
+  final TextEditingController forwardInputEqualizer1TextEditingController =
+      TextEditingController();
+  final TextEditingController
+      forwardOutputAttenuation3And4TextEditingController =
+      TextEditingController();
+  final TextEditingController
+      forwardOutputAttenuation2And3TextEditingController =
+      TextEditingController();
+  final TextEditingController
+      forwardOutputAttenuation5And6TextEditingController =
+      TextEditingController();
+  final TextEditingController forwardOutputEqualizer3And4TextEditingController =
+      TextEditingController();
+  final TextEditingController forwardOutputEqualizer2And3TextEditingController =
+      TextEditingController();
+  final TextEditingController forwardOutputEqualizer5And6TextEditingController =
+      TextEditingController();
+
+  final TextEditingController returnInputAttenuation2TextEditingController =
+      TextEditingController();
+  final TextEditingController returnInputAttenuation3TextEditingController =
+      TextEditingController();
+  final TextEditingController returnInputAttenuation4TextEditingController =
+      TextEditingController();
+  final TextEditingController returnInputAttenuation2And3TextEditingController =
+      TextEditingController();
+  final TextEditingController returnInputAttenuation5And6TextEditingController =
+      TextEditingController();
+  final TextEditingController returnOutputAttenuation1TextEditingController =
+      TextEditingController();
+  final TextEditingController returnOutputEqualizer1TextEditingController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -190,6 +225,8 @@ class Setting18ControlView extends StatelessWidget {
               _ForwardInputAttenuation(
                 alcMode: alcMode,
                 currentInputAttenuation: currentInputAttenuation,
+                forwardInputAttenuation1TextEditingController:
+                    forwardInputAttenuation1TextEditingController,
               ),
             );
             break;
@@ -199,37 +236,57 @@ class Setting18ControlView extends StatelessWidget {
                 alcMode: alcMode,
                 agcMode: agcMode,
                 currentInputEqualizer: currentInputEqualizer,
+                forwardInputEqualizer1TextEditingController:
+                    forwardInputEqualizer1TextEditingController,
               ),
             );
             break;
           case SettingControl.forwardOutputAttenuation3And4:
             widgets.add(
-              const _ForwardOutputAttenuation3And4(),
+              _ForwardOutputAttenuation3And4(
+                forwardOutputAttenuation3And4TextEditingController:
+                    forwardOutputAttenuation3And4TextEditingController,
+              ),
             );
             break;
           case SettingControl.forwardOutputEqualizer3And4:
             widgets.add(
-              const _ForwardOutputEqualizer3And4(),
+              _ForwardOutputEqualizer3And4(
+                forwardOutputEqualizer3And4TextEditingController:
+                    forwardOutputEqualizer3And4TextEditingController,
+              ),
             );
             break;
           case SettingControl.forwardOutputAttenuation2And3:
             widgets.add(
-              const _ForwardOutputAttenuation2And3(),
+              _ForwardOutputAttenuation2And3(
+                forwardOutputAttenuation2And3TextEditingController:
+                    forwardOutputAttenuation2And3TextEditingController,
+              ),
             );
             break;
           case SettingControl.forwardOutputAttenuation5And6:
             widgets.add(
-              const _ForwardOutputAttenuation5And6(),
+              _ForwardOutputAttenuation5And6(
+                forwardOutputAttenuation5And6TextEditingController:
+                    forwardOutputAttenuation5And6TextEditingController,
+              ),
             );
             break;
           case SettingControl.forwardOutputEqualizer2And3:
             widgets.add(
-              const _ForwardOutputEqualizer2And3(),
+              _ForwardOutputEqualizer2And3(
+                forwardOutputEqualizer2And3TextEditingController:
+                    forwardOutputEqualizer2And3TextEditingController,
+              ),
             );
             break;
           case SettingControl.forwardOutputEqualizer5And6:
             widgets.add(
-              const _ForwardOutputEqualizer5And6(),
+              _ForwardOutputEqualizer5And6(
+                forwardOutputEqualizer5And6TextEditingController:
+                    forwardOutputEqualizer5And6TextEditingController,
+              ),
             );
             break;
         }
@@ -241,14 +298,24 @@ class Setting18ControlView extends StatelessWidget {
               _ForwardInputAttenuation(
                 alcMode: alcMode,
                 currentInputAttenuation: currentInputAttenuation,
+                forwardInputAttenuation1TextEditingController:
+                    forwardInputAttenuation1TextEditingController,
               ),
               _ForwardInputEqualizer(
                 alcMode: alcMode,
                 agcMode: agcMode,
                 currentInputEqualizer: currentInputEqualizer,
+                forwardInputEqualizer1TextEditingController:
+                    forwardInputEqualizer1TextEditingController,
               ),
-              const _ForwardOutputAttenuation3And4(),
-              const _ForwardOutputEqualizer3And4(),
+              _ForwardOutputAttenuation3And4(
+                forwardOutputAttenuation3And4TextEditingController:
+                    forwardOutputAttenuation3And4TextEditingController,
+              ),
+              _ForwardOutputEqualizer3And4(
+                forwardOutputEqualizer3And4TextEditingController:
+                    forwardOutputEqualizer3And4TextEditingController,
+              ),
             ];
     }
 
@@ -269,18 +336,26 @@ class Setting18ControlView extends StatelessWidget {
             break;
           case SettingControl.returnInputAttenuation2:
             widgets.add(
-              const _RtnInputAttenuation2(),
+              _RtnInputAttenuation2(
+                returnInputAttenuation2TextEditingController:
+                    returnInputAttenuation2TextEditingController,
+              ),
             );
             break;
           case SettingControl.returnInputAttenuation3:
             widgets.add(
-              const _RtnInputAttenuation3(),
+              _RtnInputAttenuation3(
+                returnInputAttenuation3TextEditingController:
+                    returnInputAttenuation3TextEditingController,
+              ),
             );
             break;
           case SettingControl.returnInputAttenuation4:
             widgets.add(
               _RtnInputAttenuation4(
                 partId: partId,
+                returnInputAttenuation4TextEditingController:
+                    returnInputAttenuation4TextEditingController,
               ),
             );
             break;
@@ -290,22 +365,34 @@ class Setting18ControlView extends StatelessWidget {
             break;
           case SettingControl.returnInputAttenuation2And3:
             widgets.add(
-              const _RtnInputAttenuation2And3(),
+              _RtnInputAttenuation2And3(
+                returnInputAttenuation2And3TextEditingController:
+                    returnInputAttenuation2And3TextEditingController,
+              ),
             );
             break;
           case SettingControl.returnInputAttenuation5And6:
             widgets.add(
-              const _RtnInputAttenuation5And6(),
+              _RtnInputAttenuation5And6(
+                returnInputAttenuation5And6TextEditingController:
+                    returnInputAttenuation5And6TextEditingController,
+              ),
             );
             break;
           case SettingControl.returnOutputAttenuation1:
             widgets.add(
-              const _RtnOutputLevelAttenuation(),
+              _RtnOutputLevelAttenuation(
+                returnOutputAttenuation1TextEditingController:
+                    returnOutputAttenuation1TextEditingController,
+              ),
             );
             break;
           case SettingControl.returnOutputEqualizer1:
             widgets.add(
-              const _RtnOutputEQ(),
+              _RtnOutputEQ(
+                returnOutputEqualizer1TextEditingController:
+                    returnOutputEqualizer1TextEditingController,
+              ),
             );
             break;
           case SettingControl.returnIngressSetting1:
@@ -346,13 +433,27 @@ class Setting18ControlView extends StatelessWidget {
       return widgets.isNotEmpty
           ? widgets
           : [
-              const _RtnInputAttenuation2(),
-              const _RtnInputAttenuation3(),
+              _RtnInputAttenuation2(
+                returnInputAttenuation2TextEditingController:
+                    returnInputAttenuation2TextEditingController,
+              ),
+              _RtnInputAttenuation3(
+                returnInputAttenuation3TextEditingController:
+                    returnInputAttenuation3TextEditingController,
+              ),
               _RtnInputAttenuation4(
                 partId: partId,
+                returnInputAttenuation4TextEditingController:
+                    returnInputAttenuation4TextEditingController,
               ),
-              const _RtnOutputLevelAttenuation(),
-              const _RtnOutputEQ(),
+              _RtnOutputLevelAttenuation(
+                returnOutputAttenuation1TextEditingController:
+                    returnOutputAttenuation1TextEditingController,
+              ),
+              _RtnOutputEQ(
+                returnOutputEqualizer1TextEditingController:
+                    returnOutputEqualizer1TextEditingController,
+              ),
               const _RtnIngressSetting2(),
               const _RtnIngressSetting3(),
               _RtnIngressSetting4(
@@ -438,6 +539,31 @@ class Setting18ControlView extends StatelessWidget {
           }
           showResetToDefaultFailureDialog(context);
         }
+
+        if (state.isInitialize) {
+          forwardInputAttenuation1TextEditingController.text = state.dsVVA1;
+          forwardInputEqualizer1TextEditingController.text = state.dsSlope1;
+          forwardOutputAttenuation3And4TextEditingController.text =
+              state.dsVVA4;
+          forwardOutputAttenuation2And3TextEditingController.text =
+              state.dsVVA4;
+          forwardOutputAttenuation5And6TextEditingController.text =
+              state.dsVVA5;
+          forwardOutputEqualizer3And4TextEditingController.text =
+              state.dsSlope3;
+          forwardOutputEqualizer2And3TextEditingController.text =
+              state.dsSlope3;
+          forwardOutputEqualizer5And6TextEditingController.text =
+              state.dsSlope4;
+
+          returnInputAttenuation2TextEditingController.text = state.usVCA1;
+          returnInputAttenuation3TextEditingController.text = state.usVCA3;
+          returnInputAttenuation4TextEditingController.text = state.usVCA4;
+          returnInputAttenuation2And3TextEditingController.text = state.usVCA3;
+          returnInputAttenuation5And6TextEditingController.text = state.usVCA4;
+          returnOutputAttenuation1TextEditingController.text = state.usVCA2;
+          returnOutputEqualizer1TextEditingController.text = state.eREQ;
+        }
       },
       child: Scaffold(
         body: SafeArea(
@@ -456,14 +582,6 @@ class Setting18ControlView extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-double _getValue(String value) {
-  if (value.isNotEmpty) {
-    return double.parse(value);
-  } else {
-    return 0.0;
   }
 }
 
@@ -751,21 +869,22 @@ class _ForwardInputAttenuation extends StatelessWidget {
     super.key,
     required this.alcMode,
     required this.currentInputAttenuation,
+    required this.forwardInputAttenuation1TextEditingController,
   });
 
   final String alcMode;
   final String currentInputAttenuation;
+  final TextEditingController forwardInputAttenuation1TextEditingController;
 
   @override
   Widget build(BuildContext context) {
-    double getCurrentValue(String fwdInputAttenuation) {
-      return alcMode == '0'
-          ? _getValue(fwdInputAttenuation)
-          : _getValue(currentInputAttenuation);
+    String getCurrentValue(String fwdInputAttenuation) {
+      return alcMode == '0' ? fwdInputAttenuation : currentInputAttenuation;
     }
 
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
+        // forwardInputAttenuation1TextEditingController.text = state.dsVVA1;
         double minValue = 0.0;
         double maxValue = 25.0;
         return controlParameterSlider(
@@ -777,16 +896,38 @@ class _ForwardInputAttenuation extends StatelessWidget {
           maxValue: maxValue,
           currentValue: getCurrentValue(state.dsVVA1),
           onChanged: (dsVVA1) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(DSVVA1Changed(dsVVA1.toStringAsFixed(1)));
+            context.read<Setting18ControlBloc>().add(DSVVA1Changed(
+                  dsVVA1: dsVVA1.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputAttenuation1TextEditingController,
+                  isFromTextField: false,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSVVA1Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSVVA1Increased(maxValue)),
+          textEditingController: forwardInputAttenuation1TextEditingController,
+          onTextChanged: (dsVVA1) {
+            context.read<Setting18ControlBloc>().add(DSVVA1Changed(
+                  dsVVA1: dsVVA1,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputAttenuation1TextEditingController,
+                  isFromTextField: true,
+                ));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(DSVVA1Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        forwardInputAttenuation1TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(DSVVA1Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        forwardInputAttenuation1TextEditingController,
+                  )),
         );
       },
     );
@@ -799,24 +940,26 @@ class _ForwardInputEqualizer extends StatelessWidget {
     required this.alcMode,
     required this.agcMode,
     required this.currentInputEqualizer,
+    required this.forwardInputEqualizer1TextEditingController,
   });
 
   final String alcMode;
   final String agcMode;
   final String currentInputEqualizer;
+  final TextEditingController forwardInputEqualizer1TextEditingController;
 
   @override
   Widget build(BuildContext context) {
-    double getCurrentValue(String forwardInputEqualizer) {
+    String getCurrentValue(String forwardInputEqualizer) {
       return alcMode == '0' && agcMode == '0'
-          ? _getValue(forwardInputEqualizer)
-          : _getValue(currentInputEqualizer);
+          ? forwardInputEqualizer
+          : currentInputEqualizer;
     }
 
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         double minValue = 0.0;
-        double maxValue = 15.0;
+        double maxValue = 27.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode && alcMode == '0' && agcMode == '0',
@@ -826,16 +969,38 @@ class _ForwardInputEqualizer extends StatelessWidget {
           maxValue: maxValue,
           currentValue: getCurrentValue(state.dsSlope1),
           onChanged: (dsSlope1) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(DSSlope1Changed(dsSlope1.toStringAsFixed(1)));
+            context.read<Setting18ControlBloc>().add(DSSlope1Changed(
+                  dsSlope1: dsSlope1.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputEqualizer1TextEditingController,
+                  isFromTextField: false,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSSlope1Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSSlope1Increased(maxValue)),
+          textEditingController: forwardInputEqualizer1TextEditingController,
+          onTextChanged: (dsSlope1) {
+            context.read<Setting18ControlBloc>().add(DSSlope1Changed(
+                  dsSlope1: dsSlope1,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputEqualizer1TextEditingController,
+                  isFromTextField: true,
+                ));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(DSSlope1Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        forwardInputEqualizer1TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(DSSlope1Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        forwardInputEqualizer1TextEditingController,
+                  )),
         );
       },
     );
@@ -843,7 +1008,13 @@ class _ForwardInputEqualizer extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation2And3 extends StatelessWidget {
-  const _ForwardOutputAttenuation2And3({super.key});
+  const _ForwardOutputAttenuation2And3({
+    super.key,
+    required this.forwardOutputAttenuation2And3TextEditingController,
+  });
+
+  final TextEditingController
+      forwardOutputAttenuation2And3TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -858,18 +1029,41 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputAttenuation2And3}: ${state.dsVVA4} dB',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: _getValue(state.dsVVA4),
+          currentValue: state.dsVVA4,
           onChanged: (dsVVA4) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(DSVVA4Changed(dsVVA4.toStringAsFixed(1)));
+            context.read<Setting18ControlBloc>().add(DSVVA4Changed(
+                  dsVVA4: dsVVA4.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardOutputAttenuation2And3TextEditingController,
+                  isFromTextField: false,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSVVA4Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSVVA4Increased(maxValue)),
+          textEditingController:
+              forwardOutputAttenuation2And3TextEditingController,
+          onTextChanged: (dsVVA4) {
+            context.read<Setting18ControlBloc>().add(DSVVA4Changed(
+                  dsVVA4: dsVVA4,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardOutputAttenuation2And3TextEditingController,
+                  isFromTextField: true,
+                ));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(DSVVA4Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        forwardOutputAttenuation2And3TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(DSVVA4Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        forwardOutputAttenuation2And3TextEditingController,
+                  )),
         );
       },
     );
@@ -877,7 +1071,13 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation3And4 extends StatelessWidget {
-  const _ForwardOutputAttenuation3And4({super.key});
+  const _ForwardOutputAttenuation3And4({
+    super.key,
+    required this.forwardOutputAttenuation3And4TextEditingController,
+  });
+
+  final TextEditingController
+      forwardOutputAttenuation3And4TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -892,18 +1092,41 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputAttenuation3And4}: ${state.dsVVA4} dB',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: _getValue(state.dsVVA4),
+          currentValue: state.dsVVA4,
           onChanged: (dsVVA4) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(DSVVA4Changed(dsVVA4.toStringAsFixed(1)));
+            context.read<Setting18ControlBloc>().add(DSVVA4Changed(
+                  dsVVA4: dsVVA4.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardOutputAttenuation3And4TextEditingController,
+                  isFromTextField: false,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSVVA4Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSVVA4Increased(maxValue)),
+          textEditingController:
+              forwardOutputAttenuation3And4TextEditingController,
+          onTextChanged: (dsVVA4) {
+            context.read<Setting18ControlBloc>().add(DSVVA4Changed(
+                  dsVVA4: dsVVA4,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardOutputAttenuation3And4TextEditingController,
+                  isFromTextField: true,
+                ));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(DSVVA4Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        forwardOutputAttenuation3And4TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(DSVVA4Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        forwardOutputAttenuation3And4TextEditingController,
+                  )),
         );
       },
     );
@@ -911,7 +1134,13 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation5And6 extends StatelessWidget {
-  const _ForwardOutputAttenuation5And6({super.key});
+  const _ForwardOutputAttenuation5And6({
+    super.key,
+    required this.forwardOutputAttenuation5And6TextEditingController,
+  });
+
+  final TextEditingController
+      forwardOutputAttenuation5And6TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -926,18 +1155,41 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6}: ${state.dsVVA5} dB',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: _getValue(state.dsVVA5),
-          onChanged: (dsVVA4) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(DSVVA5Changed(dsVVA4.toStringAsFixed(1)));
+          currentValue: state.dsVVA5,
+          onChanged: (dsVVA5) {
+            context.read<Setting18ControlBloc>().add(DSVVA5Changed(
+                  dsVVA5: dsVVA5.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardOutputAttenuation5And6TextEditingController,
+                  isFromTextField: false,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSVVA5Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSVVA5Increased(maxValue)),
+          textEditingController:
+              forwardOutputAttenuation5And6TextEditingController,
+          onTextChanged: (dsVVA5) {
+            context.read<Setting18ControlBloc>().add(DSVVA5Changed(
+                  dsVVA5: dsVVA5,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardOutputAttenuation5And6TextEditingController,
+                  isFromTextField: true,
+                ));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(DSVVA5Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        forwardOutputAttenuation5And6TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(DSVVA5Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        forwardOutputAttenuation5And6TextEditingController,
+                  )),
         );
       },
     );
@@ -945,7 +1197,12 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer2And3 extends StatelessWidget {
-  const _ForwardOutputEqualizer2And3({super.key});
+  const _ForwardOutputEqualizer2And3({
+    super.key,
+    required this.forwardOutputEqualizer2And3TextEditingController,
+  });
+
+  final TextEditingController forwardOutputEqualizer2And3TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -960,18 +1217,41 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputEqualizer2And3}: ${state.dsSlope3} dB',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: _getValue(state.dsSlope3),
+          currentValue: state.dsSlope3,
           onChanged: (dsSlope3) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(DSSlope3Changed(dsSlope3.toStringAsFixed(1)));
+            context.read<Setting18ControlBloc>().add(DSSlope3Changed(
+                  dsSlope3: dsSlope3.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardOutputEqualizer2And3TextEditingController,
+                  isFromTextField: false,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSSlope3Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSSlope3Increased(maxValue)),
+          textEditingController:
+              forwardOutputEqualizer2And3TextEditingController,
+          onTextChanged: (dsSlope3) {
+            context.read<Setting18ControlBloc>().add(DSSlope3Changed(
+                  dsSlope3: dsSlope3,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardOutputEqualizer2And3TextEditingController,
+                  isFromTextField: true,
+                ));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(DSSlope3Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        forwardOutputEqualizer2And3TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(DSSlope3Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        forwardOutputEqualizer2And3TextEditingController,
+                  )),
         );
       },
     );
@@ -979,7 +1259,12 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer3And4 extends StatelessWidget {
-  const _ForwardOutputEqualizer3And4({super.key});
+  const _ForwardOutputEqualizer3And4({
+    super.key,
+    required this.forwardOutputEqualizer3And4TextEditingController,
+  });
+
+  final TextEditingController forwardOutputEqualizer3And4TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -994,18 +1279,41 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputEqualizer3And4}: ${state.dsSlope3} dB',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: _getValue(state.dsSlope3),
+          currentValue: state.dsSlope3,
           onChanged: (dsSlope3) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(DSSlope3Changed(dsSlope3.toStringAsFixed(1)));
+            context.read<Setting18ControlBloc>().add(DSSlope3Changed(
+                  dsSlope3: dsSlope3.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardOutputEqualizer3And4TextEditingController,
+                  isFromTextField: false,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSSlope3Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSSlope3Increased(maxValue)),
+          textEditingController:
+              forwardOutputEqualizer3And4TextEditingController,
+          onTextChanged: (dsSlope3) {
+            context.read<Setting18ControlBloc>().add(DSSlope3Changed(
+                  dsSlope3: dsSlope3,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardOutputEqualizer3And4TextEditingController,
+                  isFromTextField: true,
+                ));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(DSSlope3Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        forwardOutputEqualizer3And4TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(DSSlope3Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        forwardOutputEqualizer3And4TextEditingController,
+                  )),
         );
       },
     );
@@ -1013,7 +1321,12 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer5And6 extends StatelessWidget {
-  const _ForwardOutputEqualizer5And6({super.key});
+  const _ForwardOutputEqualizer5And6({
+    super.key,
+    required this.forwardOutputEqualizer5And6TextEditingController,
+  });
+
+  final TextEditingController forwardOutputEqualizer5And6TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1028,18 +1341,41 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputEqualizer5And6}: ${state.dsSlope4} dB',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: _getValue(state.dsSlope4),
+          currentValue: state.dsSlope4,
           onChanged: (dsSlope4) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(DSSlope4Changed(dsSlope4.toStringAsFixed(1)));
+            context.read<Setting18ControlBloc>().add(DSSlope4Changed(
+                  dsSlope4: dsSlope4.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardOutputEqualizer5And6TextEditingController,
+                  isFromTextField: false,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSSlope4Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(DSSlope4Increased(maxValue)),
+          textEditingController:
+              forwardOutputEqualizer5And6TextEditingController,
+          onTextChanged: (dsSlope4) {
+            context.read<Setting18ControlBloc>().add(DSSlope4Changed(
+                  dsSlope4: dsSlope4,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardOutputEqualizer5And6TextEditingController,
+                  isFromTextField: true,
+                ));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(DSSlope4Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        forwardOutputEqualizer5And6TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(DSSlope4Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        forwardOutputEqualizer5And6TextEditingController,
+                  )),
         );
       },
     );
@@ -1047,7 +1383,12 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
 }
 
 class _RtnInputAttenuation2 extends StatelessWidget {
-  const _RtnInputAttenuation2({super.key});
+  const _RtnInputAttenuation2({
+    super.key,
+    required this.returnInputAttenuation2TextEditingController,
+  });
+
+  final TextEditingController returnInputAttenuation2TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1062,18 +1403,40 @@ class _RtnInputAttenuation2 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnInputAttenuation2}: ${state.usVCA1} dB',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: _getValue(state.usVCA1),
+          currentValue: state.usVCA1,
           onChanged: (usVCA1) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(USVCA1Changed(usVCA1.toStringAsFixed(1)));
+            context.read<Setting18ControlBloc>().add(USVCA1Changed(
+                  usVCA1: usVCA1.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation2TextEditingController,
+                  isFromTextField: false,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(USVCA1Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(USVCA1Increased(maxValue)),
+          textEditingController: returnInputAttenuation2TextEditingController,
+          onTextChanged: (usVCA1) {
+            context.read<Setting18ControlBloc>().add(USVCA1Changed(
+                  usVCA1: usVCA1,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation2TextEditingController,
+                  isFromTextField: true,
+                ));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(USVCA1Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        returnInputAttenuation2TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(USVCA1Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        returnInputAttenuation2TextEditingController,
+                  )),
         );
       },
     );
@@ -1081,7 +1444,12 @@ class _RtnInputAttenuation2 extends StatelessWidget {
 }
 
 class _RtnInputAttenuation3 extends StatelessWidget {
-  const _RtnInputAttenuation3({super.key});
+  const _RtnInputAttenuation3({
+    super.key,
+    required this.returnInputAttenuation3TextEditingController,
+  });
+
+  final TextEditingController returnInputAttenuation3TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1096,18 +1464,40 @@ class _RtnInputAttenuation3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnInputAttenuation3}: ${state.usVCA3} dB',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: _getValue(state.usVCA3),
-          onChanged: (rtnInputAttenuation) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(USVCA3Changed(rtnInputAttenuation.toStringAsFixed(1)));
+          currentValue: state.usVCA3,
+          onChanged: (usVCA3) {
+            context.read<Setting18ControlBloc>().add(USVCA3Changed(
+                  usVCA3: usVCA3.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation3TextEditingController,
+                  isFromTextField: false,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(USVCA3Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(USVCA3Increased(maxValue)),
+          textEditingController: returnInputAttenuation3TextEditingController,
+          onTextChanged: (usVCA3) {
+            context.read<Setting18ControlBloc>().add(USVCA3Changed(
+                  usVCA3: usVCA3,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation3TextEditingController,
+                  isFromTextField: true,
+                ));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(USVCA3Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        returnInputAttenuation3TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(USVCA3Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        returnInputAttenuation3TextEditingController,
+                  )),
         );
       },
     );
@@ -1115,7 +1505,12 @@ class _RtnInputAttenuation3 extends StatelessWidget {
 }
 
 class _RtnInputAttenuation2And3 extends StatelessWidget {
-  const _RtnInputAttenuation2And3({super.key});
+  const _RtnInputAttenuation2And3({
+    super.key,
+    required this.returnInputAttenuation2And3TextEditingController,
+  });
+
+  final TextEditingController returnInputAttenuation2And3TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1130,18 +1525,41 @@ class _RtnInputAttenuation2And3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnInputAttenuation2And3}: ${state.usVCA3} dB',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: _getValue(state.usVCA3),
-          onChanged: (rtnInputAttenuation) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(USVCA3Changed(rtnInputAttenuation.toStringAsFixed(1)));
+          currentValue: state.usVCA3,
+          onChanged: (usVCA3) {
+            context.read<Setting18ControlBloc>().add(USVCA3Changed(
+                  usVCA3: usVCA3.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation2And3TextEditingController,
+                  isFromTextField: false,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(USVCA3Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(USVCA3Increased(maxValue)),
+          textEditingController:
+              returnInputAttenuation2And3TextEditingController,
+          onTextChanged: (usVCA3) {
+            context.read<Setting18ControlBloc>().add(USVCA3Changed(
+                  usVCA3: usVCA3,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation2And3TextEditingController,
+                  isFromTextField: true,
+                ));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(USVCA3Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        returnInputAttenuation2And3TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(USVCA3Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        returnInputAttenuation2And3TextEditingController,
+                  )),
         );
       },
     );
@@ -1152,9 +1570,11 @@ class _RtnInputAttenuation4 extends StatelessWidget {
   const _RtnInputAttenuation4({
     super.key,
     required this.partId,
+    required this.returnInputAttenuation4TextEditingController,
   });
 
   final String partId;
+  final TextEditingController returnInputAttenuation4TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1170,18 +1590,40 @@ class _RtnInputAttenuation4 extends StatelessWidget {
                 '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.usVCA1} dB',
             minValue: minValue,
             maxValue: maxValue,
-            currentValue: _getValue(state.usVCA1),
+            currentValue: state.usVCA1,
             onChanged: (usVCA1) {
-              context
-                  .read<Setting18ControlBloc>()
-                  .add(USVCA1Changed(usVCA1.toStringAsFixed(1)));
+              context.read<Setting18ControlBloc>().add(USVCA1Changed(
+                    usVCA1: usVCA1.toStringAsFixed(1),
+                    maxValue: maxValue,
+                    minValue: minValue,
+                    textEditingController:
+                        returnInputAttenuation4TextEditingController,
+                    isFromTextField: false,
+                  ));
             },
-            onDecreased: () => context
-                .read<Setting18ControlBloc>()
-                .add(USVCA1Decreased(minValue)),
-            onIncreased: () => context
-                .read<Setting18ControlBloc>()
-                .add(USVCA1Increased(maxValue)),
+            textEditingController: returnInputAttenuation4TextEditingController,
+            onTextChanged: (usVCA1) {
+              context.read<Setting18ControlBloc>().add(USVCA1Changed(
+                    usVCA1: usVCA1,
+                    maxValue: maxValue,
+                    minValue: minValue,
+                    textEditingController:
+                        returnInputAttenuation4TextEditingController,
+                    isFromTextField: true,
+                  ));
+            },
+            onDecreased: () =>
+                context.read<Setting18ControlBloc>().add(USVCA1Decreased(
+                      minValue: minValue,
+                      textEditingController:
+                          returnInputAttenuation4TextEditingController,
+                    )),
+            onIncreased: () =>
+                context.read<Setting18ControlBloc>().add(USVCA1Increased(
+                      maxValue: maxValue,
+                      textEditingController:
+                          returnInputAttenuation4TextEditingController,
+                    )),
           );
         },
       );
@@ -1197,18 +1639,40 @@ class _RtnInputAttenuation4 extends StatelessWidget {
                 '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.usVCA4} dB',
             minValue: minValue,
             maxValue: maxValue,
-            currentValue: _getValue(state.usVCA4),
+            currentValue: state.usVCA4,
             onChanged: (usVCA4) {
-              context
-                  .read<Setting18ControlBloc>()
-                  .add(USVCA4Changed(usVCA4.toStringAsFixed(1)));
+              context.read<Setting18ControlBloc>().add(USVCA4Changed(
+                    usVCA4: usVCA4.toStringAsFixed(1),
+                    maxValue: maxValue,
+                    minValue: minValue,
+                    textEditingController:
+                        returnInputAttenuation4TextEditingController,
+                    isFromTextField: false,
+                  ));
             },
-            onDecreased: () => context
-                .read<Setting18ControlBloc>()
-                .add(USVCA4Decreased(minValue)),
-            onIncreased: () => context
-                .read<Setting18ControlBloc>()
-                .add(USVCA4Increased(maxValue)),
+            textEditingController: returnInputAttenuation4TextEditingController,
+            onTextChanged: (usVCA4) {
+              context.read<Setting18ControlBloc>().add(USVCA4Changed(
+                    usVCA4: usVCA4,
+                    maxValue: maxValue,
+                    minValue: minValue,
+                    textEditingController:
+                        returnInputAttenuation4TextEditingController,
+                    isFromTextField: true,
+                  ));
+            },
+            onDecreased: () =>
+                context.read<Setting18ControlBloc>().add(USVCA4Decreased(
+                      minValue: minValue,
+                      textEditingController:
+                          returnInputAttenuation4TextEditingController,
+                    )),
+            onIncreased: () =>
+                context.read<Setting18ControlBloc>().add(USVCA4Increased(
+                      maxValue: maxValue,
+                      textEditingController:
+                          returnInputAttenuation4TextEditingController,
+                    )),
           );
         },
       );
@@ -1217,7 +1681,12 @@ class _RtnInputAttenuation4 extends StatelessWidget {
 }
 
 class _RtnInputAttenuation5And6 extends StatelessWidget {
-  const _RtnInputAttenuation5And6({super.key});
+  const _RtnInputAttenuation5And6({
+    super.key,
+    required this.returnInputAttenuation5And6TextEditingController,
+  });
+
+  final TextEditingController returnInputAttenuation5And6TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1232,18 +1701,41 @@ class _RtnInputAttenuation5And6 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnInputAttenuation5And6}: ${state.usVCA4} dB',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: _getValue(state.usVCA4),
-          onChanged: (rtnInputAttenuation) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(USVCA4Changed(rtnInputAttenuation.toStringAsFixed(1)));
+          currentValue: state.usVCA4,
+          onChanged: (usVCA4) {
+            context.read<Setting18ControlBloc>().add(USVCA4Changed(
+                  usVCA4: usVCA4.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation5And6TextEditingController,
+                  isFromTextField: false,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(USVCA4Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(USVCA4Increased(maxValue)),
+          textEditingController:
+              returnInputAttenuation5And6TextEditingController,
+          onTextChanged: (usVCA4) {
+            context.read<Setting18ControlBloc>().add(USVCA4Changed(
+                  usVCA4: usVCA4,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation5And6TextEditingController,
+                  isFromTextField: true,
+                ));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(USVCA4Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        returnInputAttenuation5And6TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(USVCA4Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        returnInputAttenuation5And6TextEditingController,
+                  )),
         );
       },
     );
@@ -1251,7 +1743,12 @@ class _RtnInputAttenuation5And6 extends StatelessWidget {
 }
 
 class _RtnOutputLevelAttenuation extends StatelessWidget {
-  const _RtnOutputLevelAttenuation({super.key});
+  const _RtnOutputLevelAttenuation({
+    super.key,
+    required this.returnOutputAttenuation1TextEditingController,
+  });
+
+  final TextEditingController returnOutputAttenuation1TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1266,18 +1763,40 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnOutputAttenuation1}: ${state.usVCA2} dB',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: _getValue(state.usVCA2),
-          onChanged: (rtnInputAttenuation) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(USVCA2Changed(rtnInputAttenuation.toStringAsFixed(1)));
+          currentValue: state.usVCA2,
+          onChanged: (usVCA2) {
+            context.read<Setting18ControlBloc>().add(USVCA2Changed(
+                  usVCA2: usVCA2.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnOutputAttenuation1TextEditingController,
+                  isFromTextField: false,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(USVCA2Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18ControlBloc>()
-              .add(USVCA2Increased(maxValue)),
+          textEditingController: returnOutputAttenuation1TextEditingController,
+          onTextChanged: (usVCA2) {
+            context.read<Setting18ControlBloc>().add(USVCA2Changed(
+                  usVCA2: usVCA2,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnOutputAttenuation1TextEditingController,
+                  isFromTextField: true,
+                ));
+          },
+          onDecreased: () =>
+              context.read<Setting18ControlBloc>().add(USVCA2Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        returnOutputAttenuation1TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18ControlBloc>().add(USVCA2Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        returnOutputAttenuation1TextEditingController,
+                  )),
         );
       },
     );
@@ -1285,7 +1804,12 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
 }
 
 class _RtnOutputEQ extends StatelessWidget {
-  const _RtnOutputEQ({super.key});
+  const _RtnOutputEQ({
+    super.key,
+    required this.returnOutputEqualizer1TextEditingController,
+  });
+
+  final TextEditingController returnOutputEqualizer1TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1300,16 +1824,40 @@ class _RtnOutputEQ extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnOutputEqualizer1}: ${state.eREQ} dB',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: _getValue(state.eREQ),
-          onChanged: (returnOutputEqualizer1) {
-            context
-                .read<Setting18ControlBloc>()
-                .add(EREQChanged(returnOutputEqualizer1.toStringAsFixed(1)));
+          currentValue: state.eREQ,
+          onChanged: (eREQ) {
+            context.read<Setting18ControlBloc>().add(EREQChanged(
+                  eREQ: eREQ.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnOutputEqualizer1TextEditingController,
+                  isFromTextField: false,
+                ));
+          },
+          textEditingController: returnOutputEqualizer1TextEditingController,
+          onTextChanged: (eREQ) {
+            context.read<Setting18ControlBloc>().add(EREQChanged(
+                  eREQ: eREQ,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnOutputEqualizer1TextEditingController,
+                  isFromTextField: true,
+                ));
           },
           onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(EREQDecreased(minValue)),
+              context.read<Setting18ControlBloc>().add(EREQDecreased(
+                    minValue: minValue,
+                    textEditingController:
+                        returnOutputEqualizer1TextEditingController,
+                  )),
           onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(EREQIncreased(maxValue)),
+              context.read<Setting18ControlBloc>().add(EREQIncreased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        returnOutputEqualizer1TextEditingController,
+                  )),
         );
       },
     );

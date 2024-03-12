@@ -39,6 +39,9 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       manualModePilot1RFOutputPowerTextEditingController;
   late final TextEditingController
       manualModePilot2RFOutputPowerTextEditingController;
+  late final TextEditingController
+      forwardInputAttenuation1TextEditingController;
+  late final TextEditingController forwardInputEqualizer1TextEditingController;
 
   @override
   void initState() {
@@ -52,6 +55,8 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         TextEditingController();
     manualModePilot2RFOutputPowerTextEditingController =
         TextEditingController();
+    forwardInputAttenuation1TextEditingController = TextEditingController();
+    forwardInputEqualizer1TextEditingController = TextEditingController();
     super.initState();
   }
 
@@ -65,23 +70,33 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         case 0:
           return [const _SplitOption()];
         case 1:
-          return [const _ForwardInputAttenuation()];
+          return [
+            _ForwardInputAttenuation(
+              forwardInputAttenuation1TextEditingController:
+                  forwardInputAttenuation1TextEditingController,
+            )
+          ];
         case 2:
-          return [const _ForwardInputEqualizer()];
+          return [
+            _ForwardInputEqualizer(
+              forwardInputEqualizer1TextEditingController:
+                  forwardInputEqualizer1TextEditingController,
+            )
+          ];
         case 3:
-          return [const _ForwardInputEqualizer()];
+          return [];
         case 4:
-          return [const _ForwardInputEqualizer()];
+          return [];
         case 5:
-          return [const _ForwardInputEqualizer()];
+          return [];
         case 6:
-          return [const _ForwardInputEqualizer()];
+          return [];
         case 7:
-          return [const _ForwardInputEqualizer()];
+          return [];
         case 8:
-          return [const _ForwardInputEqualizer()];
+          return [];
         case 9:
-          return [const _ForwardInputEqualizer()];
+          return [];
         case 10:
           return [
             const _PilotFrequencyMode(),
@@ -287,16 +302,13 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
   }
 }
 
-double _getValue(String value) {
-  if (value.isNotEmpty) {
-    return double.parse(value);
-  } else {
-    return 0.0;
-  }
-}
-
 class _ForwardInputAttenuation extends StatelessWidget {
-  const _ForwardInputAttenuation({super.key});
+  const _ForwardInputAttenuation({
+    super.key,
+    required this.forwardInputAttenuation1TextEditingController,
+  });
+
+  final TextEditingController forwardInputAttenuation1TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -309,11 +321,15 @@ class _ForwardInputAttenuation extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardInputAttenuation1}: ${state.dsVVA1} dB',
           minValue: 0.0,
           maxValue: 25.0,
-          currentValue: _getValue(state.dsVVA1),
+          currentValue: state.dsVVA1,
           onChanged: (dsVVA1) {
             context
                 .read<Setting18GraphModuleBloc>()
                 .add(DSVVA1Changed(dsVVA1.toStringAsFixed(1)));
+          },
+          textEditingController: forwardInputAttenuation1TextEditingController,
+          onTextChanged: (dsVVA1) {
+            context.read<Setting18GraphModuleBloc>().add(DSVVA1Changed(dsVVA1));
           },
           onDecreased: () => context
               .read<Setting18GraphModuleBloc>()
@@ -328,7 +344,12 @@ class _ForwardInputAttenuation extends StatelessWidget {
 }
 
 class _ForwardInputEqualizer extends StatelessWidget {
-  const _ForwardInputEqualizer({super.key});
+  const _ForwardInputEqualizer({
+    super.key,
+    required this.forwardInputEqualizer1TextEditingController,
+  });
+
+  final TextEditingController forwardInputEqualizer1TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -341,11 +362,17 @@ class _ForwardInputEqualizer extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardInputEqualizer1}: ${state.dsSlope1} dB',
           minValue: 0.0,
           maxValue: 15.0,
-          currentValue: _getValue(state.dsSlope1),
+          currentValue: state.dsSlope1,
           onChanged: (dsSlope1) {
             context
                 .read<Setting18GraphModuleBloc>()
                 .add(DSSlope1Changed(dsSlope1.toStringAsFixed(1)));
+          },
+          textEditingController: forwardInputEqualizer1TextEditingController,
+          onTextChanged: (dsSlope1) {
+            context
+                .read<Setting18GraphModuleBloc>()
+                .add(DSSlope1Changed(dsSlope1));
           },
           onDecreased: () => context
               .read<Setting18GraphModuleBloc>()

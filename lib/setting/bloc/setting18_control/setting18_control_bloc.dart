@@ -2,6 +2,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'setting18_control_event.dart';
@@ -147,18 +148,81 @@ class Setting18ControlBloc
     return strValue;
   }
 
+  void _adjustTextFieldValue({
+    required double maxValue,
+    required double minValue,
+    required TextEditingController textEditingController,
+    required String previousValue,
+    required String currentValue,
+    required bool isFromTextField,
+  }) {
+    if (!isFromTextField) {
+      textEditingController.text = currentValue;
+    } else {
+      if (currentValue.isNotEmpty) {
+        double doubleCurrentValue = double.parse(currentValue);
+        if (doubleCurrentValue > maxValue) {
+          textEditingController.text = previousValue;
+        } else if (doubleCurrentValue < minValue) {
+          textEditingController.text = previousValue;
+        } else {
+          textEditingController.text = currentValue;
+        }
+      } else {
+        textEditingController.text = '';
+      }
+    }
+  }
+
+  String _getValue({
+    required double maxValue,
+    required double minValue,
+    required String previousValue,
+    required String currentValue,
+  }) {
+    if (currentValue.isNotEmpty) {
+      double doubleCurrentValue = double.parse(currentValue);
+
+      if (doubleCurrentValue > maxValue) {
+        return previousValue;
+      } else if (doubleCurrentValue < minValue) {
+        return previousValue;
+      } else {
+        return currentValue;
+      }
+    } else {
+      return '';
+    }
+  }
+
   void _onDSVVA1Changed(
     DSVVA1Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
+    String dsVVA1 = _getValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      previousValue: state.dsVVA1,
+      currentValue: event.dsVVA1,
+    );
+
+    _adjustTextFieldValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      textEditingController: event.textEditingController,
+      previousValue: state.dsVVA1,
+      currentValue: event.dsVVA1,
+      isFromTextField: event.isFromTextField,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      dsVVA1: event.dsVVA1,
+      dsVVA1: dsVVA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
-        dsVVA1: event.dsVVA1,
+        dsVVA1: dsVVA1,
         dsSlope1: state.dsSlope1,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
@@ -218,6 +282,8 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+
+    event.textEditingController.text = dsVVA1;
   }
 
   void _onDSVVA1Decreased(
@@ -258,21 +324,39 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+
+    event.textEditingController.text = dsVVA1;
   }
 
   void _onDSSlope1Changed(
     DSSlope1Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
+    String dsSlope1 = _getValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      previousValue: state.dsSlope1,
+      currentValue: event.dsSlope1,
+    );
+
+    _adjustTextFieldValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      textEditingController: event.textEditingController,
+      previousValue: state.dsSlope1,
+      currentValue: event.dsSlope1,
+      isFromTextField: event.isFromTextField,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      dsSlope1: event.dsSlope1,
+      dsSlope1: dsSlope1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
-        dsSlope1: event.dsSlope1,
+        dsSlope1: dsSlope1,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
@@ -292,6 +376,10 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+
+    if (!event.isFromTextField) {
+      event.textEditingController.text = event.dsSlope1;
+    }
   }
 
   void _onDSSlope1Increased(
@@ -332,6 +420,8 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+
+    event.textEditingController.text = dsSlope1;
   }
 
   void _onDSSlope1Decreased(
@@ -372,22 +462,39 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+    event.textEditingController.text = dsSlope1;
   }
 
   void _onUSVCA1Changed(
     USVCA1Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
+    String usVCA1 = _getValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      previousValue: state.usVCA1,
+      currentValue: event.usVCA1,
+    );
+
+    _adjustTextFieldValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      textEditingController: event.textEditingController,
+      previousValue: state.usVCA1,
+      currentValue: event.usVCA1,
+      isFromTextField: event.isFromTextField,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      usVCA1: event.usVCA1,
+      usVCA1: usVCA1,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
-        usVCA1: event.usVCA1,
+        usVCA1: usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
         usVCA2: state.usVCA2,
@@ -446,6 +553,7 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+    event.textEditingController.text = usVCA1;
   }
 
   void _onUSVCA1Decreased(
@@ -484,23 +592,40 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+    event.textEditingController.text = usVCA1;
   }
 
   void _onUSVCA3Changed(
     USVCA3Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
+    String usVCA3 = _getValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      previousValue: state.usVCA3,
+      currentValue: event.usVCA3,
+    );
+
+    _adjustTextFieldValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      textEditingController: event.textEditingController,
+      previousValue: state.usVCA3,
+      currentValue: event.usVCA3,
+      isFromTextField: event.isFromTextField,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      usVCA3: event.usVCA3,
+      usVCA3: usVCA3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
         usVCA1: state.usVCA1,
-        usVCA3: event.usVCA3,
+        usVCA3: usVCA3,
         usVCA4: state.usVCA4,
         usVCA2: state.usVCA2,
         eREQ: state.eREQ,
@@ -557,6 +682,7 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+    event.textEditingController.text = usVCA3;
   }
 
   void _onUSVCA3Decreased(
@@ -596,24 +722,41 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+    event.textEditingController.text = usVCA3;
   }
 
   void _onUSVCA4Changed(
     USVCA4Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
+    String usVCA4 = _getValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      previousValue: state.usVCA4,
+      currentValue: event.usVCA4,
+    );
+
+    _adjustTextFieldValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      textEditingController: event.textEditingController,
+      previousValue: state.usVCA4,
+      currentValue: event.usVCA4,
+      isFromTextField: event.isFromTextField,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      usVCA4: event.usVCA4,
+      usVCA4: usVCA4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
-        usVCA4: event.usVCA4,
+        usVCA4: usVCA4,
         usVCA2: state.usVCA2,
         eREQ: state.eREQ,
         returnIngressSetting2: state.returnIngressSetting2,
@@ -670,6 +813,8 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+
+    event.textEditingController.text = usVCA4;
   }
 
   void _onUSVCA4Decreased(
@@ -709,17 +854,34 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+    event.textEditingController.text = usVCA4;
   }
 
   void _onUSVCA2Changed(
     USVCA2Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
+    String usVCA2 = _getValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      previousValue: state.usVCA2,
+      currentValue: event.usVCA2,
+    );
+
+    _adjustTextFieldValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      textEditingController: event.textEditingController,
+      previousValue: state.usVCA2,
+      currentValue: event.usVCA2,
+      isFromTextField: event.isFromTextField,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      usVCA2: event.usVCA2,
+      usVCA2: usVCA2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
@@ -727,7 +889,7 @@ class Setting18ControlBloc
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
-        usVCA2: event.usVCA2,
+        usVCA2: usVCA2,
         eREQ: state.eREQ,
         returnIngressSetting2: state.returnIngressSetting2,
         returnIngressSetting3: state.returnIngressSetting3,
@@ -784,6 +946,8 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+
+    event.textEditingController.text = usVCA2;
   }
 
   void _onUSVCA2Decreased(
@@ -824,17 +988,34 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+    event.textEditingController.text = usVCA2;
   }
 
   void _onEREQChanged(
     EREQChanged event,
     Emitter<Setting18ControlState> emit,
   ) {
+    String eREQ = _getValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      previousValue: state.eREQ,
+      currentValue: event.eREQ,
+    );
+
+    _adjustTextFieldValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      textEditingController: event.textEditingController,
+      previousValue: state.eREQ,
+      currentValue: event.eREQ,
+      isFromTextField: event.isFromTextField,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      eREQ: event.eREQ,
+      eREQ: eREQ,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
@@ -843,7 +1024,7 @@ class Setting18ControlBloc
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
         usVCA2: state.usVCA2,
-        eREQ: event.eREQ,
+        eREQ: eREQ,
         returnIngressSetting2: state.returnIngressSetting2,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
@@ -898,6 +1079,7 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+    event.textEditingController.text = eREQ;
   }
 
   void _onEREQDecreased(
@@ -937,6 +1119,7 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+    event.textEditingController.text = eREQ;
   }
 
   void _onRtnIngressSetting2Changed(
@@ -1083,11 +1266,27 @@ class Setting18ControlBloc
     DSVVA2Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
+    String dsVVA2 = _getValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      previousValue: state.dsVVA2,
+      currentValue: event.dsVVA2,
+    );
+
+    _adjustTextFieldValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      textEditingController: event.textEditingController,
+      previousValue: state.dsVVA2,
+      currentValue: event.dsVVA2,
+      isFromTextField: event.isFromTextField,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      dsVVA2: event.dsVVA2,
+      dsVVA2: dsVVA2,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
@@ -1101,7 +1300,7 @@ class Setting18ControlBloc
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,
         tgcCableLength: state.tgcCableLength,
-        dsVVA2: event.dsVVA2,
+        dsVVA2: dsVVA2,
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
@@ -1147,6 +1346,8 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+
+    event.textEditingController.text = event.dsSlope2;
   }
 
   void _onDSVVA3Changed(
@@ -1188,11 +1389,27 @@ class Setting18ControlBloc
     DSVVA4Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
+    String dsVVA4 = _getValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      previousValue: state.dsVVA4,
+      currentValue: event.dsVVA4,
+    );
+
+    _adjustTextFieldValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      textEditingController: event.textEditingController,
+      previousValue: state.dsVVA4,
+      currentValue: event.dsVVA4,
+      isFromTextField: event.isFromTextField,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      dsVVA4: event.dsVVA4,
+      dsVVA4: dsVVA4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
@@ -1209,7 +1426,7 @@ class Setting18ControlBloc
         dsVVA2: state.dsVVA2,
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
-        dsVVA4: event.dsVVA4,
+        dsVVA4: dsVVA4,
         dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
         dsSlope4: state.dsSlope4,
@@ -1256,6 +1473,8 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+
+    event.textEditingController.text = dsVVA4;
   }
 
   void _onDSVVA4Decreased(
@@ -1295,17 +1514,35 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+
+    event.textEditingController.text = dsVVA4;
   }
 
   void _onDSVVA5Changed(
     DSVVA5Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
+    String dsVVA5 = _getValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      previousValue: state.dsVVA5,
+      currentValue: event.dsVVA5,
+    );
+
+    _adjustTextFieldValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      textEditingController: event.textEditingController,
+      previousValue: state.dsVVA5,
+      currentValue: event.dsVVA5,
+      isFromTextField: event.isFromTextField,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      dsVVA5: event.dsVVA5,
+      dsVVA5: dsVVA5,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
@@ -1323,7 +1560,7 @@ class Setting18ControlBloc
         dsSlope2: state.dsSlope2,
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
-        dsVVA5: event.dsVVA5,
+        dsVVA5: dsVVA5,
         dsSlope3: state.dsSlope3,
         dsSlope4: state.dsSlope4,
         // usTGC: state.usTGC,
@@ -1368,6 +1605,8 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+
+    event.textEditingController.text = dsVVA5;
   }
 
   void _onDSVVA5Decreased(
@@ -1408,17 +1647,35 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+
+    event.textEditingController.text = dsVVA5;
   }
 
   void _onDSSlope3Changed(
     DSSlope3Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
+    String dsSlope3 = _getValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      previousValue: state.dsSlope3,
+      currentValue: event.dsSlope3,
+    );
+
+    _adjustTextFieldValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      textEditingController: event.textEditingController,
+      previousValue: state.dsSlope3,
+      currentValue: event.dsSlope3,
+      isFromTextField: event.isFromTextField,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      dsSlope3: event.dsSlope3,
+      dsSlope3: dsSlope3,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
@@ -1437,7 +1694,7 @@ class Setting18ControlBloc
         dsVVA3: state.dsVVA3,
         dsVVA4: state.dsVVA4,
         dsVVA5: state.dsVVA5,
-        dsSlope3: event.dsSlope3,
+        dsSlope3: dsSlope3,
         dsSlope4: state.dsSlope4,
         // usTGC: state.usTGC,
       ),
@@ -1481,6 +1738,8 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+
+    event.textEditingController.text = dsSlope3;
   }
 
   void _onDSSlope3Decreased(
@@ -1520,17 +1779,35 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+
+    event.textEditingController.text = dsSlope3;
   }
 
   void _onDSSlope4Changed(
     DSSlope4Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
+    String dsSlope4 = _getValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      previousValue: state.dsSlope4,
+      currentValue: event.dsSlope4,
+    );
+
+    _adjustTextFieldValue(
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+      textEditingController: event.textEditingController,
+      previousValue: state.dsSlope4,
+      currentValue: event.dsSlope4,
+      isFromTextField: event.isFromTextField,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      dsSlope4: event.dsSlope4,
+      dsSlope4: dsSlope4,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
@@ -1550,7 +1827,7 @@ class Setting18ControlBloc
         dsVVA4: state.dsVVA4,
         dsVVA5: state.dsVVA5,
         dsSlope3: state.dsSlope3,
-        dsSlope4: event.dsSlope4,
+        dsSlope4: dsSlope4,
         // usTGC: state.usTGC,
       ),
     ));
@@ -1593,6 +1870,7 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+    event.textEditingController.text = dsSlope4;
   }
 
   void _onDSSlope4Decreased(
@@ -1632,6 +1910,7 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
+    event.textEditingController.text = dsSlope4;
   }
 
   // void _onUSTGCChanged(
@@ -1746,7 +2025,7 @@ class Setting18ControlBloc
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      isInitialize: false,
+      isInitialize: true,
       editMode: false,
       enableSubmission: false,
       dsVVA1: state.initialValues[DataKey.dsVVA1],
@@ -1790,13 +2069,18 @@ class Setting18ControlBloc
     required String dsSlope4,
     // required String usTGC,
   }) {
-    if (dsVVA1 != state.initialValues[DataKey.dsVVA1] ||
-            dsSlope1 != state.initialValues[DataKey.dsSlope1] ||
-            usVCA1 != state.initialValues[DataKey.usVCA1] ||
-            usVCA3 != state.initialValues[DataKey.usVCA3] ||
-            usVCA4 != state.initialValues[DataKey.usVCA4] ||
-            usVCA2 != state.initialValues[DataKey.usVCA2] ||
-            eREQ != state.initialValues[DataKey.eREQ] ||
+    if (dsVVA1 != state.initialValues[DataKey.dsVVA1] && dsVVA1.isNotEmpty ||
+            dsSlope1 != state.initialValues[DataKey.dsSlope1] &&
+                dsSlope1.isNotEmpty ||
+            usVCA1 != state.initialValues[DataKey.usVCA1] &&
+                usVCA1.isNotEmpty ||
+            usVCA3 != state.initialValues[DataKey.usVCA3] &&
+                usVCA3.isNotEmpty ||
+            usVCA4 != state.initialValues[DataKey.usVCA4] &&
+                usVCA4.isNotEmpty ||
+            usVCA2 != state.initialValues[DataKey.usVCA2] &&
+                usVCA2.isNotEmpty ||
+            eREQ != state.initialValues[DataKey.eREQ] && eREQ.isNotEmpty ||
             returnIngressSetting2 !=
                 state.initialValues[DataKey.ingressSetting2] ||
             returnIngressSetting3 !=
@@ -1804,15 +2088,23 @@ class Setting18ControlBloc
             returnIngressSetting4 !=
                 state.initialValues[DataKey.ingressSetting4] ||
             tgcCableLength != state.initialValues[DataKey.tgcCableLength] ||
-            dsVVA2 != state.initialValues[DataKey.dsVVA2] ||
-            dsSlope2 != state.initialValues[DataKey.dsSlope2] ||
-            dsVVA3 != state.initialValues[DataKey.dsVVA3] ||
-            dsVVA4 != state.initialValues[DataKey.dsVVA4] ||
-            dsVVA5 != state.initialValues[DataKey.dsVVA5] ||
-            dsSlope3 != state.initialValues[DataKey.dsSlope3] ||
-            dsSlope4 != state.initialValues[DataKey.dsSlope4] ||
-            usVCA3 != state.initialValues[DataKey.usVCA3] ||
-            usVCA3 != state.initialValues[DataKey.usVCA4]
+            dsVVA2 != state.initialValues[DataKey.dsVVA2] &&
+                dsVVA2.isNotEmpty ||
+            dsSlope2 != state.initialValues[DataKey.dsSlope2] &&
+                dsSlope2.isNotEmpty ||
+            dsVVA3 != state.initialValues[DataKey.dsVVA3] &&
+                dsVVA3.isNotEmpty ||
+            dsVVA4 != state.initialValues[DataKey.dsVVA4] &&
+                dsVVA4.isNotEmpty ||
+            dsVVA5 != state.initialValues[DataKey.dsVVA5] &&
+                dsVVA5.isNotEmpty ||
+            dsSlope3 != state.initialValues[DataKey.dsSlope3] &&
+                dsSlope3.isNotEmpty ||
+            dsSlope4 != state.initialValues[DataKey.dsSlope4] &&
+                dsSlope4.isNotEmpty ||
+            usVCA3 != state.initialValues[DataKey.usVCA3] &&
+                usVCA3.isNotEmpty ||
+            usVCA3 != state.initialValues[DataKey.usVCA4] && usVCA4.isNotEmpty
         // usTGC != state.initialValues[DataKey.usTGC]
         ) {
       return true;

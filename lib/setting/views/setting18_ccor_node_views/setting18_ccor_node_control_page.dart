@@ -13,7 +13,7 @@ class Setting18CCorNodeControlPage extends StatelessWidget {
       create: (context) => Setting18CCorNodeControlBloc(
           amp18CCorNodeRepository:
               RepositoryProvider.of<Amp18CCorNodeRepository>(context)),
-      child: const Setting18CCorNodeControlView(),
+      child: Setting18CCorNodeControlView(),
     );
   }
 }
