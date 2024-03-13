@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:aci_plus_app/repositories/config_repository.dart';
+import 'package:aci_plus_app/setting/model/svg_image.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:xml/xml.dart';
 part 'information18_event.dart';
 part 'information18_state.dart';
 
@@ -15,6 +19,7 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
         _configRepository = configRepository,
         super(const Information18State()) {
     on<ConfigLoaded>(_onConfigLoaded);
+    on<DiagramLoaded>(_onDiagramLoaded);
     on<AlarmUpdated>(_onAlarmUpdated);
     on<AlarmPeriodicUpdateRequested>(_onAlarmPeriodicUpdateRequested);
     on<AlarmPeriodicUpdateCanceled>(_onAlarmPeriodicUpdateCanceled);
@@ -24,10 +29,10 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
   final Amp18Repository _amp18Repository;
   final ConfigRepository _configRepository;
 
-  void _onConfigLoaded(
+  Future<void> _onConfigLoaded(
     ConfigLoaded event,
     Emitter<Information18State> emit,
-  ) {
+  ) async {
     String groupId = event.partId == '5' ? '0' : '1';
 
     List<Config> configs = _configRepository.getConfigsByGroupId(groupId);
@@ -50,6 +55,73 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     //     errorMessage: 'Preset data not found, please add new preset profiles.',
     //   ));
     // }
+  }
+
+  Future<void> _onDiagramLoaded(
+    DiagramLoaded event,
+    Emitter<Information18State> emit,
+  ) async {
+    String namePlatePath = namePlateFilePath[event.partId] ?? '';
+
+    String generalString =
+        await rootBundle.loadString('assets/nameplates/BLE.svg');
+
+    XmlDocument document = XmlDocument.parse(generalString);
+
+    final paths = document.findAllElements('path');
+    // final rects = document.findAllElements('rect');
+    final header = document.findElements('svg').toList()[0];
+    final double width = double.parse(header.getAttribute('width').toString());
+    final double height =
+        double.parse(header.getAttribute('height').toString());
+
+    List<Component> components = [];
+    List<Box> boxes = [];
+
+    for (var element in paths) {
+      // String partColor = element.getAttribute('style').toString();
+      String? fill = element.getAttribute('fill');
+
+      String partColor;
+
+      if (fill == null) {
+        partColor = 'ff000000';
+      } else {
+        partColor = 'ff${fill.toString().substring(1)}';
+      }
+
+      // String partColor = 'ff${element.getAttribute('fill').toString()}';
+      String partPath = element.getAttribute('d').toString();
+
+      components.add(Component(color: partColor, path: partPath));
+    }
+
+    // for (var element in rects) {
+    //   int moduleId = int.parse(element.getAttribute('symbol').toString());
+    //   double x = double.parse(element.getAttribute('x').toString());
+    //   double y = double.parse(element.getAttribute('y').toString());
+    //   double width = double.parse(element.getAttribute('width').toString());
+    //   double height = double.parse(element.getAttribute('height').toString());
+
+    //   boxes.add(Box(
+    //     moduleId: moduleId,
+    //     x: x,
+    //     y: y,
+    //     width: width,
+    //     height: height,
+    //   ));
+    // }
+
+    SVGImage namePlateImage = SVGImage(
+      width: width,
+      height: height,
+      components: components,
+      boxes: boxes,
+    );
+
+    emit(state.copyWith(
+      namePlateImage: namePlateImage,
+    ));
   }
 
   void _onAlarmPeriodicUpdateRequested(

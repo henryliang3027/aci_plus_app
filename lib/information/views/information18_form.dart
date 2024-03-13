@@ -5,7 +5,7 @@ import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/information/bloc/information18_bloc/information18_bloc.dart';
 import 'package:aci_plus_app/information/views/information18_config_list_view.dart';
-import 'package:aci_plus_app/information/views/information18_preset_page.dart';
+import 'package:aci_plus_app/information/views/name_plate_view.dart';
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -72,7 +72,7 @@ class Information18Form extends StatelessWidget {
           children: [
             _ConnectionCard(),
             _ShortcutCard(),
-            // _BlockDiagramCard(),
+            _BlockDiagramCard(),
             _BasicCard(),
             _AlarmCard(),
           ],
@@ -341,68 +341,6 @@ class _ShortcutCard extends StatelessWidget {
   }
 }
 
-class _BlockDiagramCard extends StatelessWidget {
-  const _BlockDiagramCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        String partId = state.characteristicData[DataKey.partId] ?? '';
-
-        return Card(
-          color: Theme.of(context).colorScheme.onPrimary,
-          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Block Diagram',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        // AppLocalizations.of(context)!.loadPreset,
-                        'Show Diagram',
-                        style: const TextStyle(
-                          fontSize: CustomStyle.sizeL,
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          foregroundColor: Colors.white,
-                        ),
-                        child: Text(
-                          'Show',
-                          style: const TextStyle(
-                            fontSize: CustomStyle.sizeL,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
 class _LoadPresetButton extends StatelessWidget {
   const _LoadPresetButton({
     super.key,
@@ -491,6 +429,101 @@ class _LoadPresetButton extends StatelessWidget {
           ),
           child: Text(
             AppLocalizations.of(context)!.load,
+            style: const TextStyle(
+              fontSize: CustomStyle.sizeL,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _BlockDiagramCard extends StatelessWidget {
+  const _BlockDiagramCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        String partId = state.characteristicData[DataKey.partId] ?? '';
+
+        if (state.loadingStatus.isRequestSuccess) {
+          context.read<Information18Bloc>().add(DiagramLoaded(partId));
+        }
+
+        return Card(
+          color: Theme.of(context).colorScheme.onPrimary,
+          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.blockDiagram,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.showDiagram,
+                        style: const TextStyle(
+                          fontSize: CustomStyle.sizeL,
+                        ),
+                      ),
+                      _ShowDiagramButton(
+                        loadingStatus: state.loadingStatus,
+                        partId: partId,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _ShowDiagramButton extends StatelessWidget {
+  const _ShowDiagramButton({
+    super.key,
+    required this.loadingStatus,
+    required this.partId,
+  });
+
+  final FormStatus loadingStatus;
+  final String partId;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Information18Bloc, Information18State>(
+      builder: (context, state) {
+        return ElevatedButton(
+          onPressed: !loadingStatus.isRequestInProgress && !loadingStatus.isNone
+              ? () async {
+                  Navigator.push(
+                      context,
+                      NamePlateView.route(
+                        namePlateImage: state.namePlateImage,
+                      ));
+                }
+              : null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Colors.white,
+          ),
+          child: Text(
+            AppLocalizations.of(context)!.show,
             style: const TextStyle(
               fontSize: CustomStyle.sizeL,
             ),

@@ -16,6 +16,15 @@ class ConfigLoaded extends Information18Event {
   List<Object> get props => [partId];
 }
 
+class DiagramLoaded extends Information18Event {
+  const DiagramLoaded(this.partId);
+
+  final String partId;
+
+  @override
+  List<Object> get props => [partId];
+}
+
 class AlarmUpdated extends Information18Event {
   const AlarmUpdated();
 

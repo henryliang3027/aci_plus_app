@@ -128,6 +128,16 @@ const Map<String, String> settingGraphFilePath = {
   '7': '',
 };
 
+const Map<String, String> namePlateFilePath = {
+  '1': '',
+  '2': 'assets/nameplates/BLE.svg',
+  '3': 'assets/nameplates/MB.svg',
+  '4': '',
+  '5': 'assets/nameplates/TR.svg',
+  '6': 'assets/nameplates/BR.svg',
+  '7': 'assets/nameplates/LE.svg',
+};
+
 class SettingItemTable {
   static Map<String, Map<Enum, bool>> itemsMap = {
     '1': {

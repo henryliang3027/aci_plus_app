@@ -110,7 +110,18 @@ class _AppView extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.showSplash != current.showSplash,
         builder: (context, state) {
-          return state.showSplash ? const SplashScreen() : const HomePage();
+          if (state.showSplash) {
+            return const Stack(
+              children: [
+                HomePage(),
+                SplashScreen(),
+              ],
+            );
+          } else {
+            return const HomePage();
+          }
+
+          // state.showSplash ? const SplashScreen() : const HomePage();
         },
       ),
     );
@@ -124,7 +135,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        const SplashView(),
+        // const SplashView(),
         Image.asset(
           'assets/splash2.gif',
           fit: BoxFit.cover,
