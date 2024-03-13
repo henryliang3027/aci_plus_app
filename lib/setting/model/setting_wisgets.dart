@@ -106,32 +106,37 @@ Widget controlParameterSlider({
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton.filled(
-                visualDensity: const VisualDensity(horizontal: -4.0),
-                icon: const Icon(
-                  Icons.remove,
+              Flexible(
+                flex: 1,
+                child: IconButton.filled(
+                  visualDensity: const VisualDensity(horizontal: -4.0),
+                  icon: const Icon(
+                    Icons.remove,
+                  ),
+                  onPressed: editMode ? onDecreased : null,
                 ),
-                onPressed: editMode ? onDecreased : null,
               ),
               Flexible(
                 flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 60.0,
+                    horizontal: 0.0,
                   ),
                   child: TextField(
                     controller: textEditingController,
                     // key: Key(textEditingControllerName1),
                     style: const TextStyle(
-                      fontSize: CustomStyle.sizeXL,
+                      fontSize: CustomStyle.sizeXXL,
                     ),
                     textAlign: TextAlign.center,
                     enabled: editMode,
                     textInputAction: TextInputAction.done,
                     onChanged: onTextChanged,
                     maxLength: 40,
+                    keyboardType: TextInputType.number,
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d?'))
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d{0,2}(\.\d{0,1})?'))
                     ],
                     decoration: const InputDecoration(
                       // label: Text(
@@ -150,12 +155,15 @@ Widget controlParameterSlider({
                   ),
                 ),
               ),
-              IconButton.filled(
-                visualDensity: const VisualDensity(horizontal: -4.0),
-                icon: const Icon(
-                  Icons.add,
+              Flexible(
+                flex: 1,
+                child: IconButton.filled(
+                  visualDensity: const VisualDensity(horizontal: -4.0),
+                  icon: const Icon(
+                    Icons.add,
+                  ),
+                  onPressed: editMode ? onIncreased : null,
                 ),
-                onPressed: editMode ? onIncreased : null,
               ),
             ],
           ),

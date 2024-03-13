@@ -541,8 +541,18 @@ class Setting18ControlView extends StatelessWidget {
         }
 
         if (state.isInitialize) {
-          forwardInputAttenuation1TextEditingController.text = state.dsVVA1;
-          forwardInputEqualizer1TextEditingController.text = state.dsSlope1;
+          forwardInputAttenuation1TextEditingController.text =
+              getInputAttenuation(
+            alcMode: alcMode,
+            inputAttenuation: state.dsVVA1,
+            currentInputAttenuation: currentInputAttenuation,
+          );
+          forwardInputEqualizer1TextEditingController.text = getInputEqualizer(
+            alcMode: alcMode,
+            agcMode: agcMode,
+            inputEqualizer: state.dsSlope1,
+            currentInputEqualizer: currentInputEqualizer,
+          );
           forwardOutputAttenuation3And4TextEditingController.text =
               state.dsVVA4;
           forwardOutputAttenuation2And3TextEditingController.text =
@@ -864,6 +874,25 @@ class _ReverseControlHeader extends StatelessWidget {
   }
 }
 
+String getInputAttenuation({
+  required String alcMode,
+  required String inputAttenuation,
+  required String currentInputAttenuation,
+}) {
+  return alcMode == '0' ? inputAttenuation : currentInputAttenuation;
+}
+
+String getInputEqualizer({
+  required String alcMode,
+  required String agcMode,
+  required String inputEqualizer,
+  required String currentInputEqualizer,
+}) {
+  return alcMode == '0' && agcMode == '0'
+      ? inputEqualizer
+      : currentInputEqualizer;
+}
+
 class _ForwardInputAttenuation extends StatelessWidget {
   const _ForwardInputAttenuation({
     super.key,
@@ -878,23 +907,28 @@ class _ForwardInputAttenuation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String getCurrentValue(String fwdInputAttenuation) {
-      return alcMode == '0' ? fwdInputAttenuation : currentInputAttenuation;
-    }
+    // String getCurrentValue(String fwdInputAttenuation) {
+    //   return alcMode == '0' ? fwdInputAttenuation : currentInputAttenuation;
+    // }
 
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         // forwardInputAttenuation1TextEditingController.text = state.dsVVA1;
         double minValue = 0.0;
         double maxValue = 25.0;
+        String inputAttenuation = getInputAttenuation(
+          alcMode: alcMode,
+          inputAttenuation: state.dsVVA1,
+          currentInputAttenuation: currentInputAttenuation,
+        );
         return controlParameterSlider(
           context: context,
           editMode: state.editMode && alcMode == '0',
           title:
-              '${AppLocalizations.of(context)!.forwardInputAttenuation1}: ${getCurrentValue(state.dsVVA1)} dB',
+              '${AppLocalizations.of(context)!.forwardInputAttenuation1}: $inputAttenuation dB',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: getCurrentValue(state.dsVVA1),
+          currentValue: inputAttenuation,
           onChanged: (dsVVA1) {
             context.read<Setting18ControlBloc>().add(DSVVA1Changed(
                   dsVVA1: dsVVA1.toStringAsFixed(1),
@@ -950,24 +984,30 @@ class _ForwardInputEqualizer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String getCurrentValue(String forwardInputEqualizer) {
-      return alcMode == '0' && agcMode == '0'
-          ? forwardInputEqualizer
-          : currentInputEqualizer;
-    }
+    // String getCurrentValue(String forwardInputEqualizer) {
+    //   return alcMode == '0' && agcMode == '0'
+    //       ? forwardInputEqualizer
+    //       : currentInputEqualizer;
+    // }
 
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         double minValue = 0.0;
         double maxValue = 27.0;
+        String inputEqualizer = getInputEqualizer(
+          alcMode: alcMode,
+          agcMode: agcMode,
+          inputEqualizer: state.dsSlope1,
+          currentInputEqualizer: currentInputEqualizer,
+        );
         return controlParameterSlider(
           context: context,
           editMode: state.editMode && alcMode == '0' && agcMode == '0',
           title:
-              '${AppLocalizations.of(context)!.forwardInputEqualizer1}: ${getCurrentValue(state.dsSlope1)} dB',
+              '${AppLocalizations.of(context)!.forwardInputEqualizer1}: $inputEqualizer dB',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: getCurrentValue(state.dsSlope1),
+          currentValue: inputEqualizer,
           onChanged: (dsSlope1) {
             context.read<Setting18ControlBloc>().add(DSSlope1Changed(
                   dsSlope1: dsSlope1.toStringAsFixed(1),
