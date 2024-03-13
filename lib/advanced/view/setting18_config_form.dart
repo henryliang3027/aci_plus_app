@@ -543,32 +543,49 @@ class _DeviceListView extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: config.isDefault == '1'
-                ? CustomStyle.customBlue
-                : Theme.of(context).colorScheme.onPrimary,
+            color: Theme.of(context).colorScheme.onPrimary,
+
+            // config.isDefault == '1'
+            //     ? CustomStyle.customBlue
+            //     : Theme.of(context).colorScheme.onPrimary,
           ),
           // height: 80,
           child: Material(
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(8.0),
-              onLongPress: config.isDefault == '0'
-                  ? () {
-                      showSetAsDefaultDialog(configName: config.name)
-                          .then((result) {
-                        if (result != null) {
-                          if (result) {
-                            context
-                                .read<Setting18ConfigBloc>()
-                                .add(DefaultConfigChanged(
-                                  groupId: groupId,
-                                  id: config.id,
-                                ));
-                          }
-                        }
-                      });
+              onLongPress: () {
+                showSetAsDefaultDialog(configName: config.name).then((result) {
+                  if (result != null) {
+                    if (result) {
+                      context
+                          .read<Setting18ConfigBloc>()
+                          .add(DefaultConfigChanged(
+                            groupId: groupId,
+                            id: config.id,
+                          ));
                     }
-                  : null,
+                  }
+                });
+              },
+
+              // config.isDefault == '0'
+              //     ? () {
+              //         showSetAsDefaultDialog(configName: config.name)
+              //             .then((result) {
+              //           if (result != null) {
+              //             if (result) {
+              //               context
+              //                   .read<Setting18ConfigBloc>()
+              //                   .add(DefaultConfigChanged(
+              //                     groupId: groupId,
+              //                     id: config.id,
+              //                   ));
+              //             }
+              //           }
+              //         });
+              //       }
+              //     : null,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -598,24 +615,41 @@ class _DeviceListView extends StatelessWidget {
                         children: [
                           Expanded(
                             child: IconButton(
-                              onPressed: config.isDefault == '0' || true
-                                  ? () {
-                                      showConfirmDeleteDialog(
-                                        configName: config.name,
-                                      ).then((result) {
-                                        if (result != null) {
-                                          if (result) {
-                                            context
-                                                .read<Setting18ConfigBloc>()
-                                                .add(ConfigDeleted(
-                                                  id: config.id,
-                                                  groupId: groupId,
-                                                ));
-                                          }
-                                        }
-                                      });
+                              onPressed: () {
+                                showConfirmDeleteDialog(
+                                  configName: config.name,
+                                ).then((result) {
+                                  if (result != null) {
+                                    if (result) {
+                                      context
+                                          .read<Setting18ConfigBloc>()
+                                          .add(ConfigDeleted(
+                                            id: config.id,
+                                            groupId: groupId,
+                                          ));
                                     }
-                                  : null,
+                                  }
+                                });
+                              },
+
+                              // config.isDefault == '0' || true
+                              //     ? () {
+                              //         showConfirmDeleteDialog(
+                              //           configName: config.name,
+                              //         ).then((result) {
+                              //           if (result != null) {
+                              //             if (result) {
+                              //               context
+                              //                   .read<Setting18ConfigBloc>()
+                              //                   .add(ConfigDeleted(
+                              //                     id: config.id,
+                              //                     groupId: groupId,
+                              //                   ));
+                              //             }
+                              //           }
+                              //         });
+                              //       }
+                              //     : null,
                               icon: const Icon(
                                 Icons.delete,
                                 size: 26,

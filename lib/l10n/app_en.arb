@@ -18,6 +18,8 @@
     "stopFrequency": "Stop Frequency",
     "frequency": "Frequency",
     "level": "Level",
+    "startLevel": "Start Level",
+    "stopLevel": "Stop Level",
     "pilotFrequencySelect": "Pilot Frequency Select",
     "pilotFrequencyBandwidthSettings": "Bandwidth Settings",
     "pilotFrequencyUserSettings": "User Settings",

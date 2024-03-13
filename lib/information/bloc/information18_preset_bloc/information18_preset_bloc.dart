@@ -2,8 +2,6 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/config.dart';
-import 'package:aci_plus_app/repositories/distribution_config.dart';
-import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,25 +15,25 @@ class Information18PresetBloc
     required Config config,
   })  : _amp18Repository = amp18repository,
         _config = config,
-        super(const Information18PresetState()) {
-    on<DefaultConfigRequested>(_onDefaultConfigRequested);
+        super(Information18PresetState(config: config)) {
+    // on<DefaultConfigRequested>(_onDefaultConfigRequested);
     on<ConfigExecuted>(_onConfigExecuted);
 
-    add(const DefaultConfigRequested());
+    // add(const DefaultConfigRequested());
   }
 
   final Amp18Repository _amp18Repository;
   final Config _config;
 
-  void _onDefaultConfigRequested(
-    DefaultConfigRequested event,
-    Emitter<Information18PresetState> emit,
-  ) {
-    emit(state.copyWith(
-      isInitialize: true,
-      config: _config,
-    ));
-  }
+  // void _onDefaultConfigRequested(
+  //   DefaultConfigRequested event,
+  //   Emitter<Information18PresetState> emit,
+  // ) {
+  //   emit(state.copyWith(
+  //     isInitialize: true,
+  //     config: _config,
+  //   ));
+  // }
 
   void _onConfigExecuted(
     ConfigExecuted event,

@@ -18,6 +18,8 @@
     "stopFrequency": "截止頻率",
     "frequency": "頻率",
     "level": "強度",
+    "startLevel": "起始強度",
+    "stopLevel": "截止強度",
     "pilotFrequencySelect": "導航頻道選取方式",
     "pilotFrequencyBandwidthSettings": "頻寬設定",
     "pilotFrequencyUserSettings": "使用者設定",

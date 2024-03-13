@@ -352,7 +352,7 @@ class Setting18ConfigEditBloc
       firstChannelLoadingLevel: state.firstChannelLoadingLevel.value,
       lastChannelLoadingFrequency: state.lastChannelLoadingFrequency.value,
       lastChannelLoadingLevel: state.lastChannelLoadingLevel.value,
-      isDefault: configs.isEmpty ? '1' : '0',
+      isDefault: '0',
     );
 
     emit(state.copyWith(

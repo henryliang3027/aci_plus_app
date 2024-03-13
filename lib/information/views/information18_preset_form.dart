@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -158,58 +159,21 @@ class _Information18PresetFormState extends State<Information18PresetForm> {
           ),
           centerTitle: true,
         ),
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Container(
-            //   alignment: Alignment.center,
-            //   width: double.maxFinite,
-            //   height: 58,
-            //   decoration: BoxDecoration(
-            //     borderRadius: const BorderRadius.only(
-            //         topLeft: Radius.circular(20.0),
-            //         topRight: Radius.circular(20.0)),
-            //     color: Theme.of(context).colorScheme.primary,
-            //   ),
-            //   child: _PartName(
-            //     nameTextEditingController: nameTextEditingController,
-            //   ),
-            // ),
-            // _QRCodeCard(
-            //   isShortcut: widget.isShortcut,
-            // ),
-            Flexible(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
-                  child: Column(
-                    children: [
-                      const _SplitOption(),
-                      _FirstChannelLoading(
-                        firstChannelLoadingFrequencyTextEditingController:
-                            firstChannelLoadingFrequencyTextEditingController,
-                        firstChannelLoadingLevelTextEditingController:
-                            firstChannelLoadingLevelTextEditingController,
-                        currentDetectedSplitOption: currentDetectedSplitOption,
-                      ),
-                      _LastChannelLoading(
-                        lastChannelLoadingFrequencyTextEditingController:
-                            lastChannelLoadingFrequencyTextEditingController,
-                        lastChannelLoadingLevelTextEditingController:
-                            lastChannelLoadingLevelTextEditingController,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      // const _ActionTool(),
-                      const _ActionButton(),
-                    ],
-                  ),
-                ),
+        body: const SingleChildScrollView(
+          child: Column(
+            children: [
+              _SplitOption(),
+              _StartFrequency(),
+              _StartLevel(),
+              _StopFrequency(),
+              _StopLevel(),
+              SizedBox(
+                height: 200.0,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+        floatingActionButton: const _ActionButton(),
       ),
     );
   }
@@ -378,19 +342,105 @@ class _ActionButton extends StatelessWidget {
 
     return BlocBuilder<Information18PresetBloc, Information18PresetState>(
       builder: (context, state) {
-        return Align(
-          alignment: Alignment.centerRight,
-          child: Wrap(
-            alignment: WrapAlignment.end,
-            children: [
-              getCancelButton(),
-              getExecuteButton(),
-            ],
-          ),
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              shape: const CircleBorder(
+                side: BorderSide.none,
+              ),
+              backgroundColor:
+                  Theme.of(context).colorScheme.primary.withAlpha(200),
+              child: Icon(
+                CustomIcons.cancel,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            FloatingActionButton(
+              shape: const CircleBorder(
+                side: BorderSide.none,
+              ),
+              backgroundColor:
+                  Theme.of(context).colorScheme.primary.withAlpha(200),
+              onPressed: () async {
+                if (kDebugMode) {
+                  context
+                      .read<Information18PresetBloc>()
+                      .add(const ConfigExecuted());
+                } else {
+                  bool? isMatch =
+                      await showConfirmInputDialog(context: context);
+
+                  if (context.mounted) {
+                    if (isMatch != null) {
+                      if (isMatch) {
+                        context
+                            .read<Information18PresetBloc>()
+                            .add(const ConfigExecuted());
+                      }
+                    }
+                  }
+                }
+              },
+              child: Icon(
+                Icons.check,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
+          ],
         );
       },
     );
   }
+}
+
+Widget buildCard({
+  required BuildContext context,
+  required String title,
+  required String content,
+}) {
+  return Card(
+    surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: CustomStyle.sizeL,
+                ),
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Text(
+            content,
+            style: const TextStyle(
+              fontSize: CustomStyle.size4XL,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 class _SplitOption extends StatelessWidget {
@@ -402,85 +452,91 @@ class _SplitOption extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.config.splitOption != current.config.splitOption,
       builder: (context, state) {
-        return splitOptionGridViewButton(
+        return buildCard(
           context: context,
-          editMode: true,
-          splitOption: state.config.splitOption,
-          onGridPressed: (index) {},
+          title: AppLocalizations.of(context)!.splitOption,
+          content:
+              '${splitBaseLine[state.config.splitOption]!.$1}/${splitBaseLine[state.config.splitOption]!.$2} ${CustomStyle.mHz}',
         );
       },
     );
   }
 }
 
-class _FirstChannelLoading extends StatelessWidget {
-  const _FirstChannelLoading({
+class _StartFrequency extends StatelessWidget {
+  const _StartFrequency({
     super.key,
-    required this.firstChannelLoadingFrequencyTextEditingController,
-    required this.firstChannelLoadingLevelTextEditingController,
-    required this.currentDetectedSplitOption,
   });
-
-  final TextEditingController firstChannelLoadingFrequencyTextEditingController;
-  final TextEditingController firstChannelLoadingLevelTextEditingController;
-  final String currentDetectedSplitOption;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Information18PresetBloc, Information18PresetState>(
       builder: (context, state) {
-        return twoTextField(
+        return buildCard(
           context: context,
-          title: '${AppLocalizations.of(context)!.startFrequency}:',
-          editMode1: true,
-          editMode2: true,
-          reaOnly1: true,
-          reaOnly2: true,
-          textEditingControllerName1:
-              'information18PresetForm_firstChannelLoadingFrequencyInput_textField',
-          textEditingControllerName2:
-              'information18PresetForm_firstChannelLoadingLevelInput_textField',
-          textEditingController1:
-              firstChannelLoadingFrequencyTextEditingController,
-          textEditingController2: firstChannelLoadingLevelTextEditingController,
-          onChanged1: (firstChannelLoadingFrequency) {},
-          onChanged2: (firstChannelLoadingLevel) {},
+          title:
+              '${AppLocalizations.of(context)!.startFrequency} (${CustomStyle.mHz})',
+          content: state.config.firstChannelLoadingFrequency,
         );
       },
     );
   }
 }
 
-class _LastChannelLoading extends StatelessWidget {
-  const _LastChannelLoading({
+class _StartLevel extends StatelessWidget {
+  const _StartLevel({
     super.key,
-    required this.lastChannelLoadingFrequencyTextEditingController,
-    required this.lastChannelLoadingLevelTextEditingController,
   });
-
-  final TextEditingController lastChannelLoadingFrequencyTextEditingController;
-  final TextEditingController lastChannelLoadingLevelTextEditingController;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Information18PresetBloc, Information18PresetState>(
       builder: (context, state) {
-        return twoTextField(
+        return buildCard(
           context: context,
-          title: '${AppLocalizations.of(context)!.stopFrequency}:',
-          editMode1: true,
-          editMode2: true,
-          reaOnly1: true,
-          reaOnly2: true,
-          textEditingControllerName1:
-              'information18PresetForm_lastChannelLoadingFrequencyInput_textField',
-          textEditingControllerName2:
-              'information18PresetForm_lastChannelLoadingLevelInput_textField',
-          textEditingController1:
-              lastChannelLoadingFrequencyTextEditingController,
-          textEditingController2: lastChannelLoadingLevelTextEditingController,
-          onChanged1: (lastChannelLoadingFrequency) {},
-          onChanged2: (lastChannelLoadingLevel) {},
+          title:
+              '${AppLocalizations.of(context)!.startLevel} (${CustomStyle.dBmV})',
+          content: state.config.firstChannelLoadingLevel,
+        );
+      },
+    );
+  }
+}
+
+class _StopFrequency extends StatelessWidget {
+  const _StopFrequency({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Information18PresetBloc, Information18PresetState>(
+      builder: (context, state) {
+        return buildCard(
+          context: context,
+          title:
+              '${AppLocalizations.of(context)!.stopFrequency} (${CustomStyle.mHz})',
+          content: state.config.lastChannelLoadingFrequency,
+        );
+      },
+    );
+  }
+}
+
+class _StopLevel extends StatelessWidget {
+  const _StopLevel({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Information18PresetBloc, Information18PresetState>(
+      builder: (context, state) {
+        return buildCard(
+          context: context,
+          title:
+              '${AppLocalizations.of(context)!.stopLevel} (${CustomStyle.dBmV})',
+          content: state.config.lastChannelLoadingLevel,
         );
       },
     );

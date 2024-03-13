@@ -4,16 +4,7 @@ class Information18PresetState extends Equatable {
   const Information18PresetState({
     this.settingStatus = SubmissionStatus.none,
     this.isInitialize = false,
-    this.config = const Config(
-      id: -1,
-      name: '',
-      splitOption: '0',
-      firstChannelLoadingFrequency: '',
-      firstChannelLoadingLevel: '',
-      lastChannelLoadingFrequency: '',
-      lastChannelLoadingLevel: '',
-      isDefault: '0',
-    ),
+    required this.config,
     this.settingResult = const [],
   });
 

@@ -18,6 +18,8 @@
     "stopFrequency": "Fréquence d'Arrêt",
     "frequency": "Fréquence",
     "level": "Niveau",
+    "startLevel": "Niveau de Démarrage",
+    "stopLevel": "Niveau d'Arrêt",
     "pilotFrequencySelect": "Sélection de la Fréquence Pilote",
     "pilotFrequencyBandwidthSettings": "Paramètres d'Intervalle",
     "pilotFrequencyUserSettings": "Paramètres de l'Utilisateur",
