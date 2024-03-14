@@ -1,9 +1,12 @@
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
+import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/setting/model/svg_image.dart';
+import 'package:aci_plus_app/setting/views/circuit_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:touchable/touchable.dart';
 import 'package:xml/xml.dart';
 
 class NamePlateView extends StatelessWidget {
@@ -66,7 +69,7 @@ class _NamePlateInteractor extends StatelessWidget {
 
     Future<SVGImage> _getSVGImage() async {
       String generalString =
-          await rootBundle.loadString('assets/nameplates/BLE.svg');
+          await rootBundle.loadString('assets/nameplates/BR.svg');
 
       XmlDocument document = XmlDocument.parse(generalString);
 
