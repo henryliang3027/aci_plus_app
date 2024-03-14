@@ -337,13 +337,6 @@ class Setting18ConfigEditBloc
       isInitialize: false,
     ));
 
-    List<dynamic> configs = [];
-    if (state.groupId == '0') {
-      configs = _configRepository.getAllTrunkConfigs();
-    } else {
-      configs = _configRepository.getAllDistributionConfigs();
-    }
-
     await _configRepository.putConfig(
       groupId: state.groupId,
       name: state.name.value,

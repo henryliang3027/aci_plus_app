@@ -271,8 +271,14 @@ class _ShortcutCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.loadingStatus != current.loadingStatus,
       builder: (context, state) {
         String partId = state.characteristicData[DataKey.partId] ?? '';
+
+        if (state.loadingStatus.isRequestSuccess) {
+          context.read<Information18Bloc>().add(ConfigLoaded(partId));
+        }
 
         return Card(
           color: Theme.of(context).colorScheme.onPrimary,
@@ -353,29 +359,6 @@ class _LoadPresetButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Future<void> showModuleSettingDialog({
-    //   required Config defaultConfig,
-    // }) async {
-    //   return showDialog<void>(
-    //     context: context,
-    //     barrierDismissible: false, // user must tap button!
-
-    //     builder: (BuildContext context) {
-    //       var width = MediaQuery.of(context).size.width;
-    //       // var height = MediaQuery.of(context).size.height;
-
-    //       return Dialog(
-    //         insetPadding: EdgeInsets.symmetric(
-    //           horizontal: width * 0.01,
-    //         ),
-    //         child: Information18PresetPage(
-    //           defaultConfig: defaultConfig,
-    //         ),
-    //       );
-    //     },
-    //   );
-    // }
-
     Future<void> showSelectConfigDialog({
       required List<Config> configs,
     }) async {
@@ -401,12 +384,8 @@ class _LoadPresetButton extends StatelessWidget {
 
     return BlocBuilder<Information18Bloc, Information18State>(
       builder: (context, state) {
-        context.read<Information18Bloc>().add(ConfigLoaded(partId));
-
         return ElevatedButton(
-          onPressed: !loadingStatus.isRequestInProgress &&
-                  !loadingStatus.isNone &&
-                  state.isLoadConfigEnabled
+          onPressed: loadingStatus.isRequestSuccess && state.configs.isNotEmpty
               ? () async {
                   // 要進行設定前先暫停 alarm 定期更新, 避免設定過程中同時要求 alarm 資訊
                   context
@@ -445,12 +424,14 @@ class _BlockDiagramCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.loadingStatus != current.loadingStatus,
       builder: (context, state) {
         String partId = state.characteristicData[DataKey.partId] ?? '';
 
-        if (state.loadingStatus.isRequestSuccess) {
-          context.read<Information18Bloc>().add(DiagramLoaded(partId));
-        }
+        // if (state.loadingStatus.isRequestSuccess) {
+        //   context.read<Information18Bloc>().add(DiagramLoaded(partId));
+        // }
 
         return Card(
           color: Theme.of(context).colorScheme.onPrimary,
@@ -509,12 +490,12 @@ class _ShowDiagramButton extends StatelessWidget {
     return BlocBuilder<Information18Bloc, Information18State>(
       builder: (context, state) {
         return ElevatedButton(
-          onPressed: !loadingStatus.isRequestInProgress && !loadingStatus.isNone
+          onPressed: loadingStatus.isRequestSuccess
               ? () async {
                   Navigator.push(
                       context,
                       NamePlateView.route(
-                        namePlateImage: state.namePlateImage,
+                        partId: partId,
                       ));
                 }
               : null,

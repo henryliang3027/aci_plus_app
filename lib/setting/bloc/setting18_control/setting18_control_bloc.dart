@@ -162,11 +162,11 @@ class Setting18ControlBloc
       if (currentValue.isNotEmpty) {
         double doubleCurrentValue = double.parse(currentValue);
         if (doubleCurrentValue > maxValue) {
-          textEditingController.text = previousValue;
+          textEditingController.text = maxValue.toStringAsFixed(1);
         } else if (doubleCurrentValue < minValue) {
-          textEditingController.text = previousValue;
+          textEditingController.text = minValue.toStringAsFixed(1);
         } else {
-          textEditingController.text = currentValue;
+          // textEditingController.text = currentValue;
         }
       } else {
         textEditingController.text = '';

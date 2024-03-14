@@ -925,7 +925,7 @@ class _ForwardInputAttenuation extends StatelessWidget {
           context: context,
           editMode: state.editMode && alcMode == '0',
           title:
-              '${AppLocalizations.of(context)!.forwardInputAttenuation1}: $inputAttenuation dB',
+              '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: inputAttenuation,
@@ -1004,7 +1004,7 @@ class _ForwardInputEqualizer extends StatelessWidget {
           context: context,
           editMode: state.editMode && alcMode == '0' && agcMode == '0',
           title:
-              '${AppLocalizations.of(context)!.forwardInputEqualizer1}: $inputEqualizer dB',
+              '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: inputEqualizer,
@@ -1066,7 +1066,7 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardOutputAttenuation2And3}: ${state.dsVVA4} dB',
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation2And3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsVVA4,
@@ -1129,7 +1129,7 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardOutputAttenuation3And4}: ${state.dsVVA4} dB',
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation3And4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsVVA4,
@@ -1192,7 +1192,7 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6}: ${state.dsVVA5} dB',
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsVVA5,
@@ -1254,7 +1254,7 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardOutputEqualizer2And3}: ${state.dsSlope3} dB',
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer2And3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsSlope3,
@@ -1316,7 +1316,7 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardOutputEqualizer3And4}: ${state.dsSlope3} dB',
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer3And4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsSlope3,
@@ -1378,7 +1378,7 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardOutputEqualizer5And6}: ${state.dsSlope4} dB',
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer5And6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsSlope4,
@@ -1440,7 +1440,7 @@ class _RtnInputAttenuation2 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation2}: ${state.usVCA1} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation2} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.usVCA1,
@@ -1501,7 +1501,7 @@ class _RtnInputAttenuation3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation3}: ${state.usVCA3} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.usVCA3,
@@ -1562,7 +1562,7 @@ class _RtnInputAttenuation2And3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation2And3}: ${state.usVCA3} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation2And3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.usVCA3,
@@ -1627,7 +1627,7 @@ class _RtnInputAttenuation4 extends StatelessWidget {
             context: context,
             editMode: state.editMode,
             title:
-                '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.usVCA1} dB',
+                '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
             minValue: minValue,
             maxValue: maxValue,
             currentValue: state.usVCA1,
@@ -1676,7 +1676,7 @@ class _RtnInputAttenuation4 extends StatelessWidget {
             context: context,
             editMode: state.editMode,
             title:
-                '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.usVCA4} dB',
+                '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
             minValue: minValue,
             maxValue: maxValue,
             currentValue: state.usVCA4,
@@ -1738,7 +1738,7 @@ class _RtnInputAttenuation5And6 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation5And6}: ${state.usVCA4} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.usVCA4,
@@ -1800,7 +1800,7 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnOutputAttenuation1}: ${state.usVCA2} dB',
+              '${AppLocalizations.of(context)!.returnOutputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.usVCA2,
@@ -1861,7 +1861,7 @@ class _RtnOutputEQ extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnOutputEqualizer1}: ${state.eREQ} dB',
+              '${AppLocalizations.of(context)!.returnOutputEqualizer1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.eREQ,

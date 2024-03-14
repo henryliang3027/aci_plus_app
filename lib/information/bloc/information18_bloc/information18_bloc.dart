@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:aci_plus_app/repositories/config_repository.dart';
-import 'package:aci_plus_app/setting/model/svg_image.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:xml/xml.dart';
+
 part 'information18_event.dart';
 part 'information18_state.dart';
 
@@ -19,7 +16,7 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
         _configRepository = configRepository,
         super(const Information18State()) {
     on<ConfigLoaded>(_onConfigLoaded);
-    on<DiagramLoaded>(_onDiagramLoaded);
+    // on<DiagramLoaded>(_onDiagramLoaded);
     on<AlarmUpdated>(_onAlarmUpdated);
     on<AlarmPeriodicUpdateRequested>(_onAlarmPeriodicUpdateRequested);
     on<AlarmPeriodicUpdateCanceled>(_onAlarmPeriodicUpdateCanceled);
@@ -38,7 +35,7 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     List<Config> configs = _configRepository.getConfigsByGroupId(groupId);
 
     emit(state.copyWith(
-      isLoadConfigEnabled: configs.isNotEmpty ? true : false,
+      // isLoadConfigEnabled: configs.isNotEmpty ? true : false,
       configs: configs,
     ));
 
@@ -61,40 +58,40 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     DiagramLoaded event,
     Emitter<Information18State> emit,
   ) async {
-    String namePlatePath = namePlateFilePath[event.partId] ?? '';
+    // String namePlatePath = namePlateFilePath[event.partId] ?? '';
 
-    String generalString =
-        await rootBundle.loadString('assets/nameplates/BLE.svg');
+    // String generalString =
+    //     await rootBundle.loadString('assets/nameplates/BLE.svg');
 
-    XmlDocument document = XmlDocument.parse(generalString);
+    // XmlDocument document = XmlDocument.parse(generalString);
 
-    final paths = document.findAllElements('path');
-    // final rects = document.findAllElements('rect');
-    final header = document.findElements('svg').toList()[0];
-    final double width = double.parse(header.getAttribute('width').toString());
-    final double height =
-        double.parse(header.getAttribute('height').toString());
+    // final paths = document.findAllElements('path');
+    // // final rects = document.findAllElements('rect');
+    // final header = document.findElements('svg').toList()[0];
+    // final double width = double.parse(header.getAttribute('width').toString());
+    // final double height =
+    //     double.parse(header.getAttribute('height').toString());
 
-    List<Component> components = [];
-    List<Box> boxes = [];
+    // List<Component> components = [];
+    // List<Box> boxes = [];
 
-    for (var element in paths) {
-      // String partColor = element.getAttribute('style').toString();
-      String? fill = element.getAttribute('fill');
+    // for (var element in paths) {
+    //   // String partColor = element.getAttribute('style').toString();
+    //   String? fill = element.getAttribute('fill');
 
-      String partColor;
+    //   String partColor;
 
-      if (fill == null) {
-        partColor = 'ff000000';
-      } else {
-        partColor = 'ff${fill.toString().substring(1)}';
-      }
+    //   if (fill == null) {
+    //     partColor = 'ff000000';
+    //   } else {
+    //     partColor = 'ff${fill.toString().substring(1)}';
+    //   }
 
-      // String partColor = 'ff${element.getAttribute('fill').toString()}';
-      String partPath = element.getAttribute('d').toString();
+    //   // String partColor = 'ff${element.getAttribute('fill').toString()}';
+    //   String partPath = element.getAttribute('d').toString();
 
-      components.add(Component(color: partColor, path: partPath));
-    }
+    //   components.add(Component(color: partColor, path: partPath));
+    // }
 
     // for (var element in rects) {
     //   int moduleId = int.parse(element.getAttribute('symbol').toString());
@@ -112,16 +109,16 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     //   ));
     // }
 
-    SVGImage namePlateImage = SVGImage(
-      width: width,
-      height: height,
-      components: components,
-      boxes: boxes,
-    );
+    // SVGImage namePlateImage = SVGImage(
+    //   width: width,
+    //   height: height,
+    //   components: components,
+    //   boxes: boxes,
+    // );
 
-    emit(state.copyWith(
-      namePlateImage: namePlateImage,
-    ));
+    // emit(state.copyWith(
+    //   namePlateImage: namePlateImage,
+    // ));
   }
 
   void _onAlarmPeriodicUpdateRequested(

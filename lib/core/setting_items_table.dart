@@ -120,8 +120,7 @@ const Map<String, String> partIdMap = {
 const Map<String, String> settingGraphFilePath = {
   '1': '',
   '2': '',
-  '3':
-      'assets/circuits/MB_1.8G_20231117.svg', // assets/circuits/MB_1.8G_20231117.svg
+  '3': '', // assets/circuits/MB_1.8G_20231117.svg
   '4': '',
   '5': '',
   '6': '',
@@ -130,12 +129,12 @@ const Map<String, String> settingGraphFilePath = {
 
 const Map<String, String> namePlateFilePath = {
   '1': '',
-  '2': 'assets/nameplates/BLE.svg',
-  '3': 'assets/nameplates/MB.svg',
+  '2': 'assets/nameplates/BLE.png',
+  '3': 'assets/nameplates/MB.png',
   '4': '',
-  '5': 'assets/nameplates/TR.svg',
-  '6': 'assets/nameplates/BR.svg',
-  '7': 'assets/nameplates/LE.svg',
+  '5': 'assets/nameplates/TR.png',
+  '6': 'assets/nameplates/BR.png',
+  '7': 'assets/nameplates/LE.png',
 };
 
 class SettingItemTable {

@@ -533,27 +533,43 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardInputAttenuation1}: ${state.dsVVA1} dB',
+              '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsVVA1,
           onChanged: (dsVVA1) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSVVA1Changed(dsVVA1.toStringAsFixed(1)));
+            context.read<Setting18CCorNodeControlBloc>().add(DSVVA1Changed(
+                  dsVVA1: dsVVA1.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputAttenuation1TextEditingController,
+                  isFromTextField: false,
+                ));
           },
           textEditingController: forwardInputAttenuation1TextEditingController,
           onTextChanged: (dsVVA1) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSVVA1Changed(dsVVA1));
+            context.read<Setting18CCorNodeControlBloc>().add(DSVVA1Changed(
+                  dsVVA1: dsVVA1,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputAttenuation1TextEditingController,
+                  isFromTextField: true,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(DSVVA1Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(DSVVA1Increased(maxValue)),
+          onDecreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(DSVVA1Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        forwardInputAttenuation1TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(DSVVA1Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        forwardInputAttenuation1TextEditingController,
+                  )),
         );
       },
     );
@@ -579,27 +595,43 @@ class _ForwardInputAttenuation3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardInputAttenuation3}: ${state.dsVVA3} dB',
+              '${AppLocalizations.of(context)!.forwardInputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsVVA3,
           onChanged: (dsVVA3) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSVVA3Changed(dsVVA3.toStringAsFixed(1)));
+            context.read<Setting18CCorNodeControlBloc>().add(DSVVA3Changed(
+                  dsVVA3: dsVVA3.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputAttenuation3TextEditingController,
+                  isFromTextField: false,
+                ));
           },
           textEditingController: forwardInputAttenuation3TextEditingController,
           onTextChanged: (dsVVA3) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSVVA3Changed(dsVVA3));
+            context.read<Setting18CCorNodeControlBloc>().add(DSVVA3Changed(
+                  dsVVA3: dsVVA3,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputAttenuation3TextEditingController,
+                  isFromTextField: true,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(DSVVA3Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(DSVVA3Increased(maxValue)),
+          onDecreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(DSVVA3Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        forwardInputAttenuation3TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(DSVVA3Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        forwardInputAttenuation3TextEditingController,
+                  )),
         );
       },
     );
@@ -625,27 +657,43 @@ class _ForwardInputAttenuation4 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.dsVVA4} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsVVA4,
           onChanged: (dsVVA4) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSVVA4Changed(dsVVA4.toStringAsFixed(1)));
+            context.read<Setting18CCorNodeControlBloc>().add(DSVVA4Changed(
+                  dsVVA4: dsVVA4.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputAttenuation4TextEditingController,
+                  isFromTextField: false,
+                ));
           },
           textEditingController: forwardInputAttenuation4TextEditingController,
           onTextChanged: (dsVVA4) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSVVA4Changed(dsVVA4));
+            context.read<Setting18CCorNodeControlBloc>().add(DSVVA4Changed(
+                  dsVVA4: dsVVA4,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputAttenuation4TextEditingController,
+                  isFromTextField: true,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(DSVVA4Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(DSVVA4Increased(maxValue)),
+          onDecreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(DSVVA4Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        forwardInputAttenuation4TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(DSVVA4Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        forwardInputAttenuation4TextEditingController,
+                  )),
         );
       },
     );
@@ -671,27 +719,43 @@ class _ForwardInputAttenuation6 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation6}: ${state.dsVVA6} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsVVA6,
           onChanged: (dsVVA6) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSVVA6Changed(dsVVA6.toStringAsFixed(1)));
+            context.read<Setting18CCorNodeControlBloc>().add(DSVVA6Changed(
+                  dsVVA6: dsVVA6.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputAttenuation6TextEditingController,
+                  isFromTextField: false,
+                ));
           },
           textEditingController: forwardInputAttenuation6TextEditingController,
           onTextChanged: (dsVVA6) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSVVA6Changed(dsVVA6));
+            context.read<Setting18CCorNodeControlBloc>().add(DSVVA6Changed(
+                  dsVVA6: dsVVA6,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputAttenuation6TextEditingController,
+                  isFromTextField: true,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(DSVVA6Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(DSVVA6Increased(maxValue)),
+          onDecreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(DSVVA6Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        forwardInputAttenuation6TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(DSVVA6Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        forwardInputAttenuation6TextEditingController,
+                  )),
         );
       },
     );
@@ -717,27 +781,45 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardInputEqualizer1}: ${state.dsInSlope1} dB',
+              '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsInSlope1,
           onChanged: (dsInSlope1) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSInSlope1Changed(dsInSlope1.toStringAsFixed(1)));
+            context.read<Setting18CCorNodeControlBloc>().add(DSInSlope1Changed(
+                  dsInSlope1: dsInSlope1.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputEqualizer1TextEditingController,
+                  isFromTextField: false,
+                ));
           },
           textEditingController: forwardInputEqualizer1TextEditingController,
           onTextChanged: (dsInSlope1) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSInSlope1Changed(dsInSlope1));
+            context.read<Setting18CCorNodeControlBloc>().add(DSInSlope1Changed(
+                  dsInSlope1: dsInSlope1,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputEqualizer1TextEditingController,
+                  isFromTextField: true,
+                ));
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(DSInSlope1Decreased(minValue)),
+              .add(DSInSlope1Decreased(
+                minValue: minValue,
+                textEditingController:
+                    forwardInputEqualizer1TextEditingController,
+              )),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(DSInSlope1Increased(maxValue)),
+              .add(DSInSlope1Increased(
+                maxValue: maxValue,
+                textEditingController:
+                    forwardInputEqualizer1TextEditingController,
+              )),
         );
       },
     );
@@ -763,27 +845,45 @@ class _ForwardInputEqualizer3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardInputEqualizer3}: ${state.dsInSlope3} dB',
+              '${AppLocalizations.of(context)!.forwardInputEqualizer3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsInSlope3,
           onChanged: (dsInSlope3) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSInSlope3Changed(dsInSlope3.toStringAsFixed(1)));
+            context.read<Setting18CCorNodeControlBloc>().add(DSInSlope3Changed(
+                  dsInSlope3: dsInSlope3.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputEqualizer3TextEditingController,
+                  isFromTextField: false,
+                ));
           },
           textEditingController: forwardInputEqualizer3TextEditingController,
           onTextChanged: (dsInSlope3) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSInSlope3Changed(dsInSlope3));
+            context.read<Setting18CCorNodeControlBloc>().add(DSInSlope3Changed(
+                  dsInSlope3: dsInSlope3,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputEqualizer3TextEditingController,
+                  isFromTextField: true,
+                ));
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(DSInSlope3Decreased(minValue)),
+              .add(DSInSlope3Decreased(
+                minValue: minValue,
+                textEditingController:
+                    forwardInputEqualizer3TextEditingController,
+              )),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(DSInSlope3Increased(maxValue)),
+              .add(DSInSlope3Increased(
+                maxValue: maxValue,
+                textEditingController:
+                    forwardInputEqualizer3TextEditingController,
+              )),
         );
       },
     );
@@ -809,27 +909,45 @@ class _ForwardInputEqualizer4 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardInputEqualizer4}: ${state.dsInSlope4} dB',
+              '${AppLocalizations.of(context)!.forwardInputEqualizer4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsInSlope4,
           onChanged: (dsInSlope4) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSInSlope4Changed(dsInSlope4.toStringAsFixed(1)));
+            context.read<Setting18CCorNodeControlBloc>().add(DSInSlope4Changed(
+                  dsInSlope4: dsInSlope4.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputEqualizer4TextEditingController,
+                  isFromTextField: false,
+                ));
           },
           textEditingController: forwardInputEqualizer4TextEditingController,
           onTextChanged: (dsInSlope4) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSInSlope4Changed(dsInSlope4));
+            context.read<Setting18CCorNodeControlBloc>().add(DSInSlope4Changed(
+                  dsInSlope4: dsInSlope4,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputEqualizer4TextEditingController,
+                  isFromTextField: true,
+                ));
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(DSInSlope4Decreased(minValue)),
+              .add(DSInSlope4Decreased(
+                minValue: minValue,
+                textEditingController:
+                    forwardInputEqualizer4TextEditingController,
+              )),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(DSInSlope4Increased(maxValue)),
+              .add(DSInSlope4Increased(
+                maxValue: maxValue,
+                textEditingController:
+                    forwardInputEqualizer4TextEditingController,
+              )),
         );
       },
     );
@@ -855,27 +973,45 @@ class _ForwardInputEqualizer6 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardInputEqualizer6}: ${state.dsInSlope6} dB',
+              '${AppLocalizations.of(context)!.forwardInputEqualizer6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsInSlope6,
           onChanged: (dsInSlope6) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSInSlope6Changed(dsInSlope6.toStringAsFixed(1)));
+            context.read<Setting18CCorNodeControlBloc>().add(DSInSlope6Changed(
+                  dsInSlope6: dsInSlope6.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputEqualizer6TextEditingController,
+                  isFromTextField: false,
+                ));
           },
           textEditingController: forwardInputEqualizer6TextEditingController,
           onTextChanged: (dsInSlope6) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(DSInSlope6Changed(dsInSlope6));
+            context.read<Setting18CCorNodeControlBloc>().add(DSInSlope6Changed(
+                  dsInSlope6: dsInSlope6,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      forwardInputEqualizer6TextEditingController,
+                  isFromTextField: true,
+                ));
           },
           onDecreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(DSInSlope6Decreased(minValue)),
+              .add(DSInSlope6Decreased(
+                minValue: minValue,
+                textEditingController:
+                    forwardInputEqualizer6TextEditingController,
+              )),
           onIncreased: () => context
               .read<Setting18CCorNodeControlBloc>()
-              .add(DSInSlope6Increased(maxValue)),
+              .add(DSInSlope6Increased(
+                maxValue: maxValue,
+                textEditingController:
+                    forwardInputEqualizer6TextEditingController,
+              )),
         );
       },
     );
@@ -901,27 +1037,43 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation1}: ${state.usVCA1} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.usVCA1,
           onChanged: (usVCA1) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(USVCA1Changed(usVCA1.toStringAsFixed(1)));
+            context.read<Setting18CCorNodeControlBloc>().add(USVCA1Changed(
+                  usVCA1: usVCA1.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation1TextEditingController,
+                  isFromTextField: false,
+                ));
           },
           textEditingController: returnInputAttenuation1TextEditingController,
           onTextChanged: (usVCA1) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(USVCA1Changed(usVCA1));
+            context.read<Setting18CCorNodeControlBloc>().add(USVCA1Changed(
+                  usVCA1: usVCA1,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation1TextEditingController,
+                  isFromTextField: true,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(USVCA1Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(USVCA1Increased(maxValue)),
+          onDecreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(USVCA1Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        returnInputAttenuation1TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(USVCA1Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        returnInputAttenuation1TextEditingController,
+                  )),
         );
       },
     );
@@ -947,27 +1099,43 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation3}: ${state.usVCA3} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.usVCA3,
           onChanged: (usVCA3) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(USVCA3Changed(usVCA3.toStringAsFixed(1)));
+            context.read<Setting18CCorNodeControlBloc>().add(USVCA3Changed(
+                  usVCA3: usVCA3.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation3TextEditingController,
+                  isFromTextField: false,
+                ));
           },
           textEditingController: returnInputAttenuation3TextEditingController,
           onTextChanged: (usVCA3) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(USVCA3Changed(usVCA3));
+            context.read<Setting18CCorNodeControlBloc>().add(USVCA3Changed(
+                  usVCA3: usVCA3,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation3TextEditingController,
+                  isFromTextField: true,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(USVCA3Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(USVCA3Increased(maxValue)),
+          onDecreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(USVCA3Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        returnInputAttenuation3TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(USVCA3Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        returnInputAttenuation3TextEditingController,
+                  )),
         );
       },
     );
@@ -993,27 +1161,43 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation4}: ${state.usVCA4} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.usVCA4,
           onChanged: (usVCA4) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(USVCA4Changed(usVCA4.toStringAsFixed(1)));
+            context.read<Setting18CCorNodeControlBloc>().add(USVCA4Changed(
+                  usVCA4: usVCA4.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation4TextEditingController,
+                  isFromTextField: false,
+                ));
           },
           textEditingController: returnInputAttenuation4TextEditingController,
           onTextChanged: (usVCA4) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(USVCA4Changed(usVCA4));
+            context.read<Setting18CCorNodeControlBloc>().add(USVCA4Changed(
+                  usVCA4: usVCA4,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation4TextEditingController,
+                  isFromTextField: true,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(USVCA4Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(USVCA4Increased(maxValue)),
+          onDecreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(USVCA4Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        returnInputAttenuation4TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(USVCA4Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        returnInputAttenuation4TextEditingController,
+                  )),
         );
       },
     );
@@ -1039,27 +1223,43 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation6}: ${state.usVCA6} dB',
+              '${AppLocalizations.of(context)!.returnInputAttenuation6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.usVCA6,
           onChanged: (usVCA6) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(USVCA6Changed(usVCA6.toStringAsFixed(1)));
+            context.read<Setting18CCorNodeControlBloc>().add(USVCA6Changed(
+                  usVCA6: usVCA6.toStringAsFixed(1),
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation6TextEditingController,
+                  isFromTextField: false,
+                ));
           },
           textEditingController: returnInputAttenuation6TextEditingController,
           onTextChanged: (usVCA6) {
-            context
-                .read<Setting18CCorNodeControlBloc>()
-                .add(USVCA6Changed(usVCA6));
+            context.read<Setting18CCorNodeControlBloc>().add(USVCA6Changed(
+                  usVCA6: usVCA6,
+                  maxValue: maxValue,
+                  minValue: minValue,
+                  textEditingController:
+                      returnInputAttenuation6TextEditingController,
+                  isFromTextField: true,
+                ));
           },
-          onDecreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(USVCA6Decreased(minValue)),
-          onIncreased: () => context
-              .read<Setting18CCorNodeControlBloc>()
-              .add(USVCA6Increased(maxValue)),
+          onDecreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(USVCA6Decreased(
+                    minValue: minValue,
+                    textEditingController:
+                        returnInputAttenuation6TextEditingController,
+                  )),
+          onIncreased: () =>
+              context.read<Setting18CCorNodeControlBloc>().add(USVCA6Increased(
+                    maxValue: maxValue,
+                    textEditingController:
+                        returnInputAttenuation6TextEditingController,
+                  )),
         );
       },
     );

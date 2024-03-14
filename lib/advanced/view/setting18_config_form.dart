@@ -554,20 +554,20 @@ class _DeviceListView extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(8.0),
-              onLongPress: () {
-                showSetAsDefaultDialog(configName: config.name).then((result) {
-                  if (result != null) {
-                    if (result) {
-                      context
-                          .read<Setting18ConfigBloc>()
-                          .add(DefaultConfigChanged(
-                            groupId: groupId,
-                            id: config.id,
-                          ));
-                    }
-                  }
-                });
-              },
+              // onLongPress: () {
+              //   showSetAsDefaultDialog(configName: config.name).then((result) {
+              //     if (result != null) {
+              //       if (result) {
+              //         context
+              //             .read<Setting18ConfigBloc>()
+              //             .add(DefaultConfigChanged(
+              //               groupId: groupId,
+              //               id: config.id,
+              //             ));
+              //       }
+              //     }
+              //   });
+              // },
 
               // config.isDefault == '0'
               //     ? () {
@@ -590,7 +590,6 @@ class _DeviceListView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    flex: 3,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 26.0,
@@ -604,8 +603,8 @@ class _DeviceListView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
+                  SizedBox(
+                    width: 136,
                     child: Padding(
                       padding: const EdgeInsets.only(
                         right: 12,

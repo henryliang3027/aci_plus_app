@@ -135,8 +135,11 @@ Widget controlParameterSlider({
                     maxLength: 40,
                     keyboardType: TextInputType.number,
                     inputFormatters: [
+                      // ^：表示從起始開始匹配第一個符合的數字
+                      // \d{1,2}：\d 表示匹配任何一個數字。{1,2} 表示前面的數字字符必須出現 1 次或 2 次
+                      // (\.\d?)?：匹配一個小數點後跟著 0 到 1 位數字
                       FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d{0,2}(\.\d{0,1})?'))
+                          RegExp(r'^\d{1,2}(\.\d?)?'))
                     ],
                     decoration: const InputDecoration(
                       // label: Text(
