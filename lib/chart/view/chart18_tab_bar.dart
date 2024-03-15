@@ -74,8 +74,6 @@ class Chart18TabBar extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 controller: tabController,
                 children: [
-                  // Icon(Icons.abc),
-                  // Icon(Icons.ac_unit_rounded),
                   DataLogChartPage(
                     pageController: pageController,
                   ),
