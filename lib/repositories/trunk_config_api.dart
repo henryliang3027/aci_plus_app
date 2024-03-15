@@ -18,7 +18,7 @@ class TrunkConfigApi {
     required String firstChannelLoadingLevel,
     required String lastChannelLoadingFrequency,
     required String lastChannelLoadingLevel,
-    required String isDefault,
+    // required String isDefault,
   }) async {
     TrunkConfig newConfig = TrunkConfig(
       id: id,
@@ -28,72 +28,72 @@ class TrunkConfigApi {
       firstChannelLoadingLevel: firstChannelLoadingLevel,
       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       lastChannelLoadingLevel: lastChannelLoadingLevel,
-      isDefault: isDefault,
+      // isDefault: isDefault,
     );
     await _trunkConfigBox.put(id, newConfig);
   }
 
-  Future<void> setDefaultConfigById({
-    required int id,
-  }) async {
-    List<TrunkConfig> configs = getAllConfigs();
+  // Future<void> setDefaultConfigById({
+  //   required int id,
+  // }) async {
+  //   List<TrunkConfig> configs = getAllConfigs();
 
-    TrunkConfig? defaultConfig;
+  //   TrunkConfig? defaultConfig;
 
-    for (TrunkConfig config in configs) {
-      if (config.isDefault == '1') {
-        defaultConfig = config;
-      }
-    }
+  //   for (TrunkConfig config in configs) {
+  //     if (config.isDefault == '1') {
+  //       defaultConfig = config;
+  //     }
+  //   }
 
-    // 如果已經有預設的 config, 則先將該 config 改為非預設
-    if (defaultConfig != null) {
-      TrunkConfig canceledDefaultConfig = TrunkConfig(
-        id: defaultConfig.id,
-        name: defaultConfig.name,
-        splitOption: defaultConfig.splitOption,
-        firstChannelLoadingFrequency:
-            defaultConfig.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: defaultConfig.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: defaultConfig.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: defaultConfig.lastChannelLoadingLevel,
-        isDefault: '0',
-      );
+  //   // 如果已經有預設的 config, 則先將該 config 改為非預設
+  //   if (defaultConfig != null) {
+  //     TrunkConfig canceledDefaultConfig = TrunkConfig(
+  //       id: defaultConfig.id,
+  //       name: defaultConfig.name,
+  //       splitOption: defaultConfig.splitOption,
+  //       firstChannelLoadingFrequency:
+  //           defaultConfig.firstChannelLoadingFrequency,
+  //       firstChannelLoadingLevel: defaultConfig.firstChannelLoadingLevel,
+  //       lastChannelLoadingFrequency: defaultConfig.lastChannelLoadingFrequency,
+  //       lastChannelLoadingLevel: defaultConfig.lastChannelLoadingLevel,
+  //       isDefault: '0',
+  //     );
 
-      await _trunkConfigBox.put(defaultConfig.id, canceledDefaultConfig);
-    }
+  //     await _trunkConfigBox.put(defaultConfig.id, canceledDefaultConfig);
+  //   }
 
-    List<dynamic> result = getConfigById(id);
+  //   List<dynamic> result = getConfigById(id);
 
-    if (result[0]) {
-      TrunkConfig targetConfig = result[1];
+  //   if (result[0]) {
+  //     TrunkConfig targetConfig = result[1];
 
-      TrunkConfig newDefaultConfig = TrunkConfig(
-        id: targetConfig.id,
-        name: targetConfig.name,
-        splitOption: targetConfig.splitOption,
-        firstChannelLoadingFrequency: targetConfig.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: targetConfig.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: targetConfig.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: targetConfig.lastChannelLoadingLevel,
-        isDefault: '1',
-      );
+  //     TrunkConfig newDefaultConfig = TrunkConfig(
+  //       id: targetConfig.id,
+  //       name: targetConfig.name,
+  //       splitOption: targetConfig.splitOption,
+  //       firstChannelLoadingFrequency: targetConfig.firstChannelLoadingFrequency,
+  //       firstChannelLoadingLevel: targetConfig.firstChannelLoadingLevel,
+  //       lastChannelLoadingFrequency: targetConfig.lastChannelLoadingFrequency,
+  //       lastChannelLoadingLevel: targetConfig.lastChannelLoadingLevel,
+  //       isDefault: '1',
+  //     );
 
-      await _trunkConfigBox.put(targetConfig.id, newDefaultConfig);
-    }
-  }
+  //     await _trunkConfigBox.put(targetConfig.id, newDefaultConfig);
+  //   }
+  // }
 
-  List<dynamic> getDefaultConfig() {
-    List<TrunkConfig> configs = getAllConfigs();
+  // List<dynamic> getDefaultConfig() {
+  //   List<TrunkConfig> configs = getAllConfigs();
 
-    for (TrunkConfig config in configs) {
-      if (config.isDefault == '1') {
-        return [true, config];
-      }
-    }
+  //   for (TrunkConfig config in configs) {
+  //     if (config.isDefault == '1') {
+  //       return [true, config];
+  //     }
+  //   }
 
-    return [false, 'default config does not exist'];
-  }
+  //   return [false, 'default config does not exist'];
+  // }
 
   /// 藉由 config id 取得 config 參數
   List<dynamic> getConfigById(

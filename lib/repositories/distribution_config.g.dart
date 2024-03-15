@@ -27,14 +27,13 @@ class DistributionConfigAdapter extends TypeAdapter<DistributionConfig> {
       lastChannelLoadingFrequency:
           fields[5] == null ? '1794' : fields[5] as String,
       lastChannelLoadingLevel: fields[6] == null ? '51.1' : fields[6] as String,
-      isDefault: fields[7] == null ? '0' : fields[7] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, DistributionConfig obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -48,9 +47,7 @@ class DistributionConfigAdapter extends TypeAdapter<DistributionConfig> {
       ..writeByte(5)
       ..write(obj.lastChannelLoadingFrequency)
       ..writeByte(6)
-      ..write(obj.lastChannelLoadingLevel)
-      ..writeByte(7)
-      ..write(obj.isDefault);
+      ..write(obj.lastChannelLoadingLevel);
   }
 
   @override
@@ -77,7 +74,6 @@ DistributionConfig _$DistributionConfigFromJson(Map<String, dynamic> json) =>
       firstChannelLoadingLevel: json['4'] as String,
       lastChannelLoadingFrequency: json['5'] as String,
       lastChannelLoadingLevel: json['6'] as String,
-      isDefault: json['7'] as String,
     );
 
 Map<String, dynamic> _$DistributionConfigToJson(DistributionConfig instance) =>
@@ -89,5 +85,4 @@ Map<String, dynamic> _$DistributionConfigToJson(DistributionConfig instance) =>
       '4': instance.firstChannelLoadingLevel,
       '5': instance.lastChannelLoadingFrequency,
       '6': instance.lastChannelLoadingLevel,
-      '7': instance.isDefault,
     };

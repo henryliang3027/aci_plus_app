@@ -16,7 +16,7 @@ class TrunkConfig extends Config {
     required super.firstChannelLoadingLevel,
     required super.lastChannelLoadingFrequency,
     required super.lastChannelLoadingLevel,
-    required super.isDefault,
+    // required super.isDefault,
   });
 
   factory TrunkConfig.fromJson(Map<String, dynamic> json) =>

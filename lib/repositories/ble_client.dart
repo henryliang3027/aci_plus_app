@@ -346,7 +346,7 @@ class BLEClient {
   Future<void> closeScanStream() async {
     print('closeScanStream');
 
-    if (_scanReportStreamController.isClosed) {
+    if (!_scanReportStreamController.isClosed) {
       await _scanReportStreamController.close();
     }
 

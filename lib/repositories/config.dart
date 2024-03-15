@@ -10,7 +10,7 @@ class Config {
     required this.firstChannelLoadingLevel,
     required this.lastChannelLoadingFrequency,
     required this.lastChannelLoadingLevel,
-    required this.isDefault,
+    // required this.isDefault,
   });
 
   @JsonKey(name: '0')
@@ -41,7 +41,7 @@ class Config {
   @HiveField(6, defaultValue: '51.1')
   final String lastChannelLoadingLevel;
 
-  @JsonKey(name: '7')
-  @HiveField(7, defaultValue: '0')
-  final String isDefault;
+  // @JsonKey(name: '7')
+  // @HiveField(7, defaultValue: '0')
+  // final String isDefault;
 }

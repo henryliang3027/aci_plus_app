@@ -19,7 +19,7 @@ class Setting18ConfigBloc
         super(const Setting18ConfigState()) {
     on<ConfigsRequested>(_onConfigsRequested);
     on<ConfigDeleted>(_onConfigDeleted);
-    on<DefaultConfigChanged>(_onDefaultConfigChanged);
+    // on<DefaultConfigChanged>(_onDefaultConfigChanged);
     on<QRDataGenerated>(_onQRDataGenerated);
     on<QRDataScanned>(_onQRDataScanned);
 
@@ -76,26 +76,26 @@ class Setting18ConfigBloc
     ));
   }
 
-  Future<void> _onDefaultConfigChanged(
-    DefaultConfigChanged event,
-    Emitter<Setting18ConfigState> emit,
-  ) async {
-    await _configRepository.setDefaultConfigById(
-      groupId: event.groupId,
-      id: event.id,
-    );
+  // Future<void> _onDefaultConfigChanged(
+  //   DefaultConfigChanged event,
+  //   Emitter<Setting18ConfigState> emit,
+  // ) async {
+  //   await _configRepository.setDefaultConfigById(
+  //     groupId: event.groupId,
+  //     id: event.id,
+  //   );
 
-    List<TrunkConfig> trunkConfigs = _configRepository.getAllTrunkConfigs();
-    List<DistributionConfig> distributionConfigs =
-        _configRepository.getAllDistributionConfigs();
+  //   List<TrunkConfig> trunkConfigs = _configRepository.getAllTrunkConfigs();
+  //   List<DistributionConfig> distributionConfigs =
+  //       _configRepository.getAllDistributionConfigs();
 
-    emit(state.copyWith(
-      encodeStaus: FormStatus.none,
-      decodeStatus: FormStatus.none,
-      trunkConfigs: trunkConfigs,
-      distributionConfigs: distributionConfigs,
-    ));
-  }
+  //   emit(state.copyWith(
+  //     encodeStaus: FormStatus.none,
+  //     decodeStatus: FormStatus.none,
+  //     trunkConfigs: trunkConfigs,
+  //     distributionConfigs: distributionConfigs,
+  //   ));
+  // }
 
   void _onQRDataGenerated(
     QRDataGenerated event,

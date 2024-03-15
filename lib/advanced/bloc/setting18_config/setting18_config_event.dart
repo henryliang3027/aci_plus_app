@@ -30,21 +30,21 @@ class ConfigDeleted extends Setting18ConfigEvent {
       ];
 }
 
-class DefaultConfigChanged extends Setting18ConfigEvent {
-  const DefaultConfigChanged({
-    required this.groupId,
-    required this.id,
-  });
+// class DefaultConfigChanged extends Setting18ConfigEvent {
+//   const DefaultConfigChanged({
+//     required this.groupId,
+//     required this.id,
+//   });
 
-  final String groupId;
-  final int id;
+//   final String groupId;
+//   final int id;
 
-  @override
-  List<Object> get props => [
-        groupId,
-        id,
-      ];
-}
+//   @override
+//   List<Object> get props => [
+//         groupId,
+//         id,
+//       ];
+// }
 
 class QRDataGenerated extends Setting18ConfigEvent {
   const QRDataGenerated();

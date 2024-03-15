@@ -345,7 +345,7 @@ class Setting18ConfigEditBloc
       firstChannelLoadingLevel: state.firstChannelLoadingLevel.value,
       lastChannelLoadingFrequency: state.lastChannelLoadingFrequency.value,
       lastChannelLoadingLevel: state.lastChannelLoadingLevel.value,
-      isDefault: '0',
+      // isDefault: '0',
     );
 
     emit(state.copyWith(
@@ -373,7 +373,7 @@ class Setting18ConfigEditBloc
       firstChannelLoadingLevel: state.firstChannelLoadingLevel.value,
       lastChannelLoadingFrequency: state.lastChannelLoadingFrequency.value,
       lastChannelLoadingLevel: state.lastChannelLoadingLevel.value,
-      isDefault: _config!.isDefault,
+      // isDefault: _config!.isDefault,
     );
 
     emit(state.copyWith(

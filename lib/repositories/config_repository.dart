@@ -59,7 +59,7 @@ class ConfigRepository {
     required String firstChannelLoadingLevel,
     required String lastChannelLoadingFrequency,
     required String lastChannelLoadingLevel,
-    required String isDefault,
+    // required String isDefault,
   }) async {
     if (groupId == '0') {
       int? firstEmptyId = getEmptyNameId(groupId: groupId);
@@ -73,7 +73,7 @@ class ConfigRepository {
           firstChannelLoadingLevel: firstChannelLoadingLevel,
           lastChannelLoadingFrequency: lastChannelLoadingFrequency,
           lastChannelLoadingLevel: lastChannelLoadingLevel,
-          isDefault: isDefault,
+          // isDefault: isDefault,
         );
         _trunkConfigNames[firstEmptyId] = name;
       }
@@ -89,7 +89,7 @@ class ConfigRepository {
           firstChannelLoadingLevel: firstChannelLoadingLevel,
           lastChannelLoadingFrequency: lastChannelLoadingFrequency,
           lastChannelLoadingLevel: lastChannelLoadingLevel,
-          isDefault: isDefault,
+          // isDefault: isDefault,
         );
         _distributionConfigNames[firstEmptyId] = name;
       }
@@ -105,7 +105,7 @@ class ConfigRepository {
     required String firstChannelLoadingLevel,
     required String lastChannelLoadingFrequency,
     required String lastChannelLoadingLevel,
-    required String isDefault,
+    // required String isDefault,
   }) async {
     if (groupId == '0') {
       await _trunkConfigApi.putConfig(
@@ -116,7 +116,7 @@ class ConfigRepository {
         firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
         lastChannelLoadingLevel: lastChannelLoadingLevel,
-        isDefault: isDefault,
+        // isDefault: isDefault,
       );
       _trunkConfigNames[id] = name;
     } else {
@@ -128,7 +128,7 @@ class ConfigRepository {
         firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
         lastChannelLoadingLevel: lastChannelLoadingLevel,
-        isDefault: isDefault,
+        // isDefault: isDefault,
       );
       _distributionConfigNames[id] = name;
     }
@@ -155,7 +155,7 @@ class ConfigRepository {
         firstChannelLoadingLevel: trunkConfig.firstChannelLoadingLevel,
         lastChannelLoadingFrequency: trunkConfig.lastChannelLoadingFrequency,
         lastChannelLoadingLevel: trunkConfig.lastChannelLoadingLevel,
-        isDefault: trunkConfig.isDefault,
+        // isDefault: trunkConfig.isDefault,
       );
       _trunkConfigNames[trunkConfig.id] = trunkConfig.name;
     }
@@ -171,32 +171,32 @@ class ConfigRepository {
         lastChannelLoadingFrequency:
             distributionConfig.lastChannelLoadingFrequency,
         lastChannelLoadingLevel: distributionConfig.lastChannelLoadingLevel,
-        isDefault: distributionConfig.isDefault,
+        // isDefault: distributionConfig.isDefault,
       );
       _distributionConfigNames[distributionConfig.id] = distributionConfig.name;
     }
   }
 
-  Future<void> setDefaultConfigById({
-    required String groupId,
-    required int id,
-  }) async {
-    if (groupId == '0') {
-      await _trunkConfigApi.setDefaultConfigById(id: id);
-    } else {
-      await _distributionConfigApi.setDefaultConfigById(id: id);
-    }
-  }
+  // Future<void> setDefaultConfigById({
+  //   required String groupId,
+  //   required int id,
+  // }) async {
+  //   if (groupId == '0') {
+  //     await _trunkConfigApi.setDefaultConfigById(id: id);
+  //   } else {
+  //     await _distributionConfigApi.setDefaultConfigById(id: id);
+  //   }
+  // }
 
-  List<dynamic> getDefaultConfigByGroupId(
-    String groupId,
-  ) {
-    if (groupId == '0') {
-      return _trunkConfigApi.getDefaultConfig();
-    } else {
-      return _distributionConfigApi.getDefaultConfig();
-    }
-  }
+  // List<dynamic> getDefaultConfigByGroupId(
+  //   String groupId,
+  // ) {
+  //   if (groupId == '0') {
+  //     return _trunkConfigApi.getDefaultConfig();
+  //   } else {
+  //     return _distributionConfigApi.getDefaultConfig();
+  //   }
+  // }
 
   List<Config> getConfigsByGroupId(
     String groupId,
@@ -223,17 +223,17 @@ class ConfigRepository {
   List<TrunkConfig> getAllTrunkConfigs() {
     List<TrunkConfig> trunkConfigs = _trunkConfigApi.getAllConfigs();
 
-    print('db trunkConfig:');
-    for (TrunkConfig trunkConfig in trunkConfigs) {
-      print('${trunkConfig.id} : ${trunkConfig.name}');
-      _trunkConfigNames[trunkConfig.id] = trunkConfig.name;
-    }
-    print('=============');
-    print(' _trunkConfigNames:');
-    for (MapEntry entry in _trunkConfigNames.entries) {
-      print('${entry.key} : ${entry.value}');
-    }
-    print('=============');
+    // print('db trunkConfig:');
+    // for (TrunkConfig trunkConfig in trunkConfigs) {
+    //   print('${trunkConfig.id} : ${trunkConfig.name}');
+    //   _trunkConfigNames[trunkConfig.id] = trunkConfig.name;
+    // }
+    // print('=============');
+    // print(' _trunkConfigNames:');
+    // for (MapEntry entry in _trunkConfigNames.entries) {
+    //   print('${entry.key} : ${entry.value}');
+    // }
+    // print('=============');
 
     return trunkConfigs;
   }
@@ -242,17 +242,17 @@ class ConfigRepository {
     List<DistributionConfig> distributionConfigs =
         _distributionConfigApi.getAllConfigs();
 
-    print('db distributionConfig:');
-    for (DistributionConfig distributionConfig in distributionConfigs) {
-      print('${distributionConfig.id} : ${distributionConfig.name}');
-      _distributionConfigNames[distributionConfig.id] = distributionConfig.name;
-    }
-    print('=============');
-    print(' _distributionConfigNames:');
-    for (MapEntry entry in _distributionConfigNames.entries) {
-      print('${entry.key} : ${entry.value}');
-    }
-    print('=============');
+    // print('db distributionConfig:');
+    // for (DistributionConfig distributionConfig in distributionConfigs) {
+    //   print('${distributionConfig.id} : ${distributionConfig.name}');
+    //   _distributionConfigNames[distributionConfig.id] = distributionConfig.name;
+    // }
+    // print('=============');
+    // print(' _distributionConfigNames:');
+    // for (MapEntry entry in _distributionConfigNames.entries) {
+    //   print('${entry.key} : ${entry.value}');
+    // }
+    // print('=============');
 
     return distributionConfigs;
   }
