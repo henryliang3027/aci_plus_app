@@ -320,6 +320,7 @@
     "dialogMessageExecute": "Ejecutar",
     "dialogMessagePilotSearchFailed": "Piloto no encontrado. Por favor, ingrese el código correcto.",
     "dialogMessageDataExportSuccessful": "Exportación exitosa.",
+    "dialogMessageFileOpenFailed": "No se encontró ninguna aplicación para abrir este archivo.",
     "dialogMessageNoMoreLogs": "No hay más registros.",
     "dialogMessageEnterConfirm": "Para confirmar, escriba \"confirm\" abajo.",
     "dialogMessageCodeHint": "Por favor ingresa tu código",

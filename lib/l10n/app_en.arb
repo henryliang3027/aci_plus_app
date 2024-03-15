@@ -320,6 +320,7 @@
     "dialogMessageExecute": "Execute",
     "dialogMessagePilotSearchFailed": "Pilot not found, Please type correct code.",
     "dialogMessageDataExportSuccessful": "Data export successful.",
+    "dialogMessageFileOpenFailed": "No app found to open this file.",
     "dialogMessageNoMoreLogs": "No more logs.",
     "dialogMessageEnterConfirm": "To confirm, type \"confirm\" below.",
     "dialogMessageCodeHint": "Please enter your code",

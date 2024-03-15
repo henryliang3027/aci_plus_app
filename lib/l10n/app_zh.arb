@@ -319,6 +319,7 @@
     "dialogMessageExecute": "執行",
     "dialogMessagePilotSearchFailed": "找不到此導航頻率，請輸入正確的代碼",
     "dialogMessageDataExportSuccessful": "資料匯出成功",
+    "dialogMessageFileOpenFailed": "找不到可用來開啟此檔案的應用程式",
     "dialogMessageNoMoreLogs": "無法載入更多紀錄。",
     "dialogMessageEnterConfirm": "請在下面的方塊中輸入 \"confirm\" 來確認您要進行設定",
     "dialogMessageCodeHint": "請輸入您的代碼",

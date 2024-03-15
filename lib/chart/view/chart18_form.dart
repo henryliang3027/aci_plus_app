@@ -96,12 +96,16 @@ class _Chart18FormState extends State<Chart18Form>
                 action: SnackBarAction(
                   label: AppLocalizations.of(context)!.open,
                   onPressed: () async {
-                    OpenResult result = await OpenFilex.open(
+                    OpenFilex.open(
                       state.dataExportPath,
                       type: 'application/vnd.ms-excel',
                       uti: 'com.microsoft.excel.xls',
-                    );
-                    print(result.message);
+                    ).then((OpenResult result) {
+                      if (result.type == ResultType.noAppToOpen) {
+                        showFailureDialog(AppLocalizations.of(context)!
+                            .dialogMessageFileOpenFailed);
+                      }
+                    });
                   },
                 ),
               ),
@@ -138,12 +142,16 @@ class _Chart18FormState extends State<Chart18Form>
                 action: SnackBarAction(
                   label: AppLocalizations.of(context)!.open,
                   onPressed: () async {
-                    OpenResult result = await OpenFilex.open(
+                    OpenFilex.open(
                       state.dataExportPath,
                       type: 'application/vnd.ms-excel',
                       uti: 'com.microsoft.excel.xls',
-                    );
-                    print(result.message);
+                    ).then((OpenResult result) {
+                      if (result.type == ResultType.noAppToOpen) {
+                        showFailureDialog(AppLocalizations.of(context)!
+                            .dialogMessageFileOpenFailed);
+                      }
+                    });
                   },
                 ),
               ),
@@ -163,12 +171,16 @@ class _Chart18FormState extends State<Chart18Form>
                 action: SnackBarAction(
                   label: AppLocalizations.of(context)!.open,
                   onPressed: () async {
-                    OpenResult result = await OpenFilex.open(
+                    OpenFilex.open(
                       state.dataExportPath,
                       type: 'application/vnd.ms-excel',
                       uti: 'com.microsoft.excel.xls',
-                    );
-                    print(result.message);
+                    ).then((OpenResult result) {
+                      if (result.type == ResultType.noAppToOpen) {
+                        showFailureDialog(AppLocalizations.of(context)!
+                            .dialogMessageFileOpenFailed);
+                      }
+                    });
                   },
                 ),
               ),
