@@ -588,6 +588,9 @@ class _VoltageRippleAlarmControl extends StatelessWidget {
                             .add(MaxVoltageRippleChanged(maxVoltageRipple));
                       },
                       maxLength: 40,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       decoration: InputDecoration(
                         label: Text(
                             AppLocalizations.of(context)!.maxVoltageRipple),

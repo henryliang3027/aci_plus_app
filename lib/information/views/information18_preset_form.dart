@@ -134,7 +134,9 @@ class _Information18PresetFormState extends State<Information18PresetForm> {
           showResultDialog(
             context: context,
             messageRows: rows,
-          );
+          ).then((_) {
+            Navigator.of(context).pop();
+          });
         }
 
         if (state.isInitialize) {
@@ -163,10 +165,13 @@ class _Information18PresetFormState extends State<Information18PresetForm> {
           child: Column(
             children: [
               _SplitOption(),
+              _PilotFrequencyMode(),
               _StartFrequency(),
               _StartLevel(),
               _StopFrequency(),
               _StopLevel(),
+              _FwdAGCMode(),
+              _AutoLevelControl(),
               SizedBox(
                 height: 200.0,
               ),
@@ -405,6 +410,7 @@ Widget buildCard({
   required BuildContext context,
   required String title,
   required String content,
+  double contentFontSize = CustomStyle.size4XL,
 }) {
   return Card(
     surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
@@ -432,8 +438,8 @@ Widget buildCard({
           ),
           Text(
             content,
-            style: const TextStyle(
-              fontSize: CustomStyle.size4XL,
+            style: TextStyle(
+              fontSize: contentFontSize,
               fontWeight: FontWeight.normal,
             ),
           ),
@@ -457,6 +463,27 @@ class _SplitOption extends StatelessWidget {
           title: AppLocalizations.of(context)!.splitOption,
           content:
               '${splitBaseLine[state.config.splitOption]!.$1}/${splitBaseLine[state.config.splitOption]!.$2} ${CustomStyle.mHz}',
+        );
+      },
+    );
+  }
+}
+
+class _PilotFrequencyMode extends StatelessWidget {
+  const _PilotFrequencyMode({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Information18PresetBloc, Information18PresetState>(
+      builder: (context, state) {
+        return buildCard(
+          context: context,
+          title: AppLocalizations.of(context)!.pilotFrequencySelect,
+          content:
+              AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
+          contentFontSize: CustomStyle.size36,
         );
       },
     );
@@ -537,6 +564,44 @@ class _StopLevel extends StatelessWidget {
           title:
               '${AppLocalizations.of(context)!.stopLevel} (${CustomStyle.dBmV})',
           content: state.config.lastChannelLoadingLevel,
+        );
+      },
+    );
+  }
+}
+
+class _FwdAGCMode extends StatelessWidget {
+  const _FwdAGCMode({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Information18PresetBloc, Information18PresetState>(
+      builder: (context, state) {
+        return buildCard(
+          context: context,
+          title: AppLocalizations.of(context)!.agcMode,
+          content: AppLocalizations.of(context)!.on,
+        );
+      },
+    );
+  }
+}
+
+class _AutoLevelControl extends StatelessWidget {
+  const _AutoLevelControl({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Information18PresetBloc, Information18PresetState>(
+      builder: (context, state) {
+        return buildCard(
+          context: context,
+          title: AppLocalizations.of(context)!.alcMode,
+          content: AppLocalizations.of(context)!.on,
         );
       },
     );

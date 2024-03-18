@@ -133,7 +133,9 @@ Widget controlParameterSlider({
                     textInputAction: TextInputAction.done,
                     onChanged: onTextChanged,
                     maxLength: 40,
-                    keyboardType: TextInputType.number,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     inputFormatters: [
                       // ^：表示從起始開始匹配第一個符合的數字
                       // \d{1,2}：\d 表示匹配任何一個數字。{1,2} 表示前面的數字字符必須出現 1 次或 2 次
@@ -304,6 +306,9 @@ Widget twoTextField({
                 style: const TextStyle(
                   fontSize: CustomStyle.sizeXL,
                 ),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 enabled: editMode1,
                 readOnly: reaOnly1,
                 textInputAction: TextInputAction.done,
@@ -335,6 +340,9 @@ Widget twoTextField({
                 key: Key(textEditingControllerName2),
                 style: const TextStyle(
                   fontSize: CustomStyle.sizeXL,
+                ),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
                 ),
                 enabled: editMode2,
                 readOnly: reaOnly2,
@@ -619,6 +627,9 @@ Widget thresholdAlarmParameterWidget({
                 style: const TextStyle(
                   fontSize: CustomStyle.sizeXL,
                 ),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 enabled: editMode,
                 textInputAction: TextInputAction.done,
                 onChanged: onChangedMinValue,
@@ -648,6 +659,9 @@ Widget thresholdAlarmParameterWidget({
                 key: Key(maxValueTextEditingControllerName),
                 style: const TextStyle(
                   fontSize: CustomStyle.sizeXL,
+                ),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
                 ),
                 enabled: editMode,
                 textInputAction: TextInputAction.done,

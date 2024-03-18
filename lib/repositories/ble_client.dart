@@ -304,11 +304,12 @@ class BLEClient {
 
           break;
         case DeviceConnectionState.disconnecting:
-        // _connectionReportStreamController.add(const ConnectionReport(
-        //   connectionState: DeviceConnectionState.disconnected,
-        //   errorMessage: 'disconnecting',
-        // ));
-        // break;
+          // _connectionReportStreamController.add(const ConnectionReport(
+          //   connectionState: DeviceConnectionState.disconnected,
+          //   errorMessage: 'disconnecting',
+          // ));
+          // break;
+          break;
         case DeviceConnectionState.disconnected:
           // cancelConnectionTimer();
           // cancelCharacteristicDataTimer(name: 'connection closed');
@@ -319,15 +320,15 @@ class BLEClient {
             errorMessage: 'Device connection failed',
           ));
 
-          await closeConnectionStream();
+          // await closeConnectionStream();
           break;
         default:
           break;
       }
     }, onError: (error) {
-      cancelConnectionTimer();
-      cancelCharacteristicDataTimer(name: 'connection closed');
-      cancelCompleterOnDisconnected();
+      // cancelConnectionTimer();
+      // cancelCharacteristicDataTimer(name: 'connection closed');
+      // cancelCompleterOnDisconnected();
       _connectionReportStreamController.add(ConnectionReport(
         connectionState: DeviceConnectionState.disconnected,
         errorMessage: error.toString(),
