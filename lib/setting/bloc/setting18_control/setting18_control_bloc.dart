@@ -129,8 +129,7 @@ class Setting18ControlBloc
     required double maxValue,
   }) {
     double doubleValue = double.parse(value);
-    doubleValue =
-        doubleValue + 0.5 <= maxValue ? doubleValue + 0.5 : doubleValue;
+    doubleValue = doubleValue + 0.5 <= maxValue ? doubleValue + 0.5 : maxValue;
     String strValue = doubleValue.toStringAsFixed(1);
 
     return strValue;
@@ -141,8 +140,7 @@ class Setting18ControlBloc
     required double minValue,
   }) {
     double doubleValue = double.parse(value);
-    doubleValue =
-        doubleValue - 0.5 >= minValue ? doubleValue - 0.5 : doubleValue;
+    doubleValue = doubleValue - 0.5 >= minValue ? doubleValue - 0.5 : minValue;
     String strValue = doubleValue.toStringAsFixed(1);
 
     return strValue;

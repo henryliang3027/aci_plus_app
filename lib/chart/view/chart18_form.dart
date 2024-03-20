@@ -300,7 +300,7 @@ Future<String?> showEnterCodeDialog({
 }
 
 class _PopupMenu extends StatelessWidget {
-  _PopupMenu({
+  const _PopupMenu({
     Key? key,
     required this.tabController,
   }) : super(key: key);
