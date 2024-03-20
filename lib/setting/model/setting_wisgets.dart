@@ -627,9 +627,6 @@ Widget thresholdAlarmParameterWidget({
                 style: const TextStyle(
                   fontSize: CustomStyle.sizeXL,
                 ),
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
                 enabled: editMode,
                 textInputAction: TextInputAction.done,
                 onChanged: onChangedMinValue,
@@ -659,9 +656,6 @@ Widget thresholdAlarmParameterWidget({
                 key: Key(maxValueTextEditingControllerName),
                 style: const TextStyle(
                   fontSize: CustomStyle.sizeXL,
-                ),
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
                 ),
                 enabled: editMode,
                 textInputAction: TextInputAction.done,
