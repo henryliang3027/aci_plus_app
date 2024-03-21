@@ -629,6 +629,10 @@ Widget thresholdAlarmParameterWidget({
                 ),
                 enabled: editMode,
                 textInputAction: TextInputAction.done,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                  signed: true,
+                ),
                 onChanged: onChangedMinValue,
                 maxLength: 40,
                 decoration: InputDecoration(
@@ -659,6 +663,10 @@ Widget thresholdAlarmParameterWidget({
                 ),
                 enabled: editMode,
                 textInputAction: TextInputAction.done,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                  signed: true,
+                ),
                 onChanged: onChangedMaxValue,
                 maxLength: 40,
                 decoration: InputDecoration(

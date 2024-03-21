@@ -582,6 +582,10 @@ class _VoltageRippleAlarmControl extends StatelessWidget {
                       ),
                       enabled: state.editMode,
                       textInputAction: TextInputAction.done,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                        signed: true,
+                      ),
                       onChanged: (maxVoltageRipple) {
                         context
                             .read<Setting18ThresholdBloc>()
