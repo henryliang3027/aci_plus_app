@@ -173,12 +173,19 @@ class _QRViewExampleState extends State<QRCodeScanner> {
     );
   }
 
+  void printWrapped(String text) {
+    final pattern = new RegExp('.{1,800}'); // 800 is the size of each chunk
+    pattern.allMatches(text).forEach((match) => print(match.group(0)));
+  }
+
   void _onQRViewCreated(QRViewController controller) {
     setState(() {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      print('${scanData.code}');
+      // print('${scanData.code}');
+
+      printWrapped('${scanData.code}');
 
       if (scanData.code != null) {
         if (configJsonRegex.hasMatch(scanData.code!)) {

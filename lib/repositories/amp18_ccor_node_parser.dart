@@ -236,14 +236,14 @@ class Amp18CCorNodeParser {
         (rawMinRFOutputPower3ByteData.getInt16(0, Endian.little) / 10)
             .toStringAsFixed(1);
 
-    // 解析 fowwardVVA1
+    // 解析 forwardVVA1
     List<int> rawDSVVA1 = rawData.sublist(33, 35);
     ByteData rawDSVVA1ByteData =
         ByteData.sublistView(Uint8List.fromList(rawDSVVA1));
     dsVVA1 =
         (rawDSVVA1ByteData.getInt16(0, Endian.little) / 10).toStringAsFixed(1);
 
-    // 解析 fowwardInSlope1
+    // 解析 forwardInSlope1
     List<int> rawDSInSlope1 = rawData.sublist(35, 37);
     ByteData rawDSInSlope1ByteData =
         ByteData.sublistView(Uint8List.fromList(rawDSInSlope1));

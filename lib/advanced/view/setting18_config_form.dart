@@ -188,7 +188,7 @@ class _Content extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _Version(),
-                // _QRToolbar(),
+                _QRToolbar(),
                 _DeviceListView(),
               ],
             ),
