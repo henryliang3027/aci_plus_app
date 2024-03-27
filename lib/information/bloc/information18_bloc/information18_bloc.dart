@@ -4,6 +4,7 @@ import 'package:aci_plus_app/repositories/config.dart';
 import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 part 'information18_event.dart';
 part 'information18_state.dart';
@@ -16,15 +17,29 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
         _configRepository = configRepository,
         super(const Information18State()) {
     on<ConfigLoaded>(_onConfigLoaded);
-    // on<DiagramLoaded>(_onDiagramLoaded);
+    on<AppVersionRequested>(_onAppVersionRequested);
     on<AlarmUpdated>(_onAlarmUpdated);
     on<AlarmPeriodicUpdateRequested>(_onAlarmPeriodicUpdateRequested);
     on<AlarmPeriodicUpdateCanceled>(_onAlarmPeriodicUpdateCanceled);
+
+    add(const AppVersionRequested());
   }
 
   Timer? _timer;
   final Amp18Repository _amp18Repository;
   final ConfigRepository _configRepository;
+
+  Future<void> _onAppVersionRequested(
+    AppVersionRequested event,
+    Emitter<Information18State> emit,
+  ) async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String appVersion = 'V ${packageInfo.version}';
+
+    emit(state.copyWith(
+      appVersion: appVersion,
+    ));
+  }
 
   Future<void> _onConfigLoaded(
     ConfigLoaded event,

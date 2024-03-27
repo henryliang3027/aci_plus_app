@@ -7,6 +7,13 @@ abstract class Information18CCorNodeEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class AppVersionRequested extends Information18CCorNodeEvent {
+  const AppVersionRequested();
+
+  @override
+  List<Object> get props => [];
+}
+
 class AlarmUpdated extends Information18CCorNodeEvent {
   const AlarmUpdated();
 

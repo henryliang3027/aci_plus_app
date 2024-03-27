@@ -187,38 +187,12 @@ class _Content extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _Version(),
-                _QRToolbar(),
+                // _QRToolbar(),
                 _DeviceListView(),
               ],
             ),
           );
         }
-      },
-    );
-  }
-}
-
-class _Version extends StatelessWidget {
-  const _Version({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
-      buildWhen: (previous, current) =>
-          previous.buildVersion != current.buildVersion,
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                state.buildVersion,
-              )
-            ],
-          ),
-        );
       },
     );
   }

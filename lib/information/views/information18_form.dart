@@ -70,6 +70,7 @@ class Information18Form extends StatelessWidget {
       body: const SingleChildScrollView(
         child: Column(
           children: [
+            _VersionCard(),
             _ConnectionCard(),
             _ShortcutCard(),
             _BlockDiagramCard(),
@@ -169,6 +170,38 @@ class _DeviceRefresh extends StatelessWidget {
           return Container();
         }
       },
+    );
+  }
+}
+
+class _VersionCard extends StatelessWidget {
+  const _VersionCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Information18Bloc, Information18State>(
+      builder: (context, state) => Card(
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.appVersion,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              Text(
+                state.appVersion,
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeL,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

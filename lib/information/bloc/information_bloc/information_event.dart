@@ -6,6 +6,13 @@ abstract class InformationEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class AppVersionRequested extends InformationEvent {
+  const AppVersionRequested();
+
+  @override
+  List<Object> get props => [];
+}
+
 class AlarmUpdated extends InformationEvent {
   const AlarmUpdated();
 

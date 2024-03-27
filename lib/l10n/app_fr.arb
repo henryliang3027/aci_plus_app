@@ -117,6 +117,7 @@
     
     
     "home": "Accueil",
+    "appVersion": "Version App",
     "connection": "Connexion",
     "bluetooth": "Bluetooth",
     "shortcut": "Raccourci",

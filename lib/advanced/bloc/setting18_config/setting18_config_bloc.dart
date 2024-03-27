@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
-import 'package:aci_plus_app/repositories/dongle.dart';
+// import 'package:aci_plus_app/repositories/dongle.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/trunk_config.dart';
@@ -20,7 +20,6 @@ class Setting18ConfigBloc
         super(const Setting18ConfigState()) {
     on<ConfigsRequested>(_onConfigsRequested);
     on<ConfigDeleted>(_onConfigDeleted);
-    // on<DefaultConfigChanged>(_onDefaultConfigChanged);
     on<QRDataGenerated>(_onQRDataGenerated);
     on<QRDataScanned>(_onQRDataScanned);
 
@@ -39,17 +38,12 @@ class Setting18ConfigBloc
       formStatus: FormStatus.requestInProgress,
     ));
 
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String buildVersion =
-        'V ${packageInfo.version}-beta${packageInfo.buildNumber}';
-
     List<TrunkConfig> trunkConfigs = _configRepository.getAllTrunkConfigs();
     List<DistributionConfig> distributionConfigs =
         _configRepository.getAllDistributionConfigs();
 
     emit(state.copyWith(
       formStatus: FormStatus.requestSuccess,
-      buildVersion: buildVersion,
       trunkConfigs: trunkConfigs,
       distributionConfigs: distributionConfigs,
     ));
@@ -76,27 +70,6 @@ class Setting18ConfigBloc
       distributionConfigs: distributionConfigs,
     ));
   }
-
-  // Future<void> _onDefaultConfigChanged(
-  //   DefaultConfigChanged event,
-  //   Emitter<Setting18ConfigState> emit,
-  // ) async {
-  //   await _configRepository.setDefaultConfigById(
-  //     groupId: event.groupId,
-  //     id: event.id,
-  //   );
-
-  //   List<TrunkConfig> trunkConfigs = _configRepository.getAllTrunkConfigs();
-  //   List<DistributionConfig> distributionConfigs =
-  //       _configRepository.getAllDistributionConfigs();
-
-  //   emit(state.copyWith(
-  //     encodeStaus: FormStatus.none,
-  //     decodeStatus: FormStatus.none,
-  //     trunkConfigs: trunkConfigs,
-  //     distributionConfigs: distributionConfigs,
-  //   ));
-  // }
 
   void _onQRDataGenerated(
     QRDataGenerated event,

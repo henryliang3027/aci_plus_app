@@ -117,6 +117,7 @@
 
 
     "home": "Inicio",
+    "appVersion": "Versión App",
     "connection": "Conexión",
     "bluetooth": "Bluetooth",
     "shortcut": "Acceso Directo",

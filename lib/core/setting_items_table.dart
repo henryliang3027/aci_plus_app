@@ -120,8 +120,7 @@ const Map<String, String> partIdMap = {
 const Map<String, String> settingGraphFilePath = {
   '1': '',
   '2': '',
-  '3':
-      'assets/circuits/MB_1.8G_20231117.svg', // assets/circuits/MB_1.8G_20231117.svg
+  '3': '', // assets/circuits/MB_1.8G_20231117.svg
   '4': '',
   '5': '',
   '6': '',

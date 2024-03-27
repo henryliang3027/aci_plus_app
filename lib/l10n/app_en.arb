@@ -118,6 +118,7 @@
     
     
     "home": "Home",
+    "appVersion": "App Version",
     "connection": "Connection",
     "bluetooth": "Bluetooth",
     "shortcut": "Shortcut",

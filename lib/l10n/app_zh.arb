@@ -117,6 +117,7 @@
 
 
     "home": "首頁",
+    "appVersion": "App 版本",
     "connection": "連接裝置",
     "bluetooth": "藍牙",
     "shortcut": "捷徑",

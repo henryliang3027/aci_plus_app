@@ -5,7 +5,6 @@ class Setting18ConfigState extends Equatable {
     this.formStatus = FormStatus.none,
     this.encodeStaus = FormStatus.none,
     this.decodeStatus = FormStatus.none,
-    this.buildVersion = '',
     this.trunkConfigs = const [],
     this.distributionConfigs = const [],
     this.encodedData = '',
@@ -14,7 +13,6 @@ class Setting18ConfigState extends Equatable {
   final FormStatus formStatus;
   final FormStatus encodeStaus;
   final FormStatus decodeStatus;
-  final String buildVersion;
   final List<TrunkConfig> trunkConfigs;
   final List<DistributionConfig> distributionConfigs;
   final String encodedData;
@@ -23,7 +21,6 @@ class Setting18ConfigState extends Equatable {
     FormStatus? formStatus,
     FormStatus? encodeStaus,
     FormStatus? decodeStatus,
-    String? buildVersion,
     List<TrunkConfig>? trunkConfigs,
     List<DistributionConfig>? distributionConfigs,
     String? encodedData,
@@ -32,7 +29,6 @@ class Setting18ConfigState extends Equatable {
       formStatus: formStatus ?? this.formStatus,
       encodeStaus: encodeStaus ?? this.encodeStaus,
       decodeStatus: decodeStatus ?? this.decodeStatus,
-      buildVersion: buildVersion ?? this.buildVersion,
       trunkConfigs: trunkConfigs ?? this.trunkConfigs,
       distributionConfigs: distributionConfigs ?? this.distributionConfigs,
       encodedData: encodedData ?? this.encodedData,
@@ -44,7 +40,6 @@ class Setting18ConfigState extends Equatable {
         formStatus,
         encodeStaus,
         decodeStatus,
-        buildVersion,
         trunkConfigs,
         distributionConfigs,
         encodedData,

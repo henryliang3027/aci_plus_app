@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 part 'information_event.dart';
 part 'information_state.dart';
@@ -12,13 +13,28 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
     required DsimRepository dsimRepository,
   })  : _dsimRepository = dsimRepository,
         super(const InformationState()) {
+    on<AppVersionRequested>(_onAppVersionRequested);
     on<AlarmUpdated>(_onAlarmUpdated);
     on<AlarmPeriodicUpdateRequested>(_onAlarmPeriodicUpdateRequested);
     on<AlarmPeriodicUpdateCanceled>(_onAlarmPeriodicUpdateCanceled);
+
+    add(const AppVersionRequested());
   }
 
   Timer? _timer;
   final DsimRepository _dsimRepository;
+
+  Future<void> _onAppVersionRequested(
+    AppVersionRequested event,
+    Emitter<InformationState> emit,
+  ) async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String appVersion = 'V ${packageInfo.version}';
+
+    emit(state.copyWith(
+      appVersion: appVersion,
+    ));
+  }
 
   void _onAlarmPeriodicUpdateRequested(
     AlarmPeriodicUpdateRequested event,

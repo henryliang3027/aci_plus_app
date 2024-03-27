@@ -42,13 +42,6 @@ class _AboutPageState extends State<AboutPage> {
       );
     }
 
-    Future<String> getVersion() async {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      String buildVersion =
-          'V ${packageInfo.version}-beta${packageInfo.buildNumber}';
-      return buildVersion;
-    }
-
     return Scaffold(
       body: CustomScrollView(
         controller: _scrollController,
@@ -86,40 +79,6 @@ class _AboutPageState extends State<AboutPage> {
                   children: [
                     Container(
                       color: Colors.black,
-                    ),
-                    Positioned(
-                      top: 70.0,
-                      right: 10.0,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0.0,
-                          backgroundColor: Colors.transparent,
-                          padding: const EdgeInsets.all(0.0),
-                          visualDensity: const VisualDensity(
-                            horizontal: -4.0,
-                            vertical: -4.0,
-                          ),
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
-                        child: FutureBuilder<String>(
-                          future: getVersion(),
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              return Text(
-                                snapshot.data,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
-                          },
-                        ),
-                        onPressed: () async {},
-                      ),
                     ),
                   ],
                 ),

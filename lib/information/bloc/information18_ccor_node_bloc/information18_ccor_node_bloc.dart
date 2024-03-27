@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 part 'information18_ccor_node_event.dart';
 part 'information18_ccor_node_state.dart';
@@ -12,13 +13,28 @@ class Information18CCorNodeBloc
     required Amp18CCorNodeRepository amp18CCorNodeRepository,
   })  : _amp18CCorNodeRepository = amp18CCorNodeRepository,
         super(const Information18CCorNodeState()) {
+    on<AppVersionRequested>(_onAppVersionRequested);
     on<AlarmUpdated>(_onAlarmUpdated);
     on<AlarmPeriodicUpdateRequested>(_onAlarmPeriodicUpdateRequested);
     on<AlarmPeriodicUpdateCanceled>(_onAlarmPeriodicUpdateCanceled);
+
+    add(const AppVersionRequested());
   }
 
   Timer? _timer;
   final Amp18CCorNodeRepository _amp18CCorNodeRepository;
+
+  Future<void> _onAppVersionRequested(
+    AppVersionRequested event,
+    Emitter<Information18CCorNodeState> emit,
+  ) async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String appVersion = 'V ${packageInfo.version}';
+
+    emit(state.copyWith(
+      appVersion: appVersion,
+    ));
+  }
 
   void _onAlarmPeriodicUpdateRequested(
     AlarmPeriodicUpdateRequested event,
