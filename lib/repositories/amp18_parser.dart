@@ -32,6 +32,7 @@ class Amp18Parser {
     String partId = '';
     String serialNumber = '';
     String firmwareVersion = '';
+    String hardwareVersion = '';
     String mfgDate = '';
     String coordinate = '';
     String nowDateTime = '';
@@ -49,10 +50,16 @@ class Amp18Parser {
     partNo = _trimString(partNo);
 
     // 解析 serialNumber
-    for (int i = 43; i <= 62; i++) {
+    for (int i = 43; i <= 58; i++) {
       serialNumber += String.fromCharCode(rawData[i]);
     }
     serialNumber = _trimString(serialNumber);
+
+    // 解析 hardwareVersion
+    for (int i = 59; i <= 62; i++) {
+      hardwareVersion += String.fromCharCode(rawData[i]);
+    }
+    hardwareVersion = _trimString(hardwareVersion);
 
     // 解析 firmwareVersion
     for (int i = 63; i <= 66; i++) {
@@ -101,6 +108,7 @@ class Amp18Parser {
       partId: partId,
       serialNumber: serialNumber,
       firmwareVersion: firmwareVersion,
+      hardwareVersion: hardwareVersion,
       mfgDate: mfgDate,
       coordinate: coordinate,
       nowDateTime: nowDateTime,
@@ -1589,6 +1597,7 @@ class A1P8G0 {
     required this.partId,
     required this.serialNumber,
     required this.firmwareVersion,
+    required this.hardwareVersion,
     required this.mfgDate,
     required this.coordinate,
     required this.nowDateTime,
@@ -1599,6 +1608,7 @@ class A1P8G0 {
   final String partId;
   final String serialNumber;
   final String firmwareVersion;
+  final String hardwareVersion;
   final String mfgDate;
   final String coordinate;
   final String nowDateTime;

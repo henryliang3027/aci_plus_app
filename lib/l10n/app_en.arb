@@ -83,6 +83,7 @@
     "status": "Device Status",
     "serialNumber": "Serial Number",
     "firmwareVersion": "Firmware Version",
+    "hardwareVersion": "Hardware Version",
     "attenuation": "Attenuation",
     "range": "Range",
     "currentAttenuation": "Current",

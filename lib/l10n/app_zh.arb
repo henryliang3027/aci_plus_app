@@ -83,6 +83,7 @@
     "status": "設備狀態",
     "serialNumber": "序號",
     "firmwareVersion": "韌體版本",
+    "hardwareVersion": "硬體版本",
     "attenuation": "衰減值",
     "range": "範圍",
     "currentAttenuation": "目前衰減值",

@@ -72,6 +72,7 @@ class Amp18Repository {
         DataKey.partId: a1p8g0.partId,
         DataKey.serialNumber: a1p8g0.serialNumber,
         DataKey.firmwareVersion: a1p8g0.firmwareVersion,
+        DataKey.hardwareVersion: a1p8g0.hardwareVersion,
         DataKey.mfgDate: a1p8g0.mfgDate,
         DataKey.coordinates: a1p8g0.coordinate,
         DataKey.nowDateTime: a1p8g0.nowDateTime,

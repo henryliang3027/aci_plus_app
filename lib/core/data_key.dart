@@ -4,6 +4,7 @@ enum DataKey {
   partId,
   serialNumber,
   firmwareVersion,
+  hardwareVersion,
   mfgDate,
   location,
   coordinates,

@@ -391,6 +391,12 @@ class _BasicCard extends StatelessWidget {
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
+                title: AppLocalizations.of(context)!.hardwareVersion,
+                content:
+                    state.characteristicData[DataKey.hardwareVersion] ?? '',
+              ),
+              itemText(
+                loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context)!.logInterval,
                 content: getCurrentLogInterval(
                     state.characteristicData[DataKey.logInterval] ?? ''),

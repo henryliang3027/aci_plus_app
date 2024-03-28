@@ -83,6 +83,7 @@
     "status": "Estado",
     "serialNumber": "Número de Serie",
     "firmwareVersion": "Versión del firmware",
+    "hardwareVersion": "Versión de hardware",
     "attenuation": "Atenuación",
     "range": "Rango",
     "currentAttenuation": "Actual",
