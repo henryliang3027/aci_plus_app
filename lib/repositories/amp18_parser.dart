@@ -61,6 +61,9 @@ class Amp18Parser {
     }
     hardwareVersion = _trimString(hardwareVersion);
 
+    // 舊版本為空自串, 所以加一個N/A表示無 hardware version
+    hardwareVersion = hardwareVersion.isEmpty ? 'N/A' : hardwareVersion;
+
     // 解析 firmwareVersion
     for (int i = 63; i <= 66; i++) {
       firmwareVersion += String.fromCharCode(rawData[i]);
