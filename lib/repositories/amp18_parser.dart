@@ -1141,8 +1141,10 @@ class Amp18Parser {
 
   Future<dynamic> export1p8GRecords({
     required String code,
-    required String coordinate,
-    required String location,
+    required Map<String, String> configurationData,
+    required Map<String, String> controlData,
+    // required String coordinate,
+    // required String location,
     required List<Log1p8G> log1p8Gs,
     required List<Event1p8G> event1p8Gs,
   }) async {
@@ -1179,8 +1181,26 @@ class Amp18Parser {
     Sheet eventSheet = excel['Event'];
 
     userInformationSheet.insertRowIterables(['Code Number', code], 0);
-    userInformationSheet.insertRowIterables(['Coordinate', coordinate], 3);
-    userInformationSheet.insertRowIterables(['Location', location], 6);
+
+    List<String> configurationDataKeys = configurationData.keys.toList();
+    for (int i = 0; i < configurationDataKeys.length; i++) {
+      String key = configurationDataKeys[i];
+      String value = configurationData[key] ?? '';
+
+      userInformationSheet.insertRowIterables([key, value], i + 3);
+    }
+
+    List<String> controlDataKeys = controlData.keys.toList();
+    for (int i = 0; i < controlDataKeys.length; i++) {
+      String key = controlDataKeys[i];
+      String value = controlData[key] ?? '';
+
+      userInformationSheet.insertRowIterables(
+          [key, value], i + configurationDataKeys.length + 6);
+    }
+
+    // userInformationSheet.insertRowIterables(['Coordinate', coordinate], 3);
+    // userInformationSheet.insertRowIterables(['Location', location], 6);
 
     eventSheet.insertRowIterables(eventHeader, 0);
     List<List<String>> eventContent = formatEvent1p8G(event1p8Gs);

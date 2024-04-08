@@ -26,6 +26,8 @@
     "pilotFrequencySmartSettings": "Configuraciones inteligentes",
     "pilotFrequency1": "Frecuencia baja",
     "pilotFrequency2": "Frecuencia alta",
+    "pilotLevel1": "Bajo Nivel",
+    "pilotLevel2": "Alto Nivel",
     "agcMode": "Modo AGC",
     "alcMode": "Modo ALC",
     "on": "Encendido",

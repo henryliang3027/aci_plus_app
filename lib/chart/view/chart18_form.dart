@@ -6,8 +6,10 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
+import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
+import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -308,6 +310,9 @@ class _PopupMenu extends StatelessWidget {
   final TabController tabController;
 
   Widget buildDataLogPageMenu(BuildContext context) {
+    Map<DataKey, String> characteristicData =
+        context.read<HomeBloc>().state.characteristicData;
+
     return BlocBuilder<Chart18Bloc, Chart18State>(
       builder: (context, state) {
         Future<List<dynamic>?> showDownloadDialog() async {
@@ -338,12 +343,25 @@ class _PopupMenu extends StatelessWidget {
                     case DataLogMenu.share:
                       String? code =
                           await showEnterCodeDialog(context: context);
-                      if (code != null) {
-                        if (code.isNotEmpty) {
-                          if (context.mounted) {
-                            context
-                                .read<Chart18Bloc>()
-                                .add(DataShared(code: code));
+                      if (context.mounted) {
+                        if (code != null) {
+                          if (code.isNotEmpty) {
+                            Map<String, String> configurationData =
+                                getConfigurationData(
+                              context: context,
+                              characteristicData: characteristicData,
+                            );
+
+                            Map<String, String> controlData = getControlData(
+                              context: context,
+                              characteristicData: characteristicData,
+                            );
+
+                            context.read<Chart18Bloc>().add(DataShared(
+                                  code: code,
+                                  configurationData: configurationData,
+                                  controlData: controlData,
+                                ));
                           }
                         }
                       }
@@ -354,9 +372,22 @@ class _PopupMenu extends StatelessWidget {
                       if (context.mounted) {
                         if (code != null) {
                           if (code.isNotEmpty) {
-                            context
-                                .read<Chart18Bloc>()
-                                .add(DataExported(code: code));
+                            Map<String, String> configurationData =
+                                getConfigurationData(
+                              context: context,
+                              characteristicData: characteristicData,
+                            );
+
+                            Map<String, String> controlData = getControlData(
+                              context: context,
+                              characteristicData: characteristicData,
+                            );
+
+                            context.read<Chart18Bloc>().add(DataExported(
+                                  code: code,
+                                  configurationData: configurationData,
+                                  controlData: controlData,
+                                ));
                           }
                         }
                       }
@@ -376,11 +407,24 @@ class _PopupMenu extends StatelessWidget {
                             List<Log1p8G> log1p8Gs = resultOfDownload[1];
                             String errorMessage = resultOfDownload[2];
                             if (context.mounted) {
+                              Map<String, String> configurationData =
+                                  getConfigurationData(
+                                context: context,
+                                characteristicData: characteristicData,
+                              );
+
+                              Map<String, String> controlData = getControlData(
+                                context: context,
+                                characteristicData: characteristicData,
+                              );
+
                               context.read<Chart18Bloc>().add(AllDataExported(
                                     isSuccessful: isSuccessful,
                                     log1p8Gs: log1p8Gs,
                                     errorMessage: errorMessage,
                                     code: code,
+                                    configurationData: configurationData,
+                                    controlData: controlData,
                                   ));
                             }
                           }
@@ -579,6 +623,157 @@ class _PopupMenu extends StatelessWidget {
             : Container();
       },
     );
+  }
+
+  Map<String, String> getConfigurationData({
+    required BuildContext context,
+    required Map<DataKey, String> characteristicData,
+  }) {
+    Map<String, String> pilotFrequencyModeTexts = {
+      '0': AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
+      '1': AppLocalizations.of(context)!.pilotFrequencyUserSettings,
+      //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
+    };
+
+    Map<String, String> onOffTexts = {
+      '0': AppLocalizations.of(context)!.on,
+      '1': AppLocalizations.of(context)!.off,
+    };
+
+    String location = characteristicData[DataKey.location] ?? '';
+    String coordinates = characteristicData[DataKey.coordinates] ?? '';
+    String splitOption = characteristicData[DataKey.splitOption] ?? '';
+
+    String splitOptionText = splitOption != ''
+        ? '${splitBaseLine[splitOption]!.$1}/${splitBaseLine[splitOption]!.$2} ${CustomStyle.mHz}'
+        : '';
+
+    String pilotFrequencyMode =
+        characteristicData[DataKey.pilotFrequencyMode] ?? '';
+
+    String pilotFrequencyModeText = pilotFrequencyMode != ''
+        ? pilotFrequencyModeTexts[pilotFrequencyMode]!
+        : '';
+
+    String firstChannelLoadingFrequency =
+        characteristicData[DataKey.firstChannelLoadingFrequency] ?? '';
+    String lastChannelLoadingFrequency =
+        characteristicData[DataKey.lastChannelLoadingFrequency] ?? '';
+    String firstChannelLoadingLevel =
+        characteristicData[DataKey.firstChannelLoadingLevel] ?? '';
+    String lastChannelLoadingLevel =
+        characteristicData[DataKey.lastChannelLoadingLevel] ?? '';
+
+    String pilotFrequency1 = characteristicData[DataKey.pilotFrequency1] ?? '';
+    String pilotFrequency2 = characteristicData[DataKey.pilotFrequency2] ?? '';
+
+    String manualModePilot1RFOutputPower =
+        characteristicData[DataKey.manualModePilot1RFOutputPower] ?? '';
+    String manualModePilot2RFOutputPower =
+        characteristicData[DataKey.manualModePilot2RFOutputPower] ?? '';
+
+    String agcMode = characteristicData[DataKey.agcMode] ?? '';
+    String agcModeText = agcMode != '' ? onOffTexts[agcMode]! : '';
+    String alcMode = characteristicData[DataKey.alcMode] ?? '';
+    String alcModeText = alcMode != '' ? onOffTexts[alcMode]! : '';
+    String logInterval = characteristicData[DataKey.logInterval] ?? '';
+
+    Map<String, String> configurationValues = {
+      AppLocalizations.of(context)!.device: '',
+      AppLocalizations.of(context)!.location: location,
+      AppLocalizations.of(context)!.coordinates: coordinates,
+      AppLocalizations.of(context)!.splitOption: splitOptionText,
+      AppLocalizations.of(context)!.pilotFrequencySelect:
+          pilotFrequencyModeText,
+      AppLocalizations.of(context)!.startFrequency:
+          '$firstChannelLoadingFrequency ${CustomStyle.mHz}',
+      AppLocalizations.of(context)!.startLevel:
+          '$firstChannelLoadingLevel ${CustomStyle.dBmV}',
+      AppLocalizations.of(context)!.stopFrequency:
+          '$lastChannelLoadingFrequency ${CustomStyle.mHz}',
+      AppLocalizations.of(context)!.stopLevel:
+          '$lastChannelLoadingLevel ${CustomStyle.dBmV}',
+      AppLocalizations.of(context)!.pilotFrequency1:
+          '$pilotFrequency1 ${CustomStyle.mHz}',
+      AppLocalizations.of(context)!.pilotLevel1:
+          '$manualModePilot1RFOutputPower ${CustomStyle.dBmV}',
+      AppLocalizations.of(context)!.pilotFrequency2:
+          '$pilotFrequency2 ${CustomStyle.mHz}',
+      AppLocalizations.of(context)!.pilotLevel2:
+          '$manualModePilot2RFOutputPower ${CustomStyle.dBmV}',
+      AppLocalizations.of(context)!.agcMode: agcModeText,
+      AppLocalizations.of(context)!.alcMode: alcModeText,
+      AppLocalizations.of(context)!.logInterval:
+          '$logInterval ${AppLocalizations.of(context)!.minute}',
+    };
+
+    return configurationValues;
+  }
+
+  Map<String, String> getControlData({
+    required BuildContext context,
+    required Map<DataKey, String> characteristicData,
+  }) {
+    Map<Enum, String> controlItemTexts = {
+      SettingControl.forwardInputAttenuation1:
+          AppLocalizations.of(context)!.forwardInputAttenuation1,
+      SettingControl.forwardInputEqualizer1:
+          AppLocalizations.of(context)!.forwardInputEqualizer1,
+      SettingControl.forwardOutputAttenuation2And3:
+          AppLocalizations.of(context)!.forwardOutputAttenuation2And3,
+      SettingControl.forwardOutputAttenuation3And4:
+          AppLocalizations.of(context)!.forwardOutputAttenuation3And4,
+      SettingControl.forwardOutputAttenuation5And6:
+          AppLocalizations.of(context)!.forwardOutputAttenuation5And6,
+      SettingControl.forwardOutputEqualizer2And3:
+          AppLocalizations.of(context)!.forwardOutputEqualizer2And3,
+      SettingControl.forwardOutputEqualizer5And6:
+          AppLocalizations.of(context)!.forwardOutputEqualizer5And6,
+      SettingControl.returnOutputAttenuation1:
+          AppLocalizations.of(context)!.returnOutputAttenuation1,
+      SettingControl.returnOutputEqualizer1:
+          AppLocalizations.of(context)!.returnOutputEqualizer1,
+      SettingControl.returnInputAttenuation2:
+          AppLocalizations.of(context)!.returnInputAttenuation2,
+      SettingControl.returnInputAttenuation3:
+          AppLocalizations.of(context)!.returnInputAttenuation3,
+      SettingControl.returnInputAttenuation4:
+          AppLocalizations.of(context)!.returnInputAttenuation4,
+      SettingControl.returnInputAttenuation2And3:
+          AppLocalizations.of(context)!.returnInputAttenuation2And3,
+      SettingControl.returnInputAttenuation5And6:
+          AppLocalizations.of(context)!.returnInputAttenuation5And6,
+      SettingControl.returnIngressSetting2:
+          AppLocalizations.of(context)!.returnIngressSetting2,
+      SettingControl.returnIngressSetting3:
+          AppLocalizations.of(context)!.returnIngressSetting3,
+      SettingControl.returnIngressSetting4:
+          AppLocalizations.of(context)!.returnIngressSetting4,
+      SettingControl.returnIngressSetting2And3:
+          AppLocalizations.of(context)!.returnIngressSetting2And3,
+      SettingControl.returnIngressSetting5And6:
+          AppLocalizations.of(context)!.returnIngressSetting5And6,
+    };
+
+    String partId = characteristicData[DataKey.partId]!;
+
+    Map<String, String> controlValues = {
+      AppLocalizations.of(context)!.balance: '',
+    };
+
+    Map<Enum, DataKey> controlItemMap =
+        SettingItemTable.controlItemDataMapCollection[partId]!;
+
+    for (MapEntry entry in controlItemMap.entries) {
+      Enum key = entry.key;
+      DataKey value = entry.value;
+
+      String controlName = controlItemTexts[key] ?? '';
+      String controlValue = characteristicData[value] ?? '';
+      controlValues[controlName] = controlValue;
+    }
+
+    return controlValues;
   }
 
   Widget getLoadingSuccessMenu(BuildContext context) {

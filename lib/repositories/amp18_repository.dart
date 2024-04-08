@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui';
 import 'package:aci_plus_app/core/command18.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/data_key.dart';
@@ -9,6 +10,9 @@ import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class Amp18Repository {
   Amp18Repository()
@@ -445,6 +449,8 @@ class Amp18Repository {
 
   Future<dynamic> export1p8GRecords({
     required String code,
+    required Map<String, String> configurationData,
+    required Map<String, String> controlData,
   }) async {
     List<Log1p8G> log1p8Gs = _amp18ChartCache.readLoadMoreLog1p8Gs();
     List<Event1p8G> event1p8Gs = _amp18ChartCache.readEvent1p8Gs();
@@ -467,13 +473,15 @@ class Amp18Repository {
 
     // print("Duplicate elements: $duplicates");
 
-    String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
-    String location = _characteristicDataCache[DataKey.location] ?? '';
+    // String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
+    // String location = _characteristicDataCache[DataKey.location] ?? '';
 
     List<dynamic> result = await _amp18Parser.export1p8GRecords(
       code: code,
-      coordinate: coordinate,
-      location: location,
+      configurationData: configurationData,
+      controlData: controlData,
+      // coordinate: coordinate,
+      // location: location,
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
     );
@@ -482,17 +490,21 @@ class Amp18Repository {
 
   Future<dynamic> exportAll1p8GRecords({
     required String code,
+    required Map<String, String> configurationData,
+    required Map<String, String> controlData,
   }) async {
     List<Log1p8G> log1p8Gs = _amp18ChartCache.readAllLog1p8Gs();
     List<Event1p8G> event1p8Gs = _amp18ChartCache.readEvent1p8Gs();
 
-    String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
-    String location = _characteristicDataCache[DataKey.location] ?? '';
+    // String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
+    // String location = _characteristicDataCache[DataKey.location] ?? '';
 
     List<dynamic> result = await _amp18Parser.export1p8GRecords(
       code: code,
-      coordinate: coordinate,
-      location: location,
+      configurationData: configurationData,
+      controlData: controlData,
+      // coordinate: coordinate,
+      // location: location,
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
     );

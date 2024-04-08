@@ -26,6 +26,8 @@
     "pilotFrequencySmartSettings": "智慧設定",
     "pilotFrequency1": "低頻",
     "pilotFrequency2": "高頻",
+    "pilotLevel1": "低頻強度",
+    "pilotLevel2": "高頻強度",
     "agcMode": "AGC模式",
     "alcMode": "ALC模式",
     "on": "開啟",
