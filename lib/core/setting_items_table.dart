@@ -1,5 +1,4 @@
 import 'package:aci_plus_app/core/data_key.dart';
-import 'package:excel/excel.dart';
 
 enum SettingConfiruration {
   location,
@@ -726,98 +725,126 @@ class SettingItemTable {
     },
   };
 
-  static Map<String, Map<Enum, DataKey>> controlItemDataMapCollection = {
-    '1': {
+  static Map<String, List<Map<Enum, DataKey>>> controlItemDataMapCollection = {
+    '1': [
       // SDLE
-      SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
-      SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
-      SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
-      SettingControl.returnOutputEqualizer1: DataKey.eREQ,
-      SettingControl.returnInputAttenuation2: DataKey.usVCA1,
-      SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
-    },
-    '2': {
+      {
+        SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+        SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
+      },
+      {
+        SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
+        SettingControl.returnOutputEqualizer1: DataKey.eREQ,
+        SettingControl.returnInputAttenuation2: DataKey.usVCA1,
+        SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
+      }
+    ],
+    '2': [
       // Moto BLE
-      SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
-      SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
-      SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
-      SettingControl.returnOutputEqualizer1: DataKey.eREQ,
-      SettingControl.returnInputAttenuation2: DataKey.usVCA1,
-      SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
-    },
-    '3': {
+      {
+        SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+        SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
+      },
+      {
+        SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
+        SettingControl.returnOutputEqualizer1: DataKey.eREQ,
+        SettingControl.returnInputAttenuation2: DataKey.usVCA1,
+        SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
+      }
+    ],
+    '3': [
       // Moto MB
-      SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
-      SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
-      SettingControl.forwardOutputAttenuation3And4: DataKey.dsVVA4,
-      SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
-      SettingControl.returnOutputEqualizer1: DataKey.eREQ,
-      SettingControl.returnInputAttenuation2: DataKey.usVCA1,
-      SettingControl.returnInputAttenuation3: DataKey.usVCA3,
-      SettingControl.returnInputAttenuation4: DataKey.usVCA4,
-      SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
-      SettingControl.returnIngressSetting3: DataKey.ingressSetting3,
-      SettingControl.returnIngressSetting4: DataKey.ingressSetting4,
-    },
-    '4': {
+      {
+        SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+        SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
+        SettingControl.forwardOutputAttenuation3And4: DataKey.dsVVA4,
+      },
+      {
+        SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
+        SettingControl.returnOutputEqualizer1: DataKey.eREQ,
+        SettingControl.returnInputAttenuation2: DataKey.usVCA1,
+        SettingControl.returnInputAttenuation3: DataKey.usVCA3,
+        SettingControl.returnInputAttenuation4: DataKey.usVCA4,
+        SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
+        SettingControl.returnIngressSetting3: DataKey.ingressSetting3,
+        SettingControl.returnIngressSetting4: DataKey.ingressSetting4,
+      },
+    ],
+    '4': [
       // C-Cor Node
-      SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
-      SettingControl.forwardInputAttenuation3: DataKey.dsVVA3,
-      SettingControl.forwardInputAttenuation4: DataKey.dsVVA4,
-      SettingControl.forwardInputAttenuation6: DataKey.dsVVA6,
-      SettingControl.forwardInputEqualizer1: DataKey.dsInSlope1,
-      SettingControl.forwardInputEqualizer3: DataKey.dsInSlope3,
-      SettingControl.forwardInputEqualizer4: DataKey.dsInSlope4,
-      SettingControl.forwardInputEqualizer6: DataKey.dsInSlope6,
-      SettingControl.returnInputAttenuation1: DataKey.usVCA1,
-      SettingControl.returnInputAttenuation3: DataKey.usVCA3,
-      SettingControl.returnInputAttenuation4: DataKey.usVCA4,
-      SettingControl.returnInputAttenuation6: DataKey.usVCA6,
-      SettingControl.returnIngressSetting1: DataKey.ingressSetting1,
-      SettingControl.returnIngressSetting3: DataKey.ingressSetting3,
-      SettingControl.returnIngressSetting4: DataKey.ingressSetting4,
-      SettingControl.returnIngressSetting6: DataKey.ingressSetting6,
-    },
-    '5': {
-      // C-Cor TR
-      SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
-      SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
-      SettingControl.forwardOutputAttenuation2And3: DataKey.dsVVA4,
-      SettingControl.forwardOutputAttenuation5And6: DataKey.dsVVA5,
-      SettingControl.forwardOutputEqualizer2And3: DataKey.dsSlope3,
-      SettingControl.forwardOutputEqualizer5And6: DataKey.dsSlope4,
-      SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
-      SettingControl.returnOutputEqualizer1: DataKey.eREQ,
-      SettingControl.returnInputAttenuation4: DataKey.usVCA1,
-      SettingControl.returnInputAttenuation2And3: DataKey.usVCA3,
-      SettingControl.returnInputAttenuation5And6: DataKey.usVCA4,
-      SettingControl.returnIngressSetting4: DataKey.ingressSetting2,
-      SettingControl.returnIngressSetting2And3: DataKey.ingressSetting3,
-      SettingControl.returnIngressSetting5And6: DataKey.ingressSetting4,
-    },
-    '6': {
-      // C-Cor BR
-      SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
-      SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
-      SettingControl.forwardOutputAttenuation2And3: DataKey.dsVVA4,
-      SettingControl.forwardOutputAttenuation5And6: DataKey.dsVVA5,
-      SettingControl.forwardOutputEqualizer2And3: DataKey.dsSlope3,
-      SettingControl.forwardOutputEqualizer5And6: DataKey.dsSlope4,
-      SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
-      SettingControl.returnOutputEqualizer1: DataKey.eREQ,
-      SettingControl.returnInputAttenuation2And3: DataKey.usVCA3,
-      SettingControl.returnInputAttenuation5And6: DataKey.usVCA4,
-      SettingControl.returnIngressSetting2And3: DataKey.ingressSetting3,
-      SettingControl.returnIngressSetting5And6: DataKey.ingressSetting4,
-    },
-    '7': {
-      // C-Cor LE
-      SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
-      SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
-      SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
-      SettingControl.returnOutputEqualizer1: DataKey.eREQ,
-      SettingControl.returnInputAttenuation2: DataKey.usVCA1,
-      SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
-    },
+      {
+        SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+        SettingControl.forwardInputAttenuation3: DataKey.dsVVA3,
+        SettingControl.forwardInputAttenuation4: DataKey.dsVVA4,
+        SettingControl.forwardInputAttenuation6: DataKey.dsVVA6,
+        SettingControl.forwardInputEqualizer1: DataKey.dsInSlope1,
+        SettingControl.forwardInputEqualizer3: DataKey.dsInSlope3,
+        SettingControl.forwardInputEqualizer4: DataKey.dsInSlope4,
+        SettingControl.forwardInputEqualizer6: DataKey.dsInSlope6,
+      },
+      {
+        SettingControl.returnInputAttenuation1: DataKey.usVCA1,
+        SettingControl.returnInputAttenuation3: DataKey.usVCA3,
+        SettingControl.returnInputAttenuation4: DataKey.usVCA4,
+        SettingControl.returnInputAttenuation6: DataKey.usVCA6,
+        SettingControl.returnIngressSetting1: DataKey.ingressSetting1,
+        SettingControl.returnIngressSetting3: DataKey.ingressSetting3,
+        SettingControl.returnIngressSetting4: DataKey.ingressSetting4,
+        SettingControl.returnIngressSetting6: DataKey.ingressSetting6,
+      },
+    ],
+    '5': [
+      {
+        // C-Cor TR
+        SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+        SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
+        SettingControl.forwardOutputAttenuation2And3: DataKey.dsVVA4,
+        SettingControl.forwardOutputAttenuation5And6: DataKey.dsVVA5,
+        SettingControl.forwardOutputEqualizer2And3: DataKey.dsSlope3,
+        SettingControl.forwardOutputEqualizer5And6: DataKey.dsSlope4,
+      },
+      {
+        SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
+        SettingControl.returnOutputEqualizer1: DataKey.eREQ,
+        SettingControl.returnInputAttenuation4: DataKey.usVCA1,
+        SettingControl.returnInputAttenuation2And3: DataKey.usVCA3,
+        SettingControl.returnInputAttenuation5And6: DataKey.usVCA4,
+        SettingControl.returnIngressSetting4: DataKey.ingressSetting2,
+        SettingControl.returnIngressSetting2And3: DataKey.ingressSetting3,
+        SettingControl.returnIngressSetting5And6: DataKey.ingressSetting4,
+      }
+    ],
+    '6': [
+      {
+        // C-Cor BR
+        SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+        SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
+        SettingControl.forwardOutputAttenuation2And3: DataKey.dsVVA4,
+        SettingControl.forwardOutputAttenuation5And6: DataKey.dsVVA5,
+        SettingControl.forwardOutputEqualizer2And3: DataKey.dsSlope3,
+        SettingControl.forwardOutputEqualizer5And6: DataKey.dsSlope4,
+      },
+      {
+        SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
+        SettingControl.returnOutputEqualizer1: DataKey.eREQ,
+        SettingControl.returnInputAttenuation2And3: DataKey.usVCA3,
+        SettingControl.returnInputAttenuation5And6: DataKey.usVCA4,
+        SettingControl.returnIngressSetting2And3: DataKey.ingressSetting3,
+        SettingControl.returnIngressSetting5And6: DataKey.ingressSetting4,
+      }
+    ],
+    '7': [
+      {
+        // C-Cor LE
+        SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+        SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
+      },
+      {
+        SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
+        SettingControl.returnOutputEqualizer1: DataKey.eREQ,
+        SettingControl.returnInputAttenuation2: DataKey.usVCA1,
+        SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
+      }
+    ],
   };
 }

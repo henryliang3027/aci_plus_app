@@ -1062,8 +1062,10 @@ class Amp18Parser {
 
   Future<dynamic> export1p8GRFInOuts({
     required String code,
-    required String coordinate,
-    required String location,
+    required Map<String, String> configurationData,
+    required List<Map<String, String>> controlData,
+    // required String coordinate,
+    // required String location,
     required List<RFInOut> rfInOuts,
   }) async {
     Excel excel = Excel.createExcel();
@@ -1079,8 +1081,22 @@ class Amp18Parser {
     Sheet rfOutSheet = excel['Output Levels'];
 
     userInformationSheet.insertRowIterables(['Code Number', code], 0);
-    userInformationSheet.insertRowIterables(['Coordinate', coordinate], 3);
-    userInformationSheet.insertRowIterables(['Location', location], 6);
+
+    // 空兩行後再開始寫入 configuration data
+    List<String> configurationDataKeys = configurationData.keys.toList();
+    for (int i = 0; i < configurationDataKeys.length; i++) {
+      String key = configurationDataKeys[i];
+      String value = configurationData[key] ?? '';
+
+      userInformationSheet.insertRowIterables([key, value], i + 3);
+    }
+
+    // 空兩行後再開始寫入 control data
+    for (int i = 0; i < controlData.length; i++) {
+      MapEntry entry = controlData[i].entries.first;
+      userInformationSheet.insertRowIterables(
+          [entry.key, entry.value], i + configurationDataKeys.length + 5);
+    }
 
     rfInSheet.insertRowIterables(rfInOutHeader, 0);
     for (int i = 0; i < rfInOuts.length; i++) {
@@ -1142,7 +1158,7 @@ class Amp18Parser {
   Future<dynamic> export1p8GRecords({
     required String code,
     required Map<String, String> configurationData,
-    required Map<String, String> controlData,
+    required List<Map<String, String>> controlData,
     // required String coordinate,
     // required String location,
     required List<Log1p8G> log1p8Gs,
@@ -1182,6 +1198,7 @@ class Amp18Parser {
 
     userInformationSheet.insertRowIterables(['Code Number', code], 0);
 
+    // 空兩行後再開始寫入 configuration data
     List<String> configurationDataKeys = configurationData.keys.toList();
     for (int i = 0; i < configurationDataKeys.length; i++) {
       String key = configurationDataKeys[i];
@@ -1190,17 +1207,12 @@ class Amp18Parser {
       userInformationSheet.insertRowIterables([key, value], i + 3);
     }
 
-    List<String> controlDataKeys = controlData.keys.toList();
-    for (int i = 0; i < controlDataKeys.length; i++) {
-      String key = controlDataKeys[i];
-      String value = controlData[key] ?? '';
-
+    // 空兩行後再開始寫入 control data
+    for (int i = 0; i < controlData.length; i++) {
+      MapEntry entry = controlData[i].entries.first;
       userInformationSheet.insertRowIterables(
-          [key, value], i + configurationDataKeys.length + 6);
+          [entry.key, entry.value], i + configurationDataKeys.length + 5);
     }
-
-    // userInformationSheet.insertRowIterables(['Coordinate', coordinate], 3);
-    // userInformationSheet.insertRowIterables(['Location', location], 6);
 
     eventSheet.insertRowIterables(eventHeader, 0);
     List<List<String>> eventContent = formatEvent1p8G(event1p8Gs);

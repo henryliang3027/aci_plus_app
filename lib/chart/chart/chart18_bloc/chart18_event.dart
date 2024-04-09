@@ -27,7 +27,7 @@ class DataExported extends Chart18Event {
 
   final String code;
   final Map<String, String> configurationData;
-  final Map<String, String> controlData;
+  final List<Map<String, String>> controlData;
 
   @override
   List<Object?> get props => [
@@ -46,7 +46,7 @@ class DataShared extends Chart18Event {
 
   final String code;
   final Map<String, String> configurationData;
-  final Map<String, String> controlData;
+  final List<Map<String, String>> controlData;
 
   @override
   List<Object?> get props => [
@@ -57,24 +57,40 @@ class DataShared extends Chart18Event {
 }
 
 class RFLevelExported extends Chart18Event {
-  const RFLevelExported({required this.code});
+  const RFLevelExported({
+    required this.code,
+    required this.configurationData,
+    required this.controlData,
+  });
 
   final String code;
+  final Map<String, String> configurationData;
+  final List<Map<String, String>> controlData;
 
   @override
   List<Object?> get props => [
         code,
+        configurationData,
+        controlData,
       ];
 }
 
 class RFLevelShared extends Chart18Event {
-  const RFLevelShared({required this.code});
+  const RFLevelShared({
+    required this.code,
+    required this.configurationData,
+    required this.controlData,
+  });
 
   final String code;
+  final Map<String, String> configurationData;
+  final List<Map<String, String>> controlData;
 
   @override
   List<Object?> get props => [
         code,
+        configurationData,
+        controlData,
       ];
 }
 
@@ -93,7 +109,7 @@ class AllDataExported extends Chart18Event {
   final String errorMessage;
   final String code;
   final Map<String, String> configurationData;
-  final Map<String, String> controlData;
+  final List<Map<String, String>> controlData;
 
   @override
   List<Object?> get props => [

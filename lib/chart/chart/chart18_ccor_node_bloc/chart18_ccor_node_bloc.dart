@@ -221,6 +221,8 @@ class Chart18CCorNodeBloc
     final List<dynamic> result =
         await _amp18CCorNodeRepository.export1p8GCCorNodeRecords(
       code: event.code,
+      configurationData: event.configurationData,
+      controlData: event.controlData,
     );
 
     if (result[0]) {
@@ -249,6 +251,8 @@ class Chart18CCorNodeBloc
     final List<dynamic> result =
         await _amp18CCorNodeRepository.export1p8GCCorNodeRecords(
       code: event.code,
+      configurationData: event.configurationData,
+      controlData: event.controlData,
     );
 
     if (result[0]) {
@@ -279,6 +283,8 @@ class Chart18CCorNodeBloc
       final List<dynamic> result =
           await _amp18CCorNodeRepository.exportAll1p8GCCorNodeRecords(
         code: event.code,
+        configurationData: event.configurationData,
+        controlData: event.controlData,
       );
 
       if (result[0]) {

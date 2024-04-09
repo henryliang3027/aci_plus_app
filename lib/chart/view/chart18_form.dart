@@ -9,7 +9,7 @@ import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
-import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
+import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -341,9 +341,8 @@ class _PopupMenu extends StatelessWidget {
                       context.read<HomeBloc>().add(const DeviceRefreshed());
                       break;
                     case DataLogMenu.share:
-                      String? code =
-                          await showEnterCodeDialog(context: context);
-                      if (context.mounted) {
+                      showEnterCodeDialog(context: context)
+                          .then((String? code) {
                         if (code != null) {
                           if (code.isNotEmpty) {
                             Map<String, String> configurationData =
@@ -352,7 +351,8 @@ class _PopupMenu extends StatelessWidget {
                               characteristicData: characteristicData,
                             );
 
-                            Map<String, String> controlData = getControlData(
+                            List<Map<String, String>> controlData =
+                                getControlData(
                               context: context,
                               characteristicData: characteristicData,
                             );
@@ -364,12 +364,12 @@ class _PopupMenu extends StatelessWidget {
                                 ));
                           }
                         }
-                      }
+                      });
+
                       break;
                     case DataLogMenu.export:
-                      String? code =
-                          await showEnterCodeDialog(context: context);
-                      if (context.mounted) {
+                      showEnterCodeDialog(context: context)
+                          .then((String? code) {
                         if (code != null) {
                           if (code.isNotEmpty) {
                             Map<String, String> configurationData =
@@ -378,7 +378,8 @@ class _PopupMenu extends StatelessWidget {
                               characteristicData: characteristicData,
                             );
 
-                            Map<String, String> controlData = getControlData(
+                            List<Map<String, String>> controlData =
+                                getControlData(
                               context: context,
                               characteristicData: characteristicData,
                             );
@@ -390,46 +391,49 @@ class _PopupMenu extends StatelessWidget {
                                 ));
                           }
                         }
-                      }
+                      });
 
                       break;
                     case DataLogMenu.downloadAll:
-                      String? code =
-                          await showEnterCodeDialog(context: context);
+                      showEnterCodeDialog(context: context)
+                          .then((String? code) {
+                        if (code != null) {
+                          if (code.isNotEmpty) {
+                            showDownloadDialog()
+                                .then((List<dynamic>? resultOfDownload) {
+                              if (resultOfDownload != null) {
+                                bool isSuccessful = resultOfDownload[0];
+                                List<Log1p8G> log1p8Gs = resultOfDownload[1];
+                                String errorMessage = resultOfDownload[2];
+                                if (context.mounted) {
+                                  Map<String, String> configurationData =
+                                      getConfigurationData(
+                                    context: context,
+                                    characteristicData: characteristicData,
+                                  );
 
-                      if (code != null) {
-                        if (code.isNotEmpty) {
-                          List<dynamic>? resultOfDownload =
-                              await showDownloadDialog();
+                                  List<Map<String, String>> controlData =
+                                      getControlData(
+                                    context: context,
+                                    characteristicData: characteristicData,
+                                  );
 
-                          if (resultOfDownload != null) {
-                            bool isSuccessful = resultOfDownload[0];
-                            List<Log1p8G> log1p8Gs = resultOfDownload[1];
-                            String errorMessage = resultOfDownload[2];
-                            if (context.mounted) {
-                              Map<String, String> configurationData =
-                                  getConfigurationData(
-                                context: context,
-                                characteristicData: characteristicData,
-                              );
-
-                              Map<String, String> controlData = getControlData(
-                                context: context,
-                                characteristicData: characteristicData,
-                              );
-
-                              context.read<Chart18Bloc>().add(AllDataExported(
-                                    isSuccessful: isSuccessful,
-                                    log1p8Gs: log1p8Gs,
-                                    errorMessage: errorMessage,
-                                    code: code,
-                                    configurationData: configurationData,
-                                    controlData: controlData,
-                                  ));
-                            }
+                                  context
+                                      .read<Chart18Bloc>()
+                                      .add(AllDataExported(
+                                        isSuccessful: isSuccessful,
+                                        log1p8Gs: log1p8Gs,
+                                        errorMessage: errorMessage,
+                                        code: code,
+                                        configurationData: configurationData,
+                                        controlData: controlData,
+                                      ));
+                                }
+                              }
+                            });
                           }
                         }
-                      }
+                      });
 
                       break;
                     default:
@@ -518,6 +522,9 @@ class _PopupMenu extends StatelessWidget {
   }
 
   Widget buildRFLevelPageMenu(BuildContext context) {
+    Map<DataKey, String> characteristicData =
+        context.read<HomeBloc>().state.characteristicData;
+
     return BlocBuilder<Chart18Bloc, Chart18State>(
       builder: (context, state) {
         return state.enableTabChange
@@ -533,30 +540,57 @@ class _PopupMenu extends StatelessWidget {
                       context.read<HomeBloc>().add(const DeviceRefreshed());
                       break;
                     case RFLevelMenu.share:
-                      String? code =
-                          await showEnterCodeDialog(context: context);
-                      if (context.mounted) {
+                      showEnterCodeDialog(context: context)
+                          .then((String? code) {
                         if (code != null) {
                           if (code.isNotEmpty) {
-                            context
-                                .read<Chart18Bloc>()
-                                .add(RFLevelShared(code: code));
+                            Map<String, String> configurationData =
+                                getConfigurationData(
+                              context: context,
+                              characteristicData: characteristicData,
+                            );
+
+                            List<Map<String, String>> controlData =
+                                getControlData(
+                              context: context,
+                              characteristicData: characteristicData,
+                            );
+
+                            context.read<Chart18Bloc>().add(RFLevelShared(
+                                  code: code,
+                                  configurationData: configurationData,
+                                  controlData: controlData,
+                                ));
                           }
                         }
-                      }
+                      });
+
                       break;
                     case RFLevelMenu.export:
-                      String? code =
-                          await showEnterCodeDialog(context: context);
-                      if (context.mounted) {
+                      showEnterCodeDialog(context: context)
+                          .then((String? code) {
                         if (code != null) {
                           if (code.isNotEmpty) {
-                            context
-                                .read<Chart18Bloc>()
-                                .add(RFLevelExported(code: code));
+                            Map<String, String> configurationData =
+                                getConfigurationData(
+                              context: context,
+                              characteristicData: characteristicData,
+                            );
+
+                            List<Map<String, String>> controlData =
+                                getControlData(
+                              context: context,
+                              characteristicData: characteristicData,
+                            );
+
+                            context.read<Chart18Bloc>().add(RFLevelExported(
+                                  code: code,
+                                  configurationData: configurationData,
+                                  controlData: controlData,
+                                ));
                           }
                         }
-                      }
+                      });
 
                     default:
                       break;
@@ -636,8 +670,8 @@ class _PopupMenu extends StatelessWidget {
     };
 
     Map<String, String> onOffTexts = {
-      '0': AppLocalizations.of(context)!.on,
-      '1': AppLocalizations.of(context)!.off,
+      '0': AppLocalizations.of(context)!.off,
+      '1': AppLocalizations.of(context)!.on,
     };
 
     String location = characteristicData[DataKey.location] ?? '';
@@ -710,10 +744,36 @@ class _PopupMenu extends StatelessWidget {
     return configurationValues;
   }
 
-  Map<String, String> getControlData({
+  String getInputAttenuation({
+    required String alcMode,
+    required String inputAttenuation,
+    required String currentInputAttenuation,
+  }) {
+    return alcMode == '0' ? inputAttenuation : currentInputAttenuation;
+  }
+
+  String getInputEqualizer({
+    required String alcMode,
+    required String agcMode,
+    required String inputEqualizer,
+    required String currentInputEqualizer,
+  }) {
+    return alcMode == '0' && agcMode == '0'
+        ? inputEqualizer
+        : currentInputEqualizer;
+  }
+
+  List<Map<String, String>> getControlData({
     required BuildContext context,
     required Map<DataKey, String> characteristicData,
   }) {
+    Map<String, String> ingressSettingTexts = {
+      '0': '0${CustomStyle.dB}',
+      '1': '-3${CustomStyle.dB}',
+      '2': '-6${CustomStyle.dB}',
+      '4': AppLocalizations.of(context)!.ingressOpen,
+    };
+
     Map<Enum, String> controlItemTexts = {
       SettingControl.forwardInputAttenuation1:
           AppLocalizations.of(context)!.forwardInputAttenuation1,
@@ -757,20 +817,72 @@ class _PopupMenu extends StatelessWidget {
 
     String partId = characteristicData[DataKey.partId]!;
 
-    Map<String, String> controlValues = {
-      AppLocalizations.of(context)!.balance: '',
-    };
+    List<Map<String, String>> controlValues = [
+      {
+        AppLocalizations.of(context)!.balance: '',
+      }
+    ];
 
-    Map<Enum, DataKey> controlItemMap =
-        SettingItemTable.controlItemDataMapCollection[partId]!;
+    Map<Enum, DataKey> forwardControlItemMap =
+        SettingItemTable.controlItemDataMapCollection[partId]![0];
 
-    for (MapEntry entry in controlItemMap.entries) {
+    Map<Enum, DataKey> returnControlItemMap =
+        SettingItemTable.controlItemDataMapCollection[partId]![1];
+
+    controlValues
+        .add({AppLocalizations.of(context)!.forwardControlParameters: ''});
+
+    for (MapEntry entry in forwardControlItemMap.entries) {
       Enum key = entry.key;
       DataKey value = entry.value;
 
       String controlName = controlItemTexts[key] ?? '';
       String controlValue = characteristicData[value] ?? '';
-      controlValues[controlName] = controlValue;
+
+      String alcMode = characteristicData[DataKey.alcMode]!;
+      String agcMode = characteristicData[DataKey.agcMode]!;
+
+      if (key.name == SettingControl.forwardInputAttenuation1.name) {
+        controlValue = getInputAttenuation(
+          alcMode: alcMode,
+          inputAttenuation: controlValue,
+          currentInputAttenuation:
+              characteristicData[DataKey.currentDSVVA1] ?? '',
+        );
+      }
+
+      if (key.name == SettingControl.forwardInputEqualizer1.name) {
+        controlValue = getInputEqualizer(
+          alcMode: alcMode,
+          agcMode: agcMode,
+          inputEqualizer: controlValue,
+          currentInputEqualizer:
+              characteristicData[DataKey.currentDSSlope1] ?? '',
+        );
+      }
+
+      controlValue = '$controlValue ${CustomStyle.dB}';
+
+      controlValues.add({controlName: controlValue});
+    }
+
+    controlValues
+        .add({AppLocalizations.of(context)!.returnControlParameters: ''});
+
+    for (MapEntry entry in returnControlItemMap.entries) {
+      Enum key = entry.key;
+      DataKey value = entry.value;
+
+      String controlName = controlItemTexts[key] ?? '';
+      String controlValue = characteristicData[value] ?? '';
+
+      if (value.name.startsWith('ingressSetting')) {
+        controlValue = ingressSettingTexts[controlValue] ?? '';
+      } else {
+        controlValue = '$controlValue ${CustomStyle.dB}';
+      }
+
+      controlValues.add({controlName: controlValue});
     }
 
     return controlValues;

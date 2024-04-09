@@ -1040,8 +1040,10 @@ class Amp18CCorNodeParser {
 
   Future<dynamic> export1p8GCCorNodeRecords({
     required String code,
-    required String coordinate,
-    required String location,
+    required Map<String, String> configurationData,
+    required List<Map<String, String>> controlData,
+    // required String coordinate,
+    // required String location,
     required List<Log1p8GCCorNode> log1p8Gs,
     required List<Event1p8GCCorNode> event1p8Gs,
   }) async {
@@ -1079,8 +1081,22 @@ class Amp18CCorNodeParser {
     Sheet eventSheet = excel['Event'];
 
     userInformationSheet.insertRowIterables(['Code Number', code], 0);
-    userInformationSheet.insertRowIterables(['Coordinate', coordinate], 3);
-    userInformationSheet.insertRowIterables(['Location', location], 6);
+
+    // 空兩行後再開始寫入 configuration data
+    List<String> configurationDataKeys = configurationData.keys.toList();
+    for (int i = 0; i < configurationDataKeys.length; i++) {
+      String key = configurationDataKeys[i];
+      String value = configurationData[key] ?? '';
+
+      userInformationSheet.insertRowIterables([key, value], i + 3);
+    }
+
+    // 空兩行後再開始寫入 control data
+    for (int i = 0; i < controlData.length; i++) {
+      MapEntry entry = controlData[i].entries.first;
+      userInformationSheet.insertRowIterables(
+          [entry.key, entry.value], i + configurationDataKeys.length + 5);
+    }
 
     eventSheet.insertRowIterables(eventHeader, 0);
     List<List<String>> eventContent = formatEvent1p8G(event1p8Gs);

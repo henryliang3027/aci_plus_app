@@ -62,49 +62,52 @@ class _Downloader18CCorNodeFormState extends State<Downloader18CCorNodeForm>
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(26.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppLocalizations.of(context)!.dialogTitleDownloading,
-            style: const TextStyle(
-              fontSize: CustomStyle.sizeXXL,
+    return PopScope(
+      canPop: false,
+      child: Padding(
+        padding: const EdgeInsets.all(26.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.dialogTitleDownloading,
+              style: const TextStyle(
+                fontSize: CustomStyle.sizeXXL,
+              ),
             ),
-          ),
-          const SizedBox(
-            height: CustomStyle.sizeXXL,
-          ),
-          AnimatedBuilder(
-            animation: animationController,
-            builder: (context, child) {
-              Downloader18CCorNodeState downloaderState =
-                  context.read<Downloader18CCorNodeBloc>().state;
-              return SingleChildScrollView(
-                child: ListBody(
-                  children: <Widget>[
-                    LinearProgressIndicator(
-                      value: animationController.value,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 10.0,
+            const SizedBox(
+              height: CustomStyle.sizeXXL,
+            ),
+            AnimatedBuilder(
+              animation: animationController,
+              builder: (context, child) {
+                Downloader18CCorNodeState downloaderState =
+                    context.read<Downloader18CCorNodeBloc>().state;
+                return SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      LinearProgressIndicator(
+                        value: animationController.value,
                       ),
-                      child: Text(
-                        '${downloaderState.currentProgress / 10 * 100.0}%',
-                        style: const TextStyle(
-                          fontSize: CustomStyle.sizeL,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10.0,
+                        ),
+                        child: Text(
+                          '${downloaderState.currentProgress / 10 * 100.0}%',
+                          style: const TextStyle(
+                            fontSize: CustomStyle.sizeL,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

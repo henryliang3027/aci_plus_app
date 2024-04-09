@@ -450,7 +450,7 @@ class Amp18Repository {
   Future<dynamic> export1p8GRecords({
     required String code,
     required Map<String, String> configurationData,
-    required Map<String, String> controlData,
+    required List<Map<String, String>> controlData,
   }) async {
     List<Log1p8G> log1p8Gs = _amp18ChartCache.readLoadMoreLog1p8Gs();
     List<Event1p8G> event1p8Gs = _amp18ChartCache.readEvent1p8Gs();
@@ -491,7 +491,7 @@ class Amp18Repository {
   Future<dynamic> exportAll1p8GRecords({
     required String code,
     required Map<String, String> configurationData,
-    required Map<String, String> controlData,
+    required List<Map<String, String>> controlData,
   }) async {
     List<Log1p8G> log1p8Gs = _amp18ChartCache.readAllLog1p8Gs();
     List<Event1p8G> event1p8Gs = _amp18ChartCache.readEvent1p8Gs();
@@ -513,17 +513,21 @@ class Amp18Repository {
 
   Future<dynamic> export1p8GRFInOuts({
     required String code,
+    required Map<String, String> configurationData,
+    required List<Map<String, String>> controlData,
   }) async {
     List<RFInOut> rfInOuts = _amp18ChartCache.readRFInOuts();
 
-    String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
-    String location = _characteristicDataCache[DataKey.location] ?? '';
+    // String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
+    // String location = _characteristicDataCache[DataKey.location] ?? '';
 
     List<dynamic> result = await _amp18Parser.export1p8GRFInOuts(
       rfInOuts: rfInOuts,
       code: code,
-      coordinate: coordinate,
-      location: location,
+      configurationData: configurationData,
+      controlData: controlData,
+      // coordinate: coordinate,
+      // location: location,
     );
     return result;
   }

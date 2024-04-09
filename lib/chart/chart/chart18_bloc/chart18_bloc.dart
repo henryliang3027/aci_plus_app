@@ -163,6 +163,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
 
     final List<dynamic> result = await _amp18Repository.export1p8GRFInOuts(
       code: event.code,
+      configurationData: event.configurationData,
+      controlData: event.controlData,
     );
 
     if (result[0]) {
@@ -192,6 +194,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
 
     final List<dynamic> result = await _amp18Repository.export1p8GRFInOuts(
       code: event.code,
+      configurationData: event.configurationData,
+      controlData: event.controlData,
     );
 
     if (result[0]) {

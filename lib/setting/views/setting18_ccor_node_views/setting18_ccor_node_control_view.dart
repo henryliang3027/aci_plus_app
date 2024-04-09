@@ -6,7 +6,7 @@ import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_control/setting18_ccor_node_control_bloc.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
-import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
+import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

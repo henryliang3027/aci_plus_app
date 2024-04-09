@@ -3,7 +3,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
-import 'package:aci_plus_app/setting/model/setting_wisgets.dart';
+import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
