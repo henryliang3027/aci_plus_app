@@ -29,8 +29,7 @@ class Information18CCorNodeBloc
     Emitter<Information18CCorNodeState> emit,
   ) async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String appVersion =
-        'V ${packageInfo.version}-beta${packageInfo.buildNumber}';
+    String appVersion = 'V ${packageInfo.version}-beta2';
 
     emit(state.copyWith(
       appVersion: appVersion,
