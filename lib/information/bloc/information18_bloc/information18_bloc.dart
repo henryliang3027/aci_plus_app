@@ -34,8 +34,7 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     Emitter<Information18State> emit,
   ) async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String appVersion =
-        'V ${packageInfo.version}-beta${packageInfo.buildNumber}';
+    String appVersion = 'V ${packageInfo.version}-beta2';
 
     emit(state.copyWith(
       appVersion: appVersion,
