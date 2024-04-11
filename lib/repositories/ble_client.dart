@@ -1,38 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-enum ScanStatus {
-  success,
-  failure,
-  disable,
-}
-
-class ScanReport {
-  const ScanReport({
-    required this.scanStatus,
-    this.discoveredDevice,
-  });
-
-  final ScanStatus scanStatus;
-  final DiscoveredDevice? discoveredDevice;
-}
-
-class ConnectionReport {
-  const ConnectionReport({
-    required this.connectionState,
-    this.errorMessage = '',
-  });
-
-  final DeviceConnectionState connectionState;
-  final String errorMessage;
-}
 
 class BLEClient {
   BLEClient._() : _ble = FlutterReactiveBle();
@@ -107,7 +82,7 @@ class BLEClient {
         _scanReportStreamController.add(
           const ScanReport(
             scanStatus: ScanStatus.failure,
-            discoveredDevice: null,
+            perigheral: null,
           ),
         );
 
@@ -123,7 +98,10 @@ class BLEClient {
             _scanReportStreamController.add(
               ScanReport(
                 scanStatus: ScanStatus.success,
-                discoveredDevice: device,
+                perigheral: Perigheral(
+                  id: device.id,
+                  name: device.name,
+                ),
               ),
             );
           }
@@ -133,7 +111,7 @@ class BLEClient {
         _scanReportStreamController.add(
           const ScanReport(
             scanStatus: ScanStatus.failure,
-            discoveredDevice: null,
+            perigheral: null,
           ),
         );
       });
@@ -142,7 +120,7 @@ class BLEClient {
       _scanReportStreamController.add(
         const ScanReport(
           scanStatus: ScanStatus.disable,
-          discoveredDevice: null,
+          perigheral: null,
         ),
       );
     }
@@ -150,13 +128,13 @@ class BLEClient {
     yield* _scanReportStreamController.stream;
   }
 
-  Future<void> connectToDevice(DiscoveredDevice discoveredDevice) async {
+  Future<void> connectToDevice(String deviceId) async {
     startConnectionTimer();
 
     _connectionReportStreamController = StreamController<ConnectionReport>();
     _connectionStreamSubscription = _ble!
         .connectToDevice(
-      id: discoveredDevice.id,
+      id: deviceId,
     )
         .listen((connectionStateUpdate) async {
       print('current connection state: $connectionStateUpdate');
@@ -172,7 +150,7 @@ class BLEClient {
           _qualifiedCharacteristic = QualifiedCharacteristic(
             serviceId: Uuid.parse(_serviceId),
             characteristicId: Uuid.parse(_characteristicId),
-            deviceId: discoveredDevice.id,
+            deviceId: deviceId,
           );
 
           _characteristicStreamSubscription = _ble!
@@ -299,7 +277,7 @@ class BLEClient {
           });
 
           _connectionReportStreamController.add(const ConnectionReport(
-            connectionState: DeviceConnectionState.connected,
+            connectStatus: ConnectStatus.connected,
           ));
 
           break;
@@ -316,7 +294,7 @@ class BLEClient {
           // cancelCompleterOnDisconnected();
 
           _connectionReportStreamController.add(const ConnectionReport(
-            connectionState: DeviceConnectionState.disconnected,
+            connectStatus: ConnectStatus.disconnected,
             errorMessage: 'Device connection failed',
           ));
 
@@ -330,7 +308,7 @@ class BLEClient {
       // cancelCharacteristicDataTimer(name: 'connection closed');
       // cancelCompleterOnDisconnected();
       _connectionReportStreamController.add(ConnectionReport(
-        connectionState: DeviceConnectionState.disconnected,
+        connectStatus: ConnectStatus.disconnected,
         errorMessage: error.toString(),
       ));
     });
@@ -530,7 +508,7 @@ class BLEClient {
   void startConnectionTimer() {
     _connectionTimer = Timer(Duration(seconds: _connectionTimeout), () async {
       _connectionReportStreamController.add(const ConnectionReport(
-        connectionState: DeviceConnectionState.disconnected,
+        connectStatus: ConnectStatus.disconnected,
         errorMessage: 'disconnected',
       ));
 

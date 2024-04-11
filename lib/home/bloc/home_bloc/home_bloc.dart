@@ -3,7 +3,7 @@ import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
-import 'package:aci_plus_app/repositories/ble_client.dart';
+import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
@@ -105,7 +105,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       case ScanStatus.success:
         emit(state.copyWith(
           scanStatus: FormStatus.requestSuccess,
-          device: event.scanReport.discoveredDevice,
+          device: event.scanReport.perigheral,
         ));
 
         // _connectionReportStreamSubscription =
@@ -121,8 +121,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           add(DeviceConnectionChanged(connectionReport));
         });
 
-        _aciDeviceRepository
-            .connectToDevice(event.scanReport.discoveredDevice!);
+        _aciDeviceRepository.connectToDevice(event.scanReport.perigheral!.id);
 
         break;
       case ScanStatus.failure:
@@ -158,14 +157,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     DeviceConnectionChanged event,
     Emitter<HomeState> emit,
   ) async {
-    switch (event.connectionReport.connectionState) {
-      case DeviceConnectionState.connecting:
+    switch (event.connectionReport.connectStatus) {
+      case ConnectStatus.connecting:
         // emit(state.copyWith(
         //   scanStatus: FormStatus.requestSuccess,
         //   connectionStatus: FormStatus.requestInProgress,
         // ));
         break;
-      case DeviceConnectionState.connected:
+      case ConnectStatus.connected:
         // List<dynamic> result =
         //     await _dsimRepository.getACIDeviceType(deviceId: state.device!.id);
 
@@ -230,14 +229,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
 
         break;
-      case DeviceConnectionState.disconnecting:
+      case ConnectStatus.disconnecting:
         // emit(state.copyWith(
         //   scanStatus: FormStatus.requestSuccess,
         //   connectionStatus: FormStatus.requestFailure,
         //   // loadingStatus: FormStatus.requestFailure,
         // ));
         break;
-      case DeviceConnectionState.disconnected:
+      case ConnectStatus.disconnected:
         // emit(state.copyWith(
         //   scanStatus: FormStatus.requestSuccess,
         //   connectionStatus: FormStatus.requestFailure,

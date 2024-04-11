@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/repositories/ble_client.dart';
+import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
 class ACIDeviceRepository {
@@ -16,8 +17,8 @@ class ACIDeviceRepository {
     yield* _bleClient.connectionStateReport;
   }
 
-  Future<void> connectToDevice(DiscoveredDevice discoveredDevice) {
-    return _bleClient.connectToDevice(discoveredDevice);
+  Future<void> connectToDevice(String deviceId) {
+    return _bleClient.connectToDevice(deviceId);
   }
 
   Future<void> closeScanStream() async {
