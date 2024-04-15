@@ -1,26 +1,23 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:ui';
+
 import 'package:aci_plus_app/core/command18.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/data_key.dart';
-import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
+import 'package:aci_plus_app/repositories/ble_windows_client.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:intl/intl.dart';
-
 class Amp18Repository {
   Amp18Repository()
-      : _bleClient = BLEClient.instance,
+      : _bleClient = BLEWindowsClient.instance,
         _amp18Parser = Amp18Parser(),
         _amp18ChartCache = Amp18ChartCache();
 
-  final BLEClient _bleClient;
+  final BLEWindowsClient _bleClient;
   final Amp18Parser _amp18Parser;
   final Amp18ChartCache _amp18ChartCache;
 
@@ -2011,7 +2008,7 @@ class Amp18Repository {
 
     print('get data from request command 1p8G$commandIndex');
 
-    int rssi = await _bleClient.getRSSI();
+    int rssi = -65;
 
     // 依據藍牙訊號強度來決定延遲時間, RSSI 為一個負的數值
     int ms = rssi >= -65 ? 26 : 27;

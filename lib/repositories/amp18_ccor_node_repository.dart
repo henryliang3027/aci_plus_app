@@ -5,20 +5,20 @@ import 'dart:typed_data';
 import 'package:aci_plus_app/core/command18_c_core_node.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/data_key.dart';
-import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
+import 'package:aci_plus_app/repositories/ble_windows_client.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 
 class Amp18CCorNodeRepository {
   Amp18CCorNodeRepository()
-      : _bleClient = BLEClient.instance,
+      : _bleClient = BLEWindowsClient.instance,
         _amp18CCorNodeParser = Amp18CCorNodeParser(),
         _amp18CCorNodeChartCache = Amp18CCorNodeChartCache();
 
-  final BLEClient _bleClient;
+  final BLEWindowsClient _bleClient;
   final Amp18CCorNodeChartCache _amp18CCorNodeChartCache;
   final Amp18CCorNodeParser _amp18CCorNodeParser;
 
