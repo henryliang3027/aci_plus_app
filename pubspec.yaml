@@ -41,6 +41,7 @@ dependencies:
   hive_flutter: ^1.1.0
   formz: ^0.6.1
   permission_handler: ^10.4.5
+  win_ble: ^1.1.1
   flutter_reactive_ble: ^5.2.0
   bluetooth_enable_fork: ^0.1.6 # check if bluetooth is enabled
   location: ^5.0.3
