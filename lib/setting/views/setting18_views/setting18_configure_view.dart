@@ -993,6 +993,8 @@ class _LogInterval extends StatelessWidget {
           previous.logInterval != current.logInterval ||
           previous.editMode != current.editMode,
       builder: (context, state) {
+        const int minValue = 5;
+        const int maxValue = 240;
         return Padding(
           padding: const EdgeInsets.only(
             bottom: 30.0,
@@ -1019,7 +1021,7 @@ class _LogInterval extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                padding: const EdgeInsets.fromLTRB(10.0, 0.0, 6.0, 0.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(
@@ -1030,7 +1032,10 @@ class _LogInterval extends StatelessWidget {
                           alignment: Alignment.bottomCenter,
                           height: 22,
                           child: Text(
-                            '${(List.from([1, 60])[index]).toStringAsFixed(0)}',
+                            '${(List.from([
+                                  minValue,
+                                  maxValue,
+                                ])[index]).toStringAsFixed(0)}',
                             style: const TextStyle(
                               fontSize: CustomStyle.sizeM,
                             ),
@@ -1058,9 +1063,9 @@ class _LogInterval extends StatelessWidget {
                   overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
                 ),
                 child: Slider(
-                  min: 1.0,
-                  max: 60.0,
-                  divisions: 60,
+                  min: minValue.toDouble(),
+                  max: maxValue.toDouble(),
+                  divisions: (maxValue - minValue) ~/ 5,
                   value: getValue(state.logInterval),
                   onChanged: state.editMode
                       ? (double logInterval) {
