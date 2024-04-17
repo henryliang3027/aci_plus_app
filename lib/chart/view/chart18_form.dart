@@ -289,6 +289,7 @@ enum RFLevelMenu {
   refresh,
   share,
   export,
+  downloadAll,
 }
 
 Future<String?> showEnterCodeDialog({
@@ -299,6 +300,21 @@ Future<String?> showEnterCodeDialog({
       builder: (context) {
         return const CodeInputPage();
       });
+}
+
+Future<List<dynamic>?> showDownloadDialog({
+  required BuildContext context,
+}) async {
+  return showDialog<List<dynamic>>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+
+    builder: (BuildContext context) {
+      return const Dialog(
+        child: Downloader18Page(),
+      );
+    },
+  );
 }
 
 class _PopupMenu extends StatelessWidget {
@@ -315,19 +331,6 @@ class _PopupMenu extends StatelessWidget {
 
     return BlocBuilder<Chart18Bloc, Chart18State>(
       builder: (context, state) {
-        Future<List<dynamic>?> showDownloadDialog() async {
-          return showDialog<List<dynamic>>(
-            context: context,
-            barrierDismissible: false, // user must tap button!
-
-            builder: (BuildContext context) {
-              return const Dialog(
-                child: Downloader18Page(),
-              );
-            },
-          );
-        }
-
         return state.enableTabChange
             ? PopupMenuButton<DataLogMenu>(
                 icon: const Icon(
@@ -399,7 +402,7 @@ class _PopupMenu extends StatelessWidget {
                           .then((String? code) {
                         if (code != null) {
                           if (code.isNotEmpty) {
-                            showDownloadDialog()
+                            showDownloadDialog(context: context)
                                 .then((List<dynamic>? resultOfDownload) {
                               if (resultOfDownload != null) {
                                 bool isSuccessful = resultOfDownload[0];
@@ -592,6 +595,49 @@ class _PopupMenu extends StatelessWidget {
                         }
                       });
 
+                      break;
+                    case RFLevelMenu.downloadAll:
+                      showEnterCodeDialog(context: context)
+                          .then((String? code) {
+                        if (code != null) {
+                          if (code.isNotEmpty) {
+                            showDownloadDialog(context: context)
+                                .then((List<dynamic>? resultOfDownload) {
+                              if (resultOfDownload != null) {
+                                bool isSuccessful = resultOfDownload[0];
+                                List<Log1p8G> log1p8Gs = resultOfDownload[1];
+                                String errorMessage = resultOfDownload[2];
+                                if (context.mounted) {
+                                  Map<String, String> configurationData =
+                                      getConfigurationData(
+                                    context: context,
+                                    characteristicData: characteristicData,
+                                  );
+
+                                  List<Map<String, String>> controlData =
+                                      getControlData(
+                                    context: context,
+                                    characteristicData: characteristicData,
+                                  );
+
+                                  context
+                                      .read<Chart18Bloc>()
+                                      .add(AllDataExported(
+                                        isSuccessful: isSuccessful,
+                                        log1p8Gs: log1p8Gs,
+                                        errorMessage: errorMessage,
+                                        code: code,
+                                        configurationData: configurationData,
+                                        controlData: controlData,
+                                      ));
+                                }
+                              }
+                            });
+                          }
+                        }
+                      });
+
+                      break;
                     default:
                       break;
                   }
@@ -649,6 +695,24 @@ class _PopupMenu extends StatelessWidget {
                           width: 10.0,
                         ),
                         Text(AppLocalizations.of(context)!.export),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem<RFLevelMenu>(
+                    value: RFLevelMenu.downloadAll,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.download,
+                          size: 20.0,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(AppLocalizations.of(context)!.downloadAll),
                       ],
                     ),
                   ),

@@ -16,3 +16,8 @@ enum CharacteristicError {
   invalidData,
   timeoutOccured,
 }
+
+enum DownloadType {
+  log,
+  rfLog,
+}
