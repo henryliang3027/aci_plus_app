@@ -89,6 +89,9 @@ class Setting18ConfigureView extends StatelessWidget {
         return AppLocalizations.of(context)!.dialogMessageALCModeSetting;
       } else if (item == DataKey.logInterval.name) {
         return AppLocalizations.of(context)!.dialogMessageLogIntervalSetting;
+      } else if (item == DataKey.rfOutputLogInterval.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageRFOutputLogIntervalSetting;
       } else if (item == DataKey.tgcCableLength.name) {
         return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
       } else {
@@ -245,6 +248,9 @@ class Setting18ConfigureView extends StatelessWidget {
             break;
           case SettingConfiruration.logInterval:
             widgets.add(const _LogInterval());
+            break;
+          case SettingConfiruration.rfOutputLogInterval:
+            widgets.add(const _RFOutputLogInterval());
             break;
           case SettingConfiruration.cableLength:
             // widgets.add(const _TGCCableLength());
@@ -980,135 +986,73 @@ class _LogInterval extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double getValue(String logInterval) {
-      if (logInterval.isNotEmpty) {
-        return double.parse(logInterval);
-      } else {
-        return 1.0;
-      }
-    }
-
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       buildWhen: (previous, current) =>
           previous.logInterval != current.logInterval ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        const int minValue = 5;
-        const int maxValue = 240;
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 30.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: CustomStyle.sizeL,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '${AppLocalizations.of(context)!.logInterval}: ${state.logInterval} ${AppLocalizations.of(context)!.minute}',
-                        style: const TextStyle(
-                          fontSize: CustomStyle.sizeXL,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10.0, 0.0, 6.0, 0.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(
-                    2,
-                    (index) => Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.bottomCenter,
-                          height: 22,
-                          child: Text(
-                            '${(List.from([
-                                  minValue,
-                                  maxValue,
-                                ])[index]).toStringAsFixed(0)}',
-                            style: const TextStyle(
-                              fontSize: CustomStyle.sizeM,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.bottomCenter,
-                          height: 16,
-                          child: VerticalDivider(
-                            indent: 0,
-                            thickness: 1.2,
-                            color: Colors.grey.shade300,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SliderTheme(
-                data: const SliderThemeData(
-                  valueIndicatorColor: Colors.red,
-                  showValueIndicator: ShowValueIndicator.always,
-                  overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
-                ),
-                child: Slider(
-                  min: minValue.toDouble(),
-                  max: maxValue.toDouble(),
-                  divisions: (maxValue - minValue) ~/ 5,
-                  value: getValue(state.logInterval),
-                  onChanged: state.editMode
-                      ? (double logInterval) {
-                          context.read<Setting18ConfigureBloc>().add(
-                              LogIntervalChanged(
-                                  logInterval.toStringAsFixed(0)));
-                        }
-                      : null,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton.filled(
-                    visualDensity: const VisualDensity(horizontal: -4.0),
-                    icon: const Icon(
-                      Icons.remove,
-                    ),
-                    onPressed: state.editMode
-                        ? () {
-                            context
-                                .read<Setting18ConfigureBloc>()
-                                .add(const LogIntervalDecreased());
-                          }
-                        : null,
-                  ),
-                  IconButton.filled(
-                    visualDensity: const VisualDensity(horizontal: -4.0),
-                    icon: const Icon(
-                      Icons.add,
-                    ),
-                    onPressed: state.editMode
-                        ? () {
-                            context
-                                .read<Setting18ConfigureBloc>()
-                                .add(const LogIntervalIncreased());
-                          }
-                        : null,
-                  ),
-                ],
-              ),
-            ],
-          ),
+        return configurationIntervalSlider(
+          context: context,
+          editMode: state.editMode,
+          title: AppLocalizations.of(context)!.logInterval,
+          minValue: 5,
+          currentValue: state.logInterval,
+          maxValue: 240,
+          interval: 5,
+          onChanged: (double logInterval) {
+            context
+                .read<Setting18ConfigureBloc>()
+                .add(LogIntervalChanged(logInterval.toStringAsFixed(0)));
+          },
+          onIncreased: () {
+            context
+                .read<Setting18ConfigureBloc>()
+                .add(const LogIntervalIncreased());
+          },
+          onDecreased: () {
+            context
+                .read<Setting18ConfigureBloc>()
+                .add(const LogIntervalDecreased());
+          },
+        );
+      },
+    );
+  }
+}
+
+class _RFOutputLogInterval extends StatelessWidget {
+  const _RFOutputLogInterval({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
+      buildWhen: (previous, current) =>
+          previous.rfOutputLogInterval != current.rfOutputLogInterval ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return configurationIntervalSlider(
+          context: context,
+          editMode: state.editMode,
+          title: AppLocalizations.of(context)!.rfOutputLogInterval,
+          minValue: 30,
+          currentValue: state.rfOutputLogInterval,
+          maxValue: 240,
+          interval: 30,
+          onChanged: (double rfOutputLogInterval) {
+            context.read<Setting18ConfigureBloc>().add(
+                RFOutputLogIntervalChanged(
+                    rfOutputLogInterval.toStringAsFixed(0)));
+          },
+          onIncreased: () {
+            context
+                .read<Setting18ConfigureBloc>()
+                .add(const RFOutputLogIntervalIncreased());
+          },
+          onDecreased: () {
+            context
+                .read<Setting18ConfigureBloc>()
+                .add(const RFOutputLogIntervalDecreased());
+          },
         );
       },
     );

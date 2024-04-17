@@ -12,6 +12,117 @@ double _getValue(String value) {
   }
 }
 
+Widget configurationIntervalSlider({
+  required BuildContext context,
+  required bool editMode,
+  required String title,
+  required double minValue,
+  required String currentValue,
+  required double maxValue,
+  required int interval,
+  required ValueChanged<double> onChanged,
+  required VoidCallback onIncreased,
+  required VoidCallback onDecreased,
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(
+      bottom: 30.0,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: CustomStyle.sizeL,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  '$title: $currentValue ${AppLocalizations.of(context)!.minute}',
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 6.0, 0.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(
+              2,
+              (index) => Column(
+                children: [
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    height: 22,
+                    child: Text(
+                      '${(List.from([
+                            minValue,
+                            maxValue,
+                          ])[index]).toStringAsFixed(0)}',
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeM,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    height: 16,
+                    child: VerticalDivider(
+                      indent: 0,
+                      thickness: 1.2,
+                      color: Colors.grey.shade300,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SliderTheme(
+          data: const SliderThemeData(
+            valueIndicatorColor: Colors.red,
+            showValueIndicator: ShowValueIndicator.always,
+            overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
+          ),
+          child: Slider(
+            min: minValue.toDouble(),
+            max: maxValue.toDouble(),
+            divisions: (maxValue - minValue) ~/ interval,
+            value: _getValue(currentValue),
+            onChanged: editMode ? onChanged : null,
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton.filled(
+              visualDensity: const VisualDensity(horizontal: -4.0),
+              icon: const Icon(
+                Icons.remove,
+              ),
+              onPressed: editMode ? onDecreased : null,
+            ),
+            IconButton.filled(
+              visualDensity: const VisualDensity(horizontal: -4.0),
+              icon: const Icon(
+                Icons.add,
+              ),
+              onPressed: editMode ? onIncreased : null,
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
 Widget controlParameterSlider({
   required BuildContext context,
   required bool editMode,

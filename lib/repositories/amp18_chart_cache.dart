@@ -7,6 +7,7 @@ class Amp18ChartCache {
   final List<Log1p8G> _loadMoreLog1p8Gs = [];
   final List<Log1p8G> _allLog1p8Gs = [];
   final List<RFInOut> _rfInOuts = [];
+  final List<RFOut> _rfOuts = [];
 
   void writeEvent1p8Gs(List<Event1p8G> event1p8Gs) {
     _event1p8Gs.addAll(event1p8Gs);
@@ -40,6 +41,14 @@ class Amp18ChartCache {
     return _rfInOuts;
   }
 
+  void writeRFOuts(List<RFOut> rfOuts) {
+    _rfOuts.addAll(rfOuts);
+  }
+
+  List<RFOut> readRFOuts() {
+    return _rfOuts;
+  }
+
   void clearEvent1p8Gs() {
     _event1p8Gs.clear();
   }
@@ -54,5 +63,9 @@ class Amp18ChartCache {
 
   void clearRFInOuts() {
     _rfInOuts.clear();
+  }
+
+  void clearRFOuts() {
+    _rfOuts.clear();
   }
 }

@@ -19,6 +19,7 @@ class Setting18ConfigureState extends Equatable {
     this.fwdAGCMode = '',
     this.autoLevelControl = '',
     this.logInterval = '30',
+    this.rfOutputLogInterval = '30',
     this.tgcCableLength = '',
     this.editMode = false,
     this.enableSubmission = false,
@@ -45,6 +46,7 @@ class Setting18ConfigureState extends Equatable {
   final String fwdAGCMode;
   final String autoLevelControl;
   final String logInterval;
+  final String rfOutputLogInterval;
   final String tgcCableLength;
   final bool editMode;
   final bool enableSubmission;
@@ -71,6 +73,7 @@ class Setting18ConfigureState extends Equatable {
     String? fwdAGCMode,
     String? autoLevelControl,
     String? logInterval,
+    String? rfOutputLogInterval,
     String? tgcCableLength,
     bool? editMode,
     bool? enableSubmission,
@@ -103,6 +106,7 @@ class Setting18ConfigureState extends Equatable {
       fwdAGCMode: fwdAGCMode ?? this.fwdAGCMode,
       autoLevelControl: autoLevelControl ?? this.autoLevelControl,
       logInterval: logInterval ?? this.logInterval,
+      rfOutputLogInterval: rfOutputLogInterval ?? this.rfOutputLogInterval,
       tgcCableLength: tgcCableLength ?? this.tgcCableLength,
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
@@ -133,6 +137,7 @@ class Setting18ConfigureState extends Equatable {
         fwdAGCMode,
         autoLevelControl,
         logInterval,
+        rfOutputLogInterval,
         tgcCableLength,
         editMode,
         enableSubmission,

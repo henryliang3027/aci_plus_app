@@ -12,6 +12,7 @@ enum DataKey {
   currentPilot,
   currentPilotMode,
   logInterval,
+  rfOutputLogInterval,
   nowDateTime,
   hasDualPilot,
   alarmRSeverity,

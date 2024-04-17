@@ -148,6 +148,7 @@ class Amp18Repository {
         DataKey.rfOutputPowerAlarmState: a1p8g1.outputPowerAlarmState,
         DataKey.location: a1p8g1.location,
         DataKey.logInterval: a1p8g1.logInterval,
+        DataKey.rfOutputLogInterval: a1p8g1.rfOutputLogInterval,
         DataKey.dsVVA1: a1p8g1.dsVVA1,
         DataKey.dsSlope1: a1p8g1.dsSlope1,
         DataKey.dsVVA2: a1p8g1.dsVVA2,
@@ -431,6 +432,10 @@ class Amp18Repository {
     _amp18ChartCache.clearRFInOuts();
   }
 
+  void clearRFOuts() {
+    _amp18ChartCache.clearRFOuts();
+  }
+
   void writeEvent1p8Gs(List<Event1p8G> event1p8Gs) {
     _amp18ChartCache.writeEvent1p8Gs(event1p8Gs);
   }
@@ -445,6 +450,10 @@ class Amp18Repository {
 
   void writeRFInOuts(List<RFInOut> rfInOuts) {
     _amp18ChartCache.writeRFInOuts(rfInOuts);
+  }
+
+  void writeRFOuts(List<RFOut> rfOuts) {
+    _amp18ChartCache.writeRFOuts(rfOuts);
   }
 
   Future<dynamic> export1p8GRecords({
@@ -523,6 +532,29 @@ class Amp18Repository {
 
     List<dynamic> result = await _amp18Parser.export1p8GRFInOuts(
       rfInOuts: rfInOuts,
+      code: code,
+      configurationData: configurationData,
+      controlData: controlData,
+      // coordinate: coordinate,
+      // location: location,
+    );
+    return result;
+  }
+
+  Future<dynamic> export1p8GAllRFOuts({
+    required String code,
+    required Map<String, String> configurationData,
+    required List<Map<String, String>> controlData,
+  }) async {
+    List<RFInOut> rfInOuts = _amp18ChartCache.readRFInOuts();
+    List<RFOut> rfOuts = _amp18ChartCache.readRFOuts();
+
+    // String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
+    // String location = _characteristicDataCache[DataKey.location] ?? '';
+
+    List<dynamic> result = await _amp18Parser.export1p8GAllRFOutputs(
+      rfInOuts: rfInOuts,
+      rfOuts: rfOuts,
       code: code,
       configurationData: configurationData,
       controlData: controlData,
@@ -1512,8 +1544,33 @@ class Amp18Repository {
     }
   }
 
-  Future<dynamic> set1p8GDSVVA1(String strValue) async {
+  Future<dynamic> set1p8GRFOutputLogInterval(String rfOutputLogInterval) async {
     int commandIndex = 339;
+
+    int interval = int.parse(rfOutputLogInterval);
+
+    print('get data from request command 1p8G$commandIndex');
+
+    Command18.setRFOutputLogIntervalCmd[7] = interval;
+
+    CRC16.calculateCRC16(
+      command: Command18.setRFOutputLogIntervalCmd,
+      usDataLength: Command18.setRFOutputLogIntervalCmd.length - 2,
+    );
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setRFOutputLogIntervalCmd,
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GDSVVA1(String strValue) async {
+    int commandIndex = 340;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -1546,7 +1603,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8GDSSlope1(String strValue) async {
-    int commandIndex = 340;
+    int commandIndex = 341;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -1579,7 +1636,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8GDSVVA2(String strValue) async {
-    int commandIndex = 341;
+    int commandIndex = 342;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -1612,7 +1669,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8GDSSlope2(String strValue) async {
-    int commandIndex = 342;
+    int commandIndex = 343;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -1645,7 +1702,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8GUSVCA1(String strValue) async {
-    int commandIndex = 343;
+    int commandIndex = 344;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -1678,7 +1735,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8GEREQ(String strValue) async {
-    int commandIndex = 344;
+    int commandIndex = 345;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -1711,7 +1768,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8DSVVA3(String strValue) async {
-    int commandIndex = 345;
+    int commandIndex = 346;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -1744,7 +1801,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8GDSVVA4(String strValue) async {
-    int commandIndex = 346;
+    int commandIndex = 347;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -1777,7 +1834,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8GUSVCA2(String strValue) async {
-    int commandIndex = 347;
+    int commandIndex = 348;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -1810,7 +1867,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8GUSVCA3(String strValue) async {
-    int commandIndex = 348;
+    int commandIndex = 349;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -1843,7 +1900,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8GUSVCA4(String strValue) async {
-    int commandIndex = 349;
+    int commandIndex = 350;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -1876,7 +1933,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8GDSVVA5(String strValue) async {
-    int commandIndex = 350;
+    int commandIndex = 351;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -1908,7 +1965,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8DSSlope3(String strValue) async {
-    int commandIndex = 351;
+    int commandIndex = 352;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -1940,7 +1997,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8DSSlope4(String strValue) async {
-    int commandIndex = 352;
+    int commandIndex = 353;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -1972,7 +2029,7 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8GCoordinates(String coordinates) async {
-    int commandIndex = 353;
+    int commandIndex = 354;
 
     List<int> coordinatesBytes = [];
 
@@ -2007,7 +2064,7 @@ class Amp18Repository {
   // 設定藍牙串口的資料傳輸延遲時間, 單位為 ms
   // 例如 MTU = 244, 則每傳輸244byte 就會休息 ms 時間再傳下一筆
   Future<dynamic> set1p8GTransmitDelayTime() async {
-    int commandIndex = 354;
+    int commandIndex = 355;
 
     print('get data from request command 1p8G$commandIndex');
 
@@ -2059,7 +2116,7 @@ class Amp18Repository {
     required String partId,
     required String deviceNowDateTime,
   }) async {
-    int commandIndex = 355;
+    int commandIndex = 356;
 
     print('get data from request command 1p8G$commandIndex');
 

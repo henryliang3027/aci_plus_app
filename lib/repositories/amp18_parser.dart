@@ -132,6 +132,7 @@ class Amp18Parser {
     String ingressSetting2 = '';
     String ingressSetting3 = '';
     String ingressSetting4 = '';
+    String rfOutputLogInterval = '';
     String tgcCableLength = '';
     String splitOption = '';
     String pilotFrequencyMode = '';
@@ -245,6 +246,9 @@ class Amp18Parser {
     // 解析 ingress setting 4
     ingressSetting4 = rawData[21].toString();
 
+    // 解析 RF Output log interval
+    rfOutputLogInterval = rawData[23].toString();
+
     // 解析 tgcCableLength
     tgcCableLength = rawData[24].toString();
 
@@ -352,7 +356,7 @@ class Amp18Parser {
 
     location = _trimString(location);
 
-    // 解析 logInterval
+    // 解析 log interval
     logInterval = rawData[150].toString();
     print('LOG interval: $logInterval');
 
@@ -467,6 +471,7 @@ class Amp18Parser {
       ingressSetting2: ingressSetting2,
       ingressSetting3: ingressSetting3,
       ingressSetting4: ingressSetting4,
+      rfOutputLogInterval: rfOutputLogInterval,
       tgcCableLength: tgcCableLength,
       splitOption: splitOption,
       pilotFrequencyMode: pilotFrequencyMode,
@@ -1155,6 +1160,100 @@ class Amp18Parser {
     }
   }
 
+  Future<dynamic> export1p8GAllRFOutputs({
+    required String code,
+    required Map<String, String> configurationData,
+    required List<Map<String, String>> controlData,
+    required List<RFInOut> rfInOuts,
+    required List<RFOut> rfOuts,
+  }) async {
+    Excel excel = Excel.createExcel();
+
+    List<String> rfInOutHeader = [
+      'Frequency (MHz)',
+      'Level (dBmV)',
+    ];
+
+    excel.rename('Sheet1', 'User Information');
+    Sheet userInformationSheet = excel['User Information'];
+    Sheet rfInSheet = excel['Input Levels'];
+    Sheet rfOutSheet = excel['Output Levels'];
+
+    userInformationSheet.insertRowIterables(['Code Number', code], 0);
+
+    // 空兩行後再開始寫入 configuration data
+    List<String> configurationDataKeys = configurationData.keys.toList();
+    for (int i = 0; i < configurationDataKeys.length; i++) {
+      String key = configurationDataKeys[i];
+      String value = configurationData[key] ?? '';
+
+      userInformationSheet.insertRowIterables([key, value], i + 3);
+    }
+
+    // 空兩行後再開始寫入 control data
+    for (int i = 0; i < controlData.length; i++) {
+      MapEntry entry = controlData[i].entries.first;
+      userInformationSheet.insertRowIterables(
+          [entry.key, entry.value], i + configurationDataKeys.length + 5);
+    }
+
+    rfInSheet.insertRowIterables(rfInOutHeader, 0);
+    for (int i = 0; i < rfInOuts.length; i++) {
+      String frequency = rfInOuts[i].frequency.toString();
+      String level = rfInOuts[i].input.toStringAsFixed(1);
+
+      List<String> row = [frequency, level];
+      rfInSheet.insertRowIterables(row, i + 1);
+    }
+
+    rfOutSheet.insertRowIterables(rfInOutHeader, 0);
+    for (int i = 0; i < rfInOuts.length; i++) {
+      String frequency = rfInOuts[i].frequency.toString();
+      String level = rfInOuts[i].output.toStringAsFixed(1);
+
+      List<String> row = [frequency, level];
+      rfOutSheet.insertRowIterables(row, i + 1);
+    }
+
+    var fileBytes = excel.save();
+
+    String timeStamp =
+        DateFormat('yyyy_MM_dd_HH_mm_ss').format(DateTime.now()).toString();
+    String filename = 'rf_levels_$timeStamp';
+    String extension = '.xlsx';
+
+    if (Platform.isIOS) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$filename$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
+      return [
+        true,
+        filename,
+        fullWrittenPath,
+      ];
+    } else if (Platform.isAndroid) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$filename$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
+
+      return [
+        true,
+        filename,
+        fullWrittenPath,
+      ];
+    } else {
+      return [
+        false,
+        '',
+        'write file failed, export function not implement on ${Platform.operatingSystem} '
+      ];
+    }
+  }
+
   Future<dynamic> export1p8GRecords({
     required String code,
     required Map<String, String> configurationData,
@@ -1625,6 +1724,16 @@ class RFInOut {
   final double output;
 }
 
+class RFOut {
+  const RFOut({
+    required this.frequency,
+    required this.output,
+  });
+
+  final int frequency;
+  final double output;
+}
+
 class A1P8G0 {
   const A1P8G0({
     required this.partName,
@@ -1664,6 +1773,7 @@ class A1P8G1 {
     required this.ingressSetting2,
     required this.ingressSetting3,
     required this.ingressSetting4,
+    required this.rfOutputLogInterval,
     required this.tgcCableLength,
     required this.splitOption,
     required this.pilotFrequencyMode,
@@ -1717,6 +1827,7 @@ class A1P8G1 {
   final String ingressSetting2;
   final String ingressSetting3;
   final String ingressSetting4;
+  final String rfOutputLogInterval;
   final String tgcCableLength;
   final String splitOption;
   final String pilotFrequencyMode;

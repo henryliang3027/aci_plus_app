@@ -512,10 +512,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       resultOf1p8G1 = await _amp18Repository.requestCommand1p8G1();
 
       if (resultOf1p8G1[0]) {
-        String logInterval = resultOf1p8G1[1][DataKey.logInterval];
+        int logInterval = int.parse(resultOf1p8G1[1][DataKey.logInterval]);
 
-        // 如果讀取到 logInterval == '0', 則自動設定為 30 分鐘
-        if (logInterval == '0') {
+        // 如果讀取到 logInterval < 5, 則自動設定為 30 分鐘
+        if (logInterval < 5) {
           bool isSuccess = await _amp18Repository.set1p8GLogInterval('30');
 
           // 如果設定失敗, 則顯示 dialog
@@ -705,10 +705,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           await _amp18CCorNodeRepository.requestCommand1p8GCCorNode91();
 
       if (resultOf1p8GCCorNode91[0]) {
-        String logInterval = resultOf1p8GCCorNode91[1][DataKey.logInterval];
+        int logInterval =
+            int.parse(resultOf1p8GCCorNode91[1][DataKey.logInterval]);
 
-        // 如果讀取到 logInterval == '0', 則自動設定為 30 分鐘
-        if (logInterval == '0') {
+        // 如果讀取到 logInterval < 5, 則自動設定為 30 分鐘
+        if (logInterval < 5) {
           bool isSuccess =
               await _amp18CCorNodeRepository.set1p8GCCorNodeLogInterval('30');
 
