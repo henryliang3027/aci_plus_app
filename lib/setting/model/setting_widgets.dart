@@ -12,6 +12,19 @@ double _getValue(String value) {
   }
 }
 
+double _getBondaryValue({
+  required String value,
+  required double minValue,
+  required double maxValue,
+}) {
+  if (value.isNotEmpty) {
+    double currentValue = double.parse(value).clamp(minValue, maxValue);
+    return currentValue;
+  } else {
+    return 0.0;
+  }
+}
+
 Widget configurationIntervalSlider({
   required BuildContext context,
   required bool editMode,
@@ -208,7 +221,11 @@ Widget controlParameterSlider({
             min: minValue,
             max: maxValue,
             divisions: (maxValue - minValue) ~/ 0.5,
-            value: _getValue(currentValue),
+            value: _getBondaryValue(
+              value: currentValue,
+              minValue: minValue,
+              maxValue: maxValue,
+            ),
             onChanged: editMode ? onChanged : null,
           ),
         ),

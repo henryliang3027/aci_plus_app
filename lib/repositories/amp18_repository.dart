@@ -344,7 +344,7 @@ class Amp18Repository {
       } catch (e) {
         return [
           false,
-          false, // hasNextChunk
+          false, // no next chunk
           e.toString(),
         ];
       }
@@ -370,6 +370,36 @@ class Amp18Repository {
     } catch (e) {
       return [
         false,
+        false, // no next chunk
+        e.toString(),
+      ];
+    }
+  }
+
+  Future<dynamic> requestCommand1p8GRFOutputLogChunk(int chunkIndex) async {
+    int commandIndex = chunkIndex + 195;
+
+    print('get data from request command 1p8G_RFOuts');
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _amp18Parser.command18Collection[commandIndex - 180],
+      );
+
+      List<RFOutputLog> rfOutputLogs =
+          _amp18Parser.parse1P8GRFOutputLogs(rawData);
+      bool hasNextChunk = rfOutputLogs.isNotEmpty ? true : false;
+
+      return [
+        true,
+        hasNextChunk,
+        rfOutputLogs,
+      ];
+    } catch (e) {
+      return [
+        false,
+        false, // no next chunk
         e.toString(),
       ];
     }
@@ -428,8 +458,8 @@ class Amp18Repository {
     _amp18ChartCache.clearRFInOuts();
   }
 
-  void clearRFOuts() {
-    _amp18ChartCache.clearRFOuts();
+  void clearRFOutputLogs() {
+    _amp18ChartCache.clearRFOutputLogs();
   }
 
   void writeEvent1p8Gs(List<Event1p8G> event1p8Gs) {
@@ -448,8 +478,8 @@ class Amp18Repository {
     _amp18ChartCache.writeRFInOuts(rfInOuts);
   }
 
-  void writeRFOuts(List<RFOut> rfOuts) {
-    _amp18ChartCache.writeRFOuts(rfOuts);
+  void writeRFOutputLogs(List<RFOutputLog> rfOutputLogs) {
+    _amp18ChartCache.writeRFOutputLogs(rfOutputLogs);
   }
 
   Future<dynamic> export1p8GRecords({
@@ -537,20 +567,20 @@ class Amp18Repository {
     return result;
   }
 
-  Future<dynamic> export1p8GAllRFOuts({
+  Future<dynamic> export1p8GAllRFOutputLogs({
     required String code,
     required Map<String, String> configurationData,
     required List<Map<String, String>> controlData,
   }) async {
     List<RFInOut> rfInOuts = _amp18ChartCache.readRFInOuts();
-    List<RFOut> rfOuts = _amp18ChartCache.readRFOuts();
+    List<RFOutputLog> rfOutputLogs = _amp18ChartCache.readRFOutputLogs();
 
     // String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
     // String location = _characteristicDataCache[DataKey.location] ?? '';
 
-    List<dynamic> result = await _amp18Parser.export1p8GAllRFOutputs(
+    List<dynamic> result = await _amp18Parser.export1p8GAllRFOutputLogs(
       rfInOuts: rfInOuts,
-      rfOuts: rfOuts,
+      rfOutputLogs: rfOutputLogs,
       code: code,
       configurationData: configurationData,
       controlData: controlData,

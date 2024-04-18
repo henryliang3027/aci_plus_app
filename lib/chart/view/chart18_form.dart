@@ -2,6 +2,7 @@ import 'package:aci_plus_app/chart/chart/chart18_bloc/chart18_bloc.dart';
 import 'package:aci_plus_app/chart/view/chart18_tab_bar.dart';
 import 'package:aci_plus_app/chart/view/code_input_page.dart';
 import 'package:aci_plus_app/chart/view/downloader18_page.dart';
+import 'package:aci_plus_app/chart/view/downloader18_rf_out_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -317,6 +318,21 @@ Future<List<dynamic>?> showDownloadDialog({
   );
 }
 
+Future<List<dynamic>?> showRFOutDownloadDialog({
+  required BuildContext context,
+}) async {
+  return showDialog<List<dynamic>>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+
+    builder: (BuildContext context) {
+      return const Dialog(
+        child: Downloader18RFOutPage(),
+      );
+    },
+  );
+}
+
 class _PopupMenu extends StatelessWidget {
   const _PopupMenu({
     Key? key,
@@ -601,11 +617,12 @@ class _PopupMenu extends StatelessWidget {
                           .then((String? code) {
                         if (code != null) {
                           if (code.isNotEmpty) {
-                            showDownloadDialog(context: context)
+                            showRFOutDownloadDialog(context: context)
                                 .then((List<dynamic>? resultOfDownload) {
                               if (resultOfDownload != null) {
                                 bool isSuccessful = resultOfDownload[0];
-                                List<Log1p8G> log1p8Gs = resultOfDownload[1];
+                                List<RFOutputLog> rfOutputLog1p8Gs =
+                                    resultOfDownload[1];
                                 String errorMessage = resultOfDownload[2];
                                 if (context.mounted) {
                                   Map<String, String> configurationData =
@@ -622,9 +639,9 @@ class _PopupMenu extends StatelessWidget {
 
                                   context
                                       .read<Chart18Bloc>()
-                                      .add(AllDataExported(
+                                      .add(AllRFOutputLogExported(
                                         isSuccessful: isSuccessful,
-                                        log1p8Gs: log1p8Gs,
+                                        rfOutputLog1p8Gs: rfOutputLog1p8Gs,
                                         errorMessage: errorMessage,
                                         code: code,
                                         configurationData: configurationData,

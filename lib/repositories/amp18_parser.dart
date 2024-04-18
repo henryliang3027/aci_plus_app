@@ -911,6 +911,63 @@ class Amp18Parser {
     return rfInOuts;
   }
 
+  List<RFOutputLog> parse1P8GRFOutputLogs(List<int> rawData) {
+    List<RFOutputLog> rfOutputLogs = [];
+
+    rawData.removeRange(rawData.length - 2, rawData.length);
+    rawData.removeRange(0, 3);
+
+    for (int i = 0; i < 30; i++) {
+      List<RFOut> rfOuts = [];
+
+      // 546 * 15 = 8190, 8190 和 8191 留空, 共 2 bytes
+      int oi = i >= 15 ? 2 : 0;
+
+      // 如果檢查到有一筆log 的內容全部是 255, 則視為沒有更多log資料了
+      bool isEmptyLog = rawData
+          .sublist(i * 546, i * 546 + 546)
+          .every((element) => element == 255);
+      if (isEmptyLog) {
+        break;
+      }
+
+      List<int> rawYear = rawData.sublist(i * 546 + oi, i * 546 + 2 + oi);
+      ByteData rawYearByteData =
+          ByteData.sublistView(Uint8List.fromList(rawYear));
+      String strYear = rawYearByteData.getInt16(0, Endian.little).toString();
+
+      String strMonth = rawData[i * 546 + 2 + oi].toString().padLeft(2, '0');
+      String strDay = rawData[i * 546 + 3 + oi].toString().padLeft(2, '0');
+      String strHour = rawData[i * 546 + 4 + oi].toString().padLeft(2, '0');
+      String strMinute = rawData[i * 546 + 5 + oi].toString().padLeft(2, '0');
+
+      final DateTime dateTime =
+          DateTime.parse('$strYear-$strMonth-$strDay $strHour:$strMinute:00');
+
+      for (int j = 0; j < 256; j++) {
+        int frequency = 261 + 6 * j;
+        // 解析 rfOuts
+        int rfIndex = (i * 546 + 6 + oi) + j * 2;
+        List<int> rawOutput = rawData.sublist(rfIndex, rfIndex + 2);
+        ByteData rawOutputByteData =
+            ByteData.sublistView(Uint8List.fromList(rawOutput));
+        double output = rawOutputByteData.getInt16(0, Endian.little) / 10;
+
+        rfOuts.add(RFOut(
+          frequency: frequency,
+          output: output,
+        ));
+      }
+
+      rfOutputLogs.add(RFOutputLog(
+        dateTime: dateTime,
+        rfOuts: rfOuts,
+      ));
+    }
+
+    return rfOutputLogs;
+  }
+
   A1P8GRFOutputPowerStatistic getA1p8GRFOutputPowerStatistic(
       List<RFInOut> rfInOuts) {
     if (rfInOuts.isNotEmpty) {
@@ -1160,12 +1217,12 @@ class Amp18Parser {
     }
   }
 
-  Future<dynamic> export1p8GAllRFOutputs({
+  Future<dynamic> export1p8GAllRFOutputLogs({
     required String code,
     required Map<String, String> configurationData,
     required List<Map<String, String>> controlData,
     required List<RFInOut> rfInOuts,
-    required List<RFOut> rfOuts,
+    required List<RFOutputLog> rfOutputLogs,
   }) async {
     Excel excel = Excel.createExcel();
 
@@ -1178,6 +1235,7 @@ class Amp18Parser {
     Sheet userInformationSheet = excel['User Information'];
     Sheet rfInSheet = excel['Input Levels'];
     Sheet rfOutSheet = excel['Output Levels'];
+    Sheet rfOutputLogSheet = excel['Output Level Logs'];
 
     userInformationSheet.insertRowIterables(['Code Number', code], 0);
 
@@ -1213,6 +1271,17 @@ class Amp18Parser {
 
       List<String> row = [frequency, level];
       rfOutSheet.insertRowIterables(row, i + 1);
+    }
+
+    for (int i = 0; i < rfOutputLogs.length; i++) {
+      List<RFOut> rfOuts = rfOutputLogs[i].rfOuts;
+      for (int j = 0; j < rfOuts.length; j++) {
+        String frequency = rfInOuts[i].frequency.toString();
+        String level = rfInOuts[i].output.toStringAsFixed(1);
+
+        List<String> row = [frequency, level];
+        rfOutSheet.insertRowIterables(row, i + 1);
+      }
     }
 
     var fileBytes = excel.save();
@@ -1663,6 +1732,16 @@ class Amp18Parser {
     CRC16.calculateCRC16(command: Command18.reqLog08Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqLog09Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqEvent00Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqRFOutput00Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqRFOutput01Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqRFOutput02Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqRFOutput03Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqRFOutput04Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqRFOutput05Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqRFOutput06Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqRFOutput07Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqRFOutput08Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqRFOutput09Cmd, usDataLength: 6);
 
     _command18Collection.add(Command18.req00Cmd);
     _command18Collection.add(Command18.req01Cmd);
@@ -1679,6 +1758,16 @@ class Amp18Parser {
     _command18Collection.add(Command18.reqLog08Cmd);
     _command18Collection.add(Command18.reqLog09Cmd);
     _command18Collection.add(Command18.reqEvent00Cmd);
+    _command18Collection.add(Command18.reqRFOutput00Cmd);
+    _command18Collection.add(Command18.reqRFOutput01Cmd);
+    _command18Collection.add(Command18.reqRFOutput02Cmd);
+    _command18Collection.add(Command18.reqRFOutput03Cmd);
+    _command18Collection.add(Command18.reqRFOutput04Cmd);
+    _command18Collection.add(Command18.reqRFOutput05Cmd);
+    _command18Collection.add(Command18.reqRFOutput06Cmd);
+    _command18Collection.add(Command18.reqRFOutput07Cmd);
+    _command18Collection.add(Command18.reqRFOutput08Cmd);
+    _command18Collection.add(Command18.reqRFOutput09Cmd);
   }
 }
 
@@ -1722,6 +1811,16 @@ class RFInOut {
   final int frequency;
   final double input;
   final double output;
+}
+
+class RFOutputLog {
+  const RFOutputLog({
+    required this.dateTime,
+    required this.rfOuts,
+  });
+
+  final DateTime dateTime;
+  final List<RFOut> rfOuts; // 256 筆
 }
 
 class RFOut {

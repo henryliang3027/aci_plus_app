@@ -266,6 +266,32 @@ class BLEClient {
                   }
                 }
               }
+            } else if (_currentCommandIndex >= 195 &&
+                _currentCommandIndex <= 204) {
+              // _currentCommandIndex 195 ~ 204 用來接收 10 組 RFOut 資料流, 每一組 Log 總長 16389
+              List<int> header = [0xB0, 0x03, 0x00];
+              if (listEquals(rawData.sublist(0, 3), header)) {
+                _combinedRawData.clear();
+              }
+
+              _combinedRawData.addAll(rawData);
+              print(_combinedRawData.length);
+
+              if (_combinedRawData.length == 16389) {
+                bool isValidCRC = checkCRC(_combinedRawData);
+                if (isValidCRC) {
+                  List<int> rawRFOuts = List.from(_combinedRawData);
+                  cancelCharacteristicDataTimer(
+                      name: 'cmd $_currentCommandIndex');
+                  if (!_completer!.isCompleted) {
+                    _completer!.complete(rawRFOuts);
+                  }
+                } else {
+                  if (!_completer!.isCompleted) {
+                    _completer!.completeError(CharacteristicError.invalidData);
+                  }
+                }
+              }
             } else if (_currentCommandIndex >= 300) {
               cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
               if (!_completer!.isCompleted) {

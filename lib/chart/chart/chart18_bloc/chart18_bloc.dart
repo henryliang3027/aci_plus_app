@@ -19,6 +19,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     on<AllDataExported>(_onAllDataExported);
     on<RFLevelShared>(_onRFLevelShared);
     on<RFLevelExported>(_onRFLevelExported);
+    on<AllRFOutputLogExported>(_onAllRFOutputLogExported);
   }
 
   final Amp18Repository _amp18Repository;
@@ -125,6 +126,42 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       // 將所有 log 寫入 cache
       _amp18Repository.writeAllLog1p8Gs(event.log1p8Gs);
       final List<dynamic> result = await _amp18Repository.exportAll1p8GRecords(
+        code: event.code,
+        configurationData: event.configurationData,
+        controlData: event.controlData,
+      );
+
+      if (result[0]) {
+        emit(state.copyWith(
+          allDataExportStatus: FormStatus.requestSuccess,
+          dataExportPath: result[2],
+        ));
+      } else {
+        emit(state.copyWith(
+          allDataExportStatus: FormStatus.requestFailure,
+          dataExportPath: result[2],
+        ));
+      }
+    } else {
+      emit(state.copyWith(
+        allDataExportStatus: FormStatus.requestFailure,
+        errorMessage: event.errorMessage,
+      ));
+    }
+  }
+
+  void _onAllRFOutputLogExported(
+    AllRFOutputLogExported event,
+    Emitter<Chart18State> emit,
+  ) async {
+    if (event.isSuccessful) {
+      // 清除 cache
+      _amp18Repository.clearRFOutputLogs();
+
+      // 將所有 rfOuts 寫入 cache
+      _amp18Repository.writeRFOutputLogs(event.rfOutputLog1p8Gs);
+      final List<dynamic> result =
+          await _amp18Repository.export1p8GAllRFOutputLogs(
         code: event.code,
         configurationData: event.configurationData,
         controlData: event.controlData,

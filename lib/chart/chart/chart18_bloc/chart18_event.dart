@@ -121,3 +121,31 @@ class AllDataExported extends Chart18Event {
         controlData,
       ];
 }
+
+class AllRFOutputLogExported extends Chart18Event {
+  const AllRFOutputLogExported({
+    required this.isSuccessful,
+    required this.rfOutputLog1p8Gs,
+    required this.errorMessage,
+    required this.code,
+    required this.configurationData,
+    required this.controlData,
+  });
+
+  final bool isSuccessful;
+  final List<RFOutputLog> rfOutputLog1p8Gs;
+  final String errorMessage;
+  final String code;
+  final Map<String, String> configurationData;
+  final List<Map<String, String>> controlData;
+
+  @override
+  List<Object?> get props => [
+        isSuccessful,
+        rfOutputLog1p8Gs,
+        errorMessage,
+        code,
+        configurationData,
+        controlData,
+      ];
+}
