@@ -2,7 +2,6 @@ import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
-import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
 class ACIDeviceRepository {
   ACIDeviceRepository() : _bleClient = BLEClient.instance;

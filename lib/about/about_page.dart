@@ -2,7 +2,6 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key, required this.pageController});
@@ -16,13 +15,11 @@ class AboutPage extends StatefulWidget {
 class _AboutPageState extends State<AboutPage> {
   late final ScrollController _scrollController;
   late final double _kExpandedHeight;
-  late final String _dsimVersion;
 
   @override
   void initState() {
     _kExpandedHeight = 160.0;
     _scrollController = ScrollController()..addListener(() {});
-    _dsimVersion = 'V 2.1.0';
 
     super.initState();
   }

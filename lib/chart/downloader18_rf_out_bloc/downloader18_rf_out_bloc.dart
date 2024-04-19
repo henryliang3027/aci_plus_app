@@ -50,14 +50,14 @@ class Downloader18RFOutBloc
   ) async {
     List<RFOutputLog> rfOutputLog1p8Gs = [];
 
-    for (int i = 0; i < 1; i++) {
-      List<dynamic> resultOfRFOut = await getRFOutChunkWithRetry(i);
-      print('resultOfRFOut $i: ${resultOfRFOut[0]}');
+    for (int i = 0; i < 10; i++) {
+      List<dynamic> resultOfRFOutputLog = await getRFOutChunkWithRetry(i);
+      print('resultOfRFOutputLog $i: ${resultOfRFOutputLog[0]}');
 
-      if (resultOfRFOut[0]) {
-        rfOutputLog1p8Gs.addAll(resultOfRFOut[2]);
+      if (resultOfRFOutputLog[0]) {
+        rfOutputLog1p8Gs.addAll(resultOfRFOutputLog[2]);
 
-        bool hasNextChunk = resultOfRFOut[1];
+        bool hasNextChunk = resultOfRFOutputLog[1];
 
         if (hasNextChunk) {
           emit(state.copyWith(

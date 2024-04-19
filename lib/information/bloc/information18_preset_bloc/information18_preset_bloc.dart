@@ -14,7 +14,6 @@ class Information18PresetBloc
     required Amp18Repository amp18repository,
     required Config config,
   })  : _amp18Repository = amp18repository,
-        _config = config,
         super(Information18PresetState(config: config)) {
     // on<DefaultConfigRequested>(_onDefaultConfigRequested);
     on<ConfigExecuted>(_onConfigExecuted);
@@ -23,7 +22,6 @@ class Information18PresetBloc
   }
 
   final Amp18Repository _amp18Repository;
-  final Config _config;
 
   // void _onDefaultConfigRequested(
   //   DefaultConfigRequested event,

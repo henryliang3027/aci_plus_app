@@ -885,6 +885,7 @@ class _FwdAGCMode extends StatelessWidget {
   }
 }
 
+// 2024/0419 ALC 為 read only 且 ALC 的動作跟 AGC 連動
 class _AutoLevelControl extends StatelessWidget {
   const _AutoLevelControl({
     super.key,
@@ -938,15 +939,15 @@ class _AutoLevelControl extends StatelessWidget {
                 builder: (context, constraints) => ToggleButtons(
                   direction: Axis.horizontal,
                   onPressed: (int index) {
-                    if (state.editMode) {
-                      context.read<Setting18ConfigureBloc>().add(
-                          AutoLevelControlChanged(
-                              autoLevelControlValues[index]));
-                    }
+                    // if (state.editMode) {
+                    //   context.read<Setting18ConfigureBloc>().add(
+                    //       AutoLevelControlChanged(
+                    //           autoLevelControlValues[index]));
+                    // }
                   },
                   textStyle: const TextStyle(fontSize: 18.0),
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  selectedBorderColor: state.editMode
+                  selectedBorderColor: state.editMode && false
                       ? Theme.of(context).colorScheme.primary
                       : Theme.of(context)
                           .colorScheme
@@ -955,7 +956,7 @@ class _AutoLevelControl extends StatelessWidget {
                       .colorScheme
                       .onPrimary, // white text color
 
-                  fillColor: state.editMode
+                  fillColor: state.editMode && false
                       ? Theme.of(context).colorScheme.primary
                       : Theme.of(context)
                           .colorScheme

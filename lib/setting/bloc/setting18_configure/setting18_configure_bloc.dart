@@ -487,6 +487,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       fwdAGCMode: event.fwdAGCMode,
+      autoLevelControl: event.fwdAGCMode,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
@@ -500,7 +501,7 @@ class Setting18ConfigureBloc
         pilotFrequency1: state.pilotFrequency1,
         pilotFrequency2: state.pilotFrequency2,
         fwdAGCMode: event.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
+        autoLevelControl: event.fwdAGCMode,
         logInterval: state.logInterval,
         rfOutputLogInterval: state.rfOutputLogInterval,
         tgcCableLength: state.tgcCableLength,
@@ -831,6 +832,7 @@ class Setting18ConfigureBloc
       fwdAGCMode: state.initialValues[DataKey.agcMode],
       autoLevelControl: state.initialValues[DataKey.alcMode],
       logInterval: state.initialValues[DataKey.logInterval],
+      rfOutputLogInterval: state.initialValues[DataKey.rfOutputLogInterval],
       tgcCableLength: state.initialValues[DataKey.tgcCableLength],
     ));
   }

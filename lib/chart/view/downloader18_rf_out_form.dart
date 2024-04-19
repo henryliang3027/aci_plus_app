@@ -62,7 +62,7 @@ class _Downloader18RFOutFormState extends State<Downloader18RFOutForm>
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: true,
+      canPop: false,
       child: Padding(
         padding: const EdgeInsets.all(26.0),
         child: Column(

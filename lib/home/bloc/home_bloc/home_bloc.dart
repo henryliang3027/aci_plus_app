@@ -9,7 +9,6 @@ import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:intl/intl.dart';
 // import 'package:assets_audio_player/assets_audio_player.dart';

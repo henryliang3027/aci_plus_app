@@ -308,43 +308,6 @@ class _ActionButton extends StatelessWidget {
       );
     }
 
-    Widget getExecuteButton() {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6.0),
-        child: ElevatedButton(
-          onPressed: () async {
-            if (kDebugMode) {
-              context
-                  .read<Information18PresetBloc>()
-                  .add(const ConfigExecuted());
-            } else {
-              bool? isMatch = await showConfirmInputDialog(context: context);
-
-              if (context.mounted) {
-                if (isMatch != null) {
-                  if (isMatch) {
-                    context
-                        .read<Information18PresetBloc>()
-                        .add(const ConfigExecuted());
-                  }
-                }
-              }
-            }
-          },
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(
-              vertical: 0.0,
-              horizontal: 20.0,
-            ),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          child: Text(
-            AppLocalizations.of(context)!.dialogMessageExecute,
-          ),
-        ),
-      );
-    }
-
     return BlocBuilder<Information18PresetBloc, Information18PresetState>(
       builder: (context, state) {
         return Column(

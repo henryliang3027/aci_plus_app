@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
 // import 'package:aci_plus_app/repositories/dongle.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:equatable/equatable.dart';

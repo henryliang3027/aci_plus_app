@@ -1226,7 +1226,7 @@ class Amp18Parser {
   }) async {
     Excel excel = Excel.createExcel();
 
-    List<String> rfInOutHeader = [
+    List<String> rfHeader = [
       'Frequency (MHz)',
       'Level (dBmV)',
     ];
@@ -1255,7 +1255,7 @@ class Amp18Parser {
           [entry.key, entry.value], i + configurationDataKeys.length + 5);
     }
 
-    rfInSheet.insertRowIterables(rfInOutHeader, 0);
+    rfInSheet.insertRowIterables(rfHeader, 0);
     for (int i = 0; i < rfInOuts.length; i++) {
       String frequency = rfInOuts[i].frequency.toString();
       String level = rfInOuts[i].input.toStringAsFixed(1);
@@ -1264,7 +1264,7 @@ class Amp18Parser {
       rfInSheet.insertRowIterables(row, i + 1);
     }
 
-    rfOutSheet.insertRowIterables(rfInOutHeader, 0);
+    rfOutSheet.insertRowIterables(rfHeader, 0);
     for (int i = 0; i < rfInOuts.length; i++) {
       String frequency = rfInOuts[i].frequency.toString();
       String level = rfInOuts[i].output.toStringAsFixed(1);
@@ -1273,14 +1273,39 @@ class Amp18Parser {
       rfOutSheet.insertRowIterables(row, i + 1);
     }
 
+    // 寫入 rf output logs
     for (int i = 0; i < rfOutputLogs.length; i++) {
-      List<RFOut> rfOuts = rfOutputLogs[i].rfOuts;
-      for (int j = 0; j < rfOuts.length; j++) {
-        String frequency = rfInOuts[i].frequency.toString();
-        String level = rfInOuts[i].output.toStringAsFixed(1);
+      DateTime dateTime = rfOutputLogs[i].dateTime;
 
-        List<String> row = [frequency, level];
-        rfOutSheet.insertRowIterables(row, i + 1);
+      String timeStamp =
+          DateFormat('yyyy_MM_dd_HH_mm_ss').format(dateTime).toString();
+
+      List<String> timeRow = [timeStamp];
+      rfOutputLogSheet.insertRowIterables(
+        timeRow,
+        0,
+        startingColumn: i * 3,
+      );
+      rfOutputLogSheet.insertRowIterables(
+        rfHeader,
+        1,
+        startingColumn: i * 3,
+      );
+
+      List<RFOut> rfOuts = rfOutputLogs[i].rfOuts;
+
+      // 寫入 256 組 rf output, [frequency, level]
+      for (int j = 0; j < rfOuts.length; j++) {
+        String frequency = rfInOuts[j].frequency.toString();
+        String level = rfInOuts[j].output.toStringAsFixed(1);
+
+        List<String> outputRow = [frequency, level];
+
+        rfOutputLogSheet.insertRowIterables(
+          outputRow,
+          j + 2,
+          startingColumn: i * 3,
+        );
       }
     }
 
