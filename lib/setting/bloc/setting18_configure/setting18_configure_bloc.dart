@@ -36,11 +36,7 @@ class Setting18ConfigureBloc
     on<FwdAGCModeChanged>(_onFwdAGCModeChanged);
     on<AutoLevelControlChanged>(_onAutoLevelControlChanged);
     on<LogIntervalChanged>(_onLogIntervalChanged);
-    on<LogIntervalIncreased>(_onLogIntervalIncreased);
-    on<LogIntervalDecreased>(_onLogIntervalDecreased);
     on<RFOutputLogIntervalChanged>(_onRFOutputLogIntervalChanged);
-    on<RFOutputLogIntervalIncreased>(_onRFOutputLogIntervalIncreased);
-    on<RFOutputLogIntervalDecreased>(_onRFOutputLogIntervalDecreased);
     on<TGCCableLengthChanged>(_onTGCCableLengthChanged);
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
@@ -84,7 +80,11 @@ class Setting18ConfigureBloc
 
     String fwdAGCMode = characteristicDataCache[DataKey.agcMode] ?? '';
     String autoLevelControl = characteristicDataCache[DataKey.alcMode] ?? '';
-    String logInterval = characteristicDataCache[DataKey.logInterval] ?? '';
+    String logInterval =
+        characteristicDataCache[DataKey.logInterval] ?? state.logInterval;
+    String rfOutputLogInterval =
+        characteristicDataCache[DataKey.rfOutputLogInterval] ??
+            state.rfOutputLogInterval;
     String tgcCableLength =
         characteristicDataCache[DataKey.tgcCableLength] ?? '';
 
@@ -107,6 +107,7 @@ class Setting18ConfigureBloc
       fwdAGCMode: fwdAGCMode,
       autoLevelControl: autoLevelControl,
       logInterval: logInterval,
+      rfOutputLogInterval: rfOutputLogInterval,
       tgcCableLength: tgcCableLength,
       isInitialize: true,
       initialValues: characteristicDataCache,
@@ -567,102 +568,6 @@ class Setting18ConfigureBloc
     ));
   }
 
-  String _getIncreasedNumber({
-    required String value,
-    required double maxValue,
-    required double step,
-  }) {
-    double doubleValue = double.parse(value);
-    doubleValue =
-        doubleValue + step <= maxValue ? doubleValue + step : doubleValue;
-    String strValue = doubleValue.toStringAsFixed(0);
-
-    return strValue;
-  }
-
-  String _getDecreasedNumber({
-    required String value,
-    required double minValue,
-    required double step,
-  }) {
-    double doubleValue = double.parse(value);
-    doubleValue =
-        doubleValue - step >= minValue ? doubleValue - step : doubleValue;
-    String strValue = doubleValue.toStringAsFixed(0);
-
-    return strValue;
-  }
-
-  void _onLogIntervalIncreased(
-    LogIntervalIncreased event,
-    Emitter<Setting18ConfigureState> emit,
-  ) {
-    String logInterval = _getIncreasedNumber(
-      value: state.logInterval,
-      maxValue: 240,
-      step: 5.0,
-    );
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
-      logInterval: logInterval,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
-        logInterval: logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
-      ),
-    ));
-  }
-
-  void _onLogIntervalDecreased(
-    LogIntervalDecreased event,
-    Emitter<Setting18ConfigureState> emit,
-  ) {
-    String logInterval = _getDecreasedNumber(
-      value: state.logInterval,
-      minValue: 5,
-      step: 5.0,
-    );
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
-      logInterval: logInterval,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
-        logInterval: logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
-      ),
-    ));
-  }
-
   void _onRFOutputLogIntervalChanged(
     RFOutputLogIntervalChanged event,
     Emitter<Setting18ConfigureState> emit,
@@ -687,76 +592,6 @@ class Setting18ConfigureBloc
         autoLevelControl: state.autoLevelControl,
         logInterval: state.logInterval,
         rfOutputLogInterval: event.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
-      ),
-    ));
-  }
-
-  void _onRFOutputLogIntervalIncreased(
-    RFOutputLogIntervalIncreased event,
-    Emitter<Setting18ConfigureState> emit,
-  ) {
-    String rfOutputLogInterval = _getIncreasedNumber(
-      value: state.rfOutputLogInterval,
-      maxValue: 240,
-      step: 30.0,
-    );
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
-      rfOutputLogInterval: rfOutputLogInterval,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
-        logInterval: state.logInterval,
-        rfOutputLogInterval: rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
-      ),
-    ));
-  }
-
-  void _onRFOutputLogIntervalDecreased(
-    RFOutputLogIntervalDecreased event,
-    Emitter<Setting18ConfigureState> emit,
-  ) {
-    String rfOutputLogInterval = _getDecreasedNumber(
-      value: state.rfOutputLogInterval,
-      minValue: 30,
-      step: 30.0,
-    );
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
-      rfOutputLogInterval: rfOutputLogInterval,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
-        logInterval: state.logInterval,
-        rfOutputLogInterval: rfOutputLogInterval,
         tgcCableLength: state.tgcCableLength,
       ),
     ));

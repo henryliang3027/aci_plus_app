@@ -4,14 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 
-double _getValue(String value) {
-  if (value.isNotEmpty) {
-    return double.parse(value);
-  } else {
-    return 0.0;
-  }
-}
-
 double _getBondaryValue({
   required String value,
   required double minValue,
@@ -21,47 +13,73 @@ double _getBondaryValue({
     double currentValue = double.parse(value).clamp(minValue, maxValue);
     return currentValue;
   } else {
-    return 0.0;
+    return minValue;
   }
 }
 
-Widget configurationIntervalSlider({
-  required BuildContext context,
-  required bool editMode,
-  required String title,
-  required double minValue,
-  required String currentValue,
-  required double maxValue,
-  required int interval,
-  required ValueChanged<double> onChanged,
-  required VoidCallback onIncreased,
-  required VoidCallback onDecreased,
-}) {
-  return Padding(
-    padding: const EdgeInsets.only(
-      bottom: 30.0,
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+class FineTuneSlider extends StatefulWidget {
+  const FineTuneSlider({
+    super.key,
+    required this.initialValue,
+    required this.minValue,
+    required this.maxValue,
+    required this.interval,
+    required this.step,
+    required this.enabled,
+    required this.onChanged,
+  });
+
+  final double initialValue;
+  final double minValue;
+  final double maxValue;
+  final int interval;
+  final int step;
+  final bool enabled;
+  final ValueChanged<double> onChanged;
+
+  @override
+  State<FineTuneSlider> createState() => _FineTuneSliderState();
+}
+
+class _FineTuneSliderState extends State<FineTuneSlider> {
+  late double _value;
+
+  @override
+  void initState() {
+    _value = widget.initialValue;
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant FineTuneSlider oldWidget) {
+    if (oldWidget.initialValue != widget.initialValue) {
+      setState(() {
+        _value = widget.initialValue;
+      });
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void _increaseValue() {
+    setState(() {
+      _value = _value + widget.step <= widget.maxValue
+          ? _value + widget.step
+          : _value;
+    });
+  }
+
+  void _decreasedValue() {
+    setState(() {
+      _value = _value - widget.step >= widget.minValue
+          ? _value - widget.step
+          : _value;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: CustomStyle.sizeL,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  '$title: $currentValue ${AppLocalizations.of(context)!.minute}',
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
         Padding(
           padding: const EdgeInsets.fromLTRB(10.0, 0.0, 6.0, 0.0),
           child: Row(
@@ -75,8 +93,8 @@ Widget configurationIntervalSlider({
                     height: 22,
                     child: Text(
                       '${(List.from([
-                            minValue,
-                            maxValue,
+                            widget.minValue,
+                            widget.maxValue,
                           ])[index]).toStringAsFixed(0)}',
                       style: const TextStyle(
                         fontSize: CustomStyle.sizeM,
@@ -105,11 +123,18 @@ Widget configurationIntervalSlider({
             overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
           ),
           child: Slider(
-            min: minValue.toDouble(),
-            max: maxValue.toDouble(),
-            divisions: (maxValue - minValue) ~/ interval,
-            value: _getValue(currentValue),
-            onChanged: editMode ? onChanged : null,
+            min: widget.minValue,
+            max: widget.maxValue,
+            divisions: (widget.maxValue - widget.minValue) ~/ widget.interval,
+            value: _value,
+            onChanged: widget.enabled
+                ? (double value) {
+                    setState(() {
+                      _value = value;
+                    });
+                    widget.onChanged(_value);
+                  }
+                : null,
           ),
         ),
         Row(
@@ -120,17 +145,80 @@ Widget configurationIntervalSlider({
               icon: const Icon(
                 Icons.remove,
               ),
-              onPressed: editMode ? onDecreased : null,
+              onPressed: widget.enabled
+                  ? () {
+                      _decreasedValue();
+                      widget.onChanged(_value);
+                    }
+                  : null,
             ),
             IconButton.filled(
               visualDensity: const VisualDensity(horizontal: -4.0),
               icon: const Icon(
                 Icons.add,
               ),
-              onPressed: editMode ? onIncreased : null,
+              onPressed: widget.enabled
+                  ? () {
+                      _increaseValue();
+                      widget.onChanged(_value);
+                    }
+                  : null,
             ),
           ],
         ),
+      ],
+    );
+  }
+}
+
+Widget configurationIntervalSlider({
+  required BuildContext context,
+  required bool editMode,
+  required String title,
+  required double minValue,
+  required String currentValue,
+  required double maxValue,
+  required int interval,
+  required ValueChanged<double> onChanged,
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(
+      bottom: 30.0,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: CustomStyle.sizeL,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  '$title: $currentValue ${AppLocalizations.of(context)!.minute}',
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        FineTuneSlider(
+          initialValue: _getBondaryValue(
+            value: currentValue,
+            minValue: minValue,
+            maxValue: maxValue,
+          ),
+          minValue: minValue,
+          maxValue: maxValue,
+          interval: interval,
+          step: interval,
+          enabled: editMode,
+          onChanged: onChanged,
+        )
       ],
     ),
   );

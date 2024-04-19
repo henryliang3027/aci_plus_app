@@ -944,10 +944,16 @@ class Amp18Parser {
       final DateTime dateTime =
           DateTime.parse('$strYear-$strMonth-$strDay $strHour:$strMinute:00');
 
+      // String timeStamp =
+      //     DateFormat('yyyy_MM_dd_HH_mm_ss').format(dateTime).toString();
+
+      // print('timeStamp: $timeStamp ');
+
       for (int j = 0; j < 256; j++) {
         int frequency = 261 + 6 * j;
         // 解析 rfOuts
         int rfIndex = (i * 546 + 6 + oi) + j * 2;
+        // print('$rfIndex, ${rawData[rfIndex]}, ${rawData[rfIndex + 1]}');
         List<int> rawOutput = rawData.sublist(rfIndex, rfIndex + 2);
         ByteData rawOutputByteData =
             ByteData.sublistView(Uint8List.fromList(rawOutput));
@@ -1296,8 +1302,8 @@ class Amp18Parser {
 
       // 寫入 256 組 rf output, [frequency, level]
       for (int j = 0; j < rfOuts.length; j++) {
-        String frequency = rfInOuts[j].frequency.toString();
-        String level = rfInOuts[j].output.toStringAsFixed(1);
+        String frequency = rfOuts[j].frequency.toString();
+        String level = rfOuts[j].output.toStringAsFixed(1);
 
         List<String> outputRow = [frequency, level];
 

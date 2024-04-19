@@ -296,6 +296,7 @@ class Setting18ConfigureView extends StatelessWidget {
               const _FwdAGCMode(),
               const _AutoLevelControl(),
               const _LogInterval(),
+              const _RFOutputLogInterval(),
               // const _TGCCableLength(),
             ];
     }
@@ -1005,16 +1006,6 @@ class _LogInterval extends StatelessWidget {
                 .read<Setting18ConfigureBloc>()
                 .add(LogIntervalChanged(logInterval.toStringAsFixed(0)));
           },
-          onIncreased: () {
-            context
-                .read<Setting18ConfigureBloc>()
-                .add(const LogIntervalIncreased());
-          },
-          onDecreased: () {
-            context
-                .read<Setting18ConfigureBloc>()
-                .add(const LogIntervalDecreased());
-          },
         );
       },
     );
@@ -1043,16 +1034,6 @@ class _RFOutputLogInterval extends StatelessWidget {
             context.read<Setting18ConfigureBloc>().add(
                 RFOutputLogIntervalChanged(
                     rfOutputLogInterval.toStringAsFixed(0)));
-          },
-          onIncreased: () {
-            context
-                .read<Setting18ConfigureBloc>()
-                .add(const RFOutputLogIntervalIncreased());
-          },
-          onDecreased: () {
-            context
-                .read<Setting18ConfigureBloc>()
-                .add(const RFOutputLogIntervalDecreased());
           },
         );
       },

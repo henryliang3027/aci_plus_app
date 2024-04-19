@@ -145,20 +145,6 @@ class LogIntervalChanged extends Setting18ConfigureEvent {
   List<Object> get props => [logInterval];
 }
 
-class LogIntervalIncreased extends Setting18ConfigureEvent {
-  const LogIntervalIncreased();
-
-  @override
-  List<Object> get props => [];
-}
-
-class LogIntervalDecreased extends Setting18ConfigureEvent {
-  const LogIntervalDecreased();
-
-  @override
-  List<Object> get props => [];
-}
-
 class RFOutputLogIntervalChanged extends Setting18ConfigureEvent {
   const RFOutputLogIntervalChanged(this.rfOutputLogInterval);
 
@@ -166,20 +152,6 @@ class RFOutputLogIntervalChanged extends Setting18ConfigureEvent {
 
   @override
   List<Object> get props => [rfOutputLogInterval];
-}
-
-class RFOutputLogIntervalIncreased extends Setting18ConfigureEvent {
-  const RFOutputLogIntervalIncreased();
-
-  @override
-  List<Object> get props => [];
-}
-
-class RFOutputLogIntervalDecreased extends Setting18ConfigureEvent {
-  const RFOutputLogIntervalDecreased();
-
-  @override
-  List<Object> get props => [];
 }
 
 class TGCCableLengthChanged extends Setting18ConfigureEvent {
