@@ -915,7 +915,7 @@ class _ForwardInputAttenuation extends StatelessWidget {
       builder: (context, state) {
         // forwardInputAttenuation1TextEditingController.text = state.dsVVA1;
         double minValue = 0.0;
-        double maxValue = 25.0;
+        double maxValue = 30.0;
         String inputAttenuation = getInputAttenuation(
           alcMode: alcMode,
           inputAttenuation: state.dsVVA1,
