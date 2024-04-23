@@ -1061,7 +1061,7 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         double minValue = 0.0;
-        double maxValue = 25.0;
+        double maxValue = 10.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
@@ -1187,7 +1187,7 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         double minValue = 0.0;
-        double maxValue = 25.0;
+        double maxValue = 10.0;
         return controlParameterSlider(
           context: context,
           editMode: state.editMode,
