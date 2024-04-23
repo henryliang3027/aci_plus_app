@@ -66,6 +66,8 @@ class Amp18Repository {
 
       A1P8G0 a1p8g0 = _amp18Parser.decodeA1P8G0(rawData);
 
+      print('Device time: ${a1p8g0.nowDateTime}');
+
       Map<DataKey, String> characteristicDataCache = {
         DataKey.partName: a1p8g0.partName,
         DataKey.partNo: a1p8g0.partNo,
@@ -389,7 +391,8 @@ class Amp18Repository {
 
       List<RFOutputLog> rfOutputLogs =
           _amp18Parser.parse1P8GRFOutputLogs(rawData);
-      bool hasNextChunk = rfOutputLogs.isNotEmpty ? true : false;
+      bool hasNextChunk =
+          rfOutputLogs.isNotEmpty && commandIndex != 204 ? true : false;
 
       return [
         true,
@@ -2175,8 +2178,8 @@ class Amp18Repository {
 
     int difference = dateTime.difference(deviceDateTime).inMinutes.abs();
 
-    // 如果 device 的 now time 跟 目前時間相差大於1440分鐘(24 小時), 則寫入目前時間
-    if (difference > 1440) {
+    // 如果 device 的 now time 跟 目前時間相差大於等於 30 分鐘, 則寫入目前時間
+    if (difference >= 30) {
       print('sync time on device id $partId');
       try {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
