@@ -171,6 +171,254 @@ class _FineTuneSliderState extends State<FineTuneSlider> {
   }
 }
 
+class FineTuneTextSlider extends StatefulWidget {
+  const FineTuneTextSlider({
+    super.key,
+    required this.initialValue,
+    required this.minValue,
+    required this.maxValue,
+    required this.step,
+    required this.enabled,
+    required this.onChanged,
+  });
+
+  final String initialValue;
+  final double minValue;
+  final double maxValue;
+  final double step;
+  final bool enabled;
+  final ValueChanged<double> onChanged;
+
+  @override
+  State<FineTuneTextSlider> createState() => _FineTuneTextSliderState();
+}
+
+class _FineTuneTextSliderState extends State<FineTuneTextSlider> {
+  late double _value;
+  late TextEditingController _textEditingController;
+
+  @override
+  void initState() {
+    double doubleValue = _getBondaryValue(
+      value: widget.initialValue,
+      minValue: widget.minValue,
+      maxValue: widget.maxValue,
+    );
+    _value = doubleValue;
+
+    _textEditingController = TextEditingController()
+      ..text = doubleValue.toString();
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant FineTuneTextSlider oldWidget) {
+    if (oldWidget.initialValue != widget.initialValue) {
+      setState(() {
+        double doubleValue = _getBondaryValue(
+          value: widget.initialValue,
+          minValue: widget.minValue,
+          maxValue: widget.maxValue,
+        );
+
+        _value = doubleValue;
+        _textEditingController.text = doubleValue.toString();
+      });
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void _increaseValue() {
+    setState(() {
+      _value = _value + widget.step <= widget.maxValue
+          ? _value + widget.step
+          : _value;
+
+      _textEditingController.text = _value.toString();
+    });
+  }
+
+  void _decreasedValue() {
+    setState(() {
+      _value = _value - widget.step >= widget.minValue
+          ? _value - widget.step
+          : _value;
+
+      _textEditingController.text = _value.toString();
+    });
+  }
+
+  _adjustTextFieldValue({
+    required String value,
+  }) {
+    if (value.isNotEmpty) {
+      double doubleCurrentValue = double.parse(value);
+      if (doubleCurrentValue > widget.maxValue) {
+        _textEditingController.text = widget.maxValue.toStringAsFixed(1);
+      } else if (doubleCurrentValue < widget.minValue) {
+        _textEditingController.text = widget.minValue.toStringAsFixed(1);
+      } else {
+        // textEditingController.text = currentValue;
+      }
+    } else {
+      _textEditingController.text = '';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 6.0, 0.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(
+              2,
+              (index) => Column(
+                children: [
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    height: 22,
+                    child: Text(
+                      '${(List.from([
+                            widget.minValue,
+                            widget.maxValue,
+                          ])[index]).toStringAsFixed(0)}',
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeM,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    height: 16,
+                    child: VerticalDivider(
+                      indent: 0,
+                      thickness: 1.2,
+                      color: Colors.grey.shade300,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SliderTheme(
+          data: const SliderThemeData(
+            valueIndicatorColor: Colors.red,
+            showValueIndicator: ShowValueIndicator.always,
+            overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
+          ),
+          child: Slider(
+            min: widget.minValue,
+            max: widget.maxValue,
+            divisions: (widget.maxValue - widget.minValue) ~/ widget.step,
+            value: _value,
+            onChanged: widget.enabled
+                ? (double value) {
+                    setState(() {
+                      _value = value;
+                    });
+                    widget.onChanged(_value);
+                  }
+                : null,
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              flex: 1,
+              child: IconButton.filled(
+                visualDensity: const VisualDensity(horizontal: -4.0),
+                icon: const Icon(
+                  Icons.remove,
+                ),
+                onPressed: widget.enabled
+                    ? () {
+                        _decreasedValue();
+                        widget.onChanged(_value);
+                      }
+                    : null,
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 0.0,
+                ),
+                child: TextField(
+                  controller: _textEditingController,
+                  // key: Key(textEditingControllerName1),
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeXXL,
+                  ),
+                  textAlign: TextAlign.center,
+                  enabled: widget.enabled,
+                  textInputAction: TextInputAction.done,
+                  onChanged: (value) {
+                    _adjustTextFieldValue(value: value);
+
+                    if (_textEditingController.text.isNotEmpty) {
+                      if (!_textEditingController.text.endsWith('.')) {
+                        widget.onChanged(
+                            double.parse(_textEditingController.text));
+                      }
+                    }
+                  },
+                  maxLength: 40,
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  inputFormatters: [
+                    // ^：表示從起始開始匹配第一個符合的數字
+                    // \d{1,2}：\d 表示匹配任何一個數字。{1,2} 表示前面的數字字符必須出現 1 次或 2 次
+                    // (\.\d?)?：匹配一個小數點後跟著 0 到 1 位數字
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d{1,2}(\.\d?)?'))
+                  ],
+                  decoration: const InputDecoration(
+                    // label: Text(
+                    //     '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                    contentPadding: EdgeInsets.all(8.0),
+                    isDense: true,
+                    filled: true,
+                    fillColor: Colors.white,
+                    counterText: '',
+                    errorMaxLines: 2,
+                    errorStyle: TextStyle(fontSize: CustomStyle.sizeS),
+                    // errorText: editMode1 ? errorText1 : null,
+                  ),
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: IconButton.filled(
+                visualDensity: const VisualDensity(horizontal: -4.0),
+                icon: const Icon(
+                  Icons.add,
+                ),
+                onPressed: widget.enabled
+                    ? () {
+                        _increaseValue();
+                        widget.onChanged(_value);
+                      }
+                    : null,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
 Widget configurationIntervalSlider({
   required BuildContext context,
   required bool editMode,
@@ -219,6 +467,59 @@ Widget configurationIntervalSlider({
           enabled: editMode,
           onChanged: onChanged,
         )
+      ],
+    ),
+  );
+}
+
+Widget controlTextSlider({
+  required BuildContext context,
+  required bool editMode,
+  required String title,
+  required double minValue,
+  required String currentValue,
+  required double maxValue,
+  required double step,
+  required ValueChanged<double> onChanged,
+  required TextEditingController textEditingController,
+  required ValueChanged<String> onTextChanged,
+  required VoidCallback onIncreased,
+  required VoidCallback onDecreased,
+}) {
+  // textEditingController.text = currentValue;
+  return Padding(
+    padding: const EdgeInsets.only(
+      bottom: 30.0,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: CustomStyle.sizeL,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        FineTuneTextSlider(
+          initialValue: currentValue,
+          minValue: minValue,
+          maxValue: maxValue,
+          step: step,
+          enabled: editMode,
+          onChanged: onChanged,
+        ),
       ],
     ),
   );

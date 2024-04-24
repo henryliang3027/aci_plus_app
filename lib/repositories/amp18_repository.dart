@@ -2216,6 +2216,8 @@ class Amp18Repository {
     List<dynamic> resultOf1p8G1 = await requestCommand1p8G1();
 
     if (resultOf1p8G1[0]) {
+      print('fcl: ${resultOf1p8G1[1][DataKey.firstChannelLoadingLevel]}');
+      print('lcl: ${resultOf1p8G1[1][DataKey.lastChannelLoadingLevel]}');
       _characteristicDataStreamController
           .add(Map<DataKey, String>.from(resultOf1p8G1[1]));
 

@@ -772,6 +772,8 @@ class Setting18ConfigureBloc
 
       settingResult.add(
           '${DataKey.firstChannelLoadingFrequency.name},$resultOfSetFirstChannelLoadingFrequency');
+
+      // await _amp18Repository.updateCharacteristics();
     }
 
     if (state.firstChannelLoadingLevel.value !=

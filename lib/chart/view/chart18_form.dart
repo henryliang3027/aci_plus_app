@@ -792,6 +792,8 @@ class _PopupMenu extends StatelessWidget {
     String alcMode = characteristicData[DataKey.alcMode] ?? '';
     String alcModeText = alcMode != '' ? onOffTexts[alcMode]! : '';
     String logInterval = characteristicData[DataKey.logInterval] ?? '';
+    String rfOutputLogInterval =
+        characteristicData[DataKey.rfOutputLogInterval] ?? '';
 
     Map<String, String> configurationValues = {
       AppLocalizations.of(context)!.device: '',
@@ -820,6 +822,8 @@ class _PopupMenu extends StatelessWidget {
       AppLocalizations.of(context)!.alcMode: alcModeText,
       AppLocalizations.of(context)!.logInterval:
           '$logInterval ${AppLocalizations.of(context)!.minute}',
+      AppLocalizations.of(context)!.rfOutputLogInterval:
+          '$rfOutputLogInterval ${AppLocalizations.of(context)!.minute}',
     };
 
     return configurationValues;
