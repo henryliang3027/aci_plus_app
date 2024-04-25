@@ -14,26 +14,12 @@ class Setting18GraphModuleBloc
         super(const Setting18GraphModuleState()) {
     on<Initialized>(_onInitialized);
     on<DSVVA1Changed>(_onDSVVA1Changed);
-    on<DSVVA1Increased>(_onDSVVA1Increased);
-    on<DSVVA1Decreased>(_onDSVVA1Decreased);
     on<DSSlope1Changed>(_onDSSlope1Changed);
-    on<DSSlope1Increased>(_onDSSlope1Increased);
-    on<DSSlope1Decreased>(_onDSSlope1Decreased);
     on<USVCA1Changed>(_onUSVCA1Changed);
-    on<USVCA1Increased>(_onUSVCA1Increased);
-    on<USVCA1Decreased>(_onUSVCA1Decreased);
     on<RtnInputAttenuation3Changed>(_onRtnInputAttenuation3Changed);
-    on<RtnInputAttenuation3Increased>(_onRtnInputAttenuation3Increased);
-    on<RtnInputAttenuation3Decreased>(_onRtnInputAttenuation3Decreased);
     on<RtnInputAttenuation4Changed>(_onRtnInputAttenuation4Changed);
-    on<RtnInputAttenuation4Increased>(_onRtnInputAttenuation4Increased);
-    on<RtnInputAttenuation4Decreased>(_onRtnInputAttenuation4Decreased);
     on<USVCA2Changed>(_onUSVCA2Changed);
-    on<USVCA2Increased>(_onUSVCA2Increased);
-    on<USVCA2Decreased>(_onUSVCA2Decreased);
     on<EREQChanged>(_onEREQChanged);
-    on<EREQIncreased>(_onEREQIncreased);
-    on<EREQDecreased>(_onEREQDecreased);
     on<RtnIngressSetting2Changed>(_onRtnIngressSetting2Changed);
     on<RtnIngressSetting3Changed>(_onRtnIngressSetting3Changed);
     on<RtnIngressSetting4Changed>(_onRtnIngressSetting4Changed);
@@ -193,84 +179,6 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onDSVVA1Increased(
-    DSVVA1Increased event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    String dsVVA1 = _getIncreasedNumber(state.dsVVA1);
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      dsVVA1: dsVVA1,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA1: dsVVA1,
-        dsSlope1: state.dsSlope1,
-        usVCA1: state.usVCA1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        usVCA2: state.usVCA2,
-        eREQ: state.eREQ,
-        returnIngressSetting2: state.returnIngressSetting2,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        tgcCableLength: state.tgcCableLength,
-        dsVVA2: state.dsVVA2,
-        dsSlope2: state.dsSlope2,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        // usTGC: state.usTGC,
-        splitOption: state.splitOption,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-      ),
-    ));
-  }
-
-  void _onDSVVA1Decreased(
-    DSVVA1Decreased event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    String dsVVA1 = _getDecreasedNumber(state.dsVVA1);
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      dsVVA1: dsVVA1,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA1: dsVVA1,
-        dsSlope1: state.dsSlope1,
-        usVCA1: state.usVCA1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        usVCA2: state.usVCA2,
-        eREQ: state.eREQ,
-        returnIngressSetting2: state.returnIngressSetting2,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        tgcCableLength: state.tgcCableLength,
-        dsVVA2: state.dsVVA2,
-        dsSlope2: state.dsSlope2,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        // usTGC: state.usTGC,
-        splitOption: state.splitOption,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-      ),
-    ));
-  }
-
   void _onDSSlope1Changed(
     DSSlope1Changed event,
     Emitter<Setting18GraphModuleState> emit,
@@ -282,84 +190,6 @@ class Setting18GraphModuleBloc
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: event.dsSlope1,
-        usVCA1: state.usVCA1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        usVCA2: state.usVCA2,
-        eREQ: state.eREQ,
-        returnIngressSetting2: state.returnIngressSetting2,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        tgcCableLength: state.tgcCableLength,
-        dsVVA2: state.dsVVA2,
-        dsSlope2: state.dsSlope2,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        // usTGC: state.usTGC,
-        splitOption: state.splitOption,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-      ),
-    ));
-  }
-
-  void _onDSSlope1Increased(
-    DSSlope1Increased event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    String dsSlope1 = _getIncreasedNumber(state.dsSlope1);
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      dsSlope1: dsSlope1,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA1: state.dsVVA1,
-        dsSlope1: dsSlope1,
-        usVCA1: state.usVCA1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        usVCA2: state.usVCA2,
-        eREQ: state.eREQ,
-        returnIngressSetting2: state.returnIngressSetting2,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        tgcCableLength: state.tgcCableLength,
-        dsVVA2: state.dsVVA2,
-        dsSlope2: state.dsSlope2,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        // usTGC: state.usTGC,
-        splitOption: state.splitOption,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-      ),
-    ));
-  }
-
-  void _onDSSlope1Decreased(
-    DSSlope1Decreased event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    String dsSlope1 = _getDecreasedNumber(state.dsSlope1);
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      dsSlope1: dsSlope1,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA1: state.dsVVA1,
-        dsSlope1: dsSlope1,
         usVCA1: state.usVCA1,
         returnInputAttenuation3: state.returnInputAttenuation3,
         returnInputAttenuation4: state.returnInputAttenuation4,
@@ -423,82 +253,6 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onUSVCA1Increased(
-    USVCA1Increased event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    String usVCA1 = _getIncreasedNumber(state.usVCA1);
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      usVCA1: usVCA1,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA1: state.dsVVA1,
-        dsSlope1: state.dsSlope1,
-        usVCA1: usVCA1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        usVCA2: state.usVCA2,
-        eREQ: state.eREQ,
-        returnIngressSetting2: state.returnIngressSetting2,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        tgcCableLength: state.tgcCableLength,
-        dsVVA2: state.dsVVA2,
-        dsSlope2: state.dsSlope2,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        // usTGC: state.usTGC,
-        splitOption: state.splitOption,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-      ),
-    ));
-  }
-
-  void _onUSVCA1Decreased(
-    USVCA1Decreased event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    String usVCA1 = _getDecreasedNumber(state.usVCA1);
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      usVCA1: usVCA1,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA1: state.dsVVA1,
-        dsSlope1: state.dsSlope1,
-        usVCA1: usVCA1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        usVCA2: state.usVCA2,
-        eREQ: state.eREQ,
-        returnIngressSetting2: state.returnIngressSetting2,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        tgcCableLength: state.tgcCableLength,
-        dsVVA2: state.dsVVA2,
-        dsSlope2: state.dsSlope2,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        // usTGC: state.usTGC,
-        splitOption: state.splitOption,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-      ),
-    ));
-  }
-
   void _onRtnInputAttenuation3Changed(
     RtnInputAttenuation3Changed event,
     Emitter<Setting18GraphModuleState> emit,
@@ -512,86 +266,6 @@ class Setting18GraphModuleBloc
         dsSlope1: state.dsSlope1,
         usVCA1: state.usVCA1,
         returnInputAttenuation3: event.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        usVCA2: state.usVCA2,
-        eREQ: state.eREQ,
-        returnIngressSetting2: state.returnIngressSetting2,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        tgcCableLength: state.tgcCableLength,
-        dsVVA2: state.dsVVA2,
-        dsSlope2: state.dsSlope2,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        // usTGC: state.usTGC,
-        splitOption: state.splitOption,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-      ),
-    ));
-  }
-
-  void _onRtnInputAttenuation3Increased(
-    RtnInputAttenuation3Increased event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    String returnInputAttenuation3 =
-        _getIncreasedNumber(state.returnInputAttenuation3);
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation3: returnInputAttenuation3,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA1: state.dsVVA1,
-        dsSlope1: state.dsSlope1,
-        usVCA1: state.usVCA1,
-        returnInputAttenuation3: returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        usVCA2: state.usVCA2,
-        eREQ: state.eREQ,
-        returnIngressSetting2: state.returnIngressSetting2,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        tgcCableLength: state.tgcCableLength,
-        dsVVA2: state.dsVVA2,
-        dsSlope2: state.dsSlope2,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        // usTGC: state.usTGC,
-        splitOption: state.splitOption,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-      ),
-    ));
-  }
-
-  void _onRtnInputAttenuation3Decreased(
-    RtnInputAttenuation3Decreased event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    String returnInputAttenuation3 =
-        _getDecreasedNumber(state.returnInputAttenuation3);
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation3: returnInputAttenuation3,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA1: state.dsVVA1,
-        dsSlope1: state.dsSlope1,
-        usVCA1: state.usVCA1,
-        returnInputAttenuation3: returnInputAttenuation3,
         returnInputAttenuation4: state.returnInputAttenuation4,
         usVCA2: state.usVCA2,
         eREQ: state.eREQ,
@@ -653,84 +327,6 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onRtnInputAttenuation4Increased(
-    RtnInputAttenuation4Increased event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    String returnInputAttenuation4 =
-        _getIncreasedNumber(state.returnInputAttenuation4);
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation4: returnInputAttenuation4,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA1: state.dsVVA1,
-        dsSlope1: state.dsSlope1,
-        usVCA1: state.usVCA1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: returnInputAttenuation4,
-        usVCA2: state.usVCA2,
-        eREQ: state.eREQ,
-        returnIngressSetting2: state.returnIngressSetting2,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        tgcCableLength: state.tgcCableLength,
-        dsVVA2: state.dsVVA2,
-        dsSlope2: state.dsSlope2,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        // usTGC: state.usTGC,
-        splitOption: state.splitOption,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-      ),
-    ));
-  }
-
-  void _onRtnInputAttenuation4Decreased(
-    RtnInputAttenuation4Decreased event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    String returnInputAttenuation4 =
-        _getDecreasedNumber(state.returnInputAttenuation4);
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      returnInputAttenuation4: returnInputAttenuation4,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA1: state.dsVVA1,
-        dsSlope1: state.dsSlope1,
-        usVCA1: state.usVCA1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: returnInputAttenuation4,
-        usVCA2: state.usVCA2,
-        eREQ: state.eREQ,
-        returnIngressSetting2: state.returnIngressSetting2,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        tgcCableLength: state.tgcCableLength,
-        dsVVA2: state.dsVVA2,
-        dsSlope2: state.dsSlope2,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        // usTGC: state.usTGC,
-        splitOption: state.splitOption,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-      ),
-    ));
-  }
-
   void _onUSVCA2Changed(
     USVCA2Changed event,
     Emitter<Setting18GraphModuleState> emit,
@@ -746,84 +342,6 @@ class Setting18GraphModuleBloc
         returnInputAttenuation3: state.returnInputAttenuation3,
         returnInputAttenuation4: state.returnInputAttenuation4,
         usVCA2: event.usVCA2,
-        eREQ: state.eREQ,
-        returnIngressSetting2: state.returnIngressSetting2,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        tgcCableLength: state.tgcCableLength,
-        dsVVA2: state.dsVVA2,
-        dsSlope2: state.dsSlope2,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        // usTGC: state.usTGC,
-        splitOption: state.splitOption,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-      ),
-    ));
-  }
-
-  void _onUSVCA2Increased(
-    USVCA2Increased event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    String usVCA2 = _getIncreasedNumber(state.usVCA2);
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      usVCA2: usVCA2,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA1: state.dsVVA1,
-        dsSlope1: state.dsSlope1,
-        usVCA1: state.usVCA1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        usVCA2: usVCA2,
-        eREQ: state.eREQ,
-        returnIngressSetting2: state.returnIngressSetting2,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        tgcCableLength: state.tgcCableLength,
-        dsVVA2: state.dsVVA2,
-        dsSlope2: state.dsSlope2,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        // usTGC: state.usTGC,
-        splitOption: state.splitOption,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-      ),
-    ));
-  }
-
-  void _onUSVCA2Decreased(
-    USVCA2Decreased event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    String usVCA2 = _getDecreasedNumber(state.usVCA2);
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      usVCA2: usVCA2,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA1: state.dsVVA1,
-        dsSlope1: state.dsSlope1,
-        usVCA1: state.usVCA1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        usVCA2: usVCA2,
         eREQ: state.eREQ,
         returnIngressSetting2: state.returnIngressSetting2,
         returnIngressSetting3: state.returnIngressSetting3,
@@ -862,82 +380,6 @@ class Setting18GraphModuleBloc
         returnInputAttenuation4: state.returnInputAttenuation4,
         usVCA2: state.usVCA2,
         eREQ: event.eREQ,
-        returnIngressSetting2: state.returnIngressSetting2,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        tgcCableLength: state.tgcCableLength,
-        dsVVA2: state.dsVVA2,
-        dsSlope2: state.dsSlope2,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        // usTGC: state.usTGC,
-        splitOption: state.splitOption,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-      ),
-    ));
-  }
-
-  void _onEREQIncreased(
-    EREQIncreased event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    String eREQ = _getIncreasedNumber(state.eREQ);
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      eREQ: eREQ,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA1: state.dsVVA1,
-        dsSlope1: state.dsSlope1,
-        usVCA1: state.usVCA1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        usVCA2: state.usVCA2,
-        eREQ: eREQ,
-        returnIngressSetting2: state.returnIngressSetting2,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        tgcCableLength: state.tgcCableLength,
-        dsVVA2: state.dsVVA2,
-        dsSlope2: state.dsSlope2,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        // usTGC: state.usTGC,
-        splitOption: state.splitOption,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-      ),
-    ));
-  }
-
-  void _onEREQDecreased(
-    EREQDecreased event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    String eREQ = _getDecreasedNumber(state.eREQ);
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      eREQ: eREQ,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA1: state.dsVVA1,
-        dsSlope1: state.dsSlope1,
-        usVCA1: state.usVCA1,
-        returnInputAttenuation3: state.returnInputAttenuation3,
-        returnInputAttenuation4: state.returnInputAttenuation4,
-        usVCA2: state.usVCA2,
-        eREQ: eREQ,
         returnIngressSetting2: state.returnIngressSetting2,
         returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: state.returnIngressSetting4,

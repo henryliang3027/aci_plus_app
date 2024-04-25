@@ -187,7 +187,7 @@ class FineTuneTextSlider extends StatefulWidget {
   final double maxValue;
   final double step;
   final bool enabled;
-  final ValueChanged<double> onChanged;
+  final ValueChanged<String> onChanged;
 
   @override
   State<FineTuneTextSlider> createState() => _FineTuneTextSliderState();
@@ -199,15 +199,14 @@ class _FineTuneTextSliderState extends State<FineTuneTextSlider> {
 
   @override
   void initState() {
-    double doubleValue = _getBondaryValue(
+    _value = _getBondaryValue(
       value: widget.initialValue,
       minValue: widget.minValue,
       maxValue: widget.maxValue,
     );
-    _value = doubleValue;
 
     _textEditingController = TextEditingController()
-      ..text = doubleValue.toString();
+      ..text = widget.initialValue;
     super.initState();
   }
 
@@ -215,14 +214,13 @@ class _FineTuneTextSliderState extends State<FineTuneTextSlider> {
   void didUpdateWidget(covariant FineTuneTextSlider oldWidget) {
     if (oldWidget.initialValue != widget.initialValue) {
       setState(() {
-        double doubleValue = _getBondaryValue(
+        _value = _getBondaryValue(
           value: widget.initialValue,
           minValue: widget.minValue,
           maxValue: widget.maxValue,
         );
 
-        _value = doubleValue;
-        _textEditingController.text = doubleValue.toString();
+        _textEditingController.text = widget.initialValue;
       });
     }
     super.didUpdateWidget(oldWidget);
@@ -258,7 +256,7 @@ class _FineTuneTextSliderState extends State<FineTuneTextSlider> {
       } else if (doubleCurrentValue < widget.minValue) {
         _textEditingController.text = widget.minValue.toStringAsFixed(1);
       } else {
-        // textEditingController.text = currentValue;
+        // 維持目前 value;
       }
     } else {
       _textEditingController.text = '';
@@ -321,98 +319,95 @@ class _FineTuneTextSliderState extends State<FineTuneTextSlider> {
                     setState(() {
                       _value = value;
                     });
-                    widget.onChanged(_value);
+                    widget.onChanged(_value.toString());
                   }
                 : null,
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              flex: 1,
-              child: IconButton.filled(
-                visualDensity: const VisualDensity(horizontal: -4.0),
-                icon: const Icon(
-                  Icons.remove,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 30.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                flex: 1,
+                child: IconButton.filled(
+                  visualDensity: const VisualDensity(horizontal: -4.0),
+                  icon: const Icon(
+                    Icons.remove,
+                  ),
+                  onPressed: widget.enabled
+                      ? () {
+                          _decreasedValue();
+                          widget.onChanged(_value.toString());
+                        }
+                      : null,
                 ),
-                onPressed: widget.enabled
-                    ? () {
-                        _decreasedValue();
-                        widget.onChanged(_value);
-                      }
-                    : null,
               ),
-            ),
-            Flexible(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 0.0,
-                ),
-                child: TextField(
-                  controller: _textEditingController,
-                  // key: Key(textEditingControllerName1),
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXXL,
+              Flexible(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 0.0,
                   ),
-                  textAlign: TextAlign.center,
-                  enabled: widget.enabled,
-                  textInputAction: TextInputAction.done,
-                  onChanged: (value) {
-                    _adjustTextFieldValue(value: value);
-
-                    if (_textEditingController.text.isNotEmpty) {
-                      if (!_textEditingController.text.endsWith('.')) {
-                        widget.onChanged(
-                            double.parse(_textEditingController.text));
-                      }
-                    }
-                  },
-                  maxLength: 40,
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
-                  inputFormatters: [
-                    // ^：表示從起始開始匹配第一個符合的數字
-                    // \d{1,2}：\d 表示匹配任何一個數字。{1,2} 表示前面的數字字符必須出現 1 次或 2 次
-                    // (\.\d?)?：匹配一個小數點後跟著 0 到 1 位數字
-                    FilteringTextInputFormatter.allow(
-                        RegExp(r'^\d{1,2}(\.\d?)?'))
-                  ],
-                  decoration: const InputDecoration(
-                    // label: Text(
-                    //     '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                    contentPadding: EdgeInsets.all(8.0),
-                    isDense: true,
-                    filled: true,
-                    fillColor: Colors.white,
-                    counterText: '',
-                    errorMaxLines: 2,
-                    errorStyle: TextStyle(fontSize: CustomStyle.sizeS),
-                    // errorText: editMode1 ? errorText1 : null,
+                  child: TextField(
+                    controller: _textEditingController,
+                    // key: Key(textEditingControllerName1),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXXL,
+                    ),
+                    textAlign: TextAlign.center,
+                    enabled: widget.enabled,
+                    textInputAction: TextInputAction.done,
+                    onChanged: (value) {
+                      _adjustTextFieldValue(value: value);
+                      widget.onChanged(_textEditingController.text);
+                    },
+                    maxLength: 40,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    inputFormatters: [
+                      // ^：表示從起始開始匹配第一個符合的數字
+                      // \d{1,2}：\d 表示匹配任何一個數字。{1,2} 表示前面的數字字符必須出現 1 次或 2 次
+                      // (\.\d?)?：匹配一個小數點後跟著 0 到 1 位數字
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d{1,2}(\.\d?)?'))
+                    ],
+                    decoration: const InputDecoration(
+                      // label: Text(
+                      //     '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: EdgeInsets.all(8.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor: Colors.white,
+                      counterText: '',
+                      errorMaxLines: 2,
+                      errorStyle: TextStyle(fontSize: CustomStyle.sizeS),
+                      // errorText: editMode1 ? errorText1 : null,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Flexible(
-              flex: 1,
-              child: IconButton.filled(
-                visualDensity: const VisualDensity(horizontal: -4.0),
-                icon: const Icon(
-                  Icons.add,
+              Flexible(
+                flex: 1,
+                child: IconButton.filled(
+                  visualDensity: const VisualDensity(horizontal: -4.0),
+                  icon: const Icon(
+                    Icons.add,
+                  ),
+                  onPressed: widget.enabled
+                      ? () {
+                          _increaseValue();
+                          widget.onChanged(_value.toString());
+                        }
+                      : null,
                 ),
-                onPressed: widget.enabled
-                    ? () {
-                        _increaseValue();
-                        widget.onChanged(_value);
-                      }
-                    : null,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
@@ -479,12 +474,8 @@ Widget controlTextSlider({
   required double minValue,
   required String currentValue,
   required double maxValue,
-  required double step,
-  required ValueChanged<double> onChanged,
-  required TextEditingController textEditingController,
-  required ValueChanged<String> onTextChanged,
-  required VoidCallback onIncreased,
-  required VoidCallback onDecreased,
+  required ValueChanged<String> onChanged,
+  double step = 0.5,
 }) {
   // textEditingController.text = currentValue;
   return Padding(
@@ -519,176 +510,6 @@ Widget controlTextSlider({
           step: step,
           enabled: editMode,
           onChanged: onChanged,
-        ),
-      ],
-    ),
-  );
-}
-
-Widget controlParameterSlider({
-  required BuildContext context,
-  required bool editMode,
-  required String title,
-  required double minValue,
-  required String currentValue,
-  required double maxValue,
-  required ValueChanged<double> onChanged,
-  required TextEditingController textEditingController,
-  required ValueChanged<String> onTextChanged,
-  required VoidCallback onIncreased,
-  required VoidCallback onDecreased,
-}) {
-  // textEditingController.text = currentValue;
-  return Padding(
-    padding: const EdgeInsets.only(
-      bottom: 30.0,
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: CustomStyle.sizeL,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(
-              2,
-              (index) => Column(
-                children: [
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 22,
-                    child: Text(
-                      '${(List.from([
-                            minValue,
-                            maxValue
-                          ])[index]).toStringAsFixed(0)}',
-                      style: const TextStyle(
-                        fontSize: CustomStyle.sizeM,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 16,
-                    child: VerticalDivider(
-                      indent: 0,
-                      thickness: 1.2,
-                      color: Colors.grey.shade300,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        SliderTheme(
-          data: const SliderThemeData(
-            valueIndicatorColor: Colors.red,
-            showValueIndicator: ShowValueIndicator.always,
-            overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
-          ),
-          child: Slider(
-            min: minValue,
-            max: maxValue,
-            divisions: (maxValue - minValue) ~/ 0.5,
-            value: _getBondaryValue(
-              value: currentValue,
-              minValue: minValue,
-              maxValue: maxValue,
-            ),
-            onChanged: editMode ? onChanged : null,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 30.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                flex: 1,
-                child: IconButton.filled(
-                  visualDensity: const VisualDensity(horizontal: -4.0),
-                  icon: const Icon(
-                    Icons.remove,
-                  ),
-                  onPressed: editMode ? onDecreased : null,
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 0.0,
-                  ),
-                  child: TextField(
-                    controller: textEditingController,
-                    // key: Key(textEditingControllerName1),
-                    style: const TextStyle(
-                      fontSize: CustomStyle.sizeXXL,
-                    ),
-                    textAlign: TextAlign.center,
-                    enabled: editMode,
-                    textInputAction: TextInputAction.done,
-                    onChanged: onTextChanged,
-                    maxLength: 40,
-                    keyboardType: const TextInputType.numberWithOptions(
-                      decimal: true,
-                    ),
-                    inputFormatters: [
-                      // ^：表示從起始開始匹配第一個符合的數字
-                      // \d{1,2}：\d 表示匹配任何一個數字。{1,2} 表示前面的數字字符必須出現 1 次或 2 次
-                      // (\.\d?)?：匹配一個小數點後跟著 0 到 1 位數字
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d{1,2}(\.\d?)?'))
-                    ],
-                    decoration: const InputDecoration(
-                      // label: Text(
-                      //     '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                      contentPadding: EdgeInsets.all(8.0),
-                      isDense: true,
-                      filled: true,
-                      fillColor: Colors.white,
-                      counterText: '',
-                      errorMaxLines: 2,
-                      errorStyle: TextStyle(fontSize: CustomStyle.sizeS),
-                      // errorText: editMode1 ? errorText1 : null,
-                    ),
-                  ),
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: IconButton.filled(
-                  visualDensity: const VisualDensity(horizontal: -4.0),
-                  icon: const Icon(
-                    Icons.add,
-                  ),
-                  onPressed: editMode ? onIncreased : null,
-                ),
-              ),
-            ],
-          ),
         ),
       ],
     ),

@@ -314,7 +314,7 @@ class _ForwardInputAttenuation extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
           editMode: true,
           title:
@@ -323,20 +323,8 @@ class _ForwardInputAttenuation extends StatelessWidget {
           maxValue: 25.0,
           currentValue: state.dsVVA1,
           onChanged: (dsVVA1) {
-            context
-                .read<Setting18GraphModuleBloc>()
-                .add(DSVVA1Changed(dsVVA1.toStringAsFixed(1)));
-          },
-          textEditingController: forwardInputAttenuation1TextEditingController,
-          onTextChanged: (dsVVA1) {
             context.read<Setting18GraphModuleBloc>().add(DSVVA1Changed(dsVVA1));
           },
-          onDecreased: () => context
-              .read<Setting18GraphModuleBloc>()
-              .add(const DSVVA1Decreased()),
-          onIncreased: () => context
-              .read<Setting18GraphModuleBloc>()
-              .add(const DSVVA1Increased()),
         );
       },
     );
@@ -355,7 +343,7 @@ class _ForwardInputEqualizer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
           editMode: true,
           title:
@@ -366,20 +354,8 @@ class _ForwardInputEqualizer extends StatelessWidget {
           onChanged: (dsSlope1) {
             context
                 .read<Setting18GraphModuleBloc>()
-                .add(DSSlope1Changed(dsSlope1.toStringAsFixed(1)));
-          },
-          textEditingController: forwardInputEqualizer1TextEditingController,
-          onTextChanged: (dsSlope1) {
-            context
-                .read<Setting18GraphModuleBloc>()
                 .add(DSSlope1Changed(dsSlope1));
           },
-          onDecreased: () => context
-              .read<Setting18GraphModuleBloc>()
-              .add(const DSSlope1Decreased()),
-          onIncreased: () => context
-              .read<Setting18GraphModuleBloc>()
-              .add(const DSSlope1Increased()),
         );
       },
     );

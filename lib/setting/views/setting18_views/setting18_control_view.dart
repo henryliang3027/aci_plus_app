@@ -921,47 +921,19 @@ class _ForwardInputAttenuation extends StatelessWidget {
           inputAttenuation: state.dsVVA1,
           currentInputAttenuation: currentInputAttenuation,
         );
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
-          editMode: state.editMode && alcMode == '0',
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
-          maxValue: maxValue,
           currentValue: inputAttenuation,
+          maxValue: maxValue,
           onChanged: (dsVVA1) {
             context.read<Setting18ControlBloc>().add(DSVVA1Changed(
-                  dsVVA1: dsVVA1.toStringAsFixed(1),
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardInputAttenuation1TextEditingController,
-                  isFromTextField: false,
-                ));
-          },
-          textEditingController: forwardInputAttenuation1TextEditingController,
-          onTextChanged: (dsVVA1) {
-            context.read<Setting18ControlBloc>().add(DSVVA1Changed(
                   dsVVA1: dsVVA1,
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardInputAttenuation1TextEditingController,
-                  isFromTextField: true,
                 ));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(DSVVA1Decreased(
-                    minValue: minValue,
-                    textEditingController:
-                        forwardInputAttenuation1TextEditingController,
-                  )),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(DSVVA1Increased(
-                    maxValue: maxValue,
-                    textEditingController:
-                        forwardInputAttenuation1TextEditingController,
-                  )),
         );
       },
     );
@@ -1000,47 +972,19 @@ class _ForwardInputEqualizer extends StatelessWidget {
           inputEqualizer: state.dsSlope1,
           currentInputEqualizer: currentInputEqualizer,
         );
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
-          editMode: state.editMode && alcMode == '0' && agcMode == '0',
+          editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
           minValue: minValue,
-          maxValue: maxValue,
           currentValue: inputEqualizer,
+          maxValue: maxValue,
           onChanged: (dsSlope1) {
             context.read<Setting18ControlBloc>().add(DSSlope1Changed(
-                  dsSlope1: dsSlope1.toStringAsFixed(1),
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardInputEqualizer1TextEditingController,
-                  isFromTextField: false,
-                ));
-          },
-          textEditingController: forwardInputEqualizer1TextEditingController,
-          onTextChanged: (dsSlope1) {
-            context.read<Setting18ControlBloc>().add(DSSlope1Changed(
                   dsSlope1: dsSlope1,
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardInputEqualizer1TextEditingController,
-                  isFromTextField: true,
                 ));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(DSSlope1Decreased(
-                    minValue: minValue,
-                    textEditingController:
-                        forwardInputEqualizer1TextEditingController,
-                  )),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(DSSlope1Increased(
-                    maxValue: maxValue,
-                    textEditingController:
-                        forwardInputEqualizer1TextEditingController,
-                  )),
         );
       },
     );
@@ -1062,7 +1006,7 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
       builder: (context, state) {
         double minValue = 0.0;
         double maxValue = 10.0;
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -1072,38 +1016,9 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
           currentValue: state.dsVVA4,
           onChanged: (dsVVA4) {
             context.read<Setting18ControlBloc>().add(DSVVA4Changed(
-                  dsVVA4: dsVVA4.toStringAsFixed(1),
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardOutputAttenuation2And3TextEditingController,
-                  isFromTextField: false,
-                ));
-          },
-          textEditingController:
-              forwardOutputAttenuation2And3TextEditingController,
-          onTextChanged: (dsVVA4) {
-            context.read<Setting18ControlBloc>().add(DSVVA4Changed(
                   dsVVA4: dsVVA4,
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardOutputAttenuation2And3TextEditingController,
-                  isFromTextField: true,
                 ));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(DSVVA4Decreased(
-                    minValue: minValue,
-                    textEditingController:
-                        forwardOutputAttenuation2And3TextEditingController,
-                  )),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(DSVVA4Increased(
-                    maxValue: maxValue,
-                    textEditingController:
-                        forwardOutputAttenuation2And3TextEditingController,
-                  )),
         );
       },
     );
@@ -1125,7 +1040,7 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
       builder: (context, state) {
         double minValue = 0.0;
         double maxValue = 10.0;
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -1135,38 +1050,9 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
           currentValue: state.dsVVA4,
           onChanged: (dsVVA4) {
             context.read<Setting18ControlBloc>().add(DSVVA4Changed(
-                  dsVVA4: dsVVA4.toStringAsFixed(1),
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardOutputAttenuation3And4TextEditingController,
-                  isFromTextField: false,
-                ));
-          },
-          textEditingController:
-              forwardOutputAttenuation3And4TextEditingController,
-          onTextChanged: (dsVVA4) {
-            context.read<Setting18ControlBloc>().add(DSVVA4Changed(
                   dsVVA4: dsVVA4,
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardOutputAttenuation3And4TextEditingController,
-                  isFromTextField: true,
                 ));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(DSVVA4Decreased(
-                    minValue: minValue,
-                    textEditingController:
-                        forwardOutputAttenuation3And4TextEditingController,
-                  )),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(DSVVA4Increased(
-                    maxValue: maxValue,
-                    textEditingController:
-                        forwardOutputAttenuation3And4TextEditingController,
-                  )),
         );
       },
     );
@@ -1188,7 +1074,7 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
       builder: (context, state) {
         double minValue = 0.0;
         double maxValue = 10.0;
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -1198,38 +1084,9 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
           currentValue: state.dsVVA5,
           onChanged: (dsVVA5) {
             context.read<Setting18ControlBloc>().add(DSVVA5Changed(
-                  dsVVA5: dsVVA5.toStringAsFixed(1),
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardOutputAttenuation5And6TextEditingController,
-                  isFromTextField: false,
-                ));
-          },
-          textEditingController:
-              forwardOutputAttenuation5And6TextEditingController,
-          onTextChanged: (dsVVA5) {
-            context.read<Setting18ControlBloc>().add(DSVVA5Changed(
                   dsVVA5: dsVVA5,
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardOutputAttenuation5And6TextEditingController,
-                  isFromTextField: true,
                 ));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(DSVVA5Decreased(
-                    minValue: minValue,
-                    textEditingController:
-                        forwardOutputAttenuation5And6TextEditingController,
-                  )),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(DSVVA5Increased(
-                    maxValue: maxValue,
-                    textEditingController:
-                        forwardOutputAttenuation5And6TextEditingController,
-                  )),
         );
       },
     );
@@ -1250,7 +1107,7 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
       builder: (context, state) {
         double minValue = 0.0;
         double maxValue = 10.0;
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -1260,38 +1117,9 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
           currentValue: state.dsSlope3,
           onChanged: (dsSlope3) {
             context.read<Setting18ControlBloc>().add(DSSlope3Changed(
-                  dsSlope3: dsSlope3.toStringAsFixed(1),
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardOutputEqualizer2And3TextEditingController,
-                  isFromTextField: false,
-                ));
-          },
-          textEditingController:
-              forwardOutputEqualizer2And3TextEditingController,
-          onTextChanged: (dsSlope3) {
-            context.read<Setting18ControlBloc>().add(DSSlope3Changed(
                   dsSlope3: dsSlope3,
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardOutputEqualizer2And3TextEditingController,
-                  isFromTextField: true,
                 ));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(DSSlope3Decreased(
-                    minValue: minValue,
-                    textEditingController:
-                        forwardOutputEqualizer2And3TextEditingController,
-                  )),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(DSSlope3Increased(
-                    maxValue: maxValue,
-                    textEditingController:
-                        forwardOutputEqualizer2And3TextEditingController,
-                  )),
         );
       },
     );
@@ -1312,7 +1140,7 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
       builder: (context, state) {
         double minValue = 0.0;
         double maxValue = 10.0;
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -1322,38 +1150,9 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
           currentValue: state.dsSlope3,
           onChanged: (dsSlope3) {
             context.read<Setting18ControlBloc>().add(DSSlope3Changed(
-                  dsSlope3: dsSlope3.toStringAsFixed(1),
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardOutputEqualizer3And4TextEditingController,
-                  isFromTextField: false,
-                ));
-          },
-          textEditingController:
-              forwardOutputEqualizer3And4TextEditingController,
-          onTextChanged: (dsSlope3) {
-            context.read<Setting18ControlBloc>().add(DSSlope3Changed(
                   dsSlope3: dsSlope3,
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardOutputEqualizer3And4TextEditingController,
-                  isFromTextField: true,
                 ));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(DSSlope3Decreased(
-                    minValue: minValue,
-                    textEditingController:
-                        forwardOutputEqualizer3And4TextEditingController,
-                  )),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(DSSlope3Increased(
-                    maxValue: maxValue,
-                    textEditingController:
-                        forwardOutputEqualizer3And4TextEditingController,
-                  )),
         );
       },
     );
@@ -1374,7 +1173,7 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
       builder: (context, state) {
         double minValue = 0.0;
         double maxValue = 10.0;
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -1384,38 +1183,9 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
           currentValue: state.dsSlope4,
           onChanged: (dsSlope4) {
             context.read<Setting18ControlBloc>().add(DSSlope4Changed(
-                  dsSlope4: dsSlope4.toStringAsFixed(1),
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardOutputEqualizer5And6TextEditingController,
-                  isFromTextField: false,
-                ));
-          },
-          textEditingController:
-              forwardOutputEqualizer5And6TextEditingController,
-          onTextChanged: (dsSlope4) {
-            context.read<Setting18ControlBloc>().add(DSSlope4Changed(
                   dsSlope4: dsSlope4,
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      forwardOutputEqualizer5And6TextEditingController,
-                  isFromTextField: true,
                 ));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(DSSlope4Decreased(
-                    minValue: minValue,
-                    textEditingController:
-                        forwardOutputEqualizer5And6TextEditingController,
-                  )),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(DSSlope4Increased(
-                    maxValue: maxValue,
-                    textEditingController:
-                        forwardOutputEqualizer5And6TextEditingController,
-                  )),
         );
       },
     );
@@ -1436,7 +1206,7 @@ class _RtnInputAttenuation2 extends StatelessWidget {
       builder: (context, state) {
         double minValue = 0.0;
         double maxValue = 25.0;
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -1446,37 +1216,9 @@ class _RtnInputAttenuation2 extends StatelessWidget {
           currentValue: state.usVCA1,
           onChanged: (usVCA1) {
             context.read<Setting18ControlBloc>().add(USVCA1Changed(
-                  usVCA1: usVCA1.toStringAsFixed(1),
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      returnInputAttenuation2TextEditingController,
-                  isFromTextField: false,
-                ));
-          },
-          textEditingController: returnInputAttenuation2TextEditingController,
-          onTextChanged: (usVCA1) {
-            context.read<Setting18ControlBloc>().add(USVCA1Changed(
                   usVCA1: usVCA1,
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      returnInputAttenuation2TextEditingController,
-                  isFromTextField: true,
                 ));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(USVCA1Decreased(
-                    minValue: minValue,
-                    textEditingController:
-                        returnInputAttenuation2TextEditingController,
-                  )),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(USVCA1Increased(
-                    maxValue: maxValue,
-                    textEditingController:
-                        returnInputAttenuation2TextEditingController,
-                  )),
         );
       },
     );
@@ -1497,7 +1239,7 @@ class _RtnInputAttenuation3 extends StatelessWidget {
       builder: (context, state) {
         double minValue = 0.0;
         double maxValue = 25.0;
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -1507,37 +1249,9 @@ class _RtnInputAttenuation3 extends StatelessWidget {
           currentValue: state.usVCA3,
           onChanged: (usVCA3) {
             context.read<Setting18ControlBloc>().add(USVCA3Changed(
-                  usVCA3: usVCA3.toStringAsFixed(1),
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      returnInputAttenuation3TextEditingController,
-                  isFromTextField: false,
-                ));
-          },
-          textEditingController: returnInputAttenuation3TextEditingController,
-          onTextChanged: (usVCA3) {
-            context.read<Setting18ControlBloc>().add(USVCA3Changed(
                   usVCA3: usVCA3,
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      returnInputAttenuation3TextEditingController,
-                  isFromTextField: true,
                 ));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(USVCA3Decreased(
-                    minValue: minValue,
-                    textEditingController:
-                        returnInputAttenuation3TextEditingController,
-                  )),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(USVCA3Increased(
-                    maxValue: maxValue,
-                    textEditingController:
-                        returnInputAttenuation3TextEditingController,
-                  )),
         );
       },
     );
@@ -1558,7 +1272,7 @@ class _RtnInputAttenuation2And3 extends StatelessWidget {
       builder: (context, state) {
         double minValue = 0.0;
         double maxValue = 25.0;
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -1568,38 +1282,9 @@ class _RtnInputAttenuation2And3 extends StatelessWidget {
           currentValue: state.usVCA3,
           onChanged: (usVCA3) {
             context.read<Setting18ControlBloc>().add(USVCA3Changed(
-                  usVCA3: usVCA3.toStringAsFixed(1),
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      returnInputAttenuation2And3TextEditingController,
-                  isFromTextField: false,
-                ));
-          },
-          textEditingController:
-              returnInputAttenuation2And3TextEditingController,
-          onTextChanged: (usVCA3) {
-            context.read<Setting18ControlBloc>().add(USVCA3Changed(
                   usVCA3: usVCA3,
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      returnInputAttenuation2And3TextEditingController,
-                  isFromTextField: true,
                 ));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(USVCA3Decreased(
-                    minValue: minValue,
-                    textEditingController:
-                        returnInputAttenuation2And3TextEditingController,
-                  )),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(USVCA3Increased(
-                    maxValue: maxValue,
-                    textEditingController:
-                        returnInputAttenuation2And3TextEditingController,
-                  )),
         );
       },
     );
@@ -1623,7 +1308,7 @@ class _RtnInputAttenuation4 extends StatelessWidget {
         builder: (context, state) {
           double minValue = 0.0;
           double maxValue = 25.0;
-          return controlParameterSlider(
+          return controlTextSlider(
             context: context,
             editMode: state.editMode,
             title:
@@ -1633,37 +1318,9 @@ class _RtnInputAttenuation4 extends StatelessWidget {
             currentValue: state.usVCA1,
             onChanged: (usVCA1) {
               context.read<Setting18ControlBloc>().add(USVCA1Changed(
-                    usVCA1: usVCA1.toStringAsFixed(1),
-                    maxValue: maxValue,
-                    minValue: minValue,
-                    textEditingController:
-                        returnInputAttenuation4TextEditingController,
-                    isFromTextField: false,
-                  ));
-            },
-            textEditingController: returnInputAttenuation4TextEditingController,
-            onTextChanged: (usVCA1) {
-              context.read<Setting18ControlBloc>().add(USVCA1Changed(
                     usVCA1: usVCA1,
-                    maxValue: maxValue,
-                    minValue: minValue,
-                    textEditingController:
-                        returnInputAttenuation4TextEditingController,
-                    isFromTextField: true,
                   ));
             },
-            onDecreased: () =>
-                context.read<Setting18ControlBloc>().add(USVCA1Decreased(
-                      minValue: minValue,
-                      textEditingController:
-                          returnInputAttenuation4TextEditingController,
-                    )),
-            onIncreased: () =>
-                context.read<Setting18ControlBloc>().add(USVCA1Increased(
-                      maxValue: maxValue,
-                      textEditingController:
-                          returnInputAttenuation4TextEditingController,
-                    )),
           );
         },
       );
@@ -1672,7 +1329,7 @@ class _RtnInputAttenuation4 extends StatelessWidget {
         builder: (context, state) {
           double minValue = 0.0;
           double maxValue = 25.0;
-          return controlParameterSlider(
+          return controlTextSlider(
             context: context,
             editMode: state.editMode,
             title:
@@ -1682,37 +1339,9 @@ class _RtnInputAttenuation4 extends StatelessWidget {
             currentValue: state.usVCA4,
             onChanged: (usVCA4) {
               context.read<Setting18ControlBloc>().add(USVCA4Changed(
-                    usVCA4: usVCA4.toStringAsFixed(1),
-                    maxValue: maxValue,
-                    minValue: minValue,
-                    textEditingController:
-                        returnInputAttenuation4TextEditingController,
-                    isFromTextField: false,
-                  ));
-            },
-            textEditingController: returnInputAttenuation4TextEditingController,
-            onTextChanged: (usVCA4) {
-              context.read<Setting18ControlBloc>().add(USVCA4Changed(
                     usVCA4: usVCA4,
-                    maxValue: maxValue,
-                    minValue: minValue,
-                    textEditingController:
-                        returnInputAttenuation4TextEditingController,
-                    isFromTextField: true,
                   ));
             },
-            onDecreased: () =>
-                context.read<Setting18ControlBloc>().add(USVCA4Decreased(
-                      minValue: minValue,
-                      textEditingController:
-                          returnInputAttenuation4TextEditingController,
-                    )),
-            onIncreased: () =>
-                context.read<Setting18ControlBloc>().add(USVCA4Increased(
-                      maxValue: maxValue,
-                      textEditingController:
-                          returnInputAttenuation4TextEditingController,
-                    )),
           );
         },
       );
@@ -1734,7 +1363,7 @@ class _RtnInputAttenuation5And6 extends StatelessWidget {
       builder: (context, state) {
         double minValue = 0.0;
         double maxValue = 25.0;
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -1744,38 +1373,9 @@ class _RtnInputAttenuation5And6 extends StatelessWidget {
           currentValue: state.usVCA4,
           onChanged: (usVCA4) {
             context.read<Setting18ControlBloc>().add(USVCA4Changed(
-                  usVCA4: usVCA4.toStringAsFixed(1),
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      returnInputAttenuation5And6TextEditingController,
-                  isFromTextField: false,
-                ));
-          },
-          textEditingController:
-              returnInputAttenuation5And6TextEditingController,
-          onTextChanged: (usVCA4) {
-            context.read<Setting18ControlBloc>().add(USVCA4Changed(
                   usVCA4: usVCA4,
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      returnInputAttenuation5And6TextEditingController,
-                  isFromTextField: true,
                 ));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(USVCA4Decreased(
-                    minValue: minValue,
-                    textEditingController:
-                        returnInputAttenuation5And6TextEditingController,
-                  )),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(USVCA4Increased(
-                    maxValue: maxValue,
-                    textEditingController:
-                        returnInputAttenuation5And6TextEditingController,
-                  )),
         );
       },
     );
@@ -1796,7 +1396,7 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
       builder: (context, state) {
         double minValue = 0.0;
         double maxValue = 15.0;
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -1806,37 +1406,9 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
           currentValue: state.usVCA2,
           onChanged: (usVCA2) {
             context.read<Setting18ControlBloc>().add(USVCA2Changed(
-                  usVCA2: usVCA2.toStringAsFixed(1),
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      returnOutputAttenuation1TextEditingController,
-                  isFromTextField: false,
-                ));
-          },
-          textEditingController: returnOutputAttenuation1TextEditingController,
-          onTextChanged: (usVCA2) {
-            context.read<Setting18ControlBloc>().add(USVCA2Changed(
                   usVCA2: usVCA2,
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      returnOutputAttenuation1TextEditingController,
-                  isFromTextField: true,
                 ));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(USVCA2Decreased(
-                    minValue: minValue,
-                    textEditingController:
-                        returnOutputAttenuation1TextEditingController,
-                  )),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(USVCA2Increased(
-                    maxValue: maxValue,
-                    textEditingController:
-                        returnOutputAttenuation1TextEditingController,
-                  )),
         );
       },
     );
@@ -1857,7 +1429,7 @@ class _RtnOutputEQ extends StatelessWidget {
       builder: (context, state) {
         double minValue = 0.0;
         double maxValue = 12.0;
-        return controlParameterSlider(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -1867,37 +1439,9 @@ class _RtnOutputEQ extends StatelessWidget {
           currentValue: state.eREQ,
           onChanged: (eREQ) {
             context.read<Setting18ControlBloc>().add(EREQChanged(
-                  eREQ: eREQ.toStringAsFixed(1),
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      returnOutputEqualizer1TextEditingController,
-                  isFromTextField: false,
-                ));
-          },
-          textEditingController: returnOutputEqualizer1TextEditingController,
-          onTextChanged: (eREQ) {
-            context.read<Setting18ControlBloc>().add(EREQChanged(
                   eREQ: eREQ,
-                  maxValue: maxValue,
-                  minValue: minValue,
-                  textEditingController:
-                      returnOutputEqualizer1TextEditingController,
-                  isFromTextField: true,
                 ));
           },
-          onDecreased: () =>
-              context.read<Setting18ControlBloc>().add(EREQDecreased(
-                    minValue: minValue,
-                    textEditingController:
-                        returnOutputEqualizer1TextEditingController,
-                  )),
-          onIncreased: () =>
-              context.read<Setting18ControlBloc>().add(EREQIncreased(
-                    maxValue: maxValue,
-                    textEditingController:
-                        returnOutputEqualizer1TextEditingController,
-                  )),
         );
       },
     );
@@ -2130,7 +1674,7 @@ class _RtnIngressSetting5And6 extends StatelessWidget {
 //   Widget build(BuildContext context) {
 //     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
 //       builder: (context, state) {
-//         return controlParameterSlider(
+//         return controlTextSlider(
 //           context: context,
 //           editMode: state.editMode,
 //           title: 'US TGC: ${state.usTGC} dB',
