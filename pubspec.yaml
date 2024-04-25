@@ -70,9 +70,7 @@ dependencies:
   # assets_audio_player: ^3.1.0
 
   # flutter_speed_chart:
-  #   git:
-  #     url: /Users/henry.liang/projects/flutter_speed_chart
-  #     ref: 0ff461c
+  #   path: /Users/henry.liang/projects/flutter_speed_chart
   
   flutter_speed_chart:
     git:

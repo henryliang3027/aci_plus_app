@@ -286,6 +286,7 @@ class _LogChartListView extends StatelessWidget {
         minYAxisValue: 0.0,
         maxYAxisValue: 500.0,
       );
+
       return [
         voltageLineSeries,
         voltageRippleLineSeries,
