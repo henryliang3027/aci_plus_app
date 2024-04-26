@@ -1,10 +1,10 @@
 import 'dart:async';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 part 'information18_event.dart';
 part 'information18_state.dart';
@@ -33,8 +33,7 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     AppVersionRequested event,
     Emitter<Information18State> emit,
   ) async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String appVersion = 'V ${packageInfo.version}-beta4';
+    String appVersion = await getAppVersion();
 
     emit(state.copyWith(
       appVersion: appVersion,
