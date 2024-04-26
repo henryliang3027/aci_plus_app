@@ -512,34 +512,38 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       if (resultOf1p8G1[0]) {
         int logInterval = int.parse(resultOf1p8G1[1][DataKey.logInterval]);
+        int rfOutputLogInterval =
+            int.parse(resultOf1p8G1[1][DataKey.rfOutputLogInterval]);
+
+        bool isUpdateLogInterval = false;
+        bool isUpdateRFOutputLogInterval = false;
 
         // 如果讀取到 logInterval < 5, 則自動設定為 30 分鐘
         if (logInterval < 5) {
-          bool isSuccess = await _amp18Repository.set1p8GLogInterval('30');
+          isUpdateLogInterval = await _amp18Repository.set1p8GLogInterval('30');
+        }
 
-          // 如果設定失敗, 則顯示 dialog
-          if (!isSuccess) {
+        // 如果讀取到 logInterval < 30, 則自動設定為 30 分鐘
+        if (rfOutputLogInterval < 30) {
+          isUpdateRFOutputLogInterval =
+              await _amp18Repository.set1p8GRFOutputLogInterval('30');
+        }
+
+        if (isUpdateLogInterval || isUpdateRFOutputLogInterval) {
+          List<dynamic> newResultOf1p8G1 =
+              await _amp18Repository.requestCommand1p8G1();
+
+          if (newResultOf1p8G1[0]) {
+            newCharacteristicData.addAll(newResultOf1p8G1[1]);
+            emit(state.copyWith(
+              characteristicData: newCharacteristicData,
+            ));
+          } else {
             emit(state.copyWith(
               loadingStatus: FormStatus.requestFailure,
               characteristicData: state.characteristicData,
-              errorMassage: 'Failed to initialize the log interval.',
+              errorMassage: 'Failed to load data',
             ));
-          } else {
-            List<dynamic> newResultOf1p8G1 =
-                await _amp18Repository.requestCommand1p8G1();
-
-            if (newResultOf1p8G1[0]) {
-              newCharacteristicData.addAll(newResultOf1p8G1[1]);
-              emit(state.copyWith(
-                characteristicData: newCharacteristicData,
-              ));
-            } else {
-              emit(state.copyWith(
-                loadingStatus: FormStatus.requestFailure,
-                characteristicData: state.characteristicData,
-                errorMassage: 'Failed to load data',
-              ));
-            }
           }
         } else {
           // 如果讀取到 logInterval != '0', 則 emit 讀取到的資料
