@@ -2176,23 +2176,36 @@ class Amp18Repository {
       usDataLength: Command18.setNowDateTimeCmd.length - 2,
     );
 
-    int difference = dateTime.difference(deviceDateTime).inMinutes.abs();
-
-    // 如果 device 的 now time 跟 目前時間相差大於等於 30 分鐘, 則寫入目前時間
-    if (difference >= 30) {
-      print('sync time on device id $partId');
-      try {
-        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-          commandIndex: commandIndex,
-          value: Command18.setNowDateTimeCmd,
-        );
-        return true;
-      } catch (e) {
-        return false;
-      }
-    } else {
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setNowDateTimeCmd,
+      );
       return true;
+    } catch (e) {
+      return false;
     }
+
+    // 之前版本的 log interval 可以為 1 分鐘, 如果一直同步時間就可能發生log紀錄裡有某前後兩筆的log時間一模一樣
+    // 所以才加入判斷
+    // device 的 now time 跟 目前時間相差大於等於 30 分鐘, 則寫入目前時間
+    // int difference = dateTime.difference(deviceDateTime).inMinutes.abs();
+
+    // // 如果 device 的 now time 跟 目前時間相差大於等於 30 分鐘, 則寫入目前時間
+    // if (difference >= 30) {
+    //   print('sync time on device id $partId');
+    //   try {
+    //     List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+    //       commandIndex: commandIndex,
+    //       value: Command18.setNowDateTimeCmd,
+    //     );
+    //     return true;
+    //   } catch (e) {
+    //     return false;
+    //   }
+    // } else {
+    //   return true;
+    // }
   }
 
   Future<void> updateDataWithGivenValuePairs(

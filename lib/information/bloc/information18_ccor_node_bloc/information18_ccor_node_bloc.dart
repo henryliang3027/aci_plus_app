@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 part 'information18_ccor_node_event.dart';
 part 'information18_ccor_node_state.dart';
@@ -28,8 +28,7 @@ class Information18CCorNodeBloc
     AppVersionRequested event,
     Emitter<Information18CCorNodeState> emit,
   ) async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String appVersion = 'V ${packageInfo.version}-beta4';
+    String appVersion = await getAppVersion();
 
     emit(state.copyWith(
       appVersion: appVersion,

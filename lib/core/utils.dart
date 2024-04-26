@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 void setPreferredOrientation() {
   double screenWidth = WidgetsBinding
@@ -72,4 +73,12 @@ String adjustMaxIntValue({
   return intMaxValue > intCurrentValue
       ? intMaxValue.toString()
       : intCurrentValue.toString();
+}
+
+Future<String> getAppVersion() async {
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+  // 給部門內測試的版本會加 -beta版本文字, 例如V 2.1.2-beta5
+  String appVersion = 'V ${packageInfo.version}';
+  return appVersion;
 }

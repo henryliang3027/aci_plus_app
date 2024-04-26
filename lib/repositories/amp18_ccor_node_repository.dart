@@ -1881,23 +1881,34 @@ class Amp18CCorNodeRepository {
       command: Command18CCorNode.setNowDateTimeCmd,
       usDataLength: Command18CCorNode.setNowDateTimeCmd.length - 2,
     );
-
-    int difference = dateTime.difference(deviceDateTime).inMinutes.abs();
-
-    // 如果 device 的 now time 跟 目前時間相差大於1440分鐘(24 小時), 則寫入目前時間
-    if (difference > 1440) {
-      try {
-        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-          commandIndex: commandIndex,
-          value: Command18CCorNode.setNowDateTimeCmd,
-        );
-        return true;
-      } catch (e) {
-        return false;
-      }
-    } else {
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18CCorNode.setNowDateTimeCmd,
+      );
       return true;
+    } catch (e) {
+      return false;
     }
+
+    // 之前版本的 log interval 可以為 1 分鐘, 如果一直同步時間就可能發生log紀錄裡有某前後兩筆的log時間一模一樣
+    // 所以才加入以下判斷
+    // device 的 now time 跟 目前時間相差大於等於 30 分鐘, 則寫入目前時間
+    // int difference = dateTime.difference(deviceDateTime).inMinutes.abs();
+
+    // if (difference > 30) {
+    //   try {
+    //     List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+    //       commandIndex: commandIndex,
+    //       value: Command18CCorNode.setNowDateTimeCmd,
+    //     );
+    //     return true;
+    //   } catch (e) {
+    //     return false;
+    //   }
+    // } else {
+    //   return true;
+    // }
   }
 
   Future<void> updateDataWithGivenValuePairs(
