@@ -24,7 +24,6 @@ class Setting18CCorNodeControlState extends Equatable {
     this.returnIngressSetting6 = '',
     this.editMode = false,
     this.enableSubmission = false,
-    this.isInitialize = true,
     this.initialValues = const {},
     this.settingResult = const [],
   });
@@ -48,7 +47,6 @@ class Setting18CCorNodeControlState extends Equatable {
   final String returnIngressSetting6;
   final bool editMode;
   final bool enableSubmission;
-  final bool isInitialize;
   final Map<DataKey, String> initialValues;
   final List<String> settingResult;
 
@@ -72,7 +70,6 @@ class Setting18CCorNodeControlState extends Equatable {
     String? returnIngressSetting6,
     bool? editMode,
     bool? enableSubmission,
-    bool? isInitialize,
     Map<DataKey, String>? initialValues,
     List<String>? settingResult,
   }) {
@@ -100,7 +97,6 @@ class Setting18CCorNodeControlState extends Equatable {
           returnIngressSetting6 ?? this.returnIngressSetting6,
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
-      isInitialize: isInitialize ?? this.isInitialize,
       initialValues: initialValues ?? this.initialValues,
       settingResult: settingResult ?? this.settingResult,
     );
@@ -127,7 +123,6 @@ class Setting18CCorNodeControlState extends Equatable {
         returnIngressSetting6,
         editMode,
         enableSubmission,
-        isInitialize,
         initialValues,
         settingResult,
       ];

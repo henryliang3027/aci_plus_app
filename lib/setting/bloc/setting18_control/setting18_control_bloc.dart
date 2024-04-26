@@ -2,7 +2,6 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'setting18_control_event.dart';
@@ -97,106 +96,19 @@ class Setting18ControlBloc
       dsVVA5: dsVVA5,
       dsSlope3: dsSlope3,
       dsSlope4: dsSlope4,
-      isInitialize: true,
       initialValues: characteristicDataCache,
     ));
-  }
-
-  String _getIncreasedNumber({
-    required String value,
-    required double maxValue,
-  }) {
-    double doubleValue = double.parse(value);
-    doubleValue = doubleValue + 0.5 <= maxValue ? doubleValue + 0.5 : maxValue;
-    String strValue = doubleValue.toStringAsFixed(1);
-
-    return strValue;
-  }
-
-  String _getDecreasedNumber({
-    required String value,
-    required double minValue,
-  }) {
-    double doubleValue = double.parse(value);
-    doubleValue = doubleValue - 0.5 >= minValue ? doubleValue - 0.5 : minValue;
-    String strValue = doubleValue.toStringAsFixed(1);
-
-    return strValue;
-  }
-
-  void _adjustTextFieldValue({
-    required double maxValue,
-    required double minValue,
-    required TextEditingController textEditingController,
-    required String previousValue,
-    required String currentValue,
-    required bool isFromTextField,
-  }) {
-    if (!isFromTextField) {
-      textEditingController.text = currentValue;
-    } else {
-      if (currentValue.isNotEmpty) {
-        double doubleCurrentValue = double.parse(currentValue);
-        if (doubleCurrentValue > maxValue) {
-          textEditingController.text = maxValue.toStringAsFixed(1);
-        } else if (doubleCurrentValue < minValue) {
-          textEditingController.text = minValue.toStringAsFixed(1);
-        } else {
-          // textEditingController.text = currentValue;
-        }
-      } else {
-        textEditingController.text = '';
-      }
-    }
-  }
-
-  String _getValue({
-    required double maxValue,
-    required double minValue,
-    required String previousValue,
-    required String currentValue,
-  }) {
-    if (currentValue.isNotEmpty) {
-      double doubleCurrentValue = double.parse(currentValue);
-
-      if (doubleCurrentValue > maxValue) {
-        return previousValue;
-      } else if (doubleCurrentValue < minValue) {
-        return previousValue;
-      } else {
-        return currentValue;
-      }
-    } else {
-      return '';
-    }
   }
 
   void _onDSVVA1Changed(
     DSVVA1Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
-    // String dsVVA1 = _getValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   previousValue: state.dsVVA1,
-    //   currentValue: event.dsVVA1,
-    // );
-
-    // _adjustTextFieldValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   textEditingController: event.textEditingController,
-    //   previousValue: state.dsVVA1,
-    //   currentValue: event.dsVVA1,
-    //   isFromTextField: event.isFromTextField,
-    // );
-
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA1: event.dsVVA1,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: event.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -225,28 +137,11 @@ class Setting18ControlBloc
     DSSlope1Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
-    // String dsSlope1 = _getValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   previousValue: state.dsSlope1,
-    //   currentValue: event.dsSlope1,
-    // );
-
-    // _adjustTextFieldValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   textEditingController: event.textEditingController,
-    //   previousValue: state.dsSlope1,
-    //   currentValue: event.dsSlope1,
-    //   isFromTextField: event.isFromTextField,
-    // );
-
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope1: event.dsSlope1,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: event.dsSlope1,
@@ -269,38 +164,17 @@ class Setting18ControlBloc
         // usTGC: state.usTGC,
       ),
     ));
-
-    // if (!event.isFromTextField) {
-    //   event.textEditingController.text = event.dsSlope1;
-    // }
   }
 
   void _onUSVCA1Changed(
     USVCA1Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
-    // String usVCA1 = _getValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   previousValue: state.usVCA1,
-    //   currentValue: event.usVCA1,
-    // );
-
-    // _adjustTextFieldValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   textEditingController: event.textEditingController,
-    //   previousValue: state.usVCA1,
-    //   currentValue: event.usVCA1,
-    //   isFromTextField: event.isFromTextField,
-    // );
-
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA1: event.usVCA1,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -330,28 +204,11 @@ class Setting18ControlBloc
     USVCA3Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
-    // String usVCA3 = _getValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   previousValue: state.usVCA3,
-    //   currentValue: event.usVCA3,
-    // );
-
-    // _adjustTextFieldValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   textEditingController: event.textEditingController,
-    //   previousValue: state.usVCA3,
-    //   currentValue: event.usVCA3,
-    //   isFromTextField: event.isFromTextField,
-    // );
-
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA3: event.usVCA3,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -380,28 +237,11 @@ class Setting18ControlBloc
     USVCA4Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
-    // String usVCA4 = _getValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   previousValue: state.usVCA4,
-    //   currentValue: event.usVCA4,
-    // );
-
-    // _adjustTextFieldValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   textEditingController: event.textEditingController,
-    //   previousValue: state.usVCA4,
-    //   currentValue: event.usVCA4,
-    //   isFromTextField: event.isFromTextField,
-    // );
-
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA4: event.usVCA4,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -430,28 +270,11 @@ class Setting18ControlBloc
     USVCA2Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
-    // String usVCA2 = _getValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   previousValue: state.usVCA2,
-    //   currentValue: event.usVCA2,
-    // );
-
-    // _adjustTextFieldValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   textEditingController: event.textEditingController,
-    //   previousValue: state.usVCA2,
-    //   currentValue: event.usVCA2,
-    //   isFromTextField: event.isFromTextField,
-    // );
-
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA2: event.usVCA2,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -481,28 +304,11 @@ class Setting18ControlBloc
     EREQChanged event,
     Emitter<Setting18ControlState> emit,
   ) {
-    // String eREQ = _getValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   previousValue: state.eREQ,
-    //   currentValue: event.eREQ,
-    // );
-
-    // _adjustTextFieldValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   textEditingController: event.textEditingController,
-    //   previousValue: state.eREQ,
-    //   currentValue: event.eREQ,
-    //   isFromTextField: event.isFromTextField,
-    // );
-
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       eREQ: event.eREQ,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -537,7 +343,6 @@ class Setting18ControlBloc
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       returnIngressSetting2: event.returnIngressSetting2,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -572,7 +377,6 @@ class Setting18ControlBloc
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       returnIngressSetting3: event.returnIngressSetting3,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -607,7 +411,6 @@ class Setting18ControlBloc
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       returnIngressSetting4: event.returnIngressSetting4,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -642,7 +445,6 @@ class Setting18ControlBloc
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       tgcCableLength: event.tgcCableLength,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -672,28 +474,11 @@ class Setting18ControlBloc
     DSVVA2Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
-    // String dsVVA2 = _getValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   previousValue: state.dsVVA2,
-    //   currentValue: event.dsVVA2,
-    // );
-
-    // _adjustTextFieldValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   textEditingController: event.textEditingController,
-    //   previousValue: state.dsVVA2,
-    //   currentValue: event.dsVVA2,
-    //   isFromTextField: event.isFromTextField,
-    // );
-
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA2: event.dsVVA2,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -728,7 +513,6 @@ class Setting18ControlBloc
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope2: event.dsSlope2,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -763,7 +547,6 @@ class Setting18ControlBloc
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA3: event.dsVVA3,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -793,28 +576,11 @@ class Setting18ControlBloc
     DSVVA4Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
-    // String dsVVA4 = _getValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   previousValue: state.dsVVA4,
-    //   currentValue: event.dsVVA4,
-    // );
-
-    // _adjustTextFieldValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   textEditingController: event.textEditingController,
-    //   previousValue: state.dsVVA4,
-    //   currentValue: event.dsVVA4,
-    //   isFromTextField: event.isFromTextField,
-    // );
-
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA4: event.dsVVA4,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -844,28 +610,11 @@ class Setting18ControlBloc
     DSVVA5Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
-    // String dsVVA5 = _getValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   previousValue: state.dsVVA5,
-    //   currentValue: event.dsVVA5,
-    // );
-
-    // _adjustTextFieldValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   textEditingController: event.textEditingController,
-    //   previousValue: state.dsVVA5,
-    //   currentValue: event.dsVVA5,
-    //   isFromTextField: event.isFromTextField,
-    // );
-
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA5: event.dsVVA5,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -894,28 +643,11 @@ class Setting18ControlBloc
     DSSlope3Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
-    // String dsSlope3 = _getValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   previousValue: state.dsSlope3,
-    //   currentValue: event.dsSlope3,
-    // );
-
-    // _adjustTextFieldValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   textEditingController: event.textEditingController,
-    //   previousValue: state.dsSlope3,
-    //   currentValue: event.dsSlope3,
-    //   isFromTextField: event.isFromTextField,
-    // );
-
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope3: event.dsSlope3,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -944,28 +676,11 @@ class Setting18ControlBloc
     DSSlope4Changed event,
     Emitter<Setting18ControlState> emit,
   ) {
-    // String dsSlope4 = _getValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   previousValue: state.dsSlope4,
-    //   currentValue: event.dsSlope4,
-    // );
-
-    // _adjustTextFieldValue(
-    //   maxValue: event.maxValue,
-    //   minValue: event.minValue,
-    //   textEditingController: event.textEditingController,
-    //   previousValue: state.dsSlope4,
-    //   currentValue: event.dsSlope4,
-    //   isFromTextField: event.isFromTextField,
-    // );
-
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope4: event.dsSlope4,
-      isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: state.dsVVA1,
         dsSlope1: state.dsSlope1,
@@ -997,7 +712,7 @@ class Setting18ControlBloc
   //   emit(state.copyWith(
   //     submissionStatus: SubmissionStatus.none,
   //     usTGC: event.usTGC,
-  //     isInitialize: false,
+  //
   //     enableSubmission: _isEnabledSubmission(
   //       fwdInputAttenuation: state.fwdInputAttenuation,
   //       dsSlope1: state.dsSlope1,
@@ -1024,7 +739,6 @@ class Setting18ControlBloc
     Emitter<Setting18ControlState> emit,
   ) async {
     emit(state.copyWith(
-      isInitialize: false,
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.submissionInProgress,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
@@ -1055,7 +769,6 @@ class Setting18ControlBloc
     Emitter<Setting18ControlState> emit,
   ) async {
     emit(state.copyWith(
-      isInitialize: false,
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.submissionInProgress,
@@ -1089,7 +802,6 @@ class Setting18ControlBloc
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      isInitialize: false,
       editMode: true,
     ));
   }
@@ -1102,7 +814,7 @@ class Setting18ControlBloc
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      isInitialize: true,
+
       editMode: false,
       enableSubmission: false,
       dsVVA1: state.initialValues[DataKey.dsVVA1],
@@ -1201,7 +913,6 @@ class Setting18ControlBloc
     Emitter<Setting18ControlState> emit,
   ) async {
     emit(state.copyWith(
-      isInitialize: false,
       submissionStatus: SubmissionStatus.submissionInProgress,
     ));
 

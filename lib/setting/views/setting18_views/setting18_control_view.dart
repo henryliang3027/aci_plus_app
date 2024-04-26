@@ -15,42 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Setting18ControlView extends StatelessWidget {
-  Setting18ControlView({super.key});
-
-  final TextEditingController forwardInputAttenuation1TextEditingController =
-      TextEditingController();
-  final TextEditingController forwardInputEqualizer1TextEditingController =
-      TextEditingController();
-  final TextEditingController
-      forwardOutputAttenuation3And4TextEditingController =
-      TextEditingController();
-  final TextEditingController
-      forwardOutputAttenuation2And3TextEditingController =
-      TextEditingController();
-  final TextEditingController
-      forwardOutputAttenuation5And6TextEditingController =
-      TextEditingController();
-  final TextEditingController forwardOutputEqualizer3And4TextEditingController =
-      TextEditingController();
-  final TextEditingController forwardOutputEqualizer2And3TextEditingController =
-      TextEditingController();
-  final TextEditingController forwardOutputEqualizer5And6TextEditingController =
-      TextEditingController();
-
-  final TextEditingController returnInputAttenuation2TextEditingController =
-      TextEditingController();
-  final TextEditingController returnInputAttenuation3TextEditingController =
-      TextEditingController();
-  final TextEditingController returnInputAttenuation4TextEditingController =
-      TextEditingController();
-  final TextEditingController returnInputAttenuation2And3TextEditingController =
-      TextEditingController();
-  final TextEditingController returnInputAttenuation5And6TextEditingController =
-      TextEditingController();
-  final TextEditingController returnOutputAttenuation1TextEditingController =
-      TextEditingController();
-  final TextEditingController returnOutputEqualizer1TextEditingController =
-      TextEditingController();
+  const Setting18ControlView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -225,8 +190,6 @@ class Setting18ControlView extends StatelessWidget {
               _ForwardInputAttenuation(
                 alcMode: alcMode,
                 currentInputAttenuation: currentInputAttenuation,
-                forwardInputAttenuation1TextEditingController:
-                    forwardInputAttenuation1TextEditingController,
               ),
             );
             break;
@@ -236,57 +199,37 @@ class Setting18ControlView extends StatelessWidget {
                 alcMode: alcMode,
                 agcMode: agcMode,
                 currentInputEqualizer: currentInputEqualizer,
-                forwardInputEqualizer1TextEditingController:
-                    forwardInputEqualizer1TextEditingController,
               ),
             );
             break;
           case SettingControl.forwardOutputAttenuation3And4:
             widgets.add(
-              _ForwardOutputAttenuation3And4(
-                forwardOutputAttenuation3And4TextEditingController:
-                    forwardOutputAttenuation3And4TextEditingController,
-              ),
+              const _ForwardOutputAttenuation3And4(),
             );
             break;
           case SettingControl.forwardOutputEqualizer3And4:
             widgets.add(
-              _ForwardOutputEqualizer3And4(
-                forwardOutputEqualizer3And4TextEditingController:
-                    forwardOutputEqualizer3And4TextEditingController,
-              ),
+              const _ForwardOutputEqualizer3And4(),
             );
             break;
           case SettingControl.forwardOutputAttenuation2And3:
             widgets.add(
-              _ForwardOutputAttenuation2And3(
-                forwardOutputAttenuation2And3TextEditingController:
-                    forwardOutputAttenuation2And3TextEditingController,
-              ),
+              const _ForwardOutputAttenuation2And3(),
             );
             break;
           case SettingControl.forwardOutputAttenuation5And6:
             widgets.add(
-              _ForwardOutputAttenuation5And6(
-                forwardOutputAttenuation5And6TextEditingController:
-                    forwardOutputAttenuation5And6TextEditingController,
-              ),
+              const _ForwardOutputAttenuation5And6(),
             );
             break;
           case SettingControl.forwardOutputEqualizer2And3:
             widgets.add(
-              _ForwardOutputEqualizer2And3(
-                forwardOutputEqualizer2And3TextEditingController:
-                    forwardOutputEqualizer2And3TextEditingController,
-              ),
+              const _ForwardOutputEqualizer2And3(),
             );
             break;
           case SettingControl.forwardOutputEqualizer5And6:
             widgets.add(
-              _ForwardOutputEqualizer5And6(
-                forwardOutputEqualizer5And6TextEditingController:
-                    forwardOutputEqualizer5And6TextEditingController,
-              ),
+              const _ForwardOutputEqualizer5And6(),
             );
             break;
         }
@@ -298,24 +241,14 @@ class Setting18ControlView extends StatelessWidget {
               _ForwardInputAttenuation(
                 alcMode: alcMode,
                 currentInputAttenuation: currentInputAttenuation,
-                forwardInputAttenuation1TextEditingController:
-                    forwardInputAttenuation1TextEditingController,
               ),
               _ForwardInputEqualizer(
                 alcMode: alcMode,
                 agcMode: agcMode,
                 currentInputEqualizer: currentInputEqualizer,
-                forwardInputEqualizer1TextEditingController:
-                    forwardInputEqualizer1TextEditingController,
               ),
-              _ForwardOutputAttenuation3And4(
-                forwardOutputAttenuation3And4TextEditingController:
-                    forwardOutputAttenuation3And4TextEditingController,
-              ),
-              _ForwardOutputEqualizer3And4(
-                forwardOutputEqualizer3And4TextEditingController:
-                    forwardOutputEqualizer3And4TextEditingController,
-              ),
+              const _ForwardOutputAttenuation3And4(),
+              const _ForwardOutputEqualizer3And4(),
             ];
     }
 
@@ -336,26 +269,18 @@ class Setting18ControlView extends StatelessWidget {
             break;
           case SettingControl.returnInputAttenuation2:
             widgets.add(
-              _RtnInputAttenuation2(
-                returnInputAttenuation2TextEditingController:
-                    returnInputAttenuation2TextEditingController,
-              ),
+              const _RtnInputAttenuation2(),
             );
             break;
           case SettingControl.returnInputAttenuation3:
             widgets.add(
-              _RtnInputAttenuation3(
-                returnInputAttenuation3TextEditingController:
-                    returnInputAttenuation3TextEditingController,
-              ),
+              const _RtnInputAttenuation3(),
             );
             break;
           case SettingControl.returnInputAttenuation4:
             widgets.add(
               _RtnInputAttenuation4(
                 partId: partId,
-                returnInputAttenuation4TextEditingController:
-                    returnInputAttenuation4TextEditingController,
               ),
             );
             break;
@@ -365,34 +290,22 @@ class Setting18ControlView extends StatelessWidget {
             break;
           case SettingControl.returnInputAttenuation2And3:
             widgets.add(
-              _RtnInputAttenuation2And3(
-                returnInputAttenuation2And3TextEditingController:
-                    returnInputAttenuation2And3TextEditingController,
-              ),
+              const _RtnInputAttenuation2And3(),
             );
             break;
           case SettingControl.returnInputAttenuation5And6:
             widgets.add(
-              _RtnInputAttenuation5And6(
-                returnInputAttenuation5And6TextEditingController:
-                    returnInputAttenuation5And6TextEditingController,
-              ),
+              const _RtnInputAttenuation5And6(),
             );
             break;
           case SettingControl.returnOutputAttenuation1:
             widgets.add(
-              _RtnOutputLevelAttenuation(
-                returnOutputAttenuation1TextEditingController:
-                    returnOutputAttenuation1TextEditingController,
-              ),
+              const _RtnOutputLevelAttenuation(),
             );
             break;
           case SettingControl.returnOutputEqualizer1:
             widgets.add(
-              _RtnOutputEQ(
-                returnOutputEqualizer1TextEditingController:
-                    returnOutputEqualizer1TextEditingController,
-              ),
+              const _RtnOutputEQ(),
             );
             break;
           case SettingControl.returnIngressSetting1:
@@ -433,27 +346,13 @@ class Setting18ControlView extends StatelessWidget {
       return widgets.isNotEmpty
           ? widgets
           : [
-              _RtnInputAttenuation2(
-                returnInputAttenuation2TextEditingController:
-                    returnInputAttenuation2TextEditingController,
-              ),
-              _RtnInputAttenuation3(
-                returnInputAttenuation3TextEditingController:
-                    returnInputAttenuation3TextEditingController,
-              ),
+              const _RtnInputAttenuation2(),
+              const _RtnInputAttenuation3(),
               _RtnInputAttenuation4(
                 partId: partId,
-                returnInputAttenuation4TextEditingController:
-                    returnInputAttenuation4TextEditingController,
               ),
-              _RtnOutputLevelAttenuation(
-                returnOutputAttenuation1TextEditingController:
-                    returnOutputAttenuation1TextEditingController,
-              ),
-              _RtnOutputEQ(
-                returnOutputEqualizer1TextEditingController:
-                    returnOutputEqualizer1TextEditingController,
-              ),
+              const _RtnOutputLevelAttenuation(),
+              const _RtnOutputEQ(),
               const _RtnIngressSetting2(),
               const _RtnIngressSetting3(),
               _RtnIngressSetting4(
@@ -538,41 +437,6 @@ class Setting18ControlView extends StatelessWidget {
             Navigator.of(context).pop();
           }
           showResetToDefaultFailureDialog(context);
-        }
-
-        if (state.isInitialize) {
-          forwardInputAttenuation1TextEditingController.text =
-              getInputAttenuation(
-            alcMode: alcMode,
-            inputAttenuation: state.dsVVA1,
-            currentInputAttenuation: currentInputAttenuation,
-          );
-          forwardInputEqualizer1TextEditingController.text = getInputEqualizer(
-            alcMode: alcMode,
-            agcMode: agcMode,
-            inputEqualizer: state.dsSlope1,
-            currentInputEqualizer: currentInputEqualizer,
-          );
-          forwardOutputAttenuation3And4TextEditingController.text =
-              state.dsVVA4;
-          forwardOutputAttenuation2And3TextEditingController.text =
-              state.dsVVA4;
-          forwardOutputAttenuation5And6TextEditingController.text =
-              state.dsVVA5;
-          forwardOutputEqualizer3And4TextEditingController.text =
-              state.dsSlope3;
-          forwardOutputEqualizer2And3TextEditingController.text =
-              state.dsSlope3;
-          forwardOutputEqualizer5And6TextEditingController.text =
-              state.dsSlope4;
-
-          returnInputAttenuation2TextEditingController.text = state.usVCA1;
-          returnInputAttenuation3TextEditingController.text = state.usVCA3;
-          returnInputAttenuation4TextEditingController.text = state.usVCA4;
-          returnInputAttenuation2And3TextEditingController.text = state.usVCA3;
-          returnInputAttenuation5And6TextEditingController.text = state.usVCA4;
-          returnOutputAttenuation1TextEditingController.text = state.usVCA2;
-          returnOutputEqualizer1TextEditingController.text = state.eREQ;
         }
       },
       child: Scaffold(
@@ -898,12 +762,10 @@ class _ForwardInputAttenuation extends StatelessWidget {
     super.key,
     required this.alcMode,
     required this.currentInputAttenuation,
-    required this.forwardInputAttenuation1TextEditingController,
   });
 
   final String alcMode;
   final String currentInputAttenuation;
-  final TextEditingController forwardInputAttenuation1TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -923,7 +785,7 @@ class _ForwardInputAttenuation extends StatelessWidget {
         );
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: state.editMode && alcMode == '0',
           title:
               '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -946,13 +808,11 @@ class _ForwardInputEqualizer extends StatelessWidget {
     required this.alcMode,
     required this.agcMode,
     required this.currentInputEqualizer,
-    required this.forwardInputEqualizer1TextEditingController,
   });
 
   final String alcMode;
   final String agcMode;
   final String currentInputEqualizer;
-  final TextEditingController forwardInputEqualizer1TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -974,7 +834,7 @@ class _ForwardInputEqualizer extends StatelessWidget {
         );
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: state.editMode && alcMode == '0' && agcMode == '0',
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
           minValue: minValue,
@@ -994,11 +854,7 @@ class _ForwardInputEqualizer extends StatelessWidget {
 class _ForwardOutputAttenuation2And3 extends StatelessWidget {
   const _ForwardOutputAttenuation2And3({
     super.key,
-    required this.forwardOutputAttenuation2And3TextEditingController,
   });
-
-  final TextEditingController
-      forwardOutputAttenuation2And3TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1028,11 +884,7 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
 class _ForwardOutputAttenuation3And4 extends StatelessWidget {
   const _ForwardOutputAttenuation3And4({
     super.key,
-    required this.forwardOutputAttenuation3And4TextEditingController,
   });
-
-  final TextEditingController
-      forwardOutputAttenuation3And4TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1062,11 +914,7 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
 class _ForwardOutputAttenuation5And6 extends StatelessWidget {
   const _ForwardOutputAttenuation5And6({
     super.key,
-    required this.forwardOutputAttenuation5And6TextEditingController,
   });
-
-  final TextEditingController
-      forwardOutputAttenuation5And6TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1096,10 +944,7 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
 class _ForwardOutputEqualizer2And3 extends StatelessWidget {
   const _ForwardOutputEqualizer2And3({
     super.key,
-    required this.forwardOutputEqualizer2And3TextEditingController,
   });
-
-  final TextEditingController forwardOutputEqualizer2And3TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1129,10 +974,7 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
 class _ForwardOutputEqualizer3And4 extends StatelessWidget {
   const _ForwardOutputEqualizer3And4({
     super.key,
-    required this.forwardOutputEqualizer3And4TextEditingController,
   });
-
-  final TextEditingController forwardOutputEqualizer3And4TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1162,10 +1004,7 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
 class _ForwardOutputEqualizer5And6 extends StatelessWidget {
   const _ForwardOutputEqualizer5And6({
     super.key,
-    required this.forwardOutputEqualizer5And6TextEditingController,
   });
-
-  final TextEditingController forwardOutputEqualizer5And6TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1195,10 +1034,7 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
 class _RtnInputAttenuation2 extends StatelessWidget {
   const _RtnInputAttenuation2({
     super.key,
-    required this.returnInputAttenuation2TextEditingController,
   });
-
-  final TextEditingController returnInputAttenuation2TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1228,10 +1064,7 @@ class _RtnInputAttenuation2 extends StatelessWidget {
 class _RtnInputAttenuation3 extends StatelessWidget {
   const _RtnInputAttenuation3({
     super.key,
-    required this.returnInputAttenuation3TextEditingController,
   });
-
-  final TextEditingController returnInputAttenuation3TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1261,10 +1094,7 @@ class _RtnInputAttenuation3 extends StatelessWidget {
 class _RtnInputAttenuation2And3 extends StatelessWidget {
   const _RtnInputAttenuation2And3({
     super.key,
-    required this.returnInputAttenuation2And3TextEditingController,
   });
-
-  final TextEditingController returnInputAttenuation2And3TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1295,11 +1125,9 @@ class _RtnInputAttenuation4 extends StatelessWidget {
   const _RtnInputAttenuation4({
     super.key,
     required this.partId,
-    required this.returnInputAttenuation4TextEditingController,
   });
 
   final String partId;
-  final TextEditingController returnInputAttenuation4TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1352,10 +1180,7 @@ class _RtnInputAttenuation4 extends StatelessWidget {
 class _RtnInputAttenuation5And6 extends StatelessWidget {
   const _RtnInputAttenuation5And6({
     super.key,
-    required this.returnInputAttenuation5And6TextEditingController,
   });
-
-  final TextEditingController returnInputAttenuation5And6TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1385,10 +1210,7 @@ class _RtnInputAttenuation5And6 extends StatelessWidget {
 class _RtnOutputLevelAttenuation extends StatelessWidget {
   const _RtnOutputLevelAttenuation({
     super.key,
-    required this.returnOutputAttenuation1TextEditingController,
   });
-
-  final TextEditingController returnOutputAttenuation1TextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -1418,10 +1240,7 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
 class _RtnOutputEQ extends StatelessWidget {
   const _RtnOutputEQ({
     super.key,
-    required this.returnOutputEqualizer1TextEditingController,
   });
-
-  final TextEditingController returnOutputEqualizer1TextEditingController;
 
   @override
   Widget build(BuildContext context) {
