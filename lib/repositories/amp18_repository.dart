@@ -1993,7 +1993,7 @@ class Amp18Repository {
     }
   }
 
-  Future<dynamic> set1p8DSSlope3(String strValue) async {
+  Future<dynamic> set1p8GDSSlope3(String strValue) async {
     int commandIndex = 352;
 
     print('get data from request command 1p8G$commandIndex');
@@ -2025,7 +2025,7 @@ class Amp18Repository {
     }
   }
 
-  Future<dynamic> set1p8DSSlope4(String strValue) async {
+  Future<dynamic> set1p8GDSSlope4(String strValue) async {
     int commandIndex = 353;
 
     print('get data from request command 1p8G$commandIndex');

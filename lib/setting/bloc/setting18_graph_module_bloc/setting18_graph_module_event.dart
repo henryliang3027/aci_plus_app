@@ -15,7 +15,7 @@ class Initialized extends Setting18GraphModuleEvent {
 }
 
 class DSVVA1Changed extends Setting18GraphModuleEvent {
-  const DSVVA1Changed(this.dsVVA1);
+  const DSVVA1Changed({required this.dsVVA1});
 
   final String dsVVA1;
 
@@ -23,22 +23,26 @@ class DSVVA1Changed extends Setting18GraphModuleEvent {
   List<Object> get props => [dsVVA1];
 }
 
-class DSVVA1Increased extends Setting18GraphModuleEvent {
-  const DSVVA1Increased();
+class DSVVA4Changed extends Setting18GraphModuleEvent {
+  const DSVVA4Changed({required this.dsVVA4});
+
+  final String dsVVA4;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [dsVVA4];
 }
 
-class DSVVA1Decreased extends Setting18GraphModuleEvent {
-  const DSVVA1Decreased();
+class DSVVA5Changed extends Setting18GraphModuleEvent {
+  const DSVVA5Changed({required this.dsVVA5});
+
+  final String dsVVA5;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [dsVVA5];
 }
 
 class DSSlope1Changed extends Setting18GraphModuleEvent {
-  const DSSlope1Changed(this.dsSlope1);
+  const DSSlope1Changed({required this.dsSlope1});
 
   final String dsSlope1;
 
@@ -46,22 +50,26 @@ class DSSlope1Changed extends Setting18GraphModuleEvent {
   List<Object> get props => [dsSlope1];
 }
 
-class DSSlope1Increased extends Setting18GraphModuleEvent {
-  const DSSlope1Increased();
+class DSSlope3Changed extends Setting18GraphModuleEvent {
+  const DSSlope3Changed({required this.dsSlope3});
+
+  final String dsSlope3;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [dsSlope3];
 }
 
-class DSSlope1Decreased extends Setting18GraphModuleEvent {
-  const DSSlope1Decreased();
+class DSSlope4Changed extends Setting18GraphModuleEvent {
+  const DSSlope4Changed({required this.dsSlope4});
+
+  final String dsSlope4;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [dsSlope4];
 }
 
 class USVCA1Changed extends Setting18GraphModuleEvent {
-  const USVCA1Changed(this.usVCA1);
+  const USVCA1Changed({required this.usVCA1});
 
   final String usVCA1;
 
@@ -69,68 +77,8 @@ class USVCA1Changed extends Setting18GraphModuleEvent {
   List<Object> get props => [usVCA1];
 }
 
-class USVCA1Increased extends Setting18GraphModuleEvent {
-  const USVCA1Increased();
-
-  @override
-  List<Object> get props => [];
-}
-
-class USVCA1Decreased extends Setting18GraphModuleEvent {
-  const USVCA1Decreased();
-
-  @override
-  List<Object> get props => [];
-}
-
-class RtnInputAttenuation3Changed extends Setting18GraphModuleEvent {
-  const RtnInputAttenuation3Changed(this.returnInputAttenuation3);
-
-  final String returnInputAttenuation3;
-
-  @override
-  List<Object> get props => [returnInputAttenuation3];
-}
-
-class RtnInputAttenuation3Increased extends Setting18GraphModuleEvent {
-  const RtnInputAttenuation3Increased();
-
-  @override
-  List<Object> get props => [];
-}
-
-class RtnInputAttenuation3Decreased extends Setting18GraphModuleEvent {
-  const RtnInputAttenuation3Decreased();
-
-  @override
-  List<Object> get props => [];
-}
-
-class RtnInputAttenuation4Changed extends Setting18GraphModuleEvent {
-  const RtnInputAttenuation4Changed(this.returnInputAttenuation4);
-
-  final String returnInputAttenuation4;
-
-  @override
-  List<Object> get props => [returnInputAttenuation4];
-}
-
-class RtnInputAttenuation4Increased extends Setting18GraphModuleEvent {
-  const RtnInputAttenuation4Increased();
-
-  @override
-  List<Object> get props => [];
-}
-
-class RtnInputAttenuation4Decreased extends Setting18GraphModuleEvent {
-  const RtnInputAttenuation4Decreased();
-
-  @override
-  List<Object> get props => [];
-}
-
 class USVCA2Changed extends Setting18GraphModuleEvent {
-  const USVCA2Changed(this.usVCA2);
+  const USVCA2Changed({required this.usVCA2});
 
   final String usVCA2;
 
@@ -138,22 +86,26 @@ class USVCA2Changed extends Setting18GraphModuleEvent {
   List<Object> get props => [usVCA2];
 }
 
-class USVCA2Increased extends Setting18GraphModuleEvent {
-  const USVCA2Increased();
+class USVCA3Changed extends Setting18GraphModuleEvent {
+  const USVCA3Changed({required this.usVCA3});
+
+  final String usVCA3;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [usVCA3];
 }
 
-class USVCA2Decreased extends Setting18GraphModuleEvent {
-  const USVCA2Decreased();
+class USVCA4Changed extends Setting18GraphModuleEvent {
+  const USVCA4Changed({required this.usVCA4});
+
+  final String usVCA4;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [usVCA4];
 }
 
 class EREQChanged extends Setting18GraphModuleEvent {
-  const EREQChanged(this.eREQ);
+  const EREQChanged({required this.eREQ});
 
   final String eREQ;
 
@@ -161,22 +113,8 @@ class EREQChanged extends Setting18GraphModuleEvent {
   List<Object> get props => [eREQ];
 }
 
-class EREQIncreased extends Setting18GraphModuleEvent {
-  const EREQIncreased();
-
-  @override
-  List<Object> get props => [];
-}
-
-class EREQDecreased extends Setting18GraphModuleEvent {
-  const EREQDecreased();
-
-  @override
-  List<Object> get props => [];
-}
-
 class RtnIngressSetting2Changed extends Setting18GraphModuleEvent {
-  const RtnIngressSetting2Changed(this.returnIngressSetting2);
+  const RtnIngressSetting2Changed({required this.returnIngressSetting2});
 
   final String returnIngressSetting2;
 
@@ -185,7 +123,7 @@ class RtnIngressSetting2Changed extends Setting18GraphModuleEvent {
 }
 
 class RtnIngressSetting3Changed extends Setting18GraphModuleEvent {
-  const RtnIngressSetting3Changed(this.returnIngressSetting3);
+  const RtnIngressSetting3Changed({required this.returnIngressSetting3});
 
   final String returnIngressSetting3;
 
@@ -194,7 +132,7 @@ class RtnIngressSetting3Changed extends Setting18GraphModuleEvent {
 }
 
 class RtnIngressSetting4Changed extends Setting18GraphModuleEvent {
-  const RtnIngressSetting4Changed(this.returnIngressSetting4);
+  const RtnIngressSetting4Changed({required this.returnIngressSetting4});
 
   final String returnIngressSetting4;
 
@@ -203,48 +141,12 @@ class RtnIngressSetting4Changed extends Setting18GraphModuleEvent {
 }
 
 class TGCCableLengthChanged extends Setting18GraphModuleEvent {
-  const TGCCableLengthChanged(this.tgcCableLength);
+  const TGCCableLengthChanged({required this.tgcCableLength});
 
   final String tgcCableLength;
 
   @override
   List<Object> get props => [tgcCableLength];
-}
-
-class DSVVA2Changed extends Setting18GraphModuleEvent {
-  const DSVVA2Changed(this.dsVVA2);
-
-  final String dsVVA2;
-
-  @override
-  List<Object> get props => [dsVVA2];
-}
-
-class DSSlope2Changed extends Setting18GraphModuleEvent {
-  const DSSlope2Changed(this.dsSlope2);
-
-  final String dsSlope2;
-
-  @override
-  List<Object> get props => [dsSlope2];
-}
-
-class DSVVA3Changed extends Setting18GraphModuleEvent {
-  const DSVVA3Changed(this.dsVVA3);
-
-  final String dsVVA3;
-
-  @override
-  List<Object> get props => [dsVVA3];
-}
-
-class DSVVA4Changed extends Setting18GraphModuleEvent {
-  const DSVVA4Changed(this.dsVVA4);
-
-  final String dsVVA4;
-
-  @override
-  List<Object> get props => [dsVVA4];
 }
 
 // class USTGCChanged extends Setting18GraphModuleEvent {
@@ -257,7 +159,7 @@ class DSVVA4Changed extends Setting18GraphModuleEvent {
 // }
 
 class SplitOptionChanged extends Setting18GraphModuleEvent {
-  const SplitOptionChanged(this.splitOption);
+  const SplitOptionChanged({required this.splitOption});
 
   final String splitOption;
 
@@ -266,16 +168,24 @@ class SplitOptionChanged extends Setting18GraphModuleEvent {
 }
 
 class FirstChannelLoadingFrequencyChanged extends Setting18GraphModuleEvent {
-  const FirstChannelLoadingFrequencyChanged(this.firstChannelLoadingFrequency);
+  const FirstChannelLoadingFrequencyChanged({
+    required this.firstChannelLoadingFrequency,
+    required this.currentDetectedSplitOption,
+  });
 
   final String firstChannelLoadingFrequency;
+  final String currentDetectedSplitOption;
 
   @override
-  List<Object> get props => [firstChannelLoadingFrequency];
+  List<Object> get props => [
+        firstChannelLoadingFrequency,
+        currentDetectedSplitOption,
+      ];
 }
 
 class FirstChannelLoadingLevelChanged extends Setting18GraphModuleEvent {
-  const FirstChannelLoadingLevelChanged(this.firstChannelLoadingLevel);
+  const FirstChannelLoadingLevelChanged(
+      {required this.firstChannelLoadingLevel});
 
   final String firstChannelLoadingLevel;
 
@@ -284,7 +194,8 @@ class FirstChannelLoadingLevelChanged extends Setting18GraphModuleEvent {
 }
 
 class LastChannelLoadingFrequencyChanged extends Setting18GraphModuleEvent {
-  const LastChannelLoadingFrequencyChanged(this.lastChannelLoadingFrequency);
+  const LastChannelLoadingFrequencyChanged(
+      {required this.lastChannelLoadingFrequency});
 
   final String lastChannelLoadingFrequency;
 
@@ -293,7 +204,7 @@ class LastChannelLoadingFrequencyChanged extends Setting18GraphModuleEvent {
 }
 
 class LastChannelLoadingLevelChanged extends Setting18GraphModuleEvent {
-  const LastChannelLoadingLevelChanged(this.lastChannelLoadingLevel);
+  const LastChannelLoadingLevelChanged({required this.lastChannelLoadingLevel});
 
   final String lastChannelLoadingLevel;
 
@@ -302,7 +213,7 @@ class LastChannelLoadingLevelChanged extends Setting18GraphModuleEvent {
 }
 
 class PilotFrequencyModeChanged extends Setting18GraphModuleEvent {
-  const PilotFrequencyModeChanged(this.pilotFrequencyMode);
+  const PilotFrequencyModeChanged({required this.pilotFrequencyMode});
 
   final String pilotFrequencyMode;
 
@@ -311,7 +222,7 @@ class PilotFrequencyModeChanged extends Setting18GraphModuleEvent {
 }
 
 class PilotFrequency1Changed extends Setting18GraphModuleEvent {
-  const PilotFrequency1Changed(this.pilotFrequency1);
+  const PilotFrequency1Changed({required this.pilotFrequency1});
 
   final String pilotFrequency1;
 
@@ -320,7 +231,7 @@ class PilotFrequency1Changed extends Setting18GraphModuleEvent {
 }
 
 class PilotFrequency2Changed extends Setting18GraphModuleEvent {
-  const PilotFrequency2Changed(this.pilotFrequency2);
+  const PilotFrequency2Changed({required this.pilotFrequency2});
 
   final String pilotFrequency2;
 

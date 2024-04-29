@@ -738,25 +738,6 @@ class _ReverseControlHeader extends StatelessWidget {
   }
 }
 
-String getInputAttenuation({
-  required String alcMode,
-  required String inputAttenuation,
-  required String currentInputAttenuation,
-}) {
-  return alcMode == '0' ? inputAttenuation : currentInputAttenuation;
-}
-
-String getInputEqualizer({
-  required String alcMode,
-  required String agcMode,
-  required String inputEqualizer,
-  required String currentInputEqualizer,
-}) {
-  return alcMode == '0' && agcMode == '0'
-      ? inputEqualizer
-      : currentInputEqualizer;
-}
-
 class _ForwardInputAttenuation extends StatelessWidget {
   const _ForwardInputAttenuation({
     super.key,
@@ -1612,7 +1593,11 @@ class _SettingFloatingActionButton extends StatelessWidget {
                         ),
                         onPressed: () {
                           // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
-                          Navigator.push(context, Setting18GraphPage.route())
+                          Navigator.push(
+                                  context,
+                                  Setting18GraphPage.route(
+                                    graphFilePath: graphFilePath,
+                                  ))
                               .then((value) => context
                                   .read<Setting18ControlBloc>()
                                   .add(const Initialized()));

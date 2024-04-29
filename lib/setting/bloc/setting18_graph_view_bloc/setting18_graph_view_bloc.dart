@@ -13,7 +13,9 @@ class Setting18GraphViewBloc
     extends Bloc<Setting18GraphViewEvent, Setting18GraphViewState> {
   Setting18GraphViewBloc({
     required Amp18Repository amp18Repository,
+    required String graphFilePath,
   })  : _amp18Repository = amp18Repository,
+        _graphFilePath = graphFilePath,
         super(const Setting18GraphViewState()) {
     on<LoadGraphRequested>(_onLoadGraphRequested);
     on<AttenuatorTapped>(_onAttenuatorTapped);
@@ -22,13 +24,13 @@ class Setting18GraphViewBloc
   }
 
   final Amp18Repository _amp18Repository;
+  final String _graphFilePath;
 
   Future<void> _onLoadGraphRequested(
     LoadGraphRequested event,
     Emitter<Setting18GraphViewState> emit,
   ) async {
-    String generalString =
-        await rootBundle.loadString('assets/circuits/MB_1.8G_20231117.svg');
+    String generalString = await rootBundle.loadString(_graphFilePath);
 
     XmlDocument document = XmlDocument.parse(generalString);
 
@@ -51,14 +53,14 @@ class Setting18GraphViewBloc
     }
 
     for (var element in rects) {
-      int moduleId = int.parse(element.getAttribute('symbol').toString());
+      String moduleName = element.getAttribute('module').toString();
       double x = double.parse(element.getAttribute('x').toString());
       double y = double.parse(element.getAttribute('y').toString());
       double width = double.parse(element.getAttribute('width').toString());
       double height = double.parse(element.getAttribute('height').toString());
 
       boxes.add(Box(
-        moduleId: moduleId,
+        moduleName: moduleName,
         x: x,
         y: y,
         width: width,

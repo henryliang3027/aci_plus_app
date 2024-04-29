@@ -925,35 +925,37 @@ class Setting18ControlBloc
       settingResult.add('${DataKey.dsVVA1.name},$resultOfSetDSVVA1');
     }
 
-    if (state.dsSlope1 != state.initialValues[DataKey.dsSlope1]) {
-      bool resultOfDSSlope1 =
-          await _amp18Repository.set1p8GDSSlope1(state.dsSlope1);
-
-      settingResult.add('${DataKey.dsSlope1.name},$resultOfDSSlope1');
-    }
-
     if (state.dsVVA4 != state.initialValues[DataKey.dsVVA4]) {
-      bool resultOfDSVVA4 = await _amp18Repository.set1p8GDSVVA4(state.dsVVA4);
+      bool resultOfSetDSVVA4 =
+          await _amp18Repository.set1p8GDSVVA4(state.dsVVA4);
 
-      settingResult.add('${DataKey.dsVVA4.name},$resultOfDSVVA4');
+      settingResult.add('${DataKey.dsVVA4.name},$resultOfSetDSVVA4');
     }
 
     if (state.dsVVA5 != state.initialValues[DataKey.dsVVA5]) {
-      bool resultOfDSVVA5 = await _amp18Repository.set1p8GDSVVA5(state.dsVVA5);
+      bool resultOfSetDSVVA5 =
+          await _amp18Repository.set1p8GDSVVA5(state.dsVVA5);
 
-      settingResult.add('${DataKey.dsVVA5.name},$resultOfDSVVA5');
+      settingResult.add('${DataKey.dsVVA5.name},$resultOfSetDSVVA5');
+    }
+
+    if (state.dsSlope1 != state.initialValues[DataKey.dsSlope1]) {
+      bool resultOfSetDSSlope1 =
+          await _amp18Repository.set1p8GDSSlope1(state.dsSlope1);
+
+      settingResult.add('${DataKey.dsSlope1.name},$resultOfSetDSSlope1');
     }
 
     if (state.dsSlope3 != state.initialValues[DataKey.dsSlope3]) {
       bool resultOfSetDSSlope3 =
-          await _amp18Repository.set1p8DSSlope3(state.dsSlope3);
+          await _amp18Repository.set1p8GDSSlope3(state.dsSlope3);
 
       settingResult.add('${DataKey.dsSlope3.name},$resultOfSetDSSlope3');
     }
 
     if (state.dsSlope4 != state.initialValues[DataKey.dsSlope4]) {
       bool resultOfSetDSSlope4 =
-          await _amp18Repository.set1p8DSSlope4(state.dsSlope4);
+          await _amp18Repository.set1p8GDSSlope4(state.dsSlope4);
 
       settingResult.add('${DataKey.dsSlope4.name},$resultOfSetDSSlope4');
     }
@@ -965,11 +967,18 @@ class Setting18ControlBloc
       settingResult.add('${DataKey.usVCA1.name},$resultOfSetUSVCA1Cmd');
     }
 
+    if (state.usVCA2 != state.initialValues[DataKey.usVCA2]) {
+      bool resultOfSetUSVCA2 =
+          await _amp18Repository.set1p8GUSVCA2(state.usVCA2);
+
+      settingResult.add('${DataKey.usVCA2.name},$resultOfSetUSVCA2');
+    }
+
     if (state.usVCA3 != state.initialValues[DataKey.usVCA3]) {
-      bool resultOfSetReturnUSVCA3 =
+      bool resultOfSetUSVCA3 =
           await _amp18Repository.set1p8GUSVCA3(state.usVCA3);
 
-      settingResult.add('${DataKey.usVCA3.name},$resultOfSetReturnUSVCA3');
+      settingResult.add('${DataKey.usVCA3.name},$resultOfSetUSVCA3');
     }
 
     if (state.usVCA4 != state.initialValues[DataKey.usVCA4]) {
@@ -977,13 +986,6 @@ class Setting18ControlBloc
           await _amp18Repository.set1p8GUSVCA4(state.usVCA4);
 
       settingResult.add('${DataKey.usVCA4.name},$resultOfSetUSVCA4');
-    }
-
-    if (state.usVCA2 != state.initialValues[DataKey.usVCA2]) {
-      bool resultOfSetUSVCA2 =
-          await _amp18Repository.set1p8GUSVCA2(state.usVCA2);
-
-      settingResult.add('${DataKey.usVCA2.name},$resultOfSetUSVCA2');
     }
 
     if (state.eREQ != state.initialValues[DataKey.eREQ]) {

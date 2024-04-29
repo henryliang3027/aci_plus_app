@@ -6,10 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class Setting18GraphModulePage extends StatelessWidget {
   const Setting18GraphModulePage({
     super.key,
-    required this.moduleId,
+    required this.moduleName,
   });
 
-  final int moduleId;
+  final String moduleName;
 
   // static Route<void> route(int moduleId) {
   //   return MaterialPageRoute(
@@ -22,7 +22,7 @@ class Setting18GraphModulePage extends StatelessWidget {
       create: (context) => Setting18GraphModuleBloc(
           amp18Repository: RepositoryProvider.of(context)),
       child: Setting18GraphModuleForm(
-        moduleId: moduleId,
+        moduleName: moduleName,
       ),
     );
   }

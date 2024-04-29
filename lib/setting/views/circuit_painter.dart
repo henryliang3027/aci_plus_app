@@ -18,7 +18,7 @@ class CircuitPainter extends CustomPainter {
 
   Future<void> showModuleSettingDialog({
     required BuildContext context,
-    required int moduleId,
+    required String moduleName,
   }) async {
     return showDialog<void>(
       context: context,
@@ -33,7 +33,7 @@ class CircuitPainter extends CustomPainter {
             horizontal: width * 0.01,
             vertical: height * 0.01,
           ),
-          child: Setting18GraphModulePage(moduleId: moduleId),
+          child: Setting18GraphModulePage(moduleName: moduleName),
         );
       },
     );
@@ -108,7 +108,7 @@ class CircuitPainter extends CustomPainter {
           Paint()..color = Colors.transparent, onTapUp: (details) {
         showModuleSettingDialog(
           context: context,
-          moduleId: box.moduleId,
+          moduleName: box.moduleName,
         );
       });
     }

@@ -15,10 +15,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class Setting18GraphModuleForm extends StatefulWidget {
   const Setting18GraphModuleForm({
     super.key,
-    required this.moduleId,
+    required this.moduleName,
   });
 
-  final int moduleId;
+  final String moduleName;
 
   @override
   State<Setting18GraphModuleForm> createState() =>
@@ -39,9 +39,6 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       manualModePilot1RFOutputPowerTextEditingController;
   late final TextEditingController
       manualModePilot2RFOutputPowerTextEditingController;
-  late final TextEditingController
-      forwardInputAttenuation1TextEditingController;
-  late final TextEditingController forwardInputEqualizer1TextEditingController;
 
   @override
   void initState() {
@@ -55,79 +52,179 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         TextEditingController();
     manualModePilot2RFOutputPowerTextEditingController =
         TextEditingController();
-    forwardInputAttenuation1TextEditingController = TextEditingController();
-    forwardInputEqualizer1TextEditingController = TextEditingController();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    HomeState homeState = context.watch<HomeBloc>().state;
+    HomeState homeState = context.read<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
+    String agcMode = homeState.characteristicData[DataKey.agcMode] ?? '0';
+    String alcMode = homeState.characteristicData[DataKey.alcMode] ?? '0';
+    String currentInputAttenuation =
+        homeState.characteristicData[DataKey.currentDSVVA1] ?? '';
+    String currentInputEqualizer =
+        homeState.characteristicData[DataKey.currentDSSlope1] ?? '';
+    String currentDetectedSplitOption =
+        homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
 
     List<Widget> getSettingWidgetByModuleId() {
-      switch (widget.moduleId) {
-        case 0:
-          return [const _SplitOption()];
-        case 1:
+      String moduleName = widget.moduleName;
+
+      if (moduleName == DataKey.splitOption.name) {
+        return [const _SplitOption()];
+      } else if (moduleName == DataKey.agcMode.name) {
+        return [
+          const _PilotFrequencyMode(),
+          _FirstChannelLoading(
+            firstChannelLoadingFrequencyTextEditingController:
+                firstChannelLoadingFrequencyTextEditingController,
+            firstChannelLoadingLevelTextEditingController:
+                firstChannelLoadingLevelTextEditingController,
+            currentDetectedSplitOption: currentDetectedSplitOption,
+          ),
+          _LastChannelLoading(
+            lastChannelLoadingFrequencyTextEditingController:
+                lastChannelLoadingFrequencyTextEditingController,
+            lastChannelLoadingLevelTextEditingController:
+                lastChannelLoadingLevelTextEditingController,
+          ),
+          _PilotFrequency1(
+            pilotFrequency1TextEditingController:
+                pilotFrequency1TextEditingController,
+            manualModePilot1RFOutputPowerTextEditingController:
+                manualModePilot1RFOutputPowerTextEditingController,
+          ),
+          _PilotFrequency2(
+            pilotFrequency2TextEditingController:
+                pilotFrequency2TextEditingController,
+            manualModePilot2RFOutputPowerTextEditingController:
+                manualModePilot2RFOutputPowerTextEditingController,
+          ),
+        ];
+      } else if (moduleName == DataKey.dsVVA1.name) {
+        return [
+          _ForwardInputAttenuation(
+            alcMode: alcMode,
+            currentInputAttenuation: currentInputAttenuation,
+          )
+        ];
+      } else if (moduleName == DataKey.dsVVA4.name) {
+        if (partId == '5') {
+          return [const _ForwardOutputAttenuation2And3()];
+        } else {
+          return [const _ForwardOutputAttenuation3And4()];
+        }
+      } else if (moduleName == DataKey.dsVVA5.name) {
+        return [const _ForwardOutputAttenuation5And6()];
+      } else if (moduleName == DataKey.dsSlope1.name) {
+        return [
+          _ForwardInputEqualizer(
+            alcMode: alcMode,
+            agcMode: agcMode,
+            currentInputEqualizer: currentInputEqualizer,
+          )
+        ];
+      } else if (moduleName == DataKey.dsSlope3.name) {
+        return [const _ForwardOutputEqualizer2And3()];
+      } else if (moduleName == DataKey.dsSlope4.name) {
+        return [const _ForwardOutputEqualizer5And6()];
+      } else if (moduleName == DataKey.usVCA1.name) {
+        if (partId == '5') {
           return [
-            _ForwardInputAttenuation(
-              forwardInputAttenuation1TextEditingController:
-                  forwardInputAttenuation1TextEditingController,
+            _RtnInputAttenuation4(
+              partId: partId,
             )
           ];
-        case 2:
+        } else {
+          return [const _RtnInputAttenuation2()];
+        }
+      } else if (moduleName == DataKey.usVCA2.name) {
+        return [const _RtnOutputLevelAttenuation()];
+      } else if (moduleName == DataKey.usVCA3.name) {
+        if (partId == '5' || partId == '6') {
+          return [const _RtnInputAttenuation2And3()];
+        } else {
+          return [const _RtnInputAttenuation3()];
+        }
+      } else if (moduleName == DataKey.usVCA4.name) {
+        if (partId == '5' || partId == '6') {
+          return [const _RtnInputAttenuation5And6()];
+        } else {
           return [
-            _ForwardInputEqualizer(
-              forwardInputEqualizer1TextEditingController:
-                  forwardInputEqualizer1TextEditingController,
+            _RtnInputAttenuation4(
+              partId: partId,
             )
           ];
-        case 3:
-          return [];
-        case 4:
-          return [];
-        case 5:
-          return [];
-        case 6:
-          return [];
-        case 7:
-          return [];
-        case 8:
-          return [];
-        case 9:
-          return [];
-        case 10:
-          return [
-            const _PilotFrequencyMode(),
-            _FirstChannelLoading(
-              firstChannelLoadingFrequencyTextEditingController:
-                  firstChannelLoadingFrequencyTextEditingController,
-              firstChannelLoadingLevelTextEditingController:
-                  firstChannelLoadingLevelTextEditingController,
-            ),
-            _LastChannelLoading(
-              lastChannelLoadingFrequencyTextEditingController:
-                  lastChannelLoadingFrequencyTextEditingController,
-              lastChannelLoadingLevelTextEditingController:
-                  lastChannelLoadingLevelTextEditingController,
-            ),
-            _PilotFrequency1(
-              pilotFrequency1TextEditingController:
-                  pilotFrequency1TextEditingController,
-              manualModePilot1RFOutputPowerTextEditingController:
-                  manualModePilot1RFOutputPowerTextEditingController,
-            ),
-            _PilotFrequency2(
-              pilotFrequency2TextEditingController:
-                  pilotFrequency2TextEditingController,
-              manualModePilot2RFOutputPowerTextEditingController:
-                  manualModePilot2RFOutputPowerTextEditingController,
-            ),
-          ];
-        default:
-          return [];
+        }
+      } else if (moduleName == DataKey.eREQ.name) {
+        return [const _RtnOutputEQ()];
+      } else {
+        return [];
       }
+
+      // switch (widget.moduleName) {
+      //   case DataKey.splitOption:
+      //     return [const _SplitOption()];
+      //   case 1:
+      //     return [
+      //       _ForwardInputAttenuation(
+      //         forwardInputAttenuation1TextEditingController:
+      //             forwardInputAttenuation1TextEditingController,
+      //       )
+      //     ];
+      //   case 2:
+      //     return [
+      //       _ForwardInputEqualizer(
+      //         forwardInputEqualizer1TextEditingController:
+      //             forwardInputEqualizer1TextEditingController,
+      //       )
+      //     ];
+      //   case 3:
+      //     return [];
+      //   case 4:
+      //     return [];
+      //   case 5:
+      //     return [];
+      //   case 6:
+      //     return [];
+      //   case 7:
+      //     return [];
+      //   case 8:
+      //     return [];
+      //   case 9:
+      //     return [];
+      //   case 10:
+      //     return [
+      //       const _PilotFrequencyMode(),
+      //       _FirstChannelLoading(
+      //         firstChannelLoadingFrequencyTextEditingController:
+      //             firstChannelLoadingFrequencyTextEditingController,
+      //         firstChannelLoadingLevelTextEditingController:
+      //             firstChannelLoadingLevelTextEditingController,
+      //       ),
+      //       _LastChannelLoading(
+      //         lastChannelLoadingFrequencyTextEditingController:
+      //             lastChannelLoadingFrequencyTextEditingController,
+      //         lastChannelLoadingLevelTextEditingController:
+      //             lastChannelLoadingLevelTextEditingController,
+      //       ),
+      //       _PilotFrequency1(
+      //         pilotFrequency1TextEditingController:
+      //             pilotFrequency1TextEditingController,
+      //         manualModePilot1RFOutputPowerTextEditingController:
+      //             manualModePilot1RFOutputPowerTextEditingController,
+      //       ),
+      //       _PilotFrequency2(
+      //         pilotFrequency2TextEditingController:
+      //             pilotFrequency2TextEditingController,
+      //         manualModePilot2RFOutputPowerTextEditingController:
+      //             manualModePilot2RFOutputPowerTextEditingController,
+      //       ),
+      //     ];
+      //   default:
+      //     return [];
+      // }
     }
 
     String formatResultValue(String boolValue) {
@@ -261,15 +358,17 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
 
         if (state.isInitialize) {
           firstChannelLoadingFrequencyTextEditingController.text =
-              state.firstChannelLoadingFrequency;
+              state.firstChannelLoadingFrequency.value;
           firstChannelLoadingLevelTextEditingController.text =
-              state.firstChannelLoadingLevel;
+              state.firstChannelLoadingLevel.value;
           lastChannelLoadingFrequencyTextEditingController.text =
-              state.lastChannelLoadingFrequency;
+              state.lastChannelLoadingFrequency.value;
           lastChannelLoadingLevelTextEditingController.text =
-              state.lastChannelLoadingLevel;
-          pilotFrequency1TextEditingController.text = state.pilotFrequency1;
-          pilotFrequency2TextEditingController.text = state.pilotFrequency2;
+              state.lastChannelLoadingLevel.value;
+          pilotFrequency1TextEditingController.text =
+              state.pilotFrequency1.value;
+          pilotFrequency2TextEditingController.text =
+              state.pilotFrequency2.value;
           manualModePilot1RFOutputPowerTextEditingController.text =
               state.manualModePilot1RFOutputPower;
           manualModePilot2RFOutputPowerTextEditingController.text =
@@ -305,25 +404,41 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
 class _ForwardInputAttenuation extends StatelessWidget {
   const _ForwardInputAttenuation({
     super.key,
-    required this.forwardInputAttenuation1TextEditingController,
+    required this.alcMode,
+    required this.currentInputAttenuation,
   });
 
-  final TextEditingController forwardInputAttenuation1TextEditingController;
+  final String alcMode;
+  final String currentInputAttenuation;
 
   @override
   Widget build(BuildContext context) {
+    // String getCurrentValue(String fwdInputAttenuation) {
+    //   return alcMode == '0' ? fwdInputAttenuation : currentInputAttenuation;
+    // }
+
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
+        // forwardInputAttenuation1TextEditingController.text = state.dsVVA1;
+        double minValue = 0.0;
+        double maxValue = 30.0;
+        String inputAttenuation = getInputAttenuation(
+          alcMode: alcMode,
+          inputAttenuation: state.dsVVA1,
+          currentInputAttenuation: currentInputAttenuation,
+        );
         return controlTextSlider(
           context: context,
-          editMode: true,
+          editMode: state.editMode && alcMode == '0',
           title:
-              '${AppLocalizations.of(context)!.forwardInputAttenuation1}: ${state.dsVVA1} dB',
-          minValue: 0.0,
-          maxValue: 25.0,
-          currentValue: state.dsVVA1,
+              '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
+          minValue: minValue,
+          currentValue: inputAttenuation,
+          maxValue: maxValue,
           onChanged: (dsVVA1) {
-            context.read<Setting18GraphModuleBloc>().add(DSVVA1Changed(dsVVA1));
+            context.read<Setting18GraphModuleBloc>().add(DSVVA1Changed(
+                  dsVVA1: dsVVA1,
+                ));
           },
         );
       },
@@ -334,27 +449,461 @@ class _ForwardInputAttenuation extends StatelessWidget {
 class _ForwardInputEqualizer extends StatelessWidget {
   const _ForwardInputEqualizer({
     super.key,
-    required this.forwardInputEqualizer1TextEditingController,
+    required this.alcMode,
+    required this.agcMode,
+    required this.currentInputEqualizer,
   });
 
-  final TextEditingController forwardInputEqualizer1TextEditingController;
+  final String alcMode;
+  final String agcMode;
+  final String currentInputEqualizer;
+
+  @override
+  Widget build(BuildContext context) {
+    // String getCurrentValue(String forwardInputEqualizer) {
+    //   return alcMode == '0' && agcMode == '0'
+    //       ? forwardInputEqualizer
+    //       : currentInputEqualizer;
+    // }
+
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 12.0;
+        String inputEqualizer = getInputEqualizer(
+          alcMode: alcMode,
+          agcMode: agcMode,
+          inputEqualizer: state.dsSlope1,
+          currentInputEqualizer: currentInputEqualizer,
+        );
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode && alcMode == '0' && agcMode == '0',
+          title:
+              '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
+          minValue: minValue,
+          currentValue: inputEqualizer,
+          maxValue: maxValue,
+          onChanged: (dsSlope1) {
+            context.read<Setting18GraphModuleBloc>().add(DSSlope1Changed(
+                  dsSlope1: dsSlope1,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputAttenuation2And3 extends StatelessWidget {
+  const _ForwardOutputAttenuation2And3({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 10.0;
         return controlTextSlider(
           context: context,
-          editMode: true,
+          editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardInputEqualizer1}: ${state.dsSlope1} dB',
-          minValue: 0.0,
-          maxValue: 15.0,
-          currentValue: state.dsSlope1,
-          onChanged: (dsSlope1) {
-            context
-                .read<Setting18GraphModuleBloc>()
-                .add(DSSlope1Changed(dsSlope1));
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation2And3} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsVVA4,
+          onChanged: (dsVVA4) {
+            context.read<Setting18GraphModuleBloc>().add(DSVVA4Changed(
+                  dsVVA4: dsVVA4,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputAttenuation3And4 extends StatelessWidget {
+  const _ForwardOutputAttenuation3And4({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 10.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation3And4} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsVVA4,
+          onChanged: (dsVVA4) {
+            context.read<Setting18GraphModuleBloc>().add(DSVVA4Changed(
+                  dsVVA4: dsVVA4,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputAttenuation5And6 extends StatelessWidget {
+  const _ForwardOutputAttenuation5And6({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 10.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsVVA5,
+          onChanged: (dsVVA5) {
+            context.read<Setting18GraphModuleBloc>().add(DSVVA5Changed(
+                  dsVVA5: dsVVA5,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputEqualizer2And3 extends StatelessWidget {
+  const _ForwardOutputEqualizer2And3({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 10.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer2And3} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsSlope3,
+          onChanged: (dsSlope3) {
+            context.read<Setting18GraphModuleBloc>().add(DSSlope3Changed(
+                  dsSlope3: dsSlope3,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputEqualizer3And4 extends StatelessWidget {
+  const _ForwardOutputEqualizer3And4({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 10.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer3And4} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsSlope3,
+          onChanged: (dsSlope3) {
+            context.read<Setting18GraphModuleBloc>().add(DSSlope3Changed(
+                  dsSlope3: dsSlope3,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputEqualizer5And6 extends StatelessWidget {
+  const _ForwardOutputEqualizer5And6({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 10.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer5And6} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsSlope4,
+          onChanged: (dsSlope4) {
+            context.read<Setting18GraphModuleBloc>().add(DSSlope4Changed(
+                  dsSlope4: dsSlope4,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _RtnOutputLevelAttenuation extends StatelessWidget {
+  const _RtnOutputLevelAttenuation({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 15.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.returnOutputAttenuation1} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.usVCA2,
+          onChanged: (usVCA2) {
+            context.read<Setting18GraphModuleBloc>().add(USVCA2Changed(
+                  usVCA2: usVCA2,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _RtnOutputEQ extends StatelessWidget {
+  const _RtnOutputEQ({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 12.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.returnOutputEqualizer1} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.eREQ,
+          onChanged: (eREQ) {
+            context.read<Setting18GraphModuleBloc>().add(EREQChanged(
+                  eREQ: eREQ,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _RtnInputAttenuation2 extends StatelessWidget {
+  const _RtnInputAttenuation2({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.returnInputAttenuation2} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.usVCA1,
+          onChanged: (usVCA1) {
+            context.read<Setting18GraphModuleBloc>().add(USVCA1Changed(
+                  usVCA1: usVCA1,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _RtnInputAttenuation3 extends StatelessWidget {
+  const _RtnInputAttenuation3({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.returnInputAttenuation3} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.usVCA3,
+          onChanged: (usVCA3) {
+            context.read<Setting18GraphModuleBloc>().add(USVCA3Changed(
+                  usVCA3: usVCA3,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _RtnInputAttenuation2And3 extends StatelessWidget {
+  const _RtnInputAttenuation2And3({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.returnInputAttenuation2And3} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.usVCA3,
+          onChanged: (usVCA3) {
+            context.read<Setting18GraphModuleBloc>().add(USVCA3Changed(
+                  usVCA3: usVCA3,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _RtnInputAttenuation4 extends StatelessWidget {
+  const _RtnInputAttenuation4({
+    super.key,
+    required this.partId,
+  });
+
+  final String partId;
+
+  @override
+  Widget build(BuildContext context) {
+    if (partId == '5') {
+      return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+        builder: (context, state) {
+          double minValue = 0.0;
+          double maxValue = 25.0;
+          return controlTextSlider(
+            context: context,
+            editMode: state.editMode,
+            title:
+                '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
+            minValue: minValue,
+            maxValue: maxValue,
+            currentValue: state.usVCA1,
+            onChanged: (usVCA1) {
+              context.read<Setting18GraphModuleBloc>().add(USVCA1Changed(
+                    usVCA1: usVCA1,
+                  ));
+            },
+          );
+        },
+      );
+    } else {
+      return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+        builder: (context, state) {
+          double minValue = 0.0;
+          double maxValue = 25.0;
+          return controlTextSlider(
+            context: context,
+            editMode: state.editMode,
+            title:
+                '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
+            minValue: minValue,
+            maxValue: maxValue,
+            currentValue: state.usVCA4,
+            onChanged: (usVCA4) {
+              context.read<Setting18GraphModuleBloc>().add(USVCA4Changed(
+                    usVCA4: usVCA4,
+                  ));
+            },
+          );
+        },
+      );
+    }
+  }
+}
+
+class _RtnInputAttenuation5And6 extends StatelessWidget {
+  const _RtnInputAttenuation5And6({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 25.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.returnInputAttenuation5And6} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.usVCA4,
+          onChanged: (usVCA4) {
+            context.read<Setting18GraphModuleBloc>().add(USVCA4Changed(
+                  usVCA4: usVCA4,
+                ));
           },
         );
       },
@@ -375,7 +924,7 @@ class _SplitOption extends StatelessWidget {
         splitOption: state.splitOption,
         onGridPressed: (index) => context
             .read<Setting18GraphModuleBloc>()
-            .add(SplitOptionChanged(splitOptionValues[index])),
+            .add(SplitOptionChanged(splitOption: splitOptionValues[index])),
       );
     });
   }
@@ -414,7 +963,8 @@ class _PilotFrequencyMode extends StatelessWidget {
           pilotFrequencyMode: state.pilotFrequencyMode,
           onGridPressed: (index) => context
               .read<Setting18GraphModuleBloc>()
-              .add(PilotFrequencyModeChanged(pilotFrequencyModeValues[index])),
+              .add(PilotFrequencyModeChanged(
+                  pilotFrequencyMode: pilotFrequencyModeValues[index])),
         );
       },
     );
@@ -426,10 +976,12 @@ class _FirstChannelLoading extends StatelessWidget {
     super.key,
     required this.firstChannelLoadingFrequencyTextEditingController,
     required this.firstChannelLoadingLevelTextEditingController,
+    required this.currentDetectedSplitOption,
   });
 
   final TextEditingController firstChannelLoadingFrequencyTextEditingController;
   final TextEditingController firstChannelLoadingLevelTextEditingController;
+  final String currentDetectedSplitOption;
 
   @override
   Widget build(BuildContext context) {
@@ -438,8 +990,8 @@ class _FirstChannelLoading extends StatelessWidget {
         return twoTextField(
           context: context,
           title: '${AppLocalizations.of(context)!.startFrequency}:',
-          editMode1: state.pilotFrequencyMode != '2',
-          editMode2: state.pilotFrequencyMode != '2',
+          editMode1: state.editMode && state.pilotFrequencyMode != '2',
+          editMode2: state.editMode && state.pilotFrequencyMode != '2',
           textEditingControllerName1:
               'setting18Form_firstChannelLoadingFrequencyInput_textField',
           textEditingControllerName2:
@@ -448,15 +1000,27 @@ class _FirstChannelLoading extends StatelessWidget {
               firstChannelLoadingFrequencyTextEditingController,
           textEditingController2: firstChannelLoadingLevelTextEditingController,
           onChanged1: (firstChannelLoadingFrequency) {
-            context.read<Setting18GraphModuleBloc>().add(
-                FirstChannelLoadingFrequencyChanged(
-                    firstChannelLoadingFrequency));
-          },
-          onChanged2: (firstChannelLoadingLevel) {
             context
                 .read<Setting18GraphModuleBloc>()
-                .add(FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
+                .add(FirstChannelLoadingFrequencyChanged(
+                  firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+                  currentDetectedSplitOption: currentDetectedSplitOption,
+                ));
           },
+          onChanged2: (firstChannelLoadingLevel) {
+            context.read<Setting18GraphModuleBloc>().add(
+                FirstChannelLoadingLevelChanged(
+                    firstChannelLoadingLevel: firstChannelLoadingLevel));
+          },
+          errorText1: !isValidFirstChannelLoadingFrequency(
+            currentDetectedSplitOption: currentDetectedSplitOption,
+            firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+          )
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          errorText2: state.firstChannelLoadingLevel.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -480,8 +1044,8 @@ class _LastChannelLoading extends StatelessWidget {
         return twoTextField(
           context: context,
           title: '${AppLocalizations.of(context)!.stopFrequency}:',
-          editMode1: state.pilotFrequencyMode != '2',
-          editMode2: state.pilotFrequencyMode != '2',
+          editMode1: state.editMode && state.pilotFrequencyMode != '2',
+          editMode2: state.editMode && state.pilotFrequencyMode != '2',
           textEditingControllerName1:
               'setting18Form_lastChannelLoadingFrequencyInput_textField',
           textEditingControllerName2:
@@ -492,13 +1056,19 @@ class _LastChannelLoading extends StatelessWidget {
           onChanged1: (lastChannelLoadingFrequency) {
             context.read<Setting18GraphModuleBloc>().add(
                 LastChannelLoadingFrequencyChanged(
-                    lastChannelLoadingFrequency));
+                    lastChannelLoadingFrequency: lastChannelLoadingFrequency));
           },
           onChanged2: (lastChannelLoadingLevel) {
-            context
-                .read<Setting18GraphModuleBloc>()
-                .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
+            context.read<Setting18GraphModuleBloc>().add(
+                LastChannelLoadingLevelChanged(
+                    lastChannelLoadingLevel: lastChannelLoadingLevel));
           },
+          errorText1: state.lastChannelLoadingFrequency.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+          errorText2: state.lastChannelLoadingLevel.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -523,7 +1093,7 @@ class _PilotFrequency1 extends StatelessWidget {
         return twoTextField(
           context: context,
           title: '${AppLocalizations.of(context)!.pilotFrequency1}:',
-          editMode1: state.pilotFrequencyMode == '1',
+          editMode1: state.editMode && state.pilotFrequencyMode == '1',
           editMode2: false,
           textEditingControllerName1:
               'setting18Form_pilotFrequency1Input_textField',
@@ -532,16 +1102,15 @@ class _PilotFrequency1 extends StatelessWidget {
           textEditingController1: pilotFrequency1TextEditingController,
           textEditingController2:
               manualModePilot1RFOutputPowerTextEditingController,
-          onChanged1: (lastChannelLoadingFrequency) {
-            context.read<Setting18GraphModuleBloc>().add(
-                LastChannelLoadingFrequencyChanged(
-                    lastChannelLoadingFrequency));
-          },
-          onChanged2: (lastChannelLoadingLevel) {
+          onChanged1: (pilotFrequency1) {
             context
                 .read<Setting18GraphModuleBloc>()
-                .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
+                .add(PilotFrequency1Changed(pilotFrequency1: pilotFrequency1));
           },
+          onChanged2: (_) {},
+          errorText1: state.pilotFrequency1.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -566,7 +1135,7 @@ class _PilotFrequency2 extends StatelessWidget {
         return twoTextField(
           context: context,
           title: '${AppLocalizations.of(context)!.pilotFrequency2}:',
-          editMode1: state.pilotFrequencyMode == '1',
+          editMode1: state.editMode && state.pilotFrequencyMode == '1',
           editMode2: false,
           textEditingControllerName1:
               'setting18Form_pilotFrequency2Input_textField',
@@ -575,12 +1144,15 @@ class _PilotFrequency2 extends StatelessWidget {
           textEditingController1: pilotFrequency2TextEditingController,
           textEditingController2:
               manualModePilot2RFOutputPowerTextEditingController,
-          onChanged1: (frequency) {
+          onChanged1: (pilotFrequency2) {
             context
                 .read<Setting18GraphModuleBloc>()
-                .add(PilotFrequency2Changed(frequency));
+                .add(PilotFrequency2Changed(pilotFrequency2: pilotFrequency2));
           },
           onChanged2: (_) {},
+          errorText1: state.pilotFrequency2.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );

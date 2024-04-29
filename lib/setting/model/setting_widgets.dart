@@ -17,6 +17,25 @@ double _getBondaryValue({
   }
 }
 
+String getInputAttenuation({
+  required String alcMode,
+  required String inputAttenuation,
+  required String currentInputAttenuation,
+}) {
+  return alcMode == '0' ? inputAttenuation : currentInputAttenuation;
+}
+
+String getInputEqualizer({
+  required String alcMode,
+  required String agcMode,
+  required String inputEqualizer,
+  required String currentInputEqualizer,
+}) {
+  return alcMode == '0' && agcMode == '0'
+      ? inputEqualizer
+      : currentInputEqualizer;
+}
+
 class FineTuneSlider extends StatefulWidget {
   const FineTuneSlider({
     super.key,
