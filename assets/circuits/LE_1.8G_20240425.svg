@@ -5,7 +5,7 @@
    height="2065"
    style="clip-rule:evenodd;fill-rule:evenodd;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
    id="svg638"
-   sodipodi:docname="LE 1.8G 20240425 update.svg"
+   sodipodi:docname="LE_1.8G_20240425.svg"
    inkscape:version="1.2 (dc2aeda, 2022-05-15)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -24,9 +24,9 @@
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
      inkscape:zoom="0.3190781"
-     inkscape:cx="1281.8178"
-     inkscape:cy="963.71388"
-     inkscape:window-width="1390"
+     inkscape:cx="1805.2007"
+     inkscape:cy="1158.0237"
+     inkscape:window-width="1804"
      inkscape:window-height="1109"
      inkscape:window-x="0"
      inkscape:window-y="25"
@@ -944,4 +944,68 @@
        d="m 3564.5,2034.5 c -1077.33,0 -2154.67,0 -3232,0 0,-1.67 0,-3.33 0,-5 1076.33,0 2152.67,0 3229,0 -0.04,-1.86 0.79,-3.19 2.5,-4 0.5,2.98 0.66,5.98 0.5,9 z"
        id="path634" />
   </g>
+  <rect
+     style="fill:#ffffff;fill-opacity:0;stroke:#000000;stroke-width:6"
+     id="rect14619"
+     width="222.51605"
+     height="372.9494"
+     x="457.56824"
+     y="94.020866"
+     module="splitOption" />
+  <rect
+     style="clip-rule:evenodd;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:#000000;stroke-width:6;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
+     id="rect14619-0"
+     width="222.51605"
+     height="372.9494"
+     x="3220.2146"
+     y="89.319847"
+     module="splitOption" />
+  <rect
+     style="clip-rule:evenodd;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:#000000;stroke-width:6;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
+     id="rect14619-0-9"
+     width="319.67096"
+     height="313.40283"
+     x="913.56927"
+     y="79.917763"
+     module="dsVVA1" />
+  <rect
+     style="clip-rule:evenodd;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:#000000;stroke-width:6;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
+     id="rect14619-0-9-7"
+     width="498.31067"
+     height="278.9285"
+     x="1422.8492"
+     y="100.28895"
+     module="dsSlope1" />
+  <rect
+     style="clip-rule:evenodd;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:#000000;stroke-width:6;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
+     id="rect14619-0-9-5"
+     width="488.90845"
+     height="266.3924"
+     x="2181.2842"
+     y="103.423"
+     module="agcMode" />
+  <rect
+     style="clip-rule:evenodd;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:#000000;stroke-width:6;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
+     id="rect14619-0-9-0"
+     width="294.59863"
+     height="278.92853"
+     x="1190.9309"
+     y="783.50726"
+     module="eREQ" />
+  <rect
+     style="clip-rule:evenodd;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:#000000;stroke-width:6;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
+     id="rect14619-0-9-0-4"
+     width="310.26889"
+     height="307.1348"
+     x="1871.0153"
+     y="772.53815"
+     module="usVCA2" />
+  <rect
+     style="clip-rule:evenodd;fill:#ffffff;fill-opacity:0;fill-rule:evenodd;stroke:#000000;stroke-width:6;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
+     id="rect14619-0-9-0-4-5"
+     width="310.26889"
+     height="307.1348"
+     x="2875.4717"
+     y="767.8371"
+     module="usVCA1" />
 </svg>
