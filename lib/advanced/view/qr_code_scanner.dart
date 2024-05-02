@@ -31,7 +31,7 @@ class _QRViewExampleState extends State<QRCodeScanner> {
   // \} matches the closing curly brace }.
   // (?:,\{[^{}]*\}){0,4} matches zero to four instances of the pattern preceded by a comma ,.
   final RegExp configJsonRegex = RegExp(
-      r'^((?:\{[^{}]*\})(?:,\{[^{}]*\}){0,4})\s((?:\{[^{}]*\})?(?:,\{[^{}]*\}){0,4})$');
+      r'^((?:\{[^{}]*\})?(?:,\{[^{}]*\}){0,4})\s((?:\{[^{}]*\})?(?:,\{[^{}]*\}){0,4})$');
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.

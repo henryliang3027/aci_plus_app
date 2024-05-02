@@ -30,10 +30,14 @@ class Setting18ConfigForm extends StatelessWidget {
 
           return Dialog(
             insetPadding: EdgeInsets.symmetric(
-              horizontal: width * 0.01,
+              horizontal: 0,
             ),
-            child: QRCodeGeneratorPage(
-              encodedData: encodedData,
+            child: Container(
+              width: 400,
+              height: 500,
+              child: QRCodeGeneratorPage(
+                encodedData: encodedData,
+              ),
             ),
           );
         },

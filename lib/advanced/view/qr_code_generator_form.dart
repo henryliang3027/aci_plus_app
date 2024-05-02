@@ -26,8 +26,7 @@ class QRCodeGeneratorForm extends StatelessWidget {
           double height = MediaQuery.of(context).size.height;
           Share.shareXFiles(
             [XFile(state.imageFilePath)],
-            subject: 'QR Code',
-            text: 'QR Code',
+            subject: state.imageFileName,
             sharePositionOrigin:
                 Rect.fromLTWH(0.0, height / 2, width, height / 2),
           );
@@ -80,7 +79,7 @@ class _QRCodeViewer extends StatelessWidget {
         version: QrVersions.auto,
         errorCorrectionLevel: QrErrorCorrectLevel.L,
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
-        // size: 360,
+        size: 360,
         gapless: false,
         embeddedImage: const AssetImage('assets/qr_logo.png'),
         embeddedImageStyle: const QrEmbeddedImageStyle(

@@ -93,10 +93,15 @@ class Setting18ConfigBloc
           .distributionConfigs) ...[jsonEncode(distributionConfig.toJson())]
     ];
 
-    String encodedData =
-        '${trunkConfigJsons.join(',')} ${distributionConfigJsons.join(',')}';
+    String strTrunkConfigJsons =
+        trunkConfigJsons.join(',').isNotEmpty ? trunkConfigJsons.join(',') : '';
+    String strDistributionConfigJsons = distributionConfigJsons.join(',');
 
-    print(encodedData);
+    String encodedData = '$strTrunkConfigJsons $strDistributionConfigJsons';
+
+    print(trunkConfigJsons.join(','));
+    print(distributionConfigJsons.join(','));
+    print('data:$encodedData');
 
     emit(state.copyWith(
       encodeStaus: FormStatus.requestSuccess,
