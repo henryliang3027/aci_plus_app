@@ -29,10 +29,10 @@ class Setting18ConfigForm extends StatelessWidget {
           // var height = MediaQuery.of(context).size.height;
 
           return Dialog(
-            insetPadding: EdgeInsets.symmetric(
+            insetPadding: const EdgeInsets.symmetric(
               horizontal: 0,
             ),
-            child: Container(
+            child: SizedBox(
               width: 400,
               height: 500,
               child: QRCodeGeneratorPage(
