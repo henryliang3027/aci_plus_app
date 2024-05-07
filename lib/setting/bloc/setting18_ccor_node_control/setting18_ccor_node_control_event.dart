@@ -117,6 +117,110 @@ class DSInSlope6Changed extends Setting18CCorNodeControlEvent {
       ];
 }
 
+class DSOutSlope1Changed extends Setting18CCorNodeControlEvent {
+  const DSOutSlope1Changed({
+    required this.dsOutSlope1,
+  });
+
+  final String dsOutSlope1;
+
+  @override
+  List<Object> get props => [
+        dsOutSlope1,
+      ];
+}
+
+class DSOutSlope3Changed extends Setting18CCorNodeControlEvent {
+  const DSOutSlope3Changed({
+    required this.dsOutSlope3,
+  });
+
+  final String dsOutSlope3;
+
+  @override
+  List<Object> get props => [
+        dsOutSlope3,
+      ];
+}
+
+class DSOutSlope4Changed extends Setting18CCorNodeControlEvent {
+  const DSOutSlope4Changed({
+    required this.dsOutSlope4,
+  });
+
+  final String dsOutSlope4;
+
+  @override
+  List<Object> get props => [
+        dsOutSlope4,
+      ];
+}
+
+class DSOutSlope6Changed extends Setting18CCorNodeControlEvent {
+  const DSOutSlope6Changed({
+    required this.dsOutSlope6,
+  });
+
+  final String dsOutSlope6;
+
+  @override
+  List<Object> get props => [
+        dsOutSlope6,
+      ];
+}
+
+class BiasCurrent1Changed extends Setting18CCorNodeControlEvent {
+  const BiasCurrent1Changed({
+    required this.biasCurrent1,
+  });
+
+  final String biasCurrent1;
+
+  @override
+  List<Object> get props => [
+        biasCurrent1,
+      ];
+}
+
+class BiasCurrent3Changed extends Setting18CCorNodeControlEvent {
+  const BiasCurrent3Changed({
+    required this.biasCurrent3,
+  });
+
+  final String biasCurrent3;
+
+  @override
+  List<Object> get props => [
+        biasCurrent3,
+      ];
+}
+
+class BiasCurrent4Changed extends Setting18CCorNodeControlEvent {
+  const BiasCurrent4Changed({
+    required this.biasCurrent4,
+  });
+
+  final String biasCurrent4;
+
+  @override
+  List<Object> get props => [
+        biasCurrent4,
+      ];
+}
+
+class BiasCurrent6Changed extends Setting18CCorNodeControlEvent {
+  const BiasCurrent6Changed({
+    required this.biasCurrent6,
+  });
+
+  final String biasCurrent6;
+
+  @override
+  List<Object> get props => [
+        biasCurrent6,
+      ];
+}
+
 class USVCA1Changed extends Setting18CCorNodeControlEvent {
   const USVCA1Changed({
     required this.usVCA1,

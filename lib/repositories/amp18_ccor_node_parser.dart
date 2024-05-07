@@ -34,6 +34,7 @@ class Amp18CCorNodeParser {
     String partId = '';
     String serialNumber = '';
     String firmwareVersion = '';
+    String hardwareVersion = '';
     String mfgDate = '';
     String coordinate = '';
     String nowDateTime = '';
@@ -51,16 +52,25 @@ class Amp18CCorNodeParser {
     partNo = _trimString(partNo);
 
     // 解析 serialNumber
-    for (int i = 43; i <= 62; i++) {
+    for (int i = 43; i <= 58; i++) {
       serialNumber += String.fromCharCode(rawData[i]);
     }
     serialNumber = _trimString(serialNumber);
+
+    // 解析 hardwareVersion
+    for (int i = 59; i <= 62; i++) {
+      hardwareVersion += String.fromCharCode(rawData[i]);
+    }
+    hardwareVersion = _trimString(hardwareVersion);
 
     // 解析 firmwareVersion
     for (int i = 63; i <= 66; i++) {
       firmwareVersion += String.fromCharCode(rawData[i]);
     }
     firmwareVersion = _trimString(firmwareVersion);
+
+    // 舊版本為空自串, 所以加一個N/A表示無 hardware version
+    hardwareVersion = hardwareVersion.isEmpty ? 'N/A' : hardwareVersion;
 
     // 解析 mfgDate
     List<int> rawYear = rawData.sublist(67, 69);
@@ -103,6 +113,7 @@ class Amp18CCorNodeParser {
       partId: partId,
       serialNumber: serialNumber,
       firmwareVersion: firmwareVersion,
+      hardwareVersion: hardwareVersion,
       mfgDate: mfgDate,
       coordinate: coordinate,
       nowDateTime: nowDateTime,
@@ -122,6 +133,7 @@ class Amp18CCorNodeParser {
     String ingressSetting3 = '';
     String ingressSetting4 = '';
     String ingressSetting6 = '';
+    String forwardConfig = '';
     String splitOption = '';
     String maxRFOutputPower3 = '';
     String minRFOutputPower3 = '';
@@ -216,6 +228,9 @@ class Amp18CCorNodeParser {
 
     // 解析 ingress setting 6
     ingressSetting6 = rawData[22].toString();
+
+    // 解析 forward config
+    forwardConfig = rawData[23].toString();
 
     // 解析 splitOption
     splitOption = rawData[25].toString();
@@ -434,6 +449,7 @@ class Amp18CCorNodeParser {
       ingressSetting3: ingressSetting3,
       ingressSetting4: ingressSetting4,
       ingressSetting6: ingressSetting6,
+      forwardConfig: forwardConfig,
       splitOption: splitOption,
       maxRFOutputPower3: maxRFOutputPower3,
       minRFOutputPower3: minRFOutputPower3,
@@ -466,6 +482,48 @@ class Amp18CCorNodeParser {
       usVCA6: usVCA6,
       maxRFOutputPower6: maxRFOutputPower6,
       minRFOutputPower6: minRFOutputPower6,
+    );
+  }
+
+  A1P8GCCorNode92 decodeA1P8GCCorNode92(List<int> rawData) {
+    String biasCurrent1 = '';
+    String biasCurrent3 = '';
+    String biasCurrent4 = '';
+    String biasCurrent6 = '';
+
+    // 解析 biasCurrent1
+    List<int> rawBiasCurrent1 = rawData.sublist(3, 5);
+    ByteData rawBiasCurrent1ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawBiasCurrent1));
+    biasCurrent1 = (rawBiasCurrent1ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 biasCurrent3
+    List<int> rawBiasCurrent3 = rawData.sublist(5, 7);
+    ByteData rawBiasCurrent3ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawBiasCurrent3));
+    biasCurrent3 = (rawBiasCurrent3ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 biasCurrent4
+    List<int> rawBiasCurrent4 = rawData.sublist(7, 9);
+    ByteData rawBiasCurrent4ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawBiasCurrent4));
+    biasCurrent4 = (rawBiasCurrent4ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    // 解析 biasCurrent6
+    List<int> rawBiasCurrent6 = rawData.sublist(9, 11);
+    ByteData rawBiasCurrent6ByteData =
+        ByteData.sublistView(Uint8List.fromList(rawBiasCurrent6));
+    biasCurrent6 = (rawBiasCurrent6ByteData.getInt16(0, Endian.little) / 10)
+        .toStringAsFixed(1);
+
+    return A1P8GCCorNode92(
+      biasCurrent1: biasCurrent1,
+      biasCurrent3: biasCurrent3,
+      biasCurrent4: biasCurrent4,
+      biasCurrent6: biasCurrent6,
     );
   }
 
@@ -1446,8 +1504,10 @@ class Amp18CCorNodeParser {
 
   void calculate18CRCs() {
     CRC16.calculateCRC16(command: Command18CCorNode.req00Cmd, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command18CCorNode.req01Cmd, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command18CCorNode.req02Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18CCorNode.req91Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18CCorNode.req92Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18CCorNode.reqA1Cmd, usDataLength: 6);
+
     CRC16.calculateCRC16(
         command: Command18CCorNode.reqLog00Cmd, usDataLength: 6);
     CRC16.calculateCRC16(
@@ -1472,8 +1532,9 @@ class Amp18CCorNodeParser {
         command: Command18CCorNode.reqEvent00Cmd, usDataLength: 6);
 
     _command18CCorNodeCollection.add(Command18CCorNode.req00Cmd);
-    _command18CCorNodeCollection.add(Command18CCorNode.req01Cmd);
-    _command18CCorNodeCollection.add(Command18CCorNode.req02Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.req91Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.req92Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.reqA1Cmd);
     _command18CCorNodeCollection.add(Command18CCorNode.reqLog00Cmd);
     _command18CCorNodeCollection.add(Command18CCorNode.reqLog01Cmd);
     _command18CCorNodeCollection.add(Command18CCorNode.reqLog02Cmd);
@@ -1525,6 +1586,7 @@ class A1P8GCCorNode80 {
     required this.partId,
     required this.serialNumber,
     required this.firmwareVersion,
+    required this.hardwareVersion,
     required this.mfgDate,
     required this.coordinate,
     required this.nowDateTime,
@@ -1535,6 +1597,7 @@ class A1P8GCCorNode80 {
   final String partId;
   final String serialNumber;
   final String firmwareVersion;
+  final String hardwareVersion;
   final String mfgDate;
   final String coordinate;
   final String nowDateTime;
@@ -1554,6 +1617,7 @@ class A1P8GCCorNode91 {
     required this.ingressSetting3,
     required this.ingressSetting4,
     required this.ingressSetting6,
+    required this.forwardConfig,
     required this.splitOption,
     required this.maxRFOutputPower3,
     required this.minRFOutputPower3,
@@ -1600,6 +1664,7 @@ class A1P8GCCorNode91 {
   final String ingressSetting3;
   final String ingressSetting4;
   final String ingressSetting6;
+  final String forwardConfig;
   final String splitOption;
   final String maxRFOutputPower3;
   final String minRFOutputPower3;
@@ -1632,6 +1697,20 @@ class A1P8GCCorNode91 {
   final String usVCA6;
   final String maxRFOutputPower6;
   final String minRFOutputPower6;
+}
+
+class A1P8GCCorNode92 {
+  const A1P8GCCorNode92({
+    required this.biasCurrent1,
+    required this.biasCurrent3,
+    required this.biasCurrent4,
+    required this.biasCurrent6,
+  });
+
+  final String biasCurrent1;
+  final String biasCurrent3;
+  final String biasCurrent4;
+  final String biasCurrent6;
 }
 
 class A1P8GCCorNodeA1 {

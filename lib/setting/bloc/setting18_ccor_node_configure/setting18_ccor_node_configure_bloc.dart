@@ -21,10 +21,9 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     on<LocationChanged>(_onLocationChanged);
     on<CoordinatesChanged>(_onCoordinatesChanged);
     on<GPSCoordinatesRequested>(_onGPSCoordinatesRequested);
+    on<ForwardConfigChanged>(_onForwardConfigChanged);
     on<SplitOptionChanged>(_onSplitOptionChanged);
     on<LogIntervalChanged>(_onLogIntervalChanged);
-    on<LogIntervalIncreased>(_onLogIntervalIncreased);
-    on<LogIntervalDecreased>(_onLogIntervalDecreased);
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
@@ -44,12 +43,14 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
 
     String location = characteristicDataCache[DataKey.location] ?? '';
     String coordinates = characteristicDataCache[DataKey.coordinates] ?? '';
+    String forwardConfig = characteristicDataCache[DataKey.forwardConfig] ?? '';
     String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
     String logInterval = characteristicDataCache[DataKey.logInterval] ?? '';
 
     emit(state.copyWith(
       location: location,
       coordinates: coordinates,
+      forwardConfig: forwardConfig,
       splitOption: splitOption,
       logInterval: logInterval,
       isInitialize: true,
@@ -69,6 +70,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       enableSubmission: _isEnabledSubmission(
         location: event.location,
         coordinates: state.coordinates,
+        forwardConfig: state.forwardConfig,
         splitOption: state.splitOption,
         logInterval: state.logInterval,
       ),
@@ -87,6 +89,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: event.coordinates,
+        forwardConfig: state.forwardConfig,
         splitOption: state.splitOption,
         logInterval: state.logInterval,
       ),
@@ -111,6 +114,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
         enableSubmission: _isEnabledSubmission(
           location: state.location,
           coordinates: coordinates,
+          forwardConfig: state.forwardConfig,
           splitOption: state.splitOption,
           logInterval: state.logInterval,
         ),
@@ -122,11 +126,31 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
         enableSubmission: _isEnabledSubmission(
           location: state.location,
           coordinates: state.coordinates,
+          forwardConfig: state.forwardConfig,
           splitOption: state.splitOption,
           logInterval: state.logInterval,
         ),
       ));
     }
+  }
+
+  void _onForwardConfigChanged(
+    ForwardConfigChanged event,
+    Emitter<Setting18CCorNodeConfigureState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
+      forwardConfig: event.forwardConfig,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        forwardConfig: event.forwardConfig,
+        splitOption: state.splitOption,
+        logInterval: state.logInterval,
+      ),
+    ));
   }
 
   void _onSplitOptionChanged(
@@ -141,6 +165,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
+        forwardConfig: state.forwardConfig,
         splitOption: event.splitOption,
         logInterval: state.logInterval,
       ),
@@ -159,64 +184,9 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
+        forwardConfig: state.forwardConfig,
         splitOption: state.splitOption,
         logInterval: event.logInterval,
-      ),
-    ));
-  }
-
-  String _getIncreasedNumber(String value) {
-    double doubleValue = double.parse(value);
-    doubleValue = doubleValue + 1.0 <= 60.0 ? doubleValue + 1.0 : doubleValue;
-    String strValue = doubleValue.toStringAsFixed(0);
-
-    return strValue;
-  }
-
-  String _getDecreasedNumber(String value) {
-    double doubleValue = double.parse(value);
-    doubleValue = doubleValue - 1.0 >= 1.0 ? doubleValue - 1.0 : doubleValue;
-    String strValue = doubleValue.toStringAsFixed(0);
-
-    return strValue;
-  }
-
-  void _onLogIntervalIncreased(
-    LogIntervalIncreased event,
-    Emitter<Setting18CCorNodeConfigureState> emit,
-  ) {
-    String logInterval = _getIncreasedNumber(state.logInterval);
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
-      logInterval: logInterval,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        logInterval: logInterval,
-      ),
-    ));
-  }
-
-  void _onLogIntervalDecreased(
-    LogIntervalDecreased event,
-    Emitter<Setting18CCorNodeConfigureState> emit,
-  ) {
-    String logInterval = _getDecreasedNumber(state.logInterval);
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
-      logInterval: logInterval,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        logInterval: logInterval,
       ),
     ));
   }
@@ -245,6 +215,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       enableSubmission: false,
       location: state.initialValues[DataKey.location],
       coordinates: state.initialValues[DataKey.coordinates],
+      forwardConfig: state.initialValues[DataKey.forwardConfig],
       splitOption: state.initialValues[DataKey.splitOption],
       logInterval: state.initialValues[DataKey.logInterval],
     ));
@@ -253,11 +224,13 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
   bool _isEnabledSubmission({
     required String location,
     required String coordinates,
+    required String forwardConfig,
     required String splitOption,
     required String logInterval,
   }) {
     if (location != state.initialValues[DataKey.location] ||
         coordinates != state.initialValues[DataKey.coordinates] ||
+        forwardConfig != state.initialValues[DataKey.forwardConfig] ||
         splitOption != state.initialValues[DataKey.splitOption] ||
         logInterval != state.initialValues[DataKey.logInterval]) {
       return true;
@@ -290,6 +263,14 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
           .set1p8GCCorNodeCoordinates(state.coordinates);
 
       settingResult.add('${DataKey.coordinates.name},$resultOfSetCoordinates');
+    }
+
+    if (state.forwardConfig != state.initialValues[DataKey.forwardConfig]) {
+      bool resultOfSetForwardConfig = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeForwardConfig(state.forwardConfig);
+
+      settingResult
+          .add('${DataKey.forwardConfig.name},$resultOfSetForwardConfig');
     }
 
     if (state.splitOption != state.initialValues[DataKey.splitOption]) {

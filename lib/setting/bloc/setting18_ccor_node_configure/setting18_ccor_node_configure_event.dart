@@ -8,27 +8,10 @@ class Setting18CCorNodeConfigureEvent extends Equatable {
 }
 
 class Initialized extends Setting18CCorNodeConfigureEvent {
-  const Initialized(
-      //   {
-      //   required this.location,
-      //   required this.coordinates,
-      //   required this.splitOption,
-      //   required this.logInterval,
-      // }
-      );
-
-  // final String location;
-  // final String coordinates;
-  // final String splitOption;
-  // final String logInterval;
+  const Initialized();
 
   @override
-  List<Object> get props => [
-        // location,
-        // coordinates,
-        // splitOption,
-        // logInterval,
-      ];
+  List<Object> get props => [];
 }
 
 class LocationChanged extends Setting18CCorNodeConfigureEvent {
@@ -56,6 +39,15 @@ class GPSCoordinatesRequested extends Setting18CCorNodeConfigureEvent {
   List<Object> get props => [];
 }
 
+class ForwardConfigChanged extends Setting18CCorNodeConfigureEvent {
+  const ForwardConfigChanged(this.forwardConfig);
+
+  final String forwardConfig;
+
+  @override
+  List<Object> get props => [forwardConfig];
+}
+
 class SplitOptionChanged extends Setting18CCorNodeConfigureEvent {
   const SplitOptionChanged(this.splitOption);
 
@@ -72,20 +64,6 @@ class LogIntervalChanged extends Setting18CCorNodeConfigureEvent {
 
   @override
   List<Object> get props => [logInterval];
-}
-
-class LogIntervalIncreased extends Setting18CCorNodeConfigureEvent {
-  const LogIntervalIncreased();
-
-  @override
-  List<Object> get props => [];
-}
-
-class LogIntervalDecreased extends Setting18CCorNodeConfigureEvent {
-  const LogIntervalDecreased();
-
-  @override
-  List<Object> get props => [];
 }
 
 class EditModeEnabled extends Setting18CCorNodeConfigureEvent {

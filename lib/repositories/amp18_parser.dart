@@ -1749,9 +1749,9 @@ class Amp18Parser {
 
   void calculate18CRCs() {
     CRC16.calculateCRC16(command: Command18.req00Cmd, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command18.req01Cmd, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command18.req02Cmd, usDataLength: 6);
-    CRC16.calculateCRC16(command: Command18.req03Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.req90Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqA0Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(command: Command18.reqRFInOutCmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqLog00Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqLog01Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqLog02Cmd, usDataLength: 6);
@@ -1775,9 +1775,9 @@ class Amp18Parser {
     CRC16.calculateCRC16(command: Command18.reqRFOutput09Cmd, usDataLength: 6);
 
     _command18Collection.add(Command18.req00Cmd);
-    _command18Collection.add(Command18.req01Cmd);
-    _command18Collection.add(Command18.req02Cmd);
-    _command18Collection.add(Command18.req03Cmd);
+    _command18Collection.add(Command18.req90Cmd);
+    _command18Collection.add(Command18.reqA0Cmd);
+    _command18Collection.add(Command18.reqRFInOutCmd);
     _command18Collection.add(Command18.reqLog00Cmd);
     _command18Collection.add(Command18.reqLog01Cmd);
     _command18Collection.add(Command18.reqLog02Cmd);

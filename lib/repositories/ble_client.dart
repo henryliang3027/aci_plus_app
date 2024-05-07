@@ -199,8 +199,8 @@ class BLEClient {
               if (!_completer!.isCompleted) {
                 _completer!.complete(rawData);
               }
-            } else if (_currentCommandIndex >= 180 &&
-                _currentCommandIndex <= 182) {
+            } else if (_currentCommandIndex >= 80 &&
+                _currentCommandIndex <= 83) {
               cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
 
               bool isValidCRC = checkCRC(rawData);

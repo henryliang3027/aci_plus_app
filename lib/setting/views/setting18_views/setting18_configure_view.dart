@@ -587,7 +587,7 @@ class _PilotFrequencyMode extends StatelessWidget {
           previous.pilotFrequencyMode != current.pilotFrequencyMode ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return gridViewButton(
+        return pilotFrequencyModeGridViewButton(
           context: context,
           crossAxisCount: 1,
           texts: pilotFrequencyModeTexts,

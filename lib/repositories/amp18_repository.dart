@@ -54,14 +54,14 @@ class Amp18Repository {
   }
 
   Future<dynamic> requestCommand1p8G0() async {
-    int commandIndex = 180;
+    int commandIndex = 80;
 
     print('get data from request command 1p8G0');
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _amp18Parser.command18Collection[commandIndex - 180],
+        value: _amp18Parser.command18Collection[commandIndex - 80],
       );
 
       A1P8G0 a1p8g0 = _amp18Parser.decodeA1P8G0(rawData);
@@ -94,14 +94,14 @@ class Amp18Repository {
   }
 
   Future<dynamic> requestCommand1p8G1() async {
-    int commandIndex = 181;
+    int commandIndex = 81;
 
     print('get data from request command 1p8G1');
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _amp18Parser.command18Collection[commandIndex - 180],
+        value: _amp18Parser.command18Collection[commandIndex - 80],
       );
 
       A1P8G1 a1p8g1 = _amp18Parser.decodeA1P8G1(rawData);
@@ -180,14 +180,14 @@ class Amp18Repository {
   Future<dynamic> requestCommand1p8G2({
     Duration timeout = const Duration(seconds: 10),
   }) async {
-    int commandIndex = 182;
+    int commandIndex = 82;
 
     print('get data from request command 1p8G2');
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _amp18Parser.command18Collection[commandIndex - 180],
+        value: _amp18Parser.command18Collection[commandIndex - 80],
         timeout: timeout,
       );
 
@@ -235,6 +235,33 @@ class Amp18Repository {
       return [
         true,
         characteristicDataCache,
+      ];
+    } catch (e) {
+      return [
+        false,
+      ];
+    }
+  }
+
+  Future<dynamic> requestCommand1p8GAlarm() async {
+    int commandIndex = 82;
+
+    print('get data from request command 1p8G_Alarm');
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _amp18Parser.command18Collection[commandIndex - 80],
+        timeout: const Duration(seconds: 1),
+      );
+
+      A1P8GAlarm a1p8gAlarm = _amp18Parser.decodeAlarmSeverity(rawData);
+
+      return [
+        true,
+        a1p8gAlarm.unitStatusAlarmSeverity,
+        a1p8gAlarm.temperatureAlarmSeverity,
+        a1p8gAlarm.powerAlarmSeverity,
       ];
     } catch (e) {
       return [
@@ -404,33 +431,6 @@ class Amp18Repository {
         false,
         false, // no next chunk
         e.toString(),
-      ];
-    }
-  }
-
-  Future<dynamic> requestCommand1p8GAlarm() async {
-    int commandIndex = 182;
-
-    print('get data from request command 1p8G_Alarm');
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: _amp18Parser.command18Collection[commandIndex - 180],
-        timeout: const Duration(seconds: 1),
-      );
-
-      A1P8GAlarm a1p8gAlarm = _amp18Parser.decodeAlarmSeverity(rawData);
-
-      return [
-        true,
-        a1p8gAlarm.unitStatusAlarmSeverity,
-        a1p8gAlarm.temperatureAlarmSeverity,
-        a1p8gAlarm.powerAlarmSeverity,
-      ];
-    } catch (e) {
-      return [
-        false,
       ];
     }
   }

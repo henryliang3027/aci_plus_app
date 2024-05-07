@@ -6,6 +6,7 @@ class Setting18CCorNodeConfigureState extends Equatable {
     this.gpsStatus = FormStatus.none,
     this.location = '',
     this.coordinates = '',
+    this.forwardConfig = '',
     this.splitOption = '1',
     this.logInterval = '30',
     this.editMode = false,
@@ -20,6 +21,7 @@ class Setting18CCorNodeConfigureState extends Equatable {
   final FormStatus gpsStatus;
   final String location;
   final String coordinates;
+  final String forwardConfig;
   final String splitOption;
   final String logInterval;
   final bool editMode;
@@ -34,6 +36,7 @@ class Setting18CCorNodeConfigureState extends Equatable {
     FormStatus? gpsStatus,
     String? location,
     String? coordinates,
+    String? forwardConfig,
     String? splitOption,
     String? logInterval,
     bool? editMode,
@@ -48,6 +51,7 @@ class Setting18CCorNodeConfigureState extends Equatable {
       gpsStatus: gpsStatus ?? this.gpsStatus,
       location: location ?? this.location,
       coordinates: coordinates ?? this.coordinates,
+      forwardConfig: forwardConfig ?? this.forwardConfig,
       splitOption: splitOption ?? this.splitOption,
       logInterval: logInterval ?? this.logInterval,
       editMode: editMode ?? this.editMode,
@@ -66,6 +70,7 @@ class Setting18CCorNodeConfigureState extends Equatable {
         gpsStatus,
         location,
         coordinates,
+        forwardConfig,
         splitOption,
         logInterval,
         editMode,

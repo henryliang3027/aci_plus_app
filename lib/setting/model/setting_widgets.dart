@@ -732,6 +732,96 @@ Widget twoTextField({
   );
 }
 
+Widget forwardConfigModeGridViewButton({
+  required BuildContext context,
+  required bool editMode,
+  required String forwardConfig,
+  required ValueChanged onGridPressed,
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(
+      bottom: 40.0,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: CustomStyle.sizeL,
+          ),
+          child: Text(
+            '${AppLocalizations.of(context)!.forwardConfigMode}:',
+            style: const TextStyle(
+              fontSize: CustomStyle.sizeXL,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: (MediaQuery.of(context).size.width / 110.0),
+          ),
+          itemCount: splitOptionValues.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  elevation: 0.0,
+                  foregroundColor: getForegroundColor(
+                    context: context,
+                    targetValue: forwardConfig,
+                    value: forwardConfigValues[index],
+                  ),
+                  backgroundColor: editMode
+                      ? getBackgroundColor(
+                          context: context,
+                          targetValue: forwardConfig,
+                          value: forwardConfigValues[index],
+                        )
+                      : getDisabledBackgroundColor(
+                          context: context,
+                          targetValue: forwardConfig,
+                          value: forwardConfigValues[index],
+                        ),
+                  side: BorderSide(
+                    color: editMode
+                        ? getBorderColor(
+                            context: context,
+                            targetValue: forwardConfig,
+                            value: forwardConfigValues[index],
+                          )
+                        : getDisabledBorderColor(),
+                    width: 1.0,
+                  ),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                ),
+                onPressed: editMode
+                    ? () {
+                        onGridPressed(index);
+                      }
+                    : () {},
+                child: Text(
+                  forwardConfigTexts[index],
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    ),
+  );
+}
+
 Widget splitOptionGridViewButton({
   required BuildContext context,
   required bool editMode,
@@ -822,7 +912,7 @@ Widget splitOptionGridViewButton({
   );
 }
 
-Widget gridViewButton({
+Widget pilotFrequencyModeGridViewButton({
   required BuildContext context,
   required int crossAxisCount,
   required List<String> values,
@@ -1119,6 +1209,16 @@ List<String> pilotFrequencyModeValues = const [
   '0',
   '1',
   // '2',
+];
+
+List<String> forwardConfigTexts = const [
+  '1 X 4',
+  '2 X 2',
+];
+
+List<String> forwardConfigValues = const [
+  '1',
+  '2',
 ];
 
 bool isValidFirstChannelLoadingFrequency({

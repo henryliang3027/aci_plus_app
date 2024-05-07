@@ -686,6 +686,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Map<DataKey, String> newCharacteristicData = {};
     List<dynamic> resultOf1p8GCCorNode80 = [];
     List<dynamic> resultOf1p8GCCorNode91 = [];
+    List<dynamic> resultOf1p8GCCorNode92 = [];
     List<dynamic> resultOf1p8GCCorNodeA1 = [];
     List<dynamic> resultOf1p8GCCorNodeLogChunk = [];
 
@@ -759,6 +760,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     if (resultOf1p8GCCorNode91[0]) {
+      resultOf1p8GCCorNode92 =
+          await _amp18CCorNodeRepository.requestCommand1p8GCCorNode92();
+
+      if (resultOf1p8GCCorNode92[0]) {
+        newCharacteristicData.addAll(resultOf1p8GCCorNode92[1]);
+        emit(state.copyWith(
+          characteristicData: newCharacteristicData,
+        ));
+      } else {
+        emit(state.copyWith(
+          loadingStatus: FormStatus.requestFailure,
+          characteristicData: state.characteristicData,
+          errorMassage: 'Failed to load data',
+        ));
+      }
+    }
+
+    if (resultOf1p8GCCorNode92[0]) {
       resultOf1p8GCCorNodeA1 =
           await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeA1();
 
@@ -776,7 +795,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
-    if (resultOf1p8GCCorNode91[0]) {
+    if (resultOf1p8GCCorNodeA1[0]) {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       for (int i = 0; i < 3; i++) {
         resultOf1p8GCCorNodeLogChunk = await _amp18CCorNodeRepository

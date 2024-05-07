@@ -22,6 +22,14 @@ class Setting18CCorNodeControlBloc
     on<DSInSlope3Changed>(_onDSInSlope3Changed);
     on<DSInSlope4Changed>(_onDSInSlope4Changed);
     on<DSInSlope6Changed>(_onDSInSlope6Changed);
+    on<DSOutSlope1Changed>(_onDSOutSlope1Changed);
+    on<DSOutSlope3Changed>(_onDSOutSlope3Changed);
+    on<DSOutSlope4Changed>(_onDSOutSlope4Changed);
+    on<DSOutSlope6Changed>(_onDSOutSlope6Changed);
+    on<BiasCurrent1Changed>(_onBiasCurrent1Changed);
+    on<BiasCurrent3Changed>(_onBiasCurrent3Changed);
+    on<BiasCurrent4Changed>(_onBiasCurrent4Changed);
+    on<BiasCurrent6Changed>(_onBiasCurrent6Changed);
     on<USVCA1Changed>(_onUSVCA1Changed);
     on<USVCA3Changed>(_onUSVCA3Changed);
     on<USVCA4Changed>(_onUSVCA4Changed);
@@ -54,6 +62,14 @@ class Setting18CCorNodeControlBloc
     String dsInSlope3 = characteristicDataCache[DataKey.dsInSlope3] ?? '';
     String dsInSlope4 = characteristicDataCache[DataKey.dsInSlope4] ?? '';
     String dsInSlope6 = characteristicDataCache[DataKey.dsInSlope6] ?? '';
+    String dsOutSlope1 = characteristicDataCache[DataKey.dsOutSlope1] ?? '';
+    String dsOutSlope3 = characteristicDataCache[DataKey.dsOutSlope3] ?? '';
+    String dsOutSlope4 = characteristicDataCache[DataKey.dsOutSlope4] ?? '';
+    String dsOutSlope6 = characteristicDataCache[DataKey.dsOutSlope6] ?? '';
+    String biasCurrent1 = characteristicDataCache[DataKey.biasCurrent1] ?? '';
+    String biasCurrent3 = characteristicDataCache[DataKey.biasCurrent3] ?? '';
+    String biasCurrent4 = characteristicDataCache[DataKey.biasCurrent4] ?? '';
+    String biasCurrent6 = characteristicDataCache[DataKey.biasCurrent6] ?? '';
     String usVCA1 = characteristicDataCache[DataKey.usVCA1] ?? '';
     String usVCA3 = characteristicDataCache[DataKey.usVCA3] ?? '';
     String usVCA4 = characteristicDataCache[DataKey.usVCA4] ?? '';
@@ -76,6 +92,14 @@ class Setting18CCorNodeControlBloc
       dsInSlope3: dsInSlope3,
       dsInSlope4: dsInSlope4,
       dsInSlope6: dsInSlope6,
+      dsOutSlope1: dsOutSlope1,
+      dsOutSlope3: dsOutSlope3,
+      dsOutSlope4: dsOutSlope4,
+      dsOutSlope6: dsOutSlope6,
+      biasCurrent1: biasCurrent1,
+      biasCurrent3: biasCurrent3,
+      biasCurrent4: biasCurrent4,
+      biasCurrent6: biasCurrent6,
       usVCA1: usVCA1,
       usVCA3: usVCA3,
       usVCA4: usVCA4,
@@ -104,6 +128,14 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: state.dsInSlope3,
         dsInSlope4: state.dsInSlope4,
         dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
@@ -132,6 +164,14 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: state.dsInSlope3,
         dsInSlope4: state.dsInSlope4,
         dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
@@ -160,6 +200,14 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: state.dsInSlope3,
         dsInSlope4: state.dsInSlope4,
         dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
@@ -188,6 +236,14 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: state.dsInSlope3,
         dsInSlope4: state.dsInSlope4,
         dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
@@ -216,6 +272,14 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: state.dsInSlope3,
         dsInSlope4: state.dsInSlope4,
         dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
@@ -244,6 +308,14 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: event.dsInSlope3,
         dsInSlope4: state.dsInSlope4,
         dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
@@ -272,6 +344,14 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: state.dsInSlope3,
         dsInSlope4: event.dsInSlope4,
         dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
@@ -300,6 +380,302 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: state.dsInSlope3,
         dsInSlope4: state.dsInSlope4,
         dsInSlope6: event.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSOutSlope1Changed(
+    DSOutSlope1Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsOutSlope1: event.dsOutSlope1,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: event.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSOutSlope3Changed(
+    DSOutSlope3Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsOutSlope3: event.dsOutSlope3,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: event.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSOutSlope4Changed(
+    DSOutSlope4Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsOutSlope4: event.dsOutSlope4,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: event.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onDSOutSlope6Changed(
+    DSOutSlope6Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      dsOutSlope6: event.dsOutSlope6,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: event.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onBiasCurrent1Changed(
+    BiasCurrent1Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      biasCurrent1: event.biasCurrent1,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: event.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onBiasCurrent3Changed(
+    BiasCurrent3Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      biasCurrent3: event.biasCurrent3,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: event.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onBiasCurrent4Changed(
+    BiasCurrent4Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      biasCurrent4: event.biasCurrent4,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: event.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
+        usVCA1: state.usVCA1,
+        usVCA3: state.usVCA3,
+        usVCA4: state.usVCA4,
+        usVCA6: state.usVCA6,
+        returnIngressSetting1: state.returnIngressSetting1,
+        returnIngressSetting3: state.returnIngressSetting3,
+        returnIngressSetting4: state.returnIngressSetting4,
+        returnIngressSetting6: state.returnIngressSetting6,
+      ),
+    ));
+  }
+
+  void _onBiasCurrent6Changed(
+    BiasCurrent6Changed event,
+    Emitter<Setting18CCorNodeControlState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      biasCurrent6: event.biasCurrent6,
+      enableSubmission: _isEnabledSubmission(
+        dsVVA1: state.dsVVA1,
+        dsVVA3: state.dsVVA3,
+        dsVVA4: state.dsVVA4,
+        dsVVA6: state.dsVVA6,
+        dsInSlope1: state.dsInSlope1,
+        dsInSlope3: state.dsInSlope3,
+        dsInSlope4: state.dsInSlope4,
+        dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: event.biasCurrent6,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
@@ -328,6 +704,14 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: state.dsInSlope3,
         dsInSlope4: state.dsInSlope4,
         dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
         usVCA1: event.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
@@ -356,6 +740,14 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: state.dsInSlope3,
         dsInSlope4: state.dsInSlope4,
         dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
         usVCA1: state.usVCA1,
         usVCA3: event.usVCA3,
         usVCA4: state.usVCA4,
@@ -384,6 +776,14 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: state.dsInSlope3,
         dsInSlope4: state.dsInSlope4,
         dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: event.usVCA4,
@@ -412,6 +812,14 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: state.dsInSlope3,
         dsInSlope4: state.dsInSlope4,
         dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
@@ -440,6 +848,14 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: state.dsInSlope3,
         dsInSlope4: state.dsInSlope4,
         dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
@@ -468,6 +884,14 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: state.dsInSlope3,
         dsInSlope4: state.dsInSlope4,
         dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
@@ -496,6 +920,14 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: state.dsInSlope3,
         dsInSlope4: state.dsInSlope4,
         dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
@@ -524,6 +956,14 @@ class Setting18CCorNodeControlBloc
         dsInSlope3: state.dsInSlope3,
         dsInSlope4: state.dsInSlope4,
         dsInSlope6: state.dsInSlope6,
+        dsOutSlope1: state.dsOutSlope1,
+        dsOutSlope3: state.dsOutSlope3,
+        dsOutSlope4: state.dsOutSlope4,
+        dsOutSlope6: state.dsOutSlope6,
+        biasCurrent1: state.biasCurrent1,
+        biasCurrent3: state.biasCurrent3,
+        biasCurrent4: state.biasCurrent4,
+        biasCurrent6: state.biasCurrent6,
         usVCA1: state.usVCA1,
         usVCA3: state.usVCA3,
         usVCA4: state.usVCA4,
@@ -562,6 +1002,14 @@ class Setting18CCorNodeControlBloc
       dsInSlope3: state.initialValues[DataKey.dsInSlope3],
       dsInSlope4: state.initialValues[DataKey.dsInSlope4],
       dsInSlope6: state.initialValues[DataKey.dsInSlope6],
+      dsOutSlope1: state.initialValues[DataKey.dsOutSlope1],
+      dsOutSlope3: state.initialValues[DataKey.dsOutSlope3],
+      dsOutSlope4: state.initialValues[DataKey.dsOutSlope4],
+      dsOutSlope6: state.initialValues[DataKey.dsOutSlope6],
+      biasCurrent1: state.initialValues[DataKey.biasCurrent1],
+      biasCurrent3: state.initialValues[DataKey.biasCurrent3],
+      biasCurrent4: state.initialValues[DataKey.biasCurrent4],
+      biasCurrent6: state.initialValues[DataKey.biasCurrent6],
       usVCA1: state.initialValues[DataKey.usVCA1],
       usVCA3: state.initialValues[DataKey.usVCA3],
       usVCA4: state.initialValues[DataKey.usVCA4],
@@ -582,6 +1030,14 @@ class Setting18CCorNodeControlBloc
     required String dsInSlope3,
     required String dsInSlope4,
     required String dsInSlope6,
+    required String dsOutSlope1,
+    required String dsOutSlope3,
+    required String dsOutSlope4,
+    required String dsOutSlope6,
+    required String biasCurrent1,
+    required String biasCurrent3,
+    required String biasCurrent4,
+    required String biasCurrent6,
     required String usVCA1,
     required String usVCA3,
     required String usVCA4,
@@ -591,18 +1047,26 @@ class Setting18CCorNodeControlBloc
     required String returnIngressSetting4,
     required String returnIngressSetting6,
   }) {
-    if (dsVVA1.isNotEmpty ||
-        dsVVA3.isNotEmpty ||
-        dsVVA4.isNotEmpty ||
-        dsVVA6.isNotEmpty ||
-        dsInSlope1.isNotEmpty ||
-        dsInSlope3.isNotEmpty ||
-        dsInSlope4.isNotEmpty ||
-        dsInSlope6.isNotEmpty ||
-        usVCA1.isNotEmpty ||
-        usVCA3.isNotEmpty ||
-        usVCA4.isNotEmpty ||
-        usVCA6.isNotEmpty) {
+    if (dsVVA1.isEmpty ||
+        dsVVA3.isEmpty ||
+        dsVVA4.isEmpty ||
+        dsVVA6.isEmpty ||
+        dsInSlope1.isEmpty ||
+        dsInSlope3.isEmpty ||
+        dsInSlope4.isEmpty ||
+        dsInSlope6.isEmpty ||
+        dsOutSlope1.isEmpty ||
+        dsOutSlope3.isEmpty ||
+        dsOutSlope4.isEmpty ||
+        dsOutSlope6.isEmpty ||
+        biasCurrent1.isEmpty ||
+        biasCurrent3.isEmpty ||
+        biasCurrent4.isEmpty ||
+        biasCurrent6.isEmpty ||
+        usVCA1.isEmpty ||
+        usVCA3.isEmpty ||
+        usVCA4.isEmpty ||
+        usVCA6.isEmpty) {
       return false;
     } else {
       if (dsVVA1 != state.initialValues[DataKey.dsVVA1] ||
@@ -613,6 +1077,14 @@ class Setting18CCorNodeControlBloc
           dsInSlope3 != state.initialValues[DataKey.dsInSlope3] ||
           dsInSlope4 != state.initialValues[DataKey.dsInSlope4] ||
           dsInSlope6 != state.initialValues[DataKey.dsInSlope6] ||
+          dsOutSlope1 != state.initialValues[DataKey.dsOutSlope1] ||
+          dsOutSlope3 != state.initialValues[DataKey.dsOutSlope3] ||
+          dsOutSlope4 != state.initialValues[DataKey.dsOutSlope4] ||
+          dsOutSlope6 != state.initialValues[DataKey.dsOutSlope6] ||
+          biasCurrent1 != state.initialValues[DataKey.biasCurrent1] ||
+          biasCurrent3 != state.initialValues[DataKey.biasCurrent3] ||
+          biasCurrent4 != state.initialValues[DataKey.biasCurrent4] ||
+          biasCurrent6 != state.initialValues[DataKey.biasCurrent6] ||
           usVCA1 != state.initialValues[DataKey.usVCA1] ||
           usVCA3 != state.initialValues[DataKey.usVCA3] ||
           usVCA4 != state.initialValues[DataKey.usVCA4] ||
@@ -696,6 +1168,66 @@ class Setting18CCorNodeControlBloc
           .set1p8GCCorNodeDSInSlope6(state.dsInSlope6);
 
       settingResult.add('${DataKey.dsInSlope6.name},$resultOfSetDSInSlope6');
+    }
+
+    if (state.dsOutSlope1 != state.initialValues[DataKey.dsOutSlope1]) {
+      bool resultOfSetDSOutSlope1 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeDSOutSlope1(state.dsOutSlope1);
+
+      settingResult.add('${DataKey.dsOutSlope1.name},$resultOfSetDSOutSlope1');
+    }
+
+    if (state.dsOutSlope3 != state.initialValues[DataKey.dsOutSlope3]) {
+      bool resultOfSetDSOutSlope3 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeDSOutSlope3(state.dsOutSlope3);
+
+      settingResult.add('${DataKey.dsOutSlope3.name},$resultOfSetDSOutSlope3');
+    }
+
+    if (state.dsOutSlope4 != state.initialValues[DataKey.dsOutSlope4]) {
+      bool resultOfSetDSOutSlope4 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeDSOutSlope4(state.dsOutSlope4);
+
+      settingResult.add('${DataKey.dsOutSlope4.name},$resultOfSetDSOutSlope4');
+    }
+
+    if (state.dsOutSlope6 != state.initialValues[DataKey.dsOutSlope6]) {
+      bool resultOfSetDSOutSlope6 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeDSOutSlope6(state.dsOutSlope6);
+
+      settingResult.add('${DataKey.dsOutSlope6.name},$resultOfSetDSOutSlope6');
+    }
+
+    if (state.biasCurrent1 != state.initialValues[DataKey.biasCurrent1]) {
+      bool resultOfSetBiasCurrent1 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeBiasCurrent1(state.biasCurrent1);
+
+      settingResult
+          .add('${DataKey.biasCurrent1.name},$resultOfSetBiasCurrent1');
+    }
+
+    if (state.biasCurrent3 != state.initialValues[DataKey.biasCurrent3]) {
+      bool resultOfSetBiasCurrent3 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeBiasCurrent3(state.biasCurrent3);
+
+      settingResult
+          .add('${DataKey.biasCurrent3.name},$resultOfSetBiasCurrent3');
+    }
+
+    if (state.biasCurrent4 != state.initialValues[DataKey.biasCurrent4]) {
+      bool resultOfSetBiasCurrent4 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeBiasCurrent4(state.biasCurrent4);
+
+      settingResult
+          .add('${DataKey.biasCurrent4.name},$resultOfSetBiasCurrent4');
+    }
+
+    if (state.biasCurrent6 != state.initialValues[DataKey.biasCurrent6]) {
+      bool resultOfSetBiasCurrent6 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeBiasCurrent6(state.biasCurrent6);
+
+      settingResult
+          .add('${DataKey.biasCurrent6.name},$resultOfSetBiasCurrent6');
     }
 
     if (state.usVCA1 != state.initialValues[DataKey.usVCA1]) {

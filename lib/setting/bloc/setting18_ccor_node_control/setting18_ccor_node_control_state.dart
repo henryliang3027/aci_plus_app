@@ -14,6 +14,14 @@ class Setting18CCorNodeControlState extends Equatable {
     this.dsInSlope3 = '',
     this.dsInSlope4 = '',
     this.dsInSlope6 = '',
+    this.dsOutSlope1 = '',
+    this.dsOutSlope3 = '',
+    this.dsOutSlope4 = '',
+    this.dsOutSlope6 = '',
+    this.biasCurrent1 = '',
+    this.biasCurrent3 = '',
+    this.biasCurrent4 = '',
+    this.biasCurrent6 = '',
     this.usVCA1 = '',
     this.usVCA3 = '',
     this.usVCA4 = '',
@@ -37,6 +45,14 @@ class Setting18CCorNodeControlState extends Equatable {
   final String dsInSlope3;
   final String dsInSlope4;
   final String dsInSlope6;
+  final String dsOutSlope1;
+  final String dsOutSlope3;
+  final String dsOutSlope4;
+  final String dsOutSlope6;
+  final String biasCurrent1;
+  final String biasCurrent3;
+  final String biasCurrent4;
+  final String biasCurrent6;
   final String usVCA1;
   final String usVCA3;
   final String usVCA4;
@@ -60,6 +76,14 @@ class Setting18CCorNodeControlState extends Equatable {
     String? dsInSlope3,
     String? dsInSlope4,
     String? dsInSlope6,
+    String? dsOutSlope1,
+    String? dsOutSlope3,
+    String? dsOutSlope4,
+    String? dsOutSlope6,
+    String? biasCurrent1,
+    String? biasCurrent3,
+    String? biasCurrent4,
+    String? biasCurrent6,
     String? usVCA1,
     String? usVCA3,
     String? usVCA4,
@@ -83,6 +107,14 @@ class Setting18CCorNodeControlState extends Equatable {
       dsInSlope3: dsInSlope3 ?? this.dsInSlope3,
       dsInSlope4: dsInSlope4 ?? this.dsInSlope4,
       dsInSlope6: dsInSlope6 ?? this.dsInSlope6,
+      dsOutSlope1: dsOutSlope1 ?? this.dsOutSlope1,
+      dsOutSlope3: dsOutSlope3 ?? this.dsOutSlope3,
+      dsOutSlope4: dsOutSlope4 ?? this.dsOutSlope4,
+      dsOutSlope6: dsOutSlope6 ?? this.dsOutSlope6,
+      biasCurrent1: biasCurrent1 ?? this.biasCurrent1,
+      biasCurrent3: biasCurrent3 ?? this.biasCurrent3,
+      biasCurrent4: biasCurrent4 ?? this.biasCurrent4,
+      biasCurrent6: biasCurrent6 ?? this.biasCurrent6,
       usVCA1: usVCA1 ?? this.usVCA1,
       usVCA3: usVCA3 ?? this.usVCA3,
       usVCA4: usVCA4 ?? this.usVCA4,
@@ -113,6 +145,14 @@ class Setting18CCorNodeControlState extends Equatable {
         dsInSlope3,
         dsInSlope4,
         dsInSlope6,
+        dsOutSlope1,
+        dsOutSlope3,
+        dsOutSlope4,
+        dsOutSlope6,
+        biasCurrent1,
+        biasCurrent3,
+        biasCurrent4,
+        biasCurrent6,
         usVCA1,
         usVCA3,
         usVCA4,

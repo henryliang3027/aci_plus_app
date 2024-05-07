@@ -40,6 +40,9 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
         return AppLocalizations.of(context)!.dialogMessageLocationSetting;
       } else if (item == DataKey.coordinates.name) {
         return AppLocalizations.of(context)!.dialogMessageCoordinatesSetting;
+      } else if (item == DataKey.forwardConfig.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardConfigModeSetting;
       } else if (item == DataKey.splitOption.name) {
         return AppLocalizations.of(context)!.dialogMessageSplitOptionSetting;
       } else if (item == DataKey.firstChannelLoadingFrequency.name) {
@@ -177,6 +180,9 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
             widgets.add(_Coordinates(
               textEditingController: coordinateTextEditingController,
             ));
+            break;
+          case SettingConfiruration.forwardConfigMode:
+            widgets.add(const _ForwardConfig());
             break;
           case SettingConfiruration.splitOptions:
             widgets.add(const _SplitOption());
@@ -434,6 +440,30 @@ class _Coordinates extends StatelessWidget {
   }
 }
 
+class _ForwardConfig extends StatelessWidget {
+  const _ForwardConfig({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeConfigureBloc,
+        Setting18CCorNodeConfigureState>(
+      buildWhen: (previous, current) =>
+          previous.forwardConfig != current.forwardConfig ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return forwardConfigModeGridViewButton(
+          context: context,
+          editMode: state.editMode,
+          forwardConfig: state.forwardConfig,
+          onGridPressed: (index) => context
+              .read<Setting18CCorNodeConfigureBloc>()
+              .add(ForwardConfigChanged(forwardConfigValues[index])),
+        );
+      },
+    );
+  }
+}
+
 class _SplitOption extends StatelessWidget {
   const _SplitOption({super.key});
 
@@ -463,134 +493,25 @@ class _LogInterval extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double getValue(String logInterval) {
-      if (logInterval.isNotEmpty) {
-        return double.parse(logInterval);
-      } else {
-        return 1.0;
-      }
-    }
-
     return BlocBuilder<Setting18CCorNodeConfigureBloc,
         Setting18CCorNodeConfigureState>(
       buildWhen: (previous, current) =>
           previous.logInterval != current.logInterval ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        const int minValue = 5;
-        const int maxValue = 240;
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 30.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: CustomStyle.sizeL),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '${AppLocalizations.of(context)!.logInterval}: ${state.logInterval} ${AppLocalizations.of(context)!.minute}',
-                        style: const TextStyle(
-                          fontSize: CustomStyle.sizeXL,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10.0, 0.0, 6.0, 0.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(
-                    2,
-                    (index) => Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.bottomCenter,
-                          height: 22,
-                          child: Text(
-                            '${(List.from([
-                                  minValue,
-                                  maxValue,
-                                ])[index]).toStringAsFixed(0)}',
-                            style: const TextStyle(
-                              fontSize: CustomStyle.sizeM,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.bottomCenter,
-                          height: 16,
-                          child: VerticalDivider(
-                            indent: 0,
-                            thickness: 1.2,
-                            color: Colors.grey.shade300,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SliderTheme(
-                data: const SliderThemeData(
-                  valueIndicatorColor: Colors.red,
-                  showValueIndicator: ShowValueIndicator.always,
-                  overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
-                ),
-                child: Slider(
-                  min: minValue.toDouble(),
-                  max: maxValue.toDouble(),
-                  divisions: (maxValue - minValue) ~/ 5,
-                  value: getValue(state.logInterval),
-                  onChanged: state.editMode
-                      ? (double logInterval) {
-                          context.read<Setting18CCorNodeConfigureBloc>().add(
-                              LogIntervalChanged(
-                                  logInterval.toStringAsFixed(0)));
-                        }
-                      : null,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton.filled(
-                    visualDensity: const VisualDensity(horizontal: -4.0),
-                    icon: const Icon(
-                      Icons.remove,
-                    ),
-                    onPressed: state.editMode
-                        ? () {
-                            context
-                                .read<Setting18CCorNodeConfigureBloc>()
-                                .add(const LogIntervalDecreased());
-                          }
-                        : null,
-                  ),
-                  IconButton.filled(
-                    visualDensity: const VisualDensity(horizontal: -4.0),
-                    icon: const Icon(
-                      Icons.add,
-                    ),
-                    onPressed: state.editMode
-                        ? () {
-                            context
-                                .read<Setting18CCorNodeConfigureBloc>()
-                                .add(const LogIntervalIncreased());
-                          }
-                        : null,
-                  ),
-                ],
-              ),
-            ],
-          ),
+        return configurationIntervalSlider(
+          context: context,
+          editMode: state.editMode,
+          title: AppLocalizations.of(context)!.logInterval,
+          minValue: 5,
+          currentValue: state.logInterval,
+          maxValue: 240,
+          interval: 5,
+          onChanged: (double logInterval) {
+            context
+                .read<Setting18CCorNodeConfigureBloc>()
+                .add(LogIntervalChanged(logInterval.toStringAsFixed(0)));
+          },
         );
       },
     );

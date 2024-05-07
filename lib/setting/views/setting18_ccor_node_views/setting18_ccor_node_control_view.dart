@@ -54,6 +54,30 @@ class Setting18CCorNodeControlView extends StatelessWidget {
       } else if (item == DataKey.dsInSlope6.name) {
         return AppLocalizations.of(context)!
             .dialogMessageForwardInputEqualizer6Setting;
+      } else if (item == DataKey.dsOutSlope1.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardOutputEqualizer1Setting;
+      } else if (item == DataKey.dsOutSlope3.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardOutputEqualizer3Setting;
+      } else if (item == DataKey.dsOutSlope4.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardOutputEqualizer4Setting;
+      } else if (item == DataKey.dsOutSlope6.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardOutputEqualizer6Setting;
+      } else if (item == DataKey.biasCurrent1.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardBiasCurrent1Setting;
+      } else if (item == DataKey.biasCurrent3.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardBiasCurrent3Setting;
+      } else if (item == DataKey.biasCurrent4.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardBiasCurrent4Setting;
+      } else if (item == DataKey.biasCurrent6.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardBiasCurrent6Setting;
       } else if (item == DataKey.usVCA1.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation1Setting;
@@ -180,6 +204,51 @@ class Setting18CCorNodeControlView extends StatelessWidget {
           case SettingControl.forwardInputEqualizer6:
             widgets.add(
               const _ForwardInputEqualizer6(),
+            );
+            break;
+
+          case SettingControl.forwardOutputEqualizer1:
+            widgets.add(
+              const _ForwardOutputEqualizer1(),
+            );
+            break;
+          case SettingControl.forwardOutputEqualizer2:
+            break;
+          case SettingControl.forwardOutputEqualizer3:
+            widgets.add(
+              const _ForwardOutputEqualizer3(),
+            );
+            break;
+          case SettingControl.forwardOutputEqualizer4:
+            widgets.add(
+              const _ForwardOutputEqualizer4(),
+            );
+            break;
+          case SettingControl.forwardOutputEqualizer5:
+            break;
+          case SettingControl.forwardOutputEqualizer6:
+            widgets.add(
+              const _ForwardOutputEqualizer6(),
+            );
+            break;
+          case SettingControl.forwardBiasCurrent1:
+            widgets.add(
+              const _ForwardBiasCurrent1(),
+            );
+            break;
+          case SettingControl.forwardBiasCurrent3:
+            widgets.add(
+              const _ForwardBiasCurrent3(),
+            );
+            break;
+          case SettingControl.forwardBiasCurrent4:
+            widgets.add(
+              const _ForwardBiasCurrent4(),
+            );
+            break;
+          case SettingControl.forwardBiasCurrent6:
+            widgets.add(
+              const _ForwardBiasCurrent6(),
             );
             break;
         }
@@ -640,6 +709,262 @@ class _ForwardInputEqualizer6 extends StatelessWidget {
           onChanged: (dsInSlope6) {
             context.read<Setting18CCorNodeControlBloc>().add(DSInSlope6Changed(
                   dsInSlope6: dsInSlope6,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputEqualizer1 extends StatelessWidget {
+  const _ForwardOutputEqualizer1({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 15.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer1} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsOutSlope1,
+          onChanged: (dsOutSlope1) {
+            context.read<Setting18CCorNodeControlBloc>().add(DSOutSlope1Changed(
+                  dsOutSlope1: dsOutSlope1,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputEqualizer3 extends StatelessWidget {
+  const _ForwardOutputEqualizer3({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 15.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer3} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsOutSlope3,
+          onChanged: (dsOutSlope3) {
+            context.read<Setting18CCorNodeControlBloc>().add(DSOutSlope3Changed(
+                  dsOutSlope3: dsOutSlope3,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputEqualizer4 extends StatelessWidget {
+  const _ForwardOutputEqualizer4({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 15.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer4} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsOutSlope4,
+          onChanged: (dsOutSlope4) {
+            context.read<Setting18CCorNodeControlBloc>().add(DSOutSlope4Changed(
+                  dsOutSlope4: dsOutSlope4,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputEqualizer6 extends StatelessWidget {
+  const _ForwardOutputEqualizer6({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        double minValue = 0.0;
+        double maxValue = 15.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer6} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsOutSlope6,
+          onChanged: (dsOutSlope6) {
+            context.read<Setting18CCorNodeControlBloc>().add(DSOutSlope6Changed(
+                  dsOutSlope6: dsOutSlope6,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ForwardBiasCurrent1 extends StatelessWidget {
+  const _ForwardBiasCurrent1({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        double minValue = 320.0;
+        double maxValue = 520.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardBiasCurrent1} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.biasCurrent1,
+          onChanged: (biasCurrent1) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(BiasCurrent1Changed(
+                  biasCurrent1: biasCurrent1,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ForwardBiasCurrent3 extends StatelessWidget {
+  const _ForwardBiasCurrent3({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        double minValue = 320.0;
+        double maxValue = 520.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardBiasCurrent3} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.biasCurrent3,
+          onChanged: (biasCurrent3) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(BiasCurrent3Changed(
+                  biasCurrent3: biasCurrent3,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ForwardBiasCurrent4 extends StatelessWidget {
+  const _ForwardBiasCurrent4({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        double minValue = 320.0;
+        double maxValue = 520.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardBiasCurrent4} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.biasCurrent4,
+          onChanged: (biasCurrent4) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(BiasCurrent4Changed(
+                  biasCurrent4: biasCurrent4,
+                ));
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ForwardBiasCurrent6 extends StatelessWidget {
+  const _ForwardBiasCurrent6({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeControlBloc,
+        Setting18CCorNodeControlState>(
+      builder: (context, state) {
+        double minValue = 320.0;
+        double maxValue = 520.0;
+        return controlTextSlider(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardBiasCurrent6} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.biasCurrent6,
+          onChanged: (biasCurrent6) {
+            context
+                .read<Setting18CCorNodeControlBloc>()
+                .add(BiasCurrent6Changed(
+                  biasCurrent6: biasCurrent6,
                 ));
           },
         );
