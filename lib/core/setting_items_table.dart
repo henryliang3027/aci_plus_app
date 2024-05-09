@@ -132,7 +132,8 @@ const Map<String, String> settingGraphFilePath = {
       'assets/circuits/LE_1.8G_20240425.svg', // assets/circuits/LE_1.8G_20240425.svg
   '3':
       'assets/circuits/MB_1.8G_20240425.svg', // assets/circuits/MB_1.8G_20240425.svg
-  '4': '',
+  '4':
+      'assets/circuits/NODE_1.8G_20240507.svg', // assets/circuits/NODE_1.8G_20240507.svg
   '5':
       'assets/circuits/TR_1.8G_20240506.svg', // assets/circuits/TR_1.8G_20240506.svg
   '6':

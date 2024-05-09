@@ -9,6 +9,7 @@ import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_threshold/setting1
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
+import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -788,6 +789,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
       required bool editMode,
       required bool enableSubmission,
     }) {
+      String graphFilePath = settingGraphFilePath[partId] ?? '';
       return editMode
           ? Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -855,22 +857,40 @@ class _SettingFloatingActionButton extends StatelessWidget {
           : Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                // FloatingActionButton(
-                //   shape: const CircleBorder(
-                //     side: BorderSide.none,
-                //   ),
-                //   backgroundColor: Colors.grey.withAlpha(200),
-                //   child: Icon(
-                //     Icons.grain_sharp,
-                //     color: Theme.of(context).colorScheme.onPrimary,
-                //   ),
-                //   onPressed: () {
-                //     context.read<SettingBloc>().add(const GraphViewToggled());
-                //   },
-                // ),
-                // const SizedBox(
-                //   height: 10.0,
-                // ),
+                graphFilePath.isNotEmpty
+                    ? FloatingActionButton(
+                        // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
+                        heroTag: null,
+                        shape: const CircleBorder(
+                          side: BorderSide.none,
+                        ),
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withAlpha(200),
+                        child: Icon(
+                          Icons.settings_input_composite,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        onPressed: () {
+                          // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
+                          Navigator.push(
+                                  context,
+                                  Setting18GraphPage.route(
+                                    graphFilePath: graphFilePath,
+                                  ))
+                              .then((value) => context
+                                  .read<Setting18CCorNodeThresholdBloc>()
+                                  .add(const Initialized()));
+                        },
+                      )
+                    : const SizedBox(
+                        width: 0,
+                        height: 0,
+                      ),
+                const SizedBox(
+                  height: 10.0,
+                ),
                 FloatingActionButton(
                   shape: const CircleBorder(
                     side: BorderSide.none,

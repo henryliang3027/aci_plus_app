@@ -1,5 +1,3 @@
-import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/svg_image.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,18 +10,14 @@ part 'setting18_graph_view_state.dart';
 class Setting18GraphViewBloc
     extends Bloc<Setting18GraphViewEvent, Setting18GraphViewState> {
   Setting18GraphViewBloc({
-    required Amp18Repository amp18Repository,
     required String graphFilePath,
-  })  : _amp18Repository = amp18Repository,
-        _graphFilePath = graphFilePath,
+  })  : _graphFilePath = graphFilePath,
         super(const Setting18GraphViewState()) {
     on<LoadGraphRequested>(_onLoadGraphRequested);
-    on<AttenuatorTapped>(_onAttenuatorTapped);
 
     add(const LoadGraphRequested());
   }
 
-  final Amp18Repository _amp18Repository;
   final String _graphFilePath;
 
   Future<void> _onLoadGraphRequested(
@@ -79,9 +73,4 @@ class Setting18GraphViewBloc
       svgImage: svgImage,
     ));
   }
-
-  void _onAttenuatorTapped(
-    AttenuatorTapped event,
-    Emitter<Setting18GraphViewState> emit,
-  ) {}
 }

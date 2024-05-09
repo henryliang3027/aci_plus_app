@@ -20,7 +20,8 @@ class Setting18GraphModulePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Setting18GraphModuleBloc(
-          amp18Repository: RepositoryProvider.of(context)),
+        amp18Repository: RepositoryProvider.of(context),
+      ),
       child: Setting18GraphModuleForm(
         moduleName: moduleName,
       ),

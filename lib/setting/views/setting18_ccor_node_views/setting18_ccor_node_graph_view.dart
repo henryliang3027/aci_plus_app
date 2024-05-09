@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:touchable/touchable.dart';
 
-class Setting18GraphView extends StatelessWidget {
-  const Setting18GraphView({super.key});
+class Setting18CCorNodeGraphView extends StatelessWidget {
+  const Setting18CCorNodeGraphView({super.key});
 
   @override
   Widget build(BuildContext context) {

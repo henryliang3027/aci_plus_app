@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:aci_plus_app/setting/model/svg_image.dart';
+import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_graph_module_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_module_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +12,12 @@ class CircuitPainter extends CustomPainter {
   CircuitPainter({
     required this.context,
     required this.svgImage,
+    required this.partId,
   });
 
   final BuildContext context;
   final SVGImage svgImage;
+  final String partId;
 
   Future<void> showModuleSettingDialog({
     required BuildContext context,
@@ -33,7 +36,9 @@ class CircuitPainter extends CustomPainter {
             horizontal: width * 0.01,
             vertical: height * 0.01,
           ),
-          child: Setting18GraphModulePage(moduleName: moduleName),
+          child: partId == '4' // 4 表示 C-Cor Node
+              ? Setting18CCorNodeGraphModulePage(moduleName: moduleName)
+              : Setting18GraphModulePage(moduleName: moduleName),
         );
       },
     );

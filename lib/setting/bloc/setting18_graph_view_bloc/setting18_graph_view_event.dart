@@ -13,10 +13,3 @@ class LoadGraphRequested extends Setting18GraphViewEvent {
   @override
   List<Object> get props => [];
 }
-
-class AttenuatorTapped extends Setting18GraphViewEvent {
-  const AttenuatorTapped();
-
-  @override
-  List<Object> get props => [];
-}
