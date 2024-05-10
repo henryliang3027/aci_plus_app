@@ -14,6 +14,28 @@ class Initialized extends Setting18CCorNodeGraphModuleEvent {
   List<Object> get props => [];
 }
 
+class SplitOptionChanged extends Setting18CCorNodeGraphModuleEvent {
+  const SplitOptionChanged({
+    required this.splitOption,
+  });
+
+  final String splitOption;
+
+  @override
+  List<Object> get props => [splitOption];
+}
+
+class ForwardConfigChanged extends Setting18CCorNodeGraphModuleEvent {
+  const ForwardConfigChanged({
+    required this.forwardConfig,
+  });
+
+  final String forwardConfig;
+
+  @override
+  List<Object> get props => [forwardConfig];
+}
+
 class DSVVA1Changed extends Setting18CCorNodeGraphModuleEvent {
   const DSVVA1Changed({
     required this.dsVVA1,

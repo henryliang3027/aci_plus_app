@@ -251,7 +251,7 @@ class _FineTuneTextSliderState extends State<FineTuneTextSlider> {
           ? _value + widget.step
           : _value;
 
-      _textEditingController.text = _value.toString();
+      _textEditingController.text = _value.toStringAsFixed(1);
     });
   }
 
@@ -261,7 +261,7 @@ class _FineTuneTextSliderState extends State<FineTuneTextSlider> {
           ? _value - widget.step
           : _value;
 
-      _textEditingController.text = _value.toString();
+      _textEditingController.text = _value.toStringAsFixed(1);
     });
   }
 
@@ -338,7 +338,7 @@ class _FineTuneTextSliderState extends State<FineTuneTextSlider> {
                     setState(() {
                       _value = value;
                     });
-                    widget.onChanged(_value.toString());
+                    widget.onChanged(_value.toStringAsFixed(1));
                   }
                 : null,
           ),
@@ -358,7 +358,7 @@ class _FineTuneTextSliderState extends State<FineTuneTextSlider> {
                   onPressed: widget.enabled
                       ? () {
                           _decreasedValue();
-                          widget.onChanged(_value.toString());
+                          widget.onChanged(_value.toStringAsFixed(1));
                         }
                       : null,
                 ),
@@ -420,7 +420,7 @@ class _FineTuneTextSliderState extends State<FineTuneTextSlider> {
                   onPressed: widget.enabled
                       ? () {
                           _increaseValue();
-                          widget.onChanged(_value.toString());
+                          widget.onChanged(_value.toStringAsFixed(1));
                         }
                       : null,
                 ),

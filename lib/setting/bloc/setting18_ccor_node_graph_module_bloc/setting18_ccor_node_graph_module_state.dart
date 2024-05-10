@@ -3,6 +3,8 @@ part of 'setting18_ccor_node_graph_module_bloc.dart';
 class Setting18CCorNodeGraphModuleState extends Equatable {
   const Setting18CCorNodeGraphModuleState({
     this.submissionStatus = SubmissionStatus.none,
+    this.forwardConfig = '',
+    this.splitOption = '',
     this.dsVVA1 = '',
     this.dsVVA3 = '',
     this.dsVVA4 = '',
@@ -35,6 +37,8 @@ class Setting18CCorNodeGraphModuleState extends Equatable {
   });
 
   final SubmissionStatus submissionStatus;
+  final String forwardConfig;
+  final String splitOption;
   final String dsVVA1;
   final String dsVVA3;
   final String dsVVA4;
@@ -67,6 +71,8 @@ class Setting18CCorNodeGraphModuleState extends Equatable {
 
   Setting18CCorNodeGraphModuleState copyWith({
     SubmissionStatus? submissionStatus,
+    String? forwardConfig,
+    String? splitOption,
     String? dsVVA1,
     String? dsVVA3,
     String? dsVVA4,
@@ -99,6 +105,8 @@ class Setting18CCorNodeGraphModuleState extends Equatable {
   }) {
     return Setting18CCorNodeGraphModuleState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
+      forwardConfig: forwardConfig ?? this.forwardConfig,
+      splitOption: splitOption ?? this.splitOption,
       dsVVA1: dsVVA1 ?? this.dsVVA1,
       dsVVA3: dsVVA3 ?? this.dsVVA3,
       dsVVA4: dsVVA4 ?? this.dsVVA4,
@@ -138,6 +146,8 @@ class Setting18CCorNodeGraphModuleState extends Equatable {
   @override
   List<Object> get props => [
         submissionStatus,
+        forwardConfig,
+        splitOption,
         dsVVA1,
         dsVVA3,
         dsVVA4,
