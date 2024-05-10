@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/chart/chart/chart18_ccor_node_bloc/chart18_ccor_node_bloc.dart';
+import 'package:aci_plus_app/chart/bloc/chart18_ccor_node/chart18_ccor_node_bloc.dart';
 import 'package:aci_plus_app/chart/view/chart18_ccor_node_form.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:flutter/material.dart';

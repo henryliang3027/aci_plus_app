@@ -1,7 +1,7 @@
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
-import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:aci_plus_app/setting/views/setting_views/setting_list_view.dart';
 import 'package:flutter/material.dart';

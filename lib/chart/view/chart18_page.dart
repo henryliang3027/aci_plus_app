@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/chart/chart/chart18_bloc/chart18_bloc.dart';
+import 'package:aci_plus_app/chart/bloc/chart18/chart18_bloc.dart';
 import 'package:aci_plus_app/chart/view/chart18_form.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:flutter/material.dart';

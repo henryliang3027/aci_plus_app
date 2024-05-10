@@ -1,7 +1,7 @@
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/utils.dart';
-import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
-import 'package:aci_plus_app/setting/bloc/setting18_graph_view_bloc/setting18_graph_view_bloc.dart';
+import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
+import 'package:aci_plus_app/setting/bloc/setting18_graph_view/setting18_graph_view_bloc.dart';
 import 'package:aci_plus_app/setting/views/circuit_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

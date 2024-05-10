@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/chart/downloader18_rf_out_bloc/downloader18_rf_out_bloc.dart';
+import 'package:aci_plus_app/chart/bloc/downloader18_rf_out/downloader18_rf_out_bloc.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:flutter/material.dart';

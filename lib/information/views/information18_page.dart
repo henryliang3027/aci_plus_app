@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/information/bloc/information18_bloc/information18_bloc.dart';
+import 'package:aci_plus_app/information/bloc/information18/information18_bloc.dart';
 import 'package:aci_plus_app/information/views/information18_form.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/config_repository.dart';

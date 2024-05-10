@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_page.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/config_repository.dart';

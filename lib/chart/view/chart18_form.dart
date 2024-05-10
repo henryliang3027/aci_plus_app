@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/chart/chart/chart18_bloc/chart18_bloc.dart';
+import 'package:aci_plus_app/chart/bloc/chart18/chart18_bloc.dart';
 import 'package:aci_plus_app/chart/view/chart18_tab_bar.dart';
 import 'package:aci_plus_app/chart/view/code_input_page.dart';
 import 'package:aci_plus_app/chart/view/downloader18_page.dart';
@@ -8,7 +8,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
-import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:flutter/material.dart';

@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:aci_plus_app/chart/chart/chart18_ccor_node_bloc/chart18_ccor_node_bloc.dart';
+import 'package:aci_plus_app/chart/bloc/chart18_ccor_node/chart18_ccor_node_bloc.dart';
 import 'package:aci_plus_app/chart/view/code_input_page.dart';
 import 'package:aci_plus_app/chart/view/downloader18_ccor_node_page.dart';
 import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
@@ -9,7 +9,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
-import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';

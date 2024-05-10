@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/chart/chart/chart_bloc/chart_bloc.dart';
+import 'package:aci_plus_app/chart/bloc/chart/chart_bloc.dart';
 import 'package:aci_plus_app/chart/view/chart_form.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:flutter/material.dart';

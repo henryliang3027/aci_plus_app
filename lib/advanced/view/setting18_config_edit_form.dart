@@ -2,7 +2,7 @@ import 'package:aci_plus_app/advanced/bloc/setting18_config_edit/setting18_confi
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/material.dart';

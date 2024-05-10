@@ -4,7 +4,7 @@ import 'package:aci_plus_app/advanced/view/qr_code_scanner.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/home/bloc/home_bloc/home_bloc.dart';
+import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
 import 'package:aci_plus_app/repositories/trunk_config.dart';

@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/information/bloc/information_bloc/information_bloc.dart';
+import 'package:aci_plus_app/information/bloc/information/information_bloc.dart';
 import 'package:aci_plus_app/information/views/information_form.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:flutter/material.dart';

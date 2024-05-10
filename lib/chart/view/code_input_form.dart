@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/chart/chart/code_input_bloc/code_input_bloc.dart';
+import 'package:aci_plus_app/chart/bloc/code_input/code_input_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/chart/downloader18_ccor_node_bloc/downloader18_ccor_node_bloc.dart';
+import 'package:aci_plus_app/chart/bloc/downloader18_ccor_node/downloader18_ccor_node_bloc.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

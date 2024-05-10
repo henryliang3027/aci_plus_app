@@ -1,5 +1,5 @@
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
-import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_graph_module_bloc/setting18_ccor_node_graph_module_bloc.dart';
+import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_graph_module/setting18_ccor_node_graph_module_bloc.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_graph_module_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
