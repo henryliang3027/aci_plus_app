@@ -9,10 +9,33 @@
    inkscape:version="1.2 (dc2aeda, 2022-05-15)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
-     id="defs4221" />
+     id="defs4221">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3306">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop3302" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop3304" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3306"
+       id="linearGradient3310"
+       gradientUnits="userSpaceOnUse"
+       x1="1501.2574"
+       y1="1306.0419"
+       x2="1848.0699"
+       y2="1306.0419" />
+  </defs>
   <sodipodi:namedview
      id="namedview4219"
      pagecolor="#ffffff"
@@ -24,8 +47,8 @@
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
      inkscape:zoom="0.3190781"
-     inkscape:cx="2479.0169"
-     inkscape:cy="1051.4667"
+     inkscape:cx="1905.4896"
+     inkscape:cy="1067.1369"
      inkscape:window-width="2240"
      inkscape:window-height="1109"
      inkscape:window-x="0"
@@ -2656,4 +2679,33 @@
      x="778.10516"
      y="79.484764"
      module="dsVVA1" />
+  <text
+     xml:space="preserve"
+     style="font-size:192px;fill:#ffffff;fill-opacity:0;stroke:#000000;stroke-width:6"
+     x="1899.2216"
+     y="1911.7577"
+     id="text1104"><tspan
+       sodipodi:role="line"
+       id="tspan1102"
+       x="1899.2216"
+       y="1911.7577" /></text>
+  <text
+     xml:space="preserve"
+     style="font-size:192px;fill:#ffffff;fill-opacity:0;stroke:#000000;stroke-width:6"
+     x="1833.4069"
+     y="1911.7577"
+     id="text1108"><tspan
+       sodipodi:role="line"
+       id="tspan1106"></tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:192px;fill:#ffffff;fill-opacity:0;stroke:url(#linearGradient3310);stroke-width:5;stroke-dasharray:none;stroke-dashoffset:0"
+     x="1488.6637"
+     y="1375.8387"
+     id="text3169"><tspan
+       sodipodi:role="line"
+       id="tspan3277"
+       style="opacity:1;fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-dasharray:none;stroke-opacity:1"
+       x="1488.6637"
+       y="1375.8387" /></text>
 </svg>

@@ -104,8 +104,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       case ScanStatus.success:
         emit(state.copyWith(
           scanStatus: FormStatus.requestSuccess,
-          connectionStatus: FormStatus.none,
-          loadingStatus: FormStatus.none,
+          connectionStatus: FormStatus.requestInProgress,
+          loadingStatus: FormStatus.requestInProgress,
           device: event.scanReport.perigheral,
         ));
 
@@ -177,6 +177,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           emit(state.copyWith(
             scanStatus: FormStatus.requestSuccess,
             connectionStatus: FormStatus.requestSuccess,
+            loadingStatus: FormStatus.requestInProgress,
             aciDeviceType: aciDeviceType,
           ));
 
