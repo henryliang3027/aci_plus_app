@@ -239,6 +239,24 @@ class PilotFrequency2Changed extends Setting18GraphModuleEvent {
   List<Object> get props => [pilotFrequency2];
 }
 
+class AGCModeChanged extends Setting18GraphModuleEvent {
+  const AGCModeChanged(this.agcMode);
+
+  final String agcMode;
+
+  @override
+  List<Object> get props => [agcMode];
+}
+
+class ALCModeChanged extends Setting18GraphModuleEvent {
+  const ALCModeChanged(this.alcMode);
+
+  final String alcMode;
+
+  @override
+  List<Object> get props => [alcMode];
+}
+
 class SettingSubmitted extends Setting18GraphModuleEvent {
   const SettingSubmitted();
 

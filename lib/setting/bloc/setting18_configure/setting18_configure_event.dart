@@ -118,22 +118,22 @@ class PilotFrequency2Changed extends Setting18ConfigureEvent {
   List<Object> get props => [pilotFrequency2];
 }
 
-class FwdAGCModeChanged extends Setting18ConfigureEvent {
-  const FwdAGCModeChanged(this.fwdAGCMode);
+class AGCModeChanged extends Setting18ConfigureEvent {
+  const AGCModeChanged(this.agcMode);
 
-  final String fwdAGCMode;
+  final String agcMode;
 
   @override
-  List<Object> get props => [fwdAGCMode];
+  List<Object> get props => [agcMode];
 }
 
-class AutoLevelControlChanged extends Setting18ConfigureEvent {
-  const AutoLevelControlChanged(this.autoLevelControl);
+class ALCModeChanged extends Setting18ConfigureEvent {
+  const ALCModeChanged(this.alcMode);
 
-  final String autoLevelControl;
+  final String alcMode;
 
   @override
-  List<Object> get props => [autoLevelControl];
+  List<Object> get props => [alcMode];
 }
 
 class LogIntervalChanged extends Setting18ConfigureEvent {

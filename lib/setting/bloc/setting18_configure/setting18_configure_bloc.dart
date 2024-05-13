@@ -33,8 +33,8 @@ class Setting18ConfigureBloc
     on<PilotFrequencyModeChanged>(_onPilotFrequencyModeChanged);
     on<PilotFrequency1Changed>(_onPilotFrequency1Changed);
     on<PilotFrequency2Changed>(_onPilotFrequency2Changed);
-    on<FwdAGCModeChanged>(_onFwdAGCModeChanged);
-    on<AutoLevelControlChanged>(_onAutoLevelControlChanged);
+    on<AGCModeChanged>(_onAGCModeChanged);
+    on<ALCModeChanged>(_onALCModeChanged);
     on<LogIntervalChanged>(_onLogIntervalChanged);
     on<RFOutputLogIntervalChanged>(_onRFOutputLogIntervalChanged);
     on<TGCCableLengthChanged>(_onTGCCableLengthChanged);
@@ -78,8 +78,8 @@ class Setting18ConfigureBloc
     String manualModePilot2RFOutputPower =
         characteristicDataCache[DataKey.manualModePilot2RFOutputPower] ?? '';
 
-    String fwdAGCMode = characteristicDataCache[DataKey.agcMode] ?? '';
-    String autoLevelControl = characteristicDataCache[DataKey.alcMode] ?? '';
+    String agcMode = characteristicDataCache[DataKey.agcMode] ?? '';
+    String alcMode = characteristicDataCache[DataKey.alcMode] ?? '';
     String logInterval =
         characteristicDataCache[DataKey.logInterval] ?? state.logInterval;
     String rfOutputLogInterval =
@@ -104,8 +104,8 @@ class Setting18ConfigureBloc
       pilotFrequency2: IntegerInput.dirty(pilotFrequency2),
       manualModePilot1RFOutputPower: manualModePilot1RFOutputPower,
       manualModePilot2RFOutputPower: manualModePilot2RFOutputPower,
-      fwdAGCMode: fwdAGCMode,
-      autoLevelControl: autoLevelControl,
+      agcMode: agcMode,
+      alcMode: alcMode,
       logInterval: logInterval,
       rfOutputLogInterval: rfOutputLogInterval,
       tgcCableLength: tgcCableLength,
@@ -134,8 +134,8 @@ class Setting18ConfigureBloc
         pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: state.pilotFrequency1,
         pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
+        agcMode: state.agcMode,
+        alcMode: state.alcMode,
         logInterval: state.logInterval,
         rfOutputLogInterval: state.rfOutputLogInterval,
         tgcCableLength: state.tgcCableLength,
@@ -163,8 +163,8 @@ class Setting18ConfigureBloc
         pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: state.pilotFrequency1,
         pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
+        agcMode: state.agcMode,
+        alcMode: state.alcMode,
         logInterval: state.logInterval,
         rfOutputLogInterval: state.rfOutputLogInterval,
         tgcCableLength: state.tgcCableLength,
@@ -198,8 +198,8 @@ class Setting18ConfigureBloc
           pilotFrequencyMode: state.pilotFrequencyMode,
           pilotFrequency1: state.pilotFrequency1,
           pilotFrequency2: state.pilotFrequency2,
-          fwdAGCMode: state.fwdAGCMode,
-          autoLevelControl: state.autoLevelControl,
+          agcMode: state.agcMode,
+          alcMode: state.alcMode,
           logInterval: state.logInterval,
           rfOutputLogInterval: state.rfOutputLogInterval,
           tgcCableLength: state.tgcCableLength,
@@ -221,8 +221,8 @@ class Setting18ConfigureBloc
           pilotFrequencyMode: state.pilotFrequencyMode,
           pilotFrequency1: state.pilotFrequency1,
           pilotFrequency2: state.pilotFrequency2,
-          fwdAGCMode: state.fwdAGCMode,
-          autoLevelControl: state.autoLevelControl,
+          agcMode: state.agcMode,
+          alcMode: state.alcMode,
           logInterval: state.logInterval,
           rfOutputLogInterval: state.rfOutputLogInterval,
           tgcCableLength: state.tgcCableLength,
@@ -251,8 +251,8 @@ class Setting18ConfigureBloc
         pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: state.pilotFrequency1,
         pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
+        agcMode: state.agcMode,
+        alcMode: state.alcMode,
         logInterval: state.logInterval,
         rfOutputLogInterval: state.rfOutputLogInterval,
         tgcCableLength: state.tgcCableLength,
@@ -289,8 +289,8 @@ class Setting18ConfigureBloc
             pilotFrequencyMode: state.pilotFrequencyMode,
             pilotFrequency1: state.pilotFrequency1,
             pilotFrequency2: state.pilotFrequency2,
-            fwdAGCMode: state.fwdAGCMode,
-            autoLevelControl: state.autoLevelControl,
+            agcMode: state.agcMode,
+            alcMode: state.alcMode,
             logInterval: state.logInterval,
             rfOutputLogInterval: state.rfOutputLogInterval,
             tgcCableLength: state.tgcCableLength,
@@ -320,8 +320,8 @@ class Setting18ConfigureBloc
         pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: state.pilotFrequency1,
         pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
+        agcMode: state.agcMode,
+        alcMode: state.alcMode,
         logInterval: state.logInterval,
         rfOutputLogInterval: state.rfOutputLogInterval,
         tgcCableLength: state.tgcCableLength,
@@ -351,8 +351,8 @@ class Setting18ConfigureBloc
         pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: state.pilotFrequency1,
         pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
+        agcMode: state.agcMode,
+        alcMode: state.alcMode,
         logInterval: state.logInterval,
         rfOutputLogInterval: state.rfOutputLogInterval,
         tgcCableLength: state.tgcCableLength,
@@ -382,8 +382,8 @@ class Setting18ConfigureBloc
         pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: state.pilotFrequency1,
         pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
+        agcMode: state.agcMode,
+        alcMode: state.alcMode,
         logInterval: state.logInterval,
         rfOutputLogInterval: state.rfOutputLogInterval,
         tgcCableLength: state.tgcCableLength,
@@ -411,8 +411,8 @@ class Setting18ConfigureBloc
         pilotFrequencyMode: event.pilotFrequencyMode,
         pilotFrequency1: state.pilotFrequency1,
         pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
+        agcMode: state.agcMode,
+        alcMode: state.alcMode,
         logInterval: state.logInterval,
         rfOutputLogInterval: state.rfOutputLogInterval,
         tgcCableLength: state.tgcCableLength,
@@ -441,8 +441,8 @@ class Setting18ConfigureBloc
         pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: pilotFrequency1,
         pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
+        agcMode: state.agcMode,
+        alcMode: state.alcMode,
         logInterval: state.logInterval,
         rfOutputLogInterval: state.rfOutputLogInterval,
         tgcCableLength: state.tgcCableLength,
@@ -471,8 +471,8 @@ class Setting18ConfigureBloc
         pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: state.pilotFrequency1,
         pilotFrequency2: pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
+        agcMode: state.agcMode,
+        alcMode: state.alcMode,
         logInterval: state.logInterval,
         rfOutputLogInterval: state.rfOutputLogInterval,
         tgcCableLength: state.tgcCableLength,
@@ -480,15 +480,15 @@ class Setting18ConfigureBloc
     ));
   }
 
-  void _onFwdAGCModeChanged(
-    FwdAGCModeChanged event,
+  void _onAGCModeChanged(
+    AGCModeChanged event,
     Emitter<Setting18ConfigureState> emit,
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
-      fwdAGCMode: event.fwdAGCMode,
-      autoLevelControl: event.fwdAGCMode,
+      agcMode: event.agcMode,
+      alcMode: event.agcMode,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
@@ -501,8 +501,8 @@ class Setting18ConfigureBloc
         pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: state.pilotFrequency1,
         pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: event.fwdAGCMode,
-        autoLevelControl: event.fwdAGCMode,
+        agcMode: event.agcMode,
+        alcMode: event.agcMode,
         logInterval: state.logInterval,
         rfOutputLogInterval: state.rfOutputLogInterval,
         tgcCableLength: state.tgcCableLength,
@@ -510,14 +510,14 @@ class Setting18ConfigureBloc
     ));
   }
 
-  void _onAutoLevelControlChanged(
-    AutoLevelControlChanged event,
+  void _onALCModeChanged(
+    ALCModeChanged event,
     Emitter<Setting18ConfigureState> emit,
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
-      autoLevelControl: event.autoLevelControl,
+      alcMode: event.alcMode,
       isInitialize: false,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
@@ -530,8 +530,8 @@ class Setting18ConfigureBloc
         pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: state.pilotFrequency1,
         pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: event.autoLevelControl,
+        agcMode: state.agcMode,
+        alcMode: event.alcMode,
         logInterval: state.logInterval,
         rfOutputLogInterval: state.rfOutputLogInterval,
         tgcCableLength: state.tgcCableLength,
@@ -559,8 +559,8 @@ class Setting18ConfigureBloc
         pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: state.pilotFrequency1,
         pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
+        agcMode: state.agcMode,
+        alcMode: state.alcMode,
         logInterval: event.logInterval,
         rfOutputLogInterval: state.rfOutputLogInterval,
         tgcCableLength: state.tgcCableLength,
@@ -588,8 +588,8 @@ class Setting18ConfigureBloc
         pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: state.pilotFrequency1,
         pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
+        agcMode: state.agcMode,
+        alcMode: state.alcMode,
         logInterval: state.logInterval,
         rfOutputLogInterval: event.rfOutputLogInterval,
         tgcCableLength: state.tgcCableLength,
@@ -617,8 +617,8 @@ class Setting18ConfigureBloc
         pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: state.pilotFrequency1,
         pilotFrequency2: state.pilotFrequency2,
-        fwdAGCMode: state.fwdAGCMode,
-        autoLevelControl: state.autoLevelControl,
+        agcMode: state.agcMode,
+        alcMode: state.alcMode,
         logInterval: state.logInterval,
         rfOutputLogInterval: state.rfOutputLogInterval,
         tgcCableLength: event.tgcCableLength,
@@ -664,8 +664,8 @@ class Setting18ConfigureBloc
           state.initialValues[DataKey.pilotFrequency1] ?? ''),
       pilotFrequency2: IntegerInput.dirty(
           state.initialValues[DataKey.pilotFrequency2] ?? ''),
-      fwdAGCMode: state.initialValues[DataKey.agcMode],
-      autoLevelControl: state.initialValues[DataKey.alcMode],
+      agcMode: state.initialValues[DataKey.agcMode],
+      alcMode: state.initialValues[DataKey.alcMode],
       logInterval: state.initialValues[DataKey.logInterval],
       rfOutputLogInterval: state.initialValues[DataKey.rfOutputLogInterval],
       tgcCableLength: state.initialValues[DataKey.tgcCableLength],
@@ -683,8 +683,8 @@ class Setting18ConfigureBloc
     required String pilotFrequencyMode,
     required IntegerInput pilotFrequency1,
     required IntegerInput pilotFrequency2,
-    required String fwdAGCMode,
-    required String autoLevelControl,
+    required String agcMode,
+    required String alcMode,
     required String logInterval,
     required String rfOutputLogInterval,
     required String tgcCableLength,
@@ -716,8 +716,8 @@ class Setting18ConfigureBloc
               state.initialValues[DataKey.pilotFrequency1] ||
           pilotFrequency2.value !=
               state.initialValues[DataKey.pilotFrequency2] ||
-          fwdAGCMode != state.initialValues[DataKey.agcMode] ||
-          autoLevelControl != state.initialValues[DataKey.alcMode] ||
+          agcMode != state.initialValues[DataKey.agcMode] ||
+          alcMode != state.initialValues[DataKey.alcMode] ||
           logInterval != state.initialValues[DataKey.logInterval] ||
           rfOutputLogInterval !=
               state.initialValues[DataKey.rfOutputLogInterval] ||
@@ -832,16 +832,16 @@ class Setting18ConfigureBloc
           .add('${DataKey.pilotFrequency2.name},$resultOfSetPilotFrequency2');
     }
 
-    if (state.fwdAGCMode != state.initialValues[DataKey.agcMode]) {
+    if (state.agcMode != state.initialValues[DataKey.agcMode]) {
       bool resultOfSetForwardAGCMode =
-          await _amp18Repository.set1p8GForwardAGCMode(state.fwdAGCMode);
+          await _amp18Repository.set1p8GForwardAGCMode(state.agcMode);
 
       settingResult.add('${DataKey.agcMode.name},$resultOfSetForwardAGCMode');
     }
 
-    if (state.autoLevelControl != state.initialValues[DataKey.alcMode]) {
+    if (state.alcMode != state.initialValues[DataKey.alcMode]) {
       bool resultOfSetALCMode =
-          await _amp18Repository.set1p8GALCMode(state.autoLevelControl);
+          await _amp18Repository.set1p8GALCMode(state.alcMode);
 
       settingResult.add('${DataKey.alcMode.name},$resultOfSetALCMode');
     }

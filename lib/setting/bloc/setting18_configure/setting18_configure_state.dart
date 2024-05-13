@@ -16,8 +16,8 @@ class Setting18ConfigureState extends Equatable {
     this.pilotFrequency2 = const IntegerInput.pure(),
     this.manualModePilot1RFOutputPower = '',
     this.manualModePilot2RFOutputPower = '',
-    this.fwdAGCMode = '',
-    this.autoLevelControl = '',
+    this.agcMode = '',
+    this.alcMode = '',
     this.logInterval = '',
     this.rfOutputLogInterval = '',
     this.tgcCableLength = '',
@@ -43,8 +43,8 @@ class Setting18ConfigureState extends Equatable {
   final IntegerInput pilotFrequency2;
   final String manualModePilot1RFOutputPower;
   final String manualModePilot2RFOutputPower;
-  final String fwdAGCMode;
-  final String autoLevelControl;
+  final String agcMode;
+  final String alcMode;
   final String logInterval;
   final String rfOutputLogInterval;
   final String tgcCableLength;
@@ -70,8 +70,8 @@ class Setting18ConfigureState extends Equatable {
     IntegerInput? pilotFrequency2,
     String? manualModePilot1RFOutputPower,
     String? manualModePilot2RFOutputPower,
-    String? fwdAGCMode,
-    String? autoLevelControl,
+    String? agcMode,
+    String? alcMode,
     String? logInterval,
     String? rfOutputLogInterval,
     String? tgcCableLength,
@@ -103,8 +103,8 @@ class Setting18ConfigureState extends Equatable {
           manualModePilot1RFOutputPower ?? this.manualModePilot1RFOutputPower,
       manualModePilot2RFOutputPower:
           manualModePilot2RFOutputPower ?? this.manualModePilot2RFOutputPower,
-      fwdAGCMode: fwdAGCMode ?? this.fwdAGCMode,
-      autoLevelControl: autoLevelControl ?? this.autoLevelControl,
+      agcMode: agcMode ?? this.agcMode,
+      alcMode: alcMode ?? this.alcMode,
       logInterval: logInterval ?? this.logInterval,
       rfOutputLogInterval: rfOutputLogInterval ?? this.rfOutputLogInterval,
       tgcCableLength: tgcCableLength ?? this.tgcCableLength,
@@ -134,8 +134,8 @@ class Setting18ConfigureState extends Equatable {
         pilotFrequency2,
         manualModePilot1RFOutputPower,
         manualModePilot2RFOutputPower,
-        fwdAGCMode,
-        autoLevelControl,
+        agcMode,
+        alcMode,
         logInterval,
         rfOutputLogInterval,
         tgcCableLength,

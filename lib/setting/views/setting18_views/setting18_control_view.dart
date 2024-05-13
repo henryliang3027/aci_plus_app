@@ -44,36 +44,40 @@ class Setting18ControlView extends StatelessWidget {
       if (item == DataKey.dsVVA1.name) {
         return AppLocalizations.of(context)!
             .dialogMessageForwardInputAttenuation1Setting;
+      } else if (item == DataKey.dsVVA4.name) {
+        if (partId == '5' || partId == '6') {
+          return AppLocalizations.of(context)!
+              .dialogMessageForwardOutputAttenuation2And3Setting;
+        } else {
+          return AppLocalizations.of(context)!
+              .dialogMessageForwardOutputEqualizer3And4Setting;
+        }
+      } else if (item == DataKey.dsVVA5.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardOutputAttenuation5And6Setting;
       } else if (item == DataKey.dsSlope1.name) {
         return AppLocalizations.of(context)!
             .dialogMessageForwardInputEqualizer1Setting;
+      } else if (item == DataKey.dsSlope3.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardInputEqualizer3Setting;
+      } else if (item == DataKey.dsSlope4.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardInputEqualizer4Setting;
+      } else if (item == DataKey.tgcCableLength.name) {
+        return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
       } else if (item == DataKey.usVCA1.name) {
-        if (partId == '5' || partId == '6') {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnInputAttenuation4Setting;
-        } else {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnInputAttenuation2Setting;
-        }
-      } else if (item == DataKey.usVCA3.name) {
-        if (partId == '5' || partId == '6') {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnInputAttenuation2And3Setting;
-        } else {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnInputAttenuation3Setting;
-        }
-      } else if (item == DataKey.usVCA4.name) {
-        if (partId == '5' || partId == '6') {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnInputAttenuation5And6Setting;
-        } else {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnInputAttenuation4Setting;
-        }
+        return AppLocalizations.of(context)!
+            .dialogMessageReturnInputAttenuation2Setting;
       } else if (item == DataKey.usVCA2.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnOutputAttenuation1Setting;
+      } else if (item == DataKey.usVCA3.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageReturnInputAttenuation3Setting;
+      } else if (item == DataKey.usVCA4.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageReturnInputAttenuation4Setting;
       } else if (item == DataKey.eREQ.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnOutputEqualizer1Setting;
@@ -101,30 +105,6 @@ class Setting18ControlView extends StatelessWidget {
           return AppLocalizations.of(context)!
               .dialogMessageReturnIngress4Setting;
         }
-      } else if (item == DataKey.tgcCableLength.name) {
-        return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
-      } else if (item == DataKey.dsVVA4.name) {
-        if (partId == '5' || partId == '6') {
-          return AppLocalizations.of(context)!
-              .dialogMessageForwardOutputAttenuation2And3Setting;
-        } else {
-          return AppLocalizations.of(context)!
-              .dialogMessageForwardOutputAttenuation3And4Setting;
-        }
-      } else if (item == DataKey.dsVVA5.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardOutputAttenuation5And6Setting;
-      } else if (item == DataKey.dsSlope3.name) {
-        if (partId == '5' || partId == '6') {
-          return AppLocalizations.of(context)!
-              .dialogMessageForwardOutputEqualizer2And3Setting;
-        } else {
-          return AppLocalizations.of(context)!
-              .dialogMessageForwardOutputEqualizer3And4Setting;
-        }
-      } else if (item == DataKey.dsSlope4.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardOutputEqualizer5And6Setting;
       } else {
         return '';
       }

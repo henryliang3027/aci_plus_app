@@ -68,7 +68,7 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
     String currentDetectedSplitOption =
         homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
 
-    List<Widget> getSettingWidgetByModuleId() {
+    List<Widget> getForwardSettingWidgetByModuleId() {
       String moduleName = widget.moduleName;
 
       if (moduleName == DataKey.splitOption.name) {
@@ -101,13 +101,16 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
             manualModePilot2RFOutputPowerTextEditingController:
                 manualModePilot2RFOutputPowerTextEditingController,
           ),
+          const _AGCMode(),
+          const _ALCMode(),
         ];
       } else if (moduleName == DataKey.dsVVA1.name) {
         return [
           _ForwardInputAttenuation(
             alcMode: alcMode,
+            agcMode: agcMode,
             currentInputAttenuation: currentInputAttenuation,
-          )
+          ),
         ];
       } else if (moduleName == DataKey.dsVVA4.name) {
         if (partId == '5') {
@@ -129,32 +132,54 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         return [const _ForwardOutputEqualizer2And3()];
       } else if (moduleName == DataKey.dsSlope4.name) {
         return [const _ForwardOutputEqualizer5And6()];
-      } else if (moduleName == DataKey.usVCA1.name) {
+      } else {
+        return [];
+      }
+    }
+
+    List<Widget> getReverseSettingWidgetByModuleId() {
+      String moduleName = widget.moduleName;
+
+      if (moduleName == DataKey.usVCA1.name) {
         if (partId == '5') {
           return [
-            _RtnInputAttenuation4(
-              partId: partId,
-            )
+            _RtnInputAttenuation4(partId: partId),
+            _RtnIngressSetting4(partId: partId),
           ];
         } else {
-          return [const _RtnInputAttenuation2()];
+          return [
+            const _RtnInputAttenuation2(),
+            const _RtnIngressSetting2(),
+          ];
         }
       } else if (moduleName == DataKey.usVCA2.name) {
         return [const _RtnOutputLevelAttenuation()];
       } else if (moduleName == DataKey.usVCA3.name) {
         if (partId == '5' || partId == '6') {
-          return [const _RtnInputAttenuation2And3()];
+          return [
+            const _RtnInputAttenuation2And3(),
+            const _RtnIngressSetting2And3(),
+          ];
         } else {
-          return [const _RtnInputAttenuation3()];
+          return [
+            const _RtnInputAttenuation3(),
+            const _RtnIngressSetting3(),
+          ];
         }
       } else if (moduleName == DataKey.usVCA4.name) {
         if (partId == '5' || partId == '6') {
-          return [const _RtnInputAttenuation5And6()];
+          return [
+            const _RtnInputAttenuation5And6(),
+            const _RtnIngressSetting5And6(),
+          ];
         } else {
           return [
             _RtnInputAttenuation4(
               partId: partId,
-            )
+            ),
+            _RtnIngressSetting4(
+              partId: partId,
+            ),
           ];
         }
       } else if (moduleName == DataKey.eREQ.name) {
@@ -162,69 +187,6 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       } else {
         return [];
       }
-
-      // switch (widget.moduleName) {
-      //   case DataKey.splitOption:
-      //     return [const _SplitOption()];
-      //   case 1:
-      //     return [
-      //       _ForwardInputAttenuation(
-      //         forwardInputAttenuation1TextEditingController:
-      //             forwardInputAttenuation1TextEditingController,
-      //       )
-      //     ];
-      //   case 2:
-      //     return [
-      //       _ForwardInputEqualizer(
-      //         forwardInputEqualizer1TextEditingController:
-      //             forwardInputEqualizer1TextEditingController,
-      //       )
-      //     ];
-      //   case 3:
-      //     return [];
-      //   case 4:
-      //     return [];
-      //   case 5:
-      //     return [];
-      //   case 6:
-      //     return [];
-      //   case 7:
-      //     return [];
-      //   case 8:
-      //     return [];
-      //   case 9:
-      //     return [];
-      //   case 10:
-      //     return [
-      //       const _PilotFrequencyMode(),
-      //       _FirstChannelLoading(
-      //         firstChannelLoadingFrequencyTextEditingController:
-      //             firstChannelLoadingFrequencyTextEditingController,
-      //         firstChannelLoadingLevelTextEditingController:
-      //             firstChannelLoadingLevelTextEditingController,
-      //       ),
-      //       _LastChannelLoading(
-      //         lastChannelLoadingFrequencyTextEditingController:
-      //             lastChannelLoadingFrequencyTextEditingController,
-      //         lastChannelLoadingLevelTextEditingController:
-      //             lastChannelLoadingLevelTextEditingController,
-      //       ),
-      //       _PilotFrequency1(
-      //         pilotFrequency1TextEditingController:
-      //             pilotFrequency1TextEditingController,
-      //         manualModePilot1RFOutputPowerTextEditingController:
-      //             manualModePilot1RFOutputPowerTextEditingController,
-      //       ),
-      //       _PilotFrequency2(
-      //         pilotFrequency2TextEditingController:
-      //             pilotFrequency2TextEditingController,
-      //         manualModePilot2RFOutputPowerTextEditingController:
-      //             manualModePilot2RFOutputPowerTextEditingController,
-      //       ),
-      //     ];
-      //   default:
-      //     return [];
-      // }
     }
 
     String formatResultValue(String boolValue) {
@@ -234,44 +196,7 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
     }
 
     String formatResultItem(String item) {
-      if (item == DataKey.dsVVA1.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardInputAttenuation1Setting;
-      } else if (item == DataKey.dsSlope1.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardInputEqualizer1Setting;
-      } else if (item == DataKey.usVCA1.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnInputAttenuation2Setting;
-      } else if (item == DataKey.usVCA3.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnInputAttenuation3Setting;
-      } else if (item == DataKey.usVCA4.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnInputAttenuation4Setting;
-      } else if (item == DataKey.usVCA2.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnOutputAttenuation1Setting;
-      } else if (item == DataKey.eREQ.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnOutputEqualizer1Setting;
-      } else if (item == DataKey.ingressSetting2.name) {
-        return AppLocalizations.of(context)!.dialogMessageReturnIngress2Setting;
-      } else if (item == DataKey.ingressSetting3.name) {
-        return AppLocalizations.of(context)!.dialogMessageReturnIngress3Setting;
-      } else if (item == DataKey.ingressSetting4.name) {
-        return AppLocalizations.of(context)!.dialogMessageReturnIngress4Setting;
-      } else if (item == DataKey.tgcCableLength.name) {
-        return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
-      } else if (item == DataKey.dsVVA4.name) {
-        if (partId == '5' || partId == '6') {
-          return AppLocalizations.of(context)!
-              .dialogMessageForwardOutputEqualizer2And3Setting;
-        } else {
-          return AppLocalizations.of(context)!
-              .dialogMessageForwardOutputEqualizer3And4Setting;
-        }
-      } else if (item == DataKey.splitOption.name) {
+      if (item == DataKey.splitOption.name) {
         return AppLocalizations.of(context)!.dialogMessageSplitOptionSetting;
       } else if (item == DataKey.pilotFrequencyMode.name) {
         return AppLocalizations.of(context)!
@@ -294,9 +219,120 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       } else if (item == DataKey.pilotFrequency2.name) {
         return AppLocalizations.of(context)!
             .dialogMessagePilotFrequency2Setting;
+      } else if (item == DataKey.agcMode.name) {
+        return AppLocalizations.of(context)!.dialogMessageAGCModeSetting;
+      } else if (item == DataKey.alcMode.name) {
+        return AppLocalizations.of(context)!.dialogMessageALCModeSetting;
+      }
+      if (item == DataKey.dsVVA1.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardInputAttenuation1Setting;
+      } else if (item == DataKey.dsVVA4.name) {
+        if (partId == '5' || partId == '6') {
+          return AppLocalizations.of(context)!
+              .dialogMessageForwardOutputAttenuation2And3Setting;
+        } else {
+          return AppLocalizations.of(context)!
+              .dialogMessageForwardOutputEqualizer3And4Setting;
+        }
+      } else if (item == DataKey.dsVVA5.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardOutputAttenuation5And6Setting;
+      } else if (item == DataKey.dsSlope1.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardInputEqualizer1Setting;
+      } else if (item == DataKey.dsSlope3.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardInputEqualizer3Setting;
+      } else if (item == DataKey.dsSlope4.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageForwardInputEqualizer4Setting;
+      } else if (item == DataKey.tgcCableLength.name) {
+        return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
+      } else if (item == DataKey.usVCA1.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageReturnInputAttenuation2Setting;
+      } else if (item == DataKey.usVCA2.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageReturnOutputAttenuation1Setting;
+      } else if (item == DataKey.usVCA3.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageReturnInputAttenuation3Setting;
+      } else if (item == DataKey.usVCA4.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageReturnInputAttenuation4Setting;
+      } else if (item == DataKey.eREQ.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageReturnOutputEqualizer1Setting;
+      } else if (item == DataKey.ingressSetting2.name) {
+        if (partId == '5' || partId == '6') {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnIngress4Setting;
+        } else {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnIngress2Setting;
+        }
+      } else if (item == DataKey.ingressSetting3.name) {
+        if (partId == '5' || partId == '6') {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnIngress2And3Setting;
+        } else {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnIngress3Setting;
+        }
+      } else if (item == DataKey.ingressSetting4.name) {
+        if (partId == '5' || partId == '6') {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnIngress5And6Setting;
+        } else {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnIngress4Setting;
+        }
       } else {
         return '';
       }
+    }
+
+    Widget getSettingWidgetHeader(String title) {
+      return Padding(
+        padding: const EdgeInsets.only(
+          bottom: 16,
+        ),
+        child: Row(
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: CustomStyle.sizeXL,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    List<Widget> getSettingWidgetByModuleId() {
+      List<Widget> settingWidgets = [];
+      List<Widget> forwardSettingWidgets = getForwardSettingWidgetByModuleId();
+      List<Widget> reverseSettingWidgets = getReverseSettingWidgetByModuleId();
+      Widget forwardSettingHeader = getSettingWidgetHeader(
+          AppLocalizations.of(context)!.forwardControlParameters);
+      Widget reverseSettingHeader = getSettingWidgetHeader(
+          AppLocalizations.of(context)!.returnControlParameters);
+
+      if (forwardSettingWidgets.isNotEmpty) {
+        settingWidgets.add(forwardSettingHeader);
+        settingWidgets.addAll(forwardSettingWidgets);
+      }
+
+      if (reverseSettingWidgets.isNotEmpty) {
+        settingWidgets.add(reverseSettingHeader);
+        settingWidgets.addAll(reverseSettingWidgets);
+      }
+
+      return settingWidgets;
     }
 
     Color getResultValueColor(String resultValue) {
@@ -405,17 +441,20 @@ class _ForwardInputAttenuation extends StatelessWidget {
   const _ForwardInputAttenuation({
     super.key,
     required this.alcMode,
+    required this.agcMode,
     required this.currentInputAttenuation,
   });
 
   final String alcMode;
+  final String agcMode;
   final String currentInputAttenuation;
 
   @override
   Widget build(BuildContext context) {
-    // String getCurrentValue(String fwdInputAttenuation) {
-    //   return alcMode == '0' ? fwdInputAttenuation : currentInputAttenuation;
-    // }
+    Map<String, String> agcModeText = {
+      '0': AppLocalizations.of(context)!.off,
+      '1': AppLocalizations.of(context)!.on,
+    };
 
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
@@ -427,19 +466,34 @@ class _ForwardInputAttenuation extends StatelessWidget {
           inputAttenuation: state.dsVVA1,
           currentInputAttenuation: currentInputAttenuation,
         );
-        return controlTextSlider(
-          context: context,
-          editMode: state.editMode && alcMode == '0',
-          title:
-              '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
-          minValue: minValue,
-          currentValue: inputAttenuation,
-          maxValue: maxValue,
-          onChanged: (dsVVA1) {
-            context.read<Setting18GraphModuleBloc>().add(DSVVA1Changed(
-                  dsVVA1: dsVVA1,
-                ));
-          },
+        return Column(
+          children: [
+            controlTextSlider(
+              context: context,
+              editMode: state.editMode && alcMode == '0',
+              title:
+                  '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
+              minValue: minValue,
+              currentValue: inputAttenuation,
+              maxValue: maxValue,
+              onChanged: (dsVVA1) {
+                context.read<Setting18GraphModuleBloc>().add(DSVVA1Changed(
+                      dsVVA1: dsVVA1,
+                    ));
+              },
+            ),
+            Row(
+              children: [
+                Text(
+                  '${AppLocalizations.of(context)!.agcMode}: ${agcModeText[agcMode]}',
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ],
         );
       },
     );
@@ -460,11 +514,10 @@ class _ForwardInputEqualizer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // String getCurrentValue(String forwardInputEqualizer) {
-    //   return alcMode == '0' && agcMode == '0'
-    //       ? forwardInputEqualizer
-    //       : currentInputEqualizer;
-    // }
+    Map<String, String> agcModeText = {
+      '0': AppLocalizations.of(context)!.off,
+      '1': AppLocalizations.of(context)!.on,
+    };
 
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
@@ -476,19 +529,34 @@ class _ForwardInputEqualizer extends StatelessWidget {
           inputEqualizer: state.dsSlope1,
           currentInputEqualizer: currentInputEqualizer,
         );
-        return controlTextSlider(
-          context: context,
-          editMode: state.editMode && alcMode == '0' && agcMode == '0',
-          title:
-              '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
-          minValue: minValue,
-          currentValue: inputEqualizer,
-          maxValue: maxValue,
-          onChanged: (dsSlope1) {
-            context.read<Setting18GraphModuleBloc>().add(DSSlope1Changed(
-                  dsSlope1: dsSlope1,
-                ));
-          },
+        return Column(
+          children: [
+            controlTextSlider(
+              context: context,
+              editMode: state.editMode && alcMode == '0' && agcMode == '0',
+              title:
+                  '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
+              minValue: minValue,
+              currentValue: inputEqualizer,
+              maxValue: maxValue,
+              onChanged: (dsSlope1) {
+                context.read<Setting18GraphModuleBloc>().add(DSSlope1Changed(
+                      dsSlope1: dsSlope1,
+                    ));
+              },
+            ),
+            Row(
+              children: [
+                Text(
+                  '${AppLocalizations.of(context)!.agcMode}: ${agcModeText[agcMode]}',
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ],
         );
       },
     );
@@ -1153,6 +1221,417 @@ class _PilotFrequency2 extends StatelessWidget {
           errorText1: state.pilotFrequency2.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+        );
+      },
+    );
+  }
+}
+
+class _AGCMode extends StatelessWidget {
+  const _AGCMode({
+    super.key,
+  });
+
+  final List<String> fwdAGCModeValues = const [
+    '1',
+    '0',
+  ];
+
+  List<bool> getSelectionState(String selectedFwdAGCMode) {
+    Map<String, bool> fwdAGCModeMap = {
+      '1': false,
+      '0': false,
+    };
+
+    if (fwdAGCModeMap.containsKey(selectedFwdAGCMode)) {
+      fwdAGCModeMap[selectedFwdAGCMode] = true;
+    }
+
+    return fwdAGCModeMap.values.toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      buildWhen: (previous, current) =>
+          previous.agcMode != current.agcMode ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 40.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: CustomStyle.sizeL,
+                ),
+                child: Text(
+                  '${AppLocalizations.of(context)!.agcMode}:',
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              LayoutBuilder(
+                builder: (context, constraints) => ToggleButtons(
+                  direction: Axis.horizontal,
+                  onPressed: (int index) {
+                    if (state.editMode) {
+                      context
+                          .read<Setting18GraphModuleBloc>()
+                          .add(AGCModeChanged(fwdAGCModeValues[index]));
+                    }
+                  },
+                  textStyle: const TextStyle(fontSize: 18.0),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  selectedBorderColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // indigo border color
+                  selectedColor: Theme.of(context)
+                      .colorScheme
+                      .onPrimary, // white text color
+
+                  fillColor: state.editMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // selected
+                  color:
+                      Theme.of(context).colorScheme.secondary, // not selected
+                  constraints: BoxConstraints.expand(
+                    width: (constraints.maxWidth - 4) / fwdAGCModeValues.length,
+                  ),
+                  isSelected: getSelectionState(state.agcMode),
+                  children: <Widget>[
+                    Text(AppLocalizations.of(context)!.on),
+                    Text(AppLocalizations.of(context)!.off),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+// 2024/0419 ALC 為 read only 且 ALC 的動作跟 AGC 連動
+class _ALCMode extends StatelessWidget {
+  const _ALCMode({
+    super.key,
+  });
+
+  final List<String> autoLevelControlValues = const [
+    '1',
+    '0',
+  ];
+
+  List<bool> getSelectionState(String selectedAutoLevelControl) {
+    Map<String, bool> autoLevelControlMap = {
+      '1': false,
+      '0': false,
+    };
+
+    if (autoLevelControlMap.containsKey(selectedAutoLevelControl)) {
+      autoLevelControlMap[selectedAutoLevelControl] = true;
+    }
+
+    return autoLevelControlMap.values.toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      buildWhen: (previous, current) =>
+          previous.alcMode != current.alcMode ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            bottom: 40.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: CustomStyle.sizeL,
+                ),
+                child: Text(
+                  '${AppLocalizations.of(context)!.alcMode}:',
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              LayoutBuilder(
+                builder: (context, constraints) => ToggleButtons(
+                  direction: Axis.horizontal,
+                  onPressed: (int index) {
+                    // if (state.editMode) {
+                    //   context.read<Setting18GraphModuleBloc>().add(
+                    //       AutoLevelControlChanged(
+                    //           autoLevelControlValues[index]));
+                    // }
+                  },
+                  textStyle: const TextStyle(fontSize: 18.0),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  selectedBorderColor: state.editMode && false
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // indigo border color
+                  selectedColor: Theme.of(context)
+                      .colorScheme
+                      .onPrimary, // white text color
+
+                  fillColor: state.editMode && false
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context)
+                          .colorScheme
+                          .inversePrimary, // selected
+                  color:
+                      Theme.of(context).colorScheme.secondary, // not selected
+                  constraints: BoxConstraints.expand(
+                    width: (constraints.maxWidth - 4) /
+                        autoLevelControlValues.length,
+                  ),
+                  isSelected: getSelectionState(state.alcMode),
+                  children: <Widget>[
+                    Text(AppLocalizations.of(context)!.on),
+                    Text(AppLocalizations.of(context)!.off),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+const List<String> rtnIngressValues = [
+  '0',
+  '1',
+  '2',
+  '4',
+];
+
+const List<String> tgcCableLengthValues = [
+  '9',
+  '18',
+  '27',
+];
+
+class _RtnIngressSetting2 extends StatelessWidget {
+  const _RtnIngressSetting2({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      buildWhen: (previous, current) =>
+          previous.returnIngressSetting2 != current.returnIngressSetting2 ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.returnIngressSetting2}:',
+          currentValue: state.returnIngressSetting2,
+          onChanged: (int index) {
+            context.read<Setting18GraphModuleBloc>().add(
+                RtnIngressSetting2Changed(
+                    returnIngressSetting2: rtnIngressValues[index]));
+          },
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _RtnIngressSetting3 extends StatelessWidget {
+  const _RtnIngressSetting3({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      buildWhen: (previous, current) =>
+          previous.returnIngressSetting3 != current.returnIngressSetting3 ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.returnIngressSetting3}:',
+          currentValue: state.returnIngressSetting3,
+          onChanged: (int index) {
+            context.read<Setting18GraphModuleBloc>().add(
+                RtnIngressSetting3Changed(
+                    returnIngressSetting3: rtnIngressValues[index]));
+          },
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _RtnIngressSetting4 extends StatelessWidget {
+  const _RtnIngressSetting4({
+    super.key,
+    required this.partId,
+  });
+
+  final String partId;
+
+  @override
+  Widget build(BuildContext context) {
+    if (partId == '5') {
+      return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+        buildWhen: (previous, current) =>
+            previous.returnIngressSetting2 != current.returnIngressSetting2 ||
+            previous.editMode != current.editMode,
+        builder: (context, state) {
+          return controlToggleButton(
+            context: context,
+            editMode: state.editMode,
+            title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
+            currentValue: state.returnIngressSetting2,
+            onChanged: (int index) {
+              context.read<Setting18GraphModuleBloc>().add(
+                  RtnIngressSetting2Changed(
+                      returnIngressSetting2: rtnIngressValues[index]));
+            },
+            values: rtnIngressValues,
+            texts: [
+              '0dB',
+              '-3dB',
+              '-6dB',
+              AppLocalizations.of(context)!.ingressOpen,
+            ],
+          );
+        },
+      );
+    } else {
+      return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+        buildWhen: (previous, current) =>
+            previous.returnIngressSetting4 != current.returnIngressSetting4 ||
+            previous.editMode != current.editMode,
+        builder: (context, state) {
+          return controlToggleButton(
+            context: context,
+            editMode: state.editMode,
+            title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
+            currentValue: state.returnIngressSetting4,
+            onChanged: (int index) {
+              context.read<Setting18GraphModuleBloc>().add(
+                  RtnIngressSetting4Changed(
+                      returnIngressSetting4: rtnIngressValues[index]));
+            },
+            values: rtnIngressValues,
+            texts: [
+              '0dB',
+              '-3dB',
+              '-6dB',
+              AppLocalizations.of(context)!.ingressOpen,
+            ],
+          );
+        },
+      );
+    }
+  }
+}
+
+class _RtnIngressSetting2And3 extends StatelessWidget {
+  const _RtnIngressSetting2And3({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      buildWhen: (previous, current) =>
+          previous.returnIngressSetting3 != current.returnIngressSetting3 ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.returnIngressSetting2And3}:',
+          currentValue: state.returnIngressSetting3,
+          onChanged: (int index) {
+            context.read<Setting18GraphModuleBloc>().add(
+                RtnIngressSetting3Changed(
+                    returnIngressSetting3: rtnIngressValues[index]));
+          },
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _RtnIngressSetting5And6 extends StatelessWidget {
+  const _RtnIngressSetting5And6({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      buildWhen: (previous, current) =>
+          previous.returnIngressSetting4 != current.returnIngressSetting4 ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.returnIngressSetting5And6}:',
+          currentValue: state.returnIngressSetting4,
+          onChanged: (int index) {
+            context.read<Setting18GraphModuleBloc>().add(
+                RtnIngressSetting4Changed(
+                    returnIngressSetting4: rtnIngressValues[index]));
+          },
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
         );
       },
     );

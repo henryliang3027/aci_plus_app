@@ -241,10 +241,10 @@ class Setting18ConfigureView extends StatelessWidget {
             ));
             break;
           case SettingConfiruration.agcMode:
-            widgets.add(const _FwdAGCMode());
+            widgets.add(const _AGCMode());
             break;
           case SettingConfiruration.alcMode:
-            widgets.add(const _AutoLevelControl());
+            widgets.add(const _ALCMode());
             break;
           case SettingConfiruration.logInterval:
             widgets.add(const _LogInterval());
@@ -293,8 +293,8 @@ class Setting18ConfigureView extends StatelessWidget {
                 manualModePilot2RFOutputPowerTextEditingController:
                     manualModePilot2RFOutputPowerTextEditingController,
               ),
-              const _FwdAGCMode(),
-              const _AutoLevelControl(),
+              const _AGCMode(),
+              const _ALCMode(),
               const _LogInterval(),
               const _RFOutputLogInterval(),
               // const _TGCCableLength(),
@@ -791,8 +791,8 @@ class _PilotFrequency2 extends StatelessWidget {
   }
 }
 
-class _FwdAGCMode extends StatelessWidget {
-  const _FwdAGCMode({
+class _AGCMode extends StatelessWidget {
+  const _AGCMode({
     super.key,
   });
 
@@ -818,7 +818,7 @@ class _FwdAGCMode extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       buildWhen: (previous, current) =>
-          previous.fwdAGCMode != current.fwdAGCMode ||
+          previous.agcMode != current.agcMode ||
           previous.editMode != current.editMode,
       builder: (context, state) {
         return Padding(
@@ -847,7 +847,7 @@ class _FwdAGCMode extends StatelessWidget {
                     if (state.editMode) {
                       context
                           .read<Setting18ConfigureBloc>()
-                          .add(FwdAGCModeChanged(fwdAGCModeValues[index]));
+                          .add(AGCModeChanged(fwdAGCModeValues[index]));
                     }
                   },
                   textStyle: const TextStyle(fontSize: 18.0),
@@ -871,7 +871,7 @@ class _FwdAGCMode extends StatelessWidget {
                   constraints: BoxConstraints.expand(
                     width: (constraints.maxWidth - 4) / fwdAGCModeValues.length,
                   ),
-                  isSelected: getSelectionState(state.fwdAGCMode),
+                  isSelected: getSelectionState(state.agcMode),
                   children: <Widget>[
                     Text(AppLocalizations.of(context)!.on),
                     Text(AppLocalizations.of(context)!.off),
@@ -887,8 +887,8 @@ class _FwdAGCMode extends StatelessWidget {
 }
 
 // 2024/0419 ALC 為 read only 且 ALC 的動作跟 AGC 連動
-class _AutoLevelControl extends StatelessWidget {
-  const _AutoLevelControl({
+class _ALCMode extends StatelessWidget {
+  const _ALCMode({
     super.key,
   });
 
@@ -914,7 +914,7 @@ class _AutoLevelControl extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       buildWhen: (previous, current) =>
-          previous.autoLevelControl != current.autoLevelControl ||
+          previous.alcMode != current.alcMode ||
           previous.editMode != current.editMode,
       builder: (context, state) {
         return Padding(
@@ -968,7 +968,7 @@ class _AutoLevelControl extends StatelessWidget {
                     width: (constraints.maxWidth - 4) /
                         autoLevelControlValues.length,
                   ),
-                  isSelected: getSelectionState(state.autoLevelControl),
+                  isSelected: getSelectionState(state.alcMode),
                   children: <Widget>[
                     Text(AppLocalizations.of(context)!.on),
                     Text(AppLocalizations.of(context)!.off),

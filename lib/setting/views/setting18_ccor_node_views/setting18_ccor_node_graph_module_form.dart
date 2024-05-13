@@ -34,7 +34,7 @@ class _Setting18CCorNodeGraphModuleFormState
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> getSettingWidgetByModuleId() {
+    List<Widget> getForwardSettingWidgetByModuleId() {
       String moduleName = widget.moduleName;
 
       if (moduleName == DataKey.forwardConfig.name) {
@@ -91,21 +91,33 @@ class _Setting18CCorNodeGraphModuleFormState
         return [
           const _ForwardBiasCurrent6(),
         ];
-      } else if (moduleName == DataKey.usVCA1.name) {
+      } else {
+        return [];
+      }
+    }
+
+    List<Widget> getReverseSettingWidgetByModuleId() {
+      String moduleName = widget.moduleName;
+
+      if (moduleName == DataKey.usVCA1.name) {
         return [
           const _ReturnInputAttenuation1(),
+          const _ReturnIngressSetting1(),
         ];
       } else if (moduleName == DataKey.usVCA3.name) {
         return [
           const _ReturnInputAttenuation3(),
+          const _ReturnIngressSetting3(),
         ];
       } else if (moduleName == DataKey.usVCA4.name) {
         return [
           const _ReturnInputAttenuation4(),
+          const _ReturnIngressSetting4(),
         ];
       } else if (moduleName == DataKey.usVCA6.name) {
         return [
           const _ReturnInputAttenuation6(),
+          const _ReturnIngressSetting6(),
         ];
       } else {
         return [];
@@ -173,9 +185,59 @@ class _Setting18CCorNodeGraphModuleFormState
       } else if (item == DataKey.usVCA6.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnInputAttenuation6Setting;
+      } else if (item == DataKey.ingressSetting1.name) {
+        return AppLocalizations.of(context)!.dialogMessageReturnIngress1Setting;
+      } else if (item == DataKey.ingressSetting3.name) {
+        return AppLocalizations.of(context)!.dialogMessageReturnIngress3Setting;
+      } else if (item == DataKey.ingressSetting4.name) {
+        return AppLocalizations.of(context)!.dialogMessageReturnIngress4Setting;
+      } else if (item == DataKey.ingressSetting6.name) {
+        return AppLocalizations.of(context)!.dialogMessageReturnIngress6Setting;
       } else {
         return '';
       }
+    }
+
+    Widget getSettingWidgetHeader(String title) {
+      return Padding(
+        padding: const EdgeInsets.only(
+          bottom: 16,
+        ),
+        child: Row(
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: CustomStyle.sizeXL,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    List<Widget> getSettingWidgetByModuleId() {
+      List<Widget> settingWidgets = [];
+      List<Widget> forwardSettingWidgets = getForwardSettingWidgetByModuleId();
+      List<Widget> reverseSettingWidgets = getReverseSettingWidgetByModuleId();
+      Widget forwardSettingHeader = getSettingWidgetHeader(
+          AppLocalizations.of(context)!.forwardControlParameters);
+      Widget reverseSettingHeader = getSettingWidgetHeader(
+          AppLocalizations.of(context)!.returnControlParameters);
+
+      if (forwardSettingWidgets.isNotEmpty) {
+        settingWidgets.add(forwardSettingHeader);
+        settingWidgets.addAll(forwardSettingWidgets);
+      }
+
+      if (reverseSettingWidgets.isNotEmpty) {
+        settingWidgets.add(reverseSettingHeader);
+        settingWidgets.addAll(reverseSettingWidgets);
+      }
+
+      return settingWidgets;
     }
 
     Color getResultValueColor(String resultValue) {
@@ -963,6 +1025,157 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
                   usVCA6: usVCA6,
                 ));
           },
+        );
+      },
+    );
+  }
+}
+
+List<String> rtnIngressValues = const [
+  '0',
+  '1',
+  '2',
+  '4',
+];
+
+class _ReturnIngressSetting1 extends StatelessWidget {
+  const _ReturnIngressSetting1({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
+        Setting18CCorNodeGraphModuleState>(
+      buildWhen: (previous, current) =>
+          previous.returnIngressSetting1 != current.returnIngressSetting1 ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.returnIngressSetting1}:',
+          currentValue: state.returnIngressSetting1,
+          onChanged: (int index) {
+            context
+                .read<Setting18CCorNodeGraphModuleBloc>()
+                .add(ReturnIngressSetting1Changed(rtnIngressValues[index]));
+          },
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _ReturnIngressSetting3 extends StatelessWidget {
+  const _ReturnIngressSetting3({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
+        Setting18CCorNodeGraphModuleState>(
+      buildWhen: (previous, current) =>
+          previous.returnIngressSetting3 != current.returnIngressSetting3 ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.returnIngressSetting3}:',
+          currentValue: state.returnIngressSetting3,
+          onChanged: (int index) {
+            context
+                .read<Setting18CCorNodeGraphModuleBloc>()
+                .add(ReturnIngressSetting3Changed(rtnIngressValues[index]));
+          },
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _ReturnIngressSetting4 extends StatelessWidget {
+  const _ReturnIngressSetting4({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
+        Setting18CCorNodeGraphModuleState>(
+      buildWhen: (previous, current) =>
+          previous.returnIngressSetting4 != current.returnIngressSetting4 ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
+          currentValue: state.returnIngressSetting4,
+          onChanged: (int index) {
+            context
+                .read<Setting18CCorNodeGraphModuleBloc>()
+                .add(ReturnIngressSetting4Changed(rtnIngressValues[index]));
+          },
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _ReturnIngressSetting6 extends StatelessWidget {
+  const _ReturnIngressSetting6({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
+        Setting18CCorNodeGraphModuleState>(
+      buildWhen: (previous, current) =>
+          previous.returnIngressSetting6 != current.returnIngressSetting6 ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.returnIngressSetting6}:',
+          currentValue: state.returnIngressSetting6,
+          onChanged: (int index) {
+            context
+                .read<Setting18CCorNodeGraphModuleBloc>()
+                .add(ReturnIngressSetting6Changed(rtnIngressValues[index]));
+          },
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
         );
       },
     );
