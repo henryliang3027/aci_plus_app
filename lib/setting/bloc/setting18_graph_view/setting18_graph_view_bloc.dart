@@ -47,19 +47,22 @@ class Setting18GraphViewBloc
     }
 
     for (var element in rects) {
-      String moduleName = element.getAttribute('module').toString();
-      double x = double.parse(element.getAttribute('x').toString());
-      double y = double.parse(element.getAttribute('y').toString());
-      double width = double.parse(element.getAttribute('width').toString());
-      double height = double.parse(element.getAttribute('height').toString());
+      String? moduleName = element.getAttribute('module');
 
-      boxes.add(Box(
-        moduleName: moduleName,
-        x: x,
-        y: y,
-        width: width,
-        height: height,
-      ));
+      if (moduleName != null) {
+        double x = double.parse(element.getAttribute('x').toString());
+        double y = double.parse(element.getAttribute('y').toString());
+        double width = double.parse(element.getAttribute('width').toString());
+        double height = double.parse(element.getAttribute('height').toString());
+
+        boxes.add(Box(
+          moduleName: moduleName,
+          x: x,
+          y: y,
+          width: width,
+          height: height,
+        ));
+      }
     }
 
     SVGImage svgImage = SVGImage(

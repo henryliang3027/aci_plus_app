@@ -63,19 +63,20 @@ dependencies:
   qr_flutter: ^4.1.0
   json_annotation: ^4.8.1
   package_info_plus: ^5.0.1
-  path_drawing:
-    git:
-      url: https://github.com/henryliang3027/flutter_path_drawing.git
-      ref: master
-  # assets_audio_player: ^3.1.0
-
-  # flutter_speed_chart:
-  #   path: /Users/henry.liang/projects/flutter_speed_chart
-  
+  flutter_svg: 2.0.10+1
   flutter_speed_chart:
     git:
       url: https://github.com/henryliang3027/flutter_speed_chart.git
       ref: discreteX
+
+  # path_drawing:
+  #   git:
+  #     url: https://github.com/henryliang3027/flutter_path_drawing.git
+  #     ref: master
+  # assets_audio_player: ^3.1.0
+
+  # flutter_speed_chart:
+  #   path: /Users/henry.liang/projects/flutter_speed_chart
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

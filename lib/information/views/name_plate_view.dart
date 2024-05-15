@@ -62,7 +62,7 @@ class _NamePlateInteractor extends StatelessWidget {
     String namePlatePath = namePlateFilePath[partId] ?? '';
 
     return PopScope(
-      onPopInvoked: (bool canPop) async {
+      onPopInvoked: (bool didPop) async {
         setPreferredOrientation();
       },
       child: InteractiveViewer(

@@ -90,7 +90,7 @@ class Informtion18ConfigListView extends StatelessWidget {
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   child: Text(
-                    AppLocalizations.of(context)!.dialogMessageCancel,
+                    AppLocalizations.of(context)!.dialogMessageOk,
                   ),
                 ),
               ],

@@ -56,10 +56,9 @@ class _GraphInteractor extends StatelessWidget {
 
     return BlocBuilder<Setting18GraphViewBloc, Setting18GraphViewState>(
       builder: (context, state) {
-        return WillPopScope(
-          onWillPop: () async {
+        return PopScope(
+          onPopInvoked: (bool didPop) {
             setPreferredOrientation();
-            return true;
           },
           child: InteractiveViewer(
             child: Stack(

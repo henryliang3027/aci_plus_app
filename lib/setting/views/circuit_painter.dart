@@ -3,9 +3,7 @@ import 'dart:math';
 import 'package:aci_plus_app/setting/model/svg_image.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_graph_module_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_module_page.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:path_drawing/path_drawing.dart';
 import 'package:touchable/touchable.dart';
 
 class CircuitPainter extends CustomPainter {
@@ -63,59 +61,83 @@ class CircuitPainter extends CustomPainter {
 
     // canvas.translate(offsetX, offsetY);
 
-    final translateM = Float64List.fromList([
-      scaleFactor,
-      0,
-      0,
-      0,
-      0,
-      scaleFactor,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      offsetX,
-      offsetY,
-      0,
-      1,
-    ]);
+    // final translateM = Float64List.fromList([
+    //   scaleFactor,
+    //   0,
+    //   0,
+    //   0,
+    //   0,
+    //   scaleFactor,
+    //   0,
+    //   0,
+    //   0,
+    //   0,
+    //   1,
+    //   0,
+    //   offsetX,
+    //   offsetY,
+    //   0,
+    //   1,
+    // ]);
 
-    canvas.transform(translateM);
+    // canvas.transform(translateM);
 
-    for (Component component in svgImage.components) {
-      final Path path = parseSvgPathData(component.path);
-      int decimalColor = int.parse(component.color, radix: 16);
-      canvas.drawPath(
-        path,
-        Paint()..color = Color(decimalColor),
-      );
-    }
+    // for (Component component in svgImage.components) {
+    //   final Path path = parseSvgPathData(component.path);
+    //   int decimalColor = int.parse(component.color, radix: 16);
+    //   canvas.drawPath(
+    //     path,
+    //     Paint()..color = Color(decimalColor),
+    //   );
+    // }
 
     var myCanvas = TouchyCanvas(context, canvas);
     for (Box box in svgImage.boxes) {
-      // canvas.drawRRect(
-      //   RRect.fromRectAndRadius(
-      //       Rect.fromLTWH(box.x, box.y, box.width, box.height),
-      //       Radius.circular(10.0)),
-      //   Paint()
-      //     ..color = Colors.black
-      //     ..style = PaintingStyle.stroke
-      //     ..strokeWidth = 2.0,
+      // final textStyle = TextStyle(
+      //   background: Paint()..color = Color.fromARGB(255, 170, 214, 255),
+      //   color: Colors.black,
+      //   fontSize: 12,
       // );
+      // final textSpan = TextSpan(
+      //   text: '12 dB',
+      //   style: textStyle,
+      // );
+
+      // final textPainter = TextPainter(
+      //   text: textSpan,
+      //   textDirection: TextDirection.ltr,
+      // );
+      // textPainter.layout(
+      //   minWidth: 0,
+      //   maxWidth: size.width,
+      // );
+
+      // textPainter.paint(
+      //     canvas,
+      //     Offset((box.x + box.width - 50) * scaleFactor + offsetX,
+      //         (box.y + box.height - 50) * scaleFactor + offsetY));
+
+      Rect rect = Rect.fromLTWH(
+          box.x * scaleFactor + offsetX,
+          box.y * scaleFactor + offsetY,
+          box.width * scaleFactor,
+          box.height * scaleFactor);
+
+      Paint paint = Paint()
+        ..color = Color.fromARGB(0, 43, 255, 0)
+        ..style = PaintingStyle.fill
+        ..strokeWidth = 1.0;
+
       myCanvas.drawRect(
-          Rect.fromLTWH(
-              box.x * scaleFactor + offsetX,
-              box.y * scaleFactor + offsetY,
-              box.width * scaleFactor,
-              box.height * scaleFactor),
-          Paint()..color = Colors.transparent, onTapUp: (details) {
-        showModuleSettingDialog(
-          context: context,
-          moduleName: box.moduleName,
-        );
-      });
+        rect,
+        paint,
+        onTapUp: (details) {
+          showModuleSettingDialog(
+            context: context,
+            moduleName: box.moduleName,
+          );
+        },
+      );
     }
   }
 
