@@ -7,6 +7,7 @@ import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/information/views/information18_ccor_node_page.dart';
 import 'package:aci_plus_app/information/views/information18_page.dart';
@@ -207,6 +208,7 @@ class _HomeFormState extends State<HomeForm> {
           // 當斷線時, 關閉目前顯示的 dialog (下載全部 log (download all) 或 load preset)
           if (ModalRoute.of(context)?.isCurrent == false) {
             Navigator.of(context).pop();
+            setPreferredOrientation();
           }
 
           showFailureDialog(state.errorMassage);

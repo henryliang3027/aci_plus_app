@@ -132,6 +132,7 @@ class Amp18Parser {
     String ingressSetting2 = '';
     String ingressSetting3 = '';
     String ingressSetting4 = '';
+    String forwardCEQIndex = '';
     String rfOutputLogInterval = '';
     String tgcCableLength = '';
     String splitOption = '';
@@ -245,6 +246,9 @@ class Amp18Parser {
 
     // 解析 ingress setting 4
     ingressSetting4 = rawData[21].toString();
+
+    // 解析 forwardCEQIndex
+    forwardCEQIndex = rawData[22].toString();
 
     // 解析 RF Output log interval
     rfOutputLogInterval = rawData[23].toString();
@@ -471,6 +475,7 @@ class Amp18Parser {
       ingressSetting2: ingressSetting2,
       ingressSetting3: ingressSetting3,
       ingressSetting4: ingressSetting4,
+      forwardCEQIndex: forwardCEQIndex,
       rfOutputLogInterval: rfOutputLogInterval,
       tgcCableLength: tgcCableLength,
       splitOption: splitOption,
@@ -1903,6 +1908,7 @@ class A1P8G1 {
     required this.ingressSetting2,
     required this.ingressSetting3,
     required this.ingressSetting4,
+    required this.forwardCEQIndex,
     required this.rfOutputLogInterval,
     required this.tgcCableLength,
     required this.splitOption,
@@ -1957,6 +1963,7 @@ class A1P8G1 {
   final String ingressSetting2;
   final String ingressSetting3;
   final String ingressSetting4;
+  final String forwardCEQIndex;
   final String rfOutputLogInterval;
   final String tgcCableLength;
   final String splitOption;

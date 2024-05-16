@@ -843,7 +843,8 @@ class Setting18ConfigureBloc
       bool resultOfSetALCMode =
           await _amp18Repository.set1p8GALCMode(state.alcMode);
 
-      settingResult.add('${DataKey.alcMode.name},$resultOfSetALCMode');
+      // 20240516 不顯示設定的結果, 之後不具備 ALC 功能
+      // settingResult.add('${DataKey.alcMode.name},$resultOfSetALCMode');
     }
 
     if (state.logInterval != state.initialValues[DataKey.logInterval]) {

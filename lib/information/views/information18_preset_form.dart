@@ -171,7 +171,10 @@ class _Information18PresetFormState extends State<Information18PresetForm> {
               _StopFrequency(),
               _StopLevel(),
               _FwdAGCMode(),
-              _AutoLevelControl(),
+
+              // 20240516 不顯示設定項目, 之後不具備 ALC 功能
+              // _AutoLevelControl(),
+
               SizedBox(
                 height: 200.0,
               ),

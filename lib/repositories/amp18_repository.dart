@@ -8,6 +8,7 @@ import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:excel/excel.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 
 class Amp18Repository {
@@ -120,6 +121,8 @@ class Amp18Repository {
         DataKey.ingressSetting2: a1p8g1.ingressSetting2,
         DataKey.ingressSetting3: a1p8g1.ingressSetting3,
         DataKey.ingressSetting4: a1p8g1.ingressSetting4,
+        DataKey.forwardCEQIndex: a1p8g1.forwardCEQIndex,
+        DataKey.rfOutputLogInterval: a1p8g1.rfOutputLogInterval,
         DataKey.tgcCableLength: a1p8g1.tgcCableLength,
         DataKey.splitOption: a1p8g1.splitOption,
         DataKey.pilotFrequencyMode: a1p8g1.pilotFrequencyMode,
@@ -146,7 +149,7 @@ class Amp18Repository {
         DataKey.rfOutputPowerAlarmState: a1p8g1.outputPowerAlarmState,
         DataKey.location: a1p8g1.location,
         DataKey.logInterval: a1p8g1.logInterval,
-        DataKey.rfOutputLogInterval: a1p8g1.rfOutputLogInterval,
+
         DataKey.dsVVA1: a1p8g1.dsVVA1,
         DataKey.dsSlope1: a1p8g1.dsSlope1,
         DataKey.dsVVA2: a1p8g1.dsVVA2,

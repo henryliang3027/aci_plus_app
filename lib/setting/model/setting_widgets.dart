@@ -17,6 +17,26 @@ double _getBondaryValue({
   }
 }
 
+String getForwardCEQText(String index) {
+  if (index.isNotEmpty) {
+    int intIndex = int.parse(index);
+
+    if (intIndex >= 0 && intIndex <= 24) {
+      return 'CEQ';
+    } else if (intIndex == 120) {
+      return '1.2G EQ';
+    } else if (intIndex == 180) {
+      return '1.8G EQ';
+    } else if (intIndex == 255) {
+      return 'N/A';
+    } else {
+      return '';
+    }
+  } else {
+    return '';
+  }
+}
+
 String getInputAttenuation({
   required String alcMode,
   required String inputAttenuation,
@@ -495,6 +515,7 @@ Widget controlTextSlider({
   required double maxValue,
   required ValueChanged<String> onChanged,
   double step = 0.5,
+  String subTitle = '',
 }) {
   // textEditingController.text = currentValue;
   return Padding(
@@ -509,6 +530,7 @@ Widget controlTextSlider({
             bottom: CustomStyle.sizeL,
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: Text(
@@ -517,6 +539,13 @@ Widget controlTextSlider({
                     fontSize: CustomStyle.sizeXL,
                     fontWeight: FontWeight.w500,
                   ),
+                ),
+              ),
+              Text(
+                subTitle,
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeXL,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],

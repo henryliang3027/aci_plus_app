@@ -1453,7 +1453,8 @@ class Setting18GraphModuleBloc
       bool resultOfSetALCMode =
           await _amp18Repository.set1p8GALCMode(state.alcMode);
 
-      settingResult.add('${DataKey.alcMode.name},$resultOfSetALCMode');
+      // 20240516 不顯示設定的結果, 之後不具備 ALC 功能
+      // settingResult.add('${DataKey.alcMode.name},$resultOfSetALCMode');
     }
 
     // 等待 device 完成更新後在讀取值
@@ -1465,7 +1466,6 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
       enableSubmission: false,
-      editMode: false,
       isInitialize: true,
       initialValues: _amp18Repository.characteristicDataCache,
     ));

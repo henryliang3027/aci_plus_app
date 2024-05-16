@@ -102,7 +102,7 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
                 manualModePilot2RFOutputPowerTextEditingController,
           ),
           const _AGCMode(),
-          const _ALCMode(),
+          // const _ALCMode(),
         ];
       } else if (moduleName == DataKey.dsVVA1.name) {
         return [
@@ -783,7 +783,7 @@ class _RtnOutputEQ extends StatelessWidget {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
         double minValue = 0.0;
-        double maxValue = 12.0;
+        double maxValue = 15.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,

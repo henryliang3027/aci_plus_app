@@ -243,9 +243,9 @@ class Setting18ConfigureView extends StatelessWidget {
           case SettingConfiruration.agcMode:
             widgets.add(const _AGCMode());
             break;
-          case SettingConfiruration.alcMode:
-            widgets.add(const _ALCMode());
-            break;
+          // case SettingConfiruration.alcMode:
+          //   widgets.add(const _ALCMode());
+          //   break;
           case SettingConfiruration.logInterval:
             widgets.add(const _LogInterval());
             break;

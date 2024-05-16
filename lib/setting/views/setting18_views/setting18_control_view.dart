@@ -34,6 +34,9 @@ class Setting18ControlView extends StatelessWidget {
     String factoryDefaultNumber =
         homeState.characteristicData[DataKey.factoryDefaultNumber] ?? '';
 
+    String forwardCEQIndex =
+        homeState.characteristicData[DataKey.forwardCEQIndex] ?? '';
+
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
           ? AppLocalizations.of(context)!.dialogMessageSuccessful
@@ -176,6 +179,7 @@ class Setting18ControlView extends StatelessWidget {
           case SettingControl.forwardInputEqualizer1:
             widgets.add(
               _ForwardInputEqualizer(
+                forwardCEQIndex: forwardCEQIndex,
                 alcMode: alcMode,
                 agcMode: agcMode,
                 currentInputEqualizer: currentInputEqualizer,
@@ -223,6 +227,7 @@ class Setting18ControlView extends StatelessWidget {
                 currentInputAttenuation: currentInputAttenuation,
               ),
               _ForwardInputEqualizer(
+                forwardCEQIndex: forwardCEQIndex,
                 alcMode: alcMode,
                 agcMode: agcMode,
                 currentInputEqualizer: currentInputEqualizer,
@@ -766,11 +771,13 @@ class _ForwardInputAttenuation extends StatelessWidget {
 class _ForwardInputEqualizer extends StatelessWidget {
   const _ForwardInputEqualizer({
     super.key,
+    required this.forwardCEQIndex,
     required this.alcMode,
     required this.agcMode,
     required this.currentInputEqualizer,
   });
 
+  final String forwardCEQIndex;
   final String alcMode;
   final String agcMode;
   final String currentInputEqualizer;
@@ -798,6 +805,7 @@ class _ForwardInputEqualizer extends StatelessWidget {
           editMode: state.editMode && alcMode == '0' && agcMode == '0',
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
+          subTitle: getForwardCEQText(forwardCEQIndex),
           minValue: minValue,
           currentValue: inputEqualizer,
           maxValue: maxValue,
@@ -1208,7 +1216,7 @@ class _RtnOutputEQ extends StatelessWidget {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         double minValue = 0.0;
-        double maxValue = 12.0;
+        double maxValue = 15.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,

@@ -95,8 +95,9 @@ class Information18PresetBloc
         await _amp18Repository.set1p8GForwardAGCMode('1');
     settingResult.add('${DataKey.agcMode.name},$resultOfSetForwardAGCMode');
 
-    bool resultOfSetALCMode = await _amp18Repository.set1p8GALCMode('1');
-    settingResult.add('${DataKey.alcMode.name},$resultOfSetALCMode');
+    // 20240516 不顯示設定的結果, 之後不具備 ALC 功能
+    // bool resultOfSetALCMode = await _amp18Repository.set1p8GALCMode('1');
+    // settingResult.add('${DataKey.alcMode.name},$resultOfSetALCMode');
 
     // 等待 device 完成更新後在讀取值
     await Future.delayed(const Duration(milliseconds: 1000));
