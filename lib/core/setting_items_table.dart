@@ -127,19 +127,19 @@ const Map<String, String> partIdMap = {
 
 const Map<String, String> settingGraphFilePath = {
   '1':
-      'assets/circuits/LE_1.8G_20240425.svg', // assets/circuits/LE_1.8G_20240425.svg
+      'assets/circuits/LE_1.8G_20240516.svg', // assets/circuits/LE_1.8G_20240425.svg
   '2':
-      'assets/circuits/BLE_1.8G_20240514.svg', // assets/circuits/LE_1.8G_20240425.svg
+      'assets/circuits/BLE_1.8G_20240516.svg', // assets/circuits/LE_1.8G_20240425.svg
   '3':
-      'assets/circuits/MB_1.8G_20240514.svg', // assets/circuits/MB_1.8G_20240425.svg
+      'assets/circuits/MB_1.8G_20240516.svg', // assets/circuits/MB_1.8G_20240425.svg
   '4':
-      'assets/circuits/NODE_1.8G_20240514.svg', // assets/circuits/NODE_1.8G_20240507.svg
+      'assets/circuits/NODE_1.8G_20240516.svg', // assets/circuits/NODE_1.8G_20240507.svg
   '5':
-      'assets/circuits/TR_1.8G_20240514.svg', // assets/circuits/TR_1.8G_20240506.svg
+      'assets/circuits/TR_1.8G_20240516.svg', // assets/circuits/TR_1.8G_20240506.svg
   '6':
-      'assets/circuits/BR_1.8G_20240514.svg', // assets/circuits/BR_1.8G_20240506.svg
+      'assets/circuits/BR_1.8G_20240516.svg', // assets/circuits/BR_1.8G_20240506.svg
   '7':
-      'assets/circuits/LE_1.8G_20240514.svg', // assets/circuits/LE_1.8G_20240425.svg
+      'assets/circuits/LE_1.8G_20240516.svg', // assets/circuits/LE_1.8G_20240425.svg
 };
 
 const Map<String, String> namePlateFilePath = {

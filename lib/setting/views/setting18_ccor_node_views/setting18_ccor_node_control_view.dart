@@ -262,10 +262,14 @@ class Setting18CCorNodeControlView extends StatelessWidget {
               const _ForwardInputAttenuation3(),
               const _ForwardInputAttenuation4(),
               const _ForwardInputAttenuation6(),
-              const _ForwardInputEqualizer1(),
-              const _ForwardInputEqualizer3(),
-              const _ForwardInputEqualizer4(),
-              const _ForwardInputEqualizer6(),
+              const _ForwardOutputEqualizer1(),
+              const _ForwardOutputEqualizer3(),
+              const _ForwardOutputEqualizer4(),
+              const _ForwardOutputEqualizer6(),
+              const _ForwardBiasCurrent1(),
+              const _ForwardBiasCurrent3(),
+              const _ForwardBiasCurrent4(),
+              const _ForwardBiasCurrent6(),
             ];
     }
 

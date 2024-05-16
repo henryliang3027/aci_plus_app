@@ -202,6 +202,7 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
               _Coordinates(
                 textEditingController: coordinateTextEditingController,
               ),
+              const _ForwardConfig(),
               const _SplitOption(),
               const _LogInterval(),
             ];

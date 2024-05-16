@@ -294,7 +294,7 @@ class Setting18ConfigureView extends StatelessWidget {
                     manualModePilot2RFOutputPowerTextEditingController,
               ),
               const _AGCMode(),
-              const _ALCMode(),
+              // const _ALCMode(),
               const _LogInterval(),
               const _RFOutputLogInterval(),
               // const _TGCCableLength(),

@@ -106,7 +106,7 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         ];
       } else if (moduleName == DataKey.dsVVA1.name) {
         return [
-          _ForwardInputAttenuation(
+          _ForwardInputAttenuation1(
             alcMode: alcMode,
             agcMode: agcMode,
             currentInputAttenuation: currentInputAttenuation,
@@ -122,7 +122,7 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         return [const _ForwardOutputAttenuation5And6()];
       } else if (moduleName == DataKey.dsSlope1.name) {
         return [
-          _ForwardInputEqualizer(
+          _ForwardInputEqualizer1(
             alcMode: alcMode,
             agcMode: agcMode,
             currentInputEqualizer: currentInputEqualizer,
@@ -143,47 +143,47 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       if (moduleName == DataKey.usVCA1.name) {
         if (partId == '5') {
           return [
-            _RtnInputAttenuation4(partId: partId),
-            _RtnIngressSetting4(partId: partId),
+            _ReturnInputAttenuation4(partId: partId),
+            _ReturnIngressSetting4(partId: partId),
           ];
         } else {
           return [
-            const _RtnInputAttenuation2(),
-            const _RtnIngressSetting2(),
+            const _ReturnInputAttenuation2(),
+            const _ReturnIngressSetting2(),
           ];
         }
       } else if (moduleName == DataKey.usVCA2.name) {
-        return [const _RtnOutputLevelAttenuation()];
+        return [const _ReturnOutputAttenuation1()];
       } else if (moduleName == DataKey.usVCA3.name) {
         if (partId == '5' || partId == '6') {
           return [
-            const _RtnInputAttenuation2And3(),
-            const _RtnIngressSetting2And3(),
+            const _ReturnInputAttenuation2And3(),
+            const _ReturnIngressSetting2And3(),
           ];
         } else {
           return [
-            const _RtnInputAttenuation3(),
-            const _RtnIngressSetting3(),
+            const _ReturnInputAttenuation3(),
+            const _ReturnIngressSetting3(),
           ];
         }
       } else if (moduleName == DataKey.usVCA4.name) {
         if (partId == '5' || partId == '6') {
           return [
-            const _RtnInputAttenuation5And6(),
-            const _RtnIngressSetting5And6(),
+            const _ReturnInputAttenuation5And6(),
+            const _ReturnIngressSetting5And6(),
           ];
         } else {
           return [
-            _RtnInputAttenuation4(
+            _ReturnInputAttenuation4(
               partId: partId,
             ),
-            _RtnIngressSetting4(
+            _ReturnIngressSetting4(
               partId: partId,
             ),
           ];
         }
       } else if (moduleName == DataKey.eREQ.name) {
-        return [const _RtnOutputEQ()];
+        return [const _ReturnOutputEqualizer1()];
       } else {
         return [];
       }
@@ -437,8 +437,8 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
   }
 }
 
-class _ForwardInputAttenuation extends StatelessWidget {
-  const _ForwardInputAttenuation({
+class _ForwardInputAttenuation1 extends StatelessWidget {
+  const _ForwardInputAttenuation1({
     super.key,
     required this.alcMode,
     required this.agcMode,
@@ -500,8 +500,8 @@ class _ForwardInputAttenuation extends StatelessWidget {
   }
 }
 
-class _ForwardInputEqualizer extends StatelessWidget {
-  const _ForwardInputEqualizer({
+class _ForwardInputEqualizer1 extends StatelessWidget {
+  const _ForwardInputEqualizer1({
     super.key,
     required this.alcMode,
     required this.agcMode,
@@ -743,8 +743,8 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
   }
 }
 
-class _RtnOutputLevelAttenuation extends StatelessWidget {
-  const _RtnOutputLevelAttenuation({
+class _ReturnOutputAttenuation1 extends StatelessWidget {
+  const _ReturnOutputAttenuation1({
     super.key,
   });
 
@@ -773,8 +773,8 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
   }
 }
 
-class _RtnOutputEQ extends StatelessWidget {
-  const _RtnOutputEQ({
+class _ReturnOutputEqualizer1 extends StatelessWidget {
+  const _ReturnOutputEqualizer1({
     super.key,
   });
 
@@ -803,8 +803,8 @@ class _RtnOutputEQ extends StatelessWidget {
   }
 }
 
-class _RtnInputAttenuation2 extends StatelessWidget {
-  const _RtnInputAttenuation2({
+class _ReturnInputAttenuation2 extends StatelessWidget {
+  const _ReturnInputAttenuation2({
     super.key,
   });
 
@@ -833,8 +833,8 @@ class _RtnInputAttenuation2 extends StatelessWidget {
   }
 }
 
-class _RtnInputAttenuation3 extends StatelessWidget {
-  const _RtnInputAttenuation3({
+class _ReturnInputAttenuation3 extends StatelessWidget {
+  const _ReturnInputAttenuation3({
     super.key,
   });
 
@@ -863,8 +863,8 @@ class _RtnInputAttenuation3 extends StatelessWidget {
   }
 }
 
-class _RtnInputAttenuation2And3 extends StatelessWidget {
-  const _RtnInputAttenuation2And3({
+class _ReturnInputAttenuation2And3 extends StatelessWidget {
+  const _ReturnInputAttenuation2And3({
     super.key,
   });
 
@@ -893,8 +893,8 @@ class _RtnInputAttenuation2And3 extends StatelessWidget {
   }
 }
 
-class _RtnInputAttenuation4 extends StatelessWidget {
-  const _RtnInputAttenuation4({
+class _ReturnInputAttenuation4 extends StatelessWidget {
+  const _ReturnInputAttenuation4({
     super.key,
     required this.partId,
   });
@@ -949,8 +949,8 @@ class _RtnInputAttenuation4 extends StatelessWidget {
   }
 }
 
-class _RtnInputAttenuation5And6 extends StatelessWidget {
-  const _RtnInputAttenuation5And6({
+class _ReturnInputAttenuation5And6 extends StatelessWidget {
+  const _ReturnInputAttenuation5And6({
     super.key,
   });
 
@@ -1432,8 +1432,8 @@ const List<String> tgcCableLengthValues = [
   '27',
 ];
 
-class _RtnIngressSetting2 extends StatelessWidget {
-  const _RtnIngressSetting2({
+class _ReturnIngressSetting2 extends StatelessWidget {
+  const _ReturnIngressSetting2({
     super.key,
   });
 
@@ -1467,8 +1467,8 @@ class _RtnIngressSetting2 extends StatelessWidget {
   }
 }
 
-class _RtnIngressSetting3 extends StatelessWidget {
-  const _RtnIngressSetting3({
+class _ReturnIngressSetting3 extends StatelessWidget {
+  const _ReturnIngressSetting3({
     super.key,
   });
 
@@ -1502,8 +1502,8 @@ class _RtnIngressSetting3 extends StatelessWidget {
   }
 }
 
-class _RtnIngressSetting4 extends StatelessWidget {
-  const _RtnIngressSetting4({
+class _ReturnIngressSetting4 extends StatelessWidget {
+  const _ReturnIngressSetting4({
     super.key,
     required this.partId,
   });
@@ -1568,8 +1568,8 @@ class _RtnIngressSetting4 extends StatelessWidget {
   }
 }
 
-class _RtnIngressSetting2And3 extends StatelessWidget {
-  const _RtnIngressSetting2And3({
+class _ReturnIngressSetting2And3 extends StatelessWidget {
+  const _ReturnIngressSetting2And3({
     super.key,
   });
 
@@ -1603,8 +1603,8 @@ class _RtnIngressSetting2And3 extends StatelessWidget {
   }
 }
 
-class _RtnIngressSetting5And6 extends StatelessWidget {
-  const _RtnIngressSetting5And6({
+class _ReturnIngressSetting5And6 extends StatelessWidget {
+  const _ReturnIngressSetting5And6({
     super.key,
   });
 

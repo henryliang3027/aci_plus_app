@@ -170,7 +170,7 @@ class Setting18ControlView extends StatelessWidget {
         switch (name) {
           case SettingControl.forwardInputAttenuation1:
             widgets.add(
-              _ForwardInputAttenuation(
+              _ForwardInputAttenuation1(
                 alcMode: alcMode,
                 currentInputAttenuation: currentInputAttenuation,
               ),
@@ -178,7 +178,7 @@ class Setting18ControlView extends StatelessWidget {
             break;
           case SettingControl.forwardInputEqualizer1:
             widgets.add(
-              _ForwardInputEqualizer(
+              _ForwardInputEqualizer1(
                 forwardCEQIndex: forwardCEQIndex,
                 alcMode: alcMode,
                 agcMode: agcMode,
@@ -222,11 +222,11 @@ class Setting18ControlView extends StatelessWidget {
       return widgets.isNotEmpty
           ? widgets
           : [
-              _ForwardInputAttenuation(
+              _ForwardInputAttenuation1(
                 alcMode: alcMode,
                 currentInputAttenuation: currentInputAttenuation,
               ),
-              _ForwardInputEqualizer(
+              _ForwardInputEqualizer1(
                 forwardCEQIndex: forwardCEQIndex,
                 alcMode: alcMode,
                 agcMode: agcMode,
@@ -234,6 +234,10 @@ class Setting18ControlView extends StatelessWidget {
               ),
               const _ForwardOutputAttenuation3And4(),
               const _ForwardOutputEqualizer3And4(),
+              const _ForwardOutputAttenuation2And3(),
+              const _ForwardOutputAttenuation5And6(),
+              const _ForwardOutputEqualizer2And3(),
+              const _ForwardOutputEqualizer5And6(),
             ];
     }
 
@@ -254,17 +258,17 @@ class Setting18ControlView extends StatelessWidget {
             break;
           case SettingControl.returnInputAttenuation2:
             widgets.add(
-              const _RtnInputAttenuation2(),
+              const _ReturnInputAttenuation2(),
             );
             break;
           case SettingControl.returnInputAttenuation3:
             widgets.add(
-              const _RtnInputAttenuation3(),
+              const _ReturnInputAttenuation3(),
             );
             break;
           case SettingControl.returnInputAttenuation4:
             widgets.add(
-              _RtnInputAttenuation4(
+              _ReturnInputAttenuation4(
                 partId: partId,
               ),
             );
@@ -275,39 +279,39 @@ class Setting18ControlView extends StatelessWidget {
             break;
           case SettingControl.returnInputAttenuation2And3:
             widgets.add(
-              const _RtnInputAttenuation2And3(),
+              const _ReturnInputAttenuation2And3(),
             );
             break;
           case SettingControl.returnInputAttenuation5And6:
             widgets.add(
-              const _RtnInputAttenuation5And6(),
+              const _ReturnInputAttenuation5And6(),
             );
             break;
           case SettingControl.returnOutputAttenuation1:
             widgets.add(
-              const _RtnOutputLevelAttenuation(),
+              const _ReturnOutputAttenuation1(),
             );
             break;
           case SettingControl.returnOutputEqualizer1:
             widgets.add(
-              const _RtnOutputEQ(),
+              const _ReturnOutputEqualizer1(),
             );
             break;
           case SettingControl.returnIngressSetting1:
             break;
           case SettingControl.returnIngressSetting2:
             widgets.add(
-              const _RtnIngressSetting2(),
+              const _ReturnIngressSetting2(),
             );
             break;
           case SettingControl.returnIngressSetting3:
             widgets.add(
-              const _RtnIngressSetting3(),
+              const _ReturnIngressSetting3(),
             );
             break;
           case SettingControl.returnIngressSetting4:
             widgets.add(
-              _RtnIngressSetting4(
+              _ReturnIngressSetting4(
                 partId: partId,
               ),
             );
@@ -318,12 +322,12 @@ class Setting18ControlView extends StatelessWidget {
             break;
           case SettingControl.returnIngressSetting2And3:
             widgets.add(
-              const _RtnIngressSetting2And3(),
+              const _ReturnIngressSetting2And3(),
             );
             break;
           case SettingControl.returnIngressSetting5And6:
             widgets.add(
-              const _RtnIngressSetting5And6(),
+              const _ReturnIngressSetting5And6(),
             );
             break;
         }
@@ -331,18 +335,22 @@ class Setting18ControlView extends StatelessWidget {
       return widgets.isNotEmpty
           ? widgets
           : [
-              const _RtnInputAttenuation2(),
-              const _RtnInputAttenuation3(),
-              _RtnInputAttenuation4(
+              const _ReturnInputAttenuation2(),
+              const _ReturnInputAttenuation3(),
+              _ReturnInputAttenuation4(
                 partId: partId,
               ),
-              const _RtnOutputLevelAttenuation(),
-              const _RtnOutputEQ(),
-              const _RtnIngressSetting2(),
-              const _RtnIngressSetting3(),
-              _RtnIngressSetting4(
+              const _ReturnInputAttenuation2And3(),
+              const _ReturnInputAttenuation5And6(),
+              const _ReturnOutputAttenuation1(),
+              const _ReturnOutputEqualizer1(),
+              const _ReturnIngressSetting2(),
+              const _ReturnIngressSetting3(),
+              _ReturnIngressSetting4(
                 partId: partId,
               ),
+              const _ReturnIngressSetting2And3(),
+              const _ReturnIngressSetting5And6(),
             ];
     }
 
@@ -723,8 +731,8 @@ class _ReverseControlHeader extends StatelessWidget {
   }
 }
 
-class _ForwardInputAttenuation extends StatelessWidget {
-  const _ForwardInputAttenuation({
+class _ForwardInputAttenuation1 extends StatelessWidget {
+  const _ForwardInputAttenuation1({
     super.key,
     required this.alcMode,
     required this.currentInputAttenuation,
@@ -768,8 +776,8 @@ class _ForwardInputAttenuation extends StatelessWidget {
   }
 }
 
-class _ForwardInputEqualizer extends StatelessWidget {
-  const _ForwardInputEqualizer({
+class _ForwardInputEqualizer1 extends StatelessWidget {
+  const _ForwardInputEqualizer1({
     super.key,
     required this.forwardCEQIndex,
     required this.alcMode,
@@ -1000,8 +1008,8 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
   }
 }
 
-class _RtnInputAttenuation2 extends StatelessWidget {
-  const _RtnInputAttenuation2({
+class _ReturnInputAttenuation2 extends StatelessWidget {
+  const _ReturnInputAttenuation2({
     super.key,
   });
 
@@ -1030,8 +1038,8 @@ class _RtnInputAttenuation2 extends StatelessWidget {
   }
 }
 
-class _RtnInputAttenuation3 extends StatelessWidget {
-  const _RtnInputAttenuation3({
+class _ReturnInputAttenuation3 extends StatelessWidget {
+  const _ReturnInputAttenuation3({
     super.key,
   });
 
@@ -1060,8 +1068,8 @@ class _RtnInputAttenuation3 extends StatelessWidget {
   }
 }
 
-class _RtnInputAttenuation2And3 extends StatelessWidget {
-  const _RtnInputAttenuation2And3({
+class _ReturnInputAttenuation2And3 extends StatelessWidget {
+  const _ReturnInputAttenuation2And3({
     super.key,
   });
 
@@ -1090,8 +1098,8 @@ class _RtnInputAttenuation2And3 extends StatelessWidget {
   }
 }
 
-class _RtnInputAttenuation4 extends StatelessWidget {
-  const _RtnInputAttenuation4({
+class _ReturnInputAttenuation4 extends StatelessWidget {
+  const _ReturnInputAttenuation4({
     super.key,
     required this.partId,
   });
@@ -1146,8 +1154,8 @@ class _RtnInputAttenuation4 extends StatelessWidget {
   }
 }
 
-class _RtnInputAttenuation5And6 extends StatelessWidget {
-  const _RtnInputAttenuation5And6({
+class _ReturnInputAttenuation5And6 extends StatelessWidget {
+  const _ReturnInputAttenuation5And6({
     super.key,
   });
 
@@ -1176,8 +1184,8 @@ class _RtnInputAttenuation5And6 extends StatelessWidget {
   }
 }
 
-class _RtnOutputLevelAttenuation extends StatelessWidget {
-  const _RtnOutputLevelAttenuation({
+class _ReturnOutputAttenuation1 extends StatelessWidget {
+  const _ReturnOutputAttenuation1({
     super.key,
   });
 
@@ -1206,8 +1214,8 @@ class _RtnOutputLevelAttenuation extends StatelessWidget {
   }
 }
 
-class _RtnOutputEQ extends StatelessWidget {
-  const _RtnOutputEQ({
+class _ReturnOutputEqualizer1 extends StatelessWidget {
+  const _ReturnOutputEqualizer1({
     super.key,
   });
 
@@ -1249,8 +1257,8 @@ const List<String> tgcCableLengthValues = [
   '27',
 ];
 
-class _RtnIngressSetting2 extends StatelessWidget {
-  const _RtnIngressSetting2({
+class _ReturnIngressSetting2 extends StatelessWidget {
+  const _ReturnIngressSetting2({
     super.key,
   });
 
@@ -1284,8 +1292,8 @@ class _RtnIngressSetting2 extends StatelessWidget {
   }
 }
 
-class _RtnIngressSetting3 extends StatelessWidget {
-  const _RtnIngressSetting3({
+class _ReturnIngressSetting3 extends StatelessWidget {
+  const _ReturnIngressSetting3({
     super.key,
   });
 
@@ -1319,8 +1327,8 @@ class _RtnIngressSetting3 extends StatelessWidget {
   }
 }
 
-class _RtnIngressSetting4 extends StatelessWidget {
-  const _RtnIngressSetting4({
+class _ReturnIngressSetting4 extends StatelessWidget {
+  const _ReturnIngressSetting4({
     super.key,
     required this.partId,
   });
@@ -1385,8 +1393,8 @@ class _RtnIngressSetting4 extends StatelessWidget {
   }
 }
 
-class _RtnIngressSetting2And3 extends StatelessWidget {
-  const _RtnIngressSetting2And3({
+class _ReturnIngressSetting2And3 extends StatelessWidget {
+  const _ReturnIngressSetting2And3({
     super.key,
   });
 
@@ -1420,8 +1428,8 @@ class _RtnIngressSetting2And3 extends StatelessWidget {
   }
 }
 
-class _RtnIngressSetting5And6 extends StatelessWidget {
-  const _RtnIngressSetting5And6({
+class _ReturnIngressSetting5And6 extends StatelessWidget {
+  const _ReturnIngressSetting5And6({
     super.key,
   });
 
