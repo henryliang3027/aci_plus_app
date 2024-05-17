@@ -801,7 +801,7 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
     return BlocBuilder<Setting18ControlBloc, Setting18ControlState>(
       builder: (context, state) {
         double minValue = 0.0;
-        double maxValue = 12.0;
+        double maxValue = getSlope1MaxValue(forwardCEQIndex);
         String inputEqualizer = getInputEqualizer(
           alcMode: alcMode,
           agcMode: agcMode,

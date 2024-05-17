@@ -22,18 +22,38 @@ String getForwardCEQText(String index) {
     int intIndex = int.parse(index);
 
     if (intIndex >= 0 && intIndex <= 24) {
-      return 'CEQ';
+      return '1.8G CEQ';
     } else if (intIndex == 120) {
       return '1.2G EQ';
     } else if (intIndex == 180) {
       return '1.8G EQ';
     } else if (intIndex == 255) {
-      return 'N/A';
+      return '';
     } else {
       return '';
     }
   } else {
     return '';
+  }
+}
+
+double getSlope1MaxValue(String index) {
+  if (index.isNotEmpty) {
+    int intIndex = int.parse(index);
+
+    if (intIndex >= 0 && intIndex <= 24) {
+      return 24.0;
+    } else if (intIndex == 120) {
+      return 12.0;
+    } else if (intIndex == 180) {
+      return 12.0;
+    } else if (intIndex == 255) {
+      return 12.0;
+    } else {
+      return 12.0;
+    }
+  } else {
+    return 12.0;
   }
 }
 
@@ -836,7 +856,7 @@ Widget forwardConfigModeGridViewButton({
                       }
                     : () {},
                 child: Text(
-                  forwardConfigTexts[index],
+                  forwardConfigTexts[index.toString()]!,
                   style: const TextStyle(
                     fontSize: CustomStyle.sizeXL,
                     fontWeight: FontWeight.normal,
@@ -1217,7 +1237,7 @@ Widget thresholdAlarmSwitch({
 // List<Record>
 // Record, a new variable type of Dart 3
 const Map<String, (int?, int?)> splitBaseLine = {
-  // '0': (null, null),
+  '0': (null, null),
   '1': (204, 258),
   // '2': (300, 372),
   '3': (396, 492),
@@ -1240,10 +1260,10 @@ List<String> pilotFrequencyModeValues = const [
   // '2',
 ];
 
-List<String> forwardConfigTexts = const [
-  '1 X 4',
-  '2 X 2',
-];
+Map<String, String> forwardConfigTexts = {
+  '0': '1 X 4',
+  '1': '2 X 2',
+};
 
 List<String> forwardConfigValues = const [
   '1',

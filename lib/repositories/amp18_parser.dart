@@ -548,6 +548,7 @@ class Amp18Parser {
     Alarm splitOptionAlarmSeverity = Alarm.medium;
     Alarm voltageRippleAlarmSeverity = Alarm.medium;
     Alarm outputPowerAlarmSeverity = Alarm.medium;
+    String currentForwardCEQIndex = '';
 
     int unitStatus = rawData[3];
     unitStatusAlarmSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
@@ -741,6 +742,9 @@ class Amp18Parser {
     outputPowerAlarmSeverity =
         outputPowerStatus == 1 ? Alarm.danger : Alarm.success;
 
+    // 解析 current Forward CEQ Index
+    currentForwardCEQIndex = rawData[137].toString();
+
     return A1P8G2(
       currentTemperatureC: currentTemperatureC,
       currentTemperatureF: currentTemperatureF,
@@ -774,6 +778,7 @@ class Amp18Parser {
       splitOptionAlarmSeverity: splitOptionAlarmSeverity.name,
       voltageRippleAlarmSeverity: voltageRippleAlarmSeverity.name,
       outputPowerAlarmSeverity: outputPowerAlarmSeverity.name,
+      currentForwardCEQIndex: currentForwardCEQIndex,
     );
   }
 
@@ -2035,6 +2040,7 @@ class A1P8G2 {
     required this.splitOptionAlarmSeverity,
     required this.voltageRippleAlarmSeverity,
     required this.outputPowerAlarmSeverity,
+    required this.currentForwardCEQIndex,
   });
 
   final String currentTemperatureC;
@@ -2065,6 +2071,7 @@ class A1P8G2 {
   final String splitOptionAlarmSeverity;
   final String voltageRippleAlarmSeverity;
   final String outputPowerAlarmSeverity;
+  final String currentForwardCEQIndex;
 }
 
 class A1P8GAlarm {

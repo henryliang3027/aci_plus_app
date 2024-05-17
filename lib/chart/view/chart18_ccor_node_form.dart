@@ -455,8 +455,10 @@ class _PopupMenu extends StatelessWidget {
   }) {
     String location = characteristicData[DataKey.location] ?? '';
     String coordinates = characteristicData[DataKey.coordinates] ?? '';
+    String forwardConfig = characteristicData[DataKey.forwardConfig] ?? '';
     String splitOption = characteristicData[DataKey.splitOption] ?? '';
 
+    String forwardConfigText = forwardConfigTexts[forwardConfig] ?? '';
     String splitOptionText = splitOption != ''
         ? '${splitBaseLine[splitOption]!.$1}/${splitBaseLine[splitOption]!.$2} ${CustomStyle.mHz}'
         : '';
@@ -467,6 +469,7 @@ class _PopupMenu extends StatelessWidget {
       AppLocalizations.of(context)!.device: '',
       AppLocalizations.of(context)!.location: location,
       AppLocalizations.of(context)!.coordinates: coordinates,
+      AppLocalizations.of(context)!.forwardConfigMode: forwardConfigText,
       AppLocalizations.of(context)!.splitOption: splitOptionText,
       AppLocalizations.of(context)!.logInterval:
           '$logInterval ${AppLocalizations.of(context)!.minute}',
@@ -495,14 +498,22 @@ class _PopupMenu extends StatelessWidget {
           AppLocalizations.of(context)!.forwardInputAttenuation4,
       SettingControl.forwardInputAttenuation6:
           AppLocalizations.of(context)!.forwardInputAttenuation6,
-      SettingControl.forwardInputEqualizer1:
-          AppLocalizations.of(context)!.forwardInputEqualizer1,
-      SettingControl.forwardInputEqualizer3:
-          AppLocalizations.of(context)!.forwardInputEqualizer3,
-      SettingControl.forwardInputEqualizer4:
-          AppLocalizations.of(context)!.forwardInputEqualizer4,
-      SettingControl.forwardInputEqualizer6:
-          AppLocalizations.of(context)!.forwardInputEqualizer6,
+      SettingControl.forwardOutputEqualizer1:
+          AppLocalizations.of(context)!.forwardOutputEqualizer1,
+      SettingControl.forwardOutputEqualizer3:
+          AppLocalizations.of(context)!.forwardOutputEqualizer3,
+      SettingControl.forwardOutputEqualizer4:
+          AppLocalizations.of(context)!.forwardOutputEqualizer4,
+      SettingControl.forwardOutputEqualizer6:
+          AppLocalizations.of(context)!.forwardOutputEqualizer6,
+      SettingControl.forwardBiasCurrent1:
+          AppLocalizations.of(context)!.forwardBiasCurrent1,
+      SettingControl.forwardBiasCurrent3:
+          AppLocalizations.of(context)!.forwardBiasCurrent3,
+      SettingControl.forwardBiasCurrent4:
+          AppLocalizations.of(context)!.forwardBiasCurrent4,
+      SettingControl.forwardBiasCurrent6:
+          AppLocalizations.of(context)!.forwardBiasCurrent6,
       SettingControl.returnInputAttenuation1:
           AppLocalizations.of(context)!.returnInputAttenuation1,
       SettingControl.returnInputAttenuation3:

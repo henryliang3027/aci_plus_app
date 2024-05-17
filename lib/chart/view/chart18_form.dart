@@ -759,15 +759,22 @@ class _PopupMenu extends StatelessWidget {
     String coordinates = characteristicData[DataKey.coordinates] ?? '';
     String splitOption = characteristicData[DataKey.splitOption] ?? '';
 
-    String splitOptionText = splitOption != ''
-        ? '${splitBaseLine[splitOption]!.$1}/${splitBaseLine[splitOption]!.$2} ${CustomStyle.mHz}'
-        : '';
+    String splitValue1 = splitBaseLine[splitOption]?.$1 != null
+        ? splitBaseLine[splitOption]!.$1.toString()
+        : 'N/A';
+    String splitValue2 = splitBaseLine[splitOption]?.$2 != null
+        ? splitBaseLine[splitOption]!.$2.toString()
+        : 'N/A';
+    ;
+
+    String splitOptionText =
+        splitOption != '' ? '$splitValue1/$splitValue2 ${CustomStyle.mHz}' : '';
 
     String pilotFrequencyMode =
         characteristicData[DataKey.pilotFrequencyMode] ?? '';
 
     String pilotFrequencyModeText = pilotFrequencyMode != ''
-        ? pilotFrequencyModeTexts[pilotFrequencyMode]!
+        ? pilotFrequencyModeTexts[pilotFrequencyMode] ?? 'N/A'
         : '';
 
     String firstChannelLoadingFrequency =

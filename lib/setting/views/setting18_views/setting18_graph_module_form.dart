@@ -68,6 +68,9 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
     String currentDetectedSplitOption =
         homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
 
+    String forwardCEQIndex =
+        homeState.characteristicData[DataKey.forwardCEQIndex] ?? '';
+
     List<Widget> getForwardSettingWidgetByModuleId() {
       String moduleName = widget.moduleName;
 
@@ -123,6 +126,7 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       } else if (moduleName == DataKey.dsSlope1.name) {
         return [
           _ForwardInputEqualizer1(
+            forwardCEQIndex: forwardCEQIndex,
             alcMode: alcMode,
             agcMode: agcMode,
             currentInputEqualizer: currentInputEqualizer,
@@ -503,11 +507,13 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
 class _ForwardInputEqualizer1 extends StatelessWidget {
   const _ForwardInputEqualizer1({
     super.key,
+    required this.forwardCEQIndex,
     required this.alcMode,
     required this.agcMode,
     required this.currentInputEqualizer,
   });
 
+  final String forwardCEQIndex;
   final String alcMode;
   final String agcMode;
   final String currentInputEqualizer;
@@ -522,7 +528,7 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
         double minValue = 0.0;
-        double maxValue = 12.0;
+        double maxValue = getSlope1MaxValue(forwardCEQIndex);
         String inputEqualizer = getInputEqualizer(
           alcMode: alcMode,
           agcMode: agcMode,
@@ -536,6 +542,7 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
               editMode: state.editMode && alcMode == '0' && agcMode == '0',
               title:
                   '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
+              subTitle: getForwardCEQText(forwardCEQIndex),
               minValue: minValue,
               currentValue: inputEqualizer,
               maxValue: maxValue,

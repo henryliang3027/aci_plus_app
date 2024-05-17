@@ -171,4 +171,5 @@ enum DataKey {
   currentDSInSlope6,
   currentDSOutSlope6,
   currentUSVCA6,
+  currentForwardCEQIndex,
 }

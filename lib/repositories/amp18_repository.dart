@@ -231,6 +231,7 @@ class Amp18Repository {
         DataKey.splitOptionAlarmSeverity: a1p8g2.splitOptionAlarmSeverity,
         DataKey.voltageRippleAlarmSeverity: a1p8g2.voltageRippleAlarmSeverity,
         DataKey.outputPowerAlarmSeverity: a1p8g2.outputPowerAlarmSeverity,
+        DataKey.currentForwardCEQIndex: a1p8g2.currentForwardCEQIndex,
       };
 
       _characteristicDataCache.addAll(characteristicDataCache);
