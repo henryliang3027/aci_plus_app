@@ -129,15 +129,13 @@ class Setting18CCorNodeControlView extends StatelessWidget {
                   style: const TextStyle(fontSize: 16),
                 ),
               ),
-              Expanded(
-                child: Text(
-                  formatResultValue(value),
-                  style: TextStyle(
-                    fontSize: CustomStyle.sizeL,
-                    color: valueColor,
-                  ),
-                  textAlign: TextAlign.end,
+              Text(
+                formatResultValue(value),
+                style: TextStyle(
+                  fontSize: CustomStyle.sizeL,
+                  color: valueColor,
                 ),
+                textAlign: TextAlign.end,
               ),
             ],
           ),

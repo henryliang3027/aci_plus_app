@@ -118,21 +118,18 @@ class Setting18ConfigureView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                flex: 3,
                 child: Text(
                   formatResultItem(item),
                   style: const TextStyle(fontSize: 16),
                 ),
               ),
-              Expanded(
-                child: Text(
-                  formatResultValue(value),
-                  style: TextStyle(
-                    fontSize: CustomStyle.sizeL,
-                    color: valueColor,
-                  ),
-                  textAlign: TextAlign.end,
+              Text(
+                formatResultValue(value),
+                style: TextStyle(
+                  fontSize: CustomStyle.sizeL,
+                  color: valueColor,
                 ),
+                textAlign: TextAlign.end,
               ),
             ],
           ),

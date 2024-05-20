@@ -101,15 +101,13 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
                   style: const TextStyle(fontSize: 16),
                 ),
               ),
-              Expanded(
-                child: Text(
-                  formatResultValue(value),
-                  style: TextStyle(
-                    fontSize: CustomStyle.sizeL,
-                    color: valueColor,
-                  ),
-                  textAlign: TextAlign.end,
+              Text(
+                formatResultValue(value),
+                style: TextStyle(
+                  fontSize: CustomStyle.sizeL,
+                  color: valueColor,
                 ),
+                textAlign: TextAlign.end,
               ),
             ],
           ),
