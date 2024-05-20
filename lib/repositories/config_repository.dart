@@ -223,17 +223,17 @@ class ConfigRepository {
   List<TrunkConfig> getAllTrunkConfigs() {
     List<TrunkConfig> trunkConfigs = _trunkConfigApi.getAllConfigs();
 
-    // print('db trunkConfig:');
-    // for (TrunkConfig trunkConfig in trunkConfigs) {
-    //   print('${trunkConfig.id} : ${trunkConfig.name}');
-    //   _trunkConfigNames[trunkConfig.id] = trunkConfig.name;
-    // }
-    // print('=============');
-    // print(' _trunkConfigNames:');
-    // for (MapEntry entry in _trunkConfigNames.entries) {
-    //   print('${entry.key} : ${entry.value}');
-    // }
-    // print('=============');
+    print('db trunkConfig:');
+    for (TrunkConfig trunkConfig in trunkConfigs) {
+      print('${trunkConfig.id} : ${trunkConfig.name}');
+      _trunkConfigNames[trunkConfig.id] = trunkConfig.name;
+    }
+    print('=============');
+    print('repo _trunkConfigNames:');
+    for (MapEntry entry in _trunkConfigNames.entries) {
+      print('${entry.key} : ${entry.value}');
+    }
+    print('=============');
 
     return trunkConfigs;
   }
@@ -242,17 +242,17 @@ class ConfigRepository {
     List<DistributionConfig> distributionConfigs =
         _distributionConfigApi.getAllConfigs();
 
-    // print('db distributionConfig:');
-    // for (DistributionConfig distributionConfig in distributionConfigs) {
-    //   print('${distributionConfig.id} : ${distributionConfig.name}');
-    //   _distributionConfigNames[distributionConfig.id] = distributionConfig.name;
-    // }
-    // print('=============');
-    // print(' _distributionConfigNames:');
-    // for (MapEntry entry in _distributionConfigNames.entries) {
-    //   print('${entry.key} : ${entry.value}');
-    // }
-    // print('=============');
+    print('db distributionConfig:');
+    for (DistributionConfig distributionConfig in distributionConfigs) {
+      print('${distributionConfig.id} : ${distributionConfig.name}');
+      _distributionConfigNames[distributionConfig.id] = distributionConfig.name;
+    }
+    print('=============');
+    print('repo _distributionConfigNames:');
+    for (MapEntry entry in _distributionConfigNames.entries) {
+      print('${entry.key} : ${entry.value}');
+    }
+    print('=============');
 
     return distributionConfigs;
   }
