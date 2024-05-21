@@ -796,8 +796,8 @@ class _PopupMenu extends StatelessWidget {
 
     String agcMode = characteristicData[DataKey.agcMode] ?? '';
     String agcModeText = agcMode != '' ? onOffTexts[agcMode]! : '';
-    String alcMode = characteristicData[DataKey.alcMode] ?? '';
-    String alcModeText = alcMode != '' ? onOffTexts[alcMode]! : '';
+    // String alcMode = characteristicData[DataKey.alcMode] ?? '';
+    // String alcModeText = alcMode != '' ? onOffTexts[alcMode]! : '';
     String logInterval = characteristicData[DataKey.logInterval] ?? '';
     String rfOutputLogInterval =
         characteristicData[DataKey.rfOutputLogInterval] ?? '';
@@ -826,7 +826,7 @@ class _PopupMenu extends StatelessWidget {
       AppLocalizations.of(context)!.pilotLevel2:
           '$manualModePilot2RFOutputPower ${CustomStyle.dBmV}',
       AppLocalizations.of(context)!.agcMode: agcModeText,
-      AppLocalizations.of(context)!.alcMode: alcModeText,
+      // AppLocalizations.of(context)!.alcMode: alcModeText,
       AppLocalizations.of(context)!.logInterval:
           '$logInterval ${AppLocalizations.of(context)!.minute}',
       AppLocalizations.of(context)!.rfOutputLogInterval:

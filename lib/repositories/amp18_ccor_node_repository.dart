@@ -1943,6 +1943,7 @@ class Amp18CCorNodeRepository {
       command: Command18CCorNode.setNowDateTimeCmd,
       usDataLength: Command18CCorNode.setNowDateTimeCmd.length - 2,
     );
+
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
