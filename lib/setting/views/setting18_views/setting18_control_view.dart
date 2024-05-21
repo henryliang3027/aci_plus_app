@@ -63,10 +63,10 @@ class Setting18ControlView extends StatelessWidget {
             .dialogMessageForwardInputEqualizer1Setting;
       } else if (item == DataKey.dsSlope3.name) {
         return AppLocalizations.of(context)!
-            .dialogMessageForwardInputEqualizer3Setting;
+            .dialogMessageForwardOutputEqualizer2And3Setting;
       } else if (item == DataKey.dsSlope4.name) {
         return AppLocalizations.of(context)!
-            .dialogMessageForwardInputEqualizer4Setting;
+            .dialogMessageForwardOutputEqualizer5And6Setting;
       } else if (item == DataKey.tgcCableLength.name) {
         return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
       } else if (item == DataKey.usVCA1.name) {
@@ -76,11 +76,21 @@ class Setting18ControlView extends StatelessWidget {
         return AppLocalizations.of(context)!
             .dialogMessageReturnOutputAttenuation1Setting;
       } else if (item == DataKey.usVCA3.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnInputAttenuation3Setting;
+        if (partId == '5' || partId == '6') {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnInputAttenuation2And3Setting;
+        } else {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnInputAttenuation3Setting;
+        }
       } else if (item == DataKey.usVCA4.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnInputAttenuation4Setting;
+        if (partId == '5' || partId == '6') {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnInputAttenuation5And6Setting;
+        } else {
+          return AppLocalizations.of(context)!
+              .dialogMessageReturnInputAttenuation4Setting;
+        }
       } else if (item == DataKey.eREQ.name) {
         return AppLocalizations.of(context)!
             .dialogMessageReturnOutputEqualizer1Setting;

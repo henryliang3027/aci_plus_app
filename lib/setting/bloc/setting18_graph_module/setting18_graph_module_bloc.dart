@@ -1356,13 +1356,6 @@ class Setting18GraphModuleBloc
           .add('${DataKey.tgcCableLength.name},$resultOfSetTGCCableLength');
     }
 
-    if (state.dsVVA4 != state.initialValues[DataKey.dsVVA4]) {
-      bool resultOfSetDSVVA4 =
-          await _amp18Repository.set1p8GDSVVA4(state.dsVVA4);
-
-      settingResult.add('${DataKey.dsVVA4.name},$resultOfSetDSVVA4');
-    }
-
     // if (state.usTGC != state.initialValues[DataKey.usTGC]) {
     //   bool resultOfSetUSTGC = await _amp18Repository.set1p8USTGC(state.usTGC);
 
