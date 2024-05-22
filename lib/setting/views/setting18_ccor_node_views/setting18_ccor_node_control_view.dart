@@ -731,7 +731,7 @@ class _ForwardOutputEqualizer1 extends StatelessWidget {
         Setting18CCorNodeControlState>(
       builder: (context, state) {
         double minValue = 0.0;
-        double maxValue = 15.0;
+        double maxValue = 8.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -762,7 +762,7 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
         Setting18CCorNodeControlState>(
       builder: (context, state) {
         double minValue = 0.0;
-        double maxValue = 15.0;
+        double maxValue = 8.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -793,7 +793,7 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
         Setting18CCorNodeControlState>(
       builder: (context, state) {
         double minValue = 0.0;
-        double maxValue = 15.0;
+        double maxValue = 8.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -824,7 +824,7 @@ class _ForwardOutputEqualizer6 extends StatelessWidget {
         Setting18CCorNodeControlState>(
       builder: (context, state) {
         double minValue = 0.0;
-        double maxValue = 15.0;
+        double maxValue = 8.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
