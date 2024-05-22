@@ -8,7 +8,6 @@ import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:excel/excel.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 
 class Amp18Repository {

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class BLEClient {
+class BLEClient extends BLEClientBase {
   BLEClient._() : _ble = FlutterReactiveBle();
 
   static final BLEClient _instance = BLEClient._();
@@ -28,6 +29,7 @@ class BLEClient {
   StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
   StreamSubscription<List<int>>? _characteristicStreamSubscription;
   late QualifiedCharacteristic _qualifiedCharacteristic;
+  late Perigheral _perigheral;
 
   final _aciPrefix = 'ACI';
   final _serviceId = 'ffe0';
@@ -95,13 +97,16 @@ class BLEClient {
           if (!_scanReportStreamController.isClosed) {
             scanTimer.cancel();
             print('Device: ${device.name}');
+
+            _perigheral = Perigheral(
+              id: device.id,
+              name: device.name,
+            );
+
             _scanReportStreamController.add(
               ScanReport(
                 scanStatus: ScanStatus.success,
-                perigheral: Perigheral(
-                  id: device.id,
-                  name: device.name,
-                ),
+                perigheral: _perigheral,
               ),
             );
           }
@@ -128,13 +133,13 @@ class BLEClient {
     yield* _scanReportStreamController.stream;
   }
 
-  Future<void> connectToDevice(String deviceId) async {
+  Future<void> connectToDevice() async {
     startConnectionTimer();
 
     _connectionReportStreamController = StreamController<ConnectionReport>();
     _connectionStreamSubscription = _ble!
         .connectToDevice(
-      id: deviceId,
+      id: _perigheral.id,
     )
         .listen((connectionStateUpdate) async {
       print('current connection state: $connectionStateUpdate');
@@ -150,7 +155,7 @@ class BLEClient {
           _qualifiedCharacteristic = QualifiedCharacteristic(
             serviceId: Uuid.parse(_serviceId),
             characteristicId: Uuid.parse(_characteristicId),
-            deviceId: deviceId,
+            deviceId: _perigheral.id,
           );
 
           _characteristicStreamSubscription = _ble!
@@ -159,6 +164,27 @@ class BLEClient {
             List<int> rawData = data;
             print(_currentCommandIndex);
             // print('data length: ${rawData.length}, $rawData');
+
+            // List<dynamic> combinedResult = combineRawData(
+            //   commandIndex: _currentCommandIndex,
+            //   rawData: rawData,
+            // );
+
+            // if (combinedResult[0]) {
+            //   cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
+            //   List<int> combinedRawData = combinedResult[1];
+
+            //   bool isValidCRC = checkCRC(combinedRawData);
+            //   if (isValidCRC) {
+            //     if (!_completer!.isCompleted) {
+            //       _completer!.complete(combinedRawData);
+            //     }
+            //   } else {
+            //     if (!_completer!.isCompleted) {
+            //       _completer!.completeError(CharacteristicError.invalidData);
+            //     }
+            //   }
+            // }
 
             if (_currentCommandIndex <= 13) {
               cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
@@ -389,23 +415,23 @@ class BLEClient {
     _combinedRawData.clear();
   }
 
-  bool checkCRC(
-    List<int> rawData,
-  ) {
-    List<int> crcData = List<int>.from(rawData);
-    CRC16.calculateCRC16(command: crcData, usDataLength: crcData.length - 2);
-    if (rawData.isNotEmpty) {
-      if (crcData[crcData.length - 1] == rawData[rawData.length - 1] &&
-          crcData[crcData.length - 2] == rawData[rawData.length - 2]) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      // 如果 rawData 是空的
-      return false;
-    }
-  }
+  // bool checkCRC(
+  //   List<int> rawData,
+  // ) {
+  //   List<int> crcData = List<int>.from(rawData);
+  //   CRC16.calculateCRC16(command: crcData, usDataLength: crcData.length - 2);
+  //   if (rawData.isNotEmpty) {
+  //     if (crcData[crcData.length - 1] == rawData[rawData.length - 1] &&
+  //         crcData[crcData.length - 2] == rawData[rawData.length - 2]) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   } else {
+  //     // 如果 rawData 是空的
+  //     return false;
+  //   }
+  // }
 
   // 透過 1G/1.2G/1.8G 同樣的基本指令, 來取得回傳資料的長度
   Future<dynamic> _requestBasicInformationRawData(List<int> value) async {

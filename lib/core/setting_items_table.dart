@@ -146,7 +146,7 @@ const Map<String, String> namePlateFilePath = {
   '1': '',
   '2': 'assets/nameplates/BLE.png',
   '3': 'assets/nameplates/MB.png',
-  '4': '',
+  '4': 'assets/nameplates/NODE.png',
   '5': 'assets/nameplates/TR.png',
   '6': 'assets/nameplates/BR.png',
   '7': 'assets/nameplates/LE.png',

@@ -122,7 +122,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           add(DeviceConnectionChanged(connectionReport));
         });
 
-        _aciDeviceRepository.connectToDevice(event.scanReport.perigheral!.id);
+        _aciDeviceRepository.connectToDevice();
 
         break;
       case ScanStatus.failure:

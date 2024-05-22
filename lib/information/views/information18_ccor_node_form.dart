@@ -4,6 +4,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/information/bloc/information18_ccor_node/information18_ccor_node_bloc.dart';
+import 'package:aci_plus_app/information/views/name_plate_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -32,6 +33,7 @@ class Information18CCorNodeForm extends StatelessWidget {
             _VersionCard(),
             _ConnectionCard(),
             _ShortcutCard(),
+            _BlockDiagramCard(),
             _BasicCard(),
             _AlarmCard(),
           ],
@@ -331,6 +333,103 @@ class _ShortcutCard extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _BlockDiagramCard extends StatelessWidget {
+  const _BlockDiagramCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.loadingStatus != current.loadingStatus,
+      builder: (context, state) {
+        String partId = state.characteristicData[DataKey.partId] ?? '';
+
+        // if (state.loadingStatus.isRequestSuccess) {
+        //   context.read<Information18Bloc>().add(DiagramLoaded(partId));
+        // }
+
+        return Card(
+          color: Theme.of(context).colorScheme.onPrimary,
+          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.blockDiagram,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.showDiagram,
+                        style: const TextStyle(
+                          fontSize: CustomStyle.sizeL,
+                        ),
+                      ),
+                      _ShowDiagramButton(
+                        loadingStatus: state.loadingStatus,
+                        partId: partId,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _ShowDiagramButton extends StatelessWidget {
+  const _ShowDiagramButton({
+    super.key,
+    required this.loadingStatus,
+    required this.partId,
+  });
+
+  final FormStatus loadingStatus;
+  final String partId;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Information18CCorNodeBloc, Information18CCorNodeState>(
+      builder: (context, state) {
+        return ElevatedButton(
+          onPressed: loadingStatus.isRequestSuccess
+              ? () async {
+                  Navigator.push(
+                      context,
+                      NamePlateView.route(
+                        partId: partId,
+                      ));
+                }
+              : null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Colors.white,
+          ),
+          child: Text(
+            AppLocalizations.of(context)!.show,
+            style: const TextStyle(
+              fontSize: CustomStyle.sizeL,
             ),
           ),
         );
