@@ -1,12 +1,14 @@
 import 'package:aci_plus_app/core/command.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/repositories/ble_client.dart';
+import 'package:aci_plus_app/repositories/ble_client_base.dart';
+import 'package:aci_plus_app/repositories/ble_factory.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 
 class ACIDeviceRepository {
-  ACIDeviceRepository() : _bleClient = BLEClient.instance;
+  ACIDeviceRepository() : _bleClient = BLEClientFactory.instance;
 
-  final BLEClient _bleClient;
+  final BLEClientBase _bleClient;
 
   Stream<ScanReport> get scanReport async* {
     yield* _bleClient.scanReport;

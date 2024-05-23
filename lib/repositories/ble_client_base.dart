@@ -1,8 +1,38 @@
+import 'dart:io';
+
 import 'package:aci_plus_app/core/crc16_calculate.dart';
+import 'package:aci_plus_app/repositories/ble_client.dart';
+import 'package:aci_plus_app/repositories/ble_peripheral.dart';
+import 'package:aci_plus_app/repositories/ble_windows_client.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class BLEClientBase {
   final List<int> _combinedRawData = [];
+
+  Stream<ScanReport> get scanReport;
+
+  Stream<ConnectionReport> get connectionStateReport;
+
+  Future<void> connectToDevice();
+
+  Future<void> closeScanStream();
+
+  Future<void> closeConnectionStream();
+
+  Future<dynamic> getACIDeviceType({
+    required int commandIndex,
+    required List<int> value,
+    required String deviceId,
+    int mtu = 247,
+  });
+
+  Future<int> getRSSI();
+
+  Future<dynamic> writeSetCommandToCharacteristic({
+    required int commandIndex,
+    required List<int> value,
+    Duration timeout = const Duration(seconds: 10),
+  });
 
   bool checkCRC(
     List<int> rawData,
@@ -31,9 +61,11 @@ abstract class BLEClientBase {
     if (listEquals(rawData.sublist(0, 3), header)) {
       _combinedRawData.clear();
       _combinedRawData.addAll(rawData);
+      print(_combinedRawData.length);
       return [false];
     } else {
       _combinedRawData.addAll(rawData);
+      print(_combinedRawData.length);
       if (_combinedRawData.length == length) {
         List<int> finalRawData = List.from(_combinedRawData);
 

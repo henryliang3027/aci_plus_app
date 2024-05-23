@@ -5,16 +5,18 @@ import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/shared_preference_key.dart';
 import 'package:aci_plus_app/repositories/ble_client.dart';
+import 'package:aci_plus_app/repositories/ble_client_base.dart';
+import 'package:aci_plus_app/repositories/ble_factory.dart';
 import 'package:aci_plus_app/repositories/dsim_parser.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DsimRepository {
   DsimRepository()
-      : _bleClient = BLEClient.instance,
+      : _bleClient = BLEClientFactory.instance,
         _dsimParser = DsimParser();
 
-  final BLEClient _bleClient;
+  final BLEClientBase _bleClient;
   final DsimParser _dsimParser;
 
   late StreamController<Map<DataKey, String>>

@@ -11,11 +11,14 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class BLEClient extends BLEClientBase {
-  BLEClient._() : _ble = FlutterReactiveBle();
+  BLEClient()
+      : _ble = FlutterReactiveBle(),
+        super();
+  // BLEClient._() : _ble = FlutterReactiveBle();
 
-  static final BLEClient _instance = BLEClient._();
+  // static final BLEClient _instance = BLEClient._();
 
-  static BLEClient get instance => _instance;
+  // static BLEClient get instance => _instance;
 
   FlutterReactiveBle? _ble;
   final _scanTimeout = 3; // sec
@@ -42,8 +45,8 @@ class BLEClient extends BLEClientBase {
   Timer? _characteristicDataTimer;
   Timer? _connectionTimer;
 
-  final List<int> _combinedRawData = [];
-  final int _totalBytesPerCommand = 261;
+  // final List<int> _combinedRawData = [];
+  // final int _totalBytesPerCommand = 261;
 
   // 1p8G variables
   // List<int> _rawRFInOut = [];
@@ -68,10 +71,12 @@ class BLEClient extends BLEClientBase {
     }
   }
 
+  @override
   Future<int> getRSSI() {
     return _ble!.readRssi(_qualifiedCharacteristic.deviceId);
   }
 
+  @override
   Stream<ScanReport> get scanReport async* {
     _ble ??= FlutterReactiveBle();
     _scanReportStreamController = StreamController<ScanReport>();
@@ -133,6 +138,7 @@ class BLEClient extends BLEClientBase {
     yield* _scanReportStreamController.stream;
   }
 
+  @override
   Future<void> connectToDevice() async {
     startConnectionTimer();
 
@@ -165,165 +171,165 @@ class BLEClient extends BLEClientBase {
             print(_currentCommandIndex);
             // print('data length: ${rawData.length}, $rawData');
 
-            // List<dynamic> combinedResult = combineRawData(
-            //   commandIndex: _currentCommandIndex,
-            //   rawData: rawData,
-            // );
+            List<dynamic> finalResult = combineRawData(
+              commandIndex: _currentCommandIndex,
+              rawData: rawData,
+            );
 
-            // if (combinedResult[0]) {
+            if (finalResult[0]) {
+              cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
+              List<int> finalRawData = finalResult[1];
+
+              bool isValidCRC = checkCRC(finalRawData);
+              if (isValidCRC) {
+                if (!_completer!.isCompleted) {
+                  _completer!.complete(finalRawData);
+                }
+              } else {
+                if (!_completer!.isCompleted) {
+                  _completer!.completeError(CharacteristicError.invalidData);
+                }
+              }
+            }
+
+            // if (_currentCommandIndex <= 13) {
             //   cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
-            //   List<int> combinedRawData = combinedResult[1];
 
-            //   bool isValidCRC = checkCRC(combinedRawData);
+            //   bool isValidCRC = checkCRC(rawData);
             //   if (isValidCRC) {
             //     if (!_completer!.isCompleted) {
-            //       _completer!.complete(combinedRawData);
+            //       _completer!.complete(rawData);
             //     }
             //   } else {
             //     if (!_completer!.isCompleted) {
             //       _completer!.completeError(CharacteristicError.invalidData);
             //     }
             //   }
+            // } else if (_currentCommandIndex >= 14 &&
+            //     _currentCommandIndex <= 37) {
+            //   _combinedRawData.addAll(rawData);
+            //   // 一個 log command 總共會接收 261 bytes, 每一次傳回 16 bytes
+            //   if (_combinedRawData.length == _totalBytesPerCommand) {
+            //     bool isValidCRC = checkCRC(_combinedRawData);
+            //     if (isValidCRC) {
+            //       List<int> combinedRawData = List.from(_combinedRawData);
+            //       _combinedRawData.clear();
+            //       cancelCharacteristicDataTimer(
+            //           name: 'cmd $_currentCommandIndex');
+            //       if (!_completer!.isCompleted) {
+            //         _completer!.complete(combinedRawData);
+            //       }
+            //     } else {
+            //       if (!_completer!.isCompleted) {
+            //         _completer!.completeError(CharacteristicError.invalidData);
+            //       }
+            //     }
+            //   }
+            // } else if (_currentCommandIndex >= 40 &&
+            //     _currentCommandIndex <= 46) {
+            //   cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
+            //   if (!_completer!.isCompleted) {
+            //     _completer!.complete(rawData);
+            //   }
+            // } else if (_currentCommandIndex >= 80 &&
+            //     _currentCommandIndex <= 83) {
+            //   cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
+
+            //   bool isValidCRC = checkCRC(rawData);
+            //   if (isValidCRC) {
+            //     if (!_completer!.isCompleted) {
+            //       _completer!.complete(rawData);
+            //     }
+            //   } else {
+            //     if (!_completer!.isCompleted) {
+            //       _completer!.completeError(CharacteristicError.invalidData);
+            //     }
+            //   }
+            // } else if (_currentCommandIndex == 183) {
+            //   // 接收 RF input/output power 資料流
+            //   List<int> header = [0xB0, 0x03, 0x00];
+            //   if (listEquals(rawData.sublist(0, 3), header)) {
+            //     _combinedRawData.clear();
+            //   }
+
+            //   _combinedRawData.addAll(rawData);
+            //   // print(_combinedRawData.length);
+
+            //   if (_combinedRawData.length == 1029) {
+            //     // RF input/output power 資料流總長度 1029
+            //     bool isValidCRC = checkCRC(_combinedRawData);
+            //     if (isValidCRC) {
+            //       List<int> rawRFInOuts = List.from(_combinedRawData);
+            //       cancelCharacteristicDataTimer(
+            //           name: 'cmd $_currentCommandIndex');
+            //       if (!_completer!.isCompleted) {
+            //         _completer!.complete(rawRFInOuts);
+            //       }
+            //     } else {
+            //       if (!_completer!.isCompleted) {
+            //         _completer!.completeError(CharacteristicError.invalidData);
+            //       }
+            //     }
+            //   }
+            // } else if (_currentCommandIndex >= 184 &&
+            //     _currentCommandIndex <= 194) {
+            //   // _currentCommandIndex 184 ~ 193 用來接收 10 組 Log 資料流, 每一組 Log 總長 16389
+            //   // _currentCommandIndex 194 用來接收 1 組 Event 資料流, Event 總長 16389
+            //   List<int> header = [0xB0, 0x03, 0x00];
+            //   if (listEquals(rawData.sublist(0, 3), header)) {
+            //     _combinedRawData.clear();
+            //   }
+
+            //   _combinedRawData.addAll(rawData);
+            //   print(_combinedRawData.length);
+
+            //   if (_combinedRawData.length == 16389) {
+            //     bool isValidCRC = checkCRC(_combinedRawData);
+            //     if (isValidCRC) {
+            //       List<int> rawLogs = List.from(_combinedRawData);
+            //       cancelCharacteristicDataTimer(
+            //           name: 'cmd $_currentCommandIndex');
+            //       if (!_completer!.isCompleted) {
+            //         _completer!.complete(rawLogs);
+            //       }
+            //     } else {
+            //       if (!_completer!.isCompleted) {
+            //         _completer!.completeError(CharacteristicError.invalidData);
+            //       }
+            //     }
+            //   }
+            // } else if (_currentCommandIndex >= 195 &&
+            //     _currentCommandIndex <= 204) {
+            //   // _currentCommandIndex 195 ~ 204 用來接收 10 組 RFOut 資料流, 每一組 Log 總長 16389
+            //   List<int> header = [0xB0, 0x03, 0x00];
+            //   if (listEquals(rawData.sublist(0, 3), header)) {
+            //     _combinedRawData.clear();
+            //   }
+
+            //   _combinedRawData.addAll(rawData);
+            //   print(_combinedRawData.length);
+
+            //   if (_combinedRawData.length == 16389) {
+            //     bool isValidCRC = checkCRC(_combinedRawData);
+            //     if (isValidCRC) {
+            //       List<int> rawRFOuts = List.from(_combinedRawData);
+            //       cancelCharacteristicDataTimer(
+            //           name: 'cmd $_currentCommandIndex');
+            //       if (!_completer!.isCompleted) {
+            //         _completer!.complete(rawRFOuts);
+            //       }
+            //     } else {
+            //       if (!_completer!.isCompleted) {
+            //         _completer!.completeError(CharacteristicError.invalidData);
+            //       }
+            //     }
+            //   }
+            // } else if (_currentCommandIndex >= 300) {
+            //   cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
+            //   if (!_completer!.isCompleted) {
+            //     _completer!.complete(rawData);
+            //   }
             // }
-
-            if (_currentCommandIndex <= 13) {
-              cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
-
-              bool isValidCRC = checkCRC(rawData);
-              if (isValidCRC) {
-                if (!_completer!.isCompleted) {
-                  _completer!.complete(rawData);
-                }
-              } else {
-                if (!_completer!.isCompleted) {
-                  _completer!.completeError(CharacteristicError.invalidData);
-                }
-              }
-            } else if (_currentCommandIndex >= 14 &&
-                _currentCommandIndex <= 37) {
-              _combinedRawData.addAll(rawData);
-              // 一個 log command 總共會接收 261 bytes, 每一次傳回 16 bytes
-              if (_combinedRawData.length == _totalBytesPerCommand) {
-                bool isValidCRC = checkCRC(_combinedRawData);
-                if (isValidCRC) {
-                  List<int> combinedRawData = List.from(_combinedRawData);
-                  _combinedRawData.clear();
-                  cancelCharacteristicDataTimer(
-                      name: 'cmd $_currentCommandIndex');
-                  if (!_completer!.isCompleted) {
-                    _completer!.complete(combinedRawData);
-                  }
-                } else {
-                  if (!_completer!.isCompleted) {
-                    _completer!.completeError(CharacteristicError.invalidData);
-                  }
-                }
-              }
-            } else if (_currentCommandIndex >= 40 &&
-                _currentCommandIndex <= 46) {
-              cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
-              if (!_completer!.isCompleted) {
-                _completer!.complete(rawData);
-              }
-            } else if (_currentCommandIndex >= 80 &&
-                _currentCommandIndex <= 83) {
-              cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
-
-              bool isValidCRC = checkCRC(rawData);
-              if (isValidCRC) {
-                if (!_completer!.isCompleted) {
-                  _completer!.complete(rawData);
-                }
-              } else {
-                if (!_completer!.isCompleted) {
-                  _completer!.completeError(CharacteristicError.invalidData);
-                }
-              }
-            } else if (_currentCommandIndex == 183) {
-              // 接收 RF input/output power 資料流
-              List<int> header = [0xB0, 0x03, 0x00];
-              if (listEquals(rawData.sublist(0, 3), header)) {
-                _combinedRawData.clear();
-              }
-
-              _combinedRawData.addAll(rawData);
-              // print(_combinedRawData.length);
-
-              if (_combinedRawData.length == 1029) {
-                // RF input/output power 資料流總長度 1029
-                bool isValidCRC = checkCRC(_combinedRawData);
-                if (isValidCRC) {
-                  List<int> rawRFInOuts = List.from(_combinedRawData);
-                  cancelCharacteristicDataTimer(
-                      name: 'cmd $_currentCommandIndex');
-                  if (!_completer!.isCompleted) {
-                    _completer!.complete(rawRFInOuts);
-                  }
-                } else {
-                  if (!_completer!.isCompleted) {
-                    _completer!.completeError(CharacteristicError.invalidData);
-                  }
-                }
-              }
-            } else if (_currentCommandIndex >= 184 &&
-                _currentCommandIndex <= 194) {
-              // _currentCommandIndex 184 ~ 193 用來接收 10 組 Log 資料流, 每一組 Log 總長 16389
-              // _currentCommandIndex 194 用來接收 1 組 Event 資料流, Event 總長 16389
-              List<int> header = [0xB0, 0x03, 0x00];
-              if (listEquals(rawData.sublist(0, 3), header)) {
-                _combinedRawData.clear();
-              }
-
-              _combinedRawData.addAll(rawData);
-              print(_combinedRawData.length);
-
-              if (_combinedRawData.length == 16389) {
-                bool isValidCRC = checkCRC(_combinedRawData);
-                if (isValidCRC) {
-                  List<int> rawLogs = List.from(_combinedRawData);
-                  cancelCharacteristicDataTimer(
-                      name: 'cmd $_currentCommandIndex');
-                  if (!_completer!.isCompleted) {
-                    _completer!.complete(rawLogs);
-                  }
-                } else {
-                  if (!_completer!.isCompleted) {
-                    _completer!.completeError(CharacteristicError.invalidData);
-                  }
-                }
-              }
-            } else if (_currentCommandIndex >= 195 &&
-                _currentCommandIndex <= 204) {
-              // _currentCommandIndex 195 ~ 204 用來接收 10 組 RFOut 資料流, 每一組 Log 總長 16389
-              List<int> header = [0xB0, 0x03, 0x00];
-              if (listEquals(rawData.sublist(0, 3), header)) {
-                _combinedRawData.clear();
-              }
-
-              _combinedRawData.addAll(rawData);
-              print(_combinedRawData.length);
-
-              if (_combinedRawData.length == 16389) {
-                bool isValidCRC = checkCRC(_combinedRawData);
-                if (isValidCRC) {
-                  List<int> rawRFOuts = List.from(_combinedRawData);
-                  cancelCharacteristicDataTimer(
-                      name: 'cmd $_currentCommandIndex');
-                  if (!_completer!.isCompleted) {
-                    _completer!.complete(rawRFOuts);
-                  }
-                } else {
-                  if (!_completer!.isCompleted) {
-                    _completer!.completeError(CharacteristicError.invalidData);
-                  }
-                }
-              }
-            } else if (_currentCommandIndex >= 300) {
-              cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
-              if (!_completer!.isCompleted) {
-                _completer!.complete(rawData);
-              }
-            }
           }, onError: (error) {
             print('lisetn to Characteristic failed');
           });
@@ -350,7 +356,8 @@ class BLEClient extends BLEClientBase {
             errorMessage: 'Device connection failed',
           ));
 
-          // await closeConnectionStream();
+          await closeConnectionStream();
+
           break;
         default:
           break;
@@ -366,6 +373,7 @@ class BLEClient extends BLEClientBase {
     });
   }
 
+  @override
   Stream<ConnectionReport> get connectionStateReport async* {
     yield* _connectionReportStreamController.stream;
   }
@@ -374,6 +382,7 @@ class BLEClient extends BLEClientBase {
   //   yield* _characteristicDataStreamController.stream;
   // }
 
+  @override
   Future<void> closeScanStream() async {
     print('closeScanStream');
 
@@ -385,12 +394,13 @@ class BLEClient extends BLEClientBase {
     _discoveredDeviceStreamSubscription = null;
   }
 
+  @override
   Future<void> closeConnectionStream() async {
     print('close _characteristicStreamSubscription');
 
+    cancelCompleterOnDisconnected();
     cancelConnectionTimer();
     cancelCharacteristicDataTimer(name: 'connection closed');
-    cancelCompleterOnDisconnected();
 
     if (_connectionReportStreamController.hasListener) {
       if (!_connectionReportStreamController.isClosed) {
@@ -412,7 +422,8 @@ class BLEClient extends BLEClientBase {
     await Future.delayed(const Duration(milliseconds: 2000));
     _connectionStreamSubscription = null;
     _ble = null;
-    _combinedRawData.clear();
+    clearCombinedRawData();
+    // _combinedRawData.clear();
   }
 
   // bool checkCRC(
@@ -453,6 +464,7 @@ class BLEClient extends BLEClientBase {
     }
   }
 
+  @override
   Future<dynamic> getACIDeviceType({
     required int commandIndex,
     required List<int> value,
@@ -497,6 +509,7 @@ class BLEClient extends BLEClientBase {
   }
 
   // iOS 跟 Android 的 set command 方式不一樣
+  @override
   Future writeSetCommandToCharacteristic({
     required int commandIndex,
     required List<int> value,

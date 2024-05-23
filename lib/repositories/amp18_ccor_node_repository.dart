@@ -9,16 +9,18 @@ import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
+import 'package:aci_plus_app/repositories/ble_client_base.dart';
+import 'package:aci_plus_app/repositories/ble_factory.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 
 class Amp18CCorNodeRepository {
   Amp18CCorNodeRepository()
-      : _bleClient = BLEClient.instance,
+      : _bleClient = BLEClientFactory.instance,
         _amp18CCorNodeParser = Amp18CCorNodeParser(),
         _amp18CCorNodeChartCache = Amp18CCorNodeChartCache();
 
-  final BLEClient _bleClient;
+  final BLEClientBase _bleClient;
   final Amp18CCorNodeChartCache _amp18CCorNodeChartCache;
   final Amp18CCorNodeParser _amp18CCorNodeParser;
 

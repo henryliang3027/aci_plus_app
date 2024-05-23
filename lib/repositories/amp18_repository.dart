@@ -7,16 +7,18 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
+import 'package:aci_plus_app/repositories/ble_client_base.dart';
+import 'package:aci_plus_app/repositories/ble_factory.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 
 class Amp18Repository {
   Amp18Repository()
-      : _bleClient = BLEClient.instance,
+      : _bleClient = BLEClientFactory.instance,
         _amp18Parser = Amp18Parser(),
         _amp18ChartCache = Amp18ChartCache();
 
-  final BLEClient _bleClient;
+  final BLEClientBase _bleClient;
   final Amp18Parser _amp18Parser;
   final Amp18ChartCache _amp18ChartCache;
 
