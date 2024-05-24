@@ -1400,7 +1400,6 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
       enableSubmission: false,
-      editMode: false,
     ));
   }
 }
