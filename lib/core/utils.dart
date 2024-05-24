@@ -78,7 +78,7 @@ String adjustMaxIntValue({
 Future<String> getAppVersion() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-  // 給部門內測試的版本會加 -beta版本文字, 例如V 2.1.2-beta5
-  String appVersion = 'V ${packageInfo.version}-beta6';
+  // 給部門內測試的版本會加 -beta版本文字, 例如V 2.1.2
+  String appVersion = 'V ${packageInfo.version}';
   return appVersion;
 }
