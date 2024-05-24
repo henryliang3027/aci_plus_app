@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_bloc.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_generator_page.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_scanner.dart';
@@ -11,6 +13,7 @@ import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class Setting18ConfigForm extends StatelessWidget {
   const Setting18ConfigForm({super.key});
@@ -282,18 +285,29 @@ class _QRToolbar extends StatelessWidget {
                             children: [
                               IconButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    QRCodeScanner.route(),
-                                  ).then((rawData) {
-                                    if (rawData != null) {
-                                      if (rawData.isNotEmpty) {
-                                        context
-                                            .read<Setting18ConfigBloc>()
-                                            .add(QRDataScanned(rawData));
+                                  if (Platform.isWindows) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SimpleBarcodeScannerPage(),
+                                        )).then((value) {
+                                      print(value);
+                                    });
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      QRCodeScanner.route(),
+                                    ).then((rawData) {
+                                      if (rawData != null) {
+                                        if (rawData.isNotEmpty) {
+                                          context
+                                              .read<Setting18ConfigBloc>()
+                                              .add(QRDataScanned(rawData));
+                                        }
                                       }
-                                    }
-                                  });
+                                    });
+                                  }
                                 },
                                 icon: const Icon(
                                   Icons.qr_code_scanner_sharp,
