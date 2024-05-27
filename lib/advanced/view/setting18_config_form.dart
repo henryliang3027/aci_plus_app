@@ -13,6 +13,7 @@ import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:simple_barcode_scanner/enum.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class Setting18ConfigForm extends StatelessWidget {
@@ -290,9 +291,17 @@ class _QRToolbar extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const SimpleBarcodeScannerPage(),
-                                        )).then((value) {
-                                      print(value);
+                                              const SimpleBarcodeScannerPage(
+                                            scanType: ScanType.qr,
+                                          ),
+                                        )).then((rawData) {
+                                      if (rawData != null) {
+                                        if (rawData.isNotEmpty) {
+                                          context
+                                              .read<Setting18ConfigBloc>()
+                                              .add(QRDataScanned(rawData));
+                                        }
+                                      }
                                     });
                                   } else {
                                     Navigator.push(
