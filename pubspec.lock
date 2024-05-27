@@ -1058,10 +1058,9 @@ packages:
   simple_barcode_scanner:
     dependency: "direct main"
     description:
-      name: simple_barcode_scanner
-      sha256: e14c0b302ffe76f0b61004aa47c36365b5d884fcd745494309e21042667902d3
-      url: "https://pub.dev"
-    source: hosted
+      path: "C:\\Users\\henry.liang\\projects\\simple_barcode_scanner-0.1.1"
+      relative: false
+    source: path
     version: "0.1.1"
   sky_engine:
     dependency: transitive

@@ -28,7 +28,7 @@ class BLEWindowsClient extends BLEClientBase {
   StreamSubscription<BleDevice>? _discoveredDeviceStreamSubscription;
   StreamSubscription<bool>? _connectionStreamSubscription;
   StreamSubscription<dynamic>? _characteristicStreamSubscription;
-  late Perigheral _perigheral;
+  Perigheral? _perigheral;
 
   final _aciPrefix = 'ACI';
   final _serviceId = '0000ffe0-0000-1000-8000-00805f9b34fb';
@@ -174,12 +174,12 @@ class BLEWindowsClient extends BLEClientBase {
 
   @override
   Future<void> connectToDevice() async {
-    startConnectionTimer(_perigheral.id);
+    startConnectionTimer(_perigheral!.id);
 
-    WinBle.connect(_perigheral.id);
+    WinBle.connect(_perigheral!.id);
 
     _connectionReportStreamController = StreamController<ConnectionReport>();
-    _connectionStreamSubscription = WinBle.connectionStreamOf(_perigheral.id)
+    _connectionStreamSubscription = WinBle.connectionStreamOf(_perigheral!.id)
         .listen((connectionStateUpdate) async {
       print('current connection state: $connectionStateUpdate');
       switch (connectionStateUpdate) {
@@ -210,7 +210,7 @@ class BLEWindowsClient extends BLEClientBase {
           // // To Get Characteristic
           List<BleCharacteristic> bleCharacteristics =
               await WinBle.discoverCharacteristics(
-            address: _perigheral.id,
+            address: _perigheral!.id,
             serviceId: _serviceId,
           );
 
@@ -219,7 +219,7 @@ class BLEWindowsClient extends BLEClientBase {
           }
 
           WinBle.subscribeToCharacteristic(
-            address: _perigheral.id,
+            address: _perigheral!.id,
             serviceId: _serviceId,
             characteristicId: _characteristicId,
           );
@@ -451,7 +451,9 @@ class BLEWindowsClient extends BLEClientBase {
     _connectionStreamSubscription = null;
 
     // WinBle 需要調用下面這行
-    WinBle.disconnect(_perigheral.id);
+    if (_perigheral != null) {
+      WinBle.disconnect(_perigheral!.id);
+    }
 
     clearCombinedRawData();
   }
@@ -502,7 +504,7 @@ class BLEWindowsClient extends BLEClientBase {
     int mtu = 247,
   }) async {
     _currentCommandIndex = commandIndex;
-    final maxMtu = await WinBle.getMaxMtuSize(_perigheral.id);
+    final maxMtu = await WinBle.getMaxMtuSize(_perigheral!.id);
     print('Max MTU: $maxMtu');
 
     // 設定 mtu = 247
@@ -552,7 +554,7 @@ class BLEWindowsClient extends BLEClientBase {
 
     try {
       await WinBle.write(
-        address: _perigheral.id,
+        address: _perigheral!.id,
         service: _serviceId,
         characteristic: _characteristicId,
         data: Uint8List.fromList(value),
