@@ -96,7 +96,8 @@ class _AppView extends StatelessWidget {
         // is not restarted.
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.indigo,
-          background: Colors.grey[50],
+          primary: Colors.indigo,
+          onPrimary: Colors.white,
         ),
         appBarTheme: const AppBarTheme(
           iconTheme: IconThemeData(color: Colors.white),

@@ -23,7 +23,6 @@ class Setting18AdvancedForm extends StatelessWidget {
         title: Text(
           AppLocalizations.of(context)!.advanced,
         ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
         leading: const _DeviceStatus(),
         actions: const [

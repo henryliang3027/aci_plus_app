@@ -2113,7 +2113,7 @@ class Amp18Repository {
 
       // ipad version ex: 16.6.1
       // ios version ex: 16.5
-      double version = double.parse(iosDeviceInfo.systemVersion.split('.')[0]);
+      double version = double.parse(iosDeviceInfo.systemVersion!.split('.')[0]);
 
       if (version < 16) {
         ms = 59;

@@ -83,7 +83,6 @@ class Setting18Form extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.setting),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
         leading: const _DeviceStatus(),
         actions: const [
