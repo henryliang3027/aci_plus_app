@@ -267,6 +267,19 @@ class Command18CCorNode {
     0x00,
   ];
 
+  static List<int> setForwardModeCmd = [
+    0xB0,
+    0x10,
+    0x00,
+    0x91,
+    0x00,
+    0x18,
+    0x01,
+    0x00,
+    0x00,
+    0x00,
+  ];
+
   static List<int> setMaxOutputPower3Cmd = [
     0xB0,
     0x10,

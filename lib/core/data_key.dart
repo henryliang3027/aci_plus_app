@@ -110,6 +110,7 @@ enum DataKey {
   ingressSetting3,
   ingressSetting4,
   ingressSetting6,
+  forwardMode,
   forwardConfig,
   forwardCEQIndex,
   // pilotFrequency1AlarmState,

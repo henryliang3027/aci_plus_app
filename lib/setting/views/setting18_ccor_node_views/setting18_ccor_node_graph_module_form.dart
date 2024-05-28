@@ -371,10 +371,13 @@ class _ForwardConfig extends StatelessWidget {
           previous.forwardConfig != current.forwardConfig ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return forwardConfigModeGridViewButton(
+        return configureGridViewButton(
           context: context,
           editMode: state.editMode,
-          forwardConfig: state.forwardConfig,
+          title: '${AppLocalizations.of(context)!.forwardConfigMode}:',
+          targetValue: state.forwardConfig,
+          texts: forwardConfigTexts,
+          values: forwardConfigValues,
           onGridPressed: (index) => context
               .read<Setting18CCorNodeGraphModuleBloc>()
               .add(ForwardConfigChanged(

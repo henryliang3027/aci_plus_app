@@ -21,6 +21,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     on<LocationChanged>(_onLocationChanged);
     on<CoordinatesChanged>(_onCoordinatesChanged);
     on<GPSCoordinatesRequested>(_onGPSCoordinatesRequested);
+    on<ForwardModeChanged>(_onForwardModeChanged);
     on<ForwardConfigChanged>(_onForwardConfigChanged);
     on<SplitOptionChanged>(_onSplitOptionChanged);
     on<LogIntervalChanged>(_onLogIntervalChanged);
@@ -43,6 +44,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
 
     String location = characteristicDataCache[DataKey.location] ?? '';
     String coordinates = characteristicDataCache[DataKey.coordinates] ?? '';
+    String forwardMode = characteristicDataCache[DataKey.forwardMode] ?? '';
     String forwardConfig = characteristicDataCache[DataKey.forwardConfig] ?? '';
     String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
     String logInterval = characteristicDataCache[DataKey.logInterval] ?? '';
@@ -50,6 +52,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     emit(state.copyWith(
       location: location,
       coordinates: coordinates,
+      forwardMode: forwardMode,
       forwardConfig: forwardConfig,
       splitOption: splitOption,
       logInterval: logInterval,
@@ -70,6 +73,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       enableSubmission: _isEnabledSubmission(
         location: event.location,
         coordinates: state.coordinates,
+        forwardMode: state.forwardMode,
         forwardConfig: state.forwardConfig,
         splitOption: state.splitOption,
         logInterval: state.logInterval,
@@ -89,6 +93,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: event.coordinates,
+        forwardMode: state.forwardMode,
         forwardConfig: state.forwardConfig,
         splitOption: state.splitOption,
         logInterval: state.logInterval,
@@ -114,6 +119,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
         enableSubmission: _isEnabledSubmission(
           location: state.location,
           coordinates: coordinates,
+          forwardMode: state.forwardMode,
           forwardConfig: state.forwardConfig,
           splitOption: state.splitOption,
           logInterval: state.logInterval,
@@ -126,12 +132,33 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
         enableSubmission: _isEnabledSubmission(
           location: state.location,
           coordinates: state.coordinates,
+          forwardMode: state.forwardMode,
           forwardConfig: state.forwardConfig,
           splitOption: state.splitOption,
           logInterval: state.logInterval,
         ),
       ));
     }
+  }
+
+  void _onForwardModeChanged(
+    ForwardModeChanged event,
+    Emitter<Setting18CCorNodeConfigureState> emit,
+  ) {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
+      forwardMode: event.forwardMode,
+      isInitialize: false,
+      enableSubmission: _isEnabledSubmission(
+        location: state.location,
+        coordinates: state.coordinates,
+        forwardMode: event.forwardMode,
+        forwardConfig: state.forwardConfig,
+        splitOption: state.splitOption,
+        logInterval: state.logInterval,
+      ),
+    ));
   }
 
   void _onForwardConfigChanged(
@@ -146,6 +173,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
+        forwardMode: state.forwardMode,
         forwardConfig: event.forwardConfig,
         splitOption: state.splitOption,
         logInterval: state.logInterval,
@@ -165,6 +193,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
+        forwardMode: state.forwardMode,
         forwardConfig: state.forwardConfig,
         splitOption: event.splitOption,
         logInterval: state.logInterval,
@@ -184,6 +213,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
+        forwardMode: state.forwardMode,
         forwardConfig: state.forwardConfig,
         splitOption: state.splitOption,
         logInterval: event.logInterval,
@@ -215,6 +245,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       enableSubmission: false,
       location: state.initialValues[DataKey.location],
       coordinates: state.initialValues[DataKey.coordinates],
+      forwardMode: state.initialValues[DataKey.forwardMode],
       forwardConfig: state.initialValues[DataKey.forwardConfig],
       splitOption: state.initialValues[DataKey.splitOption],
       logInterval: state.initialValues[DataKey.logInterval],
@@ -224,12 +255,14 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
   bool _isEnabledSubmission({
     required String location,
     required String coordinates,
+    required String forwardMode,
     required String forwardConfig,
     required String splitOption,
     required String logInterval,
   }) {
     if (location != state.initialValues[DataKey.location] ||
         coordinates != state.initialValues[DataKey.coordinates] ||
+        forwardMode != state.initialValues[DataKey.forwardMode] ||
         forwardConfig != state.initialValues[DataKey.forwardConfig] ||
         splitOption != state.initialValues[DataKey.splitOption] ||
         logInterval != state.initialValues[DataKey.logInterval]) {
@@ -263,6 +296,13 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
           .set1p8GCCorNodeCoordinates(state.coordinates);
 
       settingResult.add('${DataKey.coordinates.name},$resultOfSetCoordinates');
+    }
+
+    if (state.forwardMode != state.initialValues[DataKey.forwardMode]) {
+      bool resultOfSetForwardMode = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeForwardMode(state.forwardMode);
+
+      settingResult.add('${DataKey.forwardMode.name},$resultOfSetForwardMode');
     }
 
     if (state.forwardConfig != state.initialValues[DataKey.forwardConfig]) {

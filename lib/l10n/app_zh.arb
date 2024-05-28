@@ -13,6 +13,7 @@
     "advanced": "進階",
     
     "forwardConfigMode": "下行組態模式",
+    "forwardMode": "下行模式",
     "splitOption": "上下行截止頻率",
     "forwardSetting": "下行設定",
     "startFrequency": "起始頻率",
@@ -286,6 +287,7 @@
     "dialogMessageRFOutputPilotLowFrequencyAlarmStateSetting": "低頻輸出狀態警告設定",
     "dialogMessageRFOutputPilotHighFrequencyAlarmStateSetting": "高頻輸出狀態警告設定",
     "dialogMessageForwardConfigModeSetting": "下行組態模式設定",
+    "dialogMessageForwardModeSetting": "下行模式設定",
     "dialogMessageSplitOptionSetting": "上下行截止頻率設定",
     "dialogMessageCoordinatesSetting": "座標設定",
     "dialogMessageForwardInputAttenuation1Setting": "Port 1 下行輸入衰減量設定",

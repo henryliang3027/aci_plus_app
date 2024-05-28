@@ -41,6 +41,8 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
         return AppLocalizations.of(context)!.dialogMessageLocationSetting;
       } else if (item == DataKey.coordinates.name) {
         return AppLocalizations.of(context)!.dialogMessageCoordinatesSetting;
+      } else if (item == DataKey.forwardMode.name) {
+        return AppLocalizations.of(context)!.dialogMessageForwardModeSetting;
       } else if (item == DataKey.forwardConfig.name) {
         return AppLocalizations.of(context)!
             .dialogMessageForwardConfigModeSetting;
@@ -180,6 +182,9 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
               textEditingController: coordinateTextEditingController,
             ));
             break;
+          case SettingConfiruration.forwardMode:
+            widgets.add(const _ForwardMode());
+            break;
           case SettingConfiruration.forwardConfigMode:
             widgets.add(const _ForwardConfig());
             break;
@@ -200,6 +205,7 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
               _Coordinates(
                 textEditingController: coordinateTextEditingController,
               ),
+              const _ForwardMode(),
               const _ForwardConfig(),
               const _SplitOption(),
               const _LogInterval(),
@@ -451,10 +457,13 @@ class _ForwardConfig extends StatelessWidget {
           previous.forwardConfig != current.forwardConfig ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return forwardConfigModeGridViewButton(
+        return configureGridViewButton(
           context: context,
           editMode: state.editMode,
-          forwardConfig: state.forwardConfig,
+          title: '${AppLocalizations.of(context)!.forwardConfigMode}:',
+          targetValue: state.forwardConfig,
+          texts: forwardConfigTexts,
+          values: forwardConfigValues,
           onGridPressed: (index) => context
               .read<Setting18CCorNodeConfigureBloc>()
               .add(ForwardConfigChanged(forwardConfigValues[index])),
@@ -482,6 +491,33 @@ class _SplitOption extends StatelessWidget {
           onGridPressed: (index) => context
               .read<Setting18CCorNodeConfigureBloc>()
               .add(SplitOptionChanged(splitOptionValues[index])),
+        );
+      },
+    );
+  }
+}
+
+class _ForwardMode extends StatelessWidget {
+  const _ForwardMode({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeConfigureBloc,
+        Setting18CCorNodeConfigureState>(
+      buildWhen: (previous, current) =>
+          previous.forwardMode != current.forwardMode ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return configureGridViewButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.forwardMode}:',
+          targetValue: state.forwardMode,
+          texts: forwardModeTexts,
+          values: forwardModeValues,
+          onGridPressed: (index) => context
+              .read<Setting18CCorNodeConfigureBloc>()
+              .add(ForwardModeChanged(forwardModeValues[index])),
         );
       },
     );

@@ -13,6 +13,7 @@
     "advanced": "Advanced",
    
     "forwardConfigMode": "Forward Config Mode",
+    "forwardMode": "Forward Mode",
     "splitOption": "Split Options",
     "forwardSetting": "Forward Setting",
     "startFrequency": "Start Frequency",
@@ -287,6 +288,7 @@
     "dialogMessageRFOutputPilotLowFrequencyAlarmStateSetting": "Low frequency output status alarm setting",
     "dialogMessageRFOutputPilotHighFrequencyAlarmStateSetting": "High frequency output status alarm setting",
     "dialogMessageForwardConfigModeSetting": "Forward config mode setting",
+    "dialogMessageForwardModeSetting": "Forward mode setting",
     "dialogMessageSplitOptionSetting": "Split option setting",
     "dialogMessageCoordinatesSetting": "Coordinates setting",
     "dialogMessageForwardInputAttenuation1Setting": "Port 1 forward input attenuation setting",

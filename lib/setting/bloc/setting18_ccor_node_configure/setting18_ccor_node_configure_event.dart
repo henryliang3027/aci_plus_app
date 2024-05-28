@@ -57,6 +57,15 @@ class SplitOptionChanged extends Setting18CCorNodeConfigureEvent {
   List<Object> get props => [splitOption];
 }
 
+class ForwardModeChanged extends Setting18CCorNodeConfigureEvent {
+  const ForwardModeChanged(this.forwardMode);
+
+  final String forwardMode;
+
+  @override
+  List<Object> get props => [forwardMode];
+}
+
 class LogIntervalChanged extends Setting18CCorNodeConfigureEvent {
   const LogIntervalChanged(this.logInterval);
 

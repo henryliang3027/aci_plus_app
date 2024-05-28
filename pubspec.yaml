@@ -59,8 +59,7 @@ dependencies:
   geolocator: ^10.1.0
   touchable: ^1.0.2
   xml: ^6.3.0
-  simple_barcode_scanner: # for windows
-    path: C:/Users/henry.liang/projects/simple_barcode_scanner-0.1.1
+  simple_barcode_scanner: ^0.1.1 # for windows
   qr_code_scanner: ^1.0.1
   qr_flutter: ^4.1.0
   json_annotation: ^4.8.1

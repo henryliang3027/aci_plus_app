@@ -127,6 +127,7 @@ class Amp18CCorNodeRepository {
         DataKey.ingressSetting6: a1p8gcCorNode91.ingressSetting6,
         DataKey.forwardConfig: a1p8gcCorNode91.forwardConfig,
         DataKey.splitOption: a1p8gcCorNode91.splitOption,
+        DataKey.forwardMode: a1p8gcCorNode91.forwardMode,
         DataKey.maxRFOutputPower3: a1p8gcCorNode91.maxRFOutputPower3,
         DataKey.minRFOutputPower3: a1p8gcCorNode91.minRFOutputPower3,
         DataKey.dsVVA1: a1p8gcCorNode91.dsVVA1,
@@ -847,6 +848,31 @@ class Amp18CCorNodeRepository {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: Command18CCorNode.setSplitOptionCmd,
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> set1p8GCCorNodeForwardMode(String forwardMode) async {
+    int commandIndex = 316;
+
+    print('set data from request command 1p8G CCor Node $commandIndex');
+
+    int forwardModeNumber = int.parse(forwardMode);
+
+    Command18CCorNode.setForwardModeCmd[7] = forwardModeNumber;
+
+    CRC16.calculateCRC16(
+      command: Command18CCorNode.setForwardModeCmd,
+      usDataLength: Command18CCorNode.setForwardModeCmd.length - 2,
+    );
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18CCorNode.setForwardModeCmd,
       );
       return true;
     } catch (e) {
