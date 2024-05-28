@@ -1972,17 +1972,15 @@ class Amp18CCorNodeRepository {
       usDataLength: Command18CCorNode.setNowDateTimeCmd.length - 2,
     );
 
-    return true;
-
-    // try {
-    //   List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-    //     commandIndex: commandIndex,
-    //     value: Command18CCorNode.setNowDateTimeCmd,
-    //   );
-    //   return true;
-    // } catch (e) {
-    //   return false;
-    // }
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18CCorNode.setNowDateTimeCmd,
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
 
     // 之前版本的 log interval 可以為 1 分鐘, 如果一直同步時間就可能發生log紀錄裡有某前後兩筆的log時間一模一樣
     // 所以才加入以下判斷
