@@ -17,6 +17,7 @@ enum SettingConfiruration {
   rfOutputLogInterval,
   cableLength,
   forwardConfigMode, // 只有 C-Cor Node 有
+  forwardMode, // 只有 C-Cor Node 有
 }
 
 enum SettingThreshold {
@@ -446,6 +447,7 @@ class SettingItemTable {
       // C-Cor Node
       SettingConfiruration.location: true,
       SettingConfiruration.coordinates: true,
+      SettingConfiruration.forwardMode: true,
       SettingConfiruration.forwardConfigMode: true,
       SettingConfiruration.splitOptions: true,
       SettingConfiruration.pilotFrequencySelect: false,

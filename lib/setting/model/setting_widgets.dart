@@ -781,10 +781,13 @@ Widget twoTextField({
   );
 }
 
-Widget forwardConfigModeGridViewButton({
+Widget configureGridViewButton({
   required BuildContext context,
   required bool editMode,
-  required String forwardConfig,
+  required String title,
+  required String targetValue,
+  required Map<String, String> texts,
+  required List<String> values,
   required ValueChanged onGridPressed,
 }) {
   return Padding(
@@ -813,7 +816,7 @@ Widget forwardConfigModeGridViewButton({
             crossAxisCount: 2,
             childAspectRatio: (MediaQuery.of(context).size.width / 110.0),
           ),
-          itemCount: splitOptionValues.length,
+          itemCount: values.length,
           itemBuilder: (BuildContext context, int index) {
             return Padding(
               padding: const EdgeInsets.all(2.0),
@@ -823,26 +826,26 @@ Widget forwardConfigModeGridViewButton({
                   elevation: 0.0,
                   foregroundColor: getForegroundColor(
                     context: context,
-                    targetValue: forwardConfig,
-                    value: forwardConfigValues[index],
+                    targetValue: targetValue,
+                    value: values[index],
                   ),
                   backgroundColor: editMode
                       ? getBackgroundColor(
                           context: context,
-                          targetValue: forwardConfig,
-                          value: forwardConfigValues[index],
+                          targetValue: targetValue,
+                          value: values[index],
                         )
                       : getDisabledBackgroundColor(
                           context: context,
-                          targetValue: forwardConfig,
-                          value: forwardConfigValues[index],
+                          targetValue: targetValue,
+                          value: values[index],
                         ),
                   side: BorderSide(
                     color: editMode
                         ? getBorderColor(
                             context: context,
-                            targetValue: forwardConfig,
-                            value: forwardConfigValues[index],
+                            targetValue: targetValue,
+                            value: values[index],
                           )
                         : getDisabledBorderColor(),
                     width: 1.0,
@@ -856,7 +859,7 @@ Widget forwardConfigModeGridViewButton({
                       }
                     : () {},
                 child: Text(
-                  forwardConfigTexts[index.toString()]!,
+                  texts[index.toString()]!,
                   style: const TextStyle(
                     fontSize: CustomStyle.sizeXL,
                     fontWeight: FontWeight.normal,
@@ -1260,14 +1263,24 @@ List<String> pilotFrequencyModeValues = const [
   // '2',
 ];
 
-Map<String, String> forwardConfigTexts = {
+const Map<String, String> forwardConfigTexts = {
   '0': '1 X 4',
   '1': '2 X 2',
 };
 
-List<String> forwardConfigValues = const [
+const List<String> forwardConfigValues = [
   '1',
   '2',
+];
+
+const Map<String, String> forwardModeTexts = {
+  '0': '1218',
+  '1': '1794',
+};
+
+const List<String> forwardModeValues = [
+  '120',
+  '180',
 ];
 
 bool isValidFirstChannelLoadingFrequency({

@@ -8,6 +8,7 @@ class Setting18CCorNodeConfigureState extends Equatable {
     this.coordinates = '',
     this.forwardConfig = '',
     this.splitOption = '1',
+    this.forwardMode = '',
     this.logInterval = '30',
     this.editMode = false,
     this.enableSubmission = false,
@@ -23,6 +24,7 @@ class Setting18CCorNodeConfigureState extends Equatable {
   final String coordinates;
   final String forwardConfig;
   final String splitOption;
+  final String forwardMode;
   final String logInterval;
   final bool editMode;
   final bool enableSubmission;
@@ -38,6 +40,7 @@ class Setting18CCorNodeConfigureState extends Equatable {
     String? coordinates,
     String? forwardConfig,
     String? splitOption,
+    String? forwardMode,
     String? logInterval,
     bool? editMode,
     bool? enableSubmission,
@@ -53,6 +56,7 @@ class Setting18CCorNodeConfigureState extends Equatable {
       coordinates: coordinates ?? this.coordinates,
       forwardConfig: forwardConfig ?? this.forwardConfig,
       splitOption: splitOption ?? this.splitOption,
+      forwardMode: forwardMode ?? this.forwardMode,
       logInterval: logInterval ?? this.logInterval,
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
@@ -72,6 +76,7 @@ class Setting18CCorNodeConfigureState extends Equatable {
         coordinates,
         forwardConfig,
         splitOption,
+        forwardMode,
         logInterval,
         editMode,
         enableSubmission,

@@ -133,6 +133,7 @@ class Amp18CCorNodeParser {
     String ingressSetting3 = '';
     String ingressSetting4 = '';
     String ingressSetting6 = '';
+    String forwardMode = '';
     String forwardConfig = '';
     String splitOption = '';
     String maxRFOutputPower3 = '';
@@ -234,6 +235,9 @@ class Amp18CCorNodeParser {
 
     // 解析 splitOption
     splitOption = rawData[25].toString();
+
+    // 解析 forward mode
+    forwardMode = rawData[27].toString();
 
     // 解析 maxRFOutputPower3
     List<int> rawMaxRFOutputPower3 = rawData.sublist(29, 31);
@@ -451,6 +455,7 @@ class Amp18CCorNodeParser {
       ingressSetting6: ingressSetting6,
       forwardConfig: forwardConfig,
       splitOption: splitOption,
+      forwardMode: forwardMode,
       maxRFOutputPower3: maxRFOutputPower3,
       minRFOutputPower3: minRFOutputPower3,
       dsVVA1: dsVVA1,
@@ -1619,6 +1624,7 @@ class A1P8GCCorNode91 {
     required this.ingressSetting6,
     required this.forwardConfig,
     required this.splitOption,
+    required this.forwardMode,
     required this.maxRFOutputPower3,
     required this.minRFOutputPower3,
     required this.dsVVA1,
@@ -1664,6 +1670,7 @@ class A1P8GCCorNode91 {
   final String ingressSetting3;
   final String ingressSetting4;
   final String ingressSetting6;
+  final String forwardMode;
   final String forwardConfig;
   final String splitOption;
   final String maxRFOutputPower3;
