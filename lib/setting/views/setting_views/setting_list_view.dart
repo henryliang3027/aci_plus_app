@@ -582,19 +582,24 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
                 ),
                 DropdownButtonHideUnderline(
                   child: DropdownButton2<int?>(
-                      buttonHeight: 40,
-                      buttonDecoration: BoxDecoration(
-                        border: Border.all(
-                          color: state.editMode
-                              ? Colors.grey.shade700
-                              : Colors.grey,
+                      buttonStyleData: ButtonStyleData(
+                        height: 40,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: state.editMode
+                                ? Colors.grey.shade700
+                                : Colors.grey,
+                          ),
+                          borderRadius: BorderRadius.circular(4.0),
+                          color: Colors.white,
                         ),
-                        borderRadius: BorderRadius.circular(4.0),
-                        color: Colors.white,
                       ),
-                      dropdownMaxHeight: 200,
+                      dropdownStyleData:
+                          const DropdownStyleData(maxHeight: 200),
+                      iconStyleData: const IconStyleData(
+                        icon: Icon(Icons.keyboard_arrow_down),
+                      ),
                       isExpanded: true,
-                      icon: const Icon(Icons.keyboard_arrow_down),
                       value: state.logIntervalId == '0' ||
                               state.logIntervalId == ''
                           ? null

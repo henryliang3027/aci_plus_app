@@ -19,7 +19,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 2.1.4
 
 environment:
-  sdk: ">=3.1.5 <4.0.0"
+  sdk: ">=3.4.0 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -45,7 +45,7 @@ dependencies:
   bluetooth_enable_fork: ^0.1.6 # check if bluetooth is enabled
   location: ^5.0.3
   equatable: ^2.0.5
-  dropdown_button2: ^1.4.0 # custom dropdownButton and dropdownMenuItems
+  dropdown_button2: ^2.3.9 # custom dropdownButton and dropdownMenuItems
   url_launcher: ^6.2.5 # for launch dsim website
   excel:
     git:
@@ -53,8 +53,9 @@ dependencies:
       ref: master
   path_provider: ^2.0.15
   open_filex: ^4.3.1
-  share_plus: ^7.0.0
+  share_plus: ^9.0.0
   shared_preferences: ^2.2.0 # for persist two pilotCodes
+  package_info_plus: ^8.0.0
   device_info_plus: ^9.0.3
   geolocator: ^10.1.0
   touchable: ^1.0.2
@@ -63,7 +64,7 @@ dependencies:
   qr_code_scanner: ^1.0.1
   qr_flutter: ^4.1.0
   json_annotation: ^4.8.1
-  package_info_plus: ^5.0.1
+  
   flutter_svg: 2.0.10+1
   flutter_speed_chart:
     git:
