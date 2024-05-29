@@ -1095,9 +1095,9 @@ Widget thresholdAlarmParameterWidget({
             ),
             Flexible(
               child: Switch(
-                thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
-                  (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.selected)) {
+                thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
+                  (Set<WidgetState> states) {
+                    if (states.contains(WidgetState.selected)) {
                       return const Icon(Icons.check);
                     }
                     return const Icon(Icons.close);
@@ -1220,9 +1220,9 @@ Widget thresholdAlarmSwitch({
         Flexible(
           child: Switch(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
-              (Set<MaterialState> states) {
-                if (states.contains(MaterialState.selected)) {
+            thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
+              (Set<WidgetState> states) {
+                if (states.contains(WidgetState.selected)) {
                   return const Icon(Icons.check);
                 }
                 return const Icon(Icons.close);
@@ -1274,8 +1274,8 @@ const List<String> forwardConfigValues = [
 ];
 
 const Map<String, String> forwardModeTexts = {
-  '0': '1218',
-  '1': '1794',
+  '0': '1218 ${CustomStyle.mHz}',
+  '1': '1794 ${CustomStyle.mHz}',
 };
 
 const List<String> forwardModeValues = [
