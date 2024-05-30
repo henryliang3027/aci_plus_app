@@ -455,10 +455,12 @@ class _PopupMenu extends StatelessWidget {
   }) {
     String location = characteristicData[DataKey.location] ?? '';
     String coordinates = characteristicData[DataKey.coordinates] ?? '';
+    String forwardMode = characteristicData[DataKey.forwardMode] ?? '';
     String forwardConfig = characteristicData[DataKey.forwardConfig] ?? '';
     String splitOption = characteristicData[DataKey.splitOption] ?? '';
 
-    String forwardConfigText = forwardConfigTexts[forwardConfig] ?? '';
+    String forwardModeText = forwardModeExportTexts[forwardMode] ?? '';
+    String forwardConfigText = forwardConfigExportTexts[forwardConfig] ?? '';
     String splitOptionText = splitOption != ''
         ? '${splitBaseLine[splitOption]!.$1}/${splitBaseLine[splitOption]!.$2} ${CustomStyle.mHz}'
         : '';
@@ -469,6 +471,7 @@ class _PopupMenu extends StatelessWidget {
       AppLocalizations.of(context)!.device: '',
       AppLocalizations.of(context)!.location: location,
       AppLocalizations.of(context)!.coordinates: coordinates,
+      AppLocalizations.of(context)!.forwardMode: forwardModeText,
       AppLocalizations.of(context)!.forwardConfigMode: forwardConfigText,
       AppLocalizations.of(context)!.splitOption: splitOptionText,
       AppLocalizations.of(context)!.logInterval:

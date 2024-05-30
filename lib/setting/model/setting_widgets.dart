@@ -1263,9 +1263,16 @@ List<String> pilotFrequencyModeValues = const [
   // '2',
 ];
 
+// 給 widget 用, 由 grid item index 找 text
 const Map<String, String> forwardConfigTexts = {
   '0': '1 X 4',
   '1': '2 X 2',
+};
+
+// 給 data export 用 由 forwardConfig value 找 text
+const Map<String, String> forwardConfigExportTexts = {
+  '1': '1 X 4',
+  '2': '2 X 2',
 };
 
 const List<String> forwardConfigValues = [
@@ -1273,9 +1280,16 @@ const List<String> forwardConfigValues = [
   '2',
 ];
 
+// 給 widget 用, 由 grid item index 找 text
 const Map<String, String> forwardModeTexts = {
   '0': '1218 ${CustomStyle.mHz}',
   '1': '1794 ${CustomStyle.mHz}',
+};
+
+// 給 data export 用 由 forwardMode value 找 text
+const Map<String, String> forwardModeExportTexts = {
+  '120': '1218 ${CustomStyle.mHz}',
+  '180': '1794 ${CustomStyle.mHz}',
 };
 
 const List<String> forwardModeValues = [
