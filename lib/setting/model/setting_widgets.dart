@@ -802,7 +802,7 @@ Widget configureGridViewButton({
             bottom: CustomStyle.sizeL,
           ),
           child: Text(
-            '${AppLocalizations.of(context)!.forwardConfigMode}:',
+            title,
             style: const TextStyle(
               fontSize: CustomStyle.sizeXL,
               fontWeight: FontWeight.w500,

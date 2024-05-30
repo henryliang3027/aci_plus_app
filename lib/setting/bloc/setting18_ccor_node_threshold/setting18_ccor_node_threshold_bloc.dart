@@ -1247,7 +1247,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
           .set1p8GCCorNodeMinRFOutputPower4(state.minRFOutputPower4.value);
 
       settingResult.add(
-          '${DataKey.minRFOutputPower1.name},$resultOfSetMinRFOutputPower4');
+          '${DataKey.minRFOutputPower4.name},$resultOfSetMinRFOutputPower4');
     }
 
     if (state.maxRFOutputPower4.value !=
