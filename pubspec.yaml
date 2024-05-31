@@ -117,6 +117,7 @@ flutter:
     - assets/
     - assets/circuits/
     - assets/nameplates/
+    - assets/firmwares/
 
   fonts:
     - family: CustomIcons

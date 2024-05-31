@@ -7,6 +7,7 @@ import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
+import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,6 +22,7 @@ class App extends StatelessWidget {
     required this.unitRepository,
     required this.gpsRepository,
     required this.configRepository,
+    required this.firmwareRepository,
   });
 
   final ACIDeviceRepository aciDeviceRepository;
@@ -30,7 +32,7 @@ class App extends StatelessWidget {
   final UnitRepository unitRepository;
   final GPSRepository gpsRepository;
   final ConfigRepository configRepository;
-
+  final FirmwareRepository firmwareRepository;
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
@@ -55,6 +57,9 @@ class App extends StatelessWidget {
         ),
         RepositoryProvider<ConfigRepository>(
           create: (context) => configRepository,
+        ),
+        RepositoryProvider<FirmwareRepository>(
+          create: (context) => firmwareRepository,
         ),
       ],
       child: BlocProvider(

@@ -173,11 +173,16 @@
 
     "scanQRCode": "Scanner code QR",
     "deviceSetting": "Paramètres de l'appareil",
+    "firmawreUpdate": "Mise à jour du firmware",
     "bluetoothSetting": "Paramètres Bluetooth",
     "instruction" : "Instruction",
     "instructionStep1": "Veuillez brancher l'adaptateur Bluetooth USB BT 5.1 dans n'importe quel amplificateur 1.8G.",
     "instructionStep2": "Après l'avoir branché et allumé, veuillez appuyer sur le bouton ci-dessous.",
     "instructionStep3": "Une fois les réglages terminés, veuillez redémarrer l'application.",
+    "startUpdate": "Commencer",
+    "firmawreUpdateCaution1": "Veuillez fournir une alimentation électrique stable à l'appareil. Ne coupez pas l'alimentation pendant le processus de mise à jour.",
+    "firmawreUpdateCaution2": "Ne retirez pas l'adaptateur Bluetooth et ne fermez pas l'application pendant le processus de mise à jour.",
+    "firmawreUpdateCaution3": "Maintenez une distance de connexion Bluetooth stable entre l'appareil et l'appareil mobile.",
 
     "aboutUs": "À propos nous",
     "aboutArticleParagraph1": "Twoway Communications, Inc., fondée en octobre 1992, est le principal fournisseur taïwanais d'amplificateurs à large bande et d'équipements de poste de travail optique. Elle est également la seule entreprise en Asie certifiée par les principaux opérateurs de systèmes multiples nord-américains pour le développement et la fabrication d'équipements de transmission HFC (Hybrid Fiber-Coaxial).",

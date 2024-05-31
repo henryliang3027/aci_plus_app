@@ -29,7 +29,7 @@ class Setting18AdvancedForm extends StatelessWidget {
           _DeviceRefresh(),
         ],
       ),
-      body: const Setting18ConfigPage(),
+      body: const _ViewLayout(),
       bottomNavigationBar: HomeBottomNavigationBar18(
         pageController: pageController,
         selectedIndex: 4,
