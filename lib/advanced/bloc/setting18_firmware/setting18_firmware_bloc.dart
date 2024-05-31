@@ -39,8 +39,8 @@ class Setting18FirmwareBloc
     BootloaderStarted event,
     Emitter<Setting18FirmwareState> emit,
   ) async {
-    List<dynamic> result = await _firmwareRepository.enterBootloader();
+    var result = await _firmwareRepository.exitBootloader();
 
-    print(result);
+    print('enter bootloader result $result');
   }
 }
