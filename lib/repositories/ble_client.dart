@@ -169,7 +169,7 @@ class BLEClient extends BLEClientBase {
               .listen((data) async {
             List<int> rawData = data;
             print(_currentCommandIndex);
-            // print('data length: ${rawData.length}, $rawData');
+            print('data length: ${rawData.length}, $rawData');
 
             List<dynamic> finalResult = combineRawData(
               commandIndex: _currentCommandIndex,
