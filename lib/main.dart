@@ -10,6 +10,7 @@ import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
+import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -48,5 +49,6 @@ Future<void> main() async {
     unitRepository: UnitRepository(),
     gpsRepository: GPSRepository(),
     configRepository: ConfigRepository(),
+    firmwareRepository: FirmwareRepository(),
   ));
 }

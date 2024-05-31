@@ -1,5 +1,6 @@
 import 'package:aci_plus_app/advanced/view/setting18_config_page.dart';
 import 'package:aci_plus_app/advanced/view/setting18_instruction_page.dart';
+import 'package:aci_plus_app/advanced/view/setting18_firmware_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -53,11 +54,21 @@ class Setting18AdvancedTabBar extends StatelessWidget {
                       width: 160,
                       child: Center(
                         child: Text(
-                          AppLocalizations.of(context)!.bluetoothSetting,
+                          AppLocalizations.of(context)!.firmawreUpdate,
                         ),
                       ),
                     ),
                   ),
+                  // Tab(
+                  //   child: SizedBox(
+                  //     width: 160,
+                  //     child: Center(
+                  //       child: Text(
+                  //         AppLocalizations.of(context)!.bluetoothSetting,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -68,7 +79,9 @@ class Setting18AdvancedTabBar extends StatelessWidget {
               // controller: tabController,
               children: [
                 Setting18ConfigPage(),
-                Setting18InstructionPage(),
+                Setting18FirmwarePage(),
+
+                // Setting18InstructionPage(),
               ],
             ),
           ),

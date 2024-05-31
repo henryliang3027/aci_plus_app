@@ -63,3 +63,5 @@ ios/fastlane/report.xml
 
 # FVM Version Cache
 .fvm/
+
+.VSCodeCounter/
