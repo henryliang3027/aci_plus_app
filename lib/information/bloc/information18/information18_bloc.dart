@@ -40,11 +40,19 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     ));
   }
 
+  String getGroupIdByPartId(String partId) {
+    if (partId == '5' || partId == '8') {
+      return '0'; // trunk
+    } else {
+      return '1'; // distribution
+    }
+  }
+
   Future<void> _onConfigLoaded(
     ConfigLoaded event,
     Emitter<Information18State> emit,
   ) async {
-    String groupId = event.partId == '5' ? '0' : '1';
+    String groupId = getGroupIdByPartId(event.partId);
 
     List<Config> configs = _configRepository.getConfigsByGroupId(groupId);
 
