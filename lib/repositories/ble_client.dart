@@ -26,8 +26,6 @@ class BLEClient extends BLEClientBase {
   late StreamController<ScanReport> _scanReportStreamController;
   StreamController<ConnectionReport> _connectionReportStreamController =
       StreamController<ConnectionReport>();
-  // StreamController<Map<DataKey, String>> _characteristicDataStreamController =
-  //     StreamController<Map<DataKey, String>>();
   StreamSubscription<DiscoveredDevice>? _discoveredDeviceStreamSubscription;
   StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
   StreamSubscription<List<int>>? _characteristicStreamSubscription;
@@ -334,6 +332,7 @@ class BLEClient extends BLEClientBase {
   }) async {
     _currentCommandIndex = commandIndex;
     final negotiatedMtu = await _ble!.requestMtu(deviceId: deviceId, mtu: mtu);
+    print('negotiatedMtu: ${negotiatedMtu}');
 
     // 設定 mtu = 247
     List<dynamic> result = await _requestBasicInformationRawData(value);
@@ -403,6 +402,49 @@ class BLEClient extends BLEClientBase {
         _completer!.completeError(CharacteristicError.writeDataError.name);
       }
     }
+    return _completer!.future;
+  }
+
+  @override
+  Future<dynamic> transferFirmwareBinary({
+    required List<int> binary,
+    Duration timeout = const Duration(seconds: 60),
+  }) async {
+    final negotiatedMtu =
+        await _ble!.requestMtu(deviceId: _perigheral.id, mtu: 247);
+    print('negotiatedMtu: ${negotiatedMtu}');
+
+    List<List<int>> chunks = divideToChunkList(
+      binary: binary,
+      chunkSize: negotiatedMtu,
+    );
+
+    print('binary.length: ${binary.length}, chunks.length: ${chunks.length}');
+    for (int i = 0; i < chunks.length; i++) {
+      List<int> chunk = chunks[i];
+      print('chink index: $i');
+      try {
+        if (Platform.isAndroid) {
+          await _ble!.writeCharacteristicWithResponse(
+            _qualifiedCharacteristic,
+            value: chunk,
+          );
+        } else if (Platform.isIOS) {
+          await _ble!.writeCharacteristicWithoutResponse(
+            _qualifiedCharacteristic,
+            value: chunk,
+          );
+        } else {}
+      } catch (e) {
+        if (!_completer!.isCompleted) {
+          print('writeCharacteristic failed: ${e.toString()}');
+          _completer!.completeError(CharacteristicError.writeDataError.name);
+        }
+      }
+
+      await Future.delayed(const Duration(milliseconds: 30));
+    }
+
     return _completer!.future;
   }
 

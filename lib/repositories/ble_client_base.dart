@@ -34,6 +34,23 @@ abstract class BLEClientBase {
     Duration timeout = const Duration(seconds: 10),
   });
 
+  Future<dynamic> transferFirmwareBinary({
+    required List<int> binary,
+    Duration timeout = const Duration(seconds: 10),
+  });
+
+  List<List<int>> divideToChunkList({
+    required List<int> binary,
+    required int chunkSize,
+  }) {
+    List<List<int>> chunks = [];
+    for (int i = 0; i < binary.length; i += chunkSize) {
+      int end = (i + chunkSize < binary.length) ? i + chunkSize : binary.length;
+      chunks.add(binary.sublist(i, end));
+    }
+    return chunks;
+  }
+
   bool checkCRC(
     List<int> rawData,
   ) {

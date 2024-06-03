@@ -86,11 +86,11 @@ class ContentView extends StatelessWidget {
               description: AppLocalizations.of(context)!.firmawreUpdateCaution3,
             ),
             const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            Wrap(
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(bottom: CustomStyle.size36),
+                  padding: const EdgeInsets.only(bottom: 0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
@@ -113,7 +113,7 @@ class ContentView extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: CustomStyle.size36),
+                  padding: const EdgeInsets.only(bottom: 0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
@@ -128,15 +128,82 @@ class ContentView extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   Setting18DonglePage.route(),
-                      // );
-                      // Setting18DonglePage.route();
+                      context
+                          .read<Setting18FirmwareBloc>()
+                          .add(const UpdateStarted());
                     },
                     child: Text(
                       AppLocalizations.of(context)!.startUpdate,
                     ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      minimumSize: const Size(100, 60),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(CustomStyle.sizeS)),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: CustomStyle.sizeXXL,
+                      ),
+                    ),
+                    onPressed: () {
+                      context
+                          .read<Setting18FirmwareBloc>()
+                          .add(const CommandWrited('C'));
+                    },
+                    child: Text("C"),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      minimumSize: const Size(100, 60),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(CustomStyle.sizeS)),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: CustomStyle.sizeXXL,
+                      ),
+                    ),
+                    onPressed: () {
+                      context
+                          .read<Setting18FirmwareBloc>()
+                          .add(const CommandWrited('Y'));
+                    },
+                    child: Text("Y"),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      minimumSize: const Size(100, 60),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(CustomStyle.sizeS)),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: CustomStyle.sizeXXL,
+                      ),
+                    ),
+                    onPressed: () {
+                      context
+                          .read<Setting18FirmwareBloc>()
+                          .add(const CommandWrited('N'));
+                    },
+                    child: Text("N"),
                   ),
                 ),
               ],

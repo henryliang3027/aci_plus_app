@@ -14,7 +14,9 @@ class Setting18FirmwareBloc
         super(const Setting18FirmwareState()) {
     on<BinaryDataLoaded>(_onBinaryDataLoaded);
     on<BootloaderStarted>(_onBootloaderStarted);
+    on<BootloaderExited>(_onBootloaderExited);
     on<UpdateStarted>(_onUpdateStarted);
+    on<CommandWrited>(_onCommandWrited);
 
     print('BinaryDataLoaded');
 
@@ -28,19 +30,54 @@ class Setting18FirmwareBloc
     Emitter<Setting18FirmwareState> emit,
   ) async {
     List<dynamic> result = await _firmwareRepository.calculateCheckSum();
+
+    if (result[0]) {
+      int sum = result[1];
+      List<int> binary = result[2];
+
+      emit(state.copyWith(
+        formStatus: FormStatus.requestSuccess,
+        sum: sum,
+        binary: binary,
+      ));
+    } else {
+      emit(state.copyWith(
+        formStatus: FormStatus.requestFailure,
+      ));
+    }
   }
 
   void _onUpdateStarted(
     UpdateStarted event,
     Emitter<Setting18FirmwareState> emit,
-  ) {}
+  ) {
+    _firmwareRepository.updateFirmware(binary: state.binary);
+  }
 
   Future<void> _onBootloaderStarted(
     BootloaderStarted event,
     Emitter<Setting18FirmwareState> emit,
   ) async {
-    var result = await _firmwareRepository.exitBootloader();
+    var result = await _firmwareRepository.enterBootloader();
 
     print('enter bootloader result $result');
+  }
+
+  Future<void> _onBootloaderExited(
+    BootloaderExited event,
+    Emitter<Setting18FirmwareState> emit,
+  ) async {
+    var result = await _firmwareRepository.exitBootloader();
+
+    print('exit bootloader result $result');
+  }
+
+  Future<void> _onCommandWrited(
+    CommandWrited event,
+    Emitter<Setting18FirmwareState> emit,
+  ) async {
+    List<int> cmd = event.character.codeUnits;
+
+    var result = await _firmwareRepository.writeCommand(cmd);
   }
 }
