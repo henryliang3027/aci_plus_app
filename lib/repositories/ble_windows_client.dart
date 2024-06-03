@@ -439,6 +439,40 @@ class BLEWindowsClient extends BLEClientBase {
     return _completer!.future;
   }
 
+  @override
+  Future<dynamic> transferFirmwareBinary({
+    required List<int> binary,
+    Duration timeout = const Duration(seconds: 60),
+  }) async {
+    int mtu = 244;
+
+    List<List<int>> chunks = divideToChunkList(
+      binary: binary,
+      chunkSize: mtu,
+    );
+
+    for (List<int> chunk in chunks) {
+      try {
+        await WinBle.write(
+          address: _perigheral!.id,
+          service: _serviceId,
+          characteristic: _characteristicId,
+          data: Uint8List.fromList(chunk),
+          writeWithResponse: true,
+        );
+      } catch (e) {
+        if (!_completer!.isCompleted) {
+          print('writeCharacteristic failed: ${e.toString()}');
+          _completer!.completeError(CharacteristicError.writeDataError.name);
+        }
+      }
+
+      await Future.delayed(const Duration(milliseconds: 200));
+    }
+
+    return _completer!.future;
+  }
+
   // Future getCompleter() {
   //   _completer = Completer<dynamic>();
   //   return _completer.future;

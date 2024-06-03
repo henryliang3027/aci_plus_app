@@ -29,7 +29,11 @@ class FirmwareRepository {
     print('$sum ${sum.toRadixString(16)}');
     print(byteData.lengthInBytes);
 
-    return [true, ''];
+    return [
+      true,
+      sum,
+      byteData.buffer.asUint8List().toList(),
+    ];
   }
 
   Future<dynamic> enterBootloader() async {
@@ -37,7 +41,26 @@ class FirmwareRepository {
 
     print('Entering Bootloader');
 
-    List<int> cmd = List<int>.generate(1, (index) => 0x43);
+    List<int> cmd = List<int>.generate(100, (index) => 0xf0);
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: cmd,
+      );
+      return rawData;
+    } catch (e) {
+      return e;
+    }
+  }
+
+  Future<dynamic> writeCommand(List<int> cmd) async {
+    int commandIndex = 1000;
+
+    print('Write $cmd ');
+    // 0x43 67 C
+    // 0x4E 116 N
+    // 0x59 131 Y
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
@@ -63,5 +86,11 @@ class FirmwareRepository {
     } catch (e) {
       return e;
     }
+  }
+
+  Future<void> updateFirmware({
+    required List<int> binary,
+  }) async {
+    _bleClient.transferFirmwareBinary(binary: binary);
   }
 }
