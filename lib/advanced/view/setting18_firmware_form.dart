@@ -1,5 +1,6 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_firmware/setting18_firmware_bloc.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
+import 'package:aci_plus_app/core/firmware_file_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -85,7 +86,45 @@ class ContentView extends StatelessWidget {
               number: '3. ',
               description: AppLocalizations.of(context)!.firmawreUpdateCaution3,
             ),
+
+            DropdownButton<String>(
+              value: state.selectedBinary,
+              icon: const Icon(Icons.arrow_downward),
+              elevation: 16,
+              style: const TextStyle(color: Colors.deepPurple, fontSize: 20),
+              underline: Container(
+                height: 2,
+                color: Colors.deepPurpleAccent,
+              ),
+              onChanged: (String? value) {
+                if (value != null) {
+                  context
+                      .read<Setting18FirmwareBloc>()
+                      .add(BinarySelected(value));
+                }
+              },
+              items: FirmwareFileTable.filePathMap.entries
+                  .map((entry) => DropdownMenuItem<String>(
+                        value: entry.key,
+                        child: Text(entry.value),
+                      ))
+                  .toList(),
+            ),
             const Spacer(),
+            // LinearProgressIndicator(
+            //   value: 0.5,
+            // ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Row(
+                children: [
+                  Text(
+                    state.updateMessage,
+                    style: TextStyle(fontSize: 20),
+                  )
+                ],
+              ),
+            ),
             Wrap(
               // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -110,6 +149,29 @@ class ContentView extends StatelessWidget {
                           .add(const BootloaderStarted());
                     },
                     child: Text('Bootloader'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      minimumSize: const Size(100, 60),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(CustomStyle.sizeS)),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: CustomStyle.sizeXXL,
+                      ),
+                    ),
+                    onPressed: () {
+                      context
+                          .read<Setting18FirmwareBloc>()
+                          .add(const BootloaderExited());
+                    },
+                    child: Text('Main'),
                   ),
                 ),
                 Padding(

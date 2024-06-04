@@ -13,6 +13,8 @@ abstract class BLEClientBase {
 
   Stream<ConnectionReport> get connectionStateReport;
 
+  Stream<List<int>> get updateReport;
+
   Future<void> connectToDevice();
 
   Future<void> closeScanStream();
@@ -35,7 +37,14 @@ abstract class BLEClientBase {
   });
 
   Future<dynamic> transferFirmwareBinary({
+    required int commandIndex,
     required List<int> binary,
+    Duration timeout = const Duration(seconds: 10),
+  });
+
+  Future<dynamic> transferFirmwareCommand({
+    required int commandIndex,
+    required List<int> command,
     Duration timeout = const Duration(seconds: 10),
   });
 
@@ -128,7 +137,9 @@ abstract class BLEClientBase {
     } else if (commandIndex >= 195 && commandIndex <= 204) {
       // _currentCommandIndex 195 ~ 204 用來接收 10 組 RFOut 資料流, 每一組 RFOut 總長 16389
       return _combine1p8GRawData(rawData: rawData, length: 16389);
-    } else if (commandIndex >= 300) {
+    } else if (commandIndex >= 300 && commandIndex <= 999) {
+      return [true, rawData];
+    } else if (commandIndex >= 1000 && commandIndex <= 1100) {
       return [true, rawData];
     } else {
       return [false];

@@ -130,7 +130,7 @@ class Setting18ConfigForm extends StatelessWidget {
           showDecodeFailureDialog();
         }
       },
-      child: const _ViewLayout(),
+      child: const _Content(),
     );
   }
 }
