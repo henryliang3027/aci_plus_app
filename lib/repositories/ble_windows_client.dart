@@ -25,6 +25,10 @@ class BLEWindowsClient extends BLEClientBase {
       StreamController<ConnectionReport>();
   // StreamController<Map<DataKey, String>> _characteristicDataStreamController =
   //     StreamController<Map<DataKey, String>>();
+
+  StreamController<List<int>> _updateReportStreamController =
+      StreamController<List<int>>();
+
   StreamSubscription<BleDevice>? _discoveredDeviceStreamSubscription;
   StreamSubscription<bool>? _connectionStreamSubscription;
   StreamSubscription<dynamic>? _characteristicStreamSubscription;
@@ -46,6 +50,11 @@ class BLEWindowsClient extends BLEClientBase {
 
   // 1p8G variables
   // List<int> _rawRFInOut = [];
+
+  @override
+  Stream<List<int>> get updateReport async* {
+    yield* _updateReportStreamController.stream;
+  }
 
   Future<void> initialize() async {
     await WinBle.initialize(
@@ -441,6 +450,7 @@ class BLEWindowsClient extends BLEClientBase {
 
   @override
   Future<dynamic> transferFirmwareBinary({
+    required int commandIndex,
     required List<int> binary,
     Duration timeout = const Duration(seconds: 60),
   }) async {
@@ -471,6 +481,40 @@ class BLEWindowsClient extends BLEClientBase {
     }
 
     return _completer!.future;
+  }
+
+  @override
+  Future<dynamic> transferFirmwareCommand({
+    required int commandIndex,
+    required List<int> command,
+    Duration timeout = const Duration(seconds: 10),
+  }) async {
+    try {
+      await WinBle.write(
+        address: _perigheral!.id,
+        service: _serviceId,
+        characteristic: _characteristicId,
+        data: Uint8List.fromList(command),
+        writeWithResponse: true,
+      );
+    } catch (e) {
+      if (!_completer!.isCompleted) {
+        print('writeCharacteristic failed: ${e.toString()}');
+        _completer!.completeError(CharacteristicError.writeDataError.name);
+      }
+    }
+
+    try {
+      await WinBle.write(
+        address: _perigheral!.id,
+        service: _serviceId,
+        characteristic: _characteristicId,
+        data: Uint8List.fromList(command),
+        writeWithResponse: true,
+      );
+    } catch (e) {
+      _updateReportStreamController.addError('write data error');
+    }
   }
 
   // Future getCompleter() {

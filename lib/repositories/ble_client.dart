@@ -26,6 +26,10 @@ class BLEClient extends BLEClientBase {
   late StreamController<ScanReport> _scanReportStreamController;
   StreamController<ConnectionReport> _connectionReportStreamController =
       StreamController<ConnectionReport>();
+
+  StreamController<List<int>> _updateReportStreamController =
+      StreamController<List<int>>();
+
   StreamSubscription<DiscoveredDevice>? _discoveredDeviceStreamSubscription;
   StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
   StreamSubscription<List<int>>? _characteristicStreamSubscription;
@@ -48,6 +52,12 @@ class BLEClient extends BLEClientBase {
 
   // 1p8G variables
   // List<int> _rawRFInOut = [];
+
+  @override
+  Stream<List<int>> get updateReport async* {
+    _updateReportStreamController = StreamController<List<int>>();
+    yield* _updateReportStreamController.stream;
+  }
 
   Future<bool> checkBluetoothEnabled() async {
     // 要求定位與藍芽存取權
@@ -174,18 +184,30 @@ class BLEClient extends BLEClientBase {
               rawData: rawData,
             );
 
-            if (finalResult[0]) {
-              cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
+            if (_currentCommandIndex >= 1000) {
               List<int> finalRawData = finalResult[1];
+              _updateReportStreamController.add(finalRawData);
+              // cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
+              // List<int> finalRawData = finalResult[1];
 
-              bool isValidCRC = checkCRC(finalRawData);
-              if (isValidCRC) {
-                if (!_completer!.isCompleted) {
-                  _completer!.complete(finalRawData);
-                }
-              } else {
-                if (!_completer!.isCompleted) {
-                  _completer!.completeError(CharacteristicError.invalidData);
+              // if (!_completer!.isCompleted) {
+              //   _completer!.complete(finalRawData);
+              // }
+            } else {
+              if (finalResult[0]) {
+                cancelCharacteristicDataTimer(
+                    name: 'cmd $_currentCommandIndex');
+                List<int> finalRawData = finalResult[1];
+
+                bool isValidCRC = checkCRC(finalRawData);
+                if (isValidCRC) {
+                  if (!_completer!.isCompleted) {
+                    _completer!.complete(finalRawData);
+                  }
+                } else {
+                  if (!_completer!.isCompleted) {
+                    _completer!.completeError(CharacteristicError.invalidData);
+                  }
                 }
               }
             }
@@ -407,28 +429,40 @@ class BLEClient extends BLEClientBase {
 
   @override
   Future<dynamic> transferFirmwareBinary({
+    required int commandIndex,
     required List<int> binary,
-    Duration timeout = const Duration(seconds: 60),
+    Duration timeout = const Duration(seconds: 600),
   }) async {
+    _currentCommandIndex = commandIndex;
+
+    // _completer = Completer<dynamic>();
+
     final negotiatedMtu =
-        await _ble!.requestMtu(deviceId: _perigheral.id, mtu: 247);
+        await _ble!.requestMtu(deviceId: _perigheral.id, mtu: 244);
     print('negotiatedMtu: ${negotiatedMtu}');
+    // negotiatedMtu = 247
+    // 送 chunck0 的時候會出現 status 13 (GATT_INVALID_ATTR_LEN) 的錯誤
+    // 送完全部的時候收到 clean ap2
 
     List<List<int>> chunks = divideToChunkList(
       binary: binary,
-      chunkSize: negotiatedMtu,
+      chunkSize: 244,
     );
 
     print('binary.length: ${binary.length}, chunks.length: ${chunks.length}');
     for (int i = 0; i < chunks.length; i++) {
       List<int> chunk = chunks[i];
-      print('chink index: $i');
+      print('chink index: $i, length: ${chunks[i].length}');
+
       try {
         if (Platform.isAndroid) {
+          Stopwatch stopwatch = Stopwatch()..start();
           await _ble!.writeCharacteristicWithResponse(
             _qualifiedCharacteristic,
             value: chunk,
           );
+          print(
+              'doSomething() executed in ${stopwatch.elapsed.inMilliseconds}');
         } else if (Platform.isIOS) {
           await _ble!.writeCharacteristicWithoutResponse(
             _qualifiedCharacteristic,
@@ -436,16 +470,39 @@ class BLEClient extends BLEClientBase {
           );
         } else {}
       } catch (e) {
-        if (!_completer!.isCompleted) {
-          print('writeCharacteristic failed: ${e.toString()}');
-          _completer!.completeError(CharacteristicError.writeDataError.name);
-        }
+        _updateReportStreamController.addError('write data error');
       }
-
-      await Future.delayed(const Duration(milliseconds: 30));
+      if (i != chunks.length - 1) {
+        await Future.delayed(const Duration(milliseconds: 30));
+      }
     }
 
-    return _completer!.future;
+    // return _completer!.future;
+  }
+
+  @override
+  Future<dynamic> transferFirmwareCommand({
+    required int commandIndex,
+    required List<int> command,
+    Duration timeout = const Duration(seconds: 10),
+  }) async {
+    _currentCommandIndex = commandIndex;
+
+    try {
+      if (Platform.isAndroid) {
+        await _ble!.writeCharacteristicWithResponse(
+          _qualifiedCharacteristic,
+          value: command,
+        );
+      } else if (Platform.isIOS) {
+        await _ble!.writeCharacteristicWithoutResponse(
+          _qualifiedCharacteristic,
+          value: command,
+        );
+      } else {}
+    } catch (e) {
+      _updateReportStreamController.addError('write data error');
+    }
   }
 
   // Future getCompleter() {

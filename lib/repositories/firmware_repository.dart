@@ -11,9 +11,11 @@ class FirmwareRepository {
 
   final BLEClientBase _bleClient;
 
-  Future<List<dynamic>> calculateCheckSum() async {
-    String binaryPath = FirmwareFileTable.filePathMap['2'] ?? '';
+  Stream<List<int>> get updateReport async* {
+    yield* _bleClient.updateReport;
+  }
 
+  Future<List<dynamic>> calculateCheckSum({required String binaryPath}) async {
     if (binaryPath.isEmpty) {
       return [false, ''];
     }
@@ -41,14 +43,14 @@ class FirmwareRepository {
 
     print('Entering Bootloader');
 
-    List<int> cmd = List<int>.generate(100, (index) => 0xf0);
+    List<int> cmd = List<int>.generate(200, (index) => 0xf0);
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData = await _bleClient.transferFirmwareCommand(
         commandIndex: commandIndex,
-        value: cmd,
+        command: cmd,
       );
-      return rawData;
+      return String.fromCharCodes(rawData);
     } catch (e) {
       return e;
     }
@@ -63,11 +65,11 @@ class FirmwareRepository {
     // 0x59 131 Y
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData = await _bleClient.transferFirmwareCommand(
         commandIndex: commandIndex,
-        value: cmd,
+        command: cmd,
       );
-      return rawData;
+      return String.fromCharCodes(rawData);
     } catch (e) {
       return e;
     }
@@ -78,9 +80,9 @@ class FirmwareRepository {
     CRC16.calculateCRC16(command: req00Cmd, usDataLength: 6);
 
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData = await _bleClient.transferFirmwareCommand(
         commandIndex: 300,
-        value: req00Cmd,
+        command: req00Cmd,
       );
       return rawData;
     } catch (e) {
@@ -88,9 +90,18 @@ class FirmwareRepository {
     }
   }
 
-  Future<void> updateFirmware({
+  Future<dynamic> updateFirmware({
     required List<int> binary,
   }) async {
-    _bleClient.transferFirmwareBinary(binary: binary);
+    // List<int> binaryWithLeadingC = [0x43, ...binary];
+    try {
+      List<int> rawData = await _bleClient.transferFirmwareBinary(
+        commandIndex: 1000,
+        binary: binary,
+      );
+      return String.fromCharCodes(rawData);
+    } catch (e) {
+      return e;
+    }
   }
 }
