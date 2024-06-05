@@ -6,6 +6,7 @@ class Setting18FirmwareState extends Equatable {
     this.submissionStatus = SubmissionStatus.none,
     this.selectedBinary = '2',
     this.sum = 0,
+    this.currentProgress = 0,
     this.binary = const [],
     this.updateMessage = '',
     this.errorMessage = '',
@@ -15,6 +16,7 @@ class Setting18FirmwareState extends Equatable {
   final SubmissionStatus submissionStatus;
   final String selectedBinary;
   final int sum;
+  final double currentProgress;
   final List<int> binary;
   final String updateMessage;
   final String errorMessage;
@@ -24,6 +26,7 @@ class Setting18FirmwareState extends Equatable {
     SubmissionStatus? submissionStatus,
     String? selectedBinary,
     int? sum,
+    double? currentProgress,
     List<int>? binary,
     String? updateMessage,
     String? errorMessage,
@@ -32,6 +35,7 @@ class Setting18FirmwareState extends Equatable {
       formStatus: formStatus ?? this.formStatus,
       submissionStatus: submissionStatus ?? this.submissionStatus,
       selectedBinary: selectedBinary ?? this.selectedBinary,
+      currentProgress: currentProgress ?? this.currentProgress,
       sum: sum ?? this.sum,
       binary: binary ?? this.binary,
       updateMessage: updateMessage ?? this.updateMessage,
@@ -45,6 +49,7 @@ class Setting18FirmwareState extends Equatable {
         submissionStatus,
         selectedBinary,
         sum,
+        currentProgress,
         binary,
         updateMessage,
         errorMessage,

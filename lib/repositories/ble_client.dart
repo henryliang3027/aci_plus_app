@@ -27,8 +27,7 @@ class BLEClient extends BLEClientBase {
   StreamController<ConnectionReport> _connectionReportStreamController =
       StreamController<ConnectionReport>();
 
-  StreamController<List<int>> _updateReportStreamController =
-      StreamController<List<int>>();
+  late StreamController<String> _updateReportStreamController;
 
   StreamSubscription<DiscoveredDevice>? _discoveredDeviceStreamSubscription;
   StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
@@ -54,8 +53,8 @@ class BLEClient extends BLEClientBase {
   // List<int> _rawRFInOut = [];
 
   @override
-  Stream<List<int>> get updateReport async* {
-    _updateReportStreamController = StreamController<List<int>>();
+  Stream<String> get updateReport async* {
+    _updateReportStreamController = StreamController<String>();
     yield* _updateReportStreamController.stream;
   }
 
@@ -186,7 +185,8 @@ class BLEClient extends BLEClientBase {
 
             if (_currentCommandIndex >= 1000) {
               List<int> finalRawData = finalResult[1];
-              _updateReportStreamController.add(finalRawData);
+              String message = String.fromCharCodes(finalRawData);
+              _updateReportStreamController.add(message);
               // cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
               // List<int> finalRawData = finalResult[1];
 
@@ -472,8 +472,10 @@ class BLEClient extends BLEClientBase {
       } catch (e) {
         _updateReportStreamController.addError('write data error');
       }
+
+      _updateReportStreamController.add('Sending ${i} ${chunks.length}');
       if (i != chunks.length - 1) {
-        await Future.delayed(const Duration(milliseconds: 30));
+        await Future.delayed(const Duration(milliseconds: 1));
       }
     }
 

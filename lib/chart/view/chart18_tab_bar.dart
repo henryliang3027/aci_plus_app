@@ -25,47 +25,44 @@ class Chart18TabBar extends StatelessWidget {
             Container(
               width: double.maxFinite,
               color: Theme.of(context).colorScheme.primary,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: IgnorePointer(
-                  ignoring: !state.enableTabChange,
-                  child: TabBar(
-                    controller: tabController,
-                    unselectedLabelColor: Colors.white,
-                    labelColor: Theme.of(context).colorScheme.primary,
-                    isScrollable: true,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    indicator: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10)),
-                      color: Colors.white,
-                    ),
-                    labelPadding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    tabAlignment: TabAlignment.start,
-                    tabs: [
-                      Tab(
-                        child: SizedBox(
-                          width: 130,
-                          child: Center(
-                            child: Text(
-                              AppLocalizations.of(context)!.dataLog,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Tab(
-                        child: SizedBox(
-                          width: 130,
-                          child: Center(
-                            child: Text(
-                              AppLocalizations.of(context)!.rfLevel,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+              child: IgnorePointer(
+                ignoring: !state.enableTabChange,
+                child: TabBar(
+                  controller: tabController,
+                  tabAlignment: TabAlignment.start,
+                  isScrollable: true,
+                  unselectedLabelColor: Colors.white,
+                  labelColor: Theme.of(context).colorScheme.primary,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicator: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10)),
+                    color: Colors.white,
                   ),
+                  labelPadding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  tabs: [
+                    Tab(
+                      child: SizedBox(
+                        width: 130,
+                        child: Center(
+                          child: Text(
+                            AppLocalizations.of(context)!.dataLog,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Tab(
+                      child: SizedBox(
+                        width: 130,
+                        child: Center(
+                          child: Text(
+                            AppLocalizations.of(context)!.rfLevel,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -13,7 +13,7 @@ abstract class BLEClientBase {
 
   Stream<ConnectionReport> get connectionStateReport;
 
-  Stream<List<int>> get updateReport;
+  Stream<String> get updateReport;
 
   Future<void> connectToDevice();
 

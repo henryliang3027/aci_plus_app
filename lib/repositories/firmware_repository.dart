@@ -11,7 +11,7 @@ class FirmwareRepository {
 
   final BLEClientBase _bleClient;
 
-  Stream<List<int>> get updateReport async* {
+  Stream<String> get updateReport async* {
     yield* _bleClient.updateReport;
   }
 
@@ -43,7 +43,7 @@ class FirmwareRepository {
 
     print('Entering Bootloader');
 
-    List<int> cmd = List<int>.generate(200, (index) => 0xf0);
+    List<int> cmd = List<int>.generate(20, (index) => 0xf0);
 
     try {
       List<int> rawData = await _bleClient.transferFirmwareCommand(
@@ -61,8 +61,8 @@ class FirmwareRepository {
 
     print('Write $cmd ');
     // 0x43 67 C
-    // 0x4E 116 N
-    // 0x59 131 Y
+    // 0x4E 78 N
+    // 0x59 89 Y
 
     try {
       List<int> rawData = await _bleClient.transferFirmwareCommand(
