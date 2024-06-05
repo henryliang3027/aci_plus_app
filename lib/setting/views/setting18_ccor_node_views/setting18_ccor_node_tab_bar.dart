@@ -17,63 +17,61 @@ class Setting18CCorNodeTabBar extends StatelessWidget {
           Container(
             width: double.maxFinite,
             color: Theme.of(context).colorScheme.primary,
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: TabBar(
-                unselectedLabelColor: Colors.white,
-                labelColor: Theme.of(context).colorScheme.primary,
-                isScrollable: true,
-                indicatorSize: TabBarIndicatorSize.tab,
-                indicator: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10)),
-                  color: Colors.white,
-                ),
-                labelPadding: const EdgeInsets.symmetric(horizontal: 24.0),
-                tabs: [
-                  Tab(
-                    child: SizedBox(
-                      width: 110,
-                      child: Center(
-                        child: Text(
-                          AppLocalizations.of(context)!.device,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: SizedBox(
-                      width: 110,
-                      child: Center(
-                        child: Text(
-                          AppLocalizations.of(context)!.alarm,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: SizedBox(
-                      width: 110,
-                      child: Center(
-                        child: Text(
-                          AppLocalizations.of(context)!.balance,
-                        ),
-                      ),
-                    ),
-                  ),
-                  // Tab(
-                  //   child: SizedBox(
-                  //     width: 110,
-                  //     child: Center(
-                  //       child: Text(
-                  //         AppLocalizations.of(context)!.advanced,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                ],
+            child: TabBar(
+              tabAlignment: TabAlignment.start,
+              isScrollable: true,
+              unselectedLabelColor: Colors.white,
+              labelColor: Theme.of(context).colorScheme.primary,
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicator: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10)),
+                color: Colors.white,
               ),
+              labelPadding: const EdgeInsets.symmetric(horizontal: 24.0),
+              tabs: [
+                Tab(
+                  child: SizedBox(
+                    width: 110,
+                    child: Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.device,
+                      ),
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: SizedBox(
+                    width: 110,
+                    child: Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.alarm,
+                      ),
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: SizedBox(
+                    width: 110,
+                    child: Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.balance,
+                      ),
+                    ),
+                  ),
+                ),
+                // Tab(
+                //   child: SizedBox(
+                //     width: 110,
+                //     child: Center(
+                //       child: Text(
+                //         AppLocalizations.of(context)!.advanced,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+              ],
             ),
           ),
           const Expanded(

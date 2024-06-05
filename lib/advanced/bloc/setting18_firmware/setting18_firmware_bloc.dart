@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:aci_plus_app/core/firmware_file_table.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -26,21 +27,74 @@ class Setting18FirmwareBloc
     print('BinaryDataLoaded');
 
     _updateReportStreamSubscription =
-        _firmwareRepository.updateReport.listen((data) {
-      String message = String.fromCharCodes(data);
+        _firmwareRepository.updateReport.listen((message) {
+      double currentProgress = 0.0;
 
-      if (message.startsWith('Write AP2')) {
+      if (message.startsWith('Bootloader')) {
+        currentProgress = 0.1;
+      } else if (message.startsWith('Write AP2')) {
+        currentProgress = 0.2;
         _firmwareRepository.updateFirmware(binary: state.binary);
+      } else if (message.startsWith('Sending')) {
+        List<String> splitted = message.split(' ');
+        currentProgress = 1.0;
+        int indexOfChunk = int.parse(splitted[1]);
+        int chunkLength = int.parse(splitted[2]);
+
+        currentProgress =
+            _roundToFirstDecimalPlace(0.3 + indexOfChunk / chunkLength * 0.4);
+
+        message = '$indexOfChunk / $chunkLength';
+      } else if (message.contains('Wait "Y"')) {
+        LineSplitter lineSplitter = const LineSplitter();
+        List<String> splitted = lineSplitter.convert(message);
+
+        String receivedHexSum = splitted[0];
+        String receivedHexBinaryLength = splitted[1];
+
+        String hexSum = state.sum.toRadixString(16);
+
+        // receivedHexSum 是大寫字母, 所以轉成大寫來比較
+        String targetHexSum =
+            hexSum.substring(hexSum.length - 4, hexSum.length).toUpperCase();
+        String targetHexBinaryLength = state.binary.length.toRadixString(16);
+
+        print('$receivedHexSum : $targetHexSum');
+        print('$receivedHexBinaryLength : $targetHexBinaryLength');
+
+        if (receivedHexSum == targetHexSum &&
+            receivedHexBinaryLength == targetHexBinaryLength) {
+          // write 'Y'
+          print('===============Y==================');
+          _firmwareRepository.writeCommand([0x59]);
+        } else {
+          // write 'N'
+          print('===============N==================');
+          _firmwareRepository.writeCommand([0x4E]);
+        }
+      } else if (message.startsWith('Clean AP1')) {
+        currentProgress = 0.8;
+      } else if (message.startsWith('Write AP1')) {
+        currentProgress = 0.9;
+      } else if (message.startsWith('Run AP1')) {
+        currentProgress = 1.0;
+      } else {
+        currentProgress = state.currentProgress;
       }
 
-      add(MessageReceived(message));
+      add(MessageReceived(message: message, currentProgress: currentProgress));
     });
 
     add(BinarySelected(state.selectedBinary));
   }
 
   final FirmwareRepository _firmwareRepository;
-  StreamSubscription<List<int>>? _updateReportStreamSubscription;
+  StreamSubscription<String>? _updateReportStreamSubscription;
+
+  double _roundToFirstDecimalPlace(double value) {
+    num mod = 10;
+    return ((value * mod).round().toDouble() / mod);
+  }
 
   Future<void> _onBinaryDataLoaded(
     BinaryDataLoaded event,
@@ -70,6 +124,7 @@ class Setting18FirmwareBloc
   ) {
     emit(state.copyWith(
       updateMessage: event.message,
+      currentProgress: event.currentProgress,
     ));
   }
 

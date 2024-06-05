@@ -26,8 +26,7 @@ class BLEWindowsClient extends BLEClientBase {
   // StreamController<Map<DataKey, String>> _characteristicDataStreamController =
   //     StreamController<Map<DataKey, String>>();
 
-  StreamController<List<int>> _updateReportStreamController =
-      StreamController<List<int>>();
+  late StreamController<String> _updateReportStreamController;
 
   StreamSubscription<BleDevice>? _discoveredDeviceStreamSubscription;
   StreamSubscription<bool>? _connectionStreamSubscription;
@@ -52,7 +51,8 @@ class BLEWindowsClient extends BLEClientBase {
   // List<int> _rawRFInOut = [];
 
   @override
-  Stream<List<int>> get updateReport async* {
+  Stream<String> get updateReport async* {
+    _updateReportStreamController = StreamController<String>();
     yield* _updateReportStreamController.stream;
   }
 

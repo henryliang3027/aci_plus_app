@@ -36,12 +36,19 @@ class UpdateStarted extends Setting18FirmwareEvent {
 }
 
 class MessageReceived extends Setting18FirmwareEvent {
-  const MessageReceived(this.message);
+  const MessageReceived({
+    required this.message,
+    required this.currentProgress,
+  });
 
   final String message;
+  final double currentProgress;
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [
+        message,
+        currentProgress,
+      ];
 }
 
 class CommandWrited extends Setting18FirmwareEvent {
