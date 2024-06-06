@@ -185,6 +185,7 @@
     "firmawreUpdateCaution1": "Please provide a stable power source for the device. Do not turn off the power during the update process.",
     "firmawreUpdateCaution2": "Do not remove the Bluetooth adapter or close the App during the update process.",
     "firmawreUpdateCaution3": "Maintain a stable Bluetooth connection distance between the device and the mobile device.",
+    "firmwareUpdateError": "The Bluetooth connection status is abnormal. Would you like to try again?",
 
     "aboutUs": "About Us",
     "aboutArticleParagraph1": "Twoway Communications, Inc., founded in October 1992, is Taiwan's largest broadband amplifier and optical workstation equipment provider. It is also the only company in Asia certified by major North American MSOs (Multiple-System Operators) for the development and manufacturing of HFC (Hybrid Fiber-Coaxial) transmission equipment.",
@@ -213,6 +214,20 @@
     "dialogTitleEnterConfirm": "Confirm",
     "dialogTitleDeleteConfig": "Delete",
     "dialogTitleSelectConfig": "Select Preset",
+
+    "dialogMessageFirmwareUpdateVersion": "The current firmware version is {currentVersion}, do you want to update to {newVersion} ?",
+    "@dialogMessageFirmwareUpdateVersion": {
+        "placeholders": {
+                "currentVersion": {
+                "type": "String",
+                "example": "127"
+            },
+                "newVersion": {
+                "type": "String",
+                "example": "128"
+            }
+        }
+    },
 
     "dialogMessageDeleteConfig": "Do you want to delete {configName} ?",
     "@dialogMessageDeleteConfig": {

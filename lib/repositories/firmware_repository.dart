@@ -43,7 +43,7 @@ class FirmwareRepository {
 
     print('Entering Bootloader');
 
-    List<int> cmd = List<int>.generate(20, (index) => 0xf0);
+    List<int> cmd = List<int>.generate(10, (index) => 0xf0);
 
     try {
       List<int> rawData = await _bleClient.transferFirmwareCommand(

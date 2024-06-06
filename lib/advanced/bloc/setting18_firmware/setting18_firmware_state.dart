@@ -8,6 +8,7 @@ class Setting18FirmwareState extends Equatable {
     this.sum = 0,
     this.currentProgress = 0,
     this.binary = const [],
+    this.updateCanceled = false,
     this.updateMessage = '',
     this.errorMessage = '',
   });
@@ -18,6 +19,7 @@ class Setting18FirmwareState extends Equatable {
   final int sum;
   final double currentProgress;
   final List<int> binary;
+  final bool updateCanceled;
   final String updateMessage;
   final String errorMessage;
 
@@ -28,6 +30,7 @@ class Setting18FirmwareState extends Equatable {
     int? sum,
     double? currentProgress,
     List<int>? binary,
+    bool? updateCanceled,
     String? updateMessage,
     String? errorMessage,
   }) {
@@ -38,6 +41,7 @@ class Setting18FirmwareState extends Equatable {
       currentProgress: currentProgress ?? this.currentProgress,
       sum: sum ?? this.sum,
       binary: binary ?? this.binary,
+      updateCanceled: updateCanceled ?? this.updateCanceled,
       updateMessage: updateMessage ?? this.updateMessage,
       errorMessage: errorMessage ?? this.errorMessage,
     );
@@ -51,6 +55,7 @@ class Setting18FirmwareState extends Equatable {
         sum,
         currentProgress,
         binary,
+        updateCanceled,
         updateMessage,
         errorMessage,
       ];

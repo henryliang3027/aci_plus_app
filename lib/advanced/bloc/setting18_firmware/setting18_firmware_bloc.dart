@@ -16,21 +16,35 @@ class Setting18FirmwareBloc
     required FirmwareRepository firmwareRepository,
   })  : _firmwareRepository = firmwareRepository,
         super(const Setting18FirmwareState()) {
-    on<BinaryDataLoaded>(_onBinaryDataLoaded);
     on<BootloaderStarted>(_onBootloaderStarted);
     on<BootloaderExited>(_onBootloaderExited);
     on<UpdateStarted>(_onUpdateStarted);
     on<CommandWrited>(_onCommandWrited);
     on<MessageReceived>(_onMessageReceived);
+    on<ErrorReceived>(_onErrorReceived);
     on<BinarySelected>(_onBinarySelected);
 
-    print('BinaryDataLoaded');
+    add(BinarySelected(state.selectedBinary));
+  }
 
+  final FirmwareRepository _firmwareRepository;
+  StreamSubscription<String>? _updateReportStreamSubscription;
+  Timer? _enterBootloaderTimer;
+
+  void _listenUpdateReport() {
     _updateReportStreamSubscription =
         _firmwareRepository.updateReport.listen((message) {
       double currentProgress = 0.0;
 
       if (message.startsWith('Bootloader')) {
+        if (_enterBootloaderTimer != null) {
+          _enterBootloaderTimer!.cancel();
+        }
+
+        // write 'C'
+        print('===============Y==================');
+        _firmwareRepository.writeCommand([0x43]);
+
         currentProgress = 0.1;
       } else if (message.startsWith('Write AP2')) {
         currentProgress = 0.2;
@@ -42,7 +56,10 @@ class Setting18FirmwareBloc
         int chunkLength = int.parse(splitted[2]);
 
         currentProgress =
-            _roundToFirstDecimalPlace(0.3 + indexOfChunk / chunkLength * 0.4);
+            _roundToSecondDecimalPlace(0.3 + indexOfChunk / chunkLength * 0.4);
+        print('cp: ${0.3 + indexOfChunk / chunkLength * 0.4}');
+        print(
+            'round cp: ${_roundToSecondDecimalPlace(0.3 + indexOfChunk / chunkLength * 0.4)}');
 
         message = '$indexOfChunk / $chunkLength';
       } else if (message.contains('Wait "Y"')) {
@@ -57,7 +74,8 @@ class Setting18FirmwareBloc
         // receivedHexSum 是大寫字母, 所以轉成大寫來比較
         String targetHexSum =
             hexSum.substring(hexSum.length - 4, hexSum.length).toUpperCase();
-        String targetHexBinaryLength = state.binary.length.toRadixString(16);
+        String targetHexBinaryLength =
+            state.binary.length.toRadixString(16).toUpperCase();
 
         print('$receivedHexSum : $targetHexSum');
         print('$receivedHexBinaryLength : $targetHexBinaryLength');
@@ -68,9 +86,10 @@ class Setting18FirmwareBloc
           print('===============Y==================');
           _firmwareRepository.writeCommand([0x59]);
         } else {
-          // write 'N'
-          print('===============N==================');
-          _firmwareRepository.writeCommand([0x4E]);
+          add(const ErrorReceived(errorMessage: 'Checksum mismatch'));
+          // // write 'N'
+          // print('===============N==================');
+          // _firmwareRepository.writeCommand([0x4E]);
         }
       } else if (message.startsWith('Clean AP1')) {
         currentProgress = 0.8;
@@ -81,54 +100,50 @@ class Setting18FirmwareBloc
       } else {
         currentProgress = state.currentProgress;
       }
-
       add(MessageReceived(message: message, currentProgress: currentProgress));
+    }, onError: (error) {
+      print('onError: $error');
+      add(ErrorReceived(errorMessage: error));
     });
-
-    add(BinarySelected(state.selectedBinary));
   }
 
-  final FirmwareRepository _firmwareRepository;
-  StreamSubscription<String>? _updateReportStreamSubscription;
-
-  double _roundToFirstDecimalPlace(double value) {
-    num mod = 10;
+  double _roundToSecondDecimalPlace(double value) {
+    num mod = 100;
     return ((value * mod).round().toDouble() / mod);
-  }
-
-  Future<void> _onBinaryDataLoaded(
-    BinaryDataLoaded event,
-    Emitter<Setting18FirmwareState> emit,
-  ) async {
-    // List<dynamic> result = await _firmwareRepository.calculateCheckSum();
-
-    // if (result[0]) {
-    //   int sum = result[1];
-    //   List<int> binary = result[2];
-
-    //   emit(state.copyWith(
-    //     formStatus: FormStatus.requestSuccess,
-    //     sum: sum,
-    //     binary: binary,
-    //   ));
-    // } else {
-    //   emit(state.copyWith(
-    //     formStatus: FormStatus.requestFailure,
-    //   ));
-    // }
   }
 
   void _onMessageReceived(
     MessageReceived event,
     Emitter<Setting18FirmwareState> emit,
   ) {
+    if (event.message.startsWith('Run AP1')) {
+      _updateReportStreamSubscription?.cancel();
+      emit(state.copyWith(
+        submissionStatus: SubmissionStatus.submissionSuccess,
+        updateMessage: event.message,
+        currentProgress: event.currentProgress,
+      ));
+    } else {
+      emit(state.copyWith(
+        updateMessage: event.message,
+        currentProgress: event.currentProgress,
+      ));
+    }
+  }
+
+  void _onErrorReceived(
+    ErrorReceived event,
+    Emitter<Setting18FirmwareState> emit,
+  ) {
+    _updateReportStreamSubscription?.pause();
+
     emit(state.copyWith(
-      updateMessage: event.message,
-      currentProgress: event.currentProgress,
+      submissionStatus: SubmissionStatus.submissionFailure,
+      errorMessage: event.errorMessage,
     ));
   }
 
-  Future<void> _onUpdateStarted(
+  void _onUpdateStarted(
     UpdateStarted event,
     Emitter<Setting18FirmwareState> emit,
   ) async {
@@ -139,13 +154,26 @@ class Setting18FirmwareBloc
     BootloaderStarted event,
     Emitter<Setting18FirmwareState> emit,
   ) async {
-    _firmwareRepository.enterBootloader();
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.submissionInProgress,
+    ));
+
+    _listenUpdateReport();
+
+    _enterBootloaderTimer =
+        Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      print('write enter bootloader cmd: ${timer.tick}');
+      _firmwareRepository.enterBootloader();
+    });
   }
 
   Future<void> _onBootloaderExited(
     BootloaderExited event,
     Emitter<Setting18FirmwareState> emit,
   ) async {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+    ));
     _firmwareRepository.exitBootloader();
 
     emit(state.copyWith(updateMessage: 'Main'));
