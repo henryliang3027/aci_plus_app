@@ -55,7 +55,15 @@ class BLEClient extends BLEClientBase {
   @override
   Stream<String> get updateReport async* {
     _updateReportStreamController = StreamController<String>();
-    yield* _updateReportStreamController.stream;
+    Stream<String> streamWithTimeout =
+        _updateReportStreamController.stream.timeout(
+      Duration(seconds: 30),
+      onTimeout: (sink) {
+        sink.addError('Timeout occurred');
+      },
+    );
+
+    yield* streamWithTimeout;
   }
 
   Future<bool> checkBluetoothEnabled() async {
@@ -407,12 +415,13 @@ class BLEClient extends BLEClientBase {
           _qualifiedCharacteristic,
           value: value,
         );
-      } else if (Platform.isIOS) {
+      } else {
+        // iOS
         await _ble!.writeCharacteristicWithoutResponse(
           _qualifiedCharacteristic,
           value: value,
         );
-      } else {}
+      }
 
       startCharacteristicDataTimer(
         timeout: timeout,
@@ -433,20 +442,17 @@ class BLEClient extends BLEClientBase {
     required List<int> binary,
     Duration timeout = const Duration(seconds: 600),
   }) async {
+    int chunkSize = 244;
     _currentCommandIndex = commandIndex;
 
-    // _completer = Completer<dynamic>();
-
-    final negotiatedMtu =
-        await _ble!.requestMtu(deviceId: _perigheral.id, mtu: 244);
-    print('negotiatedMtu: ${negotiatedMtu}');
     // negotiatedMtu = 247
     // 送 chunck0 的時候會出現 status 13 (GATT_INVALID_ATTR_LEN) 的錯誤
-    // 送完全部的時候收到 clean ap2
+    // final negotiatedMtu =
+    //     await _ble!.requestMtu(deviceId: _perigheral.id, mtu: 244);
 
     List<List<int>> chunks = divideToChunkList(
       binary: binary,
-      chunkSize: 244,
+      chunkSize: chunkSize,
     );
 
     print('binary.length: ${binary.length}, chunks.length: ${chunks.length}');
@@ -455,31 +461,34 @@ class BLEClient extends BLEClientBase {
       print('chink index: $i, length: ${chunks[i].length}');
 
       try {
+        Stopwatch stopwatch = Stopwatch()..start();
         if (Platform.isAndroid) {
-          Stopwatch stopwatch = Stopwatch()..start();
           await _ble!.writeCharacteristicWithResponse(
             _qualifiedCharacteristic,
             value: chunk,
           );
-          print(
-              'doSomething() executed in ${stopwatch.elapsed.inMilliseconds}');
-        } else if (Platform.isIOS) {
+        } else {
+          // iOS
           await _ble!.writeCharacteristicWithoutResponse(
             _qualifiedCharacteristic,
             value: chunk,
           );
-        } else {}
-      } catch (e) {
-        _updateReportStreamController.addError('write data error');
-      }
+        }
+        await Future.delayed(Duration(milliseconds: 500));
+        _updateReportStreamController
+            .add('Sending ${i * chunkSize} ${binary.length}');
+        print('doSomething() executed in ${stopwatch.elapsed.inMilliseconds}');
+        int elapsedMs = stopwatch.elapsed.inMilliseconds;
+        if (elapsedMs >= 400) {
+          // _updateReportStreamController
+          //     .addError('Sending the chunk $i takes too long, $elapsedMs');
 
-      _updateReportStreamController.add('Sending ${i} ${chunks.length}');
-      if (i != chunks.length - 1) {
-        await Future.delayed(const Duration(milliseconds: 1));
+          break;
+        }
+      } catch (e) {
+        _updateReportStreamController.addError('Sending the chunk $i error');
       }
     }
-
-    // return _completer!.future;
   }
 
   @override

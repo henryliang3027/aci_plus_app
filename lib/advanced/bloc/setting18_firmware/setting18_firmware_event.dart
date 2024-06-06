@@ -7,13 +7,6 @@ sealed class Setting18FirmwareEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class BinaryDataLoaded extends Setting18FirmwareEvent {
-  const BinaryDataLoaded();
-
-  @override
-  List<Object> get props => [];
-}
-
 class BootloaderStarted extends Setting18FirmwareEvent {
   const BootloaderStarted();
 
@@ -48,6 +41,19 @@ class MessageReceived extends Setting18FirmwareEvent {
   List<Object> get props => [
         message,
         currentProgress,
+      ];
+}
+
+class ErrorReceived extends Setting18FirmwareEvent {
+  const ErrorReceived({
+    required this.errorMessage,
+  });
+
+  final String errorMessage;
+
+  @override
+  List<Object> get props => [
+        errorMessage,
       ];
 }
 

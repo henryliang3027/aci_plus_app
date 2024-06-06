@@ -166,7 +166,9 @@ class Information18Bloc extends Bloc<Information18Event, Information18State> {
     AlarmUpdated event,
     Emitter<Information18State> emit,
   ) async {
+    Stopwatch stopwatch = Stopwatch()..start();
     List<dynamic> result = await _amp18Repository.requestCommand1p8GAlarm();
+    print('doSomething() executed in ${stopwatch.elapsed.inMilliseconds}');
 
     if (result[0]) {
       String alarmUServerity = result[1];
