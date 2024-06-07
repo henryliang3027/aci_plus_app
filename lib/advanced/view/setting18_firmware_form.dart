@@ -19,45 +19,54 @@ class Setting18FirmwareForm extends StatelessWidget {
             .characteristicData[DataKey.firmwareVersion] ??
         '';
 
-    Future<void> showFailureDialog(String errorMessage) async {
+    Future<void> showFailureDialog({
+      required BuildContext buildContext,
+      required String errorMessage,
+    }) async {
       return showDialog<void>(
-        context: context,
+        context: buildContext,
         barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context)!.dialogTitleError,
-              style: const TextStyle(
-                color: CustomStyle.customRed,
+        builder: (_) {
+          return BlocProvider.value(
+            value: buildContext.read<Setting18FirmwareBloc>(),
+            child: AlertDialog(
+              title: Text(
+                AppLocalizations.of(context)!.dialogTitleError,
+                style: const TextStyle(
+                  color: CustomStyle.customRed,
+                ),
               ),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    Text(
+                      AppLocalizations.of(context)!.firmwareUpdateError,
+                    ),
+                    Text(errorMessage),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    context
+                        .read<Setting18FirmwareBloc>()
+                        .add(const BootloaderExited());
+                    Navigator.of(context).pop(); // pop dialog
+                  },
+                ),
+                TextButton(
+                  child: const Text('Try again'),
+                  onPressed: () {
+                    context
+                        .read<Setting18FirmwareBloc>()
+                        .add(const UpdateStarted());
+                    Navigator.of(context).pop(); // pop dialog
+                  },
+                ),
+              ],
             ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context)!.firmwareUpdateError,
-                  ),
-                  Text(errorMessage),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-              TextButton(
-                child: const Text('Try again'),
-                onPressed: () {
-                  context
-                      .read<Setting18FirmwareBloc>()
-                      .add(const UpdateStarted());
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-            ],
           );
         },
       );
@@ -68,7 +77,10 @@ class Setting18FirmwareForm extends StatelessWidget {
           previous.submissionStatus != current.submissionStatus,
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionFailure) {
-          await showFailureDialog(state.errorMessage);
+          await showFailureDialog(
+            buildContext: context,
+            errorMessage: state.errorMessage,
+          );
         }
       },
       child: Padding(
@@ -77,6 +89,7 @@ class Setting18FirmwareForm extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const _UserCaution(),
+            const _BinaryDropDownMenu(),
             const _ProgressBar(),
             _Progress(
               currentFirmwareVersion: currentFirmwareVersion,
@@ -157,6 +170,39 @@ class _UserCaution extends StatelessWidget {
           description: AppLocalizations.of(context)!.firmawreUpdateCaution3,
         ),
       ],
+    );
+  }
+}
+
+class _BinaryDropDownMenu extends StatelessWidget {
+  const _BinaryDropDownMenu({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18FirmwareBloc, Setting18FirmwareState>(
+      builder: (context, state) {
+        return DropdownButton<String>(
+          value: state.selectedBinary,
+          icon: const Icon(Icons.arrow_downward),
+          elevation: 16,
+          style: const TextStyle(color: Colors.deepPurple, fontSize: 20),
+          underline: Container(
+            height: 2,
+            color: Colors.deepPurpleAccent,
+          ),
+          onChanged: (String? value) {
+            if (value != null) {
+              context.read<Setting18FirmwareBloc>().add(BinarySelected(value));
+            }
+          },
+          items: FirmwareFileTable.filePathMap.entries
+              .map((entry) => DropdownMenuItem<String>(
+                    value: entry.key,
+                    child: Text(entry.value),
+                  ))
+              .toList(),
+        );
+      },
     );
   }
 }
@@ -339,29 +385,6 @@ class _Progress extends StatelessWidget {
         builder: (context, state) {
       return Column(
         children: [
-          DropdownButton<String>(
-            value: state.selectedBinary,
-            icon: const Icon(Icons.arrow_downward),
-            elevation: 16,
-            style: const TextStyle(color: Colors.deepPurple, fontSize: 20),
-            underline: Container(
-              height: 2,
-              color: Colors.deepPurpleAccent,
-            ),
-            onChanged: (String? value) {
-              if (value != null) {
-                context
-                    .read<Setting18FirmwareBloc>()
-                    .add(BinarySelected(value));
-              }
-            },
-            items: FirmwareFileTable.filePathMap.entries
-                .map((entry) => DropdownMenuItem<String>(
-                      value: entry.key,
-                      child: Text(entry.value),
-                    ))
-                .toList(),
-          ),
           // // LinearProgressIndicator(
           // //   value: 0.5,
           // // ),
@@ -395,32 +418,32 @@ class _Progress extends StatelessWidget {
                       }
                     });
                   },
-                  child: Text('B'),
+                  child: Text('Start'),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    minimumSize: const Size(80, 60),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: CustomStyle.sizeXXL,
-                    ),
-                  ),
-                  onPressed: () {
-                    context
-                        .read<Setting18FirmwareBloc>()
-                        .add(const BootloaderExited());
-                  },
-                  child: Text('M'),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(bottom: 0),
+              //   child: ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: Theme.of(context).colorScheme.primary,
+              //       foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              //       minimumSize: const Size(80, 60),
+              //       shape: const RoundedRectangleBorder(
+              //         borderRadius:
+              //             BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
+              //       ),
+              //       textStyle: const TextStyle(
+              //         fontSize: CustomStyle.sizeXXL,
+              //       ),
+              //     ),
+              //     onPressed: () {
+              //       context
+              //           .read<Setting18FirmwareBloc>()
+              //           .add(const BootloaderExited());
+              //     },
+              //     child: Text('M'),
+              //   ),
+              // ),
               // Padding(
               //   padding: const EdgeInsets.only(bottom: 0),
               //   child: ElevatedButton(
@@ -446,52 +469,52 @@ class _Progress extends StatelessWidget {
               //     ),
               //   ),
               // ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    minimumSize: const Size(80, 60),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: CustomStyle.sizeXXL,
-                    ),
-                  ),
-                  onPressed: () {
-                    context
-                        .read<Setting18FirmwareBloc>()
-                        .add(const CommandWrited('N'));
-                  },
-                  child: Text("N"),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    minimumSize: const Size(80, 60),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: CustomStyle.sizeXXL,
-                    ),
-                  ),
-                  onPressed: () {
-                    context
-                        .read<Setting18FirmwareBloc>()
-                        .add(const CommandWrited('Y'));
-                  },
-                  child: Text("Y"),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(bottom: 0),
+              //   child: ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: Theme.of(context).colorScheme.primary,
+              //       foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              //       minimumSize: const Size(80, 60),
+              //       shape: const RoundedRectangleBorder(
+              //         borderRadius:
+              //             BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
+              //       ),
+              //       textStyle: const TextStyle(
+              //         fontSize: CustomStyle.sizeXXL,
+              //       ),
+              //     ),
+              //     onPressed: () {
+              //       context
+              //           .read<Setting18FirmwareBloc>()
+              //           .add(const CommandWrited('N'));
+              //     },
+              //     child: Text("N"),
+              //   ),
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.only(bottom: 0),
+              //   child: ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: Theme.of(context).colorScheme.primary,
+              //       foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              //       minimumSize: const Size(80, 60),
+              //       shape: const RoundedRectangleBorder(
+              //         borderRadius:
+              //             BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
+              //       ),
+              //       textStyle: const TextStyle(
+              //         fontSize: CustomStyle.sizeXXL,
+              //       ),
+              //     ),
+              //     onPressed: () {
+              //       context
+              //           .read<Setting18FirmwareBloc>()
+              //           .add(const CommandWrited('Y'));
+              //     },
+              //     child: Text("Y"),
+              //   ),
+              // ),
               // Padding(
               //   padding: const EdgeInsets.only(bottom: 0),
               //   child: ElevatedButton(

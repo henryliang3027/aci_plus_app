@@ -41,9 +41,20 @@ class Setting18FirmwareBloc
           _enterBootloaderTimer!.cancel();
         }
 
-        // write 'C'
-        print('===============Y==================');
-        _firmwareRepository.writeCommand([0x43]);
+        if (!state.updateCanceled) {
+          // 正常流程
+          // write 'C'
+          print('===============C==================');
+          _firmwareRepository.writeCommand([0x43]);
+        } else {
+          // 出錯之後, 使用者取消更新,
+          // write 'N'
+          print('===============N==================');
+          _firmwareRepository.writeCommand([0x4E]);
+
+          // 暫停 stream 來重置 timeout 的 countdown
+          _updateReportStreamSubscription?.pause();
+        }
 
         currentProgress = 0.1;
       } else if (message.startsWith('Write AP2')) {
@@ -57,7 +68,6 @@ class Setting18FirmwareBloc
 
         currentProgress =
             _roundToSecondDecimalPlace(0.3 + indexOfChunk / chunkLength * 0.4);
-        print('cp: ${0.3 + indexOfChunk / chunkLength * 0.4}');
         print(
             'round cp: ${_roundToSecondDecimalPlace(0.3 + indexOfChunk / chunkLength * 0.4)}');
 
@@ -86,10 +96,8 @@ class Setting18FirmwareBloc
           print('===============Y==================');
           _firmwareRepository.writeCommand([0x59]);
         } else {
+          // 發出 Error event, 由使用者決定重試或取消
           add(const ErrorReceived(errorMessage: 'Checksum mismatch'));
-          // // write 'N'
-          // print('===============N==================');
-          // _firmwareRepository.writeCommand([0x4E]);
         }
       } else if (message.startsWith('Clean AP1')) {
         currentProgress = 0.8;
@@ -135,21 +143,32 @@ class Setting18FirmwareBloc
     ErrorReceived event,
     Emitter<Setting18FirmwareState> emit,
   ) {
-    _updateReportStreamSubscription?.pause();
-
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionFailure,
       errorMessage: event.errorMessage,
     ));
   }
 
+  // 在 Bootloader 模式下重新傳遞 binary
   void _onUpdateStarted(
     UpdateStarted event,
     Emitter<Setting18FirmwareState> emit,
   ) async {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.submissionInProgress,
+    ));
+
+    // 暫停 stream 來重置 timeout 的 countdown
+    _updateReportStreamSubscription?.pause();
+
+    // 恢復 stream
+    _updateReportStreamSubscription?.resume();
+
+    //開始傳遞 binary
     _firmwareRepository.updateFirmware(binary: state.binary);
   }
 
+  // 使用者觸發 Start 後, 嘗試進入 Bootloader
   Future<void> _onBootloaderStarted(
     BootloaderStarted event,
     Emitter<Setting18FirmwareState> emit,
@@ -167,6 +186,7 @@ class Setting18FirmwareBloc
     });
   }
 
+  // 更新過程失敗, 取消重試後退出 Bootloader
   Future<void> _onBootloaderExited(
     BootloaderExited event,
     Emitter<Setting18FirmwareState> emit,
@@ -174,7 +194,13 @@ class Setting18FirmwareBloc
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
     ));
-    _firmwareRepository.exitBootloader();
+
+    emit(state.copyWith(
+      updateCanceled: true,
+    ));
+
+    // Write N
+    _firmwareRepository.writeCommand([0x4E]);
 
     emit(state.copyWith(updateMessage: 'Main'));
   }
