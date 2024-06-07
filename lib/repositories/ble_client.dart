@@ -57,7 +57,7 @@ class BLEClient extends BLEClientBase {
     _updateReportStreamController = StreamController<String>();
     Stream<String> streamWithTimeout =
         _updateReportStreamController.stream.timeout(
-      Duration(seconds: 30),
+      Duration(seconds: 5),
       onTimeout: (sink) {
         sink.addError('Timeout occurred');
       },
@@ -474,7 +474,7 @@ class BLEClient extends BLEClientBase {
             value: chunk,
           );
         }
-        await Future.delayed(Duration(milliseconds: 500));
+        // await Future.delayed(Duration(milliseconds: 500));
         _updateReportStreamController
             .add('Sending ${i * chunkSize} ${binary.length}');
         print('doSomething() executed in ${stopwatch.elapsed.inMilliseconds}');

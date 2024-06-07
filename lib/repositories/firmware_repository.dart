@@ -59,7 +59,7 @@ class FirmwareRepository {
   Future<dynamic> writeCommand(List<int> cmd) async {
     int commandIndex = 1000;
 
-    print('Write $cmd ');
+    print('Write ${String.fromCharCodes(cmd)}');
     // 0x43 67 C
     // 0x4E 78 N
     // 0x59 89 Y
