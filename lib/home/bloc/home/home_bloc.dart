@@ -36,6 +36,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
     on<DeviceConnectionChanged>(_onDeviceConnectionChanged);
+    on<NeedsDataReloaded>(_onNeedsDataReloaded);
     // on<testTimeout>(_onTestTimeout);
   }
 
@@ -909,5 +910,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         add(DiscoveredDeviceChanged(scanReport));
       },
     );
+  }
+
+  void _onNeedsDataReloaded(
+    NeedsDataReloaded event,
+    Emitter<HomeState> emit,
+  ) {
+    emit(state.copyWith(
+      loadingStatus: FormStatus.none,
+      isReloadData: event.isReloadData,
+    ));
   }
 }

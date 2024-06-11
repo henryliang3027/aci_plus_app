@@ -14,6 +14,7 @@ class HomeState extends Equatable {
     this.characteristicData = const {},
     this.errorMassage = '',
     this.dateValueCollectionOfLog = const [],
+    this.isReloadData = false,
   });
 
   final FormStatus scanStatus;
@@ -22,13 +23,13 @@ class HomeState extends Equatable {
   final FormStatus eventLoadingStatus;
   final FormStatus dataExportStatus;
   final FormStatus dataShareStatus;
-
   final bool showSplash;
   final ACIDeviceType aciDeviceType;
   final Perigheral? device;
   final Map<DataKey, String> characteristicData;
   final String errorMassage;
   final List<List<ValuePair>> dateValueCollectionOfLog;
+  final bool isReloadData;
 
   HomeState copyWith({
     FormStatus? scanStatus,
@@ -43,6 +44,7 @@ class HomeState extends Equatable {
     Map<DataKey, String>? characteristicData,
     String? errorMassage,
     List<List<ValuePair>>? dateValueCollectionOfLog,
+    bool? isReloadData,
   }) {
     return HomeState(
       scanStatus: scanStatus ?? this.scanStatus,
@@ -60,6 +62,7 @@ class HomeState extends Equatable {
       errorMassage: errorMassage ?? this.errorMassage,
       dateValueCollectionOfLog:
           dateValueCollectionOfLog ?? this.dateValueCollectionOfLog,
+      isReloadData: isReloadData ?? this.isReloadData,
     );
   }
 
@@ -77,5 +80,6 @@ class HomeState extends Equatable {
         characteristicData,
         errorMassage,
         dateValueCollectionOfLog,
+        isReloadData,
       ];
 }

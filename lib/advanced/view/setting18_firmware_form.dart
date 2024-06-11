@@ -9,7 +9,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Setting18FirmwareForm extends StatelessWidget {
-  const Setting18FirmwareForm({super.key});
+  const Setting18FirmwareForm({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +98,7 @@ class Setting18FirmwareForm extends StatelessWidget {
             const _ProgressBar(),
             _Progress(
               currentFirmwareVersion: currentFirmwareVersion,
+              pageController: pageController,
             ),
           ],
         ),
@@ -274,10 +280,12 @@ class _Progress extends StatelessWidget {
   const _Progress({
     super.key,
     required this.currentFirmwareVersion,
+    required this.pageController,
   });
 
   final String currentFirmwareVersion;
   final String newFirmwareVersion = '128';
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -421,29 +429,33 @@ class _Progress extends StatelessWidget {
                   child: Text('Start'),
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(bottom: 0),
-              //   child: ElevatedButton(
-              //     style: ElevatedButton.styleFrom(
-              //       backgroundColor: Theme.of(context).colorScheme.primary,
-              //       foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              //       minimumSize: const Size(80, 60),
-              //       shape: const RoundedRectangleBorder(
-              //         borderRadius:
-              //             BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-              //       ),
-              //       textStyle: const TextStyle(
-              //         fontSize: CustomStyle.sizeXXL,
-              //       ),
-              //     ),
-              //     onPressed: () {
-              //       context
-              //           .read<Setting18FirmwareBloc>()
-              //           .add(const BootloaderExited());
-              //     },
-              //     child: Text('M'),
-              //   ),
-              // ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    minimumSize: const Size(80, 60),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
+                    ),
+                    textStyle: const TextStyle(
+                      fontSize: CustomStyle.sizeXXL,
+                    ),
+                  ),
+                  onPressed: () {
+                    // pageController.animateToPage(
+                    //   2,
+                    //   duration: Duration(milliseconds: 500),
+                    //   curve: Curves.easeInOut,
+                    // );
+                    context.read<HomeBloc>().add(const NeedsDataReloaded(true));
+                    pageController.jumpToPage(2);
+                  },
+                  child: Text('Jump'),
+                ),
+              ),
               // Padding(
               //   padding: const EdgeInsets.only(bottom: 0),
               //   child: ElevatedButton(

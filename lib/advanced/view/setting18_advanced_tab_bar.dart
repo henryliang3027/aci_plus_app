@@ -7,10 +7,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class Setting18AdvancedTabBar extends StatelessWidget {
   const Setting18AdvancedTabBar({
     super.key,
+    required this.pageController,
     // required this.tabController,
   });
 
   // final TabController tabController;
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -72,13 +74,15 @@ class Setting18AdvancedTabBar extends StatelessWidget {
               ],
             ),
           ),
-          const Expanded(
+          Expanded(
             child: TabBarView(
               // physics: NeverScrollableScrollPhysics(),
               // controller: tabController,
               children: [
-                Setting18ConfigPage(),
-                Setting18FirmwarePage(),
+                const Setting18ConfigPage(),
+                Setting18FirmwarePage(
+                  pageController: pageController,
+                ),
 
                 // Setting18InstructionPage(),
               ],
