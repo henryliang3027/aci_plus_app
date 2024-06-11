@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Setting18FirmwarePage extends StatelessWidget {
-  const Setting18FirmwarePage({super.key});
+  const Setting18FirmwarePage({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +18,9 @@ class Setting18FirmwarePage extends StatelessWidget {
       create: (context) => Setting18FirmwareBloc(
         firmwareRepository: RepositoryProvider.of<FirmwareRepository>(context),
       ),
-      child: const Setting18FirmwareForm(),
+      child: Setting18FirmwareForm(
+        pageController: pageController,
+      ),
     );
   }
 }

@@ -156,6 +156,7 @@ class Setting18FirmwareBloc
   ) async {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionInProgress,
+      updateCanceled: false,
     ));
 
     // 暫停 stream 來重置 timeout 的 countdown
@@ -164,8 +165,11 @@ class Setting18FirmwareBloc
     // 恢復 stream
     _updateReportStreamSubscription?.resume();
 
+    // Write N, 回到 bootloader ... wait "C"
+    _firmwareRepository.writeCommand([0x4E]);
+
     //開始傳遞 binary
-    _firmwareRepository.updateFirmware(binary: state.binary);
+    // _firmwareRepository.updateFirmware(binary: state.binary);
   }
 
   // 使用者觸發 Start 後, 嘗試進入 Bootloader

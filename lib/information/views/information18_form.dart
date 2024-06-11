@@ -76,6 +76,7 @@ class Information18Form extends StatelessWidget {
             _BlockDiagramCard(),
             _BasicCard(),
             _AlarmCard(),
+            // _DataReloader(),
           ],
         ),
       ),
@@ -97,6 +98,21 @@ class Information18Form extends StatelessWidget {
     );
   }
 }
+
+// class _DataReloader extends StatelessWidget {
+//   const _DataReloader({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<HomeBloc, HomeState>(
+//       builder: (context, state) {
+//         if (state.isReloadData) {
+//           print('isReloadData');
+//         }
+//       },
+//     );
+//   }
+// }
 
 class _DeviceStatus extends StatelessWidget {
   const _DeviceStatus({super.key});
@@ -153,21 +169,29 @@ class _DeviceRefresh extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (!state.loadingStatus.isRequestInProgress &&
-            !state.connectionStatus.isRequestInProgress) {
-          return IconButton(
-              onPressed: () {
-                context
-                    .read<Information18Bloc>()
-                    .add(const AlarmPeriodicUpdateCanceled());
-                context.read<HomeBloc>().add(const DeviceRefreshed());
-              },
-              icon: Icon(
-                Icons.refresh,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ));
-        } else {
+        if (state.isReloadData) {
+          context.read<HomeBloc>().add(const NeedsDataReloaded(false));
+
+          context.read<HomeBloc>().add(const Data18Requested());
+
           return Container();
+        } else {
+          if (!state.loadingStatus.isRequestInProgress &&
+              !state.connectionStatus.isRequestInProgress) {
+            return IconButton(
+                onPressed: () {
+                  context
+                      .read<Information18Bloc>()
+                      .add(const AlarmPeriodicUpdateCanceled());
+                  context.read<HomeBloc>().add(const DeviceRefreshed());
+                },
+                icon: Icon(
+                  Icons.refresh,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ));
+          } else {
+            return Container();
+          }
         }
       },
     );
