@@ -169,29 +169,21 @@ class _DeviceRefresh extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (state.isReloadData) {
-          context.read<HomeBloc>().add(const NeedsDataReloaded(false));
-
-          context.read<HomeBloc>().add(const Data18Requested());
-
-          return Container();
+        if (!state.loadingStatus.isRequestInProgress &&
+            !state.connectionStatus.isRequestInProgress) {
+          return IconButton(
+              onPressed: () {
+                context
+                    .read<Information18Bloc>()
+                    .add(const AlarmPeriodicUpdateCanceled());
+                context.read<HomeBloc>().add(const DeviceRefreshed());
+              },
+              icon: Icon(
+                Icons.refresh,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ));
         } else {
-          if (!state.loadingStatus.isRequestInProgress &&
-              !state.connectionStatus.isRequestInProgress) {
-            return IconButton(
-                onPressed: () {
-                  context
-                      .read<Information18Bloc>()
-                      .add(const AlarmPeriodicUpdateCanceled());
-                  context.read<HomeBloc>().add(const DeviceRefreshed());
-                },
-                icon: Icon(
-                  Icons.refresh,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ));
-          } else {
-            return Container();
-          }
+          return Container();
         }
       },
     );

@@ -86,21 +86,21 @@ class DeviceRefreshed extends HomeEvent {
   List<Object?> get props => [];
 }
 
-class NeedsDataReloaded extends HomeEvent {
-  const NeedsDataReloaded(this.isReloadData);
+// class NeedsDataReloaded extends HomeEvent {
+//   const NeedsDataReloaded(this.isReloadData);
 
-  final bool isReloadData;
+//   final bool isReloadData;
 
-  @override
-  List<Object?> get props => [isReloadData];
-}
+//   @override
+//   List<Object?> get props => [isReloadData];
+// }
 
-class DataReloaded extends HomeEvent {
-  const DataReloaded();
+// class DataReloaded extends HomeEvent {
+//   const DataReloaded();
 
-  @override
-  List<Object?> get props => [];
-}
+//   @override
+//   List<Object?> get props => [];
+// }
 
 // class testTimeout extends HomeEvent {
 //   const testTimeout();

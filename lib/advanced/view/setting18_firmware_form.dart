@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/advanced/bloc/setting18_advanced/setting18_advanced_bloc.dart';
 import 'package:aci_plus_app/advanced/bloc/setting18_firmware/setting18_firmware_bloc.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
@@ -45,7 +46,8 @@ class Setting18FirmwareForm extends StatelessWidget {
                 child: ListBody(
                   children: <Widget>[
                     Text(
-                      AppLocalizations.of(context)!.firmwareUpdateError,
+                      AppLocalizations.of(context)!
+                          .dialogMessageFirmwareUpdateError,
                     ),
                     Text(errorMessage),
                   ],
@@ -77,6 +79,51 @@ class Setting18FirmwareForm extends StatelessWidget {
       );
     }
 
+    Future<void> showSuccessDialog({
+      required BuildContext buildContext,
+    }) async {
+      return showDialog<void>(
+        context: buildContext,
+        barrierDismissible: false, // user must tap button!
+        builder: (_) {
+          return BlocProvider.value(
+            value: buildContext.read<Setting18FirmwareBloc>(),
+            child: AlertDialog(
+              title: Text(
+                AppLocalizations.of(context)!.dialogTitleSuccess,
+                style: const TextStyle(
+                  color: CustomStyle.customRed,
+                ),
+              ),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    Text(
+                      AppLocalizations.of(context)!
+                          .dialogMessageFirmwareUpdateSuccess,
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(
+                    AppLocalizations.of(context)!.dialogMessageOk,
+                  ),
+                  onPressed: () {
+                    context
+                        .read<Setting18FirmwareBloc>()
+                        .add(const BootloaderExited());
+                    Navigator.of(context).pop(); // pop dialog
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
     return BlocListener<Setting18FirmwareBloc, Setting18FirmwareState>(
       listenWhen: (previous, current) =>
           previous.submissionStatus != current.submissionStatus,
@@ -86,6 +133,13 @@ class Setting18FirmwareForm extends StatelessWidget {
             buildContext: context,
             errorMessage: state.errorMessage,
           );
+        } else if (state.submissionStatus.isSubmissionSuccess) {
+          showSuccessDialog(
+            buildContext: context,
+          ).then((_) {
+            context.read<HomeBloc>().add(const Data18Requested());
+            pageController.jumpToPage(2);
+          });
         }
       },
       child: Padding(
@@ -419,6 +473,11 @@ class _Progress extends StatelessWidget {
                     showUpdateVersionDialog().then((bool? isConfirm) {
                       if (isConfirm != null) {
                         if (isConfirm) {
+                          // disable 所有 button
+                          context
+                              .read<Setting18AdvancedBloc>()
+                              .add(const AllButtonsDisabled());
+
                           context
                               .read<Setting18FirmwareBloc>()
                               .add(const BootloaderStarted());
@@ -426,7 +485,9 @@ class _Progress extends StatelessWidget {
                       }
                     });
                   },
-                  child: Text('Start'),
+                  child: Text(
+                    AppLocalizations.of(context)!.startUpdate,
+                  ),
                 ),
               ),
               Padding(
@@ -450,37 +511,44 @@ class _Progress extends StatelessWidget {
                     //   duration: Duration(milliseconds: 500),
                     //   curve: Curves.easeInOut,
                     // );
-                    context.read<HomeBloc>().add(const NeedsDataReloaded(true));
+
+                    context.read<HomeBloc>().add(const Data18Requested());
                     pageController.jumpToPage(2);
                   },
                   child: Text('Jump'),
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(bottom: 0),
-              //   child: ElevatedButton(
-              //     style: ElevatedButton.styleFrom(
-              //       backgroundColor: Theme.of(context).colorScheme.primary,
-              //       foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              //       minimumSize: const Size(100, 60),
-              //       shape: const RoundedRectangleBorder(
-              //         borderRadius:
-              //             BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-              //       ),
-              //       textStyle: const TextStyle(
-              //         fontSize: CustomStyle.sizeXXL,
-              //       ),
-              //     ),
-              //     onPressed: () {
-              //       context
-              //           .read<Setting18FirmwareBloc>()
-              //           .add(const UpdateStarted());
-              //     },
-              //     child: Text(
-              //       AppLocalizations.of(context)!.startUpdate,
-              //     ),
-              //   ),
-              // ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    minimumSize: const Size(100, 60),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
+                    ),
+                    textStyle: const TextStyle(
+                      fontSize: CustomStyle.sizeXXL,
+                    ),
+                  ),
+                  onPressed: () {
+                    bool isEnabled = context
+                        .read<Setting18AdvancedBloc>()
+                        .state
+                        .enableButtonsTap;
+                    isEnabled
+                        ? context
+                            .read<Setting18AdvancedBloc>()
+                            .add(const AllButtonsDisabled())
+                        : context
+                            .read<Setting18AdvancedBloc>()
+                            .add(const AllButtonsEnabled());
+                  },
+                  child: Text('T'),
+                ),
+              ),
               // Padding(
               //   padding: const EdgeInsets.only(bottom: 0),
               //   child: ElevatedButton(

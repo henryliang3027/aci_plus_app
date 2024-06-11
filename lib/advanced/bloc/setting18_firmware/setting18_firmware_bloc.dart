@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/firmware_file_table.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 part 'setting18_firmware_event.dart';
 part 'setting18_firmware_state.dart';
@@ -14,7 +16,9 @@ class Setting18FirmwareBloc
     extends Bloc<Setting18FirmwareEvent, Setting18FirmwareState> {
   Setting18FirmwareBloc({
     required FirmwareRepository firmwareRepository,
+    required AppLocalizations appLocalizations,
   })  : _firmwareRepository = firmwareRepository,
+        _appLocalizations = appLocalizations,
         super(const Setting18FirmwareState()) {
     on<BootloaderStarted>(_onBootloaderStarted);
     on<BootloaderExited>(_onBootloaderExited);
@@ -28,6 +32,7 @@ class Setting18FirmwareBloc
   }
 
   final FirmwareRepository _firmwareRepository;
+  final AppLocalizations _appLocalizations;
   StreamSubscription<String>? _updateReportStreamSubscription;
   Timer? _enterBootloaderTimer;
 
@@ -35,6 +40,7 @@ class Setting18FirmwareBloc
     _updateReportStreamSubscription =
         _firmwareRepository.updateReport.listen((message) {
       double currentProgress = 0.0;
+      String displayMessage = '';
 
       if (message.startsWith('Bootloader')) {
         if (_enterBootloaderTimer != null) {
@@ -57,12 +63,13 @@ class Setting18FirmwareBloc
         }
 
         currentProgress = 0.1;
+        displayMessage = _appLocalizations.readyToSend;
       } else if (message.startsWith('Write AP2')) {
-        currentProgress = 0.2;
         _firmwareRepository.updateFirmware(binary: state.binary);
+        currentProgress = 0.2;
+        displayMessage = _appLocalizations.readyToSend;
       } else if (message.startsWith('Sending')) {
         List<String> splitted = message.split(' ');
-        currentProgress = 1.0;
         int indexOfChunk = int.parse(splitted[1]);
         int chunkLength = int.parse(splitted[2]);
 
@@ -72,6 +79,9 @@ class Setting18FirmwareBloc
             'round cp: ${_roundToSecondDecimalPlace(0.3 + indexOfChunk / chunkLength * 0.4)}');
 
         message = '$indexOfChunk / $chunkLength';
+
+        displayMessage =
+            '${_appLocalizations.sendingBinary} $indexOfChunk ${CustomStyle.bytes} / $chunkLength ${CustomStyle.bytes}';
       } else if (message.contains('Wait "Y"')) {
         LineSplitter lineSplitter = const LineSplitter();
         List<String> splitted = lineSplitter.convert(message);
@@ -99,16 +109,23 @@ class Setting18FirmwareBloc
           // 發出 Error event, 由使用者決定重試或取消
           add(const ErrorReceived(errorMessage: 'Checksum mismatch'));
         }
+
+        currentProgress = 0.7;
+        displayMessage = _appLocalizations.verifying;
       } else if (message.startsWith('Clean AP1')) {
         currentProgress = 0.8;
+        displayMessage = _appLocalizations.updatingFirmware;
       } else if (message.startsWith('Write AP1')) {
         currentProgress = 0.9;
+        displayMessage = _appLocalizations.updatingFirmware;
       } else if (message.startsWith('Run AP1')) {
         currentProgress = 1.0;
+        displayMessage = _appLocalizations.updateComplete;
       } else {
         currentProgress = state.currentProgress;
       }
-      add(MessageReceived(message: message, currentProgress: currentProgress));
+      add(MessageReceived(
+          message: displayMessage, currentProgress: currentProgress));
     }, onError: (error) {
       print('onError: $error');
       add(ErrorReceived(errorMessage: error));

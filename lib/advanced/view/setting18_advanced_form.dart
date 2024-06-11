@@ -1,21 +1,40 @@
+import 'package:aci_plus_app/advanced/bloc/setting18_advanced/setting18_advanced_bloc.dart';
 import 'package:aci_plus_app/advanced/view/setting18_advanced_tab_bar.dart';
-import 'package:aci_plus_app/advanced/view/setting18_config_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Setting18AdvancedForm extends StatelessWidget {
+class Setting18AdvancedForm extends StatefulWidget {
   const Setting18AdvancedForm({
     super.key,
     required this.pageController,
   });
 
   final PageController pageController;
+
+  @override
+  State<Setting18AdvancedForm> createState() => _Setting18AdvancedFormState();
+}
+
+class _Setting18AdvancedFormState extends State<Setting18AdvancedForm>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(vsync: this, length: 2);
+
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        setState(() {});
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,17 +50,51 @@ class Setting18AdvancedForm extends StatelessWidget {
         ],
       ),
       body: _ViewLayout(
-        pageController: pageController,
+        pageController: widget.pageController,
+        tabController: _tabController,
       ),
-      bottomNavigationBar: HomeBottomNavigationBar18(
-        pageController: pageController,
-        selectedIndex: 4,
-        onTap: (int index) {
-          pageController.jumpToPage(
-            index,
+      bottomNavigationBar: _DynamicBottomNavigationBar(
+        pageController: widget.pageController,
+      ),
+    );
+  }
+}
+
+class _DynamicBottomNavigationBar extends StatelessWidget {
+  const _DynamicBottomNavigationBar({
+    super.key,
+    required this.pageController,
+  });
+
+  final PageController pageController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18AdvancedBloc, Setting18AdvancedState>(
+      builder: (context, state) {
+        if (state.enableButtonsTap) {
+          return HomeBottomNavigationBar18(
+            pageController: pageController,
+            selectedIndex: 4,
+            onTap: (int index) {
+              pageController.jumpToPage(
+                index,
+              );
+            },
           );
-        },
-      ),
+        } else {
+          return HomeBottomNavigationBar18(
+            pageController: pageController,
+            selectedIndex: 4,
+            enableTap: false,
+            onTap: (int index) {
+              pageController.jumpToPage(
+                index,
+              );
+            },
+          );
+        }
+      },
     );
   }
 }
@@ -99,10 +152,15 @@ class _DeviceRefresh extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        if (!state.loadingStatus.isRequestInProgress &&
-            !state.connectionStatus.isRequestInProgress) {
+    return Builder(
+      builder: (context) {
+        HomeState homeState = context.watch<HomeBloc>().state;
+        Setting18AdvancedState setting18advancedState =
+            context.watch<Setting18AdvancedBloc>().state;
+
+        if (!homeState.loadingStatus.isRequestInProgress &&
+            !homeState.connectionStatus.isRequestInProgress &&
+            setting18advancedState.enableButtonsTap) {
           return IconButton(
               onPressed: () {
                 context.read<HomeBloc>().add(const DeviceRefreshed());
@@ -123,9 +181,11 @@ class _ViewLayout extends StatelessWidget {
   const _ViewLayout({
     super.key,
     required this.pageController,
+    required this.tabController,
   });
 
   final PageController pageController;
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +197,7 @@ class _ViewLayout extends StatelessWidget {
             children: [
               Setting18AdvancedTabBar(
                 pageController: pageController,
-                // tabController: tabController,
+                tabController: tabController,
               ),
               Container(
                 decoration: const BoxDecoration(
@@ -156,8 +216,7 @@ class _ViewLayout extends StatelessWidget {
         } else {
           return Setting18AdvancedTabBar(
             pageController: pageController,
-
-            // tabController: tabController,
+            tabController: tabController,
           );
         }
       },

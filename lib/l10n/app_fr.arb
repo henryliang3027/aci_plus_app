@@ -183,7 +183,12 @@
     "firmawreUpdateCaution1": "Veuillez fournir une alimentation électrique stable à l'appareil. Ne coupez pas l'alimentation pendant le processus de mise à jour.",
     "firmawreUpdateCaution2": "Ne retirez pas l'adaptateur Bluetooth et ne fermez pas l'application pendant le processus de mise à jour.",
     "firmawreUpdateCaution3": "Maintenez une distance de connexion Bluetooth stable entre l'appareil et l'appareil mobile.",
-    "firmwareUpdateError": "Le statut de la connexion Bluetooth est anormal. Souhaitez-vous réessayer ?",
+    "readyToSend": "Prêt à envoyer le firmware",
+    "sendingBinary": "Envoi",
+    "verifying": "Vérification",
+    "updatingFirmware": "Mise à jour",
+    "updateComplete": "Mise à jour terminée",
+
 
     "aboutUs": "À propos nous",
     "aboutArticleParagraph1": "Twoway Communications, Inc., fondée en octobre 1992, est le principal fournisseur taïwanais d'amplificateurs à large bande et d'équipements de poste de travail optique. Elle est également la seule entreprise en Asie certifiée par les principaux opérateurs de systèmes multiples nord-américains pour le développement et la fabrication d'équipements de transmission HFC (Hybrid Fiber-Coaxial).",
@@ -212,6 +217,9 @@
     "dialogTitleEnterConfirm": "Confirmer",
     "dialogTitleDeleteConfig": "Supprimer",
     "dialogTitleSelectConfig": "Sélectionner le préréglage",
+
+    "dialogMessageFirmwareUpdateError": "Le statut de la connexion Bluetooth est anormal. Souhaitez-vous réessayer ?",
+    "dialogMessageFirmwareUpdateSuccess": "Mise à jour du firmware réussie.",
 
     "dialogMessageFirmwareUpdateVersion": "La version actuelle du firmware est {currentVersion}, voulez-vous mettre à jour vers {newVersion} ?",
     "@dialogMessageFirmwareUpdateVersion": {

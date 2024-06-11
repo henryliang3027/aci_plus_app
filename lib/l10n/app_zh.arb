@@ -184,7 +184,12 @@
     "firmawreUpdateCaution1": "請提供設備穩定的電源，更新過程中請勿關閉電源。",
     "firmawreUpdateCaution2": "更新過程中請勿拔除藍芽調適器與關閉 App。",
     "firmawreUpdateCaution3": "設備與行動裝置間需維持穩定的藍芽連線距離。",
-    "firmwareUpdateError": "藍芽連線狀態異常, 請問您是否重新嘗試？",
+    "readyToSend": "準備傳送韌體",
+    "sendingBinary": "傳送中",
+    "verifying": "驗證中",
+    "updatingFirmware": "更新中",
+    "updateComplete": "更新完成",
+
 
     "aboutUs": "關於我們",
     "aboutArticleParagraph1": "達運光電股份有限公司 (Twoway Communications, Inc.) 成立於 1992 年 10 月，為台灣第一大寬頻放大器及光工作站設備商，也是亞洲唯一通過北美主要 MSO (多系統業者, Multiple-System Operators) 認證之 HFC (混合光纖同軸, Hybrid Fiber-Coaxial) 傳輸設備之研發製造商。",
@@ -213,6 +218,9 @@
     "dialogTitleEnterConfirm": "確認",
     "dialogTitleDeleteConfig": "刪除",
     "dialogTitleSelectConfig": "選擇設定檔",
+
+    "dialogMessageFirmwareUpdateError": "藍芽連線狀態異常, 請問您是否重新嘗試？",
+    "dialogMessageFirmwareUpdateSuccess": "韌體更新成功",
 
     "dialogMessageFirmwareUpdateVersion": "目前的韌體版本為 {currentVersion}，您確定要更新到 {newVersion} 嗎 ?",
     "@dialogMessageFirmwareUpdateVersion": {
