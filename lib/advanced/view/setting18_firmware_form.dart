@@ -92,7 +92,7 @@ class Setting18FirmwareForm extends StatelessWidget {
               title: Text(
                 AppLocalizations.of(context)!.dialogTitleSuccess,
                 style: const TextStyle(
-                  color: CustomStyle.customRed,
+                  color: CustomStyle.customGreen,
                 ),
               ),
               content: SingleChildScrollView(
