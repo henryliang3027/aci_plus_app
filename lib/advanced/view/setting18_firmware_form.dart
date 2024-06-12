@@ -25,54 +25,91 @@ class Setting18FirmwareForm extends StatelessWidget {
             .characteristicData[DataKey.firmwareVersion] ??
         '';
 
-    Future<void> showFailureDialog({
+    Future<void> showRebootingDialog(BuildContext context) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return PopScope(
+            canPop: false,
+            child: AlertDialog(
+              title: Text(
+                AppLocalizations.of(context)!.dialogTitleDeviceRebooting,
+              ),
+              actionsAlignment: MainAxisAlignment.center,
+              content: const SingleChildScrollView(
+                child: ListBody(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Center(
+                        child: SizedBox(
+                          width: CustomStyle.diameter,
+                          height: CustomStyle.diameter,
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+
+    Future<bool?> showFailureDialog({
       required BuildContext buildContext,
       required String errorMessage,
     }) async {
-      return showDialog<void>(
+      return showDialog<bool>(
         context: buildContext,
         barrierDismissible: false, // user must tap button!
         builder: (_) {
           return BlocProvider.value(
             value: buildContext.read<Setting18FirmwareBloc>(),
-            child: AlertDialog(
-              title: Text(
-                AppLocalizations.of(context)!.dialogTitleError,
-                style: const TextStyle(
-                  color: CustomStyle.customRed,
+            child: PopScope(
+              canPop: false,
+              child: AlertDialog(
+                title: Text(
+                  AppLocalizations.of(context)!.dialogTitleError,
+                  style: const TextStyle(
+                    color: CustomStyle.customRed,
+                  ),
                 ),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Text(
+                        AppLocalizations.of(context)!
+                            .dialogMessageFirmwareUpdateError,
+                      ),
+                      Text(errorMessage),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Cancel'),
+                    onPressed: () {
+                      context
+                          .read<Setting18FirmwareBloc>()
+                          .add(const BootloaderExited());
+                      Navigator.of(context).pop(false); // pop dialog
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('Try again'),
+                    onPressed: () {
+                      context
+                          .read<Setting18FirmwareBloc>()
+                          .add(const UpdateStarted());
+                      Navigator.of(context).pop(true); // pop dialog
+                    },
+                  ),
+                ],
               ),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: <Widget>[
-                    Text(
-                      AppLocalizations.of(context)!
-                          .dialogMessageFirmwareUpdateError,
-                    ),
-                    Text(errorMessage),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('Cancel'),
-                  onPressed: () {
-                    context
-                        .read<Setting18FirmwareBloc>()
-                        .add(const BootloaderExited());
-                    Navigator.of(context).pop(); // pop dialog
-                  },
-                ),
-                TextButton(
-                  child: const Text('Try again'),
-                  onPressed: () {
-                    context
-                        .read<Setting18FirmwareBloc>()
-                        .add(const UpdateStarted());
-                    Navigator.of(context).pop(); // pop dialog
-                  },
-                ),
-              ],
             ),
           );
         },
@@ -129,10 +166,22 @@ class Setting18FirmwareForm extends StatelessWidget {
           previous.submissionStatus != current.submissionStatus,
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionFailure) {
-          await showFailureDialog(
+          showFailureDialog(
             buildContext: context,
             errorMessage: state.errorMessage,
-          );
+          ).then((bool? retry) {
+            if (retry != null) {
+              if (!retry) {
+                showRebootingDialog(context);
+                Future.delayed(const Duration(seconds: 4)).then((_) {
+                  Navigator.pop(context);
+
+                  context.read<HomeBloc>().add(const Data18Requested());
+                  pageController.jumpToPage(2);
+                });
+              }
+            }
+          });
         } else if (state.submissionStatus.isSubmissionSuccess) {
           showSuccessDialog(
             buildContext: context,
@@ -506,95 +555,13 @@ class _Progress extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    // pageController.animateToPage(
-                    //   2,
-                    //   duration: Duration(milliseconds: 500),
-                    //   curve: Curves.easeInOut,
-                    // );
-
-                    context.read<HomeBloc>().add(const Data18Requested());
-                    pageController.jumpToPage(2);
+                    context
+                        .read<Setting18FirmwareBloc>()
+                        .add(const BootloaderForceExited());
                   },
-                  child: Text('Jump'),
+                  child: Text('M'),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    minimumSize: const Size(100, 60),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: CustomStyle.sizeXXL,
-                    ),
-                  ),
-                  onPressed: () {
-                    bool isEnabled = context
-                        .read<Setting18AdvancedBloc>()
-                        .state
-                        .enableButtonsTap;
-                    isEnabled
-                        ? context
-                            .read<Setting18AdvancedBloc>()
-                            .add(const AllButtonsDisabled())
-                        : context
-                            .read<Setting18AdvancedBloc>()
-                            .add(const AllButtonsEnabled());
-                  },
-                  child: Text('T'),
-                ),
-              ),
-              // Padding(
-              //   padding: const EdgeInsets.only(bottom: 0),
-              //   child: ElevatedButton(
-              //     style: ElevatedButton.styleFrom(
-              //       backgroundColor: Theme.of(context).colorScheme.primary,
-              //       foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              //       minimumSize: const Size(80, 60),
-              //       shape: const RoundedRectangleBorder(
-              //         borderRadius:
-              //             BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-              //       ),
-              //       textStyle: const TextStyle(
-              //         fontSize: CustomStyle.sizeXXL,
-              //       ),
-              //     ),
-              //     onPressed: () {
-              //       context
-              //           .read<Setting18FirmwareBloc>()
-              //           .add(const CommandWrited('N'));
-              //     },
-              //     child: Text("N"),
-              //   ),
-              // ),
-              // Padding(
-              //   padding: const EdgeInsets.only(bottom: 0),
-              //   child: ElevatedButton(
-              //     style: ElevatedButton.styleFrom(
-              //       backgroundColor: Theme.of(context).colorScheme.primary,
-              //       foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              //       minimumSize: const Size(80, 60),
-              //       shape: const RoundedRectangleBorder(
-              //         borderRadius:
-              //             BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-              //       ),
-              //       textStyle: const TextStyle(
-              //         fontSize: CustomStyle.sizeXXL,
-              //       ),
-              //     ),
-              //     onPressed: () {
-              //       context
-              //           .read<Setting18FirmwareBloc>()
-              //           .add(const CommandWrited('Y'));
-              //     },
-              //     child: Text("Y"),
-              //   ),
-              // ),
               // Padding(
               //   padding: const EdgeInsets.only(bottom: 0),
               //   child: ElevatedButton(
@@ -611,13 +578,44 @@ class _Progress extends StatelessWidget {
               //       ),
               //     ),
               //     onPressed: () {
-              //       context
-              //           .read<Setting18FirmwareBloc>()
-              //           .add(const CommandWrited('N'));
+              //       bool isEnabled = context
+              //           .read<Setting18AdvancedBloc>()
+              //           .state
+              //           .enableButtonsTap;
+              //       isEnabled
+              //           ? context
+              //               .read<Setting18AdvancedBloc>()
+              //               .add(const AllButtonsDisabled())
+              //           : context
+              //               .read<Setting18AdvancedBloc>()
+              //               .add(const AllButtonsEnabled());
               //     },
-              //     child: Text("N"),
+              //     child: Text('T'),
               //   ),
               // ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    minimumSize: const Size(80, 60),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
+                    ),
+                    textStyle: const TextStyle(
+                      fontSize: CustomStyle.sizeXXL,
+                    ),
+                  ),
+                  onPressed: () {
+                    context
+                        .read<Setting18FirmwareBloc>()
+                        .add(const CommandWrited('N'));
+                  },
+                  child: Text("N"),
+                ),
+              ),
             ],
           ),
         ],

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:aci_plus_app/core/command.dart';
+import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/firmware_file_table.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -22,6 +24,7 @@ class Setting18FirmwareBloc
         super(const Setting18FirmwareState()) {
     on<BootloaderStarted>(_onBootloaderStarted);
     on<BootloaderExited>(_onBootloaderExited);
+    on<BootloaderForceExited>(_onBootloaderForceExited);
     on<UpdateStarted>(_onUpdateStarted);
     on<CommandWrited>(_onCommandWrited);
     on<MessageReceived>(_onMessageReceived);
@@ -121,6 +124,7 @@ class Setting18FirmwareBloc
         displayMessage = _appLocalizations.updateComplete;
       } else {
         currentProgress = state.currentProgress;
+        displayMessage = state.updateMessage;
       }
       add(MessageReceived(
           message: displayMessage, currentProgress: currentProgress));
@@ -212,14 +216,26 @@ class Setting18FirmwareBloc
   ) async {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-    ));
-
-    emit(state.copyWith(
       updateCanceled: true,
     ));
 
     // Write N
     _firmwareRepository.writeCommand([0x4E]);
+
+    emit(state.copyWith(updateMessage: 'Main'));
+  }
+
+  // 更新過程出現 timeout , 強制退出 Bootloader
+  Future<void> _onBootloaderForceExited(
+    BootloaderForceExited event,
+    Emitter<Setting18FirmwareState> emit,
+  ) async {
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      updateCanceled: true,
+    ));
+
+    _firmwareRepository.exitBootloader();
 
     emit(state.copyWith(updateMessage: 'Main'));
   }
