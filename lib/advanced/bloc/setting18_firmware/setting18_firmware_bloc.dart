@@ -78,8 +78,6 @@ class Setting18FirmwareBloc
         print(
             'round cp: ${_roundToSecondDecimalPlace(0.3 + indexOfChunk / chunkLength * 0.4)}');
 
-        message = '$indexOfChunk / $chunkLength';
-
         displayMessage =
             '${_appLocalizations.sendingBinary} $indexOfChunk ${CustomStyle.bytes} / $chunkLength ${CustomStyle.bytes}';
       } else if (message.contains('Wait "Y"')) {
@@ -141,7 +139,7 @@ class Setting18FirmwareBloc
     MessageReceived event,
     Emitter<Setting18FirmwareState> emit,
   ) {
-    if (event.message.startsWith('Run AP1')) {
+    if (event.message == _appLocalizations.updateComplete) {
       _updateReportStreamSubscription?.cancel();
       emit(state.copyWith(
         submissionStatus: SubmissionStatus.submissionSuccess,
