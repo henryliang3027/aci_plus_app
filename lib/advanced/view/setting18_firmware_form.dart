@@ -166,22 +166,25 @@ class Setting18FirmwareForm extends StatelessWidget {
           previous.submissionStatus != current.submissionStatus,
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionFailure) {
-          showFailureDialog(
-            buildContext: context,
-            errorMessage: state.errorMessage,
-          ).then((bool? retry) {
-            if (retry != null) {
-              if (!retry) {
-                showRebootingDialog(context);
-                Future.delayed(const Duration(seconds: 4)).then((_) {
-                  Navigator.pop(context);
+          // 如果 failure dialog 沒有開啟才開啟
+          if (ModalRoute.of(context)?.isCurrent == true) {
+            showFailureDialog(
+              buildContext: context,
+              errorMessage: state.errorMessage,
+            ).then((bool? retry) {
+              if (retry != null) {
+                if (!retry) {
+                  showRebootingDialog(context);
+                  Future.delayed(const Duration(seconds: 4)).then((_) {
+                    Navigator.pop(context);
 
-                  context.read<HomeBloc>().add(const Data18Requested());
-                  pageController.jumpToPage(2);
-                });
+                    context.read<HomeBloc>().add(const Data18Requested());
+                    pageController.jumpToPage(2);
+                  });
+                }
               }
-            }
-          });
+            });
+          }
         } else if (state.submissionStatus.isSubmissionSuccess) {
           showSuccessDialog(
             buildContext: context,
