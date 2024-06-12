@@ -474,7 +474,10 @@ class BLEClient extends BLEClientBase {
             value: chunk,
           );
         }
-        // await Future.delayed(Duration(milliseconds: 500));
+        // if (i == 10) {
+        //   await Future.delayed(Duration(milliseconds: 500));
+        // }
+
         _updateReportStreamController
             .add('Sending ${i * chunkSize} ${binary.length}');
         print('doSomething() executed in ${stopwatch.elapsed.inMilliseconds}');

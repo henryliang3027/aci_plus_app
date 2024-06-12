@@ -21,6 +21,13 @@ class BootloaderExited extends Setting18FirmwareEvent {
   List<Object> get props => [];
 }
 
+class BootloaderForceExited extends Setting18FirmwareEvent {
+  const BootloaderForceExited();
+
+  @override
+  List<Object> get props => [];
+}
+
 class UpdateStarted extends Setting18FirmwareEvent {
   const UpdateStarted();
 

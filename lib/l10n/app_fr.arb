@@ -188,6 +188,7 @@
     "verifying": "Vérification",
     "updatingFirmware": "Mise à jour",
     "updateComplete": "Mise à jour terminée",
+    
 
 
     "aboutUs": "À propos nous",
@@ -217,7 +218,9 @@
     "dialogTitleEnterConfirm": "Confirmer",
     "dialogTitleDeleteConfig": "Supprimer",
     "dialogTitleSelectConfig": "Sélectionner le préréglage",
+    "dialogTitleDeviceRebooting": "Redémarrage",
 
+   
     "dialogMessageFirmwareUpdateError": "Le statut de la connexion Bluetooth est anormal. Souhaitez-vous réessayer ?",
     "dialogMessageFirmwareUpdateSuccess": "Mise à jour du firmware réussie.",
 
