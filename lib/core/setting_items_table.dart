@@ -113,6 +113,8 @@ enum SettingControl {
 // 5: C-Cor TR
 // 6: C-Cor BR
 // 7: C-Cor LE
+// 8: SDAT
+// 9: SDAM
 
 const Map<String, String> partIdMap = {
   'd': 'DSIM',

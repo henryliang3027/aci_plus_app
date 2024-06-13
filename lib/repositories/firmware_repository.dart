@@ -45,15 +45,10 @@ class FirmwareRepository {
 
     List<int> cmd = List<int>.generate(10, (index) => 0xf0);
 
-    try {
-      List<int> rawData = await _bleClient.transferFirmwareCommand(
-        commandIndex: commandIndex,
-        command: cmd,
-      );
-      return String.fromCharCodes(rawData);
-    } catch (e) {
-      return e;
-    }
+    await _bleClient.transferFirmwareCommand(
+      commandIndex: commandIndex,
+      command: cmd,
+    );
   }
 
   Future<dynamic> writeCommand(List<int> cmd) async {
@@ -64,30 +59,20 @@ class FirmwareRepository {
     // 0x4E 78 N
     // 0x59 89 Y
 
-    try {
-      List<int> rawData = await _bleClient.transferFirmwareCommand(
-        commandIndex: commandIndex,
-        command: cmd,
-      );
-      return String.fromCharCodes(rawData);
-    } catch (e) {
-      return e;
-    }
+    await _bleClient.transferFirmwareCommand(
+      commandIndex: commandIndex,
+      command: cmd,
+    );
   }
 
   Future<dynamic> exitBootloader() async {
     List<int> req00Cmd = [0xB0, 0x03, 0x00, 0x00, 0x00, 0x06, 0, 0]; //0
     CRC16.calculateCRC16(command: req00Cmd, usDataLength: 6);
 
-    try {
-      List<int> rawData = await _bleClient.transferFirmwareCommand(
-        commandIndex: 300,
-        command: req00Cmd,
-      );
-      return rawData;
-    } catch (e) {
-      return e;
-    }
+    await _bleClient.transferFirmwareCommand(
+      commandIndex: 300,
+      command: req00Cmd,
+    );
   }
 
   Future<dynamic> updateFirmware({
