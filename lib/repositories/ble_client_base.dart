@@ -42,7 +42,7 @@ abstract class BLEClientBase {
     Duration timeout = const Duration(seconds: 10),
   });
 
-  Future<dynamic> transferFirmwareCommand({
+  Future<void> transferFirmwareCommand({
     required int commandIndex,
     required List<int> command,
     Duration timeout = const Duration(seconds: 10),

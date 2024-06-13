@@ -38,6 +38,7 @@ class Setting18FirmwareBloc
   final AppLocalizations _appLocalizations;
   StreamSubscription<String>? _updateReportStreamSubscription;
   Timer? _enterBootloaderTimer;
+  final Stopwatch _stopwatch = Stopwatch();
 
   void _listenUpdateReport() {
     _updateReportStreamSubscription =
@@ -46,9 +47,7 @@ class Setting18FirmwareBloc
       String displayMessage = '';
 
       if (message.startsWith('Bootloader')) {
-        if (_enterBootloaderTimer != null) {
-          _enterBootloaderTimer!.cancel();
-        }
+        cancelEnterBootloaderTimer(); // 成功進入 Bootloader, 停止 timer
 
         if (!state.updateCanceled) {
           // 正常流程
@@ -144,9 +143,13 @@ class Setting18FirmwareBloc
     Emitter<Setting18FirmwareState> emit,
   ) {
     if (event.message == _appLocalizations.updateComplete) {
+      _stopwatch.stop();
+      String formattedTimeElapsed =
+          formatTimeElapsed(_stopwatch.elapsed.inSeconds);
       _updateReportStreamSubscription?.cancel();
       emit(state.copyWith(
         submissionStatus: SubmissionStatus.submissionSuccess,
+        formattedTimeElapsed: formattedTimeElapsed,
         updateMessage: event.message,
         currentProgress: event.currentProgress,
       ));
@@ -201,11 +204,15 @@ class Setting18FirmwareBloc
     ));
 
     _listenUpdateReport();
-
+    _stopwatch.start(); // 用來計算更新耗時多少時間, 開始計時
     _enterBootloaderTimer =
         Timer.periodic(const Duration(milliseconds: 100), (timer) {
       print('write enter bootloader cmd: ${timer.tick}');
-      _firmwareRepository.enterBootloader();
+      if (timer.tick < 50) {
+        _firmwareRepository.enterBootloader();
+      } else {
+        cancelEnterBootloaderTimer(); // 沒有成功進入 Bootloader, 停止 timer
+      }
     });
   }
 
@@ -256,6 +263,8 @@ class Setting18FirmwareBloc
     String binaryPath =
         FirmwareFileTable.filePathMap[event.selectedPartId] ?? '';
 
+    String selectedVersion = getSelectedFirmwareVersion(binaryPath: binaryPath);
+
     List<dynamic> result =
         await _firmwareRepository.calculateCheckSum(binaryPath: binaryPath);
 
@@ -267,6 +276,7 @@ class Setting18FirmwareBloc
         formStatus: FormStatus.requestSuccess,
         sum: sum,
         binary: binary,
+        selectedVersion: selectedVersion,
       ));
     } else {
       emit(state.copyWith(
@@ -275,6 +285,31 @@ class Setting18FirmwareBloc
     }
 
     emit(state.copyWith(selectedBinary: event.selectedPartId));
+  }
+
+  void cancelEnterBootloaderTimer() {
+    if (_enterBootloaderTimer != null) {
+      _enterBootloaderTimer!.cancel();
+    }
+  }
+
+  String formatTimeElapsed(int elapseInSeconds) {
+    int minutes = elapseInSeconds ~/ 60;
+    int seconds = elapseInSeconds % 60;
+
+    String minutesStr = minutes.toString().padLeft(2, '0');
+    String secondsStr = seconds.toString().padLeft(2, '0');
+    return '$minutesStr:$secondsStr';
+  }
+
+  String getSelectedFirmwareVersion({
+    required String binaryPath,
+  }) {
+    String splitBySlash = binaryPath.split('/').last;
+    String filename = splitBySlash.split('.')[0];
+    String version = filename.split('_')[1].substring(1);
+
+    return version;
   }
 
   @override

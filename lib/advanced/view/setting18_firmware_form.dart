@@ -118,6 +118,7 @@ class Setting18FirmwareForm extends StatelessWidget {
 
     Future<void> showSuccessDialog({
       required BuildContext buildContext,
+      required String timeElapsed,
     }) async {
       return showDialog<void>(
         context: buildContext,
@@ -139,6 +140,7 @@ class Setting18FirmwareForm extends StatelessWidget {
                       AppLocalizations.of(context)!
                           .dialogMessageFirmwareUpdateSuccess,
                     ),
+                    Text(timeElapsed),
                   ],
                 ),
               ),
@@ -188,6 +190,7 @@ class Setting18FirmwareForm extends StatelessWidget {
         } else if (state.submissionStatus.isSubmissionSuccess) {
           showSuccessDialog(
             buildContext: context,
+            timeElapsed: state.formattedTimeElapsed,
           ).then((_) {
             context.read<HomeBloc>().add(const Data18Requested());
             pageController.jumpToPage(2);
@@ -390,22 +393,23 @@ class _Progress extends StatelessWidget {
   });
 
   final String currentFirmwareVersion;
-  final String newFirmwareVersion = '128';
   final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
-    String localizedText = AppLocalizations.of(context)!
-        .dialogMessageFirmwareUpdateVersion(
-            currentFirmwareVersion, newFirmwareVersion);
-    int currentFirmwareVersionIndex =
-        localizedText.indexOf(currentFirmwareVersion);
-    int newFirmwareVersionIndex = localizedText.indexOf(
-      newFirmwareVersion,
-      currentFirmwareVersionIndex + currentFirmwareVersion.length,
-    );
+    Future<bool?> showUpdateVersionDialog({
+      required String newFirmwareVersion,
+    }) async {
+      String localizedText = AppLocalizations.of(context)!
+          .dialogMessageFirmwareUpdateVersion(
+              currentFirmwareVersion, newFirmwareVersion);
+      int currentFirmwareVersionIndex =
+          localizedText.indexOf(currentFirmwareVersion);
+      int newFirmwareVersionIndex = localizedText.indexOf(
+        newFirmwareVersion,
+        currentFirmwareVersionIndex + currentFirmwareVersion.length,
+      );
 
-    Future<bool?> showUpdateVersionDialog() async {
       return showDialog<bool?>(
         context: context,
         barrierDismissible: false, // user must tap button!
@@ -521,50 +525,56 @@ class _Progress extends StatelessWidget {
                       fontSize: CustomStyle.sizeXXL,
                     ),
                   ),
-                  onPressed: () async {
-                    showUpdateVersionDialog().then((bool? isConfirm) {
-                      if (isConfirm != null) {
-                        if (isConfirm) {
-                          // disable 所有 button
-                          context
-                              .read<Setting18AdvancedBloc>()
-                              .add(const AllButtonsDisabled());
+                  onPressed: !state.submissionStatus.isSubmissionInProgress
+                      ? () async {
+                          showUpdateVersionDialog(
+                            newFirmwareVersion: state.selectedVersion,
+                          ).then((bool? isConfirm) {
+                            if (isConfirm != null) {
+                              if (isConfirm) {
+                                // disable 所有 button
+                                context
+                                    .read<Setting18AdvancedBloc>()
+                                    .add(const AllButtonsDisabled());
 
-                          context
-                              .read<Setting18FirmwareBloc>()
-                              .add(const BootloaderStarted());
+                                context
+                                    .read<Setting18FirmwareBloc>()
+                                    .add(const BootloaderStarted());
+                              }
+                            }
+                          });
                         }
-                      }
-                    });
-                  },
+                      : null,
                   child: Text(
                     AppLocalizations.of(context)!.startUpdate,
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    minimumSize: const Size(80, 60),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: CustomStyle.sizeXXL,
-                    ),
-                  ),
-                  onPressed: () {
-                    context
-                        .read<Setting18FirmwareBloc>()
-                        .add(const BootloaderForceExited());
-                  },
-                  child: Text('M'),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(bottom: 0),
+              //   child: ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: Theme.of(context).colorScheme.primary,
+              //       foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              //       minimumSize: const Size(80, 60),
+              //       shape: const RoundedRectangleBorder(
+              //         borderRadius:
+              //             BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
+              //       ),
+              //       textStyle: const TextStyle(
+              //         fontSize: CustomStyle.sizeXXL,
+              //       ),
+              //     ),
+              //     onPressed: !state.submissionStatus.isSubmissionInProgress
+              //         ? () {
+              //             context
+              //                 .read<Setting18FirmwareBloc>()
+              //                 .add(const BootloaderForceExited());
+              //           }
+              //         : null,
+              //     child: Text('M'),
+              //   ),
+              // ),
               // Padding(
               //   padding: const EdgeInsets.only(bottom: 0),
               //   child: ElevatedButton(
@@ -596,29 +606,31 @@ class _Progress extends StatelessWidget {
               //     child: Text('T'),
               //   ),
               // ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    minimumSize: const Size(80, 60),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: CustomStyle.sizeXXL,
-                    ),
-                  ),
-                  onPressed: () {
-                    context
-                        .read<Setting18FirmwareBloc>()
-                        .add(const CommandWrited('N'));
-                  },
-                  child: Text("N"),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(bottom: 0),
+              //   child: ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: Theme.of(context).colorScheme.primary,
+              //       foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              //       minimumSize: const Size(80, 60),
+              //       shape: const RoundedRectangleBorder(
+              //         borderRadius:
+              //             BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
+              //       ),
+              //       textStyle: const TextStyle(
+              //         fontSize: CustomStyle.sizeXXL,
+              //       ),
+              //     ),
+              //     onPressed: !state.submissionStatus.isSubmissionInProgress
+              //         ? () {
+              //             context
+              //                 .read<Setting18FirmwareBloc>()
+              //                 .add(const CommandWrited('N'));
+              //           }
+              //         : null,
+              //     child: Text("N"),
+              //   ),
+              // ),
             ],
           ),
         ],

@@ -484,7 +484,7 @@ class BLEWindowsClient extends BLEClientBase {
   }
 
   @override
-  Future<dynamic> transferFirmwareCommand({
+  Future<void> transferFirmwareCommand({
     required int commandIndex,
     required List<int> command,
     Duration timeout = const Duration(seconds: 10),
