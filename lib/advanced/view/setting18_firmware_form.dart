@@ -65,12 +65,12 @@ class Setting18FirmwareForm extends StatelessWidget {
     }) async {
       return showDialog<bool>(
         context: buildContext,
-        barrierDismissible: false, // user must tap button!
+        barrierDismissible: true, // 暫時打開
         builder: (_) {
           return BlocProvider.value(
             value: buildContext.read<Setting18FirmwareBloc>(),
             child: PopScope(
-              canPop: false,
+              canPop: true,
               child: AlertDialog(
                 title: Text(
                   AppLocalizations.of(context)!.dialogTitleError,
@@ -550,87 +550,56 @@ class _Progress extends StatelessWidget {
                   ),
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(bottom: 0),
-              //   child: ElevatedButton(
-              //     style: ElevatedButton.styleFrom(
-              //       backgroundColor: Theme.of(context).colorScheme.primary,
-              //       foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              //       minimumSize: const Size(80, 60),
-              //       shape: const RoundedRectangleBorder(
-              //         borderRadius:
-              //             BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-              //       ),
-              //       textStyle: const TextStyle(
-              //         fontSize: CustomStyle.sizeXXL,
-              //       ),
-              //     ),
-              //     onPressed: !state.submissionStatus.isSubmissionInProgress
-              //         ? () {
-              //             context
-              //                 .read<Setting18FirmwareBloc>()
-              //                 .add(const BootloaderForceExited());
-              //           }
-              //         : null,
-              //     child: Text('M'),
-              //   ),
-              // ),
-              // Padding(
-              //   padding: const EdgeInsets.only(bottom: 0),
-              //   child: ElevatedButton(
-              //     style: ElevatedButton.styleFrom(
-              //       backgroundColor: Theme.of(context).colorScheme.primary,
-              //       foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              //       minimumSize: const Size(100, 60),
-              //       shape: const RoundedRectangleBorder(
-              //         borderRadius:
-              //             BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-              //       ),
-              //       textStyle: const TextStyle(
-              //         fontSize: CustomStyle.sizeXXL,
-              //       ),
-              //     ),
-              //     onPressed: () {
-              //       bool isEnabled = context
-              //           .read<Setting18AdvancedBloc>()
-              //           .state
-              //           .enableButtonsTap;
-              //       isEnabled
-              //           ? context
-              //               .read<Setting18AdvancedBloc>()
-              //               .add(const AllButtonsDisabled())
-              //           : context
-              //               .read<Setting18AdvancedBloc>()
-              //               .add(const AllButtonsEnabled());
-              //     },
-              //     child: Text('T'),
-              //   ),
-              // ),
-              // Padding(
-              //   padding: const EdgeInsets.only(bottom: 0),
-              //   child: ElevatedButton(
-              //     style: ElevatedButton.styleFrom(
-              //       backgroundColor: Theme.of(context).colorScheme.primary,
-              //       foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              //       minimumSize: const Size(80, 60),
-              //       shape: const RoundedRectangleBorder(
-              //         borderRadius:
-              //             BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-              //       ),
-              //       textStyle: const TextStyle(
-              //         fontSize: CustomStyle.sizeXXL,
-              //       ),
-              //     ),
-              //     onPressed: !state.submissionStatus.isSubmissionInProgress
-              //         ? () {
-              //             context
-              //                 .read<Setting18FirmwareBloc>()
-              //                 .add(const CommandWrited('N'));
-              //           }
-              //         : null,
-              //     child: Text("N"),
-              //   ),
-              // ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    minimumSize: const Size(80, 60),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
+                    ),
+                    textStyle: const TextStyle(
+                      fontSize: CustomStyle.sizeXXL,
+                    ),
+                  ),
+                  onPressed: !state.submissionStatus.isSubmissionInProgress
+                      ? () {
+                          context
+                              .read<Setting18FirmwareBloc>()
+                              .add(const BootloaderForceExited(cmd: 'M'));
+                        }
+                      : null,
+                  child: Text('M'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    minimumSize: const Size(80, 60),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
+                    ),
+                    textStyle: const TextStyle(
+                      fontSize: CustomStyle.sizeXXL,
+                    ),
+                  ),
+                  onPressed: !state.submissionStatus.isSubmissionInProgress
+                      ? () {
+                          context
+                              .read<Setting18FirmwareBloc>()
+                              .add(const BootloaderForceExited(cmd: 'N'));
+                        }
+                      : null,
+                  child: Text("N"),
+                ),
+              ),
             ],
           ),
         ],

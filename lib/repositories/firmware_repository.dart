@@ -75,18 +75,12 @@ class FirmwareRepository {
     );
   }
 
-  Future<dynamic> updateFirmware({
+  Future<void> updateFirmware({
     required List<int> binary,
   }) async {
-    // List<int> binaryWithLeadingC = [0x43, ...binary];
-    try {
-      List<int> rawData = await _bleClient.transferFirmwareBinary(
-        commandIndex: 1000,
-        binary: binary,
-      );
-      return String.fromCharCodes(rawData);
-    } catch (e) {
-      return e;
-    }
+    await _bleClient.transferFirmwareBinary(
+      commandIndex: 1000,
+      binary: binary,
+    );
   }
 }

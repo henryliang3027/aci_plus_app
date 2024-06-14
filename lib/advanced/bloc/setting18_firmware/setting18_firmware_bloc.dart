@@ -138,15 +138,20 @@ class Setting18FirmwareBloc
     return ((value * mod).round().toDouble() / mod);
   }
 
-  void _onMessageReceived(
+  Future<void> _onMessageReceived(
     MessageReceived event,
     Emitter<Setting18FirmwareState> emit,
-  ) {
+  ) async {
     if (event.message == _appLocalizations.updateComplete) {
       _stopwatch.stop();
       String formattedTimeElapsed =
           formatTimeElapsed(_stopwatch.elapsed.inSeconds);
       _updateReportStreamSubscription?.cancel();
+
+      // 收到完成訊息('Run AP1')後, 多等待一段時間, 再提示完成 dialog, 按下OK, 接著讀取基本資訊就可以很快讀到
+      // 測試發現若更新 SDLE 完成後提示完成並馬上按下OK, 接著讀取基本資訊就要等待10秒才讀到
+      await Future.delayed(const Duration(milliseconds: 3500));
+
       emit(state.copyWith(
         submissionStatus: SubmissionStatus.submissionSuccess,
         formattedTimeElapsed: formattedTimeElapsed,
@@ -232,7 +237,7 @@ class Setting18FirmwareBloc
     emit(state.copyWith(updateMessage: 'Main'));
   }
 
-  // 更新過程出現 timeout , 強制退出 Bootloader
+  // 更新過程出現checksum 錯誤或 timeout , 強制退出 Bootloader
   Future<void> _onBootloaderForceExited(
     BootloaderForceExited event,
     Emitter<Setting18FirmwareState> emit,
@@ -242,7 +247,12 @@ class Setting18FirmwareBloc
       updateCanceled: true,
     ));
 
-    _firmwareRepository.exitBootloader();
+    if (event.cmd == 'N') {
+      // Write N
+      _firmwareRepository.writeCommand([0x4E]);
+    } else {
+      _firmwareRepository.exitBootloader();
+    }
 
     emit(state.copyWith(updateMessage: 'Main'));
   }

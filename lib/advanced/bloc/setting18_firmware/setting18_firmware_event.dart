@@ -22,10 +22,14 @@ class BootloaderExited extends Setting18FirmwareEvent {
 }
 
 class BootloaderForceExited extends Setting18FirmwareEvent {
-  const BootloaderForceExited();
+  const BootloaderForceExited({
+    required this.cmd,
+  });
+
+  final String cmd;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [cmd];
 }
 
 class UpdateStarted extends Setting18FirmwareEvent {
