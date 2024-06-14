@@ -437,7 +437,7 @@ class BLEClient extends BLEClientBase {
   }
 
   @override
-  Future<dynamic> transferFirmwareBinary({
+  Future<void> transferFirmwareBinary({
     required int commandIndex,
     required List<int> binary,
     Duration timeout = const Duration(seconds: 600),

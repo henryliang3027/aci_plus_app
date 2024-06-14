@@ -53,7 +53,15 @@ class BLEWindowsClient extends BLEClientBase {
   @override
   Stream<String> get updateReport async* {
     _updateReportStreamController = StreamController<String>();
-    yield* _updateReportStreamController.stream;
+    Stream<String> streamWithTimeout =
+        _updateReportStreamController.stream.timeout(
+      Duration(seconds: 10),
+      onTimeout: (sink) {
+        sink.addError('Timeout occurred');
+      },
+    );
+
+    yield* streamWithTimeout;
   }
 
   Future<void> initialize() async {
@@ -232,19 +240,32 @@ class BLEWindowsClient extends BLEClientBase {
                 rawData: rawData,
               );
 
-              if (finalResult[0]) {
-                cancelCharacteristicDataTimer(
-                    name: 'cmd $_currentCommandIndex');
+              if (_currentCommandIndex >= 1000) {
                 List<int> finalRawData = finalResult[1];
+                String message = String.fromCharCodes(finalRawData);
+                _updateReportStreamController.add(message);
+                // cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
+                // List<int> finalRawData = finalResult[1];
 
-                bool isValidCRC = checkCRC(finalRawData);
-                if (isValidCRC) {
-                  if (!_completer!.isCompleted) {
-                    _completer!.complete(finalRawData);
-                  }
-                } else {
-                  if (!_completer!.isCompleted) {
-                    _completer!.completeError(CharacteristicError.invalidData);
+                // if (!_completer!.isCompleted) {
+                //   _completer!.complete(finalRawData);
+                // }
+              } else {
+                if (finalResult[0]) {
+                  cancelCharacteristicDataTimer(
+                      name: 'cmd $_currentCommandIndex');
+                  List<int> finalRawData = finalResult[1];
+
+                  bool isValidCRC = checkCRC(finalRawData);
+                  if (isValidCRC) {
+                    if (!_completer!.isCompleted) {
+                      _completer!.complete(finalRawData);
+                    }
+                  } else {
+                    if (!_completer!.isCompleted) {
+                      _completer!
+                          .completeError(CharacteristicError.invalidData);
+                    }
                   }
                 }
               }
@@ -449,20 +470,25 @@ class BLEWindowsClient extends BLEClientBase {
   }
 
   @override
-  Future<dynamic> transferFirmwareBinary({
+  Future<void> transferFirmwareBinary({
     required int commandIndex,
     required List<int> binary,
     Duration timeout = const Duration(seconds: 60),
   }) async {
-    int mtu = 244;
+    int chunkSize = 244;
 
     List<List<int>> chunks = divideToChunkList(
       binary: binary,
-      chunkSize: mtu,
+      chunkSize: chunkSize,
     );
 
-    for (List<int> chunk in chunks) {
+    print('binary.length: ${binary.length}, chunks.length: ${chunks.length}');
+    for (int i = 0; i < chunks.length; i++) {
+      List<int> chunk = chunks[i];
+      print('chink index: $i, length: ${chunks[i].length}');
+
       try {
+        Stopwatch stopwatch = Stopwatch()..start();
         await WinBle.write(
           address: _perigheral!.id,
           service: _serviceId,
@@ -470,17 +496,24 @@ class BLEWindowsClient extends BLEClientBase {
           data: Uint8List.fromList(chunk),
           writeWithResponse: true,
         );
-      } catch (e) {
-        if (!_completer!.isCompleted) {
-          print('writeCharacteristic failed: ${e.toString()}');
-          _completer!.completeError(CharacteristicError.writeDataError.name);
+        // if (i == 10) {
+        //   await Future.delayed(Duration(milliseconds: 500));
+        // }
+
+        _updateReportStreamController
+            .add('Sending ${i * chunkSize} ${binary.length}');
+        print('doSomething() executed in ${stopwatch.elapsed.inMilliseconds}');
+        int elapsedMs = stopwatch.elapsed.inMilliseconds;
+        if (elapsedMs >= 400) {
+          // _updateReportStreamController
+          //     .addError('Sending the chunk $i takes too long, $elapsedMs');
+
+          break;
         }
+      } catch (e) {
+        _updateReportStreamController.addError('Sending the chunk $i error');
       }
-
-      await Future.delayed(const Duration(milliseconds: 200));
     }
-
-    return _completer!.future;
   }
 
   @override
@@ -489,20 +522,7 @@ class BLEWindowsClient extends BLEClientBase {
     required List<int> command,
     Duration timeout = const Duration(seconds: 10),
   }) async {
-    try {
-      await WinBle.write(
-        address: _perigheral!.id,
-        service: _serviceId,
-        characteristic: _characteristicId,
-        data: Uint8List.fromList(command),
-        writeWithResponse: true,
-      );
-    } catch (e) {
-      if (!_completer!.isCompleted) {
-        print('writeCharacteristic failed: ${e.toString()}');
-        _completer!.completeError(CharacteristicError.writeDataError.name);
-      }
-    }
+    _currentCommandIndex = commandIndex;
 
     try {
       await WinBle.write(
