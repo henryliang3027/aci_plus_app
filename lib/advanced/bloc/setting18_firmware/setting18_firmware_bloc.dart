@@ -143,14 +143,15 @@ class Setting18FirmwareBloc
     Emitter<Setting18FirmwareState> emit,
   ) async {
     if (event.message == _appLocalizations.updateComplete) {
-      _stopwatch.stop();
-      String formattedTimeElapsed =
-          formatTimeElapsed(_stopwatch.elapsed.inSeconds);
       _updateReportStreamSubscription?.cancel();
 
       // 收到完成訊息('Run AP1')後, 多等待一段時間, 再提示完成 dialog, 按下OK, 接著讀取基本資訊就可以很快讀到
       // 測試發現若更新 SDLE 完成後提示完成並馬上按下OK, 接著讀取基本資訊就要等待10秒才讀到
       await Future.delayed(const Duration(milliseconds: 3500));
+
+      _stopwatch.stop();
+      String formattedTimeElapsed =
+          formatTimeElapsed(_stopwatch.elapsed.inSeconds);
 
       emit(state.copyWith(
         submissionStatus: SubmissionStatus.submissionSuccess,
