@@ -470,50 +470,69 @@ class BLEWindowsClient extends BLEClientBase {
   }
 
   @override
-  Future<void> transferFirmwareBinary({
+  Future<void> transferBinaryChunk({
     required int commandIndex,
-    required List<int> binary,
-    Duration timeout = const Duration(seconds: 60),
+    required List<int> chunk,
+    required int indexOfChunk,
   }) async {
-    int chunkSize = 244;
+    _currentCommandIndex = commandIndex;
 
-    List<List<int>> chunks = divideToChunkList(
-      binary: binary,
-      chunkSize: chunkSize,
-    );
+    try {
+      await WinBle.write(
+        address: _perigheral!.id,
+        service: _serviceId,
+        characteristic: _characteristicId,
+        data: Uint8List.fromList(chunk),
+        writeWithResponse: true,
+      );
+      // if (i == 10) {
+      //   await Future.delayed(Duration(milliseconds: 500));
+      // }
 
-    print('binary.length: ${binary.length}, chunks.length: ${chunks.length}');
-    for (int i = 0; i < chunks.length; i++) {
-      List<int> chunk = chunks[i];
-      print('chink index: $i, length: ${chunks[i].length}');
-
-      try {
-        Stopwatch stopwatch = Stopwatch()..start();
-        await WinBle.write(
-          address: _perigheral!.id,
-          service: _serviceId,
-          characteristic: _characteristicId,
-          data: Uint8List.fromList(chunk),
-          writeWithResponse: true,
-        );
-        // if (i == 10) {
-        //   await Future.delayed(Duration(milliseconds: 500));
-        // }
-
-        _updateReportStreamController
-            .add('Sending ${i * chunkSize} ${binary.length}');
-        print('doSomething() executed in ${stopwatch.elapsed.inMilliseconds}');
-        int elapsedMs = stopwatch.elapsed.inMilliseconds;
-        if (elapsedMs >= 400) {
-          // _updateReportStreamController
-          //     .addError('Sending the chunk $i takes too long, $elapsedMs');
-
-          break;
-        }
-      } catch (e) {
-        _updateReportStreamController.addError('Sending the chunk $i error');
-      }
+      _updateReportStreamController.add('Sent $indexOfChunk');
+    } catch (e) {
+      _updateReportStreamController.addError('Sending the chunk error');
     }
+
+    // int chunkSize = 244;
+
+    // List<List<int>> chunks = divideToChunkList(
+    //   binary: binary,
+    //   chunkSize: chunkSize,
+    // );
+
+    // print('binary.length: ${binary.length}, chunks.length: ${chunks.length}');
+    // for (int i = 0; i < chunks.length; i++) {
+    //   List<int> chunk = chunks[i];
+    //   print('chink index: $i, length: ${chunks[i].length}');
+
+    //   try {
+    //     Stopwatch stopwatch = Stopwatch()..start();
+    //     await WinBle.write(
+    //       address: _perigheral!.id,
+    //       service: _serviceId,
+    //       characteristic: _characteristicId,
+    //       data: Uint8List.fromList(chunk),
+    //       writeWithResponse: true,
+    //     );
+    //     // if (i == 10) {
+    //     //   await Future.delayed(Duration(milliseconds: 500));
+    //     // }
+
+    //     _updateReportStreamController
+    //         .add('Sending ${i * chunkSize} ${binary.length}');
+    //     print('doSomething() executed in ${stopwatch.elapsed.inMilliseconds}');
+    //     int elapsedMs = stopwatch.elapsed.inMilliseconds;
+    //     if (elapsedMs >= 400) {
+    //       // _updateReportStreamController
+    //       //     .addError('Sending the chunk $i takes too long, $elapsedMs');
+
+    //       break;
+    //     }
+    //   } catch (e) {
+    //     _updateReportStreamController.addError('Sending the chunk $i error');
+    //   }
+    // }
   }
 
   @override

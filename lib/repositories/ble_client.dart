@@ -437,61 +437,77 @@ class BLEClient extends BLEClientBase {
   }
 
   @override
-  Future<void> transferFirmwareBinary({
+  Future<void> transferBinaryChunk({
     required int commandIndex,
-    required List<int> binary,
-    Duration timeout = const Duration(seconds: 600),
+    required List<int> chunk,
+    required int indexOfChunk,
   }) async {
-    int chunkSize = 244;
     _currentCommandIndex = commandIndex;
+
+    try {
+      if (Platform.isAndroid) {
+        await _ble!.writeCharacteristicWithResponse(
+          _qualifiedCharacteristic,
+          value: chunk,
+        );
+      } else {
+        // iOS
+        await _ble!.writeCharacteristicWithoutResponse(
+          _qualifiedCharacteristic,
+          value: chunk,
+        );
+      }
+      // if (i == 10) {
+      //   await Future.delayed(Duration(milliseconds: 500));
+      // }
+
+      _updateReportStreamController.add('Sent $indexOfChunk');
+    } catch (e) {
+      _updateReportStreamController.addError('Sending the chunk error');
+    }
 
     // negotiatedMtu = 247
     // 送 chunck0 的時候會出現 status 13 (GATT_INVALID_ATTR_LEN) 的錯誤
     // final negotiatedMtu =
     //     await _ble!.requestMtu(deviceId: _perigheral.id, mtu: 244);
 
-    List<List<int>> chunks = divideToChunkList(
-      binary: binary,
-      chunkSize: chunkSize,
-    );
+    // print('binary.length: ${binary.length}, chunks.length: ${chunks.length}');
+    // for (int i = 0; i < chunks.length; i++) {
+    //   List<int> chunk = chunks[i];
+    //   print('chink index: $i, length: ${chunks[i].length}');
 
-    print('binary.length: ${binary.length}, chunks.length: ${chunks.length}');
-    for (int i = 0; i < chunks.length; i++) {
-      List<int> chunk = chunks[i];
-      print('chink index: $i, length: ${chunks[i].length}');
+    //   try {
+    //     Stopwatch stopwatch = Stopwatch()..start();
+    //     if (Platform.isAndroid) {
+    //       await _ble!.writeCharacteristicWithResponse(
+    //         _qualifiedCharacteristic,
+    //         value: chunk,
+    //       );
+    //     } else {
+    //       // iOS
+    //       await _ble!.writeCharacteristicWithoutResponse(
+    //         _qualifiedCharacteristic,
+    //         value: chunk,
+    //       );
+    //     }
+    //     // if (i == 10) {
+    //     //   await Future.delayed(Duration(milliseconds: 500));
+    //     // }
+    //     int elapsedMs = stopwatch.elapsed.inMilliseconds;
+    //     if (elapsedMs >= 400) {
+    //       // _updateReportStreamController
+    //       //     .addError('Sending the chunk $i takes too long, $elapsedMs');
 
-      try {
-        Stopwatch stopwatch = Stopwatch()..start();
-        if (Platform.isAndroid) {
-          await _ble!.writeCharacteristicWithResponse(
-            _qualifiedCharacteristic,
-            value: chunk,
-          );
-        } else {
-          // iOS
-          await _ble!.writeCharacteristicWithoutResponse(
-            _qualifiedCharacteristic,
-            value: chunk,
-          );
-        }
-        // if (i == 10) {
-        //   await Future.delayed(Duration(milliseconds: 500));
-        // }
+    //       break;
+    //     }
 
-        _updateReportStreamController
-            .add('Sending ${i * chunkSize} ${binary.length}');
-        print('doSomething() executed in ${stopwatch.elapsed.inMilliseconds}');
-        int elapsedMs = stopwatch.elapsed.inMilliseconds;
-        if (elapsedMs >= 400) {
-          // _updateReportStreamController
-          //     .addError('Sending the chunk $i takes too long, $elapsedMs');
-
-          break;
-        }
-      } catch (e) {
-        _updateReportStreamController.addError('Sending the chunk $i error');
-      }
-    }
+    //     _updateReportStreamController
+    //         .add('Sending ${i * chunkSize} ${binary.length}');
+    //     print('doSomething() executed in ${stopwatch.elapsed.inMilliseconds}');
+    //   } catch (e) {
+    //     _updateReportStreamController.addError('Sending the chunk $i error');
+    //   }
+    // }
   }
 
   @override

@@ -36,10 +36,10 @@ abstract class BLEClientBase {
     Duration timeout = const Duration(seconds: 10),
   });
 
-  Future<void> transferFirmwareBinary({
+  Future<void> transferBinaryChunk({
     required int commandIndex,
-    required List<int> binary,
-    Duration timeout = const Duration(seconds: 10),
+    required List<int> chunk,
+    required int indexOfChunk,
   });
 
   Future<void> transferFirmwareCommand({
@@ -47,18 +47,6 @@ abstract class BLEClientBase {
     required List<int> command,
     Duration timeout = const Duration(seconds: 10),
   });
-
-  List<List<int>> divideToChunkList({
-    required List<int> binary,
-    required int chunkSize,
-  }) {
-    List<List<int>> chunks = [];
-    for (int i = 0; i < binary.length; i += chunkSize) {
-      int end = (i + chunkSize < binary.length) ? i + chunkSize : binary.length;
-      chunks.add(binary.sublist(i, end));
-    }
-    return chunks;
-  }
 
   bool checkCRC(
     List<int> rawData,
