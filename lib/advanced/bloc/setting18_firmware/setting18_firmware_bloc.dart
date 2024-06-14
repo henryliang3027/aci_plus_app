@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:aci_plus_app/core/command.dart';
-import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/firmware_file_table.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -40,6 +38,11 @@ class Setting18FirmwareBloc
   Timer? _enterBootloaderTimer;
   final Stopwatch _stopwatch = Stopwatch();
 
+  // 檢查是否收到 checksum 的 flag
+  bool _isReceivedChecksum = false;
+
+  final int _chunkSize = 244;
+
   void _listenUpdateReport() {
     _updateReportStreamSubscription =
         _firmwareRepository.updateReport.listen((message) {
@@ -47,7 +50,7 @@ class Setting18FirmwareBloc
       String displayMessage = '';
 
       if (message.startsWith('Bootloader')) {
-        cancelEnterBootloaderTimer(); // 成功進入 Bootloader, 停止 timer
+        _cancelEnterBootloaderTimer(); // 成功進入 Bootloader, 停止 timer
 
         if (!state.updateCanceled) {
           // 正常流程
@@ -67,22 +70,26 @@ class Setting18FirmwareBloc
         currentProgress = 0.1;
         displayMessage = _appLocalizations.readyToSend;
       } else if (message.startsWith('Write AP2')) {
-        _firmwareRepository.updateFirmware(binary: state.binary);
+        _transferBinary(); // 開始傳送 binary
         currentProgress = 0.2;
         displayMessage = _appLocalizations.readyToSend;
-      } else if (message.startsWith('Sending')) {
+      } else if (message.startsWith('Sent')) {
         List<String> splitted = message.split(' ');
         int indexOfChunk = int.parse(splitted[1]);
-        int chunkLength = int.parse(splitted[2]);
+
+        int currentSize = indexOfChunk * _chunkSize;
+        int totalSize = state.binary.length;
 
         currentProgress =
-            _roundToSecondDecimalPlace(0.3 + indexOfChunk / chunkLength * 0.4);
-        print(
-            'round cp: ${_roundToSecondDecimalPlace(0.3 + indexOfChunk / chunkLength * 0.4)}');
+            _roundToSecondDecimalPlace(0.3 + currentSize / totalSize * 0.4);
+        // print(
+        //     'round cp: ${_roundToSecondDecimalPlace(0.3 + indexOfChunk / chunkLength * 0.4)}');
 
         displayMessage =
-            '${_appLocalizations.sendingBinary} $indexOfChunk ${CustomStyle.bytes} / $chunkLength ${CustomStyle.bytes}';
+            '${_appLocalizations.sendingBinary} $currentSize ${CustomStyle.bytes} / $totalSize ${CustomStyle.bytes}';
       } else if (message.contains('Wait "Y"')) {
+        _isReceivedChecksum = true; // 收到 checksum 立馬設為 true
+
         LineSplitter lineSplitter = const LineSplitter();
         List<String> splitted = lineSplitter.convert(message);
 
@@ -151,7 +158,7 @@ class Setting18FirmwareBloc
 
       _stopwatch.stop();
       String formattedTimeElapsed =
-          formatTimeElapsed(_stopwatch.elapsed.inSeconds);
+          _formatTimeElapsed(_stopwatch.elapsed.inSeconds);
 
       emit(state.copyWith(
         submissionStatus: SubmissionStatus.submissionSuccess,
@@ -182,6 +189,9 @@ class Setting18FirmwareBloc
     UpdateStarted event,
     Emitter<Setting18FirmwareState> emit,
   ) async {
+    // 重新傳送時將 checksum flag 設為 false
+    _isReceivedChecksum = false;
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionInProgress,
       updateCanceled: false,
@@ -217,7 +227,7 @@ class Setting18FirmwareBloc
       if (timer.tick < 50) {
         _firmwareRepository.enterBootloader();
       } else {
-        cancelEnterBootloaderTimer(); // 沒有成功進入 Bootloader, 停止 timer
+        _cancelEnterBootloaderTimer(); // 沒有成功進入 Bootloader, 停止 timer
       }
     });
   }
@@ -227,6 +237,9 @@ class Setting18FirmwareBloc
     BootloaderExited event,
     Emitter<Setting18FirmwareState> emit,
   ) async {
+    // 重新傳送時將 checksum flag 設為 false
+    _isReceivedChecksum = false;
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       updateCanceled: true,
@@ -274,7 +287,8 @@ class Setting18FirmwareBloc
     String binaryPath =
         FirmwareFileTable.filePathMap[event.selectedPartId] ?? '';
 
-    String selectedVersion = getSelectedFirmwareVersion(binaryPath: binaryPath);
+    String selectedVersion =
+        _getSelectedFirmwareVersion(binaryPath: binaryPath);
 
     List<dynamic> result =
         await _firmwareRepository.calculateCheckSum(binaryPath: binaryPath);
@@ -298,13 +312,13 @@ class Setting18FirmwareBloc
     emit(state.copyWith(selectedBinary: event.selectedPartId));
   }
 
-  void cancelEnterBootloaderTimer() {
+  void _cancelEnterBootloaderTimer() {
     if (_enterBootloaderTimer != null) {
       _enterBootloaderTimer!.cancel();
     }
   }
 
-  String formatTimeElapsed(int elapseInSeconds) {
+  String _formatTimeElapsed(int elapseInSeconds) {
     int minutes = elapseInSeconds ~/ 60;
     int seconds = elapseInSeconds % 60;
 
@@ -313,7 +327,7 @@ class Setting18FirmwareBloc
     return '$minutesStr:$secondsStr';
   }
 
-  String getSelectedFirmwareVersion({
+  String _getSelectedFirmwareVersion({
     required String binaryPath,
   }) {
     String splitBySlash = binaryPath.split('/').last;
@@ -321,6 +335,25 @@ class Setting18FirmwareBloc
     String version = filename.split('_')[1].substring(1);
 
     return version;
+  }
+
+  Future<void> _transferBinary() async {
+    // 將 binary 切分成每個大小為 chunkSize 的封包
+    List<List<int>> chunks = _firmwareRepository.divideToChunkList(
+      binary: state.binary,
+      chunkSize: _chunkSize,
+    );
+
+    for (int i = 0; i < chunks.length; i++) {
+      if (!_isReceivedChecksum) {
+        await _firmwareRepository.transferBinaryChunk(
+          chunk: chunks[i],
+          indexOfChunk: i,
+        );
+      } else {
+        break;
+      }
+    }
   }
 
   @override

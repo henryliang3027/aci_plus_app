@@ -75,12 +75,23 @@ class FirmwareRepository {
     );
   }
 
-  Future<void> updateFirmware({
+  List<List<int>> divideToChunkList({
     required List<int> binary,
+    required int chunkSize,
+  }) {
+    List<List<int>> chunks = [];
+    for (int i = 0; i < binary.length; i += chunkSize) {
+      int end = (i + chunkSize < binary.length) ? i + chunkSize : binary.length;
+      chunks.add(binary.sublist(i, end));
+    }
+    return chunks;
+  }
+
+  Future<void> transferBinaryChunk({
+    required List<int> chunk,
+    required int indexOfChunk,
   }) async {
-    await _bleClient.transferFirmwareBinary(
-      commandIndex: 1000,
-      binary: binary,
-    );
+    await _bleClient.transferBinaryChunk(
+        commandIndex: 1000, chunk: chunk, indexOfChunk: indexOfChunk);
   }
 }
