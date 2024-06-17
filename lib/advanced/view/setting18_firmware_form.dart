@@ -2,12 +2,12 @@ import 'package:aci_plus_app/advanced/bloc/setting18_advanced/setting18_advanced
 import 'package:aci_plus_app/advanced/bloc/setting18_firmware/setting18_firmware_bloc.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
-import 'package:aci_plus_app/core/firmware_file_table.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:file_picker/file_picker.dart';
 
 class Setting18FirmwareForm extends StatelessWidget {
   const Setting18FirmwareForm({
@@ -203,9 +203,10 @@ class Setting18FirmwareForm extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const _UserCaution(),
-            const _BinaryDropDownMenu(),
+            // const _FilePicker(),
+            // const _BinaryDropDownMenu(),
             const _ProgressBar(),
-            _Progress(
+            _StartButton(
               currentFirmwareVersion: currentFirmwareVersion,
               pageController: pageController,
             ),
@@ -230,7 +231,7 @@ class _UserCaution extends StatelessWidget {
           bottom: 20.0,
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -289,38 +290,81 @@ class _UserCaution extends StatelessWidget {
   }
 }
 
-class _BinaryDropDownMenu extends StatelessWidget {
-  const _BinaryDropDownMenu({super.key});
+// class _FilePicker extends StatelessWidget {
+//   const _FilePicker({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18FirmwareBloc, Setting18FirmwareState>(
-      builder: (context, state) {
-        return DropdownButton<String>(
-          value: state.selectedBinary,
-          icon: const Icon(Icons.arrow_downward),
-          elevation: 16,
-          style: const TextStyle(color: Colors.deepPurple, fontSize: 20),
-          underline: Container(
-            height: 2,
-            color: Colors.deepPurpleAccent,
-          ),
-          onChanged: (String? value) {
-            if (value != null) {
-              context.read<Setting18FirmwareBloc>().add(BinarySelected(value));
-            }
-          },
-          items: FirmwareFileTable.filePathMap.entries
-              .map((entry) => DropdownMenuItem<String>(
-                    value: entry.key,
-                    child: Text(entry.value),
-                  ))
-              .toList(),
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18FirmwareBloc, Setting18FirmwareState>(
+//       builder: (context, state) {
+//         return ElevatedButton(
+//           onPressed: () async {
+//             FilePickerResult? result = await FilePicker.platform.pickFiles(
+//               type: FileType.custom,
+//               allowedExtensions: ['bin'],
+//               allowCompression: false,
+//             );
+
+//             if (result != null) {
+//               context
+//                   .read<Setting18FirmwareBloc>()
+//                   .add(BinarySelected(result.files.single.path!));
+//               // File file = File(result.files.single.path!);
+//               // print(file.path);
+//             } else {
+//               // 使用者取消 file picker, 沒有選擇任何檔案
+//             }
+//           },
+//           child: Row(
+//             mainAxisSize: MainAxisSize.min,
+//             children: [
+//               Icon(Icons.file_open_outlined),
+//               SizedBox(
+//                 width: 10,
+//               ),
+//               Text(
+//                 state.selectedBinaryName,
+//               ),
+//             ],
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
+
+// class _BinaryDropDownMenu extends StatelessWidget {
+//   const _BinaryDropDownMenu({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18FirmwareBloc, Setting18FirmwareState>(
+//       builder: (context, state) {
+//         return DropdownButton<String>(
+//           value: state.selectedBinary,
+//           icon: const Icon(Icons.arrow_downward),
+//           elevation: 16,
+//           style: const TextStyle(color: Colors.deepPurple, fontSize: 20),
+//           underline: Container(
+//             height: 2,
+//             color: Colors.deepPurpleAccent,
+//           ),
+//           onChanged: (String? value) {
+//             if (value != null) {
+//               context.read<Setting18FirmwareBloc>().add(BinarySelected(value));
+//             }
+//           },
+//           items: FirmwareFileTable.filePathMap.entries
+//               .map((entry) => DropdownMenuItem<String>(
+//                     value: entry.key,
+//                     child: Text(entry.value),
+//                   ))
+//               .toList(),
+//         );
+//       },
+//     );
+//   }
+// }
 
 class _ProgressBar extends StatefulWidget {
   const _ProgressBar({super.key});
@@ -361,6 +405,7 @@ class __ProgressBarState extends State<_ProgressBar>
                   animation: animationController,
                   builder: (context, child) {
                     return LinearProgressIndicator(
+                      minHeight: 10,
                       value: animationController.value,
                     );
                   },
@@ -385,8 +430,8 @@ class __ProgressBarState extends State<_ProgressBar>
   }
 }
 
-class _Progress extends StatelessWidget {
-  const _Progress({
+class _StartButton extends StatelessWidget {
+  const _StartButton({
     super.key,
     required this.currentFirmwareVersion,
     required this.pageController,
@@ -417,193 +462,245 @@ class _Progress extends StatelessWidget {
           var width = MediaQuery.of(context).size.width;
           // var height = MediaQuery.of(context).size.height;
 
-          return AlertDialog(
-            insetPadding: EdgeInsets.symmetric(
-              horizontal: width * 0.1,
-            ),
-            title: Text(
-              AppLocalizations.of(context)!.dialogTitleNotice,
-              style: const TextStyle(
-                color: CustomStyle.customYellow,
+          return PopScope(
+            canPop: false,
+            child: AlertDialog(
+              insetPadding: EdgeInsets.symmetric(
+                horizontal: width * 0.1,
               ),
-            ),
-            content: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text:
-                        localizedText.substring(0, currentFirmwareVersionIndex),
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                  TextSpan(
-                    text: localizedText.substring(
-                        currentFirmwareVersionIndex,
-                        currentFirmwareVersionIndex +
-                            currentFirmwareVersion.length),
-                    style: const TextStyle(
-                      color: CustomStyle.customRed,
-                    ),
-                  ),
-                  TextSpan(
-                    text: localizedText.substring(
-                        currentFirmwareVersionIndex +
-                            currentFirmwareVersion.length,
-                        newFirmwareVersionIndex),
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                  TextSpan(
-                    text: localizedText.substring(newFirmwareVersionIndex,
-                        newFirmwareVersionIndex + newFirmwareVersion.length),
-                    style: const TextStyle(
-                      color: CustomStyle.customRed,
-                    ),
-                  ),
-                  TextSpan(
-                    text: localizedText.substring(
-                        newFirmwareVersionIndex + newFirmwareVersion.length,
-                        localizedText.length),
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-              style: const TextStyle(
-                fontSize: CustomStyle.sizeL,
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(
-                  AppLocalizations.of(context)!.dialogMessageCancel,
+              title: Text(
+                AppLocalizations.of(context)!.dialogTitleNotice,
+                style: const TextStyle(
+                  color: CustomStyle.customYellow,
                 ),
-                onPressed: () {
-                  Navigator.of(context).pop(false); // pop dialog
-                },
               ),
-              TextButton(
-                child: Text(
-                  AppLocalizations.of(context)!.dialogMessageOk,
+              content: Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: localizedText.substring(
+                          0, currentFirmwareVersionIndex),
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    TextSpan(
+                      text: localizedText.substring(
+                          currentFirmwareVersionIndex,
+                          currentFirmwareVersionIndex +
+                              currentFirmwareVersion.length),
+                      style: const TextStyle(
+                        color: CustomStyle.customRed,
+                      ),
+                    ),
+                    TextSpan(
+                      text: localizedText.substring(
+                          currentFirmwareVersionIndex +
+                              currentFirmwareVersion.length,
+                          newFirmwareVersionIndex),
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    TextSpan(
+                      text: localizedText.substring(newFirmwareVersionIndex,
+                          newFirmwareVersionIndex + newFirmwareVersion.length),
+                      style: const TextStyle(
+                        color: CustomStyle.customRed,
+                      ),
+                    ),
+                    TextSpan(
+                      text: localizedText.substring(
+                          newFirmwareVersionIndex + newFirmwareVersion.length,
+                          localizedText.length),
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
-                onPressed: () {
-                  Navigator.of(context).pop(true); // pop dialog
-                },
+                style: const TextStyle(
+                  fontSize: CustomStyle.sizeL,
+                ),
               ),
-            ],
+              actions: <Widget>[
+                TextButton(
+                  child: Text(
+                    AppLocalizations.of(context)!.dialogMessageCancel,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(false); // pop dialog
+                  },
+                ),
+                TextButton(
+                  child: Text(
+                    AppLocalizations.of(context)!.dialogMessageOk,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(true); // pop dialog
+                  },
+                ),
+              ],
+            ),
           );
         },
       );
     }
 
-    return BlocBuilder<Setting18FirmwareBloc, Setting18FirmwareState>(
-        builder: (context, state) {
-      return Column(
-        children: [
-          // // LinearProgressIndicator(
-          // //   value: 0.5,
-          // // ),
+    return BlocListener<Setting18FirmwareBloc, Setting18FirmwareState>(
+      listenWhen: (previous, current) =>
+          previous.binaryLoadStatus != current.binaryLoadStatus,
+      listener: (context, state) {
+        if (state.binaryLoadStatus.isRequestSuccess) {
+          showUpdateVersionDialog(
+            newFirmwareVersion: state.selectedBinaryInfo.name,
+          ).then((bool? isConfirm) {
+            if (isConfirm != null) {
+              if (isConfirm) {
+                // disable 所有 button
+                context
+                    .read<Setting18AdvancedBloc>()
+                    .add(const AllButtonsDisabled());
 
-          Wrap(
-            // mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    minimumSize: const Size(80, 60),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: CustomStyle.sizeXXL,
-                    ),
-                  ),
-                  onPressed: !state.submissionStatus.isSubmissionInProgress
-                      ? () async {
-                          showUpdateVersionDialog(
-                            newFirmwareVersion: state.selectedVersion,
-                          ).then((bool? isConfirm) {
-                            if (isConfirm != null) {
-                              if (isConfirm) {
-                                // disable 所有 button
-                                context
-                                    .read<Setting18AdvancedBloc>()
-                                    .add(const AllButtonsDisabled());
+                context
+                    .read<Setting18FirmwareBloc>()
+                    .add(const BootloaderStarted());
+              } else {
+                context
+                    .read<Setting18FirmwareBloc>()
+                    .add(const BinaryCanceled());
+              }
+            } else {
+              // 如果沒有返回為 null, 因為設定了 canPop: false 所以不會發生這種情況,
+              // 保險起見還是加上底下的檢查
+              context.read<Setting18FirmwareBloc>().add(const BinaryCanceled());
+            }
+          });
+        }
+      },
+      child: BlocBuilder<Setting18FirmwareBloc, Setting18FirmwareState>(
+          builder: (context, state) {
+        return Column(
+          children: [
+            // // LinearProgressIndicator(
+            // //   value: 0.5,
+            // // ),
 
-                                context
-                                    .read<Setting18FirmwareBloc>()
-                                    .add(const BootloaderStarted());
+            Wrap(
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      minimumSize: const Size(80, 60),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(CustomStyle.sizeS)),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: CustomStyle.sizeXXL,
+                      ),
+                    ),
+                    onPressed: !state.submissionStatus.isSubmissionInProgress
+                        ? () async {
+                            FilePicker.platform
+                                .pickFiles(
+                              type: FileType.custom,
+                              allowedExtensions: ['bin'],
+                              allowCompression: false,
+                            )
+                                .then((FilePickerResult? result) {
+                              if (result != null) {
+                                context.read<Setting18FirmwareBloc>().add(
+                                    BinarySelected(result.files.single.path!));
+                                // File file = File(result.files.single.path!);
+                                // print(file.path);
+                              } else {
+                                // 使用者取消 file picker, 沒有選擇任何檔案
                               }
-                            }
-                          });
-                        }
-                      : null,
-                  child: Text(
-                    AppLocalizations.of(context)!.startUpdate,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    minimumSize: const Size(80, 60),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: CustomStyle.sizeXXL,
-                    ),
-                  ),
-                  onPressed: !state.submissionStatus.isSubmissionInProgress
-                      ? () {
-                          context
-                              .read<Setting18FirmwareBloc>()
-                              .add(const BootloaderForceExited(cmd: 'M'));
-                        }
-                      : null,
-                  child: Text('M'),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    minimumSize: const Size(80, 60),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: CustomStyle.sizeXXL,
+                            });
+
+                            // showUpdateVersionDialog(
+                            //   newFirmwareVersion: state.selectedVersion,
+                            // ).then((bool? isConfirm) {
+                            //   if (isConfirm != null) {
+                            //     if (isConfirm) {
+                            //       // disable 所有 button
+                            //       context
+                            //           .read<Setting18AdvancedBloc>()
+                            //           .add(const AllButtonsDisabled());
+
+                            //       context
+                            //           .read<Setting18FirmwareBloc>()
+                            //           .add(const BootloaderStarted());
+                            //     }
+                            //   }
+                            // });
+                          }
+                        : null,
+                    child: Text(
+                      AppLocalizations.of(context)!.startUpdate,
                     ),
                   ),
-                  onPressed: !state.submissionStatus.isSubmissionInProgress
-                      ? () {
-                          context
-                              .read<Setting18FirmwareBloc>()
-                              .add(const BootloaderForceExited(cmd: 'N'));
-                        }
-                      : null,
-                  child: Text("N"),
                 ),
-              ),
-            ],
-          ),
-        ],
-      );
-    });
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      minimumSize: const Size(80, 60),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(CustomStyle.sizeS)),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: CustomStyle.sizeXXL,
+                      ),
+                    ),
+                    onPressed: !state.submissionStatus.isSubmissionInProgress
+                        ? () {
+                            context
+                                .read<Setting18FirmwareBloc>()
+                                .add(const BootloaderForceExited(cmd: 'M'));
+                          }
+                        : null,
+                    child: Text('M'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      minimumSize: const Size(80, 60),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(CustomStyle.sizeS)),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: CustomStyle.sizeXXL,
+                      ),
+                    ),
+                    onPressed: !state.submissionStatus.isSubmissionInProgress
+                        ? () {
+                            context
+                                .read<Setting18FirmwareBloc>()
+                                .add(const BootloaderForceExited(cmd: 'N'));
+                          }
+                        : null,
+                    child: Text("N"),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      }),
+    );
   }
 }

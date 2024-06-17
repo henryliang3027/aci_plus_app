@@ -2,54 +2,50 @@ part of 'setting18_firmware_bloc.dart';
 
 class Setting18FirmwareState extends Equatable {
   const Setting18FirmwareState({
-    this.formStatus = FormStatus.none,
+    this.binaryLoadStatus = FormStatus.none,
     this.submissionStatus = SubmissionStatus.none,
-    this.selectedBinary = '2',
+    this.selectedBinaryInfo = const BinaryInfo.empty(),
     this.sum = 0,
     this.currentProgress = 0,
     this.binary = const [],
     this.updateCanceled = false,
     this.formattedTimeElapsed = '',
-    this.selectedVersion = '',
     this.updateMessage = '',
     this.errorMessage = '',
   });
 
-  final FormStatus formStatus;
+  final FormStatus binaryLoadStatus;
   final SubmissionStatus submissionStatus;
-  final String selectedBinary;
+  final BinaryInfo selectedBinaryInfo;
   final int sum;
   final double currentProgress;
   final List<int> binary;
   final bool updateCanceled;
   final String formattedTimeElapsed;
-  final String selectedVersion;
   final String updateMessage;
   final String errorMessage;
 
   Setting18FirmwareState copyWith({
-    FormStatus? formStatus,
+    FormStatus? binaryLoadStatus,
     SubmissionStatus? submissionStatus,
-    String? selectedBinary,
+    BinaryInfo? selectedBinaryInfo,
     int? sum,
     double? currentProgress,
     List<int>? binary,
     bool? updateCanceled,
     String? formattedTimeElapsed,
-    String? selectedVersion,
     String? updateMessage,
     String? errorMessage,
   }) {
     return Setting18FirmwareState(
-      formStatus: formStatus ?? this.formStatus,
+      binaryLoadStatus: binaryLoadStatus ?? this.binaryLoadStatus,
       submissionStatus: submissionStatus ?? this.submissionStatus,
-      selectedBinary: selectedBinary ?? this.selectedBinary,
+      selectedBinaryInfo: selectedBinaryInfo ?? this.selectedBinaryInfo,
       currentProgress: currentProgress ?? this.currentProgress,
       sum: sum ?? this.sum,
       binary: binary ?? this.binary,
       updateCanceled: updateCanceled ?? this.updateCanceled,
       formattedTimeElapsed: formattedTimeElapsed ?? this.formattedTimeElapsed,
-      selectedVersion: selectedVersion ?? this.selectedVersion,
       updateMessage: updateMessage ?? this.updateMessage,
       errorMessage: errorMessage ?? this.errorMessage,
     );
@@ -57,15 +53,14 @@ class Setting18FirmwareState extends Equatable {
 
   @override
   List<Object> get props => [
-        formStatus,
+        binaryLoadStatus,
         submissionStatus,
-        selectedBinary,
+        selectedBinaryInfo,
         sum,
         currentProgress,
         binary,
         updateCanceled,
         formattedTimeElapsed,
-        selectedVersion,
         updateMessage,
         errorMessage,
       ];

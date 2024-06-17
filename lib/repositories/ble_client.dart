@@ -57,7 +57,7 @@ class BLEClient extends BLEClientBase {
     _updateReportStreamController = StreamController<String>();
     Stream<String> streamWithTimeout =
         _updateReportStreamController.stream.timeout(
-      Duration(seconds: 10),
+      const Duration(seconds: 300),
       onTimeout: (sink) {
         sink.addError('Timeout occurred');
       },
@@ -454,7 +454,7 @@ class BLEClient extends BLEClientBase {
         );
       } else {
         // iOS
-        await _ble!.writeCharacteristicWithoutResponse(
+        await _ble!.writeCharacteristicWithResponse(
           _qualifiedCharacteristic,
           value: chunk,
         );
