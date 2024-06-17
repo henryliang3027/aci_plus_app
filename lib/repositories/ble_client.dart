@@ -443,8 +443,10 @@ class BLEClient extends BLEClientBase {
     required int indexOfChunk,
   }) async {
     _currentCommandIndex = commandIndex;
+    print('chink index: $indexOfChunk, length: ${chunk.length}');
 
     try {
+      Stopwatch stopwatch = Stopwatch()..start();
       if (Platform.isAndroid) {
         await _ble!.writeCharacteristicWithResponse(
           _qualifiedCharacteristic,
@@ -462,6 +464,8 @@ class BLEClient extends BLEClientBase {
       // }
 
       _updateReportStreamController.add('Sent $indexOfChunk');
+      print(
+          'transferBinaryChunk executed in ${stopwatch.elapsed.inMilliseconds}');
     } catch (e) {
       _updateReportStreamController.addError('Sending the chunk error');
     }
