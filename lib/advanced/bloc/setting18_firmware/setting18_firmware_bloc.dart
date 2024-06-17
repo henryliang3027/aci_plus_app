@@ -28,8 +28,7 @@ class Setting18FirmwareBloc
     on<MessageReceived>(_onMessageReceived);
     on<ErrorReceived>(_onErrorReceived);
     on<BinarySelected>(_onBinarySelected);
-
-    add(BinarySelected(state.selectedBinary));
+    on<BinaryCanceled>(_onBinaryCanceled);
   }
 
   final FirmwareRepository _firmwareRepository;
@@ -42,6 +41,7 @@ class Setting18FirmwareBloc
   bool _isReceivedChecksum = false;
 
   final int _chunkSize = 244;
+  int _chunkLength = 0;
 
   void _listenUpdateReport() {
     _updateReportStreamSubscription =
@@ -77,7 +77,10 @@ class Setting18FirmwareBloc
         List<String> splitted = message.split(' ');
         int indexOfChunk = int.parse(splitted[1]);
 
-        int currentSize = indexOfChunk * _chunkSize;
+        // indexOfChunk == _chunkLength 時直接等於 binary size, 因為最後一個封包不一定滿244
+        int currentSize = indexOfChunk < _chunkLength - 1
+            ? (indexOfChunk + 1) * _chunkSize
+            : state.binary.length;
         int totalSize = state.binary.length;
 
         currentProgress =
@@ -284,11 +287,14 @@ class Setting18FirmwareBloc
     BinarySelected event,
     Emitter<Setting18FirmwareState> emit,
   ) async {
-    String binaryPath =
-        FirmwareFileTable.filePathMap[event.selectedPartId] ?? '';
+    String binaryPath = event.selectedBinary;
 
-    String selectedVersion =
-        _getSelectedFirmwareVersion(binaryPath: binaryPath);
+    print('binaryPath: $binaryPath');
+
+    BinaryInfo selectedBinaryInfo =
+        _getSelectedBinaryInfo(binaryPath: binaryPath);
+
+    print('selectedVersion: ${selectedBinaryInfo.version}');
 
     List<dynamic> result =
         await _firmwareRepository.calculateCheckSum(binaryPath: binaryPath);
@@ -298,18 +304,25 @@ class Setting18FirmwareBloc
       List<int> binary = result[2];
 
       emit(state.copyWith(
-        formStatus: FormStatus.requestSuccess,
+        binaryLoadStatus: FormStatus.requestSuccess,
         sum: sum,
         binary: binary,
-        selectedVersion: selectedVersion,
+        selectedBinaryInfo: selectedBinaryInfo,
       ));
     } else {
       emit(state.copyWith(
-        formStatus: FormStatus.requestFailure,
+        binaryLoadStatus: FormStatus.requestFailure,
       ));
     }
+  }
 
-    emit(state.copyWith(selectedBinary: event.selectedPartId));
+  Future<void> _onBinaryCanceled(
+    BinaryCanceled event,
+    Emitter<Setting18FirmwareState> emit,
+  ) async {
+    emit(state.copyWith(
+      binaryLoadStatus: FormStatus.none,
+    ));
   }
 
   void _cancelEnterBootloaderTimer() {
@@ -327,14 +340,19 @@ class Setting18FirmwareBloc
     return '$minutesStr:$secondsStr';
   }
 
-  String _getSelectedFirmwareVersion({
-    required String binaryPath,
-  }) {
-    String splitBySlash = binaryPath.split('/').last;
-    String filename = splitBySlash.split('.')[0];
-    String version = filename.split('_')[1].substring(1);
+  BinaryInfo _getSelectedBinaryInfo({required String binaryPath}) {
+    String filenameWithExtenaionName = binaryPath.split('/').last;
+    List<String> nameAndExtensionName = filenameWithExtenaionName.split('.');
 
-    return version;
+    String name = nameAndExtensionName[0];
+    String extensionName = nameAndExtensionName[1];
+    String version = name.split('_')[1].substring(1);
+
+    return BinaryInfo(
+      name: name,
+      version: version,
+      extensionName: extensionName,
+    );
   }
 
   Future<void> _transferBinary() async {
@@ -344,7 +362,9 @@ class Setting18FirmwareBloc
       chunkSize: _chunkSize,
     );
 
-    for (int i = 0; i < chunks.length; i++) {
+    _chunkLength = chunks.length;
+
+    for (int i = 0; i < _chunkLength; i++) {
       if (!_isReceivedChecksum) {
         await _firmwareRepository.transferBinaryChunk(
           chunk: chunks[i],
@@ -361,4 +381,21 @@ class Setting18FirmwareBloc
     _updateReportStreamSubscription?.cancel();
     return super.close();
   }
+}
+
+class BinaryInfo {
+  const BinaryInfo({
+    required this.name,
+    required this.version,
+    required this.extensionName,
+  });
+
+  const BinaryInfo.empty()
+      : name = '',
+        version = '',
+        extensionName = '';
+
+  final String name;
+  final String version;
+  final String extensionName;
 }
