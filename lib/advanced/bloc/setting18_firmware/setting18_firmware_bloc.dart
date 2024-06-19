@@ -15,10 +15,10 @@ part 'setting18_firmware_state.dart';
 class Setting18FirmwareBloc
     extends Bloc<Setting18FirmwareEvent, Setting18FirmwareState> {
   Setting18FirmwareBloc({
-    required FirmwareRepository firmwareRepository,
     required AppLocalizations appLocalizations,
-  })  : _firmwareRepository = firmwareRepository,
-        _appLocalizations = appLocalizations,
+    required FirmwareRepository firmwareRepository,
+  })  : _appLocalizations = appLocalizations,
+        _firmwareRepository = firmwareRepository,
         super(const Setting18FirmwareState()) {
     on<BootloaderStarted>(_onBootloaderStarted);
     on<BootloaderExited>(_onBootloaderExited);
@@ -28,11 +28,12 @@ class Setting18FirmwareBloc
     on<MessageReceived>(_onMessageReceived);
     on<ErrorReceived>(_onErrorReceived);
     on<BinarySelected>(_onBinarySelected);
+    on<BinaryLoaded>(_onBinaryLoaded);
     on<BinaryCanceled>(_onBinaryCanceled);
   }
 
-  final FirmwareRepository _firmwareRepository;
   final AppLocalizations _appLocalizations;
+  final FirmwareRepository _firmwareRepository;
   StreamSubscription<String>? _updateReportStreamSubscription;
   Timer? _enterBootloaderTimer;
   final Stopwatch _stopwatch = Stopwatch();
@@ -218,21 +219,23 @@ class Setting18FirmwareBloc
     BootloaderStarted event,
     Emitter<Setting18FirmwareState> emit,
   ) async {
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.submissionInProgress,
-    ));
+    add(ErrorReceived(errorMessage: 'Test'));
 
-    _listenUpdateReport();
-    _stopwatch.start(); // 用來計算更新耗時多少時間, 開始計時
-    _enterBootloaderTimer =
-        Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      print('write enter bootloader cmd: ${timer.tick}');
-      if (timer.tick < 50) {
-        _firmwareRepository.enterBootloader();
-      } else {
-        _cancelEnterBootloaderTimer(); // 沒有成功進入 Bootloader, 停止 timer
-      }
-    });
+    // emit(state.copyWith(
+    //   submissionStatus: SubmissionStatus.submissionInProgress,
+    // ));
+
+    // _listenUpdateReport();
+    // _stopwatch.start(); // 用來計算更新耗時多少時間, 開始計時
+    // _enterBootloaderTimer =
+    //     Timer.periodic(const Duration(milliseconds: 100), (timer) {
+    //   print('write enter bootloader cmd: ${timer.tick}');
+    //   if (timer.tick < 50) {
+    //     _firmwareRepository.enterBootloader();
+    //   } else {
+    //     _cancelEnterBootloaderTimer(); // 沒有成功進入 Bootloader, 停止 timer
+    //   }
+    // });
   }
 
   // 更新過程失敗, 取消重試後退出 Bootloader
@@ -309,6 +312,45 @@ class Setting18FirmwareBloc
         binary: binary,
         selectedBinaryInfo: selectedBinaryInfo,
       ));
+    } else {
+      emit(state.copyWith(
+        binaryLoadStatus: FormStatus.requestFailure,
+      ));
+    }
+  }
+
+  Future<void> _onBinaryLoaded(
+    BinaryLoaded event,
+    Emitter<Setting18FirmwareState> emit,
+  ) async {
+    String binaryPath = FirmwareFileTable.filePathMap[event.partId] ?? '';
+
+    print('binaryPath: $binaryPath');
+
+    if (binaryPath.isNotEmpty) {
+      BinaryInfo selectedBinaryInfo =
+          _getSelectedBinaryInfo(binaryPath: binaryPath);
+
+      print('selectedVersion: ${selectedBinaryInfo.version}');
+
+      List<dynamic> result =
+          await _firmwareRepository.calculateCheckSum(binaryPath: binaryPath);
+
+      if (result[0]) {
+        int sum = result[1];
+        List<int> binary = result[2];
+
+        emit(state.copyWith(
+          binaryLoadStatus: FormStatus.requestSuccess,
+          sum: sum,
+          binary: binary,
+          selectedBinaryInfo: selectedBinaryInfo,
+        ));
+      } else {
+        emit(state.copyWith(
+          binaryLoadStatus: FormStatus.requestFailure,
+        ));
+      }
     } else {
       emit(state.copyWith(
         binaryLoadStatus: FormStatus.requestFailure,

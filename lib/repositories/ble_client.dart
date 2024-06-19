@@ -57,7 +57,7 @@ class BLEClient extends BLEClientBase {
     _updateReportStreamController = StreamController<String>();
     Stream<String> streamWithTimeout =
         _updateReportStreamController.stream.timeout(
-      const Duration(seconds: 300),
+      const Duration(seconds: 20),
       onTimeout: (sink) {
         sink.addError('Timeout occurred');
       },

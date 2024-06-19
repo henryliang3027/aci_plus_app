@@ -24,6 +24,12 @@ class Setting18AdvancedTabBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+              // 移除 appbar 跟 body 中間白色細長的區域
+              transform: Matrix4.translationValues(
+                0,
+                -0.2,
+                0,
+              ),
               width: double.maxFinite,
               color: Theme.of(context).colorScheme.primary,
               child: IgnorePointer(
@@ -63,6 +69,7 @@ class Setting18AdvancedTabBar extends StatelessWidget {
                         ),
                       ),
                     ),
+
                     // Tab(
                     //   child: SizedBox(
                     //     width: 160,
@@ -86,7 +93,6 @@ class Setting18AdvancedTabBar extends StatelessWidget {
                   Setting18FirmwarePage(
                     pageController: pageController,
                   ),
-
                   // Setting18InstructionPage(),
                 ],
               ),
