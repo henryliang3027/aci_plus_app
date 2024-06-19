@@ -22,9 +22,9 @@ class FirmwareRepository {
       return [false, ''];
     }
 
-    // ByteData byteData = await rootBundle.load(binaryPath);
+    ByteData byteData = await rootBundle.load(binaryPath);
 
-    Uint8List byteData = await File(binaryPath).readAsBytes();
+    // Uint8List byteData = await File(binaryPath).readAsBytes();
 
     int sum = 0;
 
