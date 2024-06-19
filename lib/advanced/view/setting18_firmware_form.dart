@@ -19,6 +19,9 @@ class Setting18FirmwareForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeState homeState = context.read<HomeBloc>().state;
+    String partId = homeState.characteristicData[DataKey.partId] ?? '';
+
     Future<void> showRebootingDialog(BuildContext context) async {
       return showDialog<void>(
         context: context,
@@ -157,6 +160,20 @@ class Setting18FirmwareForm extends StatelessWidget {
       );
     }
 
+    void readDataAndJumpPage() {
+      // 讀取 device 基本資訊
+      if (partId == '4') {
+        // C-Cor Node
+        context.read<HomeBloc>().add(const CCorNode18DataRequested());
+      } else {
+        // 其他機種的放大器
+        context.read<HomeBloc>().add(const Data18Requested());
+      }
+
+      // 頁面跳轉到 information page
+      pageController.jumpToPage(2);
+    }
+
     return BlocListener<Setting18FirmwareBloc, Setting18FirmwareState>(
       listenWhen: (previous, current) =>
           previous.submissionStatus != current.submissionStatus,
@@ -174,8 +191,7 @@ class Setting18FirmwareForm extends StatelessWidget {
                   Future.delayed(const Duration(seconds: 4)).then((_) {
                     Navigator.pop(context);
 
-                    context.read<HomeBloc>().add(const Data18Requested());
-                    pageController.jumpToPage(2);
+                    readDataAndJumpPage();
                   });
                 }
               }
@@ -186,8 +202,7 @@ class Setting18FirmwareForm extends StatelessWidget {
             buildContext: context,
             timeElapsed: state.formattedTimeElapsed,
           ).then((_) {
-            context.read<HomeBloc>().add(const Data18Requested());
-            pageController.jumpToPage(2);
+            readDataAndJumpPage();
           });
         }
       },
@@ -200,6 +215,7 @@ class Setting18FirmwareForm extends StatelessWidget {
             const _ProgressBar(),
             _StartButton(
               pageController: pageController,
+              partId: partId,
             ),
           ],
         ),
@@ -425,9 +441,11 @@ class _StartButton extends StatelessWidget {
   const _StartButton({
     super.key,
     required this.pageController,
+    required this.partId,
   });
 
   final PageController pageController;
+  final String partId;
 
   @override
   Widget build(BuildContext context) {
@@ -618,8 +636,6 @@ class _StartButton extends StatelessWidget {
               homeState.characteristicData[DataKey.firmwareVersion]!;
 
           if (setting18FirmwareState.binaryLoadStatus.isNone) {
-            String partId = homeState.characteristicData[DataKey.partId]!;
-
             context
                 .read<Setting18FirmwareBloc>()
                 .add(BinaryLoaded(partId: partId));
