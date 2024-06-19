@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+// 用在 update firmware 時 disable android 的 system back button
+class SystemBackButtonProperty {
+  static bool isEnabled = true;
+}
+
 void setPreferredOrientation() {
   double screenWidth = WidgetsBinding
       .instance.platformDispatcher.views.first.physicalSize.shortestSide;
