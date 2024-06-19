@@ -219,10 +219,12 @@ class _HomeFormState extends State<HomeForm> {
       child: PopScope(
         canPop: false,
         onPopInvoked: (bool didPop) async {
-          bool? isExit = await showExitAppDialog(context: context);
-          if (isExit != null) {
-            if (isExit) {
-              SystemNavigator.pop();
+          if (SystemBackButtonProperty.isEnabled) {
+            bool? isExit = await showExitAppDialog(context: context);
+            if (isExit != null) {
+              if (isExit) {
+                SystemNavigator.pop();
+              }
             }
           }
         },

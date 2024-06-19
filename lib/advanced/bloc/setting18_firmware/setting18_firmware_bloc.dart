@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/firmware_file_table.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -164,6 +165,9 @@ class Setting18FirmwareBloc
       String formattedTimeElapsed =
           _formatTimeElapsed(_stopwatch.elapsed.inSeconds);
 
+      //  將 android system back button 設為可點擊
+      SystemBackButtonProperty.isEnabled = true;
+
       emit(state.copyWith(
         submissionStatus: SubmissionStatus.submissionSuccess,
         formattedTimeElapsed: formattedTimeElapsed,
@@ -186,6 +190,9 @@ class Setting18FirmwareBloc
       submissionStatus: SubmissionStatus.submissionFailure,
       errorMessage: event.errorMessage,
     ));
+
+    //  將 android system back button 設為可點擊
+    SystemBackButtonProperty.isEnabled = true;
   }
 
   // 在 Bootloader 模式下重新傳遞 binary
@@ -219,23 +226,24 @@ class Setting18FirmwareBloc
     BootloaderStarted event,
     Emitter<Setting18FirmwareState> emit,
   ) async {
-    add(ErrorReceived(errorMessage: 'Test'));
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.submissionInProgress,
+    ));
 
-    // emit(state.copyWith(
-    //   submissionStatus: SubmissionStatus.submissionInProgress,
-    // ));
+    //  將 android system back button 設為不可點擊
+    SystemBackButtonProperty.isEnabled = false;
 
-    // _listenUpdateReport();
-    // _stopwatch.start(); // 用來計算更新耗時多少時間, 開始計時
-    // _enterBootloaderTimer =
-    //     Timer.periodic(const Duration(milliseconds: 100), (timer) {
-    //   print('write enter bootloader cmd: ${timer.tick}');
-    //   if (timer.tick < 50) {
-    //     _firmwareRepository.enterBootloader();
-    //   } else {
-    //     _cancelEnterBootloaderTimer(); // 沒有成功進入 Bootloader, 停止 timer
-    //   }
-    // });
+    _listenUpdateReport();
+    _stopwatch.start(); // 用來計算更新耗時多少時間, 開始計時
+    _enterBootloaderTimer =
+        Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      print('write enter bootloader cmd: ${timer.tick}');
+      if (timer.tick < 50) {
+        _firmwareRepository.enterBootloader();
+      } else {
+        _cancelEnterBootloaderTimer(); // 沒有成功進入 Bootloader, 停止 timer
+      }
+    });
   }
 
   // 更新過程失敗, 取消重試後退出 Bootloader
