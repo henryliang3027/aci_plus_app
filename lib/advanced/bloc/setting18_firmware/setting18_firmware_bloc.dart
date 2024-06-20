@@ -165,7 +165,7 @@ class Setting18FirmwareBloc
       String formattedTimeElapsed =
           _formatTimeElapsed(_stopwatch.elapsed.inSeconds);
 
-      //  將 android system back button 設為可點擊
+      // 將 android system back button 設為可點擊
       SystemBackButtonProperty.isEnabled = true;
 
       emit(state.copyWith(
@@ -191,7 +191,7 @@ class Setting18FirmwareBloc
       errorMessage: event.errorMessage,
     ));
 
-    //  將 android system back button 設為可點擊
+    // 將 android system back button 設為可點擊
     SystemBackButtonProperty.isEnabled = true;
   }
 

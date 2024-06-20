@@ -88,7 +88,9 @@ class Setting18FirmwareForm extends StatelessWidget {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    child: const Text('Cancel'),
+                    child: Text(
+                      AppLocalizations.of(context)!.dialogMessageCancel,
+                    ),
                     onPressed: () {
                       context
                           .read<Setting18FirmwareBloc>()
@@ -97,7 +99,9 @@ class Setting18FirmwareForm extends StatelessWidget {
                     },
                   ),
                   TextButton(
-                    child: const Text('Try again'),
+                    child: Text(
+                      AppLocalizations.of(context)!.dialogMessageTryAgain,
+                    ),
                     onPressed: () {
                       context
                           .read<Setting18FirmwareBloc>()
@@ -179,6 +183,9 @@ class Setting18FirmwareForm extends StatelessWidget {
           previous.submissionStatus != current.submissionStatus,
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionFailure) {
+          // 收到錯誤時 enable 所有 button
+          context.read<Setting18AdvancedBloc>().add(const AllButtonsEnabled());
+
           // 如果 failure dialog 沒有開啟才開啟
           if (ModalRoute.of(context)?.isCurrent == true) {
             showFailureDialog(
@@ -621,6 +628,31 @@ class _StartButton extends StatelessWidget {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                minimumSize: const Size(80, 60),
+                shape: const RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
+                ),
+                textStyle: const TextStyle(
+                  fontSize: CustomStyle.sizeXXL,
+                ),
+              ),
+              onPressed: () {
+                context
+                    .read<Setting18FirmwareBloc>()
+                    .add(const CommandWrited('N'));
+              },
+              child: Text(
+                'N',
+              ),
+            ),
+          ),
         ],
       );
     }
@@ -650,6 +682,13 @@ class _StartButton extends StatelessWidget {
             isEnabled: true,
           );
         } else {
+          if (homeState.loadingStatus.isNone) {
+            // 斷線時 enable 所有 button
+            context
+                .read<Setting18AdvancedBloc>()
+                .add(const AllButtonsEnabled());
+          }
+
           return buildStartButton(
             isSubmissionInProgress:
                 setting18FirmwareState.submissionStatus.isSubmissionInProgress,

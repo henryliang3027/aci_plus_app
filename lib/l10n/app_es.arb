@@ -375,6 +375,7 @@
     "dialogMessageOk": "OK",
     "dialogMessageSave": "Guardar",
     "dialogMessageExecute": "Ejecutar",
+    "dialogMessageTryAgain": "Intentar de nuevo",
     "dialogMessagePilotSearchFailed": "Piloto no encontrado. Por favor, ingrese el código correcto.",
     "dialogMessageDataExportSuccessful": "Exportación exitosa.",
     "dialogMessageFileOpenFailed": "No se encontró ninguna aplicación para abrir este archivo.",

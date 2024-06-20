@@ -374,6 +374,7 @@
     "dialogMessageOk": "OK",
     "dialogMessageSave": "Enregistrer",
     "dialogMessageExecute": "Exécuter",
+    "dialogMessageTryAgain": "Réessayer",
     "dialogMessagePilotSearchFailed": "Pilote introuvable, entrez le code correct.",
     "dialogMessageDataExportSuccessful": "Exportation données réussie",
     "dialogMessageFileOpenFailed": "Aucune application n'a été trouvée pour ouvrir ce fichier.",

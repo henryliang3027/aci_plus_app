@@ -373,6 +373,7 @@
     "dialogMessageOk": "確定",
     "dialogMessageSave": "儲存",
     "dialogMessageExecute": "執行",
+    "dialogMessageTryAgain": "再試一次",
     "dialogMessagePilotSearchFailed": "找不到此導航頻率，請輸入正確的代碼",
     "dialogMessageDataExportSuccessful": "資料匯出成功",
     "dialogMessageFileOpenFailed": "找不到可用來開啟此檔案的應用程式",
