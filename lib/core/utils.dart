@@ -7,6 +7,11 @@ class SystemBackButtonProperty {
   static bool isEnabled = true;
 }
 
+class PageTabIndex {
+  static int currentPage = 2;
+  static int currentTab = 0;
+}
+
 void setPreferredOrientation() {
   double screenWidth = WidgetsBinding
       .instance.platformDispatcher.views.first.physicalSize.shortestSide;

@@ -682,7 +682,7 @@ class _StartButton extends StatelessWidget {
             isEnabled: true,
           );
         } else {
-          if (homeState.loadingStatus.isNone) {
+          if (homeState.connectionStatus.isRequestFailure) {
             // 斷線時 enable 所有 button
             context
                 .read<Setting18AdvancedBloc>()

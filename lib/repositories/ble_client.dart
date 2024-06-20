@@ -5,8 +5,6 @@ import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
-import 'package:aci_plus_app/core/crc16_calculate.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -45,12 +43,6 @@ class BLEClient extends BLEClientBase {
 
   Timer? _characteristicDataTimer;
   Timer? _connectionTimer;
-
-  // final List<int> _combinedRawData = [];
-  // final int _totalBytesPerCommand = 261;
-
-  // 1p8G variables
-  // List<int> _rawRFInOut = [];
 
   @override
   Stream<String> get updateReport async* {
@@ -195,12 +187,6 @@ class BLEClient extends BLEClientBase {
               List<int> finalRawData = finalResult[1];
               String message = String.fromCharCodes(finalRawData);
               _updateReportStreamController.add(message);
-              // cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
-              // List<int> finalRawData = finalResult[1];
-
-              // if (!_completer!.isCompleted) {
-              //   _completer!.complete(finalRawData);
-              // }
             } else {
               if (finalResult[0]) {
                 cancelCharacteristicDataTimer(
@@ -220,7 +206,11 @@ class BLEClient extends BLEClientBase {
               }
             }
           }, onError: (error) {
-            print('lisetn to Characteristic failed');
+            _connectionReportStreamController.add(const ConnectionReport(
+              connectStatus: ConnectStatus.disconnected,
+              errorMessage: 'lisetn to the characteristic failed',
+            ));
+            print('lisetn to the characteristic failed');
           });
 
           _connectionReportStreamController.add(const ConnectionReport(
