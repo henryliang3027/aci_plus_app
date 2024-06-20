@@ -375,6 +375,7 @@
     "dialogMessageOk": "OK",
     "dialogMessageSave": "Save",
     "dialogMessageExecute": "Execute",
+    "dialogMessageTryAgain": "Try again",
     "dialogMessagePilotSearchFailed": "Pilot not found, Please type correct code.",
     "dialogMessageDataExportSuccessful": "Data export successful.",
     "dialogMessageFileOpenFailed": "No app found to open this file.",
