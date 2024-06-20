@@ -167,8 +167,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         // ));
         break;
       case ConnectStatus.connected:
-        // List<dynamic> result =
-        //     await _dsimRepository.getACIDeviceType(deviceId: state.device!.id);
+        emit(state.copyWith(
+          scanStatus: FormStatus.requestSuccess,
+          connectionStatus: FormStatus.requestSuccess,
+          loadingStatus: FormStatus.requestInProgress,
+        ));
 
         List<dynamic> result = await _aciDeviceRepository.getACIDeviceType(
             deviceId: state.device!.id);
