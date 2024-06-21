@@ -3,6 +3,7 @@ import 'package:aci_plus_app/advanced/bloc/setting18_firmware/setting18_firmware
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -183,7 +184,7 @@ class Setting18FirmwareForm extends StatelessWidget {
           previous.submissionStatus != current.submissionStatus,
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionFailure) {
-          // 收到錯誤時 enable 所有 button
+          // 收到錯誤時 enable advanced page 的所有 button
           context.read<Setting18AdvancedBloc>().add(const AllButtonsEnabled());
 
           // 如果 failure dialog 沒有開啟才開啟
@@ -628,31 +629,31 @@ class _StartButton extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                minimumSize: const Size(80, 60),
-                shape: const RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-                ),
-                textStyle: const TextStyle(
-                  fontSize: CustomStyle.sizeXXL,
-                ),
-              ),
-              onPressed: () {
-                context
-                    .read<Setting18FirmwareBloc>()
-                    .add(const CommandWrited('N'));
-              },
-              child: Text(
-                'N',
-              ),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.only(bottom: 0),
+          //   child: ElevatedButton(
+          //     style: ElevatedButton.styleFrom(
+          //       backgroundColor: Theme.of(context).colorScheme.primary,
+          //       foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          //       minimumSize: const Size(80, 60),
+          //       shape: const RoundedRectangleBorder(
+          //         borderRadius:
+          //             BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
+          //       ),
+          //       textStyle: const TextStyle(
+          //         fontSize: CustomStyle.sizeXXL,
+          //       ),
+          //     ),
+          //     onPressed: () {
+          //       context
+          //           .read<Setting18FirmwareBloc>()
+          //           .add(const CommandWrited('N'));
+          //     },
+          //     child: Text(
+          //       'N',
+          //     ),
+          //   ),
+          // ),
         ],
       );
     }
@@ -683,7 +684,8 @@ class _StartButton extends StatelessWidget {
           );
         } else {
           if (homeState.connectionStatus.isRequestFailure) {
-            // 斷線時 enable 所有 button
+            CrossPageFlag.isDisconnectOnFirmwareUpdate = true;
+            // 斷線時 enable advanced page 的所有 button
             context
                 .read<Setting18AdvancedBloc>()
                 .add(const AllButtonsEnabled());

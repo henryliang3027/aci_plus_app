@@ -449,9 +449,6 @@ class BLEClient extends BLEClientBase {
           value: chunk,
         );
       }
-      // if (i == 10) {
-      //   await Future.delayed(Duration(milliseconds: 500));
-      // }
 
       _updateReportStreamController.add('Sent $indexOfChunk');
       print(

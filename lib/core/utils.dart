@@ -7,9 +7,9 @@ class SystemBackButtonProperty {
   static bool isEnabled = true;
 }
 
-class PageTabIndex {
-  static int currentPage = 2;
-  static int currentTab = 0;
+// 用在 update firmware 時判斷有哪有斷線
+class CrossPageFlag {
+  static bool isDisconnectOnFirmwareUpdate = false;
 }
 
 void setPreferredOrientation() {

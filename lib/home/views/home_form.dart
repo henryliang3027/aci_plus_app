@@ -201,7 +201,7 @@ class _HomeFormState extends State<HomeForm> {
     }
 
     return BlocListener<HomeBloc, HomeState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state.scanStatus.isRequestFailure) {
           showFailureDialog(state.errorMassage);
         } else if (state.connectionStatus.isRequestFailure) {
@@ -211,7 +211,15 @@ class _HomeFormState extends State<HomeForm> {
             setPreferredOrientation();
           }
 
-          showFailureDialog(state.errorMassage);
+          showFailureDialog(state.errorMassage).then((_) {
+            // 如果是在 firmware update 過程中斷線, 就讀取 isDisconnectOnFirmwareUpdate flag
+            // 如果為 true, 就重新連線, 並將 flag 設定回 false
+            if (CrossPageFlag.isDisconnectOnFirmwareUpdate) {
+              CrossPageFlag.isDisconnectOnFirmwareUpdate = false;
+              _pageController.jumpToPage(2);
+              context.read<HomeBloc>().add(const DeviceRefreshed());
+            }
+          });
         } else if (state.loadingStatus.isRequestFailure) {
           showFailureDialog(state.errorMassage);
         }
