@@ -40,9 +40,9 @@ class Setting18FirmwareBloc
   final Stopwatch _stopwatch = Stopwatch();
 
   // 檢查是否收到 checksum 的 flag
-  bool _isReceivedChecksum = false;
+  bool _isReceivedChecksumOrDisconnected = false;
 
-  final int _chunkSize = 244;
+  int _chunkSize = 244;
   int _chunkLength = 0;
 
   void _listenUpdateReport() {
@@ -59,6 +59,8 @@ class Setting18FirmwareBloc
           // write 'C'
           print('===============C==================');
           _firmwareRepository.writeCommand([0x43]);
+          currentProgress = 0.1;
+          displayMessage = _appLocalizations.readyToSend;
         } else {
           // 出錯之後, 使用者取消更新,
           // write 'N'
@@ -67,10 +69,9 @@ class Setting18FirmwareBloc
 
           // 暫停 stream 來重置 timeout 的 countdown
           _updateReportStreamSubscription?.pause();
+          currentProgress = 0.0;
+          displayMessage = _appLocalizations.dialogMessageCancel;
         }
-
-        currentProgress = 0.1;
-        displayMessage = _appLocalizations.readyToSend;
       } else if (message.startsWith('Write AP2')) {
         _transferBinary(); // 開始傳送 binary
         currentProgress = 0.2;
@@ -93,7 +94,7 @@ class Setting18FirmwareBloc
         displayMessage =
             '${_appLocalizations.sendingBinary} $currentSize ${CustomStyle.bytes} / $totalSize ${CustomStyle.bytes}';
       } else if (message.contains('Wait "Y"')) {
-        _isReceivedChecksum = true; // 收到 checksum 立馬設為 true
+        _isReceivedChecksumOrDisconnected = true; // 收到 checksum 立馬設為 true
 
         LineSplitter lineSplitter = const LineSplitter();
         List<String> splitted = lineSplitter.convert(message);
@@ -191,6 +192,9 @@ class Setting18FirmwareBloc
       errorMessage: event.errorMessage,
     ));
 
+    //有可能是收到 checksum錯誤或已經斷線
+    _isReceivedChecksumOrDisconnected = true;
+
     // 將 android system back button 設為可點擊
     SystemBackButtonProperty.isEnabled = true;
   }
@@ -201,7 +205,7 @@ class Setting18FirmwareBloc
     Emitter<Setting18FirmwareState> emit,
   ) async {
     // 重新傳送時將 checksum flag 設為 false
-    _isReceivedChecksum = false;
+    _isReceivedChecksumOrDisconnected = false;
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionInProgress,
@@ -252,7 +256,7 @@ class Setting18FirmwareBloc
     Emitter<Setting18FirmwareState> emit,
   ) async {
     // 重新傳送時將 checksum flag 設為 false
-    _isReceivedChecksum = false;
+    _isReceivedChecksumOrDisconnected = false;
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -407,6 +411,9 @@ class Setting18FirmwareBloc
 
   Future<void> _transferBinary() async {
     // 將 binary 切分成每個大小為 chunkSize 的封包
+    int chunkSize = await _firmwareRepository.getChunkSize();
+    _chunkSize = chunkSize;
+
     List<List<int>> chunks = _firmwareRepository.divideToChunkList(
       binary: state.binary,
       chunkSize: _chunkSize,
@@ -415,7 +422,7 @@ class Setting18FirmwareBloc
     _chunkLength = chunks.length;
 
     for (int i = 0; i < _chunkLength; i++) {
-      if (!_isReceivedChecksum) {
+      if (!_isReceivedChecksumOrDisconnected) {
         await _firmwareRepository.transferBinaryChunk(
           chunk: chunks[i],
           indexOfChunk: i,

@@ -6,6 +6,7 @@ import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/firmware_file_table.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/services.dart';
 
 class FirmwareRepository {
@@ -77,6 +78,29 @@ class FirmwareRepository {
       commandIndex: 300,
       command: req00Cmd,
     );
+  }
+
+  Future<int> getChunkSize() async {
+    // ios version < 16 mtu 為 182, 其餘為 244
+    // android 為 247, 3 個 byte 用在 header, 所以實際可容納的量為 244
+
+    if (Platform.isIOS) {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+
+      // ipad version ex: 16.6.1
+      // ios version ex: 16.5
+      double version = double.parse(iosDeviceInfo.systemVersion!.split('.')[0]);
+
+      if (version < 16) {
+        return 182;
+      } else {
+        return 244;
+      }
+    } else {
+      // android or windows
+      return 244;
+    }
   }
 
   List<List<int>> divideToChunkList({
