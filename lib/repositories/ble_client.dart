@@ -437,18 +437,10 @@ class BLEClient extends BLEClientBase {
 
     try {
       Stopwatch stopwatch = Stopwatch()..start();
-      if (Platform.isAndroid) {
-        await _ble!.writeCharacteristicWithResponse(
-          _qualifiedCharacteristic,
-          value: chunk,
-        );
-      } else {
-        // iOS
-        await _ble!.writeCharacteristicWithResponse(
-          _qualifiedCharacteristic,
-          value: chunk,
-        );
-      }
+      await _ble!.writeCharacteristicWithResponse(
+        _qualifiedCharacteristic,
+        value: chunk,
+      );
 
       _updateReportStreamController.add('Sent $indexOfChunk');
       print(
