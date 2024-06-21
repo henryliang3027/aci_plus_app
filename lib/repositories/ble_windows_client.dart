@@ -478,6 +478,7 @@ class BLEWindowsClient extends BLEClientBase {
     _currentCommandIndex = commandIndex;
 
     try {
+      Stopwatch stopwatch = Stopwatch()..start();
       await WinBle.write(
         address: _perigheral!.id,
         service: _serviceId,
@@ -490,6 +491,8 @@ class BLEWindowsClient extends BLEClientBase {
       // }
 
       _updateReportStreamController.add('Sent $indexOfChunk');
+      print(
+          'transferBinaryChunk executed in ${stopwatch.elapsed.inMilliseconds}');
     } catch (e) {
       _updateReportStreamController.addError('Sending the chunk error');
     }
