@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/about/about18_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -65,7 +66,7 @@ class Information18Form extends StatelessWidget {
         title: Text(AppLocalizations.of(context)!.home),
         centerTitle: true,
         leading: const _DeviceStatus(),
-        actions: const [_DeviceRefresh()],
+        actions: const [_PopupMenu()],
       ),
       body: const SingleChildScrollView(
         child: Column(
@@ -99,20 +100,105 @@ class Information18Form extends StatelessWidget {
   }
 }
 
-// class _DataReloader extends StatelessWidget {
-//   const _DataReloader({super.key});
+enum HomeMenu {
+  refresh,
+  about,
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<HomeBloc, HomeState>(
-//       builder: (context, state) {
-//         if (state.isReloadData) {
-//           print('isReloadData');
-//         }
-//       },
-//     );
-//   }
-// }
+class _PopupMenu extends StatelessWidget {
+  const _PopupMenu({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (!state.loadingStatus.isRequestInProgress &&
+            !state.connectionStatus.isRequestInProgress) {
+          return PopupMenuButton<HomeMenu>(
+            icon: const Icon(
+              Icons.more_vert_outlined,
+              color: Colors.white,
+            ),
+            tooltip: '',
+            onSelected: (HomeMenu item) async {
+              switch (item) {
+                case HomeMenu.refresh:
+                  context
+                      .read<Information18Bloc>()
+                      .add(const AlarmPeriodicUpdateCanceled());
+                  context.read<HomeBloc>().add(const DeviceRefreshed());
+                  break;
+                case HomeMenu.about:
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => About18Page(),
+                      ));
+                  break;
+                default:
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<HomeMenu>>[
+              PopupMenuItem<HomeMenu>(
+                value: HomeMenu.refresh,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.refresh,
+                      size: 20.0,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    Text(AppLocalizations.of(context)!.reconnect),
+                  ],
+                ),
+              ),
+              PopupMenuItem<HomeMenu>(
+                value: HomeMenu.about,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.share,
+                      size: 20.0,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    Text(AppLocalizations.of(context)!.aboutUs),
+                  ],
+                ),
+              ),
+            ],
+          );
+
+          // IconButton(
+          //     onPressed: () {
+          //       context
+          //           .read<Information18Bloc>()
+          //           .add(const AlarmPeriodicUpdateCanceled());
+          //       context.read<HomeBloc>().add(const DeviceRefreshed());
+          //     },
+          //     icon: Icon(
+          //       Icons.refresh,
+          //       color: Theme.of(context).colorScheme.onPrimary,
+          //     ));
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
+}
 
 class _DeviceStatus extends StatelessWidget {
   const _DeviceStatus({super.key});
