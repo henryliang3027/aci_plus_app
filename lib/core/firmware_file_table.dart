@@ -8,6 +8,6 @@ class FirmwareFileTable {
     '6': 'assets/firmwares/BR_R139.bin', // C-Cor BR
     '7': 'assets/firmwares/LE_R139.bin', // C-Cor LE
     '8': 'assets/firmwares/SDAT_R140.bin', // SDAT
-    '9': 'assets/firmwares/SDAM_R140.bin', // SDAM
+    '9': 'assets/firmwares/SDAM_R141.bin', // SDAM
   };
 }
