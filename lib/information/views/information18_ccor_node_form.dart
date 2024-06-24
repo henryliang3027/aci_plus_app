@@ -1,3 +1,5 @@
+import 'package:aci_plus_app/about/about18_page.dart';
+import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -26,12 +28,12 @@ class Information18CCorNodeForm extends StatelessWidget {
         title: Text(AppLocalizations.of(context)!.home),
         centerTitle: true,
         leading: const _DeviceStatus(),
-        actions: const [_DeviceRefresh()],
+        actions: const [_PopupMenu()],
       ),
       body: const SingleChildScrollView(
         child: Column(
           children: [
-            _VersionCard(),
+            // _VersionCard(),
             _ConnectionCard(),
             _ShortcutCard(),
             _BlockDiagramCard(),
@@ -55,6 +57,103 @@ class Information18CCorNodeForm extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+enum HomeMenu {
+  refresh,
+  about,
+}
+
+class _PopupMenu extends StatefulWidget {
+  const _PopupMenu({super.key});
+
+  @override
+  State<_PopupMenu> createState() => __PopupMenuState();
+}
+
+class __PopupMenuState extends State<_PopupMenu> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (!state.loadingStatus.isRequestInProgress &&
+            !state.connectionStatus.isRequestInProgress) {
+          return PopupMenuButton<HomeMenu>(
+            icon: const Icon(
+              Icons.more_vert_outlined,
+              color: Colors.white,
+            ),
+            tooltip: '',
+            onSelected: (HomeMenu item) async {
+              switch (item) {
+                case HomeMenu.refresh:
+                  context
+                      .read<Information18CCorNodeBloc>()
+                      .add(const AlarmPeriodicUpdateCanceled());
+                  context.read<HomeBloc>().add(const DeviceRefreshed());
+                  break;
+                case HomeMenu.about:
+                  Navigator.push(
+                    context,
+                    About18Page.route(
+                      appVersion: context
+                          .read<Information18CCorNodeBloc>()
+                          .state
+                          .appVersion,
+                    ),
+                  );
+                  break;
+                default:
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return <PopupMenuEntry<HomeMenu>>[
+                PopupMenuItem<HomeMenu>(
+                  value: HomeMenu.refresh,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.refresh,
+                        size: 20.0,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(AppLocalizations.of(context)!.reconnect),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<HomeMenu>(
+                  value: HomeMenu.about,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        CustomIcons.about,
+                        size: 20.0,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(AppLocalizations.of(context)!.aboutUs),
+                    ],
+                  ),
+                ),
+              ];
+            },
+          );
+        } else {
+          return Container();
+        }
+      },
     );
   }
 }
