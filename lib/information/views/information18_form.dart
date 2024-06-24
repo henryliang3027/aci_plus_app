@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/about/about18_page.dart';
+import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -105,11 +106,14 @@ enum HomeMenu {
   about,
 }
 
-class _PopupMenu extends StatelessWidget {
-  const _PopupMenu({
-    super.key,
-  });
+class _PopupMenu extends StatefulWidget {
+  const _PopupMenu({super.key});
 
+  @override
+  State<_PopupMenu> createState() => __PopupMenuState();
+}
+
+class __PopupMenuState extends State<_PopupMenu> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
@@ -132,66 +136,55 @@ class _PopupMenu extends StatelessWidget {
                   break;
                 case HomeMenu.about:
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => About18Page(),
-                      ));
+                    context,
+                    About18Page.route(context.read<Information18Bloc>()),
+                  );
                   break;
                 default:
                   break;
               }
             },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<HomeMenu>>[
-              PopupMenuItem<HomeMenu>(
-                value: HomeMenu.refresh,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.refresh,
-                      size: 20.0,
-                      color: Colors.black,
-                    ),
-                    const SizedBox(
-                      width: 10.0,
-                    ),
-                    Text(AppLocalizations.of(context)!.reconnect),
-                  ],
+            itemBuilder: (BuildContext context) {
+              return <PopupMenuEntry<HomeMenu>>[
+                PopupMenuItem<HomeMenu>(
+                  value: HomeMenu.refresh,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.refresh,
+                        size: 20.0,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(AppLocalizations.of(context)!.reconnect),
+                    ],
+                  ),
                 ),
-              ),
-              PopupMenuItem<HomeMenu>(
-                value: HomeMenu.about,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.share,
-                      size: 20.0,
-                      color: Colors.black,
-                    ),
-                    const SizedBox(
-                      width: 10.0,
-                    ),
-                    Text(AppLocalizations.of(context)!.aboutUs),
-                  ],
+                PopupMenuItem<HomeMenu>(
+                  value: HomeMenu.about,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        CustomIcons.about,
+                        size: 20.0,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(AppLocalizations.of(context)!.aboutUs),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ];
+            },
           );
-
-          // IconButton(
-          //     onPressed: () {
-          //       context
-          //           .read<Information18Bloc>()
-          //           .add(const AlarmPeriodicUpdateCanceled());
-          //       context.read<HomeBloc>().add(const DeviceRefreshed());
-          //     },
-          //     icon: Icon(
-          //       Icons.refresh,
-          //       color: Theme.of(context).colorScheme.onPrimary,
-          //     ));
         } else {
           return Container();
         }
@@ -199,6 +192,86 @@ class _PopupMenu extends StatelessWidget {
     );
   }
 }
+
+// class _PopupMenu extends StatelessWidget {
+//   const _PopupMenu({
+//     super.key,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<HomeBloc, HomeState>(
+//       builder: (context, state) {
+//         return  PopupMenuButton<HomeMenu>(
+//           icon: const Icon(
+//             Icons.more_vert_outlined,
+//             color: Colors.white,
+//           ),
+//           tooltip: '',
+//           onSelected: (HomeMenu item) async {
+//             switch (item) {
+//               case HomeMenu.refresh:
+//                 context
+//                     .read<Information18Bloc>()
+//                     .add(const AlarmPeriodicUpdateCanceled());
+//                 context.read<HomeBloc>().add(const DeviceRefreshed());
+//                 break;
+//               case HomeMenu.about:
+//                 Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (context) => About18Page(),
+//                     ));
+//                 break;
+//               default:
+//                 break;
+//             }
+//           },
+//           itemBuilder: (BuildContext context) => <PopupMenuEntry<HomeMenu>>[
+//             PopupMenuItem<HomeMenu>(
+//               value: HomeMenu.refresh,
+//               enabled: !state.loadingStatus.isRequestInProgress &&
+//                   !state.connectionStatus.isRequestInProgress,
+//               child: Row(
+//                 mainAxisSize: MainAxisSize.max,
+//                 mainAxisAlignment: MainAxisAlignment.start,
+//                 children: [
+//                   const Icon(
+//                     Icons.refresh,
+//                     size: 20.0,
+//                     color: Colors.black,
+//                   ),
+//                   const SizedBox(
+//                     width: 10.0,
+//                   ),
+//                   Text(AppLocalizations.of(context)!.reconnect),
+//                 ],
+//               ),
+//             ),
+//             PopupMenuItem<HomeMenu>(
+//               value: HomeMenu.about,
+//               child: Row(
+//                 mainAxisSize: MainAxisSize.max,
+//                 mainAxisAlignment: MainAxisAlignment.start,
+//                 children: [
+//                   const Icon(
+//                     Icons.share,
+//                     size: 20.0,
+//                     color: Colors.black,
+//                   ),
+//                   const SizedBox(
+//                     width: 10.0,
+//                   ),
+//                   Text(AppLocalizations.of(context)!.aboutUs),
+//                 ],
+//               ),
+//             ),
+//           ],
+//         );
+//       },
+//     );
+//   }
+// }
 
 class _DeviceStatus extends StatelessWidget {
   const _DeviceStatus({super.key});
