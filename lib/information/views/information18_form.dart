@@ -72,7 +72,7 @@ class Information18Form extends StatelessWidget {
       body: const SingleChildScrollView(
         child: Column(
           children: [
-            _VersionCard(),
+            // _VersionCard(),
             _ConnectionCard(),
             _ShortcutCard(),
             _BlockDiagramCard(),
@@ -137,7 +137,10 @@ class __PopupMenuState extends State<_PopupMenu> {
                 case HomeMenu.about:
                   Navigator.push(
                     context,
-                    About18Page.route(context.read<Information18Bloc>()),
+                    About18Page.route(
+                      appVersion:
+                          context.read<Information18Bloc>().state.appVersion,
+                    ),
                   );
                   break;
                 default:
@@ -164,24 +167,45 @@ class __PopupMenuState extends State<_PopupMenu> {
                     ],
                   ),
                 ),
-                PopupMenuItem<HomeMenu>(
-                  value: HomeMenu.about,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Icon(
-                        CustomIcons.about,
-                        size: 20.0,
-                        color: Colors.black,
+                !state.loadingStatus.isRequestInProgress &&
+                        !state.connectionStatus.isRequestInProgress
+                    ? PopupMenuItem<HomeMenu>(
+                        value: HomeMenu.about,
+                        enabled: true,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Icon(
+                              CustomIcons.about,
+                              size: 20.0,
+                              color: Colors.black,
+                            ),
+                            const SizedBox(
+                              width: 10.0,
+                            ),
+                            Text(AppLocalizations.of(context)!.aboutUs),
+                          ],
+                        ),
+                      )
+                    : PopupMenuItem<HomeMenu>(
+                        value: HomeMenu.about,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Icon(
+                              CustomIcons.about,
+                              size: 20.0,
+                              color: Colors.black,
+                            ),
+                            const SizedBox(
+                              width: 10.0,
+                            ),
+                            Text(AppLocalizations.of(context)!.aboutUs),
+                          ],
+                        ),
                       ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Text(AppLocalizations.of(context)!.aboutUs),
-                    ],
-                  ),
-                ),
               ];
             },
           );
