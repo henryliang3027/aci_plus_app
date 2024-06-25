@@ -56,10 +56,7 @@ class Setting18ControlTabBar extends StatelessWidget {
             child: TabBarView(
               physics: NeverScrollableScrollPhysics(),
               // controller: tabController,
-              children: [
-                ForwardControlPage(),
-                ReverseControlPage(),
-              ],
+              children: [],
             ),
           ),
         ],
