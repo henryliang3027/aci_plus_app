@@ -30,7 +30,7 @@
     "pilotFrequency2": "Alta Frecuencia",
     "pilotLevel1": "Bajo Nivel",
     "pilotLevel2": "Alto Nivel",
-    "agcMode": "Modo AGC",
+    "agcMode": "Modo ALSC",
     "alcMode": "Modo ALC",
     "on": "Encendido",
     "off": "Apagado",
@@ -48,6 +48,8 @@
     "forwardControlParameters": "Parámetros Control Avance",
     "returnControlParameters": "Parámetros Control Inverso",
     
+    "forwardControl": "Avance",
+    "returnControl": "Inverso",
     "forwardInputAttenuation1": "Atenuación Entrada Puerto 1",
     "forwardInputAttenuation3": "Atenuación Entrada Puerto 3",
     "forwardInputAttenuation4": "Atenuación Entrada Puerto 4",
@@ -282,7 +284,7 @@
 
     "dialogMessageResetForwardToDefault": "¿Quieres restablecer parámetros de reenvío?",
     "dialogMessageResetReverseToDefault": "¿Quiere restablecer parámetros inversos?",
-    "dialogMessageAGCModeSetting": "Ajustes modo AGC",
+    "dialogMessageAGCModeSetting": "Ajustes modo ALSC",
     "dialogMessageALCModeSetting": "Ajustes modo ALC",
     "dialogMessageFirstChannelLoadingFrequencySetting": "Ajuste frecuencia inicio",
     "dialogMessageFirstChannelLoadingLevelSetting": "Ajuste nivel inicio",

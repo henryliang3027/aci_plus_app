@@ -20,12 +20,6 @@ class Setting18TabBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            // 移除 appbar 跟 body 中間白色細長的區域
-            transform: Matrix4.translationValues(
-              0,
-              -0.2,
-              0,
-            ),
             width: double.maxFinite,
             color: Theme.of(context).colorScheme.primary,
             child: TabBar(
@@ -88,7 +82,7 @@ class Setting18TabBar extends StatelessWidget {
           ),
           const Expanded(
             child: TabBarView(
-              // physics: NeverScrollableScrollPhysics(),
+              physics: NeverScrollableScrollPhysics(),
               // controller: tabController,
               children: [
                 Setting18ConfigurePage(),

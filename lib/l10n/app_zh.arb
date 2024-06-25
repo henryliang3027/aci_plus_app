@@ -30,8 +30,8 @@
     "pilotFrequency2": "高頻",
     "pilotLevel1": "低頻強度",
     "pilotLevel2": "高頻強度",
-    "agcMode": "AGC模式",
-    "alcMode": "ALC模式",
+    "agcMode": "ALSC 模式",
+    "alcMode": "ALC 模式",
     "on": "開啟",
     "off": "關閉",
     "rfInputPower": "輸入強度",
@@ -48,6 +48,8 @@
     "forwardControlParameters": "下行控制參數",
     "returnControlParameters": "上行控制參數",
 
+    "forwardControl": "下行",
+    "returnControl": "上行",
     "forwardInputAttenuation1": "Port 1 輸入衰減量",
     "forwardInputAttenuation3": "Port 3 輸入衰減量",
     "forwardInputAttenuation4": "Port 4 輸入衰減量",
@@ -280,7 +282,7 @@
 
     "dialogMessageResetForwardToDefault": "您確定要重置下行參數設定嗎 ?",
     "dialogMessageResetReverseToDefault": "您確定要重置上行參數設定嗎 ?",
-    "dialogMessageAGCModeSetting": "AGC 模式設定",
+    "dialogMessageAGCModeSetting": "ALSC 模式設定",
     "dialogMessageALCModeSetting": "ALC 模式設定",
     "dialogMessageFirstChannelLoadingFrequencySetting": "起始頻率設定",
     "dialogMessageFirstChannelLoadingLevelSetting": "起始強度設定",

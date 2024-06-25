@@ -1,11 +1,8 @@
-import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_configure_page.dart';
-import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_control_page.dart';
-import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_threshold_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Setting18CCorNodeTabBar extends StatelessWidget {
-  const Setting18CCorNodeTabBar({super.key});
+class Setting18ControlTabBar extends StatelessWidget {
+  const Setting18ControlTabBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +15,7 @@ class Setting18CCorNodeTabBar extends StatelessWidget {
             width: double.maxFinite,
             color: Theme.of(context).colorScheme.primary,
             child: TabBar(
+              // controller: tabController,
               tabAlignment: TabAlignment.start,
               isScrollable: true,
               unselectedLabelColor: Colors.white,
@@ -36,7 +34,7 @@ class Setting18CCorNodeTabBar extends StatelessWidget {
                     width: 110,
                     child: Center(
                       child: Text(
-                        AppLocalizations.of(context)!.device,
+                        AppLocalizations.of(context)!.forwardControl,
                       ),
                     ),
                   ),
@@ -46,42 +44,21 @@ class Setting18CCorNodeTabBar extends StatelessWidget {
                     width: 110,
                     child: Center(
                       child: Text(
-                        AppLocalizations.of(context)!.alarm,
+                        AppLocalizations.of(context)!.returnControl,
                       ),
                     ),
                   ),
                 ),
-                Tab(
-                  child: SizedBox(
-                    width: 110,
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.balance,
-                      ),
-                    ),
-                  ),
-                ),
-                // Tab(
-                //   child: SizedBox(
-                //     width: 110,
-                //     child: Center(
-                //       child: Text(
-                //         AppLocalizations.of(context)!.advanced,
-                //       ),
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),
           const Expanded(
             child: TabBarView(
               physics: NeverScrollableScrollPhysics(),
+              // controller: tabController,
               children: [
-                Setting18CCorNodeConfigurePage(),
-                Setting18CCorNodeThresholdPage(),
-                Setting18CCorNodeControlPage(),
-                // Setting18ConfigPage(),
+                ForwardControlPage(),
+                ReverseControlPage(),
               ],
             ),
           ),
