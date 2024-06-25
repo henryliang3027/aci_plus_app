@@ -20,12 +20,6 @@ class About18Form extends StatelessWidget {
         centerTitle: true,
       ),
       body: Container(
-          // 移除 appbar 跟 body 中間白色細長的區域
-          transform: Matrix4.translationValues(
-            0,
-            -0.2,
-            0,
-          ),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [Theme.of(context).colorScheme.primary, Colors.black],
@@ -63,14 +57,12 @@ class About extends StatelessWidget {
               children: [
                 Text(
                   AppLocalizations.of(context)!.appVersion,
-                  style: const TextStyle(
-                    fontSize: 22,
-                  ),
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Text(
                   appVersion,
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: CustomStyle.sizeXXL,
                   ),
                 ),
               ],

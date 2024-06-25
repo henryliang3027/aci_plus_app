@@ -30,7 +30,7 @@
     "pilotFrequency2": "Haute fréquence",
     "pilotLevel1": "Bas Niveau",
     "pilotLevel2": "Haut Niveau",
-    "agcMode": "Mode AGC",
+    "agcMode": "Mode ALSC",
     "alcMode": "Mode ALC",
     "on": "Activé",
     "off": "Désactivé",
@@ -48,6 +48,8 @@
     "forwardControlParameters": "Paramètres de Commande Avant",
     "returnControlParameters": "Paramètres de Commande Arrière",
     
+    "forwardControl": "Avant",
+    "returnControl": "Arrière",
     "forwardInputAttenuation1": "Atténuation d'Entrée du Port 1",
     "forwardInputAttenuation3": "Atténuation d'Entrée du Port 3",
     "forwardInputAttenuation4": "Atténuation d'Entrée du Port 4",
@@ -281,7 +283,7 @@
 
     "dialogMessageResetForwardToDefault": "Voulez-vous réinitialiser les paramètres transfert ?",
     "dialogMessageResetReverseToDefault": "Voulez-vous réinitialiser les paramètres inverses ?",
-    "dialogMessageAGCModeSetting": "Réglage mode AGC",
+    "dialogMessageAGCModeSetting": "Réglage mode ALSC",
     "dialogMessageALCModeSetting": "Réglage mode ALC",
     "dialogMessageFirstChannelLoadingFrequencySetting": "Réglage fréquence départ",
     "dialogMessageFirstChannelLoadingLevelSetting": "Réglage niveau départ",
