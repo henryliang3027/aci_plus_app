@@ -30,6 +30,7 @@ class CircuitPainter extends CustomPainter {
         var height = MediaQuery.of(context).size.height;
 
         return Dialog(
+          clipBehavior: Clip.antiAlias,
           insetPadding: EdgeInsets.symmetric(
             horizontal: width * 0.01,
             vertical: height * 0.01,

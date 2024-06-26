@@ -415,6 +415,7 @@ class _FineTuneTextSliderState extends State<FineTuneTextSlider> {
                     style: const TextStyle(
                       fontSize: CustomStyle.sizeXXL,
                     ),
+
                     textAlign: TextAlign.center,
                     enabled: widget.enabled,
                     textInputAction: TextInputAction.done,
