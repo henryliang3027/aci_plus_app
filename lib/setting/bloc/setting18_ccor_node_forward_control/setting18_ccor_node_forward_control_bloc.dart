@@ -7,10 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'setting18_ccor_node_forward_control_event.dart';
 part 'setting18_ccor_node_forward_control_state.dart';
 
-class Setting18CcorNodeForwardControlBloc extends Bloc<
+class Setting18CCorNodeForwardControlBloc extends Bloc<
     Setting18CCorNodeForwardControlEvent,
     Setting18CCorNodeForwardControlState> {
-  Setting18CcorNodeForwardControlBloc({
+  Setting18CCorNodeForwardControlBloc({
     required Amp18CCorNodeRepository amp18CCorNodeRepository,
   })  : _amp18CCorNodeRepository = amp18CCorNodeRepository,
         super(const Setting18CCorNodeForwardControlState()) {

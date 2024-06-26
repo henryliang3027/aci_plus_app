@@ -151,7 +151,7 @@ class Setting18ForwardControlView extends StatelessWidget {
           if (ModalRoute.of(context)?.isCurrent != true) {
             Navigator.of(context).pop();
           }
-          List<Widget> rows = getMessageRows(
+          List<Widget> rows = get1P8GSettingMessageRows(
             context: context,
             partId: partId,
             settingResultList: state.settingResult,

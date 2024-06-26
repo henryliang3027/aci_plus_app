@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ String formatResultValue({
       : AppLocalizations.of(context)!.dialogMessageFailed;
 }
 
-String formatResultItem({
+String format1P8GSettingResultItem({
   required BuildContext context,
   required String partId,
   required String item,
@@ -92,11 +93,88 @@ String formatResultItem({
   }
 }
 
+String formatCCorNode1P8GSettingResultItem({
+  required BuildContext context,
+  required String item,
+}) {
+  if (item == DataKey.dsVVA1.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardInputAttenuation1Setting;
+  } else if (item == DataKey.dsVVA3.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardInputAttenuation3Setting;
+  } else if (item == DataKey.dsVVA4.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardInputAttenuation4Setting;
+  } else if (item == DataKey.dsVVA6.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardInputAttenuation6Setting;
+  } else if (item == DataKey.dsInSlope1.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardInputEqualizer1Setting;
+  } else if (item == DataKey.dsInSlope3.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardInputEqualizer3Setting;
+  } else if (item == DataKey.dsInSlope4.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardInputEqualizer4Setting;
+  } else if (item == DataKey.dsInSlope6.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardInputEqualizer6Setting;
+  } else if (item == DataKey.dsOutSlope1.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardOutputEqualizer1Setting;
+  } else if (item == DataKey.dsOutSlope3.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardOutputEqualizer3Setting;
+  } else if (item == DataKey.dsOutSlope4.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardOutputEqualizer4Setting;
+  } else if (item == DataKey.dsOutSlope6.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardOutputEqualizer6Setting;
+  } else if (item == DataKey.biasCurrent1.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardBiasCurrent1Setting;
+  } else if (item == DataKey.biasCurrent3.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardBiasCurrent3Setting;
+  } else if (item == DataKey.biasCurrent4.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardBiasCurrent4Setting;
+  } else if (item == DataKey.biasCurrent6.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageForwardBiasCurrent6Setting;
+  } else if (item == DataKey.usVCA1.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageReturnInputAttenuation1Setting;
+  } else if (item == DataKey.usVCA3.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageReturnInputAttenuation3Setting;
+  } else if (item == DataKey.usVCA4.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageReturnInputAttenuation4Setting;
+  } else if (item == DataKey.usVCA6.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageReturnInputAttenuation6Setting;
+  } else if (item == DataKey.ingressSetting1.name) {
+    return AppLocalizations.of(context)!.dialogMessageReturnIngress1Setting;
+  } else if (item == DataKey.ingressSetting3.name) {
+    return AppLocalizations.of(context)!.dialogMessageReturnIngress3Setting;
+  } else if (item == DataKey.ingressSetting4.name) {
+    return AppLocalizations.of(context)!.dialogMessageReturnIngress4Setting;
+  } else if (item == DataKey.ingressSetting6.name) {
+    return AppLocalizations.of(context)!.dialogMessageReturnIngress6Setting;
+  } else {
+    return '';
+  }
+}
+
 Color getResultValueColor(String resultValue) {
   return resultValue == 'true' ? Colors.green : Colors.red;
 }
 
-List<Widget> getMessageRows({
+List<Widget> get1P8GSettingMessageRows({
   required BuildContext context,
   required String partId,
   required List<String> settingResultList,
@@ -116,9 +194,50 @@ List<Widget> getMessageRows({
         children: [
           Expanded(
             child: Text(
-              formatResultItem(
+              format1P8GSettingResultItem(
                 context: context,
                 partId: partId,
+                item: item,
+              ),
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
+          Text(
+            formatResultValue(context: context, boolValue: boolValue),
+            style: TextStyle(
+              fontSize: CustomStyle.sizeL,
+              color: valueColor,
+            ),
+            textAlign: TextAlign.end,
+          ),
+        ],
+      ),
+    ));
+  }
+  return rows;
+}
+
+List<Widget> get1P8GCCorNodeSettingMessageRows({
+  required BuildContext context,
+  required List<String> settingResultList,
+}) {
+  List<Widget> rows = [];
+  for (String settingResult in settingResultList) {
+    String item = settingResult.split(',')[0];
+    String boolValue = settingResult.split(',')[1];
+    Color valueColor = getResultValueColor(boolValue);
+
+    rows.add(Padding(
+      padding: const EdgeInsets.only(
+        bottom: 14.0,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text(
+              formatCCorNode1P8GSettingResultItem(
+                context: context,
                 item: item,
               ),
               style: const TextStyle(fontSize: 16),
