@@ -1,10 +1,10 @@
-import 'package:aci_plus_app/setting/views/setting18_views/setting18_forward_control_page.dart';
-import 'package:aci_plus_app/setting/views/setting18_views/setting18_reverse_control_page.dart';
+import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_forward_control_page.dart';
+import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_reverse_control_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Setting18ControlTabBar extends StatelessWidget {
-  const Setting18ControlTabBar({super.key});
+class Setting18CCroNodeControlTabBar extends StatelessWidget {
+  const Setting18CCroNodeControlTabBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +57,8 @@ class Setting18ControlTabBar extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               // controller: tabController,
               children: [
-                Setting18ForwardControlPage(),
-                Setting18ReverseControlPage(),
+                Setting18CCorNodeForwardControlPage(),
+                Setting18CCorNodeReverseControlPage(),
               ],
             ),
           ),

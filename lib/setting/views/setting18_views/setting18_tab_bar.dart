@@ -31,8 +31,9 @@ class Setting18TabBar extends StatelessWidget {
               indicatorSize: TabBarIndicatorSize.tab,
               indicator: const BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10)),
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
                 color: Colors.white,
               ),
               labelPadding: const EdgeInsets.symmetric(horizontal: 24.0),

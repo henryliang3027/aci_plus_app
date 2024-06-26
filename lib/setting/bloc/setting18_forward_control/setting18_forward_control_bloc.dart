@@ -28,6 +28,8 @@ class Setting18ForwardControlBloc
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
+
+    add(const Initialized());
   }
 
   final Amp18Repository _amp18Repository;
@@ -390,13 +392,13 @@ class Setting18ForwardControlBloc
       settingResult.add('${DataKey.dsVVA3.name},$resultOfSetDSVVA3');
     }
 
-    if (state.tgcCableLength != state.initialValues[DataKey.tgcCableLength]) {
-      bool resultOfSetTGCCableLength =
-          await _amp18Repository.set1p8GTGCCableLength(state.tgcCableLength);
+    // if (state.tgcCableLength != state.initialValues[DataKey.tgcCableLength]) {
+    //   bool resultOfSetTGCCableLength =
+    //       await _amp18Repository.set1p8GTGCCableLength(state.tgcCableLength);
 
-      settingResult
-          .add('${DataKey.tgcCableLength.name},$resultOfSetTGCCableLength');
-    }
+    //   settingResult
+    //       .add('${DataKey.tgcCableLength.name},$resultOfSetTGCCableLength');
+    // }
 
     // 等待 device 完成更新後在讀取值
     await Future.delayed(const Duration(milliseconds: 1000));

@@ -18,7 +18,7 @@ void setPreferredOrientation() {
 
   print('screenWidth: $screenWidth');
 
-  if (screenWidth <= 1290) {
+  if (screenWidth <= 1440) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,

@@ -26,6 +26,8 @@ class Setting18ReverseControlBloc
     on<EditModeEnabled>(_onEditModeEnabled);
     on<EditModeDisabled>(_onEditModeDisabled);
     on<SettingSubmitted>(_onSettingSubmitted);
+
+    add(const Initialized());
   }
 
   final Amp18Repository _amp18Repository;
