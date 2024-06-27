@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
+import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -59,10 +60,18 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
     String dsOutSlope3 = characteristicDataCache[DataKey.dsOutSlope3] ?? '';
     String dsOutSlope4 = characteristicDataCache[DataKey.dsOutSlope4] ?? '';
     String dsOutSlope6 = characteristicDataCache[DataKey.dsOutSlope6] ?? '';
-    String biasCurrent1 = characteristicDataCache[DataKey.biasCurrent1] ?? '';
-    String biasCurrent3 = characteristicDataCache[DataKey.biasCurrent3] ?? '';
-    String biasCurrent4 = characteristicDataCache[DataKey.biasCurrent4] ?? '';
-    String biasCurrent6 = characteristicDataCache[DataKey.biasCurrent6] ?? '';
+    RangeFloatPointInput biasCurrent1 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.biasCurrent1] ?? '',
+    );
+    RangeFloatPointInput biasCurrent3 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.biasCurrent3] ?? '',
+    );
+    RangeFloatPointInput biasCurrent4 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.biasCurrent4] ?? '',
+    );
+    RangeFloatPointInput biasCurrent6 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.biasCurrent6] ?? '',
+    );
 
     emit(state.copyWith(
       dsVVA1: dsVVA1,
@@ -245,11 +254,17 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
     BiasCurrent1Changed event,
     Emitter<Setting18CCorNodeForwardControlState> emit,
   ) {
+    RangeFloatPointInput biasCurrent1 = RangeFloatPointInput.dirty(
+      event.biasCurrent1,
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      biasCurrent1: event.biasCurrent1,
+      biasCurrent1: biasCurrent1,
       enableSubmission: _isEnabledSubmission(
-        biasCurrent1: event.biasCurrent1,
+        biasCurrent1: biasCurrent1,
       ),
     ));
   }
@@ -258,11 +273,17 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
     BiasCurrent3Changed event,
     Emitter<Setting18CCorNodeForwardControlState> emit,
   ) {
+    RangeFloatPointInput biasCurrent3 = RangeFloatPointInput.dirty(
+      event.biasCurrent3,
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      biasCurrent3: event.biasCurrent3,
+      biasCurrent3: biasCurrent3,
       enableSubmission: _isEnabledSubmission(
-        biasCurrent3: event.biasCurrent3,
+        biasCurrent3: biasCurrent3,
       ),
     ));
   }
@@ -271,11 +292,17 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
     BiasCurrent4Changed event,
     Emitter<Setting18CCorNodeForwardControlState> emit,
   ) {
+    RangeFloatPointInput biasCurrent4 = RangeFloatPointInput.dirty(
+      event.biasCurrent4,
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      biasCurrent4: event.biasCurrent4,
+      biasCurrent4: biasCurrent4,
       enableSubmission: _isEnabledSubmission(
-        biasCurrent4: event.biasCurrent4,
+        biasCurrent4: biasCurrent4,
       ),
     ));
   }
@@ -284,11 +311,17 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
     BiasCurrent6Changed event,
     Emitter<Setting18CCorNodeForwardControlState> emit,
   ) {
+    RangeFloatPointInput biasCurrent6 = RangeFloatPointInput.dirty(
+      event.biasCurrent6,
+      maxValue: event.maxValue,
+      minValue: event.minValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      biasCurrent6: event.biasCurrent6,
+      biasCurrent6: biasCurrent6,
       enableSubmission: _isEnabledSubmission(
-        biasCurrent6: event.biasCurrent6,
+        biasCurrent6: biasCurrent6,
       ),
     ));
   }
@@ -323,10 +356,14 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       dsOutSlope3: state.initialValues[DataKey.dsOutSlope3],
       dsOutSlope4: state.initialValues[DataKey.dsOutSlope4],
       dsOutSlope6: state.initialValues[DataKey.dsOutSlope6],
-      biasCurrent1: state.initialValues[DataKey.biasCurrent1],
-      biasCurrent3: state.initialValues[DataKey.biasCurrent3],
-      biasCurrent4: state.initialValues[DataKey.biasCurrent4],
-      biasCurrent6: state.initialValues[DataKey.biasCurrent6],
+      biasCurrent1: RangeFloatPointInput.dirty(
+          state.initialValues[DataKey.biasCurrent1] ?? ''),
+      biasCurrent3: RangeFloatPointInput.dirty(
+          state.initialValues[DataKey.biasCurrent3] ?? ''),
+      biasCurrent4: RangeFloatPointInput.dirty(
+          state.initialValues[DataKey.biasCurrent4] ?? ''),
+      biasCurrent6: RangeFloatPointInput.dirty(
+          state.initialValues[DataKey.biasCurrent6] ?? ''),
     ));
   }
 
@@ -343,10 +380,10 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
     String? dsOutSlope3,
     String? dsOutSlope4,
     String? dsOutSlope6,
-    String? biasCurrent1,
-    String? biasCurrent3,
-    String? biasCurrent4,
-    String? biasCurrent6,
+    RangeFloatPointInput? biasCurrent1,
+    RangeFloatPointInput? biasCurrent3,
+    RangeFloatPointInput? biasCurrent4,
+    RangeFloatPointInput? biasCurrent6,
   }) {
     dsVVA1 ??= state.dsVVA1;
     dsVVA3 ??= state.dsVVA3;
@@ -377,10 +414,10 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
         dsOutSlope3.isEmpty ||
         dsOutSlope4.isEmpty ||
         dsOutSlope6.isEmpty ||
-        biasCurrent1.isEmpty ||
-        biasCurrent3.isEmpty ||
-        biasCurrent4.isEmpty ||
-        biasCurrent6.isEmpty) {
+        biasCurrent1.isNotValid ||
+        biasCurrent3.isNotValid ||
+        biasCurrent4.isNotValid ||
+        biasCurrent6.isNotValid) {
       return false;
     } else {
       if (dsVVA1 != state.initialValues[DataKey.dsVVA1] ||
@@ -395,10 +432,10 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
           dsOutSlope3 != state.initialValues[DataKey.dsOutSlope3] ||
           dsOutSlope4 != state.initialValues[DataKey.dsOutSlope4] ||
           dsOutSlope6 != state.initialValues[DataKey.dsOutSlope6] ||
-          biasCurrent1 != state.initialValues[DataKey.biasCurrent1] ||
-          biasCurrent3 != state.initialValues[DataKey.biasCurrent3] ||
-          biasCurrent4 != state.initialValues[DataKey.biasCurrent4] ||
-          biasCurrent6 != state.initialValues[DataKey.biasCurrent6]) {
+          biasCurrent1.value != state.initialValues[DataKey.biasCurrent1] ||
+          biasCurrent3.value != state.initialValues[DataKey.biasCurrent3] ||
+          biasCurrent4.value != state.initialValues[DataKey.biasCurrent4] ||
+          biasCurrent6.value != state.initialValues[DataKey.biasCurrent6]) {
         return true;
       } else {
         return false;
@@ -500,33 +537,33 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       settingResult.add('${DataKey.dsOutSlope6.name},$resultOfSetDSOutSlope6');
     }
 
-    if (state.biasCurrent1 != state.initialValues[DataKey.biasCurrent1]) {
+    if (state.biasCurrent1.value != state.initialValues[DataKey.biasCurrent1]) {
       bool resultOfSetBiasCurrent1 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeBiasCurrent1(state.biasCurrent1);
+          .set1p8GCCorNodeBiasCurrent1(state.biasCurrent1.value);
 
       settingResult
           .add('${DataKey.biasCurrent1.name},$resultOfSetBiasCurrent1');
     }
 
-    if (state.biasCurrent3 != state.initialValues[DataKey.biasCurrent3]) {
+    if (state.biasCurrent3.value != state.initialValues[DataKey.biasCurrent3]) {
       bool resultOfSetBiasCurrent3 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeBiasCurrent3(state.biasCurrent3);
+          .set1p8GCCorNodeBiasCurrent3(state.biasCurrent3.value);
 
       settingResult
           .add('${DataKey.biasCurrent3.name},$resultOfSetBiasCurrent3');
     }
 
-    if (state.biasCurrent4 != state.initialValues[DataKey.biasCurrent4]) {
+    if (state.biasCurrent4.value != state.initialValues[DataKey.biasCurrent4]) {
       bool resultOfSetBiasCurrent4 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeBiasCurrent4(state.biasCurrent4);
+          .set1p8GCCorNodeBiasCurrent4(state.biasCurrent4.value);
 
       settingResult
           .add('${DataKey.biasCurrent4.name},$resultOfSetBiasCurrent4');
     }
 
-    if (state.biasCurrent6 != state.initialValues[DataKey.biasCurrent6]) {
+    if (state.biasCurrent6.value != state.initialValues[DataKey.biasCurrent6]) {
       bool resultOfSetBiasCurrent6 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeBiasCurrent6(state.biasCurrent6);
+          .set1p8GCCorNodeBiasCurrent6(state.biasCurrent6.value);
 
       settingResult
           .add('${DataKey.biasCurrent6.name},$resultOfSetBiasCurrent6');
