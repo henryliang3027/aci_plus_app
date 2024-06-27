@@ -71,127 +71,226 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
     String forwardCEQIndex =
         homeState.characteristicData[DataKey.forwardCEQIndex] ?? '';
 
-    List<Widget> getForwardSettingWidgetByModuleId() {
-      String moduleName = widget.moduleName;
+    Map<String, List<Widget>> forwardSettingWidgetsMap = {
+      DataKey.splitOption.name: [const _SplitOption()],
+      DataKey.agcMode.name: [
+        const _PilotFrequencyMode(),
+        _FirstChannelLoading(
+          firstChannelLoadingFrequencyTextEditingController:
+              firstChannelLoadingFrequencyTextEditingController,
+          firstChannelLoadingLevelTextEditingController:
+              firstChannelLoadingLevelTextEditingController,
+          currentDetectedSplitOption: currentDetectedSplitOption,
+        ),
+        _LastChannelLoading(
+          lastChannelLoadingFrequencyTextEditingController:
+              lastChannelLoadingFrequencyTextEditingController,
+          lastChannelLoadingLevelTextEditingController:
+              lastChannelLoadingLevelTextEditingController,
+        ),
+        _PilotFrequency1(
+          pilotFrequency1TextEditingController:
+              pilotFrequency1TextEditingController,
+          manualModePilot1RFOutputPowerTextEditingController:
+              manualModePilot1RFOutputPowerTextEditingController,
+        ),
+        _PilotFrequency2(
+          pilotFrequency2TextEditingController:
+              pilotFrequency2TextEditingController,
+          manualModePilot2RFOutputPowerTextEditingController:
+              manualModePilot2RFOutputPowerTextEditingController,
+        ),
+        const _AGCMode(),
+        // const _ALCMode(),
+      ],
+      DataKey.dsVVA1.name: [
+        _ForwardInputAttenuation1(
+          alcMode: alcMode,
+          agcMode: agcMode,
+          currentInputAttenuation: currentInputAttenuation,
+        ),
+      ],
+      DataKey.dsVVA4.name: [
+        partId == '5'
+            ? const _ForwardOutputAttenuation2And3()
+            : const _ForwardOutputAttenuation3And4(),
+      ],
+      DataKey.dsVVA5.name: [
+        const _ForwardOutputAttenuation5And6(),
+      ],
+      DataKey.dsSlope1.name: [
+        _ForwardInputEqualizer1(
+          forwardCEQIndex: forwardCEQIndex,
+          alcMode: alcMode,
+          agcMode: agcMode,
+          currentInputEqualizer: currentInputEqualizer,
+        ),
+      ],
+      DataKey.dsSlope3.name: [
+        const _ForwardOutputEqualizer2And3(),
+      ],
+      DataKey.dsSlope4.name: [
+        const _ForwardOutputEqualizer5And6(),
+      ]
+    };
 
-      if (moduleName == DataKey.splitOption.name) {
-        return [const _SplitOption()];
-      } else if (moduleName == DataKey.agcMode.name) {
-        return [
-          const _PilotFrequencyMode(),
-          _FirstChannelLoading(
-            firstChannelLoadingFrequencyTextEditingController:
-                firstChannelLoadingFrequencyTextEditingController,
-            firstChannelLoadingLevelTextEditingController:
-                firstChannelLoadingLevelTextEditingController,
-            currentDetectedSplitOption: currentDetectedSplitOption,
-          ),
-          _LastChannelLoading(
-            lastChannelLoadingFrequencyTextEditingController:
-                lastChannelLoadingFrequencyTextEditingController,
-            lastChannelLoadingLevelTextEditingController:
-                lastChannelLoadingLevelTextEditingController,
-          ),
-          _PilotFrequency1(
-            pilotFrequency1TextEditingController:
-                pilotFrequency1TextEditingController,
-            manualModePilot1RFOutputPowerTextEditingController:
-                manualModePilot1RFOutputPowerTextEditingController,
-          ),
-          _PilotFrequency2(
-            pilotFrequency2TextEditingController:
-                pilotFrequency2TextEditingController,
-            manualModePilot2RFOutputPowerTextEditingController:
-                manualModePilot2RFOutputPowerTextEditingController,
-          ),
-          const _AGCMode(),
-          // const _ALCMode(),
-        ];
-      } else if (moduleName == DataKey.dsVVA1.name) {
-        return [
-          _ForwardInputAttenuation1(
-            alcMode: alcMode,
-            agcMode: agcMode,
-            currentInputAttenuation: currentInputAttenuation,
-          ),
-        ];
-      } else if (moduleName == DataKey.dsVVA4.name) {
-        if (partId == '5') {
-          return [const _ForwardOutputAttenuation2And3()];
-        } else {
-          return [const _ForwardOutputAttenuation3And4()];
-        }
-      } else if (moduleName == DataKey.dsVVA5.name) {
-        return [const _ForwardOutputAttenuation5And6()];
-      } else if (moduleName == DataKey.dsSlope1.name) {
-        return [
-          _ForwardInputEqualizer1(
-            forwardCEQIndex: forwardCEQIndex,
-            alcMode: alcMode,
-            agcMode: agcMode,
-            currentInputEqualizer: currentInputEqualizer,
-          )
-        ];
-      } else if (moduleName == DataKey.dsSlope3.name) {
-        return [const _ForwardOutputEqualizer2And3()];
-      } else if (moduleName == DataKey.dsSlope4.name) {
-        return [const _ForwardOutputEqualizer5And6()];
-      } else {
-        return [];
-      }
-    }
+    Map<String, List<Widget>> reverseSettingWidgetsMap = {
+      DataKey.usVCA1.name: partId == '5'
+          ? [
+              _ReturnInputAttenuation4(partId: partId),
+              _ReturnIngressSetting4(partId: partId),
+            ]
+          : [
+              const _ReturnInputAttenuation2(),
+              const _ReturnIngressSetting2(),
+            ],
+      DataKey.usVCA2.name: [const _ReturnOutputAttenuation1()],
+      DataKey.usVCA3.name: partId == '5' || partId == '6'
+          ? [
+              const _ReturnInputAttenuation2And3(),
+              const _ReturnIngressSetting2And3(),
+            ]
+          : [
+              const _ReturnInputAttenuation3(),
+              const _ReturnIngressSetting3(),
+            ],
+      DataKey.usVCA4.name: partId == '5' || partId == '6'
+          ? [
+              const _ReturnInputAttenuation5And6(),
+              const _ReturnIngressSetting5And6(),
+            ]
+          : [
+              _ReturnInputAttenuation4(
+                partId: partId,
+              ),
+              _ReturnIngressSetting4(
+                partId: partId,
+              ),
+            ],
+      DataKey.eREQ.name: [const _ReturnOutputEqualizer1()],
+    };
 
-    List<Widget> getReverseSettingWidgetByModuleId() {
-      String moduleName = widget.moduleName;
+    // List<Widget> getForwardSettingWidgetByModuleId() {
+    //   String moduleName = widget.moduleName;
 
-      if (moduleName == DataKey.usVCA1.name) {
-        if (partId == '5') {
-          return [
-            _ReturnInputAttenuation4(partId: partId),
-            _ReturnIngressSetting4(partId: partId),
-          ];
-        } else {
-          return [
-            const _ReturnInputAttenuation2(),
-            const _ReturnIngressSetting2(),
-          ];
-        }
-      } else if (moduleName == DataKey.usVCA2.name) {
-        return [const _ReturnOutputAttenuation1()];
-      } else if (moduleName == DataKey.usVCA3.name) {
-        if (partId == '5' || partId == '6') {
-          return [
-            const _ReturnInputAttenuation2And3(),
-            const _ReturnIngressSetting2And3(),
-          ];
-        } else {
-          return [
-            const _ReturnInputAttenuation3(),
-            const _ReturnIngressSetting3(),
-          ];
-        }
-      } else if (moduleName == DataKey.usVCA4.name) {
-        if (partId == '5' || partId == '6') {
-          return [
-            const _ReturnInputAttenuation5And6(),
-            const _ReturnIngressSetting5And6(),
-          ];
-        } else {
-          return [
-            _ReturnInputAttenuation4(
-              partId: partId,
-            ),
-            _ReturnIngressSetting4(
-              partId: partId,
-            ),
-          ];
-        }
-      } else if (moduleName == DataKey.eREQ.name) {
-        return [const _ReturnOutputEqualizer1()];
-      } else {
-        return [];
-      }
-    }
+    //   if (moduleName == DataKey.splitOption.name) {
+    //     return [const _SplitOption()];
+    //   } else if (moduleName == DataKey.agcMode.name) {
+    //     return [
+    //       const _PilotFrequencyMode(),
+    //       _FirstChannelLoading(
+    //         firstChannelLoadingFrequencyTextEditingController:
+    //             firstChannelLoadingFrequencyTextEditingController,
+    //         firstChannelLoadingLevelTextEditingController:
+    //             firstChannelLoadingLevelTextEditingController,
+    //         currentDetectedSplitOption: currentDetectedSplitOption,
+    //       ),
+    //       _LastChannelLoading(
+    //         lastChannelLoadingFrequencyTextEditingController:
+    //             lastChannelLoadingFrequencyTextEditingController,
+    //         lastChannelLoadingLevelTextEditingController:
+    //             lastChannelLoadingLevelTextEditingController,
+    //       ),
+    //       _PilotFrequency1(
+    //         pilotFrequency1TextEditingController:
+    //             pilotFrequency1TextEditingController,
+    //         manualModePilot1RFOutputPowerTextEditingController:
+    //             manualModePilot1RFOutputPowerTextEditingController,
+    //       ),
+    //       _PilotFrequency2(
+    //         pilotFrequency2TextEditingController:
+    //             pilotFrequency2TextEditingController,
+    //         manualModePilot2RFOutputPowerTextEditingController:
+    //             manualModePilot2RFOutputPowerTextEditingController,
+    //       ),
+    //       const _AGCMode(),
+    //       // const _ALCMode(),
+    //     ];
+    //   } else if (moduleName == DataKey.dsVVA1.name) {
+    //     return [
+    //       _ForwardInputAttenuation1(
+    //         alcMode: alcMode,
+    //         agcMode: agcMode,
+    //         currentInputAttenuation: currentInputAttenuation,
+    //       ),
+    //     ];
+    //   } else if (moduleName == DataKey.dsVVA4.name) {
+    //     if (partId == '5') {
+    //       return [const _ForwardOutputAttenuation2And3()];
+    //     } else {
+    //       return [const _ForwardOutputAttenuation3And4()];
+    //     }
+    //   } else if (moduleName == DataKey.dsVVA5.name) {
+    //     return [const _ForwardOutputAttenuation5And6()];
+    //   } else if (moduleName == DataKey.dsSlope1.name) {
+    //     return [
+    //       _ForwardInputEqualizer1(
+    //         forwardCEQIndex: forwardCEQIndex,
+    //         alcMode: alcMode,
+    //         agcMode: agcMode,
+    //         currentInputEqualizer: currentInputEqualizer,
+    //       )
+    //     ];
+    //   } else if (moduleName == DataKey.dsSlope3.name) {
+    //     return [const _ForwardOutputEqualizer2And3()];
+    //   } else if (moduleName == DataKey.dsSlope4.name) {
+    //     return [const _ForwardOutputEqualizer5And6()];
+    //   } else {
+    //     return [];
+    //   }
+    // }
+
+    // List<Widget> getReverseSettingWidgetByModuleId() {
+    //   String moduleName = widget.moduleName;
+
+    //   if (moduleName == DataKey.usVCA1.name) {
+    //     if (partId == '5') {
+    //       return [
+    //         _ReturnInputAttenuation4(partId: partId),
+    //         _ReturnIngressSetting4(partId: partId),
+    //       ];
+    //     } else {
+    //       return [
+    //         const _ReturnInputAttenuation2(),
+    //         const _ReturnIngressSetting2(),
+    //       ];
+    //     }
+    //   } else if (moduleName == DataKey.usVCA2.name) {
+    //     return [const _ReturnOutputAttenuation1()];
+    //   } else if (moduleName == DataKey.usVCA3.name) {
+    //     if (partId == '5' || partId == '6') {
+    //       return [
+    //         const _ReturnInputAttenuation2And3(),
+    //         const _ReturnIngressSetting2And3(),
+    //       ];
+    //     } else {
+    //       return [
+    //         const _ReturnInputAttenuation3(),
+    //         const _ReturnIngressSetting3(),
+    //       ];
+    //     }
+    //   } else if (moduleName == DataKey.usVCA4.name) {
+    //     if (partId == '5' || partId == '6') {
+    //       return [
+    //         const _ReturnInputAttenuation5And6(),
+    //         const _ReturnIngressSetting5And6(),
+    //       ];
+    //     } else {
+    //       return [
+    //         _ReturnInputAttenuation4(
+    //           partId: partId,
+    //         ),
+    //         _ReturnIngressSetting4(
+    //           partId: partId,
+    //         ),
+    //       ];
+    //     }
+    //   } else if (moduleName == DataKey.eREQ.name) {
+    //     return [const _ReturnOutputEqualizer1()];
+    //   } else {
+    //     return [];
+    //   }
+    // }
 
     String formatResultValue(String boolValue) {
       return boolValue == 'true'
@@ -329,8 +428,10 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
 
     List<Widget> getSettingWidgetByModuleId() {
       List<Widget> settingWidgets = [];
-      List<Widget> forwardSettingWidgets = getForwardSettingWidgetByModuleId();
-      List<Widget> reverseSettingWidgets = getReverseSettingWidgetByModuleId();
+      List<Widget> forwardSettingWidgets =
+          forwardSettingWidgetsMap[widget.moduleName] ?? [];
+      List<Widget> reverseSettingWidgets =
+          reverseSettingWidgetsMap[widget.moduleName] ?? [];
       Widget forwardSettingHeader = getSettingWidgetHeader(
           AppLocalizations.of(context)!.forwardControlParameters);
       Widget reverseSettingHeader = getSettingWidgetHeader(
@@ -347,6 +448,14 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       }
 
       return settingWidgets;
+    }
+
+    Color getBackgroundColor() {
+      bool isForwardWidget =
+          forwardSettingWidgetsMap.keys.contains(widget.moduleName);
+
+      // 如果是下行模組, 就將背景設為淺藍色, 否則就視為上行模組, 設為粉紅色
+      return isForwardWidget ? CustomStyle.customBlue : CustomStyle.customPink;
     }
 
     Color getResultValueColor(String resultValue) {
@@ -422,7 +531,11 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
               state.manualModePilot2RFOutputPower;
         }
       },
-      child: Padding(
+      child: Container(
+        decoration: BoxDecoration(
+          color: getBackgroundColor(),
+        ),
+        child: Padding(
           padding: const EdgeInsets.all(30),
           child: Stack(
             children: [
@@ -443,7 +556,9 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
                 child: _SettingFloatingActionButton(),
               ),
             ],
-          )),
+          ),
+        ),
+      ),
     );
   }
 }
