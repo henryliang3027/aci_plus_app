@@ -90,9 +90,6 @@ class RangeFloatPointInput extends FormzInput<String, ValidationError> {
       return ValidationError.formatError;
     } else {
       // 轉換 value 成浮點數
-
-      print(value);
-
       double? floatValue = double.tryParse(value);
 
       if (floatValue == null) {
