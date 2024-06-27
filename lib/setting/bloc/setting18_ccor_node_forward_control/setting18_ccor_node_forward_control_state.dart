@@ -18,10 +18,10 @@ class Setting18CCorNodeForwardControlState extends Equatable {
     this.dsOutSlope3 = '',
     this.dsOutSlope4 = '',
     this.dsOutSlope6 = '',
-    this.biasCurrent1 = '',
-    this.biasCurrent3 = '',
-    this.biasCurrent4 = '',
-    this.biasCurrent6 = '',
+    this.biasCurrent1 = const RangeFloatPointInput.pure(),
+    this.biasCurrent3 = const RangeFloatPointInput.pure(),
+    this.biasCurrent4 = const RangeFloatPointInput.pure(),
+    this.biasCurrent6 = const RangeFloatPointInput.pure(),
     this.editMode = false,
     this.enableSubmission = false,
     this.initialValues = const {},
@@ -41,10 +41,10 @@ class Setting18CCorNodeForwardControlState extends Equatable {
   final String dsOutSlope3;
   final String dsOutSlope4;
   final String dsOutSlope6;
-  final String biasCurrent1;
-  final String biasCurrent3;
-  final String biasCurrent4;
-  final String biasCurrent6;
+  final RangeFloatPointInput biasCurrent1;
+  final RangeFloatPointInput biasCurrent3;
+  final RangeFloatPointInput biasCurrent4;
+  final RangeFloatPointInput biasCurrent6;
   final bool editMode;
   final bool enableSubmission;
   final Map<DataKey, String> initialValues;
@@ -64,10 +64,10 @@ class Setting18CCorNodeForwardControlState extends Equatable {
     String? dsOutSlope3,
     String? dsOutSlope4,
     String? dsOutSlope6,
-    String? biasCurrent1,
-    String? biasCurrent3,
-    String? biasCurrent4,
-    String? biasCurrent6,
+    RangeFloatPointInput? biasCurrent1,
+    RangeFloatPointInput? biasCurrent3,
+    RangeFloatPointInput? biasCurrent4,
+    RangeFloatPointInput? biasCurrent6,
     bool? editMode,
     bool? enableSubmission,
     Map<DataKey, String>? initialValues,

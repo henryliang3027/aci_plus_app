@@ -665,23 +665,28 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 320.0;
-        double maxValue = 520.0;
-        return controlTextSlider(
+        double minValue = 320;
+        double maxValue = 520;
+        return biasCurrentTextSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardBiasCurrent1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.biasCurrent1,
+          currentValue: state.biasCurrent1.value,
           onChanged: (biasCurrent1) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
                 .add(BiasCurrent1Changed(
                   biasCurrent1: biasCurrent1,
+                  maxValue: maxValue,
+                  minValue: minValue,
                 ));
           },
+          errorText: state.biasCurrent1.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -698,23 +703,28 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 320.0;
-        double maxValue = 520.0;
-        return controlTextSlider(
+        double minValue = 320;
+        double maxValue = 520;
+        return biasCurrentTextSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardBiasCurrent3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.biasCurrent3,
+          currentValue: state.biasCurrent3.value,
           onChanged: (biasCurrent3) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
                 .add(BiasCurrent3Changed(
                   biasCurrent3: biasCurrent3,
+                  maxValue: maxValue,
+                  minValue: minValue,
                 ));
           },
+          errorText: state.biasCurrent3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -731,23 +741,28 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 320.0;
-        double maxValue = 520.0;
-        return controlTextSlider(
+        double minValue = 320;
+        double maxValue = 520;
+        return biasCurrentTextSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardBiasCurrent4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.biasCurrent4,
+          currentValue: state.biasCurrent4.value,
           onChanged: (biasCurrent4) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
                 .add(BiasCurrent4Changed(
                   biasCurrent4: biasCurrent4,
+                  maxValue: maxValue,
+                  minValue: minValue,
                 ));
           },
+          errorText: state.biasCurrent4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -764,23 +779,28 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 320.0;
-        double maxValue = 520.0;
-        return controlTextSlider(
+        double minValue = 320;
+        double maxValue = 520;
+        return biasCurrentTextSlider(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardBiasCurrent6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.biasCurrent6,
+          currentValue: state.biasCurrent6.value,
           onChanged: (biasCurrent6) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
                 .add(BiasCurrent6Changed(
                   biasCurrent6: biasCurrent6,
+                  maxValue: maxValue,
+                  minValue: minValue,
                 ));
           },
+          errorText: state.biasCurrent6.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
