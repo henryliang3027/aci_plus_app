@@ -523,6 +523,8 @@ class _BiasCurrentTextSliderState extends State<BiasCurrentTextSlider> {
 
   @override
   void didUpdateWidget(covariant BiasCurrentTextSlider oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
     if (oldWidget.initialValue != widget.initialValue) {
       setState(() {
         _value = _getBondaryValue(
@@ -531,10 +533,12 @@ class _BiasCurrentTextSliderState extends State<BiasCurrentTextSlider> {
           maxValue: widget.maxValue,
         );
 
-        _textEditingController.text = widget.initialValue;
+        _textEditingController.value = TextEditingValue(
+          text: widget.initialValue,
+          selection: _textEditingController.selection,
+        );
       });
     }
-    super.didUpdateWidget(oldWidget);
   }
 
   void _increaseValue() {
@@ -636,9 +640,10 @@ class _BiasCurrentTextSliderState extends State<BiasCurrentTextSlider> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 30.0),
+          padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Flexible(
                 flex: 1,
@@ -669,6 +674,7 @@ class _BiasCurrentTextSliderState extends State<BiasCurrentTextSlider> {
                     ),
 
                     textAlign: TextAlign.center,
+
                     enabled: widget.enabled,
                     textInputAction: TextInputAction.done,
                     onChanged: (value) {
@@ -679,13 +685,13 @@ class _BiasCurrentTextSliderState extends State<BiasCurrentTextSlider> {
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: true,
                     ),
-                    // inputFormatters: [
-                    //   // ^：表示從起始開始匹配第一個符合的數字
-                    //   // \d{1,2}：\d 表示匹配任何一個數字。{1,2} 表示前面的數字字符必須出現 1 次或 2 次
-                    //   // (\.\d?)?：匹配一個小數點後跟著 0 到 1 位數字
-                    //   FilteringTextInputFormatter.allow(
-                    //       RegExp(r'^\d{1,2}(\.\d?)?'))
-                    // ],
+                    inputFormatters: [
+                      // ^：表示從起始開始匹配第一個符合的數字
+                      // \d{1,3}：\d 表示匹配任何一個數字。{1,3} 表示前面的數字字符必須出現 1~3 次
+                      // (\.\d?)?：匹配一個小數點後跟著 0 到 1 位數字
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d{1,3}(\.\d?)?'))
+                    ],
                     decoration: InputDecoration(
                       // label: Text(
                       //     '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
@@ -697,8 +703,10 @@ class _BiasCurrentTextSliderState extends State<BiasCurrentTextSlider> {
                       fillColor: Colors.white,
                       counterText: '',
                       errorMaxLines: 2,
-                      errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
-                      errorText: widget.errorText1,
+                      // 暫時解法, 避免 errorText 出現時改變了 textfield 原來的高度
+                      helperText: '',
+
+                      error: _validateText(widget.errorText1),
                     ),
                   ),
                 ),
@@ -723,6 +731,20 @@ class _BiasCurrentTextSliderState extends State<BiasCurrentTextSlider> {
         ),
       ],
     );
+  }
+}
+
+Widget? _validateText(String? errorText) {
+  if (errorText != null) {
+    return Align(
+      alignment: Alignment.center,
+      child: Text(
+        errorText,
+        style: TextStyle(color: Colors.red[900], fontSize: 12),
+      ),
+    );
+  } else {
+    return null;
   }
 }
 
