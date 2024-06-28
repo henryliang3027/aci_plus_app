@@ -3,10 +3,22 @@ part of 'setting18_ccor_node_reverse_control_bloc.dart';
 class Setting18CCorNodeReverseControlState extends Equatable {
   const Setting18CCorNodeReverseControlState({
     this.submissionStatus = SubmissionStatus.none,
-    this.usVCA1 = '',
-    this.usVCA3 = '',
-    this.usVCA4 = '',
-    this.usVCA6 = '',
+    this.usVCA1 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.usVCA3 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.usVCA4 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.usVCA6 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
     this.returnIngressSetting1 = '',
     this.returnIngressSetting3 = '',
     this.returnIngressSetting4 = '',
@@ -18,10 +30,10 @@ class Setting18CCorNodeReverseControlState extends Equatable {
   });
 
   final SubmissionStatus submissionStatus;
-  final String usVCA1;
-  final String usVCA3;
-  final String usVCA4;
-  final String usVCA6;
+  final RangeFloatPointInput usVCA1;
+  final RangeFloatPointInput usVCA3;
+  final RangeFloatPointInput usVCA4;
+  final RangeFloatPointInput usVCA6;
   final String returnIngressSetting1;
   final String returnIngressSetting3;
   final String returnIngressSetting4;
@@ -33,10 +45,10 @@ class Setting18CCorNodeReverseControlState extends Equatable {
 
   Setting18CCorNodeReverseControlState copyWith({
     SubmissionStatus? submissionStatus,
-    String? usVCA1,
-    String? usVCA3,
-    String? usVCA4,
-    String? usVCA6,
+    RangeFloatPointInput? usVCA1,
+    RangeFloatPointInput? usVCA3,
+    RangeFloatPointInput? usVCA4,
+    RangeFloatPointInput? usVCA6,
     String? returnIngressSetting1,
     String? returnIngressSetting3,
     String? returnIngressSetting4,

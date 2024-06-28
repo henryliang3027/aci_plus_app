@@ -480,8 +480,8 @@ class _FineTuneTextSliderState extends State<FineTuneTextSlider> {
   }
 }
 
-class BiasCurrentTextSlider extends StatefulWidget {
-  const BiasCurrentTextSlider({
+class FineTuneTextSlider2 extends StatefulWidget {
+  const FineTuneTextSlider2({
     super.key,
     required this.initialValue,
     required this.minValue,
@@ -501,10 +501,10 @@ class BiasCurrentTextSlider extends StatefulWidget {
   final String? errorText1;
 
   @override
-  State<BiasCurrentTextSlider> createState() => _BiasCurrentTextSliderState();
+  State<FineTuneTextSlider2> createState() => _FineTuneTextSlider2State();
 }
 
-class _BiasCurrentTextSliderState extends State<BiasCurrentTextSlider> {
+class _FineTuneTextSlider2State extends State<FineTuneTextSlider2> {
   late double _value;
   late TextEditingController _textEditingController;
 
@@ -522,7 +522,7 @@ class _BiasCurrentTextSliderState extends State<BiasCurrentTextSlider> {
   }
 
   @override
-  void didUpdateWidget(covariant BiasCurrentTextSlider oldWidget) {
+  void didUpdateWidget(covariant FineTuneTextSlider2 oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.initialValue != widget.initialValue) {
@@ -859,7 +859,7 @@ Widget controlTextSlider({
   );
 }
 
-Widget biasCurrentTextSlider({
+Widget controlTextSlider2({
   required BuildContext context,
   required bool editMode,
   required String title,
@@ -905,7 +905,7 @@ Widget biasCurrentTextSlider({
             ],
           ),
         ),
-        BiasCurrentTextSlider(
+        FineTuneTextSlider2(
           initialValue: currentValue,
           minValue: minValue,
           maxValue: maxValue,
