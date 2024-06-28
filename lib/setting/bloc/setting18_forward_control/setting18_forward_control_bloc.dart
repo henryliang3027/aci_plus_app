@@ -2,6 +2,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
+import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,26 +35,6 @@ class Setting18ForwardControlBloc
   }
 
   final Amp18Repository _amp18Repository;
-
-  double getSlope1MaxValue(String index) {
-    if (index.isNotEmpty) {
-      int intIndex = int.parse(index);
-
-      if (intIndex >= 0 && intIndex <= 24) {
-        return 24.0;
-      } else if (intIndex == 120) {
-        return 12.0;
-      } else if (intIndex == 180) {
-        return 12.0;
-      } else if (intIndex == 255) {
-        return 12.0;
-      } else {
-        return 12.0;
-      }
-    } else {
-      return 12.0;
-    }
-  }
 
   void _onInitialized(
     Initialized event,

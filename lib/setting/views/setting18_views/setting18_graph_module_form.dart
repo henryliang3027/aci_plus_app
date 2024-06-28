@@ -585,16 +585,16 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
         // forwardInputAttenuation1TextEditingController.text = state.dsVVA1;
-        double minValue = 0.0;
-        double maxValue = 30.0;
+        double minValue = state.dsVVA1.minValue;
+        double maxValue = state.dsVVA1.maxValue;
         String inputAttenuation = getInputAttenuation(
           alcMode: alcMode,
-          inputAttenuation: state.dsVVA1,
+          inputAttenuation: state.dsVVA1.value,
           currentInputAttenuation: currentInputAttenuation,
         );
         return Column(
           children: [
-            controlTextSlider(
+            controlTextSlider2(
               context: context,
               editMode: state.editMode && alcMode == '0',
               title:
@@ -607,6 +607,9 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
                       dsVVA1: dsVVA1,
                     ));
               },
+              errorText: state.dsVVA1.isNotValid
+                  ? AppLocalizations.of(context)!.textFieldErrorMessage
+                  : null,
             ),
             Row(
               children: [
@@ -649,17 +652,17 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
 
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = getSlope1MaxValue(forwardCEQIndex);
+        double minValue = state.dsSlope1.minValue;
+        double maxValue = state.dsSlope1.maxValue;
         String inputEqualizer = getInputEqualizer(
           alcMode: alcMode,
           agcMode: agcMode,
-          inputEqualizer: state.dsSlope1,
+          inputEqualizer: state.dsSlope1.value,
           currentInputEqualizer: currentInputEqualizer,
         );
         return Column(
           children: [
-            controlTextSlider(
+            controlTextSlider2(
               context: context,
               editMode: state.editMode && alcMode == '0' && agcMode == '0',
               title:
@@ -673,6 +676,9 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
                       dsSlope1: dsSlope1,
                     ));
               },
+              errorText: state.dsVVA1.isNotValid
+                  ? AppLocalizations.of(context)!.textFieldErrorMessage
+                  : null,
             ),
             Row(
               children: [
@@ -701,21 +707,24 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 10.0;
-        return controlTextSlider(
+        double minValue = state.dsVVA4.minValue;
+        double maxValue = state.dsVVA4.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation2And3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA4,
+          currentValue: state.dsVVA4.value,
           onChanged: (dsVVA4) {
             context.read<Setting18GraphModuleBloc>().add(DSVVA4Changed(
                   dsVVA4: dsVVA4,
                 ));
           },
+          errorText: state.dsVVA4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -731,21 +740,24 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 10.0;
-        return controlTextSlider(
+        double minValue = state.dsVVA4.minValue;
+        double maxValue = state.dsVVA4.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation3And4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA4,
+          currentValue: state.dsVVA4.value,
           onChanged: (dsVVA4) {
             context.read<Setting18GraphModuleBloc>().add(DSVVA4Changed(
                   dsVVA4: dsVVA4,
                 ));
           },
+          errorText: state.dsVVA4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -761,21 +773,24 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 10.0;
-        return controlTextSlider(
+        double minValue = state.dsVVA5.minValue;
+        double maxValue = state.dsVVA5.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA5,
+          currentValue: state.dsVVA5.value,
           onChanged: (dsVVA5) {
             context.read<Setting18GraphModuleBloc>().add(DSVVA5Changed(
                   dsVVA5: dsVVA5,
                 ));
           },
+          errorText: state.dsVVA5.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -791,21 +806,24 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 10.0;
-        return controlTextSlider(
+        double minValue = state.dsSlope3.minValue;
+        double maxValue = state.dsSlope3.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer2And3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsSlope3,
+          currentValue: state.dsSlope3.value,
           onChanged: (dsSlope3) {
             context.read<Setting18GraphModuleBloc>().add(DSSlope3Changed(
                   dsSlope3: dsSlope3,
                 ));
           },
+          errorText: state.dsSlope3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -821,21 +839,24 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 10.0;
-        return controlTextSlider(
+        double minValue = state.dsSlope3.minValue;
+        double maxValue = state.dsSlope3.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer3And4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsSlope3,
+          currentValue: state.dsSlope3.value,
           onChanged: (dsSlope3) {
             context.read<Setting18GraphModuleBloc>().add(DSSlope3Changed(
                   dsSlope3: dsSlope3,
                 ));
           },
+          errorText: state.dsSlope3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -851,21 +872,24 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 10.0;
-        return controlTextSlider(
+        double minValue = state.dsSlope4.minValue;
+        double maxValue = state.dsSlope4.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer5And6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsSlope4,
+          currentValue: state.dsSlope4.value,
           onChanged: (dsSlope4) {
             context.read<Setting18GraphModuleBloc>().add(DSSlope4Changed(
                   dsSlope4: dsSlope4,
                 ));
           },
+          errorText: state.dsSlope4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -881,21 +905,24 @@ class _ReturnOutputAttenuation1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 15.0;
-        return controlTextSlider(
+        double minValue = state.usVCA2.minValue;
+        double maxValue = state.usVCA2.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnOutputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA2,
+          currentValue: state.usVCA2.value,
           onChanged: (usVCA2) {
             context.read<Setting18GraphModuleBloc>().add(USVCA2Changed(
                   usVCA2: usVCA2,
                 ));
           },
+          errorText: state.usVCA2.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -911,21 +938,24 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 15.0;
-        return controlTextSlider(
+        double minValue = state.eREQ.minValue;
+        double maxValue = state.eREQ.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnOutputEqualizer1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.eREQ,
+          currentValue: state.eREQ.value,
           onChanged: (eREQ) {
             context.read<Setting18GraphModuleBloc>().add(EREQChanged(
                   eREQ: eREQ,
                 ));
           },
+          errorText: state.eREQ.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -941,21 +971,24 @@ class _ReturnInputAttenuation2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.usVCA1.minValue;
+        double maxValue = state.usVCA1.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation2} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA1,
+          currentValue: state.usVCA1.value,
           onChanged: (usVCA1) {
             context.read<Setting18GraphModuleBloc>().add(USVCA1Changed(
                   usVCA1: usVCA1,
                 ));
           },
+          errorText: state.usVCA1.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -971,21 +1004,24 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.usVCA3.minValue;
+        double maxValue = state.usVCA3.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA3,
+          currentValue: state.usVCA3.value,
           onChanged: (usVCA3) {
             context.read<Setting18GraphModuleBloc>().add(USVCA3Changed(
                   usVCA3: usVCA3,
                 ));
           },
+          errorText: state.usVCA3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -1001,21 +1037,24 @@ class _ReturnInputAttenuation2And3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.usVCA3.minValue;
+        double maxValue = state.usVCA3.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation2And3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA3,
+          currentValue: state.usVCA3.value,
           onChanged: (usVCA3) {
             context.read<Setting18GraphModuleBloc>().add(USVCA3Changed(
                   usVCA3: usVCA3,
                 ));
           },
+          errorText: state.usVCA3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -1035,42 +1074,48 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
     if (partId == '5') {
       return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
         builder: (context, state) {
-          double minValue = 0.0;
-          double maxValue = 25.0;
-          return controlTextSlider(
+          double minValue = state.usVCA1.minValue;
+          double maxValue = state.usVCA1.maxValue;
+          return controlTextSlider2(
             context: context,
             editMode: state.editMode,
             title:
                 '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
             minValue: minValue,
             maxValue: maxValue,
-            currentValue: state.usVCA1,
+            currentValue: state.usVCA1.value,
             onChanged: (usVCA1) {
               context.read<Setting18GraphModuleBloc>().add(USVCA1Changed(
                     usVCA1: usVCA1,
                   ));
             },
+            errorText: state.usVCA1.isNotValid
+                ? AppLocalizations.of(context)!.textFieldErrorMessage
+                : null,
           );
         },
       );
     } else {
       return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
         builder: (context, state) {
-          double minValue = 0.0;
-          double maxValue = 25.0;
-          return controlTextSlider(
+          double minValue = state.usVCA4.minValue;
+          double maxValue = state.usVCA4.maxValue;
+          return controlTextSlider2(
             context: context,
             editMode: state.editMode,
             title:
                 '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
             minValue: minValue,
             maxValue: maxValue,
-            currentValue: state.usVCA4,
+            currentValue: state.usVCA4.value,
             onChanged: (usVCA4) {
               context.read<Setting18GraphModuleBloc>().add(USVCA4Changed(
                     usVCA4: usVCA4,
                   ));
             },
+            errorText: state.usVCA4.isNotValid
+                ? AppLocalizations.of(context)!.textFieldErrorMessage
+                : null,
           );
         },
       );
@@ -1087,21 +1132,24 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.usVCA4.minValue;
+        double maxValue = state.usVCA4.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA4,
+          currentValue: state.usVCA4.value,
           onChanged: (usVCA4) {
             context.read<Setting18GraphModuleBloc>().add(USVCA4Changed(
                   usVCA4: usVCA4,
                 ));
           },
+          errorText: state.usVCA4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );

@@ -3,17 +3,50 @@ part of 'setting18_graph_module_bloc.dart';
 class Setting18GraphModuleState extends Equatable {
   const Setting18GraphModuleState({
     this.submissionStatus = SubmissionStatus.none,
-    this.dsVVA1 = '',
-    this.dsVVA4 = '',
-    this.dsVVA5 = '',
-    this.dsSlope1 = '',
-    this.dsSlope3 = '',
-    this.dsSlope4 = '',
-    this.usVCA1 = '',
-    this.usVCA2 = '',
-    this.usVCA3 = '',
-    this.usVCA4 = '',
-    this.eREQ = '',
+    this.dsVVA1 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 30,
+    ),
+    this.dsVVA4 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 10,
+    ),
+    this.dsVVA5 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 10,
+    ),
+    this.dsSlope1 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 24,
+    ),
+    this.dsSlope3 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 10,
+    ),
+    this.dsSlope4 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 10,
+    ),
+    this.usVCA1 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.usVCA2 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 15,
+    ),
+    this.usVCA3 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.usVCA4 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.eREQ = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 15,
+    ),
     this.returnIngressSetting2 = '',
     this.returnIngressSetting3 = '',
     this.returnIngressSetting4 = '',
@@ -39,17 +72,17 @@ class Setting18GraphModuleState extends Equatable {
   });
 
   final SubmissionStatus submissionStatus;
-  final String dsVVA1;
-  final String dsVVA4;
-  final String dsVVA5;
-  final String dsSlope1;
-  final String dsSlope3;
-  final String dsSlope4;
-  final String usVCA1;
-  final String usVCA2;
-  final String usVCA3;
-  final String usVCA4;
-  final String eREQ;
+  final RangeFloatPointInput dsVVA1;
+  final RangeFloatPointInput dsVVA4;
+  final RangeFloatPointInput dsVVA5;
+  final RangeFloatPointInput dsSlope1;
+  final RangeFloatPointInput dsSlope3;
+  final RangeFloatPointInput dsSlope4;
+  final RangeFloatPointInput usVCA1;
+  final RangeFloatPointInput usVCA2;
+  final RangeFloatPointInput usVCA3;
+  final RangeFloatPointInput usVCA4;
+  final RangeFloatPointInput eREQ;
   final String returnIngressSetting2;
   final String returnIngressSetting3;
   final String returnIngressSetting4;
@@ -76,17 +109,17 @@ class Setting18GraphModuleState extends Equatable {
 
   Setting18GraphModuleState copyWith({
     SubmissionStatus? submissionStatus,
-    String? dsVVA1,
-    String? dsVVA4,
-    String? dsVVA5,
-    String? dsSlope1,
-    String? dsSlope3,
-    String? dsSlope4,
-    String? usVCA1,
-    String? usVCA2,
-    String? usVCA3,
-    String? usVCA4,
-    String? eREQ,
+    RangeFloatPointInput? dsVVA1,
+    RangeFloatPointInput? dsVVA4,
+    RangeFloatPointInput? dsVVA5,
+    RangeFloatPointInput? dsSlope1,
+    RangeFloatPointInput? dsSlope3,
+    RangeFloatPointInput? dsSlope4,
+    RangeFloatPointInput? usVCA1,
+    RangeFloatPointInput? usVCA2,
+    RangeFloatPointInput? usVCA3,
+    RangeFloatPointInput? usVCA4,
+    RangeFloatPointInput? eREQ,
     String? returnIngressSetting2,
     String? returnIngressSetting3,
     String? returnIngressSetting4,
