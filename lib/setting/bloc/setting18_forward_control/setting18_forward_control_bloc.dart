@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
+import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -64,15 +65,51 @@ class Setting18ForwardControlBloc
     String forwardCEQIndex =
         characteristicDataCache[DataKey.forwardCEQIndex] ?? '';
 
-    String dsVVA1 = characteristicDataCache[DataKey.dsVVA1] ?? '';
-    String dsVVA2 = characteristicDataCache[DataKey.dsVVA2] ?? '';
-    String dsVVA3 = characteristicDataCache[DataKey.dsVVA3] ?? '';
-    String dsVVA4 = characteristicDataCache[DataKey.dsVVA4] ?? '';
-    String dsVVA5 = characteristicDataCache[DataKey.dsVVA5] ?? '';
-    String dsSlope1 = characteristicDataCache[DataKey.dsSlope1] ?? '';
-    String dsSlope2 = characteristicDataCache[DataKey.dsSlope2] ?? '';
-    String dsSlope3 = characteristicDataCache[DataKey.dsSlope3] ?? '';
-    String dsSlope4 = characteristicDataCache[DataKey.dsSlope4] ?? '';
+    RangeFloatPointInput dsVVA1 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsVVA1] ?? '',
+      minValue: state.dsVVA1.minValue,
+      maxValue: state.dsVVA1.maxValue,
+    );
+    RangeFloatPointInput dsVVA2 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsVVA2] ?? '',
+      minValue: state.dsVVA2.minValue,
+      maxValue: state.dsVVA2.maxValue,
+    );
+    RangeFloatPointInput dsVVA3 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsVVA3] ?? '',
+      minValue: state.dsVVA3.minValue,
+      maxValue: state.dsVVA3.maxValue,
+    );
+    RangeFloatPointInput dsVVA4 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsVVA4] ?? '',
+      minValue: state.dsVVA4.minValue,
+      maxValue: state.dsVVA4.maxValue,
+    );
+    RangeFloatPointInput dsVVA5 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsVVA5] ?? '',
+      minValue: state.dsVVA5.minValue,
+      maxValue: state.dsVVA5.maxValue,
+    );
+    RangeFloatPointInput dsSlope1 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsSlope1] ?? '',
+      minValue: state.dsSlope1.minValue,
+      maxValue: getSlope1MaxValue(forwardCEQIndex),
+    );
+    RangeFloatPointInput dsSlope2 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsSlope2] ?? '',
+      minValue: state.dsSlope2.minValue,
+      maxValue: state.dsSlope2.maxValue,
+    );
+    RangeFloatPointInput dsSlope3 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsSlope3] ?? '',
+      minValue: state.dsSlope3.minValue,
+      maxValue: state.dsSlope3.maxValue,
+    );
+    RangeFloatPointInput dsSlope4 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsSlope4] ?? '',
+      minValue: state.dsSlope4.minValue,
+      maxValue: state.dsSlope4.maxValue,
+    );
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -123,12 +160,18 @@ class Setting18ForwardControlBloc
     DSVVA1Changed event,
     Emitter<Setting18ForwardControlState> emit,
   ) {
+    RangeFloatPointInput dsVVA1 = RangeFloatPointInput.dirty(
+      event.dsVVA1,
+      minValue: state.dsVVA1.minValue,
+      maxValue: state.dsVVA1.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
-      dsVVA1: event.dsVVA1,
+      dsVVA1: dsVVA1,
       enableSubmission: _isEnabledSubmission(
-        dsVVA1: event.dsVVA1,
+        dsVVA1: dsVVA1,
       ),
     ));
   }
@@ -137,12 +180,18 @@ class Setting18ForwardControlBloc
     DSVVA2Changed event,
     Emitter<Setting18ForwardControlState> emit,
   ) {
+    RangeFloatPointInput dsVVA2 = RangeFloatPointInput.dirty(
+      event.dsVVA2,
+      minValue: state.dsVVA2.minValue,
+      maxValue: state.dsVVA2.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
-      dsVVA2: event.dsVVA2,
+      dsVVA2: dsVVA2,
       enableSubmission: _isEnabledSubmission(
-        dsVVA2: event.dsVVA2,
+        dsVVA2: dsVVA2,
       ),
     ));
   }
@@ -151,12 +200,18 @@ class Setting18ForwardControlBloc
     DSVVA3Changed event,
     Emitter<Setting18ForwardControlState> emit,
   ) {
+    RangeFloatPointInput dsVVA3 = RangeFloatPointInput.dirty(
+      event.dsVVA3,
+      minValue: state.dsVVA3.minValue,
+      maxValue: state.dsVVA3.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
-      dsVVA3: event.dsVVA3,
+      dsVVA3: dsVVA3,
       enableSubmission: _isEnabledSubmission(
-        dsVVA3: event.dsVVA3,
+        dsVVA3: dsVVA3,
       ),
     ));
   }
@@ -165,12 +220,18 @@ class Setting18ForwardControlBloc
     DSVVA4Changed event,
     Emitter<Setting18ForwardControlState> emit,
   ) {
+    RangeFloatPointInput dsVVA4 = RangeFloatPointInput.dirty(
+      event.dsVVA4,
+      minValue: state.dsVVA4.minValue,
+      maxValue: state.dsVVA4.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
-      dsVVA4: event.dsVVA4,
+      dsVVA4: dsVVA4,
       enableSubmission: _isEnabledSubmission(
-        dsVVA4: event.dsVVA4,
+        dsVVA4: dsVVA4,
       ),
     ));
   }
@@ -179,12 +240,18 @@ class Setting18ForwardControlBloc
     DSVVA5Changed event,
     Emitter<Setting18ForwardControlState> emit,
   ) {
+    RangeFloatPointInput dsVVA5 = RangeFloatPointInput.dirty(
+      event.dsVVA5,
+      minValue: state.dsVVA5.minValue,
+      maxValue: state.dsVVA5.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
-      dsVVA5: event.dsVVA5,
+      dsVVA5: dsVVA5,
       enableSubmission: _isEnabledSubmission(
-        dsVVA5: event.dsVVA5,
+        dsVVA5: dsVVA5,
       ),
     ));
   }
@@ -193,12 +260,18 @@ class Setting18ForwardControlBloc
     DSSlope1Changed event,
     Emitter<Setting18ForwardControlState> emit,
   ) {
+    RangeFloatPointInput dsSlope1 = RangeFloatPointInput.dirty(
+      event.dsSlope1,
+      minValue: state.dsSlope1.minValue,
+      maxValue: state.dsSlope1.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
-      dsSlope1: event.dsSlope1,
+      dsSlope1: dsSlope1,
       enableSubmission: _isEnabledSubmission(
-        dsSlope1: event.dsSlope1,
+        dsSlope1: dsSlope1,
       ),
     ));
   }
@@ -207,12 +280,18 @@ class Setting18ForwardControlBloc
     DSSlope2Changed event,
     Emitter<Setting18ForwardControlState> emit,
   ) {
+    RangeFloatPointInput dsSlope2 = RangeFloatPointInput.dirty(
+      event.dsSlope2,
+      minValue: state.dsSlope2.minValue,
+      maxValue: state.dsSlope2.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
-      dsSlope2: event.dsSlope2,
+      dsSlope2: dsSlope2,
       enableSubmission: _isEnabledSubmission(
-        dsSlope2: event.dsSlope2,
+        dsSlope2: dsSlope2,
       ),
     ));
   }
@@ -221,12 +300,18 @@ class Setting18ForwardControlBloc
     DSSlope3Changed event,
     Emitter<Setting18ForwardControlState> emit,
   ) {
+    RangeFloatPointInput dsSlope3 = RangeFloatPointInput.dirty(
+      event.dsSlope3,
+      minValue: state.dsSlope3.minValue,
+      maxValue: state.dsSlope3.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
-      dsSlope3: event.dsSlope3,
+      dsSlope3: dsSlope3,
       enableSubmission: _isEnabledSubmission(
-        dsSlope3: event.dsSlope3,
+        dsSlope3: dsSlope3,
       ),
     ));
   }
@@ -235,12 +320,18 @@ class Setting18ForwardControlBloc
     DSSlope4Changed event,
     Emitter<Setting18ForwardControlState> emit,
   ) {
+    RangeFloatPointInput dsSlope4 = RangeFloatPointInput.dirty(
+      event.dsSlope4,
+      minValue: state.dsSlope4.minValue,
+      maxValue: state.dsSlope4.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
-      dsSlope4: event.dsSlope4,
+      dsSlope4: dsSlope4,
       enableSubmission: _isEnabledSubmission(
-        dsSlope4: event.dsSlope4,
+        dsSlope4: dsSlope4,
       ),
     ));
   }
@@ -279,27 +370,60 @@ class Setting18ForwardControlBloc
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       editMode: false,
       enableSubmission: false,
-      dsVVA1: state.initialValues[DataKey.dsVVA1],
-      dsVVA2: state.initialValues[DataKey.dsVVA2],
-      dsVVA3: state.initialValues[DataKey.dsVVA3],
-      dsVVA4: state.initialValues[DataKey.dsVVA4],
-      dsSlope1: state.initialValues[DataKey.dsSlope1],
-      dsSlope2: state.initialValues[DataKey.dsSlope2],
-      dsSlope3: state.initialValues[DataKey.dsSlope3],
+      dsVVA1: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.dsVVA1] ?? '',
+        minValue: state.dsVVA1.minValue,
+        maxValue: state.dsVVA1.maxValue,
+      ),
+      dsVVA2: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.dsVVA2] ?? '',
+        minValue: state.dsVVA2.minValue,
+        maxValue: state.dsVVA2.maxValue,
+      ),
+      dsVVA3: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.dsVVA3] ?? '',
+        minValue: state.dsVVA3.minValue,
+        maxValue: state.dsVVA3.maxValue,
+      ),
+      dsVVA4: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.dsVVA4] ?? '',
+        minValue: state.dsVVA4.minValue,
+        maxValue: state.dsVVA4.maxValue,
+      ),
+      dsSlope1: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.dsSlope1] ?? '',
+        minValue: state.dsSlope1.minValue,
+        maxValue: state.dsSlope1.maxValue,
+      ),
+      dsSlope2: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.dsSlope2] ?? '',
+        minValue: state.dsSlope2.minValue,
+        maxValue: state.dsSlope2.maxValue,
+      ),
+      dsSlope3: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.dsSlope3] ?? '',
+        minValue: state.dsSlope3.minValue,
+        maxValue: state.dsSlope3.maxValue,
+      ),
+      dsSlope4: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.dsSlope4] ?? '',
+        minValue: state.dsSlope4.minValue,
+        maxValue: state.dsSlope4.maxValue,
+      ),
       tgcCableLength: state.initialValues[DataKey.tgcCableLength],
     ));
   }
 
   bool _isEnabledSubmission({
-    String? dsVVA1,
-    String? dsVVA2,
-    String? dsVVA3,
-    String? dsVVA4,
-    String? dsVVA5,
-    String? dsSlope1,
-    String? dsSlope2,
-    String? dsSlope3,
-    String? dsSlope4,
+    RangeFloatPointInput? dsVVA1,
+    RangeFloatPointInput? dsVVA2,
+    RangeFloatPointInput? dsVVA3,
+    RangeFloatPointInput? dsVVA4,
+    RangeFloatPointInput? dsVVA5,
+    RangeFloatPointInput? dsSlope1,
+    RangeFloatPointInput? dsSlope2,
+    RangeFloatPointInput? dsSlope3,
+    RangeFloatPointInput? dsSlope4,
     String? tgcCableLength,
   }) {
     dsVVA1 ??= state.dsVVA1;
@@ -313,26 +437,26 @@ class Setting18ForwardControlBloc
     dsSlope4 ??= state.dsSlope4;
     tgcCableLength ??= state.tgcCableLength;
 
-    if (dsVVA1.isEmpty ||
-        dsVVA2.isEmpty ||
-        dsVVA3.isEmpty ||
-        dsVVA4.isEmpty ||
-        dsVVA5.isEmpty ||
-        dsSlope1.isEmpty ||
-        dsSlope2.isEmpty ||
-        dsSlope3.isEmpty ||
-        dsSlope4.isEmpty) {
+    if (dsVVA1.isNotValid ||
+        dsVVA2.isNotValid ||
+        dsVVA3.isNotValid ||
+        dsVVA4.isNotValid ||
+        dsVVA5.isNotValid ||
+        dsSlope1.isNotValid ||
+        dsSlope2.isNotValid ||
+        dsSlope3.isNotValid ||
+        dsSlope4.isNotValid) {
       return false;
     } else {
-      if (dsVVA1 != state.initialValues[DataKey.dsVVA1] ||
-          dsVVA2 != state.initialValues[DataKey.dsVVA2] ||
-          dsVVA3 != state.initialValues[DataKey.dsVVA3] ||
-          dsVVA4 != state.initialValues[DataKey.dsVVA4] ||
-          dsVVA5 != state.initialValues[DataKey.dsVVA5] ||
-          dsSlope1 != state.initialValues[DataKey.dsSlope1] ||
-          dsSlope2 != state.initialValues[DataKey.dsSlope2] ||
-          dsSlope3 != state.initialValues[DataKey.dsSlope3] ||
-          dsSlope4 != state.initialValues[DataKey.dsSlope4] ||
+      if (dsVVA1.value != state.initialValues[DataKey.dsVVA1] ||
+          dsVVA2.value != state.initialValues[DataKey.dsVVA2] ||
+          dsVVA3.value != state.initialValues[DataKey.dsVVA3] ||
+          dsVVA4.value != state.initialValues[DataKey.dsVVA4] ||
+          dsVVA5.value != state.initialValues[DataKey.dsVVA5] ||
+          dsSlope1.value != state.initialValues[DataKey.dsSlope1] ||
+          dsSlope2.value != state.initialValues[DataKey.dsSlope2] ||
+          dsSlope3.value != state.initialValues[DataKey.dsSlope3] ||
+          dsSlope4.value != state.initialValues[DataKey.dsSlope4] ||
           tgcCableLength != state.initialValues[DataKey.tgcCableLength]) {
         return true;
       } else {
@@ -352,65 +476,65 @@ class Setting18ForwardControlBloc
     // 按照畫面上的排列順序依序檢查是否值有改變, 如果有變就進行設定
     List<String> settingResult = [];
 
-    if (state.dsVVA1 != state.initialValues[DataKey.dsVVA1]) {
+    if (state.dsVVA1.value != state.initialValues[DataKey.dsVVA1]) {
       bool resultOfSetDSVVA1 =
-          await _amp18Repository.set1p8GDSVVA1(state.dsVVA1);
+          await _amp18Repository.set1p8GDSVVA1(state.dsVVA1.value);
 
       settingResult.add('${DataKey.dsVVA1.name},$resultOfSetDSVVA1');
     }
 
-    if (state.dsVVA4 != state.initialValues[DataKey.dsVVA4]) {
+    if (state.dsVVA4.value != state.initialValues[DataKey.dsVVA4]) {
       bool resultOfSetDSVVA4 =
-          await _amp18Repository.set1p8GDSVVA4(state.dsVVA4);
+          await _amp18Repository.set1p8GDSVVA4(state.dsVVA4.value);
 
       settingResult.add('${DataKey.dsVVA4.name},$resultOfSetDSVVA4');
     }
 
-    if (state.dsVVA5 != state.initialValues[DataKey.dsVVA5]) {
+    if (state.dsVVA5.value != state.initialValues[DataKey.dsVVA5]) {
       bool resultOfSetDSVVA5 =
-          await _amp18Repository.set1p8GDSVVA5(state.dsVVA5);
+          await _amp18Repository.set1p8GDSVVA5(state.dsVVA5.value);
 
       settingResult.add('${DataKey.dsVVA5.name},$resultOfSetDSVVA5');
     }
 
-    if (state.dsSlope1 != state.initialValues[DataKey.dsSlope1]) {
+    if (state.dsSlope1.value != state.initialValues[DataKey.dsSlope1]) {
       bool resultOfSetDSSlope1 =
-          await _amp18Repository.set1p8GDSSlope1(state.dsSlope1);
+          await _amp18Repository.set1p8GDSSlope1(state.dsSlope1.value);
 
       settingResult.add('${DataKey.dsSlope1.name},$resultOfSetDSSlope1');
     }
 
-    if (state.dsSlope3 != state.initialValues[DataKey.dsSlope3]) {
+    if (state.dsSlope3.value != state.initialValues[DataKey.dsSlope3]) {
       bool resultOfSetDSSlope3 =
-          await _amp18Repository.set1p8GDSSlope3(state.dsSlope3);
+          await _amp18Repository.set1p8GDSSlope3(state.dsSlope3.value);
 
       settingResult.add('${DataKey.dsSlope3.name},$resultOfSetDSSlope3');
     }
 
-    if (state.dsSlope4 != state.initialValues[DataKey.dsSlope4]) {
+    if (state.dsSlope4.value != state.initialValues[DataKey.dsSlope4]) {
       bool resultOfSetDSSlope4 =
-          await _amp18Repository.set1p8GDSSlope4(state.dsSlope4);
+          await _amp18Repository.set1p8GDSSlope4(state.dsSlope4.value);
 
       settingResult.add('${DataKey.dsSlope4.name},$resultOfSetDSSlope4');
     }
 
-    if (state.dsVVA2 != state.initialValues[DataKey.dsVVA2]) {
+    if (state.dsVVA2.value != state.initialValues[DataKey.dsVVA2]) {
       bool resultOfSetDSVVA2 =
-          await _amp18Repository.set1p8GDSVVA2(state.dsVVA2);
+          await _amp18Repository.set1p8GDSVVA2(state.dsVVA2.value);
 
       settingResult.add('${DataKey.dsVVA2.name},$resultOfSetDSVVA2');
     }
 
-    if (state.dsSlope2 != state.initialValues[DataKey.dsSlope2]) {
+    if (state.dsSlope2.value != state.initialValues[DataKey.dsSlope2]) {
       bool resultOfSetDSSlope2 =
-          await _amp18Repository.set1p8GDSSlope2(state.dsSlope2);
+          await _amp18Repository.set1p8GDSSlope2(state.dsSlope2.value);
 
       settingResult.add('${DataKey.dsSlope2.name},$resultOfSetDSSlope2');
     }
 
-    if (state.dsVVA3 != state.initialValues[DataKey.dsVVA3]) {
+    if (state.dsVVA3.value != state.initialValues[DataKey.dsVVA3]) {
       bool resultOfSetDSVVA3 =
-          await _amp18Repository.set1p8DSVVA3(state.dsVVA3);
+          await _amp18Repository.set1p8DSVVA3(state.dsVVA3.value);
 
       settingResult.add('${DataKey.dsVVA3.name},$resultOfSetDSVVA3');
     }

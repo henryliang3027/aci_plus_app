@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
+import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,12 +40,32 @@ class Setting18ReverseControlBloc
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
 
-    String usVCA1 = characteristicDataCache[DataKey.usVCA1] ?? '';
-    String usVCA2 = characteristicDataCache[DataKey.usVCA2] ?? '';
-    String usVCA3 = characteristicDataCache[DataKey.usVCA3] ?? '';
-    String usVCA4 = characteristicDataCache[DataKey.usVCA4] ?? '';
+    RangeFloatPointInput usVCA1 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.usVCA1] ?? '',
+      minValue: state.usVCA1.minValue,
+      maxValue: state.usVCA1.maxValue,
+    );
+    RangeFloatPointInput usVCA2 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.usVCA2] ?? '',
+      minValue: state.usVCA2.minValue,
+      maxValue: state.usVCA2.maxValue,
+    );
+    RangeFloatPointInput usVCA3 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.usVCA3] ?? '',
+      minValue: state.usVCA3.minValue,
+      maxValue: state.usVCA3.maxValue,
+    );
+    RangeFloatPointInput usVCA4 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.usVCA4] ?? '',
+      minValue: state.usVCA4.minValue,
+      maxValue: state.usVCA4.maxValue,
+    );
 
-    String eREQ = characteristicDataCache[DataKey.eREQ] ?? '';
+    RangeFloatPointInput eREQ = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.eREQ] ?? '',
+      minValue: state.eREQ.minValue,
+      maxValue: state.eREQ.maxValue,
+    );
     String ingressSetting2 =
         characteristicDataCache[DataKey.ingressSetting2] ?? '';
     String ingressSetting3 =
@@ -100,12 +121,18 @@ class Setting18ReverseControlBloc
     USVCA1Changed event,
     Emitter<Setting18ReverseControlState> emit,
   ) {
+    RangeFloatPointInput usVCA1 = RangeFloatPointInput.dirty(
+      event.usVCA1,
+      minValue: state.usVCA1.minValue,
+      maxValue: state.usVCA1.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      usVCA1: event.usVCA1,
+      usVCA1: usVCA1,
       enableSubmission: _isEnabledSubmission(
-        usVCA1: event.usVCA1,
+        usVCA1: usVCA1,
       ),
     ));
   }
@@ -114,12 +141,18 @@ class Setting18ReverseControlBloc
     USVCA2Changed event,
     Emitter<Setting18ReverseControlState> emit,
   ) {
+    RangeFloatPointInput usVCA2 = RangeFloatPointInput.dirty(
+      event.usVCA2,
+      minValue: state.usVCA2.minValue,
+      maxValue: state.usVCA2.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      usVCA2: event.usVCA2,
+      usVCA2: usVCA2,
       enableSubmission: _isEnabledSubmission(
-        usVCA2: event.usVCA2,
+        usVCA2: usVCA2,
       ),
     ));
   }
@@ -128,12 +161,18 @@ class Setting18ReverseControlBloc
     USVCA3Changed event,
     Emitter<Setting18ReverseControlState> emit,
   ) {
+    RangeFloatPointInput usVCA3 = RangeFloatPointInput.dirty(
+      event.usVCA3,
+      minValue: state.usVCA3.minValue,
+      maxValue: state.usVCA3.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      usVCA3: event.usVCA3,
+      usVCA3: usVCA3,
       enableSubmission: _isEnabledSubmission(
-        usVCA3: event.usVCA3,
+        usVCA3: usVCA3,
       ),
     ));
   }
@@ -142,12 +181,18 @@ class Setting18ReverseControlBloc
     USVCA4Changed event,
     Emitter<Setting18ReverseControlState> emit,
   ) {
+    RangeFloatPointInput usVCA4 = RangeFloatPointInput.dirty(
+      event.usVCA4,
+      minValue: state.usVCA4.minValue,
+      maxValue: state.usVCA4.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      usVCA4: event.usVCA4,
+      usVCA4: usVCA4,
       enableSubmission: _isEnabledSubmission(
-        usVCA4: event.usVCA4,
+        usVCA4: usVCA4,
       ),
     ));
   }
@@ -156,12 +201,18 @@ class Setting18ReverseControlBloc
     EREQChanged event,
     Emitter<Setting18ReverseControlState> emit,
   ) {
+    RangeFloatPointInput eREQ = RangeFloatPointInput.dirty(
+      event.eREQ,
+      minValue: state.eREQ.minValue,
+      maxValue: state.eREQ.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
-      eREQ: event.eREQ,
+      eREQ: eREQ,
       enableSubmission: _isEnabledSubmission(
-        eREQ: event.eREQ,
+        eREQ: eREQ,
       ),
     ));
   }
@@ -209,11 +260,11 @@ class Setting18ReverseControlBloc
   }
 
   bool _isEnabledSubmission({
-    String? usVCA1,
-    String? usVCA2,
-    String? usVCA3,
-    String? usVCA4,
-    String? eREQ,
+    RangeFloatPointInput? usVCA1,
+    RangeFloatPointInput? usVCA2,
+    RangeFloatPointInput? usVCA3,
+    RangeFloatPointInput? usVCA4,
+    RangeFloatPointInput? eREQ,
     String? returnIngressSetting2,
     String? returnIngressSetting3,
     String? returnIngressSetting4,
@@ -227,20 +278,18 @@ class Setting18ReverseControlBloc
     returnIngressSetting3 ??= state.returnIngressSetting3;
     returnIngressSetting4 ??= state.returnIngressSetting4;
 
-    if (usVCA1.isEmpty ||
-        usVCA2.isEmpty ||
-        usVCA3.isEmpty ||
-        usVCA4.isEmpty ||
-        eREQ.isEmpty ||
-        usVCA3.isEmpty ||
-        usVCA3.isEmpty) {
+    if (usVCA1.isNotValid ||
+        usVCA2.isNotValid ||
+        usVCA3.isNotValid ||
+        usVCA4.isNotValid ||
+        eREQ.isNotValid) {
       return false;
     } else {
-      if (usVCA1 != state.initialValues[DataKey.usVCA1] ||
-          usVCA2 != state.initialValues[DataKey.usVCA2] ||
-          usVCA3 != state.initialValues[DataKey.usVCA3] ||
-          usVCA4 != state.initialValues[DataKey.usVCA4] ||
-          eREQ != state.initialValues[DataKey.eREQ] ||
+      if (usVCA1.value != state.initialValues[DataKey.usVCA1] ||
+          usVCA2.value != state.initialValues[DataKey.usVCA2] ||
+          usVCA3.value != state.initialValues[DataKey.usVCA3] ||
+          usVCA4.value != state.initialValues[DataKey.usVCA4] ||
+          eREQ.value != state.initialValues[DataKey.eREQ] ||
           returnIngressSetting2 !=
               state.initialValues[DataKey.ingressSetting2] ||
           returnIngressSetting3 !=
@@ -274,11 +323,31 @@ class Setting18ReverseControlBloc
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       editMode: false,
       enableSubmission: false,
-      usVCA1: state.initialValues[DataKey.usVCA1],
-      usVCA2: state.initialValues[DataKey.usVCA2],
-      usVCA3: state.initialValues[DataKey.usVCA3],
-      usVCA4: state.initialValues[DataKey.usVCA4],
-      eREQ: state.initialValues[DataKey.eREQ],
+      usVCA1: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.usVCA1] ?? '',
+        minValue: state.usVCA1.minValue,
+        maxValue: state.usVCA1.maxValue,
+      ),
+      usVCA2: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.usVCA2] ?? '',
+        minValue: state.usVCA2.minValue,
+        maxValue: state.usVCA2.maxValue,
+      ),
+      usVCA3: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.usVCA3] ?? '',
+        minValue: state.usVCA3.minValue,
+        maxValue: state.usVCA3.maxValue,
+      ),
+      usVCA4: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.usVCA4] ?? '',
+        minValue: state.usVCA4.minValue,
+        maxValue: state.usVCA4.maxValue,
+      ),
+      eREQ: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.eREQ] ?? '',
+        minValue: state.eREQ.minValue,
+        maxValue: state.eREQ.maxValue,
+      ),
       returnIngressSetting2: state.initialValues[DataKey.ingressSetting2],
       returnIngressSetting3: state.initialValues[DataKey.ingressSetting3],
       returnIngressSetting4: state.initialValues[DataKey.ingressSetting4],
@@ -295,38 +364,39 @@ class Setting18ReverseControlBloc
 
     List<String> settingResult = [];
 
-    if (state.usVCA1 != state.initialValues[DataKey.usVCA1]) {
+    if (state.usVCA1.value != state.initialValues[DataKey.usVCA1]) {
       bool resultOfSetUSVCA1Cmd =
-          await _amp18Repository.set1p8GUSVCA1(state.usVCA1);
+          await _amp18Repository.set1p8GUSVCA1(state.usVCA1.value);
 
       settingResult.add('${DataKey.usVCA1.name},$resultOfSetUSVCA1Cmd');
     }
 
-    if (state.usVCA2 != state.initialValues[DataKey.usVCA2]) {
+    if (state.usVCA2.value != state.initialValues[DataKey.usVCA2]) {
       bool resultOfSetUSVCA2 =
-          await _amp18Repository.set1p8GUSVCA2(state.usVCA2);
+          await _amp18Repository.set1p8GUSVCA2(state.usVCA2.value);
 
       settingResult.add('${DataKey.usVCA2.name},$resultOfSetUSVCA2');
     }
 
-    if (state.usVCA3 != state.initialValues[DataKey.usVCA3]) {
+    if (state.eREQ.value != state.initialValues[DataKey.eREQ]) {
+      bool resultOfSetEREQ =
+          await _amp18Repository.set1p8GEREQ(state.eREQ.value);
+
+      settingResult.add('${DataKey.eREQ.name},$resultOfSetEREQ');
+    }
+
+    if (state.usVCA3.value != state.initialValues[DataKey.usVCA3]) {
       bool resultOfSetUSVCA3 =
-          await _amp18Repository.set1p8GUSVCA3(state.usVCA3);
+          await _amp18Repository.set1p8GUSVCA3(state.usVCA3.value);
 
       settingResult.add('${DataKey.usVCA3.name},$resultOfSetUSVCA3');
     }
 
-    if (state.usVCA4 != state.initialValues[DataKey.usVCA4]) {
+    if (state.usVCA4.value != state.initialValues[DataKey.usVCA4]) {
       bool resultOfSetUSVCA4 =
-          await _amp18Repository.set1p8GUSVCA4(state.usVCA4);
+          await _amp18Repository.set1p8GUSVCA4(state.usVCA4.value);
 
       settingResult.add('${DataKey.usVCA4.name},$resultOfSetUSVCA4');
-    }
-
-    if (state.eREQ != state.initialValues[DataKey.eREQ]) {
-      bool resultOfSetEREQ = await _amp18Repository.set1p8GEREQ(state.eREQ);
-
-      settingResult.add('${DataKey.eREQ.name},$resultOfSetEREQ');
     }
 
     if (state.returnIngressSetting2 !=

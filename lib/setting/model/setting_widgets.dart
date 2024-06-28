@@ -525,7 +525,7 @@ class _FineTuneTextSlider2State extends State<FineTuneTextSlider2> {
   void didUpdateWidget(covariant FineTuneTextSlider2 oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.initialValue != widget.initialValue) {
+    if (oldWidget != widget) {
       setState(() {
         _value = _getBondaryValue(
           value: widget.initialValue,

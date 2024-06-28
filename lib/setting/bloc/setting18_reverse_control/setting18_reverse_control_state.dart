@@ -4,11 +4,26 @@ class Setting18ReverseControlState extends Equatable {
   const Setting18ReverseControlState({
     this.submissionStatus = SubmissionStatus.none,
     this.resetReverseValuesSubmissionStatus = SubmissionStatus.none,
-    this.usVCA1 = '',
-    this.usVCA2 = '',
-    this.usVCA3 = '',
-    this.usVCA4 = '',
-    this.eREQ = '',
+    this.usVCA1 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.usVCA2 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 15,
+    ),
+    this.usVCA3 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.usVCA4 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.eREQ = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 15,
+    ),
     this.returnIngressSetting2 = '',
     this.returnIngressSetting3 = '',
     this.returnIngressSetting4 = '',
@@ -20,11 +35,11 @@ class Setting18ReverseControlState extends Equatable {
 
   final SubmissionStatus submissionStatus;
   final SubmissionStatus resetReverseValuesSubmissionStatus;
-  final String usVCA1;
-  final String usVCA2;
-  final String usVCA3;
-  final String usVCA4;
-  final String eREQ;
+  final RangeFloatPointInput usVCA1;
+  final RangeFloatPointInput usVCA2;
+  final RangeFloatPointInput usVCA3;
+  final RangeFloatPointInput usVCA4;
+  final RangeFloatPointInput eREQ;
   final String returnIngressSetting2;
   final String returnIngressSetting3;
   final String returnIngressSetting4;
@@ -36,11 +51,11 @@ class Setting18ReverseControlState extends Equatable {
   Setting18ReverseControlState copyWith({
     SubmissionStatus? submissionStatus,
     SubmissionStatus? resetReverseValuesSubmissionStatus,
-    String? usVCA1,
-    String? usVCA2,
-    String? usVCA3,
-    String? usVCA4,
-    String? eREQ,
+    RangeFloatPointInput? usVCA1,
+    RangeFloatPointInput? usVCA2,
+    RangeFloatPointInput? usVCA3,
+    RangeFloatPointInput? usVCA4,
+    RangeFloatPointInput? eREQ,
     String? returnIngressSetting2,
     String? returnIngressSetting3,
     String? returnIngressSetting4,
