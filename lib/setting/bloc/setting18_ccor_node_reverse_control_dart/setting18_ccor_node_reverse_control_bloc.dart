@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
+import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,10 +40,26 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
     Map<DataKey, String> characteristicDataCache =
         _amp18CCorNodeRepository.characteristicDataCache;
 
-    String usVCA1 = characteristicDataCache[DataKey.usVCA1] ?? '';
-    String usVCA3 = characteristicDataCache[DataKey.usVCA3] ?? '';
-    String usVCA4 = characteristicDataCache[DataKey.usVCA4] ?? '';
-    String usVCA6 = characteristicDataCache[DataKey.usVCA6] ?? '';
+    RangeFloatPointInput usVCA1 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.usVCA1] ?? '',
+      minValue: state.usVCA1.minValue,
+      maxValue: state.usVCA1.maxValue,
+    );
+    RangeFloatPointInput usVCA3 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.usVCA3] ?? '',
+      minValue: state.usVCA3.minValue,
+      maxValue: state.usVCA3.maxValue,
+    );
+    RangeFloatPointInput usVCA4 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.usVCA4] ?? '',
+      minValue: state.usVCA4.minValue,
+      maxValue: state.usVCA4.maxValue,
+    );
+    RangeFloatPointInput usVCA6 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.usVCA6] ?? '',
+      minValue: state.usVCA6.minValue,
+      maxValue: state.usVCA6.maxValue,
+    );
     String returnIngressSetting1 =
         characteristicDataCache[DataKey.ingressSetting1] ?? '';
     String returnIngressSetting3 =
@@ -69,11 +86,17 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
     USVCA1Changed event,
     Emitter<Setting18CCorNodeReverseControlState> emit,
   ) {
+    RangeFloatPointInput usVCA1 = RangeFloatPointInput.dirty(
+      event.usVCA1,
+      minValue: state.usVCA1.minValue,
+      maxValue: state.usVCA1.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      usVCA1: event.usVCA1,
+      usVCA1: usVCA1,
       enableSubmission: _isEnabledSubmission(
-        usVCA1: event.usVCA1,
+        usVCA1: usVCA1,
       ),
     ));
   }
@@ -82,11 +105,17 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
     USVCA3Changed event,
     Emitter<Setting18CCorNodeReverseControlState> emit,
   ) {
+    RangeFloatPointInput usVCA3 = RangeFloatPointInput.dirty(
+      event.usVCA3,
+      minValue: state.usVCA3.minValue,
+      maxValue: state.usVCA3.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      usVCA3: event.usVCA3,
+      usVCA3: usVCA3,
       enableSubmission: _isEnabledSubmission(
-        usVCA3: event.usVCA3,
+        usVCA3: usVCA3,
       ),
     ));
   }
@@ -95,11 +124,17 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
     USVCA4Changed event,
     Emitter<Setting18CCorNodeReverseControlState> emit,
   ) {
+    RangeFloatPointInput usVCA4 = RangeFloatPointInput.dirty(
+      event.usVCA4,
+      minValue: state.usVCA4.minValue,
+      maxValue: state.usVCA4.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      usVCA4: event.usVCA4,
+      usVCA4: usVCA4,
       enableSubmission: _isEnabledSubmission(
-        usVCA4: event.usVCA4,
+        usVCA4: usVCA4,
       ),
     ));
   }
@@ -108,11 +143,17 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
     USVCA6Changed event,
     Emitter<Setting18CCorNodeReverseControlState> emit,
   ) {
+    RangeFloatPointInput usVCA6 = RangeFloatPointInput.dirty(
+      event.usVCA6,
+      minValue: state.usVCA6.minValue,
+      maxValue: state.usVCA6.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      usVCA6: event.usVCA6,
+      usVCA6: usVCA6,
       enableSubmission: _isEnabledSubmission(
-        usVCA6: event.usVCA6,
+        usVCA6: usVCA6,
       ),
     ));
   }
@@ -187,10 +228,26 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       editMode: false,
       enableSubmission: false,
-      usVCA1: state.initialValues[DataKey.usVCA1],
-      usVCA3: state.initialValues[DataKey.usVCA3],
-      usVCA4: state.initialValues[DataKey.usVCA4],
-      usVCA6: state.initialValues[DataKey.usVCA6],
+      usVCA1: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.usVCA1] ?? '',
+        minValue: state.usVCA1.minValue,
+        maxValue: state.usVCA1.maxValue,
+      ),
+      usVCA3: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.usVCA3] ?? '',
+        minValue: state.usVCA3.minValue,
+        maxValue: state.usVCA3.maxValue,
+      ),
+      usVCA4: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.usVCA4] ?? '',
+        minValue: state.usVCA4.minValue,
+        maxValue: state.usVCA4.maxValue,
+      ),
+      usVCA6: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.usVCA6] ?? '',
+        minValue: state.usVCA6.minValue,
+        maxValue: state.usVCA6.maxValue,
+      ),
       returnIngressSetting1: state.initialValues[DataKey.ingressSetting1],
       returnIngressSetting3: state.initialValues[DataKey.ingressSetting3],
       returnIngressSetting4: state.initialValues[DataKey.ingressSetting4],
@@ -199,10 +256,10 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
   }
 
   bool _isEnabledSubmission({
-    String? usVCA1,
-    String? usVCA3,
-    String? usVCA4,
-    String? usVCA6,
+    RangeFloatPointInput? usVCA1,
+    RangeFloatPointInput? usVCA3,
+    RangeFloatPointInput? usVCA4,
+    RangeFloatPointInput? usVCA6,
     String? returnIngressSetting1,
     String? returnIngressSetting3,
     String? returnIngressSetting4,
@@ -217,13 +274,16 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
     returnIngressSetting4 ??= state.returnIngressSetting4;
     returnIngressSetting6 ??= state.returnIngressSetting6;
 
-    if (usVCA1.isEmpty || usVCA3.isEmpty || usVCA4.isEmpty || usVCA6.isEmpty) {
+    if (usVCA1.isNotValid ||
+        usVCA3.isNotValid ||
+        usVCA4.isNotValid ||
+        usVCA6.isNotValid) {
       return false;
     } else {
-      if (usVCA1 != state.initialValues[DataKey.usVCA1] ||
-          usVCA3 != state.initialValues[DataKey.usVCA3] ||
-          usVCA4 != state.initialValues[DataKey.usVCA4] ||
-          usVCA6 != state.initialValues[DataKey.usVCA6] ||
+      if (usVCA1.value != state.initialValues[DataKey.usVCA1] ||
+          usVCA3.value != state.initialValues[DataKey.usVCA3] ||
+          usVCA4.value != state.initialValues[DataKey.usVCA4] ||
+          usVCA6.value != state.initialValues[DataKey.usVCA6] ||
           returnIngressSetting1 !=
               state.initialValues[DataKey.ingressSetting1] ||
           returnIngressSetting3 !=
@@ -249,30 +309,30 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
 
     List<String> settingResult = [];
 
-    if (state.usVCA1 != state.initialValues[DataKey.usVCA1]) {
-      bool resultOfSetUSVCA1 =
-          await _amp18CCorNodeRepository.set1p8GCCorNodeUSVCA1(state.usVCA1);
+    if (state.usVCA1.value != state.initialValues[DataKey.usVCA1]) {
+      bool resultOfSetUSVCA1 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeUSVCA1(state.usVCA1.value);
 
       settingResult.add('${DataKey.usVCA1.name},$resultOfSetUSVCA1');
     }
 
-    if (state.usVCA3 != state.initialValues[DataKey.usVCA3]) {
-      bool resultOfSetUSVCA3 =
-          await _amp18CCorNodeRepository.set1p8GCCorNodeUSVCA3(state.usVCA3);
+    if (state.usVCA3.value != state.initialValues[DataKey.usVCA3]) {
+      bool resultOfSetUSVCA3 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeUSVCA3(state.usVCA3.value);
 
       settingResult.add('${DataKey.usVCA3.name},$resultOfSetUSVCA3');
     }
 
-    if (state.usVCA4 != state.initialValues[DataKey.usVCA4]) {
-      bool resultOfSetUSVCA4 =
-          await _amp18CCorNodeRepository.set1p8GCCorNodeUSVCA4(state.usVCA4);
+    if (state.usVCA4.value != state.initialValues[DataKey.usVCA4]) {
+      bool resultOfSetUSVCA4 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeUSVCA4(state.usVCA4.value);
 
       settingResult.add('${DataKey.usVCA4.name},$resultOfSetUSVCA4');
     }
 
-    if (state.usVCA6 != state.initialValues[DataKey.usVCA6]) {
-      bool resultOfSetUSVCA6 =
-          await _amp18CCorNodeRepository.set1p8GCCorNodeUSVCA6(state.usVCA6);
+    if (state.usVCA6.value != state.initialValues[DataKey.usVCA6]) {
+      bool resultOfSetUSVCA6 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeUSVCA6(state.usVCA6.value);
 
       settingResult.add('${DataKey.usVCA6.name},$resultOfSetUSVCA6');
     }

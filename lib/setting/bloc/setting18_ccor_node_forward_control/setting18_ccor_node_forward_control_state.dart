@@ -6,22 +6,70 @@ part of 'setting18_ccor_node_forward_control_bloc.dart';
 class Setting18CCorNodeForwardControlState extends Equatable {
   const Setting18CCorNodeForwardControlState({
     this.submissionStatus = SubmissionStatus.none,
-    this.dsVVA1 = '',
-    this.dsVVA3 = '',
-    this.dsVVA4 = '',
-    this.dsVVA6 = '',
-    this.dsInSlope1 = '',
-    this.dsInSlope3 = '',
-    this.dsInSlope4 = '',
-    this.dsInSlope6 = '',
-    this.dsOutSlope1 = '',
-    this.dsOutSlope3 = '',
-    this.dsOutSlope4 = '',
-    this.dsOutSlope6 = '',
-    this.biasCurrent1 = const RangeFloatPointInput.pure(),
-    this.biasCurrent3 = const RangeFloatPointInput.pure(),
-    this.biasCurrent4 = const RangeFloatPointInput.pure(),
-    this.biasCurrent6 = const RangeFloatPointInput.pure(),
+    this.dsVVA1 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.dsVVA3 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.dsVVA4 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.dsVVA6 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.dsInSlope1 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.dsInSlope3 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.dsInSlope4 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.dsInSlope6 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.dsOutSlope1 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.dsOutSlope3 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.dsOutSlope4 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.dsOutSlope6 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.biasCurrent1 = const RangeFloatPointInput.pure(
+      minValue: 320,
+      maxValue: 520,
+    ),
+    this.biasCurrent3 = const RangeFloatPointInput.pure(
+      minValue: 320,
+      maxValue: 520,
+    ),
+    this.biasCurrent4 = const RangeFloatPointInput.pure(
+      minValue: 320,
+      maxValue: 520,
+    ),
+    this.biasCurrent6 = const RangeFloatPointInput.pure(
+      minValue: 320,
+      maxValue: 520,
+    ),
     this.editMode = false,
     this.enableSubmission = false,
     this.initialValues = const {},
@@ -29,18 +77,18 @@ class Setting18CCorNodeForwardControlState extends Equatable {
   });
 
   final SubmissionStatus submissionStatus;
-  final String dsVVA1;
-  final String dsVVA3;
-  final String dsVVA4;
-  final String dsVVA6;
-  final String dsInSlope1;
-  final String dsInSlope3;
-  final String dsInSlope4;
-  final String dsInSlope6;
-  final String dsOutSlope1;
-  final String dsOutSlope3;
-  final String dsOutSlope4;
-  final String dsOutSlope6;
+  final RangeFloatPointInput dsVVA1;
+  final RangeFloatPointInput dsVVA3;
+  final RangeFloatPointInput dsVVA4;
+  final RangeFloatPointInput dsVVA6;
+  final RangeFloatPointInput dsInSlope1;
+  final RangeFloatPointInput dsInSlope3;
+  final RangeFloatPointInput dsInSlope4;
+  final RangeFloatPointInput dsInSlope6;
+  final RangeFloatPointInput dsOutSlope1;
+  final RangeFloatPointInput dsOutSlope3;
+  final RangeFloatPointInput dsOutSlope4;
+  final RangeFloatPointInput dsOutSlope6;
   final RangeFloatPointInput biasCurrent1;
   final RangeFloatPointInput biasCurrent3;
   final RangeFloatPointInput biasCurrent4;
@@ -52,18 +100,18 @@ class Setting18CCorNodeForwardControlState extends Equatable {
 
   Setting18CCorNodeForwardControlState copyWith({
     SubmissionStatus? submissionStatus,
-    String? dsVVA1,
-    String? dsVVA3,
-    String? dsVVA4,
-    String? dsVVA6,
-    String? dsInSlope1,
-    String? dsInSlope3,
-    String? dsInSlope4,
-    String? dsInSlope6,
-    String? dsOutSlope1,
-    String? dsOutSlope3,
-    String? dsOutSlope4,
-    String? dsOutSlope6,
+    RangeFloatPointInput? dsVVA1,
+    RangeFloatPointInput? dsVVA3,
+    RangeFloatPointInput? dsVVA4,
+    RangeFloatPointInput? dsVVA6,
+    RangeFloatPointInput? dsInSlope1,
+    RangeFloatPointInput? dsInSlope3,
+    RangeFloatPointInput? dsInSlope4,
+    RangeFloatPointInput? dsInSlope6,
+    RangeFloatPointInput? dsOutSlope1,
+    RangeFloatPointInput? dsOutSlope3,
+    RangeFloatPointInput? dsOutSlope4,
+    RangeFloatPointInput? dsOutSlope6,
     RangeFloatPointInput? biasCurrent1,
     RangeFloatPointInput? biasCurrent3,
     RangeFloatPointInput? biasCurrent4,

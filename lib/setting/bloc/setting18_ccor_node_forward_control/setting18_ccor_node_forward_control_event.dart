@@ -20,6 +20,7 @@ class DSVVA1Changed extends Setting18CCorNodeForwardControlEvent {
   });
 
   final String dsVVA1;
+
   @override
   List<Object> get props => [
         dsVVA1,
@@ -172,76 +173,52 @@ class DSOutSlope6Changed extends Setting18CCorNodeForwardControlEvent {
 class BiasCurrent1Changed extends Setting18CCorNodeForwardControlEvent {
   const BiasCurrent1Changed({
     required this.biasCurrent1,
-    required this.maxValue,
-    required this.minValue,
   });
 
   final String biasCurrent1;
-  final double maxValue;
-  final double minValue;
 
   @override
   List<Object> get props => [
         biasCurrent1,
-        maxValue,
-        minValue,
       ];
 }
 
 class BiasCurrent3Changed extends Setting18CCorNodeForwardControlEvent {
   const BiasCurrent3Changed({
     required this.biasCurrent3,
-    required this.maxValue,
-    required this.minValue,
   });
 
   final String biasCurrent3;
-  final double maxValue;
-  final double minValue;
 
   @override
   List<Object> get props => [
         biasCurrent3,
-        maxValue,
-        minValue,
       ];
 }
 
 class BiasCurrent4Changed extends Setting18CCorNodeForwardControlEvent {
   const BiasCurrent4Changed({
     required this.biasCurrent4,
-    required this.maxValue,
-    required this.minValue,
   });
 
   final String biasCurrent4;
-  final double maxValue;
-  final double minValue;
 
   @override
   List<Object> get props => [
         biasCurrent4,
-        maxValue,
-        minValue,
       ];
 }
 
 class BiasCurrent6Changed extends Setting18CCorNodeForwardControlEvent {
   const BiasCurrent6Changed({
     required this.biasCurrent6,
-    required this.maxValue,
-    required this.minValue,
   });
 
   final String biasCurrent6;
-  final double maxValue;
-  final double minValue;
 
   @override
   List<Object> get props => [
         biasCurrent6,
-        maxValue,
-        minValue,
       ];
 }
 

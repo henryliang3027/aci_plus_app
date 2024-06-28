@@ -229,16 +229,16 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeReverseControlBloc,
         Setting18CCorNodeReverseControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.usVCA1.minValue;
+        double maxValue = state.usVCA1.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA1,
+          currentValue: state.usVCA1.value,
           onChanged: (usVCA1) {
             context
                 .read<Setting18CCorNodeReverseControlBloc>()
@@ -246,6 +246,9 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
                   usVCA1: usVCA1,
                 ));
           },
+          errorText: state.usVCA1.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -262,16 +265,16 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeReverseControlBloc,
         Setting18CCorNodeReverseControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.usVCA3.minValue;
+        double maxValue = state.usVCA3.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA3,
+          currentValue: state.usVCA3.value,
           onChanged: (usVCA3) {
             context
                 .read<Setting18CCorNodeReverseControlBloc>()
@@ -279,6 +282,9 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
                   usVCA3: usVCA3,
                 ));
           },
+          errorText: state.usVCA3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -295,16 +301,16 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeReverseControlBloc,
         Setting18CCorNodeReverseControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.usVCA4.minValue;
+        double maxValue = state.usVCA4.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA4,
+          currentValue: state.usVCA4.value,
           onChanged: (usVCA4) {
             context
                 .read<Setting18CCorNodeReverseControlBloc>()
@@ -312,6 +318,9 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
                   usVCA4: usVCA4,
                 ));
           },
+          errorText: state.usVCA4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -328,16 +337,16 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeReverseControlBloc,
         Setting18CCorNodeReverseControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.usVCA6.minValue;
+        double maxValue = state.usVCA6.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA6,
+          currentValue: state.usVCA6.value,
           onChanged: (usVCA6) {
             context
                 .read<Setting18CCorNodeReverseControlBloc>()
@@ -345,6 +354,9 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
                   usVCA6: usVCA6,
                 ));
           },
+          errorText: state.usVCA6.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );

@@ -269,16 +269,16 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.dsVVA1.minValue;
+        double maxValue = state.dsVVA1.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA1,
+          currentValue: state.dsVVA1.value,
           onChanged: (dsVVA1) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -286,6 +286,9 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
                   dsVVA1: dsVVA1,
                 ));
           },
+          errorText: state.dsVVA1.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -302,16 +305,16 @@ class _ForwardInputAttenuation3 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.dsVVA3.minValue;
+        double maxValue = state.dsVVA3.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA3,
+          currentValue: state.dsVVA3.value,
           onChanged: (dsVVA3) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -319,6 +322,9 @@ class _ForwardInputAttenuation3 extends StatelessWidget {
                   dsVVA3: dsVVA3,
                 ));
           },
+          errorText: state.dsVVA3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -335,16 +341,16 @@ class _ForwardInputAttenuation4 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.dsVVA4.minValue;
+        double maxValue = state.dsVVA4.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA4,
+          currentValue: state.dsVVA4.value,
           onChanged: (dsVVA4) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -352,6 +358,9 @@ class _ForwardInputAttenuation4 extends StatelessWidget {
                   dsVVA4: dsVVA4,
                 ));
           },
+          errorText: state.dsVVA4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -368,16 +377,16 @@ class _ForwardInputAttenuation6 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.dsVVA6.minValue;
+        double maxValue = state.dsVVA6.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA6,
+          currentValue: state.dsVVA6.value,
           onChanged: (dsVVA6) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -385,6 +394,9 @@ class _ForwardInputAttenuation6 extends StatelessWidget {
                   dsVVA6: dsVVA6,
                 ));
           },
+          errorText: state.dsVVA6.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -401,16 +413,16 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 15.0;
-        return controlTextSlider(
+        double minValue = state.dsInSlope1.minValue;
+        double maxValue = state.dsInSlope1.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsInSlope1,
+          currentValue: state.dsInSlope1.value,
           onChanged: (dsInSlope1) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -418,6 +430,9 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
                   dsInSlope1: dsInSlope1,
                 ));
           },
+          errorText: state.dsInSlope1.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -434,16 +449,16 @@ class _ForwardInputEqualizer3 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 15.0;
-        return controlTextSlider(
+        double minValue = state.dsInSlope3.minValue;
+        double maxValue = state.dsInSlope3.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsInSlope3,
+          currentValue: state.dsInSlope3.value,
           onChanged: (dsInSlope3) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -451,6 +466,9 @@ class _ForwardInputEqualizer3 extends StatelessWidget {
                   dsInSlope3: dsInSlope3,
                 ));
           },
+          errorText: state.dsInSlope3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -467,16 +485,16 @@ class _ForwardInputEqualizer4 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 15.0;
-        return controlTextSlider(
+        double minValue = state.dsInSlope4.minValue;
+        double maxValue = state.dsInSlope4.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsInSlope4,
+          currentValue: state.dsInSlope4.value,
           onChanged: (dsInSlope4) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -484,6 +502,9 @@ class _ForwardInputEqualizer4 extends StatelessWidget {
                   dsInSlope4: dsInSlope4,
                 ));
           },
+          errorText: state.dsInSlope4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -500,16 +521,16 @@ class _ForwardInputEqualizer6 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 15.0;
-        return controlTextSlider(
+        double minValue = state.dsInSlope6.minValue;
+        double maxValue = state.dsInSlope6.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputEqualizer6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsInSlope6,
+          currentValue: state.dsInSlope6.value,
           onChanged: (dsInSlope6) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -517,6 +538,9 @@ class _ForwardInputEqualizer6 extends StatelessWidget {
                   dsInSlope6: dsInSlope6,
                 ));
           },
+          errorText: state.dsInSlope6.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -533,16 +557,16 @@ class _ForwardOutputEqualizer1 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 8.0;
-        return controlTextSlider(
+        double minValue = state.dsOutSlope1.minValue;
+        double maxValue = state.dsOutSlope1.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsOutSlope1,
+          currentValue: state.dsOutSlope1.value,
           onChanged: (dsOutSlope1) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -550,6 +574,9 @@ class _ForwardOutputEqualizer1 extends StatelessWidget {
                   dsOutSlope1: dsOutSlope1,
                 ));
           },
+          errorText: state.dsOutSlope1.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -566,16 +593,16 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 8.0;
-        return controlTextSlider(
+        double minValue = state.dsOutSlope3.minValue;
+        double maxValue = state.dsOutSlope3.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsOutSlope3,
+          currentValue: state.dsOutSlope3.value,
           onChanged: (dsOutSlope3) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -583,6 +610,9 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
                   dsOutSlope3: dsOutSlope3,
                 ));
           },
+          errorText: state.dsOutSlope3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -599,16 +629,16 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 8.0;
-        return controlTextSlider(
+        double minValue = state.dsOutSlope4.minValue;
+        double maxValue = state.dsOutSlope4.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsOutSlope4,
+          currentValue: state.dsOutSlope4.value,
           onChanged: (dsOutSlope4) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -616,6 +646,9 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
                   dsOutSlope4: dsOutSlope4,
                 ));
           },
+          errorText: state.dsOutSlope4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -632,16 +665,16 @@ class _ForwardOutputEqualizer6 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 8.0;
-        return controlTextSlider(
+        double minValue = state.dsOutSlope6.minValue;
+        double maxValue = state.dsOutSlope6.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsOutSlope6,
+          currentValue: state.dsOutSlope6.value,
           onChanged: (dsOutSlope6) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -649,6 +682,9 @@ class _ForwardOutputEqualizer6 extends StatelessWidget {
                   dsOutSlope6: dsOutSlope6,
                 ));
           },
+          errorText: state.dsOutSlope6.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -665,9 +701,9 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 320;
-        double maxValue = 520;
-        return biasCurrentTextSlider(
+        double minValue = state.biasCurrent1.minValue;
+        double maxValue = state.biasCurrent1.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
@@ -680,8 +716,6 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
                 .read<Setting18CCorNodeForwardControlBloc>()
                 .add(BiasCurrent1Changed(
                   biasCurrent1: biasCurrent1,
-                  maxValue: maxValue,
-                  minValue: minValue,
                 ));
           },
           errorText: state.biasCurrent1.isNotValid
@@ -703,9 +737,9 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 320;
-        double maxValue = 520;
-        return biasCurrentTextSlider(
+        double minValue = state.biasCurrent3.minValue;
+        double maxValue = state.biasCurrent3.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
@@ -718,8 +752,6 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
                 .read<Setting18CCorNodeForwardControlBloc>()
                 .add(BiasCurrent3Changed(
                   biasCurrent3: biasCurrent3,
-                  maxValue: maxValue,
-                  minValue: minValue,
                 ));
           },
           errorText: state.biasCurrent3.isNotValid
@@ -741,9 +773,9 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 320;
-        double maxValue = 520;
-        return biasCurrentTextSlider(
+        double minValue = state.biasCurrent4.minValue;
+        double maxValue = state.biasCurrent4.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
@@ -756,8 +788,6 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
                 .read<Setting18CCorNodeForwardControlBloc>()
                 .add(BiasCurrent4Changed(
                   biasCurrent4: biasCurrent4,
-                  maxValue: maxValue,
-                  minValue: minValue,
                 ));
           },
           errorText: state.biasCurrent4.isNotValid
@@ -779,9 +809,9 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = 320;
-        double maxValue = 520;
-        return biasCurrentTextSlider(
+        double minValue = state.biasCurrent6.minValue;
+        double maxValue = state.biasCurrent6.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
@@ -794,8 +824,6 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
                 .read<Setting18CCorNodeForwardControlBloc>()
                 .add(BiasCurrent6Changed(
                   biasCurrent6: biasCurrent6,
-                  maxValue: maxValue,
-                  minValue: minValue,
                 ));
           },
           errorText: state.biasCurrent6.isNotValid
