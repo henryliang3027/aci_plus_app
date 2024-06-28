@@ -15,23 +15,36 @@ class Setting18ControlTabBar extends StatelessWidget {
         children: [
           Container(
             width: double.maxFinite,
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.onPrimary,
             child: TabBar(
               // controller: tabController,
-              tabAlignment: TabAlignment.fill,
-              // isScrollable: true,
-              unselectedLabelColor: Colors.white,
-              labelColor: Theme.of(context).colorScheme.primary,
+              padding: const EdgeInsets.only(left: 6.0),
+              dividerColor: Colors.grey,
+              tabAlignment: TabAlignment.start,
+              isScrollable: true,
+              unselectedLabelColor: Colors.grey,
+              labelColor: Colors.black,
               indicatorSize: TabBarIndicatorSize.tab,
-              indicator: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                color: Colors.white,
+              indicator: BoxDecoration(
+                border: const Border(
+                    left: BorderSide(
+                      color: Colors.grey,
+                    ),
+                    top: BorderSide(
+                      color: Colors.grey,
+                    ),
+                    right: BorderSide(
+                      color: Colors.grey,
+                    )),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(10)),
+                color: Theme.of(context).colorScheme.surfaceBright,
               ),
-              labelPadding: const EdgeInsets.symmetric(horizontal: 24.0),
+              // labelPadding: const EdgeInsets.symmetric(horizontal: 24.0),
               tabs: [
                 Tab(
                   child: SizedBox(
-                    width: 110,
+                    // width: 110,
                     child: Center(
                       child: Text(
                         AppLocalizations.of(context)!.forwardControl,
@@ -41,7 +54,7 @@ class Setting18ControlTabBar extends StatelessWidget {
                 ),
                 Tab(
                   child: SizedBox(
-                    width: 110,
+                    // width: 110,
                     child: Center(
                       child: Text(
                         AppLocalizations.of(context)!.returnControl,
