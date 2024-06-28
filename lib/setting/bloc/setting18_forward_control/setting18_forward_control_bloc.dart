@@ -34,12 +34,35 @@ class Setting18ForwardControlBloc
 
   final Amp18Repository _amp18Repository;
 
+  double getSlope1MaxValue(String index) {
+    if (index.isNotEmpty) {
+      int intIndex = int.parse(index);
+
+      if (intIndex >= 0 && intIndex <= 24) {
+        return 24.0;
+      } else if (intIndex == 120) {
+        return 12.0;
+      } else if (intIndex == 180) {
+        return 12.0;
+      } else if (intIndex == 255) {
+        return 12.0;
+      } else {
+        return 12.0;
+      }
+    } else {
+      return 12.0;
+    }
+  }
+
   void _onInitialized(
     Initialized event,
     Emitter<Setting18ForwardControlState> emit,
   ) {
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
+
+    String forwardCEQIndex =
+        characteristicDataCache[DataKey.forwardCEQIndex] ?? '';
 
     String dsVVA1 = characteristicDataCache[DataKey.dsVVA1] ?? '';
     String dsVVA2 = characteristicDataCache[DataKey.dsVVA2] ?? '';

@@ -13,9 +13,14 @@ class Setting18CCorNodeControlPage extends StatelessWidget {
       create: (context) => Setting18CCorNodeControlBloc(
           amp18CCorNodeRepository:
               RepositoryProvider.of<Amp18CCorNodeRepository>(context)),
-      child: const Padding(
-        padding: EdgeInsets.only(top: 6),
-        child: Setting18CCroNodeControlTabBar(),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+        child: const Padding(
+          padding: EdgeInsets.only(top: 6),
+          child: Setting18CCroNodeControlTabBar(),
+        ),
       ),
     );
   }
