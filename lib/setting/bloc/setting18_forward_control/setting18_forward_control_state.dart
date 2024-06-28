@@ -4,15 +4,33 @@ class Setting18ForwardControlState extends Equatable {
   const Setting18ForwardControlState({
     this.submissionStatus = SubmissionStatus.none,
     this.resetForwardValuesSubmissionStatus = SubmissionStatus.none,
-    this.dsVVA1 = '',
-    this.dsVVA2 = '',
-    this.dsVVA3 = '',
-    this.dsVVA4 = '',
-    this.dsVVA5 = '',
-    this.dsSlope1 = '',
-    this.dsSlope2 = '',
-    this.dsSlope3 = '',
-    this.dsSlope4 = '',
+    this.dsVVA1 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 30,
+    ),
+    this.dsVVA2 = const RangeFloatPointInput.pure(),
+    this.dsVVA3 = const RangeFloatPointInput.pure(),
+    this.dsVVA4 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 10,
+    ),
+    this.dsVVA5 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 10,
+    ),
+    this.dsSlope1 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 24,
+    ),
+    this.dsSlope2 = const RangeFloatPointInput.pure(),
+    this.dsSlope3 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 10,
+    ),
+    this.dsSlope4 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 10,
+    ),
     this.tgcCableLength = '',
     this.editMode = false,
     this.enableSubmission = false,
@@ -22,15 +40,15 @@ class Setting18ForwardControlState extends Equatable {
 
   final SubmissionStatus submissionStatus;
   final SubmissionStatus resetForwardValuesSubmissionStatus;
-  final String dsVVA1;
-  final String dsVVA2;
-  final String dsVVA3;
-  final String dsVVA4;
-  final String dsVVA5;
-  final String dsSlope1;
-  final String dsSlope2;
-  final String dsSlope3;
-  final String dsSlope4;
+  final RangeFloatPointInput dsVVA1;
+  final RangeFloatPointInput dsVVA2;
+  final RangeFloatPointInput dsVVA3;
+  final RangeFloatPointInput dsVVA4;
+  final RangeFloatPointInput dsVVA5;
+  final RangeFloatPointInput dsSlope1;
+  final RangeFloatPointInput dsSlope2;
+  final RangeFloatPointInput dsSlope3;
+  final RangeFloatPointInput dsSlope4;
   final String tgcCableLength;
   final bool editMode;
   final bool enableSubmission;
@@ -40,15 +58,15 @@ class Setting18ForwardControlState extends Equatable {
   Setting18ForwardControlState copyWith({
     SubmissionStatus? submissionStatus,
     SubmissionStatus? resetForwardValuesSubmissionStatus,
-    String? dsVVA1,
-    String? dsVVA2,
-    String? dsVVA3,
-    String? dsVVA4,
-    String? dsVVA5,
-    String? dsSlope1,
-    String? dsSlope2,
-    String? dsSlope3,
-    String? dsSlope4,
+    RangeFloatPointInput? dsVVA1,
+    RangeFloatPointInput? dsVVA2,
+    RangeFloatPointInput? dsVVA3,
+    RangeFloatPointInput? dsVVA4,
+    RangeFloatPointInput? dsVVA5,
+    RangeFloatPointInput? dsSlope1,
+    RangeFloatPointInput? dsSlope2,
+    RangeFloatPointInput? dsSlope3,
+    RangeFloatPointInput? dsSlope4,
     String? tgcCableLength,
     bool? editMode,
     bool? enableSubmission,
