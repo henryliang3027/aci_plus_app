@@ -5,26 +5,86 @@ class Setting18CCorNodeGraphModuleState extends Equatable {
     this.submissionStatus = SubmissionStatus.none,
     this.forwardConfig = '',
     this.splitOption = '',
-    this.dsVVA1 = '',
-    this.dsVVA3 = '',
-    this.dsVVA4 = '',
-    this.dsVVA6 = '',
-    this.dsInSlope1 = '',
-    this.dsInSlope3 = '',
-    this.dsInSlope4 = '',
-    this.dsInSlope6 = '',
-    this.dsOutSlope1 = '',
-    this.dsOutSlope3 = '',
-    this.dsOutSlope4 = '',
-    this.dsOutSlope6 = '',
-    this.biasCurrent1 = '',
-    this.biasCurrent3 = '',
-    this.biasCurrent4 = '',
-    this.biasCurrent6 = '',
-    this.usVCA1 = '',
-    this.usVCA3 = '',
-    this.usVCA4 = '',
-    this.usVCA6 = '',
+    this.dsVVA1 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.dsVVA3 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.dsVVA4 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.dsVVA6 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.dsInSlope1 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.dsInSlope3 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.dsInSlope4 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.dsInSlope6 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.dsOutSlope1 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.dsOutSlope3 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.dsOutSlope4 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.dsOutSlope6 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 8,
+    ),
+    this.biasCurrent1 = const RangeFloatPointInput.pure(
+      minValue: 320,
+      maxValue: 520,
+    ),
+    this.biasCurrent3 = const RangeFloatPointInput.pure(
+      minValue: 320,
+      maxValue: 520,
+    ),
+    this.biasCurrent4 = const RangeFloatPointInput.pure(
+      minValue: 320,
+      maxValue: 520,
+    ),
+    this.biasCurrent6 = const RangeFloatPointInput.pure(
+      minValue: 320,
+      maxValue: 520,
+    ),
+    this.usVCA1 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.usVCA3 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.usVCA4 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
+    this.usVCA6 = const RangeFloatPointInput.pure(
+      minValue: 0,
+      maxValue: 25,
+    ),
     this.returnIngressSetting1 = '',
     this.returnIngressSetting3 = '',
     this.returnIngressSetting4 = '',
@@ -39,26 +99,26 @@ class Setting18CCorNodeGraphModuleState extends Equatable {
   final SubmissionStatus submissionStatus;
   final String forwardConfig;
   final String splitOption;
-  final String dsVVA1;
-  final String dsVVA3;
-  final String dsVVA4;
-  final String dsVVA6;
-  final String dsInSlope1;
-  final String dsInSlope3;
-  final String dsInSlope4;
-  final String dsInSlope6;
-  final String dsOutSlope1;
-  final String dsOutSlope3;
-  final String dsOutSlope4;
-  final String dsOutSlope6;
-  final String biasCurrent1;
-  final String biasCurrent3;
-  final String biasCurrent4;
-  final String biasCurrent6;
-  final String usVCA1;
-  final String usVCA3;
-  final String usVCA4;
-  final String usVCA6;
+  final RangeFloatPointInput dsVVA1;
+  final RangeFloatPointInput dsVVA3;
+  final RangeFloatPointInput dsVVA4;
+  final RangeFloatPointInput dsVVA6;
+  final RangeFloatPointInput dsInSlope1;
+  final RangeFloatPointInput dsInSlope3;
+  final RangeFloatPointInput dsInSlope4;
+  final RangeFloatPointInput dsInSlope6;
+  final RangeFloatPointInput dsOutSlope1;
+  final RangeFloatPointInput dsOutSlope3;
+  final RangeFloatPointInput dsOutSlope4;
+  final RangeFloatPointInput dsOutSlope6;
+  final RangeFloatPointInput biasCurrent1;
+  final RangeFloatPointInput biasCurrent3;
+  final RangeFloatPointInput biasCurrent4;
+  final RangeFloatPointInput biasCurrent6;
+  final RangeFloatPointInput usVCA1;
+  final RangeFloatPointInput usVCA3;
+  final RangeFloatPointInput usVCA4;
+  final RangeFloatPointInput usVCA6;
   final String returnIngressSetting1;
   final String returnIngressSetting3;
   final String returnIngressSetting4;
@@ -73,26 +133,26 @@ class Setting18CCorNodeGraphModuleState extends Equatable {
     SubmissionStatus? submissionStatus,
     String? forwardConfig,
     String? splitOption,
-    String? dsVVA1,
-    String? dsVVA3,
-    String? dsVVA4,
-    String? dsVVA6,
-    String? dsInSlope1,
-    String? dsInSlope3,
-    String? dsInSlope4,
-    String? dsInSlope6,
-    String? dsOutSlope1,
-    String? dsOutSlope3,
-    String? dsOutSlope4,
-    String? dsOutSlope6,
-    String? biasCurrent1,
-    String? biasCurrent3,
-    String? biasCurrent4,
-    String? biasCurrent6,
-    String? usVCA1,
-    String? usVCA3,
-    String? usVCA4,
-    String? usVCA6,
+    RangeFloatPointInput? dsVVA1,
+    RangeFloatPointInput? dsVVA3,
+    RangeFloatPointInput? dsVVA4,
+    RangeFloatPointInput? dsVVA6,
+    RangeFloatPointInput? dsInSlope1,
+    RangeFloatPointInput? dsInSlope3,
+    RangeFloatPointInput? dsInSlope4,
+    RangeFloatPointInput? dsInSlope6,
+    RangeFloatPointInput? dsOutSlope1,
+    RangeFloatPointInput? dsOutSlope3,
+    RangeFloatPointInput? dsOutSlope4,
+    RangeFloatPointInput? dsOutSlope6,
+    RangeFloatPointInput? biasCurrent1,
+    RangeFloatPointInput? biasCurrent3,
+    RangeFloatPointInput? biasCurrent4,
+    RangeFloatPointInput? biasCurrent6,
+    RangeFloatPointInput? usVCA1,
+    RangeFloatPointInput? usVCA3,
+    RangeFloatPointInput? usVCA4,
+    RangeFloatPointInput? usVCA6,
     String? returnIngressSetting1,
     String? returnIngressSetting3,
     String? returnIngressSetting4,

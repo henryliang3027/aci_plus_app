@@ -361,21 +361,24 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.dsVVA1.minValue;
+        double maxValue = state.dsVVA1.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA1,
+          currentValue: state.dsVVA1.value,
           onChanged: (dsVVA1) {
             context.read<Setting18CCorNodeGraphModuleBloc>().add(DSVVA1Changed(
                   dsVVA1: dsVVA1,
                 ));
           },
+          errorText: state.dsVVA1.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -392,21 +395,24 @@ class _ForwardInputAttenuation3 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.dsVVA3.minValue;
+        double maxValue = state.dsVVA3.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardInputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA3,
+          currentValue: state.dsVVA3.value,
           onChanged: (dsVVA3) {
             context.read<Setting18CCorNodeGraphModuleBloc>().add(DSVVA3Changed(
                   dsVVA3: dsVVA3,
                 ));
           },
+          errorText: state.dsVVA3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -423,21 +429,24 @@ class _ForwardInputAttenuation4 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.dsVVA4.minValue;
+        double maxValue = state.dsVVA4.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA4,
+          currentValue: state.dsVVA4.value,
           onChanged: (dsVVA4) {
             context.read<Setting18CCorNodeGraphModuleBloc>().add(DSVVA4Changed(
                   dsVVA4: dsVVA4,
                 ));
           },
+          errorText: state.dsVVA4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -454,21 +463,24 @@ class _ForwardInputAttenuation6 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.dsVVA6.minValue;
+        double maxValue = state.dsVVA6.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA6,
+          currentValue: state.dsVVA6.value,
           onChanged: (dsVVA6) {
             context.read<Setting18CCorNodeGraphModuleBloc>().add(DSVVA6Changed(
                   dsVVA6: dsVVA6,
                 ));
           },
+          errorText: state.dsVVA6.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -617,16 +629,16 @@ class _ForwardOutputEqualizer1 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 8.0;
-        return controlTextSlider(
+        double minValue = state.dsOutSlope1.minValue;
+        double maxValue = state.dsOutSlope1.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsOutSlope1,
+          currentValue: state.dsOutSlope1.value,
           onChanged: (dsOutSlope1) {
             context
                 .read<Setting18CCorNodeGraphModuleBloc>()
@@ -634,6 +646,9 @@ class _ForwardOutputEqualizer1 extends StatelessWidget {
                   dsOutSlope1: dsOutSlope1,
                 ));
           },
+          errorText: state.dsOutSlope1.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -650,16 +665,16 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 8.0;
-        return controlTextSlider(
+        double minValue = state.dsOutSlope3.minValue;
+        double maxValue = state.dsOutSlope3.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsOutSlope3,
+          currentValue: state.dsOutSlope3.value,
           onChanged: (dsOutSlope3) {
             context
                 .read<Setting18CCorNodeGraphModuleBloc>()
@@ -667,6 +682,9 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
                   dsOutSlope3: dsOutSlope3,
                 ));
           },
+          errorText: state.dsOutSlope3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -683,16 +701,16 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 8.0;
-        return controlTextSlider(
+        double minValue = state.dsOutSlope4.minValue;
+        double maxValue = state.dsOutSlope4.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsOutSlope4,
+          currentValue: state.dsOutSlope4.value,
           onChanged: (dsOutSlope4) {
             context
                 .read<Setting18CCorNodeGraphModuleBloc>()
@@ -700,6 +718,9 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
                   dsOutSlope4: dsOutSlope4,
                 ));
           },
+          errorText: state.dsOutSlope4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -716,16 +737,16 @@ class _ForwardOutputEqualizer6 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 8.0;
-        return controlTextSlider(
+        double minValue = state.dsOutSlope6.minValue;
+        double maxValue = state.dsOutSlope6.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardOutputEqualizer6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsOutSlope6,
+          currentValue: state.dsOutSlope6.value,
           onChanged: (dsOutSlope6) {
             context
                 .read<Setting18CCorNodeGraphModuleBloc>()
@@ -733,6 +754,9 @@ class _ForwardOutputEqualizer6 extends StatelessWidget {
                   dsOutSlope6: dsOutSlope6,
                 ));
           },
+          errorText: state.dsOutSlope6.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -749,16 +773,16 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 320.0;
-        double maxValue = 520.0;
-        return controlTextSlider(
+        double minValue = state.biasCurrent1.minValue;
+        double maxValue = state.biasCurrent1.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardBiasCurrent1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.biasCurrent1,
+          currentValue: state.biasCurrent1.value,
           onChanged: (biasCurrent1) {
             context
                 .read<Setting18CCorNodeGraphModuleBloc>()
@@ -766,6 +790,9 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
                   biasCurrent1: biasCurrent1,
                 ));
           },
+          errorText: state.biasCurrent1.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -782,16 +809,16 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 320.0;
-        double maxValue = 520.0;
-        return controlTextSlider(
+        double minValue = state.biasCurrent3.minValue;
+        double maxValue = state.biasCurrent3.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardBiasCurrent3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.biasCurrent3,
+          currentValue: state.biasCurrent3.value,
           onChanged: (biasCurrent3) {
             context
                 .read<Setting18CCorNodeGraphModuleBloc>()
@@ -799,6 +826,9 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
                   biasCurrent3: biasCurrent3,
                 ));
           },
+          errorText: state.biasCurrent3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -815,16 +845,16 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 320.0;
-        double maxValue = 520.0;
-        return controlTextSlider(
+        double minValue = state.biasCurrent4.minValue;
+        double maxValue = state.biasCurrent4.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardBiasCurrent4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.biasCurrent4,
+          currentValue: state.biasCurrent4.value,
           onChanged: (biasCurrent4) {
             context
                 .read<Setting18CCorNodeGraphModuleBloc>()
@@ -832,6 +862,9 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
                   biasCurrent4: biasCurrent4,
                 ));
           },
+          errorText: state.biasCurrent4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -848,16 +881,16 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 320.0;
-        double maxValue = 520.0;
-        return controlTextSlider(
+        double minValue = state.biasCurrent6.minValue;
+        double maxValue = state.biasCurrent6.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.forwardBiasCurrent6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.biasCurrent6,
+          currentValue: state.biasCurrent6.value,
           onChanged: (biasCurrent6) {
             context
                 .read<Setting18CCorNodeGraphModuleBloc>()
@@ -865,6 +898,9 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
                   biasCurrent6: biasCurrent6,
                 ));
           },
+          errorText: state.biasCurrent6.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -881,21 +917,24 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.usVCA1.minValue;
+        double maxValue = state.usVCA1.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA1,
+          currentValue: state.usVCA1.value,
           onChanged: (usVCA1) {
             context.read<Setting18CCorNodeGraphModuleBloc>().add(USVCA1Changed(
                   usVCA1: usVCA1,
                 ));
           },
+          errorText: state.usVCA1.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -912,21 +951,24 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.usVCA3.minValue;
+        double maxValue = state.usVCA3.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA3,
+          currentValue: state.usVCA3.value,
           onChanged: (usVCA3) {
             context.read<Setting18CCorNodeGraphModuleBloc>().add(USVCA3Changed(
                   usVCA3: usVCA3,
                 ));
           },
+          errorText: state.usVCA3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -943,21 +985,24 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.usVCA4.minValue;
+        double maxValue = state.usVCA4.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA4,
+          currentValue: state.usVCA4.value,
           onChanged: (usVCA4) {
             context.read<Setting18CCorNodeGraphModuleBloc>().add(USVCA4Changed(
                   usVCA4: usVCA4,
                 ));
           },
+          errorText: state.usVCA4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
@@ -974,21 +1019,24 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = 0.0;
-        double maxValue = 25.0;
-        return controlTextSlider(
+        double minValue = state.usVCA6.minValue;
+        double maxValue = state.usVCA6.maxValue;
+        return controlTextSlider2(
           context: context,
           editMode: state.editMode,
           title:
               '${AppLocalizations.of(context)!.returnInputAttenuation6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA6,
+          currentValue: state.usVCA6.value,
           onChanged: (usVCA6) {
             context.read<Setting18CCorNodeGraphModuleBloc>().add(USVCA6Changed(
                   usVCA6: usVCA6,
                 ));
           },
+          errorText: state.usVCA6.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );
