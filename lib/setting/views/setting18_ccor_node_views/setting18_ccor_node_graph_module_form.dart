@@ -5,6 +5,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_graph_module/setting18_ccor_node_graph_module_bloc.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
+import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/foundation.dart';
@@ -34,80 +35,6 @@ class _Setting18CCorNodeGraphModuleFormState
 
   @override
   Widget build(BuildContext context) {
-    String formatResultValue(String boolValue) {
-      return boolValue == 'true'
-          ? AppLocalizations.of(context)!.dialogMessageSuccessful
-          : AppLocalizations.of(context)!.dialogMessageFailed;
-    }
-
-    String formatResultItem(String item) {
-      if (item == DataKey.forwardConfig.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardConfigModeSetting;
-      }
-      if (item == DataKey.splitOption.name) {
-        return AppLocalizations.of(context)!.dialogMessageSplitOptionSetting;
-      } else if (item == DataKey.dsVVA1.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardInputAttenuation1Setting;
-      } else if (item == DataKey.dsVVA3.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardInputAttenuation3Setting;
-      } else if (item == DataKey.dsVVA4.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardInputAttenuation4Setting;
-      } else if (item == DataKey.dsVVA6.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardInputAttenuation6Setting;
-      } else if (item == DataKey.dsOutSlope1.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardOutputEqualizer1Setting;
-      } else if (item == DataKey.dsOutSlope3.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardOutputEqualizer3Setting;
-      } else if (item == DataKey.dsOutSlope4.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardOutputEqualizer4Setting;
-      } else if (item == DataKey.dsOutSlope6.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardOutputEqualizer6Setting;
-      } else if (item == DataKey.biasCurrent1.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardBiasCurrent1Setting;
-      } else if (item == DataKey.biasCurrent3.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardBiasCurrent3Setting;
-      } else if (item == DataKey.biasCurrent4.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardBiasCurrent4Setting;
-      } else if (item == DataKey.biasCurrent6.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardBiasCurrent6Setting;
-      } else if (item == DataKey.usVCA1.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnInputAttenuation1Setting;
-      } else if (item == DataKey.usVCA3.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnInputAttenuation3Setting;
-      } else if (item == DataKey.usVCA4.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnInputAttenuation4Setting;
-      } else if (item == DataKey.usVCA6.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnInputAttenuation6Setting;
-      } else if (item == DataKey.ingressSetting1.name) {
-        return AppLocalizations.of(context)!.dialogMessageReturnIngress1Setting;
-      } else if (item == DataKey.ingressSetting3.name) {
-        return AppLocalizations.of(context)!.dialogMessageReturnIngress3Setting;
-      } else if (item == DataKey.ingressSetting4.name) {
-        return AppLocalizations.of(context)!.dialogMessageReturnIngress4Setting;
-      } else if (item == DataKey.ingressSetting6.name) {
-        return AppLocalizations.of(context)!.dialogMessageReturnIngress6Setting;
-      } else {
-        return '';
-      }
-    }
-
     Widget getSettingWidgetHeader(String title) {
       return Padding(
         padding: const EdgeInsets.only(
@@ -197,46 +124,6 @@ class _Setting18CCorNodeGraphModuleFormState
       return isForwardWidget ? CustomStyle.customBlue : CustomStyle.customPink;
     }
 
-    Color getResultValueColor(String resultValue) {
-      return resultValue == 'true' ? Colors.green : Colors.red;
-    }
-
-    List<Widget> getMessageRows(List<String> settingResultList) {
-      List<Widget> rows = [];
-      for (String settingResult in settingResultList) {
-        String item = settingResult.split(',')[0];
-        String value = settingResult.split(',')[1];
-        Color valueColor = getResultValueColor(value);
-
-        rows.add(Padding(
-          padding: const EdgeInsets.only(
-            bottom: 14.0,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                flex: 3,
-                child: Text(
-                  formatResultItem(item),
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ),
-              Text(
-                formatResultValue(value),
-                style: TextStyle(
-                  fontSize: CustomStyle.sizeL,
-                  color: valueColor,
-                ),
-                textAlign: TextAlign.end,
-              ),
-            ],
-          ),
-        ));
-      }
-      return rows;
-    }
-
     return BlocListener<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       listener: (context, state) async {
@@ -246,7 +133,10 @@ class _Setting18CCorNodeGraphModuleFormState
           if (ModalRoute.of(context)?.isCurrent != true) {
             Navigator.of(context).pop();
           }
-          List<Widget> rows = getMessageRows(state.settingResult);
+          List<Widget> rows = get1P8GCCorNodeSettingMessageRows(
+            context: context,
+            settingResultList: state.settingResult,
+          );
           showResultDialog(
             context: context,
             messageRows: rows,

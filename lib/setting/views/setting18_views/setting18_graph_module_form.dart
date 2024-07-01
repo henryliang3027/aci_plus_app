@@ -5,6 +5,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_graph_module/setting18_graph_module_bloc.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
+import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/foundation.dart';
@@ -111,12 +112,20 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         ),
       ],
       DataKey.dsVVA4.name: [
-        partId == '5'
-            ? const _ForwardOutputAttenuation2And3()
-            : const _ForwardOutputAttenuation3And4(),
+        if (partId == '5' || partId == '6') ...[
+          const _ForwardOutputAttenuation2And3()
+        ] else if (partId == '8') ...[
+          const _ForwardOutputAttenuation3()
+        ] else ...[
+          const _ForwardOutputAttenuation3And4()
+        ]
       ],
       DataKey.dsVVA5.name: [
-        const _ForwardOutputAttenuation5And6(),
+        if (partId == '5') ...[
+          const _ForwardOutputAttenuation5And6(),
+        ] else ...[
+          const _ForwardOutputAttenuation4()
+        ]
       ],
       DataKey.dsSlope1.name: [
         _ForwardInputEqualizer1(
@@ -127,10 +136,18 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         ),
       ],
       DataKey.dsSlope3.name: [
-        const _ForwardOutputEqualizer2And3(),
+        if (partId == '5' || partId == '6') ...[
+          const _ForwardOutputEqualizer2And3(),
+        ] else ...[
+          const _ForwardOutputEqualizer3()
+        ]
       ],
       DataKey.dsSlope4.name: [
-        const _ForwardOutputEqualizer5And6(),
+        if (partId == '5' || partId == '6') ...[
+          const _ForwardOutputEqualizer5And6(),
+        ] else ...[
+          const _ForwardOutputEqualizer4()
+        ]
       ]
     };
 
@@ -169,242 +186,6 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
             ],
       DataKey.eREQ.name: [const _ReturnOutputEqualizer1()],
     };
-
-    // List<Widget> getForwardSettingWidgetByModuleId() {
-    //   String moduleName = widget.moduleName;
-
-    //   if (moduleName == DataKey.splitOption.name) {
-    //     return [const _SplitOption()];
-    //   } else if (moduleName == DataKey.agcMode.name) {
-    //     return [
-    //       const _PilotFrequencyMode(),
-    //       _FirstChannelLoading(
-    //         firstChannelLoadingFrequencyTextEditingController:
-    //             firstChannelLoadingFrequencyTextEditingController,
-    //         firstChannelLoadingLevelTextEditingController:
-    //             firstChannelLoadingLevelTextEditingController,
-    //         currentDetectedSplitOption: currentDetectedSplitOption,
-    //       ),
-    //       _LastChannelLoading(
-    //         lastChannelLoadingFrequencyTextEditingController:
-    //             lastChannelLoadingFrequencyTextEditingController,
-    //         lastChannelLoadingLevelTextEditingController:
-    //             lastChannelLoadingLevelTextEditingController,
-    //       ),
-    //       _PilotFrequency1(
-    //         pilotFrequency1TextEditingController:
-    //             pilotFrequency1TextEditingController,
-    //         manualModePilot1RFOutputPowerTextEditingController:
-    //             manualModePilot1RFOutputPowerTextEditingController,
-    //       ),
-    //       _PilotFrequency2(
-    //         pilotFrequency2TextEditingController:
-    //             pilotFrequency2TextEditingController,
-    //         manualModePilot2RFOutputPowerTextEditingController:
-    //             manualModePilot2RFOutputPowerTextEditingController,
-    //       ),
-    //       const _AGCMode(),
-    //       // const _ALCMode(),
-    //     ];
-    //   } else if (moduleName == DataKey.dsVVA1.name) {
-    //     return [
-    //       _ForwardInputAttenuation1(
-    //         alcMode: alcMode,
-    //         agcMode: agcMode,
-    //         currentInputAttenuation: currentInputAttenuation,
-    //       ),
-    //     ];
-    //   } else if (moduleName == DataKey.dsVVA4.name) {
-    //     if (partId == '5') {
-    //       return [const _ForwardOutputAttenuation2And3()];
-    //     } else {
-    //       return [const _ForwardOutputAttenuation3And4()];
-    //     }
-    //   } else if (moduleName == DataKey.dsVVA5.name) {
-    //     return [const _ForwardOutputAttenuation5And6()];
-    //   } else if (moduleName == DataKey.dsSlope1.name) {
-    //     return [
-    //       _ForwardInputEqualizer1(
-    //         forwardCEQIndex: forwardCEQIndex,
-    //         alcMode: alcMode,
-    //         agcMode: agcMode,
-    //         currentInputEqualizer: currentInputEqualizer,
-    //       )
-    //     ];
-    //   } else if (moduleName == DataKey.dsSlope3.name) {
-    //     return [const _ForwardOutputEqualizer2And3()];
-    //   } else if (moduleName == DataKey.dsSlope4.name) {
-    //     return [const _ForwardOutputEqualizer5And6()];
-    //   } else {
-    //     return [];
-    //   }
-    // }
-
-    // List<Widget> getReverseSettingWidgetByModuleId() {
-    //   String moduleName = widget.moduleName;
-
-    //   if (moduleName == DataKey.usVCA1.name) {
-    //     if (partId == '5') {
-    //       return [
-    //         _ReturnInputAttenuation4(partId: partId),
-    //         _ReturnIngressSetting4(partId: partId),
-    //       ];
-    //     } else {
-    //       return [
-    //         const _ReturnInputAttenuation2(),
-    //         const _ReturnIngressSetting2(),
-    //       ];
-    //     }
-    //   } else if (moduleName == DataKey.usVCA2.name) {
-    //     return [const _ReturnOutputAttenuation1()];
-    //   } else if (moduleName == DataKey.usVCA3.name) {
-    //     if (partId == '5' || partId == '6') {
-    //       return [
-    //         const _ReturnInputAttenuation2And3(),
-    //         const _ReturnIngressSetting2And3(),
-    //       ];
-    //     } else {
-    //       return [
-    //         const _ReturnInputAttenuation3(),
-    //         const _ReturnIngressSetting3(),
-    //       ];
-    //     }
-    //   } else if (moduleName == DataKey.usVCA4.name) {
-    //     if (partId == '5' || partId == '6') {
-    //       return [
-    //         const _ReturnInputAttenuation5And6(),
-    //         const _ReturnIngressSetting5And6(),
-    //       ];
-    //     } else {
-    //       return [
-    //         _ReturnInputAttenuation4(
-    //           partId: partId,
-    //         ),
-    //         _ReturnIngressSetting4(
-    //           partId: partId,
-    //         ),
-    //       ];
-    //     }
-    //   } else if (moduleName == DataKey.eREQ.name) {
-    //     return [const _ReturnOutputEqualizer1()];
-    //   } else {
-    //     return [];
-    //   }
-    // }
-
-    String formatResultValue(String boolValue) {
-      return boolValue == 'true'
-          ? AppLocalizations.of(context)!.dialogMessageSuccessful
-          : AppLocalizations.of(context)!.dialogMessageFailed;
-    }
-
-    String formatResultItem(String item) {
-      if (item == DataKey.splitOption.name) {
-        return AppLocalizations.of(context)!.dialogMessageSplitOptionSetting;
-      } else if (item == DataKey.pilotFrequencyMode.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessagePilotFrequencyModeSetting;
-      } else if (item == DataKey.firstChannelLoadingFrequency.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageFirstChannelLoadingFrequencySetting;
-      } else if (item == DataKey.firstChannelLoadingLevel.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageFirstChannelLoadingLevelSetting;
-      } else if (item == DataKey.lastChannelLoadingFrequency.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageLastChannelLoadingFrequencySetting;
-      } else if (item == DataKey.lastChannelLoadingLevel.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageLastChannelLoadingLevelSetting;
-      } else if (item == DataKey.pilotFrequency1.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessagePilotFrequency1Setting;
-      } else if (item == DataKey.pilotFrequency2.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessagePilotFrequency2Setting;
-      } else if (item == DataKey.agcMode.name) {
-        return AppLocalizations.of(context)!.dialogMessageAGCModeSetting;
-      } else if (item == DataKey.alcMode.name) {
-        return AppLocalizations.of(context)!.dialogMessageALCModeSetting;
-      }
-      if (item == DataKey.dsVVA1.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardInputAttenuation1Setting;
-      } else if (item == DataKey.dsVVA4.name) {
-        if (partId == '5' || partId == '6') {
-          return AppLocalizations.of(context)!
-              .dialogMessageForwardOutputAttenuation2And3Setting;
-        } else {
-          return AppLocalizations.of(context)!
-              .dialogMessageForwardOutputEqualizer3And4Setting;
-        }
-      } else if (item == DataKey.dsVVA5.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardOutputAttenuation5And6Setting;
-      } else if (item == DataKey.dsSlope1.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardInputEqualizer1Setting;
-      } else if (item == DataKey.dsSlope3.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardOutputEqualizer2And3Setting;
-      } else if (item == DataKey.dsSlope4.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageForwardOutputEqualizer5And6Setting;
-      } else if (item == DataKey.tgcCableLength.name) {
-        return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
-      } else if (item == DataKey.usVCA1.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnInputAttenuation2Setting;
-      } else if (item == DataKey.usVCA2.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnOutputAttenuation1Setting;
-      } else if (item == DataKey.usVCA3.name) {
-        if (partId == '5' || partId == '6') {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnInputAttenuation2And3Setting;
-        } else {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnInputAttenuation3Setting;
-        }
-      } else if (item == DataKey.usVCA4.name) {
-        if (partId == '5' || partId == '6') {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnInputAttenuation5And6Setting;
-        } else {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnInputAttenuation4Setting;
-        }
-      } else if (item == DataKey.eREQ.name) {
-        return AppLocalizations.of(context)!
-            .dialogMessageReturnOutputEqualizer1Setting;
-      } else if (item == DataKey.ingressSetting2.name) {
-        if (partId == '5' || partId == '6') {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnIngress4Setting;
-        } else {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnIngress2Setting;
-        }
-      } else if (item == DataKey.ingressSetting3.name) {
-        if (partId == '5' || partId == '6') {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnIngress2And3Setting;
-        } else {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnIngress3Setting;
-        }
-      } else if (item == DataKey.ingressSetting4.name) {
-        if (partId == '5' || partId == '6') {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnIngress5And6Setting;
-        } else {
-          return AppLocalizations.of(context)!
-              .dialogMessageReturnIngress4Setting;
-        }
-      } else {
-        return '';
-      }
-    }
 
     Widget getSettingWidgetHeader(String title) {
       return Padding(
@@ -458,45 +239,6 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       return isForwardWidget ? CustomStyle.customBlue : CustomStyle.customPink;
     }
 
-    Color getResultValueColor(String resultValue) {
-      return resultValue == 'true' ? Colors.green : Colors.red;
-    }
-
-    List<Widget> getMessageRows(List<String> settingResultList) {
-      List<Widget> rows = [];
-      for (String settingResult in settingResultList) {
-        String item = settingResult.split(',')[0];
-        String value = settingResult.split(',')[1];
-        Color valueColor = getResultValueColor(value);
-
-        rows.add(Padding(
-          padding: const EdgeInsets.only(
-            bottom: 14.0,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  formatResultItem(item),
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ),
-              Text(
-                formatResultValue(value),
-                style: TextStyle(
-                  fontSize: CustomStyle.sizeL,
-                  color: valueColor,
-                ),
-                textAlign: TextAlign.end,
-              ),
-            ],
-          ),
-        ));
-      }
-      return rows;
-    }
-
     return BlocListener<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionInProgress) {
@@ -505,7 +247,11 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
           if (ModalRoute.of(context)?.isCurrent != true) {
             Navigator.of(context).pop();
           }
-          List<Widget> rows = getMessageRows(state.settingResult);
+          List<Widget> rows = get1P8GSettingMessageRows(
+            context: context,
+            partId: partId,
+            settingResultList: state.settingResult,
+          );
           showResultDialog(
             context: context,
             messageRows: rows,
@@ -692,6 +438,138 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
               ],
             ),
           ],
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputEqualizer3 extends StatelessWidget {
+  const _ForwardOutputEqualizer3({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = state.dsSlope3.minValue;
+        double maxValue = state.dsSlope3.maxValue;
+        return controlTextSlider2(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer3} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsSlope3.value,
+          onChanged: (dsSlope3) {
+            context.read<Setting18GraphModuleBloc>().add(DSSlope3Changed(
+                  dsSlope3: dsSlope3,
+                ));
+          },
+          errorText: state.dsSlope3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputEqualizer4 extends StatelessWidget {
+  const _ForwardOutputEqualizer4({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = state.dsSlope4.minValue;
+        double maxValue = state.dsSlope4.maxValue;
+        return controlTextSlider2(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer4} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsSlope4.value,
+          onChanged: (dsSlope4) {
+            context.read<Setting18GraphModuleBloc>().add(DSSlope4Changed(
+                  dsSlope4: dsSlope4,
+                ));
+          },
+          errorText: state.dsSlope4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputAttenuation3 extends StatelessWidget {
+  const _ForwardOutputAttenuation3({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = state.dsVVA4.minValue;
+        double maxValue = state.dsVVA4.maxValue;
+        return controlTextSlider2(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation3} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsVVA4.value,
+          onChanged: (dsVVA4) {
+            context.read<Setting18GraphModuleBloc>().add(DSVVA4Changed(
+                  dsVVA4: dsVVA4,
+                ));
+          },
+          errorText: state.dsVVA4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputAttenuation4 extends StatelessWidget {
+  const _ForwardOutputAttenuation4({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+      builder: (context, state) {
+        double minValue = state.dsVVA5.minValue;
+        double maxValue = state.dsVVA5.maxValue;
+        return controlTextSlider2(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation4} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsVVA5.value,
+          onChanged: (dsVVA5) {
+            context.read<Setting18GraphModuleBloc>().add(DSVVA5Changed(
+                  dsVVA5: dsVVA5,
+                ));
+          },
+          errorText: state.dsVVA5.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
         );
       },
     );

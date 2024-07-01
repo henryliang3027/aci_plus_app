@@ -25,22 +25,43 @@ String format1P8GSettingResultItem({
     if (partId == '5' || partId == '6') {
       return AppLocalizations.of(context)!
           .dialogMessageForwardOutputAttenuation2And3Setting;
+    } else if (partId == '8') {
+      return AppLocalizations.of(context)!
+          .dialogMessageForwardOutputAttenuation3Setting;
     } else {
       return AppLocalizations.of(context)!
           .dialogMessageForwardOutputEqualizer3And4Setting;
     }
   } else if (item == DataKey.dsVVA5.name) {
-    return AppLocalizations.of(context)!
-        .dialogMessageForwardOutputAttenuation5And6Setting;
+    if (partId == '5') {
+      return AppLocalizations.of(context)!
+          .dialogMessageForwardOutputAttenuation5And6Setting;
+    } else {
+      // SDAT
+      return AppLocalizations.of(context)!
+          .dialogMessageForwardOutputAttenuation4Setting;
+    }
   } else if (item == DataKey.dsSlope1.name) {
     return AppLocalizations.of(context)!
         .dialogMessageForwardInputEqualizer1Setting;
   } else if (item == DataKey.dsSlope3.name) {
-    return AppLocalizations.of(context)!
-        .dialogMessageForwardOutputEqualizer2And3Setting;
+    if (partId == '8') {
+      return AppLocalizations.of(context)!
+          .dialogMessageForwardOutputEqualizer3Setting;
+    } else {
+      // C-Cor TR, C-Cor BR
+      return AppLocalizations.of(context)!
+          .dialogMessageForwardOutputEqualizer2And3Setting;
+    }
   } else if (item == DataKey.dsSlope4.name) {
-    return AppLocalizations.of(context)!
-        .dialogMessageForwardOutputEqualizer5And6Setting;
+    if (partId == '8') {
+      return AppLocalizations.of(context)!
+          .dialogMessageForwardOutputEqualizer4Setting;
+    } else {
+      // C-Cor TR, C-Cor BR
+      return AppLocalizations.of(context)!
+          .dialogMessageForwardOutputEqualizer5And6Setting;
+    }
   } else if (item == DataKey.tgcCableLength.name) {
     return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
   } else if (item == DataKey.usVCA1.name) {

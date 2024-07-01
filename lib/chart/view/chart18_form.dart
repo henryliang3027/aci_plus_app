@@ -871,12 +871,20 @@ class _PopupMenu extends StatelessWidget {
           AppLocalizations.of(context)!.forwardInputAttenuation1,
       SettingControl.forwardInputEqualizer1:
           AppLocalizations.of(context)!.forwardInputEqualizer1,
+      SettingControl.forwardOutputAttenuation3:
+          AppLocalizations.of(context)!.forwardOutputAttenuation3,
+      SettingControl.forwardOutputAttenuation4:
+          AppLocalizations.of(context)!.forwardOutputAttenuation4,
       SettingControl.forwardOutputAttenuation2And3:
           AppLocalizations.of(context)!.forwardOutputAttenuation2And3,
       SettingControl.forwardOutputAttenuation3And4:
           AppLocalizations.of(context)!.forwardOutputAttenuation3And4,
       SettingControl.forwardOutputAttenuation5And6:
           AppLocalizations.of(context)!.forwardOutputAttenuation5And6,
+      SettingControl.forwardOutputEqualizer3:
+          AppLocalizations.of(context)!.forwardOutputEqualizer3,
+      SettingControl.forwardOutputEqualizer4:
+          AppLocalizations.of(context)!.forwardOutputEqualizer4,
       SettingControl.forwardOutputEqualizer2And3:
           AppLocalizations.of(context)!.forwardOutputEqualizer2And3,
       SettingControl.forwardOutputEqualizer5And6:

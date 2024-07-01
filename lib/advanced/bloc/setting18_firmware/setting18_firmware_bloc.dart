@@ -335,7 +335,13 @@ class Setting18FirmwareBloc
     BinaryLoaded event,
     Emitter<Setting18FirmwareState> emit,
   ) async {
-    String binaryPath = FirmwareFileTable.filePathMap[event.partId] ?? '';
+    String binaryPath = '';
+
+    if (event.currentFirmwareVersion.endsWith('q')) {
+      binaryPath = FirmwareFileTable.qFilePathMap[event.partId] ?? '';
+    } else {
+      binaryPath = FirmwareFileTable.filePathMap[event.partId] ?? '';
+    }
 
     print('binaryPath: $binaryPath');
 
