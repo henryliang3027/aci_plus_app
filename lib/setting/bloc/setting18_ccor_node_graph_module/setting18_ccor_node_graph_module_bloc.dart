@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
+import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -56,26 +57,106 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
 
     String forwardConfig = characteristicDataCache[DataKey.forwardConfig] ?? '';
     String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
-    String dsVVA1 = characteristicDataCache[DataKey.dsVVA1] ?? '';
-    String dsVVA3 = characteristicDataCache[DataKey.dsVVA3] ?? '';
-    String dsVVA4 = characteristicDataCache[DataKey.dsVVA4] ?? '';
-    String dsVVA6 = characteristicDataCache[DataKey.dsVVA6] ?? '';
-    String dsInSlope1 = characteristicDataCache[DataKey.dsInSlope1] ?? '';
-    String dsInSlope3 = characteristicDataCache[DataKey.dsInSlope3] ?? '';
-    String dsInSlope4 = characteristicDataCache[DataKey.dsInSlope4] ?? '';
-    String dsInSlope6 = characteristicDataCache[DataKey.dsInSlope6] ?? '';
-    String dsOutSlope1 = characteristicDataCache[DataKey.dsOutSlope1] ?? '';
-    String dsOutSlope3 = characteristicDataCache[DataKey.dsOutSlope3] ?? '';
-    String dsOutSlope4 = characteristicDataCache[DataKey.dsOutSlope4] ?? '';
-    String dsOutSlope6 = characteristicDataCache[DataKey.dsOutSlope6] ?? '';
-    String biasCurrent1 = characteristicDataCache[DataKey.biasCurrent1] ?? '';
-    String biasCurrent3 = characteristicDataCache[DataKey.biasCurrent3] ?? '';
-    String biasCurrent4 = characteristicDataCache[DataKey.biasCurrent4] ?? '';
-    String biasCurrent6 = characteristicDataCache[DataKey.biasCurrent6] ?? '';
-    String usVCA1 = characteristicDataCache[DataKey.usVCA1] ?? '';
-    String usVCA3 = characteristicDataCache[DataKey.usVCA3] ?? '';
-    String usVCA4 = characteristicDataCache[DataKey.usVCA4] ?? '';
-    String usVCA6 = characteristicDataCache[DataKey.usVCA6] ?? '';
+    RangeFloatPointInput dsVVA1 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsVVA1] ?? '',
+      minValue: state.dsVVA1.minValue,
+      maxValue: state.dsVVA1.maxValue,
+    );
+    RangeFloatPointInput dsVVA3 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsVVA3] ?? '',
+      minValue: state.dsVVA3.minValue,
+      maxValue: state.dsVVA3.maxValue,
+    );
+    RangeFloatPointInput dsVVA4 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsVVA4] ?? '',
+      minValue: state.dsVVA4.minValue,
+      maxValue: state.dsVVA4.maxValue,
+    );
+    RangeFloatPointInput dsVVA6 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsVVA6] ?? '',
+      minValue: state.dsVVA6.minValue,
+      maxValue: state.dsVVA6.maxValue,
+    );
+    RangeFloatPointInput dsInSlope1 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsInSlope1] ?? '',
+      minValue: state.dsInSlope1.minValue,
+      maxValue: state.dsInSlope1.maxValue,
+    );
+    RangeFloatPointInput dsInSlope3 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsInSlope3] ?? '',
+      minValue: state.dsInSlope3.minValue,
+      maxValue: state.dsInSlope3.maxValue,
+    );
+    RangeFloatPointInput dsInSlope4 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsInSlope4] ?? '',
+      minValue: state.dsInSlope4.minValue,
+      maxValue: state.dsInSlope4.maxValue,
+    );
+    RangeFloatPointInput dsInSlope6 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsInSlope6] ?? '',
+      minValue: state.dsInSlope6.minValue,
+      maxValue: state.dsInSlope6.maxValue,
+    );
+    RangeFloatPointInput dsOutSlope1 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsOutSlope1] ?? '',
+      minValue: state.dsOutSlope1.minValue,
+      maxValue: state.dsOutSlope1.maxValue,
+    );
+    RangeFloatPointInput dsOutSlope3 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsOutSlope3] ?? '',
+      minValue: state.dsOutSlope3.minValue,
+      maxValue: state.dsOutSlope3.maxValue,
+    );
+    RangeFloatPointInput dsOutSlope4 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsOutSlope4] ?? '',
+      minValue: state.dsOutSlope4.minValue,
+      maxValue: state.dsOutSlope4.maxValue,
+    );
+    RangeFloatPointInput dsOutSlope6 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.dsOutSlope6] ?? '',
+      minValue: state.dsOutSlope6.minValue,
+      maxValue: state.dsOutSlope6.maxValue,
+    );
+    RangeFloatPointInput biasCurrent1 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.biasCurrent1] ?? '',
+      minValue: state.biasCurrent1.minValue,
+      maxValue: state.biasCurrent1.maxValue,
+    );
+    RangeFloatPointInput biasCurrent3 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.biasCurrent3] ?? '',
+      minValue: state.biasCurrent3.minValue,
+      maxValue: state.biasCurrent3.maxValue,
+    );
+    RangeFloatPointInput biasCurrent4 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.biasCurrent4] ?? '',
+      minValue: state.biasCurrent4.minValue,
+      maxValue: state.biasCurrent4.maxValue,
+    );
+    RangeFloatPointInput biasCurrent6 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.biasCurrent6] ?? '',
+      minValue: state.biasCurrent6.minValue,
+      maxValue: state.biasCurrent6.maxValue,
+    );
+    RangeFloatPointInput usVCA1 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.usVCA1] ?? '',
+      minValue: state.usVCA1.minValue,
+      maxValue: state.usVCA1.maxValue,
+    );
+    RangeFloatPointInput usVCA3 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.usVCA3] ?? '',
+      minValue: state.usVCA3.minValue,
+      maxValue: state.usVCA3.maxValue,
+    );
+    RangeFloatPointInput usVCA4 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.usVCA4] ?? '',
+      minValue: state.usVCA4.minValue,
+      maxValue: state.usVCA4.maxValue,
+    );
+    RangeFloatPointInput usVCA6 = RangeFloatPointInput.dirty(
+      characteristicDataCache[DataKey.usVCA6] ?? '',
+      minValue: state.usVCA6.minValue,
+      maxValue: state.usVCA6.maxValue,
+    );
     String returnIngressSetting1 =
         characteristicDataCache[DataKey.ingressSetting1] ?? '';
     String returnIngressSetting3 =
@@ -124,31 +205,6 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
       forwardConfig: event.forwardConfig,
       enableSubmission: _isEnabledSubmission(
         forwardConfig: event.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
       ),
     ));
   }
@@ -160,32 +216,7 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     emit(state.copyWith(
       splitOption: event.splitOption,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
         splitOption: event.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
       ),
     ));
   }
@@ -194,36 +225,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     DSVVA1Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput dsVVA1 = RangeFloatPointInput.dirty(
+      event.dsVVA1,
+      minValue: state.dsVVA1.minValue,
+      maxValue: state.dsVVA1.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      dsVVA1: event.dsVVA1,
+      dsVVA1: dsVVA1,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: event.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        dsVVA1: dsVVA1,
       ),
     ));
   }
@@ -232,36 +244,19 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     DSVVA3Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput dsVVA3 = RangeFloatPointInput.dirty(
+      event.dsVVA3,
+      minValue: state.dsVVA3.minValue,
+      maxValue: state.dsVVA3.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      dsVVA3: event.dsVVA3,
+      dsVVA3: dsVVA3,
       enableSubmission: _isEnabledSubmission(
         forwardConfig: state.forwardConfig,
         splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: event.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        dsVVA3: dsVVA3,
       ),
     ));
   }
@@ -270,36 +265,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     DSVVA4Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput dsVVA4 = RangeFloatPointInput.dirty(
+      event.dsVVA4,
+      minValue: state.dsVVA4.minValue,
+      maxValue: state.dsVVA4.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      dsVVA4: event.dsVVA4,
+      dsVVA4: dsVVA4,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: event.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        dsVVA4: dsVVA4,
       ),
     ));
   }
@@ -308,36 +284,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     DSVVA6Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput dsVVA6 = RangeFloatPointInput.dirty(
+      event.dsVVA6,
+      minValue: state.dsVVA6.minValue,
+      maxValue: state.dsVVA6.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      dsVVA6: event.dsVVA6,
+      dsVVA6: dsVVA6,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: event.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        dsVVA6: dsVVA6,
       ),
     ));
   }
@@ -346,36 +303,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     DSInSlope1Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput dsInSlope1 = RangeFloatPointInput.dirty(
+      event.dsInSlope1,
+      minValue: state.dsInSlope1.minValue,
+      maxValue: state.dsInSlope1.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      dsInSlope1: event.dsInSlope1,
+      dsInSlope1: dsInSlope1,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: event.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        dsInSlope1: dsInSlope1,
       ),
     ));
   }
@@ -384,36 +322,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     DSInSlope3Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput dsInSlope3 = RangeFloatPointInput.dirty(
+      event.dsInSlope3,
+      minValue: state.dsInSlope3.minValue,
+      maxValue: state.dsInSlope3.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      dsInSlope3: event.dsInSlope3,
+      dsInSlope3: dsInSlope3,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: event.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        dsInSlope3: dsInSlope3,
       ),
     ));
   }
@@ -422,36 +341,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     DSInSlope4Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput dsInSlope4 = RangeFloatPointInput.dirty(
+      event.dsInSlope4,
+      minValue: state.dsInSlope4.minValue,
+      maxValue: state.dsInSlope4.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      dsInSlope4: event.dsInSlope4,
+      dsInSlope4: dsInSlope4,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: event.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        dsInSlope4: dsInSlope4,
       ),
     ));
   }
@@ -460,36 +360,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     DSInSlope6Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput dsInSlope6 = RangeFloatPointInput.dirty(
+      event.dsInSlope6,
+      minValue: state.dsInSlope6.minValue,
+      maxValue: state.dsInSlope6.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      dsInSlope6: event.dsInSlope6,
+      dsInSlope6: dsInSlope6,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: event.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        dsInSlope6: dsInSlope6,
       ),
     ));
   }
@@ -498,36 +379,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     DSOutSlope1Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput dsOutSlope1 = RangeFloatPointInput.dirty(
+      event.dsOutSlope1,
+      minValue: state.dsOutSlope1.minValue,
+      maxValue: state.dsOutSlope1.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      dsOutSlope1: event.dsOutSlope1,
+      dsOutSlope1: dsOutSlope1,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: event.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        dsOutSlope1: dsOutSlope1,
       ),
     ));
   }
@@ -536,36 +398,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     DSOutSlope3Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput dsOutSlope3 = RangeFloatPointInput.dirty(
+      event.dsOutSlope3,
+      minValue: state.dsOutSlope3.minValue,
+      maxValue: state.dsOutSlope3.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      dsOutSlope3: event.dsOutSlope3,
+      dsOutSlope3: dsOutSlope3,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: event.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        dsOutSlope3: dsOutSlope3,
       ),
     ));
   }
@@ -574,36 +417,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     DSOutSlope4Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput dsOutSlope4 = RangeFloatPointInput.dirty(
+      event.dsOutSlope4,
+      minValue: state.dsOutSlope4.minValue,
+      maxValue: state.dsOutSlope4.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      dsOutSlope4: event.dsOutSlope4,
+      dsOutSlope4: dsOutSlope4,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: event.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        dsOutSlope4: dsOutSlope4,
       ),
     ));
   }
@@ -612,36 +436,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     DSOutSlope6Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput dsOutSlope6 = RangeFloatPointInput.dirty(
+      event.dsOutSlope6,
+      minValue: state.dsOutSlope6.minValue,
+      maxValue: state.dsOutSlope6.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      dsOutSlope6: event.dsOutSlope6,
+      dsOutSlope6: dsOutSlope6,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: event.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        dsOutSlope6: dsOutSlope6,
       ),
     ));
   }
@@ -650,36 +455,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     BiasCurrent1Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput biasCurrent1 = RangeFloatPointInput.dirty(
+      event.biasCurrent1,
+      minValue: state.biasCurrent1.minValue,
+      maxValue: state.biasCurrent1.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      biasCurrent1: event.biasCurrent1,
+      biasCurrent1: biasCurrent1,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: event.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        biasCurrent1: biasCurrent1,
       ),
     ));
   }
@@ -688,36 +474,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     BiasCurrent3Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput biasCurrent3 = RangeFloatPointInput.dirty(
+      event.biasCurrent3,
+      minValue: state.biasCurrent3.minValue,
+      maxValue: state.biasCurrent3.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      biasCurrent3: event.biasCurrent3,
+      biasCurrent3: biasCurrent3,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: event.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        biasCurrent3: biasCurrent3,
       ),
     ));
   }
@@ -726,36 +493,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     BiasCurrent4Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput biasCurrent4 = RangeFloatPointInput.dirty(
+      event.biasCurrent4,
+      minValue: state.biasCurrent4.minValue,
+      maxValue: state.biasCurrent4.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      biasCurrent4: event.biasCurrent4,
+      biasCurrent4: biasCurrent4,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: event.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        biasCurrent4: biasCurrent4,
       ),
     ));
   }
@@ -764,36 +512,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     BiasCurrent6Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput biasCurrent6 = RangeFloatPointInput.dirty(
+      event.biasCurrent6,
+      minValue: state.biasCurrent6.minValue,
+      maxValue: state.biasCurrent6.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      biasCurrent6: event.biasCurrent6,
+      biasCurrent6: biasCurrent6,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: event.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        biasCurrent6: biasCurrent6,
       ),
     ));
   }
@@ -802,36 +531,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     USVCA1Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput usVCA1 = RangeFloatPointInput.dirty(
+      event.usVCA1,
+      minValue: state.usVCA1.minValue,
+      maxValue: state.usVCA1.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      usVCA1: event.usVCA1,
+      usVCA1: usVCA1,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: event.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        usVCA1: usVCA1,
       ),
     ));
   }
@@ -840,36 +550,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     USVCA3Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput usVCA3 = RangeFloatPointInput.dirty(
+      event.usVCA3,
+      minValue: state.usVCA3.minValue,
+      maxValue: state.usVCA3.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      usVCA3: event.usVCA3,
+      usVCA3: usVCA3,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: event.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        usVCA3: usVCA3,
       ),
     ));
   }
@@ -878,36 +569,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     USVCA4Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput usVCA4 = RangeFloatPointInput.dirty(
+      event.usVCA4,
+      minValue: state.usVCA4.minValue,
+      maxValue: state.usVCA4.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      usVCA4: event.usVCA4,
+      usVCA4: usVCA4,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: event.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        usVCA4: usVCA4,
       ),
     ));
   }
@@ -916,36 +588,17 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     USVCA6Changed event,
     Emitter<Setting18CCorNodeGraphModuleState> emit,
   ) {
+    RangeFloatPointInput usVCA6 = RangeFloatPointInput.dirty(
+      event.usVCA6,
+      minValue: state.usVCA6.minValue,
+      maxValue: state.usVCA6.maxValue,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      usVCA6: event.usVCA6,
+      usVCA6: usVCA6,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: event.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
+        usVCA6: usVCA6,
       ),
     ));
   }
@@ -958,32 +611,7 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       returnIngressSetting1: event.returnIngressSetting1,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
         returnIngressSetting1: event.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
       ),
     ));
   }
@@ -996,32 +624,7 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       returnIngressSetting3: event.returnIngressSetting3,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
         returnIngressSetting3: event.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
       ),
     ));
   }
@@ -1034,32 +637,7 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       returnIngressSetting4: event.returnIngressSetting4,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
         returnIngressSetting4: event.returnIngressSetting4,
-        returnIngressSetting6: state.returnIngressSetting6,
       ),
     ));
   }
@@ -1072,108 +650,110 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       returnIngressSetting6: event.returnIngressSetting6,
       enableSubmission: _isEnabledSubmission(
-        forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
-        dsVVA1: state.dsVVA1,
-        dsVVA3: state.dsVVA3,
-        dsVVA4: state.dsVVA4,
-        dsVVA6: state.dsVVA6,
-        dsInSlope1: state.dsInSlope1,
-        dsInSlope3: state.dsInSlope3,
-        dsInSlope4: state.dsInSlope4,
-        dsInSlope6: state.dsInSlope6,
-        dsOutSlope1: state.dsOutSlope1,
-        dsOutSlope3: state.dsOutSlope3,
-        dsOutSlope4: state.dsOutSlope4,
-        dsOutSlope6: state.dsOutSlope6,
-        biasCurrent1: state.biasCurrent1,
-        biasCurrent3: state.biasCurrent3,
-        biasCurrent4: state.biasCurrent4,
-        biasCurrent6: state.biasCurrent6,
-        usVCA1: state.usVCA1,
-        usVCA3: state.usVCA3,
-        usVCA4: state.usVCA4,
-        usVCA6: state.usVCA6,
-        returnIngressSetting1: state.returnIngressSetting1,
-        returnIngressSetting3: state.returnIngressSetting3,
-        returnIngressSetting4: state.returnIngressSetting4,
         returnIngressSetting6: event.returnIngressSetting6,
       ),
     ));
   }
 
   bool _isEnabledSubmission({
-    required String forwardConfig,
-    required String splitOption,
-    required String dsVVA1,
-    required String dsVVA3,
-    required String dsVVA4,
-    required String dsVVA6,
-    required String dsInSlope1,
-    required String dsInSlope3,
-    required String dsInSlope4,
-    required String dsInSlope6,
-    required String dsOutSlope1,
-    required String dsOutSlope3,
-    required String dsOutSlope4,
-    required String dsOutSlope6,
-    required String biasCurrent1,
-    required String biasCurrent3,
-    required String biasCurrent4,
-    required String biasCurrent6,
-    required String usVCA1,
-    required String usVCA3,
-    required String usVCA4,
-    required String usVCA6,
-    required String returnIngressSetting1,
-    required String returnIngressSetting3,
-    required String returnIngressSetting4,
-    required String returnIngressSetting6,
+    String? forwardConfig,
+    String? splitOption,
+    RangeFloatPointInput? dsVVA1,
+    RangeFloatPointInput? dsVVA3,
+    RangeFloatPointInput? dsVVA4,
+    RangeFloatPointInput? dsVVA6,
+    RangeFloatPointInput? dsInSlope1,
+    RangeFloatPointInput? dsInSlope3,
+    RangeFloatPointInput? dsInSlope4,
+    RangeFloatPointInput? dsInSlope6,
+    RangeFloatPointInput? dsOutSlope1,
+    RangeFloatPointInput? dsOutSlope3,
+    RangeFloatPointInput? dsOutSlope4,
+    RangeFloatPointInput? dsOutSlope6,
+    RangeFloatPointInput? biasCurrent1,
+    RangeFloatPointInput? biasCurrent3,
+    RangeFloatPointInput? biasCurrent4,
+    RangeFloatPointInput? biasCurrent6,
+    RangeFloatPointInput? usVCA1,
+    RangeFloatPointInput? usVCA3,
+    RangeFloatPointInput? usVCA4,
+    RangeFloatPointInput? usVCA6,
+    String? returnIngressSetting1,
+    String? returnIngressSetting3,
+    String? returnIngressSetting4,
+    String? returnIngressSetting6,
   }) {
-    if (dsVVA1.isEmpty ||
-        dsVVA3.isEmpty ||
-        dsVVA4.isEmpty ||
-        dsVVA6.isEmpty ||
-        dsInSlope1.isEmpty ||
-        dsInSlope3.isEmpty ||
-        dsInSlope4.isEmpty ||
-        dsInSlope6.isEmpty ||
-        dsOutSlope1.isEmpty ||
-        dsOutSlope3.isEmpty ||
-        dsOutSlope4.isEmpty ||
-        dsOutSlope6.isEmpty ||
-        biasCurrent1.isEmpty ||
-        biasCurrent3.isEmpty ||
-        biasCurrent4.isEmpty ||
-        biasCurrent6.isEmpty ||
-        usVCA1.isEmpty ||
-        usVCA3.isEmpty ||
-        usVCA4.isEmpty ||
-        usVCA6.isEmpty) {
+    forwardConfig ??= state.forwardConfig;
+    splitOption ??= state.splitOption;
+    dsVVA1 ??= state.dsVVA1;
+    dsVVA3 ??= state.dsVVA3;
+    dsVVA4 ??= state.dsVVA4;
+    dsVVA6 ??= state.dsVVA6;
+    dsInSlope1 ??= state.dsInSlope1;
+    dsInSlope3 ??= state.dsInSlope3;
+    dsInSlope4 ??= state.dsInSlope4;
+    dsInSlope6 ??= state.dsInSlope6;
+    dsOutSlope1 ??= state.dsOutSlope1;
+    dsOutSlope3 ??= state.dsOutSlope3;
+    dsOutSlope4 ??= state.dsOutSlope4;
+    dsOutSlope6 ??= state.dsOutSlope6;
+    biasCurrent1 ??= state.biasCurrent1;
+    biasCurrent3 ??= state.biasCurrent3;
+    biasCurrent4 ??= state.biasCurrent4;
+    biasCurrent6 ??= state.biasCurrent6;
+    usVCA1 ??= state.usVCA1;
+    usVCA3 ??= state.usVCA3;
+    usVCA4 ??= state.usVCA4;
+    usVCA6 ??= state.usVCA6;
+    returnIngressSetting1 ??= state.returnIngressSetting1;
+    returnIngressSetting3 ??= state.returnIngressSetting3;
+    returnIngressSetting4 ??= state.returnIngressSetting4;
+    returnIngressSetting6 ??= state.returnIngressSetting6;
+
+    if (dsVVA1.isNotValid ||
+        dsVVA3.isNotValid ||
+        dsVVA4.isNotValid ||
+        dsVVA6.isNotValid ||
+        dsInSlope1.isNotValid ||
+        dsInSlope3.isNotValid ||
+        dsInSlope4.isNotValid ||
+        dsInSlope6.isNotValid ||
+        dsOutSlope1.isNotValid ||
+        dsOutSlope3.isNotValid ||
+        dsOutSlope4.isNotValid ||
+        dsOutSlope6.isNotValid ||
+        biasCurrent1.isNotValid ||
+        biasCurrent3.isNotValid ||
+        biasCurrent4.isNotValid ||
+        biasCurrent6.isNotValid ||
+        usVCA1.isNotValid ||
+        usVCA3.isNotValid ||
+        usVCA4.isNotValid ||
+        usVCA6.isNotValid) {
       return false;
     } else {
       if (forwardConfig != state.initialValues[DataKey.forwardConfig] ||
           splitOption != state.initialValues[DataKey.splitOption] ||
-          dsVVA1 != state.initialValues[DataKey.dsVVA1] ||
-          dsVVA3 != state.initialValues[DataKey.dsVVA3] ||
-          dsVVA4 != state.initialValues[DataKey.dsVVA4] ||
-          dsVVA6 != state.initialValues[DataKey.dsVVA6] ||
-          dsInSlope1 != state.initialValues[DataKey.dsInSlope1] ||
-          dsInSlope3 != state.initialValues[DataKey.dsInSlope3] ||
-          dsInSlope4 != state.initialValues[DataKey.dsInSlope4] ||
-          dsInSlope6 != state.initialValues[DataKey.dsInSlope6] ||
-          dsOutSlope1 != state.initialValues[DataKey.dsOutSlope1] ||
-          dsOutSlope3 != state.initialValues[DataKey.dsOutSlope3] ||
-          dsOutSlope4 != state.initialValues[DataKey.dsOutSlope4] ||
-          dsOutSlope6 != state.initialValues[DataKey.dsOutSlope6] ||
-          biasCurrent1 != state.initialValues[DataKey.biasCurrent1] ||
-          biasCurrent3 != state.initialValues[DataKey.biasCurrent3] ||
-          biasCurrent4 != state.initialValues[DataKey.biasCurrent4] ||
-          biasCurrent6 != state.initialValues[DataKey.biasCurrent6] ||
-          usVCA1 != state.initialValues[DataKey.usVCA1] ||
-          usVCA3 != state.initialValues[DataKey.usVCA3] ||
-          usVCA4 != state.initialValues[DataKey.usVCA4] ||
-          usVCA6 != state.initialValues[DataKey.usVCA6] ||
+          dsVVA1.value != state.initialValues[DataKey.dsVVA1] ||
+          dsVVA3.value != state.initialValues[DataKey.dsVVA3] ||
+          dsVVA4.value != state.initialValues[DataKey.dsVVA4] ||
+          dsVVA6.value != state.initialValues[DataKey.dsVVA6] ||
+          dsInSlope1.value != state.initialValues[DataKey.dsInSlope1] ||
+          dsInSlope3.value != state.initialValues[DataKey.dsInSlope3] ||
+          dsInSlope4.value != state.initialValues[DataKey.dsInSlope4] ||
+          dsInSlope6.value != state.initialValues[DataKey.dsInSlope6] ||
+          dsOutSlope1.value != state.initialValues[DataKey.dsOutSlope1] ||
+          dsOutSlope3.value != state.initialValues[DataKey.dsOutSlope3] ||
+          dsOutSlope4.value != state.initialValues[DataKey.dsOutSlope4] ||
+          dsOutSlope6.value != state.initialValues[DataKey.dsOutSlope6] ||
+          biasCurrent1.value != state.initialValues[DataKey.biasCurrent1] ||
+          biasCurrent3.value != state.initialValues[DataKey.biasCurrent3] ||
+          biasCurrent4.value != state.initialValues[DataKey.biasCurrent4] ||
+          biasCurrent6.value != state.initialValues[DataKey.biasCurrent6] ||
+          usVCA1.value != state.initialValues[DataKey.usVCA1] ||
+          usVCA3.value != state.initialValues[DataKey.usVCA3] ||
+          usVCA4.value != state.initialValues[DataKey.usVCA4] ||
+          usVCA6.value != state.initialValues[DataKey.usVCA6] ||
           returnIngressSetting1 !=
               state.initialValues[DataKey.ingressSetting1] ||
           returnIngressSetting3 !=
@@ -1214,146 +794,146 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
       settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
     }
 
-    if (state.dsVVA1 != state.initialValues[DataKey.dsVVA1]) {
-      bool resultOfSetDSVVA1 =
-          await _amp18CCorNodeRepository.set1p8GCCorNodeDSVVA1(state.dsVVA1);
+    if (state.dsVVA1.value != state.initialValues[DataKey.dsVVA1]) {
+      bool resultOfSetDSVVA1 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeDSVVA1(state.dsVVA1.value);
 
       settingResult.add('${DataKey.dsVVA1.name},$resultOfSetDSVVA1');
     }
 
-    if (state.dsVVA3 != state.initialValues[DataKey.dsVVA3]) {
-      bool resultOfSetDSVVA3 =
-          await _amp18CCorNodeRepository.set1p8GCCorNodeDSVVA3(state.dsVVA3);
+    if (state.dsVVA3.value != state.initialValues[DataKey.dsVVA3]) {
+      bool resultOfSetDSVVA3 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeDSVVA3(state.dsVVA3.value);
 
       settingResult.add('${DataKey.dsVVA3.name},$resultOfSetDSVVA3');
     }
 
-    if (state.dsVVA4 != state.initialValues[DataKey.dsVVA4]) {
-      bool resultOfSetDSVVA4 =
-          await _amp18CCorNodeRepository.set1p8GCCorNodeDSVVA4(state.dsVVA4);
+    if (state.dsVVA4.value != state.initialValues[DataKey.dsVVA4]) {
+      bool resultOfSetDSVVA4 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeDSVVA4(state.dsVVA4.value);
 
       settingResult.add('${DataKey.dsVVA4.name},$resultOfSetDSVVA4');
     }
 
-    if (state.dsVVA6 != state.initialValues[DataKey.dsVVA6]) {
-      bool resultOfSetDSVVA6 =
-          await _amp18CCorNodeRepository.set1p8GCCorNodeDSVVA6(state.dsVVA6);
+    if (state.dsVVA6.value != state.initialValues[DataKey.dsVVA6]) {
+      bool resultOfSetDSVVA6 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeDSVVA6(state.dsVVA6.value);
 
       settingResult.add('${DataKey.dsVVA6.name},$resultOfSetDSVVA6');
     }
 
-    if (state.dsInSlope1 != state.initialValues[DataKey.dsInSlope1]) {
+    if (state.dsInSlope1.value != state.initialValues[DataKey.dsInSlope1]) {
       bool resultOfSetDSInSlope1 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeDSInSlope1(state.dsInSlope1);
+          .set1p8GCCorNodeDSInSlope1(state.dsInSlope1.value);
 
       settingResult.add('${DataKey.dsInSlope1.name},$resultOfSetDSInSlope1');
     }
 
-    if (state.dsInSlope3 != state.initialValues[DataKey.dsInSlope3]) {
+    if (state.dsInSlope3.value != state.initialValues[DataKey.dsInSlope3]) {
       bool resultOfSetDSInSlope3 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeDSInSlope3(state.dsInSlope3);
+          .set1p8GCCorNodeDSInSlope3(state.dsInSlope3.value);
 
       settingResult.add('${DataKey.dsInSlope3.name},$resultOfSetDSInSlope3');
     }
 
-    if (state.dsInSlope4 != state.initialValues[DataKey.dsInSlope4]) {
+    if (state.dsInSlope4.value != state.initialValues[DataKey.dsInSlope4]) {
       bool resultOfSetDSInSlope4 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeDSInSlope4(state.dsInSlope4);
+          .set1p8GCCorNodeDSInSlope4(state.dsInSlope4.value);
 
       settingResult.add('${DataKey.dsInSlope4.name},$resultOfSetDSInSlope4');
     }
 
-    if (state.dsInSlope6 != state.initialValues[DataKey.dsInSlope6]) {
+    if (state.dsInSlope6.value != state.initialValues[DataKey.dsInSlope6]) {
       bool resultOfSetDSInSlope6 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeDSInSlope6(state.dsInSlope6);
+          .set1p8GCCorNodeDSInSlope6(state.dsInSlope6.value);
 
       settingResult.add('${DataKey.dsInSlope6.name},$resultOfSetDSInSlope6');
     }
 
-    if (state.dsOutSlope1 != state.initialValues[DataKey.dsOutSlope1]) {
+    if (state.dsOutSlope1.value != state.initialValues[DataKey.dsOutSlope1]) {
       bool resultOfSetDSOutSlope1 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeDSOutSlope1(state.dsOutSlope1);
+          .set1p8GCCorNodeDSOutSlope1(state.dsOutSlope1.value);
 
       settingResult.add('${DataKey.dsOutSlope1.name},$resultOfSetDSOutSlope1');
     }
 
-    if (state.dsOutSlope3 != state.initialValues[DataKey.dsOutSlope3]) {
+    if (state.dsOutSlope3.value != state.initialValues[DataKey.dsOutSlope3]) {
       bool resultOfSetDSOutSlope3 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeDSOutSlope3(state.dsOutSlope3);
+          .set1p8GCCorNodeDSOutSlope3(state.dsOutSlope3.value);
 
       settingResult.add('${DataKey.dsOutSlope3.name},$resultOfSetDSOutSlope3');
     }
 
-    if (state.dsOutSlope4 != state.initialValues[DataKey.dsOutSlope4]) {
+    if (state.dsOutSlope4.value != state.initialValues[DataKey.dsOutSlope4]) {
       bool resultOfSetDSOutSlope4 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeDSOutSlope4(state.dsOutSlope4);
+          .set1p8GCCorNodeDSOutSlope4(state.dsOutSlope4.value);
 
       settingResult.add('${DataKey.dsOutSlope4.name},$resultOfSetDSOutSlope4');
     }
 
-    if (state.dsOutSlope6 != state.initialValues[DataKey.dsOutSlope6]) {
+    if (state.dsOutSlope6.value != state.initialValues[DataKey.dsOutSlope6]) {
       bool resultOfSetDSOutSlope6 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeDSOutSlope6(state.dsOutSlope6);
+          .set1p8GCCorNodeDSOutSlope6(state.dsOutSlope6.value);
 
       settingResult.add('${DataKey.dsOutSlope6.name},$resultOfSetDSOutSlope6');
     }
 
-    if (state.biasCurrent1 != state.initialValues[DataKey.biasCurrent1]) {
+    if (state.biasCurrent1.value != state.initialValues[DataKey.biasCurrent1]) {
       bool resultOfSetBiasCurrent1 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeBiasCurrent1(state.biasCurrent1);
+          .set1p8GCCorNodeBiasCurrent1(state.biasCurrent1.value);
 
       settingResult
           .add('${DataKey.biasCurrent1.name},$resultOfSetBiasCurrent1');
     }
 
-    if (state.biasCurrent3 != state.initialValues[DataKey.biasCurrent3]) {
+    if (state.biasCurrent3.value != state.initialValues[DataKey.biasCurrent3]) {
       bool resultOfSetBiasCurrent3 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeBiasCurrent3(state.biasCurrent3);
+          .set1p8GCCorNodeBiasCurrent3(state.biasCurrent3.value);
 
       settingResult
           .add('${DataKey.biasCurrent3.name},$resultOfSetBiasCurrent3');
     }
 
-    if (state.biasCurrent4 != state.initialValues[DataKey.biasCurrent4]) {
+    if (state.biasCurrent4.value != state.initialValues[DataKey.biasCurrent4]) {
       bool resultOfSetBiasCurrent4 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeBiasCurrent4(state.biasCurrent4);
+          .set1p8GCCorNodeBiasCurrent4(state.biasCurrent4.value);
 
       settingResult
           .add('${DataKey.biasCurrent4.name},$resultOfSetBiasCurrent4');
     }
 
-    if (state.biasCurrent6 != state.initialValues[DataKey.biasCurrent6]) {
+    if (state.biasCurrent6.value != state.initialValues[DataKey.biasCurrent6]) {
       bool resultOfSetBiasCurrent6 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeBiasCurrent6(state.biasCurrent6);
+          .set1p8GCCorNodeBiasCurrent6(state.biasCurrent6.value);
 
       settingResult
           .add('${DataKey.biasCurrent6.name},$resultOfSetBiasCurrent6');
     }
 
-    if (state.usVCA1 != state.initialValues[DataKey.usVCA1]) {
-      bool resultOfSetUSVCA1 =
-          await _amp18CCorNodeRepository.set1p8GCCorNodeUSVCA1(state.usVCA1);
+    if (state.usVCA1.value != state.initialValues[DataKey.usVCA1]) {
+      bool resultOfSetUSVCA1 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeUSVCA1(state.usVCA1.value);
 
       settingResult.add('${DataKey.usVCA1.name},$resultOfSetUSVCA1');
     }
 
-    if (state.usVCA3 != state.initialValues[DataKey.usVCA3]) {
-      bool resultOfSetUSVCA3 =
-          await _amp18CCorNodeRepository.set1p8GCCorNodeUSVCA3(state.usVCA3);
+    if (state.usVCA3.value != state.initialValues[DataKey.usVCA3]) {
+      bool resultOfSetUSVCA3 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeUSVCA3(state.usVCA3.value);
 
       settingResult.add('${DataKey.usVCA3.name},$resultOfSetUSVCA3');
     }
 
-    if (state.usVCA4 != state.initialValues[DataKey.usVCA4]) {
-      bool resultOfSetUSVCA4 =
-          await _amp18CCorNodeRepository.set1p8GCCorNodeUSVCA4(state.usVCA4);
+    if (state.usVCA4.value != state.initialValues[DataKey.usVCA4]) {
+      bool resultOfSetUSVCA4 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeUSVCA4(state.usVCA4.value);
 
       settingResult.add('${DataKey.usVCA4.name},$resultOfSetUSVCA4');
     }
 
-    if (state.usVCA6 != state.initialValues[DataKey.usVCA6]) {
-      bool resultOfSetUSVCA6 =
-          await _amp18CCorNodeRepository.set1p8GCCorNodeUSVCA6(state.usVCA6);
+    if (state.usVCA6.value != state.initialValues[DataKey.usVCA6]) {
+      bool resultOfSetUSVCA6 = await _amp18CCorNodeRepository
+          .set1p8GCCorNodeUSVCA6(state.usVCA6.value);
 
       settingResult.add('${DataKey.usVCA6.name},$resultOfSetUSVCA6');
     }
