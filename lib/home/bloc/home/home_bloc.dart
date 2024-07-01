@@ -813,6 +813,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             characteristicData: newCharacteristicData,
           ));
 
+          // 讀取目前device日期時間
+          String deviceNowTime =
+              state.characteristicData[DataKey.nowDateTime] ??
+                  DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+
+          // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
+          await _amp18CCorNodeRepository
+              .set1p8GCCorNodeNowDateTime(deviceNowTime);
+
+          emit(state.copyWith(
+            loadingStatus: FormStatus.requestSuccess,
+          ));
+
           break;
         } else {
           if (i == 2) {
@@ -837,18 +850,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
       }
     }
-
-    if (resultOf1p8GCCorNodeLogChunk[0]) {
-      String deviceNowTime = state.characteristicData[DataKey.nowDateTime] ??
-          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-
-      // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
-      await _amp18CCorNodeRepository.set1p8GCCorNodeNowDateTime(deviceNowTime);
-    }
-
-    emit(state.copyWith(
-      loadingStatus: FormStatus.requestSuccess,
-    ));
   }
 
   Future<void> _onEventRequested(
