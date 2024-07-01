@@ -669,9 +669,10 @@ class _StartButton extends StatelessWidget {
               homeState.characteristicData[DataKey.firmwareVersion]!;
 
           if (setting18FirmwareState.binaryLoadStatus.isNone) {
-            context
-                .read<Setting18FirmwareBloc>()
-                .add(BinaryLoaded(partId: partId));
+            context.read<Setting18FirmwareBloc>().add(BinaryLoaded(
+                  partId: partId,
+                  currentFirmwareVersion: currentFirmwareVersion,
+                ));
           }
 
           return buildStartButton(

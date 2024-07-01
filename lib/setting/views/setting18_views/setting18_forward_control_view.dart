@@ -69,6 +69,22 @@ class Setting18ForwardControlView extends StatelessWidget {
               ),
             );
             break;
+          case SettingControl.forwardOutputAttenuation3:
+            widgets.add(
+              const _ForwardOutputAttenuation3(),
+            );
+          case SettingControl.forwardOutputEqualizer3:
+            widgets.add(
+              const _ForwardOutputEqualizer3(),
+            );
+          case SettingControl.forwardOutputAttenuation4:
+            widgets.add(
+              const _ForwardOutputAttenuation4(),
+            );
+          case SettingControl.forwardOutputEqualizer4:
+            widgets.add(
+              const _ForwardOutputEqualizer4(),
+            );
           case SettingControl.forwardOutputAttenuation3And4:
             widgets.add(
               const _ForwardOutputAttenuation3And4(),
@@ -440,6 +456,142 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
                 ));
           },
           errorText: state.dsSlope1.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputEqualizer3 extends StatelessWidget {
+  const _ForwardOutputEqualizer3({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ForwardControlBloc,
+        Setting18ForwardControlState>(
+      builder: (context, state) {
+        double minValue = state.dsSlope3.minValue;
+        double maxValue = state.dsSlope3.maxValue;
+        return controlTextSlider2(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer3} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsSlope3.value,
+          onChanged: (dsSlope3) {
+            context.read<Setting18ForwardControlBloc>().add(DSSlope3Changed(
+                  dsSlope3: dsSlope3,
+                ));
+          },
+          errorText: state.dsSlope3.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputEqualizer4 extends StatelessWidget {
+  const _ForwardOutputEqualizer4({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ForwardControlBloc,
+        Setting18ForwardControlState>(
+      builder: (context, state) {
+        double minValue = state.dsSlope4.minValue;
+        double maxValue = state.dsSlope4.maxValue;
+        return controlTextSlider2(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputEqualizer4} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsSlope4.value,
+          onChanged: (dsSlope4) {
+            context.read<Setting18ForwardControlBloc>().add(DSSlope4Changed(
+                  dsSlope4: dsSlope4,
+                ));
+          },
+          errorText: state.dsSlope4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputAttenuation3 extends StatelessWidget {
+  const _ForwardOutputAttenuation3({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ForwardControlBloc,
+        Setting18ForwardControlState>(
+      builder: (context, state) {
+        double minValue = state.dsVVA4.minValue;
+        double maxValue = state.dsVVA4.maxValue;
+        return controlTextSlider2(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation3} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsVVA4.value,
+          onChanged: (dsVVA4) {
+            context.read<Setting18ForwardControlBloc>().add(DSVVA4Changed(
+                  dsVVA4: dsVVA4,
+                ));
+          },
+          errorText: state.dsVVA4.isNotValid
+              ? AppLocalizations.of(context)!.textFieldErrorMessage
+              : null,
+        );
+      },
+    );
+  }
+}
+
+class _ForwardOutputAttenuation4 extends StatelessWidget {
+  const _ForwardOutputAttenuation4({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18ForwardControlBloc,
+        Setting18ForwardControlState>(
+      builder: (context, state) {
+        double minValue = state.dsVVA5.minValue;
+        double maxValue = state.dsVVA5.maxValue;
+        return controlTextSlider2(
+          context: context,
+          editMode: state.editMode,
+          title:
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation4} (${CustomStyle.dB}):',
+          minValue: minValue,
+          maxValue: maxValue,
+          currentValue: state.dsVVA5.value,
+          onChanged: (dsVVA5) {
+            context.read<Setting18ForwardControlBloc>().add(DSVVA5Changed(
+                  dsVVA5: dsVVA5,
+                ));
+          },
+          errorText: state.dsVVA5.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
         );

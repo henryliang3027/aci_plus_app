@@ -67,7 +67,7 @@ class Setting18CCroNodeControlTabBar extends StatelessWidget {
           ),
           const Expanded(
             child: TabBarView(
-              physics: NeverScrollableScrollPhysics(),
+              // physics: NeverScrollableScrollPhysics(),
               // controller: tabController,
               children: [
                 Setting18CCorNodeForwardControlPage(),
