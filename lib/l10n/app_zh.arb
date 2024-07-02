@@ -213,7 +213,7 @@
     "systemEngineer": "系統工程師",
 
 
-    "textFieldErrorMessage": "格式不正確",
+    "textFieldErrorMessage": "內容不正確",
     
     "dialogTitleAskBeforeExitApp": "您確定要退出應用程式嗎？",
     "dialogTitleDownloading": "下載中...",

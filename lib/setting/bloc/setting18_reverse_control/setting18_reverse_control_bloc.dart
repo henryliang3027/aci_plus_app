@@ -41,6 +41,13 @@ class Setting18ReverseControlBloc
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
 
+    // ex: C-coe LE 沒有 VCA3, VCA4, 讀到的值是 -0.1, 不符合範圍, 所以改成 0.0 作為初始值
+    characteristicDataCache.forEach((key, value) {
+      if (value == '-0.1') {
+        characteristicDataCache[key] = '0.0';
+      }
+    });
+
     RangeFloatPointInput usVCA1 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA1] ?? '',
       minValue: state.usVCA1.minValue,

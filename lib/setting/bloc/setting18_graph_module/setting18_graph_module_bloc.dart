@@ -30,7 +30,7 @@ class Setting18GraphModuleBloc
     on<RtnIngressSetting2Changed>(_onRtnIngressSetting2Changed);
     on<RtnIngressSetting3Changed>(_onRtnIngressSetting3Changed);
     on<RtnIngressSetting4Changed>(_onRtnIngressSetting4Changed);
-    on<TGCCableLengthChanged>(_onTGCCableLengthChanged);
+    // on<TGCCableLengthChanged>(_onTGCCableLengthChanged);
     // on<USTGCChanged>(_onUSTGCChanged);
     on<SplitOptionChanged>(_onSplitOptionChanged);
     on<PilotFrequencyModeChanged>(_onPilotFrequencyModeChanged);
@@ -58,6 +58,13 @@ class Setting18GraphModuleBloc
   ) {
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
+
+    // ex: C-coe LE 沒有 VVA4, VVA5, VCA3, VCA4, 讀到的值是 -0.1, 不符合範圍, 所以改成 0.0 作為初始值
+    characteristicDataCache.forEach((key, value) {
+      if (value == '-0.1') {
+        characteristicDataCache[key] = '0.0';
+      }
+    });
 
     String forwardCEQIndex =
         characteristicDataCache[DataKey.forwardCEQIndex] ?? '';
@@ -453,19 +460,19 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onTGCCableLengthChanged(
-    TGCCableLengthChanged event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      tgcCableLength: event.tgcCableLength,
-      isInitialize: false,
-      enableSubmission: _isEnabledSubmission(
-        tgcCableLength: event.tgcCableLength,
-      ),
-    ));
-  }
+  // void _onTGCCableLengthChanged(
+  //   TGCCableLengthChanged event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     tgcCableLength: event.tgcCableLength,
+  //     isInitialize: false,
+  //     enableSubmission: _isEnabledSubmission(
+  //       tgcCableLength: event.tgcCableLength,
+  //     ),
+  //   ));
+  // }
 
   // void _onUSTGCChanged(
   //   USTGCChanged event,
@@ -705,7 +712,7 @@ class Setting18GraphModuleBloc
     returnIngressSetting3 ??= state.returnIngressSetting3;
     returnIngressSetting4 ??= state.returnIngressSetting4;
     tgcCableLength ??= tgcCableLength;
-    splitOption ??= splitOption;
+    splitOption ??= state.splitOption;
     firstChannelLoadingFrequency ??= state.firstChannelLoadingFrequency;
     firstChannelLoadingLevel ??= state.firstChannelLoadingLevel;
     lastChannelLoadingFrequency ??= state.lastChannelLoadingFrequency;
@@ -713,8 +720,8 @@ class Setting18GraphModuleBloc
     pilotFrequencyMode ??= state.pilotFrequencyMode;
     pilotFrequency1 ??= state.pilotFrequency1;
     pilotFrequency2 ??= state.pilotFrequency2;
-    agcMode ??= agcMode;
-    alcMode ??= alcMode;
+    agcMode ??= state.agcMode;
+    alcMode ??= state.alcMode;
 
     if (dsVVA1.isNotValid ||
         dsVVA4.isNotValid ||
@@ -752,7 +759,6 @@ class Setting18GraphModuleBloc
               state.initialValues[DataKey.ingressSetting3] ||
           returnIngressSetting4 !=
               state.initialValues[DataKey.ingressSetting4] ||
-          tgcCableLength != state.initialValues[DataKey.tgcCableLength] ||
           // usTGC != state.initialValues[DataKey.usTGC] ||
           splitOption != state.initialValues[DataKey.splitOption] ||
           firstChannelLoadingFrequency.value !=
