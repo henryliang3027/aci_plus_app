@@ -55,9 +55,12 @@ class _Setting18CCorNodeGraphModuleFormState
       );
     }
 
+    Map<String, List<Widget>> isolatedSettingWidgetsMap = {
+      DataKey.splitOption.name: [const _SplitOption()],
+    };
+
     Map<String, List<Widget>> forwardSettingWidgetsMap = {
       DataKey.forwardConfig.name: [const _ForwardConfig()],
-      DataKey.splitOption.name: [const _SplitOption()],
       DataKey.dsVVA1.name: [const _ForwardInputAttenuation1()],
       DataKey.dsVVA3.name: [const _ForwardInputAttenuation3()],
       DataKey.dsVVA4.name: [const _ForwardInputAttenuation4()],
@@ -93,6 +96,10 @@ class _Setting18CCorNodeGraphModuleFormState
 
     List<Widget> getSettingWidgetByModuleId() {
       List<Widget> settingWidgets = [];
+
+      List<Widget> isolatedSettingWidgets =
+          isolatedSettingWidgetsMap[widget.moduleName] ?? [];
+
       List<Widget> forwardSettingWidgets =
           forwardSettingWidgetsMap[widget.moduleName] ?? [];
       List<Widget> reverseSettingWidgets =
@@ -102,6 +109,10 @@ class _Setting18CCorNodeGraphModuleFormState
           AppLocalizations.of(context)!.forwardControlParameters);
       Widget reverseSettingHeader = getSettingWidgetHeader(
           AppLocalizations.of(context)!.returnControlParameters);
+
+      if (isolatedSettingWidgets.isNotEmpty) {
+        settingWidgets.addAll(isolatedSettingWidgets);
+      }
 
       if (forwardSettingWidgets.isNotEmpty) {
         settingWidgets.add(forwardSettingHeader);
@@ -117,11 +128,28 @@ class _Setting18CCorNodeGraphModuleFormState
     }
 
     Color getBackgroundColor() {
+      bool isIsolatedWidget =
+          isolatedSettingWidgetsMap.keys.contains(widget.moduleName);
+
       bool isForwardWidget =
           forwardSettingWidgetsMap.keys.contains(widget.moduleName);
 
-      // 如果是下行模組, 就將背景設為淺藍色, 否則就視為上行模組, 設為粉紅色
-      return isForwardWidget ? CustomStyle.customBlue : CustomStyle.customPink;
+      bool isReverseWidget =
+          reverseSettingWidgetsMap.keys.contains(widget.moduleName);
+
+      if (isForwardWidget) {
+        // 如果是下行模組, 就將背景設為淺藍色,
+        return CustomStyle.customBlue;
+      } else if (isReverseWidget) {
+        // 如果是上行模組, 就將背景設為粉紅色
+        return CustomStyle.customPink;
+      } else if (isIsolatedWidget) {
+        // 如果是獨立的模組(split option), 就將背景設為預設
+        return Theme.of(context).colorScheme.surfaceBright;
+      } else {
+        // 其他情況都就將背景設為預設, 代表無任何控制項, 一般不會跑到這情況
+        return Theme.of(context).colorScheme.surfaceBright;
+      }
     }
 
     return BlocListener<Setting18CCorNodeGraphModuleBloc,

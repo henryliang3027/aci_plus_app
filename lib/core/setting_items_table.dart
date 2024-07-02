@@ -134,12 +134,12 @@ const Map<String, String> partIdMap = {
 
 const Map<String, String> settingGraphFilePath = {
   '1': 'assets/circuits/SDLE_1.8G_20240621.svg', // SDLE
-  '2': 'assets/circuits/BLE_1.8G_20240516.svg', // BLE
-  '3': 'assets/circuits/MB_1.8G_20240516.svg', // MB
-  '4': 'assets/circuits/NODE_1.8G_20240516.svg', // C-Cor Node
-  '5': 'assets/circuits/TR_1.8G_20240516.svg', // C-Cor TR
-  '6': 'assets/circuits/BR_1.8G_20240516.svg', // C-Cor BR
-  '7': 'assets/circuits/LE_1.8G_20240516.svg', // C-Cor LE
+  '2': 'assets/circuits/BLE_1.8G_20240621.svg', // BLE
+  '3': 'assets/circuits/MB_1.8G_20240621.svg', // MB
+  '4': 'assets/circuits/NODE_1.8G_20240621.svg', // C-Cor Node
+  '5': 'assets/circuits/TR_1.8G_20240621.svg', // C-Cor TR
+  '6': 'assets/circuits/BR_1.8G_20240621.svg', // C-Cor BR
+  '7': 'assets/circuits/LE_1.8G_20240621.svg', // C-Cor LE
   '8': 'assets/circuits/SDAT_1.8G_20240621.svg', // SDAT
   '9': 'assets/circuits/SDAM_1.8G_20240621.svg', // SDAM
 };

@@ -18,7 +18,29 @@ String format1P8GSettingResultItem({
   required String partId,
   required String item,
 }) {
-  if (item == DataKey.dsVVA1.name) {
+  if (item == DataKey.splitOption.name) {
+    return AppLocalizations.of(context)!.dialogMessageSplitOptionSetting;
+  } else if (item == DataKey.firstChannelLoadingFrequency.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageFirstChannelLoadingFrequencySetting;
+  } else if (item == DataKey.firstChannelLoadingLevel.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageFirstChannelLoadingLevelSetting;
+  } else if (item == DataKey.lastChannelLoadingFrequency.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageLastChannelLoadingFrequencySetting;
+  } else if (item == DataKey.lastChannelLoadingLevel.name) {
+    return AppLocalizations.of(context)!
+        .dialogMessageLastChannelLoadingLevelSetting;
+  } else if (item == DataKey.pilotFrequencyMode.name) {
+    return AppLocalizations.of(context)!.dialogMessagePilotFrequencyModeSetting;
+  } else if (item == DataKey.pilotFrequency1.name) {
+    return AppLocalizations.of(context)!.dialogMessagePilotFrequency1Setting;
+  } else if (item == DataKey.pilotFrequency2.name) {
+    return AppLocalizations.of(context)!.dialogMessagePilotFrequency2Setting;
+  } else if (item == DataKey.agcMode.name) {
+    return AppLocalizations.of(context)!.dialogMessageAGCModeSetting;
+  } else if (item == DataKey.dsVVA1.name) {
     return AppLocalizations.of(context)!
         .dialogMessageForwardInputAttenuation1Setting;
   } else if (item == DataKey.dsVVA4.name) {
@@ -118,7 +140,11 @@ String formatCCorNode1P8GSettingResultItem({
   required BuildContext context,
   required String item,
 }) {
-  if (item == DataKey.dsVVA1.name) {
+  if (item == DataKey.forwardConfig.name) {
+    return AppLocalizations.of(context)!.dialogMessageForwardConfigModeSetting;
+  } else if (item == DataKey.splitOption.name) {
+    return AppLocalizations.of(context)!.dialogMessageSplitOptionSetting;
+  } else if (item == DataKey.dsVVA1.name) {
     return AppLocalizations.of(context)!
         .dialogMessageForwardInputAttenuation1Setting;
   } else if (item == DataKey.dsVVA3.name) {
