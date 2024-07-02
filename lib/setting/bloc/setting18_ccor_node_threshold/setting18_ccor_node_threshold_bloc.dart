@@ -123,20 +123,20 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
 
     String strTemperatureAlarmState =
         characteristicDataCache[DataKey.temperatureAlarmState] ?? '';
-    bool temperatureAlarmState = strTemperatureAlarmState == '1' ? false : true;
+    // bool temperatureAlarmState = strTemperatureAlarmState == '1' ? false : true;
 
     String strVoltageAlarmState =
         characteristicDataCache[DataKey.voltageAlarmState] ?? '';
-    bool voltageAlarmState = strVoltageAlarmState == '1' ? false : true;
+    // bool voltageAlarmState = strVoltageAlarmState == '1' ? false : true;
 
     String strSplitOptionAlarmState =
         characteristicDataCache[DataKey.splitOptionAlarmState] ?? '';
-    bool splitOptionAlarmState = strSplitOptionAlarmState == '1' ? false : true;
+    // bool splitOptionAlarmState = strSplitOptionAlarmState == '1' ? false : true;
 
     String strRFOutputPower1AlarmState =
         characteristicDataCache[DataKey.rfOutputPower1AlarmState] ?? '';
-    bool rfOutputPower1AlarmState =
-        strRFOutputPower1AlarmState == '1' ? false : true;
+    //  bool rfOutputPower1AlarmState =
+    //     strRFOutputPower1AlarmState == '1' ? false : true;
 
     String strRFOutputPower3AlarmState =
         characteristicDataCache[DataKey.rfOutputPower3AlarmState] ?? '';
@@ -171,6 +171,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
         characteristicDataCache[DataKey.maxRFOutputPower6] ?? '';
 
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       temperatureAlarmState: _stringNumberToBool(strTemperatureAlarmState),
       minTemperature: FloatPointInput.dirty(
         getMinTemperature(
@@ -204,6 +205,9 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       maxRFOutputPower6: FloatPointInput.dirty(maxRFOutputPower6),
       isInitialize: true,
       initialValues: characteristicDataCache,
+      editMode: false,
+      enableSubmission: false,
+      settingResult: const [],
     ));
   }
 

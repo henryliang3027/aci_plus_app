@@ -2,6 +2,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
+import 'package:aci_plus_app/setting/model/formz_input_initializer.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,28 +41,28 @@ class Setting18ReverseControlBloc
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
 
-    RangeFloatPointInput usVCA1 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput usVCA1 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA1] ?? '',
       minValue: state.usVCA1.minValue,
       maxValue: state.usVCA1.maxValue,
     );
-    RangeFloatPointInput usVCA2 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput usVCA2 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA2] ?? '',
       minValue: state.usVCA2.minValue,
       maxValue: state.usVCA2.maxValue,
     );
-    RangeFloatPointInput usVCA3 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput usVCA3 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA3] ?? '',
       minValue: state.usVCA3.minValue,
       maxValue: state.usVCA3.maxValue,
     );
-    RangeFloatPointInput usVCA4 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput usVCA4 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA4] ?? '',
       minValue: state.usVCA4.minValue,
       maxValue: state.usVCA4.maxValue,
     );
 
-    RangeFloatPointInput eREQ = RangeFloatPointInput.dirty(
+    RangeFloatPointInput eREQ = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.eREQ] ?? '',
       minValue: state.eREQ.minValue,
       maxValue: state.eREQ.maxValue,

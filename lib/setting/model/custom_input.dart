@@ -86,22 +86,27 @@ class RangeFloatPointInput extends FormzInput<String, ValidationError> {
     RegExp floatPointRegex = RegExp(r'^[+-]?\d+(\.\d+)?$');
 
     // 如果 value 尚未被更改過(isPure), 則不會跑下列的格式檢查
-    if (!floatPointRegex.hasMatch(value) && !isPure) {
-      return ValidationError.formatError;
-    } else {
-      // 轉換 value 成浮點數
-      double? floatValue = double.tryParse(value);
-
-      if (floatValue == null) {
+    if (!isPure) {
+      if (!floatPointRegex.hasMatch(value)) {
         return ValidationError.formatError;
       } else {
-        // 檢查值是否在指定範圍內
-        if (floatValue < minValue || floatValue > maxValue) {
+        // 轉換 value 成浮點數
+        double? floatValue = double.tryParse(value);
+
+        if (floatValue == null) {
           return ValidationError.formatError;
         } else {
-          return null;
+          // 檢查值是否在指定範圍內
+          if (floatValue < minValue || floatValue > maxValue) {
+            return ValidationError.formatError;
+          } else {
+            return null;
+          }
         }
       }
+    } else {
+      // isPure
+      return null;
     }
   }
 

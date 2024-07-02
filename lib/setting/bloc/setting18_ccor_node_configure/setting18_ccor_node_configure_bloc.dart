@@ -50,6 +50,8 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     String logInterval = characteristicDataCache[DataKey.logInterval] ?? '';
 
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
       location: location,
       coordinates: coordinates,
       forwardMode: forwardMode,
@@ -58,6 +60,10 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       logInterval: logInterval,
       isInitialize: true,
       initialValues: characteristicDataCache,
+      editMode: false,
+      enableSubmission: false,
+      settingResult: const [],
+      gpsCoordinateErrorMessage: '',
     ));
   }
 

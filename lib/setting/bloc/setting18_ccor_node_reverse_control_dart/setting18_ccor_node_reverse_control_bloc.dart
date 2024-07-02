@@ -2,6 +2,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
+import 'package:aci_plus_app/setting/model/formz_input_initializer.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,22 +41,22 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
     Map<DataKey, String> characteristicDataCache =
         _amp18CCorNodeRepository.characteristicDataCache;
 
-    RangeFloatPointInput usVCA1 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput usVCA1 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA1] ?? '',
       minValue: state.usVCA1.minValue,
       maxValue: state.usVCA1.maxValue,
     );
-    RangeFloatPointInput usVCA3 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput usVCA3 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA3] ?? '',
       minValue: state.usVCA3.minValue,
       maxValue: state.usVCA3.maxValue,
     );
-    RangeFloatPointInput usVCA4 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput usVCA4 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA4] ?? '',
       minValue: state.usVCA4.minValue,
       maxValue: state.usVCA4.maxValue,
     );
-    RangeFloatPointInput usVCA6 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput usVCA6 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA6] ?? '',
       minValue: state.usVCA6.minValue,
       maxValue: state.usVCA6.maxValue,
@@ -70,6 +71,7 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
         characteristicDataCache[DataKey.ingressSetting6] ?? '';
 
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       usVCA1: usVCA1,
       usVCA3: usVCA3,
       usVCA4: usVCA4,
@@ -79,6 +81,9 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
       returnIngressSetting4: returnIngressSetting4,
       returnIngressSetting6: returnIngressSetting6,
       initialValues: characteristicDataCache,
+      editMode: false,
+      enableSubmission: false,
+      settingResult: const [],
     ));
   }
 

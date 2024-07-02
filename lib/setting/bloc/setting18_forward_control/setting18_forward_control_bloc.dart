@@ -2,6 +2,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
+import 'package:aci_plus_app/setting/model/formz_input_initializer.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,47 +47,47 @@ class Setting18ForwardControlBloc
     String forwardCEQIndex =
         characteristicDataCache[DataKey.forwardCEQIndex] ?? '';
 
-    RangeFloatPointInput dsVVA1 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput dsVVA1 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA1] ?? '',
       minValue: state.dsVVA1.minValue,
       maxValue: state.dsVVA1.maxValue,
     );
-    RangeFloatPointInput dsVVA2 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput dsVVA2 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA2] ?? '',
       minValue: state.dsVVA2.minValue,
       maxValue: state.dsVVA2.maxValue,
     );
-    RangeFloatPointInput dsVVA3 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput dsVVA3 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA3] ?? '',
       minValue: state.dsVVA3.minValue,
       maxValue: state.dsVVA3.maxValue,
     );
-    RangeFloatPointInput dsVVA4 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput dsVVA4 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA4] ?? '',
       minValue: state.dsVVA4.minValue,
       maxValue: state.dsVVA4.maxValue,
     );
-    RangeFloatPointInput dsVVA5 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput dsVVA5 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA5] ?? '',
       minValue: state.dsVVA5.minValue,
       maxValue: state.dsVVA5.maxValue,
     );
-    RangeFloatPointInput dsSlope1 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput dsSlope1 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsSlope1] ?? '',
       minValue: state.dsSlope1.minValue,
       maxValue: getSlope1MaxValue(forwardCEQIndex),
     );
-    RangeFloatPointInput dsSlope2 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput dsSlope2 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsSlope2] ?? '',
       minValue: state.dsSlope2.minValue,
       maxValue: state.dsSlope2.maxValue,
     );
-    RangeFloatPointInput dsSlope3 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput dsSlope3 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsSlope3] ?? '',
       minValue: state.dsSlope3.minValue,
       maxValue: state.dsSlope3.maxValue,
     );
-    RangeFloatPointInput dsSlope4 = RangeFloatPointInput.dirty(
+    RangeFloatPointInput dsSlope4 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsSlope4] ?? '',
       minValue: state.dsSlope4.minValue,
       maxValue: state.dsSlope4.maxValue,
