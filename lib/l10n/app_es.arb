@@ -212,7 +212,7 @@
     "systemEngineer": "Ingeniero Sistemas",
 
 
-    "textFieldErrorMessage": "Formato inválido",
+    "textFieldErrorMessage": "Valor inválido",
 
     "dialogTitleAskBeforeExitApp": "¿Desea salir de la aplicación?",
     "dialogTitleDownloading": "Descargando...",

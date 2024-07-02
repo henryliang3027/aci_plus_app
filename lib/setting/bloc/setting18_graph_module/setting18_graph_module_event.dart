@@ -140,14 +140,14 @@ class RtnIngressSetting4Changed extends Setting18GraphModuleEvent {
   List<Object> get props => [returnIngressSetting4];
 }
 
-class TGCCableLengthChanged extends Setting18GraphModuleEvent {
-  const TGCCableLengthChanged({required this.tgcCableLength});
+// class TGCCableLengthChanged extends Setting18GraphModuleEvent {
+//   const TGCCableLengthChanged({required this.tgcCableLength});
 
-  final String tgcCableLength;
+//   final String tgcCableLength;
 
-  @override
-  List<Object> get props => [tgcCableLength];
-}
+//   @override
+//   List<Object> get props => [tgcCableLength];
+// }
 
 // class USTGCChanged extends Setting18GraphModuleEvent {
 //   const USTGCChanged(this.usTGC);

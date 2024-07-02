@@ -211,7 +211,7 @@
     "systemEngineer": "Ingénieur Système",
 
 
-    "textFieldErrorMessage": "Format invalide",
+    "textFieldErrorMessage": "Valeur invalide",
     
     "dialogTitleAskBeforeExitApp": "Voulez-vous quitter l’application ?",
     "dialogTitleDownloading": "Téléchargement...",

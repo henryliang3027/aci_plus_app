@@ -213,7 +213,7 @@
     "systemEngineer": "System Engineer",
 
 
-    "textFieldErrorMessage": "Invalid format",
+    "textFieldErrorMessage": "Invalid value",
 
     "dialogTitleAskBeforeExitApp": "Do you want to exit the app ?",
     "dialogTitleDownloading": "Downloading...",

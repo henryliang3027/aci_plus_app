@@ -1758,7 +1758,6 @@ class _SettingFloatingActionButton extends StatelessWidget {
                 : Colors.grey.withAlpha(200),
             onPressed: enableSubmission && editable
                 ? () async {
-                    print(editable);
                     if (kDebugMode) {
                       context
                           .read<Setting18GraphModuleBloc>()
