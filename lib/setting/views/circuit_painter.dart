@@ -142,10 +142,11 @@ class CircuitPainter extends CustomPainter {
     }
 
     for (ValueText valueText in svgImage.valueTexts) {
-      final textStyle = TextStyle(
+      // final int colorHex = int.parse(valueText.color);
+      const textStyle = TextStyle(
           // background: Paint()..color = Color.fromARGB(255, 170, 214, 255),
-          color: Color(0xFF3f51b5),
-          fontSize: 12,
+          color: Colors.black,
+          fontSize: 14,
           fontWeight: FontWeight.bold);
       final textSpan = TextSpan(
         text: valueText.text,
@@ -166,7 +167,7 @@ class CircuitPainter extends CustomPainter {
       textPainter.paint(
           canvas,
           Offset((valueText.x) * scaleFactor + offsetX,
-              (valueText.y - 54) * scaleFactor));
+              (valueText.y - textPainter.height * 4) * scaleFactor));
     }
   }
 

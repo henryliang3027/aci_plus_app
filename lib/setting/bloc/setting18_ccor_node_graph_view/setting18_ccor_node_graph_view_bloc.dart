@@ -90,12 +90,15 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
         String text =
             '${characteristicDataCache[dataKey] ?? ''} ${CustomStyle.dB}';
 
-        // valueTexts.add(ValueText(
-        //   moduleName: moduleName,
-        //   x: x,
-        //   y: y,
-        //   text: text,
-        // ));
+        String color = textPlaceholder.getAttribute('color').toString();
+
+        valueTexts.add(ValueText(
+          moduleName: moduleName,
+          x: x,
+          y: y,
+          text: text,
+          color: color,
+        ));
       }
     }
     SVGImage svgImage = SVGImage(
