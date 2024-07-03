@@ -1,7 +1,7 @@
-part of 'setting18_graph_view_bloc.dart';
+part of 'setting18_ccor_node_graph_view_bloc.dart';
 
-class Setting18GraphViewState extends Equatable {
-  const Setting18GraphViewState({
+class Setting18CCorNodeGraphViewState extends Equatable {
+  const Setting18CCorNodeGraphViewState({
     this.svgImage = const SVGImage(
       width: 0.0,
       height: 0.0,
@@ -13,10 +13,10 @@ class Setting18GraphViewState extends Equatable {
 
   final SVGImage svgImage;
 
-  Setting18GraphViewState copyWith({
+  Setting18CCorNodeGraphViewState copyWith({
     SVGImage? svgImage,
   }) {
-    return Setting18GraphViewState(
+    return Setting18CCorNodeGraphViewState(
       svgImage: svgImage ?? this.svgImage,
     );
   }

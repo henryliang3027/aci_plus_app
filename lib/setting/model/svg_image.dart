@@ -4,12 +4,14 @@ class SVGImage {
     required this.height,
     required this.components,
     required this.boxes,
+    required this.valueTexts,
   });
 
   final double width;
   final double height;
   final List<Component> components;
   final List<Box> boxes;
+  final List<ValueText> valueTexts;
 }
 
 class Component {
@@ -36,4 +38,18 @@ class Box {
   final double y;
   final double width;
   final double height;
+}
+
+class ValueText {
+  const ValueText({
+    required this.moduleName,
+    required this.x,
+    required this.y,
+    required this.text,
+  });
+
+  final String moduleName;
+  final double x;
+  final double y;
+  final String text;
 }

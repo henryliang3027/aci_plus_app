@@ -1,37 +1,37 @@
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
-import 'package:aci_plus_app/repositories/amp18_repository.dart';
+import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/setting/model/svg_image.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:xml/xml.dart';
 
-part 'setting18_graph_view_event.dart';
-part 'setting18_graph_view_state.dart';
+part 'setting18_ccor_node_graph_view_event.dart';
+part 'setting18_ccor_node_graph_view_state.dart';
 
-class Setting18GraphViewBloc
-    extends Bloc<Setting18GraphViewEvent, Setting18GraphViewState> {
-  Setting18GraphViewBloc({
+class Setting18CCorNodeGraphViewBloc extends Bloc<
+    Setting18CCorNodeGraphViewEvent, Setting18CCorNodeGraphViewState> {
+  Setting18CCorNodeGraphViewBloc({
     required String graphFilePath,
-    required Amp18Repository amp18Repository,
-  })  : _amp18Repository = amp18Repository,
+    required Amp18CCorNodeRepository amp18CCorNodeRepository,
+  })  : _amp18CCorNodeRepository = amp18CCorNodeRepository,
         _graphFilePath = graphFilePath,
-        super(const Setting18GraphViewState()) {
+        super(const Setting18CCorNodeGraphViewState()) {
     on<LoadGraphRequested>(_onLoadGraphRequested);
 
     add(const LoadGraphRequested());
   }
 
   final String _graphFilePath;
-  final Amp18Repository _amp18Repository;
+  final Amp18CCorNodeRepository _amp18CCorNodeRepository;
 
   Future<void> _onLoadGraphRequested(
     LoadGraphRequested event,
-    Emitter<Setting18GraphViewState> emit,
+    Emitter<Setting18CCorNodeGraphViewState> emit,
   ) async {
     Map<DataKey, String> characteristicDataCache =
-        _amp18Repository.characteristicDataCache;
+        _amp18CCorNodeRepository.characteristicDataCache;
 
     String generalString = await rootBundle.loadString(_graphFilePath);
 
@@ -88,7 +88,7 @@ class Setting18GraphViewBloc
         DataKey dataKey =
             dataKeys.firstWhere((dataKey) => dataKey.name == moduleName);
         String text =
-            '${characteristicDataCache[dataKey] ?? ''}${CustomStyle.dB}';
+            '${characteristicDataCache[dataKey] ?? ''} ${CustomStyle.dB}';
 
         // valueTexts.add(ValueText(
         //   moduleName: moduleName,
@@ -98,7 +98,6 @@ class Setting18GraphViewBloc
         // ));
       }
     }
-
     SVGImage svgImage = SVGImage(
       width: width,
       height: height,

@@ -379,6 +379,11 @@ class Setting18ForwardControlBloc
         minValue: state.dsVVA4.minValue,
         maxValue: state.dsVVA4.maxValue,
       ),
+      dsVVA5: RangeFloatPointInput.dirty(
+        state.initialValues[DataKey.dsVVA5] ?? '',
+        minValue: state.dsVVA5.minValue,
+        maxValue: state.dsVVA5.maxValue,
+      ),
       dsSlope1: RangeFloatPointInput.dirty(
         state.initialValues[DataKey.dsSlope1] ?? '',
         minValue: state.dsSlope1.minValue,

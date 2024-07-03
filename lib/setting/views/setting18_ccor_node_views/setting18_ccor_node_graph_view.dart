@@ -1,10 +1,12 @@
 import 'package:aci_plus_app/core/data_key.dart';
+import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
-import 'package:aci_plus_app/setting/bloc/setting18_graph_view/setting18_graph_view_bloc.dart';
+import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_graph_view/setting18_ccor_node_graph_view_bloc.dart';
 import 'package:aci_plus_app/setting/views/circuit_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:touchable/touchable.dart';
 
 class Setting18CCorNodeGraphView extends StatelessWidget {
@@ -53,8 +55,13 @@ class _GraphInteractor extends StatelessWidget {
   Widget build(BuildContext context) {
     print(
         '${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}');
+    final String assetName = settingGraphFilePath[partId] ?? '';
 
-    return BlocBuilder<Setting18GraphViewBloc, Setting18GraphViewState>(
+    // 讀取 SVG 圖, 放在 stack 的最下層
+    final Widget svgGraph = SvgPicture.asset(assetName);
+
+    return BlocBuilder<Setting18CCorNodeGraphViewBloc,
+        Setting18CCorNodeGraphViewState>(
       builder: (context, state) {
         return PopScope(
           onPopInvoked: (bool didPop) {
@@ -64,7 +71,8 @@ class _GraphInteractor extends StatelessWidget {
             child: Stack(
               alignment: AlignmentDirectional.center,
               children: [
-                Container(
+                svgGraph,
+                SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   child: CanvasTouchDetector(
@@ -74,7 +82,7 @@ class _GraphInteractor extends StatelessWidget {
                       svgImage: state.svgImage,
                       partId: partId,
                     )),
-                    gesturesToOverride: [GestureType.onTapUp],
+                    gesturesToOverride: const [GestureType.onTapUp],
                   ),
                 ),
               ],

@@ -490,6 +490,7 @@ class FineTuneTextSlider2 extends StatefulWidget {
     required this.enabled,
     required this.onChanged,
     required this.errorText1,
+    this.textPrecision = 1,
   });
 
   final String initialValue;
@@ -499,6 +500,7 @@ class FineTuneTextSlider2 extends StatefulWidget {
   final bool enabled;
   final ValueChanged<String> onChanged;
   final String? errorText1;
+  final int textPrecision;
 
   @override
   State<FineTuneTextSlider2> createState() => _FineTuneTextSlider2State();
@@ -547,7 +549,8 @@ class _FineTuneTextSlider2State extends State<FineTuneTextSlider2> {
           ? _value + widget.step
           : _value;
 
-      _textEditingController.text = _value.toStringAsFixed(1);
+      _textEditingController.text =
+          _value.toStringAsFixed(widget.textPrecision);
     });
   }
 
@@ -557,7 +560,8 @@ class _FineTuneTextSlider2State extends State<FineTuneTextSlider2> {
           ? _value - widget.step
           : _value;
 
-      _textEditingController.text = _value.toStringAsFixed(1);
+      _textEditingController.text =
+          _value.toStringAsFixed(widget.textPrecision);
     });
   }
 
@@ -655,7 +659,8 @@ class _FineTuneTextSlider2State extends State<FineTuneTextSlider2> {
                   onPressed: widget.enabled
                       ? () {
                           _decreasedValue();
-                          widget.onChanged(_value.toStringAsFixed(1));
+                          widget.onChanged(
+                              _value.toStringAsFixed(widget.textPrecision));
                         }
                       : null,
                 ),
@@ -686,11 +691,14 @@ class _FineTuneTextSlider2State extends State<FineTuneTextSlider2> {
                       decimal: true,
                     ),
                     inputFormatters: [
-                      // ^：表示從起始開始匹配第一個符合的數字
-                      // \d{1,3}：\d 表示匹配任何一個數字。{1,3} 表示前面的數字字符必須出現 1~3 次
-                      // (\.\d?)?：匹配一個小數點後跟著 0 到 1 位數字
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d{1,3}(\.\d?)?'))
+                      if (widget.textPrecision == 1)
+                        // ^：表示從起始開始匹配第一個符合的數字
+                        // \d{1,3}：\d 表示匹配任何一個數字。{1,3} 表示前面的數字字符必須出現 1~3 次
+                        // (\.\d?)?：匹配一個小數點後跟著 0 到 1 位數字
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d{1,3}(\.\d?)?'))
+                      else
+                        FilteringTextInputFormatter.allow(RegExp(r'^\d{1,3}'))
                     ],
                     decoration: InputDecoration(
                       // label: Text(
@@ -721,7 +729,8 @@ class _FineTuneTextSlider2State extends State<FineTuneTextSlider2> {
                   onPressed: widget.enabled
                       ? () {
                           _increaseValue();
-                          widget.onChanged(_value.toStringAsFixed(1));
+                          widget.onChanged(
+                              _value.toStringAsFixed(widget.textPrecision));
                         }
                       : null,
                 ),
@@ -868,6 +877,7 @@ Widget controlTextSlider2({
   required double maxValue,
   required ValueChanged<String> onChanged,
   required String? errorText,
+  int textPrecision = 1,
   double step = 0.5,
   String subTitle = '',
 }) {
@@ -913,6 +923,7 @@ Widget controlTextSlider2({
           enabled: editMode,
           onChanged: onChanged,
           errorText1: errorText,
+          textPrecision: textPrecision,
         ),
       ],
     ),

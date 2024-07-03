@@ -9,7 +9,7 @@ import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
-import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_page.dart';
+import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_graph_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -701,8 +701,8 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = state.biasCurrent1.minValue;
-        double maxValue = state.biasCurrent1.maxValue;
+        double minValue = state.biasCurrent1.minValue.toDouble();
+        double maxValue = state.biasCurrent1.maxValue.toDouble();
         return controlTextSlider2(
           context: context,
           editMode: state.editMode,
@@ -711,6 +711,8 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.biasCurrent1.value,
+          step: 1.0,
+          textPrecision: 0,
           onChanged: (biasCurrent1) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -737,8 +739,8 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = state.biasCurrent3.minValue;
-        double maxValue = state.biasCurrent3.maxValue;
+        double minValue = state.biasCurrent3.minValue.toDouble();
+        double maxValue = state.biasCurrent3.maxValue.toDouble();
         return controlTextSlider2(
           context: context,
           editMode: state.editMode,
@@ -747,6 +749,8 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.biasCurrent3.value,
+          step: 1.0,
+          textPrecision: 0,
           onChanged: (biasCurrent3) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -773,8 +777,8 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = state.biasCurrent4.minValue;
-        double maxValue = state.biasCurrent4.maxValue;
+        double minValue = state.biasCurrent4.minValue.toDouble();
+        double maxValue = state.biasCurrent4.maxValue.toDouble();
         return controlTextSlider2(
           context: context,
           editMode: state.editMode,
@@ -783,6 +787,8 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.biasCurrent4.value,
+          step: 1.0,
+          textPrecision: 0,
           onChanged: (biasCurrent4) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -809,8 +815,8 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
         Setting18CCorNodeForwardControlState>(
       builder: (context, state) {
-        double minValue = state.biasCurrent6.minValue;
-        double maxValue = state.biasCurrent6.maxValue;
+        double minValue = state.biasCurrent6.minValue.toDouble();
+        double maxValue = state.biasCurrent6.maxValue.toDouble();
         return controlTextSlider2(
           context: context,
           editMode: state.editMode,
@@ -819,6 +825,8 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.biasCurrent6.value,
+          step: 1.0,
+          textPrecision: 0,
           onChanged: (biasCurrent6) {
             context
                 .read<Setting18CCorNodeForwardControlBloc>()
@@ -934,7 +942,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                           // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
                           Navigator.push(
                                   context,
-                                  Setting18GraphPage.route(
+                                  Setting18CCorNodeGraphPage.route(
                                     graphFilePath: graphFilePath,
                                   ))
                               .then((value) => context

@@ -43,6 +43,56 @@ class IntegerInput extends FormzInput<String, ValidationError> {
   }
 }
 
+/// 文字輸入框 整數格式有範圍限制
+class RangeIntegerInput extends FormzInput<String, ValidationError> {
+  const RangeIntegerInput.pure({
+    this.minValue = 0,
+    this.maxValue = 9999,
+  }) : super.pure('');
+  const RangeIntegerInput.dirty(
+    String value, {
+    this.minValue = 0,
+    this.maxValue = 9999,
+  }) : super.dirty(value);
+
+  final int minValue;
+  final int maxValue;
+
+  @override
+  ValidationError? validator(String value) {
+    RegExp integerRegex = RegExp(r'^-?\d+$');
+
+    // 如果 value 尚未被更改過(isPure), 則不會跑下列的格式檢查
+    if (!isPure) {
+      if (!integerRegex.hasMatch(value)) {
+        return ValidationError.formatError;
+      } else {
+        // 轉換 value 成浮點數
+        int? intValue = int.tryParse(value);
+
+        if (intValue == null) {
+          return ValidationError.formatError;
+        } else {
+          // 檢查值是否在指定範圍內
+          if (intValue < minValue || intValue > maxValue) {
+            return ValidationError.formatError;
+          } else {
+            return null;
+          }
+        }
+      }
+    } else {
+      // isPure
+      return null;
+    }
+  }
+
+  @override
+  String toString() {
+    return value;
+  }
+}
+
 /// 文字輸入框 浮點數格式
 class FloatPointInput extends FormzInput<String, ValidationError> {
   const FloatPointInput.pure() : super.pure('');
@@ -66,7 +116,7 @@ class FloatPointInput extends FormzInput<String, ValidationError> {
   }
 }
 
-/// 文字輸入框 浮點數格式
+/// 文字輸入框 浮點數格式有範圍限制
 class RangeFloatPointInput extends FormzInput<String, ValidationError> {
   const RangeFloatPointInput.pure({
     this.minValue = double.negativeInfinity,

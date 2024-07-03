@@ -140,7 +140,7 @@ const Map<String, String> settingGraphFilePath = {
   '5': 'assets/circuits/TR_1.8G_20240621.svg', // C-Cor TR
   '6': 'assets/circuits/BR_1.8G_20240621.svg', // C-Cor BR
   '7': 'assets/circuits/LE_1.8G_20240621.svg', // C-Cor LE
-  '8': 'assets/circuits/SDAT_1.8G_20240621.svg', // SDAT
+  '8': 'assets/circuits/SDAT_1.8G_20240702.svg', // SDAT
   '9': 'assets/circuits/SDAM_1.8G_20240621.svg', // SDAM
 };
 
