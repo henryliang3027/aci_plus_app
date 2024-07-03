@@ -140,6 +140,34 @@ class CircuitPainter extends CustomPainter {
         },
       );
     }
+
+    for (ValueText valueText in svgImage.valueTexts) {
+      final textStyle = TextStyle(
+          // background: Paint()..color = Color.fromARGB(255, 170, 214, 255),
+          color: Color(0xFF3f51b5),
+          fontSize: 12,
+          fontWeight: FontWeight.bold);
+      final textSpan = TextSpan(
+        text: valueText.text,
+        style: textStyle,
+      );
+
+      final textPainter = TextPainter(
+        text: textSpan,
+        textDirection: TextDirection.ltr,
+      );
+      textPainter.layout(
+        minWidth: 0,
+        maxWidth: size.width,
+      );
+
+      print(textPainter.height);
+
+      textPainter.paint(
+          canvas,
+          Offset((valueText.x) * scaleFactor + offsetX,
+              (valueText.y - 54) * scaleFactor));
+    }
   }
 
   @override

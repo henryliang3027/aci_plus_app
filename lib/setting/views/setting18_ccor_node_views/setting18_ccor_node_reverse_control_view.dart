@@ -9,7 +9,7 @@ import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
-import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_page.dart';
+import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_graph_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -606,7 +606,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                           // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
                           Navigator.push(
                                   context,
-                                  Setting18GraphPage.route(
+                                  Setting18CCorNodeGraphPage.route(
                                     graphFilePath: graphFilePath,
                                   ))
                               .then((value) => context

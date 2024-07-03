@@ -501,28 +501,28 @@ class Amp18CCorNodeParser {
     ByteData rawBiasCurrent1ByteData =
         ByteData.sublistView(Uint8List.fromList(rawBiasCurrent1));
     biasCurrent1 = (rawBiasCurrent1ByteData.getInt16(0, Endian.little) / 10)
-        .toStringAsFixed(1);
+        .toStringAsFixed(0);
 
     // 解析 biasCurrent3
     List<int> rawBiasCurrent3 = rawData.sublist(5, 7);
     ByteData rawBiasCurrent3ByteData =
         ByteData.sublistView(Uint8List.fromList(rawBiasCurrent3));
     biasCurrent3 = (rawBiasCurrent3ByteData.getInt16(0, Endian.little) / 10)
-        .toStringAsFixed(1);
+        .toStringAsFixed(0);
 
     // 解析 biasCurrent4
     List<int> rawBiasCurrent4 = rawData.sublist(7, 9);
     ByteData rawBiasCurrent4ByteData =
         ByteData.sublistView(Uint8List.fromList(rawBiasCurrent4));
     biasCurrent4 = (rawBiasCurrent4ByteData.getInt16(0, Endian.little) / 10)
-        .toStringAsFixed(1);
+        .toStringAsFixed(0);
 
     // 解析 biasCurrent6
     List<int> rawBiasCurrent6 = rawData.sublist(9, 11);
     ByteData rawBiasCurrent6ByteData =
         ByteData.sublistView(Uint8List.fromList(rawBiasCurrent6));
     biasCurrent6 = (rawBiasCurrent6ByteData.getInt16(0, Endian.little) / 10)
-        .toStringAsFixed(1);
+        .toStringAsFixed(0);
 
     return A1P8GCCorNode92(
       biasCurrent1: biasCurrent1,

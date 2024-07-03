@@ -691,8 +691,8 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = state.biasCurrent1.minValue;
-        double maxValue = state.biasCurrent1.maxValue;
+        double minValue = state.biasCurrent1.minValue.toDouble();
+        double maxValue = state.biasCurrent1.maxValue.toDouble();
         return controlTextSlider2(
           context: context,
           editMode: state.editMode,
@@ -701,6 +701,8 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.biasCurrent1.value,
+          step: 1.0,
+          textPrecision: 0,
           onChanged: (biasCurrent1) {
             context
                 .read<Setting18CCorNodeGraphModuleBloc>()
@@ -727,8 +729,8 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = state.biasCurrent3.minValue;
-        double maxValue = state.biasCurrent3.maxValue;
+        double minValue = state.biasCurrent3.minValue.toDouble();
+        double maxValue = state.biasCurrent3.maxValue.toDouble();
         return controlTextSlider2(
           context: context,
           editMode: state.editMode,
@@ -737,6 +739,8 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.biasCurrent3.value,
+          step: 1.0,
+          textPrecision: 0,
           onChanged: (biasCurrent3) {
             context
                 .read<Setting18CCorNodeGraphModuleBloc>()
@@ -763,8 +767,8 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = state.biasCurrent4.minValue;
-        double maxValue = state.biasCurrent4.maxValue;
+        double minValue = state.biasCurrent4.minValue.toDouble();
+        double maxValue = state.biasCurrent4.maxValue.toDouble();
         return controlTextSlider2(
           context: context,
           editMode: state.editMode,
@@ -773,6 +777,8 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.biasCurrent4.value,
+          step: 1.0,
+          textPrecision: 0,
           onChanged: (biasCurrent4) {
             context
                 .read<Setting18CCorNodeGraphModuleBloc>()
@@ -799,8 +805,8 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeGraphModuleBloc,
         Setting18CCorNodeGraphModuleState>(
       builder: (context, state) {
-        double minValue = state.biasCurrent6.minValue;
-        double maxValue = state.biasCurrent6.maxValue;
+        double minValue = state.biasCurrent6.minValue.toDouble();
+        double maxValue = state.biasCurrent6.maxValue.toDouble();
         return controlTextSlider2(
           context: context,
           editMode: state.editMode,
@@ -809,6 +815,8 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.biasCurrent6.value,
+          step: 1.0,
+          textPrecision: 0,
           onChanged: (biasCurrent6) {
             context
                 .read<Setting18CCorNodeGraphModuleBloc>()

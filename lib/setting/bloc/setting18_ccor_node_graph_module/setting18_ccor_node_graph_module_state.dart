@@ -53,19 +53,19 @@ class Setting18CCorNodeGraphModuleState extends Equatable {
       minValue: 0,
       maxValue: 8,
     ),
-    this.biasCurrent1 = const RangeFloatPointInput.pure(
+    this.biasCurrent1 = const RangeIntegerInput.pure(
       minValue: 320,
       maxValue: 520,
     ),
-    this.biasCurrent3 = const RangeFloatPointInput.pure(
+    this.biasCurrent3 = const RangeIntegerInput.pure(
       minValue: 320,
       maxValue: 520,
     ),
-    this.biasCurrent4 = const RangeFloatPointInput.pure(
+    this.biasCurrent4 = const RangeIntegerInput.pure(
       minValue: 320,
       maxValue: 520,
     ),
-    this.biasCurrent6 = const RangeFloatPointInput.pure(
+    this.biasCurrent6 = const RangeIntegerInput.pure(
       minValue: 320,
       maxValue: 520,
     ),
@@ -111,10 +111,10 @@ class Setting18CCorNodeGraphModuleState extends Equatable {
   final RangeFloatPointInput dsOutSlope3;
   final RangeFloatPointInput dsOutSlope4;
   final RangeFloatPointInput dsOutSlope6;
-  final RangeFloatPointInput biasCurrent1;
-  final RangeFloatPointInput biasCurrent3;
-  final RangeFloatPointInput biasCurrent4;
-  final RangeFloatPointInput biasCurrent6;
+  final RangeIntegerInput biasCurrent1;
+  final RangeIntegerInput biasCurrent3;
+  final RangeIntegerInput biasCurrent4;
+  final RangeIntegerInput biasCurrent6;
   final RangeFloatPointInput usVCA1;
   final RangeFloatPointInput usVCA3;
   final RangeFloatPointInput usVCA4;
@@ -145,10 +145,10 @@ class Setting18CCorNodeGraphModuleState extends Equatable {
     RangeFloatPointInput? dsOutSlope3,
     RangeFloatPointInput? dsOutSlope4,
     RangeFloatPointInput? dsOutSlope6,
-    RangeFloatPointInput? biasCurrent1,
-    RangeFloatPointInput? biasCurrent3,
-    RangeFloatPointInput? biasCurrent4,
-    RangeFloatPointInput? biasCurrent6,
+    RangeIntegerInput? biasCurrent1,
+    RangeIntegerInput? biasCurrent3,
+    RangeIntegerInput? biasCurrent4,
+    RangeIntegerInput? biasCurrent6,
     RangeFloatPointInput? usVCA1,
     RangeFloatPointInput? usVCA3,
     RangeFloatPointInput? usVCA4,

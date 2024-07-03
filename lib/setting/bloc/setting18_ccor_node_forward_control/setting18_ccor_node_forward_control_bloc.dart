@@ -110,22 +110,22 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       minValue: state.dsOutSlope6.minValue,
       maxValue: state.dsOutSlope6.maxValue,
     );
-    RangeFloatPointInput biasCurrent1 = initialRangeFloatPointInput(
+    RangeIntegerInput biasCurrent1 = initialRangeIntegerInput(
       characteristicDataCache[DataKey.biasCurrent1] ?? '',
       minValue: state.biasCurrent1.minValue,
       maxValue: state.biasCurrent1.maxValue,
     );
-    RangeFloatPointInput biasCurrent3 = initialRangeFloatPointInput(
+    RangeIntegerInput biasCurrent3 = initialRangeIntegerInput(
       characteristicDataCache[DataKey.biasCurrent3] ?? '',
       minValue: state.biasCurrent3.minValue,
       maxValue: state.biasCurrent3.maxValue,
     );
-    RangeFloatPointInput biasCurrent4 = initialRangeFloatPointInput(
+    RangeIntegerInput biasCurrent4 = initialRangeIntegerInput(
       characteristicDataCache[DataKey.biasCurrent4] ?? '',
       minValue: state.biasCurrent4.minValue,
       maxValue: state.biasCurrent4.maxValue,
     );
-    RangeFloatPointInput biasCurrent6 = initialRangeFloatPointInput(
+    RangeIntegerInput biasCurrent6 = initialRangeIntegerInput(
       characteristicDataCache[DataKey.biasCurrent6] ?? '',
       minValue: state.biasCurrent6.minValue,
       maxValue: state.biasCurrent6.maxValue,
@@ -388,7 +388,7 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
     BiasCurrent1Changed event,
     Emitter<Setting18CCorNodeForwardControlState> emit,
   ) {
-    RangeFloatPointInput biasCurrent1 = RangeFloatPointInput.dirty(
+    RangeIntegerInput biasCurrent1 = RangeIntegerInput.dirty(
       event.biasCurrent1,
       minValue: state.biasCurrent1.minValue,
       maxValue: state.biasCurrent1.maxValue,
@@ -407,7 +407,7 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
     BiasCurrent3Changed event,
     Emitter<Setting18CCorNodeForwardControlState> emit,
   ) {
-    RangeFloatPointInput biasCurrent3 = RangeFloatPointInput.dirty(
+    RangeIntegerInput biasCurrent3 = RangeIntegerInput.dirty(
       event.biasCurrent3,
       minValue: state.biasCurrent3.minValue,
       maxValue: state.biasCurrent3.maxValue,
@@ -426,7 +426,7 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
     BiasCurrent4Changed event,
     Emitter<Setting18CCorNodeForwardControlState> emit,
   ) {
-    RangeFloatPointInput biasCurrent4 = RangeFloatPointInput.dirty(
+    RangeIntegerInput biasCurrent4 = RangeIntegerInput.dirty(
       event.biasCurrent4,
       minValue: state.biasCurrent4.minValue,
       maxValue: state.biasCurrent4.maxValue,
@@ -445,7 +445,7 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
     BiasCurrent6Changed event,
     Emitter<Setting18CCorNodeForwardControlState> emit,
   ) {
-    RangeFloatPointInput biasCurrent6 = RangeFloatPointInput.dirty(
+    RangeIntegerInput biasCurrent6 = RangeIntegerInput.dirty(
       event.biasCurrent6,
       minValue: state.biasCurrent6.minValue,
       maxValue: state.biasCurrent6.maxValue,
@@ -538,22 +538,22 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
         minValue: state.dsOutSlope6.minValue,
         maxValue: state.dsOutSlope6.maxValue,
       ),
-      biasCurrent1: RangeFloatPointInput.dirty(
+      biasCurrent1: RangeIntegerInput.dirty(
         state.initialValues[DataKey.biasCurrent1] ?? '',
         minValue: state.biasCurrent1.minValue,
         maxValue: state.biasCurrent1.maxValue,
       ),
-      biasCurrent3: RangeFloatPointInput.dirty(
+      biasCurrent3: RangeIntegerInput.dirty(
         state.initialValues[DataKey.biasCurrent3] ?? '',
         minValue: state.biasCurrent3.minValue,
         maxValue: state.biasCurrent3.maxValue,
       ),
-      biasCurrent4: RangeFloatPointInput.dirty(
+      biasCurrent4: RangeIntegerInput.dirty(
         state.initialValues[DataKey.biasCurrent4] ?? '',
         minValue: state.biasCurrent4.minValue,
         maxValue: state.biasCurrent4.maxValue,
       ),
-      biasCurrent6: RangeFloatPointInput.dirty(
+      biasCurrent6: RangeIntegerInput.dirty(
         state.initialValues[DataKey.biasCurrent6] ?? '',
         minValue: state.biasCurrent6.minValue,
         maxValue: state.biasCurrent6.maxValue,
@@ -574,10 +574,10 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
     RangeFloatPointInput? dsOutSlope3,
     RangeFloatPointInput? dsOutSlope4,
     RangeFloatPointInput? dsOutSlope6,
-    RangeFloatPointInput? biasCurrent1,
-    RangeFloatPointInput? biasCurrent3,
-    RangeFloatPointInput? biasCurrent4,
-    RangeFloatPointInput? biasCurrent6,
+    RangeIntegerInput? biasCurrent1,
+    RangeIntegerInput? biasCurrent3,
+    RangeIntegerInput? biasCurrent4,
+    RangeIntegerInput? biasCurrent6,
   }) {
     dsVVA1 ??= state.dsVVA1;
     dsVVA3 ??= state.dsVVA3;

@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_graph_view/setting18_graph_view_bloc.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_view.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class Setting18GraphPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Setting18GraphViewBloc(
+        amp18Repository: RepositoryProvider.of<Amp18Repository>(context),
         graphFilePath: graphFilePath,
       ),
       child: const Setting18GraphView(),
