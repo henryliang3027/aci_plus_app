@@ -66,6 +66,7 @@ class _NamePlateInteractor extends StatelessWidget {
         setPreferredOrientation();
       },
       child: InteractiveViewer(
+        boundaryMargin: EdgeInsets.all(MediaQuery.of(context).padding.left),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
