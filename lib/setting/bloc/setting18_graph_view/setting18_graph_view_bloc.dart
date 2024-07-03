@@ -88,14 +88,17 @@ class Setting18GraphViewBloc
         DataKey dataKey =
             dataKeys.firstWhere((dataKey) => dataKey.name == moduleName);
         String text =
-            '${characteristicDataCache[dataKey] ?? ''}${CustomStyle.dB}';
+            ' ${characteristicDataCache[dataKey] ?? ''}${CustomStyle.dB}';
 
-        // valueTexts.add(ValueText(
-        //   moduleName: moduleName,
-        //   x: x,
-        //   y: y,
-        //   text: text,
-        // ));
+        String color = textPlaceholder.getAttribute('color').toString();
+
+        valueTexts.add(ValueText(
+          moduleName: moduleName,
+          x: x,
+          y: y,
+          text: text,
+          color: color,
+        ));
       }
     }
 
