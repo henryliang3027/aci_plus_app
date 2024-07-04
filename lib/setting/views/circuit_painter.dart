@@ -186,7 +186,9 @@ class CircuitPainter extends CustomPainter {
               (valueText.x + (238.365 / 2)) * scaleFactor +
                   offsetX -
                   (textPainter.width / 2),
-              (valueText.y - 54) * scaleFactor + offsetY));
+              (valueText.y - (40 / 2)) * scaleFactor +
+                  offsetY -
+                  (textPainter.height / 2)));
     }
   }
 
