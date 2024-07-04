@@ -148,7 +148,7 @@ class CircuitPainter extends CustomPainter {
       TextStyle textStyle = TextStyle(
           background: Paint()..color = Color.fromARGB(0, 255, 255, 255),
           color: Colors.black,
-          fontSize: 82 * scaleFactor,
+          fontSize: 76 * scaleFactor,
           fontWeight: FontWeight.bold);
       final textSpan = TextSpan(
         text: valueText.text,
@@ -160,12 +160,13 @@ class CircuitPainter extends CustomPainter {
         textDirection: TextDirection.ltr,
       );
       textPainter.layout(
-          // minWidth: 0,
-          // maxWidth: size.width,
-          );
+        minWidth: 0,
+        maxWidth: size.width,
+      );
 
       print('textPainter.height: ${textPainter.height}');
       print('textPainter.width: ${textPainter.width}');
+      print('fontsize: ${76 * scaleFactor}');
 
       // Paint paint = Paint()
       //   ..color = Color.fromARGB(255, 43, 255, 0)
