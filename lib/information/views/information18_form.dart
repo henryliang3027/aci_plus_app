@@ -75,7 +75,7 @@ class Information18Form extends StatelessWidget {
             // _VersionCard(),
             _ConnectionCard(),
             _ShortcutCard(),
-            _BlockDiagramCard(),
+            // _BlockDiagramCard(),
             _BasicCard(),
             _AlarmCard(),
             // _DataReloader(),

@@ -107,7 +107,7 @@ class Setting18GraphViewBloc
       height: height,
       components: components,
       boxes: boxes,
-      valueTexts: valueTexts,
+      valueTexts: [],
     );
 
     emit(state.copyWith(

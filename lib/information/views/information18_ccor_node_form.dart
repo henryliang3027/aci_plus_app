@@ -36,7 +36,7 @@ class Information18CCorNodeForm extends StatelessWidget {
             // _VersionCard(),
             _ConnectionCard(),
             _ShortcutCard(),
-            _BlockDiagramCard(),
+            // _BlockDiagramCard(),
             _BasicCard(),
             _AlarmCard(),
           ],
