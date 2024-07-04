@@ -7,6 +7,7 @@ import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/information/bloc/information18_ccor_node/information18_ccor_node_bloc.dart';
 import 'package:aci_plus_app/information/views/name_plate_view.dart';
+import 'package:aci_plus_app/information/views/peripheral_selector.page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -163,12 +164,34 @@ class _DeviceStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> showSelectPeripheralDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.01,
+            ),
+            child: const PeripheralSelector(),
+          );
+        },
+      );
+    }
+
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.scanStatus.isRequestSuccess) {
           if (state.connectionStatus.isRequestSuccess) {
-            return const Icon(
-              Icons.bluetooth_connected_outlined,
+            return IconButton(
+              icon: Icon(Icons.bluetooth_connected_outlined),
+              onPressed: () {
+                showSelectPeripheralDialog();
+              },
             );
           } else if (state.connectionStatus.isRequestFailure) {
             return const Icon(

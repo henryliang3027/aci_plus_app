@@ -19293,8 +19293,8 @@
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
      inkscape:zoom="0.19704315"
-     inkscape:cx="1108.8942"
-     inkscape:cy="1139.3444"
+     inkscape:cx="504.96554"
+     inkscape:cy="1144.4194"
      inkscape:window-width="2240"
      inkscape:window-height="1113"
      inkscape:window-x="0"
@@ -21294,7 +21294,7 @@
              aria-label="AGC" /></g></g><g
          id="Amp Forward OP"
          style="clip-rule:evenodd;display:inline;fill-rule:evenodd;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"><g
-           style="clip-rule:evenodd;display:inline;fill-rule:evenodd;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
+           style="clip-rule:evenodd;display:none;fill-rule:evenodd;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
            id="Amp P23 Forward Output OP"
            transform="rotate(-90,1686.6919,-83.260911)"><path
              style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#3f51b5;stroke-width:7.55767;stroke-dasharray:none;stroke-opacity:1"

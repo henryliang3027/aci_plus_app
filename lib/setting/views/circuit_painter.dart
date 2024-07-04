@@ -55,8 +55,10 @@ class CircuitPainter extends CustomPainter {
     double offsetX = (size.width - svgImage.width * scaleFactor) / 2;
     double offsetY = (size.height - svgImage.height * scaleFactor) / 2;
 
-    print(offsetX);
-    print(offsetY);
+    print('offsetX: ${offsetX}');
+    print('offsetY: ${offsetY}');
+    print('scaleFactorX: ${scaleFactorX}');
+    print('scaleFactorY: ${scaleFactorY}');
 
     // canvas.scale(scaleFactor);
 
@@ -143,10 +145,10 @@ class CircuitPainter extends CustomPainter {
 
     for (ValueText valueText in svgImage.valueTexts) {
       // final int colorHex = int.parse(valueText.color);
-      const textStyle = TextStyle(
-          // background: Paint()..color = Color.fromARGB(255, 170, 214, 255),
+      TextStyle textStyle = TextStyle(
+          background: Paint()..color = Color.fromARGB(0, 255, 255, 255),
           color: Colors.black,
-          fontSize: 14,
+          fontSize: 82 * scaleFactor,
           fontWeight: FontWeight.bold);
       final textSpan = TextSpan(
         text: valueText.text,
@@ -158,16 +160,33 @@ class CircuitPainter extends CustomPainter {
         textDirection: TextDirection.ltr,
       );
       textPainter.layout(
-        minWidth: 0,
-        maxWidth: size.width,
-      );
+          // minWidth: 0,
+          // maxWidth: size.width,
+          );
 
-      print(textPainter.height);
+      print('textPainter.height: ${textPainter.height}');
+      print('textPainter.width: ${textPainter.width}');
+
+      // Paint paint = Paint()
+      //   ..color = Color.fromARGB(255, 43, 255, 0)
+      //   ..style = PaintingStyle.fill
+      //   ..strokeWidth = 1.0;
+
+      // myCanvas.drawRect(
+      //     Rect.fromLTWH(
+      //         valueText.x * scaleFactor + offsetX,
+      //         valueText.y * scaleFactor + offsetY,
+      //         100 * scaleFactor,
+      //         100 * scaleFactor),
+      //     paint);
 
       textPainter.paint(
           canvas,
-          Offset((valueText.x) * scaleFactor + offsetX,
-              (valueText.y - textPainter.height * 4) * scaleFactor));
+          Offset(
+              (valueText.x + (238.365 / 2)) * scaleFactor +
+                  offsetX -
+                  (textPainter.width / 2),
+              (valueText.y - 54) * scaleFactor + offsetY));
     }
   }
 

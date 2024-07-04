@@ -31,7 +31,7 @@ class BLEWindowsClient extends BLEClientBase {
   StreamSubscription<BleDevice>? _discoveredDeviceStreamSubscription;
   StreamSubscription<bool>? _connectionStreamSubscription;
   StreamSubscription<dynamic>? _characteristicStreamSubscription;
-  Perigheral? _perigheral;
+  Peripheral? _peripheral;
 
   final _aciPrefix = 'ACI';
   final _serviceId = '0000ffe0-0000-1000-8000-00805f9b34fb';
@@ -110,7 +110,7 @@ class BLEWindowsClient extends BLEClientBase {
       _scanReportStreamController.add(
         const ScanReport(
           scanStatus: ScanStatus.failure,
-          perigheral: null,
+          peripheral: null,
         ),
       );
 
@@ -128,14 +128,14 @@ class BLEWindowsClient extends BLEClientBase {
           WinBle.stopScanning();
           print('Device: ${device.name}');
 
-          _perigheral = Perigheral(
+          _peripheral = Peripheral(
             id: device.address,
             name: device.name,
           );
           _scanReportStreamController.add(
             ScanReport(
               scanStatus: ScanStatus.success,
-              perigheral: _perigheral,
+              peripheral: _peripheral,
             ),
           );
         }
@@ -145,7 +145,7 @@ class BLEWindowsClient extends BLEClientBase {
       _scanReportStreamController.add(
         const ScanReport(
           scanStatus: ScanStatus.failure,
-          perigheral: null,
+          peripheral: null,
         ),
       );
     });
@@ -191,12 +191,12 @@ class BLEWindowsClient extends BLEClientBase {
 
   @override
   Future<void> connectToDevice() async {
-    startConnectionTimer(_perigheral!.id);
+    startConnectionTimer(_peripheral!.id);
 
-    WinBle.connect(_perigheral!.id);
+    WinBle.connect(_peripheral!.id);
 
     _connectionReportStreamController = StreamController<ConnectionReport>();
-    _connectionStreamSubscription = WinBle.connectionStreamOf(_perigheral!.id)
+    _connectionStreamSubscription = WinBle.connectionStreamOf(_peripheral!.id)
         .listen((connectionStateUpdate) async {
       print('current connection state: $connectionStateUpdate');
       switch (connectionStateUpdate) {
@@ -212,7 +212,7 @@ class BLEWindowsClient extends BLEClientBase {
           // To Get Characteristic
           List<BleCharacteristic> bleCharacteristics =
               await WinBle.discoverCharacteristics(
-            address: _perigheral!.id,
+            address: _peripheral!.id,
             serviceId: _serviceId,
           );
 
@@ -221,7 +221,7 @@ class BLEWindowsClient extends BLEClientBase {
           }
 
           WinBle.subscribeToCharacteristic(
-            address: _perigheral!.id,
+            address: _peripheral!.id,
             serviceId: _serviceId,
             characteristicId: _characteristicId,
           );
@@ -346,8 +346,8 @@ class BLEWindowsClient extends BLEClientBase {
     _connectionStreamSubscription = null;
 
     // WinBle 需要調用下面這行
-    if (_perigheral != null) {
-      WinBle.disconnect(_perigheral!.id);
+    if (_peripheral != null) {
+      WinBle.disconnect(_peripheral!.id);
     }
 
     clearCombinedRawData();
@@ -399,7 +399,7 @@ class BLEWindowsClient extends BLEClientBase {
     int mtu = 247,
   }) async {
     _currentCommandIndex = commandIndex;
-    final maxMtu = await WinBle.getMaxMtuSize(_perigheral!.id);
+    final maxMtu = await WinBle.getMaxMtuSize(_peripheral!.id);
     print('Max MTU: $maxMtu');
 
     // 設定 mtu = 247
@@ -449,7 +449,7 @@ class BLEWindowsClient extends BLEClientBase {
 
     try {
       await WinBle.write(
-        address: _perigheral!.id,
+        address: _peripheral!.id,
         service: _serviceId,
         characteristic: _characteristicId,
         data: Uint8List.fromList(value),
@@ -480,7 +480,7 @@ class BLEWindowsClient extends BLEClientBase {
     try {
       Stopwatch stopwatch = Stopwatch()..start();
       await WinBle.write(
-        address: _perigheral!.id,
+        address: _peripheral!.id,
         service: _serviceId,
         characteristic: _characteristicId,
         data: Uint8List.fromList(chunk),
@@ -548,7 +548,7 @@ class BLEWindowsClient extends BLEClientBase {
 
     try {
       await WinBle.write(
-        address: _perigheral!.id,
+        address: _peripheral!.id,
         service: _serviceId,
         characteristic: _characteristicId,
         data: Uint8List.fromList(command),

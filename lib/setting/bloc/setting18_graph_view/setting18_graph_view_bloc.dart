@@ -88,7 +88,7 @@ class Setting18GraphViewBloc
         DataKey dataKey =
             dataKeys.firstWhere((dataKey) => dataKey.name == moduleName);
         String text =
-            ' ${characteristicDataCache[dataKey] ?? ''}${CustomStyle.dB}';
+            '${characteristicDataCache[dataKey] ?? ''}${CustomStyle.dB}';
 
         String color = textPlaceholder.getAttribute('color').toString();
 
@@ -107,7 +107,7 @@ class Setting18GraphViewBloc
       height: height,
       components: components,
       boxes: boxes,
-      valueTexts: [],
+      valueTexts: valueTexts,
     );
 
     emit(state.copyWith(

@@ -11,8 +11,8 @@ enum ConnectStatus {
   disconnected,
 }
 
-class Perigheral {
-  const Perigheral({
+class Peripheral {
+  const Peripheral({
     required this.id,
     required this.name,
   });
@@ -24,11 +24,11 @@ class Perigheral {
 class ScanReport {
   const ScanReport({
     required this.scanStatus,
-    this.perigheral,
+    this.peripheral,
   });
 
   final ScanStatus scanStatus;
-  final Perigheral? perigheral;
+  final Peripheral? peripheral;
 }
 
 class ConnectionReport {
