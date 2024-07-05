@@ -88,7 +88,7 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
         DataKey dataKey =
             dataKeys.firstWhere((dataKey) => dataKey.name == moduleName);
         String text =
-            '${characteristicDataCache[dataKey] ?? ''} ${CustomStyle.dB}';
+            '${characteristicDataCache[dataKey] ?? ''}${CustomStyle.dB}';
 
         String color = textPlaceholder.getAttribute('color').toString();
 
@@ -106,7 +106,7 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
       height: height,
       components: components,
       boxes: boxes,
-      valueTexts: [],
+      valueTexts: valueTexts,
     );
 
     emit(state.copyWith(

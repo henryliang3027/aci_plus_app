@@ -18,6 +18,11 @@ class ConfigRepository {
     2: '',
     3: '',
     4: '',
+    5: '',
+    6: '',
+    7: '',
+    8: '',
+    9: '',
   };
 
   final Map<int, String> _distributionConfigNames = {
@@ -26,6 +31,11 @@ class ConfigRepository {
     2: '',
     3: '',
     4: '',
+    5: '',
+    6: '',
+    7: '',
+    8: '',
+    9: '',
   };
 
   int? getEmptyNameId({

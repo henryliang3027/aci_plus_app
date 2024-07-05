@@ -6,7 +6,7 @@ class PeripheralSelector extends StatelessWidget {
   const PeripheralSelector({super.key});
 
   final List<String> bluetoothDevices = const [
-    'ACI24050702',
+    'ACI240500702',
     'ACI240505004',
     'ACI240503006'
   ];
@@ -14,7 +14,7 @@ class PeripheralSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false,
+      canPop: true,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -29,7 +29,7 @@ class PeripheralSelector extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
             ),
             child: Text(
-              AppLocalizations.of(context)!.dialogTitleSelectConfig,
+              AppLocalizations.of(context)!.dialogTitleSelectBluetoothDongle,
               style: TextStyle(
                 fontSize: CustomStyle.sizeXL,
                 color: Theme.of(context).colorScheme.onPrimary,
@@ -48,16 +48,24 @@ class PeripheralSelector extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      elevation: 5,
-                      margin:
-                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                      // elevation: 1,
+                      // margin: EdgeInsets.only(bottom: 16),
                       child: ListTile(
-                        leading: Icon(Icons.bluetooth, color: Colors.blue),
-                        title: Text(
-                          bluetoothDevices[index],
-                          style: TextStyle(fontSize: 18),
+                        // leading: Icon(
+                        //   Icons.bluetooth,
+                        //   color: Theme.of(context).colorScheme.primary,
+                        // ),
+                        title: Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Text(
+                            bluetoothDevices[index],
+                            style: TextStyle(fontSize: 18),
+                          ),
                         ),
-                        trailing: Icon(Icons.arrow_forward_ios),
+                        trailing: Icon(
+                          Icons.bluetooth,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
                     );
                   },
@@ -65,29 +73,32 @@ class PeripheralSelector extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 40, 24, 40),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 0.0,
-                      horizontal: 20.0,
-                    ),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  child: Text(
-                    AppLocalizations.of(context)!.dialogMessageOk,
-                  ),
-                ),
-              ],
-            ),
+          SizedBox(
+            height: 30,
           ),
+          // Padding(
+          //   padding: const EdgeInsets.fromLTRB(0, 40, 24, 40),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.end,
+          //     children: [
+          //       ElevatedButton(
+          //         onPressed: () {
+          //           Navigator.of(context).pop();
+          //         },
+          //         style: ElevatedButton.styleFrom(
+          //           padding: const EdgeInsets.symmetric(
+          //             vertical: 0.0,
+          //             horizontal: 20.0,
+          //           ),
+          //           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          //         ),
+          //         child: Text(
+          //           AppLocalizations.of(context)!.dialogMessageOk,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

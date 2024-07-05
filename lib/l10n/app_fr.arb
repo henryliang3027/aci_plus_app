@@ -175,6 +175,7 @@
 
     "trunkAmplifier": "Amplificateur de coffre",
     "distributionAmplifier": "Amplificateur de distribution",
+    "opticalNode": "Nœud Optique",
     "name": "Nom",
 
     "scanQRCode": "Scanner code QR",
@@ -225,6 +226,7 @@
     "dialogTitleDeleteConfig": "Supprimer",
     "dialogTitleSelectConfig": "Sélectionner le préréglage",
     "dialogTitleDeviceRebooting": "Redémarrage",
+    "dialogTitleSelectBluetoothDongle": "Sélectionner le Bluetooth",
 
    
     "dialogMessageFirmwareUpdateError": "Le statut de la connexion Bluetooth est anormal. Souhaitez-vous réessayer ?",

@@ -178,6 +178,7 @@
 
     "trunkAmplifier": "幹線放大器",
     "distributionAmplifier": "支線放大器",
+    "opticalNode": "光節點",
     "name": "名稱",
 
     "scanQRCode": "掃描二維碼",
@@ -190,8 +191,8 @@
     "instructionStep3": "設定完成後請重新啟動 App。",
     "startUpdate": "開始",
     "firmawreUpdateCaution1": "請提供設備穩定的電源，更新過程中請勿關閉電源。",
-    "firmawreUpdateCaution2": "更新過程中請勿拔除藍芽調適器與關閉 App。",
-    "firmawreUpdateCaution3": "設備與行動裝置間需維持穩定的藍芽連線距離。",
+    "firmawreUpdateCaution2": "更新過程中請勿拔除藍牙調適器與關閉 App。",
+    "firmawreUpdateCaution3": "設備與行動裝置間需維持穩定的藍牙連線距離。",
     "readyToSend": "準備傳送韌體",
     "sendingBinary": "傳送中",
     "verifying": "驗證中",
@@ -227,9 +228,10 @@
     "dialogTitleDeleteConfig": "刪除",
     "dialogTitleSelectConfig": "選擇設定檔",
     "dialogTitleDeviceRebooting": "重新啟動中",
+    "dialogTitleSelectBluetoothDongle": "選擇藍牙裝置",
 
     
-    "dialogMessageFirmwareUpdateError": "藍芽連線狀態異常, 請問您是否重新嘗試？",
+    "dialogMessageFirmwareUpdateError": "藍牙連線狀態異常, 請問您是否重新嘗試？",
     "dialogMessageFirmwareUpdateSuccess": "韌體更新成功",
 
     "dialogMessageFirmwareUpdateVersion": "目前的韌體版本為 {currentVersion}，您確定要更新到 {newVersion} 嗎 ?",

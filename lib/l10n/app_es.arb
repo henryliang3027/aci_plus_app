@@ -176,6 +176,7 @@
 
     "trunkAmplifier": "Amplificador de maletero",
     "distributionAmplifier": "Amplificador de distribución",
+    "opticalNode": "Nodo Óptico",
     "name": "Nombre",
 
     "scanQRCode": "Escanear código QR",
@@ -226,6 +227,7 @@
     "dialogTitleDeleteConfig": "Eliminar",
     "dialogTitleSelectConfig": "Seleccionar preajuste",
     "dialogTitleDeviceRebooting": "Reiniciando",
+    "dialogTitleSelectBluetoothDongle": "Seleccionar Bluetooth",
 
     
     "dialogMessageFirmwareUpdateError": "El estado de la conexión Bluetooth es anormal. ¿Te gustaría intentarlo de nuevo?",

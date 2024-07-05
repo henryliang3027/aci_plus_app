@@ -177,6 +177,7 @@
     
     "trunkAmplifier": "Trunk Amplifier",
     "distributionAmplifier": "Distribution Amplifier",
+    "opticalNode": "Optical Node",
     "name": "Name",
 
     "scanQRCode": "Scan QR Code",
@@ -227,6 +228,7 @@
     "dialogTitleDeleteConfig": "Delete",
     "dialogTitleSelectConfig": "Select Preset",
     "dialogTitleDeviceRebooting": "Rebooting",
+    "dialogTitleSelectBluetoothDongle": "Select Bluetooth",
 
     
     "dialogMessageFirmwareUpdateError": "The Bluetooth connection status is abnormal. Would you like to try again?",

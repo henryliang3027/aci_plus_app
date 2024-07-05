@@ -694,13 +694,13 @@ class _DeviceListView extends StatelessWidget {
         color: Colors.transparent,
         child: Ink(
           decoration: ShapeDecoration(
-            color: configs.length < 5
+            color: configs.length < 10
                 ? Theme.of(context).colorScheme.primary.withAlpha(200)
                 : Colors.grey.withAlpha(200),
             shape: const CircleBorder(),
           ),
           child: IconButton(
-            onPressed: configs.length < 5
+            onPressed: configs.length < 10
                 ? () async {
                     showAddConfigDialog(groupId: groupId).then(
                       (result) async {

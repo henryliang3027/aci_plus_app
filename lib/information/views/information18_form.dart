@@ -313,9 +313,9 @@ class _DeviceStatus extends StatelessWidget {
           // var height = MediaQuery.of(context).size.height;
 
           return Dialog(
-            insetPadding: EdgeInsets.symmetric(
-              horizontal: width * 0.01,
-            ),
+            // insetPadding: EdgeInsets.symmetric(
+            //   horizontal: width * 0.01,
+            // ),
             child: const PeripheralSelector(),
           );
         },
