@@ -133,7 +133,7 @@ const Map<String, String> partIdMap = {
 };
 
 const Map<String, String> settingGraphFilePath = {
-  '1': 'assets/circuits/SDLE_1.8G_20240621.svg', // SDLE
+  '1': 'assets/circuits/SDLE_1.8G_20240705.svg', // SDLE
   '2': 'assets/circuits/BLE_1.8G_20240621.svg', // BLE
   '3': 'assets/circuits/MB_1.8G_20240621.svg', // MB
   '4': 'assets/circuits/NODE_1.8G_20240705.svg', // C-Cor Node
