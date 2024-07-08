@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
+import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/model/svg_image.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +26,18 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
 
   final String _graphFilePath;
   final Amp18CCorNodeRepository _amp18CCorNodeRepository;
+
+  String getTextByDataKey({
+    required Map<DataKey, String> characteristicDataCache,
+    required DataKey dataKey,
+  }) {
+    if (dataKey == DataKey.forwardConfig) {
+      return forwardConfigExportTexts[characteristicDataCache[dataKey] ?? ''] ??
+          '';
+    } else {
+      return '${characteristicDataCache[dataKey] ?? ''}${CustomStyle.dB}';
+    }
+  }
 
   Future<void> _onLoadGraphRequested(
     LoadGraphRequested event,
@@ -87,8 +100,10 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
         double y = double.parse(textPlaceholder.getAttribute('y').toString());
         DataKey dataKey =
             dataKeys.firstWhere((dataKey) => dataKey.name == moduleName);
-        String text =
-            '${characteristicDataCache[dataKey] ?? ''}${CustomStyle.dB}';
+        String text = getTextByDataKey(
+          characteristicDataCache: characteristicDataCache,
+          dataKey: dataKey,
+        );
 
         String color = textPlaceholder.getAttribute('color').toString();
 
