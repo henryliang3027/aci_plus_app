@@ -159,6 +159,7 @@
     "temperatureAlarm": "Température",
     "powerSupplyAlarm": "Alimentation électrique",
     "unitStatusAlarm": "État dispositif",
+    "warmReset": "Redémarrage chaud",
 
     "minute": "Minute(s)",
 
@@ -391,5 +392,8 @@
     "dialogMessageNoMoreLogs": "Plus de journaux.",
     "dialogMessageEnterConfirm": "Pour confirmer, tapez \"confirm\" ci-dessous.",
     "dialogMessageCodeHint": "Veuillez entrer votre code",
-    "dialogMessageEnterYourCode": "Seuls les chiffres arabes, maximum 8 caractères:"
+    "dialogMessageEnterYourCode": "Seuls les chiffres arabes, maximum 8 caractères:",
+    "dialogMessageWarmReset": "Voulez-vous effectuer un redémarrage chaud sur l'appareil ?",
+    "dialogMessagePerformingWarmReset": "Effectuer un redémarrage chaud...",
+    "dialogMessageWarmResetSuccessful": "Redémarrage chaud effectué avec succès."
 }

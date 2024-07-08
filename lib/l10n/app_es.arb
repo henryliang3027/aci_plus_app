@@ -159,6 +159,7 @@
     "temperatureAlarm": "Temperatura",
     "powerSupplyAlarm": "Fuente de alimentación",
     "unitStatusAlarm": "Estado Dispositivo",
+    "warmReset": "Reinicio caliente",
 
     "minute": "Minuto(s)",
 
@@ -392,5 +393,8 @@
     "dialogMessageNoMoreLogs": "No hay más registros.",
     "dialogMessageEnterConfirm": "Para confirmar, escriba \"confirm\" abajo.",
     "dialogMessageCodeHint": "Por favor ingresa tu código",
-    "dialogMessageEnterYourCode": "Solo números arábigos, máximo de 8 caracteres:"
+    "dialogMessageEnterYourCode": "Solo números arábigos, máximo de 8 caracteres:",
+    "dialogMessageWarmReset": "¿Quieres realizar un reinicio caliente en el dispositivo?",
+    "dialogMessagePerformingWarmReset": "Realizando un reinicio caliente...",
+    "dialogMessageWarmResetSuccessful": "Reinicio caliente realizado con éxito."
 }

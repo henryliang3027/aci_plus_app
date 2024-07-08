@@ -161,6 +161,7 @@
     "temperatureAlarm": "溫度警示",
     "powerSupplyAlarm": "電源警示",
     "unitStatusAlarm": "設備狀態",
+    "warmReset": "熱重啟",
 
     "minute": "分鐘",
 
@@ -394,7 +395,10 @@
     "dialogMessageNoMoreLogs": "無法載入更多紀錄。",
     "dialogMessageEnterConfirm": "請在下面的方塊中輸入 \"confirm\" 來確認您要進行設定",
     "dialogMessageCodeHint": "請輸入您的代碼",
-    "dialogMessageEnterYourCode": "代碼僅能為阿拉伯數字，最多八個字元："
-
+    "dialogMessageEnterYourCode": "代碼僅能為阿拉伯數字，最多八個字元：",
+    "dialogMessageWarmReset": "您想對設備執行熱重啟嗎？",
+    "dialogMessagePerformingWarmReset": "熱重啟中...",
+    "dialogMessageWarmResetSuccessful": "熱重啟成功"
+    
 
 }

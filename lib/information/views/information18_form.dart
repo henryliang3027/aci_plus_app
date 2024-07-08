@@ -10,6 +10,7 @@ import 'package:aci_plus_app/information/views/information18_config_list_view.da
 import 'package:aci_plus_app/information/views/name_plate_view.dart';
 import 'package:aci_plus_app/information/views/peripheral_selector.page.dart';
 import 'package:aci_plus_app/repositories/config.dart';
+import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -104,6 +105,7 @@ class Information18Form extends StatelessWidget {
 
 enum HomeMenu {
   refresh,
+  warmReset,
   about,
 }
 
@@ -117,6 +119,136 @@ class _PopupMenu extends StatefulWidget {
 class __PopupMenuState extends State<_PopupMenu> {
   @override
   Widget build(BuildContext context) {
+    Future<bool?> showWarmResetDialog() {
+      return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context)!.dialogTitleNotice,
+              style: const TextStyle(
+                color: CustomStyle.customYellow,
+              ),
+            ),
+            content: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: AppLocalizations.of(context)!.dialogMessageWarmReset,
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+              style: const TextStyle(
+                fontSize: CustomStyle.sizeL,
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageCancel,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(false); // pop dialog
+                },
+              ),
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageOk,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<bool?> showRebootingProgressDialog() {
+      return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context)!.warmReset,
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const LinearProgressIndicator(
+                    value: 0.2,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!
+                        .dialogMessagePerformingWarmReset,
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
+    Future<void> showSuccessDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return AlertDialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.1,
+            ),
+            title: Text(
+              AppLocalizations.of(context)!.dialogTitleSuccess,
+              style: const TextStyle(
+                color: Colors.green,
+              ),
+            ),
+            content: SizedBox(
+              width: width,
+              child: SingleChildScrollView(
+                child: ListBody(
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!
+                          .dialogMessageWarmResetSuccessful,
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeL,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageOk,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (!state.loadingStatus.isRequestInProgress &&
@@ -135,6 +267,12 @@ class __PopupMenuState extends State<_PopupMenu> {
                       .add(const AlarmPeriodicUpdateCanceled());
                   context.read<HomeBloc>().add(const DeviceRefreshed());
                   break;
+                case HomeMenu.warmReset:
+                  showWarmResetDialog().then((isConfirm) {
+                    showRebootingProgressDialog().then((isReturn) {
+                      showSuccessDialog();
+                    });
+                  });
                 case HomeMenu.about:
                   Navigator.push(
                     context,
@@ -144,6 +282,7 @@ class __PopupMenuState extends State<_PopupMenu> {
                     ),
                   );
                   break;
+
                 default:
                   break;
               }
@@ -168,45 +307,43 @@ class __PopupMenuState extends State<_PopupMenu> {
                     ],
                   ),
                 ),
-                !state.loadingStatus.isRequestInProgress &&
-                        !state.connectionStatus.isRequestInProgress
-                    ? PopupMenuItem<HomeMenu>(
-                        value: HomeMenu.about,
-                        enabled: true,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              CustomIcons.about,
-                              size: 20.0,
-                              color: Colors.black,
-                            ),
-                            const SizedBox(
-                              width: 10.0,
-                            ),
-                            Text(AppLocalizations.of(context)!.aboutUs),
-                          ],
-                        ),
-                      )
-                    : PopupMenuItem<HomeMenu>(
-                        value: HomeMenu.about,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              CustomIcons.about,
-                              size: 20.0,
-                              color: Colors.black,
-                            ),
-                            const SizedBox(
-                              width: 10.0,
-                            ),
-                            Text(AppLocalizations.of(context)!.aboutUs),
-                          ],
-                        ),
+                PopupMenuItem<HomeMenu>(
+                  value: HomeMenu.warmReset,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.restart_alt_sharp,
+                        size: 20.0,
+                        color: Colors.black,
                       ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(AppLocalizations.of(context)!.warmReset),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<HomeMenu>(
+                  value: HomeMenu.about,
+                  enabled: true,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        CustomIcons.about,
+                        size: 20.0,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(AppLocalizations.of(context)!.aboutUs),
+                    ],
+                  ),
+                )
               ];
             },
           );
