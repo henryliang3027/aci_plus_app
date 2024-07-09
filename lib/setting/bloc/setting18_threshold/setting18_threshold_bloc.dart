@@ -146,6 +146,7 @@ class Setting18ThresholdBloc
             '';
 
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       temperatureAlarmState: _stringNumberToBool(strTemperatureAlarmState),
       minTemperature: FloatPointInput.dirty(
         getMinTemperature(
@@ -180,6 +181,9 @@ class Setting18ThresholdBloc
           _stringNumberToBool(strStopFrequencyOutputLevelAlarmState),
       isInitialize: true,
       initialValues: characteristicDataCache,
+      editMode: false,
+      enableSubmission: false,
+      settingResult: const [],
     ));
   }
 

@@ -89,6 +89,7 @@ class Setting18ConfigureBloc
         characteristicDataCache[DataKey.tgcCableLength] ?? '';
 
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       location: location,
       coordinates: coordinates,
       splitOption: splitOption,
@@ -111,6 +112,10 @@ class Setting18ConfigureBloc
       tgcCableLength: tgcCableLength,
       isInitialize: true,
       initialValues: characteristicDataCache,
+      editMode: false,
+      enableSubmission: false,
+      settingResult: const [],
+      gpsCoordinateErrorMessage: '',
     ));
   }
 
