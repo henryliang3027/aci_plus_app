@@ -40,7 +40,7 @@ class Setting18TabBar extends StatelessWidget {
               tabs: [
                 Tab(
                   child: SizedBox(
-                    width: 110,
+                    // width: 110,
                     child: Center(
                       child: Text(
                         AppLocalizations.of(context)!.device,
@@ -50,7 +50,7 @@ class Setting18TabBar extends StatelessWidget {
                 ),
                 Tab(
                   child: SizedBox(
-                    width: 110,
+                    // width: 110,
                     child: Center(
                       child: Text(
                         AppLocalizations.of(context)!.alarm,
@@ -60,7 +60,7 @@ class Setting18TabBar extends StatelessWidget {
                 ),
                 Tab(
                   child: SizedBox(
-                    width: 110,
+                    // width: 110,
                     child: Center(
                       child: Text(
                         AppLocalizations.of(context)!.balance,

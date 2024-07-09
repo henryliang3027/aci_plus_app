@@ -7,9 +7,9 @@
     "workingMode": "工作模式",
     "pilotCodeFormatError": "格式不正確",
 
-    "device": "設備",
-    "alarm": "告警",
-    "balance": "調整",
+    "device": "      設備      ",
+    "alarm": "      告警      ",
+    "balance": "      調整      ",
     "advanced": "進階",
     
     "forwardConfigMode": "下行組態模式",
@@ -48,8 +48,8 @@
     "forwardControlParameters": "下行控制參數",
     "returnControlParameters": "上行控制參數",
 
-    "forwardControl": "下行",
-    "returnControl": "上行",
+    "forwardControl": "    下行    ",
+    "returnControl": "    上行    ",
     "forwardInputAttenuation1": "Port 1 輸入衰減量",
     "forwardInputAttenuation3": "Port 3 輸入衰減量",
     "forwardInputAttenuation4": "Port 4 輸入衰減量",
@@ -173,17 +173,17 @@
     "downloadAll": "下載全部",
     "open": "開啟",
 
-    "dataLog": "設備紀錄",
-    "rfLevel": "訊號強度",
+    "dataLog": "     設備紀錄     ",
+    "rfLevel": "     訊號強度     ",
 
     "trunkAmplifier": "幹線放大器",
     "distributionAmplifier": "支線放大器",
     "name": "名稱",
 
     "scanQRCode": "掃描二維碼",
-    "deviceSetting": "設備設定",
-    "firmawreUpdate": "韌體更新",
-    "bluetoothSetting": "藍牙設定",
+    "deviceSetting": "     設備設定     ",
+    "firmawreUpdate": "     韌體更新     ",
+    "bluetoothSetting": "     藍牙設定     ",
     "instruction" : "說明",
     "instructionStep1": "請將 BT 5.1 USB 藍牙適配器插入任一台 1.8G 放大器。",
     "instructionStep2": "插入並通電後，點選下方的按鈕。",

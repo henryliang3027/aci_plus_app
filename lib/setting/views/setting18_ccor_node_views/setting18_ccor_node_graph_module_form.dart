@@ -169,6 +169,10 @@ class _Setting18CCorNodeGraphModuleFormState
             context: context,
             messageRows: rows,
           );
+
+          context
+              .read<Setting18CCorNodeGraphModuleBloc>()
+              .add(const Initialized());
         }
 
         if (state.isInitialize) {

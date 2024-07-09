@@ -27,17 +27,13 @@ class Setting18ReverseControlView extends StatelessWidget {
         homeState.characteristicData[DataKey.factoryDefaultNumber] ?? '';
 
     List<Widget> getReturnControlParameterWidgetsByPartId(String partId) {
-      Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
+      List<Enum> items = SettingItemTable.itemsMap[partId] ?? [];
       List<Widget> widgets = [];
 
-      List<Enum> enabledItems =
-          itemsMap.keys.where((key) => itemsMap[key] == true).toList();
+      items =
+          items.where((item) => item.runtimeType == SettingControl).toList();
 
-      enabledItems = enabledItems
-          .where((item) => item.runtimeType == SettingControl)
-          .toList();
-
-      for (Enum name in enabledItems) {
+      for (Enum name in items) {
         switch (name) {
           case SettingControl.returnInputAttenuation1:
             break;
@@ -120,22 +116,18 @@ class Setting18ReverseControlView extends StatelessWidget {
       return widgets.isNotEmpty
           ? widgets
           : [
+              const _ReturnOutputAttenuation1(),
+              const _ReturnOutputEqualizer1(),
               const _ReturnInputAttenuation2(),
               const _ReturnInputAttenuation3(),
               _ReturnInputAttenuation4(
                 partId: partId,
               ),
-              const _ReturnInputAttenuation2And3(),
-              const _ReturnInputAttenuation5And6(),
-              const _ReturnOutputAttenuation1(),
-              const _ReturnOutputEqualizer1(),
               const _ReturnIngressSetting2(),
               const _ReturnIngressSetting3(),
               _ReturnIngressSetting4(
                 partId: partId,
               ),
-              const _ReturnIngressSetting2And3(),
-              const _ReturnIngressSetting5And6(),
             ];
     }
 

@@ -24,17 +24,13 @@ class Seting18CCorNodeReverseControlView extends StatelessWidget {
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
 
     List<Widget> getReturnControlParameterWidgetsByPartId(String partId) {
-      Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
+      List<Enum> items = SettingItemTable.itemsMap[partId] ?? [];
       List<Widget> widgets = [];
 
-      List<Enum> enabledItems =
-          itemsMap.keys.where((key) => itemsMap[key] == true).toList();
+      items =
+          items.where((item) => item.runtimeType == SettingControl).toList();
 
-      enabledItems = enabledItems
-          .where((item) => item.runtimeType == SettingControl)
-          .toList();
-
-      for (Enum name in enabledItems) {
+      for (Enum name in items) {
         switch (name) {
           case SettingControl.returnInputAttenuation1:
             widgets.add(

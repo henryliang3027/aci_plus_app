@@ -160,17 +160,13 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
     }
 
     List<Widget> getThresholdParameterWidgetsByPartId(String partId) {
-      Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
+      List<Enum> items = SettingItemTable.itemsMap[partId] ?? [];
       List<Widget> widgets = [];
 
-      List<Enum> enabledItems =
-          itemsMap.keys.where((key) => itemsMap[key] == true).toList();
+      items =
+          items.where((item) => item.runtimeType == SettingThreshold).toList();
 
-      enabledItems = enabledItems
-          .where((item) => item.runtimeType == SettingThreshold)
-          .toList();
-
-      for (Enum name in enabledItems) {
+      for (Enum name in items) {
         switch (name) {
           case SettingThreshold.temperature:
             widgets.add(_TemperatureAlarmControl(
@@ -267,17 +263,13 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
     }
 
     List<Widget> getForwardSettingWidgetsByPartId(String partId) {
-      Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
+      List<Enum> items = SettingItemTable.itemsMap[partId] ?? [];
       List<Widget> widgets = [];
 
-      List<Enum> enabledItems =
-          itemsMap.keys.where((key) => itemsMap[key] == true).toList();
+      items =
+          items.where((item) => item.runtimeType == SettingThreshold).toList();
 
-      enabledItems = enabledItems
-          .where((item) => item.runtimeType == SettingThreshold)
-          .toList();
-
-      for (Enum name in enabledItems) {
+      for (Enum name in items) {
         switch (name) {
           case SettingThreshold.splitOptions:
             widgets.add(const _SplitOptionAlarmControl());

@@ -7,9 +7,9 @@
     "workingMode": "Working Mode",
     "pilotCodeFormatError": "Invalid pilot code",
 
-    "device": "Device",
-    "alarm": "Alarm",
-    "balance": "Balance",
+    "device": "    Device    ",
+    "alarm": "    Alarm    ",
+    "balance": "   Balance   ",
     "advanced": "Advanced",
    
     "forwardConfigMode": "Forward Config Mode",
@@ -48,8 +48,8 @@
     "forwardControlParameters": "Forward Control Parameters",
     "returnControlParameters": "Reverse Control Parameters",
 
-    "forwardControl": "Forward",
-    "returnControl": "Reverse",
+    "forwardControl": " Forward ",
+    "returnControl": " Reverse ",
     "forwardInputAttenuation1": "Port 1 Input Attenuation",
     "forwardInputAttenuation3": "Port 3 Input Attenuation",
     "forwardInputAttenuation4": "Port 4 Input Attenuation",
@@ -172,8 +172,8 @@
     "downloadAll": "Download All",
     "open": "Open",
 
-    "dataLog": "Device Log",
-    "rfLevel": "RF Level",
+    "dataLog": "  Device Log  ",
+    "rfLevel": "   RF Level   ",
     
     "trunkAmplifier": "Trunk Amplifier",
     "distributionAmplifier": "Distribution Amplifier",
