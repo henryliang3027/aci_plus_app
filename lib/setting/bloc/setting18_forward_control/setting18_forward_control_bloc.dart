@@ -113,6 +113,9 @@ class Setting18ForwardControlBloc
       dsSlope3: dsSlope3,
       dsSlope4: dsSlope4,
       initialValues: characteristicDataCache,
+      editMode: false,
+      enableSubmission: false,
+      settingResult: const [],
     ));
   }
 

@@ -168,6 +168,7 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
         characteristicDataCache[DataKey.ingressSetting6] ?? '';
 
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       forwardConfig: forwardConfig,
       splitOption: splitOption,
       dsVVA1: dsVVA1,
@@ -195,6 +196,8 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
       returnIngressSetting4: returnIngressSetting4,
       returnIngressSetting6: returnIngressSetting6,
       initialValues: characteristicDataCache,
+      enableSubmission: false,
+      settingResult: const [],
     ));
   }
 

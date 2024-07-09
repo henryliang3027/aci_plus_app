@@ -93,6 +93,9 @@ class Setting18ReverseControlBloc
       returnIngressSetting3: ingressSetting3,
       returnIngressSetting4: ingressSetting4,
       initialValues: characteristicDataCache,
+      editMode: false,
+      enableSubmission: false,
+      settingResult: const [],
     ));
   }
 

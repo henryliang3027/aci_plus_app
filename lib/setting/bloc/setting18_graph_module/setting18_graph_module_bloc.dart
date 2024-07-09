@@ -162,6 +162,7 @@ class Setting18GraphModuleBloc
     String alcMode = characteristicDataCache[DataKey.alcMode] ?? '';
 
     emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
       dsVVA1: dsVVA1,
       dsVVA4: dsVVA4,
       dsVVA5: dsVVA5,
@@ -195,6 +196,8 @@ class Setting18GraphModuleBloc
       alcMode: alcMode,
       isInitialize: true,
       initialValues: characteristicDataCache,
+      enableSubmission: false,
+      settingResult: const [],
     ));
   }
 
