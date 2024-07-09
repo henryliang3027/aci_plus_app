@@ -39,17 +39,13 @@ class Setting18ForwardControlView extends StatelessWidget {
         homeState.characteristicData[DataKey.forwardCEQIndex] ?? '';
 
     List<Widget> getForwardControlParameterWidgetsByPartId(String partId) {
-      Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
+      List<Enum> items = SettingItemTable.itemsMap[partId] ?? [];
       List<Widget> widgets = [];
 
-      List<Enum> enabledItems =
-          itemsMap.keys.where((key) => itemsMap[key] == true).toList();
+      items =
+          items.where((item) => item.runtimeType == SettingControl).toList();
 
-      enabledItems = enabledItems
-          .where((item) => item.runtimeType == SettingControl)
-          .toList();
-
-      for (Enum name in enabledItems) {
+      for (Enum name in items) {
         switch (name) {
           case SettingControl.forwardInputAttenuation1:
             widgets.add(
@@ -132,11 +128,6 @@ class Setting18ForwardControlView extends StatelessWidget {
                 currentInputEqualizer: currentInputEqualizer,
               ),
               const _ForwardOutputAttenuation3And4(),
-              const _ForwardOutputEqualizer3And4(),
-              const _ForwardOutputAttenuation2And3(),
-              const _ForwardOutputAttenuation5And6(),
-              const _ForwardOutputEqualizer2And3(),
-              const _ForwardOutputEqualizer5And6(),
             ];
     }
 

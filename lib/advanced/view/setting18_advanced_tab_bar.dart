@@ -45,7 +45,7 @@ class Setting18AdvancedTabBar extends StatelessWidget {
                   tabs: [
                     Tab(
                       child: SizedBox(
-                        width: 160,
+                        // width: 160,
                         child: Center(
                           child: Text(
                             AppLocalizations.of(context)!.deviceSetting,
@@ -55,7 +55,7 @@ class Setting18AdvancedTabBar extends StatelessWidget {
                     ),
                     Tab(
                       child: SizedBox(
-                        width: 160,
+                        // width: 160,
                         child: Center(
                           child: Text(
                             AppLocalizations.of(context)!.firmawreUpdate,

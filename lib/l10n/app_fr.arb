@@ -7,9 +7,9 @@
     "workingMode": "Mode de Fonctionnement",
     "pilotCodeFormatError": "Code Pilote Incorrect",
 
-    "device": "Appareil",
-    "alarm": "Alarme",
-    "balance": "Équilibre",
+    "device": "   Appareil   ",
+    "alarm": "    Alarme    ",
+    "balance": "  Équilibre  ",
     "advanced": "Avancé",
    
     "forwardConfigMode": "Mode Configuration Avancé",
@@ -48,8 +48,8 @@
     "forwardControlParameters": "Paramètres de Commande Avant",
     "returnControlParameters": "Paramètres de Commande Arrière",
     
-    "forwardControl": "Avant",
-    "returnControl": "Arrière",
+    "forwardControl": "  Avant  ",
+    "returnControl": " Arrière ",
     "forwardInputAttenuation1": "Atténuation d'Entrée du Port 1",
     "forwardInputAttenuation3": "Atténuation d'Entrée du Port 3",
     "forwardInputAttenuation4": "Atténuation d'Entrée du Port 4",
@@ -170,8 +170,8 @@
     "open": "Ouvrir",
     "downloadAll": "Tout Télécharger",
 
-    "dataLog": "Journal",
-    "rfLevel": "Niveau RF",
+    "dataLog": "    Journal    ",
+    "rfLevel": "   Niveau RF   ",
 
     "trunkAmplifier": "Amplificateur de coffre",
     "distributionAmplifier": "Amplificateur de distribution",

@@ -283,6 +283,8 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
             context: context,
             messageRows: rows,
           );
+
+          context.read<Setting18GraphModuleBloc>().add(const Initialized());
         }
 
         if (state.isInitialize) {

@@ -44,7 +44,7 @@ class Chart18TabBar extends StatelessWidget {
                   tabs: [
                     Tab(
                       child: SizedBox(
-                        width: 130,
+                        // width: 130,
                         child: Center(
                           child: Text(
                             AppLocalizations.of(context)!.dataLog,
@@ -54,7 +54,7 @@ class Chart18TabBar extends StatelessWidget {
                     ),
                     Tab(
                       child: SizedBox(
-                        width: 130,
+                        // width: 130,
                         child: Center(
                           child: Text(
                             AppLocalizations.of(context)!.rfLevel,

@@ -53,17 +53,13 @@ class _CardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget getWidgetsByPartId(String partId) {
-      Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
+      List<Enum> items = SettingItemTable.itemsMap[partId] ?? [];
       List<Widget> widgets = [];
 
-      List<Enum> enabledItems =
-          itemsMap.keys.where((key) => itemsMap[key] == true).toList();
+      items =
+          items.where((item) => item.runtimeType == SettingThreshold).toList();
 
-      enabledItems = enabledItems
-          .where((item) => item.runtimeType == SettingThreshold)
-          .toList();
-
-      for (Enum name in enabledItems) {
+      for (Enum name in items) {
         switch (name) {
           case SettingThreshold.workingMode:
             widgets.add(const _WorkingModeCard());

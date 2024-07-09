@@ -7,9 +7,9 @@
     "workingMode": "Modo Trabajo",
     "pilotCodeFormatError": "Código Piloto Inválido",
 
-    "device": "Dispositivo",
-    "alarm": "Alarma",
-    "balance": "Balance",    
+    "device": " Dispositivo ",
+    "alarm": "    Alarma    ",
+    "balance": "   Balance   ",    
     "advanced": "Avanzado",
     
     "forwardConfigMode": "Modo Configuración Adelante",
@@ -48,8 +48,8 @@
     "forwardControlParameters": "Parámetros Control Avance",
     "returnControlParameters": "Parámetros Control Inverso",
     
-    "forwardControl": "Avance",
-    "returnControl": "Inverso",
+    "forwardControl": "  Avance  ",
+    "returnControl": " Inverso ",
     "forwardInputAttenuation1": "Atenuación Entrada Puerto 1",
     "forwardInputAttenuation3": "Atenuación Entrada Puerto 3",
     "forwardInputAttenuation4": "Atenuación Entrada Puerto 4",
@@ -171,8 +171,8 @@
     "downloadAll": "Descargar Todo",
     "open": "Abrir",
 
-    "dataLog": "Registro",
-    "rfLevel": "Nivel RF",
+    "dataLog": "   Registro   ",
+    "rfLevel": "   Nivel RF   ",
 
     "trunkAmplifier": "Amplificador de maletero",
     "distributionAmplifier": "Amplificador de distribución",

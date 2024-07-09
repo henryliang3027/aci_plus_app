@@ -160,17 +160,14 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
     }
 
     List<Widget> getConfigurationParameterWidgetsByPartId(String partId) {
-      Map<Enum, bool> itemsMap = SettingItemTable.itemsMap[partId] ?? {};
+      List<Enum> items = SettingItemTable.itemsMap[partId] ?? [];
       List<Widget> widgets = [];
 
-      List<Enum> enabledItems =
-          itemsMap.keys.where((key) => itemsMap[key] == true).toList();
-
-      enabledItems = enabledItems
+      items = items
           .where((item) => item.runtimeType == SettingConfiruration)
           .toList();
 
-      for (Enum name in enabledItems) {
+      for (Enum name in items) {
         switch (name) {
           case SettingConfiruration.location:
             widgets.add(_Location(

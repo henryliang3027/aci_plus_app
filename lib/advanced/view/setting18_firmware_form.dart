@@ -214,18 +214,20 @@ class Setting18FirmwareForm extends StatelessWidget {
           });
         }
       },
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const _UserCaution(),
-            const _ProgressBar(),
-            _StartButton(
-              pageController: pageController,
-              partId: partId,
-            ),
-          ],
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const _UserCaution(),
+              const _ProgressBar(),
+              _StartButton(
+                pageController: pageController,
+                partId: partId,
+              ),
+            ],
+          ),
         ),
       ),
     );
