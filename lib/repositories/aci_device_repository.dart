@@ -9,6 +9,7 @@ class ACIDeviceRepository {
   ACIDeviceRepository() : _bleClient = BLEClientFactory.instance;
 
   final BLEClientBase _bleClient;
+  final List<Peripheral> _peripherals = [];
 
   Stream<ScanReport> get scanReport async* {
     yield* _bleClient.scanReport;

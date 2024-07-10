@@ -107,7 +107,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           scanStatus: FormStatus.requestSuccess,
           connectionStatus: FormStatus.requestInProgress,
           loadingStatus: FormStatus.requestInProgress,
-          device: event.scanReport.perigheral,
+          device: event.scanReport.peripheral,
         ));
 
         // _connectionReportStreamSubscription =

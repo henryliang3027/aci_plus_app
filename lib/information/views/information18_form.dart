@@ -24,44 +24,6 @@ class Information18Form extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Future<bool?> showDefaultConfigNotFoundDialog({
-    //   required String message,
-    // }) {
-    //   return showDialog<bool>(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       return AlertDialog(
-    //         title: Text(
-    //           AppLocalizations.of(context)!.dialogTitleNotice,
-    //           style: const TextStyle(
-    //             color: CustomStyle.customYellow,
-    //           ),
-    //         ),
-    //         content: Text(
-    //           getMessageLocalization(
-    //             msg: message,
-    //             context: context,
-    //           ),
-    //           style: const TextStyle(
-    //             fontSize: CustomStyle.sizeL,
-    //           ),
-    //         ),
-    //         actions: <Widget>[
-    //           TextButton(
-    //             child: Text(
-    //               AppLocalizations.of(context)!.dialogMessageOk,
-    //               // style: const TextStyle(color: CustomStyle.customRed),
-    //             ),
-    //             onPressed: () {
-    //               Navigator.of(context).pop(true); // pop dialog
-    //             },
-    //           ),
-    //         ],
-    //       );
-    //     },
-    //   );
-    // }
-
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.home),
@@ -216,86 +178,6 @@ class __PopupMenuState extends State<_PopupMenu> {
     );
   }
 }
-
-// class _PopupMenu extends StatelessWidget {
-//   const _PopupMenu({
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<HomeBloc, HomeState>(
-//       builder: (context, state) {
-//         return  PopupMenuButton<HomeMenu>(
-//           icon: const Icon(
-//             Icons.more_vert_outlined,
-//             color: Colors.white,
-//           ),
-//           tooltip: '',
-//           onSelected: (HomeMenu item) async {
-//             switch (item) {
-//               case HomeMenu.refresh:
-//                 context
-//                     .read<Information18Bloc>()
-//                     .add(const AlarmPeriodicUpdateCanceled());
-//                 context.read<HomeBloc>().add(const DeviceRefreshed());
-//                 break;
-//               case HomeMenu.about:
-//                 Navigator.push(
-//                     context,
-//                     MaterialPageRoute(
-//                       builder: (context) => About18Page(),
-//                     ));
-//                 break;
-//               default:
-//                 break;
-//             }
-//           },
-//           itemBuilder: (BuildContext context) => <PopupMenuEntry<HomeMenu>>[
-//             PopupMenuItem<HomeMenu>(
-//               value: HomeMenu.refresh,
-//               enabled: !state.loadingStatus.isRequestInProgress &&
-//                   !state.connectionStatus.isRequestInProgress,
-//               child: Row(
-//                 mainAxisSize: MainAxisSize.max,
-//                 mainAxisAlignment: MainAxisAlignment.start,
-//                 children: [
-//                   const Icon(
-//                     Icons.refresh,
-//                     size: 20.0,
-//                     color: Colors.black,
-//                   ),
-//                   const SizedBox(
-//                     width: 10.0,
-//                   ),
-//                   Text(AppLocalizations.of(context)!.reconnect),
-//                 ],
-//               ),
-//             ),
-//             PopupMenuItem<HomeMenu>(
-//               value: HomeMenu.about,
-//               child: Row(
-//                 mainAxisSize: MainAxisSize.max,
-//                 mainAxisAlignment: MainAxisAlignment.start,
-//                 children: [
-//                   const Icon(
-//                     Icons.share,
-//                     size: 20.0,
-//                     color: Colors.black,
-//                   ),
-//                   const SizedBox(
-//                     width: 10.0,
-//                   ),
-//                   Text(AppLocalizations.of(context)!.aboutUs),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
-// }
 
 class _DeviceStatus extends StatelessWidget {
   const _DeviceStatus({super.key});
