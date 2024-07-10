@@ -31,7 +31,7 @@ class BLEClient extends BLEClientBase {
   StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
   StreamSubscription<List<int>>? _characteristicStreamSubscription;
   late QualifiedCharacteristic _qualifiedCharacteristic;
-  late Peripheral _peripheral;
+  Peripheral? _peripheral;
 
   final _aciPrefix = 'ACI';
   final _serviceId = 'ffe0';
@@ -94,9 +94,9 @@ class BLEClient extends BLEClientBase {
       // 設定 scan timeout
       Timer scanTimer = Timer(Duration(seconds: _scanTimeout), () async {
         _scanReportStreamController.add(
-          const ScanReport(
-            scanStatus: ScanStatus.failure,
-            peripheral: null,
+          ScanReport(
+            scanStatus: ScanStatus.complete,
+            peripheral: _peripheral,
           ),
         );
 
@@ -107,17 +107,18 @@ class BLEClient extends BLEClientBase {
           _ble!.scanForDevices(withServices: []).listen((device) {
         if (device.name.startsWith(_aciPrefix)) {
           if (!_scanReportStreamController.isClosed) {
-            scanTimer.cancel();
-            print('Device: ${device.name}');
+            // scanTimer.cancel();
+            print('Device: ${device.name}, ${device.rssi}');
 
             _peripheral = Peripheral(
               id: device.id,
               name: device.name,
+              rssi: device.rssi,
             );
 
             _scanReportStreamController.add(
               ScanReport(
-                scanStatus: ScanStatus.success,
+                scanStatus: ScanStatus.scanning,
                 peripheral: _peripheral,
               ),
             );
@@ -146,13 +147,14 @@ class BLEClient extends BLEClientBase {
   }
 
   @override
-  Future<void> connectToDevice() async {
+  Future<void> connectToDevice(Peripheral peripheral) async {
+    _peripheral = peripheral;
     startConnectionTimer();
 
     _connectionReportStreamController = StreamController<ConnectionReport>();
     _connectionStreamSubscription = _ble!
         .connectToDevice(
-      id: _peripheral.id,
+      id: _peripheral!.id,
     )
         .listen((connectionStateUpdate) async {
       print('current connection state: $connectionStateUpdate');
@@ -168,7 +170,7 @@ class BLEClient extends BLEClientBase {
           _qualifiedCharacteristic = QualifiedCharacteristic(
             serviceId: Uuid.parse(_serviceId),
             characteristicId: Uuid.parse(_characteristicId),
-            deviceId: _peripheral.id,
+            deviceId: _peripheral!.id,
           );
 
           _characteristicStreamSubscription = _ble!

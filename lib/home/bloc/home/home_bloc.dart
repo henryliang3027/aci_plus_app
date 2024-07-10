@@ -29,6 +29,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         super(const HomeState()) {
     on<SplashStateChanged>(_onSplashStateChanged);
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
+    on<DeviceSelected>(_onDeviceSelected);
     on<DataRequested>(_onDataRequested);
     on<Data18Requested>(_onData18Requested);
     on<CCorNode18DataRequested>(_onCCorNode18DataRequested);
@@ -102,28 +103,85 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     switch (event.scanReport.scanStatus) {
-      case ScanStatus.success:
+      case ScanStatus.scanning:
+        List<Peripheral> peripherals = List.from(state.peripherals);
+
+        if (event.scanReport.peripheral != null) {
+          bool isExist = false;
+          for (int i = 0; i < peripherals.length; i++) {
+            Peripheral peripheral = peripherals[i];
+            if (peripheral.name == event.scanReport.peripheral!.name) {
+              isExist = true;
+              peripherals[i] = event.scanReport.peripheral!;
+              break;
+            }
+          }
+
+          if (!isExist) {
+            peripherals.add(event.scanReport.peripheral!);
+          }
+        }
+
         emit(state.copyWith(
-          scanStatus: FormStatus.requestSuccess,
+          scanStatus: FormStatus.requestInProgress,
           connectionStatus: FormStatus.requestInProgress,
           loadingStatus: FormStatus.requestInProgress,
-          device: event.scanReport.peripheral,
+          peripherals: peripherals,
         ));
 
-        // _connectionReportStreamSubscription =
-        //     _dsimRepository.connectionStateReport.listen((connectionReport) {
-        //   add(DeviceConnectionChanged(connectionReport));
-        // });
+      // print('=====Peripherals======');
+      // print(peripherals.length);
+      // for (Peripheral peripheral in peripherals) {
+      //   print('P: ${peripheral.name}, ${peripheral.rssi}');
+      // }
+      // print('======================');
 
-        // _dsimRepository.connectToDevice(event.scanReport.discoveredDevice!);
+      // _connectionReportStreamSubscription =
+      //     _dsimRepository.connectionStateReport.listen((connectionReport) {
+      //   add(DeviceConnectionChanged(connectionReport));
+      // });
 
-        _connectionReportStreamSubscription = _aciDeviceRepository
-            .connectionStateReport
-            .listen((connectionReport) {
-          add(DeviceConnectionChanged(connectionReport));
-        });
+      // _dsimRepository.connectToDevice(event.scanReport.discoveredDevice!);
 
-        _aciDeviceRepository.connectToDevice();
+      // _connectionReportStreamSubscription = _aciDeviceRepository
+      //     .connectionStateReport
+      //     .listen((connectionReport) {
+      //   add(DeviceConnectionChanged(connectionReport));
+      // });
+
+      // _aciDeviceRepository.connectToDevice();
+      case ScanStatus.complete:
+        if (state.peripherals.isEmpty) {
+          emit(state.copyWith(
+              scanStatus: FormStatus.requestFailure,
+              connectionStatus: FormStatus.requestFailure,
+              loadingStatus: FormStatus.requestFailure,
+              device: null,
+              errorMassage: 'Device not found.'));
+        } else if (state.peripherals.length == 1) {
+          emit(state.copyWith(
+            scanStatus: FormStatus.requestSuccess,
+            connectionStatus: FormStatus.requestInProgress,
+            loadingStatus: FormStatus.requestInProgress,
+            device: state.peripherals[0],
+          ));
+
+          _connectionReportStreamSubscription = _aciDeviceRepository
+              .connectionStateReport
+              .listen((connectionReport) {
+            add(DeviceConnectionChanged(connectionReport));
+          });
+
+          _aciDeviceRepository.closeScanStream();
+          _aciDeviceRepository.connectToDevice(state.peripherals[0]);
+        } else {
+          emit(state.copyWith(
+            scanStatus: FormStatus.requestSuccess,
+            connectionStatus: FormStatus.requestInProgress,
+            loadingStatus: FormStatus.requestInProgress,
+            device: null,
+          ));
+        }
 
         break;
       case ScanStatus.failure:
@@ -146,13 +204,33 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     // await _dsimRepository.closeScanStream();
 
-    await _aciDeviceRepository.closeScanStream();
+    // await _aciDeviceRepository.closeScanStream();
 
-    if (_scanStreamSubscription != null) {
-      await _scanStreamSubscription?.cancel();
-      _scanStreamSubscription = null;
-      print('_scanStreamSubscription closed');
-    }
+    // if (_scanStreamSubscription != null) {
+    //   await _scanStreamSubscription?.cancel();
+    //   _scanStreamSubscription = null;
+    //   print('_scanStreamSubscription closed');
+    // }
+  }
+
+  void _onDeviceSelected(
+    DeviceSelected event,
+    Emitter<HomeState> emit,
+  ) {
+    _connectionReportStreamSubscription =
+        _aciDeviceRepository.connectionStateReport.listen((connectionReport) {
+      add(DeviceConnectionChanged(connectionReport));
+    });
+
+    _aciDeviceRepository.closeScanStream();
+    _aciDeviceRepository.connectToDevice(event.peripheral);
+
+    emit(state.copyWith(
+      scanStatus: FormStatus.requestSuccess,
+      connectionStatus: FormStatus.requestInProgress,
+      loadingStatus: FormStatus.requestInProgress,
+      device: event.peripheral,
+    ));
   }
 
   Future<void> _onDeviceConnectionChanged(
@@ -884,6 +962,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       loadingStatus: FormStatus.requestInProgress,
       eventLoadingStatus: FormStatus.none,
       dataExportStatus: FormStatus.none,
+      peripherals: [],
       device: null,
       characteristicData: const {},
       dateValueCollectionOfLog: const [],

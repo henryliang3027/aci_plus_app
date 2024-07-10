@@ -226,6 +226,7 @@
     "dialogTitleDeleteConfig": "Eliminar",
     "dialogTitleSelectConfig": "Seleccionar preajuste",
     "dialogTitleDeviceRebooting": "Reiniciando",
+    "dialogTitleSelectPeripheral": "Seleccionar Bluetooth",
 
     
     "dialogMessageFirmwareUpdateError": "El estado de la conexión Bluetooth es anormal. ¿Te gustaría intentarlo de nuevo?",

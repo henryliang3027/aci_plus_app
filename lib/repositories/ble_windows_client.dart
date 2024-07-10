@@ -108,9 +108,9 @@ class BLEWindowsClient extends BLEClientBase {
     // 設定 scan timeout
     Timer scanTimer = Timer(Duration(seconds: _scanTimeout), () async {
       _scanReportStreamController.add(
-        const ScanReport(
-          scanStatus: ScanStatus.failure,
-          peripheral: null,
+        ScanReport(
+          scanStatus: ScanStatus.complete,
+          peripheral: _peripheral,
         ),
       );
 
@@ -124,8 +124,8 @@ class BLEWindowsClient extends BLEClientBase {
 
       if (device.name.startsWith(_aciPrefix)) {
         if (!_scanReportStreamController.isClosed) {
-          scanTimer.cancel();
-          WinBle.stopScanning();
+          // scanTimer.cancel();
+          // WinBle.stopScanning();
           print('Device: ${device.name}');
 
           _peripheral = Peripheral(
@@ -134,7 +134,7 @@ class BLEWindowsClient extends BLEClientBase {
           );
           _scanReportStreamController.add(
             ScanReport(
-              scanStatus: ScanStatus.success,
+              scanStatus: ScanStatus.scanning,
               peripheral: _peripheral,
             ),
           );
@@ -190,7 +190,8 @@ class BLEWindowsClient extends BLEClientBase {
   }
 
   @override
-  Future<void> connectToDevice() async {
+  Future<void> connectToDevice(Peripheral peripheral) async {
+    _peripheral = peripheral;
     startConnectionTimer(_peripheral!.id);
 
     WinBle.connect(_peripheral!.id);

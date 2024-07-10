@@ -9,9 +9,11 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
+import 'package:aci_plus_app/home/views/peripheral_selector_page.dart';
 import 'package:aci_plus_app/information/views/information18_ccor_node_page.dart';
 import 'package:aci_plus_app/information/views/information18_page.dart';
 import 'package:aci_plus_app/information/views/information_page.dart';
+import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_page.dart';
 import 'package:aci_plus_app/setting/views/setting_views/setting_page.dart';
@@ -116,6 +118,26 @@ class _HomeFormState extends State<HomeForm> {
       );
     }
 
+    Future<Peripheral?> showSelectPeripheralDialog() async {
+      return showDialog<Peripheral>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          var height = MediaQuery.of(context).size.height;
+
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.01,
+              vertical: height * 0.01,
+            ),
+            child: const PeripheralSelectorPage(),
+          );
+        },
+      );
+    }
+
     List<Widget> buildPages(ACIDeviceType aciDeviceType) {
       if (aciDeviceType == ACIDeviceType.dsim1G1P2G) {
         // 適用 1G/1.2G 的頁面
@@ -202,6 +224,17 @@ class _HomeFormState extends State<HomeForm> {
 
     return BlocListener<HomeBloc, HomeState>(
       listener: (context, state) async {
+        if (state.scanStatus.isRequestInProgress) {
+          if (state.peripherals.length > 1) {
+            if (ModalRoute.of(context)?.isCurrent == true) {
+              showSelectPeripheralDialog().then((Peripheral? peripheral) {
+                if (peripheral != null) {
+                  context.read<HomeBloc>().add(DeviceSelected(peripheral));
+                }
+              });
+            }
+          }
+        }
         if (state.scanStatus.isRequestFailure) {
           showFailureDialog(state.errorMassage);
         } else if (state.connectionStatus.isRequestFailure) {

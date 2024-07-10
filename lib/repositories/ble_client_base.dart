@@ -15,7 +15,7 @@ abstract class BLEClientBase {
 
   Stream<String> get updateReport;
 
-  Future<void> connectToDevice();
+  Future<void> connectToDevice(Peripheral peripheral);
 
   Future<void> closeScanStream();
 

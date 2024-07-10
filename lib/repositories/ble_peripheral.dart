@@ -1,7 +1,10 @@
+import 'package:equatable/equatable.dart';
+
 enum ScanStatus {
-  success,
-  failure,
+  scanning,
+  complete,
   disable,
+  failure,
 }
 
 enum ConnectStatus {
@@ -15,10 +18,12 @@ class Peripheral {
   const Peripheral({
     required this.id,
     required this.name,
+    this.rssi = 0,
   });
 
   final String id;
   final String name;
+  final int rssi;
 }
 
 class ScanReport {

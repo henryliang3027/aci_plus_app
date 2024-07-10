@@ -227,6 +227,7 @@
     "dialogTitleDeleteConfig": "Delete",
     "dialogTitleSelectConfig": "Select Preset",
     "dialogTitleDeviceRebooting": "Rebooting",
+    "dialogTitleSelectPeripheral": "Select Bluetooth",
 
     
     "dialogMessageFirmwareUpdateError": "The Bluetooth connection status is abnormal. Would you like to try again?",

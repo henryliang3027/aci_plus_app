@@ -33,6 +33,17 @@ class DeviceConnectionChanged extends HomeEvent {
       ];
 }
 
+class DeviceSelected extends HomeEvent {
+  const DeviceSelected(this.peripheral);
+
+  final Peripheral peripheral;
+
+  @override
+  List<Object?> get props => [
+        peripheral,
+      ];
+}
+
 class DeviceCharacteristicChanged extends HomeEvent {
   const DeviceCharacteristicChanged(this.dataMap);
 

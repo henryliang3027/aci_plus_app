@@ -18,8 +18,8 @@ class ACIDeviceRepository {
     yield* _bleClient.connectionStateReport;
   }
 
-  Future<void> connectToDevice() {
-    return _bleClient.connectToDevice();
+  Future<void> connectToDevice(Peripheral peripheral) {
+    return _bleClient.connectToDevice(peripheral);
   }
 
   Future<void> closeScanStream() async {

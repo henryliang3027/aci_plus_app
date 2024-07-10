@@ -227,6 +227,7 @@
     "dialogTitleDeleteConfig": "刪除",
     "dialogTitleSelectConfig": "選擇設定檔",
     "dialogTitleDeviceRebooting": "重新啟動中",
+    "dialogTitleSelectPeripheral": "選擇藍牙",
 
     
     "dialogMessageFirmwareUpdateError": "藍芽連線狀態異常, 請問您是否重新嘗試？",
