@@ -11,7 +11,7 @@ class HomeState extends Equatable {
     this.showSplash = true,
     this.aciDeviceType = ACIDeviceType.undefined,
     this.peripherals = const [],
-    this.device,
+    this.device = const Peripheral.empty(),
     this.characteristicData = const {},
     this.errorMassage = '',
     this.dateValueCollectionOfLog = const [],
@@ -28,7 +28,7 @@ class HomeState extends Equatable {
   final bool showSplash;
   final ACIDeviceType aciDeviceType;
   final List<Peripheral> peripherals;
-  final Peripheral? device;
+  final Peripheral device;
   final Map<DataKey, String> characteristicData;
   final String errorMassage;
   final List<List<ValuePair>> dateValueCollectionOfLog;

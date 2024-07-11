@@ -68,13 +68,17 @@ class _PeripheralListView extends StatelessWidget {
                         onTap: () {
                           Navigator.pop(context, peripheral);
                         },
-                        trailing: Text(
-                          peripheral.rssi.toString(),
-                          style: TextStyle(
-                            fontSize: CustomStyle.sizeL,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
+                        trailing: Icon(
+                          Icons.bluetooth,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
+                        // trailing: Text(
+                        //   peripheral.rssi.toString(),
+                        //   style: TextStyle(
+                        //     fontSize: CustomStyle.sizeL,
+                        //     color: Theme.of(context).colorScheme.primary,
+                        //   ),
+                        // ),
                       ),
                     ),
                     // Card(

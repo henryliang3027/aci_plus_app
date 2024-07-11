@@ -348,7 +348,7 @@ class _ConnectionCard extends StatelessWidget {
               bluetoothText(
                 scanStatus: state.scanStatus,
                 title: AppLocalizations.of(context)!.bluetooth,
-                name: state.device != null ? state.device!.name : '',
+                name: state.device.name.isNotEmpty ? state.device.name : '',
               ),
             ],
           ),

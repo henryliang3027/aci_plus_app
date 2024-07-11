@@ -21,6 +21,11 @@ class Peripheral {
     this.rssi = 0,
   });
 
+  const Peripheral.empty()
+      : id = '',
+        name = '',
+        rssi = 0;
+
   final String id;
   final String name;
   final int rssi;

@@ -156,7 +156,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               scanStatus: FormStatus.requestFailure,
               connectionStatus: FormStatus.requestFailure,
               loadingStatus: FormStatus.requestFailure,
-              device: null,
+              device: const Peripheral.empty(),
               errorMassage: 'Device not found.'));
         } else if (state.peripherals.length == 1) {
           emit(state.copyWith(
@@ -169,6 +169,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           _connectionReportStreamSubscription = _aciDeviceRepository
               .connectionStateReport
               .listen((connectionReport) {
+            print('received connectionReport');
             add(DeviceConnectionChanged(connectionReport));
           });
 
@@ -179,7 +180,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             scanStatus: FormStatus.requestSuccess,
             connectionStatus: FormStatus.requestInProgress,
             loadingStatus: FormStatus.requestInProgress,
-            device: null,
+            device: const Peripheral.empty(),
           ));
         }
 
@@ -189,7 +190,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             scanStatus: FormStatus.requestFailure,
             connectionStatus: FormStatus.requestFailure,
             loadingStatus: FormStatus.requestFailure,
-            device: null,
+            device: const Peripheral.empty(),
             errorMassage: 'Device not found.'));
         break;
       case ScanStatus.disable:
@@ -197,7 +198,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             scanStatus: FormStatus.requestFailure,
             connectionStatus: FormStatus.requestFailure,
             loadingStatus: FormStatus.requestFailure,
-            device: null,
+            device: const Peripheral.empty(),
             errorMassage: 'Bluetooth is disabled.'));
         break;
     }
@@ -963,7 +964,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       eventLoadingStatus: FormStatus.none,
       dataExportStatus: FormStatus.none,
       peripherals: [],
-      device: null,
+      device: const Peripheral.empty(),
       characteristicData: const {},
       dateValueCollectionOfLog: const [],
     ));
