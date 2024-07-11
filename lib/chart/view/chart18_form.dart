@@ -231,6 +231,53 @@ class _Chart18FormState extends State<Chart18Form>
   }
 }
 
+class _ViewLayout extends StatelessWidget {
+  const _ViewLayout({
+    super.key,
+    required this.pageController,
+    required this.tabController,
+  });
+
+  final PageController pageController;
+  final TabController tabController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.loadingStatus.isRequestInProgress) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              Chart18TabBar(
+                pageController: pageController,
+                tabController: tabController,
+              ),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(70, 158, 158, 158),
+                ),
+                child: const Center(
+                  child: SizedBox(
+                    width: CustomStyle.diameter,
+                    height: CustomStyle.diameter,
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return Chart18TabBar(
+            pageController: pageController,
+            tabController: tabController,
+          );
+        }
+      },
+    );
+  }
+}
+
 class _DeviceStatus extends StatelessWidget {
   const _DeviceStatus({super.key});
 
