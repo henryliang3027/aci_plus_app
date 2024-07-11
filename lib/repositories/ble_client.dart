@@ -101,16 +101,20 @@ class BLEClient extends BLEClientBase {
             // scanTimer.cancel();
             print('Device: ${device.name}, ${device.rssi}');
 
-            _peripheral = Peripheral(
-              id: device.id,
-              name: device.name,
-              rssi: device.rssi,
-            );
+            // _peripheral = Peripheral(
+            //   id: device.id,
+            //   name: device.name,
+            //   rssi: device.rssi,
+            // );
 
             _scanReportStreamController.add(
               ScanReport(
                 scanStatus: ScanStatus.scanning,
-                peripheral: _peripheral,
+                peripheral: Peripheral(
+                  id: device.id,
+                  name: device.name,
+                  rssi: device.rssi,
+                ),
               ),
             );
           }

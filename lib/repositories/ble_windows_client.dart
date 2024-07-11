@@ -5,7 +5,6 @@ import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
-import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:win_ble/win_ble.dart';
@@ -43,6 +42,7 @@ class BLEWindowsClient extends BLEClientBase {
 
   Timer? _characteristicDataTimer;
   Timer? _connectionTimer;
+  Timer? _scanTimer;
 
   // final List<int> _combinedRawData = [];
   // final int _totalBytesPerCommand = 261;
@@ -55,7 +55,7 @@ class BLEWindowsClient extends BLEClientBase {
     _updateReportStreamController = StreamController<String>();
     Stream<String> streamWithTimeout =
         _updateReportStreamController.stream.timeout(
-      Duration(seconds: 10),
+      Duration(seconds: 20),
       onTimeout: (sink) {
         sink.addError('Timeout occurred');
       },
@@ -105,18 +105,8 @@ class BLEWindowsClient extends BLEClientBase {
     // bool isPermissionGranted = await checkBluetoothEnabled();
 
     // if (isPermissionGranted) {
-    // 設定 scan timeout
-    Timer scanTimer = Timer(Duration(seconds: _scanTimeout), () async {
-      _scanReportStreamController.add(
-        ScanReport(
-          scanStatus: ScanStatus.complete,
-          peripheral: _peripheral,
-        ),
-      );
 
-      await closeScanStream();
-    });
-
+    startScanTimer();
     WinBle.startScanning();
 
     _discoveredDeviceStreamSubscription = WinBle.scanStream.listen((device) {
@@ -128,14 +118,18 @@ class BLEWindowsClient extends BLEClientBase {
           // WinBle.stopScanning();
           print('Device: ${device.name}');
 
-          _peripheral = Peripheral(
-            id: device.address,
-            name: device.name,
-          );
+          // _peripheral = Peripheral(
+          //   id: device.address,
+          //   name: device.name,
+          // );
+
           _scanReportStreamController.add(
             ScanReport(
               scanStatus: ScanStatus.scanning,
-              peripheral: _peripheral,
+              peripheral: Peripheral(
+                id: device.address,
+                name: device.name,
+              ),
             ),
           );
         }
@@ -306,6 +300,8 @@ class BLEWindowsClient extends BLEClientBase {
   @override
   Future<void> closeScanStream() async {
     print('closeScanStream');
+
+    cancelScanTimer();
 
     if (!_scanReportStreamController.isClosed) {
       await _scanReportStreamController.close();
@@ -584,6 +580,26 @@ class BLEWindowsClient extends BLEClientBase {
   //     }
   //   });
   // }
+
+  void startScanTimer() {
+    // 設定 scan timeout
+    _scanTimer = Timer(Duration(seconds: _scanTimeout), () async {
+      _scanReportStreamController.add(
+        ScanReport(
+          scanStatus: ScanStatus.complete,
+          peripheral: _peripheral,
+        ),
+      );
+
+      await closeScanStream();
+    });
+  }
+
+  void cancelScanTimer() {
+    if (_scanTimer != null) {
+      _scanTimer!.cancel();
+    }
+  }
 
   void startConnectionTimer(String deviceAddress) {
     WinBle.disconnect(deviceAddress);
