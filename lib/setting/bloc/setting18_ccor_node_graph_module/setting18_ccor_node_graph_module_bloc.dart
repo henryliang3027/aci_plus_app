@@ -22,10 +22,10 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     on<DSVVA3Changed>(_onDSVVA3Changed);
     on<DSVVA4Changed>(_onDSVVA4Changed);
     on<DSVVA6Changed>(_onDSVVA6Changed);
-    on<DSInSlope1Changed>(_onDSInSlope1Changed);
-    on<DSInSlope3Changed>(_onDSInSlope3Changed);
-    on<DSInSlope4Changed>(_onDSInSlope4Changed);
-    on<DSInSlope6Changed>(_onDSInSlope6Changed);
+    // on<DSInSlope1Changed>(_onDSInSlope1Changed);
+    // on<DSInSlope3Changed>(_onDSInSlope3Changed);
+    // on<DSInSlope4Changed>(_onDSInSlope4Changed);
+    // on<DSInSlope6Changed>(_onDSInSlope6Changed);
     on<DSOutSlope1Changed>(_onDSOutSlope1Changed);
     on<DSOutSlope3Changed>(_onDSOutSlope3Changed);
     on<DSOutSlope4Changed>(_onDSOutSlope4Changed);
@@ -78,26 +78,26 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
       minValue: state.dsVVA6.minValue,
       maxValue: state.dsVVA6.maxValue,
     );
-    RangeFloatPointInput dsInSlope1 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsInSlope1] ?? '',
-      minValue: state.dsInSlope1.minValue,
-      maxValue: state.dsInSlope1.maxValue,
-    );
-    RangeFloatPointInput dsInSlope3 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsInSlope3] ?? '',
-      minValue: state.dsInSlope3.minValue,
-      maxValue: state.dsInSlope3.maxValue,
-    );
-    RangeFloatPointInput dsInSlope4 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsInSlope4] ?? '',
-      minValue: state.dsInSlope4.minValue,
-      maxValue: state.dsInSlope4.maxValue,
-    );
-    RangeFloatPointInput dsInSlope6 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsInSlope6] ?? '',
-      minValue: state.dsInSlope6.minValue,
-      maxValue: state.dsInSlope6.maxValue,
-    );
+    // RangeFloatPointInput dsInSlope1 = initialRangeFloatPointInput(
+    //   characteristicDataCache[DataKey.dsInSlope1] ?? '',
+    //   minValue: state.dsInSlope1.minValue,
+    //   maxValue: state.dsInSlope1.maxValue,
+    // );
+    // RangeFloatPointInput dsInSlope3 = initialRangeFloatPointInput(
+    //   characteristicDataCache[DataKey.dsInSlope3] ?? '',
+    //   minValue: state.dsInSlope3.minValue,
+    //   maxValue: state.dsInSlope3.maxValue,
+    // );
+    // RangeFloatPointInput dsInSlope4 = initialRangeFloatPointInput(
+    //   characteristicDataCache[DataKey.dsInSlope4] ?? '',
+    //   minValue: state.dsInSlope4.minValue,
+    //   maxValue: state.dsInSlope4.maxValue,
+    // );
+    // RangeFloatPointInput dsInSlope6 = initialRangeFloatPointInput(
+    //   characteristicDataCache[DataKey.dsInSlope6] ?? '',
+    //   minValue: state.dsInSlope6.minValue,
+    //   maxValue: state.dsInSlope6.maxValue,
+    // );
     RangeFloatPointInput dsOutSlope1 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsOutSlope1] ?? '',
       minValue: state.dsOutSlope1.minValue,
@@ -175,10 +175,10 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
       dsVVA3: dsVVA3,
       dsVVA4: dsVVA4,
       dsVVA6: dsVVA6,
-      dsInSlope1: dsInSlope1,
-      dsInSlope3: dsInSlope3,
-      dsInSlope4: dsInSlope4,
-      dsInSlope6: dsInSlope6,
+      // dsInSlope1: dsInSlope1,
+      // dsInSlope3: dsInSlope3,
+      // dsInSlope4: dsInSlope4,
+      // dsInSlope6: dsInSlope6,
       dsOutSlope1: dsOutSlope1,
       dsOutSlope3: dsOutSlope3,
       dsOutSlope4: dsOutSlope4,
@@ -303,81 +303,81 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     ));
   }
 
-  void _onDSInSlope1Changed(
-    DSInSlope1Changed event,
-    Emitter<Setting18CCorNodeGraphModuleState> emit,
-  ) {
-    RangeFloatPointInput dsInSlope1 = RangeFloatPointInput.dirty(
-      event.dsInSlope1,
-      minValue: state.dsInSlope1.minValue,
-      maxValue: state.dsInSlope1.maxValue,
-    );
+  // void _onDSInSlope1Changed(
+  //   DSInSlope1Changed event,
+  //   Emitter<Setting18CCorNodeGraphModuleState> emit,
+  // ) {
+  //   RangeFloatPointInput dsInSlope1 = RangeFloatPointInput.dirty(
+  //     event.dsInSlope1,
+  //     minValue: state.dsInSlope1.minValue,
+  //     maxValue: state.dsInSlope1.maxValue,
+  //   );
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      dsInSlope1: dsInSlope1,
-      enableSubmission: _isEnabledSubmission(
-        dsInSlope1: dsInSlope1,
-      ),
-    ));
-  }
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     dsInSlope1: dsInSlope1,
+  //     enableSubmission: _isEnabledSubmission(
+  //       dsInSlope1: dsInSlope1,
+  //     ),
+  //   ));
+  // }
 
-  void _onDSInSlope3Changed(
-    DSInSlope3Changed event,
-    Emitter<Setting18CCorNodeGraphModuleState> emit,
-  ) {
-    RangeFloatPointInput dsInSlope3 = RangeFloatPointInput.dirty(
-      event.dsInSlope3,
-      minValue: state.dsInSlope3.minValue,
-      maxValue: state.dsInSlope3.maxValue,
-    );
+  // void _onDSInSlope3Changed(
+  //   DSInSlope3Changed event,
+  //   Emitter<Setting18CCorNodeGraphModuleState> emit,
+  // ) {
+  //   RangeFloatPointInput dsInSlope3 = RangeFloatPointInput.dirty(
+  //     event.dsInSlope3,
+  //     minValue: state.dsInSlope3.minValue,
+  //     maxValue: state.dsInSlope3.maxValue,
+  //   );
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      dsInSlope3: dsInSlope3,
-      enableSubmission: _isEnabledSubmission(
-        dsInSlope3: dsInSlope3,
-      ),
-    ));
-  }
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     dsInSlope3: dsInSlope3,
+  //     enableSubmission: _isEnabledSubmission(
+  //       dsInSlope3: dsInSlope3,
+  //     ),
+  //   ));
+  // }
 
-  void _onDSInSlope4Changed(
-    DSInSlope4Changed event,
-    Emitter<Setting18CCorNodeGraphModuleState> emit,
-  ) {
-    RangeFloatPointInput dsInSlope4 = RangeFloatPointInput.dirty(
-      event.dsInSlope4,
-      minValue: state.dsInSlope4.minValue,
-      maxValue: state.dsInSlope4.maxValue,
-    );
+  // void _onDSInSlope4Changed(
+  //   DSInSlope4Changed event,
+  //   Emitter<Setting18CCorNodeGraphModuleState> emit,
+  // ) {
+  //   RangeFloatPointInput dsInSlope4 = RangeFloatPointInput.dirty(
+  //     event.dsInSlope4,
+  //     minValue: state.dsInSlope4.minValue,
+  //     maxValue: state.dsInSlope4.maxValue,
+  //   );
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      dsInSlope4: dsInSlope4,
-      enableSubmission: _isEnabledSubmission(
-        dsInSlope4: dsInSlope4,
-      ),
-    ));
-  }
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     dsInSlope4: dsInSlope4,
+  //     enableSubmission: _isEnabledSubmission(
+  //       dsInSlope4: dsInSlope4,
+  //     ),
+  //   ));
+  // }
 
-  void _onDSInSlope6Changed(
-    DSInSlope6Changed event,
-    Emitter<Setting18CCorNodeGraphModuleState> emit,
-  ) {
-    RangeFloatPointInput dsInSlope6 = RangeFloatPointInput.dirty(
-      event.dsInSlope6,
-      minValue: state.dsInSlope6.minValue,
-      maxValue: state.dsInSlope6.maxValue,
-    );
+  // void _onDSInSlope6Changed(
+  //   DSInSlope6Changed event,
+  //   Emitter<Setting18CCorNodeGraphModuleState> emit,
+  // ) {
+  //   RangeFloatPointInput dsInSlope6 = RangeFloatPointInput.dirty(
+  //     event.dsInSlope6,
+  //     minValue: state.dsInSlope6.minValue,
+  //     maxValue: state.dsInSlope6.maxValue,
+  //   );
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      dsInSlope6: dsInSlope6,
-      enableSubmission: _isEnabledSubmission(
-        dsInSlope6: dsInSlope6,
-      ),
-    ));
-  }
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     dsInSlope6: dsInSlope6,
+  //     enableSubmission: _isEnabledSubmission(
+  //       dsInSlope6: dsInSlope6,
+  //     ),
+  //   ));
+  // }
 
   void _onDSOutSlope1Changed(
     DSOutSlope1Changed event,
@@ -666,10 +666,10 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     RangeFloatPointInput? dsVVA3,
     RangeFloatPointInput? dsVVA4,
     RangeFloatPointInput? dsVVA6,
-    RangeFloatPointInput? dsInSlope1,
-    RangeFloatPointInput? dsInSlope3,
-    RangeFloatPointInput? dsInSlope4,
-    RangeFloatPointInput? dsInSlope6,
+    // RangeFloatPointInput? dsInSlope1,
+    // RangeFloatPointInput? dsInSlope3,
+    // RangeFloatPointInput? dsInSlope4,
+    // RangeFloatPointInput? dsInSlope6,
     RangeFloatPointInput? dsOutSlope1,
     RangeFloatPointInput? dsOutSlope3,
     RangeFloatPointInput? dsOutSlope4,
@@ -693,10 +693,10 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     dsVVA3 ??= state.dsVVA3;
     dsVVA4 ??= state.dsVVA4;
     dsVVA6 ??= state.dsVVA6;
-    dsInSlope1 ??= state.dsInSlope1;
-    dsInSlope3 ??= state.dsInSlope3;
-    dsInSlope4 ??= state.dsInSlope4;
-    dsInSlope6 ??= state.dsInSlope6;
+    // dsInSlope1 ??= state.dsInSlope1;
+    // dsInSlope3 ??= state.dsInSlope3;
+    // dsInSlope4 ??= state.dsInSlope4;
+    // dsInSlope6 ??= state.dsInSlope6;
     dsOutSlope1 ??= state.dsOutSlope1;
     dsOutSlope3 ??= state.dsOutSlope3;
     dsOutSlope4 ??= state.dsOutSlope4;
@@ -718,10 +718,10 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
         dsVVA3.isNotValid ||
         dsVVA4.isNotValid ||
         dsVVA6.isNotValid ||
-        dsInSlope1.isNotValid ||
-        dsInSlope3.isNotValid ||
-        dsInSlope4.isNotValid ||
-        dsInSlope6.isNotValid ||
+        // dsInSlope1.isNotValid ||
+        // dsInSlope3.isNotValid ||
+        // dsInSlope4.isNotValid ||
+        // dsInSlope6.isNotValid ||
         dsOutSlope1.isNotValid ||
         dsOutSlope3.isNotValid ||
         dsOutSlope4.isNotValid ||
@@ -742,10 +742,10 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
           dsVVA3.value != state.initialValues[DataKey.dsVVA3] ||
           dsVVA4.value != state.initialValues[DataKey.dsVVA4] ||
           dsVVA6.value != state.initialValues[DataKey.dsVVA6] ||
-          dsInSlope1.value != state.initialValues[DataKey.dsInSlope1] ||
-          dsInSlope3.value != state.initialValues[DataKey.dsInSlope3] ||
-          dsInSlope4.value != state.initialValues[DataKey.dsInSlope4] ||
-          dsInSlope6.value != state.initialValues[DataKey.dsInSlope6] ||
+          // dsInSlope1.value != state.initialValues[DataKey.dsInSlope1] ||
+          // dsInSlope3.value != state.initialValues[DataKey.dsInSlope3] ||
+          // dsInSlope4.value != state.initialValues[DataKey.dsInSlope4] ||
+          // dsInSlope6.value != state.initialValues[DataKey.dsInSlope6] ||
           dsOutSlope1.value != state.initialValues[DataKey.dsOutSlope1] ||
           dsOutSlope3.value != state.initialValues[DataKey.dsOutSlope3] ||
           dsOutSlope4.value != state.initialValues[DataKey.dsOutSlope4] ||
@@ -826,33 +826,33 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
       settingResult.add('${DataKey.dsVVA6.name},$resultOfSetDSVVA6');
     }
 
-    if (state.dsInSlope1.value != state.initialValues[DataKey.dsInSlope1]) {
-      bool resultOfSetDSInSlope1 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeDSInSlope1(state.dsInSlope1.value);
+    // if (state.dsInSlope1.value != state.initialValues[DataKey.dsInSlope1]) {
+    //   bool resultOfSetDSInSlope1 = await _amp18CCorNodeRepository
+    //       .set1p8GCCorNodeDSInSlope1(state.dsInSlope1.value);
 
-      settingResult.add('${DataKey.dsInSlope1.name},$resultOfSetDSInSlope1');
-    }
+    //   settingResult.add('${DataKey.dsInSlope1.name},$resultOfSetDSInSlope1');
+    // }
 
-    if (state.dsInSlope3.value != state.initialValues[DataKey.dsInSlope3]) {
-      bool resultOfSetDSInSlope3 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeDSInSlope3(state.dsInSlope3.value);
+    // if (state.dsInSlope3.value != state.initialValues[DataKey.dsInSlope3]) {
+    //   bool resultOfSetDSInSlope3 = await _amp18CCorNodeRepository
+    //       .set1p8GCCorNodeDSInSlope3(state.dsInSlope3.value);
 
-      settingResult.add('${DataKey.dsInSlope3.name},$resultOfSetDSInSlope3');
-    }
+    //   settingResult.add('${DataKey.dsInSlope3.name},$resultOfSetDSInSlope3');
+    // }
 
-    if (state.dsInSlope4.value != state.initialValues[DataKey.dsInSlope4]) {
-      bool resultOfSetDSInSlope4 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeDSInSlope4(state.dsInSlope4.value);
+    // if (state.dsInSlope4.value != state.initialValues[DataKey.dsInSlope4]) {
+    //   bool resultOfSetDSInSlope4 = await _amp18CCorNodeRepository
+    //       .set1p8GCCorNodeDSInSlope4(state.dsInSlope4.value);
 
-      settingResult.add('${DataKey.dsInSlope4.name},$resultOfSetDSInSlope4');
-    }
+    //   settingResult.add('${DataKey.dsInSlope4.name},$resultOfSetDSInSlope4');
+    // }
 
-    if (state.dsInSlope6.value != state.initialValues[DataKey.dsInSlope6]) {
-      bool resultOfSetDSInSlope6 = await _amp18CCorNodeRepository
-          .set1p8GCCorNodeDSInSlope6(state.dsInSlope6.value);
+    // if (state.dsInSlope6.value != state.initialValues[DataKey.dsInSlope6]) {
+    //   bool resultOfSetDSInSlope6 = await _amp18CCorNodeRepository
+    //       .set1p8GCCorNodeDSInSlope6(state.dsInSlope6.value);
 
-      settingResult.add('${DataKey.dsInSlope6.name},$resultOfSetDSInSlope6');
-    }
+    //   settingResult.add('${DataKey.dsInSlope6.name},$resultOfSetDSInSlope6');
+    // }
 
     if (state.dsOutSlope1.value != state.initialValues[DataKey.dsOutSlope1]) {
       bool resultOfSetDSOutSlope1 = await _amp18CCorNodeRepository

@@ -146,16 +146,16 @@ String formatCCorNode1P8GSettingResultItem({
     return AppLocalizations.of(context)!.dialogMessageSplitOptionSetting;
   } else if (item == DataKey.dsVVA1.name) {
     return AppLocalizations.of(context)!
-        .dialogMessageForwardInputAttenuation1Setting;
+        .dialogMessageForwardOutputAttenuation1Setting;
   } else if (item == DataKey.dsVVA3.name) {
     return AppLocalizations.of(context)!
-        .dialogMessageForwardInputAttenuation3Setting;
+        .dialogMessageForwardOutputAttenuation3Setting;
   } else if (item == DataKey.dsVVA4.name) {
     return AppLocalizations.of(context)!
-        .dialogMessageForwardInputAttenuation4Setting;
+        .dialogMessageForwardOutputAttenuation4Setting;
   } else if (item == DataKey.dsVVA6.name) {
     return AppLocalizations.of(context)!
-        .dialogMessageForwardInputAttenuation6Setting;
+        .dialogMessageForwardOutputAttenuation6Setting;
   } else if (item == DataKey.dsInSlope1.name) {
     return AppLocalizations.of(context)!
         .dialogMessageForwardInputEqualizer1Setting;

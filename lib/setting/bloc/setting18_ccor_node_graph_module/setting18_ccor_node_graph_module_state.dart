@@ -21,22 +21,22 @@ class Setting18CCorNodeGraphModuleState extends Equatable {
       minValue: 0,
       maxValue: 25,
     ),
-    this.dsInSlope1 = const RangeFloatPointInput.pure(
-      minValue: 0,
-      maxValue: 8,
-    ),
-    this.dsInSlope3 = const RangeFloatPointInput.pure(
-      minValue: 0,
-      maxValue: 8,
-    ),
-    this.dsInSlope4 = const RangeFloatPointInput.pure(
-      minValue: 0,
-      maxValue: 8,
-    ),
-    this.dsInSlope6 = const RangeFloatPointInput.pure(
-      minValue: 0,
-      maxValue: 8,
-    ),
+    // this.dsInSlope1 = const RangeFloatPointInput.pure(
+    //   minValue: 0,
+    //   maxValue: 8,
+    // ),
+    // this.dsInSlope3 = const RangeFloatPointInput.pure(
+    //   minValue: 0,
+    //   maxValue: 8,
+    // ),
+    // this.dsInSlope4 = const RangeFloatPointInput.pure(
+    //   minValue: 0,
+    //   maxValue: 8,
+    // ),
+    // this.dsInSlope6 = const RangeFloatPointInput.pure(
+    //   minValue: 0,
+    //   maxValue: 8,
+    // ),
     this.dsOutSlope1 = const RangeFloatPointInput.pure(
       minValue: 0,
       maxValue: 8,
@@ -103,10 +103,10 @@ class Setting18CCorNodeGraphModuleState extends Equatable {
   final RangeFloatPointInput dsVVA3;
   final RangeFloatPointInput dsVVA4;
   final RangeFloatPointInput dsVVA6;
-  final RangeFloatPointInput dsInSlope1;
-  final RangeFloatPointInput dsInSlope3;
-  final RangeFloatPointInput dsInSlope4;
-  final RangeFloatPointInput dsInSlope6;
+  // final RangeFloatPointInput dsInSlope1;
+  // final RangeFloatPointInput dsInSlope3;
+  // final RangeFloatPointInput dsInSlope4;
+  // final RangeFloatPointInput dsInSlope6;
   final RangeFloatPointInput dsOutSlope1;
   final RangeFloatPointInput dsOutSlope3;
   final RangeFloatPointInput dsOutSlope4;
@@ -137,10 +137,10 @@ class Setting18CCorNodeGraphModuleState extends Equatable {
     RangeFloatPointInput? dsVVA3,
     RangeFloatPointInput? dsVVA4,
     RangeFloatPointInput? dsVVA6,
-    RangeFloatPointInput? dsInSlope1,
-    RangeFloatPointInput? dsInSlope3,
-    RangeFloatPointInput? dsInSlope4,
-    RangeFloatPointInput? dsInSlope6,
+    // RangeFloatPointInput? dsInSlope1,
+    // RangeFloatPointInput? dsInSlope3,
+    // RangeFloatPointInput? dsInSlope4,
+    // RangeFloatPointInput? dsInSlope6,
     RangeFloatPointInput? dsOutSlope1,
     RangeFloatPointInput? dsOutSlope3,
     RangeFloatPointInput? dsOutSlope4,
@@ -171,10 +171,10 @@ class Setting18CCorNodeGraphModuleState extends Equatable {
       dsVVA3: dsVVA3 ?? this.dsVVA3,
       dsVVA4: dsVVA4 ?? this.dsVVA4,
       dsVVA6: dsVVA6 ?? this.dsVVA6,
-      dsInSlope1: dsInSlope1 ?? this.dsInSlope1,
-      dsInSlope3: dsInSlope3 ?? this.dsInSlope3,
-      dsInSlope4: dsInSlope4 ?? this.dsInSlope4,
-      dsInSlope6: dsInSlope6 ?? this.dsInSlope6,
+      // dsInSlope1: dsInSlope1 ?? this.dsInSlope1,
+      // dsInSlope3: dsInSlope3 ?? this.dsInSlope3,
+      // dsInSlope4: dsInSlope4 ?? this.dsInSlope4,
+      // dsInSlope6: dsInSlope6 ?? this.dsInSlope6,
       dsOutSlope1: dsOutSlope1 ?? this.dsOutSlope1,
       dsOutSlope3: dsOutSlope3 ?? this.dsOutSlope3,
       dsOutSlope4: dsOutSlope4 ?? this.dsOutSlope4,
@@ -212,10 +212,10 @@ class Setting18CCorNodeGraphModuleState extends Equatable {
         dsVVA3,
         dsVVA4,
         dsVVA6,
-        dsInSlope1,
-        dsInSlope3,
-        dsInSlope4,
-        dsInSlope6,
+        // dsInSlope1,
+        // dsInSlope3,
+        // dsInSlope4,
+        // dsInSlope6,
         dsOutSlope1,
         dsOutSlope3,
         dsOutSlope4,
