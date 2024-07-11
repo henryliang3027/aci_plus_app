@@ -66,57 +66,57 @@ class DSVVA6Changed extends Setting18CCorNodeForwardControlEvent {
       ];
 }
 
-class DSInSlope1Changed extends Setting18CCorNodeForwardControlEvent {
-  const DSInSlope1Changed({
-    required this.dsInSlope1,
-  });
+// class DSInSlope1Changed extends Setting18CCorNodeForwardControlEvent {
+//   const DSInSlope1Changed({
+//     required this.dsInSlope1,
+//   });
 
-  final String dsInSlope1;
+//   final String dsInSlope1;
 
-  @override
-  List<Object> get props => [
-        dsInSlope1,
-      ];
-}
+//   @override
+//   List<Object> get props => [
+//         dsInSlope1,
+//       ];
+// }
 
-class DSInSlope3Changed extends Setting18CCorNodeForwardControlEvent {
-  const DSInSlope3Changed({
-    required this.dsInSlope3,
-  });
+// class DSInSlope3Changed extends Setting18CCorNodeForwardControlEvent {
+//   const DSInSlope3Changed({
+//     required this.dsInSlope3,
+//   });
 
-  final String dsInSlope3;
+//   final String dsInSlope3;
 
-  @override
-  List<Object> get props => [
-        dsInSlope3,
-      ];
-}
+//   @override
+//   List<Object> get props => [
+//         dsInSlope3,
+//       ];
+// }
 
-class DSInSlope4Changed extends Setting18CCorNodeForwardControlEvent {
-  const DSInSlope4Changed({
-    required this.dsInSlope4,
-  });
+// class DSInSlope4Changed extends Setting18CCorNodeForwardControlEvent {
+//   const DSInSlope4Changed({
+//     required this.dsInSlope4,
+//   });
 
-  final String dsInSlope4;
+//   final String dsInSlope4;
 
-  @override
-  List<Object> get props => [
-        dsInSlope4,
-      ];
-}
+//   @override
+//   List<Object> get props => [
+//         dsInSlope4,
+//       ];
+// }
 
-class DSInSlope6Changed extends Setting18CCorNodeForwardControlEvent {
-  const DSInSlope6Changed({
-    required this.dsInSlope6,
-  });
+// class DSInSlope6Changed extends Setting18CCorNodeForwardControlEvent {
+//   const DSInSlope6Changed({
+//     required this.dsInSlope6,
+//   });
 
-  final String dsInSlope6;
+//   final String dsInSlope6;
 
-  @override
-  List<Object> get props => [
-        dsInSlope6,
-      ];
-}
+//   @override
+//   List<Object> get props => [
+//         dsInSlope6,
+//       ];
+// }
 
 class DSOutSlope1Changed extends Setting18CCorNodeForwardControlEvent {
   const DSOutSlope1Changed({

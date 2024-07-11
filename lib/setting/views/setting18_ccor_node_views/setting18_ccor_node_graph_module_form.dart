@@ -61,10 +61,10 @@ class _Setting18CCorNodeGraphModuleFormState
 
     Map<String, List<Widget>> forwardSettingWidgetsMap = {
       DataKey.forwardConfig.name: [const _ForwardConfig()],
-      DataKey.dsVVA1.name: [const _ForwardInputAttenuation1()],
-      DataKey.dsVVA3.name: [const _ForwardInputAttenuation3()],
-      DataKey.dsVVA4.name: [const _ForwardInputAttenuation4()],
-      DataKey.dsVVA6.name: [const _ForwardInputAttenuation6()],
+      DataKey.dsVVA1.name: [const _ForwardOutputAttenuation1()],
+      DataKey.dsVVA3.name: [const _ForwardOutputAttenuation3()],
+      DataKey.dsVVA4.name: [const _ForwardOutputAttenuation4()],
+      DataKey.dsVVA6.name: [const _ForwardOutputAttenuation6()],
       DataKey.dsOutSlope1.name: [const _ForwardOutputEqualizer1()],
       DataKey.dsOutSlope3.name: [const _ForwardOutputEqualizer3()],
       DataKey.dsOutSlope4.name: [const _ForwardOutputEqualizer4()],
@@ -273,8 +273,8 @@ class _ForwardConfig extends StatelessWidget {
   }
 }
 
-class _ForwardInputAttenuation1 extends StatelessWidget {
-  const _ForwardInputAttenuation1({
+class _ForwardOutputAttenuation1 extends StatelessWidget {
+  const _ForwardOutputAttenuation1({
     super.key,
   });
 
@@ -289,7 +289,7 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsVVA1.value,
@@ -307,8 +307,8 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
   }
 }
 
-class _ForwardInputAttenuation3 extends StatelessWidget {
-  const _ForwardInputAttenuation3({
+class _ForwardOutputAttenuation3 extends StatelessWidget {
+  const _ForwardOutputAttenuation3({
     super.key,
   });
 
@@ -323,7 +323,7 @@ class _ForwardInputAttenuation3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardInputAttenuation3} (${CustomStyle.dB}):',
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsVVA3.value,
@@ -341,8 +341,8 @@ class _ForwardInputAttenuation3 extends StatelessWidget {
   }
 }
 
-class _ForwardInputAttenuation4 extends StatelessWidget {
-  const _ForwardInputAttenuation4({
+class _ForwardOutputAttenuation4 extends StatelessWidget {
+  const _ForwardOutputAttenuation4({
     super.key,
   });
 
@@ -357,7 +357,7 @@ class _ForwardInputAttenuation4 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsVVA4.value,
@@ -375,8 +375,8 @@ class _ForwardInputAttenuation4 extends StatelessWidget {
   }
 }
 
-class _ForwardInputAttenuation6 extends StatelessWidget {
-  const _ForwardInputAttenuation6({
+class _ForwardOutputAttenuation6 extends StatelessWidget {
+  const _ForwardOutputAttenuation6({
     super.key,
   });
 
@@ -391,7 +391,7 @@ class _ForwardInputAttenuation6 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation6} (${CustomStyle.dB}):',
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsVVA6.value,
