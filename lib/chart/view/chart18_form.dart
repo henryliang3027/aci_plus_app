@@ -765,7 +765,6 @@ class _PopupMenu extends StatelessWidget {
     String splitValue2 = splitBaseLine[splitOption]?.$2 != null
         ? splitBaseLine[splitOption]!.$2.toString()
         : 'N/A';
-    ;
 
     String splitOptionText =
         splitOption != '' ? '$splitValue1/$splitValue2 ${CustomStyle.mHz}' : '';

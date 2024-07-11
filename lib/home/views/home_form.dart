@@ -236,7 +236,9 @@ class _HomeFormState extends State<HomeForm> {
           }
         }
         if (state.scanStatus.isRequestFailure) {
-          showFailureDialog(state.errorMassage);
+          if (ModalRoute.of(context)?.isCurrent == true) {
+            showFailureDialog(state.errorMassage);
+          }
         } else if (state.connectionStatus.isRequestFailure) {
           // 當斷線時, 關閉目前顯示的 dialog (下載全部 log (download all) 或 load preset)
           if (ModalRoute.of(context)?.isCurrent == false) {

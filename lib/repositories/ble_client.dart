@@ -43,6 +43,7 @@ class BLEClient extends BLEClientBase {
 
   Timer? _characteristicDataTimer;
   Timer? _connectionTimer;
+  Timer? _scanTimer;
 
   @override
   Stream<String> get updateReport async* {
@@ -91,17 +92,7 @@ class BLEClient extends BLEClientBase {
     bool isPermissionGranted = await checkBluetoothEnabled();
 
     if (isPermissionGranted) {
-      // 設定 scan timeout
-      Timer scanTimer = Timer(Duration(seconds: _scanTimeout), () async {
-        _scanReportStreamController.add(
-          ScanReport(
-            scanStatus: ScanStatus.complete,
-            peripheral: _peripheral,
-          ),
-        );
-
-        await closeScanStream();
-      });
+      startScanTimer();
 
       _discoveredDeviceStreamSubscription =
           _ble!.scanForDevices(withServices: []).listen((device) {
@@ -266,6 +257,8 @@ class BLEClient extends BLEClientBase {
   @override
   Future<void> closeScanStream() async {
     print('closeScanStream');
+
+    cancelScanTimer();
 
     if (!_scanReportStreamController.isClosed) {
       await _scanReportStreamController.close();
@@ -544,6 +537,26 @@ class BLEClient extends BLEClientBase {
   //     }
   //   });
   // }
+
+  void startScanTimer() {
+    // 設定 scan timeout
+    _scanTimer = Timer(Duration(seconds: _scanTimeout), () async {
+      _scanReportStreamController.add(
+        ScanReport(
+          scanStatus: ScanStatus.complete,
+          peripheral: _peripheral,
+        ),
+      );
+
+      await closeScanStream();
+    });
+  }
+
+  void cancelScanTimer() {
+    if (_scanTimer != null) {
+      _scanTimer!.cancel();
+    }
+  }
 
   void startConnectionTimer() {
     _connectionTimer = Timer(Duration(seconds: _connectionTimeout), () async {
