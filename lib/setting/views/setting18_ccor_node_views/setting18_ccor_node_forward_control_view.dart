@@ -32,54 +32,50 @@ class Setting18CCorNodeForwardControlView extends StatelessWidget {
 
       for (Enum name in items) {
         switch (name) {
-          case SettingControl.forwardInputAttenuation1:
+          case SettingControl.forwardOutputAttenuation1:
             widgets.add(
-              const _ForwardInputAttenuation1(),
+              const _ForwardOutputAttenuation1(),
             );
             break;
-          case SettingControl.forwardInputAttenuation2:
-            break;
-          case SettingControl.forwardInputAttenuation3:
+          case SettingControl.forwardOutputAttenuation3:
             widgets.add(
-              const _ForwardInputAttenuation3(),
+              const _ForwardOutputAttenuation3(),
             );
             break;
-          case SettingControl.forwardInputAttenuation4:
+          case SettingControl.forwardOutputAttenuation4:
             widgets.add(
-              const _ForwardInputAttenuation4(),
+              const _ForwardOutputAttenuation4(),
             );
             break;
-          case SettingControl.forwardInputAttenuation5:
-            break;
-          case SettingControl.forwardInputAttenuation6:
+          case SettingControl.forwardOutputAttenuation6:
             widgets.add(
-              const _ForwardInputAttenuation6(),
+              const _ForwardOutputAttenuation6(),
             );
             break;
-          case SettingControl.forwardInputEqualizer1:
-            widgets.add(
-              const _ForwardInputEqualizer1(),
-            );
-            break;
-          case SettingControl.forwardInputEqualizer2:
-            break;
-          case SettingControl.forwardInputEqualizer3:
-            widgets.add(
-              const _ForwardInputEqualizer3(),
-            );
-            break;
-          case SettingControl.forwardInputEqualizer4:
-            widgets.add(
-              const _ForwardInputEqualizer4(),
-            );
-            break;
-          case SettingControl.forwardInputEqualizer5:
-            break;
-          case SettingControl.forwardInputEqualizer6:
-            widgets.add(
-              const _ForwardInputEqualizer6(),
-            );
-            break;
+          // case SettingControl.forwardInputEqualizer1:
+          //   widgets.add(
+          //     const _ForwardInputEqualizer1(),
+          //   );
+          //   break;
+          // case SettingControl.forwardInputEqualizer2:
+          //   break;
+          // case SettingControl.forwardInputEqualizer3:
+          //   widgets.add(
+          //     const _ForwardInputEqualizer3(),
+          //   );
+          //   break;
+          // case SettingControl.forwardInputEqualizer4:
+          //   widgets.add(
+          //     const _ForwardInputEqualizer4(),
+          //   );
+          //   break;
+          // case SettingControl.forwardInputEqualizer5:
+          //   break;
+          // case SettingControl.forwardInputEqualizer6:
+          //   widgets.add(
+          //     const _ForwardInputEqualizer6(),
+          //   );
+          //   break;
 
           case SettingControl.forwardOutputEqualizer1:
             widgets.add(
@@ -131,10 +127,10 @@ class Setting18CCorNodeForwardControlView extends StatelessWidget {
       return widgets.isNotEmpty
           ? widgets
           : [
-              const _ForwardInputAttenuation1(),
-              const _ForwardInputAttenuation3(),
-              const _ForwardInputAttenuation4(),
-              const _ForwardInputAttenuation6(),
+              const _ForwardOutputAttenuation1(),
+              const _ForwardOutputAttenuation3(),
+              const _ForwardOutputAttenuation4(),
+              const _ForwardOutputAttenuation6(),
               const _ForwardOutputEqualizer1(),
               const _ForwardOutputEqualizer3(),
               const _ForwardOutputEqualizer4(),
@@ -255,8 +251,8 @@ class _ClusterTitle extends StatelessWidget {
   }
 }
 
-class _ForwardInputAttenuation1 extends StatelessWidget {
-  const _ForwardInputAttenuation1({
+class _ForwardOutputAttenuation1 extends StatelessWidget {
+  const _ForwardOutputAttenuation1({
     super.key,
   });
 
@@ -271,7 +267,7 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardInputAttenuation1} (${CustomStyle.dB}):',
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsVVA1.value,
@@ -291,8 +287,8 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
   }
 }
 
-class _ForwardInputAttenuation3 extends StatelessWidget {
-  const _ForwardInputAttenuation3({
+class _ForwardOutputAttenuation3 extends StatelessWidget {
+  const _ForwardOutputAttenuation3({
     super.key,
   });
 
@@ -307,7 +303,7 @@ class _ForwardInputAttenuation3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardInputAttenuation3} (${CustomStyle.dB}):',
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsVVA3.value,
@@ -327,8 +323,8 @@ class _ForwardInputAttenuation3 extends StatelessWidget {
   }
 }
 
-class _ForwardInputAttenuation4 extends StatelessWidget {
-  const _ForwardInputAttenuation4({
+class _ForwardOutputAttenuation4 extends StatelessWidget {
+  const _ForwardOutputAttenuation4({
     super.key,
   });
 
@@ -343,7 +339,7 @@ class _ForwardInputAttenuation4 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsVVA4.value,
@@ -363,8 +359,8 @@ class _ForwardInputAttenuation4 extends StatelessWidget {
   }
 }
 
-class _ForwardInputAttenuation6 extends StatelessWidget {
-  const _ForwardInputAttenuation6({
+class _ForwardOutputAttenuation6 extends StatelessWidget {
+  const _ForwardOutputAttenuation6({
     super.key,
   });
 
@@ -379,7 +375,7 @@ class _ForwardInputAttenuation6 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation6} (${CustomStyle.dB}):',
+              '${AppLocalizations.of(context)!.forwardOutputAttenuation6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.dsVVA6.value,
@@ -399,149 +395,149 @@ class _ForwardInputAttenuation6 extends StatelessWidget {
   }
 }
 
-class _ForwardInputEqualizer1 extends StatelessWidget {
-  const _ForwardInputEqualizer1({
-    super.key,
-  });
+// class _ForwardInputEqualizer1 extends StatelessWidget {
+//   const _ForwardInputEqualizer1({
+//     super.key,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18CCorNodeForwardControlBloc,
-        Setting18CCorNodeForwardControlState>(
-      builder: (context, state) {
-        double minValue = state.dsInSlope1.minValue;
-        double maxValue = state.dsInSlope1.maxValue;
-        return controlTextSlider2(
-          context: context,
-          editMode: state.editMode,
-          title:
-              '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
-          minValue: minValue,
-          maxValue: maxValue,
-          currentValue: state.dsInSlope1.value,
-          onChanged: (dsInSlope1) {
-            context
-                .read<Setting18CCorNodeForwardControlBloc>()
-                .add(DSInSlope1Changed(
-                  dsInSlope1: dsInSlope1,
-                ));
-          },
-          errorText: state.dsInSlope1.isNotValid
-              ? AppLocalizations.of(context)!.textFieldErrorMessage
-              : null,
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
+//         Setting18CCorNodeForwardControlState>(
+//       builder: (context, state) {
+//         double minValue = state.dsInSlope1.minValue;
+//         double maxValue = state.dsInSlope1.maxValue;
+//         return controlTextSlider2(
+//           context: context,
+//           editMode: state.editMode,
+//           title:
+//               '${AppLocalizations.of(context)!.forwardInputEqualizer1} (${CustomStyle.dB}):',
+//           minValue: minValue,
+//           maxValue: maxValue,
+//           currentValue: state.dsInSlope1.value,
+//           onChanged: (dsInSlope1) {
+//             context
+//                 .read<Setting18CCorNodeForwardControlBloc>()
+//                 .add(DSInSlope1Changed(
+//                   dsInSlope1: dsInSlope1,
+//                 ));
+//           },
+//           errorText: state.dsInSlope1.isNotValid
+//               ? AppLocalizations.of(context)!.textFieldErrorMessage
+//               : null,
+//         );
+//       },
+//     );
+//   }
+// }
 
-class _ForwardInputEqualizer3 extends StatelessWidget {
-  const _ForwardInputEqualizer3({
-    super.key,
-  });
+// class _ForwardInputEqualizer3 extends StatelessWidget {
+//   const _ForwardInputEqualizer3({
+//     super.key,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18CCorNodeForwardControlBloc,
-        Setting18CCorNodeForwardControlState>(
-      builder: (context, state) {
-        double minValue = state.dsInSlope3.minValue;
-        double maxValue = state.dsInSlope3.maxValue;
-        return controlTextSlider2(
-          context: context,
-          editMode: state.editMode,
-          title:
-              '${AppLocalizations.of(context)!.forwardInputEqualizer3} (${CustomStyle.dB}):',
-          minValue: minValue,
-          maxValue: maxValue,
-          currentValue: state.dsInSlope3.value,
-          onChanged: (dsInSlope3) {
-            context
-                .read<Setting18CCorNodeForwardControlBloc>()
-                .add(DSInSlope3Changed(
-                  dsInSlope3: dsInSlope3,
-                ));
-          },
-          errorText: state.dsInSlope3.isNotValid
-              ? AppLocalizations.of(context)!.textFieldErrorMessage
-              : null,
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
+//         Setting18CCorNodeForwardControlState>(
+//       builder: (context, state) {
+//         double minValue = state.dsInSlope3.minValue;
+//         double maxValue = state.dsInSlope3.maxValue;
+//         return controlTextSlider2(
+//           context: context,
+//           editMode: state.editMode,
+//           title:
+//               '${AppLocalizations.of(context)!.forwardInputEqualizer3} (${CustomStyle.dB}):',
+//           minValue: minValue,
+//           maxValue: maxValue,
+//           currentValue: state.dsInSlope3.value,
+//           onChanged: (dsInSlope3) {
+//             context
+//                 .read<Setting18CCorNodeForwardControlBloc>()
+//                 .add(DSInSlope3Changed(
+//                   dsInSlope3: dsInSlope3,
+//                 ));
+//           },
+//           errorText: state.dsInSlope3.isNotValid
+//               ? AppLocalizations.of(context)!.textFieldErrorMessage
+//               : null,
+//         );
+//       },
+//     );
+//   }
+// }
 
-class _ForwardInputEqualizer4 extends StatelessWidget {
-  const _ForwardInputEqualizer4({
-    super.key,
-  });
+// class _ForwardInputEqualizer4 extends StatelessWidget {
+//   const _ForwardInputEqualizer4({
+//     super.key,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18CCorNodeForwardControlBloc,
-        Setting18CCorNodeForwardControlState>(
-      builder: (context, state) {
-        double minValue = state.dsInSlope4.minValue;
-        double maxValue = state.dsInSlope4.maxValue;
-        return controlTextSlider2(
-          context: context,
-          editMode: state.editMode,
-          title:
-              '${AppLocalizations.of(context)!.forwardInputEqualizer4} (${CustomStyle.dB}):',
-          minValue: minValue,
-          maxValue: maxValue,
-          currentValue: state.dsInSlope4.value,
-          onChanged: (dsInSlope4) {
-            context
-                .read<Setting18CCorNodeForwardControlBloc>()
-                .add(DSInSlope4Changed(
-                  dsInSlope4: dsInSlope4,
-                ));
-          },
-          errorText: state.dsInSlope4.isNotValid
-              ? AppLocalizations.of(context)!.textFieldErrorMessage
-              : null,
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
+//         Setting18CCorNodeForwardControlState>(
+//       builder: (context, state) {
+//         double minValue = state.dsInSlope4.minValue;
+//         double maxValue = state.dsInSlope4.maxValue;
+//         return controlTextSlider2(
+//           context: context,
+//           editMode: state.editMode,
+//           title:
+//               '${AppLocalizations.of(context)!.forwardInputEqualizer4} (${CustomStyle.dB}):',
+//           minValue: minValue,
+//           maxValue: maxValue,
+//           currentValue: state.dsInSlope4.value,
+//           onChanged: (dsInSlope4) {
+//             context
+//                 .read<Setting18CCorNodeForwardControlBloc>()
+//                 .add(DSInSlope4Changed(
+//                   dsInSlope4: dsInSlope4,
+//                 ));
+//           },
+//           errorText: state.dsInSlope4.isNotValid
+//               ? AppLocalizations.of(context)!.textFieldErrorMessage
+//               : null,
+//         );
+//       },
+//     );
+//   }
+// }
 
-class _ForwardInputEqualizer6 extends StatelessWidget {
-  const _ForwardInputEqualizer6({
-    super.key,
-  });
+// class _ForwardInputEqualizer6 extends StatelessWidget {
+//   const _ForwardInputEqualizer6({
+//     super.key,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18CCorNodeForwardControlBloc,
-        Setting18CCorNodeForwardControlState>(
-      builder: (context, state) {
-        double minValue = state.dsInSlope6.minValue;
-        double maxValue = state.dsInSlope6.maxValue;
-        return controlTextSlider2(
-          context: context,
-          editMode: state.editMode,
-          title:
-              '${AppLocalizations.of(context)!.forwardInputEqualizer6} (${CustomStyle.dB}):',
-          minValue: minValue,
-          maxValue: maxValue,
-          currentValue: state.dsInSlope6.value,
-          onChanged: (dsInSlope6) {
-            context
-                .read<Setting18CCorNodeForwardControlBloc>()
-                .add(DSInSlope6Changed(
-                  dsInSlope6: dsInSlope6,
-                ));
-          },
-          errorText: state.dsInSlope6.isNotValid
-              ? AppLocalizations.of(context)!.textFieldErrorMessage
-              : null,
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18CCorNodeForwardControlBloc,
+//         Setting18CCorNodeForwardControlState>(
+//       builder: (context, state) {
+//         double minValue = state.dsInSlope6.minValue;
+//         double maxValue = state.dsInSlope6.maxValue;
+//         return controlTextSlider2(
+//           context: context,
+//           editMode: state.editMode,
+//           title:
+//               '${AppLocalizations.of(context)!.forwardInputEqualizer6} (${CustomStyle.dB}):',
+//           minValue: minValue,
+//           maxValue: maxValue,
+//           currentValue: state.dsInSlope6.value,
+//           onChanged: (dsInSlope6) {
+//             context
+//                 .read<Setting18CCorNodeForwardControlBloc>()
+//                 .add(DSInSlope6Changed(
+//                   dsInSlope6: dsInSlope6,
+//                 ));
+//           },
+//           errorText: state.dsInSlope6.isNotValid
+//               ? AppLocalizations.of(context)!.textFieldErrorMessage
+//               : null,
+//         );
+//       },
+//     );
+//   }
+// }
 
 class _ForwardOutputEqualizer1 extends StatelessWidget {
   const _ForwardOutputEqualizer1({

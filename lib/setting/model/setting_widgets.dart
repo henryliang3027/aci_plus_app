@@ -638,7 +638,8 @@ class _FineTuneTextSlider2State extends State<FineTuneTextSlider2> {
                     setState(() {
                       _value = value;
                     });
-                    widget.onChanged(_value.toStringAsFixed(1));
+                    widget.onChanged(
+                        _value.toStringAsFixed(widget.textPrecision));
                   }
                 : null,
           ),
