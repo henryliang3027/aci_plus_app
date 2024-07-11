@@ -73,8 +73,6 @@
     "forwardOutputAttenuation2And3": "Port 2 & Port 3 輸出衰減量",
     "forwardOutputAttenuation3And4": "Port 3 & Port 4 輸出衰減量",
     "forwardOutputAttenuation5And6": "Port 5 & Port 6 輸出衰減量",
-    "forwardOutputAttenuation3": "Port 3 輸出等化器",
-    "forwardOutputAttenuation4": "Port 4 輸出等化器",
     "forwardOutputEqualizer2And3": "Port 2 & Port 3 輸出等化器",
     "forwardOutputEqualizer3And4": "Port 3 & Port 4 輸出等化器",
     "forwardOutputEqualizer5And6": "Port 5 & Port 6 輸出等化器",
