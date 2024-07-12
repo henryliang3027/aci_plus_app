@@ -38,7 +38,7 @@ class Setting18CCroNodeControlTabBar extends StatelessWidget {
                     )),
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(10)),
-                color: Theme.of(context).colorScheme.surfaceBright,
+                color: Theme.of(context).scaffoldBackgroundColor,
               ),
               labelPadding: const EdgeInsets.symmetric(horizontal: 24.0),
               tabs: [
