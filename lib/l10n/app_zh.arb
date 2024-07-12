@@ -14,6 +14,7 @@
     
     "forwardConfigMode": "下行組態模式",
     "forwardMode": "下行模式",
+    "operatingMode": "操作模式",
     "splitOption": "上下行截止頻率",
     "forwardSetting": "下行設定",
     "startFrequency": "起始頻率",

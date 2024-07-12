@@ -14,6 +14,7 @@
    
     "forwardConfigMode": "Forward Config Mode",
     "forwardMode": "Forward Mode",
+    "operatingMode": "Operating Mode",
     "splitOption": "Split Options",
     "forwardSetting": "Forward Setting",
     "startFrequency": "Start Frequency",

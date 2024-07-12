@@ -70,7 +70,7 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
 
     String forwardCEQIndex =
-        homeState.characteristicData[DataKey.forwardCEQIndex] ?? '';
+        homeState.characteristicData[DataKey.currentForwardCEQIndex] ?? '';
 
     Map<String, List<Widget>> isolatedSettingWidgetsMap = {
       DataKey.splitOption.name: [const _SplitOption()],
@@ -451,7 +451,7 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
                       dsSlope1: dsSlope1,
                     ));
               },
-              errorText: state.dsVVA1.isNotValid
+              errorText: state.dsSlope1.isNotValid
                   ? AppLocalizations.of(context)!.textFieldErrorMessage
                   : null,
             ),

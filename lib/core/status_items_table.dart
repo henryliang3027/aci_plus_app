@@ -1,0 +1,132 @@
+enum StatusItem {
+  operatingMode,
+  workingMode,
+  splitOptions,
+  temperature,
+  inputVoltage24V,
+  inputVoltageRipple24V,
+  outputPower,
+  inputPower1p8G, // 暫時不需要顯示
+  pilot1Status,
+  pilot2Status,
+  startFrequencyOutputLevel,
+  stopFrequencyOutputLevel,
+  operatingSlope, // 暫時不需要顯示
+}
+
+class StatusItemTable {
+  static Map<String, List<StatusItem>> itemsMap = {
+    '1': [
+      // SDLE
+      StatusItem.operatingMode,
+      StatusItem.workingMode,
+      StatusItem.splitOptions,
+      StatusItem.temperature,
+      StatusItem.inputVoltage24V,
+      StatusItem.inputVoltageRipple24V,
+      StatusItem.outputPower,
+      StatusItem.pilot1Status,
+      StatusItem.pilot2Status,
+      StatusItem.startFrequencyOutputLevel,
+      StatusItem.stopFrequencyOutputLevel,
+    ],
+    '2': [
+      // Moto BLE
+      StatusItem.operatingMode,
+      StatusItem.workingMode,
+      StatusItem.splitOptions,
+      StatusItem.temperature,
+      StatusItem.inputVoltage24V,
+      StatusItem.inputVoltageRipple24V,
+      StatusItem.outputPower,
+      StatusItem.pilot1Status,
+      StatusItem.pilot2Status,
+      StatusItem.startFrequencyOutputLevel,
+      StatusItem.stopFrequencyOutputLevel,
+    ],
+    '3': [
+      // Moto MB
+      StatusItem.operatingMode,
+      StatusItem.workingMode,
+      StatusItem.splitOptions,
+      StatusItem.temperature,
+      StatusItem.inputVoltage24V,
+      StatusItem.inputVoltageRipple24V,
+      StatusItem.outputPower,
+      StatusItem.pilot1Status,
+      StatusItem.pilot2Status,
+      StatusItem.startFrequencyOutputLevel,
+      StatusItem.stopFrequencyOutputLevel,
+    ],
+    '5': [
+      // C-Cor TR
+      StatusItem.operatingMode,
+      StatusItem.workingMode,
+      StatusItem.splitOptions,
+      StatusItem.temperature,
+      StatusItem.inputVoltage24V,
+      StatusItem.inputVoltageRipple24V,
+      StatusItem.outputPower,
+      StatusItem.pilot1Status,
+      StatusItem.pilot2Status,
+      StatusItem.startFrequencyOutputLevel,
+      StatusItem.stopFrequencyOutputLevel,
+    ],
+    '6': [
+      // C-Cor BR
+      StatusItem.operatingMode,
+      StatusItem.workingMode,
+      StatusItem.splitOptions,
+      StatusItem.temperature,
+      StatusItem.inputVoltage24V,
+      StatusItem.inputVoltageRipple24V,
+      StatusItem.outputPower,
+      StatusItem.pilot1Status,
+      StatusItem.pilot2Status,
+      StatusItem.startFrequencyOutputLevel,
+      StatusItem.stopFrequencyOutputLevel,
+    ],
+    '7': [
+      // C-Cor LE
+      StatusItem.operatingMode,
+      StatusItem.workingMode,
+      StatusItem.splitOptions,
+      StatusItem.temperature,
+      StatusItem.inputVoltage24V,
+      StatusItem.inputVoltageRipple24V,
+      StatusItem.outputPower,
+      StatusItem.pilot1Status,
+      StatusItem.pilot2Status,
+      StatusItem.startFrequencyOutputLevel,
+      StatusItem.stopFrequencyOutputLevel,
+    ],
+    '8': [
+      // SDAT
+      StatusItem.operatingMode,
+      StatusItem.workingMode,
+      StatusItem.splitOptions,
+      StatusItem.temperature,
+      StatusItem.inputVoltage24V,
+      StatusItem.inputVoltageRipple24V,
+      StatusItem.outputPower,
+      StatusItem.pilot1Status,
+      StatusItem.pilot2Status,
+      StatusItem.startFrequencyOutputLevel,
+      StatusItem.stopFrequencyOutputLevel,
+    ],
+    '9': [
+      // SDAM
+      StatusItem.operatingMode,
+      StatusItem.workingMode,
+      StatusItem.splitOptions,
+      StatusItem.temperature,
+      StatusItem.inputVoltage24V,
+      StatusItem.inputVoltageRipple24V,
+      StatusItem.outputPower,
+      StatusItem.pilot1Status,
+      StatusItem.pilot2Status,
+      StatusItem.startFrequencyOutputLevel,
+      StatusItem.stopFrequencyOutputLevel,
+    ],
+  };
+}

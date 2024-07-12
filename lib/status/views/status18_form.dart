@@ -2,7 +2,7 @@ import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/setting_items_table.dart';
+import 'package:aci_plus_app/core/status_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/core/working_mode_table.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
@@ -56,48 +56,48 @@ class _CardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget getWidgetsByPartId(String partId) {
-      List<Enum> items = SettingItemTable.itemsMap[partId] ?? [];
+      List<StatusItem> items = StatusItemTable.itemsMap[partId] ?? [];
       List<Widget> widgets = [];
 
-      items =
-          items.where((item) => item.runtimeType == SettingThreshold).toList();
-
-      for (Enum name in items) {
+      for (StatusItem name in items) {
         switch (name) {
-          case SettingThreshold.workingMode:
+          case StatusItem.operatingMode:
+            widgets.add(const _OperatingModeCard());
+            break;
+          case StatusItem.workingMode:
             widgets.add(const _WorkingModeCard());
             break;
-          case SettingThreshold.splitOptions:
+          case StatusItem.splitOptions:
             widgets.add(const _SplitOptionCard());
             break;
-          case SettingThreshold.temperature:
+          case StatusItem.temperature:
             widgets.add(const _TemperatureCard());
             break;
-          case SettingThreshold.inputVoltage24V:
+          case StatusItem.inputVoltage24V:
             widgets.add(const _PowerSupplyCard());
             break;
-          case SettingThreshold.inputVoltageRipple24V:
+          case StatusItem.inputVoltageRipple24V:
             widgets.add(const _VoltageRippleCard());
             break;
-          case SettingThreshold.outputPower:
+          case StatusItem.outputPower:
             widgets.add(const _RFOutputPowerCard());
             break;
-          case SettingThreshold.inputPower1p8G:
+          case StatusItem.inputPower1p8G:
             widgets.add(const _RFInputPower1p8GCard());
             break;
-          case SettingThreshold.pilot1Status:
+          case StatusItem.pilot1Status:
             widgets.add(const _PilotFrequency1Card());
             break;
-          case SettingThreshold.pilot2Status:
+          case StatusItem.pilot2Status:
             widgets.add(const _PilotFrequency2Card());
             break;
-          case SettingThreshold.startFrequencyOutputLevel:
+          case StatusItem.startFrequencyOutputLevel:
             widgets.add(const _FirstChannelPowerLevelCard());
             break;
-          case SettingThreshold.stopFrequencyOutputLevel:
+          case StatusItem.stopFrequencyOutputLevel:
             widgets.add(const _LastChannelPowerLevelCard());
             break;
-          case SettingThreshold.operatingSlope:
+          case StatusItem.operatingSlope:
             widgets.add(const _OutputOperatingSlopeCard());
             break;
         }
@@ -114,6 +114,7 @@ class _CardView extends StatelessWidget {
           : const SingleChildScrollView(
               child: Column(
                 children: [
+                  _OperatingModeCard(),
                   _WorkingModeCard(),
                   _SplitOptionCard(),
                   _TemperatureCard(),
@@ -236,6 +237,129 @@ class _DeviceRefresh extends StatelessWidget {
         }
       },
     );
+  }
+}
+
+class _OperatingModeCard extends StatelessWidget {
+  const _OperatingModeCard({super.key});
+
+  String getOperatingModeByForwardCEQIndexText(String index) {
+    int intIndex = int.parse(index);
+
+    if (intIndex >= 0 && intIndex <= 24) {
+      return '1.8 ${CustomStyle.gHz}';
+    } else if (intIndex == 120) {
+      return '1.2 ${CustomStyle.gHz}';
+    } else if (intIndex == 180) {
+      return '1.8 ${CustomStyle.gHz}';
+    } else if (intIndex == 255) {
+      return 'N/A';
+    } else {
+      return 'N/A';
+    }
+  }
+
+  Widget getCurrentOperatingMode({
+    required FormStatus loadingStatus,
+    required String currentOperatingMode,
+    double fontSize = 16,
+  }) {
+    if (loadingStatus == FormStatus.requestInProgress) {
+      return currentOperatingMode.isEmpty
+          ? const Center(
+              child: SizedBox(
+                width: CustomStyle.diameter,
+                height: CustomStyle.diameter,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              currentOperatingMode,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            );
+    } else if (loadingStatus == FormStatus.requestSuccess) {
+      return Text(
+        currentOperatingMode.isEmpty ? 'N/A' : currentOperatingMode,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: fontSize,
+          // color: currentWorkingModeColor(
+          //   voltageAlarmState: voltageAlarmState,
+          //   minVoltage: minVoltage,
+          //   maxVoltage: maxVoltage,
+          //   currentVoltage: currentVoltage,
+          // ),
+        ),
+      );
+    } else {
+      return Text(
+        currentOperatingMode.isEmpty ? 'N/A' : currentOperatingMode,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
+      );
+    }
+  }
+
+  Widget operatingModeBlock({
+    required FormStatus loadingStatus,
+    required String currentOperatingMode,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SizedBox(
+        width: double.maxFinite,
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          children: [
+            getCurrentOperatingMode(
+              loadingStatus: loadingStatus,
+              currentOperatingMode: currentOperatingMode,
+              fontSize: CustomStyle.size4XL,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      String currentOperatingMode =
+          state.characteristicData[DataKey.currentForwardCEQIndex] ?? '';
+
+      String operatingMode = currentOperatingMode == ''
+          ? '' // 給空字串, 用來顯示 loading 效果
+          : getOperatingModeByForwardCEQIndexText(currentOperatingMode);
+
+      return Card(
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
+              child: Text(
+                AppLocalizations.of(context)!.operatingMode,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            operatingModeBlock(
+              loadingStatus: state.loadingStatus,
+              currentOperatingMode: operatingMode,
+            ),
+            const SizedBox(
+              height: CustomStyle.sizeXXL,
+            ),
+          ],
+        ),
+      );
+    });
   }
 }
 
@@ -459,7 +583,7 @@ class _SplitOptionCard extends StatelessWidget {
           state.characteristicData[DataKey.currentDetectedSplitOption] ?? '';
 
       String splitOption =
-          currentSplitOption == '' ? 'N/A' : types[currentSplitOption] ?? 'N/A';
+          currentSplitOption == '' ? '' : types[currentSplitOption] ?? 'N/A';
 
       String splitOptionAlarmState =
           state.characteristicData[DataKey.splitOptionAlarmState] ?? '1';

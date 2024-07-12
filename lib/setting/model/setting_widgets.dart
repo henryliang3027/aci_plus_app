@@ -48,12 +48,16 @@ double getSlope1MaxValue(String index) {
     int intIndex = int.parse(index);
 
     if (intIndex >= 0 && intIndex <= 24) {
+      // 1.8G CEQ
       return 24.0;
     } else if (intIndex == 120) {
+      // 1.2G EQ
       return 12.0;
     } else if (intIndex == 180) {
+      // 1.8G EQ
       return 12.0;
     } else if (intIndex == 255) {
+      // 未安裝
       return 12.0;
     } else {
       return 12.0;
