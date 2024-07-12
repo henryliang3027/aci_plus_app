@@ -20,6 +20,7 @@ class CustomStyle {
 
   static const String fahrenheitUnit = 'ºF';
   static const String celciusUnit = 'ºC';
+  static const String milliAmps = 'mA';
   static const String milliVolt = 'mV';
   static const String volt = 'V';
   static const String dBmV = 'dBmV';

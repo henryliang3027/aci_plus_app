@@ -701,7 +701,7 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardBiasCurrent1} (${CustomStyle.dB}):',
+              '${AppLocalizations.of(context)!.forwardBiasCurrent1} (${CustomStyle.milliAmps}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.biasCurrent1.value,
@@ -739,7 +739,7 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardBiasCurrent3} (${CustomStyle.dB}):',
+              '${AppLocalizations.of(context)!.forwardBiasCurrent3} (${CustomStyle.milliAmps}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.biasCurrent3.value,
@@ -777,7 +777,7 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardBiasCurrent4} (${CustomStyle.dB}):',
+              '${AppLocalizations.of(context)!.forwardBiasCurrent4} (${CustomStyle.milliAmps}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.biasCurrent4.value,
@@ -815,7 +815,7 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
           context: context,
           editMode: state.editMode,
           title:
-              '${AppLocalizations.of(context)!.forwardBiasCurrent6} (${CustomStyle.dB}):',
+              '${AppLocalizations.of(context)!.forwardBiasCurrent6} (${CustomStyle.milliAmps}):',
           minValue: minValue,
           maxValue: maxValue,
           currentValue: state.biasCurrent6.value,
