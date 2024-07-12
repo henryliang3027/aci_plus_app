@@ -536,15 +536,15 @@ class _DeviceListView extends StatelessWidget {
     }) {
       return Card(
         // margin: EdgeInsets.zero,
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+        // color: Theme.of(context).colorScheme.onPrimary,
+        // surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Theme.of(context).colorScheme.onPrimary,
+            // color: Theme.of(context).colorScheme.onPrimary,
 
             // config.isDefault == '1'
             //     ? CustomStyle.customBlue

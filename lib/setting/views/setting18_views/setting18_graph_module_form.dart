@@ -259,10 +259,10 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         return CustomStyle.customPink;
       } else if (isIsolatedWidget) {
         // 如果是獨立的模組(split option), 就將背景設為預設
-        return Theme.of(context).colorScheme.surfaceBright;
+        return Theme.of(context).dialogBackgroundColor;
       } else {
         // 其他情況都就將背景設為預設, 代表無任何控制項, 一般不會跑到這情況
-        return Theme.of(context).colorScheme.surfaceBright;
+        return Theme.of(context).dialogBackgroundColor;
       }
     }
 

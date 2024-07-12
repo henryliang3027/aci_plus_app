@@ -83,6 +83,23 @@ class _AppView extends StatelessWidget {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       // locale: const Locale('en'),'
+      localeResolutionCallback:
+          (Locale? locale, Iterable<Locale> supportedLocales) {
+        if (locale == null) {
+          return supportedLocales.first;
+        }
+
+        // Check if the current device locale is supported
+        for (Locale supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode &&
+              supportedLocale.countryCode == locale.countryCode) {
+            return supportedLocale;
+          }
+        }
+
+        // If the locale is not supported, default to English (US)
+        return const Locale('en', 'US');
+      },
       supportedLocales: const <Locale>[
         Locale('en', 'US'),
         Locale('es', 'ES'),
@@ -99,6 +116,9 @@ class _AppView extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
+        cardTheme: const CardTheme(
+          color: Colors.white,
+        ),
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.indigo,
           primary: Colors.indigo,
@@ -109,6 +129,8 @@ class _AppView extends StatelessWidget {
           foregroundColor: Colors.white,
           backgroundColor: Colors.indigo,
         ),
+        scaffoldBackgroundColor: Colors.grey[50],
+        dialogBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
       home: BlocBuilder<HomeBloc, HomeState>(
