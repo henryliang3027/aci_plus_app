@@ -36,7 +36,7 @@ class Setting18ForwardControlView extends StatelessWidget {
         homeState.characteristicData[DataKey.factoryDefaultNumber] ?? '';
 
     String forwardCEQIndex =
-        homeState.characteristicData[DataKey.forwardCEQIndex] ?? '';
+        homeState.characteristicData[DataKey.currentForwardCEQIndex] ?? '';
 
     List<Widget> getForwardControlParameterWidgetsByPartId(String partId) {
       List<Enum> items = SettingItemTable.itemsMap[partId] ?? [];

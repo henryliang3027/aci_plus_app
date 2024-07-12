@@ -26,6 +26,7 @@ class CustomStyle {
   static const String dBmV = 'dBmV';
   static const String dB = 'dB';
   static const String mHz = 'MHz';
+  static const String gHz = 'GHz';
   static const String bytes = 'Bytes';
 
   static const Map<String, Color> alarmColor = {
