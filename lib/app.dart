@@ -89,7 +89,7 @@ class _AppView extends StatelessWidget {
           return supportedLocales.first;
         }
 
-        // Check if the current device locale is supported
+        // 檢查目前系統語言是否有支援
         for (Locale supportedLocale in supportedLocales) {
           if (supportedLocale.languageCode == locale.languageCode &&
               supportedLocale.countryCode == locale.countryCode) {
@@ -97,7 +97,7 @@ class _AppView extends StatelessWidget {
           }
         }
 
-        // If the locale is not supported, default to English (US)
+        //  如果不支援目前系統語言, 則設為預設語言 English (US)
         return const Locale('en', 'US');
       },
       supportedLocales: const <Locale>[
