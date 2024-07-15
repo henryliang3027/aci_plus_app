@@ -1,5 +1,4 @@
-import 'package:aci_plus_app/advanced/bloc/configs/setting18_base_config/setting18_base_config_bloc.dart';
-import 'package:aci_plus_app/advanced/bloc/configs/setting18_trunk_config/setting18_trunk_config_bloc.dart';
+import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_bloc.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/repositories/config.dart';
@@ -47,20 +46,22 @@ class _ConfigFloatActionButton extends StatelessWidget {
       );
     }
 
-    return BlocBuilder<Setting18TrunkConfigBloc, Setting18BaseConfigState>(
+    return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
       builder: (context, state) {
         return FloatingActionButton(
           shape: const CircleBorder(
             side: BorderSide.none,
           ),
-          backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
-          onPressed: state.configs.length < 5
+          backgroundColor: state.trunkConfigs.length < 5
+              ? Theme.of(context).colorScheme.primary.withAlpha(200)
+              : Colors.grey.withAlpha(200),
+          onPressed: state.trunkConfigs.length < 5
               ? () async {
                   showAddConfigDialog(groupId: '0').then(
                     (result) async {
                       // await Future.delayed(Duration(seconds: 1));
                       context
-                          .read<Setting18TrunkConfigBloc>()
+                          .read<Setting18ConfigBloc>()
                           .add(const ConfigsRequested());
                     },
                   );
@@ -336,7 +337,7 @@ class _DeviceListView extends StatelessWidget {
                                   if (result != null) {
                                     if (result) {
                                       context
-                                          .read<Setting18TrunkConfigBloc>()
+                                          .read<Setting18ConfigBloc>()
                                           .add(ConfigDeleted(
                                             id: config.id,
                                             groupId: groupId,
@@ -378,7 +379,7 @@ class _DeviceListView extends StatelessWidget {
                                   groupId: groupId,
                                 ).then((result) {
                                   context
-                                      .read<Setting18TrunkConfigBloc>()
+                                      .read<Setting18ConfigBloc>()
                                       .add(const ConfigsRequested());
                                 });
                               },
@@ -411,20 +412,26 @@ class _DeviceListView extends StatelessWidget {
             groupId: groupId,
           ),
         ],
+        const SizedBox(
+          height: 100,
+        ),
       ];
     }
 
-    return BlocBuilder<Setting18TrunkConfigBloc, Setting18BaseConfigState>(
-      buildWhen: (previous, current) => previous.configs != current.configs,
+    return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
+      buildWhen: (previous, current) =>
+          previous.trunkConfigs != current.trunkConfigs,
       builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ...buildTrunkConfigListView(trunkConfigs: state.configs),
-            const SizedBox(
-              height: 20,
-            ),
-          ],
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...buildTrunkConfigListView(trunkConfigs: state.trunkConfigs),
+              const SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
         );
       },
     );

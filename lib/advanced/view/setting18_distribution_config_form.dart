@@ -1,5 +1,4 @@
-import 'package:aci_plus_app/advanced/bloc/configs/setting18_base_config/setting18_base_config_bloc.dart';
-import 'package:aci_plus_app/advanced/bloc/configs/setting18_distribution_config/setting18_distribution_config_bloc.dart';
+import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_bloc.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/repositories/config.dart';
@@ -47,21 +46,22 @@ class _ConfigFloatActionButton extends StatelessWidget {
       );
     }
 
-    return BlocBuilder<Setting18DistributionConfigBloc,
-        Setting18BaseConfigState>(
+    return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
       builder: (context, state) {
         return FloatingActionButton(
           shape: const CircleBorder(
             side: BorderSide.none,
           ),
-          backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
-          onPressed: state.configs.length < 5
+          backgroundColor: state.distributionConfigs.length < 5
+              ? Theme.of(context).colorScheme.primary.withAlpha(200)
+              : Colors.grey.withAlpha(200),
+          onPressed: state.distributionConfigs.length < 5
               ? () async {
                   showAddConfigDialog(groupId: '1').then(
                     (result) async {
                       // await Future.delayed(Duration(seconds: 1));
                       context
-                          .read<Setting18DistributionConfigBloc>()
+                          .read<Setting18ConfigBloc>()
                           .add(const ConfigsRequested());
                     },
                   );
@@ -337,8 +337,7 @@ class _DeviceListView extends StatelessWidget {
                                   if (result != null) {
                                     if (result) {
                                       context
-                                          .read<
-                                              Setting18DistributionConfigBloc>()
+                                          .read<Setting18ConfigBloc>()
                                           .add(ConfigDeleted(
                                             id: config.id,
                                             groupId: groupId,
@@ -380,7 +379,7 @@ class _DeviceListView extends StatelessWidget {
                                   groupId: groupId,
                                 ).then((result) {
                                   context
-                                      .read<Setting18DistributionConfigBloc>()
+                                      .read<Setting18ConfigBloc>()
                                       .add(const ConfigsRequested());
                                 });
                               },
@@ -413,22 +412,27 @@ class _DeviceListView extends StatelessWidget {
             groupId: groupId,
           ),
         ],
+        const SizedBox(
+          height: 100,
+        ),
       ];
     }
 
-    return BlocBuilder<Setting18DistributionConfigBloc,
-        Setting18BaseConfigState>(
-      buildWhen: (previous, current) => previous.configs != current.configs,
+    return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
+      buildWhen: (previous, current) =>
+          previous.distributionConfigs != current.distributionConfigs,
       builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ...buildDistributionConfigListView(
-                distributionConfigs: state.configs),
-            const SizedBox(
-              height: 20,
-            ),
-          ],
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...buildDistributionConfigListView(
+                  distributionConfigs: state.distributionConfigs),
+              const SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
         );
       },
     );
