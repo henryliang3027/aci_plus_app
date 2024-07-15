@@ -180,6 +180,7 @@
     
     "trunkAmplifier": "Trunk Amplifier",
     "distributionAmplifier": "Distribution Amplifier",
+    "opticalNode": "Optical Node",
     "name": "Name",
 
     "scanQRCode": "Scan QR Code",

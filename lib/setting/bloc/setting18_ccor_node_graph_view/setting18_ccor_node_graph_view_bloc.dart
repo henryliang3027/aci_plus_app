@@ -106,7 +106,7 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
       height: height,
       components: components,
       boxes: boxes,
-      valueTexts: [],
+      valueTexts: valueTexts,
     );
 
     emit(state.copyWith(

@@ -166,8 +166,13 @@ class CircuitPainter extends CustomPainter {
 
       textPainter.paint(
           canvas,
-          Offset((valueText.x) * scaleFactor + offsetX,
-              (valueText.y - textPainter.height * 4) * scaleFactor));
+          Offset(
+              (valueText.x + (238.365 / 2)) * scaleFactor +
+                  offsetX -
+                  (textPainter.width / 2),
+              (valueText.y - 20) * scaleFactor +
+                  offsetY -
+                  (textPainter.height / 2)));
     }
   }
 

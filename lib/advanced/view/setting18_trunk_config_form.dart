@@ -1,0 +1,432 @@
+import 'package:aci_plus_app/advanced/bloc/configs/setting18_base_config/setting18_base_config_bloc.dart';
+import 'package:aci_plus_app/advanced/bloc/configs/setting18_trunk_config/setting18_trunk_config_bloc.dart';
+import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
+import 'package:aci_plus_app/core/custom_style.dart';
+import 'package:aci_plus_app/repositories/config.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+class Setting18TrunkConfigForm extends StatelessWidget {
+  const Setting18TrunkConfigForm({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: _DeviceListView(),
+      floatingActionButton: _ConfigFloatActionButton(),
+    );
+  }
+}
+
+class _ConfigFloatActionButton extends StatelessWidget {
+  const _ConfigFloatActionButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    Future<bool?> showAddConfigDialog({
+      required String groupId,
+    }) async {
+      return showDialog<bool>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.01,
+            ),
+            child: Setting18ConfigEditPage(
+              groupId: groupId,
+            ),
+          );
+        },
+      );
+    }
+
+    return BlocBuilder<Setting18TrunkConfigBloc, Setting18BaseConfigState>(
+      builder: (context, state) {
+        return FloatingActionButton(
+          shape: const CircleBorder(
+            side: BorderSide.none,
+          ),
+          backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
+          onPressed: state.configs.length < 5
+              ? () async {
+                  showAddConfigDialog(groupId: '0').then(
+                    (result) async {
+                      // await Future.delayed(Duration(seconds: 1));
+                      context
+                          .read<Setting18TrunkConfigBloc>()
+                          .add(const ConfigsRequested());
+                    },
+                  );
+                }
+              : null,
+          child: Icon(
+            Icons.add,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _DeviceListView extends StatelessWidget {
+  const _DeviceListView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    Future<bool?> showEditConfigDialog({
+      required Config config,
+      required String groupId,
+    }) async {
+      return showDialog<bool>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.01,
+            ),
+            child: Setting18ConfigEditPage(
+              config: config,
+              groupId: groupId,
+              isEdit: true,
+            ),
+          );
+        },
+      );
+    }
+
+    Future<bool?> showConfirmDeleteDialog({required String configName}) {
+      String localizedText =
+          AppLocalizations.of(context)!.dialogMessageDeleteConfig(configName);
+      int configNameIndex = localizedText.indexOf(configName);
+
+      return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context)!.dialogTitleDeleteConfig,
+            ),
+            content: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: localizedText.substring(0, configNameIndex),
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  TextSpan(
+                    text: localizedText.substring(
+                        configNameIndex, configNameIndex + configName.length),
+                    style: const TextStyle(
+                      color: CustomStyle.customRed,
+                    ),
+                  ),
+                  TextSpan(
+                    text: localizedText.substring(
+                        configNameIndex + configName.length,
+                        localizedText.length),
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+              style: const TextStyle(
+                fontSize: CustomStyle.sizeL,
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageCancel,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(false); // pop dialog
+                },
+              ),
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageOk,
+                  style: const TextStyle(color: CustomStyle.customRed),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<bool?> showSetAsDefaultDialog({
+      required String configName,
+    }) {
+      String localizedText = AppLocalizations.of(context)!
+          .dialogMessageSetAsDefaultConfig(configName);
+      int configNameIndex = localizedText.indexOf(configName);
+
+      return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context)!.dialogTitleNotice,
+              style: const TextStyle(
+                color: CustomStyle.customYellow,
+              ),
+            ),
+            content: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: localizedText.substring(0, configNameIndex),
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  TextSpan(
+                    text: localizedText.substring(
+                        configNameIndex, configNameIndex + configName.length),
+                    style: const TextStyle(
+                      color: CustomStyle.customRed,
+                    ),
+                  ),
+                  TextSpan(
+                    text: localizedText.substring(
+                        configNameIndex + configName.length,
+                        localizedText.length),
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+              style: const TextStyle(
+                fontSize: CustomStyle.sizeL,
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageCancel,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(false); // pop dialog
+                },
+              ),
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.dialogMessageOk,
+                  style: const TextStyle(color: CustomStyle.customRed),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(true); // pop dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    Widget configCard({
+      required Config config,
+      required String groupId,
+    }) {
+      return Card(
+        // margin: EdgeInsets.zero,
+        color: Theme.of(context).colorScheme.onPrimary,
+        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Theme.of(context).colorScheme.onPrimary,
+
+            // config.isDefault == '1'
+            //     ? CustomStyle.customBlue
+            //     : Theme.of(context).colorScheme.onPrimary,
+          ),
+          // height: 80,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(8.0),
+              // onLongPress: () {
+              //   showSetAsDefaultDialog(configName: config.name).then((result) {
+              //     if (result != null) {
+              //       if (result) {
+              //         context
+              //             .read<Setting18ConfigBloc>()
+              //             .add(DefaultConfigChanged(
+              //               groupId: groupId,
+              //               id: config.id,
+              //             ));
+              //       }
+              //     }
+              //   });
+              // },
+
+              // config.isDefault == '0'
+              //     ? () {
+              //         showSetAsDefaultDialog(configName: config.name)
+              //             .then((result) {
+              //           if (result != null) {
+              //             if (result) {
+              //               context
+              //                   .read<Setting18ConfigBloc>()
+              //                   .add(DefaultConfigChanged(
+              //                     groupId: groupId,
+              //                     id: config.id,
+              //                   ));
+              //             }
+              //           }
+              //         });
+              //       }
+              //     : null,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 26.0,
+                        vertical: 24.0,
+                      ),
+                      child: Text(
+                        config.name,
+                        style: const TextStyle(
+                          fontSize: 24,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 136,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        right: 12,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: IconButton(
+                              onPressed: () {
+                                showConfirmDeleteDialog(
+                                  configName: config.name,
+                                ).then((result) {
+                                  if (result != null) {
+                                    if (result) {
+                                      context
+                                          .read<Setting18TrunkConfigBloc>()
+                                          .add(ConfigDeleted(
+                                            id: config.id,
+                                            groupId: groupId,
+                                          ));
+                                    }
+                                  }
+                                });
+                              },
+
+                              // config.isDefault == '0' || true
+                              //     ? () {
+                              //         showConfirmDeleteDialog(
+                              //           configName: config.name,
+                              //         ).then((result) {
+                              //           if (result != null) {
+                              //             if (result) {
+                              //               context
+                              //                   .read<Setting18ConfigBloc>()
+                              //                   .add(ConfigDeleted(
+                              //                     id: config.id,
+                              //                     groupId: groupId,
+                              //                   ));
+                              //             }
+                              //           }
+                              //         });
+                              //       }
+                              //     : null,
+                              icon: const Icon(
+                                Icons.delete,
+                                size: 26,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: IconButton(
+                              onPressed: () async {
+                                showEditConfigDialog(
+                                  config: config,
+                                  groupId: groupId,
+                                ).then((result) {
+                                  context
+                                      .read<Setting18TrunkConfigBloc>()
+                                      .add(const ConfigsRequested());
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.edit,
+                                size: 26,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    List<Widget> buildTrunkConfigListView({
+      required List<Config> trunkConfigs,
+    }) {
+      String groupId = '0';
+      return [
+        for (Config trunkConfig in trunkConfigs) ...[
+          configCard(
+            config: trunkConfig,
+            groupId: groupId,
+          ),
+        ],
+      ];
+    }
+
+    return BlocBuilder<Setting18TrunkConfigBloc, Setting18BaseConfigState>(
+      buildWhen: (previous, current) => previous.configs != current.configs,
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ...buildTrunkConfigListView(trunkConfigs: state.configs),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        );
+      },
+    );
+  }
+}

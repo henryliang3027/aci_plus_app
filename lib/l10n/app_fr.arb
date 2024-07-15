@@ -178,6 +178,7 @@
 
     "trunkAmplifier": "Amplificateur de coffre",
     "distributionAmplifier": "Amplificateur de distribution",
+    "opticalNode": "Nœud Optique",
     "name": "Nom",
 
     "scanQRCode": "Scanner code QR",
