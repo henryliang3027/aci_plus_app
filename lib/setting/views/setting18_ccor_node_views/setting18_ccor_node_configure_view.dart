@@ -443,6 +443,33 @@ class _Coordinates extends StatelessWidget {
   }
 }
 
+class _ForwardMode extends StatelessWidget {
+  const _ForwardMode({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18CCorNodeConfigureBloc,
+        Setting18CCorNodeConfigureState>(
+      buildWhen: (previous, current) =>
+          previous.forwardMode != current.forwardMode ||
+          previous.editMode != current.editMode,
+      builder: (context, state) {
+        return configureGridViewButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.forwardMode}:',
+          targetValue: state.forwardMode,
+          texts: forwardModeTexts,
+          values: forwardModeValues,
+          onGridPressed: (index) => context
+              .read<Setting18CCorNodeConfigureBloc>()
+              .add(ForwardModeChanged(forwardModeValues[index])),
+        );
+      },
+    );
+  }
+}
+
 class _ForwardConfig extends StatelessWidget {
   const _ForwardConfig({super.key});
 
@@ -488,33 +515,6 @@ class _SplitOption extends StatelessWidget {
           onGridPressed: (index) => context
               .read<Setting18CCorNodeConfigureBloc>()
               .add(SplitOptionChanged(splitOptionValues[index])),
-        );
-      },
-    );
-  }
-}
-
-class _ForwardMode extends StatelessWidget {
-  const _ForwardMode({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18CCorNodeConfigureBloc,
-        Setting18CCorNodeConfigureState>(
-      buildWhen: (previous, current) =>
-          previous.forwardMode != current.forwardMode ||
-          previous.editMode != current.editMode,
-      builder: (context, state) {
-        return configureGridViewButton(
-          context: context,
-          editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.forwardMode}:',
-          targetValue: state.forwardMode,
-          texts: forwardModeTexts,
-          values: forwardModeValues,
-          onGridPressed: (index) => context
-              .read<Setting18CCorNodeConfigureBloc>()
-              .add(ForwardModeChanged(forwardModeValues[index])),
         );
       },
     );

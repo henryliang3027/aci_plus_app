@@ -388,6 +388,7 @@
     "dialogMessageCancel": "取消",
     "dialogMessageExit": "離開",
     "dialogMessageOk": "確定",
+    "dialogMessageDone": "完成",
     "dialogMessageSave": "儲存",
     "dialogMessageExecute": "執行",
     "dialogMessageTryAgain": "再試一次",

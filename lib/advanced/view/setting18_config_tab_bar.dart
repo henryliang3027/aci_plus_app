@@ -1,5 +1,6 @@
-import 'package:aci_plus_app/advanced/view/setting18_distribution_config_page.dart';
-import 'package:aci_plus_app/advanced/view/setting18_trunk_config_page.dart';
+import 'package:aci_plus_app/advanced/view/setting18_distribution_config_form.dart';
+import 'package:aci_plus_app/advanced/view/setting18_node_config_form.dart';
+import 'package:aci_plus_app/advanced/view/setting18_trunk_config_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -80,23 +81,14 @@ class Setting18ConfigTabBar extends StatelessWidget {
               // physics: NeverScrollableScrollPhysics(),
               // controller: tabController,
               children: [
-                Setting18TrunkConfigPage(),
-                Setting18DistributionConfigPage(),
-                MyWidget(),
+                Setting18TrunkConfigForm(),
+                Setting18DistributionConfigForm(),
+                Setting18NodeConfigForm(),
               ],
             ),
           ),
         ],
       ),
     );
-  }
-}
-
-class MyWidget extends StatelessWidget {
-  const MyWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
   }
 }

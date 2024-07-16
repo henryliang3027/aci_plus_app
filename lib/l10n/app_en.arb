@@ -389,6 +389,7 @@
     "dialogMessageCancel": "Cancel",
     "dialogMessageExit": "Exit",
     "dialogMessageOk": "OK",
+    "dialogMessageDone": "Done",
     "dialogMessageSave": "Save",
     "dialogMessageExecute": "Execute",
     "dialogMessageTryAgain": "Try again",

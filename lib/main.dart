@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:aci_plus_app/app.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
+import 'package:aci_plus_app/repositories/node_config.dart';
 import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
@@ -37,9 +38,11 @@ Future<void> main() async {
   await Hive.initFlutter('.db');
   Hive.registerAdapter<TrunkConfig>(TrunkConfigAdapter());
   Hive.registerAdapter<DistributionConfig>(DistributionConfigAdapter());
+  Hive.registerAdapter<NodeConfig>(NodeConfigAdapter());
 
   await Hive.openBox<TrunkConfig>('TrunkConfigData');
   await Hive.openBox<DistributionConfig>('DistributionConfigData');
+  await Hive.openBox<NodeConfig>('NodeConfigData');
 
   runApp(App(
     aciDeviceRepository: ACIDeviceRepository(),

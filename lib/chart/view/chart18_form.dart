@@ -310,7 +310,7 @@ class _DeviceStatus extends StatelessWidget {
           return const Icon(
             Icons.nearby_error_outlined,
           );
-        } else {
+        } else if (state.scanStatus.isRequestInProgress) {
           return const Center(
             child: SizedBox(
               width: CustomStyle.diameter,
@@ -320,6 +320,8 @@ class _DeviceStatus extends StatelessWidget {
               ),
             ),
           );
+        } else {
+          return const Center();
         }
       },
     );

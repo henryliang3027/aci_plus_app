@@ -4,6 +4,7 @@ import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
 // import 'package:aci_plus_app/repositories/dongle.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/repositories/node_config.dart';
 import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,11 +41,13 @@ class Setting18ConfigBloc
     List<TrunkConfig> trunkConfigs = _configRepository.getAllTrunkConfigs();
     List<DistributionConfig> distributionConfigs =
         _configRepository.getAllDistributionConfigs();
+    List<NodeConfig> nodeConfigs = _configRepository.getAllNodeConfigs();
 
     emit(state.copyWith(
       formStatus: FormStatus.requestSuccess,
       trunkConfigs: trunkConfigs,
       distributionConfigs: distributionConfigs,
+      nodeConfigs: nodeConfigs,
     ));
   }
 
@@ -60,6 +63,7 @@ class Setting18ConfigBloc
     List<TrunkConfig> trunkConfigs = _configRepository.getAllTrunkConfigs();
     List<DistributionConfig> distributionConfigs =
         _configRepository.getAllDistributionConfigs();
+    List<NodeConfig> nodeConfigs = _configRepository.getAllNodeConfigs();
 
     emit(state.copyWith(
       encodeStaus: FormStatus.none,
@@ -67,6 +71,7 @@ class Setting18ConfigBloc
       formStatus: FormStatus.requestSuccess,
       trunkConfigs: trunkConfigs,
       distributionConfigs: distributionConfigs,
+      nodeConfigs: nodeConfigs,
     ));
   }
 
@@ -93,14 +98,23 @@ class Setting18ConfigBloc
           .distributionConfigs) ...[jsonEncode(distributionConfig.toJson())]
     ];
 
+    List<String> nodeConfigJsons = [
+      for (NodeConfig nodeConfig in state.nodeConfigs) ...[
+        jsonEncode(nodeConfig.toJson())
+      ]
+    ];
+
     String strTrunkConfigJsons =
         trunkConfigJsons.join(',').isNotEmpty ? trunkConfigJsons.join(',') : '';
     String strDistributionConfigJsons = distributionConfigJsons.join(',');
+    String strNodeConfigJsons = nodeConfigJsons.join(',');
 
-    String encodedData = '$strTrunkConfigJsons $strDistributionConfigJsons';
+    String encodedData =
+        '$strTrunkConfigJsons $strDistributionConfigJsons $strNodeConfigJsons';
 
     print(trunkConfigJsons.join(','));
     print(distributionConfigJsons.join(','));
+    print(nodeConfigJsons.join(','));
     print('data:$encodedData');
 
     emit(state.copyWith(
@@ -120,6 +134,7 @@ class Setting18ConfigBloc
 
     List<TrunkConfig> trunkConfigs = [];
     List<DistributionConfig> distributionConfigs = [];
+    List<NodeConfig> nodeConfigs = [];
 
     RegExp mapRegex = RegExp(r'(\{[^{}]*\})');
 
@@ -127,6 +142,7 @@ class Setting18ConfigBloc
 
     String trunkRawData = splitRawData[0];
     String distributionRawData = splitRawData[1];
+    String nodeRawData = splitRawData[2];
     // print('-----trunk------');
     // print(trunkRawData);
     // print('-----distribution------');
@@ -135,6 +151,7 @@ class Setting18ConfigBloc
     Iterable<Match> trunkConfigMatches = mapRegex.allMatches(trunkRawData);
     Iterable<Match> distributionConfigMatches =
         mapRegex.allMatches(distributionRawData);
+    Iterable<Match> nodeConfigMatches = mapRegex.allMatches(nodeRawData);
 
     print('-----trunk------');
 
@@ -155,19 +172,30 @@ class Setting18ConfigBloc
       distributionConfigs.add(distributionConfig);
     }
 
+    print('-----node------');
+
+    for (Match match in nodeConfigMatches) {
+      String json = match[0]!;
+      print(json);
+      NodeConfig nodeConfig = NodeConfig.fromJson(jsonDecode(json));
+      nodeConfigs.add(nodeConfig);
+    }
+
     await _configRepository.updateConfigsByQRCode(
       trunkConfigs: trunkConfigs,
       distributionConfigs: distributionConfigs,
+      nodeConfigs: nodeConfigs,
     );
 
-    List<TrunkConfig> test1 = _configRepository.getAllTrunkConfigs();
-    List<DistributionConfig> test2 =
-        _configRepository.getAllDistributionConfigs();
+    // List<TrunkConfig> test1 = _configRepository.getAllTrunkConfigs();
+    // List<DistributionConfig> test2 =
+    //     _configRepository.getAllDistributionConfigs();
 
     emit(state.copyWith(
       decodeStatus: FormStatus.requestSuccess,
       trunkConfigs: trunkConfigs,
       distributionConfigs: distributionConfigs,
+      nodeConfigs: nodeConfigs,
     ));
 
     // List<String> splitRawData = event.rawData.split(' ');

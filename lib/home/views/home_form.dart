@@ -130,7 +130,6 @@ class _HomeFormState extends State<HomeForm> {
           return Dialog(
             insetPadding: EdgeInsets.symmetric(
               horizontal: width * 0.01,
-              vertical: height * 0.01,
             ),
             child: const PeripheralSelectorPage(),
           );
@@ -230,6 +229,8 @@ class _HomeFormState extends State<HomeForm> {
               showSelectPeripheralDialog().then((Peripheral? peripheral) {
                 if (peripheral != null) {
                   context.read<HomeBloc>().add(DeviceSelected(peripheral));
+                } else {
+                  context.read<HomeBloc>().add(const DeviceSelectionCanceled());
                 }
               });
             }

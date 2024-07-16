@@ -44,6 +44,13 @@ class DeviceSelected extends HomeEvent {
       ];
 }
 
+class DeviceSelectionCanceled extends HomeEvent {
+  const DeviceSelectionCanceled();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class DeviceCharacteristicChanged extends HomeEvent {
   const DeviceCharacteristicChanged(this.dataMap);
 

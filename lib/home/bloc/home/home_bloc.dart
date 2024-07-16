@@ -30,6 +30,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<SplashStateChanged>(_onSplashStateChanged);
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
     on<DeviceSelected>(_onDeviceSelected);
+    on<DeviceSelectionCanceled>(_onDeviceSelectionCanceled);
     on<DataRequested>(_onDataRequested);
     on<Data18Requested>(_onData18Requested);
     on<CCorNode18DataRequested>(_onCCorNode18DataRequested);
@@ -231,6 +232,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       connectionStatus: FormStatus.requestInProgress,
       loadingStatus: FormStatus.requestInProgress,
       device: event.peripheral,
+    ));
+  }
+
+  void _onDeviceSelectionCanceled(
+    DeviceSelectionCanceled event,
+    Emitter<HomeState> emit,
+  ) {
+    _aciDeviceRepository.closeScanStream();
+
+    emit(state.copyWith(
+      scanStatus: FormStatus.none,
+      connectionStatus: FormStatus.none,
+      loadingStatus: FormStatus.none,
+      device: const Peripheral.empty(),
     ));
   }
 

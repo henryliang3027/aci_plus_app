@@ -1,4 +1,3 @@
-import 'package:aci_plus_app/repositories/config.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 

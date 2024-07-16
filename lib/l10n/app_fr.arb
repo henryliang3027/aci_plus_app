@@ -387,6 +387,7 @@
     "dialogMessageCancel": "Annuler",
     "dialogMessageExit": "Quitter",
     "dialogMessageOk": "OK",
+    "dialogMessageDone": "Fait",
     "dialogMessageSave": "Enregistrer",
     "dialogMessageExecute": "Exécuter",
     "dialogMessageTryAgain": "Réessayer",
