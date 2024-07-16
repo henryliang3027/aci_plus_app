@@ -52,7 +52,7 @@ class _PeripheralListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        return Flexible(
+        return Expanded(
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
