@@ -14,6 +14,13 @@ class AppVersionRequested extends Information18CCorNodeEvent {
   List<Object> get props => [];
 }
 
+class ConfigLoaded extends Information18CCorNodeEvent {
+  const ConfigLoaded();
+
+  @override
+  List<Object> get props => [];
+}
+
 class AlarmUpdated extends Information18CCorNodeEvent {
   const AlarmUpdated();
 

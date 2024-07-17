@@ -6,7 +6,9 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/information/bloc/information18_ccor_node/information18_ccor_node_bloc.dart';
+import 'package:aci_plus_app/information/views/information18_ccor_node_config_list_view.dart';
 import 'package:aci_plus_app/information/views/name_plate_view.dart';
+import 'package:aci_plus_app/repositories/node_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -208,66 +210,6 @@ class _DeviceStatus extends StatelessWidget {
   }
 }
 
-class _DeviceRefresh extends StatelessWidget {
-  const _DeviceRefresh({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        if (!state.loadingStatus.isRequestInProgress &&
-            !state.connectionStatus.isRequestInProgress) {
-          return IconButton(
-              onPressed: () {
-                context
-                    .read<Information18CCorNodeBloc>()
-                    .add(const AlarmPeriodicUpdateCanceled());
-                context.read<HomeBloc>().add(const DeviceRefreshed());
-              },
-              icon: Icon(
-                Icons.refresh,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ));
-        } else {
-          return Container();
-        }
-      },
-    );
-  }
-}
-
-class _VersionCard extends StatelessWidget {
-  const _VersionCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Information18CCorNodeBloc, Information18CCorNodeState>(
-      builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.appVersion,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              Text(
-                state.appVersion,
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeL,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _ConnectionCard extends StatelessWidget {
   const _ConnectionCard({super.key});
 
@@ -391,6 +333,10 @@ class _ShortcutCard extends StatelessWidget {
 
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
+        if (state.loadingStatus.isRequestSuccess) {
+          context.read<Information18CCorNodeBloc>().add(const ConfigLoaded());
+        }
+
         return Card(
           color: Theme.of(context).colorScheme.onPrimary,
           surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
@@ -417,24 +363,97 @@ class _ShortcutCard extends StatelessWidget {
                           fontSize: CustomStyle.sizeL,
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: null,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          foregroundColor: Colors.white,
-                        ),
-                        child: Text(
-                          AppLocalizations.of(context)!.load,
-                          style: const TextStyle(
-                            fontSize: CustomStyle.sizeL,
-                          ),
-                        ),
+                      _LoadPresetButton(
+                        loadingStatus: state.loadingStatus,
                       ),
+                      // ElevatedButton(
+                      //   onPressed: ,
+                      //   style: ElevatedButton.styleFrom(
+                      //     backgroundColor:
+                      //         Theme.of(context).colorScheme.primary,
+                      //     foregroundColor: Colors.white,
+                      //   ),
+                      //   child: Text(
+                      //     AppLocalizations.of(context)!.load,
+                      //     style: const TextStyle(
+                      //       fontSize: CustomStyle.sizeL,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
               ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _LoadPresetButton extends StatelessWidget {
+  const _LoadPresetButton({
+    super.key,
+    required this.loadingStatus,
+  });
+
+  final FormStatus loadingStatus;
+
+  @override
+  Widget build(BuildContext context) {
+    Future<void> showSelectConfigDialog({
+      required List<NodeConfig> nodeConfigs,
+    }) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.01,
+            ),
+            child: Informtion18CCorNodeConfigListView(
+              nodeConfigs: nodeConfigs,
+            ),
+          );
+        },
+      );
+    }
+
+    return BlocBuilder<Information18CCorNodeBloc, Information18CCorNodeState>(
+      builder: (context, state) {
+        return ElevatedButton(
+          onPressed:
+              loadingStatus.isRequestSuccess && state.nodeConfigs.isNotEmpty
+                  ? () async {
+                      // 要進行設定前先暫停 alarm 定期更新, 避免設定過程中同時要求 alarm 資訊
+                      context
+                          .read<Information18CCorNodeBloc>()
+                          .add(const AlarmPeriodicUpdateCanceled());
+
+                      showSelectConfigDialog(
+                        nodeConfigs: state.nodeConfigs,
+                      ).then((value) {
+                        // 設定結束後, 恢復 alarm 定期更新
+                        context
+                            .read<Information18CCorNodeBloc>()
+                            .add(const AlarmPeriodicUpdateRequested());
+                      });
+                    }
+                  : null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Colors.white,
+          ),
+          child: Text(
+            AppLocalizations.of(context)!.load,
+            style: const TextStyle(
+              fontSize: CustomStyle.sizeL,
             ),
           ),
         );

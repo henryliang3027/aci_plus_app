@@ -11,9 +11,9 @@ part 'information18_preset_state.dart';
 class Information18PresetBloc
     extends Bloc<Information18PresetEvent, Information18PresetState> {
   Information18PresetBloc({
-    required Amp18Repository amp18repository,
+    required Amp18Repository amp18Repository,
     required Config config,
-  })  : _amp18Repository = amp18repository,
+  })  : _amp18Repository = amp18Repository,
         super(Information18PresetState(config: config)) {
     // on<DefaultConfigRequested>(_onDefaultConfigRequested);
     on<ConfigExecuted>(_onConfigExecuted);

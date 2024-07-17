@@ -258,7 +258,7 @@ class ConfigRepository {
     }
   }
 
-  List<NodeConfig> getNodeConfigByGroupId() {
+  List<NodeConfig> getAllNodeConfig() {
     return _nodeConfigApi.getAllConfigs();
   }
 

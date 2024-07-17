@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
+import 'package:aci_plus_app/repositories/config_repository.dart';
+import 'package:aci_plus_app/repositories/node_config.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,8 +13,11 @@ class Information18CCorNodeBloc
     extends Bloc<Information18CCorNodeEvent, Information18CCorNodeState> {
   Information18CCorNodeBloc({
     required Amp18CCorNodeRepository amp18CCorNodeRepository,
+    required ConfigRepository configRepository,
   })  : _amp18CCorNodeRepository = amp18CCorNodeRepository,
+        _configRepository = configRepository,
         super(const Information18CCorNodeState()) {
+    on<ConfigLoaded>(_onConfigLoaded);
     on<AppVersionRequested>(_onAppVersionRequested);
     on<AlarmUpdated>(_onAlarmUpdated);
     on<AlarmPeriodicUpdateRequested>(_onAlarmPeriodicUpdateRequested);
@@ -23,6 +28,7 @@ class Information18CCorNodeBloc
 
   Timer? _timer;
   final Amp18CCorNodeRepository _amp18CCorNodeRepository;
+  final ConfigRepository _configRepository;
 
   Future<void> _onAppVersionRequested(
     AppVersionRequested event,
@@ -32,6 +38,17 @@ class Information18CCorNodeBloc
 
     emit(state.copyWith(
       appVersion: appVersion,
+    ));
+  }
+
+  Future<void> _onConfigLoaded(
+    ConfigLoaded event,
+    Emitter<Information18CCorNodeState> emit,
+  ) async {
+    List<NodeConfig> nodeConfigs = _configRepository.getAllNodeConfig();
+
+    emit(state.copyWith(
+      nodeConfigs: nodeConfigs,
     ));
   }
 
