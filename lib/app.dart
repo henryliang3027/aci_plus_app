@@ -91,8 +91,7 @@ class _AppView extends StatelessWidget {
 
         // 檢查目前系統語言是否有支援
         for (Locale supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale.languageCode &&
-              supportedLocale.countryCode == locale.countryCode) {
+          if (supportedLocale.languageCode == locale.languageCode) {
             return supportedLocale;
           }
         }
