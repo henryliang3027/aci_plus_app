@@ -129,6 +129,7 @@ class BLEWindowsClient extends BLEClientBase {
               peripheral: Peripheral(
                 id: device.address,
                 name: device.name,
+                rssi: int.parse(device.rssi),
               ),
             ),
           );
