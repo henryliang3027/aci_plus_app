@@ -386,7 +386,6 @@ class _WorkingModeCard extends StatelessWidget {
   Widget getCurrentWorkingMode({
     required FormStatus loadingStatus,
     required String currentWorkingMode,
-    double fontSize = 16,
   }) {
     if (loadingStatus == FormStatus.requestInProgress) {
       return currentWorkingMode.isEmpty
@@ -400,8 +399,8 @@ class _WorkingModeCard extends StatelessWidget {
           : Text(
               currentWorkingMode,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: fontSize,
+              style: const TextStyle(
+                fontSize: CustomStyle.size4XL,
               ),
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
@@ -409,7 +408,9 @@ class _WorkingModeCard extends StatelessWidget {
         currentWorkingMode.isEmpty ? 'N/A' : currentWorkingMode,
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: fontSize,
+          fontSize: currentWorkingMode.isEmpty
+              ? CustomStyle.size4XL
+              : CustomStyle.size28,
           // color: currentWorkingModeColor(
           //   voltageAlarmState: voltageAlarmState,
           //   minVoltage: minVoltage,
@@ -422,7 +423,9 @@ class _WorkingModeCard extends StatelessWidget {
       return Text(
         currentWorkingMode.isEmpty ? 'N/A' : currentWorkingMode,
         style: TextStyle(
-          fontSize: fontSize,
+          fontSize: currentWorkingMode.isEmpty
+              ? CustomStyle.size4XL
+              : CustomStyle.size28,
         ),
       );
     }
@@ -442,7 +445,6 @@ class _WorkingModeCard extends StatelessWidget {
             getCurrentWorkingMode(
               loadingStatus: loadingStatus,
               currentWorkingMode: currentWorkingMode,
-              fontSize: 28,
             ),
           ],
         ),

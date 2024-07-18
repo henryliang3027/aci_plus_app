@@ -58,10 +58,8 @@ class _GraphInteractor extends StatelessWidget {
 
     return BlocBuilder<Setting18GraphViewBloc, Setting18GraphViewState>(
       builder: (context, state) {
-        final String assetName = settingGraphFilePath[partId] ?? '';
-
         // 讀取 SVG 圖, 放在 stack 的最下層
-        final Widget svgGraph = SvgPicture.asset(assetName);
+        final Widget svgGraph = SvgPicture.asset(state.graphFilePath);
 
         return PopScope(
           onPopInvoked: (didPop) async {

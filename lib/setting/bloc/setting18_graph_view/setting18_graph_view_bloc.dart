@@ -16,14 +16,12 @@ class Setting18GraphViewBloc
     required String graphFilePath,
     required Amp18Repository amp18Repository,
   })  : _amp18Repository = amp18Repository,
-        _graphFilePath = graphFilePath,
-        super(const Setting18GraphViewState()) {
+        super(Setting18GraphViewState(graphFilePath: graphFilePath)) {
     on<LoadGraphRequested>(_onLoadGraphRequested);
 
     add(const LoadGraphRequested());
   }
 
-  final String _graphFilePath;
   final Amp18Repository _amp18Repository;
 
   Future<void> _onLoadGraphRequested(
@@ -33,7 +31,7 @@ class Setting18GraphViewBloc
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
 
-    String generalString = await rootBundle.loadString(_graphFilePath);
+    String generalString = await rootBundle.loadString(state.graphFilePath);
 
     XmlDocument document = XmlDocument.parse(generalString);
 
