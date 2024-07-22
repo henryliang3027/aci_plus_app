@@ -52,10 +52,10 @@ class _ConfigFloatActionButton extends StatelessWidget {
           shape: const CircleBorder(
             side: BorderSide.none,
           ),
-          backgroundColor: state.distributionConfigs.length < 5
+          backgroundColor: state.distributionConfigs.length < 3
               ? Theme.of(context).colorScheme.primary.withAlpha(200)
               : Colors.grey.withAlpha(200),
-          onPressed: state.distributionConfigs.length < 5
+          onPressed: state.distributionConfigs.length < 3
               ? () async {
                   showAddConfigDialog(groupId: '1').then(
                     (result) async {

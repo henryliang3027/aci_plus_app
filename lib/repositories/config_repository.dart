@@ -20,24 +20,18 @@ class ConfigRepository {
     0: '',
     1: '',
     2: '',
-    3: '',
-    4: '',
   };
 
   final Map<int, String> _distributionConfigNames = {
     0: '',
     1: '',
     2: '',
-    3: '',
-    4: '',
   };
 
   final Map<int, String> _nodeConfigNames = {
     0: '',
     1: '',
     2: '',
-    3: '',
-    4: '',
   };
 
   int? getEmptyNameId({
@@ -199,7 +193,7 @@ class ConfigRepository {
     // clear all configs in the hive box
     await deleteAllConfig();
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 3; i++) {
       _trunkConfigNames[i] = '';
       _distributionConfigNames[i] = '';
       _nodeConfigNames[i] = '';
