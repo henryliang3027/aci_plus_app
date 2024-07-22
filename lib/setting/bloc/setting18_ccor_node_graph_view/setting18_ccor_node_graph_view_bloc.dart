@@ -15,16 +15,26 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
   Setting18CCorNodeGraphViewBloc({
     required String graphFilePath,
     required Amp18CCorNodeRepository amp18CCorNodeRepository,
+    bool editable = true,
   })  : _amp18CCorNodeRepository = amp18CCorNodeRepository,
-        _graphFilePath = graphFilePath,
-        super(const Setting18CCorNodeGraphViewState()) {
+        _editable = editable,
+        super(Setting18CCorNodeGraphViewState(graphFilePath: graphFilePath)) {
     on<LoadGraphRequested>(_onLoadGraphRequested);
+    on<ValueTextUpdated>(_onValueTextUpdated);
 
     add(const LoadGraphRequested());
   }
 
-  final String _graphFilePath;
   final Amp18CCorNodeRepository _amp18CCorNodeRepository;
+  final bool _editable;
+
+  String getValueText(String value) {
+    if (value.isNotEmpty) {
+      return ' $value${CustomStyle.dB}';
+    } else {
+      return '';
+    }
+  }
 
   Future<void> _onLoadGraphRequested(
     LoadGraphRequested event,
@@ -33,7 +43,7 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
     Map<DataKey, String> characteristicDataCache =
         _amp18CCorNodeRepository.characteristicDataCache;
 
-    String generalString = await rootBundle.loadString(_graphFilePath);
+    String generalString = await rootBundle.loadString(state.graphFilePath);
 
     XmlDocument document = XmlDocument.parse(generalString);
 
@@ -87,8 +97,7 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
         double y = double.parse(textPlaceholder.getAttribute('y').toString());
         DataKey dataKey =
             dataKeys.firstWhere((dataKey) => dataKey.name == moduleName);
-        String text =
-            '${characteristicDataCache[dataKey] ?? ''} ${CustomStyle.dB}';
+        String text = getValueText(characteristicDataCache[dataKey] ?? '');
 
         String color = textPlaceholder.getAttribute('color').toString();
 
@@ -101,16 +110,60 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
         ));
       }
     }
+
     SVGImage svgImage = SVGImage(
       width: width,
       height: height,
       components: components,
       boxes: boxes,
       valueTexts: valueTexts,
+      editable: _editable,
     );
 
     emit(state.copyWith(
       svgImage: svgImage,
     ));
+  }
+
+  void _onValueTextUpdated(
+    ValueTextUpdated event,
+    Emitter<Setting18CCorNodeGraphViewState> emit,
+  ) async {
+    Map<DataKey, String> characteristicDataCache =
+        _amp18CCorNodeRepository.characteristicDataCache;
+
+    // 取得所有 DataKey 並轉為 list
+    List<DataKey> dataKeys = DataKey.values;
+
+    List<ValueText> valueTexts = List.from(state.svgImage.valueTexts);
+    List<ValueText> newValueTexts = [];
+
+    for (ValueText valueText in valueTexts) {
+      DataKey dataKey = dataKeys
+          .firstWhere((dataKey) => dataKey.name == valueText.moduleName);
+
+      String text = getValueText(characteristicDataCache[dataKey] ?? '');
+
+      newValueTexts.add(ValueText(
+        moduleName: valueText.moduleName,
+        x: valueText.x,
+        y: valueText.y,
+        text: text,
+        color: valueText.color,
+      ));
+
+      SVGImage svgImage = SVGImage(
+        width: state.svgImage.width,
+        height: state.svgImage.height,
+        components: state.svgImage.components,
+        boxes: state.svgImage.boxes,
+        valueTexts: newValueTexts,
+        editable: _editable,
+      );
+
+      emit(state.copyWith(
+        svgImage: svgImage,
+      ));
+    }
   }
 }

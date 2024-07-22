@@ -807,125 +807,174 @@ class _SettingFloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget getEnabledEditModeTools({
+      required bool enableSubmission,
+    }) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            shape: const CircleBorder(
+              side: BorderSide.none,
+            ),
+            backgroundColor:
+                Theme.of(context).colorScheme.primary.withAlpha(200),
+            child: Icon(
+              CustomIcons.cancel,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+            onPressed: () {
+              context
+                  .read<Setting18ForwardControlBloc>()
+                  .add(const EditModeDisabled());
+
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.focusedChild?.unfocus();
+              }
+            },
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          FloatingActionButton(
+            shape: const CircleBorder(
+              side: BorderSide.none,
+            ),
+            backgroundColor: enableSubmission
+                ? Theme.of(context).colorScheme.primary.withAlpha(200)
+                : Colors.grey.withAlpha(200),
+            onPressed: enableSubmission
+                ? () async {
+                    if (kDebugMode) {
+                      context
+                          .read<Setting18ForwardControlBloc>()
+                          .add(const SettingSubmitted());
+                    } else {
+                      bool? isMatch =
+                          await showConfirmInputDialog(context: context);
+
+                      if (context.mounted) {
+                        if (isMatch != null) {
+                          if (isMatch) {
+                            context
+                                .read<Setting18ForwardControlBloc>()
+                                .add(const SettingSubmitted());
+                          }
+                        }
+                      }
+                    }
+                  }
+                : null,
+            child: Icon(
+              Icons.check,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
+        ],
+      );
+    }
+
+    Widget getDisabledEditModeTools() {
+      String graphFilePath = settingGraphFilePath[partId] ?? '';
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          graphFilePath.isNotEmpty
+              ? FloatingActionButton(
+                  // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
+                  heroTag: null,
+                  shape: const CircleBorder(
+                    side: BorderSide.none,
+                  ),
+                  backgroundColor:
+                      Theme.of(context).colorScheme.primary.withAlpha(200),
+                  child: Icon(
+                    Icons.settings_input_composite,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                  onPressed: () {
+                    // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
+                    Navigator.push(
+                            context,
+                            Setting18GraphPage.route(
+                              graphFilePath: graphFilePath,
+                            ))
+                        .then((value) => context
+                            .read<Setting18ForwardControlBloc>()
+                            .add(const Initialized()));
+                  },
+                )
+              : const SizedBox(
+                  width: 0,
+                  height: 0,
+                ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          FloatingActionButton(
+            shape: const CircleBorder(
+              side: BorderSide.none,
+            ),
+            backgroundColor:
+                Theme.of(context).colorScheme.primary.withAlpha(200),
+            child: Icon(
+              Icons.edit,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+            onPressed: () {
+              context
+                  .read<Setting18ForwardControlBloc>()
+                  .add(const EditModeEnabled());
+            },
+          ),
+        ],
+      );
+    }
+
+    Widget getDisabledGraphSettingTool() {
+      String graphFilePath = settingGraphFilePath['3'] ?? '';
+      return graphFilePath.isNotEmpty
+          ? FloatingActionButton(
+              // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
+              heroTag: null,
+              shape: const CircleBorder(
+                side: BorderSide.none,
+              ),
+              backgroundColor:
+                  Theme.of(context).colorScheme.primary.withAlpha(200),
+              child: Icon(
+                Icons.settings_input_composite,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              onPressed: () {
+                // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
+                Navigator.push(
+                        context,
+                        Setting18GraphPage.route(
+                          graphFilePath: graphFilePath,
+                          editable: false,
+                        ))
+                    .then((value) => context
+                        .read<Setting18ForwardControlBloc>()
+                        .add(const Initialized()));
+              },
+            )
+          : const SizedBox(
+              width: 0,
+              height: 0,
+            );
+    }
+
     Widget getEditTools({
       required bool editMode,
       required bool enableSubmission,
     }) {
-      String graphFilePath = settingGraphFilePath[partId] ?? '';
       return editMode
-          ? Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                FloatingActionButton(
-                  shape: const CircleBorder(
-                    side: BorderSide.none,
-                  ),
-                  backgroundColor:
-                      Theme.of(context).colorScheme.primary.withAlpha(200),
-                  child: Icon(
-                    CustomIcons.cancel,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                  onPressed: () {
-                    context
-                        .read<Setting18ForwardControlBloc>()
-                        .add(const EditModeDisabled());
-                  },
-                ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                FloatingActionButton(
-                  shape: const CircleBorder(
-                    side: BorderSide.none,
-                  ),
-                  backgroundColor: enableSubmission
-                      ? Theme.of(context).colorScheme.primary.withAlpha(200)
-                      : Colors.grey.withAlpha(200),
-                  onPressed: enableSubmission
-                      ? () async {
-                          if (kDebugMode) {
-                            context
-                                .read<Setting18ForwardControlBloc>()
-                                .add(const SettingSubmitted());
-                          } else {
-                            bool? isMatch =
-                                await showConfirmInputDialog(context: context);
-
-                            if (context.mounted) {
-                              if (isMatch != null) {
-                                if (isMatch) {
-                                  context
-                                      .read<Setting18ForwardControlBloc>()
-                                      .add(const SettingSubmitted());
-                                }
-                              }
-                            }
-                          }
-                        }
-                      : null,
-                  child: Icon(
-                    Icons.check,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                ),
-              ],
+          ? getEnabledEditModeTools(
+              enableSubmission: enableSubmission,
             )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                graphFilePath.isNotEmpty
-                    ? FloatingActionButton(
-                        // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
-                        heroTag: null,
-                        shape: const CircleBorder(
-                          side: BorderSide.none,
-                        ),
-                        backgroundColor: Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withAlpha(200),
-                        child: Icon(
-                          Icons.settings_input_composite,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                        onPressed: () {
-                          // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
-                          Navigator.push(
-                                  context,
-                                  Setting18GraphPage.route(
-                                    graphFilePath: graphFilePath,
-                                  ))
-                              .then((value) => context
-                                  .read<Setting18ForwardControlBloc>()
-                                  .add(const Initialized()));
-                        },
-                      )
-                    : const SizedBox(
-                        width: 0,
-                        height: 0,
-                      ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                FloatingActionButton(
-                  shape: const CircleBorder(
-                    side: BorderSide.none,
-                  ),
-                  backgroundColor:
-                      Theme.of(context).colorScheme.primary.withAlpha(200),
-                  child: Icon(
-                    Icons.edit,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                  onPressed: () {
-                    context
-                        .read<Setting18ForwardControlBloc>()
-                        .add(const EditModeEnabled());
-                  },
-                ),
-              ],
-            );
+          : getDisabledEditModeTools();
     }
 
     bool getEditable({
@@ -961,7 +1010,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
               editMode: setting18ForwardControlState.editMode,
               enableSubmission: setting18ForwardControlState.enableSubmission,
             )
-          : Container();
+          : getDisabledGraphSettingTool();
     });
   }
 }

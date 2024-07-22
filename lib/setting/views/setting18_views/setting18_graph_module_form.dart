@@ -1072,7 +1072,7 @@ class _SplitOption extends StatelessWidget {
         builder: (context, state) {
       return splitOptionGridViewButton(
         context: context,
-        editMode: true,
+        editMode: state.editMode,
         splitOption: state.splitOption,
         onGridPressed: (index) => context
             .read<Setting18GraphModuleBloc>()
@@ -1111,7 +1111,7 @@ class _PilotFrequencyMode extends StatelessWidget {
           crossAxisCount: 1,
           texts: pilotFrequencyModeTexts,
           values: pilotFrequencyModeValues,
-          editMode: true,
+          editMode: state.editMode,
           pilotFrequencyMode: state.pilotFrequencyMode,
           onGridPressed: (index) => context
               .read<Setting18GraphModuleBloc>()

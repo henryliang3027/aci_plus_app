@@ -5,6 +5,7 @@ class SVGImage {
     required this.components,
     required this.boxes,
     required this.valueTexts,
+    required this.editable,
   });
 
   final double width;
@@ -12,6 +13,7 @@ class SVGImage {
   final List<Component> components;
   final List<Box> boxes;
   final List<ValueText> valueTexts;
+  final bool editable;
 }
 
 class Component {

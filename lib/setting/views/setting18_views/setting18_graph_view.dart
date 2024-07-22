@@ -79,6 +79,9 @@ class _GraphInteractor extends StatelessWidget {
                       context: context,
                       svgImage: state.svgImage,
                       partId: partId,
+                      onDone: () => context
+                          .read<Setting18GraphViewBloc>()
+                          .add(const ValueTextUpdated()),
                     )),
                     gesturesToOverride: const [GestureType.onTapUp],
                   ),

@@ -11,15 +11,18 @@ class CircuitPainter extends CustomPainter {
     required this.context,
     required this.svgImage,
     required this.partId,
+    required this.onDone,
   });
 
   final BuildContext context;
   final SVGImage svgImage;
   final String partId;
+  final VoidCallback onDone;
 
   Future<void> showModuleSettingDialog({
     required BuildContext context,
     required String moduleName,
+    bool editable = true,
   }) async {
     return showDialog<void>(
       context: context,
@@ -36,8 +39,14 @@ class CircuitPainter extends CustomPainter {
             vertical: height * 0.01,
           ),
           child: partId == '4' // 4 表示 C-Cor Node
-              ? Setting18CCorNodeGraphModulePage(moduleName: moduleName)
-              : Setting18GraphModulePage(moduleName: moduleName),
+              ? Setting18CCorNodeGraphModulePage(
+                  moduleName: moduleName,
+                  editable: editable,
+                )
+              : Setting18GraphModulePage(
+                  moduleName: moduleName,
+                  editable: editable,
+                ),
         );
       },
     );
@@ -136,6 +145,9 @@ class CircuitPainter extends CustomPainter {
           showModuleSettingDialog(
             context: context,
             moduleName: box.moduleName,
+            editable: svgImage.editable,
+          ).then(
+            (_) => onDone(),
           );
         },
       );

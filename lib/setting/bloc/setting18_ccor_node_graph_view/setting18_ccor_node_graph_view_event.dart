@@ -13,3 +13,10 @@ class LoadGraphRequested extends Setting18CCorNodeGraphViewEvent {
   @override
   List<Object> get props => [];
 }
+
+class ValueTextUpdated extends Setting18CCorNodeGraphViewEvent {
+  const ValueTextUpdated();
+
+  @override
+  List<Object> get props => [];
+}

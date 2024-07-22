@@ -11,9 +11,11 @@ part 'setting18_ccor_node_graph_module_state.dart';
 
 class Setting18CCorNodeGraphModuleBloc extends Bloc<
     Setting18CCorNodeGraphModuleEvent, Setting18CCorNodeGraphModuleState> {
-  Setting18CCorNodeGraphModuleBloc(
-      {required Amp18CCorNodeRepository amp18CCorNodeRepository})
-      : _amp18CCorNodeRepository = amp18CCorNodeRepository,
+  Setting18CCorNodeGraphModuleBloc({
+    required Amp18CCorNodeRepository amp18CCorNodeRepository,
+    bool editable = true,
+  })  : _amp18CCorNodeRepository = amp18CCorNodeRepository,
+        _editable = editable,
         super(const Setting18CCorNodeGraphModuleState()) {
     on<Initialized>(_onInitialized);
     on<ForwardConfigChanged>(_onForwardConfigChanged);
@@ -48,6 +50,7 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
   }
 
   final Amp18CCorNodeRepository _amp18CCorNodeRepository;
+  final bool _editable;
 
   Future<void> _onInitialized(
     Initialized event,
@@ -196,6 +199,7 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
       returnIngressSetting4: returnIngressSetting4,
       returnIngressSetting6: returnIngressSetting6,
       initialValues: characteristicDataCache,
+      editMode: _editable,
       enableSubmission: false,
       settingResult: const [],
     ));

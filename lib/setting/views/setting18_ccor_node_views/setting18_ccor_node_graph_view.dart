@@ -53,16 +53,12 @@ class _GraphInteractor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        '${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}');
-    final String assetName = settingGraphFilePath[partId] ?? '';
-
-    // 讀取 SVG 圖, 放在 stack 的最下層
-    final Widget svgGraph = SvgPicture.asset(assetName);
-
     return BlocBuilder<Setting18CCorNodeGraphViewBloc,
         Setting18CCorNodeGraphViewState>(
       builder: (context, state) {
+        // 讀取 SVG 圖, 放在 stack 的最下層
+        final Widget svgGraph = SvgPicture.asset(state.graphFilePath);
+
         return PopScope(
           onPopInvoked: (bool didPop) {
             setPreferredOrientation();
@@ -81,6 +77,9 @@ class _GraphInteractor extends StatelessWidget {
                       context: context,
                       svgImage: state.svgImage,
                       partId: partId,
+                      onDone: () => context
+                          .read<Setting18CCorNodeGraphViewBloc>()
+                          .add(const ValueTextUpdated()),
                     )),
                     gesturesToOverride: const [GestureType.onTapUp],
                   ),

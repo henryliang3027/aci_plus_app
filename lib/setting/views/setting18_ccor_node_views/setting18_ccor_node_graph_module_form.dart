@@ -235,7 +235,7 @@ class _SplitOption extends StatelessWidget {
         Setting18CCorNodeGraphModuleState>(builder: (context, state) {
       return splitOptionGridViewButton(
         context: context,
-        editMode: true,
+        editMode: state.editMode,
         splitOption: state.splitOption,
         onGridPressed: (index) => context
             .read<Setting18CCorNodeGraphModuleBloc>()

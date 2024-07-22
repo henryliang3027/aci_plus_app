@@ -7,9 +7,11 @@ class Setting18GraphModulePage extends StatelessWidget {
   const Setting18GraphModulePage({
     super.key,
     required this.moduleName,
+    this.editable = true,
   });
 
   final String moduleName;
+  final bool editable;
 
   // static Route<void> route(int moduleId) {
   //   return MaterialPageRoute(
@@ -21,6 +23,7 @@ class Setting18GraphModulePage extends StatelessWidget {
     return BlocProvider(
       create: (context) => Setting18GraphModuleBloc(
         amp18Repository: RepositoryProvider.of(context),
+        editable: editable,
       ),
       child: Setting18GraphModuleForm(
         moduleName: moduleName,

@@ -13,3 +13,10 @@ class LoadGraphRequested extends Setting18GraphViewEvent {
   @override
   List<Object> get props => [];
 }
+
+class ValueTextUpdated extends Setting18GraphViewEvent {
+  const ValueTextUpdated();
+
+  @override
+  List<Object> get props => [];
+}

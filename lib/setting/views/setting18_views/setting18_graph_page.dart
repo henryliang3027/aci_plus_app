@@ -8,16 +8,22 @@ class Setting18GraphPage extends StatelessWidget {
   const Setting18GraphPage({
     super.key,
     required this.graphFilePath,
+    this.editable = true,
   });
 
-  static Route<void> route({required String graphFilePath}) {
+  static Route<void> route({
+    required String graphFilePath,
+    bool editable = true,
+  }) {
     return MaterialPageRoute(
         builder: (_) => Setting18GraphPage(
               graphFilePath: graphFilePath,
+              editable: editable,
             ));
   }
 
   final String graphFilePath;
+  final bool editable;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +31,7 @@ class Setting18GraphPage extends StatelessWidget {
       create: (context) => Setting18GraphViewBloc(
         amp18Repository: RepositoryProvider.of<Amp18Repository>(context),
         graphFilePath: graphFilePath,
+        editable: editable,
       ),
       child: const Setting18GraphView(),
     );

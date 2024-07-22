@@ -8,9 +8,11 @@ class Setting18CCorNodeGraphModulePage extends StatelessWidget {
   const Setting18CCorNodeGraphModulePage({
     super.key,
     required this.moduleName,
+    this.editable = true,
   });
 
   final String moduleName;
+  final bool editable;
 
   // static Route<void> route(int moduleId) {
   //   return MaterialPageRoute(
@@ -23,6 +25,7 @@ class Setting18CCorNodeGraphModulePage extends StatelessWidget {
       create: (context) => Setting18CCorNodeGraphModuleBloc(
         amp18CCorNodeRepository:
             RepositoryProvider.of<Amp18CCorNodeRepository>(context),
+        editable: editable,
       ),
       child: Setting18CCorNodeGraphModuleForm(
         moduleName: moduleName,

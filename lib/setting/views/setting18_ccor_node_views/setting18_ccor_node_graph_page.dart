@@ -8,16 +8,22 @@ class Setting18CCorNodeGraphPage extends StatelessWidget {
   const Setting18CCorNodeGraphPage({
     super.key,
     required this.graphFilePath,
+    this.editable = true,
   });
 
-  static Route<void> route({required String graphFilePath}) {
+  static Route<void> route({
+    required String graphFilePath,
+    bool editable = true,
+  }) {
     return MaterialPageRoute(
         builder: (_) => Setting18CCorNodeGraphPage(
               graphFilePath: graphFilePath,
+              editable: editable,
             ));
   }
 
   final String graphFilePath;
+  final bool editable;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +32,7 @@ class Setting18CCorNodeGraphPage extends StatelessWidget {
         amp18CCorNodeRepository:
             RepositoryProvider.of<Amp18CCorNodeRepository>(context),
         graphFilePath: graphFilePath,
+        editable: editable,
       ),
       child: const Setting18CCorNodeGraphView(),
     );

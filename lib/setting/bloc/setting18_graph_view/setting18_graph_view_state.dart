@@ -9,6 +9,7 @@ class Setting18GraphViewState extends Equatable {
       components: [],
       boxes: [],
       valueTexts: [],
+      editable: false,
     ),
   });
 

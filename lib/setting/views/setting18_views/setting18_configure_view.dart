@@ -1212,7 +1212,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
       );
     }
 
-    Widget getGraphSettingTool() {
+    Widget getDisabledGraphSettingTool() {
       String graphFilePath = settingGraphFilePath['3'] ?? '';
       return graphFilePath.isNotEmpty
           ? FloatingActionButton(
@@ -1233,6 +1233,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                         context,
                         Setting18GraphPage.route(
                           graphFilePath: graphFilePath,
+                          editable: false,
                         ))
                     .then((value) => context
                         .read<Setting18ConfigureBloc>()
@@ -1289,7 +1290,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
               editMode: setting18ConfigureState.editMode,
               enableSubmission: setting18ConfigureState.enableSubmission,
             )
-          : getGraphSettingTool();
+          : getDisabledGraphSettingTool();
     });
   }
 }

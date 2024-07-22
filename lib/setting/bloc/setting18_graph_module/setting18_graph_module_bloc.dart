@@ -12,8 +12,11 @@ part 'setting18_graph_module_state.dart';
 
 class Setting18GraphModuleBloc
     extends Bloc<Setting18GraphModuleEvent, Setting18GraphModuleState> {
-  Setting18GraphModuleBloc({required Amp18Repository amp18Repository})
-      : _amp18Repository = amp18Repository,
+  Setting18GraphModuleBloc({
+    required Amp18Repository amp18Repository,
+    bool editable = true,
+  })  : _amp18Repository = amp18Repository,
+        _editable = editable,
         super(const Setting18GraphModuleState()) {
     on<Initialized>(_onInitialized);
     on<DSVVA1Changed>(_onDSVVA1Changed);
@@ -51,6 +54,7 @@ class Setting18GraphModuleBloc
   }
 
   final Amp18Repository _amp18Repository;
+  final bool _editable;
 
   void _onInitialized(
     Initialized event,
@@ -196,6 +200,7 @@ class Setting18GraphModuleBloc
       alcMode: alcMode,
       isInitialize: true,
       initialValues: characteristicDataCache,
+      editMode: _editable,
       enableSubmission: false,
       settingResult: const [],
     ));
