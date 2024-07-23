@@ -1213,7 +1213,8 @@ class _SettingFloatingActionButton extends StatelessWidget {
     }
 
     Widget getDisabledGraphSettingTool() {
-      String graphFilePath = settingGraphFilePath['3'] ?? '';
+      String graphFilePath =
+          settingGraphFilePath[partId] ?? settingGraphFilePath['3']!;
       return graphFilePath.isNotEmpty
           ? FloatingActionButton(
               // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
