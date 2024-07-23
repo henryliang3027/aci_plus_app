@@ -19,7 +19,7 @@ class Setting18DistributionConfigForm extends StatelessWidget {
 }
 
 class _ConfigFloatActionButton extends StatelessWidget {
-  const _ConfigFloatActionButton({super.key});
+  const _ConfigFloatActionButton();
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ class _ConfigFloatActionButton extends StatelessWidget {
 }
 
 class _DeviceListView extends StatelessWidget {
-  const _DeviceListView({super.key});
+  const _DeviceListView();
 
   @override
   Widget build(BuildContext context) {

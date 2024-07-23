@@ -105,7 +105,7 @@ class Setting18Form extends StatelessWidget {
 }
 
 class _DeviceStatus extends StatelessWidget {
-  const _DeviceStatus({super.key});
+  const _DeviceStatus();
 
   @override
   Widget build(BuildContext context) {
@@ -366,7 +366,7 @@ class _DeviceStatus extends StatelessWidget {
 // }
 
 class _DeviceRefresh extends StatelessWidget {
-  const _DeviceRefresh({super.key});
+  const _DeviceRefresh();
 
   @override
   Widget build(BuildContext context) {
@@ -391,10 +391,7 @@ class _DeviceRefresh extends StatelessWidget {
 }
 
 class _ViewLayout extends StatelessWidget {
-  const _ViewLayout({
-    super.key,
-    // required this.tabController,
-  });
+  const _ViewLayout();
 
   // final TabController tabController;
 

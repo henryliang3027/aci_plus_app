@@ -1270,6 +1270,11 @@ Widget splitOptionGridViewButton({
                     targetValue: splitOption,
                     value: splitOptionValues[index],
                   ),
+                  disabledBackgroundColor: getDisabledBackgroundColor(
+                    context: context,
+                    targetValue: splitOption,
+                    value: splitOptionValues[index],
+                  ),
                   backgroundColor: editMode
                       ? getBackgroundColor(
                           context: context,

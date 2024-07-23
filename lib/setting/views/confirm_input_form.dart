@@ -19,7 +19,6 @@ class ConfirmInputForm extends StatelessWidget {
 
 class _CofirmInputDialog extends StatelessWidget {
   const _CofirmInputDialog({
-    super.key,
     required this.confirmTextEditingController,
   });
 

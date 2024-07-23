@@ -76,7 +76,7 @@ class App extends StatelessWidget {
 }
 
 class _AppView extends StatelessWidget {
-  const _AppView({super.key});
+  const _AppView();
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +105,12 @@ class _AppView extends StatelessWidget {
         Locale('fr', 'FR'),
         Locale('zh', 'TW'),
       ],
+      themeMode: ThemeMode.system,
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        /* dark theme settings */
+      ),
+
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -128,7 +134,10 @@ class _AppView extends StatelessWidget {
           foregroundColor: Colors.white,
           backgroundColor: Colors.indigo,
         ),
-        scaffoldBackgroundColor: Colors.grey[50],
+        tabBarTheme: TabBarTheme(
+          indicatorColor: Colors.grey.shade50,
+        ),
+        scaffoldBackgroundColor: Colors.grey.shade50,
         dialogBackgroundColor: Colors.white,
         useMaterial3: true,
       ),

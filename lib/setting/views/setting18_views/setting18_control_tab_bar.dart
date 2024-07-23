@@ -38,7 +38,7 @@ class Setting18ControlTabBar extends StatelessWidget {
                     )),
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(10)),
-                color: Theme.of(context).scaffoldBackgroundColor,
+                color: Theme.of(context).tabBarTheme.indicatorColor,
               ),
               // labelPadding: const EdgeInsets.symmetric(horizontal: 24.0),
               tabs: [

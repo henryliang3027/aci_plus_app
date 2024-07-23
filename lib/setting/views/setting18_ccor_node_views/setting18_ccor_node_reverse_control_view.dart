@@ -189,7 +189,7 @@ List<bool> getSelectionState(String selectedrtnIngress) {
 }
 
 class _ClusterTitle extends StatelessWidget {
-  const _ClusterTitle({super.key, required this.title});
+  const _ClusterTitle({required this.title});
 
   final String title;
 
@@ -216,9 +216,7 @@ class _ClusterTitle extends StatelessWidget {
 }
 
 class _ReturnInputAttenuation1 extends StatelessWidget {
-  const _ReturnInputAttenuation1({
-    super.key,
-  });
+  const _ReturnInputAttenuation1();
 
   @override
   Widget build(BuildContext context) {
@@ -252,9 +250,7 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
 }
 
 class _ReturnInputAttenuation3 extends StatelessWidget {
-  const _ReturnInputAttenuation3({
-    super.key,
-  });
+  const _ReturnInputAttenuation3();
 
   @override
   Widget build(BuildContext context) {
@@ -288,9 +284,7 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
 }
 
 class _ReturnInputAttenuation4 extends StatelessWidget {
-  const _ReturnInputAttenuation4({
-    super.key,
-  });
+  const _ReturnInputAttenuation4();
 
   @override
   Widget build(BuildContext context) {
@@ -324,9 +318,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
 }
 
 class _ReturnInputAttenuation6 extends StatelessWidget {
-  const _ReturnInputAttenuation6({
-    super.key,
-  });
+  const _ReturnInputAttenuation6();
 
   @override
   Widget build(BuildContext context) {
@@ -360,9 +352,7 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
 }
 
 class _ReturnIngressSetting1 extends StatelessWidget {
-  const _ReturnIngressSetting1({
-    super.key,
-  });
+  const _ReturnIngressSetting1();
 
   @override
   Widget build(BuildContext context) {
@@ -396,9 +386,7 @@ class _ReturnIngressSetting1 extends StatelessWidget {
 }
 
 class _ReturnIngressSetting3 extends StatelessWidget {
-  const _ReturnIngressSetting3({
-    super.key,
-  });
+  const _ReturnIngressSetting3();
 
   @override
   Widget build(BuildContext context) {
@@ -432,9 +420,7 @@ class _ReturnIngressSetting3 extends StatelessWidget {
 }
 
 class _ReturnIngressSetting4 extends StatelessWidget {
-  const _ReturnIngressSetting4({
-    super.key,
-  });
+  const _ReturnIngressSetting4();
 
   @override
   Widget build(BuildContext context) {
@@ -468,9 +454,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
 }
 
 class _ReturnIngressSetting6 extends StatelessWidget {
-  const _ReturnIngressSetting6({
-    super.key,
-  });
+  const _ReturnIngressSetting6();
 
   @override
   Widget build(BuildContext context) {
@@ -505,7 +489,6 @@ class _ReturnIngressSetting6 extends StatelessWidget {
 
 class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({
-    super.key,
     required this.partId,
     // required this.currentDetectedSplitOption,
   });

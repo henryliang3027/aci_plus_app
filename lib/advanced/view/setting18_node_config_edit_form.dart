@@ -163,7 +163,6 @@ class _Setting18NodeConfigEditFormState
 
 class _PartName extends StatelessWidget {
   const _PartName({
-    super.key,
     required this.nameTextEditingController,
   });
 
@@ -335,7 +334,6 @@ class _PartName extends StatelessWidget {
 
 class _ActionButton extends StatelessWidget {
   const _ActionButton({
-    super.key,
     required this.isEdit,
   });
 
@@ -418,7 +416,7 @@ class _ActionButton extends StatelessWidget {
 }
 
 class _ForwardMode extends StatelessWidget {
-  const _ForwardMode({super.key});
+  const _ForwardMode();
 
   @override
   Widget build(BuildContext context) {
@@ -444,7 +442,7 @@ class _ForwardMode extends StatelessWidget {
 }
 
 class _ForwardConfig extends StatelessWidget {
-  const _ForwardConfig({super.key});
+  const _ForwardConfig();
 
   @override
   Widget build(BuildContext context) {
@@ -470,7 +468,7 @@ class _ForwardConfig extends StatelessWidget {
 }
 
 class _SplitOption extends StatelessWidget {
-  const _SplitOption({super.key});
+  const _SplitOption();
 
   @override
   Widget build(BuildContext context) {

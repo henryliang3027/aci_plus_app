@@ -268,7 +268,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ));
 
         List<dynamic> result = await _aciDeviceRepository.getACIDeviceType(
-            deviceId: state.device!.id);
+            deviceId: state.device.id);
 
         if (result[0]) {
           ACIDeviceType aciDeviceType = result[1];

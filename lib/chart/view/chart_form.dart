@@ -139,7 +139,7 @@ class ChartForm extends StatelessWidget {
 }
 
 class _DeviceStatus extends StatelessWidget {
-  const _DeviceStatus({super.key});
+  const _DeviceStatus();
 
   @override
   Widget build(BuildContext context) {
@@ -296,7 +296,7 @@ class _PopupMenu extends StatelessWidget {
 }
 
 class _LogChartView extends StatelessWidget {
-  const _LogChartView({super.key});
+  const _LogChartView();
 
   @override
   Widget build(BuildContext context) {

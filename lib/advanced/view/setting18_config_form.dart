@@ -131,7 +131,7 @@ class Setting18ConfigForm extends StatelessWidget {
 }
 
 class _Content extends StatelessWidget {
-  const _Content({super.key});
+  const _Content();
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +167,7 @@ class _Content extends StatelessWidget {
 }
 
 class _QRToolbar extends StatelessWidget {
-  const _QRToolbar({super.key});
+  const _QRToolbar();
 
   @override
   Widget build(BuildContext context) {

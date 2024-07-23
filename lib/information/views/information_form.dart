@@ -56,7 +56,7 @@ class InformationForm extends StatelessWidget {
 }
 
 class _DeviceStatus extends StatelessWidget {
-  const _DeviceStatus({super.key});
+  const _DeviceStatus();
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +106,7 @@ class _DeviceStatus extends StatelessWidget {
 }
 
 class _DeviceRefresh extends StatelessWidget {
-  const _DeviceRefresh({super.key});
+  const _DeviceRefresh();
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +131,7 @@ class _DeviceRefresh extends StatelessWidget {
 }
 
 class _VersionCard extends StatelessWidget {
-  const _VersionCard({super.key});
+  const _VersionCard();
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +163,7 @@ class _VersionCard extends StatelessWidget {
 }
 
 class _ConnectionCard extends StatelessWidget {
-  const _ConnectionCard({super.key});
+  const _ConnectionCard();
 
   Widget getBluetoothName({
     required FormStatus scanStatus,
@@ -260,7 +260,7 @@ class _ConnectionCard extends StatelessWidget {
 }
 
 class _BasicCard extends StatelessWidget {
-  const _BasicCard({super.key});
+  const _BasicCard();
 
   @override
   Widget build(BuildContext context) {
@@ -359,9 +359,7 @@ class _BasicCard extends StatelessWidget {
 }
 
 class _AlarmIndicator extends StatelessWidget {
-  const _AlarmIndicator({
-    super.key,
-  });
+  const _AlarmIndicator();
 
   @override
   Widget build(BuildContext context) {
@@ -379,7 +377,7 @@ class _AlarmIndicator extends StatelessWidget {
 }
 
 class _AlarmCard extends StatelessWidget {
-  const _AlarmCard({super.key});
+  const _AlarmCard();
 
   @override
   Widget build(BuildContext context) {

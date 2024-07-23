@@ -60,8 +60,7 @@ class QRCodeGeneratorForm extends StatelessWidget {
 }
 
 class _QRCodeViewer extends StatelessWidget {
-  _QRCodeViewer({
-    super.key,
+  const _QRCodeViewer({
     required this.encodedData,
     required this.globalKey,
   });
@@ -97,7 +96,6 @@ class _QRCodeViewer extends StatelessWidget {
 
 class _QrCodeTool extends StatelessWidget {
   const _QrCodeTool({
-    super.key,
     required this.globalKey,
   });
 
@@ -106,7 +104,7 @@ class _QrCodeTool extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 0.0),
+      padding: const EdgeInsets.only(bottom: 0.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

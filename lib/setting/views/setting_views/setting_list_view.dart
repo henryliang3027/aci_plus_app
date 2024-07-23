@@ -229,7 +229,7 @@ class SettingListView extends StatelessWidget {
 }
 
 class _SettingFloatingActionButton extends StatelessWidget {
-  const _SettingFloatingActionButton({super.key});
+  const _SettingFloatingActionButton();
 
   @override
   Widget build(BuildContext context) {
@@ -391,7 +391,6 @@ class _SettingFloatingActionButton extends StatelessWidget {
 
 class _Location extends StatelessWidget {
   const _Location({
-    super.key,
     required this.textEditingController,
   });
 
@@ -454,9 +453,7 @@ class _Location extends StatelessWidget {
 }
 
 class _TGCCabelLength extends StatelessWidget {
-  const _TGCCabelLength({
-    super.key,
-  });
+  const _TGCCabelLength();
 
   final List<String> tgcCableLengthTexts = const [
     '9',
@@ -538,7 +535,7 @@ class _TGCCabelLength extends StatelessWidget {
 }
 
 class _LogIntervalDropDownMenu extends StatelessWidget {
-  const _LogIntervalDropDownMenu({super.key});
+  const _LogIntervalDropDownMenu();
 
   final Map<String, int> types = const {
     '1 min.- 4 hours': 1,
@@ -638,9 +635,7 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
 }
 
 class _WorkingMode extends StatelessWidget {
-  const _WorkingMode({
-    super.key,
-  });
+  const _WorkingMode();
 
   final List<String> workingModeTexts = const [
     'MGC',
@@ -723,7 +718,6 @@ class _WorkingMode extends StatelessWidget {
 
 class _UserPilot extends StatelessWidget {
   const _UserPilot({
-    super.key,
     required this.textEditingController,
   });
 
@@ -815,7 +809,6 @@ class _UserPilot extends StatelessWidget {
 
 class _UserPilot2 extends StatelessWidget {
   const _UserPilot2({
-    super.key,
     required this.textEditingController,
   });
 
@@ -914,7 +907,7 @@ class _UserPilot2 extends StatelessWidget {
 }
 
 class _AGCPrepAttenator extends StatelessWidget {
-  const _AGCPrepAttenator({super.key});
+  const _AGCPrepAttenator();
 
   @override
   Widget build(BuildContext context) {

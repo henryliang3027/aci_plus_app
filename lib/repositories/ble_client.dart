@@ -351,7 +351,7 @@ class BLEClient extends BLEClientBase {
   }) async {
     _currentCommandIndex = commandIndex;
     final negotiatedMtu = await _ble!.requestMtu(deviceId: deviceId, mtu: mtu);
-    print('negotiatedMtu: ${negotiatedMtu}');
+    print('negotiatedMtu: $negotiatedMtu');
 
     // 設定 mtu = 247
     List<dynamic> result = await _requestBasicInformationRawData(value);

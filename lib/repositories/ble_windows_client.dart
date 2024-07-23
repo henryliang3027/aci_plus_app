@@ -55,7 +55,7 @@ class BLEWindowsClient extends BLEClientBase {
     _updateReportStreamController = StreamController<String>();
     Stream<String> streamWithTimeout =
         _updateReportStreamController.stream.timeout(
-      Duration(seconds: 20),
+      const Duration(seconds: 20),
       onTimeout: (sink) {
         sink.addError('Timeout occurred');
       },

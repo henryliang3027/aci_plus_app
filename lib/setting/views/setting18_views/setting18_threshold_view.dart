@@ -319,7 +319,7 @@ class Setting18ThresholdView extends StatelessWidget {
 }
 
 class _ClusterTitle extends StatelessWidget {
-  const _ClusterTitle({super.key, required this.title});
+  const _ClusterTitle({required this.title});
 
   final String title;
 
@@ -347,7 +347,6 @@ class _ClusterTitle extends StatelessWidget {
 
 class _TemperatureAlarmControl extends StatelessWidget {
   const _TemperatureAlarmControl({
-    super.key,
     required this.minTemperatureTextEditingController,
     required this.maxTemperatureTextEditingController,
   });
@@ -410,7 +409,6 @@ class _TemperatureAlarmControl extends StatelessWidget {
 
 class _VoltageAlarmControl extends StatelessWidget {
   const _VoltageAlarmControl({
-    super.key,
     required this.minVoltageTextEditingController,
     required this.maxVoltageTextEditingController,
   });
@@ -465,8 +463,6 @@ class _VoltageAlarmControl extends StatelessWidget {
 
 class _VoltageRippleAlarmControl extends StatelessWidget {
   const _VoltageRippleAlarmControl({
-    super.key,
-    // required this.minVoltageRippleTextEditingController,
     required this.maxVoltageRippleTextEditingController,
   });
 
@@ -587,7 +583,7 @@ class _VoltageRippleAlarmControl extends StatelessWidget {
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(4.0))),
-                        contentPadding: EdgeInsets.all(8.0),
+                        contentPadding: const EdgeInsets.all(8.0),
                         isDense: true,
                         filled: true,
                         fillColor: Colors.white,
@@ -619,7 +615,6 @@ class _VoltageRippleAlarmControl extends StatelessWidget {
 
 class _RFOutputPowerAlarmControl extends StatelessWidget {
   const _RFOutputPowerAlarmControl({
-    super.key,
     required this.minRFOutputPowerTextEditingController,
     required this.maxRFOutputPowerTextEditingController,
   });
@@ -673,7 +668,7 @@ class _RFOutputPowerAlarmControl extends StatelessWidget {
 }
 
 class _SplitOptionAlarmControl extends StatelessWidget {
-  const _SplitOptionAlarmControl({super.key});
+  const _SplitOptionAlarmControl();
 
   @override
   Widget build(BuildContext context) {
@@ -742,7 +737,7 @@ class _SplitOptionAlarmControl extends StatelessWidget {
 // }
 
 class _StartFrequencyOutputLevelAlarmControl extends StatelessWidget {
-  const _StartFrequencyOutputLevelAlarmControl({super.key});
+  const _StartFrequencyOutputLevelAlarmControl();
 
   @override
   Widget build(BuildContext context) {
@@ -765,7 +760,7 @@ class _StartFrequencyOutputLevelAlarmControl extends StatelessWidget {
 }
 
 class _StopFrequencyOutputLevelAlarmControl extends StatelessWidget {
-  const _StopFrequencyOutputLevelAlarmControl({super.key});
+  const _StopFrequencyOutputLevelAlarmControl();
 
   @override
   Widget build(BuildContext context) {
@@ -789,7 +784,6 @@ class _StopFrequencyOutputLevelAlarmControl extends StatelessWidget {
 
 class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({
-    super.key,
     required this.partId,
     // required this.currentDetectedSplitOption,
   });

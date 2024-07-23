@@ -1,5 +1,4 @@
 import 'package:aci_plus_app/core/data_key.dart';
-import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_graph_view/setting18_ccor_node_graph_view_bloc.dart';
@@ -45,7 +44,6 @@ class Setting18CCorNodeGraphView extends StatelessWidget {
 
 class _GraphInteractor extends StatelessWidget {
   const _GraphInteractor({
-    super.key,
     required this.partId,
   });
 

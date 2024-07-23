@@ -39,7 +39,7 @@ class Setting18CCorNodeForm extends StatelessWidget {
 }
 
 class _DeviceStatus extends StatelessWidget {
-  const _DeviceStatus({super.key});
+  const _DeviceStatus();
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,7 @@ class _DeviceStatus extends StatelessWidget {
 }
 
 class _DeviceRefresh extends StatelessWidget {
-  const _DeviceRefresh({super.key});
+  const _DeviceRefresh();
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +114,7 @@ class _DeviceRefresh extends StatelessWidget {
 }
 
 class _ViewLayout extends StatelessWidget {
-  const _ViewLayout({super.key});
+  const _ViewLayout();
 
   @override
   Widget build(BuildContext context) {

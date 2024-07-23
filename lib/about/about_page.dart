@@ -1,7 +1,6 @@
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AboutPage extends StatefulWidget {

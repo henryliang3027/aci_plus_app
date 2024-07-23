@@ -27,7 +27,6 @@ class CodeInputForm extends StatelessWidget {
 
 class _CodeInputDialog extends StatelessWidget {
   const _CodeInputDialog({
-    super.key,
     required this.codeTextEditingController,
   });
 

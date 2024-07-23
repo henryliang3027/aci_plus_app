@@ -51,7 +51,6 @@ class NamePlateView extends StatelessWidget {
 
 class _NamePlateInteractor extends StatelessWidget {
   const _NamePlateInteractor({
-    super.key,
     required this.partId,
   });
 

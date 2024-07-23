@@ -275,7 +275,6 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
 
 class _Location extends StatelessWidget {
   const _Location({
-    super.key,
     required this.textEditingController,
   });
 
@@ -337,7 +336,6 @@ class _Location extends StatelessWidget {
 
 class _Coordinates extends StatelessWidget {
   const _Coordinates({
-    super.key,
     required this.textEditingController,
   });
 
@@ -380,7 +378,7 @@ class _Coordinates extends StatelessWidget {
                 },
                 maxLength: 39,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(10.0),
+                  contentPadding: const EdgeInsets.all(10.0),
                   isDense: true,
                   filled: true,
                   fillColor: Colors.white,
@@ -444,7 +442,7 @@ class _Coordinates extends StatelessWidget {
 }
 
 class _ForwardMode extends StatelessWidget {
-  const _ForwardMode({super.key});
+  const _ForwardMode();
 
   @override
   Widget build(BuildContext context) {
@@ -471,7 +469,7 @@ class _ForwardMode extends StatelessWidget {
 }
 
 class _ForwardConfig extends StatelessWidget {
-  const _ForwardConfig({super.key});
+  const _ForwardConfig();
 
   @override
   Widget build(BuildContext context) {
@@ -498,7 +496,7 @@ class _ForwardConfig extends StatelessWidget {
 }
 
 class _SplitOption extends StatelessWidget {
-  const _SplitOption({super.key});
+  const _SplitOption();
 
   @override
   Widget build(BuildContext context) {
@@ -522,7 +520,7 @@ class _SplitOption extends StatelessWidget {
 }
 
 class _LogInterval extends StatelessWidget {
-  const _LogInterval({super.key});
+  const _LogInterval();
 
   @override
   Widget build(BuildContext context) {
@@ -553,7 +551,6 @@ class _LogInterval extends StatelessWidget {
 
 class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({
-    super.key,
     required this.partId,
     // required this.currentDetectedSplitOption,
   });

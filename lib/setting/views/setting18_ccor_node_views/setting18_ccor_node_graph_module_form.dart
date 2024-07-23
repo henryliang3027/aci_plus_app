@@ -227,7 +227,7 @@ class _Setting18CCorNodeGraphModuleFormState
 }
 
 class _SplitOption extends StatelessWidget {
-  const _SplitOption({super.key});
+  const _SplitOption();
 
   @override
   Widget build(BuildContext context) {
@@ -246,7 +246,7 @@ class _SplitOption extends StatelessWidget {
 }
 
 class _ForwardConfig extends StatelessWidget {
-  const _ForwardConfig({super.key});
+  const _ForwardConfig();
 
   @override
   Widget build(BuildContext context) {
@@ -274,9 +274,7 @@ class _ForwardConfig extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation1 extends StatelessWidget {
-  const _ForwardOutputAttenuation1({
-    super.key,
-  });
+  const _ForwardOutputAttenuation1();
 
   @override
   Widget build(BuildContext context) {
@@ -308,9 +306,7 @@ class _ForwardOutputAttenuation1 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation3 extends StatelessWidget {
-  const _ForwardOutputAttenuation3({
-    super.key,
-  });
+  const _ForwardOutputAttenuation3();
 
   @override
   Widget build(BuildContext context) {
@@ -342,9 +338,7 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation4 extends StatelessWidget {
-  const _ForwardOutputAttenuation4({
-    super.key,
-  });
+  const _ForwardOutputAttenuation4();
 
   @override
   Widget build(BuildContext context) {
@@ -376,9 +370,7 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation6 extends StatelessWidget {
-  const _ForwardOutputAttenuation6({
-    super.key,
-  });
+  const _ForwardOutputAttenuation6();
 
   @override
   Widget build(BuildContext context) {
@@ -542,9 +534,7 @@ class _ForwardOutputAttenuation6 extends StatelessWidget {
 // }
 
 class _ForwardOutputEqualizer1 extends StatelessWidget {
-  const _ForwardOutputEqualizer1({
-    super.key,
-  });
+  const _ForwardOutputEqualizer1();
 
   @override
   Widget build(BuildContext context) {
@@ -578,9 +568,7 @@ class _ForwardOutputEqualizer1 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer3 extends StatelessWidget {
-  const _ForwardOutputEqualizer3({
-    super.key,
-  });
+  const _ForwardOutputEqualizer3();
 
   @override
   Widget build(BuildContext context) {
@@ -614,9 +602,7 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer4 extends StatelessWidget {
-  const _ForwardOutputEqualizer4({
-    super.key,
-  });
+  const _ForwardOutputEqualizer4();
 
   @override
   Widget build(BuildContext context) {
@@ -650,9 +636,7 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer6 extends StatelessWidget {
-  const _ForwardOutputEqualizer6({
-    super.key,
-  });
+  const _ForwardOutputEqualizer6();
 
   @override
   Widget build(BuildContext context) {
@@ -686,9 +670,7 @@ class _ForwardOutputEqualizer6 extends StatelessWidget {
 }
 
 class _ForwardBiasCurrent1 extends StatelessWidget {
-  const _ForwardBiasCurrent1({
-    super.key,
-  });
+  const _ForwardBiasCurrent1();
 
   @override
   Widget build(BuildContext context) {
@@ -724,9 +706,7 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
 }
 
 class _ForwardBiasCurrent3 extends StatelessWidget {
-  const _ForwardBiasCurrent3({
-    super.key,
-  });
+  const _ForwardBiasCurrent3();
 
   @override
   Widget build(BuildContext context) {
@@ -762,9 +742,7 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
 }
 
 class _ForwardBiasCurrent4 extends StatelessWidget {
-  const _ForwardBiasCurrent4({
-    super.key,
-  });
+  const _ForwardBiasCurrent4();
 
   @override
   Widget build(BuildContext context) {
@@ -800,9 +778,7 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
 }
 
 class _ForwardBiasCurrent6 extends StatelessWidget {
-  const _ForwardBiasCurrent6({
-    super.key,
-  });
+  const _ForwardBiasCurrent6();
 
   @override
   Widget build(BuildContext context) {
@@ -838,9 +814,7 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
 }
 
 class _ReturnInputAttenuation1 extends StatelessWidget {
-  const _ReturnInputAttenuation1({
-    super.key,
-  });
+  const _ReturnInputAttenuation1();
 
   @override
   Widget build(BuildContext context) {
@@ -872,9 +846,7 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
 }
 
 class _ReturnInputAttenuation3 extends StatelessWidget {
-  const _ReturnInputAttenuation3({
-    super.key,
-  });
+  const _ReturnInputAttenuation3();
 
   @override
   Widget build(BuildContext context) {
@@ -906,9 +878,7 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
 }
 
 class _ReturnInputAttenuation4 extends StatelessWidget {
-  const _ReturnInputAttenuation4({
-    super.key,
-  });
+  const _ReturnInputAttenuation4();
 
   @override
   Widget build(BuildContext context) {
@@ -940,9 +910,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
 }
 
 class _ReturnInputAttenuation6 extends StatelessWidget {
-  const _ReturnInputAttenuation6({
-    super.key,
-  });
+  const _ReturnInputAttenuation6();
 
   @override
   Widget build(BuildContext context) {
@@ -981,9 +949,7 @@ List<String> rtnIngressValues = const [
 ];
 
 class _ReturnIngressSetting1 extends StatelessWidget {
-  const _ReturnIngressSetting1({
-    super.key,
-  });
+  const _ReturnIngressSetting1();
 
   @override
   Widget build(BuildContext context) {
@@ -1017,9 +983,7 @@ class _ReturnIngressSetting1 extends StatelessWidget {
 }
 
 class _ReturnIngressSetting3 extends StatelessWidget {
-  const _ReturnIngressSetting3({
-    super.key,
-  });
+  const _ReturnIngressSetting3();
 
   @override
   Widget build(BuildContext context) {
@@ -1053,9 +1017,7 @@ class _ReturnIngressSetting3 extends StatelessWidget {
 }
 
 class _ReturnIngressSetting4 extends StatelessWidget {
-  const _ReturnIngressSetting4({
-    super.key,
-  });
+  const _ReturnIngressSetting4();
 
   @override
   Widget build(BuildContext context) {
@@ -1089,9 +1051,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
 }
 
 class _ReturnIngressSetting6 extends StatelessWidget {
-  const _ReturnIngressSetting6({
-    super.key,
-  });
+  const _ReturnIngressSetting6();
 
   @override
   Widget build(BuildContext context) {
@@ -1125,7 +1085,7 @@ class _ReturnIngressSetting6 extends StatelessWidget {
 }
 
 class _SettingFloatingActionButton extends StatelessWidget {
-  const _SettingFloatingActionButton({super.key});
+  const _SettingFloatingActionButton();
 
   @override
   Widget build(BuildContext context) {

@@ -235,7 +235,7 @@ class Setting18FirmwareForm extends StatelessWidget {
 }
 
 class _UserCaution extends StatelessWidget {
-  const _UserCaution({super.key});
+  const _UserCaution();
 
   @override
   Widget build(BuildContext context) {
@@ -384,7 +384,7 @@ class _UserCaution extends StatelessWidget {
 // }
 
 class _ProgressBar extends StatefulWidget {
-  const _ProgressBar({super.key});
+  const _ProgressBar();
 
   @override
   State<_ProgressBar> createState() => __ProgressBarState();
@@ -449,7 +449,6 @@ class __ProgressBarState extends State<_ProgressBar>
 
 class _StartButton extends StatelessWidget {
   const _StartButton({
-    super.key,
     required this.pageController,
     required this.partId,
   });

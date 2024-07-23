@@ -169,7 +169,7 @@ class Chart18CCorNodeForm extends StatelessWidget {
 }
 
 class _DeviceStatus extends StatelessWidget {
-  const _DeviceStatus({super.key});
+  const _DeviceStatus();
 
   @override
   Widget build(BuildContext context) {
@@ -245,7 +245,7 @@ class MyWidget extends StatelessWidget {
 }
 
 class _PopupMenu extends StatelessWidget {
-  const _PopupMenu({super.key});
+  const _PopupMenu();
 
   Widget buildDataLogPageMenu(BuildContext context) {
     Map<DataKey, String> characteristicData =
@@ -614,7 +614,6 @@ class _PopupMenu extends StatelessWidget {
 
 class _DynamicBottomNavigationBar extends StatelessWidget {
   const _DynamicBottomNavigationBar({
-    super.key,
     required this.pageController,
     required this.selectedIndex,
   });
@@ -655,7 +654,7 @@ class _DynamicBottomNavigationBar extends StatelessWidget {
 }
 
 class _MoreDataFloatingActionButton extends StatelessWidget {
-  const _MoreDataFloatingActionButton({super.key});
+  const _MoreDataFloatingActionButton();
 
   @override
   Widget build(BuildContext context) {
@@ -685,7 +684,7 @@ class _MoreDataFloatingActionButton extends StatelessWidget {
 }
 
 class _LogChartListView extends StatelessWidget {
-  const _LogChartListView({super.key});
+  const _LogChartListView();
 
   @override
   Widget build(BuildContext context) {

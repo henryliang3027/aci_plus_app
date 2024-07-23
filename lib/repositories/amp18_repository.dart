@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:aci_plus_app/core/command18.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/data_key.dart';
-import 'package:aci_plus_app/repositories/ble_client.dart';
 import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
@@ -2113,7 +2112,7 @@ class Amp18Repository {
 
       // ipad version ex: 16.6.1
       // ios version ex: 16.5
-      double version = double.parse(iosDeviceInfo.systemVersion!.split('.')[0]);
+      double version = double.parse(iosDeviceInfo.systemVersion.split('.')[0]);
 
       if (version < 16) {
         ms = 59;

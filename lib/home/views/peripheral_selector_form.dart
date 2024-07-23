@@ -46,7 +46,7 @@ class PeripheralSelectorForm extends StatelessWidget {
 }
 
 class _PeripheralListView extends StatelessWidget {
-  const _PeripheralListView({super.key});
+  const _PeripheralListView();
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +121,7 @@ class _PeripheralListView extends StatelessWidget {
 }
 
 class _DoneButton extends StatelessWidget {
-  const _DoneButton({super.key});
+  const _DoneButton();
 
   @override
   Widget build(BuildContext context) {

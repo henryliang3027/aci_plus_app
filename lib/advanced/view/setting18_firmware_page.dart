@@ -1,7 +1,5 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_firmware/setting18_firmware_bloc.dart';
 import 'package:aci_plus_app/advanced/view/setting18_firmware_form.dart';
-import 'package:aci_plus_app/core/data_key.dart';
-import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

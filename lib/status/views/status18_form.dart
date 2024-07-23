@@ -51,7 +51,7 @@ class Status18Form extends StatelessWidget {
 }
 
 class _CardView extends StatelessWidget {
-  const _CardView({super.key});
+  const _CardView();
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +156,7 @@ class _CardView extends StatelessWidget {
 }
 
 class _DeviceStatus extends StatelessWidget {
-  const _DeviceStatus({super.key});
+  const _DeviceStatus();
 
   @override
   Widget build(BuildContext context) {
@@ -215,7 +215,7 @@ Color _getCurrentValueColor({
 }
 
 class _DeviceRefresh extends StatelessWidget {
-  const _DeviceRefresh({super.key});
+  const _DeviceRefresh();
 
   @override
   Widget build(BuildContext context) {
@@ -243,7 +243,7 @@ class _DeviceRefresh extends StatelessWidget {
 }
 
 class _OperatingModeCard extends StatelessWidget {
-  const _OperatingModeCard({super.key});
+  const _OperatingModeCard();
 
   String getOperatingModeByForwardCEQIndexText(String index) {
     int intIndex = int.parse(index);
@@ -366,7 +366,7 @@ class _OperatingModeCard extends StatelessWidget {
 }
 
 class _WorkingModeCard extends StatelessWidget {
-  const _WorkingModeCard({super.key});
+  const _WorkingModeCard();
 
   // Color currentWorkingModeColor({
   //   required String currentVoltage,
@@ -491,7 +491,7 @@ class _WorkingModeCard extends StatelessWidget {
 }
 
 class _SplitOptionCard extends StatelessWidget {
-  const _SplitOptionCard({super.key});
+  const _SplitOptionCard();
 
   Widget getCurrentSplitOption({
     required FormStatus loadingStatus,
@@ -625,7 +625,7 @@ class _SplitOptionCard extends StatelessWidget {
 }
 
 class _TemperatureCard extends StatelessWidget {
-  const _TemperatureCard({super.key});
+  const _TemperatureCard();
 
   @override
   Widget build(BuildContext context) {
@@ -1008,7 +1008,7 @@ class _TemperatureCard extends StatelessWidget {
 }
 
 class _PowerSupplyCard extends StatelessWidget {
-  const _PowerSupplyCard({super.key});
+  const _PowerSupplyCard();
 
   Widget getCurrentVoltage({
     required FormStatus loadingStatus,
@@ -1283,7 +1283,7 @@ class _PowerSupplyCard extends StatelessWidget {
 }
 
 class _VoltageRippleCard extends StatelessWidget {
-  const _VoltageRippleCard({super.key});
+  const _VoltageRippleCard();
 
   Widget getCurrentVoltageRipple({
     required FormStatus loadingStatus,
@@ -1566,7 +1566,7 @@ class _VoltageRippleCard extends StatelessWidget {
 }
 
 class _RFOutputPowerCard extends StatelessWidget {
-  const _RFOutputPowerCard({super.key});
+  const _RFOutputPowerCard();
 
   Widget getCurrentRFOutputPower({
     required FormStatus loadingStatus,
@@ -1859,7 +1859,7 @@ String _getPilotFrequencyAlarmSeverityText(String pilotFrequencyStatus) {
 }
 
 class _RFInputPower1p8GCard extends StatelessWidget {
-  const _RFInputPower1p8GCard({super.key});
+  const _RFInputPower1p8GCard();
 
   Widget getCurrentRFInputPower1p8G({
     required FormStatus loadingStatus,
@@ -1965,7 +1965,7 @@ class _RFInputPower1p8GCard extends StatelessWidget {
 }
 
 class _PilotFrequency1Card extends StatelessWidget {
-  const _PilotFrequency1Card({super.key});
+  const _PilotFrequency1Card();
 
   Widget getCurrentPilotFrequency({
     required FormStatus loadingStatus,
@@ -2089,7 +2089,7 @@ class _PilotFrequency1Card extends StatelessWidget {
 }
 
 class _PilotFrequency2Card extends StatelessWidget {
-  const _PilotFrequency2Card({super.key});
+  const _PilotFrequency2Card();
 
   Widget getCurrentPilotFrequency({
     required FormStatus loadingStatus,
@@ -2213,7 +2213,7 @@ class _PilotFrequency2Card extends StatelessWidget {
 }
 
 class _FirstChannelPowerLevelCard extends StatelessWidget {
-  const _FirstChannelPowerLevelCard({super.key});
+  const _FirstChannelPowerLevelCard();
 
   Widget getFrequency({
     required FormStatus loadingStatus,
@@ -2412,7 +2412,7 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
 }
 
 class _LastChannelPowerLevelCard extends StatelessWidget {
-  const _LastChannelPowerLevelCard({super.key});
+  const _LastChannelPowerLevelCard();
 
   Widget getFrequency({
     required FormStatus loadingStatus,
@@ -2613,7 +2613,7 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
 }
 
 class _OutputOperatingSlopeCard extends StatelessWidget {
-  const _OutputOperatingSlopeCard({super.key});
+  const _OutputOperatingSlopeCard();
 
   Widget getOutputOperatingSlope({
     required FormStatus loadingStatus,

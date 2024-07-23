@@ -225,7 +225,7 @@ List<bool> getSelectionState(String selectedrtnIngress) {
 }
 
 class _ClusterTitle extends StatelessWidget {
-  const _ClusterTitle({super.key, required this.title});
+  const _ClusterTitle({required this.title});
 
   final String title;
 
@@ -252,9 +252,7 @@ class _ClusterTitle extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation1 extends StatelessWidget {
-  const _ForwardOutputAttenuation1({
-    super.key,
-  });
+  const _ForwardOutputAttenuation1();
 
   @override
   Widget build(BuildContext context) {
@@ -288,9 +286,7 @@ class _ForwardOutputAttenuation1 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation3 extends StatelessWidget {
-  const _ForwardOutputAttenuation3({
-    super.key,
-  });
+  const _ForwardOutputAttenuation3();
 
   @override
   Widget build(BuildContext context) {
@@ -324,9 +320,7 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation4 extends StatelessWidget {
-  const _ForwardOutputAttenuation4({
-    super.key,
-  });
+  const _ForwardOutputAttenuation4();
 
   @override
   Widget build(BuildContext context) {
@@ -360,9 +354,7 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation6 extends StatelessWidget {
-  const _ForwardOutputAttenuation6({
-    super.key,
-  });
+  const _ForwardOutputAttenuation6();
 
   @override
   Widget build(BuildContext context) {
@@ -540,9 +532,7 @@ class _ForwardOutputAttenuation6 extends StatelessWidget {
 // }
 
 class _ForwardOutputEqualizer1 extends StatelessWidget {
-  const _ForwardOutputEqualizer1({
-    super.key,
-  });
+  const _ForwardOutputEqualizer1();
 
   @override
   Widget build(BuildContext context) {
@@ -576,9 +566,7 @@ class _ForwardOutputEqualizer1 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer3 extends StatelessWidget {
-  const _ForwardOutputEqualizer3({
-    super.key,
-  });
+  const _ForwardOutputEqualizer3();
 
   @override
   Widget build(BuildContext context) {
@@ -612,9 +600,7 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer4 extends StatelessWidget {
-  const _ForwardOutputEqualizer4({
-    super.key,
-  });
+  const _ForwardOutputEqualizer4();
 
   @override
   Widget build(BuildContext context) {
@@ -648,9 +634,7 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer6 extends StatelessWidget {
-  const _ForwardOutputEqualizer6({
-    super.key,
-  });
+  const _ForwardOutputEqualizer6();
 
   @override
   Widget build(BuildContext context) {
@@ -684,9 +668,7 @@ class _ForwardOutputEqualizer6 extends StatelessWidget {
 }
 
 class _ForwardBiasCurrent1 extends StatelessWidget {
-  const _ForwardBiasCurrent1({
-    super.key,
-  });
+  const _ForwardBiasCurrent1();
 
   @override
   Widget build(BuildContext context) {
@@ -722,9 +704,7 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
 }
 
 class _ForwardBiasCurrent3 extends StatelessWidget {
-  const _ForwardBiasCurrent3({
-    super.key,
-  });
+  const _ForwardBiasCurrent3();
 
   @override
   Widget build(BuildContext context) {
@@ -760,9 +740,7 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
 }
 
 class _ForwardBiasCurrent4 extends StatelessWidget {
-  const _ForwardBiasCurrent4({
-    super.key,
-  });
+  const _ForwardBiasCurrent4();
 
   @override
   Widget build(BuildContext context) {
@@ -798,9 +776,7 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
 }
 
 class _ForwardBiasCurrent6 extends StatelessWidget {
-  const _ForwardBiasCurrent6({
-    super.key,
-  });
+  const _ForwardBiasCurrent6();
 
   @override
   Widget build(BuildContext context) {
@@ -837,7 +813,6 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
 
 class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({
-    super.key,
     required this.partId,
     // required this.currentDetectedSplitOption,
   });

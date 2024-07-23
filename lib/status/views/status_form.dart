@@ -51,7 +51,7 @@ class StatusForm extends StatelessWidget {
 }
 
 class _DeviceStatus extends StatelessWidget {
-  const _DeviceStatus({super.key});
+  const _DeviceStatus();
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +101,7 @@ class _DeviceStatus extends StatelessWidget {
 }
 
 class _DeviceRefresh extends StatelessWidget {
-  const _DeviceRefresh({super.key});
+  const _DeviceRefresh();
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +166,7 @@ class _DeviceRefresh extends StatelessWidget {
 // }
 
 class _TemperatureCard extends StatelessWidget {
-  const _TemperatureCard({super.key});
+  const _TemperatureCard();
 
   @override
   Widget build(BuildContext context) {
@@ -388,7 +388,7 @@ class _TemperatureCard extends StatelessWidget {
 }
 
 class _AttenuationCard extends StatelessWidget {
-  const _AttenuationCard({super.key});
+  const _AttenuationCard();
 
   Widget tile({
     required FormStatus loadingStatus,
@@ -642,7 +642,7 @@ class _AttenuationCard extends StatelessWidget {
 }
 
 class _PowerSupplyCard extends StatelessWidget {
-  const _PowerSupplyCard({super.key});
+  const _PowerSupplyCard();
 
   Widget tile({
     required FormStatus loadingStatus,

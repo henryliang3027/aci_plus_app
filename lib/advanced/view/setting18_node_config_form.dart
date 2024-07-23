@@ -1,8 +1,6 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_bloc.dart';
 import 'package:aci_plus_app/advanced/view/setting18_node_config_edit_page.dart';
-import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
-import 'package:aci_plus_app/repositories/config.dart';
 import 'package:aci_plus_app/repositories/node_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +19,7 @@ class Setting18NodeConfigForm extends StatelessWidget {
 }
 
 class _ConfigFloatActionButton extends StatelessWidget {
-  const _ConfigFloatActionButton({super.key});
+  const _ConfigFloatActionButton();
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +76,7 @@ class _ConfigFloatActionButton extends StatelessWidget {
 }
 
 class _DeviceListView extends StatelessWidget {
-  const _DeviceListView({super.key});
+  const _DeviceListView();
 
   @override
   Widget build(BuildContext context) {

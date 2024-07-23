@@ -233,7 +233,6 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
 
 class _PartName extends StatelessWidget {
   const _PartName({
-    super.key,
     required this.nameTextEditingController,
   });
 
@@ -404,7 +403,6 @@ class _PartName extends StatelessWidget {
 
 class _ActionButton extends StatelessWidget {
   const _ActionButton({
-    super.key,
     required this.partId,
     required this.isEdit,
   });
@@ -488,7 +486,7 @@ class _ActionButton extends StatelessWidget {
 }
 
 class _SplitOption extends StatelessWidget {
-  const _SplitOption({super.key});
+  const _SplitOption();
 
   @override
   Widget build(BuildContext context) {
@@ -511,7 +509,6 @@ class _SplitOption extends StatelessWidget {
 
 class _FirstChannelLoading extends StatelessWidget {
   const _FirstChannelLoading({
-    super.key,
     required this.firstChannelLoadingFrequencyTextEditingController,
     required this.firstChannelLoadingLevelTextEditingController,
     required this.currentDetectedSplitOption,
@@ -567,7 +564,6 @@ class _FirstChannelLoading extends StatelessWidget {
 
 class _LastChannelLoading extends StatelessWidget {
   const _LastChannelLoading({
-    super.key,
     required this.lastChannelLoadingFrequencyTextEditingController,
     required this.lastChannelLoadingLevelTextEditingController,
   });

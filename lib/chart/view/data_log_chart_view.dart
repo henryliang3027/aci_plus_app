@@ -30,7 +30,6 @@ class DataLogChartView extends StatelessWidget {
 
 class _LogChartView extends StatelessWidget {
   const _LogChartView({
-    super.key,
     required this.pageController,
   });
 
@@ -142,7 +141,6 @@ class _LogChartView extends StatelessWidget {
 
 class _DynamicBottomNavigationBar extends StatelessWidget {
   const _DynamicBottomNavigationBar({
-    super.key,
     required this.pageController,
     required this.selectedIndex,
   });
@@ -183,7 +181,7 @@ class _DynamicBottomNavigationBar extends StatelessWidget {
 }
 
 class _DataLogFloatingActionButton extends StatelessWidget {
-  const _DataLogFloatingActionButton({super.key});
+  const _DataLogFloatingActionButton();
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +198,7 @@ class _DataLogFloatingActionButton extends StatelessWidget {
 }
 
 class _MoreDataFloatingActionButton extends StatelessWidget {
-  const _MoreDataFloatingActionButton({super.key});
+  const _MoreDataFloatingActionButton();
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +231,7 @@ class _MoreDataFloatingActionButton extends StatelessWidget {
 }
 
 class _LogChartListView extends StatelessWidget {
-  const _LogChartListView({super.key});
+  const _LogChartListView();
 
   @override
   Widget build(BuildContext context) {

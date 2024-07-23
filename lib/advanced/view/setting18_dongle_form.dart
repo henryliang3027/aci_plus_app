@@ -59,7 +59,7 @@ class Setting18DongleForm extends StatelessWidget {
 }
 
 class _QRDataScanner extends StatelessWidget {
-  const _QRDataScanner({super.key});
+  const _QRDataScanner();
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +129,7 @@ class _QRDataScanner extends StatelessWidget {
 }
 
 class _DeviceListView extends StatelessWidget {
-  const _DeviceListView({super.key});
+  const _DeviceListView();
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +148,7 @@ class _DeviceListView extends StatelessWidget {
             insetPadding: EdgeInsets.symmetric(
               horizontal: width * 0.01,
             ),
-            child: Text('123'),
+            child: const Text('123'),
             // Setting18ConfigEditPage(
             //   selectedPartId: selectedPartId,
             // ),

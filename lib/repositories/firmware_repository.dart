@@ -1,9 +1,6 @@
 import 'dart:io';
 
-import 'package:aci_plus_app/core/command.dart';
-import 'package:aci_plus_app/core/command18.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
-import 'package:aci_plus_app/core/firmware_file_table.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -90,7 +87,7 @@ class FirmwareRepository {
 
       // ipad version ex: 16.6.1
       // ios version ex: 16.5
-      double version = double.parse(iosDeviceInfo.systemVersion!.split('.')[0]);
+      double version = double.parse(iosDeviceInfo.systemVersion.split('.')[0]);
 
       if (version < 16) {
         return 182;

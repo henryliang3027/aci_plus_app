@@ -206,7 +206,6 @@ class Setting18ForwardControlView extends StatelessWidget {
 
 class _ForwardControlHeader extends StatelessWidget {
   const _ForwardControlHeader({
-    super.key,
     required this.factoryDefaultNumber,
   });
 
@@ -352,7 +351,6 @@ class _ForwardControlHeader extends StatelessWidget {
 
 class _ForwardInputAttenuation1 extends StatelessWidget {
   const _ForwardInputAttenuation1({
-    super.key,
     required this.alcMode,
     required this.currentInputAttenuation,
   });
@@ -401,7 +399,6 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
 
 class _ForwardInputEqualizer1 extends StatelessWidget {
   const _ForwardInputEqualizer1({
-    super.key,
     required this.forwardCEQIndex,
     required this.alcMode,
     required this.agcMode,
@@ -456,9 +453,7 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer3 extends StatelessWidget {
-  const _ForwardOutputEqualizer3({
-    super.key,
-  });
+  const _ForwardOutputEqualizer3();
 
   @override
   Widget build(BuildContext context) {
@@ -490,9 +485,7 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer4 extends StatelessWidget {
-  const _ForwardOutputEqualizer4({
-    super.key,
-  });
+  const _ForwardOutputEqualizer4();
 
   @override
   Widget build(BuildContext context) {
@@ -524,9 +517,7 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation3 extends StatelessWidget {
-  const _ForwardOutputAttenuation3({
-    super.key,
-  });
+  const _ForwardOutputAttenuation3();
 
   @override
   Widget build(BuildContext context) {
@@ -558,9 +549,7 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation4 extends StatelessWidget {
-  const _ForwardOutputAttenuation4({
-    super.key,
-  });
+  const _ForwardOutputAttenuation4();
 
   @override
   Widget build(BuildContext context) {
@@ -592,9 +581,7 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation2And3 extends StatelessWidget {
-  const _ForwardOutputAttenuation2And3({
-    super.key,
-  });
+  const _ForwardOutputAttenuation2And3();
 
   @override
   Widget build(BuildContext context) {
@@ -626,9 +613,7 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation3And4 extends StatelessWidget {
-  const _ForwardOutputAttenuation3And4({
-    super.key,
-  });
+  const _ForwardOutputAttenuation3And4();
 
   @override
   Widget build(BuildContext context) {
@@ -660,9 +645,7 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation5And6 extends StatelessWidget {
-  const _ForwardOutputAttenuation5And6({
-    super.key,
-  });
+  const _ForwardOutputAttenuation5And6();
 
   @override
   Widget build(BuildContext context) {
@@ -694,9 +677,7 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer2And3 extends StatelessWidget {
-  const _ForwardOutputEqualizer2And3({
-    super.key,
-  });
+  const _ForwardOutputEqualizer2And3();
 
   @override
   Widget build(BuildContext context) {
@@ -728,9 +709,7 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer3And4 extends StatelessWidget {
-  const _ForwardOutputEqualizer3And4({
-    super.key,
-  });
+  const _ForwardOutputEqualizer3And4();
 
   @override
   Widget build(BuildContext context) {
@@ -762,9 +741,7 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
 }
 
 class _ForwardOutputEqualizer5And6 extends StatelessWidget {
-  const _ForwardOutputEqualizer5And6({
-    super.key,
-  });
+  const _ForwardOutputEqualizer5And6();
 
   @override
   Widget build(BuildContext context) {
@@ -797,7 +774,6 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
 
 class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({
-    super.key,
     required this.partId,
     // required this.currentDetectedSplitOption,
   });

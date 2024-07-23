@@ -233,7 +233,6 @@ class _Chart18FormState extends State<Chart18Form>
 
 class _ViewLayout extends StatelessWidget {
   const _ViewLayout({
-    super.key,
     required this.pageController,
     required this.tabController,
   });
@@ -279,7 +278,7 @@ class _ViewLayout extends StatelessWidget {
 }
 
 class _DeviceStatus extends StatelessWidget {
-  const _DeviceStatus({super.key});
+  const _DeviceStatus();
 
   @override
   Widget build(BuildContext context) {

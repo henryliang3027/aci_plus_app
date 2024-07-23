@@ -69,12 +69,12 @@ class Setting18ConfigEditBloc
     String rawLastChannelLoadingLevel = '51.1';
 
     if (_config != null) {
-      rawName = _config!.name;
-      splitOption = _config!.splitOption;
-      rawFirstChannelLoadingFrequency = _config!.firstChannelLoadingFrequency;
-      rawFirstChannelLoadingLevel = _config!.firstChannelLoadingLevel;
-      rawLastChannelLoadingFrequency = _config!.lastChannelLoadingFrequency;
-      rawLastChannelLoadingLevel = _config!.lastChannelLoadingLevel;
+      rawName = _config.name;
+      splitOption = _config.splitOption;
+      rawFirstChannelLoadingFrequency = _config.firstChannelLoadingFrequency;
+      rawFirstChannelLoadingLevel = _config.firstChannelLoadingLevel;
+      rawLastChannelLoadingFrequency = _config.lastChannelLoadingFrequency;
+      rawLastChannelLoadingLevel = _config.lastChannelLoadingLevel;
     } else {
       int newId = _configRepository.getEmptyNameId(groupId: groupId) ?? -1;
       rawName = 'Config$newId';

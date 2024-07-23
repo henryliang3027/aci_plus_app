@@ -371,7 +371,6 @@ class Setting18ConfigureView extends StatelessWidget {
 
 class _Location extends StatelessWidget {
   const _Location({
-    super.key,
     required this.textEditingController,
   });
 
@@ -434,7 +433,6 @@ class _Location extends StatelessWidget {
 
 class _Coordinates extends StatelessWidget {
   const _Coordinates({
-    super.key,
     required this.textEditingController,
   });
 
@@ -478,7 +476,7 @@ class _Coordinates extends StatelessWidget {
                 },
                 maxLength: 39,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(10.0),
+                  contentPadding: const EdgeInsets.all(10.0),
                   isDense: true,
                   filled: true,
                   fillColor: Colors.white,
@@ -541,7 +539,7 @@ class _Coordinates extends StatelessWidget {
 }
 
 class _SplitOption extends StatelessWidget {
-  const _SplitOption({super.key});
+  const _SplitOption();
 
   @override
   Widget build(BuildContext context) {
@@ -564,9 +562,7 @@ class _SplitOption extends StatelessWidget {
 }
 
 class _PilotFrequencyMode extends StatelessWidget {
-  const _PilotFrequencyMode({
-    super.key,
-  });
+  const _PilotFrequencyMode();
 
   @override
   Widget build(BuildContext context) {
@@ -599,7 +595,6 @@ class _PilotFrequencyMode extends StatelessWidget {
 
 class _FirstChannelLoading extends StatelessWidget {
   const _FirstChannelLoading({
-    super.key,
     required this.firstChannelLoadingFrequencyTextEditingController,
     required this.firstChannelLoadingLevelTextEditingController,
     required this.currentDetectedSplitOption,
@@ -655,7 +650,6 @@ class _FirstChannelLoading extends StatelessWidget {
 
 class _LastChannelLoading extends StatelessWidget {
   const _LastChannelLoading({
-    super.key,
     required this.lastChannelLoadingFrequencyTextEditingController,
     required this.lastChannelLoadingLevelTextEditingController,
   });
@@ -703,7 +697,6 @@ class _LastChannelLoading extends StatelessWidget {
 
 class _PilotFrequency1 extends StatelessWidget {
   const _PilotFrequency1({
-    super.key,
     required this.pilotFrequency1TextEditingController,
     required this.manualModePilot1RFOutputPowerTextEditingController,
   });
@@ -745,7 +738,6 @@ class _PilotFrequency1 extends StatelessWidget {
 
 class _PilotFrequency2 extends StatelessWidget {
   const _PilotFrequency2({
-    super.key,
     required this.pilotFrequency2TextEditingController,
     required this.manualModePilot2RFOutputPowerTextEditingController,
   });
@@ -786,9 +778,7 @@ class _PilotFrequency2 extends StatelessWidget {
 }
 
 class _AGCMode extends StatelessWidget {
-  const _AGCMode({
-    super.key,
-  });
+  const _AGCMode();
 
   final List<String> fwdAGCModeValues = const [
     '1',
@@ -882,9 +872,7 @@ class _AGCMode extends StatelessWidget {
 
 // 2024/0419 ALC 為 read only 且 ALC 的動作跟 AGC 連動
 class _ALCMode extends StatelessWidget {
-  const _ALCMode({
-    super.key,
-  });
+  const _ALCMode();
 
   final List<String> autoLevelControlValues = const [
     '1',
@@ -978,7 +966,7 @@ class _ALCMode extends StatelessWidget {
 }
 
 class _LogInterval extends StatelessWidget {
-  const _LogInterval({super.key});
+  const _LogInterval();
 
   @override
   Widget build(BuildContext context) {
@@ -1007,7 +995,7 @@ class _LogInterval extends StatelessWidget {
 }
 
 class _RFOutputLogInterval extends StatelessWidget {
-  const _RFOutputLogInterval({super.key});
+  const _RFOutputLogInterval();
 
   @override
   Widget build(BuildContext context) {
@@ -1036,9 +1024,7 @@ class _RFOutputLogInterval extends StatelessWidget {
 }
 
 class _TGCCableLength extends StatelessWidget {
-  const _TGCCableLength({
-    super.key,
-  });
+  const _TGCCableLength();
 
   @override
   Widget build(BuildContext context) {
@@ -1077,7 +1063,6 @@ class _TGCCableLength extends StatelessWidget {
 
 class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({
-    super.key,
     required this.partId,
     // required this.currentDetectedSplitOption,
   });

@@ -369,7 +369,7 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
 }
 
 class _ClusterTitle extends StatelessWidget {
-  const _ClusterTitle({super.key, required this.title});
+  const _ClusterTitle({required this.title});
 
   final String title;
 
@@ -397,7 +397,6 @@ class _ClusterTitle extends StatelessWidget {
 
 class _TemperatureAlarmControl extends StatelessWidget {
   const _TemperatureAlarmControl({
-    super.key,
     required this.minTemperatureTextEditingController,
     required this.maxTemperatureTextEditingController,
   });
@@ -461,7 +460,6 @@ class _TemperatureAlarmControl extends StatelessWidget {
 
 class _VoltageAlarmControl extends StatelessWidget {
   const _VoltageAlarmControl({
-    super.key,
     required this.minVoltageTextEditingController,
     required this.maxVoltageTextEditingController,
   });
@@ -517,7 +515,6 @@ class _VoltageAlarmControl extends StatelessWidget {
 
 class _RFOutputPower1AlarmControl extends StatelessWidget {
   const _RFOutputPower1AlarmControl({
-    super.key,
     required this.minRFOutputPower1TextEditingController,
     required this.maxRFOutputPower1TextEditingController,
   });
@@ -573,7 +570,6 @@ class _RFOutputPower1AlarmControl extends StatelessWidget {
 
 class _RFOutputPower3AlarmControl extends StatelessWidget {
   const _RFOutputPower3AlarmControl({
-    super.key,
     required this.minRFOutputPower3TextEditingController,
     required this.maxRFOutputPower3TextEditingController,
   });
@@ -629,7 +625,6 @@ class _RFOutputPower3AlarmControl extends StatelessWidget {
 
 class _RFOutputPower4AlarmControl extends StatelessWidget {
   const _RFOutputPower4AlarmControl({
-    super.key,
     required this.minRFOutputPower4TextEditingController,
     required this.maxRFOutputPower4TextEditingController,
   });
@@ -685,7 +680,6 @@ class _RFOutputPower4AlarmControl extends StatelessWidget {
 
 class _RFOutputPower6AlarmControl extends StatelessWidget {
   const _RFOutputPower6AlarmControl({
-    super.key,
     required this.minRFOutputPower6TextEditingController,
     required this.maxRFOutputPower6TextEditingController,
   });
@@ -740,7 +734,7 @@ class _RFOutputPower6AlarmControl extends StatelessWidget {
 }
 
 class _SplitOptionAlarmControl extends StatelessWidget {
-  const _SplitOptionAlarmControl({super.key});
+  const _SplitOptionAlarmControl();
 
   @override
   Widget build(BuildContext context) {
@@ -765,7 +759,6 @@ class _SplitOptionAlarmControl extends StatelessWidget {
 
 class _SettingFloatingActionButton extends StatelessWidget {
   const _SettingFloatingActionButton({
-    super.key,
     required this.partId,
     // required this.currentDetectedSplitOption,
   });

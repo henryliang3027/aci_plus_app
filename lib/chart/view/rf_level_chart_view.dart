@@ -37,7 +37,7 @@ class RFLevelChartView extends StatelessWidget {
 }
 
 class _ChartView extends StatelessWidget {
-  const _ChartView({super.key});
+  const _ChartView();
 
   @override
   Widget build(BuildContext context) {

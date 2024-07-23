@@ -48,7 +48,7 @@ class Status18CCorNodeForm extends StatelessWidget {
 }
 
 class _CardView extends StatelessWidget {
-  const _CardView({super.key});
+  const _CardView();
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +136,7 @@ class _CardView extends StatelessWidget {
 }
 
 class _DeviceStatus extends StatelessWidget {
-  const _DeviceStatus({super.key});
+  const _DeviceStatus();
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +193,7 @@ Color _getCurrentValueColor(
 }
 
 class _DeviceRefresh extends StatelessWidget {
-  const _DeviceRefresh({super.key});
+  const _DeviceRefresh();
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +221,7 @@ class _DeviceRefresh extends StatelessWidget {
 }
 
 class _WorkingModeCard extends StatelessWidget {
-  const _WorkingModeCard({super.key});
+  const _WorkingModeCard();
 
   // Color currentWorkingModeColor({
   //   required String currentVoltage,
@@ -360,7 +360,7 @@ class _WorkingModeCard extends StatelessWidget {
 }
 
 class _SplitOptionCard extends StatelessWidget {
-  const _SplitOptionCard({super.key});
+  const _SplitOptionCard();
 
   Widget getCurrentSplitOption({
     required FormStatus loadingStatus,
@@ -494,7 +494,7 @@ class _SplitOptionCard extends StatelessWidget {
 }
 
 class _TemperatureCard extends StatelessWidget {
-  const _TemperatureCard({super.key});
+  const _TemperatureCard();
 
   @override
   Widget build(BuildContext context) {
@@ -878,7 +878,7 @@ class _TemperatureCard extends StatelessWidget {
 }
 
 class _PowerSupplyCard extends StatelessWidget {
-  const _PowerSupplyCard({super.key});
+  const _PowerSupplyCard();
 
   Widget getCurrentVoltage({
     required FormStatus loadingStatus,
@@ -1380,7 +1380,7 @@ Widget rfOutputPowerBlock({
 }
 
 class _RFOutputPower1Card extends StatelessWidget {
-  const _RFOutputPower1Card({super.key});
+  const _RFOutputPower1Card();
 
   @override
   Widget build(BuildContext context) {
@@ -1436,7 +1436,7 @@ class _RFOutputPower1Card extends StatelessWidget {
 }
 
 class _RFOutputPower3Card extends StatelessWidget {
-  const _RFOutputPower3Card({super.key});
+  const _RFOutputPower3Card();
 
   @override
   Widget build(BuildContext context) {
@@ -1492,7 +1492,7 @@ class _RFOutputPower3Card extends StatelessWidget {
 }
 
 class _RFOutputPower4Card extends StatelessWidget {
-  const _RFOutputPower4Card({super.key});
+  const _RFOutputPower4Card();
 
   @override
   Widget build(BuildContext context) {
@@ -1548,7 +1548,7 @@ class _RFOutputPower4Card extends StatelessWidget {
 }
 
 class _RFOutputPower6Card extends StatelessWidget {
-  const _RFOutputPower6Card({super.key});
+  const _RFOutputPower6Card();
 
   @override
   Widget build(BuildContext context) {

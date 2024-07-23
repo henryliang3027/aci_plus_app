@@ -187,7 +187,6 @@ class _Information18PresetFormState extends State<Information18PresetForm> {
 
 class _PartName extends StatelessWidget {
   const _PartName({
-    super.key,
     required this.nameTextEditingController,
   });
 
@@ -282,9 +281,7 @@ class _PartName extends StatelessWidget {
 }
 
 class _ActionButton extends StatelessWidget {
-  const _ActionButton({
-    super.key,
-  });
+  const _ActionButton();
 
   @override
   Widget build(BuildContext context) {
@@ -414,7 +411,7 @@ Widget buildCard({
 }
 
 class _SplitOption extends StatelessWidget {
-  const _SplitOption({super.key});
+  const _SplitOption();
 
   @override
   Widget build(BuildContext context) {
@@ -434,9 +431,7 @@ class _SplitOption extends StatelessWidget {
 }
 
 class _PilotFrequencyMode extends StatelessWidget {
-  const _PilotFrequencyMode({
-    super.key,
-  });
+  const _PilotFrequencyMode();
 
   @override
   Widget build(BuildContext context) {
@@ -455,9 +450,7 @@ class _PilotFrequencyMode extends StatelessWidget {
 }
 
 class _StartFrequency extends StatelessWidget {
-  const _StartFrequency({
-    super.key,
-  });
+  const _StartFrequency();
 
   @override
   Widget build(BuildContext context) {
@@ -475,9 +468,7 @@ class _StartFrequency extends StatelessWidget {
 }
 
 class _StartLevel extends StatelessWidget {
-  const _StartLevel({
-    super.key,
-  });
+  const _StartLevel();
 
   @override
   Widget build(BuildContext context) {
@@ -495,9 +486,7 @@ class _StartLevel extends StatelessWidget {
 }
 
 class _StopFrequency extends StatelessWidget {
-  const _StopFrequency({
-    super.key,
-  });
+  const _StopFrequency();
 
   @override
   Widget build(BuildContext context) {
@@ -515,9 +504,7 @@ class _StopFrequency extends StatelessWidget {
 }
 
 class _StopLevel extends StatelessWidget {
-  const _StopLevel({
-    super.key,
-  });
+  const _StopLevel();
 
   @override
   Widget build(BuildContext context) {
@@ -535,9 +522,7 @@ class _StopLevel extends StatelessWidget {
 }
 
 class _FwdAGCMode extends StatelessWidget {
-  const _FwdAGCMode({
-    super.key,
-  });
+  const _FwdAGCMode();
 
   @override
   Widget build(BuildContext context) {
@@ -554,9 +539,7 @@ class _FwdAGCMode extends StatelessWidget {
 }
 
 class _AutoLevelControl extends StatelessWidget {
-  const _AutoLevelControl({
-    super.key,
-  });
+  const _AutoLevelControl();
 
   @override
   Widget build(BuildContext context) {

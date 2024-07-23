@@ -69,7 +69,7 @@ enum HomeMenu {
 }
 
 class _PopupMenu extends StatefulWidget {
-  const _PopupMenu({super.key});
+  const _PopupMenu();
 
   @override
   State<_PopupMenu> createState() => __PopupMenuState();
@@ -180,7 +180,7 @@ class __PopupMenuState extends State<_PopupMenu> {
 }
 
 class _DeviceStatus extends StatelessWidget {
-  const _DeviceStatus({super.key});
+  const _DeviceStatus();
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +230,7 @@ class _DeviceStatus extends StatelessWidget {
 }
 
 class _DeviceRefresh extends StatelessWidget {
-  const _DeviceRefresh({super.key});
+  const _DeviceRefresh();
 
   @override
   Widget build(BuildContext context) {
@@ -258,7 +258,7 @@ class _DeviceRefresh extends StatelessWidget {
 }
 
 class _VersionCard extends StatelessWidget {
-  const _VersionCard({super.key});
+  const _VersionCard();
 
   @override
   Widget build(BuildContext context) {
@@ -290,7 +290,7 @@ class _VersionCard extends StatelessWidget {
 }
 
 class _ConnectionCard extends StatelessWidget {
-  const _ConnectionCard({super.key});
+  const _ConnectionCard();
 
   Widget getBluetoothName({
     required FormStatus scanStatus,
@@ -382,7 +382,7 @@ class _ConnectionCard extends StatelessWidget {
 }
 
 class _ShortcutCard extends StatelessWidget {
-  const _ShortcutCard({super.key});
+  const _ShortcutCard();
 
   @override
   Widget build(BuildContext context) {
@@ -465,7 +465,6 @@ class _ShortcutCard extends StatelessWidget {
 
 class _LoadPresetButton extends StatelessWidget {
   const _LoadPresetButton({
-    super.key,
     required this.loadingStatus,
     required this.partId,
   });
@@ -535,7 +534,7 @@ class _LoadPresetButton extends StatelessWidget {
 }
 
 class _BlockDiagramCard extends StatelessWidget {
-  const _BlockDiagramCard({super.key});
+  const _BlockDiagramCard();
 
   @override
   Widget build(BuildContext context) {
@@ -593,7 +592,6 @@ class _BlockDiagramCard extends StatelessWidget {
 
 class _ShowDiagramButton extends StatelessWidget {
   const _ShowDiagramButton({
-    super.key,
     required this.loadingStatus,
     required this.partId,
   });
@@ -632,7 +630,7 @@ class _ShowDiagramButton extends StatelessWidget {
 }
 
 class _BasicCard extends StatelessWidget {
-  const _BasicCard({super.key});
+  const _BasicCard();
 
   @override
   Widget build(BuildContext context) {
@@ -717,9 +715,7 @@ class _BasicCard extends StatelessWidget {
 }
 
 class _AlarmIndicator extends StatelessWidget {
-  const _AlarmIndicator({
-    super.key,
-  });
+  const _AlarmIndicator();
 
   @override
   Widget build(BuildContext context) {
@@ -737,7 +733,7 @@ class _AlarmIndicator extends StatelessWidget {
 }
 
 class _AlarmCard extends StatelessWidget {
-  const _AlarmCard({super.key});
+  const _AlarmCard();
 
   @override
   Widget build(BuildContext context) {
