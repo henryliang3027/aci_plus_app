@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
+import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/model/svg_image.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
@@ -28,9 +29,20 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
   final Amp18CCorNodeRepository _amp18CCorNodeRepository;
   final bool _editable;
 
-  String getValueText(String value) {
+  String getValueText({
+    required Map<DataKey, String> characteristicDataCache,
+    required DataKey dataKey,
+  }) {
+    String value = characteristicDataCache[dataKey] ?? '';
+
     if (value.isNotEmpty) {
-      return ' $value${CustomStyle.dB}';
+      if (dataKey.name.startsWith('biasCurrent')) {
+        return '$value${CustomStyle.milliAmps}';
+      } else if (dataKey == DataKey.forwardConfig) {
+        return '${forwardConfigExportTexts[value]}';
+      } else {
+        return '$value${CustomStyle.dB}';
+      }
     } else {
       return '';
     }
@@ -97,7 +109,10 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
         double y = double.parse(textPlaceholder.getAttribute('y').toString());
         DataKey dataKey =
             dataKeys.firstWhere((dataKey) => dataKey.name == moduleName);
-        String text = getValueText(characteristicDataCache[dataKey] ?? '');
+        String text = getValueText(
+          characteristicDataCache: characteristicDataCache,
+          dataKey: dataKey,
+        );
 
         String color = textPlaceholder.getAttribute('color').toString();
 
@@ -142,7 +157,10 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
       DataKey dataKey = dataKeys
           .firstWhere((dataKey) => dataKey.name == valueText.moduleName);
 
-      String text = getValueText(characteristicDataCache[dataKey] ?? '');
+      String text = getValueText(
+        characteristicDataCache: characteristicDataCache,
+        dataKey: dataKey,
+      );
 
       newValueTexts.add(ValueText(
         moduleName: valueText.moduleName,
