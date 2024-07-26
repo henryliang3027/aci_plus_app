@@ -169,7 +169,7 @@ class Setting18FirmwareForm extends StatelessWidget {
       // 讀取 device 基本資訊
       if (partId == '4') {
         // C-Cor Node
-        context.read<HomeBloc>().add(const CCorNode18DataRequested());
+        context.read<HomeBloc>().add(const Data18CCorNodeRequested());
       } else {
         // 其他機種的放大器
         context.read<HomeBloc>().add(const Data18Requested());

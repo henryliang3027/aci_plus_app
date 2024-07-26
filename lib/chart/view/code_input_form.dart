@@ -37,7 +37,9 @@ class _CodeInputDialog extends StatelessWidget {
     return BlocBuilder<CodeInputBloc, CodeInputState>(
       builder: (context, state) {
         return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.dialogTitleEnterYourCode),
+          title: Text(
+            AppLocalizations.of(context)!.dialogTitleEnterYourCode,
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

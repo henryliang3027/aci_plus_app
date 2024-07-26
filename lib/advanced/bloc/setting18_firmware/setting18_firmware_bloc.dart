@@ -139,7 +139,9 @@ class Setting18FirmwareBloc
         displayMessage = state.updateMessage;
       }
       add(MessageReceived(
-          message: displayMessage, currentProgress: currentProgress));
+        message: displayMessage,
+        currentProgress: currentProgress,
+      ));
     }, onError: (error) {
       print('onError: $error');
       add(ErrorReceived(errorMessage: error));

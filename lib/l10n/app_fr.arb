@@ -167,6 +167,7 @@
 
     "monitoringChart": "Graphique moniteur",
     "reconnect": "reconnecter",
+    "warmReset": "Réinitialisation chaude",
     "reset": "Réinitialiser",
     "share": "Partager",
     "export": "Exportation",
@@ -397,5 +398,7 @@
     "dialogMessageNoMoreLogs": "Plus de journaux.",
     "dialogMessageEnterConfirm": "Pour confirmer, tapez \"confirm\" ci-dessous.",
     "dialogMessageCodeHint": "Veuillez entrer votre code",
-    "dialogMessageEnterYourCode": "Seuls les chiffres arabes, maximum 8 caractères:"
+    "dialogMessageEnterYourCode": "Seuls les chiffres arabes, maximum 8 caractères:",
+    "dialogMessageWarmReset": "Voulez-vous effectuer une réinitialisation chaude sur l'appareil ?",
+    "dialogMessageWarmResetSeccessful": "Réinitialisation chaude effectuée avec succès."
 }

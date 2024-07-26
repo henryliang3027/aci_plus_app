@@ -168,6 +168,7 @@
 
     "monitoringChart": "Gráfico de Monitoreo",
     "reconnect": "Reconectar",
+    "warmReset": "Reinicio Caliente",
     "reset": "Restablecer",
     "share": "Compartir",
     "export": "Exportar",
@@ -398,5 +399,7 @@
     "dialogMessageNoMoreLogs": "No hay más registros.",
     "dialogMessageEnterConfirm": "Para confirmar, escriba \"confirm\" abajo.",
     "dialogMessageCodeHint": "Por favor ingresa tu código",
-    "dialogMessageEnterYourCode": "Solo números arábigos, máximo de 8 caracteres:"
+    "dialogMessageEnterYourCode": "Solo números arábigos, máximo de 8 caracteres:",
+    "dialogMessageWarmReset": "¿Desea realizar un reinicio caliente en el dispositivo?",
+    "dialogMessageWarmResetSeccessful": "Reinicio caliente realizado con éxito."
 }

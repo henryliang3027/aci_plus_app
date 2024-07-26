@@ -76,8 +76,8 @@ class Data18Requested extends HomeEvent {
   List<Object?> get props => [];
 }
 
-class CCorNode18DataRequested extends HomeEvent {
-  const CCorNode18DataRequested();
+class Data18CCorNodeRequested extends HomeEvent {
+  const Data18CCorNodeRequested();
 
   @override
   List<Object?> get props => [];

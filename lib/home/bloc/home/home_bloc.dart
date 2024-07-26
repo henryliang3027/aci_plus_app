@@ -33,7 +33,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DeviceSelectionCanceled>(_onDeviceSelectionCanceled);
     on<DataRequested>(_onDataRequested);
     on<Data18Requested>(_onData18Requested);
-    on<CCorNode18DataRequested>(_onCCorNode18DataRequested);
+    on<Data18CCorNodeRequested>(_onData18CCorNodeRequested);
     on<EventRequested>(_onEventRequested);
     on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
@@ -295,7 +295,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           } else if (aciDeviceType == ACIDeviceType.ampCCorNode1P8G) {
             print('1.8G _characteristicDataStreamSubscription');
             _amp18CCorNodeRepository.createCharacteristicDataStream();
-            add(const CCorNode18DataRequested());
+            add(const Data18CCorNodeRequested());
             //當在設定頁面設定資料時, 用來更新Information page 對應的資料欄位
             _characteristicDataStreamSubscription =
                 _amp18CCorNodeRepository.characteristicData.listen(
@@ -771,8 +771,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
   }
 
-  Future<void> _onCCorNode18DataRequested(
-    CCorNode18DataRequested event,
+  Future<void> _onData18CCorNodeRequested(
+    Data18CCorNodeRequested event,
     Emitter<HomeState> emit,
   ) async {
     emit(state.copyWith(

@@ -6,6 +6,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/information/bloc/information18/information18_bloc.dart';
+import 'package:aci_plus_app/information/shared/warm_reset_widget.dart';
 import 'package:aci_plus_app/information/views/information18_config_list_view.dart';
 import 'package:aci_plus_app/information/views/name_plate_view.dart';
 import 'package:aci_plus_app/repositories/config.dart';
@@ -65,6 +66,7 @@ class Information18Form extends StatelessWidget {
 
 enum HomeMenu {
   refresh,
+  warmReset,
   about,
 }
 
@@ -96,6 +98,28 @@ class __PopupMenuState extends State<_PopupMenu> {
                       .add(const AlarmPeriodicUpdateCanceled());
                   context.read<HomeBloc>().add(const DeviceRefreshed());
                   break;
+                case HomeMenu.warmReset:
+                  context
+                      .read<Information18Bloc>()
+                      .add(const AlarmPeriodicUpdateCanceled());
+
+                  showWarmResetNoticeDialog(context: context).then(
+                    (isConfirm) {
+                      if (isConfirm != null) {
+                        if (isConfirm) {
+                          showWarmResetDialog(context: context).then((_) {
+                            showWarmResetSuccessDialog(context: context)
+                                .then((_) {
+                              context
+                                  .read<HomeBloc>()
+                                  .add(const Data18Requested());
+                            });
+                          });
+                        }
+                      }
+                    },
+                  );
+                  break;
                 case HomeMenu.about:
                   Navigator.push(
                     context,
@@ -105,6 +129,7 @@ class __PopupMenuState extends State<_PopupMenu> {
                     ),
                   );
                   break;
+
                 default:
                   break;
               }
@@ -129,45 +154,43 @@ class __PopupMenuState extends State<_PopupMenu> {
                     ],
                   ),
                 ),
-                !state.loadingStatus.isRequestInProgress &&
-                        !state.connectionStatus.isRequestInProgress
-                    ? PopupMenuItem<HomeMenu>(
-                        value: HomeMenu.about,
-                        enabled: true,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              CustomIcons.about,
-                              size: 20.0,
-                              color: Colors.black,
-                            ),
-                            const SizedBox(
-                              width: 10.0,
-                            ),
-                            Text(AppLocalizations.of(context)!.aboutUs),
-                          ],
-                        ),
-                      )
-                    : PopupMenuItem<HomeMenu>(
-                        value: HomeMenu.about,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              CustomIcons.about,
-                              size: 20.0,
-                              color: Colors.black,
-                            ),
-                            const SizedBox(
-                              width: 10.0,
-                            ),
-                            Text(AppLocalizations.of(context)!.aboutUs),
-                          ],
-                        ),
+                PopupMenuItem<HomeMenu>(
+                  value: HomeMenu.warmReset,
+                  enabled: true,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.restart_alt_outlined,
+                        size: 20.0,
+                        color: Colors.black,
                       ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(AppLocalizations.of(context)!.warmReset),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<HomeMenu>(
+                  value: HomeMenu.about,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        CustomIcons.about,
+                        size: 20.0,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(AppLocalizations.of(context)!.aboutUs),
+                    ],
+                  ),
+                ),
               ];
             },
           );

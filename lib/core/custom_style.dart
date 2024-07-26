@@ -6,6 +6,7 @@ class CustomStyle {
   static const double sizeL = 16.0;
   static const double sizeXL = 18.0;
   static const double sizeXXL = 20.0; // app bar title
+  static const double size24 = 24.0; // dialog title
   static const double size28 = 28.0;
   static const double size32 = 32.0;
   static const double size36 = 36.0;

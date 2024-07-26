@@ -168,6 +168,7 @@
     
     "monitoringChart": "監控圖表",
     "reconnect": "重新連線",
+    "warmReset": "熱重啟",
     "reset": "重置",
     "share": "分享",
     "export": "匯出",
@@ -398,7 +399,7 @@
     "dialogMessageNoMoreLogs": "無法載入更多紀錄。",
     "dialogMessageEnterConfirm": "請在下面的方塊中輸入 \"confirm\" 來確認您要進行設定",
     "dialogMessageCodeHint": "請輸入您的代碼",
-    "dialogMessageEnterYourCode": "代碼僅能為阿拉伯數字，最多八個字元："
-
-
+    "dialogMessageEnterYourCode": "代碼僅能為阿拉伯數字，最多八個字元：",
+    "dialogMessageWarmReset": "您確定要對裝置執行熱重啟嗎 ?",
+    "dialogMessageWarmResetSeccessful": "熱重啟成功"
 }

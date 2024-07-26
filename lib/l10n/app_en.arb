@@ -169,6 +169,7 @@
 
     "monitoringChart": "Monitoring Chart",
     "reconnect": "Reconnect",
+    "warmReset": "Warm Reset",
     "reset": "Reset",
     "share": "Share",
     "export": "Export",
@@ -399,7 +400,9 @@
     "dialogMessageNoMoreLogs": "No more logs.",
     "dialogMessageEnterConfirm": "To confirm, type \"confirm\" below.",
     "dialogMessageCodeHint": "Please enter your code",
-    "dialogMessageEnterYourCode": "Only Arabic numerals, maximum 8 characters:"
+    "dialogMessageEnterYourCode": "Only Arabic numerals, maximum 8 characters:",
+    "dialogMessageWarmReset": "Do you want to perform a warm reset on the device ?",
+    "dialogMessageWarmResetSeccessful": "Warm reset performed successfully."
 
     
 }
