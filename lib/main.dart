@@ -12,6 +12,7 @@ import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -22,6 +23,8 @@ void openHiveBox() {}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final AdaptiveThemeMode savedAdaptiveThemeMode =
+      await AdaptiveTheme.getThemeMode() ?? AdaptiveThemeMode.light;
 
   if (Platform.isIOS || Platform.isAndroid) {
     await Firebase.initializeApp();
@@ -45,6 +48,7 @@ Future<void> main() async {
   await Hive.openBox<NodeConfig>('NodeConfigData');
 
   runApp(App(
+    savedAdaptiveThemeMode: savedAdaptiveThemeMode,
     aciDeviceRepository: ACIDeviceRepository(),
     dsimRepository: DsimRepository(),
     amp18Repository: Amp18Repository(),

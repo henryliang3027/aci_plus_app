@@ -6,10 +6,12 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/information/bloc/information18_ccor_node/information18_ccor_node_bloc.dart';
+import 'package:aci_plus_app/information/shared/theme_option_widget.dart';
 import 'package:aci_plus_app/information/shared/warm_reset_widget.dart';
 import 'package:aci_plus_app/information/views/information18_ccor_node_config_list_view.dart';
 import 'package:aci_plus_app/information/views/name_plate_view.dart';
 import 'package:aci_plus_app/repositories/node_config.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,6 +68,7 @@ class Information18CCorNodeForm extends StatelessWidget {
 
 enum HomeMenu {
   refresh,
+  theme,
   warmReset,
   about,
 }
@@ -97,6 +100,28 @@ class __PopupMenuState extends State<_PopupMenu> {
                       .read<Information18CCorNodeBloc>()
                       .add(const AlarmPeriodicUpdateCanceled());
                   context.read<HomeBloc>().add(const DeviceRefreshed());
+                  break;
+
+                case HomeMenu.theme:
+                  showThemeOptionDialog(context: context).then(
+                    (String? theme) {
+                      if (theme != null) {
+                        switch (theme) {
+                          case 'light':
+                            AdaptiveTheme.of(context).setLight();
+                            break;
+                          case 'dark':
+                            AdaptiveTheme.of(context).setDark();
+                            break;
+                          case 'system':
+                            AdaptiveTheme.of(context).setSystem();
+                            break;
+                          default:
+                            AdaptiveTheme.of(context).setLight();
+                        }
+                      }
+                    },
+                  );
                   break;
                 case HomeMenu.warmReset:
                   context
@@ -152,6 +177,25 @@ class __PopupMenuState extends State<_PopupMenu> {
                         width: 10.0,
                       ),
                       Text(AppLocalizations.of(context)!.reconnect),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<HomeMenu>(
+                  value: HomeMenu.theme,
+                  enabled: true,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.colorize_rounded,
+                        size: 20.0,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(AppLocalizations.of(context)!.theme),
                     ],
                   ),
                 ),
@@ -314,8 +358,7 @@ class _ConnectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+        color: Theme.of(context).cardTheme.color,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -381,8 +424,7 @@ class _ShortcutCard extends StatelessWidget {
         }
 
         return Card(
-          color: Theme.of(context).colorScheme.onPrimary,
-          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+          color: Theme.of(context).cardTheme.color,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -488,10 +530,7 @@ class _LoadPresetButton extends StatelessWidget {
                       });
                     }
                   : null,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            foregroundColor: Colors.white,
-          ),
+          style: Theme.of(context).elevatedButtonTheme.style,
           child: Text(
             AppLocalizations.of(context)!.load,
             style: const TextStyle(
@@ -615,8 +654,7 @@ class _BasicCard extends StatelessWidget {
 
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       return Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+        color: Theme.of(context).cardTheme.color,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -790,8 +828,7 @@ Widget buildAlarmCard({
   required String alarmPSeverity,
 }) {
   return Card(
-    color: Theme.of(context).colorScheme.onPrimary,
-    surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+    color: Theme.of(context).cardTheme.color,
     child: Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(

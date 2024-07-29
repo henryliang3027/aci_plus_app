@@ -134,9 +134,14 @@
     "currentRFOutputPower": "Courant",
     "minRFOutputPower": "Minimum",
     "maxRFOutputPower": "Maximum",
-    
+
+    "theme": "Tema",
+    "lightTheme": "Thème Clair",
+    "darkTheme": "Thème Sombre",
+    "systemTheme": "Thème Système",
     
     "home": "Accueil",
+    "theme": "Thème",
     "appVersion": "Version App",
     "support": "Soutien",
     "website": "Site web",

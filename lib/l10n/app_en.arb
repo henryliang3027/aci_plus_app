@@ -135,7 +135,11 @@
     "currentRFOutputPower": "Current",
     "minRFOutputPower": "Minimum",
     "maxRFOutputPower": "Maximum",
-    
+
+    "theme": "Theme",
+    "lightTheme": "Light Theme",
+    "darkTheme": "Dart Theme",
+    "systemTheme": "System Theme",  
     
     "home": "Home",
     "appVersion": "App Version",

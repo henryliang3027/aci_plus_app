@@ -452,6 +452,70 @@ class _ForwardMode extends StatelessWidget {
           previous.forwardMode != current.forwardMode ||
           previous.editMode != current.editMode,
       builder: (context, state) {
+        // return Padding(
+        //   padding: const EdgeInsets.only(
+        //     bottom: 40.0,
+        //   ),
+        //   child: Column(
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     children: [
+        //       Padding(
+        //         padding: const EdgeInsets.only(
+        //           bottom: CustomStyle.sizeL,
+        //         ),
+        //         child: Text(
+        //           '${AppLocalizations.of(context)!.forwardMode}:',
+        //           style: const TextStyle(
+        //             fontSize: CustomStyle.sizeXL,
+        //             fontWeight: FontWeight.w500,
+        //           ),
+        //         ),
+        //       ),
+        //       GridView.builder(
+        //         physics: const NeverScrollableScrollPhysics(),
+        //         shrinkWrap: true,
+        //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        //           crossAxisCount: 2,
+        //           childAspectRatio: (MediaQuery.of(context).size.width / 110.0),
+        //         ),
+        //         itemCount: splitOptionValues.length,
+        //         itemBuilder: (BuildContext childContext, int index) {
+        //           return Padding(
+        //             padding: const EdgeInsets.all(2.0),
+        //             child: ElevatedButton(
+        //               style: ElevatedButton.styleFrom(
+        //                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        //                 elevation: 0.0,
+        //                 disabledBackgroundColor: getDisabledBackgroundColor(
+        //                   context: context,
+        //                   targetValue: state.forwardMode,
+        //                   value: '120',
+        //                 ),
+        //                 backgroundColor: getBackgroundColor(
+        //                   context: context,
+        //                   targetValue: state.forwardMode,
+        //                   value: '120',
+        //                 ),
+        //                 shape: const RoundedRectangleBorder(
+        //                     borderRadius:
+        //                         BorderRadius.all(Radius.circular(10.0))),
+        //               ),
+        //               onPressed: state.editMode ? () {} : null,
+        //               child: Text(
+        //                 '123123123',
+        //                 style: const TextStyle(
+        //                   fontSize: CustomStyle.sizeXL,
+        //                   fontWeight: FontWeight.normal,
+        //                 ),
+        //               ),
+        //             ),
+        //           );
+        //         },
+        //       ),
+        //     ],
+        //   ),
+        // );
+
         return configureGridViewButton(
           context: context,
           editMode: state.editMode,

@@ -135,6 +135,10 @@
     "minRFOutputPower": "最小",
     "maxRFOutputPower": "最大",
 
+    "theme": "主題",
+    "lightTheme": "淺色主題",
+    "darkTheme": "深色主題",
+    "systemTheme": "系統主題",
 
     "home": "首頁",
     "appVersion": "App 版本",

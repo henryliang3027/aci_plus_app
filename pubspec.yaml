@@ -87,6 +87,7 @@ dependencies:
   flutter_native_splash: ^2.3.1
   firebase_crashlytics: ^3.4.6
   firebase_core: ^2.24.0
+  adaptive_theme: ^3.6.0
   # file_picker: ^8.0.5
 
 dev_dependencies:

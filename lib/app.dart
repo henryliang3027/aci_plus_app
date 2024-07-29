@@ -8,6 +8,7 @@ import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class App extends StatelessWidget {
   const App({
     super.key,
+    required this.savedAdaptiveThemeMode,
     required this.aciDeviceRepository,
     required this.dsimRepository,
     required this.amp18Repository,
@@ -25,6 +27,7 @@ class App extends StatelessWidget {
     required this.firmwareRepository,
   });
 
+  final AdaptiveThemeMode savedAdaptiveThemeMode;
   final ACIDeviceRepository aciDeviceRepository;
   final DsimRepository dsimRepository;
   final Amp18Repository amp18Repository;
@@ -69,14 +72,20 @@ class App extends StatelessWidget {
           amp18Repository: amp18Repository,
           amp18CCorNodeRepository: amp18CCorNodeRepository,
         ),
-        child: const _AppView(),
+        child: _AppView(
+          savedAdaptiveThemeMode: savedAdaptiveThemeMode,
+        ),
       ),
     );
   }
 }
 
 class _AppView extends StatelessWidget {
-  const _AppView();
+  const _AppView({
+    required this.savedAdaptiveThemeMode,
+  });
+
+  final AdaptiveThemeMode savedAdaptiveThemeMode;
 
   @override
   Widget build(BuildContext context) {
@@ -105,22 +114,8 @@ class _AppView extends StatelessWidget {
         Locale('fr', 'FR'),
         Locale('zh', 'TW'),
       ],
-      themeMode: ThemeMode.system,
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        /* dark theme settings */
-      ),
 
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         cardTheme: const CardTheme(
           color: Colors.white,
         ),
@@ -137,10 +132,91 @@ class _AppView extends StatelessWidget {
         tabBarTheme: TabBarTheme(
           indicatorColor: Colors.grey.shade50,
         ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.indigo,
+          unselectedItemColor: Colors.grey.shade700,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            elevation: WidgetStateProperty.resolveWith<double?>(
+                (Set<WidgetState> states) {
+              return 0.0;
+            }),
+            backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+                (Set<WidgetState> states) {
+              if (states.contains(WidgetState.disabled)) {
+                return Colors.grey.shade300; // Disabled background color
+              }
+              return Colors.indigo; // Enabled background color
+            }),
+            foregroundColor: WidgetStateProperty.resolveWith<Color?>(
+                (Set<WidgetState> states) {
+              if (states.contains(WidgetState.disabled)) {
+                return Colors.grey.shade500; // Disabled text color
+              }
+              return Colors.white; // Enabled text color
+            }),
+          ),
+        ),
         scaffoldBackgroundColor: Colors.grey.shade50,
         dialogBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
+      darkTheme: ThemeData(
+        cardTheme: CardTheme(
+          color: Colors.grey.shade900,
+        ),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.black,
+          primary: Colors.indigo,
+          onPrimary: Colors.white,
+          inversePrimary: Colors.black,
+        ),
+        appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.white),
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.black,
+        ),
+        tabBarTheme: TabBarTheme(
+          indicatorColor: Colors.grey.shade50,
+        ),
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            color: Colors.white,
+          ),
+          bodyMedium: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+                (Set<WidgetState> states) {
+              if (states.contains(WidgetState.disabled)) {
+                return Colors.grey; // Disabled background color
+              }
+              return Colors.indigo; // Enabled background color
+            }),
+            foregroundColor: WidgetStateProperty.resolveWith<Color?>(
+                (Set<WidgetState> states) {
+              if (states.contains(WidgetState.disabled)) {
+                return Colors.white; // Disabled text color
+              }
+              return Colors.white; // Enabled text color
+            }),
+          ),
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.black,
+          selectedItemColor: Colors.indigo,
+          unselectedItemColor: Colors.grey.shade700,
+        ),
+        scaffoldBackgroundColor: Colors.black,
+        dialogBackgroundColor: Colors.white,
+        useMaterial3: true,
+      ),
+      themeMode: ThemeMode.system,
       home: BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (previous, current) =>
             previous.showSplash != current.showSplash,
@@ -158,6 +234,59 @@ class _AppView extends StatelessWidget {
         },
       ),
     );
+
+    // return AdaptiveTheme(
+    //   debugShowFloatingThemeButton: true,
+    //   light: CustomTheme.lightTheme,
+    //   dark: CustomTheme.darkTheme,
+    //   initial: savedAdaptiveThemeMode,
+    //   builder: (light, dark) => MaterialApp(
+    //     localizationsDelegates: AppLocalizations.localizationsDelegates,
+    //     // locale: const Locale('en'),'
+    //     localeResolutionCallback:
+    //         (Locale? locale, Iterable<Locale> supportedLocales) {
+    //       if (locale == null) {
+    //         return supportedLocales.first;
+    //       }
+
+    //       // 檢查目前系統語言是否有支援
+    //       for (Locale supportedLocale in supportedLocales) {
+    //         if (supportedLocale.languageCode == locale.languageCode) {
+    //           return supportedLocale;
+    //         }
+    //       }
+
+    //       //  如果不支援目前系統語言, 則設為預設語言 English (US)
+    //       return const Locale('en', 'US');
+    //     },
+    //     supportedLocales: const <Locale>[
+    //       Locale('en', 'US'),
+    //       Locale('es', 'ES'),
+    //       Locale('fr', 'FR'),
+    //       Locale('zh', 'TW'),
+    //     ],
+
+    //     theme: CustomTheme.lightTheme,
+    //     darkTheme: CustomTheme.darkTheme,
+    //     themeMode: ThemeMode.light,
+    //     home: BlocBuilder<HomeBloc, HomeState>(
+    //       buildWhen: (previous, current) =>
+    //           previous.showSplash != current.showSplash,
+    //       builder: (context, state) {
+    //         if (state.showSplash) {
+    //           return const Stack(
+    //             children: [
+    //               HomePage(),
+    //               SplashScreen(),
+    //             ],
+    //           );
+    //         } else {
+    //           return const HomePage();
+    //         }
+    //       },
+    //     ),
+    //   ),
+    // );
   }
 }
 
@@ -192,4 +321,109 @@ class SplashScreen extends StatelessWidget {
       ],
     );
   }
+}
+
+class CustomTheme {
+  static ThemeData lightTheme = ThemeData(
+    cardTheme: const CardTheme(
+      color: Colors.white,
+    ),
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.indigo,
+      primary: Colors.indigo,
+      onPrimary: Colors.white,
+    ),
+    appBarTheme: const AppBarTheme(
+      iconTheme: IconThemeData(color: Colors.white),
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.indigo,
+    ),
+    tabBarTheme: TabBarTheme(
+      indicatorColor: Colors.grey.shade50,
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: Colors.white,
+      selectedItemColor: Colors.indigo,
+      unselectedItemColor: Colors.grey.shade700,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        elevation:
+            WidgetStateProperty.resolveWith<double?>((Set<WidgetState> states) {
+          return 0.0;
+        }),
+        backgroundColor:
+            WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Colors.grey.shade300; // Disabled background color
+          }
+          return Colors.indigo; // Enabled background color
+        }),
+        foregroundColor:
+            WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Colors.grey.shade500; // Disabled text color
+          }
+          return Colors.white; // Enabled text color
+        }),
+      ),
+    ),
+    scaffoldBackgroundColor: Colors.grey.shade50,
+    dialogBackgroundColor: Colors.white,
+    useMaterial3: true,
+  );
+
+  static ThemeData darkTheme = ThemeData(
+    cardTheme: CardTheme(
+      color: Colors.grey.shade900,
+    ),
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.black,
+      primary: Colors.indigo,
+      onPrimary: Colors.white,
+      inversePrimary: Colors.black,
+    ),
+    appBarTheme: const AppBarTheme(
+      iconTheme: IconThemeData(color: Colors.white),
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.black,
+    ),
+    tabBarTheme: TabBarTheme(
+      indicatorColor: Colors.grey.shade50,
+    ),
+    textTheme: const TextTheme(
+      titleLarge: TextStyle(
+        color: Colors.white,
+      ),
+      bodyMedium: TextStyle(
+        color: Colors.white,
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor:
+            WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Colors.grey; // Disabled background color
+          }
+          return Colors.indigo; // Enabled background color
+        }),
+        foregroundColor:
+            WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Colors.white; // Disabled text color
+          }
+          return Colors.white; // Enabled text color
+        }),
+      ),
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: Colors.black,
+      selectedItemColor: Colors.indigo,
+      unselectedItemColor: Colors.grey.shade700,
+    ),
+    scaffoldBackgroundColor: Colors.black,
+    dialogBackgroundColor: Colors.white,
+    useMaterial3: true,
+  );
 }

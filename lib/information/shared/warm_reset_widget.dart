@@ -11,8 +11,13 @@ Future<void> showWarmResetDialog({
     barrierDismissible: false, // user must tap button!
 
     builder: (BuildContext context) {
-      return const Dialog(
-        child: WarmResetPage(),
+      var width = MediaQuery.of(context).size.width;
+
+      return Dialog(
+        insetPadding: EdgeInsets.symmetric(
+          horizontal: width * 0.01,
+        ),
+        child: const WarmResetPage(),
       );
     },
   );

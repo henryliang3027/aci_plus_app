@@ -135,6 +135,10 @@
     "minRFOutputPower": "Mínimo",
     "maxRFOutputPower": "Máximo",
 
+    "theme": "Tema",
+    "lightTheme": "Tema Claro",
+    "darkTheme": "Tema Oscuro",
+    "systemTheme": "Tema del Sistema",
 
     "home": "Inicio",
     "appVersion": "Versión App",
@@ -145,7 +149,7 @@
     "shortcut": "Acceso Directo",
     "loadPreset": "Cargar Preset",
     "load": "Carga",
-    "blockDiagram": "Diagrama de bloques",
+    "blockDiagram": "Diagrama de Bloques",
     "showDiagram": "Mostrar diagrama",
     "show": "Mostrar",
     "visitWebsite": "Visitar sitio web ACI",
