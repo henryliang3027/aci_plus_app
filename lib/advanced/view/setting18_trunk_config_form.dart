@@ -243,152 +243,101 @@ class _DeviceListView extends StatelessWidget {
     }) {
       return Card(
         // margin: EdgeInsets.zero,
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Theme.of(context).colorScheme.onPrimary,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 26.0,
+                  vertical: 24.0,
+                ),
+                child: Text(
+                  config.name,
+                  style: const TextStyle(
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 136,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  right: 12,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: IconButton(
+                        onPressed: () {
+                          showConfirmDeleteDialog(
+                            configName: config.name,
+                          ).then((result) {
+                            if (result != null) {
+                              if (result) {
+                                context
+                                    .read<Setting18ConfigBloc>()
+                                    .add(ConfigDeleted(
+                                      id: config.id,
+                                      groupId: groupId,
+                                    ));
+                              }
+                            }
+                          });
+                        },
 
-            // config.isDefault == '1'
-            //     ? CustomStyle.customBlue
-            //     : Theme.of(context).colorScheme.onPrimary,
-          ),
-          // height: 80,
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(8.0),
-              // onLongPress: () {
-              //   showSetAsDefaultDialog(configName: config.name).then((result) {
-              //     if (result != null) {
-              //       if (result) {
-              //         context
-              //             .read<Setting18ConfigBloc>()
-              //             .add(DefaultConfigChanged(
-              //               groupId: groupId,
-              //               id: config.id,
-              //             ));
-              //       }
-              //     }
-              //   });
-              // },
-
-              // config.isDefault == '0'
-              //     ? () {
-              //         showSetAsDefaultDialog(configName: config.name)
-              //             .then((result) {
-              //           if (result != null) {
-              //             if (result) {
-              //               context
-              //                   .read<Setting18ConfigBloc>()
-              //                   .add(DefaultConfigChanged(
-              //                     groupId: groupId,
-              //                     id: config.id,
-              //                   ));
-              //             }
-              //           }
-              //         });
-              //       }
-              //     : null,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 26.0,
-                        vertical: 24.0,
-                      ),
-                      child: Text(
-                        config.name,
-                        style: const TextStyle(
-                          fontSize: 24,
+                        // config.isDefault == '0' || true
+                        //     ? () {
+                        //         showConfirmDeleteDialog(
+                        //           configName: config.name,
+                        //         ).then((result) {
+                        //           if (result != null) {
+                        //             if (result) {
+                        //               context
+                        //                   .read<Setting18ConfigBloc>()
+                        //                   .add(ConfigDeleted(
+                        //                     id: config.id,
+                        //                     groupId: groupId,
+                        //                   ));
+                        //             }
+                        //           }
+                        //         });
+                        //       }
+                        //     : null,
+                        icon: const Icon(
+                          Icons.delete,
+                          size: 26,
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 136,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        right: 12,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Expanded(
-                            child: IconButton(
-                              onPressed: () {
-                                showConfirmDeleteDialog(
-                                  configName: config.name,
-                                ).then((result) {
-                                  if (result != null) {
-                                    if (result) {
-                                      context
-                                          .read<Setting18ConfigBloc>()
-                                          .add(ConfigDeleted(
-                                            id: config.id,
-                                            groupId: groupId,
-                                          ));
-                                    }
-                                  }
-                                });
-                              },
-
-                              // config.isDefault == '0' || true
-                              //     ? () {
-                              //         showConfirmDeleteDialog(
-                              //           configName: config.name,
-                              //         ).then((result) {
-                              //           if (result != null) {
-                              //             if (result) {
-                              //               context
-                              //                   .read<Setting18ConfigBloc>()
-                              //                   .add(ConfigDeleted(
-                              //                     id: config.id,
-                              //                     groupId: groupId,
-                              //                   ));
-                              //             }
-                              //           }
-                              //         });
-                              //       }
-                              //     : null,
-                              icon: const Icon(
-                                Icons.delete,
-                                size: 26,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: IconButton(
-                              onPressed: () async {
-                                showEditConfigDialog(
-                                  config: config,
-                                  groupId: groupId,
-                                ).then((result) {
-                                  context
-                                      .read<Setting18ConfigBloc>()
-                                      .add(const ConfigsRequested());
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.edit,
-                                size: 26,
-                              ),
-                            ),
-                          ),
-                        ],
+                    Expanded(
+                      child: IconButton(
+                        onPressed: () async {
+                          showEditConfigDialog(
+                            config: config,
+                            groupId: groupId,
+                          ).then((result) {
+                            context
+                                .read<Setting18ConfigBloc>()
+                                .add(const ConfigsRequested());
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.edit,
+                          size: 26,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
+          ],
         ),
       );
     }
