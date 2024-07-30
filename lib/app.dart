@@ -123,14 +123,32 @@ class _AppView extends StatelessWidget {
           seedColor: Colors.indigo,
           primary: Colors.indigo,
           onPrimary: Colors.white,
+          secondaryContainer: Colors.white,
+          surfaceContainerLowest: Color(4294967295),
+          surfaceContainerLow: Color(4294177786),
+          surfaceContainer: Color(4293783028),
+          surfaceContainerHigh: Color(4293388526),
+          surfaceContainerHighest: Colors.white,
         ),
         appBarTheme: const AppBarTheme(
           iconTheme: IconThemeData(color: Colors.white),
           foregroundColor: Colors.white,
           backgroundColor: Colors.indigo,
         ),
-        tabBarTheme: TabBarTheme(
-          indicatorColor: Colors.grey.shade50,
+        tabBarTheme: const TabBarTheme(
+          tabAlignment: TabAlignment.start,
+          unselectedLabelColor: Colors.white,
+          labelColor: Colors.indigo,
+          indicatorSize: TabBarIndicatorSize.tab,
+          indicator: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+            color: Colors.white,
+          ),
+          labelPadding: EdgeInsets.symmetric(horizontal: 24.0),
+          dividerColor: Colors.white,
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: Colors.white,
@@ -164,31 +182,44 @@ class _AppView extends StatelessWidget {
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
-        cardTheme: CardTheme(
-          color: Colors.grey.shade900,
-        ),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.black,
+          brightness: Brightness.dark,
+          seedColor: Colors.indigo,
           primary: Colors.indigo,
           onPrimary: Colors.white,
-          inversePrimary: Colors.black,
+          surfaceContainerLowest: Color(4278980115),
+          surfaceContainerLow: Color(4279835680),
+          surfaceContainer: Color(4280098852),
+          surfaceContainerHigh: Color(4280822319),
+          surfaceContainerHighest: Color(4281546042),
         ),
         appBarTheme: const AppBarTheme(
           iconTheme: IconThemeData(color: Colors.white),
           foregroundColor: Colors.white,
           backgroundColor: Colors.black,
         ),
-        tabBarTheme: TabBarTheme(
-          indicatorColor: Colors.grey.shade50,
-        ),
-        textTheme: const TextTheme(
-          titleLarge: TextStyle(
-            color: Colors.white,
+        tabBarTheme: const TabBarTheme(
+          tabAlignment: TabAlignment.start,
+          unselectedLabelColor: Colors.white,
+          labelColor: Colors.white,
+          indicatorSize: TabBarIndicatorSize.tab,
+          indicator: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+            color: Color(4281546042),
           ),
-          bodyMedium: TextStyle(
-            color: Colors.white,
-          ),
+          labelPadding: EdgeInsets.symmetric(horizontal: 24.0),
+          dividerHeight: 0.0,
         ),
+        scaffoldBackgroundColor: Color(4278980115),
+        // textTheme: const TextTheme(
+        //   titleLarge: TextStyle(
+        //     color: Colors.white,
+        //   ),
+        //   bodyMedium: TextStyle(
+        //     color: Colors.white,
+        //   ),
+        // ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.resolveWith<Color?>(
@@ -207,13 +238,13 @@ class _AppView extends StatelessWidget {
             }),
           ),
         ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Colors.black,
-          selectedItemColor: Colors.indigo,
-          unselectedItemColor: Colors.grey.shade700,
-        ),
-        scaffoldBackgroundColor: Colors.black,
-        dialogBackgroundColor: Colors.white,
+        // bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        //   backgroundColor: Colors.black,
+        //   selectedItemColor: Colors.indigo,
+        //   unselectedItemColor: Colors.grey.shade700,
+        // ),
+        // scaffoldBackgroundColor: Colors.black,
+        // dialogBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
       themeMode: ThemeMode.system,

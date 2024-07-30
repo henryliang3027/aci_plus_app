@@ -333,8 +333,6 @@ class _WorkingModeCard extends StatelessWidget {
           : getWorkingModeText(currentWorkingMode);
 
       return Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -465,8 +463,6 @@ class _SplitOptionCard extends StatelessWidget {
           state.characteristicData[DataKey.splitOptionAlarmSeverity] ?? '1';
 
       return Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -792,8 +788,6 @@ class _TemperatureCard extends StatelessWidget {
         }
 
         return Card(
-          color: Theme.of(context).colorScheme.onPrimary,
-          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -1111,8 +1105,6 @@ class _PowerSupplyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1386,8 +1378,6 @@ class _RFOutputPower1Card extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1442,8 +1432,6 @@ class _RFOutputPower3Card extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1498,8 +1486,6 @@ class _RFOutputPower4Card extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1554,8 +1540,6 @@ class _RFOutputPower6Card extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

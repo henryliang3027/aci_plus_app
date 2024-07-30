@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/color.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_control_tab_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,7 @@ class Setting18ControlPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onPrimary,
+        color: getSecondaryTabBarPaddingColor(context),
       ),
       child: const Padding(
         padding: EdgeInsets.only(top: 6),

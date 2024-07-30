@@ -159,7 +159,7 @@ class CircuitPainter extends CustomPainter {
       // final int colorHex = int.parse(valueText.color);
       TextStyle textStyle = TextStyle(
           // background: Paint()..color = Color.fromARGB(255, 170, 214, 255),
-          color: Colors.black,
+
           fontSize: 82 * scaleFactor,
           fontWeight: FontWeight.bold);
       final textSpan = TextSpan(

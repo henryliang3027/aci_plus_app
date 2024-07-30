@@ -339,8 +339,6 @@ class _OperatingModeCard extends StatelessWidget {
           : getOperatingModeByForwardCEQIndexText(currentOperatingMode);
 
       return Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -464,8 +462,6 @@ class _WorkingModeCard extends StatelessWidget {
               currentWorkingMode;
 
       return Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -596,8 +592,6 @@ class _SplitOptionCard extends StatelessWidget {
           state.characteristicData[DataKey.splitOptionAlarmSeverity] ?? '1';
 
       return Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -922,8 +916,6 @@ class _TemperatureCard extends StatelessWidget {
         }
 
         return Card(
-          color: Theme.of(context).colorScheme.onPrimary,
-          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -1241,8 +1233,6 @@ class _PowerSupplyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1516,8 +1506,6 @@ class _VoltageRippleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1799,8 +1787,6 @@ class _RFOutputPowerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1936,8 +1922,6 @@ class _RFInputPower1p8GCard extends StatelessWidget {
           state.characteristicData[DataKey.currentRFInputPower1p8G] ?? '1';
 
       return Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -2060,8 +2044,6 @@ class _PilotFrequency1Card extends StatelessWidget {
           _getPilotFrequencyAlarmSeverityText(pilotFrequency1AlarmSeverity);
 
       return Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -2184,8 +2166,6 @@ class _PilotFrequency2Card extends StatelessWidget {
           _getPilotFrequencyAlarmSeverityText(pilotFrequency2AlarmSeverity);
 
       return Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -2382,31 +2362,29 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
           '0';
 
       return Card(
-          color: Theme.of(context).colorScheme.onPrimary,
-          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
-                child: Text(
-                  AppLocalizations.of(context)!.rfOutputPilotLowFrequencyStatus,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ),
-              pilotFrequencyBlock(
-                loadingStatus: state.loadingStatus,
-                pilotFrequencyAlarmState: pilotFrequency1AlarmState,
-                pilotFrequencyAlarmSeverity: pilotFrequency1AlarmSeverity,
-                firstChannelFrequency: firstChannelFrequency,
-                rfOutputLowChannelPower: rfOutputLowChannelPower,
-                frequencyTitle:
-                    '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})',
-                outputPowerTitle:
-                    '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})',
-              ),
-            ],
-          ));
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
+            child: Text(
+              AppLocalizations.of(context)!.rfOutputPilotLowFrequencyStatus,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
+          pilotFrequencyBlock(
+            loadingStatus: state.loadingStatus,
+            pilotFrequencyAlarmState: pilotFrequency1AlarmState,
+            pilotFrequencyAlarmSeverity: pilotFrequency1AlarmSeverity,
+            firstChannelFrequency: firstChannelFrequency,
+            rfOutputLowChannelPower: rfOutputLowChannelPower,
+            frequencyTitle:
+                '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})',
+            outputPowerTitle:
+                '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})',
+          ),
+        ],
+      ));
     });
   }
 }
@@ -2582,32 +2560,29 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
           '0';
 
       return Card(
-          color: Theme.of(context).colorScheme.onPrimary,
-          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
-                child: Text(
-                  AppLocalizations.of(context)!
-                      .rfOutputPilotHighFrequencyStatus,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ),
-              pilotFrequencyBlock(
-                loadingStatus: state.loadingStatus,
-                pilotFrequencyAlarmState: pilotFrequency2AlarmState,
-                pilotFrequencyAlarmSeverity: pilotFrequency2AlarmSeverity,
-                lastChannelFrequency: lastChannelFrequency,
-                rfOutputHighChannelPower: rfOutputHighChannelPower,
-                frequencyTitle:
-                    '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})',
-                outputPowerTitle:
-                    '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})',
-              ),
-            ],
-          ));
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 36.0, 16.0, 16.0),
+            child: Text(
+              AppLocalizations.of(context)!.rfOutputPilotHighFrequencyStatus,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
+          pilotFrequencyBlock(
+            loadingStatus: state.loadingStatus,
+            pilotFrequencyAlarmState: pilotFrequency2AlarmState,
+            pilotFrequencyAlarmSeverity: pilotFrequency2AlarmSeverity,
+            lastChannelFrequency: lastChannelFrequency,
+            rfOutputHighChannelPower: rfOutputHighChannelPower,
+            frequencyTitle:
+                '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})',
+            outputPowerTitle:
+                '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})',
+          ),
+        ],
+      ));
     });
   }
 }
@@ -2694,8 +2669,6 @@ class _OutputOperatingSlopeCard extends StatelessWidget {
           state.characteristicData[DataKey.rfOutputOperatingSlope] ?? '';
 
       return Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/color.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_forward_control_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_reverse_control_page.dart';
 import 'package:flutter/material.dart';
@@ -15,54 +16,36 @@ class Setting18ControlTabBar extends StatelessWidget {
         children: [
           Container(
             width: double.maxFinite,
-            color: Theme.of(context).colorScheme.onPrimary,
-            child: TabBar(
-              // controller: tabController,
-              padding: const EdgeInsets.only(left: 6.0),
-              dividerColor: Colors.grey,
-              tabAlignment: TabAlignment.start,
-              isScrollable: true,
-              unselectedLabelColor: Colors.grey,
-              labelColor: Colors.black,
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicator: BoxDecoration(
-                border: const Border(
-                    left: BorderSide(
-                      color: Colors.grey,
+            color: getSecondaryTabBarPaddingColor(context),
+            child: Theme(
+              data: getSecondaryTabBarTheme(context),
+              child: TabBar(
+                // controller: tabController,
+                padding: const EdgeInsets.only(left: 6.0),
+                isScrollable: true,
+                tabs: [
+                  Tab(
+                    child: SizedBox(
+                      // width: 110,
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.forwardControl,
+                        ),
+                      ),
                     ),
-                    top: BorderSide(
-                      color: Colors.grey,
+                  ),
+                  Tab(
+                    child: SizedBox(
+                      // width: 110,
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.returnControl,
+                        ),
+                      ),
                     ),
-                    right: BorderSide(
-                      color: Colors.grey,
-                    )),
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(10)),
-                color: Theme.of(context).tabBarTheme.indicatorColor,
+                  ),
+                ],
               ),
-              // labelPadding: const EdgeInsets.symmetric(horizontal: 24.0),
-              tabs: [
-                Tab(
-                  child: SizedBox(
-                    // width: 110,
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.forwardControl,
-                      ),
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: SizedBox(
-                    // width: 110,
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.returnControl,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
           const Expanded(

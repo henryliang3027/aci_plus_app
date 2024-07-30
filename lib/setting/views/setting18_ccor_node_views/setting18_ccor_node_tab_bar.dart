@@ -16,20 +16,15 @@ class Setting18CCorNodeTabBar extends StatelessWidget {
         children: [
           Container(
             width: double.maxFinite,
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).appBarTheme.backgroundColor,
             child: TabBar(
               tabAlignment: TabAlignment.start,
               isScrollable: true,
-              unselectedLabelColor: Colors.white,
-              labelColor: Theme.of(context).colorScheme.primary,
+              unselectedLabelColor:
+                  Theme.of(context).tabBarTheme.unselectedLabelColor,
+              labelColor: Theme.of(context).tabBarTheme.labelColor,
               indicatorSize: TabBarIndicatorSize.tab,
-              indicator: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10)),
-                color: Colors.white,
-              ),
-              labelPadding: const EdgeInsets.symmetric(horizontal: 24.0),
+              indicator: Theme.of(context).tabBarTheme.indicator,
               tabs: [
                 Tab(
                   child: SizedBox(

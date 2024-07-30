@@ -713,7 +713,8 @@ class _FineTuneTextSlider2State extends State<FineTuneTextSlider2> {
                       contentPadding: const EdgeInsets.all(8.0),
                       isDense: true,
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor:
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
                       counterText: '',
                       errorMaxLines: 2,
                       // 暫時解法, 避免 errorText 出現時改變了 textfield 原來的高度
@@ -1079,7 +1080,8 @@ Widget twoTextField({
                   contentPadding: const EdgeInsets.all(8.0),
                   isDense: true,
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor:
+                      Theme.of(context).colorScheme.surfaceContainerHighest,
                   counterText: '',
                   errorMaxLines: 2,
                   errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
@@ -1114,7 +1116,8 @@ Widget twoTextField({
                   contentPadding: const EdgeInsets.all(8.0),
                   isDense: true,
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor:
+                      Theme.of(context).colorScheme.surfaceContainerHighest,
                   counterText: '',
                   errorMaxLines: 2,
                   errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
@@ -1258,7 +1261,7 @@ Widget splitOptionGridViewButton({
             childAspectRatio: (MediaQuery.of(context).size.width / 110.0),
           ),
           itemCount: splitOptionValues.length,
-          itemBuilder: (BuildContext context, int index) {
+          itemBuilder: (BuildContext itemContext, int index) {
             return Padding(
               padding: const EdgeInsets.all(2.0),
               child: ElevatedButton(
@@ -1497,7 +1500,8 @@ Widget thresholdAlarmParameterWidget({
                   contentPadding: const EdgeInsets.all(8.0),
                   isDense: true,
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor:
+                      Theme.of(context).colorScheme.surfaceContainerHighest,
                   counterText: '',
                   errorMaxLines: 2,
                   errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
@@ -1531,7 +1535,8 @@ Widget thresholdAlarmParameterWidget({
                   contentPadding: const EdgeInsets.all(8.0),
                   isDense: true,
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor:
+                      Theme.of(context).colorScheme.surfaceContainerHighest,
                   counterText: '',
                   errorMaxLines: 2,
                   errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
@@ -1700,7 +1705,7 @@ Color getBackgroundColor({
 }) {
   return targetValue == value
       ? Theme.of(context).colorScheme.primary
-      : Theme.of(context).colorScheme.onPrimary;
+      : Theme.of(context).colorScheme.surfaceContainerHighest;
 }
 
 Color getBorderColor({
@@ -1740,7 +1745,7 @@ Color getDisabledBackgroundColor({
 }) {
   return targetValue == value
       ? Theme.of(context).colorScheme.inversePrimary
-      : Theme.of(context).colorScheme.onPrimary;
+      : Theme.of(context).colorScheme.surfaceContainerHighest;
 }
 
 Color getDisabledBorderColor() {

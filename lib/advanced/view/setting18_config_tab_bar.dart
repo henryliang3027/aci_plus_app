@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/advanced/view/setting18_distribution_config_form.dart';
 import 'package:aci_plus_app/advanced/view/setting18_node_config_form.dart';
 import 'package:aci_plus_app/advanced/view/setting18_trunk_config_form.dart';
+import 'package:aci_plus_app/core/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -16,64 +17,46 @@ class Setting18ConfigTabBar extends StatelessWidget {
         children: [
           Container(
             width: double.maxFinite,
-            color: Theme.of(context).colorScheme.onPrimary,
-            child: TabBar(
-              // controller: tabController,
-              padding: const EdgeInsets.only(left: 6.0),
-              dividerColor: Colors.grey,
-              tabAlignment: TabAlignment.start,
-              isScrollable: true,
-              unselectedLabelColor: Colors.grey,
-              labelColor: Colors.black,
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicator: BoxDecoration(
-                border: const Border(
-                    left: BorderSide(
-                      color: Colors.grey,
+            color: getSecondaryTabBarPaddingColor(context),
+            child: Theme(
+              data: getSecondaryTabBarTheme(context),
+              child: TabBar(
+                // controller: tabController,
+                padding: const EdgeInsets.only(left: 6.0),
+                isScrollable: true,
+                tabs: [
+                  Tab(
+                    child: SizedBox(
+                      // width: 110,
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.trunkAmplifier,
+                        ),
+                      ),
                     ),
-                    top: BorderSide(
-                      color: Colors.grey,
+                  ),
+                  Tab(
+                    child: SizedBox(
+                      // width: 110,
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.distributionAmplifier,
+                        ),
+                      ),
                     ),
-                    right: BorderSide(
-                      color: Colors.grey,
-                    )),
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(10)),
-                color: Theme.of(context).tabBarTheme.indicatorColor,
+                  ),
+                  Tab(
+                    child: SizedBox(
+                      // width: 110,
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.opticalNode,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              // labelPadding: const EdgeInsets.symmetric(horizontal: 24.0),
-              tabs: [
-                Tab(
-                  child: SizedBox(
-                    // width: 110,
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.trunkAmplifier,
-                      ),
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: SizedBox(
-                    // width: 110,
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.distributionAmplifier,
-                      ),
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: SizedBox(
-                    // width: 110,
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.opticalNode,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
           const Expanded(

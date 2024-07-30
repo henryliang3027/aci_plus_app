@@ -316,13 +316,14 @@ class _Location extends StatelessWidget {
                       .add(LocationChanged(location));
                 },
                 maxLength: 48,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(10.0),
+                  contentPadding: const EdgeInsets.all(10.0),
                   isDense: true,
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor:
+                      Theme.of(context).colorScheme.surfaceContainerHighest,
                   counterText: '',
                 ),
               ),
@@ -381,7 +382,8 @@ class _Coordinates extends StatelessWidget {
                   contentPadding: const EdgeInsets.all(10.0),
                   isDense: true,
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor:
+                      Theme.of(context).colorScheme.surfaceContainerHighest,
                   counterText: '',
                   suffixIconConstraints: const BoxConstraints(
                     maxHeight: 48,

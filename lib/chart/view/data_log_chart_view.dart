@@ -313,14 +313,12 @@ class _LogChartListView extends StatelessWidget {
                 elevation: 0,
                 side: const BorderSide(
                   width: 1.0,
-                  color: Colors.black,
                 ),
                 visualDensity:
                     const VisualDensity(horizontal: -4.0, vertical: -3.0),
               ),
               child: const Icon(
                 Icons.fullscreen_outlined,
-                color: Colors.black,
               ),
             ),
           ),

@@ -125,9 +125,7 @@ class _DeviceListView extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: localizedText.substring(0, configNameIndex),
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
+                    style: const TextStyle(),
                   ),
                   TextSpan(
                     text: localizedText.substring(
@@ -140,9 +138,7 @@ class _DeviceListView extends StatelessWidget {
                     text: localizedText.substring(
                         configNameIndex + configName.length,
                         localizedText.length),
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
+                    style: const TextStyle(),
                   ),
                 ],
               ),
@@ -196,9 +192,7 @@ class _DeviceListView extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: localizedText.substring(0, configNameIndex),
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
+                    style: const TextStyle(),
                   ),
                   TextSpan(
                     text: localizedText.substring(
@@ -211,9 +205,7 @@ class _DeviceListView extends StatelessWidget {
                     text: localizedText.substring(
                         configNameIndex + configName.length,
                         localizedText.length),
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
+                    style: const TextStyle(),
                   ),
                 ],
               ),

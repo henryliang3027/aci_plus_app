@@ -6,10 +6,12 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/information/bloc/information18/information18_bloc.dart';
+import 'package:aci_plus_app/information/shared/theme_option_widget.dart';
 import 'package:aci_plus_app/information/shared/warm_reset_widget.dart';
 import 'package:aci_plus_app/information/views/information18_config_list_view.dart';
 import 'package:aci_plus_app/information/views/name_plate_view.dart';
 import 'package:aci_plus_app/repositories/config.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -66,6 +68,7 @@ class Information18Form extends StatelessWidget {
 
 enum HomeMenu {
   refresh,
+  theme,
   warmReset,
   about,
 }
@@ -97,6 +100,27 @@ class __PopupMenuState extends State<_PopupMenu> {
                       .read<Information18Bloc>()
                       .add(const AlarmPeriodicUpdateCanceled());
                   context.read<HomeBloc>().add(const DeviceRefreshed());
+                  break;
+                case HomeMenu.theme:
+                  showThemeOptionDialog(context: context).then(
+                    (String? theme) {
+                      if (theme != null) {
+                        switch (theme) {
+                          case 'light':
+                            AdaptiveTheme.of(context).setLight();
+                            break;
+                          case 'dark':
+                            AdaptiveTheme.of(context).setDark();
+                            break;
+                          case 'system':
+                            AdaptiveTheme.of(context).setSystem();
+                            break;
+                          default:
+                            AdaptiveTheme.of(context).setLight();
+                        }
+                      }
+                    },
+                  );
                   break;
                 case HomeMenu.warmReset:
                   context
@@ -145,7 +169,6 @@ class __PopupMenuState extends State<_PopupMenu> {
                       const Icon(
                         Icons.refresh,
                         size: 20.0,
-                        color: Colors.black,
                       ),
                       const SizedBox(
                         width: 10.0,
@@ -155,8 +178,26 @@ class __PopupMenuState extends State<_PopupMenu> {
                   ),
                 ),
                 PopupMenuItem<HomeMenu>(
-                  value: HomeMenu.warmReset,
+                  value: HomeMenu.theme,
                   enabled: true,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.colorize_rounded,
+                        size: 20.0,
+                      ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(AppLocalizations.of(context)!.theme),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<HomeMenu>(
+                  value: HomeMenu.warmReset,
+                  enabled: state.loadingStatus.isRequestSuccess ? true : false,
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -164,7 +205,6 @@ class __PopupMenuState extends State<_PopupMenu> {
                       const Icon(
                         Icons.restart_alt_outlined,
                         size: 20.0,
-                        color: Colors.black,
                       ),
                       const SizedBox(
                         width: 10.0,
@@ -182,7 +222,6 @@ class __PopupMenuState extends State<_PopupMenu> {
                       const Icon(
                         CustomIcons.about,
                         size: 20.0,
-                        color: Colors.black,
                       ),
                       const SizedBox(
                         width: 10.0,
@@ -287,8 +326,6 @@ class _VersionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Information18Bloc, Information18State>(
       builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
@@ -373,8 +410,6 @@ class _ConnectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -420,8 +455,6 @@ class _ShortcutCard extends StatelessWidget {
         }
 
         return Card(
-          color: Theme.of(context).colorScheme.onPrimary,
-          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -667,8 +700,6 @@ class _BasicCard extends StatelessWidget {
 
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       return Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -834,8 +865,6 @@ Widget buildAlarmCard({
   required String alarmPSeverity,
 }) {
   return Card(
-    color: Theme.of(context).colorScheme.onPrimary,
-    surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
     child: Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(

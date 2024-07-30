@@ -171,7 +171,6 @@ class __PopupMenuState extends State<_PopupMenu> {
                       const Icon(
                         Icons.refresh,
                         size: 20.0,
-                        color: Colors.black,
                       ),
                       const SizedBox(
                         width: 10.0,
@@ -190,7 +189,6 @@ class __PopupMenuState extends State<_PopupMenu> {
                       const Icon(
                         Icons.colorize_rounded,
                         size: 20.0,
-                        color: Colors.black,
                       ),
                       const SizedBox(
                         width: 10.0,
@@ -201,7 +199,7 @@ class __PopupMenuState extends State<_PopupMenu> {
                 ),
                 PopupMenuItem<HomeMenu>(
                   value: HomeMenu.warmReset,
-                  enabled: true,
+                  enabled: state.loadingStatus.isRequestSuccess ? true : false,
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -209,7 +207,6 @@ class __PopupMenuState extends State<_PopupMenu> {
                       const Icon(
                         Icons.restart_alt_outlined,
                         size: 20.0,
-                        color: Colors.black,
                       ),
                       const SizedBox(
                         width: 10.0,
@@ -227,7 +224,6 @@ class __PopupMenuState extends State<_PopupMenu> {
                       const Icon(
                         CustomIcons.about,
                         size: 20.0,
-                        color: Colors.black,
                       ),
                       const SizedBox(
                         width: 10.0,
@@ -358,7 +354,6 @@ class _ConnectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
-        color: Theme.of(context).cardTheme.color,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -424,7 +419,6 @@ class _ShortcutCard extends StatelessWidget {
         }
 
         return Card(
-          color: Theme.of(context).cardTheme.color,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -654,7 +648,6 @@ class _BasicCard extends StatelessWidget {
 
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       return Card(
-        color: Theme.of(context).cardTheme.color,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -828,7 +821,6 @@ Widget buildAlarmCard({
   required String alarmPSeverity,
 }) {
   return Card(
-    color: Theme.of(context).cardTheme.color,
     child: Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(

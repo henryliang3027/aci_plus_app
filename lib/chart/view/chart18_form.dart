@@ -518,7 +518,6 @@ class _PopupMenu extends StatelessWidget {
                         const Icon(
                           Icons.refresh,
                           size: 20.0,
-                          color: Colors.black,
                         ),
                         const SizedBox(
                           width: 10.0,
@@ -536,7 +535,6 @@ class _PopupMenu extends StatelessWidget {
                         const Icon(
                           Icons.share,
                           size: 20.0,
-                          color: Colors.black,
                         ),
                         const SizedBox(
                           width: 10.0,
@@ -554,7 +552,6 @@ class _PopupMenu extends StatelessWidget {
                         const Icon(
                           Icons.download,
                           size: 20.0,
-                          color: Colors.black,
                         ),
                         const SizedBox(
                           width: 10.0,
@@ -572,7 +569,6 @@ class _PopupMenu extends StatelessWidget {
                         const Icon(
                           Icons.cloud_download_outlined,
                           size: 20.0,
-                          color: Colors.black,
                         ),
                         const SizedBox(
                           width: 10.0,
@@ -718,7 +714,6 @@ class _PopupMenu extends StatelessWidget {
                         const Icon(
                           Icons.refresh,
                           size: 20.0,
-                          color: Colors.black,
                         ),
                         const SizedBox(
                           width: 10.0,
@@ -736,7 +731,6 @@ class _PopupMenu extends StatelessWidget {
                         const Icon(
                           Icons.share,
                           size: 20.0,
-                          color: Colors.black,
                         ),
                         const SizedBox(
                           width: 10.0,
@@ -754,7 +748,6 @@ class _PopupMenu extends StatelessWidget {
                         const Icon(
                           Icons.download,
                           size: 20.0,
-                          color: Colors.black,
                         ),
                         const SizedBox(
                           width: 10.0,
@@ -772,7 +765,6 @@ class _PopupMenu extends StatelessWidget {
                         const Icon(
                           Icons.download,
                           size: 20.0,
-                          color: Colors.black,
                         ),
                         const SizedBox(
                           width: 10.0,

@@ -497,9 +497,7 @@ class _StartButton extends StatelessWidget {
                     TextSpan(
                       text: localizedText.substring(
                           0, currentFirmwareVersionIndex),
-                      style: const TextStyle(
-                        color: Colors.black,
-                      ),
+                      style: const TextStyle(),
                     ),
                     TextSpan(
                       text: localizedText.substring(
@@ -515,9 +513,7 @@ class _StartButton extends StatelessWidget {
                           currentFirmwareVersionIndex +
                               currentFirmwareVersion.length,
                           newFirmwareVersionIndex),
-                      style: const TextStyle(
-                        color: Colors.black,
-                      ),
+                      style: const TextStyle(),
                     ),
                     TextSpan(
                       text: localizedText.substring(newFirmwareVersionIndex,
@@ -530,9 +526,7 @@ class _StartButton extends StatelessWidget {
                       text: localizedText.substring(
                           newFirmwareVersionIndex + newFirmwareVersion.length,
                           localizedText.length),
-                      style: const TextStyle(
-                        color: Colors.black,
-                      ),
+                      style: const TextStyle(),
                     ),
                   ],
                 ),
