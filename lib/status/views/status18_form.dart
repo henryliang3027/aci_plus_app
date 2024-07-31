@@ -121,7 +121,6 @@ class _CardView extends StatelessWidget {
                   _PowerSupplyCard(),
                   _VoltageRippleCard(),
                   _RFOutputPowerCard(),
-                  _RFInputPower1p8GCard(),
                   _PilotFrequency1Card(),
                   _PilotFrequency2Card(),
                   _FirstChannelPowerLevelCard(),
@@ -298,7 +297,7 @@ class _OperatingModeCard extends StatelessWidget {
       );
     } else {
       return Text(
-        currentOperatingMode.isEmpty ? 'N/A' : currentOperatingMode,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -397,8 +396,10 @@ class _WorkingModeCard extends StatelessWidget {
           : Text(
               currentWorkingMode,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: CustomStyle.size4XL,
+              style: TextStyle(
+                fontSize: currentWorkingMode.isEmpty
+                    ? CustomStyle.size4XL
+                    : CustomStyle.size28,
               ),
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
@@ -419,7 +420,7 @@ class _WorkingModeCard extends StatelessWidget {
       );
     } else {
       return Text(
-        currentWorkingMode.isEmpty ? 'N/A' : currentWorkingMode,
+        'N/A',
         style: TextStyle(
           fontSize: currentWorkingMode.isEmpty
               ? CustomStyle.size4XL
@@ -524,7 +525,7 @@ class _SplitOptionCard extends StatelessWidget {
       );
     } else {
       return Text(
-        currentSplitOption.isEmpty ? 'N/A' : currentSplitOption,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -661,7 +662,7 @@ class _TemperatureCard extends StatelessWidget {
         );
       } else {
         return Text(
-          currentTemperature.isEmpty ? 'N/A' : currentTemperature,
+          'N/A',
           style: TextStyle(
             fontSize: fontSize,
           ),
@@ -699,7 +700,7 @@ class _TemperatureCard extends StatelessWidget {
         );
       } else {
         return Text(
-          minTemperature.isEmpty ? 'N/A' : minTemperature,
+          'N/A',
           style: TextStyle(
             fontSize: fontSize,
           ),
@@ -737,7 +738,7 @@ class _TemperatureCard extends StatelessWidget {
         );
       } else {
         return Text(
-          maxTemperature.isEmpty ? 'N/A' : maxTemperature,
+          'N/A',
           style: TextStyle(
             fontSize: fontSize,
           ),
@@ -1039,7 +1040,7 @@ class _PowerSupplyCard extends StatelessWidget {
       );
     } else {
       return Text(
-        currentVoltage.isEmpty ? 'N/A' : currentVoltage,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1076,7 +1077,7 @@ class _PowerSupplyCard extends StatelessWidget {
       );
     } else {
       return Text(
-        minVoltage.isEmpty ? 'N/A' : minVoltage,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1113,7 +1114,7 @@ class _PowerSupplyCard extends StatelessWidget {
       );
     } else {
       return Text(
-        maxVoltage.isEmpty ? 'N/A' : maxVoltage,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1312,7 +1313,7 @@ class _VoltageRippleCard extends StatelessWidget {
       );
     } else {
       return Text(
-        currentVoltageRipple.isEmpty ? 'N/A' : currentVoltageRipple,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1349,7 +1350,7 @@ class _VoltageRippleCard extends StatelessWidget {
       );
     } else {
       return Text(
-        minVoltageRipple.isEmpty ? 'N/A' : minVoltageRipple,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1386,7 +1387,7 @@ class _VoltageRippleCard extends StatelessWidget {
       );
     } else {
       return Text(
-        maxVoltageRipple.isEmpty ? 'N/A' : maxVoltageRipple,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1593,7 +1594,7 @@ class _RFOutputPowerCard extends StatelessWidget {
       );
     } else {
       return Text(
-        currentRFOutputPower.isEmpty ? 'N/A' : currentRFOutputPower,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1630,7 +1631,7 @@ class _RFOutputPowerCard extends StatelessWidget {
       );
     } else {
       return Text(
-        minRFOutputPower.isEmpty ? 'N/A' : minRFOutputPower,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1667,7 +1668,7 @@ class _RFOutputPowerCard extends StatelessWidget {
       );
     } else {
       return Text(
-        maxRFOutputPower.isEmpty ? 'N/A' : maxRFOutputPower,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1869,7 +1870,7 @@ class _RFInputPower1p8GCard extends StatelessWidget {
       );
     } else {
       return Text(
-        currentRFInputPower1p8G.isEmpty ? 'N/A' : currentRFInputPower1p8G,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1986,7 +1987,7 @@ class _PilotFrequency1Card extends StatelessWidget {
       );
     } else {
       return Text(
-        currentPilotFrequency.isEmpty ? 'N/A' : currentPilotFrequency,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -2108,7 +2109,7 @@ class _PilotFrequency2Card extends StatelessWidget {
       );
     } else {
       return Text(
-        currentPilotFrequency.isEmpty ? 'N/A' : currentPilotFrequency,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -2233,7 +2234,7 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
       );
     } else {
       return Text(
-        frequency.isEmpty ? 'N/A' : frequency,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -2276,7 +2277,7 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
       );
     } else {
       return Text(
-        outputPower.isEmpty ? 'N/A' : outputPower,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -2351,9 +2352,9 @@ class _FirstChannelPowerLevelCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       String firstChannelFrequency =
-          state.characteristicData[DataKey.pilot1RFChannelFrequency] ?? '0';
+          state.characteristicData[DataKey.pilot1RFChannelFrequency] ?? '';
       String rfOutputLowChannelPower =
-          state.characteristicData[DataKey.rfOutputLowChannelPower] ?? '0';
+          state.characteristicData[DataKey.rfOutputLowChannelPower] ?? '';
       String pilotFrequency1AlarmState = state.characteristicData[
               DataKey.rfOutputPilotLowFrequencyAlarmState] ??
           '1';
@@ -2429,7 +2430,7 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
       );
     } else {
       return Text(
-        frequency.isEmpty ? 'N/A' : frequency,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -2472,7 +2473,7 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
       );
     } else {
       return Text(
-        outputPower.isEmpty ? 'N/A' : outputPower,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -2547,10 +2548,10 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       String lastChannelFrequency =
-          state.characteristicData[DataKey.pilot2RFChannelFrequency] ?? '0';
+          state.characteristicData[DataKey.pilot2RFChannelFrequency] ?? '';
 
       String rfOutputHighChannelPower =
-          state.characteristicData[DataKey.rfOutputHighChannelPower] ?? '0';
+          state.characteristicData[DataKey.rfOutputHighChannelPower] ?? '';
 
       String pilotFrequency2AlarmState = state.characteristicData[
               DataKey.rfOutputPilotHighFrequencyAlarmState] ??
@@ -2623,7 +2624,7 @@ class _OutputOperatingSlopeCard extends StatelessWidget {
       );
     } else {
       return Text(
-        outputOperatingSlope.isEmpty ? 'N/A' : outputOperatingSlope,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),

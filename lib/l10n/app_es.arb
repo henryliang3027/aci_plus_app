@@ -236,7 +236,7 @@
     "dialogTitleSelectConfig": "Seleccionar preajuste",
     "dialogTitleDeviceRebooting": "Reiniciando",
     "dialogTitleSelectPeripheral": "Seleccionar Bluetooth",
-
+    "dialogTitleSelectTheme": "Seleccionar Tema",
     
     "dialogMessageFirmwareUpdateError": "El estado de la conexión Bluetooth es anormal. ¿Te gustaría intentarlo de nuevo?",
     "dialogMessageFirmwareUpdateSuccess": "Actualización de firmware exitosa.",

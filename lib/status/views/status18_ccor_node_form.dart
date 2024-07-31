@@ -273,7 +273,7 @@ class _WorkingModeCard extends StatelessWidget {
       );
     } else {
       return Text(
-        currentWorkingMode.isEmpty ? 'N/A' : currentWorkingMode,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -395,7 +395,7 @@ class _SplitOptionCard extends StatelessWidget {
       );
     } else {
       return Text(
-        currentSplitOption.isEmpty ? 'N/A' : currentSplitOption,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -453,8 +453,7 @@ class _SplitOptionCard extends StatelessWidget {
       String currentSplitOption =
           state.characteristicData[DataKey.currentDetectedSplitOption] ?? '';
 
-      String splitOption =
-          currentSplitOption == '' ? 'N/A' : types[currentSplitOption] ?? 'N/A';
+      String splitOption = types[currentSplitOption] ?? '';
 
       String splitOptionAlarmState =
           state.characteristicData[DataKey.splitOptionAlarmState] ?? '1';
@@ -532,7 +531,7 @@ class _TemperatureCard extends StatelessWidget {
         );
       } else {
         return Text(
-          currentTemperature.isEmpty ? 'N/A' : currentTemperature,
+          'N/A',
           style: TextStyle(
             fontSize: fontSize,
           ),
@@ -570,7 +569,7 @@ class _TemperatureCard extends StatelessWidget {
         );
       } else {
         return Text(
-          minTemperature.isEmpty ? 'N/A' : minTemperature,
+          'N/A',
           style: TextStyle(
             fontSize: fontSize,
           ),
@@ -608,7 +607,7 @@ class _TemperatureCard extends StatelessWidget {
         );
       } else {
         return Text(
-          maxTemperature.isEmpty ? 'N/A' : maxTemperature,
+          'N/A',
           style: TextStyle(
             fontSize: fontSize,
           ),
@@ -911,7 +910,7 @@ class _PowerSupplyCard extends StatelessWidget {
       );
     } else {
       return Text(
-        currentVoltage.isEmpty ? 'N/A' : currentVoltage,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -948,7 +947,7 @@ class _PowerSupplyCard extends StatelessWidget {
       );
     } else {
       return Text(
-        minVoltage.isEmpty ? 'N/A' : minVoltage,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -985,7 +984,7 @@ class _PowerSupplyCard extends StatelessWidget {
       );
     } else {
       return Text(
-        maxVoltage.isEmpty ? 'N/A' : maxVoltage,
+        'N/A',
         style: TextStyle(
           fontSize: fontSize,
         ),
@@ -1181,7 +1180,7 @@ Widget getCurrentRFOutputPower({
     );
   } else {
     return Text(
-      currentRFOutputPower.isEmpty ? 'N/A' : currentRFOutputPower,
+      'N/A',
       style: TextStyle(
         fontSize: fontSize,
       ),
@@ -1218,7 +1217,7 @@ Widget getMinRFOutputPower({
     );
   } else {
     return Text(
-      minRFOutputPower.isEmpty ? 'N/A' : minRFOutputPower,
+      'N/A',
       style: TextStyle(
         fontSize: fontSize,
       ),
@@ -1255,7 +1254,7 @@ Widget getMaxRFOutputPower({
     );
   } else {
     return Text(
-      maxRFOutputPower.isEmpty ? 'N/A' : maxRFOutputPower,
+      'N/A',
       style: TextStyle(
         fontSize: fontSize,
       ),

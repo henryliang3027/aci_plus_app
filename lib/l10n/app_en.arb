@@ -237,7 +237,7 @@
     "dialogTitleSelectConfig": "Select Preset",
     "dialogTitleDeviceRebooting": "Rebooting",
     "dialogTitleSelectPeripheral": "Select Bluetooth",
-
+    "dialogTitleSelectTheme": "Select Theme",
     
     "dialogMessageFirmwareUpdateError": "The Bluetooth connection status is abnormal. Would you like to try again?",
     "dialogMessageFirmwareUpdateSuccess": "Firmware update successful.",

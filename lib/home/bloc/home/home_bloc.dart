@@ -345,10 +345,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         // ));
 
         emit(state.copyWith(
-          scanStatus: FormStatus.requestSuccess,
+          scanStatus: FormStatus.requestFailure,
           connectionStatus: FormStatus.requestFailure,
-          loadingStatus: FormStatus.none,
+          loadingStatus: FormStatus.requestFailure,
           errorMassage: event.connectionReport.errorMessage,
+          peripherals: [],
+          device: const Peripheral.empty(),
+          characteristicData: const {},
+          dateValueCollectionOfLog: const [],
         ));
 
         break;

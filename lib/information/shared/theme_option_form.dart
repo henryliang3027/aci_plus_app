@@ -42,7 +42,7 @@ class ThemeOptionForm extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 child: Text(
-                  AppLocalizations.of(context)!.dialogTitleSelectConfig,
+                  AppLocalizations.of(context)!.dialogTitleSelectTheme,
                   style: TextStyle(
                     fontSize: CustomStyle.sizeXL,
                     color: Theme.of(context).colorScheme.onPrimary,

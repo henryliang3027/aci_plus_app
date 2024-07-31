@@ -135,13 +135,12 @@
     "minRFOutputPower": "Minimum",
     "maxRFOutputPower": "Maximum",
 
-    "theme": "Tema",
+    "theme": "Thème",
     "lightTheme": "Thème Clair",
     "darkTheme": "Thème Sombre",
     "systemTheme": "Thème Système",
     
     "home": "Accueil",
-    "theme": "Thème",
     "appVersion": "Version App",
     "support": "Soutien",
     "website": "Site web",
@@ -236,7 +235,7 @@
     "dialogTitleSelectConfig": "Sélectionner le préréglage",
     "dialogTitleDeviceRebooting": "Redémarrage",
     "dialogTitleSelectPeripheral": "Sélectionner Bluetooth",
-
+    "dialogTitleSelectTheme": "Choisir Thème",
    
     "dialogMessageFirmwareUpdateError": "Le statut de la connexion Bluetooth est anormal. Souhaitez-vous réessayer ?",
     "dialogMessageFirmwareUpdateSuccess": "Mise à jour du firmware réussie.",

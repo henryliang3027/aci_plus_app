@@ -367,17 +367,17 @@ class _ConnectionCard extends StatelessWidget {
         height: CustomStyle.diameter,
         child: CircularProgressIndicator(),
       );
-    } else if (scanStatus == FormStatus.requestFailure) {
-      return const Text(
-        'N/A',
-        style: TextStyle(
+    } else if (scanStatus == FormStatus.requestSuccess) {
+      return Text(
+        name,
+        style: const TextStyle(
           fontSize: CustomStyle.sizeL,
         ),
       );
     } else {
-      return Text(
-        name,
-        style: const TextStyle(
+      return const Text(
+        'N/A',
+        style: TextStyle(
           fontSize: CustomStyle.sizeL,
         ),
       );
