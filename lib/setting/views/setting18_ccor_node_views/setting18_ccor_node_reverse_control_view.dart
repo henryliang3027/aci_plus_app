@@ -23,6 +23,13 @@ class Seting18CCorNodeReverseControlView extends StatelessWidget {
     HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
 
+    if (homeState.connectionStatus.isRequestFailure) {
+      // 重新 Initialized, 讀取並顯示空值
+      context
+          .read<Setting18CCorNodeReverseControlBloc>()
+          .add(const Initialized());
+    }
+
     List<Widget> getReturnControlParameterWidgetsByPartId(String partId) {
       List<Enum> items = SettingItemTable.itemsMap[partId] ?? [];
       List<Widget> widgets = [];
@@ -623,7 +630,41 @@ class _SettingFloatingActionButton extends StatelessWidget {
       );
     }
 
-    Widget getEditTools({
+    Widget getDisabledFloatingActionButtons() {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
+            heroTag: null,
+            shape: const CircleBorder(
+              side: BorderSide.none,
+            ),
+            backgroundColor: Colors.grey.withAlpha(200),
+            onPressed: null,
+            child: Icon(
+              Icons.settings_input_composite,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          FloatingActionButton(
+              shape: const CircleBorder(
+                side: BorderSide.none,
+              ),
+              backgroundColor: Colors.grey.withAlpha(200),
+              onPressed: null,
+              child: Icon(
+                Icons.edit,
+                color: Theme.of(context).colorScheme.onPrimary,
+              )),
+        ],
+      );
+    }
+
+    Widget getFloatingActionButtons({
       required bool editMode,
       required bool enableSubmission,
     }) {
@@ -632,40 +673,6 @@ class _SettingFloatingActionButton extends StatelessWidget {
               enableSubmission: enableSubmission,
             )
           : getDisabledEditModeTools();
-    }
-
-    Widget getDisabledGraphSettingTool() {
-      String graphFilePath = settingGraphFilePath['4'] ?? '';
-      return graphFilePath.isNotEmpty
-          ? FloatingActionButton(
-              // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
-              heroTag: null,
-              shape: const CircleBorder(
-                side: BorderSide.none,
-              ),
-              backgroundColor:
-                  Theme.of(context).colorScheme.primary.withAlpha(200),
-              child: Icon(
-                Icons.settings_input_composite,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-              onPressed: () {
-                // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
-                Navigator.push(
-                        context,
-                        Setting18CCorNodeGraphPage.route(
-                          graphFilePath: graphFilePath,
-                          editable: false,
-                        ))
-                    .then((value) => context
-                        .read<Setting18CCorNodeReverseControlBloc>()
-                        .add(const Initialized()));
-              },
-            )
-          : const SizedBox(
-              width: 0,
-              height: 0,
-            );
     }
 
     bool getEditable({
@@ -696,12 +703,12 @@ class _SettingFloatingActionButton extends StatelessWidget {
 
       bool editable = getEditable(loadingStatus: homeState.loadingStatus);
       return editable
-          ? getEditTools(
+          ? getFloatingActionButtons(
               editMode: setting18CCorNodeReverseControlState.editMode,
               enableSubmission:
                   setting18CCorNodeReverseControlState.enableSubmission,
             )
-          : getDisabledGraphSettingTool();
+          : getDisabledFloatingActionButtons();
     });
   }
 }

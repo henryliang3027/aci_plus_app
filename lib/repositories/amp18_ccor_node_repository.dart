@@ -2133,6 +2133,10 @@ class Amp18CCorNodeRepository {
     }
   }
 
+  void clearCharacteristics() {
+    _characteristicDataCache.clear();
+  }
+
   Future<void> updateDataWithGivenValuePairs(
       Map<DataKey, String> valuePairs) async {
     _characteristicDataStreamController

@@ -343,6 +343,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         //   loadingStatus: FormStatus.none,
         //   errorMassage: 'Device connection failed',
         // ));
+        _amp18Repository.clearCharacteristics();
+        _amp18CCorNodeRepository.clearCharacteristics();
 
         emit(state.copyWith(
           scanStatus: FormStatus.requestFailure,

@@ -2212,6 +2212,10 @@ class Amp18Repository {
     // }
   }
 
+  void clearCharacteristics() {
+    _characteristicDataCache.clear();
+  }
+
   Future<void> updateDataWithGivenValuePairs(
       Map<DataKey, String> valuePairs) async {
     _characteristicDataStreamController

@@ -38,6 +38,11 @@ class Setting18ForwardControlView extends StatelessWidget {
     String forwardCEQIndex =
         homeState.characteristicData[DataKey.currentForwardCEQIndex] ?? '';
 
+    if (homeState.connectionStatus.isRequestFailure) {
+      // 重新 Initialized, 讀取並顯示空值
+      context.read<Setting18ForwardControlBloc>().add(const Initialized());
+    }
+
     List<Widget> getForwardControlParameterWidgetsByPartId(String partId) {
       List<Enum> items = SettingItemTable.itemsMap[partId] ?? [];
       List<Widget> widgets = [];
@@ -908,41 +913,41 @@ class _SettingFloatingActionButton extends StatelessWidget {
       );
     }
 
-    Widget getDisabledGraphSettingTool() {
-      String graphFilePath = settingGraphFilePath['3'] ?? '';
-      return graphFilePath.isNotEmpty
-          ? FloatingActionButton(
-              // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
-              heroTag: null,
+    Widget getDisabledFloatingActionButtons() {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
+            heroTag: null,
+            shape: const CircleBorder(
+              side: BorderSide.none,
+            ),
+            backgroundColor: Colors.grey.withAlpha(200),
+            onPressed: null,
+            child: Icon(
+              Icons.settings_input_composite,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          FloatingActionButton(
               shape: const CircleBorder(
                 side: BorderSide.none,
               ),
-              backgroundColor:
-                  Theme.of(context).colorScheme.primary.withAlpha(200),
+              backgroundColor: Colors.grey.withAlpha(200),
+              onPressed: null,
               child: Icon(
-                Icons.settings_input_composite,
+                Icons.edit,
                 color: Theme.of(context).colorScheme.onPrimary,
-              ),
-              onPressed: () {
-                // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
-                Navigator.push(
-                        context,
-                        Setting18GraphPage.route(
-                          graphFilePath: graphFilePath,
-                          editable: false,
-                        ))
-                    .then((value) => context
-                        .read<Setting18ForwardControlBloc>()
-                        .add(const Initialized()));
-              },
-            )
-          : const SizedBox(
-              width: 0,
-              height: 0,
-            );
+              )),
+        ],
+      );
     }
 
-    Widget getEditTools({
+    Widget getFloatingActionButtons({
       required bool editMode,
       required bool enableSubmission,
     }) {
@@ -982,11 +987,11 @@ class _SettingFloatingActionButton extends StatelessWidget {
         loadingStatus: homeState.loadingStatus,
       );
       return editable
-          ? getEditTools(
+          ? getFloatingActionButtons(
               editMode: setting18ForwardControlState.editMode,
               enableSubmission: setting18ForwardControlState.enableSubmission,
             )
-          : getDisabledGraphSettingTool();
+          : getDisabledFloatingActionButtons();
     });
   }
 }

@@ -1359,7 +1359,7 @@ Widget pilotFrequencyModeGridViewButton({
             childAspectRatio: (MediaQuery.of(context).size.width / 56.0),
           ),
           itemCount: values.length,
-          itemBuilder: (BuildContext context, int index) {
+          itemBuilder: (BuildContext itemContext, int index) {
             return Padding(
               padding: const EdgeInsets.all(2.0),
               child: ElevatedButton(
