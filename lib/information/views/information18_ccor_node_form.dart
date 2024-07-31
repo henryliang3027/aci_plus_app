@@ -168,9 +168,10 @@ class __PopupMenuState extends State<_PopupMenu> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.refresh,
                         size: 20.0,
+                        color: Theme.of(context).iconTheme.color,
                       ),
                       const SizedBox(
                         width: 10.0,
@@ -186,9 +187,10 @@ class __PopupMenuState extends State<_PopupMenu> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.colorize_rounded,
                         size: 20.0,
+                        color: Theme.of(context).iconTheme.color,
                       ),
                       const SizedBox(
                         width: 10.0,
@@ -204,9 +206,10 @@ class __PopupMenuState extends State<_PopupMenu> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.restart_alt_outlined,
                         size: 20.0,
+                        color: Theme.of(context).iconTheme.color,
                       ),
                       const SizedBox(
                         width: 10.0,
@@ -221,9 +224,10 @@ class __PopupMenuState extends State<_PopupMenu> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Icon(
+                      Icon(
                         CustomIcons.about,
                         size: 20.0,
+                        color: Theme.of(context).iconTheme.color,
                       ),
                       const SizedBox(
                         width: 10.0,

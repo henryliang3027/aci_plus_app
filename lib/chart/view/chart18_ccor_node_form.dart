@@ -379,9 +379,10 @@ class _PopupMenu extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.refresh,
                     size: 20.0,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                   const SizedBox(
                     width: 10.0,
@@ -396,9 +397,10 @@ class _PopupMenu extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.share,
                     size: 20.0,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                   const SizedBox(
                     width: 10.0,
@@ -413,9 +415,10 @@ class _PopupMenu extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.download,
                     size: 20.0,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                   const SizedBox(
                     width: 10.0,
@@ -430,9 +433,10 @@ class _PopupMenu extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.cloud_download_outlined,
                     size: 20.0,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                   const SizedBox(
                     width: 10.0,
