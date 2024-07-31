@@ -155,13 +155,15 @@ class CircuitPainter extends CustomPainter {
 
     print('scaleFactor: $scaleFactor');
 
+    print('colorScheme:  ${Theme.of(context).colorScheme.onSurface}');
+
     for (ValueText valueText in svgImage.valueTexts) {
       // final int colorHex = int.parse(valueText.color);
       TextStyle textStyle = TextStyle(
-          // background: Paint()..color = Color.fromARGB(255, 170, 214, 255),
-
-          fontSize: 82 * scaleFactor,
-          fontWeight: FontWeight.bold);
+        fontSize: 82 * scaleFactor,
+        fontWeight: FontWeight.bold,
+        color: Theme.of(context).colorScheme.onSurface,
+      );
       final textSpan = TextSpan(
         text: valueText.text,
         style: textStyle,

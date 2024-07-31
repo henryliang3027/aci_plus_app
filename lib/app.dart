@@ -120,6 +120,7 @@ class _AppView extends StatelessWidget {
           color: Colors.white,
         ),
         colorScheme: ColorScheme.fromSeed(
+          brightness: Brightness.light,
           seedColor: Colors.indigo,
           primary: Colors.indigo,
           onPrimary: Colors.white,
@@ -129,6 +130,7 @@ class _AppView extends StatelessWidget {
           surfaceContainer: Color(4293783028),
           surfaceContainerHigh: Color(4293388526),
           surfaceContainerHighest: Colors.white,
+          onSurface: Colors.black,
         ),
         appBarTheme: const AppBarTheme(
           iconTheme: IconThemeData(color: Colors.white),
@@ -192,6 +194,7 @@ class _AppView extends StatelessWidget {
           surfaceContainer: Color(4280098852),
           surfaceContainerHigh: Color(4280822319),
           surfaceContainerHighest: Color(4281546042),
+          onSurface: Colors.white,
         ),
         appBarTheme: const AppBarTheme(
           iconTheme: IconThemeData(color: Colors.white),

@@ -423,11 +423,9 @@ packages:
   flutter_speed_chart:
     dependency: "direct main"
     description:
-      path: "."
-      ref: discreteX
-      resolved-ref: "0caa59b9d1dbe7960d6d6d4a7b1ffbd2a071ea64"
-      url: "https://github.com/henryliang3027/flutter_speed_chart.git"
-    source: git
+      path: "/Users/henry.liang/projects/flutter_speed_chart"
+      relative: false
+    source: path
     version: "0.0.1"
   flutter_svg:
     dependency: "direct main"
