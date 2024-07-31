@@ -83,7 +83,6 @@ class Setting18TabBar extends StatelessWidget {
                 Setting18ConfigurePage(),
                 Setting18ThresholdPage(),
                 Setting18ControlPage(),
-                // Setting18ConfigPage(),
               ],
             ),
           ),

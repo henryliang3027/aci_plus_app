@@ -65,7 +65,8 @@ class _CodeInputDialog extends StatelessWidget {
                   contentPadding: const EdgeInsets.all(8.0),
                   isDense: true,
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor:
+                      Theme.of(context).colorScheme.surfaceContainerHighest,
                   counterText: '',
                 ),
               ),

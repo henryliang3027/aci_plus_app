@@ -158,7 +158,7 @@ class Chart18CCorNodeForm extends StatelessWidget {
           ],
         ),
         body: const _LogChartListView(),
-        floatingActionButton: const _MoreDataFloatingActionButton(),
+        floatingActionButton: const _DataLogFloatingActionButton(),
         bottomNavigationBar: _DynamicBottomNavigationBar(
           pageController: pageController,
           selectedIndex: 3,
@@ -653,31 +653,60 @@ class _DynamicBottomNavigationBar extends StatelessWidget {
   }
 }
 
+class _DataLogFloatingActionButton extends StatelessWidget {
+  const _DataLogFloatingActionButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.loadingStatus.isRequestSuccess) {
+          return const _MoreDataFloatingActionButton(
+            enabled: true,
+          );
+        } else {
+          return const _MoreDataFloatingActionButton(
+            enabled: false,
+          );
+        }
+      },
+    );
+  }
+}
+
 class _MoreDataFloatingActionButton extends StatelessWidget {
-  const _MoreDataFloatingActionButton();
+  const _MoreDataFloatingActionButton({
+    required this.enabled,
+  });
+
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Chart18CCorNodeBloc, Chart18CCorNodeState>(
       builder: (context, state) {
-        if (state.logRequestStatus.isRequestInProgress) {
-          return Container();
-        } else {
-          return FloatingActionButton(
-            shape: const CircleBorder(
-              side: BorderSide.none,
-            ),
-            backgroundColor:
-                Theme.of(context).colorScheme.primary.withAlpha(200),
-            child: Icon(
-              Icons.add,
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-            onPressed: () {
-              context.read<Chart18CCorNodeBloc>().add(const MoreLogRequested());
-            },
-          );
-        }
+        bool isRequesting = state.logRequestStatus.isNone ||
+            state.logRequestStatus.isRequestInProgress;
+
+        return FloatingActionButton(
+          shape: const CircleBorder(
+            side: BorderSide.none,
+          ),
+          backgroundColor: enabled && !isRequesting
+              ? Theme.of(context).colorScheme.primary.withAlpha(200)
+              : Colors.grey.withAlpha(200),
+          onPressed: enabled && !isRequesting
+              ? () {
+                  context
+                      .read<Chart18CCorNodeBloc>()
+                      .add(const MoreLogRequested());
+                }
+              : null,
+          child: Icon(
+            Icons.add,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        );
       },
     );
   }
@@ -842,71 +871,35 @@ class _LogChartListView extends StatelessWidget {
         Chart18CCorNodeState dataLogChartState =
             context.watch<Chart18CCorNodeBloc>().state;
 
-        if (homeState.loadingStatus == FormStatus.requestInProgress) {
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              buildLoadingFormWithProgressiveChartView(
-                  dataLogChartState.dateValueCollectionOfLog),
-            ],
-          );
+        if (homeState.loadingStatus.isRequestInProgress) {
+          return buildLoadingFormWithProgressiveChartView([[], [], [], [], []]);
         } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
           if (dataLogChartState.logRequestStatus.isNone) {
             print('===== get log ======');
             context.read<Chart18CCorNodeBloc>().add(const LogRequested());
-            return Stack(
-              alignment: Alignment.center,
-              children: [
-                buildLoadingFormWithProgressiveChartView(
-                    dataLogChartState.dateValueCollectionOfLog),
-              ],
-            );
+            return buildLoadingFormWithProgressiveChartView(
+                dataLogChartState.dateValueCollectionOfLog);
           } else if (dataLogChartState.logRequestStatus.isRequestInProgress) {
-            return Stack(
-              alignment: Alignment.center,
-              children: [
-                buildLoadingFormWithProgressiveChartView(
-                    dataLogChartState.dateValueCollectionOfLog),
-              ],
-            );
+            return buildLoadingFormWithProgressiveChartView(
+                dataLogChartState.dateValueCollectionOfLog);
           } else if (dataLogChartState.logRequestStatus.isRequestFailure) {
-            return Stack(
-              alignment: Alignment.center,
-              children: [
-                buildLoadingFormWithProgressiveChartView(
-                    dataLogChartState.dateValueCollectionOfLog),
-              ],
-            );
+            return buildLoadingFormWithProgressiveChartView(
+                dataLogChartState.dateValueCollectionOfLog);
           } else {
             if (dataLogChartState.eventRequestStatus.isNone) {
               print('===== get event ======');
               context
                   .read<Chart18CCorNodeBloc>()
                   .add(const Event1P8GCCorNodeRequested());
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  buildLoadingFormWithProgressiveChartView(
-                      dataLogChartState.dateValueCollectionOfLog),
-                ],
-              );
+              return buildLoadingFormWithProgressiveChartView(
+                  dataLogChartState.dateValueCollectionOfLog);
             } else if (dataLogChartState
                 .eventRequestStatus.isRequestInProgress) {
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  buildLoadingFormWithProgressiveChartView(
-                      dataLogChartState.dateValueCollectionOfLog),
-                ],
-              );
+              return buildLoadingFormWithProgressiveChartView(
+                  dataLogChartState.dateValueCollectionOfLog);
             } else if (dataLogChartState.eventRequestStatus.isRequestFailure) {
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  buildLoadingFormWithProgressiveChartView(
-                      dataLogChartState.dateValueCollectionOfLog),
-                ],
-              );
+              return buildLoadingFormWithProgressiveChartView(
+                  dataLogChartState.dateValueCollectionOfLog);
             } else {
               return Center(
                 child: SingleChildScrollView(
@@ -942,7 +935,7 @@ class _LogChartListView extends StatelessWidget {
           return SingleChildScrollView(
             // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
             // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-            key: const Key('ChartForm_Chart'),
+            key: const Key('ChartForm_Empty_Chart'),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 30.0),
               child: Column(
@@ -950,16 +943,16 @@ class _LogChartListView extends StatelessWidget {
                 children: <Widget>[
                   buildChart(
                     getChartDataOfLog1(
-                        dateValueCollectionOfLog:
-                            dataLogChartState.dateValueCollectionOfLog),
+                      dateValueCollectionOfLog: [[], [], [], [], []],
+                    ),
                   ),
                   const SizedBox(
                     height: 50.0,
                   ),
                   buildChart(
                     getChartDataOfLog2(
-                        dateValueCollectionOfLog:
-                            dataLogChartState.dateValueCollectionOfLog),
+                      dateValueCollectionOfLog: [[], [], [], [], []],
+                    ),
                   ),
                 ],
               ),

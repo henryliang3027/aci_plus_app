@@ -188,9 +188,13 @@ class _DataLogFloatingActionButton extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.loadingStatus.isRequestSuccess) {
-          return const _MoreDataFloatingActionButton();
+          return const _MoreDataFloatingActionButton(
+            enabled: true,
+          );
         } else {
-          return Container();
+          return const _MoreDataFloatingActionButton(
+            enabled: false,
+          );
         }
       },
     );
@@ -198,35 +202,39 @@ class _DataLogFloatingActionButton extends StatelessWidget {
 }
 
 class _MoreDataFloatingActionButton extends StatelessWidget {
-  const _MoreDataFloatingActionButton();
+  const _MoreDataFloatingActionButton({
+    required this.enabled,
+  });
+
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DataLogChartBloc, DataLogChartState>(
-      builder: (context, state) {
-        if (state.logRequestStatus.isNone ||
-            state.logRequestStatus.isRequestInProgress ||
-            state.eventRequestStatus.isNone ||
-            state.eventRequestStatus.isRequestInProgress) {
-          return Container();
-        } else {
-          return FloatingActionButton(
-            shape: const CircleBorder(
-              side: BorderSide.none,
-            ),
-            backgroundColor:
-                Theme.of(context).colorScheme.primary.withAlpha(200),
-            child: Icon(
-              Icons.add,
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-            onPressed: () {
-              context.read<DataLogChartBloc>().add(const MoreLogRequested());
-            },
-          );
-        }
-      },
-    );
+        builder: (context, state) {
+      bool isRequesting = state.logRequestStatus.isNone ||
+          state.logRequestStatus.isRequestInProgress ||
+          state.eventRequestStatus.isNone ||
+          state.eventRequestStatus.isRequestInProgress;
+
+      return FloatingActionButton(
+        shape: const CircleBorder(
+          side: BorderSide.none,
+        ),
+        backgroundColor: enabled && !isRequesting
+            ? Theme.of(context).colorScheme.primary.withAlpha(200)
+            : Colors.grey.withAlpha(200),
+        onPressed: enabled && !isRequesting
+            ? () {
+                context.read<DataLogChartBloc>().add(const MoreLogRequested());
+              }
+            : null,
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+      );
+    });
   }
 }
 
@@ -390,15 +398,7 @@ class _LogChartListView extends StatelessWidget {
         DataLogChartState dataLogChartState =
             context.watch<DataLogChartBloc>().state;
 
-        if (homeState.loadingStatus == FormStatus.requestInProgress) {
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              buildLoadingFormWithProgressiveChartView(
-                  dataLogChartState.dateValueCollectionOfLog),
-            ],
-          );
-        } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
+        if (homeState.loadingStatus == FormStatus.requestSuccess) {
           if (dataLogChartState.logRequestStatus.isNone) {
             print('===== get log ======');
             context.read<Chart18Bloc>().add(const TabChangedDisabled());
@@ -535,24 +535,22 @@ class _LogChartListView extends StatelessWidget {
             child: SingleChildScrollView(
               // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
               // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-              key: const Key('ChartForm_Chart'),
+              key: const Key('ChartForm_Empty_Chart'),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    buildChart(
-                      getChartDataOfLog1(
-                          dateValueCollectionOfLog:
-                              dataLogChartState.dateValueCollectionOfLog),
-                    ),
+                    buildChart(getChartDataOfLog1(
+                      dateValueCollectionOfLog: [[], [], [], [], []],
+                    )),
                     const SizedBox(
                       height: 50.0,
                     ),
                     buildChart(
                       getChartDataOfLog2(
-                          dateValueCollectionOfLog:
-                              dataLogChartState.dateValueCollectionOfLog),
+                        dateValueCollectionOfLog: [[], [], [], [], []],
+                      ),
                     ),
                   ],
                 ),

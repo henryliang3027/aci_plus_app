@@ -222,7 +222,7 @@ class _Chart18FormState extends State<Chart18Form>
             ),
           ],
         ),
-        body: Chart18TabBar(
+        body: _ViewLayout(
           pageController: widget.pageController,
           tabController: _tabController,
         ),
@@ -399,7 +399,6 @@ class _PopupMenu extends StatelessWidget {
             ? PopupMenuButton<DataLogMenu>(
                 icon: const Icon(
                   Icons.more_vert_outlined,
-                  color: Colors.white,
                 ),
                 tooltip: '',
                 onSelected: (DataLogMenu item) async {
@@ -598,7 +597,6 @@ class _PopupMenu extends StatelessWidget {
             ? PopupMenuButton<RFLevelMenu>(
                 icon: const Icon(
                   Icons.more_vert_outlined,
-                  color: Colors.white,
                 ),
                 tooltip: '',
                 onSelected: (RFLevelMenu item) async {
@@ -715,9 +713,10 @@ class _PopupMenu extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.refresh,
                           size: 20.0,
+                          color: Theme.of(context).iconTheme.color,
                         ),
                         const SizedBox(
                           width: 10.0,
@@ -732,9 +731,10 @@ class _PopupMenu extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.share,
                           size: 20.0,
+                          color: Theme.of(context).iconTheme.color,
                         ),
                         const SizedBox(
                           width: 10.0,
@@ -749,9 +749,10 @@ class _PopupMenu extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.download,
                           size: 20.0,
+                          color: Theme.of(context).iconTheme.color,
                         ),
                         const SizedBox(
                           width: 10.0,
@@ -766,9 +767,10 @@ class _PopupMenu extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const Icon(
-                          Icons.download,
+                        Icon(
+                          Icons.cloud_download_outlined,
                           size: 20.0,
+                          color: Theme.of(context).iconTheme.color,
                         ),
                         const SizedBox(
                           width: 10.0,

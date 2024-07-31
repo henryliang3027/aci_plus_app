@@ -178,15 +178,7 @@ class _ChartView extends StatelessWidget {
         RFLevelChartState rfLevelChartState =
             context.watch<RFLevelChartBloc>().state;
 
-        if (homeState.loadingStatus == FormStatus.requestInProgress) {
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              buildLoadingFormWithProgressiveChartView(
-                  rfLevelChartState.valueCollectionOfRFInOut),
-            ],
-          );
-        } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
+        if (homeState.loadingStatus == FormStatus.requestSuccess) {
           if (rfLevelChartState.rfInOutRequestStatus.isNone) {
             print('get rf');
             context.read<Chart18Bloc>().add(const TabChangedDisabled());
@@ -252,7 +244,7 @@ class _ChartView extends StatelessWidget {
             child: SingleChildScrollView(
               // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
               // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-              key: const Key('ChartForm_Chart'),
+              key: const Key('ChartForm_Empty_Chart'),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30.0),
                 child: Column(
@@ -260,16 +252,16 @@ class _ChartView extends StatelessWidget {
                   children: <Widget>[
                     buildChart(
                       getChartDataOfOutputRFLevel(
-                          dateValueCollectionOfLog:
-                              rfLevelChartState.valueCollectionOfRFInOut),
+                        dateValueCollectionOfLog: [[], [], [], [], []],
+                      ),
                     ),
                     const SizedBox(
                       height: 50.0,
                     ),
                     buildChart(
                       getChartDataOfInputRFLevel(
-                          dateValueCollectionOfLog:
-                              rfLevelChartState.valueCollectionOfRFInOut),
+                        dateValueCollectionOfLog: [[], [], [], [], []],
+                      ),
                     ),
                   ],
                 ),
