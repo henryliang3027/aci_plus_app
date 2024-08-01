@@ -1,4 +1,4 @@
-import 'package:aci_plus_app/core/color.dart';
+import 'package:aci_plus_app/core/secondary_tab_bar_theme.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_forward_control_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_reverse_control_page.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class Setting18CCroNodeControlTabBar extends StatelessWidget {
         children: [
           Container(
             width: double.maxFinite,
-            color: getSecondaryTabBarPaddingColor(context),
+            color: getSecondaryTabBarBackGroundColor(context),
             child: Theme(
               data: getSecondaryTabBarTheme(context),
               child: TabBar(

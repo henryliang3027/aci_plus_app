@@ -178,7 +178,7 @@ class _QRToolbar extends StatelessWidget {
       builder: (context, state) {
         return Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            color: Theme.of(context).colorScheme.secondaryContainer,
             // borderRadius: BorderRadius.circular(10),
           ),
           height: 60,

@@ -332,7 +332,6 @@ Widget buildCard({
   double contentFontSize = CustomStyle.size4XL,
 }) {
   return Card(
-    surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
     child: Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
       child: Column(

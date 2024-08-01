@@ -48,6 +48,9 @@ class Informtion18ConfigListView extends StatelessWidget {
                     children: [
                       for (Config config in configs) ...[
                         Card(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .surfaceContainerHighest,
                           child: ListTile(
                             title: Padding(
                               padding: const EdgeInsets.only(left: 16),

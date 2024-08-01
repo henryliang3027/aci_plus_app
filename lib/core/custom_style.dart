@@ -19,6 +19,8 @@ class CustomStyle {
   static const Color customYellow = Color(0xFFFFAA00);
   static const Color customBlue = Color.fromARGB(255, 220, 243, 255);
   static const Color customPink = Color.fromARGB(255, 255, 230, 222);
+  static const Color customDeepBlue = Color.fromARGB(255, 0, 31, 47);
+  static const Color customDeepPink = Color.fromARGB(255, 55, 14, 0);
 
   static const String fahrenheitUnit = 'ºF';
   static const String celciusUnit = 'ºC';

@@ -242,8 +242,6 @@ class _DeviceListView extends StatelessWidget {
       required String groupId,
     }) {
       return Card(
-        // margin: EdgeInsets.zero,
-
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),

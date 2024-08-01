@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/about/shared/constants.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -159,6 +160,9 @@ class About extends StatelessWidget {
     }
 
     Widget buildFooter() {
+      const String address = '23307 66th Ave South Kent, WA 98032';
+      const String copyright =
+          '© 2024 ACI Communications Inc., All Rights Reserved.';
       return const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -166,18 +170,18 @@ class About extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // SizedBox(
+              //   height: 26,
+              //   child: Image(
+              //     image: AssetImage('assets/twoway.png'),
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
+              // SizedBox(
+              //   width: 20.0,
+              // ),
               SizedBox(
-                height: 26,
-                child: Image(
-                  image: AssetImage('assets/twoway.png'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              SizedBox(
-                width: 20.0,
-              ),
-              SizedBox(
-                height: 26,
+                height: 30,
                 child: Image(
                   image: AssetImage('assets/ACI.png'),
                   fit: BoxFit.cover,
@@ -188,22 +192,16 @@ class About extends StatelessWidget {
           SizedBox(
             height: CustomStyle.sizeXXL,
           ),
-          SizedBox(
-            height: 10,
-            child: Image(
-              image: AssetImage('assets/address.png'),
-              fit: BoxFit.cover,
-            ),
+          Text(
+            address,
+            style: TextStyle(fontSize: 12),
           ),
           SizedBox(
             height: CustomStyle.sizeXXL,
           ),
-          SizedBox(
-            height: 9,
-            child: Image(
-              image: AssetImage('assets/2022.png'),
-              fit: BoxFit.cover,
-            ),
+          Text(
+            copyright,
+            style: TextStyle(fontSize: 12),
           ),
           SizedBox(
             height: CustomStyle.sizeXXL,

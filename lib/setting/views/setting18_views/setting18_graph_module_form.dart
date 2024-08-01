@@ -4,6 +4,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_graph_module/setting18_graph_module_bloc.dart';
+import 'package:aci_plus_app/setting/model/graph_module_form_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
@@ -251,19 +252,12 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       bool isReverseWidget =
           reverseSettingWidgetsMap.keys.contains(widget.moduleName);
 
-      if (isForwardWidget) {
-        // 如果是下行模組, 就將背景設為淺藍色,
-        return CustomStyle.customBlue;
-      } else if (isReverseWidget) {
-        // 如果是上行模組, 就將背景設為粉紅色
-        return CustomStyle.customPink;
-      } else if (isIsolatedWidget) {
-        // 如果是獨立的模組(split option), 就將背景設為預設
-        return Theme.of(context).dialogBackgroundColor;
-      } else {
-        // 其他情況都就將背景設為預設, 代表無任何控制項, 一般不會跑到這情況
-        return Theme.of(context).dialogBackgroundColor;
-      }
+      return getGraphModuleFormBackgroundColor(
+        context: context,
+        isIsolatedWidget: isIsolatedWidget,
+        isForwardWidget: isForwardWidget,
+        isReverseWidget: isReverseWidget,
+      );
     }
 
     return BlocListener<Setting18GraphModuleBloc, Setting18GraphModuleState>(

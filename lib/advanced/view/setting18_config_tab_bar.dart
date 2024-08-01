@@ -1,7 +1,7 @@
 import 'package:aci_plus_app/advanced/view/setting18_distribution_config_form.dart';
 import 'package:aci_plus_app/advanced/view/setting18_node_config_form.dart';
 import 'package:aci_plus_app/advanced/view/setting18_trunk_config_form.dart';
-import 'package:aci_plus_app/core/color.dart';
+import 'package:aci_plus_app/core/secondary_tab_bar_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -17,7 +17,7 @@ class Setting18ConfigTabBar extends StatelessWidget {
         children: [
           Container(
             width: double.maxFinite,
-            color: getSecondaryTabBarPaddingColor(context),
+            color: getSecondaryTabBarBackGroundColor(context),
             child: Theme(
               data: getSecondaryTabBarTheme(context),
               child: TabBar(

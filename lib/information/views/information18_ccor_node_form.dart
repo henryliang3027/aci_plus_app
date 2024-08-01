@@ -557,7 +557,6 @@ class _BlockDiagramCard extends StatelessWidget {
         // }
 
         return Card(
-          color: Theme.of(context).colorScheme.onPrimary,
           surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
           child: Padding(
             padding: const EdgeInsets.all(16.0),

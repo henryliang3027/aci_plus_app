@@ -21,7 +21,7 @@ ThemeData getSecondaryTabBarTheme(BuildContext context) {
                 color: Colors.grey,
               )),
           borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-          color: Theme.of(context).colorScheme.onPrimary,
+          color: Theme.of(context).scaffoldBackgroundColor,
         ),
         labelPadding: const EdgeInsets.symmetric(horizontal: 24.0),
       ),
@@ -54,8 +54,8 @@ ThemeData getSecondaryTabBarTheme(BuildContext context) {
   }
 }
 
-Color getSecondaryTabBarPaddingColor(BuildContext context) {
+Color getSecondaryTabBarBackGroundColor(BuildContext context) {
   return Theme.of(context).brightness == Brightness.light
       ? Theme.of(context).colorScheme.onPrimary
-      : Theme.of(context).colorScheme.surfaceContainerHighest;
+      : Theme.of(context).colorScheme.surfaceContainerLow;
 }
