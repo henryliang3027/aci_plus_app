@@ -51,13 +51,14 @@ class _CofirmInputDialog extends StatelessWidget {
                           .add(TextChanged(text: text));
                     },
                     controller: confirmTextEditingController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(4.0))),
                       contentPadding: EdgeInsets.all(8.0),
                       isDense: true,
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor:
+                          Theme.of(context).colorScheme.secondaryContainer,
                       counterText: '',
                     ),
                   ),

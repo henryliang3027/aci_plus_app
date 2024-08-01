@@ -325,8 +325,7 @@ class _Location extends StatelessWidget {
                   contentPadding: const EdgeInsets.all(10.0),
                   isDense: true,
                   filled: true,
-                  fillColor:
-                      Theme.of(context).colorScheme.surfaceContainerHighest,
+                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
                   counterText: '',
                 ),
               ),
@@ -385,8 +384,7 @@ class _Coordinates extends StatelessWidget {
                   contentPadding: const EdgeInsets.all(10.0),
                   isDense: true,
                   filled: true,
-                  fillColor:
-                      Theme.of(context).colorScheme.surfaceContainerHighest,
+                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
                   counterText: '',
                   suffixIconConstraints: const BoxConstraints(
                     maxHeight: 48,

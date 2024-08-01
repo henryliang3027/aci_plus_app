@@ -22,7 +22,15 @@ class About18Form extends StatelessWidget {
       body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Theme.of(context).colorScheme.primary, Colors.black],
+              colors: Theme.of(context).brightness == Brightness.light
+                  ? [
+                      Theme.of(context).colorScheme.primary,
+                      Colors.black,
+                    ]
+                  : [
+                      Colors.black,
+                      Theme.of(context).colorScheme.primary,
+                    ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -163,11 +171,11 @@ class About extends StatelessWidget {
       const String address = '23307 66th Ave South Kent, WA 98032';
       const String copyright =
           '© 2024 ACI Communications Inc., All Rights Reserved.';
-      return const Column(
+      return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // SizedBox(
@@ -189,21 +197,27 @@ class About extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: CustomStyle.sizeXXL,
           ),
           Text(
             address,
-            style: TextStyle(fontSize: 12),
+            style: TextStyle(
+              fontSize: 12,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
           ),
-          SizedBox(
+          const SizedBox(
             height: CustomStyle.sizeXXL,
           ),
           Text(
             copyright,
-            style: TextStyle(fontSize: 12),
+            style: TextStyle(
+              fontSize: 12,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
           ),
-          SizedBox(
+          const SizedBox(
             height: CustomStyle.sizeXXL,
           ),
         ],

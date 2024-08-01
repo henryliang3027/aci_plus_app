@@ -714,13 +714,16 @@ class _FineTuneTextSlider2State extends State<FineTuneTextSlider2> {
                       isDense: true,
                       filled: true,
                       fillColor:
-                          Theme.of(context).colorScheme.surfaceContainerHighest,
+                          Theme.of(context).colorScheme.secondaryContainer,
                       counterText: '',
                       errorMaxLines: 2,
                       // 暫時解法, 避免 errorText 出現時改變了 textfield 原來的高度
                       helperText: '',
 
-                      error: _validateText(widget.errorText1),
+                      error: _validateText(
+                        context: context,
+                        errorText: widget.errorText1,
+                      ),
                     ),
                   ),
                 ),
@@ -749,13 +752,17 @@ class _FineTuneTextSlider2State extends State<FineTuneTextSlider2> {
   }
 }
 
-Widget? _validateText(String? errorText) {
+Widget? _validateText({
+  required BuildContext context,
+  String? errorText,
+}) {
   if (errorText != null) {
     return Align(
       alignment: Alignment.center,
       child: Text(
         errorText,
-        style: TextStyle(color: Colors.red[900], fontSize: 12),
+        style:
+            TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 12),
       ),
     );
   } else {
@@ -1080,8 +1087,7 @@ Widget twoTextField({
                   contentPadding: const EdgeInsets.all(8.0),
                   isDense: true,
                   filled: true,
-                  fillColor:
-                      Theme.of(context).colorScheme.surfaceContainerHighest,
+                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
                   counterText: '',
                   errorMaxLines: 2,
                   errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
@@ -1116,8 +1122,7 @@ Widget twoTextField({
                   contentPadding: const EdgeInsets.all(8.0),
                   isDense: true,
                   filled: true,
-                  fillColor:
-                      Theme.of(context).colorScheme.surfaceContainerHighest,
+                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
                   counterText: '',
                   errorMaxLines: 2,
                   errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
@@ -1500,8 +1505,7 @@ Widget thresholdAlarmParameterWidget({
                   contentPadding: const EdgeInsets.all(8.0),
                   isDense: true,
                   filled: true,
-                  fillColor:
-                      Theme.of(context).colorScheme.surfaceContainerHighest,
+                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
                   counterText: '',
                   errorMaxLines: 2,
                   errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
@@ -1535,8 +1539,7 @@ Widget thresholdAlarmParameterWidget({
                   contentPadding: const EdgeInsets.all(8.0),
                   isDense: true,
                   filled: true,
-                  fillColor:
-                      Theme.of(context).colorScheme.surfaceContainerHighest,
+                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
                   counterText: '',
                   errorMaxLines: 2,
                   errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
@@ -1705,7 +1708,7 @@ Color getBackgroundColor({
 }) {
   return targetValue == value
       ? Theme.of(context).colorScheme.primary
-      : Theme.of(context).colorScheme.surfaceContainerHighest;
+      : Theme.of(context).colorScheme.secondaryContainer;
 }
 
 Color getBorderColor({
@@ -1745,7 +1748,7 @@ Color getDisabledBackgroundColor({
 }) {
   return targetValue == value
       ? Theme.of(context).colorScheme.inversePrimary
-      : Theme.of(context).colorScheme.surfaceContainerHighest;
+      : Theme.of(context).colorScheme.secondaryContainer;
 }
 
 Color getDisabledBorderColor() {

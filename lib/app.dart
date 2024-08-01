@@ -125,9 +125,6 @@ class _AppView extends StatelessWidget {
           primary: Colors.indigo,
           onPrimary: Colors.white,
           secondaryContainer: Colors.white,
-          surfaceContainerLowest: Color(4294967295),
-          surfaceContainerLow: Color(4294177786),
-          surfaceContainer: Color(4293783028),
           surfaceContainerHighest: Colors.white,
           onSurface: Colors.black,
         ),
@@ -179,7 +176,7 @@ class _AppView extends StatelessWidget {
           ),
         ),
         scaffoldBackgroundColor: Colors.grey.shade50,
-        dialogBackgroundColor: Colors.white,
+        dialogBackgroundColor: Colors.grey.shade50,
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
@@ -188,11 +185,8 @@ class _AppView extends StatelessWidget {
           seedColor: Colors.indigo,
           primary: Colors.indigo,
           onPrimary: Colors.white,
-          secondaryContainer: Color(4280822319),
-          surfaceContainerLowest: Color(4278980115),
-          surfaceContainerLow: Color(4280822319),
-          surfaceContainer: Color(4280098852),
-          surfaceContainerHighest: Color(4281546042),
+          secondaryContainer: const Color(0xFF282A2F),
+          surfaceContainerHighest: const Color(0xFF33353A),
           onSurface: Colors.white,
         ),
         appBarTheme: const AppBarTheme(
@@ -208,20 +202,12 @@ class _AppView extends StatelessWidget {
           indicator: BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-            color: Color(4280822319),
+            color: Color(0xFF282A2F),
           ),
           labelPadding: EdgeInsets.symmetric(horizontal: 24.0),
           dividerHeight: 0.0,
         ),
-        scaffoldBackgroundColor: Color(4278980115),
-        // textTheme: const TextTheme(
-        //   titleLarge: TextStyle(
-        //     color: Colors.white,
-        //   ),
-        //   bodyMedium: TextStyle(
-        //     color: Colors.white,
-        //   ),
-        // ),
+        scaffoldBackgroundColor: const Color(0xFF0C0E13),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.resolveWith<Color?>(
@@ -240,13 +226,7 @@ class _AppView extends StatelessWidget {
             }),
           ),
         ),
-        // bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        //   backgroundColor: Colors.black,
-        //   selectedItemColor: Colors.indigo,
-        //   unselectedItemColor: Colors.grey.shade700,
-        // ),
-        // scaffoldBackgroundColor: Colors.black,
-        dialogBackgroundColor: Color(4280822319),
+        dialogBackgroundColor: const Color(0xFF282A2F),
         useMaterial3: true,
       ),
       themeMode: ThemeMode.system,

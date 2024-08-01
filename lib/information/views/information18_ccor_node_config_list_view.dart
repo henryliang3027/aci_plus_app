@@ -48,6 +48,9 @@ class Informtion18CCorNodeConfigListView extends StatelessWidget {
                     children: [
                       for (NodeConfig nodeConfig in nodeConfigs) ...[
                         Card(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .surfaceContainerHighest,
                           child: ListTile(
                             title: Padding(
                               padding: const EdgeInsets.only(left: 16),

@@ -240,6 +240,7 @@ class _DeviceListView extends StatelessWidget {
     }) {
       return Card(
         // margin: EdgeInsets.zero,
+        color: Theme.of(context).colorScheme.secondaryContainer,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),

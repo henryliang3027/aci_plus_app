@@ -13,9 +13,9 @@ class CustomStyle {
   static const double size4XL = 40.0;
   static const double diameter = 23;
 
-  static const Color customRed = Color(0xffdc3545);
-  static const Color customGreen = Color(0xff28a745);
-  static const Color customGrey = Color(0xff6c757d);
+  static const Color customRed = Color(0xFFDC3545);
+  static const Color customGreen = Color(0xFF28A745);
+  static const Color customGrey = Color(0xFF6C757D);
   static const Color customYellow = Color(0xFFFFAA00);
   static const Color customBlue = Color.fromARGB(255, 220, 243, 255);
   static const Color customPink = Color.fromARGB(255, 255, 230, 222);

@@ -242,6 +242,7 @@ class _DeviceListView extends StatelessWidget {
       required String groupId,
     }) {
       return Card(
+        color: Theme.of(context).colorScheme.secondaryContainer,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),

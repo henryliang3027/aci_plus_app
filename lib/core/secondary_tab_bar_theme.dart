@@ -57,5 +57,5 @@ ThemeData getSecondaryTabBarTheme(BuildContext context) {
 Color getSecondaryTabBarBackGroundColor(BuildContext context) {
   return Theme.of(context).brightness == Brightness.light
       ? Theme.of(context).colorScheme.onPrimary
-      : Theme.of(context).colorScheme.surfaceContainerLow;
+      : Theme.of(context).colorScheme.secondaryContainer;
 }
