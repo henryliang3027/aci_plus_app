@@ -89,217 +89,105 @@ class _AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      // locale: const Locale('en'),'
-      localeResolutionCallback:
-          (Locale? locale, Iterable<Locale> supportedLocales) {
-        if (locale == null) {
-          return supportedLocales.first;
-        }
+    // return MaterialApp(
+    //   localizationsDelegates: AppLocalizations.localizationsDelegates,
+    //   // locale: const Locale('en'),'
+    //   localeResolutionCallback:
+    //       (Locale? locale, Iterable<Locale> supportedLocales) {
+    //     if (locale == null) {
+    //       return supportedLocales.first;
+    //     }
 
-        // 檢查目前系統語言是否有支援
-        for (Locale supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale.languageCode) {
-            return supportedLocale;
-          }
-        }
-
-        //  如果不支援目前系統語言, 則設為預設語言 English (US)
-        return const Locale('en', 'US');
-      },
-      supportedLocales: const <Locale>[
-        Locale('en', 'US'),
-        Locale('es', 'ES'),
-        Locale('fr', 'FR'),
-        Locale('zh', 'TW'),
-      ],
-
-      theme: ThemeData(
-        cardTheme: const CardTheme(
-          color: Colors.white,
-        ),
-        colorScheme: ColorScheme.fromSeed(
-          brightness: Brightness.light,
-          seedColor: Colors.indigo,
-          primary: Colors.indigo,
-          onPrimary: Colors.white,
-          secondaryContainer: Colors.white,
-          surfaceContainerHighest: Colors.white,
-          onSurface: Colors.black,
-        ),
-        appBarTheme: const AppBarTheme(
-          iconTheme: IconThemeData(color: Colors.white),
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.indigo,
-        ),
-        tabBarTheme: const TabBarTheme(
-          tabAlignment: TabAlignment.start,
-          unselectedLabelColor: Colors.white,
-          labelColor: Colors.indigo,
-          indicatorSize: TabBarIndicatorSize.tab,
-          indicator: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            ),
-            color: Colors.white,
-          ),
-          labelPadding: EdgeInsets.symmetric(horizontal: 24.0),
-          dividerColor: Colors.white,
-        ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Colors.white,
-          selectedItemColor: Colors.indigo,
-          unselectedItemColor: Colors.grey.shade700,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            elevation: WidgetStateProperty.resolveWith<double?>(
-                (Set<WidgetState> states) {
-              return 0.0;
-            }),
-            backgroundColor: WidgetStateProperty.resolveWith<Color?>(
-                (Set<WidgetState> states) {
-              if (states.contains(WidgetState.disabled)) {
-                return Colors.grey.shade300; // Disabled background color
-              }
-              return Colors.indigo; // Enabled background color
-            }),
-            foregroundColor: WidgetStateProperty.resolveWith<Color?>(
-                (Set<WidgetState> states) {
-              if (states.contains(WidgetState.disabled)) {
-                return Colors.grey.shade500; // Disabled text color
-              }
-              return Colors.white; // Enabled text color
-            }),
-          ),
-        ),
-        scaffoldBackgroundColor: Colors.grey.shade50,
-        dialogBackgroundColor: Colors.grey.shade50,
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          brightness: Brightness.dark,
-          seedColor: Colors.indigo,
-          primary: Colors.indigo,
-          onPrimary: Colors.white,
-          secondaryContainer: const Color(0xFF282A2F),
-          surfaceContainerHighest: const Color(0xFF33353A),
-          onSurface: Colors.white,
-        ),
-        appBarTheme: const AppBarTheme(
-          iconTheme: IconThemeData(color: Colors.white),
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.black,
-        ),
-        tabBarTheme: const TabBarTheme(
-          tabAlignment: TabAlignment.start,
-          unselectedLabelColor: Colors.white,
-          labelColor: Colors.white,
-          indicatorSize: TabBarIndicatorSize.tab,
-          indicator: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-            color: Color(0xFF282A2F),
-          ),
-          labelPadding: EdgeInsets.symmetric(horizontal: 24.0),
-          dividerHeight: 0.0,
-        ),
-        scaffoldBackgroundColor: const Color(0xFF0C0E13),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.resolveWith<Color?>(
-                (Set<WidgetState> states) {
-              if (states.contains(WidgetState.disabled)) {
-                return Colors.grey; // Disabled background color
-              }
-              return Colors.indigo; // Enabled background color
-            }),
-            foregroundColor: WidgetStateProperty.resolveWith<Color?>(
-                (Set<WidgetState> states) {
-              if (states.contains(WidgetState.disabled)) {
-                return Colors.white; // Disabled text color
-              }
-              return Colors.white; // Enabled text color
-            }),
-          ),
-        ),
-        dialogBackgroundColor: const Color(0xFF282A2F),
-        useMaterial3: true,
-      ),
-      themeMode: ThemeMode.system,
-      home: BlocBuilder<HomeBloc, HomeState>(
-        buildWhen: (previous, current) =>
-            previous.showSplash != current.showSplash,
-        builder: (context, state) {
-          if (state.showSplash) {
-            return const Stack(
-              children: [
-                HomePage(),
-                SplashScreen(),
-              ],
-            );
-          } else {
-            return const HomePage();
-          }
-        },
-      ),
-    );
-
-    // return AdaptiveTheme(
-    //   debugShowFloatingThemeButton: true,
-    //   light: CustomTheme.lightTheme,
-    //   dark: CustomTheme.darkTheme,
-    //   initial: savedAdaptiveThemeMode,
-    //   builder: (light, dark) => MaterialApp(
-    //     localizationsDelegates: AppLocalizations.localizationsDelegates,
-    //     // locale: const Locale('en'),'
-    //     localeResolutionCallback:
-    //         (Locale? locale, Iterable<Locale> supportedLocales) {
-    //       if (locale == null) {
-    //         return supportedLocales.first;
+    //     // 檢查目前系統語言是否有支援
+    //     for (Locale supportedLocale in supportedLocales) {
+    //       if (supportedLocale.languageCode == locale.languageCode) {
+    //         return supportedLocale;
     //       }
+    //     }
 
-    //       // 檢查目前系統語言是否有支援
-    //       for (Locale supportedLocale in supportedLocales) {
-    //         if (supportedLocale.languageCode == locale.languageCode) {
-    //           return supportedLocale;
-    //         }
+    //     //  如果不支援目前系統語言, 則設為預設語言 English (US)
+    //     return const Locale('en', 'US');
+    //   },
+    //   supportedLocales: const <Locale>[
+    //     Locale('en', 'US'),
+    //     Locale('es', 'ES'),
+    //     Locale('fr', 'FR'),
+    //     Locale('zh', 'TW'),
+    //   ],
+
+    //   theme: CustomTheme().lightTheme,
+    //   darkTheme: CustomTheme().darkTheme,
+    //   themeMode: ThemeMode.system,
+    //   home: BlocBuilder<HomeBloc, HomeState>(
+    //     buildWhen: (previous, current) =>
+    //         previous.showSplash != current.showSplash,
+    //     builder: (context, state) {
+    //       if (state.showSplash) {
+    //         return const Stack(
+    //           children: [
+    //             HomePage(),
+    //             SplashScreen(),
+    //           ],
+    //         );
+    //       } else {
+    //         return const HomePage();
     //       }
-
-    //       //  如果不支援目前系統語言, 則設為預設語言 English (US)
-    //       return const Locale('en', 'US');
     //     },
-    //     supportedLocales: const <Locale>[
-    //       Locale('en', 'US'),
-    //       Locale('es', 'ES'),
-    //       Locale('fr', 'FR'),
-    //       Locale('zh', 'TW'),
-    //     ],
-
-    //     theme: CustomTheme.lightTheme,
-    //     darkTheme: CustomTheme.darkTheme,
-    //     themeMode: ThemeMode.light,
-    //     home: BlocBuilder<HomeBloc, HomeState>(
-    //       buildWhen: (previous, current) =>
-    //           previous.showSplash != current.showSplash,
-    //       builder: (context, state) {
-    //         if (state.showSplash) {
-    //           return const Stack(
-    //             children: [
-    //               HomePage(),
-    //               SplashScreen(),
-    //             ],
-    //           );
-    //         } else {
-    //           return const HomePage();
-    //         }
-    //       },
-    //     ),
     //   ),
     // );
+
+    return AdaptiveTheme(
+      // debugShowFloatingThemeButton: true,
+      light: CustomTheme().lightTheme,
+      dark: CustomTheme().darkTheme,
+      initial: savedAdaptiveThemeMode,
+      builder: (light, dark) => MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        // locale: const Locale('en'),'
+        localeResolutionCallback:
+            (Locale? locale, Iterable<Locale> supportedLocales) {
+          if (locale == null) {
+            return supportedLocales.first;
+          }
+
+          // 檢查目前系統語言是否有支援
+          for (Locale supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode) {
+              return supportedLocale;
+            }
+          }
+
+          //  如果不支援目前系統語言, 則設為預設語言 English (US)
+          return const Locale('en', 'US');
+        },
+        supportedLocales: const <Locale>[
+          Locale('en', 'US'),
+          Locale('es', 'ES'),
+          Locale('fr', 'FR'),
+          Locale('zh', 'TW'),
+        ],
+
+        theme: light,
+        darkTheme: dark,
+        // themeMode: ThemeMode.light,
+        home: BlocBuilder<HomeBloc, HomeState>(
+          buildWhen: (previous, current) =>
+              previous.showSplash != current.showSplash,
+          builder: (context, state) {
+            if (state.showSplash) {
+              return const Stack(
+                children: [
+                  HomePage(),
+                  SplashScreen(),
+                ],
+              );
+            } else {
+              return const HomePage();
+            }
+          },
+        ),
+      ),
+    );
   }
 }
 
@@ -337,22 +225,39 @@ class SplashScreen extends StatelessWidget {
 }
 
 class CustomTheme {
-  static ThemeData lightTheme = ThemeData(
+  ThemeData lightTheme = ThemeData(
     cardTheme: const CardTheme(
       color: Colors.white,
     ),
     colorScheme: ColorScheme.fromSeed(
+      brightness: Brightness.light,
       seedColor: Colors.indigo,
       primary: Colors.indigo,
       onPrimary: Colors.white,
+      secondaryContainer: Colors.white,
+      surfaceContainerLow: Colors.white,
+      surfaceContainerHighest: Colors.white,
+      onSurface: Colors.black,
     ),
     appBarTheme: const AppBarTheme(
       iconTheme: IconThemeData(color: Colors.white),
       foregroundColor: Colors.white,
       backgroundColor: Colors.indigo,
     ),
-    tabBarTheme: TabBarTheme(
-      indicatorColor: Colors.grey.shade50,
+    tabBarTheme: const TabBarTheme(
+      tabAlignment: TabAlignment.start,
+      unselectedLabelColor: Colors.white,
+      labelColor: Colors.indigo,
+      indicatorSize: TabBarIndicatorSize.tab,
+      indicator: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+        ),
+        color: Colors.white,
+      ),
+      labelPadding: EdgeInsets.symmetric(horizontal: 24.0),
+      dividerColor: Colors.white,
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
@@ -382,36 +287,40 @@ class CustomTheme {
       ),
     ),
     scaffoldBackgroundColor: Colors.grey.shade50,
-    dialogBackgroundColor: Colors.white,
+    dialogBackgroundColor: Colors.grey.shade50,
     useMaterial3: true,
   );
 
-  static ThemeData darkTheme = ThemeData(
-    cardTheme: CardTheme(
-      color: Colors.grey.shade900,
-    ),
+  ThemeData darkTheme = ThemeData(
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.black,
+      brightness: Brightness.dark,
+      seedColor: Colors.indigo,
       primary: Colors.indigo,
       onPrimary: Colors.white,
-      inversePrimary: Colors.black,
+      secondaryContainer: const Color(0xFF282A2F),
+      surfaceContainerLow: const Color(0xFF282A2F),
+      surfaceContainerHighest: const Color(0xFF33353A),
+      onSurface: Colors.white,
     ),
     appBarTheme: const AppBarTheme(
       iconTheme: IconThemeData(color: Colors.white),
       foregroundColor: Colors.white,
       backgroundColor: Colors.black,
     ),
-    tabBarTheme: TabBarTheme(
-      indicatorColor: Colors.grey.shade50,
-    ),
-    textTheme: const TextTheme(
-      titleLarge: TextStyle(
-        color: Colors.white,
+    tabBarTheme: const TabBarTheme(
+      tabAlignment: TabAlignment.start,
+      unselectedLabelColor: Colors.white,
+      labelColor: Colors.white,
+      indicatorSize: TabBarIndicatorSize.tab,
+      indicator: BoxDecoration(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+        color: Color(0xFF282A2F),
       ),
-      bodyMedium: TextStyle(
-        color: Colors.white,
-      ),
+      labelPadding: EdgeInsets.symmetric(horizontal: 24.0),
+      dividerHeight: 0.0,
     ),
+    scaffoldBackgroundColor: const Color(0xFF0C0E13),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         backgroundColor:
@@ -430,13 +339,7 @@ class CustomTheme {
         }),
       ),
     ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: Colors.black,
-      selectedItemColor: Colors.indigo,
-      unselectedItemColor: Colors.grey.shade700,
-    ),
-    scaffoldBackgroundColor: Colors.black,
-    dialogBackgroundColor: Colors.white,
+    dialogBackgroundColor: const Color(0xFF282A2F),
     useMaterial3: true,
   );
 }
