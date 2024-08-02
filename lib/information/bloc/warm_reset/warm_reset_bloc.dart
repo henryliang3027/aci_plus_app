@@ -44,7 +44,7 @@ class WarmResetBloc extends Bloc<WarmResetEvent, WarmResetState> {
         // 暫停 stream 來重置 timeout 的 countdown
         _updateReportStreamSubscription?.pause();
         currentProgress = 0.5;
-        displayMessage = 'almost done...';
+        displayMessage = _appLocalizations.dialogMessageWarmResetingAlmostDone;
 
         add(MessageReceived(
           message: displayMessage,
@@ -63,8 +63,9 @@ class WarmResetBloc extends Bloc<WarmResetEvent, WarmResetState> {
     Emitter<WarmResetState> emit,
   ) async {
     emit(state.copyWith(
-        submissionStatus: SubmissionStatus.submissionInProgress,
-        message: 'Reseting...'));
+      submissionStatus: SubmissionStatus.submissionInProgress,
+      message: _appLocalizations.dialogTitleDeviceRebooting,
+    ));
 
     // //  將 android system back button 設為不可點擊
     // SystemBackButtonProperty.isEnabled = false;
@@ -97,7 +98,7 @@ class WarmResetBloc extends Bloc<WarmResetEvent, WarmResetState> {
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionInProgress,
-      message: 'Done',
+      message: _appLocalizations.dialogMessageDone,
       currentProgress: 1.0,
     ));
   }

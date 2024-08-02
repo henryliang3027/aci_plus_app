@@ -406,6 +406,7 @@
     "dialogMessageCodeHint": "Please enter your code",
     "dialogMessageEnterYourCode": "Only Arabic numerals, maximum 8 characters:",
     "dialogMessageWarmReset": "Do you want to perform a warm reset on the device ?",
+    "dialogMessageWarmResetingAlmostDone": "Almost done",
     "dialogMessageWarmResetSeccessful": "Warm reset performed successfully."
 
     

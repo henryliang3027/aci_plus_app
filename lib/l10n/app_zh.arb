@@ -406,5 +406,6 @@
     "dialogMessageCodeHint": "請輸入您的代碼",
     "dialogMessageEnterYourCode": "代碼僅能為阿拉伯數字，最多八個字元：",
     "dialogMessageWarmReset": "您確定要對裝置執行熱重啟嗎 ?",
+    "dialogMessageWarmResetingAlmostDone": "即將完成",
     "dialogMessageWarmResetSeccessful": "熱重啟成功"
 }

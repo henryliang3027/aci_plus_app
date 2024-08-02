@@ -404,5 +404,6 @@
     "dialogMessageCodeHint": "Veuillez entrer votre code",
     "dialogMessageEnterYourCode": "Seuls les chiffres arabes, maximum 8 caractères:",
     "dialogMessageWarmReset": "Voulez-vous effectuer une réinitialisation chaude sur l'appareil ?",
+    "dialogMessageWarmResetingAlmostDone": "Presque terminé",
     "dialogMessageWarmResetSeccessful": "Réinitialisation chaude effectuée avec succès."
 }

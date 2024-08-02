@@ -405,5 +405,6 @@
     "dialogMessageCodeHint": "Por favor ingresa tu código",
     "dialogMessageEnterYourCode": "Solo números arábigos, máximo de 8 caracteres:",
     "dialogMessageWarmReset": "¿Desea realizar un reinicio caliente en el dispositivo?",
+    "dialogMessageWarmResetingAlmostDone": "Casi terminado",
     "dialogMessageWarmResetSeccessful": "Reinicio caliente realizado con éxito."
 }
