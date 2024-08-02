@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/information/shared/theme_option_page.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 
 Future<String?> showThemeOptionDialog({
@@ -21,4 +22,23 @@ Future<String?> showThemeOptionDialog({
       );
     },
   );
+}
+
+void changeThemeByThemeString({
+  required BuildContext context,
+  required String theme,
+}) {
+  switch (theme) {
+    case 'light':
+      AdaptiveTheme.of(context).setLight();
+      break;
+    case 'dark':
+      AdaptiveTheme.of(context).setDark();
+      break;
+    case 'system':
+      AdaptiveTheme.of(context).setSystem();
+      break;
+    default:
+      AdaptiveTheme.of(context).setLight();
+  }
 }

@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:aci_plus_app/about/about18_page.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/information/bloc/information18/information18_bloc.dart';
@@ -93,146 +96,76 @@ class __PopupMenuState extends State<_PopupMenu> {
               color: Colors.white,
             ),
             tooltip: '',
-            onSelected: (HomeMenu item) async {
-              switch (item) {
-                case HomeMenu.refresh:
-                  context
-                      .read<Information18Bloc>()
-                      .add(const AlarmPeriodicUpdateCanceled());
-                  context.read<HomeBloc>().add(const DeviceRefreshed());
-                  break;
-                case HomeMenu.theme:
-                  showThemeOptionDialog(context: context).then(
-                    (String? theme) {
-                      if (theme != null) {
-                        switch (theme) {
-                          case 'light':
-                            AdaptiveTheme.of(context).setLight();
-                            break;
-                          case 'dark':
-                            AdaptiveTheme.of(context).setDark();
-                            break;
-                          case 'system':
-                            AdaptiveTheme.of(context).setSystem();
-                            break;
-                          default:
-                            AdaptiveTheme.of(context).setLight();
-                        }
-                      }
-                    },
-                  );
-                  break;
-                case HomeMenu.warmReset:
-                  context
-                      .read<Information18Bloc>()
-                      .add(const AlarmPeriodicUpdateCanceled());
-
-                  showWarmResetNoticeDialog(context: context).then(
-                    (isConfirm) {
-                      if (isConfirm != null) {
-                        if (isConfirm) {
-                          showWarmResetDialog(context: context).then((_) {
-                            showWarmResetSuccessDialog(context: context)
-                                .then((_) {
-                              context
-                                  .read<HomeBloc>()
-                                  .add(const Data18Requested());
-                            });
-                          });
-                        }
-                      }
-                    },
-                  );
-                  break;
-                case HomeMenu.about:
-                  Navigator.push(
-                    context,
-                    About18Page.route(
-                      appVersion:
-                          context.read<Information18Bloc>().state.appVersion,
-                    ),
-                  );
-                  break;
-
-                default:
-                  break;
-              }
-            },
             itemBuilder: (BuildContext context) {
               return <PopupMenuEntry<HomeMenu>>[
-                PopupMenuItem<HomeMenu>(
+                menuItem(
                   value: HomeMenu.refresh,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.refresh,
-                        size: 20.0,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Text(AppLocalizations.of(context)!.reconnect),
-                    ],
-                  ),
+                  iconData: Icons.refresh,
+                  title: AppLocalizations.of(context)!.reconnect,
+                  onTap: () {
+                    context
+                        .read<Information18Bloc>()
+                        .add(const AlarmPeriodicUpdateCanceled());
+                    context.read<HomeBloc>().add(const DeviceRefreshed());
+                  },
                 ),
-                PopupMenuItem<HomeMenu>(
+                menuItem(
                   value: HomeMenu.theme,
-                  enabled: true,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.colorize_rounded,
-                        size: 20.0,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Text(AppLocalizations.of(context)!.theme),
-                    ],
-                  ),
+                  iconData: Icons.colorize_rounded,
+                  title: AppLocalizations.of(context)!.theme,
+                  onTap: () {
+                    showThemeOptionDialog(context: context).then(
+                      (String? theme) {
+                        if (theme != null) {
+                          changeThemeByThemeString(
+                            context: context,
+                            theme: theme,
+                          );
+                        }
+                      },
+                    );
+                  },
                 ),
-                PopupMenuItem<HomeMenu>(
+                menuItem(
                   value: HomeMenu.warmReset,
-                  enabled: state.loadingStatus.isRequestSuccess ? true : false,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.restart_alt_outlined,
-                        size: 20.0,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Text(AppLocalizations.of(context)!.warmReset),
-                    ],
-                  ),
+                  iconData: Icons.restart_alt_outlined,
+                  title: AppLocalizations.of(context)!.warmReset,
+                  onTap: () {
+                    context
+                        .read<Information18Bloc>()
+                        .add(const AlarmPeriodicUpdateCanceled());
+
+                    showWarmResetNoticeDialog(context: context).then(
+                      (isConfirm) {
+                        if (isConfirm != null) {
+                          if (isConfirm) {
+                            showWarmResetDialog(context: context).then((_) {
+                              showWarmResetSuccessDialog(context: context)
+                                  .then((_) {
+                                context
+                                    .read<HomeBloc>()
+                                    .add(const Data18Requested());
+                              });
+                            });
+                          }
+                        }
+                      },
+                    );
+                  },
                 ),
-                PopupMenuItem<HomeMenu>(
+                menuItem(
                   value: HomeMenu.about,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        CustomIcons.about,
-                        size: 20.0,
-                        color: Theme.of(context).iconTheme.color,
+                  iconData: CustomIcons.about,
+                  title: AppLocalizations.of(context)!.aboutUs,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      About18Page.route(
+                        appVersion:
+                            context.read<Information18Bloc>().state.appVersion,
                       ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Text(AppLocalizations.of(context)!.aboutUs),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ];
             },

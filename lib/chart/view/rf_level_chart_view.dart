@@ -79,7 +79,7 @@ class _ChartView extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
-            child: OutlinedButton(
+            child: ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
@@ -89,20 +89,19 @@ class _ChartView extends StatelessWidget {
                   ),
                 );
               },
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.all(0.0),
-                backgroundColor: Colors.white70,
-                elevation: 0,
-                side: const BorderSide(
-                  width: 1.0,
-                  color: Colors.black,
-                ),
-                visualDensity:
-                    const VisualDensity(horizontal: -4.0, vertical: -3.0),
-              ),
+              // style: ElevatedButton.styleFrom(
+              //   padding: const EdgeInsets.all(0.0),
+              //   backgroundColor: Colors.white70,
+              //   elevation: 0,
+              //   side: const BorderSide(
+              //     width: 1.0,
+              //     color: Colors.black,
+              //   ),
+              //   visualDensity:
+              //       const VisualDensity(horizontal: -4.0, vertical: -3.0),
+              // ),
               child: const Icon(
                 Icons.fullscreen_outlined,
-                color: Colors.black,
               ),
             ),
           ),
@@ -143,7 +142,7 @@ class _ChartView extends StatelessWidget {
             // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
             key: Key('ChartForm_${intValue}_Chart'),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30.0),
+              padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -216,7 +215,7 @@ class _ChartView extends StatelessWidget {
                 // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
                 key: const Key('ChartForm_Chart'),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30.0),
+                  padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -246,7 +245,7 @@ class _ChartView extends StatelessWidget {
               // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
               key: const Key('ChartForm_Empty_Chart'),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 30.0),
+                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

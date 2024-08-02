@@ -9,6 +9,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
@@ -74,12 +75,18 @@ class Chart18CCorNodeForm extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
+                backgroundColor: Theme.of(context).dialogBackgroundColor,
                 duration: const Duration(seconds: 30),
                 content: Text(
                   AppLocalizations.of(context)!
                       .dialogMessageDataExportSuccessful,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 action: SnackBarAction(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  textColor: Theme.of(context).colorScheme.onPrimary,
                   label: AppLocalizations.of(context)!.open,
                   onPressed: () async {
                     OpenFilex.open(
@@ -120,12 +127,18 @@ class Chart18CCorNodeForm extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
+                backgroundColor: Theme.of(context).dialogBackgroundColor,
                 duration: const Duration(seconds: 30),
                 content: Text(
                   AppLocalizations.of(context)!
                       .dialogMessageDataExportSuccessful,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 action: SnackBarAction(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  textColor: Theme.of(context).colorScheme.onPrimary,
                   label: AppLocalizations.of(context)!.open,
                   onPressed: () async {
                     OpenFilex.open(
@@ -272,180 +285,121 @@ class _PopupMenu extends StatelessWidget {
             color: Colors.white,
           ),
           tooltip: '',
-          onSelected: (DataLogMenu item) async {
-            switch (item) {
-              case DataLogMenu.refresh:
-                context.read<HomeBloc>().add(const DeviceRefreshed());
-                break;
-              case DataLogMenu.share:
-                await showEnterCodeDialog(context: context)
-                    .then((String? code) {
-                  if (code != null) {
-                    if (code.isNotEmpty) {
-                      Map<String, String> configurationData =
-                          getConfigurationData(
-                        context: context,
-                        characteristicData: characteristicData,
-                      );
+          itemBuilder: (BuildContext context) {
+            return <PopupMenuEntry<DataLogMenu>>[
+              menuItem(
+                value: DataLogMenu.refresh,
+                iconData: Icons.refresh,
+                title: AppLocalizations.of(context)!.reconnect,
+                onTap: () {
+                  context.read<HomeBloc>().add(const DeviceRefreshed());
+                },
+              ),
+              menuItem(
+                value: DataLogMenu.share,
+                iconData: Icons.share,
+                title: AppLocalizations.of(context)!.share,
+                onTap: () {
+                  showEnterCodeDialog(context: context).then((String? code) {
+                    if (code != null) {
+                      if (code.isNotEmpty) {
+                        Map<String, String> configurationData =
+                            getConfigurationData(
+                          context: context,
+                          characteristicData: characteristicData,
+                        );
 
-                      List<Map<String, String>> controlData = getControlData(
-                        context: context,
-                        characteristicData: characteristicData,
-                      );
+                        List<Map<String, String>> controlData = getControlData(
+                          context: context,
+                          characteristicData: characteristicData,
+                        );
 
-                      context.read<Chart18CCorNodeBloc>().add(DataShared(
-                            code: code,
-                            configurationData: configurationData,
-                            controlData: controlData,
-                          ));
+                        context.read<Chart18CCorNodeBloc>().add(DataShared(
+                              code: code,
+                              configurationData: configurationData,
+                              controlData: controlData,
+                            ));
+                      }
                     }
-                  }
-                });
+                  });
+                },
+              ),
+              menuItem(
+                value: DataLogMenu.export,
+                iconData: Icons.download,
+                title: AppLocalizations.of(context)!.export,
+                onTap: () {
+                  showEnterCodeDialog(context: context).then((String? code) {
+                    if (code != null) {
+                      if (code.isNotEmpty) {
+                        Map<String, String> configurationData =
+                            getConfigurationData(
+                          context: context,
+                          characteristicData: characteristicData,
+                        );
 
-                break;
-              case DataLogMenu.export:
-                showEnterCodeDialog(context: context).then((String? code) {
-                  if (code != null) {
-                    if (code.isNotEmpty) {
-                      Map<String, String> configurationData =
-                          getConfigurationData(
-                        context: context,
-                        characteristicData: characteristicData,
-                      );
+                        List<Map<String, String>> controlData = getControlData(
+                          context: context,
+                          characteristicData: characteristicData,
+                        );
 
-                      List<Map<String, String>> controlData = getControlData(
-                        context: context,
-                        characteristicData: characteristicData,
-                      );
-
-                      context.read<Chart18CCorNodeBloc>().add(DataExported(
-                            code: code,
-                            configurationData: configurationData,
-                            controlData: controlData,
-                          ));
+                        context.read<Chart18CCorNodeBloc>().add(DataExported(
+                              code: code,
+                              configurationData: configurationData,
+                              controlData: controlData,
+                            ));
+                      }
                     }
-                  }
-                });
+                  });
+                },
+              ),
+              menuItem(
+                value: DataLogMenu.downloadAll,
+                iconData: Icons.cloud_download_outlined,
+                title: AppLocalizations.of(context)!.downloadAll,
+                onTap: () {
+                  showEnterCodeDialog(context: context).then((String? code) {
+                    if (code != null) {
+                      if (code.isNotEmpty) {
+                        showDownloadDialog()
+                            .then((List<dynamic>? resultOfDownload) {
+                          if (resultOfDownload != null) {
+                            bool isSuccessful = resultOfDownload[0];
+                            List<Log1p8GCCorNode> log1p8Gs =
+                                resultOfDownload[1];
+                            String errorMessage = resultOfDownload[2];
 
-                break;
-              case DataLogMenu.downloadAll:
-                showEnterCodeDialog(context: context).then((String? code) {
-                  if (code != null) {
-                    if (code.isNotEmpty) {
-                      showDownloadDialog()
-                          .then((List<dynamic>? resultOfDownload) {
-                        if (resultOfDownload != null) {
-                          bool isSuccessful = resultOfDownload[0];
-                          List<Log1p8GCCorNode> log1p8Gs = resultOfDownload[1];
-                          String errorMessage = resultOfDownload[2];
+                            Map<String, String> configurationData =
+                                getConfigurationData(
+                              context: context,
+                              characteristicData: characteristicData,
+                            );
 
-                          Map<String, String> configurationData =
-                              getConfigurationData(
-                            context: context,
-                            characteristicData: characteristicData,
-                          );
+                            List<Map<String, String>> controlData =
+                                getControlData(
+                              context: context,
+                              characteristicData: characteristicData,
+                            );
 
-                          List<Map<String, String>> controlData =
-                              getControlData(
-                            context: context,
-                            characteristicData: characteristicData,
-                          );
-
-                          context
-                              .read<Chart18CCorNodeBloc>()
-                              .add(AllDataExported(
-                                isSuccessful: isSuccessful,
-                                log1p8Gs: log1p8Gs,
-                                errorMessage: errorMessage,
-                                code: code,
-                                configurationData: configurationData,
-                                controlData: controlData,
-                              ));
-                        }
-                      });
+                            context
+                                .read<Chart18CCorNodeBloc>()
+                                .add(AllDataExported(
+                                  isSuccessful: isSuccessful,
+                                  log1p8Gs: log1p8Gs,
+                                  errorMessage: errorMessage,
+                                  code: code,
+                                  configurationData: configurationData,
+                                  controlData: controlData,
+                                ));
+                          }
+                        });
+                      }
                     }
-                  }
-                });
-
-                break;
-              default:
-                break;
-            }
+                  });
+                },
+              ),
+            ];
           },
-          itemBuilder: (BuildContext context) => <PopupMenuEntry<DataLogMenu>>[
-            PopupMenuItem<DataLogMenu>(
-              value: DataLogMenu.refresh,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.refresh,
-                    size: 20.0,
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(AppLocalizations.of(context)!.reconnect),
-                ],
-              ),
-            ),
-            PopupMenuItem<DataLogMenu>(
-              value: DataLogMenu.share,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.share,
-                    size: 20.0,
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(AppLocalizations.of(context)!.share),
-                ],
-              ),
-            ),
-            PopupMenuItem<DataLogMenu>(
-              value: DataLogMenu.export,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.download,
-                    size: 20.0,
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(AppLocalizations.of(context)!.export),
-                ],
-              ),
-            ),
-            PopupMenuItem<DataLogMenu>(
-              value: DataLogMenu.downloadAll,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.cloud_download_outlined,
-                    size: 20.0,
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(AppLocalizations.of(context)!.downloadAll),
-                ],
-              ),
-            ),
-          ],
         );
       },
     );
@@ -778,7 +732,7 @@ class _LogChartListView extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
-            child: OutlinedButton(
+            child: ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
@@ -788,16 +742,16 @@ class _LogChartListView extends StatelessWidget {
                   ),
                 );
               },
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.all(0.0),
-                backgroundColor: Colors.white70,
-                elevation: 0,
-                side: const BorderSide(
-                  width: 1.0,
-                ),
-                visualDensity:
-                    const VisualDensity(horizontal: -4.0, vertical: -3.0),
-              ),
+              // style: OutlinedButton.styleFrom(
+              //   padding: const EdgeInsets.all(0.0),
+              //   backgroundColor: Colors.white70,
+              //   elevation: 0,
+              //   side: const BorderSide(
+              //     width: 1.0,
+              //   ),
+              //   visualDensity:
+              //       const VisualDensity(horizontal: -4.0, vertical: -3.0),
+              // ),
               child: const Icon(
                 Icons.fullscreen_outlined,
               ),
@@ -836,7 +790,7 @@ class _LogChartListView extends StatelessWidget {
             // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
             key: Key('ChartForm_${intValue}_Chart'),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30.0),
+              padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -907,7 +861,7 @@ class _LogChartListView extends StatelessWidget {
                   // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
                   key: const Key('ChartForm_Chart'),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 30.0),
+                    padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -937,7 +891,7 @@ class _LogChartListView extends StatelessWidget {
             // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
             key: const Key('ChartForm_Empty_Chart'),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30.0),
+              padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

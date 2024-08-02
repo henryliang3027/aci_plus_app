@@ -389,13 +389,6 @@ class Setting18ReverseControlBloc
       settingResult.add('${DataKey.usVCA2.name},$resultOfSetUSVCA2');
     }
 
-    if (state.eREQ.value != state.initialValues[DataKey.eREQ]) {
-      bool resultOfSetEREQ =
-          await _amp18Repository.set1p8GEREQ(state.eREQ.value);
-
-      settingResult.add('${DataKey.eREQ.name},$resultOfSetEREQ');
-    }
-
     if (state.usVCA3.value != state.initialValues[DataKey.usVCA3]) {
       bool resultOfSetUSVCA3 =
           await _amp18Repository.set1p8GUSVCA3(state.usVCA3.value);
@@ -435,6 +428,13 @@ class Setting18ReverseControlBloc
 
       settingResult
           .add('${DataKey.ingressSetting4.name},$resultOfSetReturnIngress4');
+    }
+
+    if (state.eREQ.value != state.initialValues[DataKey.eREQ]) {
+      bool resultOfSetEREQ =
+          await _amp18Repository.set1p8GEREQ(state.eREQ.value);
+
+      settingResult.add('${DataKey.eREQ.name},$resultOfSetEREQ');
     }
 
     // 等待 device 完成更新後在讀取值

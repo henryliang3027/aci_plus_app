@@ -44,14 +44,17 @@ String format1P8GSettingResultItem({
         .dialogMessageForwardInputAttenuation1Setting;
   } else if (item == DataKey.dsVVA4.name) {
     if (partId == '5' || partId == '6') {
+      // TR, BR
       return AppLocalizations.of(context)!
           .dialogMessageForwardOutputAttenuation2And3Setting;
     } else if (partId == '8') {
+      // SDAT
       return AppLocalizations.of(context)!
           .dialogMessageForwardOutputAttenuation3Setting;
     } else {
+      // MB, SDAM
       return AppLocalizations.of(context)!
-          .dialogMessageForwardOutputEqualizer3And4Setting;
+          .dialogMessageForwardOutputAttenuation3And4Setting;
     }
   } else if (item == DataKey.dsVVA5.name) {
     if (partId == '5') {

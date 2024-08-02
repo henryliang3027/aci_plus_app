@@ -85,6 +85,35 @@ String adjustMaxIntValue({
       : intCurrentValue.toString();
 }
 
+PopupMenuItem<T> menuItem<T>(
+    {required T value,
+    required IconData iconData,
+    required String title,
+    required VoidCallback onTap}) {
+  // 使用 Builder 來解決當 PopupMenu 開著的時候切換主題時能即時改變 Icon 顏色
+  return PopupMenuItem<T>(
+    value: value,
+    onTap: onTap,
+    child: Builder(
+      builder: (context) => Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Icon(
+            iconData,
+            size: 20.0,
+            color: Theme.of(context).iconTheme.color,
+          ),
+          const SizedBox(
+            width: 10.0,
+          ),
+          Text(title),
+        ],
+      ),
+    ),
+  );
+}
+
 Future<String> getAppVersion() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 

@@ -29,7 +29,7 @@ class About18Form extends StatelessWidget {
                     ]
                   : [
                       Colors.black,
-                      Theme.of(context).colorScheme.primary,
+                      Theme.of(context).colorScheme.onPrimaryFixed,
                     ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -207,9 +207,9 @@ class About extends StatelessWidget {
               color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
-          const SizedBox(
-            height: CustomStyle.sizeXXL,
-          ),
+          // const SizedBox(
+          //   height: CustomStyle.sizeXXL,
+          // ),
           Text(
             copyright,
             style: TextStyle(

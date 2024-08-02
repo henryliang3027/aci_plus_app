@@ -8,6 +8,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
@@ -91,12 +92,18 @@ class _Chart18FormState extends State<Chart18Form>
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
+                backgroundColor: Theme.of(context).dialogBackgroundColor,
                 duration: const Duration(seconds: 30),
                 content: Text(
                   AppLocalizations.of(context)!
                       .dialogMessageDataExportSuccessful,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 action: SnackBarAction(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  textColor: Theme.of(context).colorScheme.onPrimary,
                   label: AppLocalizations.of(context)!.open,
                   onPressed: () async {
                     OpenFilex.open(
@@ -137,12 +144,18 @@ class _Chart18FormState extends State<Chart18Form>
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
+                backgroundColor: Theme.of(context).dialogBackgroundColor,
                 duration: const Duration(seconds: 30),
                 content: Text(
                   AppLocalizations.of(context)!
                       .dialogMessageDataExportSuccessful,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 action: SnackBarAction(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  textColor: Theme.of(context).colorScheme.onPrimary,
                   label: AppLocalizations.of(context)!.open,
                   onPressed: () async {
                     OpenFilex.open(
@@ -166,12 +179,18 @@ class _Chart18FormState extends State<Chart18Form>
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
+                backgroundColor: Theme.of(context).dialogBackgroundColor,
                 duration: const Duration(seconds: 30),
                 content: Text(
                   AppLocalizations.of(context)!
                       .dialogMessageDataExportSuccessful,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 action: SnackBarAction(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  textColor: Theme.of(context).colorScheme.onPrimary,
                   label: AppLocalizations.of(context)!.open,
                   onPressed: () async {
                     OpenFilex.open(
@@ -401,186 +420,126 @@ class _PopupMenu extends StatelessWidget {
                   Icons.more_vert_outlined,
                 ),
                 tooltip: '',
-                onSelected: (DataLogMenu item) async {
-                  switch (item) {
-                    case DataLogMenu.refresh:
-                      context.read<HomeBloc>().add(const DeviceRefreshed());
-                      break;
-                    case DataLogMenu.share:
-                      showEnterCodeDialog(context: context)
-                          .then((String? code) {
-                        if (code != null) {
-                          if (code.isNotEmpty) {
-                            Map<String, String> configurationData =
-                                getConfigurationData(
-                              context: context,
-                              characteristicData: characteristicData,
-                            );
+                itemBuilder: (BuildContext context) {
+                  return <PopupMenuEntry<DataLogMenu>>[
+                    menuItem(
+                      value: DataLogMenu.refresh,
+                      iconData: Icons.refresh,
+                      title: AppLocalizations.of(context)!.reconnect,
+                      onTap: () {
+                        context.read<HomeBloc>().add(const DeviceRefreshed());
+                      },
+                    ),
+                    menuItem(
+                      value: DataLogMenu.share,
+                      iconData: Icons.share,
+                      title: AppLocalizations.of(context)!.share,
+                      onTap: () {
+                        showEnterCodeDialog(context: context)
+                            .then((String? code) {
+                          if (code != null) {
+                            if (code.isNotEmpty) {
+                              Map<String, String> configurationData =
+                                  getConfigurationData(
+                                context: context,
+                                characteristicData: characteristicData,
+                              );
 
-                            List<Map<String, String>> controlData =
-                                getControlData(
-                              context: context,
-                              characteristicData: characteristicData,
-                            );
+                              List<Map<String, String>> controlData =
+                                  getControlData(
+                                context: context,
+                                characteristicData: characteristicData,
+                              );
 
-                            context.read<Chart18Bloc>().add(DataShared(
-                                  code: code,
-                                  configurationData: configurationData,
-                                  controlData: controlData,
-                                ));
+                              context.read<Chart18Bloc>().add(DataShared(
+                                    code: code,
+                                    configurationData: configurationData,
+                                    controlData: controlData,
+                                  ));
+                            }
                           }
-                        }
-                      });
+                        });
+                      },
+                    ),
+                    menuItem(
+                      value: DataLogMenu.export,
+                      iconData: Icons.download,
+                      title: AppLocalizations.of(context)!.export,
+                      onTap: () {
+                        showEnterCodeDialog(context: context)
+                            .then((String? code) {
+                          if (code != null) {
+                            if (code.isNotEmpty) {
+                              Map<String, String> configurationData =
+                                  getConfigurationData(
+                                context: context,
+                                characteristicData: characteristicData,
+                              );
 
-                      break;
-                    case DataLogMenu.export:
-                      showEnterCodeDialog(context: context)
-                          .then((String? code) {
-                        if (code != null) {
-                          if (code.isNotEmpty) {
-                            Map<String, String> configurationData =
-                                getConfigurationData(
-                              context: context,
-                              characteristicData: characteristicData,
-                            );
+                              List<Map<String, String>> controlData =
+                                  getControlData(
+                                context: context,
+                                characteristicData: characteristicData,
+                              );
 
-                            List<Map<String, String>> controlData =
-                                getControlData(
-                              context: context,
-                              characteristicData: characteristicData,
-                            );
-
-                            context.read<Chart18Bloc>().add(DataExported(
-                                  code: code,
-                                  configurationData: configurationData,
-                                  controlData: controlData,
-                                ));
+                              context.read<Chart18Bloc>().add(DataExported(
+                                    code: code,
+                                    configurationData: configurationData,
+                                    controlData: controlData,
+                                  ));
+                            }
                           }
-                        }
-                      });
+                        });
+                      },
+                    ),
+                    menuItem(
+                      value: DataLogMenu.downloadAll,
+                      iconData: Icons.cloud_download_outlined,
+                      title: AppLocalizations.of(context)!.downloadAll,
+                      onTap: () {
+                        showEnterCodeDialog(context: context)
+                            .then((String? code) {
+                          if (code != null) {
+                            if (code.isNotEmpty) {
+                              showDownloadDialog(context: context)
+                                  .then((List<dynamic>? resultOfDownload) {
+                                if (resultOfDownload != null) {
+                                  bool isSuccessful = resultOfDownload[0];
+                                  List<Log1p8G> log1p8Gs = resultOfDownload[1];
+                                  String errorMessage = resultOfDownload[2];
+                                  if (context.mounted) {
+                                    Map<String, String> configurationData =
+                                        getConfigurationData(
+                                      context: context,
+                                      characteristicData: characteristicData,
+                                    );
 
-                      break;
-                    case DataLogMenu.downloadAll:
-                      showEnterCodeDialog(context: context)
-                          .then((String? code) {
-                        if (code != null) {
-                          if (code.isNotEmpty) {
-                            showDownloadDialog(context: context)
-                                .then((List<dynamic>? resultOfDownload) {
-                              if (resultOfDownload != null) {
-                                bool isSuccessful = resultOfDownload[0];
-                                List<Log1p8G> log1p8Gs = resultOfDownload[1];
-                                String errorMessage = resultOfDownload[2];
-                                if (context.mounted) {
-                                  Map<String, String> configurationData =
-                                      getConfigurationData(
-                                    context: context,
-                                    characteristicData: characteristicData,
-                                  );
+                                    List<Map<String, String>> controlData =
+                                        getControlData(
+                                      context: context,
+                                      characteristicData: characteristicData,
+                                    );
 
-                                  List<Map<String, String>> controlData =
-                                      getControlData(
-                                    context: context,
-                                    characteristicData: characteristicData,
-                                  );
-
-                                  context
-                                      .read<Chart18Bloc>()
-                                      .add(AllDataExported(
-                                        isSuccessful: isSuccessful,
-                                        log1p8Gs: log1p8Gs,
-                                        errorMessage: errorMessage,
-                                        code: code,
-                                        configurationData: configurationData,
-                                        controlData: controlData,
-                                      ));
+                                    context
+                                        .read<Chart18Bloc>()
+                                        .add(AllDataExported(
+                                          isSuccessful: isSuccessful,
+                                          log1p8Gs: log1p8Gs,
+                                          errorMessage: errorMessage,
+                                          code: code,
+                                          configurationData: configurationData,
+                                          controlData: controlData,
+                                        ));
+                                  }
                                 }
-                              }
-                            });
+                              });
+                            }
                           }
-                        }
-                      });
-
-                      break;
-                    default:
-                      break;
-                  }
+                        });
+                      },
+                    ),
+                  ];
                 },
-                itemBuilder: (BuildContext context) =>
-                    <PopupMenuEntry<DataLogMenu>>[
-                  PopupMenuItem<DataLogMenu>(
-                    value: DataLogMenu.refresh,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.refresh,
-                          size: 20.0,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Text(AppLocalizations.of(context)!.reconnect),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem<DataLogMenu>(
-                    value: DataLogMenu.share,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.share,
-                          size: 20.0,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Text(AppLocalizations.of(context)!.share),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem<DataLogMenu>(
-                    value: DataLogMenu.export,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.download,
-                          size: 20.0,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Text(AppLocalizations.of(context)!.export),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem<DataLogMenu>(
-                    value: DataLogMenu.downloadAll,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.cloud_download_outlined,
-                          size: 20.0,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Text(AppLocalizations.of(context)!.downloadAll),
-                      ],
-                    ),
-                  ),
-                ],
               )
             : Container();
       },
@@ -599,187 +558,127 @@ class _PopupMenu extends StatelessWidget {
                   Icons.more_vert_outlined,
                 ),
                 tooltip: '',
-                onSelected: (RFLevelMenu item) async {
-                  switch (item) {
-                    case RFLevelMenu.refresh:
-                      context.read<HomeBloc>().add(const DeviceRefreshed());
-                      break;
-                    case RFLevelMenu.share:
-                      showEnterCodeDialog(context: context)
-                          .then((String? code) {
-                        if (code != null) {
-                          if (code.isNotEmpty) {
-                            Map<String, String> configurationData =
-                                getConfigurationData(
-                              context: context,
-                              characteristicData: characteristicData,
-                            );
+                itemBuilder: (BuildContext context) {
+                  return <PopupMenuEntry<RFLevelMenu>>[
+                    menuItem(
+                      value: RFLevelMenu.refresh,
+                      iconData: Icons.refresh,
+                      title: AppLocalizations.of(context)!.reconnect,
+                      onTap: () {
+                        context.read<HomeBloc>().add(const DeviceRefreshed());
+                      },
+                    ),
+                    menuItem(
+                      value: RFLevelMenu.share,
+                      iconData: Icons.share,
+                      title: AppLocalizations.of(context)!.share,
+                      onTap: () {
+                        showEnterCodeDialog(context: context)
+                            .then((String? code) {
+                          if (code != null) {
+                            if (code.isNotEmpty) {
+                              Map<String, String> configurationData =
+                                  getConfigurationData(
+                                context: context,
+                                characteristicData: characteristicData,
+                              );
 
-                            List<Map<String, String>> controlData =
-                                getControlData(
-                              context: context,
-                              characteristicData: characteristicData,
-                            );
+                              List<Map<String, String>> controlData =
+                                  getControlData(
+                                context: context,
+                                characteristicData: characteristicData,
+                              );
 
-                            context.read<Chart18Bloc>().add(RFLevelShared(
-                                  code: code,
-                                  configurationData: configurationData,
-                                  controlData: controlData,
-                                ));
+                              context.read<Chart18Bloc>().add(RFLevelShared(
+                                    code: code,
+                                    configurationData: configurationData,
+                                    controlData: controlData,
+                                  ));
+                            }
                           }
-                        }
-                      });
+                        });
+                      },
+                    ),
+                    menuItem(
+                      value: RFLevelMenu.export,
+                      iconData: Icons.download,
+                      title: AppLocalizations.of(context)!.export,
+                      onTap: () {
+                        showEnterCodeDialog(context: context)
+                            .then((String? code) {
+                          if (code != null) {
+                            if (code.isNotEmpty) {
+                              Map<String, String> configurationData =
+                                  getConfigurationData(
+                                context: context,
+                                characteristicData: characteristicData,
+                              );
 
-                      break;
-                    case RFLevelMenu.export:
-                      showEnterCodeDialog(context: context)
-                          .then((String? code) {
-                        if (code != null) {
-                          if (code.isNotEmpty) {
-                            Map<String, String> configurationData =
-                                getConfigurationData(
-                              context: context,
-                              characteristicData: characteristicData,
-                            );
+                              List<Map<String, String>> controlData =
+                                  getControlData(
+                                context: context,
+                                characteristicData: characteristicData,
+                              );
 
-                            List<Map<String, String>> controlData =
-                                getControlData(
-                              context: context,
-                              characteristicData: characteristicData,
-                            );
-
-                            context.read<Chart18Bloc>().add(RFLevelExported(
-                                  code: code,
-                                  configurationData: configurationData,
-                                  controlData: controlData,
-                                ));
+                              context.read<Chart18Bloc>().add(RFLevelExported(
+                                    code: code,
+                                    configurationData: configurationData,
+                                    controlData: controlData,
+                                  ));
+                            }
                           }
-                        }
-                      });
+                        });
+                      },
+                    ),
+                    menuItem(
+                      value: RFLevelMenu.downloadAll,
+                      iconData: Icons.cloud_download_outlined,
+                      title: AppLocalizations.of(context)!.downloadAll,
+                      onTap: () {
+                        showEnterCodeDialog(context: context)
+                            .then((String? code) {
+                          if (code != null) {
+                            if (code.isNotEmpty) {
+                              showRFOutDownloadDialog(context: context)
+                                  .then((List<dynamic>? resultOfDownload) {
+                                if (resultOfDownload != null) {
+                                  bool isSuccessful = resultOfDownload[0];
+                                  List<RFOutputLog> rfOutputLog1p8Gs =
+                                      resultOfDownload[1];
+                                  String errorMessage = resultOfDownload[2];
+                                  if (context.mounted) {
+                                    Map<String, String> configurationData =
+                                        getConfigurationData(
+                                      context: context,
+                                      characteristicData: characteristicData,
+                                    );
 
-                      break;
-                    case RFLevelMenu.downloadAll:
-                      showEnterCodeDialog(context: context)
-                          .then((String? code) {
-                        if (code != null) {
-                          if (code.isNotEmpty) {
-                            showRFOutDownloadDialog(context: context)
-                                .then((List<dynamic>? resultOfDownload) {
-                              if (resultOfDownload != null) {
-                                bool isSuccessful = resultOfDownload[0];
-                                List<RFOutputLog> rfOutputLog1p8Gs =
-                                    resultOfDownload[1];
-                                String errorMessage = resultOfDownload[2];
-                                if (context.mounted) {
-                                  Map<String, String> configurationData =
-                                      getConfigurationData(
-                                    context: context,
-                                    characteristicData: characteristicData,
-                                  );
+                                    List<Map<String, String>> controlData =
+                                        getControlData(
+                                      context: context,
+                                      characteristicData: characteristicData,
+                                    );
 
-                                  List<Map<String, String>> controlData =
-                                      getControlData(
-                                    context: context,
-                                    characteristicData: characteristicData,
-                                  );
-
-                                  context
-                                      .read<Chart18Bloc>()
-                                      .add(AllRFOutputLogExported(
-                                        isSuccessful: isSuccessful,
-                                        rfOutputLog1p8Gs: rfOutputLog1p8Gs,
-                                        errorMessage: errorMessage,
-                                        code: code,
-                                        configurationData: configurationData,
-                                        controlData: controlData,
-                                      ));
+                                    context
+                                        .read<Chart18Bloc>()
+                                        .add(AllRFOutputLogExported(
+                                          isSuccessful: isSuccessful,
+                                          rfOutputLog1p8Gs: rfOutputLog1p8Gs,
+                                          errorMessage: errorMessage,
+                                          code: code,
+                                          configurationData: configurationData,
+                                          controlData: controlData,
+                                        ));
+                                  }
                                 }
-                              }
-                            });
+                              });
+                            }
                           }
-                        }
-                      });
-
-                      break;
-                    default:
-                      break;
-                  }
+                        });
+                      },
+                    ),
+                  ];
                 },
-                itemBuilder: (BuildContext context) =>
-                    <PopupMenuEntry<RFLevelMenu>>[
-                  PopupMenuItem<RFLevelMenu>(
-                    value: RFLevelMenu.refresh,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.refresh,
-                          size: 20.0,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Text(AppLocalizations.of(context)!.reconnect),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem<RFLevelMenu>(
-                    value: RFLevelMenu.share,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.share,
-                          size: 20.0,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Text(AppLocalizations.of(context)!.share),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem<RFLevelMenu>(
-                    value: RFLevelMenu.export,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.download,
-                          size: 20.0,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Text(AppLocalizations.of(context)!.export),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem<RFLevelMenu>(
-                    value: RFLevelMenu.downloadAll,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.cloud_download_outlined,
-                          size: 20.0,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Text(AppLocalizations.of(context)!.downloadAll),
-                      ],
-                    ),
-                  ),
-                ],
               )
             : Container();
       },
