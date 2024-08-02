@@ -89,17 +89,13 @@ class _ChartView extends StatelessWidget {
                   ),
                 );
               },
-              // style: ElevatedButton.styleFrom(
-              //   padding: const EdgeInsets.all(0.0),
-              //   backgroundColor: Colors.white70,
-              //   elevation: 0,
-              //   side: const BorderSide(
-              //     width: 1.0,
-              //     color: Colors.black,
-              //   ),
-              //   visualDensity:
-              //       const VisualDensity(horizontal: -4.0, vertical: -3.0),
-              // ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.all(0.0),
+                visualDensity:
+                    const VisualDensity(horizontal: -4.0, vertical: -3.0),
+              ),
               child: const Icon(
                 Icons.fullscreen_outlined,
               ),
