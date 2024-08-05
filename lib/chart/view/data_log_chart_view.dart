@@ -304,7 +304,7 @@ class _LogChartListView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Padding(
-            padding: const EdgeInsets.only(right: 10.0),
+            padding: const EdgeInsets.all(10.0),
             child: ElevatedButton(
               onPressed: () {
                 Navigator.push(
