@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/control_item_value.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
@@ -41,25 +42,38 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
     Map<DataKey, String> characteristicDataCache =
         _amp18CCorNodeRepository.characteristicDataCache;
 
+    String splitOption = characteristicDataCache[DataKey.splitOption]!;
+    String partId = characteristicDataCache[DataKey.partId]!;
+
+    Map<DataKey, MinMax> values =
+        ControlItemValue.valueCollection[splitOption]![int.parse(partId)];
+
+    MinMax usVCA1MinMax = values[DataKey.usVCA1]!;
     RangeFloatPointInput usVCA1 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA1] ?? '',
-      minValue: state.usVCA1.minValue,
-      maxValue: state.usVCA1.maxValue,
+      minValue: usVCA1MinMax.min,
+      maxValue: usVCA1MinMax.max,
     );
+
+    MinMax usVCA3MinMax = values[DataKey.usVCA3]!;
     RangeFloatPointInput usVCA3 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA3] ?? '',
-      minValue: state.usVCA3.minValue,
-      maxValue: state.usVCA3.maxValue,
+      minValue: usVCA3MinMax.min,
+      maxValue: usVCA3MinMax.max,
     );
+
+    MinMax usVCA4MinMax = values[DataKey.usVCA4]!;
     RangeFloatPointInput usVCA4 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA4] ?? '',
-      minValue: state.usVCA4.minValue,
-      maxValue: state.usVCA4.maxValue,
+      minValue: usVCA4MinMax.min,
+      maxValue: usVCA4MinMax.max,
     );
+
+    MinMax usVCA6MinMax = values[DataKey.usVCA6]!;
     RangeFloatPointInput usVCA6 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA6] ?? '',
-      minValue: state.usVCA6.minValue,
-      maxValue: state.usVCA6.maxValue,
+      minValue: usVCA6MinMax.min,
+      maxValue: usVCA6MinMax.max,
     );
     String returnIngressSetting1 =
         characteristicDataCache[DataKey.ingressSetting1] ?? '';

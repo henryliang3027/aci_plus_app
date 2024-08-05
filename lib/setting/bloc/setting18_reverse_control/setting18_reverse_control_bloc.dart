@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/control_item_value.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
@@ -48,31 +49,64 @@ class Setting18ReverseControlBloc
       }
     });
 
+    String splitOption = characteristicDataCache[DataKey.splitOption]!;
+    String partId = characteristicDataCache[DataKey.partId]!;
+    Map<DataKey, MinMax> values =
+        ControlItemValue.valueCollection[splitOption]![int.parse(partId)];
+
+    MinMax usVCA1MinMax = values[DataKey.usVCA1] ??
+        MinMax(
+          min: state.usVCA1.minValue,
+          max: state.usVCA1.maxValue,
+        );
     RangeFloatPointInput usVCA1 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA1] ?? '',
-      minValue: state.usVCA1.minValue,
-      maxValue: state.usVCA1.maxValue,
-    );
-    RangeFloatPointInput usVCA2 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.usVCA2] ?? '',
-      minValue: state.usVCA2.minValue,
-      maxValue: state.usVCA2.maxValue,
-    );
-    RangeFloatPointInput usVCA3 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.usVCA3] ?? '',
-      minValue: state.usVCA3.minValue,
-      maxValue: state.usVCA3.maxValue,
-    );
-    RangeFloatPointInput usVCA4 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.usVCA4] ?? '',
-      minValue: state.usVCA4.minValue,
-      maxValue: state.usVCA4.maxValue,
+      minValue: usVCA1MinMax.min,
+      maxValue: usVCA1MinMax.max,
     );
 
+    MinMax usVCA2MinMax = values[DataKey.usVCA2] ??
+        MinMax(
+          min: state.usVCA2.minValue,
+          max: state.usVCA2.maxValue,
+        );
+    RangeFloatPointInput usVCA2 = initialRangeFloatPointInput(
+      characteristicDataCache[DataKey.usVCA2] ?? '',
+      minValue: usVCA2MinMax.min,
+      maxValue: usVCA2MinMax.max,
+    );
+
+    MinMax usVCA3MinMax = values[DataKey.usVCA3] ??
+        MinMax(
+          min: state.usVCA3.minValue,
+          max: state.usVCA3.maxValue,
+        );
+    RangeFloatPointInput usVCA3 = initialRangeFloatPointInput(
+      characteristicDataCache[DataKey.usVCA3] ?? '',
+      minValue: usVCA3MinMax.min,
+      maxValue: usVCA3MinMax.max,
+    );
+
+    MinMax usVCA4MinMax = values[DataKey.usVCA4] ??
+        MinMax(
+          min: state.usVCA4.minValue,
+          max: state.usVCA4.maxValue,
+        );
+    RangeFloatPointInput usVCA4 = initialRangeFloatPointInput(
+      characteristicDataCache[DataKey.usVCA4] ?? '',
+      minValue: usVCA4MinMax.min,
+      maxValue: usVCA4MinMax.max,
+    );
+
+    MinMax eREQMinMax = values[DataKey.eREQ] ??
+        MinMax(
+          min: state.eREQ.minValue,
+          max: state.eREQ.maxValue,
+        );
     RangeFloatPointInput eREQ = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.eREQ] ?? '',
-      minValue: state.eREQ.minValue,
-      maxValue: state.eREQ.maxValue,
+      minValue: eREQMinMax.min,
+      maxValue: eREQMinMax.max,
     );
     String ingressSetting2 =
         characteristicDataCache[DataKey.ingressSetting2] ?? '';

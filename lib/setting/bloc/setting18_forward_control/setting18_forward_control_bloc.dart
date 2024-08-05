@@ -1,9 +1,9 @@
+import 'package:aci_plus_app/core/control_item_value.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:aci_plus_app/setting/model/formz_input_initializer.dart';
-import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -51,53 +51,109 @@ class Setting18ForwardControlBloc
       }
     });
 
-    String forwardCEQIndex =
-        characteristicDataCache[DataKey.forwardCEQIndex] ?? '';
+    String splitOption = characteristicDataCache[DataKey.splitOption]!;
+    String partId = characteristicDataCache[DataKey.partId]!;
 
+    Map<DataKey, MinMax> values =
+        ControlItemValue.valueCollection[splitOption]![int.parse(partId)];
+
+    MinMax dsVVA1MinMax = values[DataKey.dsVVA1] ??
+        MinMax(
+          min: state.dsVVA1.minValue,
+          max: state.dsVVA1.maxValue,
+        );
     RangeFloatPointInput dsVVA1 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA1] ?? '',
-      minValue: state.dsVVA1.minValue,
-      maxValue: getVVA1MaxValue(characteristicDataCache[DataKey.partId] ?? ''),
+      minValue: dsVVA1MinMax.min,
+      maxValue: dsVVA1MinMax.max,
     );
+
+    MinMax dsVVA2MinMax = values[DataKey.dsVVA2] ??
+        MinMax(
+          min: state.dsVVA2.minValue,
+          max: state.dsVVA2.maxValue,
+        );
     RangeFloatPointInput dsVVA2 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA2] ?? '',
-      minValue: state.dsVVA2.minValue,
-      maxValue: state.dsVVA2.maxValue,
+      minValue: dsVVA2MinMax.min,
+      maxValue: dsVVA2MinMax.max,
     );
+
+    MinMax dsVVA3MinMax = values[DataKey.dsVVA3] ??
+        MinMax(
+          min: state.dsVVA3.minValue,
+          max: state.dsVVA3.maxValue,
+        );
     RangeFloatPointInput dsVVA3 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA3] ?? '',
-      minValue: state.dsVVA3.minValue,
-      maxValue: state.dsVVA3.maxValue,
+      minValue: dsVVA3MinMax.min,
+      maxValue: dsVVA3MinMax.max,
     );
+
+    MinMax dsVVA4MinMax = values[DataKey.dsVVA4] ??
+        MinMax(
+          min: state.dsVVA4.minValue,
+          max: state.dsVVA4.maxValue,
+        );
     RangeFloatPointInput dsVVA4 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA4] ?? '',
-      minValue: state.dsVVA4.minValue,
-      maxValue: state.dsVVA4.maxValue,
+      minValue: dsVVA4MinMax.min,
+      maxValue: dsVVA4MinMax.max,
     );
+
+    MinMax dsVVA5MinMax = values[DataKey.dsVVA5] ??
+        MinMax(
+          min: state.dsVVA5.minValue,
+          max: state.dsVVA5.maxValue,
+        );
     RangeFloatPointInput dsVVA5 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA5] ?? '',
-      minValue: state.dsVVA5.minValue,
-      maxValue: state.dsVVA5.maxValue,
+      minValue: dsVVA5MinMax.min,
+      maxValue: dsVVA5MinMax.max,
     );
+
+    MinMax dsSlope1MinMax = values[DataKey.dsSlope1] ??
+        MinMax(
+          min: state.dsSlope1.minValue,
+          max: state.dsSlope1.maxValue,
+        );
     RangeFloatPointInput dsSlope1 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsSlope1] ?? '',
-      minValue: state.dsSlope1.minValue,
-      maxValue: getSlope1MaxValue(forwardCEQIndex),
+      minValue: dsSlope1MinMax.min,
+      maxValue: dsSlope1MinMax.max,
     );
+
+    MinMax dsSlope2MinMax = values[DataKey.dsSlope2] ??
+        MinMax(
+          min: state.dsSlope2.minValue,
+          max: state.dsSlope2.maxValue,
+        );
     RangeFloatPointInput dsSlope2 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsSlope2] ?? '',
-      minValue: state.dsSlope2.minValue,
-      maxValue: state.dsSlope2.maxValue,
+      minValue: dsSlope2MinMax.min,
+      maxValue: dsSlope2MinMax.max,
     );
+
+    MinMax dsSlope3MinMax = values[DataKey.dsSlope3] ??
+        MinMax(
+          min: state.dsSlope3.minValue,
+          max: state.dsSlope3.maxValue,
+        );
     RangeFloatPointInput dsSlope3 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsSlope3] ?? '',
-      minValue: state.dsSlope3.minValue,
-      maxValue: state.dsSlope3.maxValue,
+      minValue: dsSlope3MinMax.min,
+      maxValue: dsSlope3MinMax.max,
     );
+
+    MinMax dsSlope4MinMax = values[DataKey.dsSlope4] ??
+        MinMax(
+          min: state.dsSlope4.minValue,
+          max: state.dsSlope4.maxValue,
+        );
     RangeFloatPointInput dsSlope4 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsSlope4] ?? '',
-      minValue: state.dsSlope4.minValue,
-      maxValue: state.dsSlope4.maxValue,
+      minValue: dsSlope4MinMax.min,
+      maxValue: dsSlope4MinMax.max,
     );
 
     emit(state.copyWith(
