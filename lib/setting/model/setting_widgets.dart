@@ -43,6 +43,16 @@ String getForwardCEQText(String index) {
   }
 }
 
+double getVVA1MaxValue(String partId) {
+  if (partId == '1' || partId == '8' || partId == '9') {
+    // SDLE, SDAT, SDAM
+
+    return 20.0;
+  } else {
+    return 30.0;
+  }
+}
+
 double getSlope1MaxValue(String index) {
   if (index.isNotEmpty) {
     int intIndex = int.parse(index);
@@ -719,11 +729,12 @@ class _FineTuneTextSlider2State extends State<FineTuneTextSlider2> {
                       errorMaxLines: 2,
                       // 暫時解法, 避免 errorText 出現時改變了 textfield 原來的高度
                       helperText: '',
-
-                      error: _validateText(
-                        context: context,
-                        errorText: widget.errorText1,
-                      ),
+                      error: widget.enabled
+                          ? _validateText(
+                              context: context,
+                              errorText: widget.errorText1,
+                            )
+                          : null,
                     ),
                   ),
                 ),

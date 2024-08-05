@@ -57,7 +57,7 @@ class Setting18ForwardControlBloc
     RangeFloatPointInput dsVVA1 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA1] ?? '',
       minValue: state.dsVVA1.minValue,
-      maxValue: state.dsVVA1.maxValue,
+      maxValue: getVVA1MaxValue(characteristicDataCache[DataKey.partId] ?? ''),
     );
     RangeFloatPointInput dsVVA2 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA2] ?? '',

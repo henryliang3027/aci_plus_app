@@ -20,7 +20,7 @@ class Setting18ForwardControlState extends Equatable {
     ),
     this.dsSlope1 = const RangeFloatPointInput.pure(
       minValue: 0,
-      maxValue: 24,
+      maxValue: 12,
     ),
     this.dsSlope2 = const RangeFloatPointInput.pure(),
     this.dsSlope3 = const RangeFloatPointInput.pure(

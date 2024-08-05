@@ -153,9 +153,8 @@ class CircuitPainter extends CustomPainter {
       );
     }
 
-    print('scaleFactor: $scaleFactor');
-
-    print('colorScheme:  ${Theme.of(context).colorScheme.onSurface}');
+    // print('scaleFactor: $scaleFactor');
+    // print('colorScheme:  ${Theme.of(context).colorScheme.onSurface}');
 
     for (ValueText valueText in svgImage.valueTexts) {
       // final int colorHex = int.parse(valueText.color);
