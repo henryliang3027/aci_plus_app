@@ -1224,6 +1224,18 @@ class Amp18Parser {
         filename,
         fullWrittenPath,
       ];
+    } else if (Platform.isWindows) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$filename$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
+
+      return [
+        true,
+        filename,
+        fullWrittenPath,
+      ];
     } else {
       return [
         false,
@@ -1355,6 +1367,18 @@ class Amp18Parser {
         filename,
         fullWrittenPath,
       ];
+    } else if (Platform.isWindows) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$filename$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
+
+      return [
+        true,
+        filename,
+        fullWrittenPath,
+      ];
     } else {
       return [
         false,
@@ -1456,6 +1480,18 @@ class Amp18Parser {
         fullWrittenPath,
       ];
     } else if (Platform.isAndroid) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$filename$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
+
+      return [
+        true,
+        filename,
+        fullWrittenPath,
+      ];
+    } else if (Platform.isWindows) {
       Directory appDocDir = await getApplicationDocumentsDirectory();
       String appDocPath = appDocDir.path;
       String fullWrittenPath = '$appDocPath/$filename$extension';
