@@ -17,7 +17,7 @@ class ControlItemValue {
       },
       // Moto BLE
       {
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
         DataKey.eREQ: const MinMax(min: 0.0, max: 15.0),
@@ -26,7 +26,7 @@ class ControlItemValue {
       },
       // Moto MB
       {
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -63,7 +63,7 @@ class ControlItemValue {
       },
       {
         // C-Cor TR
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA5: const MinMax(min: 0.0, max: 10.0),
@@ -80,7 +80,7 @@ class ControlItemValue {
       },
       {
         // C-Cor BR
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsSlope3: const MinMax(min: 0.0, max: 10.0),
@@ -94,7 +94,7 @@ class ControlItemValue {
       },
       {
         // C-Cor LE
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
         DataKey.eREQ: const MinMax(min: 0.0, max: 15.0),
@@ -148,7 +148,7 @@ class ControlItemValue {
       },
       // Moto BLE
       {
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
         DataKey.eREQ: const MinMax(min: 0.0, max: 15.0),
@@ -157,7 +157,7 @@ class ControlItemValue {
       },
       // Moto MB
       {
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -194,7 +194,7 @@ class ControlItemValue {
       },
       {
         // C-Cor TR
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA5: const MinMax(min: 0.0, max: 10.0),
@@ -211,7 +211,7 @@ class ControlItemValue {
       },
       {
         // C-Cor BR
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsSlope3: const MinMax(min: 0.0, max: 10.0),
@@ -225,7 +225,7 @@ class ControlItemValue {
       },
       {
         // C-Cor LE
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
         DataKey.eREQ: const MinMax(min: 0.0, max: 15.0),
@@ -279,7 +279,7 @@ class ControlItemValue {
       },
       // Moto BLE
       {
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
         DataKey.eREQ: const MinMax(min: 0.0, max: 15.0),
@@ -288,7 +288,7 @@ class ControlItemValue {
       },
       // Moto MB
       {
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -325,7 +325,7 @@ class ControlItemValue {
       },
       {
         // C-Cor TR
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA5: const MinMax(min: 0.0, max: 10.0),
@@ -342,7 +342,7 @@ class ControlItemValue {
       },
       {
         // C-Cor BR
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsSlope3: const MinMax(min: 0.0, max: 10.0),
@@ -356,7 +356,7 @@ class ControlItemValue {
       },
       {
         // C-Cor LE
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
         DataKey.eREQ: const MinMax(min: 0.0, max: 15.0),
@@ -410,7 +410,7 @@ class ControlItemValue {
       },
       // Moto BLE
       {
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
         DataKey.eREQ: const MinMax(min: 0.0, max: 15.0),
@@ -419,7 +419,7 @@ class ControlItemValue {
       },
       // Moto MB
       {
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -456,7 +456,7 @@ class ControlItemValue {
       },
       {
         // C-Cor TR
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA5: const MinMax(min: 0.0, max: 10.0),
@@ -473,7 +473,7 @@ class ControlItemValue {
       },
       {
         // C-Cor BR
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsSlope3: const MinMax(min: 0.0, max: 10.0),
@@ -487,7 +487,7 @@ class ControlItemValue {
       },
       {
         // C-Cor LE
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
         DataKey.eREQ: const MinMax(min: 0.0, max: 15.0),
@@ -541,7 +541,7 @@ class ControlItemValue {
       },
       // Moto BLE
       {
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
         DataKey.eREQ: const MinMax(min: 0.0, max: 15.0),
@@ -550,7 +550,7 @@ class ControlItemValue {
       },
       // Moto MB
       {
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -587,7 +587,7 @@ class ControlItemValue {
       },
       {
         // C-Cor TR
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA5: const MinMax(min: 0.0, max: 10.0),
@@ -604,7 +604,7 @@ class ControlItemValue {
       },
       {
         // C-Cor BR
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsSlope3: const MinMax(min: 0.0, max: 10.0),
@@ -618,7 +618,7 @@ class ControlItemValue {
       },
       {
         // C-Cor LE
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
         DataKey.eREQ: const MinMax(min: 0.0, max: 15.0),
@@ -672,7 +672,7 @@ class ControlItemValue {
       },
       // Moto BLE
       {
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
         DataKey.eREQ: const MinMax(min: 0.0, max: 15.0),
@@ -681,7 +681,7 @@ class ControlItemValue {
       },
       // Moto MB
       {
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -718,7 +718,7 @@ class ControlItemValue {
       },
       {
         // C-Cor TR
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA5: const MinMax(min: 0.0, max: 10.0),
@@ -735,7 +735,7 @@ class ControlItemValue {
       },
       {
         // C-Cor BR
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsSlope3: const MinMax(min: 0.0, max: 10.0),
@@ -749,7 +749,7 @@ class ControlItemValue {
       },
       {
         // C-Cor LE
-        DataKey.dsVVA1: const MinMax(min: 0.0, max: 30.0),
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 12.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
         DataKey.eREQ: const MinMax(min: 0.0, max: 15.0),
