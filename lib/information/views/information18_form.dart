@@ -108,50 +108,50 @@ class __PopupMenuState extends State<_PopupMenu> {
                     context.read<HomeBloc>().add(const DeviceRefreshed());
                   },
                 ),
-                // menuItem(
-                //   value: HomeMenu.theme,
-                //   iconData: Icons.colorize_rounded,
-                //   title: AppLocalizations.of(context)!.theme,
-                //   onTap: () {
-                //     showThemeOptionDialog(context: context).then(
-                //       (String? theme) {
-                //         if (theme != null) {
-                //           changeThemeByThemeString(
-                //             context: context,
-                //             theme: theme,
-                //           );
-                //         }
-                //       },
-                //     );
-                //   },
-                // ),
-                // menuItem(
-                //   value: HomeMenu.warmReset,
-                //   iconData: Icons.restart_alt_outlined,
-                //   title: AppLocalizations.of(context)!.warmReset,
-                //   onTap: () {
-                //     context
-                //         .read<Information18Bloc>()
-                //         .add(const AlarmPeriodicUpdateCanceled());
+                menuItem(
+                  value: HomeMenu.theme,
+                  iconData: Icons.colorize_rounded,
+                  title: AppLocalizations.of(context)!.theme,
+                  onTap: () {
+                    showThemeOptionDialog(context: context).then(
+                      (String? theme) {
+                        if (theme != null) {
+                          changeThemeByThemeString(
+                            context: context,
+                            theme: theme,
+                          );
+                        }
+                      },
+                    );
+                  },
+                ),
+                menuItem(
+                  value: HomeMenu.warmReset,
+                  iconData: Icons.restart_alt_outlined,
+                  title: AppLocalizations.of(context)!.warmReset,
+                  onTap: () {
+                    context
+                        .read<Information18Bloc>()
+                        .add(const AlarmPeriodicUpdateCanceled());
 
-                //     showWarmResetNoticeDialog(context: context).then(
-                //       (isConfirm) {
-                //         if (isConfirm != null) {
-                //           if (isConfirm) {
-                //             showWarmResetDialog(context: context).then((_) {
-                //               showWarmResetSuccessDialog(context: context)
-                //                   .then((_) {
-                //                 context
-                //                     .read<HomeBloc>()
-                //                     .add(const Data18Requested());
-                //               });
-                //             });
-                //           }
-                //         }
-                //       },
-                //     );
-                //   },
-                // ),
+                    showWarmResetNoticeDialog(context: context).then(
+                      (isConfirm) {
+                        if (isConfirm != null) {
+                          if (isConfirm) {
+                            showWarmResetDialog(context: context).then((_) {
+                              showWarmResetSuccessDialog(context: context)
+                                  .then((_) {
+                                context
+                                    .read<HomeBloc>()
+                                    .add(const Data18Requested());
+                              });
+                            });
+                          }
+                        }
+                      },
+                    );
+                  },
+                ),
                 menuItem(
                   value: HomeMenu.about,
                   iconData: CustomIcons.about,
