@@ -17,7 +17,7 @@ class BLEWindowsClient extends BLEClientBase {
 
   // static BLEWindowsClient get instance => _instance;
 
-  final _scanTimeout = 3; // sec
+  final _scanTimeout = 5; // sec
   final _connectionTimeout = 30; //sec
   late StreamController<ScanReport> _scanReportStreamController;
   StreamController<ConnectionReport> _connectionReportStreamController =
@@ -43,6 +43,7 @@ class BLEWindowsClient extends BLEClientBase {
   Timer? _characteristicDataTimer;
   Timer? _connectionTimer;
   Timer? _scanTimer;
+  bool _connectionState = false;
 
   // final List<int> _combinedRawData = [];
   // final int _totalBytesPerCommand = 261;
@@ -197,12 +198,18 @@ class BLEWindowsClient extends BLEClientBase {
       print('current connection state: $connectionStateUpdate');
       switch (connectionStateUpdate) {
         case false:
-          // _connectionReportStreamController.add(const ConnectionReport(
-          //   connectStatus: ConnectStatus.disconnected,
-          //   errorMessage: 'Device connection failed',
-          // ));
+          if (_connectionState == true) {
+            _connectionReportStreamController.add(const ConnectionReport(
+              connectStatus: ConnectStatus.disconnected,
+              errorMessage: 'Device connection failed',
+            ));
+
+            await closeConnectionStream();
+          }
+
           break;
         case true:
+          _connectionState = true;
           cancelConnectionTimer();
 
           // To Get Characteristic
@@ -266,8 +273,14 @@ class BLEWindowsClient extends BLEClientBase {
                 }
               }
             }
-          }, onError: (error) {
+          }, onError: (error) async {
             print('lisetn to Characteristic failed');
+            _connectionReportStreamController.add(const ConnectionReport(
+              connectStatus: ConnectStatus.disconnected,
+              errorMessage: 'lisetn to Characteristic failed',
+            ));
+
+            await closeConnectionStream();
           });
 
           _connectionReportStreamController.add(const ConnectionReport(
@@ -318,6 +331,13 @@ class BLEWindowsClient extends BLEClientBase {
   @override
   Future<void> closeConnectionStream() async {
     print('close _characteristicStreamSubscription');
+    _connectionState = false;
+
+    // WinBle 需要調用下面這行
+    if (_peripheral != null) {
+      WinBle.disconnect(_peripheral!.id);
+      _peripheral = null;
+    }
 
     cancelCompleterOnDisconnected();
     cancelConnectionTimer();
@@ -336,17 +356,12 @@ class BLEWindowsClient extends BLEClientBase {
     // Error unsubscribing from notifications:
     // PlatformException(reactive_ble_mobile.PluginError:7, The operation couldn’t be completed.
     // (reactive_ble_mobile.PluginError error 7.), {}, null)
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future.delayed(const Duration(milliseconds: 500));
 
     print('close _connectionStreamSubscription');
     await _connectionStreamSubscription?.cancel();
     await Future.delayed(const Duration(milliseconds: 2000));
     _connectionStreamSubscription = null;
-
-    // WinBle 需要調用下面這行
-    if (_peripheral != null) {
-      WinBle.disconnect(_peripheral!.id);
-    }
 
     clearCombinedRawData();
   }
@@ -603,7 +618,6 @@ class BLEWindowsClient extends BLEClientBase {
   }
 
   void startConnectionTimer(String deviceAddress) {
-    WinBle.disconnect(deviceAddress);
     _connectionTimer = Timer(Duration(seconds: _connectionTimeout), () async {
       _connectionReportStreamController.add(const ConnectionReport(
         connectStatus: ConnectStatus.disconnected,
