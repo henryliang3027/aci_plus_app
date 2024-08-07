@@ -434,13 +434,13 @@ class _Location extends StatelessWidget {
                       .add(LocationChanged(location));
                 },
                 maxLength: 40,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: EdgeInsets.all(10.0),
+                  contentPadding: const EdgeInsets.all(10.0),
                   isDense: true,
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
                   counterText: '',
                 ),
               ),
@@ -588,11 +588,17 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
                                 : Colors.grey,
                           ),
                           borderRadius: BorderRadius.circular(4.0),
-                          color: Colors.white,
+                          color:
+                              Theme.of(context).colorScheme.secondaryContainer,
                         ),
                       ),
-                      dropdownStyleData:
-                          const DropdownStyleData(maxHeight: 200),
+                      dropdownStyleData: DropdownStyleData(
+                        maxHeight: 200,
+                        decoration: BoxDecoration(
+                          color:
+                              Theme.of(context).colorScheme.secondaryContainer,
+                        ),
+                      ),
                       iconStyleData: const IconStyleData(
                         icon: Icon(Icons.keyboard_arrow_down),
                       ),
@@ -611,8 +617,8 @@ class _LogIntervalDropDownMenu extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: CustomStyle.sizeXL,
                                 fontWeight: FontWeight.normal,
-                                color:
-                                    state.editMode ? Colors.black : Colors.grey,
+                                // color:
+                                //     state.editMode ? Colors.black : Colors.grey,
                               ),
                             ),
                           )
@@ -774,7 +780,7 @@ class _UserPilot extends StatelessWidget {
                   contentPadding: const EdgeInsets.all(10.0),
                   isDense: true,
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
                   labelText: AppLocalizations.of(context)!.userPilot,
                   labelStyle: TextStyle(
                     fontSize: CustomStyle.sizeL,
@@ -867,7 +873,8 @@ class _UserPilot2 extends StatelessWidget {
                         contentPadding: const EdgeInsets.all(10.0),
                         isDense: true,
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor:
+                            Theme.of(context).colorScheme.secondaryContainer,
                         labelText: AppLocalizations.of(context)!.userPilot,
                         labelStyle: TextStyle(
                           fontSize: CustomStyle.sizeL,

@@ -18,7 +18,8 @@ class HomeBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+      backgroundColor:
+          Theme.of(context).bottomNavigationBarTheme.backgroundColor,
       type: BottomNavigationBarType.fixed,
       showSelectedLabels: false,
       showUnselectedLabels: false,
@@ -54,8 +55,10 @@ class HomeBottomNavigationBar extends StatelessWidget {
       currentIndex: selectedIndex,
       selectedIconTheme: const IconThemeData(size: 36),
       selectedFontSize: 10.0,
-      selectedItemColor: Theme.of(context).primaryColor,
-      unselectedItemColor: Theme.of(context).hintColor,
+      selectedItemColor:
+          Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
+      unselectedItemColor:
+          Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
       onTap: enableTap ? onTap : null,
     );
   }
