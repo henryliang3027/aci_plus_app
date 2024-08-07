@@ -1182,9 +1182,9 @@ Widget configureGridViewButton({
         GridView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: (MediaQuery.of(context).size.width / 110.0),
+            childAspectRatio: 3.5,
           ),
           itemCount: values.length,
           itemBuilder: (BuildContext itemContext, int index) {
@@ -1272,9 +1272,9 @@ Widget splitOptionGridViewButton({
         GridView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: (MediaQuery.of(context).size.width / 110.0),
+            childAspectRatio: 3.5,
           ),
           itemCount: splitOptionValues.length,
           itemBuilder: (BuildContext itemContext, int index) {
@@ -1372,7 +1372,7 @@ Widget pilotFrequencyModeGridViewButton({
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
-            childAspectRatio: (MediaQuery.of(context).size.width / 56.0),
+            childAspectRatio: 6.8,
           ),
           itemCount: values.length,
           itemBuilder: (BuildContext itemContext, int index) {
