@@ -28,38 +28,26 @@ class Event1P8GCCorNodeRequested extends Chart18CCorNodeEvent {
 class DataExported extends Chart18CCorNodeEvent {
   const DataExported({
     required this.code,
-    required this.configurationData,
-    required this.controlData,
   });
 
   final String code;
-  final Map<String, String> configurationData;
-  final List<Map<String, String>> controlData;
 
   @override
   List<Object?> get props => [
         code,
-        configurationData,
-        controlData,
       ];
 }
 
 class DataShared extends Chart18CCorNodeEvent {
   const DataShared({
     required this.code,
-    required this.configurationData,
-    required this.controlData,
   });
 
   final String code;
-  final Map<String, String> configurationData;
-  final List<Map<String, String>> controlData;
 
   @override
   List<Object?> get props => [
         code,
-        configurationData,
-        controlData,
       ];
 }
 
@@ -69,16 +57,12 @@ class AllDataExported extends Chart18CCorNodeEvent {
     required this.log1p8Gs,
     required this.errorMessage,
     required this.code,
-    required this.configurationData,
-    required this.controlData,
   });
 
   final bool isSuccessful;
   final List<Log1p8GCCorNode> log1p8Gs;
   final String errorMessage;
   final String code;
-  final Map<String, String> configurationData;
-  final List<Map<String, String>> controlData;
 
   @override
   List<Object?> get props => [
@@ -86,7 +70,5 @@ class AllDataExported extends Chart18CCorNodeEvent {
         log1p8Gs,
         errorMessage,
         code,
-        configurationData,
-        controlData,
       ];
 }

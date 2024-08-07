@@ -1,16 +1,23 @@
+import 'package:aci_plus_app/core/custom_style.dart';
+import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
+import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 part 'chart18_event.dart';
 part 'chart18_state.dart';
 
 class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
   Chart18Bloc({
+    required AppLocalizations appLocalizations,
     required Amp18Repository amp18Repository,
-  })  : _amp18Repository = amp18Repository,
+  })  : _appLocalizations = appLocalizations,
+        _amp18Repository = amp18Repository,
         super(const Chart18State()) {
     on<TabChangedEnabled>(_onTabChangedEnabled);
     on<TabChangedDisabled>(_onTabChangedDisabled);
@@ -22,6 +29,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     on<AllRFOutputLogExported>(_onAllRFOutputLogExported);
   }
 
+  final AppLocalizations _appLocalizations;
   final Amp18Repository _amp18Repository;
 
   void _onTabChangedEnabled(
@@ -65,9 +73,10 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     ));
 
     final List<dynamic> result = await _amp18Repository.export1p8GRecords(
-        code: event.code,
-        configurationData: event.configurationData,
-        controlData: event.controlData);
+      code: event.code,
+      configurationData: _getConfigurationData(),
+      controlData: _getControlData(),
+    );
 
     if (result[0]) {
       emit(state.copyWith(
@@ -96,8 +105,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
 
     final List<dynamic> result = await _amp18Repository.export1p8GRecords(
       code: event.code,
-      configurationData: event.configurationData,
-      controlData: event.controlData,
+      configurationData: _getConfigurationData(),
+      controlData: _getControlData(),
     );
 
     if (result[0]) {
@@ -119,6 +128,14 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     AllDataExported event,
     Emitter<Chart18State> emit,
   ) async {
+    emit(state.copyWith(
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataExportStatus: FormStatus.requestInProgress,
+      rfLevelExportStatus: FormStatus.none,
+      rfLevelShareStatus: FormStatus.none,
+    ));
+
     if (event.isSuccessful) {
       // 清除 cache
       _amp18Repository.clearAllLog1p8Gs();
@@ -127,8 +144,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       _amp18Repository.writeAllLog1p8Gs(event.log1p8Gs);
       final List<dynamic> result = await _amp18Repository.exportAll1p8GRecords(
         code: event.code,
-        configurationData: event.configurationData,
-        controlData: event.controlData,
+        configurationData: _getConfigurationData(),
+        controlData: _getControlData(),
       );
 
       if (result[0]) {
@@ -154,6 +171,14 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     AllRFOutputLogExported event,
     Emitter<Chart18State> emit,
   ) async {
+    emit(state.copyWith(
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataExportStatus: FormStatus.requestInProgress,
+      rfLevelExportStatus: FormStatus.none,
+      rfLevelShareStatus: FormStatus.none,
+    ));
+
     if (event.isSuccessful) {
       // 清除 cache
       _amp18Repository.clearRFOutputLogs();
@@ -163,8 +188,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       final List<dynamic> result =
           await _amp18Repository.export1p8GAllRFOutputLogs(
         code: event.code,
-        configurationData: event.configurationData,
-        controlData: event.controlData,
+        configurationData: _getConfigurationData(),
+        controlData: _getControlData(),
       );
 
       if (result[0]) {
@@ -200,8 +225,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
 
     final List<dynamic> result = await _amp18Repository.export1p8GRFInOuts(
       code: event.code,
-      configurationData: event.configurationData,
-      controlData: event.controlData,
+      configurationData: _getConfigurationData(),
+      controlData: _getControlData(),
     );
 
     if (result[0]) {
@@ -231,8 +256,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
 
     final List<dynamic> result = await _amp18Repository.export1p8GRFInOuts(
       code: event.code,
-      configurationData: event.configurationData,
-      controlData: event.controlData,
+      configurationData: _getConfigurationData(),
+      controlData: _getControlData(),
     );
 
     if (result[0]) {
@@ -248,5 +273,229 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
         dataExportPath: result[2],
       ));
     }
+  }
+
+  Map<String, String> _getConfigurationData() {
+    Map<DataKey, String> characteristicData =
+        _amp18Repository.characteristicDataCache;
+
+    Map<String, String> pilotFrequencyModeTexts = {
+      '0': _appLocalizations.pilotFrequencyBandwidthSettings,
+      '1': _appLocalizations.pilotFrequencyUserSettings,
+      //  _appLocalizations.pilotFrequencySmartSettings,
+    };
+
+    Map<String, String> onOffTexts = {
+      '0': _appLocalizations.off,
+      '1': _appLocalizations.on,
+    };
+
+    String location = characteristicData[DataKey.location] ?? '';
+    String coordinates = characteristicData[DataKey.coordinates] ?? '';
+    String splitOption = characteristicData[DataKey.splitOption] ?? '';
+
+    String splitValue1 = splitBaseLine[splitOption]?.$1 != null
+        ? splitBaseLine[splitOption]!.$1.toString()
+        : 'N/A';
+    String splitValue2 = splitBaseLine[splitOption]?.$2 != null
+        ? splitBaseLine[splitOption]!.$2.toString()
+        : 'N/A';
+
+    String splitOptionText =
+        splitOption != '' ? '$splitValue1/$splitValue2 ${CustomStyle.mHz}' : '';
+
+    String pilotFrequencyMode =
+        characteristicData[DataKey.pilotFrequencyMode] ?? '';
+
+    String pilotFrequencyModeText = pilotFrequencyMode != ''
+        ? pilotFrequencyModeTexts[pilotFrequencyMode] ?? 'N/A'
+        : '';
+
+    String firstChannelLoadingFrequency =
+        characteristicData[DataKey.firstChannelLoadingFrequency] ?? '';
+    String lastChannelLoadingFrequency =
+        characteristicData[DataKey.lastChannelLoadingFrequency] ?? '';
+    String firstChannelLoadingLevel =
+        characteristicData[DataKey.firstChannelLoadingLevel] ?? '';
+    String lastChannelLoadingLevel =
+        characteristicData[DataKey.lastChannelLoadingLevel] ?? '';
+
+    String pilotFrequency1 = characteristicData[DataKey.pilotFrequency1] ?? '';
+    String pilotFrequency2 = characteristicData[DataKey.pilotFrequency2] ?? '';
+
+    String manualModePilot1RFOutputPower =
+        characteristicData[DataKey.manualModePilot1RFOutputPower] ?? '';
+    String manualModePilot2RFOutputPower =
+        characteristicData[DataKey.manualModePilot2RFOutputPower] ?? '';
+
+    String agcMode = characteristicData[DataKey.agcMode] ?? '';
+    String agcModeText = agcMode != '' ? onOffTexts[agcMode]! : '';
+    // String alcMode = characteristicData[DataKey.alcMode] ?? '';
+    // String alcModeText = alcMode != '' ? onOffTexts[alcMode]! : '';
+    String logInterval = characteristicData[DataKey.logInterval] ?? '';
+    String rfOutputLogInterval =
+        characteristicData[DataKey.rfOutputLogInterval] ?? '';
+
+    Map<String, String> configurationValues = {
+      // 因為 l10n 內有位了tabbar 顯示而多加空白, 所以刪除空白
+      _appLocalizations.device.trim(): '',
+      _appLocalizations.location: location,
+      _appLocalizations.coordinates: coordinates,
+      _appLocalizations.splitOption: splitOptionText,
+      _appLocalizations.pilotFrequencySelect: pilotFrequencyModeText,
+      _appLocalizations.startFrequency:
+          '$firstChannelLoadingFrequency ${CustomStyle.mHz}',
+      _appLocalizations.startLevel:
+          '$firstChannelLoadingLevel ${CustomStyle.dBmV}',
+      _appLocalizations.stopFrequency:
+          '$lastChannelLoadingFrequency ${CustomStyle.mHz}',
+      _appLocalizations.stopLevel:
+          '$lastChannelLoadingLevel ${CustomStyle.dBmV}',
+      _appLocalizations.pilotFrequency1: '$pilotFrequency1 ${CustomStyle.mHz}',
+      _appLocalizations.pilotLevel1:
+          '$manualModePilot1RFOutputPower ${CustomStyle.dBmV}',
+      _appLocalizations.pilotFrequency2: '$pilotFrequency2 ${CustomStyle.mHz}',
+      _appLocalizations.pilotLevel2:
+          '$manualModePilot2RFOutputPower ${CustomStyle.dBmV}',
+      _appLocalizations.agcMode: agcModeText,
+      // _appLocalizations.alcMode: alcModeText,
+      _appLocalizations.logInterval: '$logInterval ${_appLocalizations.minute}',
+      _appLocalizations.rfOutputLogInterval:
+          '$rfOutputLogInterval ${_appLocalizations.minute}',
+    };
+
+    return configurationValues;
+  }
+
+  List<Map<String, String>> _getControlData() {
+    Map<DataKey, String> characteristicData =
+        _amp18Repository.characteristicDataCache;
+
+    Map<String, String> ingressSettingTexts = {
+      '0': '0${CustomStyle.dB}',
+      '1': '-3${CustomStyle.dB}',
+      '2': '-6${CustomStyle.dB}',
+      '4': _appLocalizations.ingressOpen,
+    };
+
+    Map<Enum, String> controlItemTexts = {
+      SettingControl.forwardInputAttenuation1:
+          _appLocalizations.forwardInputAttenuation1,
+      SettingControl.forwardInputEqualizer1:
+          _appLocalizations.forwardInputEqualizer1,
+      SettingControl.forwardOutputAttenuation3:
+          _appLocalizations.forwardOutputAttenuation3,
+      SettingControl.forwardOutputAttenuation4:
+          _appLocalizations.forwardOutputAttenuation4,
+      SettingControl.forwardOutputAttenuation2And3:
+          _appLocalizations.forwardOutputAttenuation2And3,
+      SettingControl.forwardOutputAttenuation3And4:
+          _appLocalizations.forwardOutputAttenuation3And4,
+      SettingControl.forwardOutputAttenuation5And6:
+          _appLocalizations.forwardOutputAttenuation5And6,
+      SettingControl.forwardOutputEqualizer3:
+          _appLocalizations.forwardOutputEqualizer3,
+      SettingControl.forwardOutputEqualizer4:
+          _appLocalizations.forwardOutputEqualizer4,
+      SettingControl.forwardOutputEqualizer2And3:
+          _appLocalizations.forwardOutputEqualizer2And3,
+      SettingControl.forwardOutputEqualizer5And6:
+          _appLocalizations.forwardOutputEqualizer5And6,
+      SettingControl.returnOutputAttenuation1:
+          _appLocalizations.returnOutputAttenuation1,
+      SettingControl.returnOutputEqualizer1:
+          _appLocalizations.returnOutputEqualizer1,
+      SettingControl.returnInputAttenuation2:
+          _appLocalizations.returnInputAttenuation2,
+      SettingControl.returnInputAttenuation3:
+          _appLocalizations.returnInputAttenuation3,
+      SettingControl.returnInputAttenuation4:
+          _appLocalizations.returnInputAttenuation4,
+      SettingControl.returnInputAttenuation2And3:
+          _appLocalizations.returnInputAttenuation2And3,
+      SettingControl.returnInputAttenuation5And6:
+          _appLocalizations.returnInputAttenuation5And6,
+      SettingControl.returnIngressSetting2:
+          _appLocalizations.returnIngressSetting2,
+      SettingControl.returnIngressSetting3:
+          _appLocalizations.returnIngressSetting3,
+      SettingControl.returnIngressSetting4:
+          _appLocalizations.returnIngressSetting4,
+      SettingControl.returnIngressSetting2And3:
+          _appLocalizations.returnIngressSetting2And3,
+      SettingControl.returnIngressSetting5And6:
+          _appLocalizations.returnIngressSetting5And6,
+    };
+
+    String partId = characteristicData[DataKey.partId]!;
+
+    List<Map<String, String>> controlValues = [
+      {
+        // 因為 l10n 內有位了tabbar 顯示而多加空白, 所以刪除空白
+        _appLocalizations.balance.trim(): '',
+      }
+    ];
+
+    Map<Enum, DataKey> forwardControlItemMap =
+        SettingItemTable.controlItemDataMapCollection[partId]![0];
+
+    Map<Enum, DataKey> returnControlItemMap =
+        SettingItemTable.controlItemDataMapCollection[partId]![1];
+
+    controlValues.add({_appLocalizations.forwardControlParameters: ''});
+
+    for (MapEntry entry in forwardControlItemMap.entries) {
+      Enum key = entry.key;
+      DataKey value = entry.value;
+
+      String controlName = controlItemTexts[key] ?? '';
+      String controlValue = characteristicData[value] ?? '';
+
+      String alcMode = characteristicData[DataKey.alcMode]!;
+      String agcMode = characteristicData[DataKey.agcMode]!;
+
+      if (key.name == SettingControl.forwardInputAttenuation1.name) {
+        controlValue = getInputAttenuation(
+          alcMode: alcMode,
+          inputAttenuation: controlValue,
+          currentInputAttenuation:
+              characteristicData[DataKey.currentDSVVA1] ?? '',
+        );
+      }
+
+      if (key.name == SettingControl.forwardInputEqualizer1.name) {
+        controlValue = getInputEqualizer(
+          alcMode: alcMode,
+          agcMode: agcMode,
+          inputEqualizer: controlValue,
+          currentInputEqualizer:
+              characteristicData[DataKey.currentDSSlope1] ?? '',
+        );
+      }
+
+      controlValue = '$controlValue ${CustomStyle.dB}';
+
+      controlValues.add({controlName: controlValue});
+    }
+
+    controlValues.add({_appLocalizations.returnControlParameters: ''});
+
+    for (MapEntry entry in returnControlItemMap.entries) {
+      Enum key = entry.key;
+      DataKey value = entry.value;
+
+      String controlName = controlItemTexts[key] ?? '';
+      String controlValue = characteristicData[value] ?? '';
+
+      if (value.name.startsWith('ingressSetting')) {
+        controlValue = ingressSettingTexts[controlValue] ?? '';
+      } else {
+        controlValue = '$controlValue ${CustomStyle.dB}';
+      }
+
+      controlValues.add({controlName: controlValue});
+    }
+
+    return controlValues;
   }
 }
