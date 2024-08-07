@@ -1226,7 +1226,13 @@ class Amp18Parser {
       ];
     } else if (Platform.isWindows) {
       Directory appDocDir = await getApplicationDocumentsDirectory();
-      String appDocPath = appDocDir.path;
+      Directory appDocDirFolder = Directory('${appDocDir.path}/ACI+/');
+      bool isExist = await appDocDirFolder.exists();
+      if (!isExist) {
+        await appDocDirFolder.create(recursive: true);
+      }
+
+      String appDocPath = appDocDirFolder.path;
       String fullWrittenPath = '$appDocPath/$filename$extension';
       File f = File(fullWrittenPath);
       await f.writeAsBytes(fileBytes!);
@@ -1369,7 +1375,13 @@ class Amp18Parser {
       ];
     } else if (Platform.isWindows) {
       Directory appDocDir = await getApplicationDocumentsDirectory();
-      String appDocPath = appDocDir.path;
+      Directory appDocDirFolder = Directory('${appDocDir.path}/ACI+/');
+      bool isExist = await appDocDirFolder.exists();
+      if (!isExist) {
+        await appDocDirFolder.create(recursive: true);
+      }
+
+      String appDocPath = appDocDirFolder.path;
       String fullWrittenPath = '$appDocPath/$filename$extension';
       File f = File(fullWrittenPath);
       await f.writeAsBytes(fileBytes!);
@@ -1493,7 +1505,13 @@ class Amp18Parser {
       ];
     } else if (Platform.isWindows) {
       Directory appDocDir = await getApplicationDocumentsDirectory();
-      String appDocPath = appDocDir.path;
+      Directory appDocDirFolder = Directory('${appDocDir.path}/ACI+/');
+      bool isExist = await appDocDirFolder.exists();
+      if (!isExist) {
+        await appDocDirFolder.create(recursive: true);
+      }
+
+      String appDocPath = appDocDirFolder.path;
       String fullWrittenPath = '$appDocPath/$filename$extension';
       File f = File(fullWrittenPath);
       await f.writeAsBytes(fileBytes!);
