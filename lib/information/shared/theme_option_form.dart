@@ -24,6 +24,7 @@ class ThemeOptionForm extends StatelessWidget {
 
     return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (context, state) {
+        print((MediaQuery.of(context).size.width / 56.0));
         return SizedBox(
           width: 370,
           height: 320,
@@ -54,10 +55,9 @@ class ThemeOptionForm extends StatelessWidget {
                 child: GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 1,
-                    childAspectRatio:
-                        (MediaQuery.of(context).size.width / 56.0),
+                    childAspectRatio: 6.8,
                   ),
                   itemCount: 3,
                   itemBuilder: (BuildContext itemContext, int index) {
