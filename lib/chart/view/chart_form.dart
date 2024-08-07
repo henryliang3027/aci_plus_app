@@ -69,12 +69,18 @@ class ChartForm extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
+                backgroundColor: Theme.of(context).dialogBackgroundColor,
                 duration: const Duration(seconds: 30),
                 content: Text(
                   AppLocalizations.of(context)!
                       .dialogMessageDataExportSuccessful,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 action: SnackBarAction(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  textColor: Theme.of(context).colorScheme.onPrimary,
                   label: AppLocalizations.of(context)!.open,
                   onPressed: () async {
                     OpenFilex.open(
@@ -360,7 +366,7 @@ class _LogChartView extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: OutlinedButton(
+            child: ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
@@ -370,13 +376,10 @@ class _LogChartView extends StatelessWidget {
                   ),
                 );
               },
-              style: OutlinedButton.styleFrom(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Colors.white,
                 padding: const EdgeInsets.all(0.0),
-                backgroundColor: Colors.white70,
-                elevation: 0,
-                side: const BorderSide(
-                  width: 1.0,
-                ),
                 visualDensity:
                     const VisualDensity(horizontal: -4.0, vertical: -3.0),
               ),

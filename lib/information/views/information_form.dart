@@ -1,9 +1,11 @@
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:aci_plus_app/information/bloc/information/information_bloc.dart';
+import 'package:aci_plus_app/information/shared/theme_option_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -24,7 +26,7 @@ class InformationForm extends StatelessWidget {
         title: Text(AppLocalizations.of(context)!.home),
         centerTitle: true,
         leading: const _DeviceStatus(),
-        actions: const [_DeviceRefresh()],
+        actions: const [_PopupMenu()],
       ),
       body: const SingleChildScrollView(
         child: Column(
@@ -105,23 +107,64 @@ class _DeviceStatus extends StatelessWidget {
   }
 }
 
-class _DeviceRefresh extends StatelessWidget {
-  const _DeviceRefresh();
+enum HomeMenu {
+  refresh,
+  theme,
+}
 
+class _PopupMenu extends StatefulWidget {
+  const _PopupMenu();
+
+  @override
+  State<_PopupMenu> createState() => __PopupMenuState();
+}
+
+class __PopupMenuState extends State<_PopupMenu> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (!state.loadingStatus.isRequestInProgress &&
             !state.connectionStatus.isRequestInProgress) {
-          return IconButton(
-              onPressed: () {
-                context.read<HomeBloc>().add(const DeviceRefreshed());
-              },
-              icon: Icon(
-                Icons.refresh,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ));
+          return PopupMenuButton<HomeMenu>(
+            icon: const Icon(
+              Icons.more_vert_outlined,
+              color: Colors.white,
+            ),
+            tooltip: '',
+            itemBuilder: (BuildContext context) {
+              return <PopupMenuEntry<HomeMenu>>[
+                menuItem(
+                  value: HomeMenu.refresh,
+                  iconData: Icons.refresh,
+                  title: AppLocalizations.of(context)!.reconnect,
+                  onTap: () {
+                    context
+                        .read<InformationBloc>()
+                        .add(const AlarmPeriodicUpdateCanceled());
+                    context.read<HomeBloc>().add(const DeviceRefreshed());
+                  },
+                ),
+                menuItem(
+                  value: HomeMenu.theme,
+                  iconData: Icons.colorize_rounded,
+                  title: AppLocalizations.of(context)!.theme,
+                  onTap: () {
+                    showThemeOptionDialog(context: context).then(
+                      (String? theme) {
+                        if (theme != null) {
+                          changeThemeByThemeString(
+                            context: context,
+                            theme: theme,
+                          );
+                        }
+                      },
+                    );
+                  },
+                ),
+              ];
+            },
+          );
         } else {
           return Container();
         }
@@ -130,6 +173,31 @@ class _DeviceRefresh extends StatelessWidget {
   }
 }
 
+// class _DeviceRefresh extends StatelessWidget {
+//   const _DeviceRefresh();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<HomeBloc, HomeState>(
+//       builder: (context, state) {
+//         if (!state.loadingStatus.isRequestInProgress &&
+//             !state.connectionStatus.isRequestInProgress) {
+//           return IconButton(
+//               onPressed: () {
+//                 context.read<HomeBloc>().add(const DeviceRefreshed());
+//               },
+//               icon: Icon(
+//                 Icons.refresh,
+//                 color: Theme.of(context).colorScheme.onPrimary,
+//               ));
+//         } else {
+//           return Container();
+//         }
+//       },
+//     );
+//   }
+// }
+
 class _VersionCard extends StatelessWidget {
   const _VersionCard();
 
@@ -137,8 +205,6 @@ class _VersionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<InformationBloc, InformationState>(
       builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
@@ -223,8 +289,6 @@ class _ConnectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -289,8 +353,6 @@ class _BasicCard extends StatelessWidget {
 
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       return Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -452,8 +514,6 @@ Widget buildAlarmCard({
   required String alarmPSeverity,
 }) {
   return Card(
-    color: Theme.of(context).colorScheme.onPrimary,
-    surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
     child: Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
