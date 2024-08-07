@@ -21,76 +21,52 @@ class TabChangedDisabled extends Chart18Event {
 class DataExported extends Chart18Event {
   const DataExported({
     required this.code,
-    required this.configurationData,
-    required this.controlData,
   });
 
   final String code;
-  final Map<String, String> configurationData;
-  final List<Map<String, String>> controlData;
 
   @override
   List<Object?> get props => [
         code,
-        configurationData,
-        controlData,
       ];
 }
 
 class DataShared extends Chart18Event {
   const DataShared({
     required this.code,
-    required this.configurationData,
-    required this.controlData,
   });
 
   final String code;
-  final Map<String, String> configurationData;
-  final List<Map<String, String>> controlData;
 
   @override
   List<Object?> get props => [
         code,
-        configurationData,
-        controlData,
       ];
 }
 
 class RFLevelExported extends Chart18Event {
   const RFLevelExported({
     required this.code,
-    required this.configurationData,
-    required this.controlData,
   });
 
   final String code;
-  final Map<String, String> configurationData;
-  final List<Map<String, String>> controlData;
 
   @override
   List<Object?> get props => [
         code,
-        configurationData,
-        controlData,
       ];
 }
 
 class RFLevelShared extends Chart18Event {
   const RFLevelShared({
     required this.code,
-    required this.configurationData,
-    required this.controlData,
   });
 
   final String code;
-  final Map<String, String> configurationData;
-  final List<Map<String, String>> controlData;
 
   @override
   List<Object?> get props => [
         code,
-        configurationData,
-        controlData,
       ];
 }
 
@@ -100,16 +76,12 @@ class AllDataExported extends Chart18Event {
     required this.log1p8Gs,
     required this.errorMessage,
     required this.code,
-    required this.configurationData,
-    required this.controlData,
   });
 
   final bool isSuccessful;
   final List<Log1p8G> log1p8Gs;
   final String errorMessage;
   final String code;
-  final Map<String, String> configurationData;
-  final List<Map<String, String>> controlData;
 
   @override
   List<Object?> get props => [
@@ -117,8 +89,6 @@ class AllDataExported extends Chart18Event {
         log1p8Gs,
         errorMessage,
         code,
-        configurationData,
-        controlData,
       ];
 }
 
@@ -128,16 +98,12 @@ class AllRFOutputLogExported extends Chart18Event {
     required this.rfOutputLog1p8Gs,
     required this.errorMessage,
     required this.code,
-    required this.configurationData,
-    required this.controlData,
   });
 
   final bool isSuccessful;
   final List<RFOutputLog> rfOutputLog1p8Gs;
   final String errorMessage;
   final String code;
-  final Map<String, String> configurationData;
-  final List<Map<String, String>> controlData;
 
   @override
   List<Object?> get props => [
@@ -145,7 +111,5 @@ class AllRFOutputLogExported extends Chart18Event {
         rfOutputLog1p8Gs,
         errorMessage,
         code,
-        configurationData,
-        controlData,
       ];
 }

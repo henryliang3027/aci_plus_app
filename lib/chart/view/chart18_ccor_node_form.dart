@@ -8,12 +8,10 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
-import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
-import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -303,21 +301,8 @@ class _PopupMenu extends StatelessWidget {
                   showEnterCodeDialog(context: context).then((String? code) {
                     if (code != null) {
                       if (code.isNotEmpty) {
-                        Map<String, String> configurationData =
-                            getConfigurationData(
-                          context: context,
-                          characteristicData: characteristicData,
-                        );
-
-                        List<Map<String, String>> controlData = getControlData(
-                          context: context,
-                          characteristicData: characteristicData,
-                        );
-
                         context.read<Chart18CCorNodeBloc>().add(DataShared(
                               code: code,
-                              configurationData: configurationData,
-                              controlData: controlData,
                             ));
                       }
                     }
@@ -332,21 +317,8 @@ class _PopupMenu extends StatelessWidget {
                   showEnterCodeDialog(context: context).then((String? code) {
                     if (code != null) {
                       if (code.isNotEmpty) {
-                        Map<String, String> configurationData =
-                            getConfigurationData(
-                          context: context,
-                          characteristicData: characteristicData,
-                        );
-
-                        List<Map<String, String>> controlData = getControlData(
-                          context: context,
-                          characteristicData: characteristicData,
-                        );
-
                         context.read<Chart18CCorNodeBloc>().add(DataExported(
                               code: code,
-                              configurationData: configurationData,
-                              controlData: controlData,
                             ));
                       }
                     }
@@ -369,18 +341,6 @@ class _PopupMenu extends StatelessWidget {
                                 resultOfDownload[1];
                             String errorMessage = resultOfDownload[2];
 
-                            Map<String, String> configurationData =
-                                getConfigurationData(
-                              context: context,
-                              characteristicData: characteristicData,
-                            );
-
-                            List<Map<String, String>> controlData =
-                                getControlData(
-                              context: context,
-                              characteristicData: characteristicData,
-                            );
-
                             context
                                 .read<Chart18CCorNodeBloc>()
                                 .add(AllDataExported(
@@ -388,8 +348,6 @@ class _PopupMenu extends StatelessWidget {
                                   log1p8Gs: log1p8Gs,
                                   errorMessage: errorMessage,
                                   code: code,
-                                  configurationData: configurationData,
-                                  controlData: controlData,
                                 ));
                           }
                         });
@@ -403,143 +361,6 @@ class _PopupMenu extends StatelessWidget {
         );
       },
     );
-  }
-
-  Map<String, String> getConfigurationData({
-    required BuildContext context,
-    required Map<DataKey, String> characteristicData,
-  }) {
-    String location = characteristicData[DataKey.location] ?? '';
-    String coordinates = characteristicData[DataKey.coordinates] ?? '';
-    String forwardMode = characteristicData[DataKey.forwardMode] ?? '';
-    String forwardConfig = characteristicData[DataKey.forwardConfig] ?? '';
-    String splitOption = characteristicData[DataKey.splitOption] ?? '';
-
-    String forwardModeText = forwardModeExportTexts[forwardMode] ?? '';
-    String forwardConfigText = forwardConfigExportTexts[forwardConfig] ?? '';
-    String splitOptionText = splitOption != ''
-        ? '${splitBaseLine[splitOption]!.$1}/${splitBaseLine[splitOption]!.$2} ${CustomStyle.mHz}'
-        : '';
-
-    String logInterval = characteristicData[DataKey.logInterval] ?? '';
-
-    Map<String, String> configurationValues = {
-      AppLocalizations.of(context)!.device: '',
-      AppLocalizations.of(context)!.location: location,
-      AppLocalizations.of(context)!.coordinates: coordinates,
-      AppLocalizations.of(context)!.forwardMode: forwardModeText,
-      AppLocalizations.of(context)!.forwardConfigMode: forwardConfigText,
-      AppLocalizations.of(context)!.splitOption: splitOptionText,
-      AppLocalizations.of(context)!.logInterval:
-          '$logInterval ${AppLocalizations.of(context)!.minute}',
-    };
-
-    return configurationValues;
-  }
-
-  List<Map<String, String>> getControlData({
-    required BuildContext context,
-    required Map<DataKey, String> characteristicData,
-  }) {
-    Map<String, String> ingressSettingTexts = {
-      '0': '0${CustomStyle.dB}',
-      '1': '-3${CustomStyle.dB}',
-      '2': '-6${CustomStyle.dB}',
-      '4': AppLocalizations.of(context)!.ingressOpen,
-    };
-
-    Map<Enum, String> controlItemTexts = {
-      SettingControl.forwardInputAttenuation1:
-          AppLocalizations.of(context)!.forwardInputAttenuation1,
-      SettingControl.forwardInputAttenuation3:
-          AppLocalizations.of(context)!.forwardInputAttenuation3,
-      SettingControl.forwardInputAttenuation4:
-          AppLocalizations.of(context)!.forwardInputAttenuation4,
-      SettingControl.forwardInputAttenuation6:
-          AppLocalizations.of(context)!.forwardInputAttenuation6,
-      SettingControl.forwardOutputEqualizer1:
-          AppLocalizations.of(context)!.forwardOutputEqualizer1,
-      SettingControl.forwardOutputEqualizer3:
-          AppLocalizations.of(context)!.forwardOutputEqualizer3,
-      SettingControl.forwardOutputEqualizer4:
-          AppLocalizations.of(context)!.forwardOutputEqualizer4,
-      SettingControl.forwardOutputEqualizer6:
-          AppLocalizations.of(context)!.forwardOutputEqualizer6,
-      SettingControl.forwardBiasCurrent1:
-          AppLocalizations.of(context)!.forwardBiasCurrent1,
-      SettingControl.forwardBiasCurrent3:
-          AppLocalizations.of(context)!.forwardBiasCurrent3,
-      SettingControl.forwardBiasCurrent4:
-          AppLocalizations.of(context)!.forwardBiasCurrent4,
-      SettingControl.forwardBiasCurrent6:
-          AppLocalizations.of(context)!.forwardBiasCurrent6,
-      SettingControl.returnInputAttenuation1:
-          AppLocalizations.of(context)!.returnInputAttenuation1,
-      SettingControl.returnInputAttenuation3:
-          AppLocalizations.of(context)!.returnInputAttenuation3,
-      SettingControl.returnInputAttenuation4:
-          AppLocalizations.of(context)!.returnInputAttenuation4,
-      SettingControl.returnInputAttenuation6:
-          AppLocalizations.of(context)!.returnInputAttenuation6,
-      SettingControl.returnIngressSetting1:
-          AppLocalizations.of(context)!.returnIngressSetting1,
-      SettingControl.returnIngressSetting3:
-          AppLocalizations.of(context)!.returnIngressSetting3,
-      SettingControl.returnIngressSetting4:
-          AppLocalizations.of(context)!.returnIngressSetting4,
-      SettingControl.returnIngressSetting6:
-          AppLocalizations.of(context)!.returnIngressSetting6,
-    };
-
-    String partId = characteristicData[DataKey.partId]!;
-
-    List<Map<String, String>> controlValues = [
-      {
-        AppLocalizations.of(context)!.balance: '',
-      }
-    ];
-
-    Map<Enum, DataKey> forwardControlItemMap =
-        SettingItemTable.controlItemDataMapCollection[partId]![0];
-
-    Map<Enum, DataKey> returnControlItemMap =
-        SettingItemTable.controlItemDataMapCollection[partId]![1];
-
-    controlValues
-        .add({AppLocalizations.of(context)!.forwardControlParameters: ''});
-
-    for (MapEntry entry in forwardControlItemMap.entries) {
-      Enum key = entry.key;
-      DataKey value = entry.value;
-
-      String controlName = controlItemTexts[key] ?? '';
-      String controlValue = characteristicData[value] ?? '';
-
-      controlValue = '$controlValue ${CustomStyle.dB}';
-
-      controlValues.add({controlName: controlValue});
-    }
-
-    controlValues
-        .add({AppLocalizations.of(context)!.returnControlParameters: ''});
-
-    for (MapEntry entry in returnControlItemMap.entries) {
-      Enum key = entry.key;
-      DataKey value = entry.value;
-
-      String controlName = controlItemTexts[key] ?? '';
-      String controlValue = characteristicData[value] ?? '';
-
-      if (value.name.startsWith('ingressSetting')) {
-        controlValue = ingressSettingTexts[controlValue] ?? '';
-      } else {
-        controlValue = '$controlValue ${CustomStyle.dB}';
-      }
-
-      controlValues.add({controlName: controlValue});
-    }
-
-    return controlValues;
   }
 
   @override
