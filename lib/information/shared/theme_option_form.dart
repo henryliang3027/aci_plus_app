@@ -24,7 +24,6 @@ class ThemeOptionForm extends StatelessWidget {
 
     return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (context, state) {
-        print((MediaQuery.of(context).size.width / 56.0));
         return SizedBox(
           width: 370,
           height: 320,
