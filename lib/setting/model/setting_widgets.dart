@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 
@@ -1182,9 +1183,9 @@ Widget configureGridViewButton({
         GridView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 3.5,
+            childAspectRatio: MediaQuery.of(context).size.width / 110,
           ),
           itemCount: values.length,
           itemBuilder: (BuildContext itemContext, int index) {
@@ -1272,9 +1273,9 @@ Widget splitOptionGridViewButton({
         GridView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 3.5,
+            childAspectRatio: MediaQuery.of(context).size.width / 110,
           ),
           itemCount: splitOptionValues.length,
           itemBuilder: (BuildContext itemContext, int index) {
@@ -1372,7 +1373,7 @@ Widget pilotFrequencyModeGridViewButton({
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
-            childAspectRatio: 6.8,
+            childAspectRatio: MediaQuery.of(context).size.width / 56,
           ),
           itemCount: values.length,
           itemBuilder: (BuildContext itemContext, int index) {
