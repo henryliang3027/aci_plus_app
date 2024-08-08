@@ -66,3 +66,6 @@ ios/fastlane/report.xml
 
 .VSCodeCounter/
 pubspec.lock
+ios/Runner.app.dSYM.zip
+ios/Runner.ipa
+ios/fastlane/report.xml
