@@ -34,6 +34,9 @@ class Setting18CCorNodeGraphViewBloc extends Bloc<
     required DataKey dataKey,
   }) {
     String value = characteristicDataCache[dataKey] ?? '';
+    if (dataKey == DataKey.returnConfig) {
+      return '2 X 2';
+    }
 
     if (value.isNotEmpty) {
       if (dataKey.name.startsWith('biasCurrent')) {

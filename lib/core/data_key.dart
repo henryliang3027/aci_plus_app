@@ -112,6 +112,7 @@ enum DataKey {
   ingressSetting6,
   forwardMode,
   forwardConfig,
+  returnConfig,
   forwardCEQIndex,
   // pilotFrequency1AlarmState,
   // pilotFrequency2AlarmState,
