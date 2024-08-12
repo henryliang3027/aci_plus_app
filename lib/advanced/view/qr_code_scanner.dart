@@ -161,7 +161,7 @@ class _QRViewExampleState extends State<QRCodeScanner> {
             ),
           ),
           actions: <Widget>[
-            TextButton(
+            ElevatedButton(
               child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop(); // pop dialog

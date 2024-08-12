@@ -63,7 +63,7 @@ Future<void> showResultDialog({
           ),
         ),
         actions: <Widget>[
-          TextButton(
+          ElevatedButton(
             child: Text(
               AppLocalizations.of(context)!.dialogMessageOk,
             ),
@@ -113,7 +113,7 @@ Future<void> showSuccessDialog(
           ),
         ),
         actions: <Widget>[
-          TextButton(
+          ElevatedButton(
             child: Text(
               AppLocalizations.of(context)!.dialogMessageOk,
             ),
@@ -164,7 +164,7 @@ Future<void> showResetToDefaultSuccessDialog(
           ),
         ),
         actions: <Widget>[
-          TextButton(
+          ElevatedButton(
             child: Text(
               AppLocalizations.of(context)!.dialogMessageOk,
             ),
@@ -215,7 +215,7 @@ Future<void> showResetToDefaultFailureDialog(
           ),
         ),
         actions: <Widget>[
-          TextButton(
+          ElevatedButton(
             child: Text(
               AppLocalizations.of(context)!.dialogMessageOk,
             ),

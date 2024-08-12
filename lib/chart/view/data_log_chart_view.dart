@@ -58,7 +58,7 @@ class _LogChartView extends StatelessWidget {
               ),
             ),
             actions: <Widget>[
-              TextButton(
+              ElevatedButton(
                 child: Text(
                   AppLocalizations.of(context)!.dialogMessageOk,
                 ),
@@ -97,7 +97,7 @@ class _LogChartView extends StatelessWidget {
               ),
             ),
             actions: <Widget>[
-              TextButton(
+              ElevatedButton(
                 child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop(); // pop dialog

@@ -71,7 +71,7 @@ class _Chart18FormState extends State<Chart18Form>
               ),
             ),
             actions: <Widget>[
-              TextButton(
+              ElevatedButton(
                 child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop(); // pop dialog
