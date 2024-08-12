@@ -58,7 +58,7 @@ class _HomeFormState extends State<HomeForm> {
               AppLocalizations.of(context)!.dialogTitleAskBeforeExitApp,
             ),
             actions: <Widget>[
-              TextButton(
+              ElevatedButton(
                 child: Text(
                   AppLocalizations.of(context)!.dialogMessageCancel,
                 ),
@@ -66,10 +66,9 @@ class _HomeFormState extends State<HomeForm> {
                   Navigator.of(context).pop(false); // pop dialog
                 },
               ),
-              TextButton(
+              ElevatedButton(
                 child: Text(
                   AppLocalizations.of(context)!.dialogMessageExit,
-                  style: const TextStyle(color: CustomStyle.customRed),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop(true); // pop dialog
@@ -106,7 +105,7 @@ class _HomeFormState extends State<HomeForm> {
               ),
             ),
             actions: <Widget>[
-              TextButton(
+              ElevatedButton(
                 child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop(); // pop dialog
@@ -235,12 +234,8 @@ class _HomeFormState extends State<HomeForm> {
               });
             }
           }
-        }
-        if (state.scanStatus.isRequestFailure) {
-          if (ModalRoute.of(context)?.isCurrent == true) {
-            showFailureDialog(state.errorMassage);
-          }
-        } else if (state.connectionStatus.isRequestFailure) {
+        } else if (state.scanStatus.isRequestFailure &&
+            state.connectionStatus.isRequestFailure) {
           // 當斷線時, 關閉目前顯示的 dialog (下載全部 log (download all) 或 load preset)
           if (ModalRoute.of(context)?.isCurrent == false) {
             Navigator.of(context).pop();

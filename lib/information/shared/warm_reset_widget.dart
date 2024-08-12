@@ -59,7 +59,7 @@ Future<bool?> showWarmResetNoticeDialog({
           ),
         ),
         actions: <Widget>[
-          TextButton(
+          ElevatedButton(
             child: Text(
               AppLocalizations.of(context)!.dialogMessageCancel,
             ),
@@ -67,7 +67,7 @@ Future<bool?> showWarmResetNoticeDialog({
               Navigator.of(context).pop(false); // pop dialog
             },
           ),
-          TextButton(
+          ElevatedButton(
             child: Text(
               AppLocalizations.of(context)!.dialogMessageOk,
             ),
@@ -105,7 +105,7 @@ Future<void> showWarmResetSuccessDialog({
           ),
         ),
         actions: <Widget>[
-          TextButton(
+          ElevatedButton(
             child: Text(
               AppLocalizations.of(context)!.dialogMessageOk,
             ),
