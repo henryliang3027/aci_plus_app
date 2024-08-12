@@ -54,7 +54,7 @@ class Chart18CCorNodeForm extends StatelessWidget {
               ),
             ),
             actions: <Widget>[
-              TextButton(
+              ElevatedButton(
                 child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop(); // pop dialog

@@ -58,7 +58,7 @@ class _HomeFormState extends State<HomeForm> {
               AppLocalizations.of(context)!.dialogTitleAskBeforeExitApp,
             ),
             actions: <Widget>[
-              TextButton(
+              ElevatedButton(
                 child: Text(
                   AppLocalizations.of(context)!.dialogMessageCancel,
                 ),
@@ -66,10 +66,9 @@ class _HomeFormState extends State<HomeForm> {
                   Navigator.of(context).pop(false); // pop dialog
                 },
               ),
-              TextButton(
+              ElevatedButton(
                 child: Text(
                   AppLocalizations.of(context)!.dialogMessageExit,
-                  style: const TextStyle(color: CustomStyle.customRed),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop(true); // pop dialog
@@ -106,7 +105,7 @@ class _HomeFormState extends State<HomeForm> {
               ),
             ),
             actions: <Widget>[
-              TextButton(
+              ElevatedButton(
                 child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop(); // pop dialog

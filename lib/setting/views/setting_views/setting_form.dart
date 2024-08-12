@@ -119,43 +119,6 @@ class _ViewLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> showFailureDialog(String msg) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context)!.dialogTitleError,
-              style: const TextStyle(
-                color: CustomStyle.customRed,
-              ),
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                    getMessageLocalization(
-                      msg: msg,
-                      context: context,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.loadingStatus.isRequestInProgress) {

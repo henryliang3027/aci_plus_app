@@ -254,7 +254,7 @@ class _ForwardControlHeader extends StatelessWidget {
               ),
             ),
             actions: <Widget>[
-              TextButton(
+              ElevatedButton(
                 child: Text(
                   AppLocalizations.of(context)!.dialogMessageCancel,
                 ),
@@ -262,7 +262,7 @@ class _ForwardControlHeader extends StatelessWidget {
                   Navigator.of(context).pop(false); // pop dialog
                 },
               ),
-              TextButton(
+              ElevatedButton(
                 child: Text(
                   AppLocalizations.of(context)!.dialogMessageOk,
                 ),

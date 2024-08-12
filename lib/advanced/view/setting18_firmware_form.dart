@@ -88,7 +88,7 @@ class Setting18FirmwareForm extends StatelessWidget {
                   ),
                 ),
                 actions: <Widget>[
-                  TextButton(
+                  ElevatedButton(
                     child: Text(
                       AppLocalizations.of(context)!.dialogMessageCancel,
                     ),
@@ -99,7 +99,7 @@ class Setting18FirmwareForm extends StatelessWidget {
                       Navigator.of(context).pop(false); // pop dialog
                     },
                   ),
-                  TextButton(
+                  ElevatedButton(
                     child: Text(
                       AppLocalizations.of(context)!.dialogMessageTryAgain,
                     ),
@@ -147,7 +147,7 @@ class Setting18FirmwareForm extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                TextButton(
+                ElevatedButton(
                   child: Text(
                     AppLocalizations.of(context)!.dialogMessageOk,
                   ),
@@ -535,7 +535,7 @@ class _StartButton extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                TextButton(
+                ElevatedButton(
                   child: Text(
                     AppLocalizations.of(context)!.dialogMessageCancel,
                   ),
@@ -543,7 +543,7 @@ class _StartButton extends StatelessWidget {
                     Navigator.of(context).pop(false); // pop dialog
                   },
                 ),
-                TextButton(
+                ElevatedButton(
                   child: Text(
                     AppLocalizations.of(context)!.dialogMessageOk,
                   ),

@@ -144,7 +144,7 @@ class _DeviceListView extends StatelessWidget {
               ),
             ),
             actions: <Widget>[
-              TextButton(
+              ElevatedButton(
                 child: Text(
                   AppLocalizations.of(context)!.dialogMessageCancel,
                 ),
@@ -152,10 +152,9 @@ class _DeviceListView extends StatelessWidget {
                   Navigator.of(context).pop(false); // pop dialog
                 },
               ),
-              TextButton(
+              ElevatedButton(
                 child: Text(
                   AppLocalizations.of(context)!.dialogMessageOk,
-                  style: const TextStyle(color: CustomStyle.customRed),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop(true); // pop dialog
@@ -167,72 +166,72 @@ class _DeviceListView extends StatelessWidget {
       );
     }
 
-    Future<bool?> showSetAsDefaultDialog({
-      required String configName,
-    }) {
-      String localizedText = AppLocalizations.of(context)!
-          .dialogMessageSetAsDefaultConfig(configName);
-      int configNameIndex = localizedText.indexOf(configName);
+    // Future<bool?> showSetAsDefaultDialog({
+    //   required String configName,
+    // }) {
+    //   String localizedText = AppLocalizations.of(context)!
+    //       .dialogMessageSetAsDefaultConfig(configName);
+    //   int configNameIndex = localizedText.indexOf(configName);
 
-      return showDialog<bool>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context)!.dialogTitleNotice,
-              style: const TextStyle(
-                color: CustomStyle.customYellow,
-              ),
-            ),
-            content: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: localizedText.substring(0, configNameIndex),
-                    style: const TextStyle(),
-                  ),
-                  TextSpan(
-                    text: localizedText.substring(
-                        configNameIndex, configNameIndex + configName.length),
-                    style: const TextStyle(
-                      color: CustomStyle.customRed,
-                    ),
-                  ),
-                  TextSpan(
-                    text: localizedText.substring(
-                        configNameIndex + configName.length,
-                        localizedText.length),
-                    style: const TextStyle(),
-                  ),
-                ],
-              ),
-              style: const TextStyle(
-                fontSize: CustomStyle.sizeL,
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(
-                  AppLocalizations.of(context)!.dialogMessageCancel,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop(false); // pop dialog
-                },
-              ),
-              TextButton(
-                child: Text(
-                  AppLocalizations.of(context)!.dialogMessageOk,
-                  style: const TextStyle(color: CustomStyle.customRed),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop(true); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
+    //   return showDialog<bool>(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return AlertDialog(
+    //         title: Text(
+    //           AppLocalizations.of(context)!.dialogTitleNotice,
+    //           style: const TextStyle(
+    //             color: CustomStyle.customYellow,
+    //           ),
+    //         ),
+    //         content: Text.rich(
+    //           TextSpan(
+    //             children: [
+    //               TextSpan(
+    //                 text: localizedText.substring(0, configNameIndex),
+    //                 style: const TextStyle(),
+    //               ),
+    //               TextSpan(
+    //                 text: localizedText.substring(
+    //                     configNameIndex, configNameIndex + configName.length),
+    //                 style: const TextStyle(
+    //                   color: CustomStyle.customRed,
+    //                 ),
+    //               ),
+    //               TextSpan(
+    //                 text: localizedText.substring(
+    //                     configNameIndex + configName.length,
+    //                     localizedText.length),
+    //                 style: const TextStyle(),
+    //               ),
+    //             ],
+    //           ),
+    //           style: const TextStyle(
+    //             fontSize: CustomStyle.sizeL,
+    //           ),
+    //         ),
+    //         actions: <Widget>[
+    //           TextButton(
+    //             child: Text(
+    //               AppLocalizations.of(context)!.dialogMessageCancel,
+    //             ),
+    //             onPressed: () {
+    //               Navigator.of(context).pop(false); // pop dialog
+    //             },
+    //           ),
+    //           TextButton(
+    //             child: Text(
+    //               AppLocalizations.of(context)!.dialogMessageOk,
+    //               style: const TextStyle(color: CustomStyle.customRed),
+    //             ),
+    //             onPressed: () {
+    //               Navigator.of(context).pop(true); // pop dialog
+    //             },
+    //           ),
+    //         ],
+    //       );
+    //     },
+    //   );
+    // }
 
     Widget configCard({
       required NodeConfig nodeConfig,
