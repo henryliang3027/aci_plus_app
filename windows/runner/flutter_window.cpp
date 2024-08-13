@@ -27,6 +27,7 @@ bool FlutterWindow::OnCreate()
   {
     return false;
   }
+
   RegisterPlugins(flutter_controller_->engine());
   SetChildContent(flutter_controller_->view()->GetNativeWindow());
 
@@ -77,12 +78,20 @@ FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
 
     MINMAXINFO *minMaxInfo = reinterpret_cast<MINMAXINFO *>(lparam);
 
+    // Adjust the window style to disable the maximize button
+    LONG_PTR style = GetWindowLongPtr(hwnd, GWL_STYLE);
+    style &= ~WS_MAXIMIZEBOX;
+    SetWindowLongPtr(hwnd, GWL_STYLE, style);
+
     // Get the DPI for the window and calculate the scale factor
     const double kBaseDpi = 96.0;
     double scale_factor = FlutterDesktopGetDpiForHWND(hwnd) / kBaseDpi;
 
     minMaxInfo->ptMinTrackSize.x = static_cast<LONG>(960 * scale_factor); // Minimum width
     minMaxInfo->ptMinTrackSize.y = static_cast<LONG>(640 * scale_factor); // Minimum height
+
+    minMaxInfo->ptMaxTrackSize.x = static_cast<LONG>(960 * scale_factor); // Minimum width
+    minMaxInfo->ptMaxTrackSize.y = static_cast<LONG>(640 * scale_factor); // Minimum height
     break;
   }
 
