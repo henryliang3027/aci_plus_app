@@ -42,34 +42,55 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
     Map<DataKey, String> characteristicDataCache =
         _amp18CCorNodeRepository.characteristicDataCache;
 
-    String splitOption = characteristicDataCache[DataKey.splitOption]!;
-    String partId = characteristicDataCache[DataKey.partId]!;
+    // 當斷線的時候重新初始化時讀取 map 元素會有 null 的情況, null 時就 assign 空字串
+    String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
+    String partId = characteristicDataCache[DataKey.partId] ?? '';
 
-    Map<DataKey, MinMax> values =
-        ControlItemValue.valueCollection[splitOption]![int.parse(partId)];
+    Map<DataKey, MinMax> values = {};
 
-    MinMax usVCA1MinMax = values[DataKey.usVCA1]!;
+    if (splitOption.isNotEmpty && partId.isNotEmpty) {
+      values =
+          ControlItemValue.valueCollection[splitOption]![int.parse(partId)];
+    }
+
+    MinMax usVCA1MinMax = values[DataKey.usVCA1] ??
+        MinMax(
+          min: state.usVCA1.minValue,
+          max: state.usVCA1.maxValue,
+        );
     RangeFloatPointInput usVCA1 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA1] ?? '',
       minValue: usVCA1MinMax.min,
       maxValue: usVCA1MinMax.max,
     );
 
-    MinMax usVCA3MinMax = values[DataKey.usVCA3]!;
+    MinMax usVCA3MinMax = values[DataKey.usVCA3] ??
+        MinMax(
+          min: state.usVCA3.minValue,
+          max: state.usVCA3.maxValue,
+        );
     RangeFloatPointInput usVCA3 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA3] ?? '',
       minValue: usVCA3MinMax.min,
       maxValue: usVCA3MinMax.max,
     );
 
-    MinMax usVCA4MinMax = values[DataKey.usVCA4]!;
+    MinMax usVCA4MinMax = values[DataKey.usVCA4] ??
+        MinMax(
+          min: state.usVCA4.minValue,
+          max: state.usVCA4.maxValue,
+        );
     RangeFloatPointInput usVCA4 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA4] ?? '',
       minValue: usVCA4MinMax.min,
       maxValue: usVCA4MinMax.max,
     );
 
-    MinMax usVCA6MinMax = values[DataKey.usVCA6]!;
+    MinMax usVCA6MinMax = values[DataKey.usVCA6] ??
+        MinMax(
+          min: state.usVCA6.minValue,
+          max: state.usVCA6.maxValue,
+        );
     RangeFloatPointInput usVCA6 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA6] ?? '',
       minValue: usVCA6MinMax.min,

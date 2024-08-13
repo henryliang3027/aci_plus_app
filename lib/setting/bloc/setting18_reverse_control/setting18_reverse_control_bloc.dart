@@ -49,10 +49,16 @@ class Setting18ReverseControlBloc
       }
     });
 
-    String splitOption = characteristicDataCache[DataKey.splitOption]!;
-    String partId = characteristicDataCache[DataKey.partId]!;
-    Map<DataKey, MinMax> values =
-        ControlItemValue.valueCollection[splitOption]![int.parse(partId)];
+// 當斷線的時候重新初始化時讀取 map 元素會有 null 的情況, null 時就 assign 空字串
+    String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
+    String partId = characteristicDataCache[DataKey.partId] ?? '';
+
+    Map<DataKey, MinMax> values = {};
+
+    if (splitOption.isNotEmpty && partId.isNotEmpty) {
+      values =
+          ControlItemValue.valueCollection[splitOption]![int.parse(partId)];
+    }
 
     MinMax usVCA1MinMax = values[DataKey.usVCA1] ??
         MinMax(

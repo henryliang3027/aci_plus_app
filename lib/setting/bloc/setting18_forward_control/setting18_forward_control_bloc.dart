@@ -51,11 +51,16 @@ class Setting18ForwardControlBloc
       }
     });
 
-    String splitOption = characteristicDataCache[DataKey.splitOption]!;
-    String partId = characteristicDataCache[DataKey.partId]!;
+    // 當斷線的時候重新初始化時讀取 map 元素會有 null 的情況, null 時就 assign 空字串
+    String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
+    String partId = characteristicDataCache[DataKey.partId] ?? '';
 
-    Map<DataKey, MinMax> values =
-        ControlItemValue.valueCollection[splitOption]![int.parse(partId)];
+    Map<DataKey, MinMax> values = {};
+
+    if (splitOption.isNotEmpty && partId.isNotEmpty) {
+      values =
+          ControlItemValue.valueCollection[splitOption]![int.parse(partId)];
+    }
 
     MinMax dsVVA1MinMax = values[DataKey.dsVVA1] ??
         MinMax(
