@@ -56,7 +56,7 @@ class Setting18GraphViewBloc
         valueText = value;
       }
 
-      return ' $valueText${CustomStyle.dB}';
+      return '$valueText${CustomStyle.dB}';
     } else {
       return '';
     }
