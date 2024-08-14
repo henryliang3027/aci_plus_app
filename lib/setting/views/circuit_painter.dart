@@ -153,7 +153,7 @@ class CircuitPainter extends CustomPainter {
       );
     }
 
-    // print('scaleFactor: $scaleFactor');
+    print('scaleFactor: $scaleFactor');
     // print('colorScheme:  ${Theme.of(context).colorScheme.onSurface}');
 
     for (ValueText valueText in svgImage.valueTexts) {
@@ -179,10 +179,11 @@ class CircuitPainter extends CustomPainter {
 
       print(textPainter.height);
 
+      print('valueText.x = ${valueText.x}');
       textPainter.paint(
           canvas,
           Offset(
-              (valueText.x + (238.365 / 2)) * scaleFactor +
+              (valueText.x - 14 + (238.365 / 2)) * scaleFactor +
                   offsetX -
                   (textPainter.width / 2),
               (valueText.y - 20) * scaleFactor +
