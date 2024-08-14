@@ -64,8 +64,8 @@ class CircuitPainter extends CustomPainter {
     double offsetX = (size.width - svgImage.width * scaleFactor) / 2;
     double offsetY = (size.height - svgImage.height * scaleFactor) / 2;
 
-    print(offsetX);
-    print(offsetY);
+    print('offsetX : ${offsetX}');
+    print('offsetY: : ${offsetY}');
 
     // canvas.scale(scaleFactor);
 
@@ -177,19 +177,46 @@ class CircuitPainter extends CustomPainter {
         maxWidth: size.width,
       );
 
-      print(textPainter.height);
+      if (valueText.moduleName == 'usVCA1') {
+        print('textPainter.height: ${textPainter.height}');
+        print('textPainter.width: ${textPainter.width}');
+      }
 
-      print('valueText.x = ${valueText.x}');
+      // print('valueText.x = ${valueText.x}');
       textPainter.paint(
           canvas,
           Offset(
-              (valueText.x - 14 + (238.365 / 2)) * scaleFactor +
+              (valueText.x + (238.365 / 2)) * scaleFactor +
                   offsetX -
                   (textPainter.width / 2),
               (valueText.y - 20) * scaleFactor +
                   offsetY -
                   (textPainter.height / 2)));
     }
+
+    // TextStyle textStyle2 = TextStyle(
+    //   fontSize: 82 * scaleFactor,
+    //   fontWeight: FontWeight.bold,
+    //   color: Theme.of(context).colorScheme.onSurface,
+    // );
+    // final textSpan = TextSpan(
+    //   text: '17.9dB',
+    //   style: textStyle2,
+    // );
+
+    // final textPainter2 = TextPainter(
+    //   text: textSpan,
+    //   textDirection: TextDirection.ltr,
+    // );
+    // textPainter2.layout(
+    //   minWidth: 0,
+    //   maxWidth: size.width,
+    // );
+
+    // print(textPainter.height);
+
+    // print('valueText.x = ${valueText.x}');
+    // textPainter2.paint(canvas, Offset(0, 0));
   }
 
   @override
