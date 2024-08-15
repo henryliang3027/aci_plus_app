@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/chart/bloc/chart18/chart18_bloc.dart';
+import 'package:aci_plus_app/chart/shared/share_file_widget.dart';
 import 'package:aci_plus_app/chart/view/chart18_tab_bar.dart';
 import 'package:aci_plus_app/chart/view/code_input_page.dart';
 import 'package:aci_plus_app/chart/view/downloader18_page.dart';
@@ -14,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_filex/open_filex.dart';
-import 'package:share_plus/share_plus.dart';
 
 class Chart18Form extends StatefulWidget {
   const Chart18Form({
@@ -128,14 +128,11 @@ class _Chart18FormState extends State<Chart18Form>
               .state
               .characteristicData[DataKey.location]!;
 
-          double width = MediaQuery.of(context).size.width;
-          double height = MediaQuery.of(context).size.height;
-          Share.shareXFiles(
-            [XFile(state.dataExportPath)],
+          openShareFileWidget(
+            context: context,
             subject: state.exportFileName,
-            text: '$partName / $location',
-            sharePositionOrigin:
-                Rect.fromLTWH(0.0, height / 2, width, height / 2),
+            body: '$partName / $location',
+            attachmentPath: state.dataExportPath,
           );
         } else if (state.allDataExportStatus.isRequestSuccess) {
           ScaffoldMessenger.of(context)
@@ -215,14 +212,11 @@ class _Chart18FormState extends State<Chart18Form>
               .state
               .characteristicData[DataKey.location]!;
 
-          double width = MediaQuery.of(context).size.width;
-          double height = MediaQuery.of(context).size.height;
-          Share.shareXFiles(
-            [XFile(state.dataExportPath)],
+          openShareFileWidget(
+            context: context,
             subject: state.exportFileName,
-            text: '$partName / $location',
-            sharePositionOrigin:
-                Rect.fromLTWH(0.0, height / 2, width, height / 2),
+            body: '$partName / $location',
+            attachmentPath: state.dataExportPath,
           );
         }
       },
@@ -407,9 +401,6 @@ class _PopupMenu extends StatelessWidget {
   final TabController tabController;
 
   Widget buildDataLogPageMenu(BuildContext context) {
-    Map<DataKey, String> characteristicData =
-        context.read<HomeBloc>().state.characteristicData;
-
     return BlocBuilder<Chart18Bloc, Chart18State>(
       builder: (context, state) {
         return state.enableTabChange
