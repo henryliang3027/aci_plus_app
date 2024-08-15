@@ -1321,7 +1321,9 @@ Widget splitOptionGridViewButton({
                 ),
                 onPressed: editMode
                     ? () {
-                        onGridPressed(index);
+                        if (index == 0) {
+                          onGridPressed(index);
+                        }
                       }
                     : () {},
                 child: Text(
