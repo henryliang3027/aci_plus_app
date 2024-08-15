@@ -1,11 +1,13 @@
 import 'dart:math';
 
 import 'package:aci_plus_app/chart/bloc/chart/chart_bloc.dart';
+import 'package:aci_plus_app/chart/shared/share_file_widget.dart';
 import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
-import 'package:share_plus/share_plus.dart';
 
 class ChartForm extends StatelessWidget {
   const ChartForm({
@@ -107,14 +108,11 @@ class ChartForm extends StatelessWidget {
               .state
               .characteristicData[DataKey.location]!;
 
-          double width = MediaQuery.of(context).size.width;
-          double height = MediaQuery.of(context).size.height;
-          Share.shareXFiles(
-            [XFile(state.dataExportPath)],
+          openShareFileWidget(
+            context: context,
             subject: state.exportFileName,
-            text: '$partNo / $location',
-            sharePositionOrigin:
-                Rect.fromLTWH(0.0, height / 2, width, height / 2),
+            body: '$partNo / $location',
+            attachmentPath: state.dataExportPath,
           );
         }
       },
@@ -225,56 +223,29 @@ class _PopupMenu extends StatelessWidget {
             }
           },
           itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
-            PopupMenuItem<Menu>(
+            menuItem(
               value: Menu.refresh,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.refresh,
-                    size: 20.0,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(AppLocalizations.of(context)!.reconnect),
-                ],
-              ),
+              iconData: Icons.refresh,
+              title: AppLocalizations.of(context)!.reconnect,
+              onTap: () {
+                context.read<HomeBloc>().add(const DeviceRefreshed());
+              },
             ),
-            PopupMenuItem<Menu>(
+            menuItem(
               value: Menu.share,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.share,
-                    size: 20.0,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(AppLocalizations.of(context)!.share),
-                ],
-              ),
+              iconData: Icons.share,
+              title: AppLocalizations.of(context)!.share,
+              onTap: () {
+                context.read<ChartBloc>().add(const DataShared());
+              },
             ),
-            PopupMenuItem<Menu>(
+            menuItem(
               value: Menu.export,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.download,
-                    size: 20.0,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(AppLocalizations.of(context)!.export),
-                ],
-              ),
+              iconData: Icons.download,
+              title: AppLocalizations.of(context)!.export,
+              onTap: () {
+                context.read<ChartBloc>().add(const DataExported());
+              },
             ),
           ],
         );

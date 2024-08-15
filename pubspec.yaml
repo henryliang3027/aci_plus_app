@@ -64,12 +64,17 @@ dependencies:
   qr_code_scanner: ^1.0.1
   qr_flutter: ^4.1.0
   json_annotation: ^4.8.1
-  
+
   flutter_svg: 2.0.10+1
   flutter_speed_chart:
     git:
       url: https://github.com/henryliang3027/flutter_speed_chart.git
       ref: discreteX
+
+  win_outlook:
+    git:
+      url: https://github.com/henryliang3027/win_outlook.git
+      ref: main
 
   # path_drawing:
   #   git:
