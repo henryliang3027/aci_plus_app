@@ -176,6 +176,7 @@ class Setting18ForwardControlBloc
       initialValues: characteristicDataCache,
       editMode: false,
       enableSubmission: false,
+      tappedSet: const {},
       settingResult: const [],
     ));
   }
@@ -219,10 +220,14 @@ class Setting18ForwardControlBloc
       maxValue: state.dsVVA1.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsVVA1);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA1: dsVVA1,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: dsVVA1,
       ),
@@ -239,10 +244,14 @@ class Setting18ForwardControlBloc
       maxValue: state.dsVVA2.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsVVA2);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA2: dsVVA2,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsVVA2: dsVVA2,
       ),
@@ -259,10 +268,14 @@ class Setting18ForwardControlBloc
       maxValue: state.dsVVA3.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsVVA3);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA3: dsVVA3,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsVVA3: dsVVA3,
       ),
@@ -279,10 +292,14 @@ class Setting18ForwardControlBloc
       maxValue: state.dsVVA4.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsVVA4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA4: dsVVA4,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsVVA4: dsVVA4,
       ),
@@ -299,10 +316,14 @@ class Setting18ForwardControlBloc
       maxValue: state.dsVVA5.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsVVA5);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       dsVVA5: dsVVA5,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsVVA5: dsVVA5,
       ),
@@ -319,10 +340,14 @@ class Setting18ForwardControlBloc
       maxValue: state.dsSlope1.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsSlope1);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope1: dsSlope1,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsSlope1: dsSlope1,
       ),
@@ -339,10 +364,14 @@ class Setting18ForwardControlBloc
       maxValue: state.dsSlope2.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsSlope2);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope2: dsSlope2,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsSlope2: dsSlope2,
       ),
@@ -359,10 +388,14 @@ class Setting18ForwardControlBloc
       maxValue: state.dsSlope3.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsSlope3);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope3: dsSlope3,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsSlope3: dsSlope3,
       ),
@@ -379,10 +412,14 @@ class Setting18ForwardControlBloc
       maxValue: state.dsSlope4.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsSlope4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       dsSlope4: dsSlope4,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsSlope4: dsSlope4,
       ),
@@ -423,6 +460,7 @@ class Setting18ForwardControlBloc
       resetForwardValuesSubmissionStatus: SubmissionStatus.none,
       editMode: false,
       enableSubmission: false,
+      tappedSet: {},
       dsVVA1: RangeFloatPointInput.dirty(
         state.initialValues[DataKey.dsVVA1] ?? '',
         minValue: state.dsVVA1.minValue,
@@ -613,6 +651,7 @@ class Setting18ForwardControlBloc
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
+      tappedSet: {},
       enableSubmission: false,
       editMode: false,
     ));

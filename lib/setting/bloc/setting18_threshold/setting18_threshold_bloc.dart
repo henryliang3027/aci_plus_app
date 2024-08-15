@@ -191,6 +191,9 @@ class Setting18ThresholdBloc
     TemperatureAlarmChanged event,
     Emitter<Setting18ThresholdState> emit,
   ) {
+    // Set<String> tappedSet = Set.from(state.tappedSet);
+    // tappedSet.add()
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       temperatureAlarmState: event.temperatureAlarmState,

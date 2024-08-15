@@ -235,7 +235,7 @@ class CustomTheme {
       primary: Colors.indigo,
       onPrimary: Colors.white,
       secondaryContainer: Colors.white,
-      surfaceContainerLow: Colors.white,
+      surfaceContainerLow: Colors.white, // default Card color
       surfaceContainerHighest: Colors.white,
       onSurface: Colors.black,
     ),
@@ -259,6 +259,8 @@ class CustomTheme {
       labelPadding: EdgeInsets.symmetric(horizontal: 24.0),
       dividerColor: Colors.white,
     ),
+    cardColor: const Color.fromARGB(
+        255, 255, 165, 45), // card tap color in setting page
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
       selectedItemColor: Colors.indigo,
@@ -298,7 +300,7 @@ class CustomTheme {
       primary: Colors.indigo,
       onPrimary: Colors.white,
       secondaryContainer: const Color(0xFF282A2F),
-      surfaceContainerLow: const Color(0xFF282A2F),
+      surfaceContainerLow: const Color(0xFF282A2F), // default Card color
       surfaceContainerHighest: const Color(0xFF33353A),
       onSurface: Colors.white,
     ),
@@ -320,6 +322,8 @@ class CustomTheme {
       labelPadding: EdgeInsets.symmetric(horizontal: 24.0),
       dividerHeight: 0.0,
     ),
+    cardColor:
+        const Color.fromARGB(255, 205, 75, 5), // card tap color in setting page
     scaffoldBackgroundColor: const Color(0xFF0C0E13),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
