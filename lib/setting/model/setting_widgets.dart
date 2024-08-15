@@ -905,52 +905,54 @@ Widget controlTextSlider2({
   int textPrecision = 1,
   double step = 0.5,
   String subTitle = '',
+  bool tapColorEnabled = false,
 }) {
   // textEditingController.text = currentValue;
-  return Padding(
-    padding: const EdgeInsets.only(
-      bottom: 30.0,
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: CustomStyle.sizeL,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  title,
+  return Card(
+    color: tapColorEnabled ? Theme.of(context).cardColor : null,
+    child: Padding(
+      padding: const EdgeInsets.all(CustomStyle.sizeXL),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: CustomStyle.sizeL,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Text(
+                  subTitle,
                   style: const TextStyle(
                     fontSize: CustomStyle.sizeXL,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-              ),
-              Text(
-                subTitle,
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        FineTuneTextSlider2(
-          initialValue: currentValue,
-          minValue: minValue,
-          maxValue: maxValue,
-          step: step,
-          enabled: editMode,
-          onChanged: onChanged,
-          errorText1: errorText,
-          textPrecision: textPrecision,
-        ),
-      ],
+          FineTuneTextSlider2(
+            initialValue: currentValue,
+            minValue: minValue,
+            maxValue: maxValue,
+            step: step,
+            enabled: editMode,
+            onChanged: onChanged,
+            errorText1: errorText,
+            textPrecision: textPrecision,
+          ),
+        ],
+      ),
     ),
   );
 }
@@ -963,6 +965,7 @@ Widget controlToggleButton({
   required ValueChanged<int> onChanged,
   required List<String> values,
   required List<String> texts,
+  bool tapColorEnabled = false,
 }) {
   List<bool> getSelectionState(String selectedValue) {
     Map<String, bool> selectedValueMap = {};
@@ -977,55 +980,56 @@ Widget controlToggleButton({
     return selectedValueMap.values.toList();
   }
 
-  return Padding(
-    padding: const EdgeInsets.only(
-      bottom: CustomStyle.size4XL,
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: CustomStyle.sizeL,
-          ),
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: CustomStyle.sizeXL,
-              fontWeight: FontWeight.w500,
+  return Card(
+    color: tapColorEnabled ? Theme.of(context).cardColor : null,
+    child: Padding(
+      padding: const EdgeInsets.all(CustomStyle.sizeXL),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: CustomStyle.sizeL,
+            ),
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: CustomStyle.sizeXL,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
-        ),
-        LayoutBuilder(
-          builder: (context, constraints) => ToggleButtons(
-            direction: Axis.horizontal,
-            onPressed: editMode ? onChanged : (index) {},
-            textStyle: const TextStyle(
-              fontSize: CustomStyle.sizeL,
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            selectedBorderColor: editMode
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context)
-                    .colorScheme
-                    .inversePrimary, // indigo border color
-            selectedColor:
-                Theme.of(context).colorScheme.onPrimary, // white text color
+          LayoutBuilder(
+            builder: (context, constraints) => ToggleButtons(
+              direction: Axis.horizontal,
+              onPressed: editMode ? onChanged : (index) {},
+              textStyle: const TextStyle(
+                fontSize: CustomStyle.sizeL,
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              selectedBorderColor: editMode
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context)
+                      .colorScheme
+                      .inversePrimary, // indigo border color
+              selectedColor:
+                  Theme.of(context).colorScheme.onPrimary, // white text color
 
-            fillColor: editMode
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.inversePrimary, // selected
-            color: Theme.of(context).colorScheme.secondary, // not selected
-            constraints: BoxConstraints.expand(
-              width: (constraints.maxWidth - 6) / values.length,
+              fillColor: editMode
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.inversePrimary, // selected
+              color: Theme.of(context).colorScheme.secondary, // not selected
+              constraints: BoxConstraints.expand(
+                width: (constraints.maxWidth - 6) / values.length,
+              ),
+              isSelected: getSelectionState(currentValue),
+              children: <Widget>[
+                for (String text in texts) ...[Text(text)],
+              ],
             ),
-            isSelected: getSelectionState(currentValue),
-            children: <Widget>[
-              for (String text in texts) ...[Text(text)],
-            ],
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }

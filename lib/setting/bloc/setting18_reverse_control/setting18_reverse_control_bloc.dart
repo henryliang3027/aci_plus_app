@@ -135,6 +135,7 @@ class Setting18ReverseControlBloc
       initialValues: characteristicDataCache,
       editMode: false,
       enableSubmission: false,
+      tappedSet: const {},
       settingResult: const [],
     ));
   }
@@ -178,10 +179,14 @@ class Setting18ReverseControlBloc
       maxValue: state.usVCA1.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.usVCA1);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA1: usVCA1,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA1: usVCA1,
       ),
@@ -198,10 +203,14 @@ class Setting18ReverseControlBloc
       maxValue: state.usVCA2.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.usVCA2);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA2: usVCA2,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA2: usVCA2,
       ),
@@ -218,10 +227,14 @@ class Setting18ReverseControlBloc
       maxValue: state.usVCA3.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.usVCA3);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA3: usVCA3,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA3: usVCA3,
       ),
@@ -238,10 +251,14 @@ class Setting18ReverseControlBloc
       maxValue: state.usVCA4.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.usVCA4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       usVCA4: usVCA4,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA4: usVCA4,
       ),
@@ -258,10 +275,14 @@ class Setting18ReverseControlBloc
       maxValue: state.eREQ.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.eREQ);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       eREQ: eREQ,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         eREQ: eREQ,
       ),
@@ -272,10 +293,14 @@ class Setting18ReverseControlBloc
     RtnIngressSetting2Changed event,
     Emitter<Setting18ReverseControlState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.ingressSetting2);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       returnIngressSetting2: event.returnIngressSetting2,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         returnIngressSetting2: event.returnIngressSetting2,
       ),
@@ -286,10 +311,14 @@ class Setting18ReverseControlBloc
     RtnIngressSetting3Changed event,
     Emitter<Setting18ReverseControlState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.ingressSetting3);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       returnIngressSetting3: event.returnIngressSetting3,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         returnIngressSetting3: event.returnIngressSetting3,
       ),
@@ -300,10 +329,14 @@ class Setting18ReverseControlBloc
     RtnIngressSetting4Changed event,
     Emitter<Setting18ReverseControlState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.ingressSetting4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       returnIngressSetting4: event.returnIngressSetting4,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         returnIngressSetting4: event.returnIngressSetting4,
       ),
@@ -374,6 +407,7 @@ class Setting18ReverseControlBloc
       resetReverseValuesSubmissionStatus: SubmissionStatus.none,
       editMode: false,
       enableSubmission: false,
+      tappedSet: {},
       usVCA1: RangeFloatPointInput.dirty(
         state.initialValues[DataKey.usVCA1] ?? '',
         minValue: state.usVCA1.minValue,
@@ -485,6 +519,7 @@ class Setting18ReverseControlBloc
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
+      tappedSet: {},
       enableSubmission: false,
       editMode: false,
     ));

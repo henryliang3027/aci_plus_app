@@ -192,12 +192,7 @@ class Setting18ReverseControlView extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(
-                CustomStyle.sizeXL,
-              ),
-              child: buildControlWidget(partId),
-            ),
+            child: buildControlWidget(partId),
           ),
         ),
         floatingActionButton: _SettingFloatingActionButton(
@@ -291,7 +286,7 @@ class _ReverseControlHeader extends StatelessWidget {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(builder: (context, state) {
       return Padding(
-        padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         child: Row(
           children: [
             Expanded(
@@ -357,6 +352,9 @@ class _ReturnInputAttenuation2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
+      buildWhen: (previous, current) =>
+          previous.usVCA1 != current.usVCA1 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.usVCA1.minValue;
         double maxValue = state.usVCA1.maxValue;
@@ -376,6 +374,7 @@ class _ReturnInputAttenuation2 extends StatelessWidget {
           errorText: state.usVCA1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.usVCA1),
         );
       },
     );
@@ -389,6 +388,9 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
+      buildWhen: (previous, current) =>
+          previous.usVCA3 != current.usVCA3 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.usVCA3.minValue;
         double maxValue = state.usVCA3.maxValue;
@@ -408,6 +410,7 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
           errorText: state.usVCA3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.usVCA3),
         );
       },
     );
@@ -421,6 +424,9 @@ class _ReturnInputAttenuation2And3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
+      buildWhen: (previous, current) =>
+          previous.usVCA3 != current.usVCA3 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.usVCA3.minValue;
         double maxValue = state.usVCA3.maxValue;
@@ -440,6 +446,7 @@ class _ReturnInputAttenuation2And3 extends StatelessWidget {
           errorText: state.usVCA3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.usVCA3),
         );
       },
     );
@@ -458,6 +465,9 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
     if (partId == '5') {
       return BlocBuilder<Setting18ReverseControlBloc,
           Setting18ReverseControlState>(
+        buildWhen: (previous, current) =>
+            previous.usVCA1 != current.usVCA1 ||
+            previous.editMode != current.editMode,
         builder: (context, state) {
           double minValue = state.usVCA1.minValue;
           double maxValue = state.usVCA1.maxValue;
@@ -477,12 +487,16 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
             errorText: state.usVCA1.isNotValid
                 ? AppLocalizations.of(context)!.textFieldErrorMessage
                 : null,
+            tapColorEnabled: state.tappedSet.contains(DataKey.usVCA1),
           );
         },
       );
     } else {
       return BlocBuilder<Setting18ReverseControlBloc,
           Setting18ReverseControlState>(
+        buildWhen: (previous, current) =>
+            previous.usVCA4 != current.usVCA4 ||
+            previous.editMode != current.editMode,
         builder: (context, state) {
           double minValue = state.usVCA4.minValue;
           double maxValue = state.usVCA4.maxValue;
@@ -502,6 +516,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
             errorText: state.usVCA4.isNotValid
                 ? AppLocalizations.of(context)!.textFieldErrorMessage
                 : null,
+            tapColorEnabled: state.tappedSet.contains(DataKey.usVCA4),
           );
         },
       );
@@ -516,6 +531,9 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
+      buildWhen: (previous, current) =>
+          previous.usVCA4 != current.usVCA4 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.usVCA4.minValue;
         double maxValue = state.usVCA4.maxValue;
@@ -535,6 +553,7 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
           errorText: state.usVCA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.usVCA4),
         );
       },
     );
@@ -548,6 +567,9 @@ class _ReturnOutputAttenuation1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
+      buildWhen: (previous, current) =>
+          previous.usVCA2 != current.usVCA2 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.usVCA2.minValue;
         double maxValue = state.usVCA2.maxValue;
@@ -567,6 +589,7 @@ class _ReturnOutputAttenuation1 extends StatelessWidget {
           errorText: state.usVCA2.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.usVCA2),
         );
       },
     );
@@ -580,6 +603,9 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
+      buildWhen: (previous, current) =>
+          previous.eREQ != current.eREQ ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.eREQ.minValue;
         double maxValue = state.eREQ.maxValue;
@@ -599,6 +625,7 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
           errorText: state.eREQ.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.eREQ),
         );
       },
     );
@@ -640,6 +667,7 @@ class _ReturnIngressSetting2 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          tapColorEnabled: state.tappedSet.contains(DataKey.ingressSetting2),
         );
       },
     );
@@ -674,6 +702,7 @@ class _ReturnIngressSetting3 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          tapColorEnabled: state.tappedSet.contains(DataKey.ingressSetting3),
         );
       },
     );
@@ -713,6 +742,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
               '-6dB',
               AppLocalizations.of(context)!.ingressOpen,
             ],
+            tapColorEnabled: state.tappedSet.contains(DataKey.ingressSetting2),
           );
         },
       );
@@ -740,6 +770,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
               '-6dB',
               AppLocalizations.of(context)!.ingressOpen,
             ],
+            tapColorEnabled: state.tappedSet.contains(DataKey.ingressSetting4),
           );
         },
       );
@@ -775,6 +806,7 @@ class _ReturnIngressSetting2And3 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          tapColorEnabled: state.tappedSet.contains(DataKey.ingressSetting3),
         );
       },
     );
@@ -809,6 +841,7 @@ class _ReturnIngressSetting5And6 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          tapColorEnabled: state.tappedSet.contains(DataKey.ingressSetting4),
         );
       },
     );

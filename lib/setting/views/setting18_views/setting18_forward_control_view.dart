@@ -192,12 +192,7 @@ class Setting18ForwardControlView extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(
-                CustomStyle.sizeXL,
-              ),
-              child: buildControlWidget(partId),
-            ),
+            child: buildControlWidget(partId),
           ),
         ),
         floatingActionButton: _SettingFloatingActionButton(
@@ -292,7 +287,7 @@ class _ForwardControlHeader extends StatelessWidget {
         Setting18ForwardControlState>(
       builder: (context, state) {
         return Padding(
-          padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -371,6 +366,9 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
 
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
+      buildWhen: (previous, current) =>
+          previous.dsVVA1 != current.dsVVA1 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         // forwardInputAttenuation1TextEditingController.text = state.dsVVA1;
         double minValue = state.dsVVA1.minValue;
@@ -396,6 +394,7 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
           errorText: state.dsVVA1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.dsVVA1),
         );
       },
     );
@@ -425,6 +424,9 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
 
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
+      buildWhen: (previous, current) =>
+          previous.dsSlope1 != current.dsSlope1 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.dsSlope1.minValue;
         double maxValue = state.dsSlope1.maxValue;
@@ -451,6 +453,7 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
           errorText: state.dsSlope1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.dsSlope1),
         );
       },
     );
@@ -464,6 +467,9 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
+      buildWhen: (previous, current) =>
+          previous.dsSlope3 != current.dsSlope3 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.dsSlope3.minValue;
         double maxValue = state.dsSlope3.maxValue;
@@ -483,6 +489,7 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
           errorText: state.dsSlope3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.dsSlope3),
         );
       },
     );
@@ -496,6 +503,9 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
+      buildWhen: (previous, current) =>
+          previous.dsSlope4 != current.dsSlope4 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.dsSlope4.minValue;
         double maxValue = state.dsSlope4.maxValue;
@@ -515,6 +525,7 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
           errorText: state.dsSlope4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.dsSlope4),
         );
       },
     );
@@ -528,6 +539,9 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
+      buildWhen: (previous, current) =>
+          previous.dsVVA4 != current.dsVVA4 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.dsVVA4.minValue;
         double maxValue = state.dsVVA4.maxValue;
@@ -547,6 +561,7 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
           errorText: state.dsVVA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.dsVVA4),
         );
       },
     );
@@ -560,6 +575,9 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
+      buildWhen: (previous, current) =>
+          previous.dsVVA5 != current.dsVVA5 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.dsVVA5.minValue;
         double maxValue = state.dsVVA5.maxValue;
@@ -579,6 +597,7 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
           errorText: state.dsVVA5.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.dsVVA5),
         );
       },
     );
@@ -592,6 +611,9 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
+      buildWhen: (previous, current) =>
+          previous.dsVVA4 != current.dsVVA4 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.dsVVA4.minValue;
         double maxValue = state.dsVVA4.maxValue;
@@ -611,6 +633,7 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
           errorText: state.dsVVA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.dsVVA4),
         );
       },
     );
@@ -624,6 +647,9 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
+      buildWhen: (previous, current) =>
+          previous.dsVVA4 != current.dsVVA4 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.dsVVA4.minValue;
         double maxValue = state.dsVVA4.maxValue;
@@ -643,6 +669,7 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
           errorText: state.dsVVA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.dsVVA4),
         );
       },
     );
@@ -656,6 +683,9 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
+      buildWhen: (previous, current) =>
+          previous.dsVVA5 != current.dsVVA5 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.dsVVA5.minValue;
         double maxValue = state.dsVVA5.maxValue;
@@ -675,6 +705,7 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
           errorText: state.dsVVA5.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.dsVVA5),
         );
       },
     );
@@ -688,6 +719,9 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
+      buildWhen: (previous, current) =>
+          previous.dsSlope3 != current.dsSlope3 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.dsSlope3.minValue;
         double maxValue = state.dsSlope3.maxValue;
@@ -707,6 +741,7 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
           errorText: state.dsSlope3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.dsSlope3),
         );
       },
     );
@@ -720,6 +755,9 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
+      buildWhen: (previous, current) =>
+          previous.dsSlope3 != current.dsSlope3 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.dsSlope3.minValue;
         double maxValue = state.dsSlope3.maxValue;
@@ -739,6 +777,7 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
           errorText: state.dsSlope3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.dsSlope3),
         );
       },
     );
@@ -752,6 +791,9 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
+      buildWhen: (previous, current) =>
+          previous.dsSlope4 != current.dsSlope4 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.dsSlope4.minValue;
         double maxValue = state.dsSlope4.maxValue;
@@ -771,6 +813,7 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
           errorText: state.dsSlope4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          tapColorEnabled: state.tappedSet.contains(DataKey.dsSlope4),
         );
       },
     );

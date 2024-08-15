@@ -17,6 +17,12 @@ class CustomStyle {
   static const Color customGreen = Color(0xFF28A745);
   static const Color customGrey = Color(0xFF6C757D);
   static const Color customYellow = Color(0xFFFFAA00);
+  static const Color customSettingCardYellow =
+      Color.fromARGB(255, 255, 165, 45);
+
+  //
+  // 255, 205, 75, 5 night
+  //230, 107, 11
   static const Color customBlue = Color.fromARGB(255, 220, 243, 255);
   static const Color customPink = Color.fromARGB(255, 255, 230, 222);
   static const Color customDeepBlue = Color.fromARGB(255, 0, 31, 47);
