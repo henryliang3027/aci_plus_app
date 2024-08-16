@@ -359,10 +359,7 @@ class Setting18ConfigureView extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: buildConfigurationWidget(partId),
-            ),
+            child: buildConfigurationWidget(partId),
           ),
         ),
         floatingActionButton: _SettingFloatingActionButton(
@@ -385,50 +382,56 @@ class _Location extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: CustomStyle.sizeL,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context)!.location}:',
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.w500,
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(CustomStyle.sizeXL),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeL,
+                  ),
+                  child: Text(
+                    '${AppLocalizations.of(context)!.location}:',
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-              TextField(
-                controller: textEditingController,
-                key: const Key('setting18Form_locationInput_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeXS,
+                  ),
+                  child: TextField(
+                    controller: textEditingController,
+                    key: const Key('setting18Form_locationInput_textField'),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                    ),
+                    enabled: state.editMode,
+                    textInputAction: TextInputAction.done,
+                    onChanged: (location) {
+                      context
+                          .read<Setting18ConfigureBloc>()
+                          .add(LocationChanged(location));
+                    },
+                    maxLength: 48,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: const EdgeInsets.all(10.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor:
+                          Theme.of(context).colorScheme.secondaryContainer,
+                      counterText: '',
+                    ),
+                  ),
                 ),
-                enabled: state.editMode,
-                textInputAction: TextInputAction.done,
-                onChanged: (location) {
-                  context
-                      .read<Setting18ConfigureBloc>()
-                      .add(LocationChanged(location));
-                },
-                maxLength: 48,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: const EdgeInsets.all(10.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
-                  counterText: '',
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -447,95 +450,104 @@ class _Coordinates extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: CustomStyle.sizeL,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context)!.coordinates}:',
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.w500,
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(CustomStyle.sizeXL),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeL,
                   ),
-                ),
-              ),
-              TextField(
-                controller: textEditingController,
-                key: const Key('setting18Form_coordinatesInput_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                ),
-                enabled: state.editMode,
-                textInputAction: TextInputAction.done,
-                onChanged: (coordinate) {
-                  context
-                      .read<Setting18ConfigureBloc>()
-                      .add(CoordinatesChanged(coordinate));
-                },
-                maxLength: 39,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(10.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
-                  counterText: '',
-                  suffixIconConstraints: const BoxConstraints(
-                    maxHeight: 48,
-                    maxWidth: 56,
-                    minHeight: 48,
-                    minWidth: 56,
-                  ),
-                  suffixIcon: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Material(
-                      // elevation: 5.0,
-                      color: state.editMode
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.inversePrimary,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(4.0),
-                              bottomRight: Radius.circular(4.0))),
-                      // shadowColor: Colors.green,
-                      child: state.gpsStatus.isRequestInProgress
-                          ? Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: CircularProgressIndicator(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
-                            )
-                          : IconButton(
-                              iconSize: 26,
-                              icon: Icon(
-                                Icons.pin_drop,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                // size: 22,
-                              ),
-                              onPressed: state.editMode
-                                  ? () {
-                                      context
-                                          .read<Setting18ConfigureBloc>()
-                                          .add(const GPSCoordinatesRequested());
-                                    }
-                                  : null,
-                            ),
-                    ),
-                  ),
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(4.0),
+                  child: Text(
+                    '${AppLocalizations.of(context)!.coordinates}:',
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeXS,
+                  ),
+                  child: TextField(
+                    controller: textEditingController,
+                    key: const Key('setting18Form_coordinatesInput_textField'),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                    ),
+                    enabled: state.editMode,
+                    textInputAction: TextInputAction.done,
+                    onChanged: (coordinate) {
+                      context
+                          .read<Setting18ConfigureBloc>()
+                          .add(CoordinatesChanged(coordinate));
+                    },
+                    maxLength: 39,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(10.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor:
+                          Theme.of(context).colorScheme.secondaryContainer,
+                      counterText: '',
+                      suffixIconConstraints: const BoxConstraints(
+                        maxHeight: 48,
+                        maxWidth: 56,
+                        minHeight: 48,
+                        minWidth: 56,
+                      ),
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Material(
+                          // elevation: 5.0,
+                          color: state.editMode
+                              ? Theme.of(context).colorScheme.primary
+                              : Theme.of(context).colorScheme.inversePrimary,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(4.0),
+                                  bottomRight: Radius.circular(4.0))),
+                          // shadowColor: Colors.green,
+                          child: state.gpsStatus.isRequestInProgress
+                              ? Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: CircularProgressIndicator(
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                                )
+                              : IconButton(
+                                  iconSize: 26,
+                                  icon: Icon(
+                                    Icons.pin_drop,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                    // size: 22,
+                                  ),
+                                  onPressed: state.editMode
+                                      ? () {
+                                          context
+                                              .read<Setting18ConfigureBloc>()
+                                              .add(
+                                                  const GPSCoordinatesRequested());
+                                        }
+                                      : null,
+                                ),
+                        ),
+                      ),
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(4.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -810,64 +822,71 @@ class _AGCMode extends StatelessWidget {
           previous.agcMode != current.agcMode ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: CustomStyle.sizeL,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context)!.agcMode}:',
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.w500,
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(CustomStyle.sizeXL),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeL,
+                  ),
+                  child: Text(
+                    '${AppLocalizations.of(context)!.agcMode}:',
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-              LayoutBuilder(
-                builder: (context, constraints) => ToggleButtons(
-                  direction: Axis.horizontal,
-                  onPressed: (int index) {
-                    if (state.editMode) {
-                      context
-                          .read<Setting18ConfigureBloc>()
-                          .add(AGCModeChanged(fwdAGCModeValues[index]));
-                    }
-                  },
-                  textStyle: const TextStyle(fontSize: 18.0),
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  selectedBorderColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeXS,
+                  ),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) => ToggleButtons(
+                      direction: Axis.horizontal,
+                      onPressed: (int index) {
+                        if (state.editMode) {
+                          context
+                              .read<Setting18ConfigureBloc>()
+                              .add(AGCModeChanged(fwdAGCModeValues[index]));
+                        }
+                      },
+                      textStyle: const TextStyle(fontSize: 18.0),
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      selectedBorderColor: state.editMode
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context)
+                              .colorScheme
+                              .inversePrimary, // indigo border color
+                      selectedColor: Theme.of(context)
                           .colorScheme
-                          .inversePrimary, // indigo border color
-                  selectedColor: Theme.of(context)
-                      .colorScheme
-                      .onPrimary, // white text color
+                          .onPrimary, // white text color
 
-                  fillColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
+                      fillColor: state.editMode
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context)
+                              .colorScheme
+                              .inversePrimary, // selected
+                      color: Theme.of(context)
                           .colorScheme
-                          .inversePrimary, // selected
-                  color:
-                      Theme.of(context).colorScheme.secondary, // not selected
-                  constraints: BoxConstraints.expand(
-                    width: (constraints.maxWidth - 4) / fwdAGCModeValues.length,
+                          .secondary, // not selected
+                      constraints: BoxConstraints.expand(
+                        width: (constraints.maxWidth - 4) /
+                            fwdAGCModeValues.length,
+                      ),
+                      isSelected: getSelectionState(state.agcMode),
+                      children: <Widget>[
+                        Text(AppLocalizations.of(context)!.on),
+                        Text(AppLocalizations.of(context)!.off),
+                      ],
+                    ),
                   ),
-                  isSelected: getSelectionState(state.agcMode),
-                  children: <Widget>[
-                    Text(AppLocalizations.of(context)!.on),
-                    Text(AppLocalizations.of(context)!.off),
-                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

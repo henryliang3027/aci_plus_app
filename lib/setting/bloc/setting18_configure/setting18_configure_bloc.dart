@@ -114,6 +114,7 @@ class Setting18ConfigureBloc
       initialValues: characteristicDataCache,
       editMode: false,
       enableSubmission: false,
+      tappedSet: const {},
       settingResult: const [],
       gpsCoordinateErrorMessage: '',
     ));
@@ -123,11 +124,15 @@ class Setting18ConfigureBloc
     LocationChanged event,
     Emitter<Setting18ConfigureState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.location);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       location: event.location,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: event.location,
         coordinates: state.coordinates,
@@ -152,11 +157,15 @@ class Setting18ConfigureBloc
     CoordinatesChanged event,
     Emitter<Setting18ConfigureState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.coordinates);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       coordinates: event.coordinates,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: event.coordinates,
@@ -186,12 +195,16 @@ class Setting18ConfigureBloc
       gpsStatus: FormStatus.requestInProgress,
     ));
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.coordinates);
+
     try {
       String coordinates = await _gpsRepository.getGPSCoordinates();
       emit(state.copyWith(
         gpsStatus: FormStatus.requestSuccess,
         coordinates: coordinates,
         isInitialize: false,
+        tappedSet: tappedSet,
         enableSubmission: _isEnabledSubmission(
           location: state.location,
           coordinates: coordinates,
@@ -215,6 +228,7 @@ class Setting18ConfigureBloc
         gpsStatus: FormStatus.requestFailure,
         gpsCoordinateErrorMessage: error.toString(),
         isInitialize: false,
+        tappedSet: tappedSet,
         enableSubmission: _isEnabledSubmission(
           location: state.location,
           coordinates: state.coordinates,
@@ -240,11 +254,15 @@ class Setting18ConfigureBloc
     SplitOptionChanged event,
     Emitter<Setting18ConfigureState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.splitOption);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       splitOption: event.splitOption,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -277,11 +295,15 @@ class Setting18ConfigureBloc
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.firstChannelLoadingFrequency);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: isValid &&
           _isEnabledSubmission(
             location: state.location,
@@ -309,11 +331,16 @@ class Setting18ConfigureBloc
   ) {
     FloatPointInput firstChannelLoadingLevel =
         FloatPointInput.dirty(event.firstChannelLoadingLevel);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.firstChannelLoadingLevel);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       firstChannelLoadingLevel: firstChannelLoadingLevel,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -340,11 +367,16 @@ class Setting18ConfigureBloc
   ) {
     IntegerInput lastChannelLoadingFrequency =
         IntegerInput.dirty(event.lastChannelLoadingFrequency);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.lastChannelLoadingFrequency);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -371,11 +403,16 @@ class Setting18ConfigureBloc
   ) {
     FloatPointInput lastChannelLoadingLevel =
         FloatPointInput.dirty(event.lastChannelLoadingLevel);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.lastChannelLoadingLevel);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       lastChannelLoadingLevel: lastChannelLoadingLevel,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -400,11 +437,15 @@ class Setting18ConfigureBloc
     PilotFrequencyModeChanged event,
     Emitter<Setting18ConfigureState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.pilotFrequencyMode);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       pilotFrequencyMode: event.pilotFrequencyMode,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -430,11 +471,16 @@ class Setting18ConfigureBloc
     Emitter<Setting18ConfigureState> emit,
   ) {
     IntegerInput pilotFrequency1 = IntegerInput.dirty(event.pilotFrequency1);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.pilotFrequency1);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       pilotFrequency1: pilotFrequency1,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -460,11 +506,16 @@ class Setting18ConfigureBloc
     Emitter<Setting18ConfigureState> emit,
   ) {
     IntegerInput pilotFrequency2 = IntegerInput.dirty(event.pilotFrequency2);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.pilotFrequency2);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       pilotFrequency2: pilotFrequency2,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -489,12 +540,16 @@ class Setting18ConfigureBloc
     AGCModeChanged event,
     Emitter<Setting18ConfigureState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.agcMode);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       agcMode: event.agcMode,
       alcMode: event.agcMode,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -548,11 +603,15 @@ class Setting18ConfigureBloc
     LogIntervalChanged event,
     Emitter<Setting18ConfigureState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.logInterval);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       logInterval: event.logInterval,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -577,11 +636,15 @@ class Setting18ConfigureBloc
     RFOutputLogIntervalChanged event,
     Emitter<Setting18ConfigureState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.rfOutputLogInterval);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       rfOutputLogInterval: event.rfOutputLogInterval,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -653,6 +716,7 @@ class Setting18ConfigureBloc
       isInitialize: true,
       editMode: false,
       enableSubmission: false,
+      tappedSet: {},
       location: state.initialValues[DataKey.location],
       coordinates: state.initialValues[DataKey.coordinates],
       splitOption: state.initialValues[DataKey.splitOption],
@@ -884,6 +948,7 @@ class Setting18ConfigureBloc
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
+      tappedSet: {},
       enableSubmission: false,
       editMode: false,
     ));

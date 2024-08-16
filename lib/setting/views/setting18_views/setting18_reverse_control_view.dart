@@ -5,6 +5,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_reverse_control/setting18_reverse_control_bloc.dart';
+import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
@@ -374,7 +375,10 @@ class _ReturnInputAttenuation2 extends StatelessWidget {
           errorText: state.usVCA1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.usVCA1),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.usVCA1),
+          ),
         );
       },
     );
@@ -410,7 +414,10 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
           errorText: state.usVCA3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.usVCA3),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.usVCA3),
+          ),
         );
       },
     );
@@ -446,7 +453,10 @@ class _ReturnInputAttenuation2And3 extends StatelessWidget {
           errorText: state.usVCA3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.usVCA3),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.usVCA3),
+          ),
         );
       },
     );
@@ -487,7 +497,10 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
             errorText: state.usVCA1.isNotValid
                 ? AppLocalizations.of(context)!.textFieldErrorMessage
                 : null,
-            tapColorEnabled: state.tappedSet.contains(DataKey.usVCA1),
+            color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.usVCA1),
+            ),
           );
         },
       );
@@ -516,7 +529,10 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
             errorText: state.usVCA4.isNotValid
                 ? AppLocalizations.of(context)!.textFieldErrorMessage
                 : null,
-            tapColorEnabled: state.tappedSet.contains(DataKey.usVCA4),
+            color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.usVCA4),
+            ),
           );
         },
       );
@@ -553,7 +569,10 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
           errorText: state.usVCA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.usVCA4),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.usVCA4),
+          ),
         );
       },
     );
@@ -589,7 +608,10 @@ class _ReturnOutputAttenuation1 extends StatelessWidget {
           errorText: state.usVCA2.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.usVCA2),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.usVCA2),
+          ),
         );
       },
     );
@@ -625,7 +647,10 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
           errorText: state.eREQ.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.eREQ),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.eREQ),
+          ),
         );
       },
     );

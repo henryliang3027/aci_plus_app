@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomStyle {
+  static const double sizeXS = 10.0;
   static const double sizeS = 12.0;
   static const double sizeM = 14.0;
   static const double sizeL = 16.0;

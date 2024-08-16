@@ -271,6 +271,7 @@ class Setting18GraphModuleBloc
       initialValues: characteristicDataCache,
       editMode: _editable,
       enableSubmission: false,
+      tappedSet: const {},
       settingResult: const [],
     ));
   }
@@ -285,10 +286,14 @@ class Setting18GraphModuleBloc
       maxValue: state.dsVVA1.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsVVA1);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       dsVVA1: dsVVA1,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: dsVVA1,
       ),
@@ -305,10 +310,14 @@ class Setting18GraphModuleBloc
       maxValue: state.dsVVA4.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsVVA4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       dsVVA4: dsVVA4,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsVVA4: dsVVA4,
       ),
@@ -325,10 +334,14 @@ class Setting18GraphModuleBloc
       maxValue: state.dsVVA5.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsVVA5);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       dsVVA5: dsVVA5,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsVVA5: dsVVA5,
       ),
@@ -345,10 +358,14 @@ class Setting18GraphModuleBloc
       maxValue: state.dsSlope1.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsSlope1);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       dsSlope1: dsSlope1,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsSlope1: dsSlope1,
       ),
@@ -365,10 +382,14 @@ class Setting18GraphModuleBloc
       maxValue: state.dsSlope3.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsSlope3);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       dsSlope3: dsSlope3,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsSlope3: dsSlope3,
       ),
@@ -385,10 +406,14 @@ class Setting18GraphModuleBloc
       maxValue: state.dsSlope4.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsSlope4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       dsSlope4: dsSlope4,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsSlope4: dsSlope4,
       ),
@@ -405,10 +430,14 @@ class Setting18GraphModuleBloc
       maxValue: state.usVCA1.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.usVCA1);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       usVCA1: usVCA1,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA1: usVCA1,
       ),
@@ -425,10 +454,14 @@ class Setting18GraphModuleBloc
       maxValue: state.usVCA2.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.usVCA2);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       usVCA2: usVCA2,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA2: usVCA2,
       ),
@@ -445,10 +478,14 @@ class Setting18GraphModuleBloc
       maxValue: state.usVCA3.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.usVCA3);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       usVCA3: usVCA3,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA3: usVCA3,
       ),
@@ -465,10 +502,14 @@ class Setting18GraphModuleBloc
       maxValue: state.usVCA4.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.usVCA4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       usVCA4: usVCA4,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA4: usVCA4,
       ),
@@ -485,10 +526,14 @@ class Setting18GraphModuleBloc
       maxValue: state.eREQ.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.eREQ);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       eREQ: eREQ,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         eREQ: eREQ,
       ),
@@ -499,10 +544,14 @@ class Setting18GraphModuleBloc
     RtnIngressSetting2Changed event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.ingressSetting2);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       returnIngressSetting2: event.returnIngressSetting2,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         returnIngressSetting2: event.returnIngressSetting2,
       ),
@@ -513,10 +562,14 @@ class Setting18GraphModuleBloc
     RtnIngressSetting3Changed event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.ingressSetting3);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       returnIngressSetting3: event.returnIngressSetting3,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         returnIngressSetting3: event.returnIngressSetting3,
       ),
@@ -527,10 +580,14 @@ class Setting18GraphModuleBloc
     RtnIngressSetting4Changed event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.ingressSetting4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       returnIngressSetting4: event.returnIngressSetting4,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         returnIngressSetting4: event.returnIngressSetting4,
       ),
@@ -592,10 +649,14 @@ class Setting18GraphModuleBloc
     SplitOptionChanged event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.splitOption);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       splitOption: event.splitOption,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         splitOption: event.splitOption,
       ),
@@ -606,10 +667,14 @@ class Setting18GraphModuleBloc
     PilotFrequencyModeChanged event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.pilotFrequencyMode);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       pilotFrequencyMode: event.pilotFrequencyMode,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         pilotFrequencyMode: event.pilotFrequencyMode,
       ),
@@ -627,10 +692,15 @@ class Setting18GraphModuleBloc
       currentDetectedSplitOption: event.currentDetectedSplitOption,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
     );
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.firstChannelLoadingFrequency);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: isValid &&
           _isEnabledSubmission(
             firstChannelLoadingFrequency: firstChannelLoadingFrequency,
@@ -644,10 +714,15 @@ class Setting18GraphModuleBloc
   ) {
     FloatPointInput firstChannelLoadingLevel =
         FloatPointInput.dirty(event.firstChannelLoadingLevel);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.firstChannelLoadingLevel);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       firstChannelLoadingLevel: firstChannelLoadingLevel,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         firstChannelLoadingLevel: firstChannelLoadingLevel,
       ),
@@ -660,10 +735,15 @@ class Setting18GraphModuleBloc
   ) {
     IntegerInput lastChannelLoadingFrequency =
         IntegerInput.dirty(event.lastChannelLoadingFrequency);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.lastChannelLoadingFrequency);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       ),
@@ -676,10 +756,15 @@ class Setting18GraphModuleBloc
   ) {
     FloatPointInput lastChannelLoadingLevel =
         FloatPointInput.dirty(event.lastChannelLoadingLevel);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.lastChannelLoadingLevel);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       lastChannelLoadingLevel: lastChannelLoadingLevel,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         lastChannelLoadingLevel: lastChannelLoadingLevel,
       ),
@@ -691,10 +776,15 @@ class Setting18GraphModuleBloc
     Emitter<Setting18GraphModuleState> emit,
   ) {
     IntegerInput pilotFrequency1 = IntegerInput.dirty(event.pilotFrequency1);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.pilotFrequency1);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       pilotFrequency1: pilotFrequency1,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         pilotFrequency1: pilotFrequency1,
       ),
@@ -706,10 +796,15 @@ class Setting18GraphModuleBloc
     Emitter<Setting18GraphModuleState> emit,
   ) {
     IntegerInput pilotFrequency2 = IntegerInput.dirty(event.pilotFrequency2);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.pilotFrequency2);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       pilotFrequency2: pilotFrequency2,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         pilotFrequency2: pilotFrequency2,
       ),
@@ -720,11 +815,15 @@ class Setting18GraphModuleBloc
     AGCModeChanged event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.agcMode);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       agcMode: event.agcMode,
       alcMode: event.agcMode,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         agcMode: event.agcMode,
         alcMode: event.agcMode,
@@ -736,10 +835,14 @@ class Setting18GraphModuleBloc
     ALCModeChanged event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.alcMode);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       agcMode: event.alcMode,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         alcMode: event.alcMode,
       ),
@@ -1088,6 +1191,7 @@ class Setting18GraphModuleBloc
       settingResult: settingResult,
       enableSubmission: false,
       isInitialize: true,
+      tappedSet: const {},
       initialValues: _amp18Repository.characteristicDataCache,
     ));
   }

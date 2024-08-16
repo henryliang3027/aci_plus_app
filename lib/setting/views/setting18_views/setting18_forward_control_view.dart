@@ -5,6 +5,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_forward_control/setting18_forward_control_bloc.dart';
+import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
@@ -394,7 +395,10 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
           errorText: state.dsVVA1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.dsVVA1),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.dsVVA1),
+          ),
         );
       },
     );
@@ -453,7 +457,10 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
           errorText: state.dsSlope1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.dsSlope1),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.dsSlope1),
+          ),
         );
       },
     );
@@ -489,7 +496,10 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
           errorText: state.dsSlope3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.dsSlope3),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.dsSlope3),
+          ),
         );
       },
     );
@@ -525,7 +535,10 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
           errorText: state.dsSlope4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.dsSlope4),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.dsSlope4),
+          ),
         );
       },
     );
@@ -561,7 +574,10 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
           errorText: state.dsVVA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.dsVVA4),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.dsVVA4),
+          ),
         );
       },
     );
@@ -597,7 +613,10 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
           errorText: state.dsVVA5.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.dsVVA5),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.dsVVA5),
+          ),
         );
       },
     );
@@ -633,7 +652,10 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
           errorText: state.dsVVA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.dsVVA4),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.dsVVA4),
+          ),
         );
       },
     );
@@ -669,7 +691,10 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
           errorText: state.dsVVA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.dsVVA4),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.dsVVA4),
+          ),
         );
       },
     );
@@ -705,7 +730,10 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
           errorText: state.dsVVA5.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.dsVVA5),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.dsVVA5),
+          ),
         );
       },
     );
@@ -741,7 +769,10 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
           errorText: state.dsSlope3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.dsSlope3),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.dsSlope3),
+          ),
         );
       },
     );
@@ -777,7 +808,10 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
           errorText: state.dsSlope3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.dsSlope3),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.dsSlope3),
+          ),
         );
       },
     );
@@ -813,7 +847,10 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
           errorText: state.dsSlope4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          tapColorEnabled: state.tappedSet.contains(DataKey.dsSlope4),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.dsSlope4),
+          ),
         );
       },
     );
