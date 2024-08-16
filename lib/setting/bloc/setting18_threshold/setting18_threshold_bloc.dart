@@ -183,6 +183,7 @@ class Setting18ThresholdBloc
       initialValues: characteristicDataCache,
       editMode: false,
       enableSubmission: false,
+      tappedSet: const {},
       settingResult: const [],
     ));
   }
@@ -191,13 +192,14 @@ class Setting18ThresholdBloc
     TemperatureAlarmChanged event,
     Emitter<Setting18ThresholdState> emit,
   ) {
-    // Set<String> tappedSet = Set.from(state.tappedSet);
-    // tappedSet.add()
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.temperatureAlarmState);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       temperatureAlarmState: event.temperatureAlarmState,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: event.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -228,10 +230,16 @@ class Setting18ThresholdBloc
   ) {
     FloatPointInput minTemperature =
         FloatPointInput.dirty(event.minTemperature);
+
+    // 用 DataKey.minTemperatureC 來代表 ºC 或 ºF 的單位下溫度 card 被 tap
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.minTemperatureC);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       minTemperature: minTemperature,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: minTemperature,
@@ -262,10 +270,16 @@ class Setting18ThresholdBloc
   ) {
     FloatPointInput maxTemperature =
         FloatPointInput.dirty(event.maxTemperature);
+
+    // 用 DataKey.maxTemperatureC 來代表 ºC 或 ºF 的單位下溫度 card 被 tap
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.maxTemperatureC);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       maxTemperature: maxTemperature,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -294,10 +308,14 @@ class Setting18ThresholdBloc
     VoltageAlarmChanged event,
     Emitter<Setting18ThresholdState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.voltageAlarmState);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       voltageAlarmState: event.voltageAlarmState,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -327,10 +345,15 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     FloatPointInput minVoltage = FloatPointInput.dirty(event.minVoltage);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.minVoltage);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       minVoltage: minVoltage,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -360,10 +383,15 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     FloatPointInput maxVoltage = FloatPointInput.dirty(event.maxVoltage);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.maxVoltage);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       maxVoltage: maxVoltage,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -392,10 +420,14 @@ class Setting18ThresholdBloc
     VoltageRippleAlarmChanged event,
     Emitter<Setting18ThresholdState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.voltageRippleAlarmState);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       voltageRippleAlarmState: event.voltageRippleAlarmState,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -425,10 +457,15 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     IntegerInput minVoltageRipple = IntegerInput.dirty(event.minVoltageRipple);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.minVoltageRipple);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       minVoltageRipple: minVoltageRipple,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -458,10 +495,15 @@ class Setting18ThresholdBloc
     Emitter<Setting18ThresholdState> emit,
   ) {
     IntegerInput maxVoltageRipple = IntegerInput.dirty(event.maxVoltageRipple);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.maxVoltageRipple);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       maxVoltageRipple: maxVoltageRipple,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -490,10 +532,14 @@ class Setting18ThresholdBloc
     RFOutputPowerAlarmChanged event,
     Emitter<Setting18ThresholdState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.rfOutputPowerAlarmState);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       rfOutputPowerAlarmState: event.rfOutputPowerAlarmState,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -524,10 +570,15 @@ class Setting18ThresholdBloc
   ) {
     FloatPointInput minRFOutputPower =
         FloatPointInput.dirty(event.minRFOutputPower);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.minRFOutputPower);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       minRFOutputPower: minRFOutputPower,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -558,10 +609,15 @@ class Setting18ThresholdBloc
   ) {
     FloatPointInput maxRFOutputPower =
         FloatPointInput.dirty(event.maxRFOutputPower);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.maxRFOutputPower);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       maxRFOutputPower: maxRFOutputPower,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -590,10 +646,14 @@ class Setting18ThresholdBloc
     SplitOptionAlarmChanged event,
     Emitter<Setting18ThresholdState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.splitOptionAlarmState);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       splitOptionAlarmState: event.splitOptionAlarmState,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -686,11 +746,15 @@ class Setting18ThresholdBloc
     StartFrequencyOutputLevelAlarmStateChanged event,
     Emitter<Setting18ThresholdState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.rfOutputPilotLowFrequencyAlarmState);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       startFrequencyOutputLevelAlarmState:
           event.startFrequencyOutputLevelAlarmState,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -719,11 +783,15 @@ class Setting18ThresholdBloc
     StopFrequencyOutputLevelAlarmStateChanged event,
     Emitter<Setting18ThresholdState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.rfOutputPilotHighFrequencyAlarmState);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       stopFrequencyOutputLevelAlarmState:
           event.stopFrequencyOutputLevelAlarmState,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -800,6 +868,7 @@ class Setting18ThresholdBloc
       isInitialize: true,
       editMode: false,
       enableSubmission: false,
+      tappedSet: const {},
       temperatureAlarmState: _stringNumberToBool(strTemperatureAlarmState),
       minTemperature: FloatPointInput.dirty(
         getMinTemperature(
@@ -1199,6 +1268,7 @@ class Setting18ThresholdBloc
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
+      tappedSet: const {},
       enableSubmission: false,
       editMode: false,
     ));

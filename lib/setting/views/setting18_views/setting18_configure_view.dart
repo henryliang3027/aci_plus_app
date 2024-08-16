@@ -6,6 +6,7 @@ import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_configure/setting18_configure_bloc.dart';
+import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
@@ -383,6 +384,10 @@ class _Location extends StatelessWidget {
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
         return Card(
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.location),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(CustomStyle.sizeXL),
             child: Column(
@@ -451,6 +456,10 @@ class _Coordinates extends StatelessWidget {
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
       builder: (context, state) {
         return Card(
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.coordinates),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(CustomStyle.sizeXL),
             child: Column(
@@ -572,6 +581,10 @@ class _SplitOption extends StatelessWidget {
           onGridPressed: (index) => context
               .read<Setting18ConfigureBloc>()
               .add(SplitOptionChanged(splitOptionValues[index])),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.splitOption),
+          ),
         );
       },
     );
@@ -604,6 +617,10 @@ class _PilotFrequencyMode extends StatelessWidget {
           onGridPressed: (index) => context
               .read<Setting18ConfigureBloc>()
               .add(PilotFrequencyModeChanged(pilotFrequencyModeValues[index])),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.pilotFrequencyMode),
+          ),
         );
       },
     );
@@ -659,6 +676,12 @@ class _FirstChannelLoading extends StatelessWidget {
           errorText2: state.firstChannelLoadingLevel.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet
+                    .contains(DataKey.firstChannelLoadingFrequency) ||
+                state.tappedSet.contains(DataKey.firstChannelLoadingLevel),
+          ),
         );
       },
     );
@@ -706,6 +729,12 @@ class _LastChannelLoading extends StatelessWidget {
           errorText2: state.lastChannelLoadingLevel.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+            context: context,
+            isTap:
+                state.tappedSet.contains(DataKey.lastChannelLoadingFrequency) ||
+                    state.tappedSet.contains(DataKey.lastChannelLoadingLevel),
+          ),
         );
       },
     );
@@ -747,6 +776,10 @@ class _PilotFrequency1 extends StatelessWidget {
           errorText1: state.pilotFrequency1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.pilotFrequency1),
+          ),
         );
       },
     );
@@ -788,6 +821,10 @@ class _PilotFrequency2 extends StatelessWidget {
           errorText1: state.pilotFrequency2.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.pilotFrequency2),
+          ),
         );
       },
     );
@@ -802,19 +839,6 @@ class _AGCMode extends StatelessWidget {
     '0',
   ];
 
-  List<bool> getSelectionState(String selectedFwdAGCMode) {
-    Map<String, bool> fwdAGCModeMap = {
-      '1': false,
-      '0': false,
-    };
-
-    if (fwdAGCModeMap.containsKey(selectedFwdAGCMode)) {
-      fwdAGCModeMap[selectedFwdAGCMode] = true;
-    }
-
-    return fwdAGCModeMap.values.toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigureBloc, Setting18ConfigureState>(
@@ -822,73 +846,97 @@ class _AGCMode extends StatelessWidget {
           previous.agcMode != current.agcMode ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return Card(
-          child: Padding(
-            padding: const EdgeInsets.all(CustomStyle.sizeXL),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: CustomStyle.sizeL,
-                  ),
-                  child: Text(
-                    '${AppLocalizations.of(context)!.agcMode}:',
-                    style: const TextStyle(
-                      fontSize: CustomStyle.sizeXL,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: CustomStyle.sizeXS,
-                  ),
-                  child: LayoutBuilder(
-                    builder: (context, constraints) => ToggleButtons(
-                      direction: Axis.horizontal,
-                      onPressed: (int index) {
-                        if (state.editMode) {
-                          context
-                              .read<Setting18ConfigureBloc>()
-                              .add(AGCModeChanged(fwdAGCModeValues[index]));
-                        }
-                      },
-                      textStyle: const TextStyle(fontSize: 18.0),
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      selectedBorderColor: state.editMode
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context)
-                              .colorScheme
-                              .inversePrimary, // indigo border color
-                      selectedColor: Theme.of(context)
-                          .colorScheme
-                          .onPrimary, // white text color
-
-                      fillColor: state.editMode
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context)
-                              .colorScheme
-                              .inversePrimary, // selected
-                      color: Theme.of(context)
-                          .colorScheme
-                          .secondary, // not selected
-                      constraints: BoxConstraints.expand(
-                        width: (constraints.maxWidth - 4) /
-                            fwdAGCModeValues.length,
-                      ),
-                      isSelected: getSelectionState(state.agcMode),
-                      children: <Widget>[
-                        Text(AppLocalizations.of(context)!.on),
-                        Text(AppLocalizations.of(context)!.off),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.agcMode}:',
+          currentValue: state.agcMode,
+          onChanged: (int index) {
+            context
+                .read<Setting18ConfigureBloc>()
+                .add(AGCModeChanged(fwdAGCModeValues[index]));
+          },
+          values: fwdAGCModeValues,
+          texts: [
+            AppLocalizations.of(context)!.on,
+            AppLocalizations.of(context)!.off,
+          ],
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.agcMode),
           ),
         );
+        // Card(
+        //   color: getSettingListCardColor(
+        //     context: context,
+        //     isTap: state.tappedSet.contains(DataKey.agcMode),
+        //   ),
+        //   child: Padding(
+        //     padding: const EdgeInsets.all(CustomStyle.sizeXL),
+        //     child: Column(
+        //       crossAxisAlignment: CrossAxisAlignment.start,
+        //       children: [
+        //         Padding(
+        //           padding: const EdgeInsets.only(
+        //             bottom: CustomStyle.sizeL,
+        //           ),
+        //           child: Text(
+        //             '${AppLocalizations.of(context)!.agcMode}:',
+        //             style: const TextStyle(
+        //               fontSize: CustomStyle.sizeXL,
+        //               fontWeight: FontWeight.w500,
+        //             ),
+        //           ),
+        //         ),
+        //         Padding(
+        //           padding: const EdgeInsets.only(
+        //             bottom: CustomStyle.sizeXS,
+        //           ),
+        //           child: LayoutBuilder(
+        //             builder: (context, constraints) => ToggleButtons(
+        //               direction: Axis.horizontal,
+        //               onPressed: (int index) {
+        //                 if (state.editMode) {
+        //                   context
+        //                       .read<Setting18ConfigureBloc>()
+        //                       .add(AGCModeChanged(fwdAGCModeValues[index]));
+        //                 }
+        //               },
+        //               textStyle: const TextStyle(fontSize: 18.0),
+        //               borderRadius: const BorderRadius.all(Radius.circular(8)),
+        //               selectedBorderColor: state.editMode
+        //                   ? Theme.of(context).colorScheme.primary
+        //                   : Theme.of(context)
+        //                       .colorScheme
+        //                       .inversePrimary, // indigo border color
+        //               selectedColor: Theme.of(context)
+        //                   .colorScheme
+        //                   .onPrimary, // white text color
+
+        //               fillColor: state.editMode
+        //                   ? Theme.of(context).colorScheme.primary
+        //                   : Theme.of(context)
+        //                       .colorScheme
+        //                       .inversePrimary, // selected
+        //               color: Theme.of(context)
+        //                   .colorScheme
+        //                   .secondary, // not selected
+        //               constraints: BoxConstraints.expand(
+        //                 width: (constraints.maxWidth - 4) /
+        //                     fwdAGCModeValues.length,
+        //               ),
+        //               isSelected: getSelectionState(state.agcMode),
+        //               children: <Widget>[
+        //                 Text(AppLocalizations.of(context)!.on),
+        //                 Text(AppLocalizations.of(context)!.off),
+        //               ],
+        //             ),
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // );
       },
     );
   }
@@ -1012,6 +1060,10 @@ class _LogInterval extends StatelessWidget {
                 .read<Setting18ConfigureBloc>()
                 .add(LogIntervalChanged(logInterval.toStringAsFixed(0)));
           },
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.logInterval),
+          ),
         );
       },
     );
@@ -1041,6 +1093,10 @@ class _RFOutputLogInterval extends StatelessWidget {
                 RFOutputLogIntervalChanged(
                     rfOutputLogInterval.toStringAsFixed(0)));
           },
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.rfOutputLogInterval),
+          ),
         );
       },
     );

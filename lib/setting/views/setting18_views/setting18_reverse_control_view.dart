@@ -692,7 +692,10 @@ class _ReturnIngressSetting2 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
-          tapColorEnabled: state.tappedSet.contains(DataKey.ingressSetting2),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.ingressSetting2),
+          ),
         );
       },
     );
@@ -727,7 +730,10 @@ class _ReturnIngressSetting3 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
-          tapColorEnabled: state.tappedSet.contains(DataKey.ingressSetting3),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.ingressSetting3),
+          ),
         );
       },
     );
@@ -767,7 +773,10 @@ class _ReturnIngressSetting4 extends StatelessWidget {
               '-6dB',
               AppLocalizations.of(context)!.ingressOpen,
             ],
-            tapColorEnabled: state.tappedSet.contains(DataKey.ingressSetting2),
+            color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.ingressSetting2),
+            ),
           );
         },
       );
@@ -795,7 +804,10 @@ class _ReturnIngressSetting4 extends StatelessWidget {
               '-6dB',
               AppLocalizations.of(context)!.ingressOpen,
             ],
-            tapColorEnabled: state.tappedSet.contains(DataKey.ingressSetting4),
+            color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.ingressSetting4),
+            ),
           );
         },
       );
@@ -831,7 +843,10 @@ class _ReturnIngressSetting2And3 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
-          tapColorEnabled: state.tappedSet.contains(DataKey.ingressSetting3),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.ingressSetting3),
+          ),
         );
       },
     );
@@ -866,7 +881,10 @@ class _ReturnIngressSetting5And6 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
-          tapColorEnabled: state.tappedSet.contains(DataKey.ingressSetting4),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.ingressSetting4),
+          ),
         );
       },
     );

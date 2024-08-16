@@ -6,6 +6,7 @@ import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_threshold/setting18_threshold_bloc.dart';
+import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
@@ -264,7 +265,7 @@ class Setting18ThresholdView extends StatelessWidget {
               : Container(),
           ...forwardSettings,
           const SizedBox(
-            height: 120,
+            height: 160,
           ),
         ],
       );
@@ -304,12 +305,7 @@ class Setting18ThresholdView extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(
-                CustomStyle.sizeXL,
-              ),
-              child: buildThresholdWidget(partId),
-            ),
+            child: buildThresholdWidget(partId),
           ),
         ),
         floatingActionButton: _SettingFloatingActionButton(
@@ -329,7 +325,7 @@ class _ClusterTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
+      padding: const EdgeInsets.fromLTRB(10, 30.0, 10, 10.0),
       child: Row(
         children: [
           Expanded(
@@ -404,6 +400,11 @@ class _TemperatureAlarmControl extends StatelessWidget {
           maxValueErrorText: state.maxTemperature.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.temperatureAlarmState) ||
+                  state.tappedSet.contains(DataKey.minTemperatureC) ||
+                  state.tappedSet.contains(DataKey.maxTemperatureC)),
         );
       },
     );
@@ -458,6 +459,11 @@ class _VoltageAlarmControl extends StatelessWidget {
           maxValueErrorText: state.maxVoltage.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.voltageAlarmState) ||
+                  state.tappedSet.contains(DataKey.minVoltage) ||
+                  state.tappedSet.contains(DataKey.maxVoltage)),
         );
       },
     );
@@ -476,141 +482,151 @@ class _VoltageRippleAlarmControl extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ThresholdBloc, Setting18ThresholdState>(
       builder: (context, state) {
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: CustomStyle.sizeL,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    flex: 3,
-                    child: Text(
-                      '${AppLocalizations.of(context)!.voltageRipple} (${CustomStyle.milliVolt})',
-                      style: const TextStyle(
-                        fontSize: CustomStyle.sizeXL,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: Switch(
-                      thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
-                        (Set<WidgetState> states) {
-                          if (states.contains(WidgetState.selected)) {
-                            return const Icon(Icons.check);
-                          }
-                          return const Icon(Icons.close);
-                        },
-                      ),
-                      value: state.voltageRippleAlarmState,
-                      onChanged: state.editMode
-                          ? (bool value) {
-                              context
-                                  .read<Setting18ThresholdBloc>()
-                                  .add(VoltageRippleAlarmChanged(value));
-                            }
-                          : null,
-                    ),
-                  ),
-                ],
-              ),
+        return Card(
+          color: getSettingListCardColor(
+              context: context,
+              isTap:
+                  state.tappedSet.contains(DataKey.voltageRippleAlarmState) ||
+                      state.tappedSet.contains(DataKey.maxVoltageRipple)),
+          child: Padding(
+            padding: const EdgeInsets.all(
+              CustomStyle.sizeXL,
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: CustomStyle.sizeL,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Flexible(
-                  //   flex: 2,
-                  //   child: TextField(
-                  //     controller: minVoltageRippleTextEditingController,
-                  //     key: const Key(
-                  //         'setting18Form_minVoltageRippleInput_textField'),
-                  //     style: const TextStyle(
-                  //       fontSize: CustomStyle.sizeXL,
-                  //     ),
-                  //     enabled: state.editMode,
-                  //     textInputAction: TextInputAction.done,
-                  //     onChanged: (minVoltageRipple) {
-                  //       context
-                  //           .read<Setting18ThresholdBloc>()
-                  //           .add(MinVoltageRippleChanged(minVoltageRipple));
-                  //     },
-                  //     maxLength: 40,
-                  //     decoration: InputDecoration(
-                  //       label: Text(
-                  //           AppLocalizations.of(context)!.minVoltageRipple),
-                  //       border: const OutlineInputBorder(
-                  //           borderRadius:
-                  //               BorderRadius.all(Radius.circular(4.0))),
-                  //       contentPadding: EdgeInsets.all(8.0),
-                  //       isDense: true,
-                  //       filled: true,
-                  //       fillColor: Colors.white,
-                  //       counterText: '',
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   width: 20,
-                  // ),
-                  Flexible(
-                    flex: 2,
-                    child: TextField(
-                      controller: maxVoltageRippleTextEditingController,
-                      key: const Key(
-                          'setting18Form_maxVoltageRippleInput_textField'),
-                      style: const TextStyle(
-                        fontSize: CustomStyle.sizeXL,
-                      ),
-                      enabled: state.editMode,
-                      textInputAction: TextInputAction.done,
-                      keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true,
-                        signed: true,
-                      ),
-                      onChanged: (maxVoltageRipple) {
-                        context
-                            .read<Setting18ThresholdBloc>()
-                            .add(MaxVoltageRippleChanged(maxVoltageRipple));
-                      },
-                      maxLength: 40,
-                      decoration: InputDecoration(
-                        label: Text(
-                            AppLocalizations.of(context)!.maxVoltageRipple),
-                        border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0))),
-                        contentPadding: const EdgeInsets.all(8.0),
-                        isDense: true,
-                        filled: true,
-                        fillColor:
-                            Theme.of(context).colorScheme.secondaryContainer,
-                        counterText: '',
-                        errorMaxLines: 2,
-                        errorStyle:
-                            const TextStyle(fontSize: CustomStyle.sizeS),
-                        errorText: state.editMode
-                            ? state.maxVoltageRipple.isNotValid
-                                ? AppLocalizations.of(context)!
-                                    .textFieldErrorMessage
-                                : null
-                            : null,
-                      ),
-                    ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeL,
                   ),
-                ],
-              ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        flex: 3,
+                        child: Text(
+                          '${AppLocalizations.of(context)!.voltageRipple} (${CustomStyle.milliVolt})',
+                          style: const TextStyle(
+                            fontSize: CustomStyle.sizeXL,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        child: Switch(
+                          thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
+                            (Set<WidgetState> states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return const Icon(Icons.check);
+                              }
+                              return const Icon(Icons.close);
+                            },
+                          ),
+                          value: state.voltageRippleAlarmState,
+                          onChanged: state.editMode
+                              ? (bool value) {
+                                  context
+                                      .read<Setting18ThresholdBloc>()
+                                      .add(VoltageRippleAlarmChanged(value));
+                                }
+                              : null,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeL,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Flexible(
+                      //   flex: 2,
+                      //   child: TextField(
+                      //     controller: minVoltageRippleTextEditingController,
+                      //     key: const Key(
+                      //         'setting18Form_minVoltageRippleInput_textField'),
+                      //     style: const TextStyle(
+                      //       fontSize: CustomStyle.sizeXL,
+                      //     ),
+                      //     enabled: state.editMode,
+                      //     textInputAction: TextInputAction.done,
+                      //     onChanged: (minVoltageRipple) {
+                      //       context
+                      //           .read<Setting18ThresholdBloc>()
+                      //           .add(MinVoltageRippleChanged(minVoltageRipple));
+                      //     },
+                      //     maxLength: 40,
+                      //     decoration: InputDecoration(
+                      //       label: Text(
+                      //           AppLocalizations.of(context)!.minVoltageRipple),
+                      //       border: const OutlineInputBorder(
+                      //           borderRadius:
+                      //               BorderRadius.all(Radius.circular(4.0))),
+                      //       contentPadding: EdgeInsets.all(8.0),
+                      //       isDense: true,
+                      //       filled: true,
+                      //       fillColor: Colors.white,
+                      //       counterText: '',
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(
+                      //   width: 20,
+                      // ),
+                      Flexible(
+                        flex: 2,
+                        child: TextField(
+                          controller: maxVoltageRippleTextEditingController,
+                          key: const Key(
+                              'setting18Form_maxVoltageRippleInput_textField'),
+                          style: const TextStyle(
+                            fontSize: CustomStyle.sizeXL,
+                          ),
+                          enabled: state.editMode,
+                          textInputAction: TextInputAction.done,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                            signed: true,
+                          ),
+                          onChanged: (maxVoltageRipple) {
+                            context
+                                .read<Setting18ThresholdBloc>()
+                                .add(MaxVoltageRippleChanged(maxVoltageRipple));
+                          },
+                          maxLength: 40,
+                          decoration: InputDecoration(
+                            label: Text(
+                                AppLocalizations.of(context)!.maxVoltageRipple),
+                            border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4.0))),
+                            contentPadding: const EdgeInsets.all(8.0),
+                            isDense: true,
+                            filled: true,
+                            fillColor: Theme.of(context)
+                                .colorScheme
+                                .secondaryContainer,
+                            counterText: '',
+                            errorMaxLines: 2,
+                            errorStyle:
+                                const TextStyle(fontSize: CustomStyle.sizeS),
+                            errorText: state.editMode
+                                ? state.maxVoltageRipple.isNotValid
+                                    ? AppLocalizations.of(context)!
+                                        .textFieldErrorMessage
+                                    : null
+                                : null,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
-          ],
+          ),
         );
       },
     );
@@ -665,6 +681,12 @@ class _RFOutputPowerAlarmControl extends StatelessWidget {
           maxValueErrorText: state.maxRFOutputPower.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap:
+                  state.tappedSet.contains(DataKey.rfOutputPowerAlarmState) ||
+                      state.tappedSet.contains(DataKey.minRFOutputPower) ||
+                      state.tappedSet.contains(DataKey.maxRFOutputPower)),
         );
       },
     );
@@ -688,6 +710,9 @@ class _SplitOptionAlarmControl extends StatelessWidget {
                 .read<Setting18ThresholdBloc>()
                 .add(SplitOptionAlarmChanged(value));
           },
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.splitOptionAlarmState)),
         );
       },
     );
@@ -757,6 +782,10 @@ class _StartFrequencyOutputLevelAlarmControl extends StatelessWidget {
                 .read<Setting18ThresholdBloc>()
                 .add(StartFrequencyOutputLevelAlarmStateChanged(value));
           },
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet
+                  .contains(DataKey.rfOutputPilotLowFrequencyAlarmState)),
         );
       },
     );
@@ -780,6 +809,10 @@ class _StopFrequencyOutputLevelAlarmControl extends StatelessWidget {
                 .read<Setting18ThresholdBloc>()
                 .add(StopFrequencyOutputLevelAlarmStateChanged(value));
           },
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet
+                  .contains(DataKey.rfOutputPilotHighFrequencyAlarmState)),
         );
       },
     );
