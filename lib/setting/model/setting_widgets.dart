@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:flutter/material.dart';
@@ -791,46 +793,48 @@ Widget configurationIntervalSlider({
   required double maxValue,
   required int interval,
   required ValueChanged<double> onChanged,
+  Color? color,
 }) {
-  return Padding(
-    padding: const EdgeInsets.only(
-      bottom: 30.0,
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: CustomStyle.sizeL,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  '$title: $currentValue ${AppLocalizations.of(context)!.minute}',
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.w500,
+  return Card(
+    color: color,
+    child: Padding(
+      padding: const EdgeInsets.all(CustomStyle.sizeXL),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: CustomStyle.sizeL,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    '$title: $currentValue ${AppLocalizations.of(context)!.minute}',
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        FineTuneSlider(
-          initialValue: _getBondaryValue(
-            value: currentValue,
+          FineTuneSlider(
+            initialValue: _getBondaryValue(
+              value: currentValue,
+              minValue: minValue,
+              maxValue: maxValue,
+            ),
             minValue: minValue,
             maxValue: maxValue,
-          ),
-          minValue: minValue,
-          maxValue: maxValue,
-          interval: interval,
-          step: interval,
-          enabled: editMode,
-          onChanged: onChanged,
-        )
-      ],
+            interval: interval,
+            step: interval,
+            enabled: editMode,
+            onChanged: onChanged,
+          )
+        ],
+      ),
     ),
   );
 }
@@ -905,11 +909,13 @@ Widget controlTextSlider2({
   int textPrecision = 1,
   double step = 0.5,
   String subTitle = '',
-  bool tapColorEnabled = false,
+  double elevation = 1.0,
+  Color? color,
 }) {
   // textEditingController.text = currentValue;
   return Card(
-    color: tapColorEnabled ? Theme.of(context).cardColor : null,
+    elevation: elevation,
+    color: color,
     child: Padding(
       padding: const EdgeInsets.all(CustomStyle.sizeXL),
       child: Column(
@@ -1049,110 +1055,118 @@ Widget twoTextField({
   bool reaOnly2 = false,
   String? errorText1,
   String? errorText2,
+  double elevation = 1.0,
+  Color? color,
 }) {
-  return Column(
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(
-          bottom: CustomStyle.sizeL,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+  return Card(
+    elevation: elevation,
+    color: color,
+    child: Padding(
+      padding: const EdgeInsets.all(CustomStyle.sizeXL),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: CustomStyle.sizeL,
             ),
-          ],
-        ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: CustomStyle.sizeXS,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  flex: 2,
+                  child: TextField(
+                    controller: textEditingController1,
+                    key: Key(textEditingControllerName1),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                    ),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    enabled: editMode1,
+                    readOnly: reaOnly1,
+                    textInputAction: TextInputAction.done,
+                    onChanged: onChanged1,
+                    maxLength: 40,
+                    decoration: InputDecoration(
+                      label: Text(
+                          '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: const EdgeInsets.all(8.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor:
+                          Theme.of(context).colorScheme.secondaryContainer,
+                      counterText: '',
+                      errorMaxLines: 2,
+                      errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
+                      errorText: editMode1 ? errorText1 : null,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Flexible(
+                  flex: 2,
+                  child: TextField(
+                    controller: textEditingController2,
+                    key: Key(textEditingControllerName2),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                    ),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    enabled: editMode2,
+                    readOnly: reaOnly2,
+                    textInputAction: TextInputAction.done,
+                    onChanged: onChanged2,
+                    maxLength: 40,
+                    decoration: InputDecoration(
+                      label: Text(
+                          '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})'),
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: const EdgeInsets.all(8.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor:
+                          Theme.of(context).colorScheme.secondaryContainer,
+                      counterText: '',
+                      errorMaxLines: 2,
+                      errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
+                      errorText: editMode2 ? errorText2 : null,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
-      Padding(
-        padding: const EdgeInsets.only(
-          bottom: CustomStyle.sizeL,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Flexible(
-              flex: 2,
-              child: TextField(
-                controller: textEditingController1,
-                key: Key(textEditingControllerName1),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                ),
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                enabled: editMode1,
-                readOnly: reaOnly1,
-                textInputAction: TextInputAction.done,
-                onChanged: onChanged1,
-                maxLength: 40,
-                decoration: InputDecoration(
-                  label: Text(
-                      '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: const EdgeInsets.all(8.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
-                  counterText: '',
-                  errorMaxLines: 2,
-                  errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
-                  errorText: editMode1 ? errorText1 : null,
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            Flexible(
-              flex: 2,
-              child: TextField(
-                controller: textEditingController2,
-                key: Key(textEditingControllerName2),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                ),
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                enabled: editMode2,
-                readOnly: reaOnly2,
-                textInputAction: TextInputAction.done,
-                onChanged: onChanged2,
-                maxLength: 40,
-                decoration: InputDecoration(
-                  label: Text(
-                      '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})'),
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: const EdgeInsets.all(8.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
-                  counterText: '',
-                  errorMaxLines: 2,
-                  errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
-                  errorText: editMode2 ? errorText2 : null,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-    ],
+    ),
   );
 }
 
@@ -1255,93 +1269,96 @@ Widget splitOptionGridViewButton({
   required String splitOption,
   required ValueChanged onGridPressed,
 }) {
-  return Padding(
-    padding: const EdgeInsets.only(
-      bottom: 40.0,
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: CustomStyle.sizeL,
-          ),
-          child: Text(
-            '${AppLocalizations.of(context)!.splitOption}:',
-            style: const TextStyle(
-              fontSize: CustomStyle.sizeXL,
-              fontWeight: FontWeight.w500,
+  return Card(
+    child: Padding(
+      padding: const EdgeInsets.all(CustomStyle.sizeXL),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: CustomStyle.sizeL,
+            ),
+            child: Text(
+              '${AppLocalizations.of(context)!.splitOption}:',
+              style: const TextStyle(
+                fontSize: CustomStyle.sizeXL,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
-        ),
-        GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: MediaQuery.of(context).size.width / 110,
-          ),
-          itemCount: splitOptionValues.length,
-          itemBuilder: (BuildContext itemContext, int index) {
-            return Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  elevation: 0.0,
-                  foregroundColor: getForegroundColor(
-                    context: context,
-                    targetValue: splitOption,
-                    value: splitOptionValues[index],
-                  ),
-                  disabledBackgroundColor: getDisabledBackgroundColor(
-                    context: context,
-                    targetValue: splitOption,
-                    value: splitOptionValues[index],
-                  ),
-                  backgroundColor: editMode
-                      ? getBackgroundColor(
-                          context: context,
-                          targetValue: splitOption,
-                          value: splitOptionValues[index],
-                        )
-                      : getDisabledBackgroundColor(
-                          context: context,
-                          targetValue: splitOption,
-                          value: splitOptionValues[index],
-                        ),
-                  side: BorderSide(
-                    color: editMode
-                        ? getBorderColor(
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: CustomStyle.sizeXS,
+            ),
+            child: GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 6.0,
+                childAspectRatio: MediaQuery.of(context).size.width / 110,
+              ),
+              itemCount: splitOptionValues.length,
+              itemBuilder: (BuildContext itemContext, int index) {
+                return ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    elevation: 0.0,
+                    foregroundColor: getForegroundColor(
+                      context: context,
+                      targetValue: splitOption,
+                      value: splitOptionValues[index],
+                    ),
+                    disabledBackgroundColor: getDisabledBackgroundColor(
+                      context: context,
+                      targetValue: splitOption,
+                      value: splitOptionValues[index],
+                    ),
+                    backgroundColor: editMode
+                        ? getBackgroundColor(
                             context: context,
                             targetValue: splitOption,
                             value: splitOptionValues[index],
                           )
-                        : getDisabledBorderColor(),
-                    width: 1.0,
+                        : getDisabledBackgroundColor(
+                            context: context,
+                            targetValue: splitOption,
+                            value: splitOptionValues[index],
+                          ),
+                    side: BorderSide(
+                      color: editMode
+                          ? getBorderColor(
+                              context: context,
+                              targetValue: splitOption,
+                              value: splitOptionValues[index],
+                            )
+                          : getDisabledBorderColor(),
+                      width: 1.0,
+                    ),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
                   ),
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                ),
-                onPressed: editMode
-                    ? () {
-                        if (index == 0) {
-                          onGridPressed(index);
+                  onPressed: editMode
+                      ? () {
+                          if (index == 0) {
+                            onGridPressed(index);
+                          }
                         }
-                      }
-                    : () {},
-                child: Text(
-                  '${splitBaseLine[splitOptionValues[index]]!.$1}/${splitBaseLine[splitOptionValues[index]]!.$2} ${CustomStyle.mHz}',
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.normal,
+                      : () {},
+                  child: Text(
+                    '${splitBaseLine[splitOptionValues[index]]!.$1}/${splitBaseLine[splitOptionValues[index]]!.$2} ${CustomStyle.mHz}',
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
-                ),
-              ),
-            );
-          },
-        ),
-      ],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }
@@ -1355,86 +1372,93 @@ Widget pilotFrequencyModeGridViewButton({
   required String pilotFrequencyMode,
   required ValueChanged onGridPressed,
 }) {
-  return Padding(
-    padding: const EdgeInsets.only(
-      bottom: 40.0,
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: CustomStyle.sizeL,
-          ),
-          child: Text(
-            '${AppLocalizations.of(context)!.pilotFrequencySelect}:',
-            style: const TextStyle(
-              fontSize: CustomStyle.sizeXL,
-              fontWeight: FontWeight.w500,
+  return Card(
+    child: Padding(
+      padding: const EdgeInsets.all(CustomStyle.sizeXL),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: CustomStyle.sizeL,
+            ),
+            child: Text(
+              '${AppLocalizations.of(context)!.pilotFrequencySelect}:',
+              style: const TextStyle(
+                fontSize: CustomStyle.sizeXL,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
-        ),
-        GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
-            childAspectRatio: MediaQuery.of(context).size.width / 56,
-          ),
-          itemCount: values.length,
-          itemBuilder: (BuildContext itemContext, int index) {
-            return Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  // padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                  elevation: 0.0,
-                  foregroundColor: getForegroundColor(
-                    context: context,
-                    targetValue: pilotFrequencyMode,
-                    value: pilotFrequencyModeValues[index],
-                  ),
-                  backgroundColor: editMode
-                      ? getBackgroundColor(
-                          context: context,
-                          targetValue: pilotFrequencyMode,
-                          value: pilotFrequencyModeValues[index],
-                        )
-                      : getDisabledBackgroundColor(
-                          context: context,
-                          targetValue: pilotFrequencyMode,
-                          value: pilotFrequencyModeValues[index],
-                        ),
-                  side: BorderSide(
-                    color: editMode
-                        ? getBorderColor(
-                            context: context,
-                            targetValue: pilotFrequencyMode,
-                            value: pilotFrequencyModeValues[index],
-                          )
-                        : getDisabledBorderColor(),
-                    width: 1.0,
-                  ),
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                ),
-                onPressed: editMode
-                    ? () {
-                        onGridPressed(index);
-                      }
-                    : () {},
-                child: Text(
-                  texts[index],
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: CustomStyle.sizeXS,
+            ),
+            child: GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                mainAxisSpacing: 6.0,
+                childAspectRatio: MediaQuery.of(context).size.width / 56,
               ),
-            );
-          },
-        ),
-      ],
+              itemCount: values.length,
+              itemBuilder: (BuildContext itemContext, int index) {
+                return Padding(
+                  padding: const EdgeInsets.all(0.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      // padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                      elevation: 0.0,
+                      foregroundColor: getForegroundColor(
+                        context: context,
+                        targetValue: pilotFrequencyMode,
+                        value: pilotFrequencyModeValues[index],
+                      ),
+                      backgroundColor: editMode
+                          ? getBackgroundColor(
+                              context: context,
+                              targetValue: pilotFrequencyMode,
+                              value: pilotFrequencyModeValues[index],
+                            )
+                          : getDisabledBackgroundColor(
+                              context: context,
+                              targetValue: pilotFrequencyMode,
+                              value: pilotFrequencyModeValues[index],
+                            ),
+                      side: BorderSide(
+                        color: editMode
+                            ? getBorderColor(
+                                context: context,
+                                targetValue: pilotFrequencyMode,
+                                value: pilotFrequencyModeValues[index],
+                              )
+                            : getDisabledBorderColor(),
+                        width: 1.0,
+                      ),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0))),
+                    ),
+                    onPressed: editMode
+                        ? () {
+                            onGridPressed(index);
+                          }
+                        : () {},
+                    child: Text(
+                      texts[index],
+                      style: const TextStyle(
+                        fontSize: CustomStyle.sizeXL,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }

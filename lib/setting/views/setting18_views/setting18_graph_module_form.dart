@@ -378,6 +378,8 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
               errorText: state.dsVVA1.isNotValid
                   ? AppLocalizations.of(context)!.textFieldErrorMessage
                   : null,
+              elevation: 0.0,
+              color: Colors.transparent,
             ),
             Row(
               children: [
@@ -446,6 +448,8 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
               errorText: state.dsSlope1.isNotValid
                   ? AppLocalizations.of(context)!.textFieldErrorMessage
                   : null,
+              elevation: 0.0,
+              color: Colors.transparent,
             ),
             Row(
               children: [
@@ -490,6 +494,8 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
           errorText: state.dsSlope3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
@@ -521,6 +527,8 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
           errorText: state.dsSlope4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
@@ -552,6 +560,8 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
           errorText: state.dsVVA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
@@ -583,6 +593,8 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
           errorText: state.dsVVA5.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
@@ -614,6 +626,8 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
           errorText: state.dsVVA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
@@ -645,6 +659,8 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
           errorText: state.dsVVA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
@@ -676,6 +692,8 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
           errorText: state.dsVVA5.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
@@ -707,6 +725,8 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
           errorText: state.dsSlope3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
@@ -738,6 +758,8 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
           errorText: state.dsSlope3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
@@ -769,6 +791,8 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
           errorText: state.dsSlope4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
@@ -800,6 +824,8 @@ class _ReturnOutputAttenuation1 extends StatelessWidget {
           errorText: state.usVCA2.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
@@ -831,6 +857,8 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
           errorText: state.eREQ.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
@@ -862,6 +890,8 @@ class _ReturnInputAttenuation2 extends StatelessWidget {
           errorText: state.usVCA1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
@@ -893,6 +923,8 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
           errorText: state.usVCA3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
@@ -924,6 +956,8 @@ class _ReturnInputAttenuation2And3 extends StatelessWidget {
           errorText: state.usVCA3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
@@ -960,6 +994,8 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
             errorText: state.usVCA1.isNotValid
                 ? AppLocalizations.of(context)!.textFieldErrorMessage
                 : null,
+            elevation: 0.0,
+            color: Colors.transparent,
           );
         },
       );
@@ -984,6 +1020,8 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
             errorText: state.usVCA4.isNotValid
                 ? AppLocalizations.of(context)!.textFieldErrorMessage
                 : null,
+            elevation: 0.0,
+            color: Colors.transparent,
           );
         },
       );
@@ -1016,6 +1054,8 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
           errorText: state.usVCA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );
