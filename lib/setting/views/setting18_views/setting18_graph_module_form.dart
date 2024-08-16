@@ -378,8 +378,6 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
               errorText: state.dsVVA1.isNotValid
                   ? AppLocalizations.of(context)!.textFieldErrorMessage
                   : null,
-              elevation: 0.0,
-              color: Colors.transparent,
             ),
             Row(
               children: [
@@ -448,8 +446,6 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
               errorText: state.dsSlope1.isNotValid
                   ? AppLocalizations.of(context)!.textFieldErrorMessage
                   : null,
-              elevation: 0.0,
-              color: Colors.transparent,
             ),
             Row(
               children: [
@@ -494,8 +490,6 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
           errorText: state.dsSlope3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -527,8 +521,6 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
           errorText: state.dsSlope4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -560,8 +552,6 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
           errorText: state.dsVVA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -593,8 +583,6 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
           errorText: state.dsVVA5.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -626,8 +614,6 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
           errorText: state.dsVVA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -659,8 +645,6 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
           errorText: state.dsVVA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -692,8 +676,6 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
           errorText: state.dsVVA5.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -725,8 +707,6 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
           errorText: state.dsSlope3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -758,8 +738,6 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
           errorText: state.dsSlope3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -791,8 +769,6 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
           errorText: state.dsSlope4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -824,8 +800,6 @@ class _ReturnOutputAttenuation1 extends StatelessWidget {
           errorText: state.usVCA2.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -857,8 +831,6 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
           errorText: state.eREQ.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -890,8 +862,6 @@ class _ReturnInputAttenuation2 extends StatelessWidget {
           errorText: state.usVCA1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -923,8 +893,6 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
           errorText: state.usVCA3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -956,8 +924,6 @@ class _ReturnInputAttenuation2And3 extends StatelessWidget {
           errorText: state.usVCA3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -994,8 +960,6 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
             errorText: state.usVCA1.isNotValid
                 ? AppLocalizations.of(context)!.textFieldErrorMessage
                 : null,
-            elevation: 0.0,
-            color: Colors.transparent,
           );
         },
       );
@@ -1020,8 +984,6 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
             errorText: state.usVCA4.isNotValid
                 ? AppLocalizations.of(context)!.textFieldErrorMessage
                 : null,
-            elevation: 0.0,
-            color: Colors.transparent,
           );
         },
       );
@@ -1054,8 +1016,6 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
           errorText: state.usVCA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
-          elevation: 0.0,
-          color: Colors.transparent,
         );
       },
     );
@@ -1312,19 +1272,6 @@ class _AGCMode extends StatelessWidget {
     '0',
   ];
 
-  List<bool> getSelectionState(String selectedFwdAGCMode) {
-    Map<String, bool> fwdAGCModeMap = {
-      '1': false,
-      '0': false,
-    };
-
-    if (fwdAGCModeMap.containsKey(selectedFwdAGCMode)) {
-      fwdAGCModeMap[selectedFwdAGCMode] = true;
-    }
-
-    return fwdAGCModeMap.values.toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
@@ -1332,66 +1279,83 @@ class _AGCMode extends StatelessWidget {
           previous.agcMode != current.agcMode ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: CustomStyle.sizeL,
-                ),
-                child: Text(
-                  '${AppLocalizations.of(context)!.agcMode}:',
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              LayoutBuilder(
-                builder: (context, constraints) => ToggleButtons(
-                  direction: Axis.horizontal,
-                  onPressed: (int index) {
-                    if (state.editMode) {
-                      context
-                          .read<Setting18GraphModuleBloc>()
-                          .add(AGCModeChanged(fwdAGCModeValues[index]));
-                    }
-                  },
-                  textStyle: const TextStyle(fontSize: 18.0),
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  selectedBorderColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // indigo border color
-                  selectedColor: Theme.of(context)
-                      .colorScheme
-                      .onPrimary, // white text color
-
-                  fillColor: state.editMode
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context)
-                          .colorScheme
-                          .inversePrimary, // selected
-                  color:
-                      Theme.of(context).colorScheme.secondary, // not selected
-                  constraints: BoxConstraints.expand(
-                    width: (constraints.maxWidth - 4) / fwdAGCModeValues.length,
-                  ),
-                  isSelected: getSelectionState(state.agcMode),
-                  children: <Widget>[
-                    Text(AppLocalizations.of(context)!.on),
-                    Text(AppLocalizations.of(context)!.off),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        return controlToggleButton(
+          context: context,
+          editMode: state.editMode,
+          title: '${AppLocalizations.of(context)!.agcMode}:',
+          currentValue: state.agcMode,
+          onChanged: (int index) {
+            context
+                .read<Setting18GraphModuleBloc>()
+                .add(AGCModeChanged(fwdAGCModeValues[index]));
+          },
+          values: fwdAGCModeValues,
+          texts: [
+            AppLocalizations.of(context)!.on,
+            AppLocalizations.of(context)!.off,
+          ],
         );
+
+        // return Padding(
+        //   padding: const EdgeInsets.only(
+        //     bottom: 40.0,
+        //   ),
+        //   child: Column(
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     children: [
+        //       Padding(
+        //         padding: const EdgeInsets.only(
+        //           bottom: CustomStyle.sizeL,
+        //         ),
+        //         child: Text(
+        //           '${AppLocalizations.of(context)!.agcMode}:',
+        //           style: const TextStyle(
+        //             fontSize: CustomStyle.sizeXL,
+        //             fontWeight: FontWeight.w500,
+        //           ),
+        //         ),
+        //       ),
+        //       LayoutBuilder(
+        //         builder: (context, constraints) => ToggleButtons(
+        //           direction: Axis.horizontal,
+        //           onPressed: (int index) {
+        //             if (state.editMode) {
+        //               context
+        //                   .read<Setting18GraphModuleBloc>()
+        //                   .add(AGCModeChanged(fwdAGCModeValues[index]));
+        //             }
+        //           },
+        //           textStyle: const TextStyle(fontSize: 18.0),
+        //           borderRadius: const BorderRadius.all(Radius.circular(8)),
+        //           selectedBorderColor: state.editMode
+        //               ? Theme.of(context).colorScheme.primary
+        //               : Theme.of(context)
+        //                   .colorScheme
+        //                   .inversePrimary, // indigo border color
+        //           selectedColor: Theme.of(context)
+        //               .colorScheme
+        //               .onPrimary, // white text color
+
+        //           fillColor: state.editMode
+        //               ? Theme.of(context).colorScheme.primary
+        //               : Theme.of(context)
+        //                   .colorScheme
+        //                   .inversePrimary, // selected
+        //           color:
+        //               Theme.of(context).colorScheme.secondary, // not selected
+        //           constraints: BoxConstraints.expand(
+        //             width: (constraints.maxWidth - 4) / fwdAGCModeValues.length,
+        //           ),
+        //           isSelected: getSelectionState(state.agcMode),
+        //           children: <Widget>[
+        //             Text(AppLocalizations.of(context)!.on),
+        //             Text(AppLocalizations.of(context)!.off),
+        //           ],
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // );
       },
     );
   }
@@ -1532,6 +1496,7 @@ class _ReturnIngressSetting2 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          elevation: 0.0,
         );
       },
     );
@@ -1565,6 +1530,7 @@ class _ReturnIngressSetting3 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          elevation: 0.0,
         );
       },
     );
@@ -1603,6 +1569,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
               '-6dB',
               AppLocalizations.of(context)!.ingressOpen,
             ],
+            elevation: 0.0,
           );
         },
       );
@@ -1629,6 +1596,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
               '-6dB',
               AppLocalizations.of(context)!.ingressOpen,
             ],
+            elevation: 0.0,
           );
         },
       );
@@ -1663,6 +1631,7 @@ class _ReturnIngressSetting2And3 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          elevation: 0.0,
         );
       },
     );
@@ -1696,6 +1665,7 @@ class _ReturnIngressSetting5And6 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          elevation: 0.0,
         );
       },
     );

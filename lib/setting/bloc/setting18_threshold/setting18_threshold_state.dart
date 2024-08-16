@@ -53,7 +53,7 @@ class Setting18ThresholdState extends Equatable {
   final bool enableSubmission;
   final bool isInitialize;
   final Map<DataKey, String> initialValues;
-  final Set<String> tappedSet;
+  final Set<DataKey> tappedSet;
   final List<String> settingResult;
 
   Setting18ThresholdState copyWith({
@@ -80,7 +80,7 @@ class Setting18ThresholdState extends Equatable {
     bool? enableSubmission,
     bool? isInitialize,
     Map<DataKey, String>? initialValues,
-    Set<String>? tappedSet,
+    Set<DataKey>? tappedSet,
     List<String>? settingResult,
   }) {
     return Setting18ThresholdState(

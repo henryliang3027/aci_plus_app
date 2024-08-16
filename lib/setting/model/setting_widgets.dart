@@ -793,9 +793,11 @@ Widget configurationIntervalSlider({
   required double maxValue,
   required int interval,
   required ValueChanged<double> onChanged,
+  double elevation = 1.0,
   Color? color,
 }) {
   return Card(
+    elevation: elevation,
     color: color,
     child: Padding(
       padding: const EdgeInsets.all(CustomStyle.sizeXL),
@@ -971,7 +973,8 @@ Widget controlToggleButton({
   required ValueChanged<int> onChanged,
   required List<String> values,
   required List<String> texts,
-  bool tapColorEnabled = false,
+  double elevation = 1.0,
+  Color? color,
 }) {
   List<bool> getSelectionState(String selectedValue) {
     Map<String, bool> selectedValueMap = {};
@@ -987,7 +990,8 @@ Widget controlToggleButton({
   }
 
   return Card(
-    color: tapColorEnabled ? Theme.of(context).cardColor : null,
+    elevation: elevation,
+    color: color,
     child: Padding(
       padding: const EdgeInsets.all(CustomStyle.sizeXL),
       child: Column(
@@ -1268,8 +1272,12 @@ Widget splitOptionGridViewButton({
   required bool editMode,
   required String splitOption,
   required ValueChanged onGridPressed,
+  double elevation = 1.0,
+  Color? color,
 }) {
   return Card(
+    elevation: elevation,
+    color: color,
     child: Padding(
       padding: const EdgeInsets.all(CustomStyle.sizeXL),
       child: Column(
@@ -1371,8 +1379,12 @@ Widget pilotFrequencyModeGridViewButton({
   required bool editMode,
   required String pilotFrequencyMode,
   required ValueChanged onGridPressed,
+  double elevation = 1.0,
+  Color? color,
 }) {
   return Card(
+    elevation: elevation,
+    color: color,
     child: Padding(
       padding: const EdgeInsets.all(CustomStyle.sizeXL),
       child: Column(
@@ -1479,123 +1491,133 @@ Widget thresholdAlarmParameterWidget({
   required ValueChanged<String> onChangedMaxValue,
   String? minValueErrorText,
   String? maxValueErrorText,
+  double elevation = 1.0,
+  Color? color,
 }) {
-  return Column(
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(
-          bottom: CustomStyle.sizeL,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              flex: 3,
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            Flexible(
-              child: Switch(
-                thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
-                  (Set<WidgetState> states) {
-                    if (states.contains(WidgetState.selected)) {
-                      return const Icon(Icons.check);
-                    }
-                    return const Icon(Icons.close);
-                  },
-                ),
-                value: enabledAlarmState,
-                onChanged: editMode ? onChangedAlarmState : null,
-              ),
-            ),
-          ],
-        ),
+  return Card(
+    elevation: elevation,
+    color: color,
+    child: Padding(
+      padding: const EdgeInsets.all(
+        CustomStyle.sizeXL,
       ),
-      Padding(
-        padding: const EdgeInsets.only(
-          bottom: CustomStyle.sizeL,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Flexible(
-              flex: 2,
-              child: TextField(
-                controller: minValueTextEditingController,
-                key: Key(minValueTextEditingControllerName),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                ),
-                enabled: editMode,
-                textInputAction: TextInputAction.done,
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                  signed: true,
-                ),
-                onChanged: onChangedMinValue,
-                maxLength: 40,
-                decoration: InputDecoration(
-                  label: Text(minValueLabel),
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: const EdgeInsets.all(8.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
-                  counterText: '',
-                  errorMaxLines: 2,
-                  errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
-                  errorText: editMode ? minValueErrorText : null,
-                ),
-              ),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: CustomStyle.sizeL,
             ),
-            const SizedBox(
-              width: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 3,
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: Switch(
+                    thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
+                      (Set<WidgetState> states) {
+                        if (states.contains(WidgetState.selected)) {
+                          return const Icon(Icons.check);
+                        }
+                        return const Icon(Icons.close);
+                      },
+                    ),
+                    value: enabledAlarmState,
+                    onChanged: editMode ? onChangedAlarmState : null,
+                  ),
+                ),
+              ],
             ),
-            Flexible(
-              flex: 2,
-              child: TextField(
-                controller: maxValueTextEditingController,
-                key: Key(maxValueTextEditingControllerName),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                ),
-                enabled: editMode,
-                textInputAction: TextInputAction.done,
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                  signed: true,
-                ),
-                onChanged: onChangedMaxValue,
-                maxLength: 40,
-                decoration: InputDecoration(
-                  label: Text(maxValueLabel),
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: const EdgeInsets.all(8.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
-                  counterText: '',
-                  errorMaxLines: 2,
-                  errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
-                  errorText: editMode ? maxValueErrorText : null,
-                ),
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: CustomStyle.sizeL,
             ),
-          ],
-        ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  flex: 2,
+                  child: TextField(
+                    controller: minValueTextEditingController,
+                    key: Key(minValueTextEditingControllerName),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                    ),
+                    enabled: editMode,
+                    textInputAction: TextInputAction.done,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                      signed: true,
+                    ),
+                    onChanged: onChangedMinValue,
+                    maxLength: 40,
+                    decoration: InputDecoration(
+                      label: Text(minValueLabel),
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: const EdgeInsets.all(8.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor:
+                          Theme.of(context).colorScheme.secondaryContainer,
+                      counterText: '',
+                      errorMaxLines: 2,
+                      errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
+                      errorText: editMode ? minValueErrorText : null,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Flexible(
+                  flex: 2,
+                  child: TextField(
+                    controller: maxValueTextEditingController,
+                    key: Key(maxValueTextEditingControllerName),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                    ),
+                    enabled: editMode,
+                    textInputAction: TextInputAction.done,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                      signed: true,
+                    ),
+                    onChanged: onChangedMaxValue,
+                    maxLength: 40,
+                    decoration: InputDecoration(
+                      label: Text(maxValueLabel),
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: const EdgeInsets.all(8.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor:
+                          Theme.of(context).colorScheme.secondaryContainer,
+                      counterText: '',
+                      errorMaxLines: 2,
+                      errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
+                      errorText: editMode ? maxValueErrorText : null,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
-      const SizedBox(
-        height: 20,
-      ),
-    ],
+    ),
   );
 }
 
@@ -1605,40 +1627,46 @@ Widget thresholdAlarmSwitch({
   required String title,
   required bool value,
   required ValueChanged<bool> onChanged,
+  double elevation = 1.0,
+  Color? color,
 }) {
-  return Padding(
-    padding: const EdgeInsets.only(
-      bottom: CustomStyle.sizeL,
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Flexible(
-          flex: 4,
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: CustomStyle.sizeXL,
-              fontWeight: FontWeight.w500,
+  return Card(
+    elevation: elevation,
+    color: color,
+    child: Padding(
+      padding: const EdgeInsets.all(
+        CustomStyle.sizeXL,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            flex: 4,
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: CustomStyle.sizeXL,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
-        ),
-        Flexible(
-          child: Switch(
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
-              (Set<WidgetState> states) {
-                if (states.contains(WidgetState.selected)) {
-                  return const Icon(Icons.check);
-                }
-                return const Icon(Icons.close);
-              },
+          Flexible(
+            child: Switch(
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
+                (Set<WidgetState> states) {
+                  if (states.contains(WidgetState.selected)) {
+                    return const Icon(Icons.check);
+                  }
+                  return const Icon(Icons.close);
+                },
+              ),
+              value: value,
+              onChanged: editMode ? onChanged : null,
             ),
-            value: value,
-            onChanged: editMode ? onChanged : null,
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }
