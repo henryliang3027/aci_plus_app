@@ -6,6 +6,7 @@ import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_threshold/setting18_ccor_node_threshold_bloc.dart';
+import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
@@ -354,12 +355,7 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(
-                CustomStyle.sizeXL,
-              ),
-              child: buildThresholdWidget(partId),
-            ),
+            child: buildThresholdWidget(partId),
           ),
         ),
         floatingActionButton: _SettingFloatingActionButton(
@@ -455,6 +451,12 @@ class _TemperatureAlarmControl extends StatelessWidget {
           maxValueErrorText: state.maxTemperature.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.temperatureAlarmState) ||
+                state.tappedSet.contains(DataKey.minTemperatureC) ||
+                state.tappedSet.contains(DataKey.maxTemperatureC),
+          ),
         );
       },
     );
@@ -510,6 +512,12 @@ class _VoltageAlarmControl extends StatelessWidget {
           maxValueErrorText: state.maxVoltage.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.voltageAlarmState) ||
+                state.tappedSet.contains(DataKey.minVoltage) ||
+                state.tappedSet.contains(DataKey.maxVoltage),
+          ),
         );
       },
     );
@@ -565,6 +573,12 @@ class _RFOutputPower1AlarmControl extends StatelessWidget {
           maxValueErrorText: state.maxRFOutputPower1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.rfOutputPower1AlarmState) ||
+                state.tappedSet.contains(DataKey.minRFOutputPower1) ||
+                state.tappedSet.contains(DataKey.maxRFOutputPower1),
+          ),
         );
       },
     );
@@ -620,6 +634,12 @@ class _RFOutputPower3AlarmControl extends StatelessWidget {
           maxValueErrorText: state.maxRFOutputPower3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.rfOutputPower3AlarmState) ||
+                state.tappedSet.contains(DataKey.minRFOutputPower3) ||
+                state.tappedSet.contains(DataKey.maxRFOutputPower3),
+          ),
         );
       },
     );
@@ -675,6 +695,12 @@ class _RFOutputPower4AlarmControl extends StatelessWidget {
           maxValueErrorText: state.maxRFOutputPower4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.rfOutputPower4AlarmState) ||
+                state.tappedSet.contains(DataKey.minRFOutputPower4) ||
+                state.tappedSet.contains(DataKey.maxRFOutputPower4),
+          ),
         );
       },
     );
@@ -730,6 +756,12 @@ class _RFOutputPower6AlarmControl extends StatelessWidget {
           maxValueErrorText: state.maxRFOutputPower6.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.rfOutputPower6AlarmState) ||
+                state.tappedSet.contains(DataKey.minRFOutputPower6) ||
+                state.tappedSet.contains(DataKey.maxRFOutputPower6),
+          ),
         );
       },
     );
@@ -754,6 +786,9 @@ class _SplitOptionAlarmControl extends StatelessWidget {
                 .read<Setting18CCorNodeThresholdBloc>()
                 .add(SplitOptionAlarmChanged(value));
           },
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.splitOptionAlarmState)),
         );
       },
     );

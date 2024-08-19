@@ -425,16 +425,22 @@ class _ForwardMode extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.forwardMode != current.forwardMode,
       builder: (context, state) {
-        return configureGridViewButton(
-          context: context,
-          editMode: true,
-          title: '${AppLocalizations.of(context)!.forwardMode}:',
-          targetValue: state.forwardMode,
-          texts: forwardModeTexts,
-          values: forwardModeValues,
-          onGridPressed: (index) => context
-              .read<Setting18CCorNodeConfigEditBloc>()
-              .add(ForwardModeChanged(forwardModeValues[index])),
+        return Padding(
+          padding: const EdgeInsets.only(bottom: CustomStyle.sizeXXL),
+          child: configureGridViewButton(
+            context: context,
+            editMode: true,
+            title: '${AppLocalizations.of(context)!.forwardMode}:',
+            targetValue: state.forwardMode,
+            texts: forwardModeTexts,
+            values: forwardModeValues,
+            onGridPressed: (index) => context
+                .read<Setting18CCorNodeConfigEditBloc>()
+                .add(ForwardModeChanged(forwardModeValues[index])),
+            padding: 0.0,
+            elevation: 0.0,
+            color: Colors.transparent,
+          ),
         );
       },
     );
@@ -451,16 +457,22 @@ class _ForwardConfig extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.forwardConfig != current.forwardConfig,
       builder: (context, state) {
-        return configureGridViewButton(
-          context: context,
-          editMode: true,
-          title: '${AppLocalizations.of(context)!.forwardConfigMode}:',
-          targetValue: state.forwardConfig,
-          texts: forwardConfigTexts,
-          values: forwardConfigValues,
-          onGridPressed: (index) => context
-              .read<Setting18CCorNodeConfigEditBloc>()
-              .add(ForwardConfigChanged(forwardConfigValues[index])),
+        return Padding(
+          padding: const EdgeInsets.only(bottom: CustomStyle.sizeXXL),
+          child: configureGridViewButton(
+            context: context,
+            editMode: true,
+            title: '${AppLocalizations.of(context)!.forwardConfigMode}:',
+            targetValue: state.forwardConfig,
+            texts: forwardConfigTexts,
+            values: forwardConfigValues,
+            onGridPressed: (index) => context
+                .read<Setting18CCorNodeConfigEditBloc>()
+                .add(ForwardConfigChanged(forwardConfigValues[index])),
+            padding: 0.0,
+            elevation: 0.0,
+            color: Colors.transparent,
+          ),
         );
       },
     );
@@ -484,6 +496,9 @@ class _SplitOption extends StatelessWidget {
           onGridPressed: (index) => context
               .read<Setting18CCorNodeConfigEditBloc>()
               .add(SplitOptionChanged(splitOptionValues[index])),
+          padding: 0.0,
+          elevation: 0.0,
+          color: Colors.transparent,
         );
       },
     );

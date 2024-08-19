@@ -234,6 +234,7 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       initialValues: characteristicDataCache,
       editMode: false,
       enableSubmission: false,
+      tappedSet: const {},
       settingResult: const [],
     ));
   }
@@ -248,9 +249,13 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       maxValue: state.dsVVA1.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsVVA1);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       dsVVA1: dsVVA1,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsVVA1: dsVVA1,
       ),
@@ -267,9 +272,13 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       maxValue: state.dsVVA3.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsVVA3);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       dsVVA3: dsVVA3,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsVVA3: dsVVA3,
       ),
@@ -286,9 +295,13 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       maxValue: state.dsVVA4.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsVVA4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       dsVVA4: dsVVA4,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsVVA4: dsVVA4,
       ),
@@ -305,9 +318,13 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       maxValue: state.dsVVA6.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsVVA6);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       dsVVA6: dsVVA6,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsVVA6: dsVVA6,
       ),
@@ -400,9 +417,13 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       maxValue: state.dsOutSlope1.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsOutSlope1);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       dsOutSlope1: dsOutSlope1,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsOutSlope1: dsOutSlope1,
       ),
@@ -419,9 +440,13 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       maxValue: state.dsOutSlope3.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsOutSlope3);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       dsOutSlope3: dsOutSlope3,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsOutSlope3: dsOutSlope3,
       ),
@@ -438,9 +463,13 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       maxValue: state.dsOutSlope4.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsOutSlope4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       dsOutSlope4: dsOutSlope4,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsOutSlope4: dsOutSlope4,
       ),
@@ -457,9 +486,13 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       maxValue: state.dsOutSlope6.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.dsOutSlope6);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       dsOutSlope6: dsOutSlope6,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsOutSlope6: dsOutSlope6,
       ),
@@ -476,9 +509,13 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       maxValue: state.biasCurrent1.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.biasCurrent1);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       biasCurrent1: biasCurrent1,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         biasCurrent1: biasCurrent1,
       ),
@@ -495,9 +532,13 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       maxValue: state.biasCurrent3.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.biasCurrent3);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       biasCurrent3: biasCurrent3,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         biasCurrent3: biasCurrent3,
       ),
@@ -514,9 +555,13 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       maxValue: state.biasCurrent4.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.biasCurrent4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       biasCurrent4: biasCurrent4,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         biasCurrent4: biasCurrent4,
       ),
@@ -533,9 +578,13 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       maxValue: state.biasCurrent6.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.biasCurrent6);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       biasCurrent6: biasCurrent6,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         biasCurrent6: biasCurrent6,
       ),
@@ -560,6 +609,7 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       editMode: false,
       enableSubmission: false,
+      tappedSet: const {},
       dsVVA1: RangeFloatPointInput.dirty(
         state.initialValues[DataKey.dsVVA1] ?? '',
         minValue: state.dsVVA1.minValue,
@@ -853,6 +903,7 @@ class Setting18CCorNodeForwardControlBloc extends Bloc<
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
+      tappedSet: const {},
       enableSubmission: false,
       editMode: false,
     ));

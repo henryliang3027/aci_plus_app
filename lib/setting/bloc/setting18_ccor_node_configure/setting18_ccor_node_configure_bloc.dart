@@ -63,6 +63,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       editMode: false,
       enableSubmission: false,
       settingResult: const [],
+      tappedSet: const {},
       gpsCoordinateErrorMessage: '',
     ));
   }
@@ -71,11 +72,15 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     LocationChanged event,
     Emitter<Setting18CCorNodeConfigureState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.location);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       location: event.location,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: event.location,
         coordinates: state.coordinates,
@@ -91,11 +96,15 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     CoordinatesChanged event,
     Emitter<Setting18CCorNodeConfigureState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.coordinates);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       coordinates: event.coordinates,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: event.coordinates,
@@ -117,11 +126,15 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       isInitialize: false,
     ));
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.coordinates);
+
     try {
       String coordinates = await _gpsRepository.getGPSCoordinates();
       emit(state.copyWith(
         gpsStatus: FormStatus.requestSuccess,
         coordinates: coordinates,
+        tappedSet: tappedSet,
         enableSubmission: _isEnabledSubmission(
           location: state.location,
           coordinates: coordinates,
@@ -135,6 +148,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       emit(state.copyWith(
         gpsStatus: FormStatus.requestFailure,
         gpsCoordinateErrorMessage: error.toString(),
+        tappedSet: tappedSet,
         enableSubmission: _isEnabledSubmission(
           location: state.location,
           coordinates: state.coordinates,
@@ -151,11 +165,15 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     ForwardModeChanged event,
     Emitter<Setting18CCorNodeConfigureState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.forwardMode);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       forwardMode: event.forwardMode,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -171,11 +189,15 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     ForwardConfigChanged event,
     Emitter<Setting18CCorNodeConfigureState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.forwardConfig);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       forwardConfig: event.forwardConfig,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -191,11 +213,15 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     SplitOptionChanged event,
     Emitter<Setting18CCorNodeConfigureState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.splitOption);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       splitOption: event.splitOption,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -211,11 +237,15 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     LogIntervalChanged event,
     Emitter<Setting18CCorNodeConfigureState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.logInterval);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       logInterval: event.logInterval,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
@@ -249,6 +279,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
       isInitialize: true,
       editMode: false,
       enableSubmission: false,
+      tappedSet: const {},
       location: state.initialValues[DataKey.location],
       coordinates: state.initialValues[DataKey.coordinates],
       forwardMode: state.initialValues[DataKey.forwardMode],
@@ -341,6 +372,7 @@ class Setting18CCorNodeConfigureBloc extends Bloc<
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
+      tappedSet: const {},
       enableSubmission: false,
       editMode: false,
     ));

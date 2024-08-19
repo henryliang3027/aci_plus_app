@@ -5,6 +5,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_reverse_control_dart/setting18_ccor_node_reverse_control_bloc.dart';
+import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
@@ -156,12 +157,7 @@ class Seting18CCorNodeReverseControlView extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(
-                CustomStyle.sizeXL,
-              ),
-              child: buildControlWidget(partId),
-            ),
+            child: buildControlWidget(partId),
           ),
         ),
         floatingActionButton: _SettingFloatingActionButton(
@@ -203,7 +199,7 @@ class _ClusterTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
       child: Row(
         children: [
           Expanded(
@@ -250,6 +246,9 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
           errorText: state.usVCA1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.usVCA1)),
         );
       },
     );
@@ -284,6 +283,9 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
           errorText: state.usVCA3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.usVCA3)),
         );
       },
     );
@@ -318,6 +320,9 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
           errorText: state.usVCA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.usVCA4)),
         );
       },
     );
@@ -352,6 +357,9 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
           errorText: state.usVCA6.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.usVCA6)),
         );
       },
     );
@@ -386,6 +394,9 @@ class _ReturnIngressSetting1 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.ingressSetting1)),
         );
       },
     );
@@ -420,6 +431,9 @@ class _ReturnIngressSetting3 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.ingressSetting3)),
         );
       },
     );
@@ -454,6 +468,9 @@ class _ReturnIngressSetting4 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.ingressSetting4)),
         );
       },
     );
@@ -488,6 +505,9 @@ class _ReturnIngressSetting6 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.ingressSetting6)),
         );
       },
     );

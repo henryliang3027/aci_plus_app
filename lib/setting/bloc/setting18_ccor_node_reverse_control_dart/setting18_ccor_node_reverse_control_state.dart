@@ -26,6 +26,7 @@ class Setting18CCorNodeReverseControlState extends Equatable {
     this.editMode = false,
     this.enableSubmission = false,
     this.initialValues = const {},
+    this.tappedSet = const {},
     this.settingResult = const [],
   });
 
@@ -41,6 +42,7 @@ class Setting18CCorNodeReverseControlState extends Equatable {
   final bool editMode;
   final bool enableSubmission;
   final Map<DataKey, String> initialValues;
+  final Set<DataKey> tappedSet;
   final List<String> settingResult;
 
   Setting18CCorNodeReverseControlState copyWith({
@@ -56,6 +58,7 @@ class Setting18CCorNodeReverseControlState extends Equatable {
     bool? editMode,
     bool? enableSubmission,
     Map<DataKey, String>? initialValues,
+    Set<DataKey>? tappedSet,
     List<String>? settingResult,
   }) {
     return Setting18CCorNodeReverseControlState(
@@ -75,6 +78,7 @@ class Setting18CCorNodeReverseControlState extends Equatable {
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       initialValues: initialValues ?? this.initialValues,
+      tappedSet: tappedSet ?? this.tappedSet,
       settingResult: settingResult ?? this.settingResult,
     );
   }
@@ -93,6 +97,7 @@ class Setting18CCorNodeReverseControlState extends Equatable {
         editMode,
         enableSubmission,
         initialValues,
+        tappedSet,
         settingResult,
       ];
 }

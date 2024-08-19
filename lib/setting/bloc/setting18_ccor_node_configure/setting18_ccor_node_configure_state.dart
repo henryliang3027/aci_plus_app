@@ -14,6 +14,7 @@ class Setting18CCorNodeConfigureState extends Equatable {
     this.enableSubmission = false,
     this.isInitialize = true,
     this.initialValues = const {},
+    this.tappedSet = const {},
     this.settingResult = const [],
     this.gpsCoordinateErrorMessage = '',
   });
@@ -30,6 +31,7 @@ class Setting18CCorNodeConfigureState extends Equatable {
   final bool enableSubmission;
   final bool isInitialize;
   final Map<DataKey, String> initialValues;
+  final Set<DataKey> tappedSet;
   final List<String> settingResult;
   final String gpsCoordinateErrorMessage;
 
@@ -46,6 +48,7 @@ class Setting18CCorNodeConfigureState extends Equatable {
     bool? enableSubmission,
     bool? isInitialize,
     Map<DataKey, String>? initialValues,
+    Set<DataKey>? tappedSet,
     List<String>? settingResult,
     String? gpsCoordinateErrorMessage,
   }) {
@@ -62,6 +65,7 @@ class Setting18CCorNodeConfigureState extends Equatable {
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
       initialValues: initialValues ?? this.initialValues,
+      tappedSet: tappedSet ?? this.tappedSet,
       settingResult: settingResult ?? this.settingResult,
       gpsCoordinateErrorMessage:
           gpsCoordinateErrorMessage ?? this.gpsCoordinateErrorMessage,
@@ -83,6 +87,7 @@ class Setting18CCorNodeConfigureState extends Equatable {
         isInitialize,
         initialValues,
         settingResult,
+        tappedSet,
         gpsCoordinateErrorMessage
       ];
 }

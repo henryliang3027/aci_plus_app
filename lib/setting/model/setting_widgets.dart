@@ -1059,6 +1059,7 @@ Widget twoTextField({
   bool reaOnly2 = false,
   String? errorText1,
   String? errorText2,
+  double padding = CustomStyle.sizeXL,
   double elevation = 1.0,
   Color? color,
 }) {
@@ -1066,7 +1067,7 @@ Widget twoTextField({
     elevation: elevation,
     color: color,
     child: Padding(
-      padding: const EdgeInsets.all(CustomStyle.sizeXL),
+      padding: EdgeInsets.all(padding),
       child: Column(
         children: [
           Padding(
@@ -1182,87 +1183,92 @@ Widget configureGridViewButton({
   required Map<String, String> texts,
   required List<String> values,
   required ValueChanged onGridPressed,
+  double padding = CustomStyle.sizeXL,
+  double elevation = 1.0,
+  Color? color,
 }) {
-  return Padding(
-    padding: const EdgeInsets.only(
-      bottom: 40.0,
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: CustomStyle.sizeL,
-          ),
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: CustomStyle.sizeXL,
-              fontWeight: FontWeight.w500,
+  return Card(
+    elevation: elevation,
+    color: color,
+    child: Padding(
+      padding: EdgeInsets.all(padding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: CustomStyle.sizeL,
+            ),
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: CustomStyle.sizeXL,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
-        ),
-        GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: MediaQuery.of(context).size.width / 110,
-          ),
-          itemCount: values.length,
-          itemBuilder: (BuildContext itemContext, int index) {
-            return Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  elevation: 0.0,
-                  foregroundColor: getForegroundColor(
-                    context: context,
-                    targetValue: targetValue,
-                    value: values[index],
-                  ),
-                  backgroundColor: editMode
-                      ? getBackgroundColor(
-                          context: context,
-                          targetValue: targetValue,
-                          value: values[index],
-                        )
-                      : getDisabledBackgroundColor(
-                          context: context,
-                          targetValue: targetValue,
-                          value: values[index],
-                        ),
-                  side: BorderSide(
-                    color: editMode
-                        ? getBorderColor(
+          GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: MediaQuery.of(context).size.width / 110,
+            ),
+            itemCount: values.length,
+            itemBuilder: (BuildContext itemContext, int index) {
+              return Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    elevation: 0.0,
+                    foregroundColor: getForegroundColor(
+                      context: context,
+                      targetValue: targetValue,
+                      value: values[index],
+                    ),
+                    backgroundColor: editMode
+                        ? getBackgroundColor(
                             context: context,
                             targetValue: targetValue,
                             value: values[index],
                           )
-                        : getDisabledBorderColor(),
-                    width: 1.0,
+                        : getDisabledBackgroundColor(
+                            context: context,
+                            targetValue: targetValue,
+                            value: values[index],
+                          ),
+                    side: BorderSide(
+                      color: editMode
+                          ? getBorderColor(
+                              context: context,
+                              targetValue: targetValue,
+                              value: values[index],
+                            )
+                          : getDisabledBorderColor(),
+                      width: 1.0,
+                    ),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
                   ),
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                ),
-                onPressed: editMode
-                    ? () {
-                        onGridPressed(index);
-                      }
-                    : () {},
-                child: Text(
-                  texts[index.toString()]!,
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.normal,
+                  onPressed: editMode
+                      ? () {
+                          onGridPressed(index);
+                        }
+                      : () {},
+                  child: Text(
+                    texts[index.toString()]!,
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
-        ),
-      ],
+              );
+            },
+          ),
+        ],
+      ),
     ),
   );
 }
@@ -1272,6 +1278,7 @@ Widget splitOptionGridViewButton({
   required bool editMode,
   required String splitOption,
   required ValueChanged onGridPressed,
+  double padding = CustomStyle.sizeXL,
   double elevation = 1.0,
   Color? color,
 }) {
@@ -1279,7 +1286,7 @@ Widget splitOptionGridViewButton({
     elevation: elevation,
     color: color,
     child: Padding(
-      padding: const EdgeInsets.all(CustomStyle.sizeXL),
+      padding: EdgeInsets.all(padding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

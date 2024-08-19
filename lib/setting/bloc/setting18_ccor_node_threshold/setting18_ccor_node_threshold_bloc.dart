@@ -223,6 +223,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       temperatureAlarmState: event.temperatureAlarmState,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: event.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -262,6 +263,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       minTemperature: minTemperature,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: minTemperature,
@@ -301,6 +303,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       maxTemperature: maxTemperature,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -336,6 +339,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       voltageAlarmState: event.voltageAlarmState,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -373,6 +377,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       minVoltage: minVoltage,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -410,6 +415,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       maxVoltage: maxVoltage,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -445,6 +451,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       splitOptionAlarmState: event.splitOptionAlarmState,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -481,6 +488,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       rfOutputPower1AlarmState: event.rfOutputPower1AlarmState,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -519,6 +527,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       minRFOutputPower1: minRFOutputPower1,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -557,6 +566,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       maxRFOutputPower1: maxRFOutputPower1,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -594,6 +604,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       rfOutputPower3AlarmState: event.rfOutputPower3AlarmState,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -632,6 +643,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       minRFOutputPower3: minRFOutputPower3,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -670,6 +682,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       maxRFOutputPower3: maxRFOutputPower3,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -707,6 +720,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       rfOutputPower4AlarmState: event.rfOutputPower4AlarmState,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -745,6 +759,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       minRFOutputPower4: minRFOutputPower4,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -783,6 +798,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       maxRFOutputPower4: maxRFOutputPower4,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -820,6 +836,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       rfOutputPower6AlarmState: event.rfOutputPower6AlarmState,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -858,6 +875,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       minRFOutputPower6: minRFOutputPower6,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,
@@ -896,6 +914,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       maxRFOutputPower6: maxRFOutputPower6,
       isInitialize: false,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         temperatureAlarmState: state.temperatureAlarmState,
         minTemperature: state.minTemperature,

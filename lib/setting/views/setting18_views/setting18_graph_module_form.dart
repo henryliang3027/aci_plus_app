@@ -378,6 +378,8 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
               errorText: state.dsVVA1.isNotValid
                   ? AppLocalizations.of(context)!.textFieldErrorMessage
                   : null,
+              elevation: 0.0,
+              // color: Colors.transparent,
             ),
             Row(
               children: [
@@ -831,6 +833,8 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
           errorText: state.eREQ.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: 0.0,
+          // color: Colors.transparent,
         );
       },
     );
