@@ -27,6 +27,7 @@ class Setting18CCorNodeThresholdState extends Equatable {
     this.enableSubmission = false,
     this.isInitialize = true,
     this.initialValues = const {},
+    this.tappedSet = const {},
     this.settingResult = const [],
   });
 
@@ -55,6 +56,7 @@ class Setting18CCorNodeThresholdState extends Equatable {
   final bool enableSubmission;
   final bool isInitialize;
   final Map<DataKey, String> initialValues;
+  final Set<DataKey> tappedSet;
   final List<String> settingResult;
 
   Setting18CCorNodeThresholdState copyWith({
@@ -83,6 +85,7 @@ class Setting18CCorNodeThresholdState extends Equatable {
     bool? enableSubmission,
     bool? isInitialize,
     Map<DataKey, String>? initialValues,
+    Set<DataKey>? tappedSet,
     List<String>? settingResult,
   }) {
     return Setting18CCorNodeThresholdState(
@@ -117,6 +120,7 @@ class Setting18CCorNodeThresholdState extends Equatable {
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
       initialValues: initialValues ?? this.initialValues,
+      tappedSet: tappedSet ?? this.tappedSet,
       settingResult: settingResult ?? this.settingResult,
     );
   }
@@ -148,6 +152,7 @@ class Setting18CCorNodeThresholdState extends Equatable {
         enableSubmission,
         isInitialize,
         initialValues,
+        tappedSet,
         settingResult,
       ];
 }

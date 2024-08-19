@@ -207,6 +207,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       initialValues: characteristicDataCache,
       editMode: false,
       enableSubmission: false,
+      tappedSet: const {},
       settingResult: const [],
     ));
   }
@@ -215,6 +216,9 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     TemperatureAlarmChanged event,
     Emitter<Setting18CCorNodeThresholdState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.temperatureAlarmState);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       temperatureAlarmState: event.temperatureAlarmState,
@@ -249,6 +253,11 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
   ) {
     FloatPointInput minTemperature =
         FloatPointInput.dirty(event.minTemperature);
+
+    // 用 DataKey.minTemperatureC 來代表 ºC 或 ºF 的單位下溫度 card 被 tap
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.minTemperatureC);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       minTemperature: minTemperature,
@@ -283,6 +292,11 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
   ) {
     FloatPointInput maxTemperature =
         FloatPointInput.dirty(event.maxTemperature);
+
+    // 用 DataKey.maxTemperatureC 來代表 ºC 或 ºF 的單位下溫度 card 被 tap
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.maxTemperatureC);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       maxTemperature: maxTemperature,
@@ -315,6 +329,9 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     VoltageAlarmChanged event,
     Emitter<Setting18CCorNodeThresholdState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.voltageAlarmState);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       voltageAlarmState: event.voltageAlarmState,
@@ -348,6 +365,10 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     Emitter<Setting18CCorNodeThresholdState> emit,
   ) {
     FloatPointInput minVoltage = FloatPointInput.dirty(event.minVoltage);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.minVoltage);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       minVoltage: minVoltage,
@@ -381,6 +402,10 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     Emitter<Setting18CCorNodeThresholdState> emit,
   ) {
     FloatPointInput maxVoltage = FloatPointInput.dirty(event.maxVoltage);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.maxVoltage);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       maxVoltage: maxVoltage,
@@ -413,6 +438,9 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     SplitOptionAlarmChanged event,
     Emitter<Setting18CCorNodeThresholdState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.splitOptionAlarmState);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       splitOptionAlarmState: event.splitOptionAlarmState,
@@ -446,6 +474,9 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     RFOutputPowerAlarmState1Changed event,
     Emitter<Setting18CCorNodeThresholdState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.rfOutputPower1AlarmState);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       rfOutputPower1AlarmState: event.rfOutputPower1AlarmState,
@@ -480,6 +511,10 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
   ) {
     FloatPointInput minRFOutputPower1 =
         FloatPointInput.dirty(event.minRFOutputPower1);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.minRFOutputPower1);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       minRFOutputPower1: minRFOutputPower1,
@@ -514,6 +549,10 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
   ) {
     FloatPointInput maxRFOutputPower1 =
         FloatPointInput.dirty(event.maxRFOutputPower1);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.maxRFOutputPower1);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       maxRFOutputPower1: maxRFOutputPower1,
@@ -548,6 +587,9 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     RFOutputPowerAlarmState3Changed event,
     Emitter<Setting18CCorNodeThresholdState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.rfOutputPower3AlarmState);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       rfOutputPower3AlarmState: event.rfOutputPower3AlarmState,
@@ -582,6 +624,10 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
   ) {
     FloatPointInput minRFOutputPower3 =
         FloatPointInput.dirty(event.minRFOutputPower3);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.minRFOutputPower3);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       minRFOutputPower3: minRFOutputPower3,
@@ -616,6 +662,10 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
   ) {
     FloatPointInput maxRFOutputPower3 =
         FloatPointInput.dirty(event.maxRFOutputPower3);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.maxRFOutputPower3);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       maxRFOutputPower3: maxRFOutputPower3,
@@ -650,6 +700,9 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     RFOutputPowerAlarmState4Changed event,
     Emitter<Setting18CCorNodeThresholdState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.rfOutputPower4AlarmState);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       rfOutputPower4AlarmState: event.rfOutputPower4AlarmState,
@@ -684,6 +737,10 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
   ) {
     FloatPointInput minRFOutputPower4 =
         FloatPointInput.dirty(event.minRFOutputPower4);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.minRFOutputPower4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       minRFOutputPower4: minRFOutputPower4,
@@ -718,6 +775,10 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
   ) {
     FloatPointInput maxRFOutputPower4 =
         FloatPointInput.dirty(event.maxRFOutputPower4);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.maxRFOutputPower4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       maxRFOutputPower4: maxRFOutputPower4,
@@ -752,6 +813,9 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     RFOutputPowerAlarmState6Changed event,
     Emitter<Setting18CCorNodeThresholdState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.rfOutputPower6AlarmState);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       rfOutputPower6AlarmState: event.rfOutputPower6AlarmState,
@@ -786,6 +850,10 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
   ) {
     FloatPointInput minRFOutputPower6 =
         FloatPointInput.dirty(event.minRFOutputPower6);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.minRFOutputPower6);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       minRFOutputPower6: minRFOutputPower6,
@@ -820,6 +888,10 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
   ) {
     FloatPointInput maxRFOutputPower6 =
         FloatPointInput.dirty(event.maxRFOutputPower6);
+
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.maxRFOutputPower6);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       maxRFOutputPower6: maxRFOutputPower6,
@@ -895,6 +967,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
       isInitialize: true,
       editMode: false,
       enableSubmission: false,
+      tappedSet: const {},
       temperatureAlarmState: _stringNumberToBool(strTemperatureAlarmState),
       minTemperature: FloatPointInput.dirty(
         getMinTemperature(
@@ -1300,6 +1373,7 @@ class Setting18CCorNodeThresholdBloc extends Bloc<
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
+      tappedSet: const {},
       enableSubmission: false,
       editMode: false,
     ));
