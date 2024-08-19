@@ -1207,18 +1207,21 @@ Widget configureGridViewButton({
               ),
             ),
           ),
-          GridView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: MediaQuery.of(context).size.width / 110,
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: CustomStyle.sizeXS,
             ),
-            itemCount: values.length,
-            itemBuilder: (BuildContext itemContext, int index) {
-              return Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: ElevatedButton(
+            child: GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 6.0,
+                childAspectRatio: MediaQuery.of(context).size.width / 110,
+              ),
+              itemCount: values.length,
+              itemBuilder: (BuildContext itemContext, int index) {
+                return ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     elevation: 0.0,
@@ -1263,9 +1266,9 @@ Widget configureGridViewButton({
                       fontWeight: FontWeight.normal,
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ],
       ),
