@@ -129,6 +129,12 @@ class __PopupMenuState extends State<_PopupMenu> {
                   value: HomeMenu.warmReset,
                   iconData: Icons.restart_alt_outlined,
                   title: AppLocalizations.of(context)!.warmReset,
+                  enabled: state.connectionStatus.isNone ||
+                          state.connectionStatus.isRequestFailure ||
+                          state.loadingStatus.isNone ||
+                          state.loadingStatus.isRequestFailure
+                      ? false
+                      : true,
                   onTap: () {
                     context
                         .read<Information18Bloc>()

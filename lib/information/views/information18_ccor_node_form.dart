@@ -12,7 +12,6 @@ import 'package:aci_plus_app/information/shared/warm_reset_widget.dart';
 import 'package:aci_plus_app/information/views/information18_ccor_node_config_list_view.dart';
 import 'package:aci_plus_app/information/views/name_plate_view.dart';
 import 'package:aci_plus_app/repositories/node_config.dart';
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -128,6 +127,12 @@ class __PopupMenuState extends State<_PopupMenu> {
                   value: HomeMenu.warmReset,
                   iconData: Icons.restart_alt_outlined,
                   title: AppLocalizations.of(context)!.warmReset,
+                  enabled: state.connectionStatus.isNone ||
+                          state.connectionStatus.isRequestFailure ||
+                          state.loadingStatus.isNone ||
+                          state.loadingStatus.isRequestFailure
+                      ? false
+                      : true,
                   onTap: () {
                     context
                         .read<Information18CCorNodeBloc>()
