@@ -379,7 +379,7 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
                   ? AppLocalizations.of(context)!.textFieldErrorMessage
                   : null,
               elevation: 0.0,
-              // color: Colors.transparent,
+              color: Colors.transparent,
             ),
             Row(
               children: [
@@ -834,7 +834,7 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: 0.0,
-          // color: Colors.transparent,
+          color: Colors.transparent,
         );
       },
     );
