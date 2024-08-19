@@ -25,9 +25,14 @@ class CustomStyle {
   // 255, 205, 75, 5 night
   //230, 107, 11
   static const Color customBlue = Color.fromARGB(255, 220, 243, 255);
-  static const Color customPink = Color.fromARGB(255, 255, 230, 222);
+  static const Color customPink = Color.fromARGB(255, 255, 235, 235);
   static const Color customDeepBlue = Color.fromARGB(255, 0, 31, 47);
   static const Color customDeepPink = Color.fromARGB(255, 55, 14, 0);
+
+  // static const Color customBlue = Color.fromARGB(255, 220, 243, 255);
+  // static const Color customPink = Color.fromARGB(255, 255, 230, 222);
+  // static const Color customDeepBlue = Color.fromARGB(255, 0, 31, 47);
+  // static const Color customDeepPink = Color.fromARGB(255, 55, 14, 0);
 
   static const String fahrenheitUnit = 'ºF';
   static const String celciusUnit = 'ºC';

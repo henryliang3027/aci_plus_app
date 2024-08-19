@@ -494,13 +494,19 @@ class _SplitOption extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.splitOption != current.splitOption,
       builder: (context, state) {
-        return splitOptionGridViewButton(
-          context: context,
-          editMode: true,
-          splitOption: state.splitOption,
-          onGridPressed: (index) => context
-              .read<Setting18ConfigEditBloc>()
-              .add(SplitOptionChanged(splitOptionValues[index])),
+        return Padding(
+          padding: const EdgeInsets.only(bottom: CustomStyle.sizeXXL),
+          child: splitOptionGridViewButton(
+            context: context,
+            editMode: true,
+            splitOption: state.splitOption,
+            onGridPressed: (index) => context
+                .read<Setting18ConfigEditBloc>()
+                .add(SplitOptionChanged(splitOptionValues[index])),
+            padding: 0.0,
+            elevation: 0.0,
+            color: Colors.transparent,
+          ),
         );
       },
     );
@@ -522,40 +528,46 @@ class _FirstChannelLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigEditBloc, Setting18ConfigEditState>(
       builder: (context, state) {
-        return twoTextField(
-          context: context,
-          title: '${AppLocalizations.of(context)!.startFrequency}:',
-          editMode1: true,
-          editMode2: true,
-          textEditingControllerName1:
-              'setting18Form_firstChannelLoadingFrequencyInput_textField',
-          textEditingControllerName2:
-              'setting18Form_firstChannelLoadingLevelInput_textField',
-          textEditingController1:
-              firstChannelLoadingFrequencyTextEditingController,
-          textEditingController2: firstChannelLoadingLevelTextEditingController,
-          onChanged1: (firstChannelLoadingFrequency) {
-            context
-                .read<Setting18ConfigEditBloc>()
-                .add(FirstChannelLoadingFrequencyChanged(
-                  firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-                  currentDetectedSplitOption: currentDetectedSplitOption,
-                ));
-          },
-          onChanged2: (firstChannelLoadingLevel) {
-            context
-                .read<Setting18ConfigEditBloc>()
-                .add(FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
-          },
-          errorText1: !isValidFirstChannelLoadingFrequency(
-            currentDetectedSplitOption: currentDetectedSplitOption,
-            firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-          )
-              ? AppLocalizations.of(context)!.textFieldErrorMessage
-              : null,
-          errorText2: state.firstChannelLoadingLevel.isNotValid
-              ? AppLocalizations.of(context)!.textFieldErrorMessage
-              : null,
+        return Padding(
+          padding: const EdgeInsets.only(bottom: CustomStyle.sizeXXL),
+          child: twoTextField(
+            context: context,
+            title: '${AppLocalizations.of(context)!.startFrequency}:',
+            editMode1: true,
+            editMode2: true,
+            textEditingControllerName1:
+                'setting18Form_firstChannelLoadingFrequencyInput_textField',
+            textEditingControllerName2:
+                'setting18Form_firstChannelLoadingLevelInput_textField',
+            textEditingController1:
+                firstChannelLoadingFrequencyTextEditingController,
+            textEditingController2:
+                firstChannelLoadingLevelTextEditingController,
+            onChanged1: (firstChannelLoadingFrequency) {
+              context
+                  .read<Setting18ConfigEditBloc>()
+                  .add(FirstChannelLoadingFrequencyChanged(
+                    firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+                    currentDetectedSplitOption: currentDetectedSplitOption,
+                  ));
+            },
+            onChanged2: (firstChannelLoadingLevel) {
+              context.read<Setting18ConfigEditBloc>().add(
+                  FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
+            },
+            errorText1: !isValidFirstChannelLoadingFrequency(
+              currentDetectedSplitOption: currentDetectedSplitOption,
+              firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+            )
+                ? AppLocalizations.of(context)!.textFieldErrorMessage
+                : null,
+            errorText2: state.firstChannelLoadingLevel.isNotValid
+                ? AppLocalizations.of(context)!.textFieldErrorMessage
+                : null,
+            padding: 0.0,
+            elevation: 0.0,
+            color: Colors.transparent,
+          ),
         );
       },
     );
@@ -575,34 +587,41 @@ class _LastChannelLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigEditBloc, Setting18ConfigEditState>(
       builder: (context, state) {
-        return twoTextField(
-          context: context,
-          title: '${AppLocalizations.of(context)!.stopFrequency}:',
-          editMode1: true,
-          editMode2: true,
-          textEditingControllerName1:
-              'setting18Form_lastChannelLoadingFrequencyInput_textField',
-          textEditingControllerName2:
-              'setting18Form_lastChannelLoadingLevelInput_textField',
-          textEditingController1:
-              lastChannelLoadingFrequencyTextEditingController,
-          textEditingController2: lastChannelLoadingLevelTextEditingController,
-          onChanged1: (lastChannelLoadingFrequency) {
-            context.read<Setting18ConfigEditBloc>().add(
-                LastChannelLoadingFrequencyChanged(
-                    lastChannelLoadingFrequency));
-          },
-          onChanged2: (lastChannelLoadingLevel) {
-            context
-                .read<Setting18ConfigEditBloc>()
-                .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
-          },
-          errorText1: state.lastChannelLoadingFrequency.isNotValid
-              ? AppLocalizations.of(context)!.textFieldErrorMessage
-              : null,
-          errorText2: state.lastChannelLoadingLevel.isNotValid
-              ? AppLocalizations.of(context)!.textFieldErrorMessage
-              : null,
+        return Padding(
+          padding: const EdgeInsets.only(bottom: CustomStyle.sizeXXL),
+          child: twoTextField(
+            context: context,
+            title: '${AppLocalizations.of(context)!.stopFrequency}:',
+            editMode1: true,
+            editMode2: true,
+            textEditingControllerName1:
+                'setting18Form_lastChannelLoadingFrequencyInput_textField',
+            textEditingControllerName2:
+                'setting18Form_lastChannelLoadingLevelInput_textField',
+            textEditingController1:
+                lastChannelLoadingFrequencyTextEditingController,
+            textEditingController2:
+                lastChannelLoadingLevelTextEditingController,
+            onChanged1: (lastChannelLoadingFrequency) {
+              context.read<Setting18ConfigEditBloc>().add(
+                  LastChannelLoadingFrequencyChanged(
+                      lastChannelLoadingFrequency));
+            },
+            onChanged2: (lastChannelLoadingLevel) {
+              context
+                  .read<Setting18ConfigEditBloc>()
+                  .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
+            },
+            errorText1: state.lastChannelLoadingFrequency.isNotValid
+                ? AppLocalizations.of(context)!.textFieldErrorMessage
+                : null,
+            errorText2: state.lastChannelLoadingLevel.isNotValid
+                ? AppLocalizations.of(context)!.textFieldErrorMessage
+                : null,
+            padding: 0.0,
+            elevation: 0.0,
+            color: Colors.transparent,
+          ),
         );
       },
     );

@@ -118,6 +118,7 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
       initialValues: characteristicDataCache,
       editMode: false,
       enableSubmission: false,
+      tappedSet: const {},
       settingResult: const [],
     ));
   }
@@ -132,9 +133,13 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
       maxValue: state.usVCA1.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.usVCA1);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       usVCA1: usVCA1,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA1: usVCA1,
       ),
@@ -151,9 +156,13 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
       maxValue: state.usVCA3.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.usVCA3);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       usVCA3: usVCA3,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA3: usVCA3,
       ),
@@ -170,9 +179,13 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
       maxValue: state.usVCA4.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.usVCA4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       usVCA4: usVCA4,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA4: usVCA4,
       ),
@@ -189,9 +202,13 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
       maxValue: state.usVCA6.maxValue,
     );
 
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.usVCA6);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       usVCA6: usVCA6,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA6: usVCA6,
       ),
@@ -202,9 +219,13 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
     ReturnIngressSetting1Changed event,
     Emitter<Setting18CCorNodeReverseControlState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.ingressSetting1);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       returnIngressSetting1: event.returnIngressSetting1,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         returnIngressSetting1: event.returnIngressSetting1,
       ),
@@ -215,9 +236,13 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
     ReturnIngressSetting3Changed event,
     Emitter<Setting18CCorNodeReverseControlState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.ingressSetting3);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       returnIngressSetting3: event.returnIngressSetting3,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         returnIngressSetting3: event.returnIngressSetting3,
       ),
@@ -228,9 +253,13 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
     ReturnIngressSetting4Changed event,
     Emitter<Setting18CCorNodeReverseControlState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.ingressSetting4);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       returnIngressSetting4: event.returnIngressSetting4,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         returnIngressSetting4: event.returnIngressSetting4,
       ),
@@ -241,9 +270,13 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
     ReturnIngressSetting6Changed event,
     Emitter<Setting18CCorNodeReverseControlState> emit,
   ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.ingressSetting6);
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       returnIngressSetting6: event.returnIngressSetting6,
+      tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         returnIngressSetting6: event.returnIngressSetting6,
       ),
@@ -268,6 +301,7 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
       submissionStatus: SubmissionStatus.none,
       editMode: false,
       enableSubmission: false,
+      tappedSet: {},
       usVCA1: RangeFloatPointInput.dirty(
         state.initialValues[DataKey.usVCA1] ?? '',
         minValue: state.usVCA1.minValue,
@@ -418,6 +452,7 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionSuccess,
       settingResult: settingResult,
+      tappedSet: {},
       enableSubmission: false,
       editMode: false,
     ));

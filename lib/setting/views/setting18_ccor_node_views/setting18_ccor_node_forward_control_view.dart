@@ -5,6 +5,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_forward_control/setting18_ccor_node_forward_control_bloc.dart';
+import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
@@ -192,12 +193,7 @@ class Setting18CCorNodeForwardControlView extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(
-                CustomStyle.sizeXL,
-              ),
-              child: buildControlWidget(partId),
-            ),
+            child: buildControlWidget(partId),
           ),
         ),
         floatingActionButton: _SettingFloatingActionButton(
@@ -239,7 +235,7 @@ class _ClusterTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
       child: Row(
         children: [
           Expanded(
@@ -286,6 +282,9 @@ class _ForwardOutputAttenuation1 extends StatelessWidget {
           errorText: state.dsVVA1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.dsVVA1)),
         );
       },
     );
@@ -320,6 +319,9 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
           errorText: state.dsVVA3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.dsVVA3)),
         );
       },
     );
@@ -354,6 +356,9 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
           errorText: state.dsVVA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.dsVVA4)),
         );
       },
     );
@@ -388,6 +393,9 @@ class _ForwardOutputAttenuation6 extends StatelessWidget {
           errorText: state.dsVVA6.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.dsVVA6)),
         );
       },
     );
@@ -566,6 +574,9 @@ class _ForwardOutputEqualizer1 extends StatelessWidget {
           errorText: state.dsOutSlope1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.dsOutSlope1)),
         );
       },
     );
@@ -600,6 +611,9 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
           errorText: state.dsOutSlope3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.dsOutSlope3)),
         );
       },
     );
@@ -634,6 +648,9 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
           errorText: state.dsOutSlope4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.dsOutSlope4)),
         );
       },
     );
@@ -668,6 +685,9 @@ class _ForwardOutputEqualizer6 extends StatelessWidget {
           errorText: state.dsOutSlope6.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.dsOutSlope6)),
         );
       },
     );
@@ -704,6 +724,9 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
           errorText: state.biasCurrent1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.biasCurrent1)),
         );
       },
     );
@@ -740,6 +763,9 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
           errorText: state.biasCurrent3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.biasCurrent3)),
         );
       },
     );
@@ -776,6 +802,9 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
           errorText: state.biasCurrent4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.biasCurrent4)),
         );
       },
     );
@@ -812,6 +841,9 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
           errorText: state.biasCurrent6.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          color: getSettingListCardColor(
+              context: context,
+              isTap: state.tappedSet.contains(DataKey.biasCurrent6)),
         );
       },
     );

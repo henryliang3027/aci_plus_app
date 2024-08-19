@@ -6,6 +6,7 @@ import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_configure/setting18_ccor_node_configure_bloc.dart';
+import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
@@ -259,12 +260,7 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(
-                CustomStyle.sizeXL,
-              ),
-              child: buildConfigurationWidget(partId),
-            ),
+            child: buildConfigurationWidget(partId),
           ),
         ),
         floatingActionButton: _SettingFloatingActionButton(
@@ -288,48 +284,52 @@ class _Location extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeConfigureBloc,
         Setting18CCorNodeConfigureState>(
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
+        return Card(
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.location),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: CustomStyle.sizeL),
-                child: Text(
-                  '${AppLocalizations.of(context)!.location}:',
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.w500,
+          child: Padding(
+            padding: const EdgeInsets.all(CustomStyle.sizeXL),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: CustomStyle.sizeL),
+                  child: Text(
+                    '${AppLocalizations.of(context)!.location}:',
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-              TextField(
-                controller: textEditingController,
-                key: const Key('setting18Form_locationInput_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
+                TextField(
+                  controller: textEditingController,
+                  key: const Key('setting18Form_locationInput_textField'),
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeXL,
+                  ),
+                  enabled: state.editMode,
+                  textInputAction: TextInputAction.done,
+                  onChanged: (location) {
+                    context
+                        .read<Setting18CCorNodeConfigureBloc>()
+                        .add(LocationChanged(location));
+                  },
+                  maxLength: 48,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                    contentPadding: const EdgeInsets.all(10.0),
+                    isDense: true,
+                    filled: true,
+                    fillColor: Theme.of(context).colorScheme.secondaryContainer,
+                    counterText: '',
+                  ),
                 ),
-                enabled: state.editMode,
-                textInputAction: TextInputAction.done,
-                onChanged: (location) {
-                  context
-                      .read<Setting18CCorNodeConfigureBloc>()
-                      .add(LocationChanged(location));
-                },
-                maxLength: 48,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                  contentPadding: const EdgeInsets.all(10.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
-                  counterText: '',
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -349,94 +349,101 @@ class _Coordinates extends StatelessWidget {
     return BlocBuilder<Setting18CCorNodeConfigureBloc,
         Setting18CCorNodeConfigureState>(
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            bottom: 40.0,
+        return Card(
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.coordinates),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: CustomStyle.sizeL),
-                child: Text(
-                  '${AppLocalizations.of(context)!.coordinates}:',
+          child: Padding(
+            padding: const EdgeInsets.all(CustomStyle.sizeXL),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: CustomStyle.sizeL),
+                  child: Text(
+                    '${AppLocalizations.of(context)!.coordinates}:',
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                TextField(
+                  controller: textEditingController,
+                  key: const Key('setting18Form_coordinatesInput_textField'),
                   style: const TextStyle(
                     fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.w500,
                   ),
-                ),
-              ),
-              TextField(
-                controller: textEditingController,
-                key: const Key('setting18Form_coordinatesInput_textField'),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                ),
-                enabled: state.editMode,
-                textInputAction: TextInputAction.done,
-                onChanged: (coordinate) {
-                  context
-                      .read<Setting18CCorNodeConfigureBloc>()
-                      .add(CoordinatesChanged(coordinate));
-                },
-                maxLength: 39,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(10.0),
-                  isDense: true,
-                  filled: true,
-                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
-                  counterText: '',
-                  suffixIconConstraints: const BoxConstraints(
-                    maxHeight: 48,
-                    maxWidth: 56,
-                    minHeight: 48,
-                    minWidth: 56,
-                  ),
-                  suffixIcon: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Material(
-                      // elevation: 5.0,
-                      color: state.editMode
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.inversePrimary,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(4.0),
-                              bottomRight: Radius.circular(4.0))),
-                      // shadowColor: Colors.green,
-                      child: state.gpsStatus.isRequestInProgress
-                          ? Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: CircularProgressIndicator(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
-                            )
-                          : IconButton(
-                              iconSize: 26,
-                              icon: Icon(
-                                Icons.pin_drop,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                // size: 22,
-                              ),
-                              onPressed: state.editMode
-                                  ? () {
-                                      context
-                                          .read<
-                                              Setting18CCorNodeConfigureBloc>()
-                                          .add(const GPSCoordinatesRequested());
-                                    }
-                                  : null,
-                            ),
+                  enabled: state.editMode,
+                  textInputAction: TextInputAction.done,
+                  onChanged: (coordinate) {
+                    context
+                        .read<Setting18CCorNodeConfigureBloc>()
+                        .add(CoordinatesChanged(coordinate));
+                  },
+                  maxLength: 39,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(10.0),
+                    isDense: true,
+                    filled: true,
+                    fillColor: Theme.of(context).colorScheme.secondaryContainer,
+                    counterText: '',
+                    suffixIconConstraints: const BoxConstraints(
+                      maxHeight: 48,
+                      maxWidth: 56,
+                      minHeight: 48,
+                      minWidth: 56,
                     ),
-                  ),
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(4.0),
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Material(
+                        // elevation: 5.0,
+                        color: state.editMode
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.inversePrimary,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(4.0),
+                                bottomRight: Radius.circular(4.0))),
+                        // shadowColor: Colors.green,
+                        child: state.gpsStatus.isRequestInProgress
+                            ? Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: CircularProgressIndicator(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                              )
+                            : IconButton(
+                                iconSize: 26,
+                                icon: Icon(
+                                  Icons.pin_drop,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  // size: 22,
+                                ),
+                                onPressed: state.editMode
+                                    ? () {
+                                        context
+                                            .read<
+                                                Setting18CCorNodeConfigureBloc>()
+                                            .add(
+                                                const GPSCoordinatesRequested());
+                                      }
+                                    : null,
+                              ),
+                      ),
+                    ),
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(4.0),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -529,6 +536,10 @@ class _ForwardMode extends StatelessWidget {
           onGridPressed: (index) => context
               .read<Setting18CCorNodeConfigureBloc>()
               .add(ForwardModeChanged(forwardModeValues[index])),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.forwardMode),
+          ),
         );
       },
     );
@@ -556,6 +567,10 @@ class _ForwardConfig extends StatelessWidget {
           onGridPressed: (index) => context
               .read<Setting18CCorNodeConfigureBloc>()
               .add(ForwardConfigChanged(forwardConfigValues[index])),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.forwardConfig),
+          ),
         );
       },
     );
@@ -580,6 +595,10 @@ class _SplitOption extends StatelessWidget {
           onGridPressed: (index) => context
               .read<Setting18CCorNodeConfigureBloc>()
               .add(SplitOptionChanged(splitOptionValues[index])),
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.splitOption),
+          ),
         );
       },
     );
@@ -610,6 +629,10 @@ class _LogInterval extends StatelessWidget {
                 .read<Setting18CCorNodeConfigureBloc>()
                 .add(LogIntervalChanged(logInterval.toStringAsFixed(0)));
           },
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.logInterval),
+          ),
         );
       },
     );
