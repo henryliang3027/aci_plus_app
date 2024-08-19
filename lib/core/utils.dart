@@ -85,14 +85,17 @@ String adjustMaxIntValue({
       : intCurrentValue.toString();
 }
 
-PopupMenuItem<T> menuItem<T>(
-    {required T value,
-    required IconData iconData,
-    required String title,
-    required VoidCallback onTap}) {
+PopupMenuItem<T> menuItem<T>({
+  required T value,
+  required IconData iconData,
+  required String title,
+  required VoidCallback onTap,
+  bool enabled = true,
+}) {
   // 使用 Builder 來解決當 PopupMenu 開著的時候切換主題時能即時改變 Icon 顏色
   return PopupMenuItem<T>(
     value: value,
+    enabled: enabled,
     onTap: onTap,
     child: Builder(
       builder: (context) => Row(
