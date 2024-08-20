@@ -2557,7 +2557,7 @@ class _LastChannelPowerLevelCard extends StatelessWidget {
               DataKey.rfOutputPilotHighFrequencyAlarmState] ??
           '1';
       String pilotFrequency2AlarmSeverity = state.characteristicData[
-              DataKey.rfOutputPilotLowFrequencyAlarmSeverity] ??
+              DataKey.rfOutputPilotHighFrequencyAlarmSeverity] ??
           '0';
 
       return Card(
