@@ -375,7 +375,7 @@ class _ClusterTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
+      padding: const EdgeInsets.fromLTRB(10, 30.0, 10, 10.0),
       child: Row(
         children: [
           Expanded(
