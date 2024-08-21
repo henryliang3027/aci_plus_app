@@ -234,6 +234,8 @@ class _SplitOption extends StatelessWidget {
         onGridPressed: (index) => context
             .read<Setting18CCorNodeGraphModuleBloc>()
             .add(SplitOptionChanged(splitOption: splitOptionValues[index])),
+        elevation: CustomStyle.graphSettingCardElevation,
+        color: CustomStyle.graphSettingCardColor,
       );
     });
   }
@@ -261,6 +263,8 @@ class _ForwardConfig extends StatelessWidget {
               .read<Setting18CCorNodeGraphModuleBloc>()
               .add(ForwardConfigChanged(
                   forwardConfig: forwardConfigValues[index])),
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -293,6 +297,8 @@ class _ForwardOutputAttenuation1 extends StatelessWidget {
           errorText: state.dsVVA1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -325,6 +331,8 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
           errorText: state.dsVVA3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -357,6 +365,8 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
           errorText: state.dsVVA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -389,6 +399,8 @@ class _ForwardOutputAttenuation6 extends StatelessWidget {
           errorText: state.dsVVA6.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -555,6 +567,8 @@ class _ForwardOutputEqualizer1 extends StatelessWidget {
           errorText: state.dsOutSlope1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -589,6 +603,8 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
           errorText: state.dsOutSlope3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -623,6 +639,8 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
           errorText: state.dsOutSlope4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -657,6 +675,8 @@ class _ForwardOutputEqualizer6 extends StatelessWidget {
           errorText: state.dsOutSlope6.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -693,6 +713,8 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
           errorText: state.biasCurrent1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -729,6 +751,8 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
           errorText: state.biasCurrent3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -765,6 +789,8 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
           errorText: state.biasCurrent4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -801,6 +827,8 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
           errorText: state.biasCurrent6.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -833,6 +861,8 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
           errorText: state.usVCA1.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -865,6 +895,8 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
           errorText: state.usVCA3.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -897,6 +929,8 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
           errorText: state.usVCA4.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -929,6 +963,8 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
           errorText: state.usVCA6.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -970,6 +1006,8 @@ class _ReturnIngressSetting1 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -1004,6 +1042,8 @@ class _ReturnIngressSetting3 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -1038,6 +1078,8 @@ class _ReturnIngressSetting4 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );
@@ -1072,6 +1114,8 @@ class _ReturnIngressSetting6 extends StatelessWidget {
             '-6dB',
             AppLocalizations.of(context)!.ingressOpen,
           ],
+          elevation: CustomStyle.graphSettingCardElevation,
+          color: CustomStyle.graphSettingCardColor,
         );
       },
     );

@@ -170,6 +170,132 @@ class _AppView extends StatelessWidget {
         theme: light,
         darkTheme: dark,
         // themeMode: ThemeMode.light,
+        // theme: ThemeData(
+        //   cardTheme: const CardTheme(
+        //     color: Colors.white,
+        //   ),
+        //   colorScheme: ColorScheme.fromSeed(
+        //     brightness: Brightness.light,
+        //     seedColor: Colors.indigo,
+        //     primary: Colors.indigo,
+        //     onPrimary: Colors.white,
+        //     secondaryContainer: Colors.white,
+        //     surfaceContainerLow: Colors.white, // default Card color
+        //     surfaceContainerHighest: Colors.white,
+        //     onSurface: Colors.black,
+        //   ),
+        //   appBarTheme: const AppBarTheme(
+        //     iconTheme: IconThemeData(color: Colors.white),
+        //     foregroundColor: Colors.white,
+        //     backgroundColor: Colors.indigo,
+        //   ),
+        //   tabBarTheme: const TabBarTheme(
+        //     tabAlignment: TabAlignment.start,
+        //     unselectedLabelColor: Colors.white,
+        //     labelColor: Colors.indigo,
+        //     indicatorSize: TabBarIndicatorSize.tab,
+        //     indicator: BoxDecoration(
+        //       borderRadius: BorderRadius.only(
+        //         topLeft: Radius.circular(10),
+        //         topRight: Radius.circular(10),
+        //       ),
+        //       color: Colors.white,
+        //     ),
+        //     labelPadding: EdgeInsets.symmetric(horizontal: 24.0),
+        //     dividerColor: Colors.white,
+        //   ),
+        //   cardColor: const Color.fromARGB(
+        //       255, 167, 191, 219), // card tap color in setting page
+        //   // cardColor: const Color.fromARGB(
+        //   //     255, 255, 165, 45), // card tap color in setting page
+        //   bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        //     backgroundColor: Colors.white,
+        //     selectedItemColor: Colors.indigo,
+        //     unselectedItemColor: Colors.grey.shade700,
+        //   ),
+        //   elevatedButtonTheme: ElevatedButtonThemeData(
+        //     style: ButtonStyle(
+        //       elevation: WidgetStateProperty.resolveWith<double?>(
+        //           (Set<WidgetState> states) {
+        //         return 0.0;
+        //       }),
+        //       backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+        //           (Set<WidgetState> states) {
+        //         if (states.contains(WidgetState.disabled)) {
+        //           return Colors.grey.shade300; // Disabled background color
+        //         }
+        //         return Colors.indigo; // Enabled background color
+        //       }),
+        //       foregroundColor: WidgetStateProperty.resolveWith<Color?>(
+        //           (Set<WidgetState> states) {
+        //         if (states.contains(WidgetState.disabled)) {
+        //           return Colors.grey.shade500; // Disabled text color
+        //         }
+        //         return Colors.white; // Enabled text color
+        //       }),
+        //     ),
+        //   ),
+        //   scaffoldBackgroundColor: Colors.grey.shade50,
+        //   dialogBackgroundColor: Colors.grey.shade50,
+        //   useMaterial3: true,
+        // ),
+
+        // darkTheme: ThemeData(
+        //   colorScheme: ColorScheme.fromSeed(
+        //     brightness: Brightness.dark,
+        //     seedColor: Colors.indigo,
+        //     primary: Colors.indigo,
+        //     onPrimary: Colors.white,
+        //     secondaryContainer: const Color(0xFF282A2F),
+        //     surfaceContainerLow: const Color(0xFF282A2F), // default Card color
+        //     surfaceContainerHighest: const Color(0xFF33353A),
+        //     onSurface: Colors.white,
+        //   ),
+        //   appBarTheme: const AppBarTheme(
+        //     iconTheme: IconThemeData(color: Colors.white),
+        //     foregroundColor: Colors.white,
+        //     backgroundColor: Colors.black,
+        //   ),
+        //   tabBarTheme: const TabBarTheme(
+        //     tabAlignment: TabAlignment.start,
+        //     unselectedLabelColor: Colors.white,
+        //     labelColor: Colors.white,
+        //     indicatorSize: TabBarIndicatorSize.tab,
+        //     indicator: BoxDecoration(
+        //       borderRadius: BorderRadius.only(
+        //           topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+        //       color: Color(0xFF282A2F),
+        //     ),
+        //     labelPadding: EdgeInsets.symmetric(horizontal: 24.0),
+        //     dividerHeight: 0.0,
+        //   ),
+        //   cardColor: const Color.fromARGB(
+        //       255, 19, 48, 68), // card tap color in setting page
+        //   // cardColor:
+        //   //     const Color.fromARGB(255, 205, 75, 5), // card tap color in setting page
+        //   scaffoldBackgroundColor: const Color(0xFF0C0E13),
+        //   elevatedButtonTheme: ElevatedButtonThemeData(
+        //     style: ButtonStyle(
+        //       backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+        //           (Set<WidgetState> states) {
+        //         if (states.contains(WidgetState.disabled)) {
+        //           return Colors.grey; // Disabled background color
+        //         }
+        //         return Colors.indigo; // Enabled background color
+        //       }),
+        //       foregroundColor: WidgetStateProperty.resolveWith<Color?>(
+        //           (Set<WidgetState> states) {
+        //         if (states.contains(WidgetState.disabled)) {
+        //           return Colors.white; // Disabled text color
+        //         }
+        //         return Colors.white; // Enabled text color
+        //       }),
+        //     ),
+        //   ),
+        //   dialogBackgroundColor: const Color(0xFF282A2F),
+        //   useMaterial3: true,
+        // ),
+
         home: BlocBuilder<HomeBloc, HomeState>(
           buildWhen: (previous, current) =>
               previous.showSplash != current.showSplash,
