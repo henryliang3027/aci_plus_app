@@ -8,17 +8,20 @@ class QRCodeGeneratorPage extends StatelessWidget {
   const QRCodeGeneratorPage({
     super.key,
     required this.encodedData,
+    required this.description,
   });
 
   final String encodedData;
+  final String description;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => QRCodeGeneratorBloc(),
-      child: QRCodeGeneratorForm(
+      create: (context) => QRCodeGeneratorBloc(
         encodedData: encodedData,
+        description: description,
       ),
+      child: QRCodeGeneratorForm(),
     );
   }
 }

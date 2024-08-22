@@ -281,11 +281,7 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
         }
       }
 
-      return widgets.isNotEmpty
-          ? widgets
-          : [
-              const _SplitOptionAlarmControl(),
-            ];
+      return widgets;
     }
 
     Widget buildThresholdWidget(String partId) {

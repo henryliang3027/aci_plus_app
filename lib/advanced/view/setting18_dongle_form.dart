@@ -13,6 +13,7 @@ class Setting18DongleForm extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<void> showGeneratedQRCodeDialog({
       required String encodedData,
+      required String description,
     }) async {
       return showDialog<void>(
         context: context,
@@ -28,6 +29,7 @@ class Setting18DongleForm extends StatelessWidget {
             ),
             child: QRCodeGeneratorPage(
               encodedData: encodedData,
+              description: description,
             ),
           );
         },

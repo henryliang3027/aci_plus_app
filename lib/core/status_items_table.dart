@@ -12,6 +12,10 @@ enum StatusItem {
   startFrequencyOutputLevel,
   stopFrequencyOutputLevel,
   operatingSlope, // 暫時不需要顯示
+  outputPower1,
+  outputPower3,
+  outputPower4,
+  outputPower6,
 }
 
 class StatusItemTable {
@@ -57,6 +61,16 @@ class StatusItemTable {
       StatusItem.pilot2Status,
       StatusItem.startFrequencyOutputLevel,
       StatusItem.stopFrequencyOutputLevel,
+    ],
+    '4': [
+      // C-Cor Node
+      StatusItem.splitOptions,
+      StatusItem.temperature,
+      StatusItem.inputVoltage24V,
+      StatusItem.outputPower1,
+      StatusItem.outputPower3,
+      StatusItem.outputPower4,
+      StatusItem.outputPower6,
     ],
     '5': [
       // C-Cor TR

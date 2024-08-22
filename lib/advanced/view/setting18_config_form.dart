@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_bloc.dart';
+import 'package:aci_plus_app/advanced/view/description_input_page.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_generator_page.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_scanner.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_tab_bar.dart';
@@ -20,6 +21,7 @@ class Setting18ConfigForm extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<void> showGeneratedQRCodeDialog({
       required String encodedData,
+      required String description,
     }) async {
       return showDialog<void>(
         context: context,
@@ -36,6 +38,7 @@ class Setting18ConfigForm extends StatelessWidget {
             child: SizedBox(
               child: QRCodeGeneratorPage(
                 encodedData: encodedData,
+                description: description,
               ),
             ),
           );
@@ -115,10 +118,25 @@ class Setting18ConfigForm extends StatelessWidget {
       );
     }
 
+    Future<String?> showQRCodeDescriptionDialog() async {
+      return showDialog<String?>(
+          context: context,
+          builder: (context) {
+            return const DescriptionInputPage();
+          });
+    }
+
     return BlocListener<Setting18ConfigBloc, Setting18ConfigState>(
       listener: (context, state) {
         if (state.encodeStaus.isRequestSuccess) {
-          showGeneratedQRCodeDialog(encodedData: state.encodedData);
+          showQRCodeDescriptionDialog().then((String? description) {
+            if (description != null) {
+              showGeneratedQRCodeDialog(
+                encodedData: state.encodedData,
+                description: description,
+              );
+            }
+          });
         } else if (state.decodeStatus.isRequestSuccess) {
           showAllConfigUpdatedDialog();
         } else if (state.decodeStatus.isRequestFailure) {

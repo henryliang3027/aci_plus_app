@@ -11,10 +11,8 @@ import 'package:share_plus/share_plus.dart';
 class QRCodeGeneratorForm extends StatelessWidget {
   QRCodeGeneratorForm({
     super.key,
-    required this.encodedData,
   });
 
-  final String encodedData;
   final GlobalKey globalKey = GlobalKey();
 
   @override
@@ -26,7 +24,7 @@ class QRCodeGeneratorForm extends StatelessWidget {
           double height = MediaQuery.of(context).size.height;
           Share.shareXFiles(
             [XFile(state.imageFilePath)],
-            subject: state.imageFileName,
+            subject: state.description,
             sharePositionOrigin:
                 Rect.fromLTWH(0.0, height / 2, width, height / 2),
           );
@@ -41,7 +39,6 @@ class QRCodeGeneratorForm extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               _QRCodeViewer(
-                encodedData: encodedData,
                 globalKey: globalKey,
               ),
               Flexible(
@@ -61,35 +58,52 @@ class QRCodeGeneratorForm extends StatelessWidget {
 
 class _QRCodeViewer extends StatelessWidget {
   const _QRCodeViewer({
-    required this.encodedData,
     required this.globalKey,
   });
 
-  final String encodedData;
   final GlobalKey globalKey;
 
   @override
   Widget build(BuildContext context) {
-    // String test = [
-    //   for (int i = 0; i < 2953; i++) ...['1']
-    // ].join();
-
-    // print(test.length);
-
-    return RepaintBoundary(
-      key: globalKey,
-      child: QrImageView(
-        data: encodedData,
-        version: QrVersions.auto,
-        errorCorrectionLevel: QrErrorCorrectLevel.L,
-        backgroundColor: Theme.of(context).colorScheme.onPrimary,
-        // size: 320,
-        gapless: true,
-        // embeddedImage: const AssetImage('assets/qr_logo.png'),
-        // embeddedImageStyle: const QrEmbeddedImageStyle(
-        //   size: Size(50, 50),
-        // ),
-      ),
+    return BlocBuilder<QRCodeGeneratorBloc, QRCodeGeneratorState>(
+      builder: (context, state) {
+        return RepaintBoundary(
+          key: globalKey,
+          child: Container(
+            // 避免分享截圖時, 註記的背景為透明導致看不清楚
+            decoration: const BoxDecoration(
+              color: Colors.white,
+            ),
+            child: Column(
+              children: [
+                QrImageView(
+                  data: state.encodedData,
+                  version: QrVersions.auto,
+                  errorCorrectionLevel: QrErrorCorrectLevel.L,
+                  backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                  // size: 320,
+                  gapless: true,
+                  // embeddedImage: const AssetImage('assets/qr_logo.png'),
+                  // embeddedImageStyle: const QrEmbeddedImageStyle(
+                  //   size: Size(50, 50),
+                  // ),
+                ),
+                Text(
+                  state.description,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black, // 淺色/深色主題都為黑色
+                  ),
+                ),
+                const SizedBox(
+                  height: 6.0,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
