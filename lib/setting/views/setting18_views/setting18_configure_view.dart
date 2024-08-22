@@ -266,7 +266,7 @@ class Setting18ConfigureView extends StatelessWidget {
               _Coordinates(
                 textEditingController: coordinateTextEditingController,
               ),
-              const _SplitOption(),
+              // const _SplitOption(),
               const _PilotFrequencyMode(),
               _FirstChannelLoading(
                 firstChannelLoadingFrequencyTextEditingController:

@@ -230,6 +230,7 @@
     "dialogTitleSettingResult": "Résultat",
     "dialogTitleSuccess": "Succès",
     "dialogTitleEnterYourCode": "Entrez Votre Code",
+    "dialogTitleEnterQRCodeDescription": "Entrez la description du code QR",
     "dialogTitleEnterConfirm": "Confirmer",
     "dialogTitleDeleteConfig": "Supprimer",
     "dialogTitleSelectConfig": "Sélectionner le préréglage",
@@ -403,6 +404,7 @@
     "dialogMessageEnterConfirm": "Pour confirmer, tapez \"confirm\" ci-dessous.",
     "dialogMessageCodeHint": "Veuillez entrer votre code",
     "dialogMessageEnterYourCode": "Seuls les chiffres arabes, maximum 8 caractères:",
+    "dialogMessageEnterQRCodeDescription": "Maximum 22 caractères:",
     "dialogMessageWarmReset": "Voulez-vous effectuer une réinitialisation chaude sur l'appareil ?",
     "dialogMessageWarmResetingAlmostDone": "Presque terminé",
     "dialogMessageWarmResetSeccessful": "Réinitialisation chaude effectuée avec succès."

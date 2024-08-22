@@ -208,7 +208,7 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
               ),
               const _ForwardMode(),
               const _ForwardConfig(),
-              const _SplitOption(),
+              // const _SplitOption(),
               const _LogInterval(),
             ];
     }

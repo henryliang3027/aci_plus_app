@@ -100,6 +100,14 @@ class _CardView extends StatelessWidget {
           case StatusItem.operatingSlope:
             widgets.add(const _OutputOperatingSlopeCard());
             break;
+          case StatusItem.outputPower1:
+            break;
+          case StatusItem.outputPower3:
+            break;
+          case StatusItem.outputPower4:
+            break;
+          case StatusItem.outputPower6:
+            break;
         }
       }
 
@@ -517,10 +525,13 @@ class _SplitOptionCard extends StatelessWidget {
         currentSplitOption.isEmpty ? 'N/A' : currentSplitOption,
         style: TextStyle(
           fontSize: fontSize,
-          color: _getCurrentValueColor(
-            alarmState: splitOptionAlarmState,
-            alarmSeverity: splitOptionAlarmSeverity,
-          ),
+          color: CustomStyle.alarmColor['mask']!,
+
+          // 20240821 不顯示顏色
+          // _getCurrentValueColor(
+          //   alarmState: splitOptionAlarmState,
+          //   alarmSeverity: splitOptionAlarmSeverity,
+          // ),
         ),
       );
     } else {

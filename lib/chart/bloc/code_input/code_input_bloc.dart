@@ -27,10 +27,10 @@ class CodeInputBloc extends Bloc<CodeInputEvent, CodeInputState> {
     ));
   }
 
-  Future<void> _onCodeChanged(
+  void _onCodeChanged(
     CodeChanged event,
     Emitter<CodeInputState> emit,
-  ) async {
+  ) {
     emit(state.copyWith(
       isInitialize: false,
       code: event.code,
