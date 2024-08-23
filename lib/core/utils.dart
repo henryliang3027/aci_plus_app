@@ -121,6 +121,6 @@ Future<String> getAppVersion() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
   // 給部門內測試的版本會加 -beta版本文字, 例如V 2.1.2-beta2
-  String appVersion = 'V ${packageInfo.version}-beta3';
+  String appVersion = 'V ${packageInfo.version}-beta8';
   return appVersion;
 }
