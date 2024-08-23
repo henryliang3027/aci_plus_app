@@ -263,8 +263,6 @@ class _SplitOptionCard extends StatelessWidget {
         currentSplitOption.isEmpty ? 'N/A' : currentSplitOption,
         style: TextStyle(
           fontSize: fontSize,
-          color: CustomStyle.alarmColor['mask']!,
-
           // 20240821 不顯示顏色
           //  _getCurrentValueColor(
           //   alarmState: splitOptionAlarmState,
