@@ -989,6 +989,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       characteristicData: const {},
       dateValueCollectionOfLog: const [],
     ));
+    _amp18Repository.clearCharacteristics();
+    _amp18CCorNodeRepository.clearCharacteristics();
 
     _dsimRepository.clearCache();
     _dsimRepository.closeCharacteristicDataStream();
