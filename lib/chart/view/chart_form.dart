@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:aci_plus_app/chart/bloc/chart/chart_bloc.dart';
@@ -336,7 +337,8 @@ class _LogChartView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.symmetric(
+                horizontal: CustomStyle.sizeXL, vertical: 10.0),
             child: ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -362,6 +364,7 @@ class _LogChartView extends StatelessWidget {
           SpeedLineChart(
             lineSeriesCollection: lineSeriesCollection,
             showLegend: true,
+            showScaleThumbs: Platform.isWindows ? true : false,
           ),
         ],
       );
