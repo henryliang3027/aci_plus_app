@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:aci_plus_app/chart/bloc/chart18_ccor_node/chart18_ccor_node_bloc.dart';
@@ -575,6 +576,7 @@ class _LogChartListView extends StatelessWidget {
           SpeedLineChart(
             lineSeriesCollection: lineSeriesCollection,
             showLegend: true,
+            showScaleThumbs: Platform.isWindows ? true : false,
           ),
         ],
       );

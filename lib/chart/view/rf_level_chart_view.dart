@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 import 'package:aci_plus_app/chart/bloc/chart18/chart18_bloc.dart';
 import 'package:aci_plus_app/chart/bloc/rf_level_chart/rf_level_chart_bloc.dart';
@@ -78,7 +79,8 @@ class _ChartView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.symmetric(
+                horizontal: CustomStyle.sizeXL, vertical: 10.0),
             child: ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -104,6 +106,7 @@ class _ChartView extends StatelessWidget {
           SpeedLineChart(
             lineSeriesCollection: lineSeriesCollection,
             showLegend: true,
+            showScaleThumbs: Platform.isWindows ? true : false,
           ),
         ],
       );

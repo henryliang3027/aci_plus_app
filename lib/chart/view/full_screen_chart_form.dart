@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
@@ -56,6 +58,7 @@ class _FullScreenChartFormState extends State<FullScreenChartForm> {
                 lineSeriesCollection: widget.lineSeriesCollection,
                 showLegend: true,
                 showMultipleYAxises: true,
+                showScaleThumbs: Platform.isWindows ? true : false,
               ),
             ],
           ),
