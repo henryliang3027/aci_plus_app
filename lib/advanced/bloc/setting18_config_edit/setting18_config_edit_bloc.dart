@@ -62,7 +62,7 @@ class Setting18ConfigEditBloc
 
     String groupId = _groupId;
     String rawName = '';
-    String splitOption = '1';
+    // String splitOption = '1';
     String rawFirstChannelLoadingFrequency = '258';
     String rawFirstChannelLoadingLevel = '34.0';
     String rawLastChannelLoadingFrequency = '1794';
@@ -70,7 +70,7 @@ class Setting18ConfigEditBloc
 
     if (_config != null) {
       rawName = _config.name;
-      splitOption = _config.splitOption;
+      // splitOption = _config.splitOption;
       rawFirstChannelLoadingFrequency = _config.firstChannelLoadingFrequency;
       rawFirstChannelLoadingLevel = _config.firstChannelLoadingLevel;
       rawLastChannelLoadingFrequency = _config.lastChannelLoadingFrequency;
@@ -104,7 +104,7 @@ class Setting18ConfigEditBloc
       settingStatus: SubmissionStatus.none,
       groupId: groupId,
       name: name,
-      splitOption: splitOption,
+      // splitOption: splitOption,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
       firstChannelLoadingLevel: firstChannelLoadingLevel,
       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -112,7 +112,7 @@ class Setting18ConfigEditBloc
       isInitialize: true,
       enableSubmission: _isEnabledSubmission(
         name: name,
-        splitOption: splitOption,
+        // splitOption: splitOption,
         firstChannelLoadingFrequency: firstChannelLoadingFrequency,
         firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -199,7 +199,7 @@ class Setting18ConfigEditBloc
       name: name,
       enableSubmission: _isEnabledSubmission(
         name: name,
-        splitOption: state.splitOption,
+        // splitOption: state.splitOption,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: state.firstChannelLoadingLevel,
         lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
@@ -219,7 +219,7 @@ class Setting18ConfigEditBloc
       splitOption: event.splitOption,
       enableSubmission: _isEnabledSubmission(
         name: state.name,
-        splitOption: event.splitOption,
+        // splitOption: event.splitOption,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: state.firstChannelLoadingLevel,
         lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
@@ -248,7 +248,7 @@ class Setting18ConfigEditBloc
       enableSubmission: isValid &&
           _isEnabledSubmission(
             name: state.name,
-            splitOption: state.splitOption,
+            // splitOption: state.splitOption,
             firstChannelLoadingFrequency: firstChannelLoadingFrequency,
             firstChannelLoadingLevel: state.firstChannelLoadingLevel,
             lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
@@ -271,7 +271,7 @@ class Setting18ConfigEditBloc
       firstChannelLoadingLevel: firstChannelLoadingLevel,
       enableSubmission: _isEnabledSubmission(
         name: state.name,
-        splitOption: state.splitOption,
+        // splitOption: state.splitOption,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
@@ -294,7 +294,7 @@ class Setting18ConfigEditBloc
       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       enableSubmission: _isEnabledSubmission(
         name: state.name,
-        splitOption: state.splitOption,
+        // splitOption: state.splitOption,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: state.firstChannelLoadingLevel,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -317,7 +317,7 @@ class Setting18ConfigEditBloc
       lastChannelLoadingLevel: lastChannelLoadingLevel,
       enableSubmission: _isEnabledSubmission(
         name: state.name,
-        splitOption: state.splitOption,
+        // splitOption: state.splitOption,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: state.firstChannelLoadingLevel,
         lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
@@ -340,7 +340,7 @@ class Setting18ConfigEditBloc
     await _configRepository.putConfig(
       groupId: state.groupId,
       name: state.name.value,
-      splitOption: state.splitOption,
+      // splitOption: state.splitOption,
       firstChannelLoadingFrequency: state.firstChannelLoadingFrequency.value,
       firstChannelLoadingLevel: state.firstChannelLoadingLevel.value,
       lastChannelLoadingFrequency: state.lastChannelLoadingFrequency.value,
@@ -448,7 +448,7 @@ class Setting18ConfigEditBloc
 
   bool _isEnabledSubmission({
     required NameInput name,
-    required String splitOption,
+    // required String splitOption,
     required IntegerInput firstChannelLoadingFrequency,
     required FloatPointInput firstChannelLoadingLevel,
     required IntegerInput lastChannelLoadingFrequency,
@@ -464,7 +464,7 @@ class Setting18ConfigEditBloc
 
     if (isValid) {
       if (name.value.isNotEmpty &&
-          splitOption != '0' &&
+          // splitOption != '0' &&
           firstChannelLoadingFrequency.value.isNotEmpty &&
           firstChannelLoadingLevel.value.isNotEmpty &&
           lastChannelLoadingFrequency.value.isNotEmpty &&

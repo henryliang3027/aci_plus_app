@@ -13,7 +13,7 @@ class TrunkConfigApi {
   Future<void> putConfig({
     required int id,
     required String name,
-    required String splitOption,
+    // required String splitOption,
     required String firstChannelLoadingFrequency,
     required String firstChannelLoadingLevel,
     required String lastChannelLoadingFrequency,
@@ -23,7 +23,7 @@ class TrunkConfigApi {
     TrunkConfig newConfig = TrunkConfig(
       id: id,
       name: name,
-      splitOption: splitOption,
+      // splitOption: splitOption,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
       firstChannelLoadingLevel: firstChannelLoadingLevel,
       lastChannelLoadingFrequency: lastChannelLoadingFrequency,

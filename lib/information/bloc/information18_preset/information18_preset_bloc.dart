@@ -46,10 +46,10 @@ class Information18PresetBloc
 
     Config config = state.config;
 
-    bool resultOfSetSplitOption =
-        await _amp18Repository.set1p8GSplitOption(config.splitOption);
+    // bool resultOfSetSplitOption =
+    //     await _amp18Repository.set1p8GSplitOption(config.splitOption);
 
-    settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
+    // settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
 
     bool resultOfSetPilotFrequencyMode = await _amp18Repository
         .set1p8GPilotFrequencyMode('0'); // Full mode (auto mode)

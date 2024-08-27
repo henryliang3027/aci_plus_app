@@ -11,7 +11,7 @@ class DistributionConfig extends Config {
   const DistributionConfig({
     required super.id,
     required super.name,
-    required super.splitOption,
+    // required super.splitOption,
     required super.firstChannelLoadingFrequency,
     required super.firstChannelLoadingLevel,
     required super.lastChannelLoadingFrequency,

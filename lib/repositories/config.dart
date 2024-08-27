@@ -5,7 +5,7 @@ class Config {
   const Config({
     required this.id,
     required this.name,
-    required this.splitOption,
+    // required this.splitOption,
     required this.firstChannelLoadingFrequency,
     required this.firstChannelLoadingLevel,
     required this.lastChannelLoadingFrequency,
@@ -21,24 +21,24 @@ class Config {
   @HiveField(1, defaultValue: '')
   final String name;
 
-  @JsonKey(name: '2')
-  @HiveField(2, defaultValue: '0')
-  final String splitOption;
+  // @JsonKey(name: '2')
+  // @HiveField(2, defaultValue: '0')
+  // final String splitOption;
 
-  @JsonKey(name: '3')
-  @HiveField(3, defaultValue: '258')
+  @JsonKey(name: '2')
+  @HiveField(2, defaultValue: '258')
   final String firstChannelLoadingFrequency;
 
-  @JsonKey(name: '4')
-  @HiveField(4, defaultValue: '34.0')
+  @JsonKey(name: '3')
+  @HiveField(3, defaultValue: '34.0')
   final String firstChannelLoadingLevel;
 
-  @JsonKey(name: '5')
-  @HiveField(5, defaultValue: '1794')
+  @JsonKey(name: '4')
+  @HiveField(4, defaultValue: '1794')
   final String lastChannelLoadingFrequency;
 
-  @JsonKey(name: '6')
-  @HiveField(6, defaultValue: '51.1')
+  @JsonKey(name: '5')
+  @HiveField(5, defaultValue: '51.1')
   final String lastChannelLoadingLevel;
 
   // @JsonKey(name: '7')

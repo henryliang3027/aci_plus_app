@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:aci_plus_app/app.dart';
+import 'package:aci_plus_app/core/shared_preference_key.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
 import 'package:aci_plus_app/repositories/node_config.dart';
@@ -18,8 +19,56 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void openHiveBox() {}
+Future<void> writeBoxVersion() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString(SharedPreferenceKey.boxVersion.name, '2.2.6');
+}
+
+Future<String> readBoxVersion() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  String boxVersion =
+      prefs.getString(SharedPreferenceKey.boxVersion.name) ?? '';
+  return boxVersion;
+}
+
+Future<void> initBox() async {
+  await Hive.initFlutter('.db');
+  Hive.registerAdapter<TrunkConfig>(TrunkConfigAdapter());
+  Hive.registerAdapter<DistributionConfig>(DistributionConfigAdapter());
+  Hive.registerAdapter<NodeConfig>(NodeConfigAdapter());
+
+  bool trunkConfigBoxExists = await Hive.boxExists('TrunkConfigData');
+  bool distributionConfigBoxExists =
+      await Hive.boxExists('DistributionConfigData');
+  bool nodeConfigBoxExists = await Hive.boxExists('NodeConfigData');
+
+  // print(
+  //     '$trunkConfigBoxExists, $distributionConfigBoxExists, $nodeConfigBoxExists');
+
+  // 如果是第一次建立 hive db 則在 SharedPreferences 內寫入 db 支援的最低 app 版本
+  if (!trunkConfigBoxExists ||
+      !distributionConfigBoxExists ||
+      !nodeConfigBoxExists) {
+    await writeBoxVersion();
+  } else {
+    // 如果已經存在, 則檢查 db 支援的最低 app 版本, 如果版本不符則清除 db, 再建立一個新的
+    String boxVersion = await readBoxVersion();
+
+    if (boxVersion.isEmpty) {
+      await Hive.deleteBoxFromDisk('TrunkConfigData');
+      await Hive.deleteBoxFromDisk('DistributionConfigData');
+      await Hive.deleteBoxFromDisk('NodeConfigData');
+
+      await writeBoxVersion();
+    }
+  }
+
+  await Hive.openBox<TrunkConfig>('TrunkConfigData');
+  await Hive.openBox<DistributionConfig>('DistributionConfigData');
+  await Hive.openBox<NodeConfig>('NodeConfigData');
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,14 +87,7 @@ Future<void> main() async {
     };
   }
 
-  await Hive.initFlutter('.db');
-  Hive.registerAdapter<TrunkConfig>(TrunkConfigAdapter());
-  Hive.registerAdapter<DistributionConfig>(DistributionConfigAdapter());
-  Hive.registerAdapter<NodeConfig>(NodeConfigAdapter());
-
-  await Hive.openBox<TrunkConfig>('TrunkConfigData');
-  await Hive.openBox<DistributionConfig>('DistributionConfigData');
-  await Hive.openBox<NodeConfig>('NodeConfigData');
+  await initBox();
 
   runApp(App(
     savedAdaptiveThemeMode: savedAdaptiveThemeMode,

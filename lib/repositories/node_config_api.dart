@@ -15,14 +15,14 @@ class NodeConfigApi {
     required String name,
     required String forwardMode,
     required String forwardConfig,
-    required String splitOption,
+    // required String splitOption,
   }) async {
     NodeConfig newConfig = NodeConfig(
       id: id,
       name: name,
       forwardMode: forwardMode,
       forwardConfig: forwardConfig,
-      splitOption: splitOption,
+      // splitOption: splitOption,
 
       // isDefault: isDefault,
     );

@@ -3,4 +3,5 @@ enum SharedPreferenceKey {
   pilot2Code,
   userCode,
   configAutoIncrementId,
+  boxVersion,
 }

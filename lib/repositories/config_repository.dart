@@ -67,7 +67,7 @@ class ConfigRepository {
   Future<void> putConfig({
     required String groupId,
     required String name,
-    required String splitOption,
+    // required String splitOption,
     required String firstChannelLoadingFrequency,
     required String firstChannelLoadingLevel,
     required String lastChannelLoadingFrequency,
@@ -81,7 +81,7 @@ class ConfigRepository {
         await _trunkConfigApi.putConfig(
           id: firstEmptyId,
           name: name,
-          splitOption: splitOption,
+          // splitOption: splitOption,
           firstChannelLoadingFrequency: firstChannelLoadingFrequency,
           firstChannelLoadingLevel: firstChannelLoadingLevel,
           lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -97,7 +97,7 @@ class ConfigRepository {
         await _distributionConfigApi.putConfig(
           id: firstEmptyId,
           name: name,
-          splitOption: splitOption,
+          // splitOption: splitOption,
           firstChannelLoadingFrequency: firstChannelLoadingFrequency,
           firstChannelLoadingLevel: firstChannelLoadingLevel,
           lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -114,7 +114,7 @@ class ConfigRepository {
     required String name,
     required String forwardMode,
     required String forwardConfig,
-    required String splitOption,
+    // required String splitOption,
   }) async {
     int? firstEmptyId = getEmptyNameId(groupId: groupId);
 
@@ -124,7 +124,7 @@ class ConfigRepository {
         name: name,
         forwardMode: forwardMode,
         forwardConfig: forwardConfig,
-        splitOption: splitOption,
+        // splitOption: splitOption,
       );
       _nodeConfigNames[firstEmptyId] = name;
     }
@@ -145,7 +145,7 @@ class ConfigRepository {
       await _trunkConfigApi.putConfig(
         id: id,
         name: name,
-        splitOption: splitOption,
+        // splitOption: splitOption,
         firstChannelLoadingFrequency: firstChannelLoadingFrequency,
         firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -157,7 +157,7 @@ class ConfigRepository {
       await _distributionConfigApi.putConfig(
         id: id,
         name: name,
-        splitOption: splitOption,
+        // splitOption: splitOption,
         firstChannelLoadingFrequency: firstChannelLoadingFrequency,
         firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -180,7 +180,7 @@ class ConfigRepository {
       name: name,
       forwardMode: forwardMode,
       forwardConfig: forwardConfig,
-      splitOption: splitOption,
+      // splitOption: splitOption,
     );
     _nodeConfigNames[id] = name;
   }
@@ -203,7 +203,7 @@ class ConfigRepository {
       await _trunkConfigApi.putConfig(
         id: trunkConfig.id,
         name: trunkConfig.name,
-        splitOption: trunkConfig.splitOption,
+        // splitOption: trunkConfig.splitOption,
         firstChannelLoadingFrequency: trunkConfig.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: trunkConfig.firstChannelLoadingLevel,
         lastChannelLoadingFrequency: trunkConfig.lastChannelLoadingFrequency,
@@ -217,7 +217,7 @@ class ConfigRepository {
       await _distributionConfigApi.putConfig(
         id: distributionConfig.id,
         name: distributionConfig.name,
-        splitOption: distributionConfig.splitOption,
+        // splitOption: distributionConfig.splitOption,
         firstChannelLoadingFrequency:
             distributionConfig.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: distributionConfig.firstChannelLoadingLevel,
@@ -235,7 +235,7 @@ class ConfigRepository {
         name: nodeConfig.name,
         forwardMode: nodeConfig.forwardMode,
         forwardConfig: nodeConfig.forwardConfig,
-        splitOption: nodeConfig.splitOption,
+        // splitOption: nodeConfig.splitOption,
       );
 
       _nodeConfigNames[nodeConfig.id] = nodeConfig.name;
