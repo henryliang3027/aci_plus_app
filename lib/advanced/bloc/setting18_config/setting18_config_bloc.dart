@@ -123,6 +123,17 @@ class Setting18ConfigBloc
     ));
   }
 
+  List<String> getSplitRawData(String rawData) {
+    List<String> splitRawData = rawData.split(' ');
+
+    // 2.2.0 版本沒有 Node config, 賦予空字串
+    if (splitRawData.length == 2) {
+      splitRawData.add('');
+    }
+
+    return splitRawData;
+  }
+
   Future<void> _onQRDataScanned(
     QRDataScanned event,
     Emitter<Setting18ConfigState> emit,
@@ -138,7 +149,7 @@ class Setting18ConfigBloc
 
     RegExp mapRegex = RegExp(r'(\{[^{}]*\})');
 
-    List<String> splitRawData = event.rawData.split(' ');
+    List<String> splitRawData = getSplitRawData(event.rawData);
 
     String trunkRawData = splitRawData[0];
     String distributionRawData = splitRawData[1];
@@ -155,7 +166,11 @@ class Setting18ConfigBloc
 
     print('-----trunk------');
 
-    for (Match match in trunkConfigMatches) {
+    for (int i = 0; i < trunkConfigMatches.length; i++) {
+      if (i == 3) {
+        break;
+      }
+      Match match = trunkConfigMatches.elementAt(i);
       String json = match[0]!;
       print(json);
       TrunkConfig trunkConfig = TrunkConfig.fromJson(jsonDecode(json));
@@ -164,7 +179,11 @@ class Setting18ConfigBloc
 
     print('-----distribution------');
 
-    for (Match match in distributionConfigMatches) {
+    for (int i = 0; i < distributionConfigMatches.length; i++) {
+      if (i == 3) {
+        break;
+      }
+      Match match = distributionConfigMatches.elementAt(i);
       String json = match[0]!;
       print(json);
       DistributionConfig distributionConfig =
@@ -174,7 +193,11 @@ class Setting18ConfigBloc
 
     print('-----node------');
 
-    for (Match match in nodeConfigMatches) {
+    for (int i = 0; i < nodeConfigMatches.length; i++) {
+      if (i == 3) {
+        break;
+      }
+      Match match = nodeConfigMatches.elementAt(i);
       String json = match[0]!;
       print(json);
       NodeConfig nodeConfig = NodeConfig.fromJson(jsonDecode(json));
