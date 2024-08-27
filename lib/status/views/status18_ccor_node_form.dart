@@ -198,11 +198,9 @@ class _DeviceStatus extends StatelessWidget {
   }
 }
 
-Color _getCurrentValueColor(
+Color? _getCurrentValueColor(
     {required String alarmState, required String alarmSeverity}) {
-  return alarmState == '0'
-      ? CustomStyle.alarmColor[alarmSeverity]!
-      : CustomStyle.alarmColor['mask']!;
+  return alarmState == '0' ? CustomStyle.alarmColor[alarmSeverity]! : null;
 }
 
 class _DeviceRefresh extends StatelessWidget {
