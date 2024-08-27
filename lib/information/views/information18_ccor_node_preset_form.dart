@@ -128,7 +128,7 @@ class _Information18CCorNodePresetFormState
             children: [
               _ForwardMode(),
               _ForwardConfig(),
-              _SplitOption(),
+              // _SplitOption(),
               SizedBox(
                 height: 200.0,
               ),
@@ -408,23 +408,23 @@ class _ForwardConfig extends StatelessWidget {
   }
 }
 
-class _SplitOption extends StatelessWidget {
-  const _SplitOption();
+// class _SplitOption extends StatelessWidget {
+//   const _SplitOption();
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Information18CCorNodePresetBloc,
-        Information18CCorNodePresetState>(
-      buildWhen: (previous, current) =>
-          previous.nodeConfig.splitOption != current.nodeConfig.splitOption,
-      builder: (context, state) {
-        return buildCard(
-          context: context,
-          title: AppLocalizations.of(context)!.splitOption,
-          content:
-              '${splitBaseLine[state.nodeConfig.splitOption]!.$1}/${splitBaseLine[state.nodeConfig.splitOption]!.$2} ${CustomStyle.mHz}',
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Information18CCorNodePresetBloc,
+//         Information18CCorNodePresetState>(
+//       buildWhen: (previous, current) =>
+//           previous.nodeConfig.splitOption != current.nodeConfig.splitOption,
+//       builder: (context, state) {
+//         return buildCard(
+//           context: context,
+//           title: AppLocalizations.of(context)!.splitOption,
+//           content:
+//               '${splitBaseLine[state.nodeConfig.splitOption]!.$1}/${splitBaseLine[state.nodeConfig.splitOption]!.$2} ${CustomStyle.mHz}',
+//         );
+//       },
+//     );
+//   }
+// }

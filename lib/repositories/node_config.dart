@@ -12,7 +12,7 @@ class NodeConfig {
     required this.name,
     required this.forwardMode,
     required this.forwardConfig,
-    required this.splitOption,
+    // required this.splitOption,
   });
 
   @JsonKey(name: '0')
@@ -31,9 +31,9 @@ class NodeConfig {
   @HiveField(3, defaultValue: '1')
   final String forwardConfig;
 
-  @JsonKey(name: '4')
-  @HiveField(4, defaultValue: '0')
-  final String splitOption;
+  // @JsonKey(name: '4')
+  // @HiveField(4, defaultValue: '0')
+  // final String splitOption;
 
   factory NodeConfig.fromJson(Map<String, dynamic> json) =>
       _$NodeConfigFromJson(json);

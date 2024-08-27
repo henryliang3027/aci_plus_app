@@ -53,13 +53,13 @@ class Setting18CCorNodeConfigEditBloc extends Bloc<
     String rawName = '';
     String forwardMode = '120';
     String forwardConfig = '1';
-    String splitOption = '1';
+    // String splitOption = '1';
 
     if (_nodeConfig != null) {
       rawName = _nodeConfig.name;
       forwardMode = _nodeConfig.forwardMode;
       forwardConfig = _nodeConfig.forwardConfig;
-      splitOption = _nodeConfig.splitOption;
+      // splitOption = _nodeConfig.splitOption;
     } else {
       int newId = _configRepository.getEmptyNameId(groupId: groupId) ?? -1;
       rawName = 'Config$newId';
@@ -75,13 +75,13 @@ class Setting18CCorNodeConfigEditBloc extends Bloc<
       name: name,
       forwardMode: forwardMode,
       forwardConfig: forwardConfig,
-      splitOption: splitOption,
+      // splitOption: splitOption,
       isInitialize: true,
       enableSubmission: _isEnabledSubmission(
         name: name,
         forwardMode: forwardMode,
         forwardConfig: forwardConfig,
-        splitOption: splitOption,
+        // splitOption: splitOption,
       ),
     ));
   }
@@ -101,7 +101,7 @@ class Setting18CCorNodeConfigEditBloc extends Bloc<
         name: name,
         forwardMode: state.forwardMode,
         forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
+        // splitOption: state.splitOption,
       ),
     ));
   }
@@ -119,7 +119,7 @@ class Setting18CCorNodeConfigEditBloc extends Bloc<
         name: state.name,
         forwardMode: event.forwardMode,
         forwardConfig: state.forwardConfig,
-        splitOption: state.splitOption,
+        // splitOption: state.splitOption,
       ),
     ));
   }
@@ -137,7 +137,7 @@ class Setting18CCorNodeConfigEditBloc extends Bloc<
         name: state.name,
         forwardMode: state.forwardMode,
         forwardConfig: event.forwardConfig,
-        splitOption: state.splitOption,
+        // splitOption: state.splitOption,
       ),
     ));
   }
@@ -155,7 +155,7 @@ class Setting18CCorNodeConfigEditBloc extends Bloc<
         name: state.name,
         forwardMode: state.forwardMode,
         forwardConfig: state.forwardConfig,
-        splitOption: event.splitOption,
+        // splitOption: event.splitOption,
       ),
     ));
   }
@@ -176,7 +176,7 @@ class Setting18CCorNodeConfigEditBloc extends Bloc<
       name: state.name.value,
       forwardMode: state.forwardMode,
       forwardConfig: state.forwardConfig,
-      splitOption: state.splitOption,
+      // splitOption: state.splitOption,
     );
 
     emit(state.copyWith(
@@ -257,12 +257,14 @@ class Setting18CCorNodeConfigEditBloc extends Bloc<
     required NameInput name,
     required String forwardMode,
     required String forwardConfig,
-    required String splitOption,
+    // required String splitOption,
   }) {
     if (name.value.isNotEmpty &&
-        forwardMode.isNotEmpty &&
-        forwardConfig.isNotEmpty &&
-        splitOption != '0') {
+            forwardMode.isNotEmpty &&
+            forwardConfig.isNotEmpty
+
+        // splitOption != '0'
+        ) {
       return true;
     } else {
       return false;

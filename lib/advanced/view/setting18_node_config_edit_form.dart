@@ -141,7 +141,7 @@ class _Setting18NodeConfigEditFormState
                   children: [
                     const _ForwardMode(),
                     const _ForwardConfig(),
-                    const _SplitOption(),
+                    // const _SplitOption(),
 
                     const SizedBox(
                       height: 20,
@@ -479,28 +479,28 @@ class _ForwardConfig extends StatelessWidget {
   }
 }
 
-class _SplitOption extends StatelessWidget {
-  const _SplitOption();
+// class _SplitOption extends StatelessWidget {
+//   const _SplitOption();
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18CCorNodeConfigEditBloc,
-        Setting18CCorNodeConfigEditState>(
-      buildWhen: (previous, current) =>
-          previous.splitOption != current.splitOption,
-      builder: (context, state) {
-        return splitOptionGridViewButton(
-          context: context,
-          editMode: true,
-          splitOption: state.splitOption,
-          onGridPressed: (index) => context
-              .read<Setting18CCorNodeConfigEditBloc>()
-              .add(SplitOptionChanged(splitOptionValues[index])),
-          padding: 0.0,
-          elevation: 0.0,
-          color: Colors.transparent,
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18CCorNodeConfigEditBloc,
+//         Setting18CCorNodeConfigEditState>(
+//       buildWhen: (previous, current) =>
+//           previous.splitOption != current.splitOption,
+//       builder: (context, state) {
+//         return splitOptionGridViewButton(
+//           context: context,
+//           editMode: true,
+//           splitOption: state.splitOption,
+//           onGridPressed: (index) => context
+//               .read<Setting18CCorNodeConfigEditBloc>()
+//               .add(SplitOptionChanged(splitOptionValues[index])),
+//           padding: 0.0,
+//           elevation: 0.0,
+//           color: Colors.transparent,
+//         );
+//       },
+//     );
+//   }
+// }

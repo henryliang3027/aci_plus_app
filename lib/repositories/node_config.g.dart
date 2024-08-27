@@ -21,14 +21,13 @@ class NodeConfigAdapter extends TypeAdapter<NodeConfig> {
       name: fields[1] == null ? '' : fields[1] as String,
       forwardMode: fields[2] == null ? '120' : fields[2] as String,
       forwardConfig: fields[3] == null ? '1' : fields[3] as String,
-      splitOption: fields[4] == null ? '0' : fields[4] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, NodeConfig obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -36,9 +35,7 @@ class NodeConfigAdapter extends TypeAdapter<NodeConfig> {
       ..writeByte(2)
       ..write(obj.forwardMode)
       ..writeByte(3)
-      ..write(obj.forwardConfig)
-      ..writeByte(4)
-      ..write(obj.splitOption);
+      ..write(obj.forwardConfig);
   }
 
   @override
@@ -61,7 +58,6 @@ NodeConfig _$NodeConfigFromJson(Map<String, dynamic> json) => NodeConfig(
       name: json['1'] as String,
       forwardMode: json['2'] as String,
       forwardConfig: json['3'] as String,
-      splitOption: json['4'] as String,
     );
 
 Map<String, dynamic> _$NodeConfigToJson(NodeConfig instance) =>
@@ -70,5 +66,4 @@ Map<String, dynamic> _$NodeConfigToJson(NodeConfig instance) =>
       '1': instance.name,
       '2': instance.forwardMode,
       '3': instance.forwardConfig,
-      '4': instance.splitOption,
     };

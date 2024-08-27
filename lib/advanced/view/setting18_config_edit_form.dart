@@ -198,7 +198,7 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
                 padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
                 child: Column(
                   children: [
-                    const _SplitOption(),
+                    // const _SplitOption(),
                     _FirstChannelLoading(
                       firstChannelLoadingFrequencyTextEditingController:
                           firstChannelLoadingFrequencyTextEditingController,
@@ -485,33 +485,33 @@ class _ActionButton extends StatelessWidget {
   }
 }
 
-class _SplitOption extends StatelessWidget {
-  const _SplitOption();
+// class _SplitOption extends StatelessWidget {
+//   const _SplitOption();
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ConfigEditBloc, Setting18ConfigEditState>(
-      buildWhen: (previous, current) =>
-          previous.splitOption != current.splitOption,
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: CustomStyle.sizeXXL),
-          child: splitOptionGridViewButton(
-            context: context,
-            editMode: true,
-            splitOption: state.splitOption,
-            onGridPressed: (index) => context
-                .read<Setting18ConfigEditBloc>()
-                .add(SplitOptionChanged(splitOptionValues[index])),
-            padding: 0.0,
-            elevation: 0.0,
-            color: Colors.transparent,
-          ),
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18ConfigEditBloc, Setting18ConfigEditState>(
+//       buildWhen: (previous, current) =>
+//           previous.splitOption != current.splitOption,
+//       builder: (context, state) {
+//         return Padding(
+//           padding: const EdgeInsets.only(bottom: CustomStyle.sizeXXL),
+//           child: splitOptionGridViewButton(
+//             context: context,
+//             editMode: true,
+//             splitOption: state.splitOption,
+//             onGridPressed: (index) => context
+//                 .read<Setting18ConfigEditBloc>()
+//                 .add(SplitOptionChanged(splitOptionValues[index])),
+//             padding: 0.0,
+//             elevation: 0.0,
+//             color: Colors.transparent,
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
 
 class _FirstChannelLoading extends StatelessWidget {
   const _FirstChannelLoading({

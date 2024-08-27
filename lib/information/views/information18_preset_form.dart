@@ -162,7 +162,7 @@ class _Information18PresetFormState extends State<Information18PresetForm> {
         body: const SingleChildScrollView(
           child: Column(
             children: [
-              _SplitOption(),
+              // _SplitOption(),
               _PilotFrequencyMode(),
               _StartFrequency(),
               _StartLevel(),
@@ -409,25 +409,25 @@ Widget buildCard({
   );
 }
 
-class _SplitOption extends StatelessWidget {
-  const _SplitOption();
+// class _SplitOption extends StatelessWidget {
+//   const _SplitOption();
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Information18PresetBloc, Information18PresetState>(
-      buildWhen: (previous, current) =>
-          previous.config.splitOption != current.config.splitOption,
-      builder: (context, state) {
-        return buildCard(
-          context: context,
-          title: AppLocalizations.of(context)!.splitOption,
-          content:
-              '${splitBaseLine[state.config.splitOption]!.$1}/${splitBaseLine[state.config.splitOption]!.$2} ${CustomStyle.mHz}',
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Information18PresetBloc, Information18PresetState>(
+//       buildWhen: (previous, current) =>
+//           previous.config.splitOption != current.config.splitOption,
+//       builder: (context, state) {
+//         return buildCard(
+//           context: context,
+//           title: AppLocalizations.of(context)!.splitOption,
+//           content:
+//               '${splitBaseLine[state.config.splitOption]!.$1}/${splitBaseLine[state.config.splitOption]!.$2} ${CustomStyle.mHz}',
+//         );
+//       },
+//     );
+//   }
+// }
 
 class _PilotFrequencyMode extends StatelessWidget {
   const _PilotFrequencyMode();
