@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 
@@ -460,6 +457,7 @@ class _FineTuneTextSliderState extends State<FineTuneTextSlider> {
                     decoration: const InputDecoration(
                       // label: Text(
                       //     '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
+
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(4.0))),
                       contentPadding: EdgeInsets.all(8.0),
@@ -1010,32 +1008,40 @@ Widget controlToggleButton({
             ),
           ),
           LayoutBuilder(
-            builder: (context, constraints) => ToggleButtons(
-              direction: Axis.horizontal,
-              onPressed: editMode ? onChanged : (index) {},
-              textStyle: const TextStyle(
-                fontSize: CustomStyle.sizeL,
+            builder: (context, constraints) => Container(
+              padding: EdgeInsets.zero,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondaryContainer,
+                borderRadius: const BorderRadius.all(Radius.circular(9.0)),
               ),
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              selectedBorderColor: editMode
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context)
-                      .colorScheme
-                      .inversePrimary, // indigo border color
-              selectedColor:
-                  Theme.of(context).colorScheme.onPrimary, // white text color
+              child: ToggleButtons(
+                direction: Axis.horizontal,
+                onPressed: editMode ? onChanged : (index) {},
+                textStyle: const TextStyle(
+                  fontSize: CustomStyle.sizeL,
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                selectedBorderColor: editMode
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context)
+                        .colorScheme
+                        .inversePrimary, // indigo border color
+                selectedColor:
+                    Theme.of(context).colorScheme.onPrimary, // white text color
 
-              fillColor: editMode
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.inversePrimary, // selected
-              color: Theme.of(context).colorScheme.secondary, // not selected
-              constraints: BoxConstraints.expand(
-                width: (constraints.maxWidth - 6) / values.length,
+                fillColor: editMode
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.inversePrimary, // selected
+                color: Theme.of(context).colorScheme.secondary, // not selected
+
+                constraints: BoxConstraints.expand(
+                  width: (constraints.maxWidth - 6) / values.length,
+                ),
+                isSelected: getSelectionState(currentValue),
+                children: <Widget>[
+                  for (String text in texts) ...[Text(text)],
+                ],
               ),
-              isSelected: getSelectionState(currentValue),
-              children: <Widget>[
-                for (String text in texts) ...[Text(text)],
-              ],
             ),
           ),
         ],
