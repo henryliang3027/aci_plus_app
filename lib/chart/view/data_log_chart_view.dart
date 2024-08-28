@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:aci_plus_app/chart/bloc/chart18/chart18_bloc.dart';
 import 'package:aci_plus_app/chart/bloc/data_log_chart/data_log_chart_bloc.dart';
+import 'package:aci_plus_app/chart/shared/message_dialog.dart';
 import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -38,94 +39,28 @@ class _LogChartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<bool?> showNoMoreDataDialog() async {
-      return showDialog<bool>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context)!.dialogTitleSuccess,
-              style: const TextStyle(
-                color: CustomStyle.customGreen,
-              ),
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context)!.dialogMessageNoMoreLogs,
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              ElevatedButton(
-                child: Text(
-                  AppLocalizations.of(context)!.dialogMessageOk,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    Future<void> showFailureDialog(String msg) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context)!.dialogTitleError,
-              style: const TextStyle(
-                color: CustomStyle.customRed,
-              ),
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                    getMessageLocalization(
-                      msg: msg,
-                      context: context,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              ElevatedButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
     return BlocListener<DataLogChartBloc, DataLogChartState>(
       listener: (context, state) async {
         if (state.logRequestStatus.isRequestSuccess) {
           if (!state.hasNextChunk) {
             // 避免 dialog 重複跳出
             if (ModalRoute.of(context)?.isCurrent == true) {
-              showNoMoreDataDialog();
+              showNoMoreDataDialog(context: context);
             }
           }
         } else if (state.logRequestStatus.isRequestFailure) {
-          showFailureDialog(state.errorMessage);
+          showFailureDialog(
+            context: context,
+            msg: state.errorMessage,
+          );
         }
 
         // 如果 state.logRequestStatus 滿足 isRequestSuccess, state.eventRequestStatus 滿足 isRequestFailure
         if (state.eventRequestStatus.isRequestFailure) {
-          showFailureDialog(state.errorMessage);
+          showFailureDialog(
+            context: context,
+            msg: state.errorMessage,
+          );
         }
       },
       child: Scaffold(
@@ -222,10 +157,13 @@ class _MoreDataFloatingActionButton extends StatelessWidget {
         shape: const CircleBorder(
           side: BorderSide.none,
         ),
-        backgroundColor: enabled && !isRequesting
+        // enabled 檢查有沒有在讀取基本資訊,
+        // isRequesting 檢查有沒有正在 load log
+        // hasNextChunk 檢查是否有下一筆 chunk
+        backgroundColor: enabled && !isRequesting && state.hasNextChunk
             ? Theme.of(context).colorScheme.primary.withAlpha(200)
             : Colors.grey.withAlpha(200),
-        onPressed: enabled && !isRequesting
+        onPressed: enabled && !isRequesting && state.hasNextChunk
             ? () {
                 context.read<DataLogChartBloc>().add(const MoreLogRequested());
               }

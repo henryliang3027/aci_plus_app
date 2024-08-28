@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:aci_plus_app/chart/bloc/chart18/chart18_bloc.dart';
 import 'package:aci_plus_app/chart/bloc/rf_level_chart/rf_level_chart_bloc.dart';
+import 'package:aci_plus_app/chart/shared/message_dialog.dart';
 import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -22,16 +23,26 @@ class RFLevelChartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: const _ChartView(),
-      bottomNavigationBar: HomeBottomNavigationBar18(
-        pageController: pageController,
-        selectedIndex: 3,
-        onTap: (int index) {
-          pageController.jumpToPage(
-            index,
+    return BlocListener<RFLevelChartBloc, RFLevelChartState>(
+      listener: (context, state) {
+        if (state.rfInOutRequestStatus.isRequestFailure) {
+          showFailureDialog(
+            context: context,
+            msg: state.errorMessage,
           );
-        },
+        }
+      },
+      child: Scaffold(
+        body: const _ChartView(),
+        bottomNavigationBar: HomeBottomNavigationBar18(
+          pageController: pageController,
+          selectedIndex: 3,
+          onTap: (int index) {
+            pageController.jumpToPage(
+              index,
+            );
+          },
+        ),
       ),
     );
   }

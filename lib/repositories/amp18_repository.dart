@@ -312,7 +312,7 @@ class Amp18Repository {
   Future<dynamic> requestCommand1p8GForLogChunk(int chunkIndex) async {
     int commandIndex = chunkIndex + 184;
 
-    print('get data from request command 1p8GForLogChunk $chunkIndex');
+    print('get data from request command 1p8GForLogChunk $commandIndex');
 
     if (commandIndex == 184) {
       try {
@@ -497,33 +497,10 @@ class Amp18Repository {
     List<Log1p8G> log1p8Gs = _amp18ChartCache.readLoadMoreLog1p8Gs();
     List<Event1p8G> event1p8Gs = _amp18ChartCache.readEvent1p8Gs();
 
-    // List<DateTime> datetimes = [];
-
-    // for (Log1p8G log1p8G in log1p8Gs) {
-    //   datetimes.add(log1p8G.dateTime);
-
-    // }
-
-    // Set<DateTime> uniqueDatetimes = Set<DateTime>();
-    // List<DateTime> duplicates = [];
-
-    // for (DateTime datetime in datetimes) {
-    //   if (!uniqueDatetimes.add(datetime)) {
-    //     duplicates.add(datetime);
-    //   }
-    // }
-
-    // print("Duplicate elements: $duplicates");
-
-    // String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
-    // String location = _characteristicDataCache[DataKey.location] ?? '';
-
     List<dynamic> result = await _amp18Parser.export1p8GRecords(
       code: code,
       configurationData: configurationData,
       controlData: controlData,
-      // coordinate: coordinate,
-      // location: location,
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
     );
@@ -538,15 +515,10 @@ class Amp18Repository {
     List<Log1p8G> log1p8Gs = _amp18ChartCache.readAllLog1p8Gs();
     List<Event1p8G> event1p8Gs = _amp18ChartCache.readEvent1p8Gs();
 
-    // String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
-    // String location = _characteristicDataCache[DataKey.location] ?? '';
-
     List<dynamic> result = await _amp18Parser.export1p8GRecords(
       code: code,
       configurationData: configurationData,
       controlData: controlData,
-      // coordinate: coordinate,
-      // location: location,
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
     );
@@ -560,16 +532,11 @@ class Amp18Repository {
   }) async {
     List<RFInOut> rfInOuts = _amp18ChartCache.readRFInOuts();
 
-    // String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
-    // String location = _characteristicDataCache[DataKey.location] ?? '';
-
     List<dynamic> result = await _amp18Parser.export1p8GRFInOuts(
       rfInOuts: rfInOuts,
       code: code,
       configurationData: configurationData,
       controlData: controlData,
-      // coordinate: coordinate,
-      // location: location,
     );
     return result;
   }
@@ -582,17 +549,12 @@ class Amp18Repository {
     List<RFInOut> rfInOuts = _amp18ChartCache.readRFInOuts();
     List<RFOutputLog> rfOutputLogs = _amp18ChartCache.readRFOutputLogs();
 
-    // String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
-    // String location = _characteristicDataCache[DataKey.location] ?? '';
-
     List<dynamic> result = await _amp18Parser.export1p8GAllRFOutputLogs(
       rfInOuts: rfInOuts,
       rfOutputLogs: rfOutputLogs,
       code: code,
       configurationData: configurationData,
       controlData: controlData,
-      // coordinate: coordinate,
-      // location: location,
     );
     return result;
   }

@@ -323,7 +323,7 @@ class Amp18CCorNodeRepository {
   Future<dynamic> requestCommand1p8GCCorNodeLogChunk(int chunkIndex) async {
     int commandIndex = chunkIndex + 184;
 
-    print('get data from request command 1p8GForLogChunk');
+    print('get data from request command 1p8GForLogChunk $commandIndex');
 
     if (commandIndex == 184) {
       try {
@@ -443,15 +443,10 @@ class Amp18CCorNodeRepository {
     List<Event1p8GCCorNode> event1p8Gs =
         _amp18CCorNodeChartCache.readEvent1p8Gs();
 
-    String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
-    String location = _characteristicDataCache[DataKey.location] ?? '';
-
     List<dynamic> result = await _amp18CCorNodeParser.export1p8GCCorNodeRecords(
       code: code,
       configurationData: configurationData,
       controlData: controlData,
-      // coordinate: coordinate,
-      // location: location,
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
     );
@@ -467,14 +462,10 @@ class Amp18CCorNodeRepository {
     List<Event1p8GCCorNode> event1p8Gs =
         _amp18CCorNodeChartCache.readEvent1p8Gs();
 
-    String coordinate = _characteristicDataCache[DataKey.coordinates] ?? '';
-    String location = _characteristicDataCache[DataKey.location] ?? '';
     List<dynamic> result = await _amp18CCorNodeParser.export1p8GCCorNodeRecords(
       code: code,
       configurationData: configurationData,
       controlData: controlData,
-      // coordinate: coordinate,
-      // location: location,
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
     );

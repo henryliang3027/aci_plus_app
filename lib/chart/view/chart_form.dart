@@ -2,12 +2,12 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:aci_plus_app/chart/bloc/chart/chart_bloc.dart';
+import 'package:aci_plus_app/chart/shared/message_dialog.dart';
 import 'package:aci_plus_app/chart/shared/share_file_widget.dart';
 import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_bottom_navigation_bar.dart';
@@ -27,43 +27,6 @@ class ChartForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> showFailureDialog(String msg) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context)!.dialogTitleError,
-              style: const TextStyle(
-                color: CustomStyle.customRed,
-              ),
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                    getMessageLocalization(
-                      msg: msg,
-                      context: context,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              ElevatedButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
     return BlocListener<ChartBloc, ChartState>(
       listener: (context, state) {
         if (state.dataExportStatus.isRequestSuccess) {
@@ -91,8 +54,11 @@ class ChartForm extends StatelessWidget {
                       uti: 'com.microsoft.excel.xls',
                     ).then((OpenResult result) {
                       if (result.type == ResultType.noAppToOpen) {
-                        showFailureDialog(AppLocalizations.of(context)!
-                            .dialogMessageFileOpenFailed);
+                        showFailureDialog(
+                          context: context,
+                          msg: AppLocalizations.of(context)!
+                              .dialogMessageFileOpenFailed,
+                        );
                       }
                     });
                   },

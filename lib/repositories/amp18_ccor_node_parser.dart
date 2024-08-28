@@ -1115,10 +1115,10 @@ class Amp18CCorNodeParser {
     List<String> log1p8GHeader = [
       'Time',
       'Temperature(C)',
-      'Port 1 RF Output Power',
-      'Port 3 RF Output Power',
-      'Port 4 RF Output Power',
-      'Port 6 RF Output Power',
+      'Port 1 RF Output Power(dBmV)',
+      'Port 3 RF Output Power(dBmV)',
+      'Port 4 RF Output Power(dBmV)',
+      'Port 6 RF Output Power(dBmV)',
     ];
     List<String> eventHeader = [
       '24V High Alarm(V)',

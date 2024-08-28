@@ -39,10 +39,9 @@ class Chart18CCorNodeBloc
   ) async {
     emit(state.copyWith(
       logRequestStatus: FormStatus.requestInProgress,
-      // rfDataRequestStatus: FormStatus.none,
-      // dataExportStatus: FormStatus.none,
-      // dataShareStatus: FormStatus.none,
-      // allDataExportStatus: FormStatus.none,
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataExportStatus: FormStatus.none,
     ));
 
     // 最多 retry 3 次, 連續失敗3次就視為失敗
@@ -105,9 +104,9 @@ class Chart18CCorNodeBloc
   ) async {
     emit(state.copyWith(
       logRequestStatus: FormStatus.requestInProgress,
-      // dataExportStatus: FormStatus.none,
-      // dataShareStatus: FormStatus.none,
-      // allDataExportStatus: FormStatus.none,
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataExportStatus: FormStatus.none,
     ));
 
     List<Log1p8GCCorNode> log1p8Gs = [];
@@ -167,9 +166,9 @@ class Chart18CCorNodeBloc
   ) async {
     emit(state.copyWith(
       eventRequestStatus: FormStatus.requestInProgress,
-      // dataExportStatus: FormStatus.none,
-      // dataShareStatus: FormStatus.none,
-      // allDataExportStatus: FormStatus.none,
+      dataExportStatus: FormStatus.none,
+      dataShareStatus: FormStatus.none,
+      allDataExportStatus: FormStatus.none,
     ));
 
     // 最多 retry 3 次, 連續失敗3次就視為失敗
@@ -327,13 +326,13 @@ class Chart18CCorNodeBloc
     String coordinates = characteristicData[DataKey.coordinates] ?? '';
     String forwardMode = characteristicData[DataKey.forwardMode] ?? '';
     String forwardConfig = characteristicData[DataKey.forwardConfig] ?? '';
-    String splitOption = characteristicData[DataKey.splitOption] ?? '';
+    // String splitOption = characteristicData[DataKey.splitOption] ?? '';
 
     String forwardModeText = forwardModeExportTexts[forwardMode] ?? '';
     String forwardConfigText = forwardConfigExportTexts[forwardConfig] ?? '';
-    String splitOptionText = splitOption != ''
-        ? '${splitBaseLine[splitOption]!.$1}/${splitBaseLine[splitOption]!.$2} ${CustomStyle.mHz}'
-        : '';
+    // String splitOptionText = splitOption != ''
+    //     ? '${splitBaseLine[splitOption]!.$1}/${splitBaseLine[splitOption]!.$2} ${CustomStyle.mHz}'
+    //     : '';
 
     String logInterval = characteristicData[DataKey.logInterval] ?? '';
 
@@ -344,7 +343,7 @@ class Chart18CCorNodeBloc
       _appLocalizations.coordinates: coordinates,
       _appLocalizations.forwardMode: forwardModeText,
       _appLocalizations.forwardConfigMode: forwardConfigText,
-      _appLocalizations.splitOption: splitOptionText,
+      // _appLocalizations.splitOption: splitOptionText,
       _appLocalizations.logInterval: '$logInterval ${_appLocalizations.minute}',
     };
 

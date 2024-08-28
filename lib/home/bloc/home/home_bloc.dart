@@ -984,6 +984,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       loadingStatus: FormStatus.requestInProgress,
       eventLoadingStatus: FormStatus.none,
       dataExportStatus: FormStatus.none,
+      aciDeviceType: ACIDeviceType.undefined,
       peripherals: [],
       device: const Peripheral.empty(),
       characteristicData: const {},

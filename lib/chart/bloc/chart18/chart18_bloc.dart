@@ -292,17 +292,17 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
 
     String location = characteristicData[DataKey.location] ?? '';
     String coordinates = characteristicData[DataKey.coordinates] ?? '';
-    String splitOption = characteristicData[DataKey.splitOption] ?? '';
+    // String splitOption = characteristicData[DataKey.splitOption] ?? '';
 
-    String splitValue1 = splitBaseLine[splitOption]?.$1 != null
-        ? splitBaseLine[splitOption]!.$1.toString()
-        : 'N/A';
-    String splitValue2 = splitBaseLine[splitOption]?.$2 != null
-        ? splitBaseLine[splitOption]!.$2.toString()
-        : 'N/A';
+    // String splitValue1 = splitBaseLine[splitOption]?.$1 != null
+    //     ? splitBaseLine[splitOption]!.$1.toString()
+    //     : 'N/A';
+    // String splitValue2 = splitBaseLine[splitOption]?.$2 != null
+    //     ? splitBaseLine[splitOption]!.$2.toString()
+    //     : 'N/A';
 
-    String splitOptionText =
-        splitOption != '' ? '$splitValue1/$splitValue2 ${CustomStyle.mHz}' : '';
+    // String splitOptionText =
+    //     splitOption != '' ? '$splitValue1/$splitValue2 ${CustomStyle.mHz}' : '';
 
     String pilotFrequencyMode =
         characteristicData[DataKey.pilotFrequencyMode] ?? '';
@@ -341,7 +341,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       _appLocalizations.device.trim(): '',
       _appLocalizations.location: location,
       _appLocalizations.coordinates: coordinates,
-      _appLocalizations.splitOption: splitOptionText,
+      // _appLocalizations.splitOption: splitOptionText,
       _appLocalizations.pilotFrequencySelect: pilotFrequencyModeText,
       _appLocalizations.startFrequency:
           '$firstChannelLoadingFrequency ${CustomStyle.mHz}',
