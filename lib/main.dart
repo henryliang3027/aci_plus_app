@@ -26,11 +26,16 @@ Future<void> writeBoxVersion() async {
   await prefs.setString(SharedPreferenceKey.boxVersion.name, '2.2.6');
 }
 
-Future<String> readBoxVersion() async {
+Future<String?> readBoxVersion() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  String boxVersion =
-      prefs.getString(SharedPreferenceKey.boxVersion.name) ?? '';
+  String? boxVersion = prefs.getString(SharedPreferenceKey.boxVersion.name);
   return boxVersion;
+}
+
+Future<void> deleteAllBox() async {
+  await Hive.deleteBoxFromDisk('TrunkConfigData');
+  await Hive.deleteBoxFromDisk('DistributionConfigData');
+  await Hive.deleteBoxFromDisk('NodeConfigData');
 }
 
 Future<void> initBox() async {
@@ -48,20 +53,27 @@ Future<void> initBox() async {
   //     '$trunkConfigBoxExists, $distributionConfigBoxExists, $nodeConfigBoxExists');
 
   // 如果是第一次建立 hive db 則在 SharedPreferences 內寫入 db 支援的最低 app 版本
-  if (!trunkConfigBoxExists ||
-      !distributionConfigBoxExists ||
+  if (!trunkConfigBoxExists &&
+      !distributionConfigBoxExists &&
       !nodeConfigBoxExists) {
+    print('writeboxVersion1');
     await writeBoxVersion();
   } else {
     // 如果已經存在, 則檢查 db 支援的最低 app 版本, 如果版本不符則清除 db, 再建立一個新的
-    String boxVersion = await readBoxVersion();
+    String? boxVersion = await readBoxVersion();
 
-    if (boxVersion.isEmpty) {
-      await Hive.deleteBoxFromDisk('TrunkConfigData');
-      await Hive.deleteBoxFromDisk('DistributionConfigData');
-      await Hive.deleteBoxFromDisk('NodeConfigData');
+    print('boxVersion: $boxVersion');
 
+    if (boxVersion == null) {
+      print('writeboxVersion2');
+      await deleteAllBox();
       await writeBoxVersion();
+    } else {
+      if (boxVersion.isEmpty) {
+        print('writeboxVersion3');
+        await deleteAllBox();
+        await writeBoxVersion();
+      }
     }
   }
 
