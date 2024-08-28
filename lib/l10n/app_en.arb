@@ -325,7 +325,7 @@
     "dialogMessageTemperatureAlarmStateSetting": "Temperature alarm setting",
     "dialogMessageVoltageAlarmStateSetting": "Voltage alarm setting",
     "dialogMessageVoltageRippleAlarmStateSetting": "Voltage ripple alarm setting",
-    "dialogMessageRFOutputPowerAlarmStateSetting": "TCP Output power alarm setting",
+    "dialogMessageRFOutputPowerAlarmStateSetting": "TCP output power alarm setting",
     "dialogMessageRFOutputPower1AlarmStateSetting": "Port 1 output power alarm setting",
     "dialogMessageRFOutputPower2AlarmStateSetting": "Port 2 output power alarm setting",
     "dialogMessageRFOutputPower3AlarmStateSetting": "Port 3 output power alarm setting",
