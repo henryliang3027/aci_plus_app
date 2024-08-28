@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/about/about18_page.dart';
 import 'package:aci_plus_app/about/about_page.dart';
 import 'package:aci_plus_app/advanced/view/setting18_advanced_page.dart';
 import 'package:aci_plus_app/chart/view/chart18_ccor_node_page.dart';

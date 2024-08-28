@@ -1414,8 +1414,8 @@ class Amp18Parser {
     List<String> log1p8GHeader = [
       'Time',
       'Temperature(C)',
-      'RF Output Low Pilot',
-      'RF Output High Pilot',
+      'RF Output Low Pilot(dBmV)',
+      'RF Output High Pilot(dBmV)',
       '24V(V)',
       '24V Ripple(mV)',
     ];

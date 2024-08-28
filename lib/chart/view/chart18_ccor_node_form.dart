@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:aci_plus_app/chart/bloc/chart18_ccor_node/chart18_ccor_node_bloc.dart';
+import 'package:aci_plus_app/chart/shared/message_dialog.dart';
 import 'package:aci_plus_app/chart/shared/share_file_widget.dart';
 import 'package:aci_plus_app/chart/view/code_input_page.dart';
 import 'package:aci_plus_app/chart/view/downloader18_ccor_node_page.dart';
@@ -9,7 +10,6 @@ import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
@@ -30,129 +30,127 @@ class Chart18CCorNodeForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> showFailureDialog(String msg) async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context)!.dialogTitleError,
-              style: const TextStyle(
-                color: CustomStyle.customRed,
-              ),
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                    getMessageLocalization(
-                      msg: msg,
-                      context: context,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              ElevatedButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // pop dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
     return BlocListener<Chart18CCorNodeBloc, Chart18CCorNodeState>(
       listener: (context, state) async {
-        if (state.dataExportStatus.isRequestSuccess) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                backgroundColor: Theme.of(context).dialogBackgroundColor,
-                duration: const Duration(seconds: 30),
-                content: Text(
-                  AppLocalizations.of(context)!
-                      .dialogMessageDataExportSuccessful,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-                action: SnackBarAction(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  textColor: Theme.of(context).colorScheme.onPrimary,
-                  label: AppLocalizations.of(context)!.open,
-                  onPressed: () async {
-                    OpenFilex.open(
-                      state.dataExportPath,
-                      type: 'application/vnd.ms-excel',
-                      uti: 'com.microsoft.excel.xls',
-                    ).then((OpenResult result) {
-                      if (result.type == ResultType.noAppToOpen) {
-                        showFailureDialog(AppLocalizations.of(context)!
-                            .dialogMessageFileOpenFailed);
-                      }
-                    });
-                  },
-                ),
-              ),
+        if (state.dataExportStatus.isNone &&
+            state.dataShareStatus.isNone &&
+            state.allDataExportStatus.isNone) {
+          if (state.logRequestStatus.isRequestSuccess) {
+            if (!state.hasNextChunk) {
+              // 避免 dialog 重複跳出
+              if (ModalRoute.of(context)?.isCurrent == true) {
+                showNoMoreDataDialog(context: context);
+              }
+            }
+          } else if (state.logRequestStatus.isRequestFailure) {
+            showFailureDialog(
+              context: context,
+              msg: state.errorMessage,
             );
-        } else if (state.dataShareStatus.isRequestSuccess) {
-          String partName = context
-              .read<HomeBloc>()
-              .state
-              .characteristicData[DataKey.partName]!;
-          String location = context
-              .read<HomeBloc>()
-              .state
-              .characteristicData[DataKey.location]!;
+          }
 
-          openShareFileWidget(
-            context: context,
-            subject: state.exportFileName,
-            body: '$partName / $location',
-            attachmentPath: state.dataExportPath,
-          );
-        } else if (state.allDataExportStatus.isRequestSuccess) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                backgroundColor: Theme.of(context).dialogBackgroundColor,
-                duration: const Duration(seconds: 30),
-                content: Text(
-                  AppLocalizations.of(context)!
-                      .dialogMessageDataExportSuccessful,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
+          // 如果 state.logRequestStatus 滿足 isRequestSuccess, state.eventRequestStatus 滿足 isRequestFailure
+          if (state.eventRequestStatus.isRequestFailure) {
+            showFailureDialog(
+              context: context,
+              msg: state.errorMessage,
+            );
+          }
+        } else {
+          if (state.dataExportStatus.isRequestSuccess) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  backgroundColor: Theme.of(context).dialogBackgroundColor,
+                  duration: const Duration(seconds: 30),
+                  content: Text(
+                    AppLocalizations.of(context)!
+                        .dialogMessageDataExportSuccessful,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                  action: SnackBarAction(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    textColor: Theme.of(context).colorScheme.onPrimary,
+                    label: AppLocalizations.of(context)!.open,
+                    onPressed: () async {
+                      OpenFilex.open(
+                        state.dataExportPath,
+                        type: 'application/vnd.ms-excel',
+                        uti: 'com.microsoft.excel.xls',
+                      ).then((OpenResult result) {
+                        if (result.type == ResultType.noAppToOpen) {
+                          showFailureDialog(
+                            context: context,
+                            msg: AppLocalizations.of(context)!
+                                .dialogMessageFileOpenFailed,
+                          );
+                        }
+                      });
+                    },
                   ),
                 ),
-                action: SnackBarAction(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  textColor: Theme.of(context).colorScheme.onPrimary,
-                  label: AppLocalizations.of(context)!.open,
-                  onPressed: () async {
-                    OpenFilex.open(
-                      state.dataExportPath,
-                      type: 'application/vnd.ms-excel',
-                      uti: 'com.microsoft.excel.xls',
-                    ).then((OpenResult result) {
-                      if (result.type == ResultType.noAppToOpen) {
-                        showFailureDialog(AppLocalizations.of(context)!
-                            .dialogMessageFileOpenFailed);
-                      }
-                    });
-                  },
-                ),
-              ),
+              );
+          } else if (state.dataShareStatus.isRequestSuccess) {
+            String partName = context
+                .read<HomeBloc>()
+                .state
+                .characteristicData[DataKey.partName]!;
+            String location = context
+                .read<HomeBloc>()
+                .state
+                .characteristicData[DataKey.location]!;
+
+            openShareFileWidget(
+              context: context,
+              subject: state.exportFileName,
+              body: '$partName / $location',
+              attachmentPath: state.dataExportPath,
             );
-        } else if (state.allDataExportStatus.isRequestFailure) {
-          showFailureDialog(state.errorMessage);
+          } else if (state.allDataExportStatus.isRequestSuccess) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  backgroundColor: Theme.of(context).dialogBackgroundColor,
+                  duration: const Duration(seconds: 30),
+                  content: Text(
+                    AppLocalizations.of(context)!
+                        .dialogMessageDataExportSuccessful,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                  action: SnackBarAction(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    textColor: Theme.of(context).colorScheme.onPrimary,
+                    label: AppLocalizations.of(context)!.open,
+                    onPressed: () async {
+                      OpenFilex.open(
+                        state.dataExportPath,
+                        type: 'application/vnd.ms-excel',
+                        uti: 'com.microsoft.excel.xls',
+                      ).then((OpenResult result) {
+                        if (result.type == ResultType.noAppToOpen) {
+                          showFailureDialog(
+                            context: context,
+                            msg: AppLocalizations.of(context)!
+                                .dialogMessageFileOpenFailed,
+                          );
+                        }
+                      });
+                    },
+                  ),
+                ),
+              );
+          } else if (state.allDataExportStatus.isRequestFailure) {
+            showFailureDialog(
+              context: context,
+              msg: state.errorMessage,
+            );
+          }
         }
       },
       child: Scaffold(
@@ -465,10 +463,13 @@ class _MoreDataFloatingActionButton extends StatelessWidget {
           shape: const CircleBorder(
             side: BorderSide.none,
           ),
-          backgroundColor: enabled && !isRequesting
+          // enabled 檢查有沒有在讀取基本資訊,
+          // isRequesting 檢查有沒有正在 load log
+          // hasNextChunk 檢查是否有下一筆 chunk
+          backgroundColor: enabled && !isRequesting && state.hasNextChunk
               ? Theme.of(context).colorScheme.primary.withAlpha(200)
               : Colors.grey.withAlpha(200),
-          onPressed: enabled && !isRequesting
+          onPressed: enabled && !isRequesting && state.hasNextChunk
               ? () {
                   context
                       .read<Chart18CCorNodeBloc>()
