@@ -19,7 +19,7 @@ class BLEClient extends BLEClientBase {
   // static BLEClient get instance => _instance;
 
   FlutterReactiveBle? _ble;
-  final _scanTimeout = 3; // sec
+  final _scanTimeout = 15; // sec
   final _connectionTimeout = 30; //sec
   late StreamController<ScanReport> _scanReportStreamController;
   StreamController<ConnectionReport> _connectionReportStreamController =

@@ -17,7 +17,7 @@ class BLEWindowsClient extends BLEClientBase {
 
   // static BLEWindowsClient get instance => _instance;
 
-  final _scanTimeout = 5; // sec
+  final _scanTimeout = 15; // sec
   final _connectionTimeout = 30; //sec
   late StreamController<ScanReport> _scanReportStreamController;
   StreamController<ConnectionReport> _connectionReportStreamController =

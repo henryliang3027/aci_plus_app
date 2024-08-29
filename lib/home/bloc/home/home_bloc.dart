@@ -159,24 +159,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               loadingStatus: FormStatus.requestFailure,
               device: const Peripheral.empty(),
               errorMassage: 'Device not found.'));
-        } else if (state.peripherals.length == 1) {
-          emit(state.copyWith(
-            scanStatus: FormStatus.requestSuccess,
-            connectionStatus: FormStatus.requestInProgress,
-            loadingStatus: FormStatus.requestInProgress,
-            device: state.peripherals[0],
-          ));
+        }
+        // else if (state.peripherals.length == 1) {
+        //   emit(state.copyWith(
+        //     scanStatus: FormStatus.requestSuccess,
+        //     connectionStatus: FormStatus.requestInProgress,
+        //     loadingStatus: FormStatus.requestInProgress,
+        //     device: state.peripherals[0],
+        //   ));
 
-          _connectionReportStreamSubscription = _aciDeviceRepository
-              .connectionStateReport
-              .listen((connectionReport) {
-            print('received connectionReport');
-            add(DeviceConnectionChanged(connectionReport));
-          });
+        //   _connectionReportStreamSubscription = _aciDeviceRepository
+        //       .connectionStateReport
+        //       .listen((connectionReport) {
+        //     print('received connectionReport');
+        //     add(DeviceConnectionChanged(connectionReport));
+        //   });
 
-          _aciDeviceRepository.closeScanStream();
-          _aciDeviceRepository.connectToDevice(state.peripherals[0]);
-        } else {
+        //   _aciDeviceRepository.closeScanStream();
+        //   _aciDeviceRepository.connectToDevice(state.peripherals[0]);
+        // }
+        else {
           emit(state.copyWith(
             scanStatus: FormStatus.requestSuccess,
             connectionStatus: FormStatus.requestInProgress,
