@@ -2067,6 +2067,7 @@ class Amp18Repository {
 
     // 依據藍牙訊號強度來決定延遲時間, RSSI 為一個負的數值
     int ms = rssi >= -65 ? 26 : 27;
+    // int ms = 100;
 
     if (Platform.isIOS) {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();

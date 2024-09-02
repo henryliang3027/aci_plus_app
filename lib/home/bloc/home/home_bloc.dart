@@ -726,6 +726,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (resultOf1p8G3[0]) {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       for (int i = 0; i < 3; i++) {
+        emit(state.copyWith(
+          numOfRetry: state.numOfRetry + 1,
+        ));
+
         resultOf1p8GForLogChunk =
             await _amp18Repository.requestCommand1p8GForLogChunk(0);
 
@@ -905,6 +909,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (resultOf1p8GCCorNodeA1[0]) {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       for (int i = 0; i < 3; i++) {
+        emit(state.copyWith(
+          numOfRetry: state.numOfRetry + 1,
+        ));
+
         resultOf1p8GCCorNodeLogChunk = await _amp18CCorNodeRepository
             .requestCommand1p8GCCorNodeLogChunk(0);
 
@@ -991,6 +999,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       device: const Peripheral.empty(),
       characteristicData: const {},
       dateValueCollectionOfLog: const [],
+      numOfRetry: 0,
     ));
     _amp18Repository.clearCharacteristics();
     _amp18CCorNodeRepository.clearCharacteristics();

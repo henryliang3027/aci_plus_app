@@ -15,7 +15,7 @@ class HomeState extends Equatable {
     this.characteristicData = const {},
     this.errorMassage = '',
     this.dateValueCollectionOfLog = const [],
-
+    this.numOfRetry = 0,
     // this.isReloadData = false,
   });
 
@@ -32,6 +32,7 @@ class HomeState extends Equatable {
   final Map<DataKey, String> characteristicData;
   final String errorMassage;
   final List<List<ValuePair>> dateValueCollectionOfLog;
+  final int numOfRetry;
 
   // final bool isReloadData;
 
@@ -49,6 +50,7 @@ class HomeState extends Equatable {
     Map<DataKey, String>? characteristicData,
     String? errorMassage,
     List<List<ValuePair>>? dateValueCollectionOfLog,
+    int? numOfRetry,
     // bool? isReloadData,
   }) {
     return HomeState(
@@ -68,6 +70,7 @@ class HomeState extends Equatable {
       errorMassage: errorMassage ?? this.errorMassage,
       dateValueCollectionOfLog:
           dateValueCollectionOfLog ?? this.dateValueCollectionOfLog,
+      numOfRetry: numOfRetry ?? this.numOfRetry,
       // isReloadData: isReloadData ?? this.isReloadData,
     );
   }
@@ -87,6 +90,7 @@ class HomeState extends Equatable {
         characteristicData,
         errorMassage,
         dateValueCollectionOfLog,
+        numOfRetry,
         // isReloadData,
       ];
 }

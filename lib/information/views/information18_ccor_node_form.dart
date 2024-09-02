@@ -192,8 +192,13 @@ class _DeviceStatus extends StatelessWidget {
       builder: (context, state) {
         if (state.scanStatus.isRequestSuccess) {
           if (state.connectionStatus.isRequestSuccess) {
-            return const Icon(
-              Icons.bluetooth_connected_outlined,
+            return Row(
+              children: [
+                const Icon(
+                  Icons.bluetooth_connected_outlined,
+                ),
+                Text(state.numOfRetry.toString())
+              ],
             );
           } else if (state.connectionStatus.isRequestFailure) {
             return const Icon(

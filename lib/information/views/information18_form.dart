@@ -14,6 +14,7 @@ import 'package:aci_plus_app/information/shared/warm_reset_widget.dart';
 import 'package:aci_plus_app/information/views/information18_config_list_view.dart';
 import 'package:aci_plus_app/information/views/name_plate_view.dart';
 import 'package:aci_plus_app/repositories/config.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -192,8 +193,13 @@ class _DeviceStatus extends StatelessWidget {
       builder: (context, state) {
         if (state.scanStatus.isRequestSuccess) {
           if (state.connectionStatus.isRequestSuccess) {
-            return const Icon(
-              Icons.bluetooth_connected_outlined,
+            return Row(
+              children: [
+                const Icon(
+                  Icons.bluetooth_connected_outlined,
+                ),
+                Text(state.numOfRetry.toString())
+              ],
             );
           } else if (state.connectionStatus.isRequestFailure) {
             return const Icon(
