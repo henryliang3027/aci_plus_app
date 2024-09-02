@@ -242,7 +242,7 @@ class Setting18ThresholdView extends StatelessWidget {
       return widgets.isNotEmpty
           ? widgets
           : [
-              const _SplitOptionAlarmControl(),
+              // const _SplitOptionAlarmControl(),
               // const _PilotFrequency1AlarmControl(),
               // const _PilotFrequency2AlarmControl(),
               const _StartFrequencyOutputLevelAlarmControl(),
