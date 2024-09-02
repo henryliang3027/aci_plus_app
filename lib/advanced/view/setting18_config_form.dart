@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_bloc.dart';
 import 'package:aci_plus_app/advanced/view/description_input_page.dart';
+import 'package:aci_plus_app/advanced/view/qr_code_scanner_win.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_generator_page.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_scanner.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_tab_bar.dart';
@@ -262,8 +263,14 @@ class _QRToolbar extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const SimpleBarcodeScannerPage(
+                                          WindowBarcodeScanner(
+                                        lineColor: "#ff6666",
+                                        cancelButtonText: "Cancel",
+                                        isShowFlashIcon: false,
                                         scanType: ScanType.qr,
+                                        onScanned: (res) {
+                                          Navigator.pop(context, res);
+                                        },
                                       ),
                                     )).then((rawData) {
                                   if (rawData != null) {
