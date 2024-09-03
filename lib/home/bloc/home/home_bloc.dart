@@ -632,7 +632,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           isUpdateLogInterval = await _amp18Repository.set1p8GLogInterval('30');
         }
 
-        // 如果讀取到 logInterval < 30, 則自動設定為 30 分鐘
+        // 如果讀取到 RFOutputLogInterval < 30, 則自動設定為 30 分鐘
         if (rfOutputLogInterval < 30) {
           isUpdateRFOutputLogInterval =
               await _amp18Repository.set1p8GRFOutputLogInterval('30');

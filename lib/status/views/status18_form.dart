@@ -133,7 +133,7 @@ class _CardView extends StatelessWidget {
                   _PilotFrequency2Card(),
                   _FirstChannelPowerLevelCard(),
                   _LastChannelPowerLevelCard(),
-                  _OutputOperatingSlopeCard(),
+                  // _OutputOperatingSlopeCard(),
                 ],
               ),
             );
