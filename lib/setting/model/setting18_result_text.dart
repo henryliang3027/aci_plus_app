@@ -89,8 +89,14 @@ String format1P8GSettingResultItem({
   } else if (item == DataKey.tgcCableLength.name) {
     return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
   } else if (item == DataKey.usVCA1.name) {
-    return AppLocalizations.of(context)!
-        .dialogMessageReturnInputAttenuation2Setting;
+    if (partId == '5') {
+      // C-Cor TR
+      return AppLocalizations.of(context)!
+          .dialogMessageReturnInputAttenuation4Setting;
+    } else {
+      return AppLocalizations.of(context)!
+          .dialogMessageReturnInputAttenuation2Setting;
+    }
   } else if (item == DataKey.usVCA2.name) {
     return AppLocalizations.of(context)!
         .dialogMessageReturnOutputAttenuation1Setting;
