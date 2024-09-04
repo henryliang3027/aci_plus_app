@@ -701,7 +701,9 @@ class _TemperatureCard extends StatelessWidget {
                               .colorScheme
                               .secondary, // not selected
                           constraints: BoxConstraints.expand(
-                              width: (constraints.maxWidth / 2 - 4) / 2),
+                            width: (constraints.maxWidth / 2 - 4) / 2,
+                            height: 48,
+                          ),
                           isSelected:
                               getSelectionState(status18State.temperatureUnit),
                           children: const <Widget>[

@@ -75,23 +75,25 @@ class BLEWindowsClient extends BLEClientBase {
   //   print("WinBle Initialized: ${await WinBle.version()}");
   // }
 
-  Future<bool> checkBluetoothEnabled() async {
-    // 要求定位與藍芽存取權
-    bool isPermissionGranted = await _requestPermission();
+  void _handleBluetoothAvailability(AvailabilityState availabilityState) async {
+    if (availabilityState == AvailabilityState.poweredOff) {
+      _connectionReportStreamController.add(const ConnectionReport(
+        connectStatus: ConnectStatus.disconnected,
+        errorMessage: 'Device connection failed',
+      ));
 
-    if (isPermissionGranted) {
-      // 偵測藍芽是否有打開, 如果沒有打開會跳出提示訊息
-      String resultStrOfEnableBluetooth = await BluetoothEnable.enableBluetooth;
-      bool resultOfEnableBluetooth =
-          resultStrOfEnableBluetooth == 'true' ? true : false;
+      await closeConnectionStream();
+    }
+  }
 
-      if (resultOfEnableBluetooth) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
+  Future<void> enableBluetooth() async {
+    AvailabilityState availabilityState =
+        await UniversalBle.getBluetoothAvailabilityState();
+
+    if (availabilityState == AvailabilityState.poweredOff) {
+      // 啟用藍芽
+      UniversalBle.enableBluetooth();
+      UniversalBle.onAvailabilityChange = _handleBluetoothAvailability;
     }
   }
 
@@ -134,7 +136,7 @@ class BLEWindowsClient extends BLEClientBase {
     // _ble ??= FlutterReactiveBle();
     _scanReportStreamController = StreamController<ScanReport>();
 
-    // bool isPermissionGranted = await checkBluetoothEnabled();
+    await enableBluetooth();
 
     // if (isPermissionGranted) {
 
@@ -276,12 +278,12 @@ class BLEWindowsClient extends BLEClientBase {
         break;
       case false:
         if (_connectionState) {
-          UniversalBle.setNotifiable(
-            deviceId,
-            _serviceId,
-            _characteristicId,
-            BleInputProperty.disabled,
-          );
+          // UniversalBle.setNotifiable(
+          //   deviceId,
+          //   _serviceId,
+          //   _characteristicId,
+          //   BleInputProperty.disabled,
+          // );
 
           _connectionReportStreamController.add(const ConnectionReport(
             connectStatus: ConnectStatus.disconnected,
@@ -609,9 +611,9 @@ class BLEWindowsClient extends BLEClientBase {
         Uint8List.fromList(chunk),
         BleOutputProperty.withResponse,
       );
-      // if (i == 10) {
-      //   await Future.delayed(Duration(milliseconds: 500));
-      // }
+
+      // withResponse 下傳送binary chunk, device 作為接收端還是會漏收, 所以多 delay 一些時間確保有收到
+      await Future.delayed(Duration(milliseconds: 50));
 
       _updateReportStreamController.add('Sent $indexOfChunk');
       print(

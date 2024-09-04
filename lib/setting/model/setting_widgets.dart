@@ -1036,6 +1036,7 @@ Widget controlToggleButton({
 
                 constraints: BoxConstraints.expand(
                   width: (constraints.maxWidth - 6) / values.length,
+                  height: 48,
                 ),
                 isSelected: getSelectionState(currentValue),
                 children: <Widget>[
