@@ -13,7 +13,8 @@ class BLEClientFactory {
   // create instances based on the platform
   static BLEClientBase create() {
     if (Platform.isWindows) {
-      _instance = BLEWindowsClient()..initialize();
+      // _instance = BLEWindowsClient()..initialize();
+      _instance = BLEWindowsClient();
       return _instance;
     } else if (Platform.isIOS || Platform.isAndroid) {
       _instance = BLEClient();
