@@ -568,6 +568,9 @@ class BLEWindowsClient extends BLEClientBase {
     print('write cmd $commandIndex, $_currentCommandIndex');
 
     _completer = Completer<dynamic>();
+
+    // 原本寫法是先寫入 command 再 啟動 timer, 但在讀基本指令 req00Cmd 時有時回傳太快而來不及啟動 timer
+    // 所以先啟動 timer 再 寫入 command
     startCharacteristicDataTimer(
       timeout: timeout,
     );
