@@ -321,6 +321,10 @@ class _Location extends StatelessWidget {
                           .read<Setting18CCorNodeConfigureBloc>()
                           .add(LocationChanged(location));
                     },
+                    onTapOutside: (event) {
+                      // 點擊其他區域關閉螢幕鍵盤
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
                     maxLength: 48,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(
@@ -391,6 +395,10 @@ class _Coordinates extends StatelessWidget {
                       context
                           .read<Setting18CCorNodeConfigureBloc>()
                           .add(CoordinatesChanged(coordinate));
+                    },
+                    onTapOutside: (event) {
+                      // 點擊其他區域關閉螢幕鍵盤
+                      FocusManager.instance.primaryFocus?.unfocus();
                     },
                     maxLength: 39,
                     decoration: InputDecoration(

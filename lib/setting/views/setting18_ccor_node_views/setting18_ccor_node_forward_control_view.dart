@@ -264,7 +264,7 @@ class _ForwardOutputAttenuation1 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsVVA1.minValue;
         double maxValue = state.dsVVA1.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -301,7 +301,7 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsVVA3.minValue;
         double maxValue = state.dsVVA3.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -338,7 +338,7 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsVVA4.minValue;
         double maxValue = state.dsVVA4.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -375,7 +375,7 @@ class _ForwardOutputAttenuation6 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsVVA6.minValue;
         double maxValue = state.dsVVA6.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -414,7 +414,7 @@ class _ForwardOutputAttenuation6 extends StatelessWidget {
 //       builder: (context, state) {
 //         double minValue = state.dsInSlope1.minValue;
 //         double maxValue = state.dsInSlope1.maxValue;
-//         return controlTextSlider2(
+//         return controlTextSlider(
 //           context: context,
 //           editMode: state.editMode,
 //           title:
@@ -450,7 +450,7 @@ class _ForwardOutputAttenuation6 extends StatelessWidget {
 //       builder: (context, state) {
 //         double minValue = state.dsInSlope3.minValue;
 //         double maxValue = state.dsInSlope3.maxValue;
-//         return controlTextSlider2(
+//         return controlTextSlider(
 //           context: context,
 //           editMode: state.editMode,
 //           title:
@@ -486,7 +486,7 @@ class _ForwardOutputAttenuation6 extends StatelessWidget {
 //       builder: (context, state) {
 //         double minValue = state.dsInSlope4.minValue;
 //         double maxValue = state.dsInSlope4.maxValue;
-//         return controlTextSlider2(
+//         return controlTextSlider(
 //           context: context,
 //           editMode: state.editMode,
 //           title:
@@ -522,7 +522,7 @@ class _ForwardOutputAttenuation6 extends StatelessWidget {
 //       builder: (context, state) {
 //         double minValue = state.dsInSlope6.minValue;
 //         double maxValue = state.dsInSlope6.maxValue;
-//         return controlTextSlider2(
+//         return controlTextSlider(
 //           context: context,
 //           editMode: state.editMode,
 //           title:
@@ -556,7 +556,7 @@ class _ForwardOutputEqualizer1 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsOutSlope1.minValue;
         double maxValue = state.dsOutSlope1.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -593,7 +593,7 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsOutSlope3.minValue;
         double maxValue = state.dsOutSlope3.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -630,7 +630,7 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsOutSlope4.minValue;
         double maxValue = state.dsOutSlope4.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -667,7 +667,7 @@ class _ForwardOutputEqualizer6 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsOutSlope6.minValue;
         double maxValue = state.dsOutSlope6.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -704,7 +704,7 @@ class _ForwardBiasCurrent1 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.biasCurrent1.minValue.toDouble();
         double maxValue = state.biasCurrent1.maxValue.toDouble();
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -743,7 +743,7 @@ class _ForwardBiasCurrent3 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.biasCurrent3.minValue.toDouble();
         double maxValue = state.biasCurrent3.maxValue.toDouble();
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -782,7 +782,7 @@ class _ForwardBiasCurrent4 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.biasCurrent4.minValue.toDouble();
         double maxValue = state.biasCurrent4.maxValue.toDouble();
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -821,7 +821,7 @@ class _ForwardBiasCurrent6 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.biasCurrent6.minValue.toDouble();
         double maxValue = state.biasCurrent6.maxValue.toDouble();
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:

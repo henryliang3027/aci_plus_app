@@ -259,6 +259,8 @@ class FineTuneTextSlider extends StatefulWidget {
     required this.step,
     required this.enabled,
     required this.onChanged,
+    required this.errorText1,
+    this.textPrecision = 1,
   });
 
   final String initialValue;
@@ -267,6 +269,8 @@ class FineTuneTextSlider extends StatefulWidget {
   final double step;
   final bool enabled;
   final ValueChanged<String> onChanged;
+  final String? errorText1;
+  final int textPrecision;
 
   @override
   State<FineTuneTextSlider> createState() => _FineTuneTextSliderState();
@@ -291,255 +295,6 @@ class _FineTuneTextSliderState extends State<FineTuneTextSlider> {
 
   @override
   void didUpdateWidget(covariant FineTuneTextSlider oldWidget) {
-    if (oldWidget.initialValue != widget.initialValue) {
-      setState(() {
-        _value = _getBondaryValue(
-          value: widget.initialValue,
-          minValue: widget.minValue,
-          maxValue: widget.maxValue,
-        );
-
-        _textEditingController.text = widget.initialValue;
-      });
-    }
-    super.didUpdateWidget(oldWidget);
-  }
-
-  void _increaseValue() {
-    setState(() {
-      _value = _value + widget.step <= widget.maxValue
-          ? _value + widget.step
-          : _value;
-
-      _textEditingController.text = _value.toStringAsFixed(1);
-    });
-  }
-
-  void _decreasedValue() {
-    setState(() {
-      _value = _value - widget.step >= widget.minValue
-          ? _value - widget.step
-          : _value;
-
-      _textEditingController.text = _value.toStringAsFixed(1);
-    });
-  }
-
-  _adjustTextFieldValue({
-    required String value,
-  }) {
-    if (value.isNotEmpty) {
-      double doubleCurrentValue = double.parse(value);
-      if (doubleCurrentValue > widget.maxValue) {
-        _textEditingController.text = widget.maxValue.toStringAsFixed(1);
-      } else if (doubleCurrentValue < widget.minValue) {
-        _textEditingController.text = widget.minValue.toStringAsFixed(1);
-      } else {
-        // 維持目前 value;
-      }
-    } else {
-      _textEditingController.text = '';
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 6.0, 0.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(
-              2,
-              (index) => Column(
-                children: [
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 22,
-                    child: Text(
-                      '${(List.from([
-                            widget.minValue,
-                            widget.maxValue,
-                          ])[index]).toStringAsFixed(0)}',
-                      style: const TextStyle(
-                        fontSize: CustomStyle.sizeM,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 16,
-                    child: VerticalDivider(
-                      indent: 0,
-                      thickness: 1.2,
-                      color: Colors.grey.shade300,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        SliderTheme(
-          data: const SliderThemeData(
-            valueIndicatorColor: Colors.red,
-            showValueIndicator: ShowValueIndicator.always,
-            overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
-          ),
-          child: Slider(
-            min: widget.minValue,
-            max: widget.maxValue,
-            divisions: (widget.maxValue - widget.minValue) ~/ widget.step,
-            value: _value,
-            onChanged: widget.enabled
-                ? (double value) {
-                    setState(() {
-                      _value = value;
-                    });
-                    widget.onChanged(_value.toStringAsFixed(1));
-                  }
-                : null,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 30.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                flex: 1,
-                child: IconButton.filled(
-                  visualDensity: const VisualDensity(horizontal: -4.0),
-                  icon: const Icon(
-                    Icons.remove,
-                  ),
-                  onPressed: widget.enabled
-                      ? () {
-                          _decreasedValue();
-                          widget.onChanged(_value.toStringAsFixed(1));
-                        }
-                      : null,
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 0.0,
-                  ),
-                  child: TextField(
-                    controller: _textEditingController,
-                    // key: Key(textEditingControllerName1),
-                    style: const TextStyle(
-                      fontSize: CustomStyle.sizeXXL,
-                    ),
-
-                    textAlign: TextAlign.center,
-                    enabled: widget.enabled,
-                    textInputAction: TextInputAction.done,
-                    onChanged: (value) {
-                      _adjustTextFieldValue(value: value);
-                      widget.onChanged(_textEditingController.text);
-                    },
-                    maxLength: 40,
-                    keyboardType: const TextInputType.numberWithOptions(
-                      decimal: true,
-                    ),
-                    inputFormatters: [
-                      // ^：表示從起始開始匹配第一個符合的數字
-                      // \d{1,2}：\d 表示匹配任何一個數字。{1,2} 表示前面的數字字符必須出現 1 次或 2 次
-                      // (\.\d?)?：匹配一個小數點後跟著 0 到 1 位數字
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d{1,2}(\.\d?)?'))
-                    ],
-                    decoration: const InputDecoration(
-                      // label: Text(
-                      //     '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
-
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                      contentPadding: EdgeInsets.all(8.0),
-                      isDense: true,
-                      filled: true,
-                      fillColor: Colors.white,
-                      counterText: '',
-                      errorMaxLines: 2,
-                      errorStyle: TextStyle(fontSize: CustomStyle.sizeS),
-                      // errorText: editMode1 ? errorText1 : null,
-                    ),
-                  ),
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: IconButton.filled(
-                  visualDensity: const VisualDensity(horizontal: -4.0),
-                  icon: const Icon(
-                    Icons.add,
-                  ),
-                  onPressed: widget.enabled
-                      ? () {
-                          _increaseValue();
-                          widget.onChanged(_value.toStringAsFixed(1));
-                        }
-                      : null,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class FineTuneTextSlider2 extends StatefulWidget {
-  const FineTuneTextSlider2({
-    super.key,
-    required this.initialValue,
-    required this.minValue,
-    required this.maxValue,
-    required this.step,
-    required this.enabled,
-    required this.onChanged,
-    required this.errorText1,
-    this.textPrecision = 1,
-  });
-
-  final String initialValue;
-  final double minValue;
-  final double maxValue;
-  final double step;
-  final bool enabled;
-  final ValueChanged<String> onChanged;
-  final String? errorText1;
-  final int textPrecision;
-
-  @override
-  State<FineTuneTextSlider2> createState() => _FineTuneTextSlider2State();
-}
-
-class _FineTuneTextSlider2State extends State<FineTuneTextSlider2> {
-  late double _value;
-  late TextEditingController _textEditingController;
-
-  @override
-  void initState() {
-    _value = _getBondaryValue(
-      value: widget.initialValue,
-      minValue: widget.minValue,
-      maxValue: widget.maxValue,
-    );
-
-    _textEditingController = TextEditingController()
-      ..text = widget.initialValue;
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(covariant FineTuneTextSlider2 oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget != widget) {
@@ -702,6 +457,10 @@ class _FineTuneTextSlider2State extends State<FineTuneTextSlider2> {
                       // _adjustTextFieldValue(value: value);
                       widget.onChanged(value);
                     },
+                    onTapOutside: (event) {
+                      // 點擊其他區域關閉螢幕鍵盤
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
                     maxLength: 40,
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: true,
@@ -847,64 +606,6 @@ Widget controlTextSlider({
   required String currentValue,
   required double maxValue,
   required ValueChanged<String> onChanged,
-  double step = 0.5,
-  String subTitle = '',
-}) {
-  // textEditingController.text = currentValue;
-  return Padding(
-    padding: const EdgeInsets.only(
-      bottom: 30.0,
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: CustomStyle.sizeL,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeXL,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              Text(
-                subTitle,
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-        FineTuneTextSlider(
-          initialValue: currentValue,
-          minValue: minValue,
-          maxValue: maxValue,
-          step: step,
-          enabled: editMode,
-          onChanged: onChanged,
-        ),
-      ],
-    ),
-  );
-}
-
-Widget controlTextSlider2({
-  required BuildContext context,
-  required bool editMode,
-  required String title,
-  required double minValue,
-  required String currentValue,
-  required double maxValue,
-  required ValueChanged<String> onChanged,
   required String? errorText,
   int textPrecision = 1,
   double step = 0.5,
@@ -947,7 +648,7 @@ Widget controlTextSlider2({
               ],
             ),
           ),
-          FineTuneTextSlider2(
+          FineTuneTextSlider(
             initialValue: currentValue,
             minValue: minValue,
             maxValue: maxValue,
@@ -1119,6 +820,10 @@ Widget twoTextField({
                     readOnly: reaOnly1,
                     textInputAction: TextInputAction.done,
                     onChanged: onChanged1,
+                    onTapOutside: (event) {
+                      // 點擊其他區域關閉螢幕鍵盤
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
                     maxLength: 40,
                     decoration: InputDecoration(
                       label: Text(
@@ -1155,6 +860,10 @@ Widget twoTextField({
                     readOnly: reaOnly2,
                     textInputAction: TextInputAction.done,
                     onChanged: onChanged2,
+                    onTapOutside: (event) {
+                      // 點擊其他區域關閉螢幕鍵盤
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
                     maxLength: 40,
                     decoration: InputDecoration(
                       label: Text(
@@ -1577,6 +1286,10 @@ Widget thresholdAlarmParameterWidget({
                       signed: true,
                     ),
                     onChanged: onChangedMinValue,
+                    onTapOutside: (event) {
+                      // 點擊其他區域關閉螢幕鍵盤
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
                     maxLength: 40,
                     decoration: InputDecoration(
                       label: Text(minValueLabel),
@@ -1612,6 +1325,10 @@ Widget thresholdAlarmParameterWidget({
                       signed: true,
                     ),
                     onChanged: onChangedMaxValue,
+                    onTapOutside: (event) {
+                      // 點擊其他區域關閉螢幕鍵盤
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
                     maxLength: 40,
                     decoration: InputDecoration(
                       label: Text(maxValueLabel),

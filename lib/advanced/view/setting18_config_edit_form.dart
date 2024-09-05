@@ -276,6 +276,10 @@ class _PartName extends StatelessWidget {
                         .read<Setting18ConfigEditBloc>()
                         .add(NameChanged(name));
                   },
+                  onTapOutside: (event) {
+                    // 點擊其他區域關閉螢幕鍵盤
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
                   textAlign: TextAlign.center,
                   maxLength: 10,
                   decoration: InputDecoration(

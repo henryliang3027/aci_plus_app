@@ -228,7 +228,7 @@ class _ReturnInputAttenuation1 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.usVCA1.minValue;
         double maxValue = state.usVCA1.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -265,7 +265,7 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.usVCA3.minValue;
         double maxValue = state.usVCA3.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -302,7 +302,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.usVCA4.minValue;
         double maxValue = state.usVCA4.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -339,7 +339,7 @@ class _ReturnInputAttenuation6 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.usVCA6.minValue;
         double maxValue = state.usVCA6.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:

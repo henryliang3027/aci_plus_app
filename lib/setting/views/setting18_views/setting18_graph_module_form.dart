@@ -362,7 +362,7 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
         );
         return Column(
           children: [
-            controlTextSlider2(
+            controlTextSlider(
               context: context,
               editMode: state.editMode && alcMode == '0',
               title:
@@ -431,7 +431,7 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
         );
         return Column(
           children: [
-            controlTextSlider2(
+            controlTextSlider(
               context: context,
               editMode: state.editMode && alcMode == '0' && agcMode == '0',
               title:
@@ -478,7 +478,7 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsSlope3.minValue;
         double maxValue = state.dsSlope3.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -511,7 +511,7 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsSlope4.minValue;
         double maxValue = state.dsSlope4.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -544,7 +544,7 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsVVA4.minValue;
         double maxValue = state.dsVVA4.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -577,7 +577,7 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsVVA5.minValue;
         double maxValue = state.dsVVA5.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -610,7 +610,7 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsVVA4.minValue;
         double maxValue = state.dsVVA4.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -643,7 +643,7 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsVVA4.minValue;
         double maxValue = state.dsVVA4.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -676,7 +676,7 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsVVA5.minValue;
         double maxValue = state.dsVVA5.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -709,7 +709,7 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsSlope3.minValue;
         double maxValue = state.dsSlope3.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -742,7 +742,7 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsSlope3.minValue;
         double maxValue = state.dsSlope3.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -775,7 +775,7 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.dsSlope4.minValue;
         double maxValue = state.dsSlope4.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -808,7 +808,7 @@ class _ReturnOutputAttenuation1 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.usVCA2.minValue;
         double maxValue = state.usVCA2.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -841,7 +841,7 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.eREQ.minValue;
         double maxValue = state.eREQ.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -874,7 +874,7 @@ class _ReturnInputAttenuation2 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.usVCA1.minValue;
         double maxValue = state.usVCA1.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -907,7 +907,7 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.usVCA3.minValue;
         double maxValue = state.usVCA3.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -940,7 +940,7 @@ class _ReturnInputAttenuation2And3 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.usVCA3.minValue;
         double maxValue = state.usVCA3.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:
@@ -978,7 +978,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
         builder: (context, state) {
           double minValue = state.usVCA1.minValue;
           double maxValue = state.usVCA1.maxValue;
-          return controlTextSlider2(
+          return controlTextSlider(
             context: context,
             editMode: state.editMode,
             title:
@@ -1004,7 +1004,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
         builder: (context, state) {
           double minValue = state.usVCA4.minValue;
           double maxValue = state.usVCA4.maxValue;
-          return controlTextSlider2(
+          return controlTextSlider(
             context: context,
             editMode: state.editMode,
             title:
@@ -1038,7 +1038,7 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
       builder: (context, state) {
         double minValue = state.usVCA4.minValue;
         double maxValue = state.usVCA4.maxValue;
-        return controlTextSlider2(
+        return controlTextSlider(
           context: context,
           editMode: state.editMode,
           title:

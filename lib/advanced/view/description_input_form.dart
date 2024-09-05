@@ -74,6 +74,10 @@ class _DescriptionInputDialog extends StatelessWidget {
                       .read<DescriptionInputBloc>()
                       .add(DescriptionChanged(description: description));
                 },
+                onTapOutside: (event) {
+                  // 點擊其他區域關閉螢幕鍵盤
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
                 controller: descriptionTextEditingController,
                 maxLength: 22,
                 decoration: InputDecoration(

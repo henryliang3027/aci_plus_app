@@ -595,6 +595,10 @@ class _VoltageRippleAlarmControl extends StatelessWidget {
                                 .read<Setting18ThresholdBloc>()
                                 .add(MaxVoltageRippleChanged(maxVoltageRipple));
                           },
+                          onTapOutside: (event) {
+                            // 點擊其他區域關閉螢幕鍵盤
+                            FocusManager.instance.primaryFocus?.unfocus();
+                          },
                           maxLength: 40,
                           decoration: InputDecoration(
                             label: Text(
