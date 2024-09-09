@@ -592,8 +592,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       characteristicData: {},
     ));
 
-    await _amp18Repository.set1p8GTransmitDelayTime();
-
     Map<DataKey, String> newCharacteristicData = {};
     List<dynamic> resultOf1p8G0 = [];
     List<dynamic> resultOf1p8G1 = [];
@@ -690,6 +688,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (resultOf1p8G2[0]) {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       for (int i = 0; i < 3; i++) {
+        // 根據RSSI設定每個 chunk 之間的 delay
+        await _amp18Repository.set1p8GTransmitDelayTime();
+
         resultOf1p8G3 = await _amp18Repository.requestCommand1p8G3();
 
         if (resultOf1p8G3[0]) {
@@ -726,6 +727,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (resultOf1p8G3[0]) {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       for (int i = 0; i < 3; i++) {
+        // 根據RSSI設定每個 chunk 之間的 delay
+        await _amp18Repository.set1p8GTransmitDelayTime();
         resultOf1p8GForLogChunk =
             await _amp18Repository.requestCommand1p8GForLogChunk(0);
 
