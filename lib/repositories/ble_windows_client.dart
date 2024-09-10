@@ -93,8 +93,9 @@ class BLEWindowsClient extends BLEClientBase {
     if (availabilityState == AvailabilityState.poweredOff) {
       // 啟用藍芽
       UniversalBle.enableBluetooth();
-      UniversalBle.onAvailabilityChange = _handleBluetoothAvailability;
     }
+
+    UniversalBle.onAvailabilityChange = _handleBluetoothAvailability;
   }
 
   @override
@@ -586,6 +587,8 @@ class BLEWindowsClient extends BLEClientBase {
         BleOutputProperty.withResponse,
       );
     } catch (e) {
+      cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
+
       if (!_completer!.isCompleted) {
         print('writeCharacteristic failed: ${e.toString()}');
         _completer!.completeError(CharacteristicError.writeDataError.name);
