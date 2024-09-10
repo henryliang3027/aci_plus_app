@@ -10,6 +10,7 @@ import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
+import 'package:aci_plus_app/repositories/shared/transmit_delay.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 
@@ -1881,7 +1882,7 @@ class Amp18CCorNodeRepository {
 
   // 設定藍芽串口的資料傳輸延遲時間, 單位為 ms
   // 例如 MTU = 244, 則每傳輸244byte 就會休息 ms 時間再傳下一筆
-  Future<dynamic> set1p8GCCorNodeTransmitDelayTime() async {
+  Future<dynamic> set1p8GCCorNodeTransmitDelayTime({int? ms}) async {
     int commandIndex = 353;
 
     print('set data from request command 1p8G CCor Node $commandIndex');
@@ -1889,7 +1890,7 @@ class Amp18CCorNodeRepository {
     int rssi = await _bleClient.getRSSI();
 
     // 依據藍牙訊號強度來決定延遲時間, RSSI 為一個負的數值
-    int ms = rssi >= -65 ? 26 : 27;
+    ms ??= getDelayByRSSI(rssi);
 
     if (Platform.isIOS) {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();

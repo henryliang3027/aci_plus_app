@@ -791,8 +791,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       characteristicData: {},
     ));
 
-    await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
-
     Map<DataKey, String> newCharacteristicData = {};
     List<dynamic> resultOf1p8GCCorNode80 = [];
     List<dynamic> resultOf1p8GCCorNode91 = [];
@@ -908,6 +906,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (resultOf1p8GCCorNodeA1[0]) {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       for (int i = 0; i < 3; i++) {
+        await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
+
         resultOf1p8GCCorNodeLogChunk = await _amp18CCorNodeRepository
             .requestCommand1p8GCCorNodeLogChunk(0);
 

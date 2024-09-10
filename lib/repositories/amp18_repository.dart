@@ -8,6 +8,7 @@ import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
+import 'package:aci_plus_app/repositories/shared/transmit_delay.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_speed_chart/speed_chart.dart';
 
@@ -2054,20 +2055,6 @@ class Amp18Repository {
       return true;
     } catch (e) {
       return false;
-    }
-  }
-
-  int getDelayByRSSI(int rssi) {
-    if (rssi > -65) {
-      return 26;
-    } else if (rssi < -65 && rssi >= -70) {
-      return 27;
-    } else if (rssi < -70 && rssi >= -75) {
-      return 28;
-    } else if (rssi < -75 && rssi >= -80) {
-      return 29;
-    } else {
-      return 30;
     }
   }
 

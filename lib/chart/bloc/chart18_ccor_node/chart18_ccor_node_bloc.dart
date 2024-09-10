@@ -46,6 +46,8 @@ class Chart18CCorNodeBloc
 
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
+      await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
+
       List<dynamic> resultOfLog1p8G =
           await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeLogChunk(0);
 
@@ -114,6 +116,8 @@ class Chart18CCorNodeBloc
 
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
+      await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
+
       List<dynamic> resultOfLog1p8G = await _amp18CCorNodeRepository
           .requestCommand1p8GCCorNodeLogChunk(state.chunkIndex);
 
@@ -173,6 +177,8 @@ class Chart18CCorNodeBloc
 
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
+      await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
+
       List<dynamic> resultOfEvent1p8G =
           await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeEvent();
 
