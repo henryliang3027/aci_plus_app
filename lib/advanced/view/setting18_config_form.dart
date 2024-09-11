@@ -193,7 +193,8 @@ class _QRToolbar extends StatelessWidget {
     return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
       buildWhen: (previous, current) =>
           previous.trunkConfigs != current.trunkConfigs ||
-          previous.distributionConfigs != current.distributionConfigs,
+          previous.distributionConfigs != current.distributionConfigs ||
+          previous.nodeConfigs != current.nodeConfigs,
       builder: (context, state) {
         return Container(
           decoration: BoxDecoration(
@@ -233,7 +234,8 @@ class _QRToolbar extends StatelessWidget {
                           IconButton(
                             onPressed: [
                               ...state.trunkConfigs,
-                              ...state.distributionConfigs
+                              ...state.distributionConfigs,
+                              ...state.nodeConfigs
                             ].isNotEmpty
                                 ? () {
                                     context

@@ -306,10 +306,10 @@ class _ConnectionCard extends StatelessWidget {
               //       context.read<HomeBloc>().add(testTimeout());
               //     },
               //     child: Icon(Icons.abc)),
-              itemLinkText(
-                title: '',
-                content: AppLocalizations.of(context)!.visitWebsite,
-              ),
+              // itemLinkText(
+              //   title: '',
+              //   content: AppLocalizations.of(context)!.visitWebsite,
+              // ),
               bluetoothText(
                 scanStatus: state.scanStatus,
                 title: AppLocalizations.of(context)!.bluetooth,
