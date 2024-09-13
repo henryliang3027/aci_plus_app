@@ -868,7 +868,6 @@ class Setting18GraphModuleBloc
           forwardStartFrequency,
       maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
     );
-
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.firstChannelLoadingFrequency);
 
