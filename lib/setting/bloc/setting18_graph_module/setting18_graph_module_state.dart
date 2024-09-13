@@ -53,9 +53,9 @@ class Setting18GraphModuleState extends Equatable {
     this.tgcCableLength = '',
     // this.usTGC = '',
     this.splitOption = '1',
-    this.firstChannelLoadingFrequency = const IntegerInput.pure(),
+    this.firstChannelLoadingFrequency = const RangeIntegerInput.pure(),
     this.firstChannelLoadingLevel = const FloatPointInput.pure(),
-    this.lastChannelLoadingFrequency = const IntegerInput.pure(),
+    this.lastChannelLoadingFrequency = const RangeIntegerInput.pure(),
     this.lastChannelLoadingLevel = const FloatPointInput.pure(),
     this.pilotFrequencyMode = '',
     this.pilotFrequency1 = const IntegerInput.pure(),
@@ -91,9 +91,9 @@ class Setting18GraphModuleState extends Equatable {
 
   // final String usTGC;
   final String splitOption;
-  final IntegerInput firstChannelLoadingFrequency;
+  final RangeIntegerInput firstChannelLoadingFrequency;
   final FloatPointInput firstChannelLoadingLevel;
-  final IntegerInput lastChannelLoadingFrequency;
+  final RangeIntegerInput lastChannelLoadingFrequency;
   final FloatPointInput lastChannelLoadingLevel;
   final String pilotFrequencyMode;
   final IntegerInput pilotFrequency1;
@@ -128,9 +128,9 @@ class Setting18GraphModuleState extends Equatable {
     String? tgcCableLength,
     // String? usTGC,
     String? splitOption,
-    IntegerInput? firstChannelLoadingFrequency,
+    RangeIntegerInput? firstChannelLoadingFrequency,
     FloatPointInput? firstChannelLoadingLevel,
-    IntegerInput? lastChannelLoadingFrequency,
+    RangeIntegerInput? lastChannelLoadingFrequency,
     FloatPointInput? lastChannelLoadingLevel,
     String? pilotFrequencyMode,
     IntegerInput? pilotFrequency1,

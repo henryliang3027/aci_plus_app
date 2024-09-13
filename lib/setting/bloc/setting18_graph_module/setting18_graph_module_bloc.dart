@@ -255,11 +255,11 @@ class Setting18GraphModuleBloc
       splitOption: splitOption,
       pilotFrequencyMode: pilotFrequencyMode,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency.isNotEmpty
-          ? IntegerInput.dirty(firstChannelLoadingFrequency)
-          : const IntegerInput.pure(),
+          ? RangeIntegerInput.dirty(firstChannelLoadingFrequency)
+          : const RangeIntegerInput.pure(),
       firstChannelLoadingLevel: FloatPointInput.dirty(firstChannelLoadingLevel),
       lastChannelLoadingFrequency:
-          IntegerInput.dirty(lastChannelLoadingFrequency),
+          RangeIntegerInput.dirty(lastChannelLoadingFrequency),
       lastChannelLoadingLevel: FloatPointInput.dirty(lastChannelLoadingLevel),
       pilotFrequency1: IntegerInput.dirty(pilotFrequency1),
       pilotFrequency2: IntegerInput.dirty(pilotFrequency2),
@@ -685,26 +685,44 @@ class Setting18GraphModuleBloc
     FirstChannelLoadingFrequencyChanged event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
-    IntegerInput firstChannelLoadingFrequency =
-        IntegerInput.dirty(event.firstChannelLoadingFrequency);
+    Map<DataKey, String> characteristicDataCache =
+        _amp18Repository.characteristicDataCache;
 
-    bool isValid = isValidFirstChannelLoadingFrequency(
-      currentDetectedSplitOption: event.currentDetectedSplitOption,
-      firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+    String currentDetectedSplitOption =
+        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
+
+    int forwardStartFrequency =
+        splitBaseLine[currentDetectedSplitOption]?.$2 ?? 0;
+
+    // 偵測到的splitOption的起始頻率 <= event.firstChannelLoadingFrequency <= 偵測到的splitOption的截止頻率\
+    // 截止頻率輸入內容不符時, event.lastChannelLoadingFrequency <= 1794
+    RangeIntegerInput firstChannelLoadingFrequency = RangeIntegerInput.dirty(
+      event.firstChannelLoadingFrequency,
+      minValue: forwardStartFrequency,
+      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
     );
 
+    // 輸入的起始頻率 <= event.lastChannelLoadingFrequency <= 1794
+    // 起始頻率輸入內容不符時, 偵測到的splitOption的起始頻率 <= event.lastChannelLoadingFrequency
+    RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
+      state.lastChannelLoadingFrequency.value,
+      minValue: int.tryParse(event.firstChannelLoadingFrequency) ??
+          forwardStartFrequency,
+      maxValue: 1794,
+    );
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.firstChannelLoadingFrequency);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+      lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       isInitialize: false,
       tappedSet: tappedSet,
-      enableSubmission: isValid &&
-          _isEnabledSubmission(
-            firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-          ),
+      enableSubmission: _isEnabledSubmission(
+        firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+        lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+      ),
     ));
   }
 
@@ -733,18 +751,43 @@ class Setting18GraphModuleBloc
     LastChannelLoadingFrequencyChanged event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
-    IntegerInput lastChannelLoadingFrequency =
-        IntegerInput.dirty(event.lastChannelLoadingFrequency);
+    Map<DataKey, String> characteristicDataCache =
+        _amp18Repository.characteristicDataCache;
+
+    String currentDetectedSplitOption =
+        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
+
+    int forwardStartFrequency =
+        splitBaseLine[currentDetectedSplitOption]?.$2 ?? 0;
+
+    // 偵測到的splitOption的起始頻率 <= event.firstChannelLoadingFrequency <= 輸入的截止頻率
+    // 截止頻率輸入內容不符時, event.lastChannelLoadingFrequency <= 1794
+    RangeIntegerInput firstChannelLoadingFrequency = RangeIntegerInput.dirty(
+      state.firstChannelLoadingFrequency.value,
+      minValue: forwardStartFrequency,
+      maxValue: int.tryParse(event.lastChannelLoadingFrequency) ?? 1794,
+    );
+
+    // 輸入的起始頻率 <= event.lastChannelLoadingFrequency <= 1794
+    // 起始頻率輸入內容不符時, 偵測到的splitOption的起始頻率 <= event.lastChannelLoadingFrequency
+    RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
+      event.lastChannelLoadingFrequency,
+      minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
+          forwardStartFrequency,
+      maxValue: 1794,
+    );
 
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.lastChannelLoadingFrequency);
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
+      firstChannelLoadingFrequency: firstChannelLoadingFrequency,
       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       isInitialize: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
+        firstChannelLoadingFrequency: firstChannelLoadingFrequency,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       ),
     ));
@@ -867,9 +910,9 @@ class Setting18GraphModuleBloc
     String? tgcCableLength,
     //  String usTGC,
     String? splitOption,
-    IntegerInput? firstChannelLoadingFrequency,
+    RangeIntegerInput? firstChannelLoadingFrequency,
     FloatPointInput? firstChannelLoadingLevel,
-    IntegerInput? lastChannelLoadingFrequency,
+    RangeIntegerInput? lastChannelLoadingFrequency,
     FloatPointInput? lastChannelLoadingLevel,
     String? pilotFrequencyMode,
     IntegerInput? pilotFrequency1,

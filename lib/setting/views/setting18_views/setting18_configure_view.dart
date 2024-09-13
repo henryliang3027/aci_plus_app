@@ -675,10 +675,7 @@ class _FirstChannelLoading extends StatelessWidget {
                 .read<Setting18ConfigureBloc>()
                 .add(FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
           },
-          errorText1: !isValidFirstChannelLoadingFrequency(
-            currentDetectedSplitOption: currentDetectedSplitOption,
-            firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-          )
+          errorText1: state.firstChannelLoadingFrequency.isNotValid
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           errorText2: state.firstChannelLoadingLevel.isNotValid
