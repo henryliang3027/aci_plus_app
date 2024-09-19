@@ -96,13 +96,15 @@ class Setting18ConfigureBloc
       firstChannelLoadingFrequency: firstChannelLoadingFrequency.isNotEmpty
           ? RangeIntegerInput.dirty(firstChannelLoadingFrequency)
           : const RangeIntegerInput.pure(),
-      firstChannelLoadingLevel: FloatPointInput.dirty(firstChannelLoadingLevel),
+      firstChannelLoadingLevel:
+          RangeFloatPointInput.dirty(firstChannelLoadingLevel),
       lastChannelLoadingFrequency:
           RangeIntegerInput.dirty(lastChannelLoadingFrequency),
-      lastChannelLoadingLevel: FloatPointInput.dirty(lastChannelLoadingLevel),
+      lastChannelLoadingLevel:
+          RangeFloatPointInput.dirty(lastChannelLoadingLevel),
       pilotFrequencyMode: pilotFrequencyMode,
-      pilotFrequency1: IntegerInput.dirty(pilotFrequency1),
-      pilotFrequency2: IntegerInput.dirty(pilotFrequency2),
+      pilotFrequency1: RangeIntegerInput.dirty(pilotFrequency1),
+      pilotFrequency2: RangeIntegerInput.dirty(pilotFrequency2),
       manualModePilot1RFOutputPower: manualModePilot1RFOutputPower,
       manualModePilot2RFOutputPower: manualModePilot2RFOutputPower,
       agcMode: agcMode,
@@ -283,18 +285,23 @@ class Setting18ConfigureBloc
     ));
   }
 
-  void _onFirstChannelLoadingFrequencyChanged(
-    FirstChannelLoadingFrequencyChanged event,
-    Emitter<Setting18ConfigureState> emit,
-  ) {
+  int _getMinForwardStartFrequency() {
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
 
     String currentDetectedSplitOption =
         characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
 
-    int forwardStartFrequency =
-        splitBaseLine[currentDetectedSplitOption]?.$2 ?? 0;
+    int startFrequency = splitBaseLine[currentDetectedSplitOption]?.$2 ?? 0;
+
+    return startFrequency;
+  }
+
+  void _onFirstChannelLoadingFrequencyChanged(
+    FirstChannelLoadingFrequencyChanged event,
+    Emitter<Setting18ConfigureState> emit,
+  ) {
+    int forwardStartFrequency = _getMinForwardStartFrequency();
 
     // 偵測到的splitOption的起始頻率 <= event.firstChannelLoadingFrequency <= 偵測到的splitOption的截止頻率\
     // 截止頻率輸入內容不符時, event.lastChannelLoadingFrequency <= 1794
@@ -313,6 +320,39 @@ class Setting18ConfigureBloc
       maxValue: 1794,
     );
 
+    // minValue 判斷優先順序
+    // firstChannelLoadingFrequency <= pilotFrequency1
+    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency1
+
+    // maxValue 判斷優先順序
+    // pilotFrequency1 <= pilotFrequency2
+    // 如果沒輸入 pilotFrequency2 則 pilotFrequency1 <= lastChannelLoadingFrequency
+    // 如果也沒輸入 lastChannelLoadingFrequency 則 pilotFrequency1 <= 1794
+    RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
+      state.pilotFrequency1.value,
+      minValue: int.tryParse(event.firstChannelLoadingFrequency) ??
+          forwardStartFrequency,
+      maxValue: int.tryParse(state.pilotFrequency2.value) ??
+          int.tryParse(state.lastChannelLoadingFrequency.value) ??
+          1794,
+    );
+
+    // minValue 判斷優先順序
+    // pilotFrequency1 <= pilotFrequency2
+    // 如果沒輸入 pilotFrequency1 則 firstChannelLoadingFrequency <= pilotFrequency2
+    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency2
+
+    // maxValue 判斷優先順序
+    // pilotFrequency2 <= lastChannelLoadingFrequency
+    // 如果沒輸入 lastChannelLoadingFrequency 則 pilotFrequency2 <= 1794
+    RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
+      state.pilotFrequency2.value,
+      minValue: int.tryParse(state.pilotFrequency1.value) ??
+          int.tryParse(event.firstChannelLoadingFrequency) ??
+          forwardStartFrequency,
+      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
+    );
+
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.firstChannelLoadingFrequency);
 
@@ -321,6 +361,8 @@ class Setting18ConfigureBloc
       gpsStatus: FormStatus.none,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+      pilotFrequency1: pilotFrequency1,
+      pilotFrequency2: pilotFrequency2,
       isInitialize: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
@@ -332,8 +374,8 @@ class Setting18ConfigureBloc
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
         lastChannelLoadingLevel: state.lastChannelLoadingLevel,
         pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
+        pilotFrequency1: pilotFrequency1,
+        pilotFrequency2: pilotFrequency2,
         agcMode: state.agcMode,
         alcMode: state.alcMode,
         logInterval: state.logInterval,
@@ -347,8 +389,24 @@ class Setting18ConfigureBloc
     FirstChannelLoadingLevelChanged event,
     Emitter<Setting18ConfigureState> emit,
   ) {
-    FloatPointInput firstChannelLoadingLevel =
-        FloatPointInput.dirty(event.firstChannelLoadingLevel);
+    // 20.0 <= firstChannelLoadingLevel <= lastChannelLoadingLevel
+    // 如果沒輸入 lastChannelLoadingLevel 時 lastChannelLoadingLevel <= 61.0
+    RangeFloatPointInput firstChannelLoadingLevel = RangeFloatPointInput.dirty(
+      event.firstChannelLoadingLevel,
+      minValue: 20.0,
+      maxValue: double.tryParse(state.lastChannelLoadingLevel.value) ?? 61.0,
+    );
+
+    // 輸入的起始頻率 <= event.lastChannelLoadingFrequency <= 1794
+    // 起始頻率輸入內容不符時, 偵測到的splitOption的起始頻率 <= event.lastChannelLoadingFrequency
+    RangeFloatPointInput lastChannelLoadingLevel = RangeFloatPointInput.dirty(
+      state.lastChannelLoadingLevel.value,
+      minValue: double.tryParse(
+            event.firstChannelLoadingLevel,
+          ) ??
+          20.0,
+      maxValue: 61.0,
+    );
 
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.firstChannelLoadingLevel);
@@ -357,6 +415,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       firstChannelLoadingLevel: firstChannelLoadingLevel,
+      lastChannelLoadingLevel: lastChannelLoadingLevel,
       isInitialize: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
@@ -366,7 +425,7 @@ class Setting18ConfigureBloc
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        lastChannelLoadingLevel: lastChannelLoadingLevel,
         pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: state.pilotFrequency1,
         pilotFrequency2: state.pilotFrequency2,
@@ -383,14 +442,7 @@ class Setting18ConfigureBloc
     LastChannelLoadingFrequencyChanged event,
     Emitter<Setting18ConfigureState> emit,
   ) {
-    Map<DataKey, String> characteristicDataCache =
-        _amp18Repository.characteristicDataCache;
-
-    String currentDetectedSplitOption =
-        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
-
-    int forwardStartFrequency =
-        splitBaseLine[currentDetectedSplitOption]?.$2 ?? 0;
+    int forwardStartFrequency = _getMinForwardStartFrequency();
 
     // 偵測到的splitOption的起始頻率 <= event.firstChannelLoadingFrequency <= 輸入的截止頻率
     // 截止頻率輸入內容不符時, event.lastChannelLoadingFrequency <= 1794
@@ -409,6 +461,39 @@ class Setting18ConfigureBloc
       maxValue: 1794,
     );
 
+    // minValue 判斷優先順序
+    // firstChannelLoadingFrequency <= pilotFrequency1
+    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency1
+
+    // maxValue 判斷優先順序
+    // pilotFrequency1 <= pilotFrequency2
+    // 如果沒輸入 pilotFrequency2 則 pilotFrequency1 <= lastChannelLoadingFrequency
+    // 如果也沒輸入 lastChannelLoadingFrequency 則 pilotFrequency1 <= 1794
+    RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
+      state.pilotFrequency1.value,
+      minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
+          forwardStartFrequency,
+      maxValue: int.tryParse(state.pilotFrequency2.value) ??
+          int.tryParse(state.lastChannelLoadingFrequency.value) ??
+          1794,
+    );
+
+    // minValue 判斷優先順序
+    // pilotFrequency1 <= pilotFrequency2
+    // 如果沒輸入 pilotFrequency1 則 firstChannelLoadingFrequency <= pilotFrequency2
+    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency2
+
+    // maxValue 判斷優先順序
+    // pilotFrequency2 <= lastChannelLoadingFrequency
+    // 如果沒輸入 lastChannelLoadingFrequency 則 pilotFrequency2 <= 1794
+    RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
+      state.pilotFrequency2.value,
+      minValue: int.tryParse(state.pilotFrequency1.value) ??
+          int.tryParse(state.firstChannelLoadingFrequency.value) ??
+          forwardStartFrequency,
+      maxValue: int.tryParse(event.lastChannelLoadingFrequency) ?? 1794,
+    );
+
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.lastChannelLoadingFrequency);
 
@@ -417,6 +502,8 @@ class Setting18ConfigureBloc
       gpsStatus: FormStatus.none,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+      pilotFrequency1: pilotFrequency1,
+      pilotFrequency2: pilotFrequency2,
       isInitialize: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
@@ -428,8 +515,8 @@ class Setting18ConfigureBloc
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
         lastChannelLoadingLevel: state.lastChannelLoadingLevel,
         pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
+        pilotFrequency1: pilotFrequency1,
+        pilotFrequency2: pilotFrequency2,
         agcMode: state.agcMode,
         alcMode: state.alcMode,
         logInterval: state.logInterval,
@@ -443,8 +530,24 @@ class Setting18ConfigureBloc
     LastChannelLoadingLevelChanged event,
     Emitter<Setting18ConfigureState> emit,
   ) {
-    FloatPointInput lastChannelLoadingLevel =
-        FloatPointInput.dirty(event.lastChannelLoadingLevel);
+    // 20.0 <= firstChannelLoadingLevel <= lastChannelLoadingLevel
+    // 如果沒輸入 lastChannelLoadingLevel 時 lastChannelLoadingLevel <= 61.0
+    RangeFloatPointInput firstChannelLoadingLevel = RangeFloatPointInput.dirty(
+      state.firstChannelLoadingLevel.value,
+      minValue: 20.0,
+      maxValue: double.tryParse(event.lastChannelLoadingLevel) ?? 61.0,
+    );
+
+    // 輸入的起始頻率 <= event.lastChannelLoadingFrequency <= 1794
+    // 起始頻率輸入內容不符時, 偵測到的splitOption的起始頻率 <= event.lastChannelLoadingFrequency
+    RangeFloatPointInput lastChannelLoadingLevel = RangeFloatPointInput.dirty(
+      event.lastChannelLoadingLevel,
+      minValue: double.tryParse(
+            state.firstChannelLoadingLevel.value,
+          ) ??
+          20.0,
+      maxValue: 61.0,
+    );
 
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.lastChannelLoadingLevel);
@@ -452,6 +555,7 @@ class Setting18ConfigureBloc
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
+      firstChannelLoadingLevel: firstChannelLoadingLevel,
       lastChannelLoadingLevel: lastChannelLoadingLevel,
       isInitialize: false,
       tappedSet: tappedSet,
@@ -460,7 +564,7 @@ class Setting18ConfigureBloc
         coordinates: state.coordinates,
         splitOption: state.splitOption,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
         lastChannelLoadingLevel: lastChannelLoadingLevel,
         pilotFrequencyMode: state.pilotFrequencyMode,
@@ -482,23 +586,100 @@ class Setting18ConfigureBloc
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.pilotFrequencyMode);
 
+    int forwardStartFrequency = _getMinForwardStartFrequency();
+
+    // 偵測到的splitOption的起始頻率 <= event.firstChannelLoadingFrequency <= 偵測到的splitOption的截止頻率\
+    // 截止頻率輸入內容不符時, event.lastChannelLoadingFrequency <= 1794
+    RangeIntegerInput firstChannelLoadingFrequency = RangeIntegerInput.dirty(
+      state.firstChannelLoadingFrequency.value,
+      minValue: forwardStartFrequency,
+      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
+    );
+
+    // 輸入的起始頻率 <= event.lastChannelLoadingFrequency <= 1794
+    // 起始頻率輸入內容不符時, 偵測到的splitOption的起始頻率 <= event.lastChannelLoadingFrequency
+    RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
+      state.lastChannelLoadingFrequency.value,
+      minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
+          forwardStartFrequency,
+      maxValue: 1794,
+    );
+
+    // minValue 判斷優先順序
+    // firstChannelLoadingFrequency <= pilotFrequency1
+    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency1
+
+    // maxValue 判斷優先順序
+    // pilotFrequency1 <= pilotFrequency2
+    // 如果沒輸入 pilotFrequency2 則 pilotFrequency1 <= lastChannelLoadingFrequency
+    // 如果也沒輸入 lastChannelLoadingFrequency 則 pilotFrequency1 <= 1794
+    RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
+      state.pilotFrequency1.value,
+      minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
+          forwardStartFrequency,
+      maxValue: int.tryParse(state.pilotFrequency2.value) ??
+          int.tryParse(state.lastChannelLoadingFrequency.value) ??
+          1794,
+    );
+
+    // minValue 判斷優先順序
+    // pilotFrequency1 <= pilotFrequency2
+    // 如果沒輸入 pilotFrequency1 則 firstChannelLoadingFrequency <= pilotFrequency2
+    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency2
+
+    // maxValue 判斷優先順序
+    // pilotFrequency2 <= lastChannelLoadingFrequency
+    // 如果沒輸入 lastChannelLoadingFrequency 則 pilotFrequency2 <= 1794
+    RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
+      state.pilotFrequency2.value,
+      minValue: int.tryParse(state.pilotFrequency1.value) ??
+          int.tryParse(state.firstChannelLoadingFrequency.value) ??
+          forwardStartFrequency,
+      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
+    );
+
+    // 20.0 <= firstChannelLoadingLevel <= lastChannelLoadingLevel
+    // 如果沒輸入 lastChannelLoadingLevel 時 lastChannelLoadingLevel <= 61.0
+    RangeFloatPointInput firstChannelLoadingLevel = RangeFloatPointInput.dirty(
+      state.firstChannelLoadingLevel.value,
+      minValue: 20.0,
+      maxValue: double.tryParse(state.lastChannelLoadingLevel.value) ?? 61.0,
+    );
+
+    // 輸入的起始頻率 <= event.lastChannelLoadingFrequency <= 1794
+    // 起始頻率輸入內容不符時, 偵測到的splitOption的起始頻率 <= event.lastChannelLoadingFrequency
+    RangeFloatPointInput lastChannelLoadingLevel = RangeFloatPointInput.dirty(
+      state.lastChannelLoadingLevel.value,
+      minValue: double.tryParse(
+            state.firstChannelLoadingLevel.value,
+          ) ??
+          20.0,
+      maxValue: 61.0,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       pilotFrequencyMode: event.pilotFrequencyMode,
+      firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+      firstChannelLoadingLevel: firstChannelLoadingLevel,
+      lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+      lastChannelLoadingLevel: lastChannelLoadingLevel,
+      pilotFrequency1: pilotFrequency1,
+      pilotFrequency2: pilotFrequency2,
       isInitialize: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         location: state.location,
         coordinates: state.coordinates,
         splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: lastChannelLoadingLevel,
         pilotFrequencyMode: event.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
+        pilotFrequency1: pilotFrequency1,
+        pilotFrequency2: pilotFrequency2,
         agcMode: state.agcMode,
         alcMode: state.alcMode,
         logInterval: state.logInterval,
@@ -512,7 +693,39 @@ class Setting18ConfigureBloc
     PilotFrequency1Changed event,
     Emitter<Setting18ConfigureState> emit,
   ) {
-    IntegerInput pilotFrequency1 = IntegerInput.dirty(event.pilotFrequency1);
+    // minValue 判斷優先順序
+    // firstChannelLoadingFrequency <= pilotFrequency1
+    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency1
+
+    // maxValue 判斷優先順序
+    // pilotFrequency1 <= pilotFrequency2
+    // 如果沒輸入 pilotFrequency2 則 pilotFrequency1 <= lastChannelLoadingFrequency
+    // 如果也沒輸入 lastChannelLoadingFrequency 則 pilotFrequency1 <= 1794
+    int forwardStartFrequency = _getMinForwardStartFrequency();
+    RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
+      event.pilotFrequency1,
+      minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
+          forwardStartFrequency,
+      maxValue: int.tryParse(state.pilotFrequency2.value) ??
+          int.tryParse(state.lastChannelLoadingFrequency.value) ??
+          1794,
+    );
+
+    // minValue 判斷優先順序
+    // pilotFrequency1 <= pilotFrequency2
+    // 如果沒輸入 pilotFrequency1 則 firstChannelLoadingFrequency <= pilotFrequency2
+    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency2
+
+    // maxValue 判斷優先順序
+    // pilotFrequency2 <= lastChannelLoadingFrequency
+    // 如果沒輸入 lastChannelLoadingFrequency 則 pilotFrequency2 <= 1794
+    RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
+      state.pilotFrequency2.value,
+      minValue: int.tryParse(event.pilotFrequency1) ??
+          int.tryParse(state.firstChannelLoadingFrequency.value) ??
+          forwardStartFrequency,
+      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
+    );
 
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.pilotFrequency1);
@@ -521,6 +734,7 @@ class Setting18ConfigureBloc
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
       pilotFrequency1: pilotFrequency1,
+      pilotFrequency2: pilotFrequency2,
       isInitialize: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
@@ -533,7 +747,7 @@ class Setting18ConfigureBloc
         lastChannelLoadingLevel: state.lastChannelLoadingLevel,
         pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
+        pilotFrequency2: pilotFrequency2,
         agcMode: state.agcMode,
         alcMode: state.alcMode,
         logInterval: state.logInterval,
@@ -547,7 +761,39 @@ class Setting18ConfigureBloc
     PilotFrequency2Changed event,
     Emitter<Setting18ConfigureState> emit,
   ) {
-    IntegerInput pilotFrequency2 = IntegerInput.dirty(event.pilotFrequency2);
+    // minValue 判斷優先順序
+    // firstChannelLoadingFrequency <= pilotFrequency1
+    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency1
+
+    // maxValue 判斷優先順序
+    // pilotFrequency1 <= pilotFrequency2
+    // 如果沒輸入 pilotFrequency2 則 pilotFrequency1 <= lastChannelLoadingFrequency
+    // 如果也沒輸入 lastChannelLoadingFrequency 則 pilotFrequency1 <= 1794
+    int forwardStartFrequency = _getMinForwardStartFrequency();
+    RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
+      state.pilotFrequency1.value,
+      minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
+          forwardStartFrequency,
+      maxValue: int.tryParse(event.pilotFrequency2) ??
+          int.tryParse(state.lastChannelLoadingFrequency.value) ??
+          1794,
+    );
+
+    // minValue 判斷優先順序
+    // pilotFrequency1 <= pilotFrequency2
+    // 如果沒輸入 pilotFrequency1 則 firstChannelLoadingFrequency <= pilotFrequency2
+    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency2
+
+    // maxValue 判斷優先順序
+    // pilotFrequency2 <= lastChannelLoadingFrequency
+    // 如果沒輸入 lastChannelLoadingFrequency 則 pilotFrequency2 <= 1794
+    RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
+      event.pilotFrequency2,
+      minValue: int.tryParse(state.pilotFrequency1.value) ??
+          int.tryParse(state.firstChannelLoadingFrequency.value) ??
+          forwardStartFrequency,
+      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
+    );
 
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.pilotFrequency2);
@@ -555,6 +801,7 @@ class Setting18ConfigureBloc
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
+      pilotFrequency1: pilotFrequency1,
       pilotFrequency2: pilotFrequency2,
       isInitialize: false,
       tappedSet: tappedSet,
@@ -567,7 +814,7 @@ class Setting18ConfigureBloc
         lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
         lastChannelLoadingLevel: state.lastChannelLoadingLevel,
         pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
+        pilotFrequency1: pilotFrequency1,
         pilotFrequency2: pilotFrequency2,
         agcMode: state.agcMode,
         alcMode: state.alcMode,
@@ -764,16 +1011,16 @@ class Setting18ConfigureBloc
       splitOption: state.initialValues[DataKey.splitOption],
       firstChannelLoadingFrequency: RangeIntegerInput.dirty(
           state.initialValues[DataKey.firstChannelLoadingFrequency] ?? ''),
-      firstChannelLoadingLevel: FloatPointInput.dirty(
+      firstChannelLoadingLevel: RangeFloatPointInput.dirty(
           state.initialValues[DataKey.firstChannelLoadingLevel] ?? ''),
       lastChannelLoadingFrequency: RangeIntegerInput.dirty(
           state.initialValues[DataKey.lastChannelLoadingFrequency] ?? ''),
-      lastChannelLoadingLevel: FloatPointInput.dirty(
+      lastChannelLoadingLevel: RangeFloatPointInput.dirty(
           state.initialValues[DataKey.lastChannelLoadingLevel] ?? ''),
       pilotFrequencyMode: state.initialValues[DataKey.pilotFrequencyMode],
-      pilotFrequency1: IntegerInput.dirty(
+      pilotFrequency1: RangeIntegerInput.dirty(
           state.initialValues[DataKey.pilotFrequency1] ?? ''),
-      pilotFrequency2: IntegerInput.dirty(
+      pilotFrequency2: RangeIntegerInput.dirty(
           state.initialValues[DataKey.pilotFrequency2] ?? ''),
       agcMode: state.initialValues[DataKey.agcMode],
       alcMode: state.initialValues[DataKey.alcMode],
@@ -788,26 +1035,39 @@ class Setting18ConfigureBloc
     required String coordinates,
     required String splitOption,
     required RangeIntegerInput firstChannelLoadingFrequency,
-    required FloatPointInput firstChannelLoadingLevel,
+    required RangeFloatPointInput firstChannelLoadingLevel,
     required RangeIntegerInput lastChannelLoadingFrequency,
-    required FloatPointInput lastChannelLoadingLevel,
+    required RangeFloatPointInput lastChannelLoadingLevel,
     required String pilotFrequencyMode,
-    required IntegerInput pilotFrequency1,
-    required IntegerInput pilotFrequency2,
+    required RangeIntegerInput pilotFrequency1,
+    required RangeIntegerInput pilotFrequency2,
     required String agcMode,
     required String alcMode,
     required String logInterval,
     required String rfOutputLogInterval,
     required String tgcCableLength,
   }) {
-    bool isValid = Formz.validate([
-      firstChannelLoadingFrequency,
-      firstChannelLoadingLevel,
-      lastChannelLoadingFrequency,
-      lastChannelLoadingLevel,
-      pilotFrequency1,
-      pilotFrequency2,
-    ]);
+    bool isValid = false;
+
+    if (pilotFrequencyMode == '0') {
+      isValid = Formz.validate([
+        firstChannelLoadingFrequency,
+        firstChannelLoadingLevel,
+        lastChannelLoadingFrequency,
+        lastChannelLoadingLevel,
+      ]);
+    } else if (pilotFrequencyMode == '1') {
+      isValid = Formz.validate([
+        firstChannelLoadingFrequency,
+        firstChannelLoadingLevel,
+        lastChannelLoadingFrequency,
+        lastChannelLoadingLevel,
+        pilotFrequency1,
+        pilotFrequency2,
+      ]);
+    } else {
+      isValid = true;
+    }
 
     if (isValid) {
       if (location != state.initialValues[DataKey.location] ||
