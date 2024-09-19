@@ -8,12 +8,12 @@ class Setting18ConfigureState extends Equatable {
     this.coordinates = '',
     this.splitOption = '1',
     this.firstChannelLoadingFrequency = const RangeIntegerInput.pure(),
-    this.firstChannelLoadingLevel = const FloatPointInput.pure(),
+    this.firstChannelLoadingLevel = const RangeFloatPointInput.pure(),
     this.lastChannelLoadingFrequency = const RangeIntegerInput.pure(),
-    this.lastChannelLoadingLevel = const FloatPointInput.pure(),
+    this.lastChannelLoadingLevel = const RangeFloatPointInput.pure(),
     this.pilotFrequencyMode = '',
-    this.pilotFrequency1 = const IntegerInput.pure(),
-    this.pilotFrequency2 = const IntegerInput.pure(),
+    this.pilotFrequency1 = const RangeIntegerInput.pure(),
+    this.pilotFrequency2 = const RangeIntegerInput.pure(),
     this.manualModePilot1RFOutputPower = '',
     this.manualModePilot2RFOutputPower = '',
     this.agcMode = '',
@@ -36,12 +36,12 @@ class Setting18ConfigureState extends Equatable {
   final String coordinates;
   final String splitOption;
   final RangeIntegerInput firstChannelLoadingFrequency;
-  final FloatPointInput firstChannelLoadingLevel;
+  final RangeFloatPointInput firstChannelLoadingLevel;
   final RangeIntegerInput lastChannelLoadingFrequency;
-  final FloatPointInput lastChannelLoadingLevel;
+  final RangeFloatPointInput lastChannelLoadingLevel;
   final String pilotFrequencyMode;
-  final IntegerInput pilotFrequency1;
-  final IntegerInput pilotFrequency2;
+  final RangeIntegerInput pilotFrequency1;
+  final RangeIntegerInput pilotFrequency2;
   final String manualModePilot1RFOutputPower;
   final String manualModePilot2RFOutputPower;
   final String agcMode;
@@ -64,12 +64,12 @@ class Setting18ConfigureState extends Equatable {
     String? coordinates,
     String? splitOption,
     RangeIntegerInput? firstChannelLoadingFrequency,
-    FloatPointInput? firstChannelLoadingLevel,
+    RangeFloatPointInput? firstChannelLoadingLevel,
     RangeIntegerInput? lastChannelLoadingFrequency,
-    FloatPointInput? lastChannelLoadingLevel,
+    RangeFloatPointInput? lastChannelLoadingLevel,
     String? pilotFrequencyMode,
-    IntegerInput? pilotFrequency1,
-    IntegerInput? pilotFrequency2,
+    RangeIntegerInput? pilotFrequency1,
+    RangeIntegerInput? pilotFrequency2,
     String? manualModePilot1RFOutputPower,
     String? manualModePilot2RFOutputPower,
     String? agcMode,

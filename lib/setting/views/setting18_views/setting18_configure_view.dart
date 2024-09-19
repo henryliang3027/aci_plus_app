@@ -8,6 +8,7 @@ import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_configure/setting18_configure_bloc.dart';
 import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
+import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_page.dart';
@@ -635,6 +636,28 @@ class _PilotFrequencyMode extends StatelessWidget {
   }
 }
 
+// 判斷在不同 pilotFrequencyMode 下要顯示哪些 error text,
+// 只要有其中一個不符合, 所有相關的 frequency 欄位都會顯示 error text
+bool _isNotValidFrequency({
+  required String pilotFrequencyMode,
+  required RangeIntegerInput firstChannelLoadingFrequency,
+  required RangeIntegerInput lastChannelLoadingFrequency,
+  required RangeIntegerInput pilotFrequency1,
+  required RangeIntegerInput pilotFrequency2,
+}) {
+  if (pilotFrequencyMode == '0') {
+    return firstChannelLoadingFrequency.isNotValid ||
+        lastChannelLoadingFrequency.isNotValid;
+  } else if (pilotFrequencyMode == '1') {
+    return firstChannelLoadingFrequency.isNotValid ||
+        lastChannelLoadingFrequency.isNotValid ||
+        pilotFrequency1.isNotValid ||
+        pilotFrequency2.isNotValid;
+  } else {
+    return false;
+  }
+}
+
 class _FirstChannelLoading extends StatelessWidget {
   const _FirstChannelLoading({
     required this.firstChannelLoadingFrequencyTextEditingController,
@@ -675,7 +698,13 @@ class _FirstChannelLoading extends StatelessWidget {
                 .read<Setting18ConfigureBloc>()
                 .add(FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
           },
-          errorText1: state.firstChannelLoadingFrequency.isNotValid
+          errorText1: _isNotValidFrequency(
+            pilotFrequencyMode: state.pilotFrequencyMode,
+            firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+            lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+            pilotFrequency1: state.pilotFrequency1,
+            pilotFrequency2: state.pilotFrequency2,
+          )
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           errorText2: state.firstChannelLoadingLevel.isNotValid
@@ -728,7 +757,13 @@ class _LastChannelLoading extends StatelessWidget {
                 .read<Setting18ConfigureBloc>()
                 .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
           },
-          errorText1: state.lastChannelLoadingFrequency.isNotValid
+          errorText1: _isNotValidFrequency(
+            pilotFrequencyMode: state.pilotFrequencyMode,
+            firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+            lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+            pilotFrequency1: state.pilotFrequency1,
+            pilotFrequency2: state.pilotFrequency2,
+          )
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           errorText2: state.lastChannelLoadingLevel.isNotValid
@@ -778,7 +813,13 @@ class _PilotFrequency1 extends StatelessWidget {
                 .add(PilotFrequency1Changed(frequency));
           },
           onChanged2: (_) {},
-          errorText1: state.pilotFrequency1.isNotValid
+          errorText1: _isNotValidFrequency(
+            pilotFrequencyMode: state.pilotFrequencyMode,
+            firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+            lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+            pilotFrequency1: state.pilotFrequency1,
+            pilotFrequency2: state.pilotFrequency2,
+          )
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -823,7 +864,13 @@ class _PilotFrequency2 extends StatelessWidget {
                 .add(PilotFrequency2Changed(frequency));
           },
           onChanged2: (_) {},
-          errorText1: state.pilotFrequency2.isNotValid
+          errorText1: _isNotValidFrequency(
+            pilotFrequencyMode: state.pilotFrequencyMode,
+            firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+            lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+            pilotFrequency1: state.pilotFrequency1,
+            pilotFrequency2: state.pilotFrequency2,
+          )
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(

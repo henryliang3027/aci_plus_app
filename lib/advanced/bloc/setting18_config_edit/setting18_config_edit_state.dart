@@ -9,9 +9,9 @@ class Setting18ConfigEditState extends Equatable {
     this.groupId = '',
     this.name = const NameInput.pure(),
     this.firstChannelLoadingFrequency = const RangeIntegerInput.pure(),
-    this.firstChannelLoadingLevel = const FloatPointInput.pure(),
+    this.firstChannelLoadingLevel = const RangeFloatPointInput.pure(),
     this.lastChannelLoadingFrequency = const RangeIntegerInput.pure(),
-    this.lastChannelLoadingLevel = const FloatPointInput.pure(),
+    this.lastChannelLoadingLevel = const RangeFloatPointInput.pure(),
     this.isInitialize = false,
     this.settingResult = const [],
     this.enableSubmission = false,
@@ -25,9 +25,9 @@ class Setting18ConfigEditState extends Equatable {
   final NameInput name;
   final String splitOption;
   final RangeIntegerInput firstChannelLoadingFrequency;
-  final FloatPointInput firstChannelLoadingLevel;
+  final RangeFloatPointInput firstChannelLoadingLevel;
   final RangeIntegerInput lastChannelLoadingFrequency;
-  final FloatPointInput lastChannelLoadingLevel;
+  final RangeFloatPointInput lastChannelLoadingLevel;
   final bool isInitialize;
   final List<String> settingResult;
   final bool enableSubmission;
@@ -40,9 +40,9 @@ class Setting18ConfigEditState extends Equatable {
     NameInput? name,
     String? splitOption,
     RangeIntegerInput? firstChannelLoadingFrequency,
-    FloatPointInput? firstChannelLoadingLevel,
+    RangeFloatPointInput? firstChannelLoadingLevel,
     RangeIntegerInput? lastChannelLoadingFrequency,
-    FloatPointInput? lastChannelLoadingLevel,
+    RangeFloatPointInput? lastChannelLoadingLevel,
     bool? isInitialize,
     List<String>? settingResult,
     bool? enableSubmission,
