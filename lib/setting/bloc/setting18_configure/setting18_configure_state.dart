@@ -24,6 +24,7 @@ class Setting18ConfigureState extends Equatable {
     this.editMode = false,
     this.enableSubmission = false,
     this.isInitialize = true,
+    this.isInitialPilotFrequencyLevelValues = false,
     this.initialValues = const {},
     this.tappedSet = const {},
     this.settingResult = const [],
@@ -52,6 +53,7 @@ class Setting18ConfigureState extends Equatable {
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
+  final bool isInitialPilotFrequencyLevelValues;
   final Map<DataKey, String> initialValues;
   final Set<DataKey> tappedSet;
   final List<String> settingResult;
@@ -80,6 +82,7 @@ class Setting18ConfigureState extends Equatable {
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
+    bool? isInitialPilotFrequencyLevelValues,
     Map<DataKey, String>? initialValues,
     Set<DataKey>? tappedSet,
     List<String>? settingResult,
@@ -115,6 +118,8 @@ class Setting18ConfigureState extends Equatable {
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
       initialValues: initialValues ?? this.initialValues,
+      isInitialPilotFrequencyLevelValues: isInitialPilotFrequencyLevelValues ??
+          this.isInitialPilotFrequencyLevelValues,
       tappedSet: tappedSet ?? this.tappedSet,
       settingResult: settingResult ?? this.settingResult,
       gpsCoordinateErrorMessage:
@@ -146,6 +151,7 @@ class Setting18ConfigureState extends Equatable {
         editMode,
         enableSubmission,
         isInitialize,
+        isInitialPilotFrequencyLevelValues,
         initialValues,
         settingResult,
         gpsCoordinateErrorMessage

@@ -300,6 +300,21 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
           manualModePilot2RFOutputPowerTextEditingController.text =
               state.manualModePilot2RFOutputPower;
         }
+
+        if (state.isInitialPilotFrequencyLevelValues) {
+          firstChannelLoadingFrequencyTextEditingController.text =
+              state.firstChannelLoadingFrequency.value;
+          firstChannelLoadingLevelTextEditingController.text =
+              state.firstChannelLoadingLevel.value;
+          lastChannelLoadingFrequencyTextEditingController.text =
+              state.lastChannelLoadingFrequency.value;
+          lastChannelLoadingLevelTextEditingController.text =
+              state.lastChannelLoadingLevel.value;
+          pilotFrequency1TextEditingController.text =
+              state.pilotFrequency1.value;
+          pilotFrequency2TextEditingController.text =
+              state.pilotFrequency2.value;
+        }
       },
       child: Container(
         decoration: BoxDecoration(
