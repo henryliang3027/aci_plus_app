@@ -67,6 +67,7 @@ class Setting18GraphModuleState extends Equatable {
     this.editMode = true,
     this.enableSubmission = false,
     this.isInitialize = true,
+    this.isInitialPilotFrequencyLevelValues = false,
     this.initialValues = const {},
     this.tappedSet = const {},
     this.settingResult = const [],
@@ -105,7 +106,9 @@ class Setting18GraphModuleState extends Equatable {
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
+  final bool isInitialPilotFrequencyLevelValues;
   final Map<DataKey, String> initialValues;
+
   final Set<DataKey> tappedSet;
   final List<String> settingResult;
 
@@ -142,6 +145,7 @@ class Setting18GraphModuleState extends Equatable {
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
+    bool? isInitialPilotFrequencyLevelValues,
     Map<DataKey, String>? initialValues,
     Set<DataKey>? tappedSet,
     List<String>? settingResult,
@@ -188,6 +192,8 @@ class Setting18GraphModuleState extends Equatable {
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
+      isInitialPilotFrequencyLevelValues: isInitialPilotFrequencyLevelValues ??
+          this.isInitialPilotFrequencyLevelValues,
       initialValues: initialValues ?? this.initialValues,
       tappedSet: tappedSet ?? this.tappedSet,
       settingResult: settingResult ?? this.settingResult,
@@ -228,6 +234,7 @@ class Setting18GraphModuleState extends Equatable {
         editMode,
         enableSubmission,
         isInitialize,
+        isInitialPilotFrequencyLevelValues,
         initialValues,
         tappedSet,
         settingResult,

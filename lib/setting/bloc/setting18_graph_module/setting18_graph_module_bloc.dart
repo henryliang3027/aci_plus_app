@@ -271,6 +271,7 @@ class Setting18GraphModuleBloc
       agcMode: agcMode,
       alcMode: alcMode,
       isInitialize: true,
+      isInitialPilotFrequencyLevelValues: false,
       initialValues: characteristicDataCache,
       editMode: _editable,
       enableSubmission: false,
@@ -320,6 +321,7 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.none,
       dsVVA4: dsVVA4,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsVVA4: dsVVA4,
@@ -344,6 +346,7 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.none,
       dsVVA5: dsVVA5,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsVVA5: dsVVA5,
@@ -368,6 +371,7 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.none,
       dsSlope1: dsSlope1,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsSlope1: dsSlope1,
@@ -392,6 +396,7 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.none,
       dsSlope3: dsSlope3,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsSlope3: dsSlope3,
@@ -416,6 +421,7 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.none,
       dsSlope4: dsSlope4,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         dsSlope4: dsSlope4,
@@ -440,6 +446,7 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.none,
       usVCA1: usVCA1,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA1: usVCA1,
@@ -464,6 +471,7 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.none,
       usVCA2: usVCA2,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA2: usVCA2,
@@ -488,6 +496,7 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.none,
       usVCA3: usVCA3,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA3: usVCA3,
@@ -512,6 +521,7 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.none,
       usVCA4: usVCA4,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         usVCA4: usVCA4,
@@ -536,6 +546,7 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.none,
       eREQ: eREQ,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         eREQ: eREQ,
@@ -554,6 +565,7 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.none,
       returnIngressSetting2: event.returnIngressSetting2,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         returnIngressSetting2: event.returnIngressSetting2,
@@ -572,6 +584,7 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.none,
       returnIngressSetting3: event.returnIngressSetting3,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         returnIngressSetting3: event.returnIngressSetting3,
@@ -590,6 +603,7 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.none,
       returnIngressSetting4: event.returnIngressSetting4,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         returnIngressSetting4: event.returnIngressSetting4,
@@ -659,6 +673,7 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.none,
       splitOption: event.splitOption,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         splitOption: event.splitOption,
@@ -673,75 +688,78 @@ class Setting18GraphModuleBloc
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.pilotFrequencyMode);
 
+    tappedSet.remove(DataKey.firstChannelLoadingFrequency);
+    tappedSet.remove(DataKey.firstChannelLoadingLevel);
+    tappedSet.remove(DataKey.lastChannelLoadingFrequency);
+    tappedSet.remove(DataKey.lastChannelLoadingLevel);
+    tappedSet.remove(DataKey.pilotFrequency1);
+    tappedSet.remove(DataKey.pilotFrequency2);
+
+    String firstChannelLoadingFrequencyValue = '';
+    String firstChannelLoadingLevelValue = '';
+    String lastChannelLoadingFrequencyValue = '';
+    String lastChannelLoadingLevelValue = '';
+    String pilotFrequency1Value = '';
+    String pilotFrequency2Value = '';
+
+    if (event.pilotFrequencyMode != state.pilotFrequencyMode) {
+      firstChannelLoadingFrequencyValue =
+          state.initialValues[DataKey.firstChannelLoadingFrequency] ?? '';
+      firstChannelLoadingLevelValue =
+          state.initialValues[DataKey.firstChannelLoadingLevel] ?? '';
+      lastChannelLoadingFrequencyValue =
+          state.initialValues[DataKey.lastChannelLoadingFrequency] ?? '';
+      lastChannelLoadingLevelValue =
+          state.initialValues[DataKey.lastChannelLoadingLevel] ?? '';
+      pilotFrequency1Value = state.initialValues[DataKey.pilotFrequency1] ?? '';
+      pilotFrequency2Value = state.initialValues[DataKey.pilotFrequency2] ?? '';
+    } else {
+      firstChannelLoadingFrequencyValue =
+          state.firstChannelLoadingFrequency.value;
+      firstChannelLoadingLevelValue = state.firstChannelLoadingLevel.value;
+      lastChannelLoadingFrequencyValue =
+          state.lastChannelLoadingFrequency.value;
+      lastChannelLoadingLevelValue = state.lastChannelLoadingLevel.value;
+      pilotFrequency1Value = state.pilotFrequency1.value;
+      pilotFrequency2Value = state.pilotFrequency2.value;
+    }
+
     int forwardStartFrequency = _getMinForwardStartFrequency();
 
-    // 偵測到的splitOption的起始頻率 <= event.firstChannelLoadingFrequency <= 偵測到的splitOption的截止頻率\
-    // 截止頻率輸入內容不符時, event.lastChannelLoadingFrequency <= 1794
     RangeIntegerInput firstChannelLoadingFrequency = RangeIntegerInput.dirty(
-      state.firstChannelLoadingFrequency.value,
+      firstChannelLoadingFrequencyValue,
       minValue: forwardStartFrequency,
-      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
-    );
-
-    // 輸入的起始頻率 <= event.lastChannelLoadingFrequency <= 1794
-    // 起始頻率輸入內容不符時, 偵測到的splitOption的起始頻率 <= event.lastChannelLoadingFrequency
-    RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
-      state.lastChannelLoadingFrequency.value,
-      minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          forwardStartFrequency,
       maxValue: 1794,
     );
 
-    // minValue 判斷優先順序
-    // firstChannelLoadingFrequency <= pilotFrequency1
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency1
-
-    // maxValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency2 則 pilotFrequency1 <= lastChannelLoadingFrequency
-    // 如果也沒輸入 lastChannelLoadingFrequency 則 pilotFrequency1 <= 1794
-    RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
-      state.pilotFrequency1.value,
-      minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          forwardStartFrequency,
-      maxValue: int.tryParse(state.pilotFrequency2.value) ??
-          int.tryParse(state.lastChannelLoadingFrequency.value) ??
-          1794,
-    );
-
-    // minValue 判斷優先順序
-    // pilotFrequency1 <= pilotFrequency2
-    // 如果沒輸入 pilotFrequency1 則 firstChannelLoadingFrequency <= pilotFrequency2
-    // 如果也沒輸入 firstChannelLoadingFrequency 則 forwardStartFrequency <= pilotFrequency2
-
-    // maxValue 判斷優先順序
-    // pilotFrequency2 <= lastChannelLoadingFrequency
-    // 如果沒輸入 lastChannelLoadingFrequency 則 pilotFrequency2 <= 1794
-    RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
-      state.pilotFrequency2.value,
-      minValue: int.tryParse(state.pilotFrequency1.value) ??
-          int.tryParse(state.firstChannelLoadingFrequency.value) ??
-          forwardStartFrequency,
-      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
-    );
-
-    // 20.0 <= firstChannelLoadingLevel <= lastChannelLoadingLevel
-    // 如果沒輸入 lastChannelLoadingLevel 時 lastChannelLoadingLevel <= 61.0
     RangeFloatPointInput firstChannelLoadingLevel = RangeFloatPointInput.dirty(
-      state.firstChannelLoadingLevel.value,
+      firstChannelLoadingLevelValue,
       minValue: 20.0,
-      maxValue: double.tryParse(state.lastChannelLoadingLevel.value) ?? 61.0,
+      maxValue: 61.0,
     );
 
-    // 輸入的起始頻率 <= event.lastChannelLoadingFrequency <= 1794
-    // 起始頻率輸入內容不符時, 偵測到的splitOption的起始頻率 <= event.lastChannelLoadingFrequency
+    RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
+      lastChannelLoadingFrequencyValue,
+      minValue: forwardStartFrequency,
+      maxValue: 1794,
+    );
+
     RangeFloatPointInput lastChannelLoadingLevel = RangeFloatPointInput.dirty(
-      state.lastChannelLoadingLevel.value,
-      minValue: double.tryParse(
-            state.firstChannelLoadingLevel.value,
-          ) ??
-          20.0,
+      lastChannelLoadingLevelValue,
+      minValue: 20.0,
       maxValue: 61.0,
+    );
+
+    RangeIntegerInput pilotFrequency1 = RangeIntegerInput.dirty(
+      pilotFrequency1Value,
+      minValue: forwardStartFrequency,
+      maxValue: 1794,
+    );
+
+    RangeIntegerInput pilotFrequency2 = RangeIntegerInput.dirty(
+      pilotFrequency2Value,
+      minValue: forwardStartFrequency,
+      maxValue: 1794,
     );
 
     emit(state.copyWith(
@@ -754,6 +772,7 @@ class Setting18GraphModuleBloc
       pilotFrequency1: pilotFrequency1,
       pilotFrequency2: pilotFrequency2,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: true,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         pilotFrequencyMode: event.pilotFrequencyMode,
@@ -845,6 +864,7 @@ class Setting18GraphModuleBloc
       pilotFrequency1: pilotFrequency1,
       pilotFrequency2: pilotFrequency2,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         firstChannelLoadingFrequency: firstChannelLoadingFrequency,
@@ -886,6 +906,7 @@ class Setting18GraphModuleBloc
       firstChannelLoadingLevel: firstChannelLoadingLevel,
       lastChannelLoadingLevel: lastChannelLoadingLevel,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         firstChannelLoadingLevel: firstChannelLoadingLevel,
@@ -960,6 +981,7 @@ class Setting18GraphModuleBloc
       pilotFrequency1: pilotFrequency1,
       pilotFrequency2: pilotFrequency2,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         firstChannelLoadingFrequency: firstChannelLoadingFrequency,
@@ -1001,6 +1023,7 @@ class Setting18GraphModuleBloc
       firstChannelLoadingLevel: firstChannelLoadingLevel,
       lastChannelLoadingLevel: lastChannelLoadingLevel,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         firstChannelLoadingLevel: firstChannelLoadingLevel,
@@ -1055,6 +1078,7 @@ class Setting18GraphModuleBloc
       pilotFrequency1: pilotFrequency1,
       pilotFrequency2: pilotFrequency2,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         pilotFrequency1: pilotFrequency1,
@@ -1109,6 +1133,7 @@ class Setting18GraphModuleBloc
       pilotFrequency1: pilotFrequency1,
       pilotFrequency2: pilotFrequency2,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         pilotFrequency1: pilotFrequency1,
@@ -1129,6 +1154,7 @@ class Setting18GraphModuleBloc
       agcMode: event.agcMode,
       alcMode: event.agcMode,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         agcMode: event.agcMode,
@@ -1148,6 +1174,7 @@ class Setting18GraphModuleBloc
       submissionStatus: SubmissionStatus.none,
       agcMode: event.alcMode,
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         alcMode: event.alcMode,
@@ -1304,6 +1331,7 @@ class Setting18GraphModuleBloc
   ) async {
     emit(state.copyWith(
       isInitialize: false,
+      isInitialPilotFrequencyLevelValues: false,
       submissionStatus: SubmissionStatus.submissionInProgress,
     ));
 
