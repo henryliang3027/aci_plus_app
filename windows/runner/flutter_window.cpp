@@ -87,11 +87,18 @@ FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
     const double kBaseDpi = 96.0;
     double scale_factor = FlutterDesktopGetDpiForHWND(hwnd) / kBaseDpi;
 
-    minMaxInfo->ptMinTrackSize.x = static_cast<LONG>(960 * scale_factor); // Minimum width
-    minMaxInfo->ptMinTrackSize.y = static_cast<LONG>(640 * scale_factor); // Minimum height
+    // Get screen sizes to calculate offsets including windows taskbar height
+    int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
 
-    minMaxInfo->ptMaxTrackSize.x = static_cast<LONG>(960 * scale_factor); // Minimum width
-    minMaxInfo->ptMaxTrackSize.y = static_cast<LONG>(640 * scale_factor); // Minimum height
+    int windowWidth = static_cast<int>(screenWidth / scale_factor * 0.9);
+    int windowHeight = static_cast<int>(screenHeight / scale_factor * 0.9);
+
+    minMaxInfo->ptMinTrackSize.x = static_cast<LONG>(windowWidth * scale_factor); // Minimum width
+    minMaxInfo->ptMinTrackSize.y = static_cast<LONG>(windowHeight * scale_factor); // Minimum height
+
+    minMaxInfo->ptMaxTrackSize.x = static_cast<LONG>(windowWidth * scale_factor); // Minimum width
+    minMaxInfo->ptMaxTrackSize.y = static_cast<LONG>(windowHeight * scale_factor); // Minimum height
     break;
   }
 
