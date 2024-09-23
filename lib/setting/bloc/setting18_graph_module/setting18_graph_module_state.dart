@@ -53,13 +53,13 @@ class Setting18GraphModuleState extends Equatable {
     this.tgcCableLength = '',
     // this.usTGC = '',
     this.splitOption = '1',
-    this.firstChannelLoadingFrequency = const IntegerInput.pure(),
-    this.firstChannelLoadingLevel = const FloatPointInput.pure(),
-    this.lastChannelLoadingFrequency = const IntegerInput.pure(),
-    this.lastChannelLoadingLevel = const FloatPointInput.pure(),
+    this.firstChannelLoadingFrequency = const RangeIntegerInput.pure(),
+    this.firstChannelLoadingLevel = const RangeFloatPointInput.pure(),
+    this.lastChannelLoadingFrequency = const RangeIntegerInput.pure(),
+    this.lastChannelLoadingLevel = const RangeFloatPointInput.pure(),
     this.pilotFrequencyMode = '',
-    this.pilotFrequency1 = const IntegerInput.pure(),
-    this.pilotFrequency2 = const IntegerInput.pure(),
+    this.pilotFrequency1 = const RangeIntegerInput.pure(),
+    this.pilotFrequency2 = const RangeIntegerInput.pure(),
     this.manualModePilot1RFOutputPower = '',
     this.manualModePilot2RFOutputPower = '',
     this.agcMode = '',
@@ -67,6 +67,7 @@ class Setting18GraphModuleState extends Equatable {
     this.editMode = true,
     this.enableSubmission = false,
     this.isInitialize = true,
+    this.isInitialPilotFrequencyLevelValues = false,
     this.initialValues = const {},
     this.tappedSet = const {},
     this.settingResult = const [],
@@ -91,13 +92,13 @@ class Setting18GraphModuleState extends Equatable {
 
   // final String usTGC;
   final String splitOption;
-  final IntegerInput firstChannelLoadingFrequency;
-  final FloatPointInput firstChannelLoadingLevel;
-  final IntegerInput lastChannelLoadingFrequency;
-  final FloatPointInput lastChannelLoadingLevel;
+  final RangeIntegerInput firstChannelLoadingFrequency;
+  final RangeFloatPointInput firstChannelLoadingLevel;
+  final RangeIntegerInput lastChannelLoadingFrequency;
+  final RangeFloatPointInput lastChannelLoadingLevel;
   final String pilotFrequencyMode;
-  final IntegerInput pilotFrequency1;
-  final IntegerInput pilotFrequency2;
+  final RangeIntegerInput pilotFrequency1;
+  final RangeIntegerInput pilotFrequency2;
   final String manualModePilot1RFOutputPower;
   final String manualModePilot2RFOutputPower;
   final String agcMode;
@@ -105,7 +106,9 @@ class Setting18GraphModuleState extends Equatable {
   final bool editMode;
   final bool enableSubmission;
   final bool isInitialize;
+  final bool isInitialPilotFrequencyLevelValues;
   final Map<DataKey, String> initialValues;
+
   final Set<DataKey> tappedSet;
   final List<String> settingResult;
 
@@ -128,13 +131,13 @@ class Setting18GraphModuleState extends Equatable {
     String? tgcCableLength,
     // String? usTGC,
     String? splitOption,
-    IntegerInput? firstChannelLoadingFrequency,
-    FloatPointInput? firstChannelLoadingLevel,
-    IntegerInput? lastChannelLoadingFrequency,
-    FloatPointInput? lastChannelLoadingLevel,
+    RangeIntegerInput? firstChannelLoadingFrequency,
+    RangeFloatPointInput? firstChannelLoadingLevel,
+    RangeIntegerInput? lastChannelLoadingFrequency,
+    RangeFloatPointInput? lastChannelLoadingLevel,
     String? pilotFrequencyMode,
-    IntegerInput? pilotFrequency1,
-    IntegerInput? pilotFrequency2,
+    RangeIntegerInput? pilotFrequency1,
+    RangeIntegerInput? pilotFrequency2,
     String? manualModePilot1RFOutputPower,
     String? manualModePilot2RFOutputPower,
     String? agcMode,
@@ -142,6 +145,7 @@ class Setting18GraphModuleState extends Equatable {
     bool? editMode,
     bool? enableSubmission,
     bool? isInitialize,
+    bool? isInitialPilotFrequencyLevelValues,
     Map<DataKey, String>? initialValues,
     Set<DataKey>? tappedSet,
     List<String>? settingResult,
@@ -188,6 +192,8 @@ class Setting18GraphModuleState extends Equatable {
       editMode: editMode ?? this.editMode,
       enableSubmission: enableSubmission ?? this.enableSubmission,
       isInitialize: isInitialize ?? this.isInitialize,
+      isInitialPilotFrequencyLevelValues: isInitialPilotFrequencyLevelValues ??
+          this.isInitialPilotFrequencyLevelValues,
       initialValues: initialValues ?? this.initialValues,
       tappedSet: tappedSet ?? this.tappedSet,
       settingResult: settingResult ?? this.settingResult,
@@ -228,6 +234,7 @@ class Setting18GraphModuleState extends Equatable {
         editMode,
         enableSubmission,
         isInitialize,
+        isInitialPilotFrequencyLevelValues,
         initialValues,
         tappedSet,
         settingResult,

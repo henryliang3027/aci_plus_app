@@ -81,22 +81,22 @@ class Setting18ConfigEditBloc
     }
 
     NameInput name = NameInput.dirty(rawName);
-    IntegerInput firstChannelLoadingFrequency =
+    RangeIntegerInput firstChannelLoadingFrequency =
         rawFirstChannelLoadingFrequency.isNotEmpty
-            ? IntegerInput.dirty(rawFirstChannelLoadingFrequency)
-            : const IntegerInput.pure();
-    FloatPointInput firstChannelLoadingLevel =
+            ? RangeIntegerInput.dirty(rawFirstChannelLoadingFrequency)
+            : const RangeIntegerInput.pure();
+    RangeFloatPointInput firstChannelLoadingLevel =
         rawFirstChannelLoadingLevel.isNotEmpty
-            ? FloatPointInput.dirty(rawFirstChannelLoadingLevel)
-            : const FloatPointInput.pure();
-    IntegerInput lastChannelLoadingFrequency =
+            ? RangeFloatPointInput.dirty(rawFirstChannelLoadingLevel)
+            : const RangeFloatPointInput.pure();
+    RangeIntegerInput lastChannelLoadingFrequency =
         rawLastChannelLoadingFrequency.isNotEmpty
-            ? IntegerInput.dirty(rawLastChannelLoadingFrequency)
-            : const IntegerInput.pure();
-    FloatPointInput lastChannelLoadingLevel =
+            ? RangeIntegerInput.dirty(rawLastChannelLoadingFrequency)
+            : const RangeIntegerInput.pure();
+    RangeFloatPointInput lastChannelLoadingLevel =
         rawLastChannelLoadingLevel.isNotEmpty
-            ? FloatPointInput.dirty(rawLastChannelLoadingLevel)
-            : const FloatPointInput.pure();
+            ? RangeFloatPointInput.dirty(rawLastChannelLoadingLevel)
+            : const RangeFloatPointInput.pure();
 
     emit(state.copyWith(
       formStatus: FormStatus.requestSuccess,
@@ -232,12 +232,30 @@ class Setting18ConfigEditBloc
     FirstChannelLoadingFrequencyChanged event,
     Emitter<Setting18ConfigEditState> emit,
   ) {
-    IntegerInput firstChannelLoadingFrequency =
-        IntegerInput.dirty(event.firstChannelLoadingFrequency);
+    Map<DataKey, String> characteristicDataCache =
+        _amp18Repository.characteristicDataCache;
 
-    bool isValid = isValidFirstChannelLoadingFrequency(
-      currentDetectedSplitOption: event.currentDetectedSplitOption,
-      firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+    String currentDetectedSplitOption =
+        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
+
+    int forwardStartFrequency =
+        splitBaseLine[currentDetectedSplitOption]?.$2 ?? 0;
+
+    // 偵測到的splitOption的起始頻率 <= event.firstChannelLoadingFrequency <= 偵測到的splitOption的截止頻率
+    // 截止頻率輸入內容不符時, event.lastChannelLoadingFrequency <= 1794
+    RangeIntegerInput firstChannelLoadingFrequency = RangeIntegerInput.dirty(
+      event.firstChannelLoadingFrequency,
+      minValue: forwardStartFrequency,
+      maxValue: int.tryParse(state.lastChannelLoadingFrequency.value) ?? 1794,
+    );
+
+    // 輸入的起始頻率 <= event.lastChannelLoadingFrequency <= 1794
+    // 起始頻率輸入內容不符時, 偵測到的splitOption的起始頻率 <= event.lastChannelLoadingFrequency
+    RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
+      state.lastChannelLoadingFrequency.value,
+      minValue: int.tryParse(event.firstChannelLoadingFrequency) ??
+          forwardStartFrequency,
+      maxValue: 1794,
     );
 
     emit(state.copyWith(
@@ -245,15 +263,17 @@ class Setting18ConfigEditBloc
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-      enableSubmission: isValid &&
+      lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+      enableSubmission:
+          // isValid &&
           _isEnabledSubmission(
-            name: state.name,
-            // splitOption: state.splitOption,
-            firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-            firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-            lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-            lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-          ),
+        name: state.name,
+        // splitOption: state.splitOption,
+        firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        lastChannelLoadingFrequency: lastChannelLoadingFrequency,
+        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+      ),
     ));
   }
 
@@ -261,21 +281,38 @@ class Setting18ConfigEditBloc
     FirstChannelLoadingLevelChanged event,
     Emitter<Setting18ConfigEditState> emit,
   ) {
-    FloatPointInput firstChannelLoadingLevel =
-        FloatPointInput.dirty(event.firstChannelLoadingLevel);
+    // 20.0 <= firstChannelLoadingLevel <= lastChannelLoadingLevel
+    // 如果沒輸入 lastChannelLoadingLevel 時 lastChannelLoadingLevel <= 61.0
+    RangeFloatPointInput firstChannelLoadingLevel = RangeFloatPointInput.dirty(
+      event.firstChannelLoadingLevel,
+      minValue: 20.0,
+      maxValue: double.tryParse(state.lastChannelLoadingLevel.value) ?? 61.0,
+    );
+
+    // 輸入的起始頻率 <= event.lastChannelLoadingFrequency <= 1794
+    // 起始頻率輸入內容不符時, 偵測到的splitOption的起始頻率 <= event.lastChannelLoadingFrequency
+    RangeFloatPointInput lastChannelLoadingLevel = RangeFloatPointInput.dirty(
+      state.lastChannelLoadingLevel.value,
+      minValue: double.tryParse(
+            event.firstChannelLoadingLevel,
+          ) ??
+          20.0,
+      maxValue: 61.0,
+    );
     emit(state.copyWith(
       // encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
       firstChannelLoadingLevel: firstChannelLoadingLevel,
+      lastChannelLoadingLevel: lastChannelLoadingLevel,
       enableSubmission: _isEnabledSubmission(
         name: state.name,
         // splitOption: state.splitOption,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
+        lastChannelLoadingLevel: lastChannelLoadingLevel,
       ),
     ));
   }
@@ -284,18 +321,43 @@ class Setting18ConfigEditBloc
     LastChannelLoadingFrequencyChanged event,
     Emitter<Setting18ConfigEditState> emit,
   ) {
-    IntegerInput lastChannelLoadingFrequency =
-        IntegerInput.dirty(event.lastChannelLoadingFrequency);
+    Map<DataKey, String> characteristicDataCache =
+        _amp18Repository.characteristicDataCache;
+
+    String currentDetectedSplitOption =
+        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '0';
+
+    int forwardStartFrequency =
+        splitBaseLine[currentDetectedSplitOption]?.$2 ?? 0;
+
+    // 偵測到的splitOption的起始頻率 <= event.firstChannelLoadingFrequency <= 輸入的截止頻率
+    // 截止頻率輸入內容不符時, event.lastChannelLoadingFrequency <= 1794
+    RangeIntegerInput firstChannelLoadingFrequency = RangeIntegerInput.dirty(
+      state.firstChannelLoadingFrequency.value,
+      minValue: forwardStartFrequency,
+      maxValue: int.tryParse(event.lastChannelLoadingFrequency) ?? 1794,
+    );
+
+    // 輸入的起始頻率 <= event.lastChannelLoadingFrequency <= 1794
+    // 起始頻率輸入內容不符時, 偵測到的splitOption的起始頻率 <= event.lastChannelLoadingFrequency
+    RangeIntegerInput lastChannelLoadingFrequency = RangeIntegerInput.dirty(
+      event.lastChannelLoadingFrequency,
+      minValue: int.tryParse(state.firstChannelLoadingFrequency.value) ??
+          forwardStartFrequency,
+      maxValue: 1794,
+    );
+
     emit(state.copyWith(
       // encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
+      firstChannelLoadingFrequency: firstChannelLoadingFrequency,
       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       enableSubmission: _isEnabledSubmission(
         name: state.name,
         // splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+        firstChannelLoadingFrequency: firstChannelLoadingFrequency,
         firstChannelLoadingLevel: state.firstChannelLoadingLevel,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
         lastChannelLoadingLevel: state.lastChannelLoadingLevel,
@@ -307,19 +369,37 @@ class Setting18ConfigEditBloc
     LastChannelLoadingLevelChanged event,
     Emitter<Setting18ConfigEditState> emit,
   ) {
-    FloatPointInput lastChannelLoadingLevel =
-        FloatPointInput.dirty(event.lastChannelLoadingLevel);
+    // 20.0 <= firstChannelLoadingLevel <= lastChannelLoadingLevel
+    // 如果沒輸入 lastChannelLoadingLevel 時 lastChannelLoadingLevel <= 61.0
+    RangeFloatPointInput firstChannelLoadingLevel = RangeFloatPointInput.dirty(
+      state.firstChannelLoadingLevel.value,
+      minValue: 20.0,
+      maxValue: double.tryParse(event.lastChannelLoadingLevel) ?? 61.0,
+    );
+
+    // 輸入的起始頻率 <= event.lastChannelLoadingFrequency <= 1794
+    // 起始頻率輸入內容不符時, 偵測到的splitOption的起始頻率 <= event.lastChannelLoadingFrequency
+    RangeFloatPointInput lastChannelLoadingLevel = RangeFloatPointInput.dirty(
+      event.lastChannelLoadingLevel,
+      minValue: double.tryParse(
+            state.firstChannelLoadingLevel.value,
+          ) ??
+          20.0,
+      maxValue: 61.0,
+    );
+
     emit(state.copyWith(
       // encodeStaus: FormStatus.none,
       saveStatus: SubmissionStatus.none,
       settingStatus: SubmissionStatus.none,
       isInitialize: false,
+      firstChannelLoadingLevel: firstChannelLoadingLevel,
       lastChannelLoadingLevel: lastChannelLoadingLevel,
       enableSubmission: _isEnabledSubmission(
         name: state.name,
         // splitOption: state.splitOption,
         firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
+        firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
         lastChannelLoadingLevel: lastChannelLoadingLevel,
       ),
@@ -449,10 +529,10 @@ class Setting18ConfigEditBloc
   bool _isEnabledSubmission({
     required NameInput name,
     // required String splitOption,
-    required IntegerInput firstChannelLoadingFrequency,
-    required FloatPointInput firstChannelLoadingLevel,
-    required IntegerInput lastChannelLoadingFrequency,
-    required FloatPointInput lastChannelLoadingLevel,
+    required RangeIntegerInput firstChannelLoadingFrequency,
+    required RangeFloatPointInput firstChannelLoadingLevel,
+    required RangeIntegerInput lastChannelLoadingFrequency,
+    required RangeFloatPointInput lastChannelLoadingLevel,
   }) {
     bool isValid = Formz.validate([
       name,

@@ -8,10 +8,10 @@ class Setting18ConfigEditState extends Equatable {
     this.splitOption = '0',
     this.groupId = '',
     this.name = const NameInput.pure(),
-    this.firstChannelLoadingFrequency = const IntegerInput.pure(),
-    this.firstChannelLoadingLevel = const FloatPointInput.pure(),
-    this.lastChannelLoadingFrequency = const IntegerInput.pure(),
-    this.lastChannelLoadingLevel = const FloatPointInput.pure(),
+    this.firstChannelLoadingFrequency = const RangeIntegerInput.pure(),
+    this.firstChannelLoadingLevel = const RangeFloatPointInput.pure(),
+    this.lastChannelLoadingFrequency = const RangeIntegerInput.pure(),
+    this.lastChannelLoadingLevel = const RangeFloatPointInput.pure(),
     this.isInitialize = false,
     this.settingResult = const [],
     this.enableSubmission = false,
@@ -24,10 +24,10 @@ class Setting18ConfigEditState extends Equatable {
   final String groupId;
   final NameInput name;
   final String splitOption;
-  final IntegerInput firstChannelLoadingFrequency;
-  final FloatPointInput firstChannelLoadingLevel;
-  final IntegerInput lastChannelLoadingFrequency;
-  final FloatPointInput lastChannelLoadingLevel;
+  final RangeIntegerInput firstChannelLoadingFrequency;
+  final RangeFloatPointInput firstChannelLoadingLevel;
+  final RangeIntegerInput lastChannelLoadingFrequency;
+  final RangeFloatPointInput lastChannelLoadingLevel;
   final bool isInitialize;
   final List<String> settingResult;
   final bool enableSubmission;
@@ -39,10 +39,10 @@ class Setting18ConfigEditState extends Equatable {
     String? groupId,
     NameInput? name,
     String? splitOption,
-    IntegerInput? firstChannelLoadingFrequency,
-    FloatPointInput? firstChannelLoadingLevel,
-    IntegerInput? lastChannelLoadingFrequency,
-    FloatPointInput? lastChannelLoadingLevel,
+    RangeIntegerInput? firstChannelLoadingFrequency,
+    RangeFloatPointInput? firstChannelLoadingLevel,
+    RangeIntegerInput? lastChannelLoadingFrequency,
+    RangeFloatPointInput? lastChannelLoadingLevel,
     bool? isInitialize,
     List<String>? settingResult,
     bool? enableSubmission,

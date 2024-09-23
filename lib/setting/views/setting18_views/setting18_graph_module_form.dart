@@ -4,6 +4,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_graph_module/setting18_graph_module_bloc.dart';
+import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:aci_plus_app/setting/model/graph_module_form_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
@@ -298,6 +299,21 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
               state.manualModePilot1RFOutputPower;
           manualModePilot2RFOutputPowerTextEditingController.text =
               state.manualModePilot2RFOutputPower;
+        }
+
+        if (state.isInitialPilotFrequencyLevelValues) {
+          firstChannelLoadingFrequencyTextEditingController.text =
+              state.firstChannelLoadingFrequency.value;
+          firstChannelLoadingLevelTextEditingController.text =
+              state.firstChannelLoadingLevel.value;
+          lastChannelLoadingFrequencyTextEditingController.text =
+              state.lastChannelLoadingFrequency.value;
+          lastChannelLoadingLevelTextEditingController.text =
+              state.lastChannelLoadingLevel.value;
+          pilotFrequency1TextEditingController.text =
+              state.pilotFrequency1.value;
+          pilotFrequency2TextEditingController.text =
+              state.pilotFrequency2.value;
         }
       },
       child: Container(
@@ -1124,6 +1140,28 @@ class _PilotFrequencyMode extends StatelessWidget {
   }
 }
 
+// 判斷在不同 pilotFrequencyMode 下要顯示哪些 error text,
+// 只要有其中一個不符合, 所有相關的 frequency 欄位都會顯示 error text
+bool _isNotValidFrequency({
+  required String pilotFrequencyMode,
+  required RangeIntegerInput firstChannelLoadingFrequency,
+  required RangeIntegerInput lastChannelLoadingFrequency,
+  required RangeIntegerInput pilotFrequency1,
+  required RangeIntegerInput pilotFrequency2,
+}) {
+  if (pilotFrequencyMode == '0') {
+    return firstChannelLoadingFrequency.isNotValid ||
+        lastChannelLoadingFrequency.isNotValid;
+  } else if (pilotFrequencyMode == '1') {
+    return firstChannelLoadingFrequency.isNotValid ||
+        lastChannelLoadingFrequency.isNotValid ||
+        pilotFrequency1.isNotValid ||
+        pilotFrequency2.isNotValid;
+  } else {
+    return false;
+  }
+}
+
 class _FirstChannelLoading extends StatelessWidget {
   const _FirstChannelLoading({
     required this.firstChannelLoadingFrequencyTextEditingController,
@@ -1164,9 +1202,12 @@ class _FirstChannelLoading extends StatelessWidget {
                 FirstChannelLoadingLevelChanged(
                     firstChannelLoadingLevel: firstChannelLoadingLevel));
           },
-          errorText1: !isValidFirstChannelLoadingFrequency(
-            currentDetectedSplitOption: currentDetectedSplitOption,
+          errorText1: _isNotValidFrequency(
+            pilotFrequencyMode: state.pilotFrequencyMode,
             firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+            lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+            pilotFrequency1: state.pilotFrequency1,
+            pilotFrequency2: state.pilotFrequency2,
           )
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
@@ -1216,7 +1257,13 @@ class _LastChannelLoading extends StatelessWidget {
                 LastChannelLoadingLevelChanged(
                     lastChannelLoadingLevel: lastChannelLoadingLevel));
           },
-          errorText1: state.lastChannelLoadingFrequency.isNotValid
+          errorText1: _isNotValidFrequency(
+            pilotFrequencyMode: state.pilotFrequencyMode,
+            firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+            lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+            pilotFrequency1: state.pilotFrequency1,
+            pilotFrequency2: state.pilotFrequency2,
+          )
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           errorText2: state.lastChannelLoadingLevel.isNotValid
@@ -1262,7 +1309,13 @@ class _PilotFrequency1 extends StatelessWidget {
                 .add(PilotFrequency1Changed(pilotFrequency1: pilotFrequency1));
           },
           onChanged2: (_) {},
-          errorText1: state.pilotFrequency1.isNotValid
+          errorText1: _isNotValidFrequency(
+            pilotFrequencyMode: state.pilotFrequencyMode,
+            firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+            lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+            pilotFrequency1: state.pilotFrequency1,
+            pilotFrequency2: state.pilotFrequency2,
+          )
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -1305,7 +1358,13 @@ class _PilotFrequency2 extends StatelessWidget {
                 .add(PilotFrequency2Changed(pilotFrequency2: pilotFrequency2));
           },
           onChanged2: (_) {},
-          errorText1: state.pilotFrequency2.isNotValid
+          errorText1: _isNotValidFrequency(
+            pilotFrequencyMode: state.pilotFrequencyMode,
+            firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
+            lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
+            pilotFrequency1: state.pilotFrequency1,
+            pilotFrequency2: state.pilotFrequency2,
+          )
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
