@@ -133,17 +133,15 @@ Win32Window::~Win32Window()
   Destroy();
 }
 
-bool Win32Window::Create(const std::wstring &title,
-                         const Point &origin,
-                         const Size &size)
+bool Win32Window::Create(const std::wstring &title)
 {
   Destroy();
 
   const wchar_t *window_class =
       WindowClassRegistrar::GetInstance()->GetWindowClass();
 
-  const POINT target_point = {static_cast<LONG>(origin.x),
-                              static_cast<LONG>(origin.y)};
+  const POINT target_point = {static_cast<LONG>(0),
+                              static_cast<LONG>(0)};
   HMONITOR monitor = MonitorFromPoint(target_point, MONITOR_DEFAULTTONEAREST);
   UINT dpi = FlutterDesktopGetDpiForMonitor(monitor);
   double scale_factor = dpi / 96.0;
