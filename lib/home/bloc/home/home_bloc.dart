@@ -70,19 +70,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     SplashStateChanged event,
     Emitter<HomeState> emit,
   ) async {
-    // await _assetsAudioPlayer.open(
-    //   Audio("assets/audios/splash_sound_final.mp3"),
-    //   autoStart: false,
-    // );
-    // _assetsAudioPlayer.play();
-    // await Future.delayed(const Duration(milliseconds: 6000));
-
-    // _scanStreamSubscription = _dsimRepository.scanReport.listen(
-    //   (scanReport) {
-    //     add(DiscoveredDeviceChanged(scanReport));
-    //   },
-    // );
-
     _scanStreamSubscription = _aciDeviceRepository.scanReport.listen(
       (scanReport) {
         add(DiscoveredDeviceChanged(scanReport));
