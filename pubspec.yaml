@@ -125,7 +125,6 @@ flutter:
   assets:
     - assets/
     - assets/circuits/
-    - assets/nameplates/
     - assets/firmwares/
 
   fonts:
