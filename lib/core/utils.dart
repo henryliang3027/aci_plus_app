@@ -130,6 +130,22 @@ PopupMenuItem<T> menuItem<T>({
   );
 }
 
+String getOperatingModeFromForwardCEQIndex(String index) {
+  int intIndex = int.parse(index);
+
+  if (intIndex >= 0 && intIndex <= 24) {
+    return '1.8';
+  } else if (intIndex == 120) {
+    return '1.2';
+  } else if (intIndex == 180) {
+    return '1.8';
+  } else if (intIndex == 255) {
+    return '1.8'; // N/A
+  } else {
+    return '1.8'; // N/A
+  }
+}
+
 Future<String> getAppVersion() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 

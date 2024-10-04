@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/core/control_item_value.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:aci_plus_app/setting/model/formz_input_initializer.dart';
@@ -77,9 +78,10 @@ class Setting18GraphModuleBloc
 
     String splitOption = characteristicDataCache[DataKey.splitOption]!;
     String partId = characteristicDataCache[DataKey.partId]!;
+    String operatingMode = getOperatingModeFromForwardCEQIndex(forwardCEQIndex);
 
-    Map<DataKey, MinMax> values =
-        ControlItemValue.valueCollection[splitOption]![int.parse(partId)];
+    Map<DataKey, MinMax> values = ControlItemValue
+        .allValueCollections[operatingMode]![splitOption]![int.parse(partId)];
 
     MinMax dsVVA1MinMax = values[DataKey.dsVVA1] ??
         MinMax(
