@@ -63,15 +63,16 @@ dependencies:
   touchable: ^1.0.2
   xml: ^6.3.0
   simple_barcode_scanner: ^0.1.1 # for windows
+  zxing2: ^0.2.3 # fow windows qr code image
   qr_code_scanner: ^1.0.1
   qr_flutter: ^4.1.0
   json_annotation: ^4.8.1
 
   flutter_svg: 2.0.10+1
-  flutter_speed_chart:
+  speed_chart:
     git:
       url: https://github.com/henryliang3027/flutter_speed_chart.git
-      ref: scale_thumbs
+      ref: revise1
 
   win_outlook:
     git:
@@ -95,7 +96,8 @@ dependencies:
   firebase_crashlytics: ^3.4.6
   firebase_core: ^2.24.0
   adaptive_theme: ^3.6.0
-  # file_picker: ^8.0.5
+  file_picker: ^8.1.2
+  image: ^4.2.0
 
 dev_dependencies:
   flutter_test:
@@ -125,7 +127,6 @@ flutter:
   assets:
     - assets/
     - assets/circuits/
-    - assets/nameplates/
     - assets/firmwares/
 
   fonts:

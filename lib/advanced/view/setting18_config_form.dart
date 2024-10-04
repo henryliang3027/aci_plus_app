@@ -6,14 +6,15 @@ import 'package:aci_plus_app/advanced/view/qr_code_scanner_win.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_generator_page.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_scanner.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_tab_bar.dart';
+import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/config.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:simple_barcode_scanner/enum.dart';
-import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class Setting18ConfigForm extends StatelessWidget {
   const Setting18ConfigForm({super.key});
@@ -127,6 +128,18 @@ class Setting18ConfigForm extends StatelessWidget {
           });
     }
 
+    void showProgressingDialog() {
+      showDialog(
+        context: context,
+        barrierDismissible: false, // Prevent dismissing by clicking outside
+        builder: (BuildContext context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      );
+    }
+
     return BlocListener<Setting18ConfigBloc, Setting18ConfigState>(
       listener: (context, state) {
         if (state.encodeStaus.isRequestSuccess) {
@@ -142,6 +155,10 @@ class Setting18ConfigForm extends StatelessWidget {
           showAllConfigUpdatedDialog();
         } else if (state.decodeStatus.isRequestFailure) {
           showDecodeFailureDialog();
+        } else if (state.pickImageStatus.isRequestInProgress) {
+          showProgressingDialog();
+        } else if (state.pickImageStatus.isRequestSuccess) {
+          Navigator.of(context).pop();
         }
       },
       child: const _Content(),
@@ -252,8 +269,8 @@ class _QRToolbar extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                        right: 12,
+                      padding: EdgeInsets.only(
+                        right: Platform.isWindows ? 0 : 12,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -265,11 +282,7 @@ class _QRToolbar extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          WindowBarcodeScanner(
-                                        lineColor: "#ff6666",
-                                        cancelButtonText: "Cancel",
-                                        isShowFlashIcon: false,
-                                        scanType: ScanType.qr,
+                                          WindowsQRCodeScanner(
                                         onScanned: (res) {
                                           Navigator.pop(context, res);
                                         },
@@ -300,6 +313,27 @@ class _QRToolbar extends StatelessWidget {
                             },
                             icon: const Icon(
                               Icons.qr_code_scanner_sharp,
+                              size: 26,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        right: 12,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            onPressed: () async {
+                              context
+                                  .read<Setting18ConfigBloc>()
+                                  .add(const QRImageRead());
+                            },
+                            icon: const Icon(
+                              CustomIcons.picture,
                               size: 26,
                             ),
                           ),

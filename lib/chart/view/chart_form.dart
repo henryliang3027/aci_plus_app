@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:open_filex/open_filex.dart';
-import 'package:flutter_speed_chart/speed_chart.dart';
+import 'package:speed_chart/speed_chart.dart';
 
 class ChartForm extends StatelessWidget {
   const ChartForm({

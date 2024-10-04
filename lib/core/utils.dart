@@ -12,6 +12,19 @@ class CrossPageFlag {
   static bool isDisconnectOnFirmwareUpdate = false;
 }
 
+class RegexUtil {
+  // (?:\{[^{}]*\}) matches one instance of the map pattern.
+  // \{ matches the opening curly brace {.
+  // [^{}]* matches any characters except { and } zero or more times.
+  // \} matches the closing curly brace }.
+  // (?:,\{[^{}]*\}){0,4} matches zero to four instances of the pattern preceded by a comma ,.
+  static final RegExp configJsonRegex = RegExp(
+      r'^((?:\{[^{}]*\})?(?:,\{[^{}]*\}){0,4})\s((?:\{[^{}]*\})?(?:,\{[^{}]*\}){0,4})\s((?:\{[^{}]*\})?(?:,\{[^{}]*\}){0,4})$');
+
+  static final RegExp configJsonRegex220 = RegExp(
+      r'^((?:\{[^{}]*\})?(?:,\{[^{}]*\}){0,4})\s((?:\{[^{}]*\})?(?:,\{[^{}]*\}){0,4})$');
+}
+
 void setPreferredOrientation() {
   double screenWidth = WidgetsBinding
       .instance.platformDispatcher.views.first.physicalSize.shortestSide;
