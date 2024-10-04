@@ -1,12 +1,12 @@
 import 'dart:ui' as ui;
 import 'package:aci_plus_app/advanced/bloc/qr_code_generator/qr_code_generator_bloc.dart';
+import 'package:aci_plus_app/chart/shared/share_file_widget.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:share_plus/share_plus.dart';
 
 class QRCodeGeneratorForm extends StatelessWidget {
   QRCodeGeneratorForm({
@@ -20,13 +20,11 @@ class QRCodeGeneratorForm extends StatelessWidget {
     return BlocListener<QRCodeGeneratorBloc, QRCodeGeneratorState>(
       listener: (context, state) {
         if (state.imageSaveStatus.isRequestSuccess) {
-          double width = MediaQuery.of(context).size.width;
-          double height = MediaQuery.of(context).size.height;
-          Share.shareXFiles(
-            [XFile(state.imageFilePath)],
+          openShareFileWidget(
+            context: context,
             subject: state.description,
-            sharePositionOrigin:
-                Rect.fromLTWH(0.0, height / 2, width, height / 2),
+            body: '',
+            attachmentPath: state.imageFilePath,
           );
         }
       },

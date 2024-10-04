@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/core/control_item_value.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:aci_plus_app/setting/model/formz_input_initializer.dart';
@@ -54,12 +55,16 @@ class Setting18ForwardControlBloc
     // 當斷線的時候重新初始化時讀取 map 元素會有 null 的情況, null 時就 assign 空字串
     String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
     String partId = characteristicDataCache[DataKey.partId] ?? '';
+    String operatingMode = getOperatingModeFromForwardCEQIndex(
+        characteristicDataCache[DataKey.forwardCEQIndex] ?? '');
 
     Map<DataKey, MinMax> values = {};
 
-    if (splitOption.isNotEmpty && partId.isNotEmpty) {
-      values =
-          ControlItemValue.valueCollection[splitOption]![int.parse(partId)];
+    if (operatingMode.isNotEmpty &&
+        splitOption.isNotEmpty &&
+        partId.isNotEmpty) {
+      values = ControlItemValue
+          .allValueCollections[operatingMode]![splitOption]![int.parse(partId)];
     }
 
     MinMax dsVVA1MinMax = values[DataKey.dsVVA1] ??

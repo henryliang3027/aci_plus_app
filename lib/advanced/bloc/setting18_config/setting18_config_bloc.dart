@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
 // import 'package:aci_plus_app/repositories/dongle.dart';
@@ -278,22 +279,33 @@ class Setting18ConfigBloc
       BinaryBitmap bitmap = BinaryBitmap(GlobalHistogramBinarizer(source));
       QRCodeReader reader = QRCodeReader();
       Result rawData = reader.decode(bitmap);
-      print(rawData.text);
+      // print(rawData.text);
 
-      List<List> configs = await parseConfigData(rawData.text);
+      if (RegexUtil.configJsonRegex.hasMatch(rawData.text) ||
+          RegexUtil.configJsonRegex220.hasMatch(rawData.text)) {
+        List<List> configs = await parseConfigData(rawData.text);
 
-      // Extract the individual lists from the returned result
-      List<TrunkConfig> trunkConfigs = configs[0] as List<TrunkConfig>;
-      List<DistributionConfig> distributionConfigs =
-          configs[1] as List<DistributionConfig>;
-      List<NodeConfig> nodeConfigs = configs[2] as List<NodeConfig>;
+        // Extract the individual lists from the returned result
+        List<TrunkConfig> trunkConfigs = configs[0] as List<TrunkConfig>;
+        List<DistributionConfig> distributionConfigs =
+            configs[1] as List<DistributionConfig>;
+        List<NodeConfig> nodeConfigs = configs[2] as List<NodeConfig>;
 
-      emit(state.copyWith(
-        decodeStatus: FormStatus.requestSuccess,
-        trunkConfigs: trunkConfigs,
-        distributionConfigs: distributionConfigs,
-        nodeConfigs: nodeConfigs,
-      ));
+        emit(state.copyWith(
+          decodeStatus: FormStatus.requestSuccess,
+          trunkConfigs: trunkConfigs,
+          distributionConfigs: distributionConfigs,
+          nodeConfigs: nodeConfigs,
+        ));
+      } else {
+        emit(state.copyWith(
+          decodeStatus: FormStatus.requestFailure,
+          pickImageStatus: FormStatus.requestSuccess,
+          trunkConfigs: state.trunkConfigs,
+          distributionConfigs: state.distributionConfigs,
+          nodeConfigs: state.nodeConfigs,
+        ));
+      }
     } else {
       emit(state.copyWith(
         decodeStatus: FormStatus.none,
