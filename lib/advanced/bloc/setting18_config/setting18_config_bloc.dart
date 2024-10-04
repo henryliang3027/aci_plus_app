@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
@@ -7,7 +8,10 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/node_config.dart';
 import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:equatable/equatable.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image/image.dart';
+import 'package:zxing2/qrcode.dart';
 
 part 'setting18_config_event.dart';
 part 'setting18_config_state.dart';
@@ -22,6 +26,7 @@ class Setting18ConfigBloc
     on<ConfigDeleted>(_onConfigDeleted);
     on<QRDataGenerated>(_onQRDataGenerated);
     on<QRDataScanned>(_onQRDataScanned);
+    on<QRImageRead>(_onQRImageRead);
 
     add(const ConfigsRequested());
   }
@@ -35,6 +40,7 @@ class Setting18ConfigBloc
     emit(state.copyWith(
       encodeStaus: FormStatus.none,
       decodeStatus: FormStatus.none,
+      pickImageStatus: FormStatus.none,
       formStatus: FormStatus.requestInProgress,
     ));
 
@@ -68,6 +74,7 @@ class Setting18ConfigBloc
     emit(state.copyWith(
       encodeStaus: FormStatus.none,
       decodeStatus: FormStatus.none,
+      pickImageStatus: FormStatus.none,
       formStatus: FormStatus.requestSuccess,
       trunkConfigs: trunkConfigs,
       distributionConfigs: distributionConfigs,
@@ -82,6 +89,7 @@ class Setting18ConfigBloc
     emit(state.copyWith(
       encodeStaus: FormStatus.requestInProgress,
       decodeStatus: FormStatus.none,
+      pickImageStatus: FormStatus.none,
     ));
 
     // Dongle dongle = const Dongle();
@@ -134,22 +142,14 @@ class Setting18ConfigBloc
     return splitRawData;
   }
 
-  Future<void> _onQRDataScanned(
-    QRDataScanned event,
-    Emitter<Setting18ConfigState> emit,
-  ) async {
-    emit(state.copyWith(
-      encodeStaus: FormStatus.none,
-      decodeStatus: FormStatus.requestInProgress,
-    ));
-
+  Future<List<List>> parseConfigData(String rawData) async {
     List<TrunkConfig> trunkConfigs = [];
     List<DistributionConfig> distributionConfigs = [];
     List<NodeConfig> nodeConfigs = [];
 
     RegExp mapRegex = RegExp(r'(\{[^{}]*\})');
 
-    List<String> splitRawData = getSplitRawData(event.rawData);
+    List<String> splitRawData = getSplitRawData(rawData);
 
     String trunkRawData = splitRawData[0];
     String distributionRawData = splitRawData[1];
@@ -210,9 +210,26 @@ class Setting18ConfigBloc
       nodeConfigs: nodeConfigs,
     );
 
-    // List<TrunkConfig> test1 = _configRepository.getAllTrunkConfigs();
-    // List<DistributionConfig> test2 =
-    //     _configRepository.getAllDistributionConfigs();
+    return [trunkConfigs, distributionConfigs, nodeConfigs];
+  }
+
+  Future<void> _onQRDataScanned(
+    QRDataScanned event,
+    Emitter<Setting18ConfigState> emit,
+  ) async {
+    emit(state.copyWith(
+      encodeStaus: FormStatus.none,
+      decodeStatus: FormStatus.requestInProgress,
+      pickImageStatus: FormStatus.none,
+    ));
+
+    List<List> configs = await parseConfigData(event.rawData);
+
+    // Extract the individual lists from the returned result
+    List<TrunkConfig> trunkConfigs = configs[0] as List<TrunkConfig>;
+    List<DistributionConfig> distributionConfigs =
+        configs[1] as List<DistributionConfig>;
+    List<NodeConfig> nodeConfigs = configs[2] as List<NodeConfig>;
 
     emit(state.copyWith(
       decodeStatus: FormStatus.requestSuccess,
@@ -220,40 +237,71 @@ class Setting18ConfigBloc
       distributionConfigs: distributionConfigs,
       nodeConfigs: nodeConfigs,
     ));
+  }
 
-    // List<String> splitRawData = event.rawData.split(' ');
+  Future<void> _onQRImageRead(
+    QRImageRead event,
+    Emitter<Setting18ConfigState> emit,
+  ) async {
+    emit(state.copyWith(
+      encodeStaus: FormStatus.none,
+      decodeStatus: FormStatus.none,
+      pickImageStatus: FormStatus.requestInProgress,
+    ));
 
-    // Iterable<Match> trunkConfigMatches =
-    //     configJsonRegex.allMatches(splitRawData[0]);
-    // Iterable<Match> distributionConfigMatches =
-    //     configJsonRegex.allMatches(splitRawData[1]);
+    FilePickerResult? fileResult = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'png'],
+    );
 
-    // print('-----trunk------');
+    if (fileResult != null) {
+      emit(state.copyWith(
+        encodeStaus: FormStatus.none,
+        decodeStatus: FormStatus.requestInProgress,
+        pickImageStatus: FormStatus.requestSuccess,
+      ));
 
-    // for (Match match in trunkConfigMatches) {
-    //   String json = match[0]!;
-    //   print(json);
-    //   // Config config = Config.fromJson(jsonDecode(json));
-    //   // configs.add(config);
-    // }
+      print('file path: ${fileResult.files.single.path}');
+      String qrImagePath = fileResult.files.single.path!;
 
-    // print('-----distribution------');
+      Image qrImage = decodePng(File(qrImagePath).readAsBytesSync())!;
 
-    // for (Match match in distributionConfigMatches) {
-    //   String json = match[0]!;
-    //   print(json);
-    //   // Config config = Config.fromJson(jsonDecode(json));
-    //   // configs.add(config);
-    // }
+      LuminanceSource source = RGBLuminanceSource(
+          qrImage.width,
+          qrImage.height,
+          qrImage
+              .convert(numChannels: 4)
+              .getBytes(order: ChannelOrder.abgr)
+              .buffer
+              .asInt32List());
+      BinaryBitmap bitmap = BinaryBitmap(GlobalHistogramBinarizer(source));
+      QRCodeReader reader = QRCodeReader();
+      Result rawData = reader.decode(bitmap);
+      print(rawData.text);
 
-    // // for (String json in jsons) {
-    // //   Config config = jsonDecode(json);
-    // //   configs.add(config);
-    // // }
+      List<List> configs = await parseConfigData(rawData.text);
 
-    // emit(state.copyWith(
-    //   decodeStatus: FormStatus.requestSuccess,
-    //   configs: configs,
-    // ));
+      // Extract the individual lists from the returned result
+      List<TrunkConfig> trunkConfigs = configs[0] as List<TrunkConfig>;
+      List<DistributionConfig> distributionConfigs =
+          configs[1] as List<DistributionConfig>;
+      List<NodeConfig> nodeConfigs = configs[2] as List<NodeConfig>;
+
+      emit(state.copyWith(
+        decodeStatus: FormStatus.requestSuccess,
+        trunkConfigs: trunkConfigs,
+        distributionConfigs: distributionConfigs,
+        nodeConfigs: nodeConfigs,
+      ));
+    } else {
+      emit(state.copyWith(
+        decodeStatus: FormStatus.none,
+        pickImageStatus: FormStatus.requestSuccess,
+        trunkConfigs: state.trunkConfigs,
+        distributionConfigs: state.distributionConfigs,
+        nodeConfigs: state.nodeConfigs,
+      ));
+    }
   }
 }

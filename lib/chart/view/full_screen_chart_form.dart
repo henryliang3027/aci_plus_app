@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_chart/speed_chart.dart';
+import 'package:speed_chart/speed_chart.dart';
 
 class FullScreenChartForm extends StatefulWidget {
   const FullScreenChartForm({

@@ -45,3 +45,10 @@ class QRDataScanned extends Setting18ConfigEvent {
   @override
   List<Object> get props => [rawData];
 }
+
+class QRImageRead extends Setting18ConfigEvent {
+  const QRImageRead();
+
+  @override
+  List<Object> get props => [];
+}

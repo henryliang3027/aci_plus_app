@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -24,17 +25,6 @@ class _QRViewExampleState extends State<QRCodeScanner> {
   bool isOpenFlash = false;
   bool isInvalid = false;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-
-  // (?:\{[^{}]*\}) matches one instance of the map pattern.
-  // \{ matches the opening curly brace {.
-  // [^{}]* matches any characters except { and } zero or more times.
-  // \} matches the closing curly brace }.
-  // (?:,\{[^{}]*\}){0,4} matches zero to four instances of the pattern preceded by a comma ,.
-  final RegExp configJsonRegex = RegExp(
-      r'^((?:\{[^{}]*\})?(?:,\{[^{}]*\}){0,4})\s((?:\{[^{}]*\})?(?:,\{[^{}]*\}){0,4})\s((?:\{[^{}]*\})?(?:,\{[^{}]*\}){0,4})$');
-
-  final RegExp configJsonRegex220 = RegExp(
-      r'^((?:\{[^{}]*\})?(?:,\{[^{}]*\}){0,4})\s((?:\{[^{}]*\})?(?:,\{[^{}]*\}){0,4})$');
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -191,8 +181,8 @@ class _QRViewExampleState extends State<QRCodeScanner> {
       printWrapped('${scanData.code}');
 
       if (scanData.code != null) {
-        if (configJsonRegex.hasMatch(scanData.code!) ||
-            configJsonRegex220.hasMatch(scanData.code!)) {
+        if (RegexUtil.configJsonRegex.hasMatch(scanData.code!) ||
+            RegexUtil.configJsonRegex220.hasMatch(scanData.code!)) {
           if (isInvalid) {
             setState(() {
               isInvalid = false;

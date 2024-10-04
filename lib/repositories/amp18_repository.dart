@@ -10,7 +10,7 @@ import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
 import 'package:aci_plus_app/repositories/shared/transmit_delay.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter_speed_chart/speed_chart.dart';
+import 'package:speed_chart/speed_chart.dart';
 
 class Amp18Repository {
   Amp18Repository()
