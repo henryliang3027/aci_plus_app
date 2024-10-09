@@ -11,12 +11,15 @@ import 'package:permission_handler/permission_handler.dart';
 class BLEClient extends BLEClientBase {
   BLEClient()
       : _ble = FlutterReactiveBle(),
+        _bluetoothEnableWrapper = BluetoothEnableWrapper(),
         super();
   // BLEClient._() : _ble = FlutterReactiveBle();
 
   // static final BLEClient _instance = BLEClient._();
 
   // static BLEClient get instance => _instance;
+
+  BluetoothEnableWrapper _bluetoothEnableWrapper;
 
   FlutterReactiveBle? _ble;
   final _scanTimeout = 15; // sec
@@ -61,11 +64,12 @@ class BLEClient extends BLEClientBase {
 
   Future<bool> checkBluetoothEnabled() async {
     // 要求定位與藍芽存取權
-    bool isPermissionGranted = await _requestPermission();
+    bool isPermissionGranted = await requestPermission();
 
     if (isPermissionGranted) {
       // 偵測藍芽是否有打開, 如果沒有打開會跳出提示訊息
-      String resultStrOfEnableBluetooth = await BluetoothEnable.enableBluetooth;
+      String resultStrOfEnableBluetooth =
+          await _bluetoothEnableWrapper.enableBluetooth();
       bool resultOfEnableBluetooth =
           resultStrOfEnableBluetooth == 'true' ? true : false;
 
@@ -610,7 +614,7 @@ class BLEClient extends BLEClientBase {
     }
   }
 
-  Future<bool> _requestPermission() async {
+  Future<bool> requestPermission() async {
     if (Platform.isAndroid) {
       Map<Permission, PermissionStatus> statuses = await [
         Permission.bluetoothConnect,
@@ -631,5 +635,11 @@ class BLEClient extends BLEClientBase {
       // neither android nor ios
       return false;
     }
+  }
+}
+
+class BluetoothEnableWrapper {
+  Future<String> enableBluetooth() async {
+    return BluetoothEnable.enableBluetooth;
   }
 }
