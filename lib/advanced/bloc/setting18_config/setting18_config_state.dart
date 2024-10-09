@@ -6,6 +6,7 @@ class Setting18ConfigState extends Equatable {
     this.encodeStaus = FormStatus.none,
     this.decodeStatus = FormStatus.none,
     this.pickImageStatus = FormStatus.none,
+    this.imageFilePath = '',
     this.trunkConfigs = const [],
     this.distributionConfigs = const [],
     this.nodeConfigs = const [],
@@ -16,6 +17,7 @@ class Setting18ConfigState extends Equatable {
   final FormStatus encodeStaus;
   final FormStatus decodeStatus;
   final FormStatus pickImageStatus;
+  final String imageFilePath;
   final List<TrunkConfig> trunkConfigs;
   final List<DistributionConfig> distributionConfigs;
   final List<NodeConfig> nodeConfigs;
@@ -26,6 +28,7 @@ class Setting18ConfigState extends Equatable {
     FormStatus? encodeStaus,
     FormStatus? decodeStatus,
     FormStatus? pickImageStatus,
+    String? imageFilePath,
     List<TrunkConfig>? trunkConfigs,
     List<DistributionConfig>? distributionConfigs,
     List<NodeConfig>? nodeConfigs,
@@ -36,6 +39,7 @@ class Setting18ConfigState extends Equatable {
       encodeStaus: encodeStaus ?? this.encodeStaus,
       decodeStatus: decodeStatus ?? this.decodeStatus,
       pickImageStatus: pickImageStatus ?? this.pickImageStatus,
+      imageFilePath: imageFilePath ?? this.imageFilePath,
       trunkConfigs: trunkConfigs ?? this.trunkConfigs,
       distributionConfigs: distributionConfigs ?? this.distributionConfigs,
       nodeConfigs: nodeConfigs ?? this.nodeConfigs,
@@ -49,6 +53,7 @@ class Setting18ConfigState extends Equatable {
         encodeStaus,
         decodeStatus,
         pickImageStatus,
+        imageFilePath,
         trunkConfigs,
         distributionConfigs,
         nodeConfigs,

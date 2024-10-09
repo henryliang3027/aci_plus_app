@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_bloc.dart';
 import 'package:aci_plus_app/advanced/view/description_input_page.dart';
+import 'package:aci_plus_app/advanced/view/qr_code_image_viewer.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_scanner_win.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_generator_page.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_scanner.dart';
@@ -140,6 +141,65 @@ class Setting18ConfigForm extends StatelessWidget {
       );
     }
 
+    Future<bool?> showQRCodePreviewDialog(String imageFilePath) {
+      return showDialog<bool?>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.01,
+            ),
+            child: SizedBox(
+              child: QRCodeImageViewer(
+                imageFilePath: imageFilePath,
+              ),
+            ),
+          );
+        },
+      );
+      // return showDialog<bool?>(
+      //   context: context,
+      //   barrierDismissible: false, // Prevent dismissing by clicking outside
+      //   builder: (BuildContext context) {
+      //     return
+
+      //     AlertDialog(
+      //       titlePadding: EdgeInsets.zero,
+      //       contentPadding: EdgeInsets.zero,
+      //       content: SizedBox(
+      //         width: 370,
+      //         height: 450,
+      //         child: Image.file(File(imageFilePath)),
+      //       ),
+      //       actionsAlignment: MainAxisAlignment.center,
+      //       actions: <Widget>[
+      //         ElevatedButton(
+      //           child: Text(
+      //             AppLocalizations.of(context)!.dialogMessageCancel,
+      //           ),
+      //           onPressed: () {
+      //             Navigator.of(context).pop(false); // pop dialog
+      //           },
+      //         ),
+      //         ElevatedButton(
+      //           child: Text(
+      //             AppLocalizations.of(context)!.dialogMessageOk,
+      //           ),
+      //           onPressed: () {
+      //             Navigator.of(context).pop(true); // pop dialog
+      //           },
+      //         ),
+      //       ],
+      //     );
+      //   },
+      // );
+    }
+
     return BlocListener<Setting18ConfigBloc, Setting18ConfigState>(
       listener: (context, state) {
         if (state.encodeStaus.isRequestSuccess) {
@@ -159,6 +219,16 @@ class Setting18ConfigForm extends StatelessWidget {
           showProgressingDialog();
         } else if (state.pickImageStatus.isRequestSuccess) {
           Navigator.of(context).pop();
+          if (state.imageFilePath.isNotEmpty) {
+            showQRCodePreviewDialog(state.imageFilePath)
+                .then((bool? isConfirm) {
+              if (isConfirm != null) {
+                if (isConfirm) {
+                  context.read<Setting18ConfigBloc>().add(const QRImageRead());
+                }
+              }
+            });
+          }
         }
       },
       child: const _Content(),
@@ -235,72 +305,62 @@ class _QRToolbar extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        onPressed: [
-                          ...state.trunkConfigs,
-                          ...state.distributionConfigs,
-                          ...state.nodeConfigs
-                        ].isNotEmpty
-                            ? () {
-                                context
-                                    .read<Setting18ConfigBloc>()
-                                    .add(const QRDataGenerated());
-                              }
-                            : null,
-                        icon: const Icon(
-                          Icons.qr_code_2,
-                          size: 26,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          if (Platform.isWindows) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => WindowsQRCodeScanner(
-                                    onScanned: (res) {
-                                      Navigator.pop(context, res);
-                                    },
-                                  ),
-                                )).then((rawData) {
-                              if (rawData != null) {
-                                if (rawData.isNotEmpty) {
-                                  context
-                                      .read<Setting18ConfigBloc>()
-                                      .add(QRDataScanned(rawData));
-                                }
-                              }
-                            });
-                          } else {
-                            Navigator.push(
-                              context,
-                              QRCodeScanner.route(),
-                            ).then((rawData) {
-                              if (rawData != null) {
-                                if (rawData.isNotEmpty) {
-                                  context
-                                      .read<Setting18ConfigBloc>()
-                                      .add(QRDataScanned(rawData));
-                                }
-                              }
-                            });
+                  IconButton(
+                    onPressed: [
+                      ...state.trunkConfigs,
+                      ...state.distributionConfigs,
+                      ...state.nodeConfigs
+                    ].isNotEmpty
+                        ? () {
+                            context
+                                .read<Setting18ConfigBloc>()
+                                .add(const QRDataGenerated());
                           }
-                        },
-                        icon: const Icon(
-                          Icons.qr_code_scanner_sharp,
-                          size: 26,
-                        ),
-                      ),
-                    ],
+                        : null,
+                    icon: const Icon(
+                      Icons.qr_code_2,
+                      size: 26,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      if (Platform.isWindows) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WindowsQRCodeScanner(
+                                onScanned: (res) {
+                                  Navigator.pop(context, res);
+                                },
+                              ),
+                            )).then((rawData) {
+                          if (rawData != null) {
+                            if (rawData.isNotEmpty) {
+                              context
+                                  .read<Setting18ConfigBloc>()
+                                  .add(QRDataScanned(rawData));
+                            }
+                          }
+                        });
+                      } else {
+                        Navigator.push(
+                          context,
+                          QRCodeScanner.route(),
+                        ).then((rawData) {
+                          if (rawData != null) {
+                            if (rawData.isNotEmpty) {
+                              context
+                                  .read<Setting18ConfigBloc>()
+                                  .add(QRDataScanned(rawData));
+                            }
+                          }
+                        });
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.qr_code_scanner_sharp,
+                      size: 26,
+                    ),
                   ),
                   Platform.isWindows
                       ? Row(
@@ -310,7 +370,7 @@ class _QRToolbar extends StatelessWidget {
                               onPressed: () async {
                                 context
                                     .read<Setting18ConfigBloc>()
-                                    .add(const QRImageRead());
+                                    .add(const QRImagePicked());
                               },
                               icon: const Icon(
                                 CustomIcons.picture,

@@ -736,7 +736,7 @@ class BLEWindowsClient extends BLEClientBase {
     _connectionTimer = Timer(Duration(seconds: _connectionTimeout), () async {
       _connectionReportStreamController.add(const ConnectionReport(
         connectStatus: ConnectStatus.disconnected,
-        errorMessage: 'disconnected',
+        errorMessage: 'Device connection failed',
       ));
 
       await closeScanStream();

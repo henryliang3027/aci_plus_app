@@ -52,3 +52,10 @@ class QRImageRead extends Setting18ConfigEvent {
   @override
   List<Object> get props => [];
 }
+
+class QRImagePicked extends Setting18ConfigEvent {
+  const QRImagePicked();
+
+  @override
+  List<Object> get props => [];
+}

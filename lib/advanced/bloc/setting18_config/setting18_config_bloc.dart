@@ -27,6 +27,7 @@ class Setting18ConfigBloc
     on<ConfigDeleted>(_onConfigDeleted);
     on<QRDataGenerated>(_onQRDataGenerated);
     on<QRDataScanned>(_onQRDataScanned);
+    on<QRImagePicked>(_onQRImagePicked);
     on<QRImageRead>(_onQRImageRead);
 
     add(const ConfigsRequested());
@@ -240,8 +241,8 @@ class Setting18ConfigBloc
     ));
   }
 
-  Future<void> _onQRImageRead(
-    QRImageRead event,
+  Future<void> _onQRImagePicked(
+    QRImagePicked event,
     Emitter<Setting18ConfigState> emit,
   ) async {
     emit(state.copyWith(
@@ -256,18 +257,30 @@ class Setting18ConfigBloc
       allowedExtensions: ['jpg', 'png'],
     );
 
-    if (fileResult != null) {
-      emit(state.copyWith(
-        encodeStaus: FormStatus.none,
-        decodeStatus: FormStatus.requestInProgress,
-        pickImageStatus: FormStatus.requestSuccess,
-      ));
+    String imageFilePath =
+        fileResult != null ? fileResult.files.single.path! : '';
 
-      print('file path: ${fileResult.files.single.path}');
-      String qrImagePath = fileResult.files.single.path!;
+    emit(state.copyWith(
+      encodeStaus: FormStatus.none,
+      decodeStatus: FormStatus.requestInProgress,
+      pickImageStatus: FormStatus.requestSuccess,
+      imageFilePath: imageFilePath,
+    ));
+  }
 
-      Image qrImage = decodePng(File(qrImagePath).readAsBytesSync())!;
+  Future<void> _onQRImageRead(
+    QRImageRead event,
+    Emitter<Setting18ConfigState> emit,
+  ) async {
+    emit(state.copyWith(
+      encodeStaus: FormStatus.none,
+      decodeStatus: FormStatus.requestInProgress,
+      pickImageStatus: FormStatus.none,
+    ));
 
+    Image? qrImage = decodePng(File(state.imageFilePath).readAsBytesSync());
+
+    if (qrImage != null) {
       LuminanceSource source = RGBLuminanceSource(
           qrImage.width,
           qrImage.height,
@@ -278,26 +291,37 @@ class Setting18ConfigBloc
               .asInt32List());
       BinaryBitmap bitmap = BinaryBitmap(GlobalHistogramBinarizer(source));
       QRCodeReader reader = QRCodeReader();
-      Result rawData = reader.decode(bitmap);
-      // print(rawData.text);
 
-      if (RegexUtil.configJsonRegex.hasMatch(rawData.text) ||
-          RegexUtil.configJsonRegex220.hasMatch(rawData.text)) {
-        List<List> configs = await parseConfigData(rawData.text);
+      try {
+        Result rawData = reader.decode(bitmap);
 
-        // Extract the individual lists from the returned result
-        List<TrunkConfig> trunkConfigs = configs[0] as List<TrunkConfig>;
-        List<DistributionConfig> distributionConfigs =
-            configs[1] as List<DistributionConfig>;
-        List<NodeConfig> nodeConfigs = configs[2] as List<NodeConfig>;
+        if (RegexUtil.configJsonRegex.hasMatch(rawData.text) ||
+            RegexUtil.configJsonRegex220.hasMatch(rawData.text)) {
+          List<List> configs = await parseConfigData(rawData.text);
 
-        emit(state.copyWith(
-          decodeStatus: FormStatus.requestSuccess,
-          trunkConfigs: trunkConfigs,
-          distributionConfigs: distributionConfigs,
-          nodeConfigs: nodeConfigs,
-        ));
-      } else {
+          // Extract the individual lists from the returned result
+          List<TrunkConfig> trunkConfigs = configs[0] as List<TrunkConfig>;
+          List<DistributionConfig> distributionConfigs =
+              configs[1] as List<DistributionConfig>;
+          List<NodeConfig> nodeConfigs = configs[2] as List<NodeConfig>;
+
+          emit(state.copyWith(
+            decodeStatus: FormStatus.requestSuccess,
+            trunkConfigs: trunkConfigs,
+            distributionConfigs: distributionConfigs,
+            nodeConfigs: nodeConfigs,
+          ));
+        } else {
+          emit(state.copyWith(
+            decodeStatus: FormStatus.requestFailure,
+            pickImageStatus: FormStatus.requestSuccess,
+            trunkConfigs: state.trunkConfigs,
+            distributionConfigs: state.distributionConfigs,
+            nodeConfigs: state.nodeConfigs,
+          ));
+        }
+      } catch (e) {
+        // decode code 內容失敗時 emit 失敗的狀態
         emit(state.copyWith(
           decodeStatus: FormStatus.requestFailure,
           pickImageStatus: FormStatus.requestSuccess,
@@ -307,8 +331,9 @@ class Setting18ConfigBloc
         ));
       }
     } else {
+      // decode image 失敗時 emit 失敗的狀態
       emit(state.copyWith(
-        decodeStatus: FormStatus.none,
+        decodeStatus: FormStatus.requestFailure,
         pickImageStatus: FormStatus.requestSuccess,
         trunkConfigs: state.trunkConfigs,
         distributionConfigs: state.distributionConfigs,

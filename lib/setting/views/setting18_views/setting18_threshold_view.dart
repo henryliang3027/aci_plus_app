@@ -914,24 +914,27 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   shape: const CircleBorder(
                     side: BorderSide.none,
                   ),
-                  backgroundColor:
-                      Theme.of(context).colorScheme.primary.withAlpha(200),
+                  backgroundColor: Colors.grey.withAlpha(200),
+                  // backgroundColor:
+                  //     Theme.of(context).colorScheme.primary.withAlpha(200),
+
                   child: Icon(
                     Icons.settings_input_composite,
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
-                  onPressed: () {
-                    // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
-                    Navigator.push(
-                            context,
-                            Setting18GraphPage.route(
-                              graphFilePath: graphFilePath,
-                            ))
-                        .then((value) => context
-                            .read<Setting18ThresholdBloc>()
-                            .add(const Initialized()));
-                  },
-                )
+                  onPressed: null
+                  // () {
+                  //   // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
+                  //   Navigator.push(
+                  //           context,
+                  //           Setting18GraphPage.route(
+                  //             graphFilePath: graphFilePath,
+                  //           ))
+                  //       .then((value) => context
+                  //           .read<Setting18ThresholdBloc>()
+                  //           .add(const Initialized()));
+                  // },
+                  )
               : const SizedBox(
                   width: 0,
                   height: 0,

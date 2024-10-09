@@ -23,7 +23,7 @@ class QRCodeGeneratorForm extends StatelessWidget {
           openShareFileWidget(
             context: context,
             subject: state.description,
-            body: '',
+            body: state.description,
             attachmentPath: state.imageFilePath,
           );
         }
