@@ -716,6 +716,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       for (int i = 0; i < 3; i++) {
         // 根據RSSI設定每個 chunk 之間的 delay
         await _amp18Repository.set1p8GTransmitDelayTime();
+
+        // 執行完上面的 set delay time 後休息一段時間再讀取 log, 比較不會有 data 收不完整的情況發生
+        await Future.delayed(const Duration(milliseconds: 500));
         resultOf1p8GForLogChunk =
             await _amp18Repository.requestCommand1p8GForLogChunk(0);
 
@@ -895,6 +898,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       for (int i = 0; i < 3; i++) {
         await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
 
+        // 執行完上面的 set delay time 後休息一段時間再讀取 log, 比較不會有 data 收不完整的情況發生
+        await Future.delayed(const Duration(milliseconds: 500));
         resultOf1p8GCCorNodeLogChunk = await _amp18CCorNodeRepository
             .requestCommand1p8GCCorNodeLogChunk(0);
 

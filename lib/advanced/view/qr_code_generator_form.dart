@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:aci_plus_app/advanced/bloc/qr_code_generator/qr_code_generator_bloc.dart';
 import 'package:aci_plus_app/chart/shared/share_file_widget.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -132,19 +134,41 @@ class _QrCodeTool extends StatelessWidget {
             width: 20.0,
           ),
           ElevatedButton(
-            onPressed: () async {
-              final RenderRepaintBoundary boundary = globalKey.currentContext!
-                  .findRenderObject() as RenderRepaintBoundary;
-              final ui.Image image = await boundary.toImage();
+            onPressed: Platform.isWindows
+                ? winBeta >= 3
+                    ? () async {
+                        final RenderRepaintBoundary boundary =
+                            globalKey.currentContext!.findRenderObject()
+                                as RenderRepaintBoundary;
+                        final ui.Image image = await boundary.toImage();
 
-              image.toByteData(format: ui.ImageByteFormat.png).then((byteData) {
-                if (byteData != null) {
-                  context
-                      .read<QRCodeGeneratorBloc>()
-                      .add(QRCodeSaved(byteData));
-                }
-              });
-            },
+                        image
+                            .toByteData(format: ui.ImageByteFormat.png)
+                            .then((byteData) {
+                          if (byteData != null) {
+                            context
+                                .read<QRCodeGeneratorBloc>()
+                                .add(QRCodeSaved(byteData));
+                          }
+                        });
+                      }
+                    : null
+                : () async {
+                    final RenderRepaintBoundary boundary =
+                        globalKey.currentContext!.findRenderObject()
+                            as RenderRepaintBoundary;
+                    final ui.Image image = await boundary.toImage();
+
+                    image
+                        .toByteData(format: ui.ImageByteFormat.png)
+                        .then((byteData) {
+                      if (byteData != null) {
+                        context
+                            .read<QRCodeGeneratorBloc>()
+                            .add(QRCodeSaved(byteData));
+                      }
+                    });
+                  },
             child: Text(
               AppLocalizations.of(context)!.share,
             ),

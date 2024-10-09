@@ -304,6 +304,7 @@ class _PopupMenu extends StatelessWidget {
                     }
                   });
                 },
+                enabled: winBeta >= 3 ? true : false,
               ),
               menuItem(
                 value: DataLogMenu.export,
@@ -320,6 +321,7 @@ class _PopupMenu extends StatelessWidget {
                     }
                   });
                 },
+                enabled: winBeta >= 2 ? true : false,
               ),
               menuItem(
                 value: DataLogMenu.downloadAll,
@@ -351,6 +353,7 @@ class _PopupMenu extends StatelessWidget {
                     }
                   });
                 },
+                enabled: winBeta >= 2 ? true : false,
               ),
             ];
           },
@@ -577,7 +580,11 @@ class _LogChartListView extends StatelessWidget {
           SpeedLineChart(
             lineSeriesCollection: lineSeriesCollection,
             showLegend: true,
-            showScaleThumbs: Platform.isWindows ? true : false,
+            showScaleThumbs: winBeta >= 4
+                ? Platform.isWindows
+                    ? true
+                    : false
+                : false,
           ),
         ],
       );

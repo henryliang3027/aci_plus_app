@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+const int winBeta = int.fromEnvironment('WIN_BETA', defaultValue: 6);
+
 // 用在 update firmware 時 disable android 的 system back button
 class SystemBackButtonProperty {
   static bool isEnabled = true;

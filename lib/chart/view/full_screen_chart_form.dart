@@ -58,7 +58,11 @@ class _FullScreenChartFormState extends State<FullScreenChartForm> {
                 lineSeriesCollection: widget.lineSeriesCollection,
                 showLegend: true,
                 showMultipleYAxises: true,
-                showScaleThumbs: Platform.isWindows ? true : false,
+                showScaleThumbs: winBeta >= 4
+                    ? Platform.isWindows
+                        ? true
+                        : false
+                    : false,
               ),
             ],
           ),

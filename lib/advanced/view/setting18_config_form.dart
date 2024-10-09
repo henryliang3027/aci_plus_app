@@ -10,6 +10,7 @@ import 'package:aci_plus_app/advanced/view/setting18_config_tab_bar.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -323,62 +324,67 @@ class _QRToolbar extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {
-                      if (Platform.isWindows) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WindowsQRCodeScanner(
-                                onScanned: (res) {
-                                  Navigator.pop(context, res);
-                                },
-                              ),
-                            )).then((rawData) {
-                          if (rawData != null) {
-                            if (rawData.isNotEmpty) {
-                              context
-                                  .read<Setting18ConfigBloc>()
-                                  .add(QRDataScanned(rawData));
-                            }
-                          }
-                        });
-                      } else {
-                        Navigator.push(
-                          context,
-                          QRCodeScanner.route(),
-                        ).then((rawData) {
-                          if (rawData != null) {
-                            if (rawData.isNotEmpty) {
-                              context
-                                  .read<Setting18ConfigBloc>()
-                                  .add(QRDataScanned(rawData));
-                            }
-                          }
-                        });
-                      }
-                    },
+                    onPressed: Platform.isWindows
+                        ? winBeta >= 5
+                            ? () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          WindowsQRCodeScanner(
+                                        onScanned: (res) {
+                                          Navigator.pop(context, res);
+                                        },
+                                      ),
+                                    )).then((rawData) {
+                                  if (rawData != null) {
+                                    if (rawData.isNotEmpty) {
+                                      context
+                                          .read<Setting18ConfigBloc>()
+                                          .add(QRDataScanned(rawData));
+                                    }
+                                  }
+                                });
+                              }
+                            : null
+                        : () {
+                            Navigator.push(
+                              context,
+                              QRCodeScanner.route(),
+                            ).then((rawData) {
+                              if (rawData != null) {
+                                if (rawData.isNotEmpty) {
+                                  context
+                                      .read<Setting18ConfigBloc>()
+                                      .add(QRDataScanned(rawData));
+                                }
+                              }
+                            });
+                          },
                     icon: const Icon(
                       Icons.qr_code_scanner_sharp,
                       size: 26,
                     ),
                   ),
                   Platform.isWindows
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              onPressed: () async {
-                                context
-                                    .read<Setting18ConfigBloc>()
-                                    .add(const QRImagePicked());
-                              },
-                              icon: const Icon(
-                                CustomIcons.picture,
-                                size: 26,
-                              ),
-                            ),
-                          ],
-                        )
+                      ? winBeta >= 6
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                  onPressed: () async {
+                                    context
+                                        .read<Setting18ConfigBloc>()
+                                        .add(const QRImagePicked());
+                                  },
+                                  icon: const Icon(
+                                    CustomIcons.picture,
+                                    size: 26,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container()
                       : Container(),
                   const SizedBox(
                     width: 6.0,

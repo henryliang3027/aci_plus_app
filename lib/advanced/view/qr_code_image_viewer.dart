@@ -20,13 +20,15 @@ class QRCodeImageViewer extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.file(File(imageFilePath)),
             Flexible(
               fit: FlexFit.tight,
-              child: Container(),
+              child: Image.file(
+                File(imageFilePath),
+                fit: BoxFit.contain,
+              ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 0.0),
+              padding: const EdgeInsets.only(top: 10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

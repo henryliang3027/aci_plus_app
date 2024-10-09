@@ -7,6 +7,7 @@ import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:flutter/material.dart';
@@ -270,7 +271,11 @@ class _LogChartListView extends StatelessWidget {
           SpeedLineChart(
             lineSeriesCollection: lineSeriesCollection,
             showLegend: true,
-            showScaleThumbs: Platform.isWindows ? true : false,
+            showScaleThumbs: winBeta >= 4
+                ? Platform.isWindows
+                    ? true
+                    : false
+                : false,
           ),
         ],
       );

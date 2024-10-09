@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
@@ -948,26 +950,27 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   shape: const CircleBorder(
                     side: BorderSide.none,
                   ),
-                  backgroundColor: Colors.grey.withAlpha(200),
-                  // backgroundColor:
-                  //     Theme.of(context).colorScheme.primary.withAlpha(200),
+                  backgroundColor: Platform.isWindows
+                      ? Colors.grey.withAlpha(200)
+                      : Theme.of(context).colorScheme.primary.withAlpha(200),
+                  onPressed: Platform.isWindows
+                      ? null
+                      : () {
+                          // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
+                          Navigator.push(
+                                  context,
+                                  Setting18GraphPage.route(
+                                    graphFilePath: graphFilePath,
+                                  ))
+                              .then((value) => context
+                                  .read<Setting18ForwardControlBloc>()
+                                  .add(const Initialized()));
+                        },
                   child: Icon(
                     Icons.settings_input_composite,
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
-                  onPressed: null
-                  // () {
-                  //   // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
-                  //   Navigator.push(
-                  //           context,
-                  //           Setting18GraphPage.route(
-                  //             graphFilePath: graphFilePath,
-                  //           ))
-                  //       .then((value) => context
-                  //           .read<Setting18ForwardControlBloc>()
-                  //           .add(const Initialized()));
-                  // },
-                  )
+                )
               : const SizedBox(
                   width: 0,
                   height: 0,
