@@ -8,10 +8,12 @@ import 'package:aci_plus_app/repositories/distribution_config.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/node_config.dart';
 import 'package:aci_plus_app/repositories/trunk_config.dart';
+import 'package:camera_checker/camera_checker.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:zxing2/qrcode.dart';
 
 part 'setting18_config_event.dart';
@@ -29,8 +31,13 @@ class Setting18ConfigBloc
     on<QRDataScanned>(_onQRDataScanned);
     on<QRImagePicked>(_onQRImagePicked);
     on<QRImageRead>(_onQRImageRead);
+    on<CameraAvailabilityChecked>(_onCameraAvailabilityChecked);
 
     add(const ConfigsRequested());
+
+    if (Platform.isWindows) {
+      add(const CameraAvailabilityChecked());
+    }
   }
 
   final ConfigRepository _configRepository;
@@ -39,6 +46,7 @@ class Setting18ConfigBloc
     ConfigsRequested event,
     Emitter<Setting18ConfigState> emit,
   ) async {
+    print(await Permission.camera.status.isGranted);
     emit(state.copyWith(
       encodeStaus: FormStatus.none,
       decodeStatus: FormStatus.none,
@@ -340,5 +348,17 @@ class Setting18ConfigBloc
         nodeConfigs: state.nodeConfigs,
       ));
     }
+  }
+
+  Future<void> _onCameraAvailabilityChecked(
+    CameraAvailabilityChecked event,
+    Emitter<Setting18ConfigState> emit,
+  ) async {
+    final CameraChecker cameraChecker = CameraChecker();
+    bool isCameraAvailable = await cameraChecker.isCameraAvailable() ?? false;
+
+    emit(state.copyWith(
+      isCameraAvailable: isCameraAvailable,
+    ));
   }
 }

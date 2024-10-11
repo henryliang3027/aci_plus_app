@@ -163,42 +163,6 @@ class Setting18ConfigForm extends StatelessWidget {
           );
         },
       );
-      // return showDialog<bool?>(
-      //   context: context,
-      //   barrierDismissible: false, // Prevent dismissing by clicking outside
-      //   builder: (BuildContext context) {
-      //     return
-
-      //     AlertDialog(
-      //       titlePadding: EdgeInsets.zero,
-      //       contentPadding: EdgeInsets.zero,
-      //       content: SizedBox(
-      //         width: 370,
-      //         height: 450,
-      //         child: Image.file(File(imageFilePath)),
-      //       ),
-      //       actionsAlignment: MainAxisAlignment.center,
-      //       actions: <Widget>[
-      //         ElevatedButton(
-      //           child: Text(
-      //             AppLocalizations.of(context)!.dialogMessageCancel,
-      //           ),
-      //           onPressed: () {
-      //             Navigator.of(context).pop(false); // pop dialog
-      //           },
-      //         ),
-      //         ElevatedButton(
-      //           child: Text(
-      //             AppLocalizations.of(context)!.dialogMessageOk,
-      //           ),
-      //           onPressed: () {
-      //             Navigator.of(context).pop(true); // pop dialog
-      //           },
-      //         ),
-      //       ],
-      //     );
-      //   },
-      // );
     }
 
     return BlocListener<Setting18ConfigBloc, Setting18ConfigState>(
@@ -278,6 +242,31 @@ class _QRToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future showWindowsQRCodeScannerDialog() {
+      return showDialog(
+        context: context,
+
+        barrierDismissible: false, // user must tap button!
+
+        builder: (BuildContext context) {
+          var width = MediaQuery.of(context).size.width;
+          // var height = MediaQuery.of(context).size.height;
+
+          return Dialog(
+            clipBehavior: Clip.hardEdge,
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: width * 0.01,
+            ),
+            child: WindowsQRCodeScanner(
+              onScanned: (res) {
+                Navigator.pop(context, res);
+              },
+            ),
+          );
+        },
+      );
+    }
+
     return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
       buildWhen: (previous, current) =>
           previous.trunkConfigs != current.trunkConfigs ||
@@ -326,26 +315,37 @@ class _QRToolbar extends StatelessWidget {
                   IconButton(
                     onPressed: Platform.isWindows
                         ? winBeta >= 5
-                            ? () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          WindowsQRCodeScanner(
-                                        onScanned: (res) {
-                                          Navigator.pop(context, res);
-                                        },
-                                      ),
-                                    )).then((rawData) {
-                                  if (rawData != null) {
-                                    if (rawData.isNotEmpty) {
-                                      context
-                                          .read<Setting18ConfigBloc>()
-                                          .add(QRDataScanned(rawData));
-                                    }
+                            ? state.isCameraAvailable
+                                ? () {
+                                    showWindowsQRCodeScannerDialog()
+                                        .then((rawData) {
+                                      if (rawData != null) {
+                                        context
+                                            .read<Setting18ConfigBloc>()
+                                            .add(QRDataScanned(rawData));
+                                      }
+                                    });
+
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) =>
+                                    //           WindowsQRCodeScanner(
+                                    //         onScanned: (res) {
+                                    //           Navigator.pop(context, res);
+                                    //         },
+                                    //       ),
+                                    //     )).then((rawData) {
+                                    //   if (rawData != null) {
+                                    //     if (rawData.isNotEmpty) {
+                                    //       context
+                                    //           .read<Setting18ConfigBloc>()
+                                    //           .add(QRDataScanned(rawData));
+                                    //     }
+                                    //   }
+                                    // });
                                   }
-                                });
-                              }
+                                : null
                             : null
                         : () {
                             Navigator.push(

@@ -61,67 +61,75 @@ class _WindowsQRCodeScannerState extends State<WindowsQRCodeScanner> {
     //   isPermissionGranted = granted;
     // });
 
-    return Scaffold(
-      body: Stack(
-        alignment: AlignmentDirectional.center,
+    return SizedBox(
+      width: 550,
+      height: 550,
+      child: Column(
         children: [
-          FutureBuilder<bool>(
-              future: isInitScanner,
-              builder: (context, snapshot) {
-                if (snapshot.hasData && snapshot.data != null) {
-                  return webview;
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text(snapshot.error.toString()),
-                  );
-                }
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }),
-          isInvalid
-              ? Positioned(
-                  bottom: 100,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(26),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 26, vertical: 10),
-                      child: Text(
-                        AppLocalizations.of(context)!
-                            .dialogMessageInvalidQRCode,
-                        style: const TextStyle(
-                          fontSize: CustomStyle.sizeXL,
-                          color: CustomStyle.customRed,
+          Flexible(
+            fit: FlexFit.tight,
+            child: Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                FutureBuilder<bool>(
+                    future: isInitScanner,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.data != null) {
+                        return webview;
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.error.toString()),
+                        );
+                      }
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }),
+                isInvalid
+                    ? Positioned(
+                        bottom: 100,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(26),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 26, vertical: 10),
+                            child: Text(
+                              AppLocalizations.of(context)!
+                                  .dialogMessageInvalidQRCode,
+                              style: const TextStyle(
+                                fontSize: CustomStyle.sizeXL,
+                                color: CustomStyle.customRed,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                      )
+                    : Container(),
+              ],
+            ),
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  child: Text(
+                    AppLocalizations.of(context)!.dialogMessageDone,
                   ),
-                )
-              : Container(),
-          Positioned(
-            bottom: 30,
-            right: 30,
-            child: FloatingActionButton(
-              heroTag: null,
-              shape: const CircleBorder(
-                side: BorderSide.none,
-              ),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              child: Icon(
-                CustomIcons.cancel,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-              onPressed: () {
-                /// send close event to web-view
-                controller.postWebMessage(json.encode({"event": "close"}));
-                Navigator.pop(context);
-              },
+                  onPressed: () {
+                    /// send close event to web-view
+                    controller.postWebMessage(json.encode({"event": "close"}));
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
             ),
           ),
         ],

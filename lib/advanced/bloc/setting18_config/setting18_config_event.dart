@@ -59,3 +59,11 @@ class QRImagePicked extends Setting18ConfigEvent {
   @override
   List<Object> get props => [];
 }
+
+// 只用於 Windows 平台, 檢查是否有 Camera
+class CameraAvailabilityChecked extends Setting18ConfigEvent {
+  const CameraAvailabilityChecked();
+
+  @override
+  List<Object> get props => [];
+}
