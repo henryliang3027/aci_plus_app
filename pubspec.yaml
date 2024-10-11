@@ -64,6 +64,8 @@ dependencies:
   xml: ^6.3.0
   simple_barcode_scanner: ^0.1.1 # for windows
   zxing2: ^0.2.3 # fow windows qr code image
+  camera_checker:
+    path: /Users/henry.liang/projects/camera_checker
   qr_code_scanner: ^1.0.1
   qr_flutter: ^4.1.0
   json_annotation: ^4.8.1
