@@ -60,49 +60,24 @@ class Amp18Repository {
 
     print('get data from request command 1p8G0');
 
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: _amp18Parser.command18Collection[commandIndex - 80],
-      );
+    Map<DataKey, String> characteristicDataCache = {
+      DataKey.partName: 'SDAT',
+      DataKey.partNo: 'P1A14X0-0X0G',
+      DataKey.partId: '8',
+      DataKey.serialNumber: '01110001',
+      DataKey.firmwareVersion: '145',
+      DataKey.hardwareVersion: '101',
+      DataKey.mfgDate: '2023/09/26',
+      DataKey.coordinates: '25.0644003000,121.4467530000',
+      DataKey.nowDateTime: '2024-10-14 15:05:00',
+    };
 
-      A1P8G0 a1p8g0 = _amp18Parser.decodeA1P8G0(rawData);
+    _characteristicDataCache.addAll(characteristicDataCache);
 
-      print('Device time: ${a1p8g0.nowDateTime}');
-
-      Map<DataKey, String> characteristicDataCache = {
-        DataKey.partName: a1p8g0.partName,
-        DataKey.partNo: a1p8g0.partNo,
-        DataKey.partId: a1p8g0.partId,
-        DataKey.serialNumber: a1p8g0.serialNumber,
-        DataKey.firmwareVersion: a1p8g0.firmwareVersion,
-        DataKey.hardwareVersion: a1p8g0.hardwareVersion,
-        DataKey.mfgDate: a1p8g0.mfgDate,
-        DataKey.coordinates: a1p8g0.coordinate,
-        DataKey.nowDateTime: a1p8g0.nowDateTime,
-      };
-
-      print('partName: ${a1p8g0.partName}');
-      print('partNo: ${a1p8g0.partNo}');
-      print('partId: ${a1p8g0.partId}');
-      print('serialNumber: ${a1p8g0.serialNumber}');
-      print('firmwareVersion: ${a1p8g0.firmwareVersion}');
-      print('hardwareVersion: ${a1p8g0.hardwareVersion}');
-      print('mfgDate: ${a1p8g0.mfgDate}');
-      print('coordinates: ${a1p8g0.coordinate}');
-      print('nowDateTime: ${a1p8g0.nowDateTime}');
-
-      _characteristicDataCache.addAll(characteristicDataCache);
-
-      return [
-        true,
-        characteristicDataCache,
-      ];
-    } catch (e) {
-      return [
-        false,
-      ];
-    }
+    return [
+      true,
+      characteristicDataCache,
+    ];
   }
 
   Future<dynamic> requestCommand1p8G1() async {
@@ -110,140 +85,66 @@ class Amp18Repository {
 
     print('get data from request command 1p8G1');
 
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: _amp18Parser.command18Collection[commandIndex - 80],
-      );
+    Map<DataKey, String> characteristicDataCache = {
+      DataKey.minTemperatureC: '-40.0',
+      DataKey.maxTemperatureC: '85.0',
+      DataKey.minTemperatureF: '-40.0',
+      DataKey.maxTemperatureF: '185.0',
+      DataKey.minVoltage: '23.0',
+      DataKey.maxVoltage: '25.0',
+      DataKey.minVoltageRipple: '0',
+      DataKey.maxVoltageRipple: '500',
+      DataKey.minRFOutputPower: '10.0',
+      DataKey.maxRFOutputPower: '50.0',
+      DataKey.ingressSetting2: '0',
+      DataKey.ingressSetting3: '0',
+      DataKey.ingressSetting4: '0',
+      DataKey.forwardCEQIndex: '0',
+      DataKey.rfOutputLogInterval: '30',
+      DataKey.tgcCableLength: '27',
+      DataKey.splitOption: '1',
+      DataKey.pilotFrequencyMode: '1',
+      DataKey.agcMode: '0',
+      DataKey.alcMode: '0',
+      DataKey.firstChannelLoadingFrequency: '262',
+      DataKey.lastChannelLoadingFrequency: '1793',
+      DataKey.firstChannelLoadingLevel: '25.0',
+      DataKey.lastChannelLoadingLevel: '39.0',
+      DataKey.pilotFrequency1: '267',
+      DataKey.pilotFrequency2: '1209',
+      DataKey.rfOutputPilotLowFrequencyAlarmState: '0',
+      DataKey.rfOutputPilotHighFrequencyAlarmState: '0',
+      DataKey.temperatureAlarmState: '0',
+      DataKey.voltageAlarmState: '0',
+      DataKey.factoryDefaultNumber: '11',
+      DataKey.splitOptionAlarmState: '0',
+      DataKey.voltageRippleAlarmState: '0',
+      DataKey.rfOutputPowerAlarmState: '0',
+      DataKey.location: '23307 66TH Avenue South Kent, WA 98032 U.S.A.',
+      DataKey.logInterval: '30',
+      DataKey.dsVVA1: '10.0',
+      DataKey.dsSlope1: '10.0',
+      DataKey.dsVVA2: '0.0',
+      DataKey.dsSlope2: '0.0',
+      DataKey.usVCA1: '10.0',
+      DataKey.eREQ: '10.0',
+      DataKey.dsVVA3: '0.0',
+      DataKey.dsVVA4: '10.0',
+      DataKey.dsVVA5: '10.0',
+      DataKey.usVCA2: '10.0',
+      DataKey.usVCA3: '10.0',
+      DataKey.usVCA4: '10.0',
+      DataKey.dsSlope3: '10.0',
+      DataKey.dsSlope4: '10.0',
+      // DataKey.usTGC: a1p8g1.usTGC,
+    };
 
-      A1P8G1 a1p8g1 = _amp18Parser.decodeA1P8G1(rawData);
+    _characteristicDataCache.addAll(characteristicDataCache);
 
-      Map<DataKey, String> characteristicDataCache = {
-        DataKey.minTemperatureC: a1p8g1.minTemperatureC,
-        DataKey.maxTemperatureC: a1p8g1.maxTemperatureC,
-        DataKey.minTemperatureF: a1p8g1.minTemperatureF,
-        DataKey.maxTemperatureF: a1p8g1.maxTemperatureF,
-        DataKey.minVoltage: a1p8g1.minVoltage,
-        DataKey.maxVoltage: a1p8g1.maxVoltage,
-        DataKey.minVoltageRipple: a1p8g1.minVoltageRipple,
-        DataKey.maxVoltageRipple: a1p8g1.maxVoltageRipple,
-        DataKey.minRFOutputPower: a1p8g1.minRFOutputPower,
-        DataKey.maxRFOutputPower: a1p8g1.maxRFOutputPower,
-        DataKey.ingressSetting2: a1p8g1.ingressSetting2,
-        DataKey.ingressSetting3: a1p8g1.ingressSetting3,
-        DataKey.ingressSetting4: a1p8g1.ingressSetting4,
-        DataKey.forwardCEQIndex: a1p8g1.forwardCEQIndex,
-        DataKey.rfOutputLogInterval: a1p8g1.rfOutputLogInterval,
-        DataKey.tgcCableLength: a1p8g1.tgcCableLength,
-        DataKey.splitOption: a1p8g1.splitOption,
-        DataKey.pilotFrequencyMode: a1p8g1.pilotFrequencyMode,
-        DataKey.agcMode: a1p8g1.agcMode,
-        DataKey.alcMode: a1p8g1.alcMode,
-        DataKey.firstChannelLoadingFrequency:
-            a1p8g1.firstChannelLoadingFrequency,
-        DataKey.lastChannelLoadingFrequency: a1p8g1.lastChannelLoadingFrequency,
-        DataKey.firstChannelLoadingLevel: a1p8g1.firstChannelLoadingLevel,
-        DataKey.lastChannelLoadingLevel: a1p8g1.lastChannelLoadingLevel,
-        DataKey.pilotFrequency1: a1p8g1.pilotFrequency1,
-        DataKey.pilotFrequency2: a1p8g1.pilotFrequency2,
-        // DataKey.pilotFrequency1AlarmState: a1p8g1.pilotFrequency1AlarmState,
-        // DataKey.pilotFrequency2AlarmState: a1p8g1.pilotFrequency2AlarmState,
-        DataKey.rfOutputPilotLowFrequencyAlarmState:
-            a1p8g1.rfOutputPilotLowFrequencyAlarmState,
-        DataKey.rfOutputPilotHighFrequencyAlarmState:
-            a1p8g1.rfOutputPilotHighFrequencyAlarmState,
-        DataKey.temperatureAlarmState: a1p8g1.temperatureAlarmState,
-        DataKey.voltageAlarmState: a1p8g1.voltageAlarmState,
-        DataKey.factoryDefaultNumber: a1p8g1.factoryDefaultNumber,
-        DataKey.splitOptionAlarmState: a1p8g1.splitOptionAlarmState,
-        DataKey.voltageRippleAlarmState: a1p8g1.voltageRippleAlarmState,
-        DataKey.rfOutputPowerAlarmState: a1p8g1.outputPowerAlarmState,
-        DataKey.location: a1p8g1.location,
-        DataKey.logInterval: a1p8g1.logInterval,
-
-        DataKey.dsVVA1: a1p8g1.dsVVA1,
-        DataKey.dsSlope1: a1p8g1.dsSlope1,
-        DataKey.dsVVA2: a1p8g1.dsVVA2,
-        DataKey.dsSlope2: a1p8g1.dsSlope2,
-        DataKey.usVCA1: a1p8g1.usVCA1,
-        DataKey.eREQ: a1p8g1.eREQ,
-        DataKey.dsVVA3: a1p8g1.dsVVA3,
-        DataKey.dsVVA4: a1p8g1.dsVVA4,
-        DataKey.dsVVA5: a1p8g1.dsVVA5,
-        DataKey.usVCA2: a1p8g1.usVCA2,
-        DataKey.usVCA3: a1p8g1.usVCA3,
-        DataKey.usVCA4: a1p8g1.usVCA4,
-        DataKey.dsSlope3: a1p8g1.dsSlope3,
-        DataKey.dsSlope4: a1p8g1.dsSlope4,
-        // DataKey.usTGC: a1p8g1.usTGC,
-      };
-
-      print('minTemperatureC: ${a1p8g1.minTemperatureC}');
-      print('maxTemperatureC: ${a1p8g1.maxTemperatureC}');
-      print('minTemperatureF: ${a1p8g1.minTemperatureF}');
-      print('maxTemperatureF: ${a1p8g1.maxTemperatureF}');
-      print('minVoltage: ${a1p8g1.minVoltage}');
-      print('maxVoltage: ${a1p8g1.maxVoltage}');
-      print('minVoltageRipple: ${a1p8g1.minVoltageRipple}');
-      print('maxVoltageRipple: ${a1p8g1.maxVoltageRipple}');
-      print('minRFOutputPower: ${a1p8g1.minRFOutputPower}');
-      print('maxRFOutputPower: ${a1p8g1.maxRFOutputPower}');
-      print('ingressSetting2: ${a1p8g1.ingressSetting2}');
-      print('ingressSetting3: ${a1p8g1.ingressSetting3}');
-      print('ingressSetting4: ${a1p8g1.ingressSetting4}');
-      print('forwardCEQIndex: ${a1p8g1.forwardCEQIndex}');
-      print('rfOutputLogInterval: ${a1p8g1.rfOutputLogInterval}');
-      print('tgcCableLength: ${a1p8g1.tgcCableLength}');
-      print('splitOption: ${a1p8g1.splitOption}');
-      print('pilotFrequencyMode: ${a1p8g1.pilotFrequencyMode}');
-      print('agcMode: ${a1p8g1.agcMode}');
-      print('alcMode: ${a1p8g1.alcMode}');
-      print(
-          'firstChannelLoadingFrequency: ${a1p8g1.firstChannelLoadingFrequency}');
-      print(
-          'lastChannelLoadingFrequency: ${a1p8g1.lastChannelLoadingFrequency}');
-      print('firstChannelLoadingLevel: ${a1p8g1.firstChannelLoadingLevel}');
-      print('lastChannelLoadingLevel: ${a1p8g1.lastChannelLoadingLevel}');
-      print('pilotFrequency1: ${a1p8g1.pilotFrequency1}');
-      print('pilotFrequency2: ${a1p8g1.pilotFrequency2}');
-      print(
-          'rfOutputPilotLowFrequencyAlarmState: ${a1p8g1.rfOutputPilotLowFrequencyAlarmState}');
-      print(
-          'rfOutputPilotHighFrequencyAlarmState: ${a1p8g1.rfOutputPilotHighFrequencyAlarmState}');
-      print('temperatureAlarmState: ${a1p8g1.temperatureAlarmState}');
-      print('voltageAlarmState: ${a1p8g1.voltageAlarmState}');
-      print('factoryDefaultNumber: ${a1p8g1.factoryDefaultNumber}');
-      print('splitOptionAlarmState: ${a1p8g1.splitOptionAlarmState}');
-      print('voltageRippleAlarmState: ${a1p8g1.voltageRippleAlarmState}');
-      print('rfOutputPowerAlarmState: ${a1p8g1.outputPowerAlarmState}');
-      print('location: ${a1p8g1.location}');
-      print('logInterval: ${a1p8g1.logInterval}');
-      print('dsVVA1: ${a1p8g1.dsVVA1}');
-      print('dsSlope1: ${a1p8g1.dsSlope1}');
-      print('dsVVA2: ${a1p8g1.dsVVA2}');
-      print('dsSlope2: ${a1p8g1.dsSlope2}');
-      print('usVCA1: ${a1p8g1.usVCA1}');
-      print('eREQ: ${a1p8g1.eREQ}');
-      print('dsVVA3: ${a1p8g1.dsVVA3}');
-      print('dsVVA4: ${a1p8g1.dsVVA4}');
-      print('dsVVA5: ${a1p8g1.dsVVA5}');
-      print('usVCA2: ${a1p8g1.usVCA2}');
-      print('usVCA3: ${a1p8g1.usVCA3}');
-      print('usVCA4: ${a1p8g1.usVCA4}');
-      print('dsSlope3: ${a1p8g1.dsSlope3}');
-      print('dsSlope4: ${a1p8g1.dsSlope4}');
-
-      _characteristicDataCache.addAll(characteristicDataCache);
-
-      return [
-        true,
-        characteristicDataCache,
-      ];
-    } catch (e) {
-      return [
-        false,
-      ];
-    }
+    return [
+      true,
+      characteristicDataCache,
+    ];
   }
 
   Future<dynamic> requestCommand1p8G2({
@@ -253,100 +154,44 @@ class Amp18Repository {
 
     print('get data from request command 1p8G2');
 
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: _amp18Parser.command18Collection[commandIndex - 80],
-        timeout: timeout,
-      );
+    Map<DataKey, String> characteristicDataCache = {
+      DataKey.currentTemperatureC: '29.9',
+      DataKey.currentTemperatureF: '85.8',
+      DataKey.currentVoltage: '24.3',
+      DataKey.currentVoltageRipple: '40',
+      DataKey.currentRFInputPower: '0.0',
+      DataKey.currentRFOutputPower: '0.0',
+      DataKey.currentDSVVA1: '11.3',
+      DataKey.currentDSSlope1: '12.0',
+      DataKey.currentWorkingMode: '72',
+      DataKey.currentDetectedSplitOption: '1',
+      DataKey.rfOutputOperatingSlope: '0.0',
+      DataKey.currentRFInputPower1p8G: '-1000.0',
+      DataKey.manualModePilot1RFOutputPower: '25.2',
+      DataKey.manualModePilot2RFOutputPower: '37.9',
+      DataKey.rfOutputLowChannelPower: '-1000.0',
+      DataKey.rfOutputHighChannelPower: '-1000.0',
+      DataKey.pilot1RFChannelFrequency: '267',
+      DataKey.pilot2RFChannelFrequency: '1209',
+      DataKey.unitStatusAlarmSeverity: 'danger',
+      DataKey.rfInputPilotLowFrequencyAlarmSeverity: 'success',
+      DataKey.rfInputPilotHighFrequencyAlarmSeverity: 'success',
+      DataKey.rfOutputPilotLowFrequencyAlarmSeverity: 'danger',
+      DataKey.rfOutputPilotHighFrequencyAlarmSeverity: 'danger',
+      DataKey.temperatureAlarmSeverity: 'success',
+      DataKey.voltageAlarmSeverity: 'success',
+      DataKey.splitOptionAlarmSeverity: 'success',
+      DataKey.voltageRippleAlarmSeverity: 'success',
+      DataKey.outputPowerAlarmSeverity: 'danger',
+      DataKey.currentForwardCEQIndex: '0',
+    };
 
-      A1P8G2 a1p8g2 = _amp18Parser.decodeA1P8G2(rawData);
+    _characteristicDataCache.addAll(characteristicDataCache);
 
-      Map<DataKey, String> characteristicDataCache = {
-        DataKey.currentTemperatureC: a1p8g2.currentTemperatureC,
-        DataKey.currentTemperatureF: a1p8g2.currentTemperatureF,
-        DataKey.currentVoltage: a1p8g2.currentVoltage,
-        DataKey.currentVoltageRipple: a1p8g2.currentVoltageRipple,
-        DataKey.currentRFInputPower: a1p8g2.currentRFInputPower,
-        DataKey.currentRFOutputPower: a1p8g2.currentRFOutputPower,
-        DataKey.currentDSVVA1: a1p8g2.currentDSVVA1,
-        DataKey.currentDSSlope1: a1p8g2.currentDSSlope1,
-        DataKey.currentWorkingMode: a1p8g2.currentWorkingMode,
-        DataKey.currentDetectedSplitOption: a1p8g2.currentDetectedSplitOption,
-        DataKey.rfOutputOperatingSlope: a1p8g2.rfOutputOperatingSlope,
-        DataKey.currentRFInputPower1p8G: a1p8g2.currentRFInputPower1p8G,
-        DataKey.manualModePilot1RFOutputPower:
-            a1p8g2.manualModePilot1RFOutputPower,
-        DataKey.manualModePilot2RFOutputPower:
-            a1p8g2.manualModePilot2RFOutputPower,
-        DataKey.rfOutputLowChannelPower: a1p8g2.rfOutputLowChannelPower,
-        DataKey.rfOutputHighChannelPower: a1p8g2.rfOutputHighChannelPower,
-        DataKey.pilot1RFChannelFrequency: a1p8g2.pilot1RFChannelFrequency,
-        DataKey.pilot2RFChannelFrequency: a1p8g2.pilot2RFChannelFrequency,
-        DataKey.unitStatusAlarmSeverity: a1p8g2.unitStatusAlarmSeverity,
-        DataKey.rfInputPilotLowFrequencyAlarmSeverity:
-            a1p8g2.rfInputPilotLowFrequencyAlarmSeverity,
-        DataKey.rfInputPilotHighFrequencyAlarmSeverity:
-            a1p8g2.rfInputPilotHighFrequencyAlarmSeverity,
-        DataKey.rfOutputPilotLowFrequencyAlarmSeverity:
-            a1p8g2.rfOutputPilotLowFrequencyAlarmSeverity,
-        DataKey.rfOutputPilotHighFrequencyAlarmSeverity:
-            a1p8g2.rfOutputPilotHighFrequencyAlarmSeverity,
-        DataKey.temperatureAlarmSeverity: a1p8g2.temperatureAlarmSeverity,
-        DataKey.voltageAlarmSeverity: a1p8g2.voltageAlarmSeverity,
-        DataKey.splitOptionAlarmSeverity: a1p8g2.splitOptionAlarmSeverity,
-        DataKey.voltageRippleAlarmSeverity: a1p8g2.voltageRippleAlarmSeverity,
-        DataKey.outputPowerAlarmSeverity: a1p8g2.outputPowerAlarmSeverity,
-        DataKey.currentForwardCEQIndex: a1p8g2.currentForwardCEQIndex,
-      };
-
-      print('currentTemperatureC: ${a1p8g2.currentTemperatureC}');
-      print('currentTemperatureF: ${a1p8g2.currentTemperatureF}');
-      print('currentVoltage: ${a1p8g2.currentVoltage}');
-      print('currentVoltageRipple: ${a1p8g2.currentVoltageRipple}');
-      print('currentRFInputPower: ${a1p8g2.currentRFInputPower}');
-      print('currentRFOutputPower: ${a1p8g2.currentRFOutputPower}');
-      print('currentDSVVA1: ${a1p8g2.currentDSVVA1}');
-      print('currentDSSlope1: ${a1p8g2.currentDSSlope1}');
-      print('currentWorkingMode: ${a1p8g2.currentWorkingMode}');
-      print('currentDetectedSplitOption: ${a1p8g2.currentDetectedSplitOption}');
-      print('rfOutputOperatingSlope: ${a1p8g2.rfOutputOperatingSlope}');
-      print('currentRFInputPower1p8G: ${a1p8g2.currentRFInputPower1p8G}');
-      print(
-          'manualModePilot1RFOutputPower: ${a1p8g2.manualModePilot1RFOutputPower}');
-      print(
-          'manualModePilot2RFOutputPower: ${a1p8g2.manualModePilot2RFOutputPower}');
-      print('rfOutputLowChannelPower: ${a1p8g2.rfOutputLowChannelPower}');
-      print('rfOutputHighChannelPower: ${a1p8g2.rfOutputHighChannelPower}');
-      print('pilot1RFChannelFrequency: ${a1p8g2.pilot1RFChannelFrequency}');
-      print('pilot2RFChannelFrequency: ${a1p8g2.pilot2RFChannelFrequency}');
-      print('unitStatusAlarmSeverity: ${a1p8g2.unitStatusAlarmSeverity}');
-      print(
-          'rfInputPilotLowFrequencyAlarmSeverity: ${a1p8g2.rfInputPilotLowFrequencyAlarmSeverity}');
-      print(
-          'rfInputPilotHighFrequencyAlarmSeverity: ${a1p8g2.rfInputPilotHighFrequencyAlarmSeverity}');
-      print(
-          'rfOutputPilotLowFrequencyAlarmSeverity: ${a1p8g2.rfOutputPilotLowFrequencyAlarmSeverity}');
-      print(
-          'rfOutputPilotHighFrequencyAlarmSeverity: ${a1p8g2.rfOutputPilotHighFrequencyAlarmSeverity}');
-      print('temperatureAlarmSeverity: ${a1p8g2.temperatureAlarmSeverity}');
-      print('voltageAlarmSeverity: ${a1p8g2.voltageAlarmSeverity}');
-      print('splitOptionAlarmSeverity: ${a1p8g2.splitOptionAlarmSeverity}');
-      print('voltageRippleAlarmSeverity: ${a1p8g2.voltageRippleAlarmSeverity}');
-      print('outputPowerAlarmSeverity: ${a1p8g2.outputPowerAlarmSeverity}');
-      print('currentForwardCEQIndex: ${a1p8g2.currentForwardCEQIndex}');
-
-      _characteristicDataCache.addAll(characteristicDataCache);
-
-      return [
-        true,
-        characteristicDataCache,
-      ];
-    } catch (e) {
-      return [
-        false,
-      ];
-    }
+    return [
+      true,
+      characteristicDataCache,
+    ];
   }
 
   Future<dynamic> requestCommand1p8GAlarm() async {
@@ -354,26 +199,12 @@ class Amp18Repository {
 
     print('get data from request command 1p8G_Alarm');
 
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: _amp18Parser.command18Collection[commandIndex - 80],
-        timeout: const Duration(seconds: 1),
-      );
-
-      A1P8GAlarm a1p8gAlarm = _amp18Parser.decodeAlarmSeverity(rawData);
-
-      return [
-        true,
-        a1p8gAlarm.unitStatusAlarmSeverity,
-        a1p8gAlarm.temperatureAlarmSeverity,
-        a1p8gAlarm.powerAlarmSeverity,
-      ];
-    } catch (e) {
-      return [
-        false,
-      ];
-    }
+    return [
+      true,
+      'danger',
+      'success',
+      'danger',
+    ];
   }
 
   Future<dynamic> requestCommand1p8G3() async {
