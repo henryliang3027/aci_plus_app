@@ -409,7 +409,7 @@
     "dialogMessageEnterQRCodeDescription": "Maximum 22 characters:",
     "dialogMessageWarmReset": "Do you want to perform a warm reset on the device ?",
     "dialogMessageWarmResetingAlmostDone": "Almost done",
-    "dialogMessageWarmResetSeccessful": "Warm reset performed successfully."
-
+    "dialogMessageWarmResetSeccessful": "Warm reset performed successfully.",
+    "dialogMessageForwardCEQChanged": "The equalizer module has been detected as changed."
     
 }

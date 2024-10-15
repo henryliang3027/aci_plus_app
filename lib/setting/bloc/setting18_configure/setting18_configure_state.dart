@@ -86,6 +86,7 @@ class Setting18ConfigureState extends Equatable {
     Map<DataKey, String>? initialValues,
     Set<DataKey>? tappedSet,
     List<String>? settingResult,
+    bool? isForwardCEQChanged,
     String? gpsCoordinateErrorMessage,
   }) {
     return Setting18ConfigureState(

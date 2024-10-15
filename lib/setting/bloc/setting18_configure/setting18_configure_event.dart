@@ -8,7 +8,9 @@ class Setting18ConfigureEvent extends Equatable {
 }
 
 class Initialized extends Setting18ConfigureEvent {
-  const Initialized();
+  const Initialized({this.useCache = true});
+
+  final bool useCache;
 
   @override
   List<Object> get props => [];

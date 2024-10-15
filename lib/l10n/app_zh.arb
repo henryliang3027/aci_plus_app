@@ -409,5 +409,6 @@
     "dialogMessageEnterQRCodeDescription": "最多 22 個字元:",
     "dialogMessageWarmReset": "您確定要對裝置執行熱重啟嗎 ?",
     "dialogMessageWarmResetingAlmostDone": "即將完成",
-    "dialogMessageWarmResetSeccessful": "熱重啟成功"
+    "dialogMessageWarmResetSeccessful": "熱重啟成功",
+    "dialogMessageForwardCEQChanged": "偵測到等化器模組已被更換"
 }

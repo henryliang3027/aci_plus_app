@@ -408,5 +408,6 @@
     "dialogMessageEnterQRCodeDescription": "Máximo 22 caracteres:",
     "dialogMessageWarmReset": "¿Desea realizar un reinicio caliente en el dispositivo?",
     "dialogMessageWarmResetingAlmostDone": "Casi terminado",
-    "dialogMessageWarmResetSeccessful": "Reinicio caliente realizado con éxito."
+    "dialogMessageWarmResetSeccessful": "Reinicio caliente realizado con éxito.",
+    "dialogMessageForwardCEQChanged": "Se ha detectado un cambio en el módulo ecualizador."
 }

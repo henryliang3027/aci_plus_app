@@ -228,3 +228,53 @@ Future<void> showResetToDefaultFailureDialog(
     },
   );
 }
+
+Future<bool?> showCurrentForwardCEQChangedDialog(
+  BuildContext context,
+) async {
+  return showDialog<bool?>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      var width = MediaQuery.of(context).size.width;
+      // var height = MediaQuery.of(context).size.height;
+
+      return AlertDialog(
+        insetPadding: EdgeInsets.symmetric(
+          horizontal: width * 0.1,
+        ),
+        title: Text(
+          AppLocalizations.of(context)!.dialogTitleNotice,
+          style: const TextStyle(
+            color: CustomStyle.customYellow,
+          ),
+        ),
+        content: SizedBox(
+          width: width,
+          child: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                Text(
+                  'CEQ Changed',
+                  style: const TextStyle(
+                    fontSize: CustomStyle.sizeL,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: <Widget>[
+          ElevatedButton(
+            child: Text(
+              AppLocalizations.of(context)!.dialogMessageOk,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop(true); // pop dialog
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
