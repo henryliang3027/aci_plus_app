@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
@@ -44,15 +46,24 @@ class Setting18ConfigureBloc
     on<SettingSubmitted>(_onSettingSubmitted);
 
     add(const Initialized());
+
+    _forwardCEQStateSubscription =
+        _amp18Repository.forwardCEQStateStream.listen((bool isChanged) {
+      add(const Initialized(useCache: false));
+    });
   }
 
   final Amp18Repository _amp18Repository;
   final GPSRepository _gpsRepository;
+  late final StreamSubscription _forwardCEQStateSubscription;
 
   Future<void> _onInitialized(
     Initialized event,
     Emitter<Setting18ConfigureState> emit,
   ) async {
+    if (!event.useCache) {
+      await _amp18Repository.updateSettingCharacteristics();
+    }
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
 
@@ -1279,5 +1290,11 @@ class Setting18ConfigureBloc
       enableSubmission: false,
       editMode: false,
     ));
+  }
+
+  @override
+  Future<void> close() {
+    _forwardCEQStateSubscription.cancel();
+    return super.close();
   }
 }

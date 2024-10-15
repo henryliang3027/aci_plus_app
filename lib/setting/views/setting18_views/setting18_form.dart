@@ -2,7 +2,8 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
-import 'package:aci_plus_app/setting/views/setting18_views/setting18_tab_bar.dart';
+
+import 'package:aci_plus_app/setting/views/setting18_views/setting18_tabbar_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -192,7 +193,7 @@ class _ViewLayout extends StatelessWidget {
           return Stack(
             alignment: Alignment.center,
             children: [
-              const Setting18TabBar(
+              const Setting18TabBarPage(
                   // tabController: tabController,
                   ),
               Container(
@@ -210,7 +211,7 @@ class _ViewLayout extends StatelessWidget {
             ],
           );
         } else {
-          return const Setting18TabBar(
+          return const Setting18TabBarPage(
               // tabController: tabController,
               );
         }

@@ -8,6 +8,7 @@ import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_configure/setting18_configure_bloc.dart';
+import 'package:aci_plus_app/setting/bloc/setting18_tabbar/setting18_tabbar_bloc.dart';
 import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
@@ -48,7 +49,21 @@ class Setting18ConfigureView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomeState homeState = context.watch<HomeBloc>().state;
+    // Setting18TabBarState setting18tabBarState =
+    //     context.watch<Setting18TabBarBloc>().state;
+
+    // print(
+    //     'setting18 configure view ${setting18tabBarState.isForwardCEQIndexChanged}');
+    // if (setting18tabBarState.isForwardCEQIndexChanged) {
+    //   showCurrentForwardCEQChangedDialog(context).then((bool? isConfirm) {
+    //     // 重新 Initialized, 讀取並顯示空值
+    //     context
+    //         .read<Setting18ConfigureBloc>()
+    //         .add(const Initialized(useCache: false));
+    //   });
+    // }
+
+    HomeState homeState = context.read<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
     String currentDetectedSplitOption =
         homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';

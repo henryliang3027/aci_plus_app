@@ -407,5 +407,6 @@
     "dialogMessageEnterQRCodeDescription": "Maximum 22 caractères:",
     "dialogMessageWarmReset": "Voulez-vous effectuer une réinitialisation chaude sur l'appareil ?",
     "dialogMessageWarmResetingAlmostDone": "Presque terminé",
-    "dialogMessageWarmResetSeccessful": "Réinitialisation chaude effectuée avec succès."
+    "dialogMessageWarmResetSeccessful": "Réinitialisation chaude effectuée avec succès.",
+    "dialogMessageForwardCEQChanged": "Le module d'égaliseur a été détecté comme modifié."
 }
