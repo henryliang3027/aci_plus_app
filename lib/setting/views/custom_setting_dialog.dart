@@ -255,7 +255,7 @@ Future<bool?> showCurrentForwardCEQChangedDialog(
             child: ListBody(
               children: [
                 Text(
-                  'CEQ Changed',
+                  AppLocalizations.of(context)!.dialogMessageForwardCEQChanged,
                   style: const TextStyle(
                     fontSize: CustomStyle.sizeL,
                   ),

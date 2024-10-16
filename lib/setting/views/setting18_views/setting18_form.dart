@@ -90,7 +90,7 @@ class Setting18Form extends StatelessWidget {
           _DeviceRefresh(),
         ],
       ),
-      body: const _ViewLayout(),
+      body: const Setting18TabBarPage(),
       bottomNavigationBar: HomeBottomNavigationBar18(
         pageController: pageController,
         selectedIndex: 0,
@@ -180,42 +180,42 @@ class _DeviceRefresh extends StatelessWidget {
   }
 }
 
-class _ViewLayout extends StatelessWidget {
-  const _ViewLayout();
+// class _ViewLayout extends StatelessWidget {
+//   const _ViewLayout();
 
-  // final TabController tabController;
+//   // final TabController tabController;
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        if (state.loadingStatus.isRequestInProgress) {
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              const Setting18TabBarPage(
-                  // tabController: tabController,
-                  ),
-              Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(70, 158, 158, 158),
-                ),
-                child: const Center(
-                  child: SizedBox(
-                    width: CustomStyle.diameter,
-                    height: CustomStyle.diameter,
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-              ),
-            ],
-          );
-        } else {
-          return const Setting18TabBarPage(
-              // tabController: tabController,
-              );
-        }
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<HomeBloc, HomeState>(
+//       builder: (context, state) {
+//         if (state.loadingStatus.isRequestInProgress) {
+//           return Stack(
+//             alignment: Alignment.center,
+//             children: [
+//               const Setting18TabBarPage(
+//                   // tabController: tabController,
+//                   ),
+//               Container(
+//                 decoration: const BoxDecoration(
+//                   color: Color.fromARGB(70, 158, 158, 158),
+//                 ),
+//                 child: const Center(
+//                   child: SizedBox(
+//                     width: CustomStyle.diameter,
+//                     height: CustomStyle.diameter,
+//                     child: CircularProgressIndicator(),
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           );
+//         } else {
+//           return const Setting18TabBarPage(
+//               // tabController: tabController,
+//               );
+//         }
+//       },
+//     );
+//   }
+// }

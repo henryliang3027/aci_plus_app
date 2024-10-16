@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:aci_plus_app/core/data_key.dart';
+import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
 
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
@@ -23,13 +24,11 @@ class Setting18TabBarBloc
         _onCurrentForwardCEQPeriodicUpdateCanceled);
 
     on<NotifyChildTabUpdated>(_onNotifyChildTabUpdated);
-
-    add(const CurrentForwardCEQPeriodicUpdateRequested());
   }
 
   Timer? _timer;
   final Amp18Repository _amp18repository;
-  final List<String> fakeData = ['1.8', '1.2', '1.2', '1.8'];
+  final List<String> fakeData = ['1.8', '1.2', '1.8', '1.2'];
   String fakePreviousCEQ = '';
 
   void _onCurrentForwardCEQPeriodicUpdateRequested(
@@ -43,7 +42,7 @@ class Setting18TabBarBloc
     // timer 啟動後 3 秒才會發 CurrentForwardCEQUpdated, 所以第0秒時先 CurrentForwardCEQUpdated
     add(const CurrentForwardCEQUpdated());
 
-    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       print('CurrentForwardCEQUpdate timer: ${timer.tick}');
 
       add(const CurrentForwardCEQUpdated());
@@ -60,6 +59,10 @@ class Setting18TabBarBloc
     // 非 255 -> 變成 255
     // 1.2 -> 變成 1.8
     // 1.8 -> 變成 1.2
+
+    emit(state.copyWith(
+      forwardCEQStatus: FormStatus.requestInProgress,
+    ));
 
     Map<DataKey, String> characteristicDataCache =
         _amp18repository.characteristicDataCache;
@@ -79,16 +82,24 @@ class Setting18TabBarBloc
         bool isForwardCEQIndexChanged = previousCEQType != currentCEQType;
 
         emit(state.copyWith(
+          forwardCEQStatus: FormStatus.requestSuccess,
           isForwardCEQIndexChanged: isForwardCEQIndexChanged,
         ));
       }
     }
 
+    // emit(state.copyWith(
+    //   forwardCEQStatus: FormStatus.requestInProgress,
+    // ));
+
     // String currentForwardCEQ = fakeData[_timer!.tick % 4];
 
     // bool isForwardCEQIndexChanged = fakePreviousCEQ != currentForwardCEQ;
+    // print(
+    //     '${fakePreviousCEQ}, ${currentForwardCEQ}, ${isForwardCEQIndexChanged}');
 
     // emit(state.copyWith(
+    //   forwardCEQStatus: FormStatus.requestSuccess,
     //   isForwardCEQIndexChanged: isForwardCEQIndexChanged,
     // ));
 

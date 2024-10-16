@@ -7,6 +7,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_reverse_control/setting18_reverse_control_bloc.dart';
+import 'package:aci_plus_app/setting/bloc/setting18_tabbar/setting18_tabbar_bloc.dart';
 import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
@@ -177,6 +178,11 @@ class Setting18ReverseControlView extends StatelessWidget {
           );
 
           context.read<Setting18ReverseControlBloc>().add(const Initialized());
+
+          // 重新啟動 CEQ 定時偵測
+          context
+              .read<Setting18TabBarBloc>()
+              .add(const CurrentForwardCEQPeriodicUpdateRequested());
         } else if (state
             .resetReverseValuesSubmissionStatus.isSubmissionSuccess) {
           if (ModalRoute.of(context)?.isCurrent != true) {
@@ -184,12 +190,22 @@ class Setting18ReverseControlView extends StatelessWidget {
           }
           showResetToDefaultSuccessDialog(context);
           context.read<Setting18ReverseControlBloc>().add(const Initialized());
+
+          // 重新啟動 CEQ 定時偵測
+          context
+              .read<Setting18TabBarBloc>()
+              .add(const CurrentForwardCEQPeriodicUpdateRequested());
         } else if (state
             .resetReverseValuesSubmissionStatus.isSubmissionFailure) {
           if (ModalRoute.of(context)?.isCurrent != true) {
             Navigator.of(context).pop();
           }
           showResetToDefaultFailureDialog(context);
+
+          // 重新啟動 CEQ 定時偵測
+          context
+              .read<Setting18TabBarBloc>()
+              .add(const CurrentForwardCEQPeriodicUpdateRequested());
         }
       },
       child: Scaffold(
@@ -313,6 +329,9 @@ class _ReverseControlHeader extends StatelessWidget {
                               if (isConfirm != null) {
                                 if (isConfirm) {
                                   if (kDebugMode) {
+                                    // 停止 CEQ 定時偵測
+                                    context.read<Setting18TabBarBloc>().add(
+                                        const CurrentForwardCEQPeriodicUpdateCanceled());
                                     context
                                         .read<Setting18ReverseControlBloc>()
                                         .add(
@@ -322,6 +341,9 @@ class _ReverseControlHeader extends StatelessWidget {
                                         .then((isMatch) {
                                       if (isMatch != null) {
                                         if (isMatch) {
+                                          // 停止 CEQ 定時偵測
+                                          context.read<Setting18TabBarBloc>().add(
+                                              const CurrentForwardCEQPeriodicUpdateCanceled());
                                           context
                                               .read<
                                                   Setting18ReverseControlBloc>()
@@ -969,6 +991,11 @@ class _SettingFloatingActionButton extends StatelessWidget {
             onPressed: enableSubmission
                 ? () async {
                     if (kDebugMode) {
+                      // 停止 CEQ 定時偵測
+                      context
+                          .read<Setting18TabBarBloc>()
+                          .add(const CurrentForwardCEQPeriodicUpdateCanceled());
+
                       context
                           .read<Setting18ReverseControlBloc>()
                           .add(const SettingSubmitted());
@@ -979,6 +1006,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       if (context.mounted) {
                         if (isMatch != null) {
                           if (isMatch) {
+                            // 停止 CEQ 定時偵測
+                            context.read<Setting18TabBarBloc>().add(
+                                const CurrentForwardCEQPeriodicUpdateCanceled());
                             context
                                 .read<Setting18ReverseControlBloc>()
                                 .add(const SettingSubmitted());
@@ -1015,15 +1045,24 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   onPressed: Platform.isWindows
                       ? null
                       : () {
+                          // 停止 CEQ 定時偵測
+                          context.read<Setting18TabBarBloc>().add(
+                              const CurrentForwardCEQPeriodicUpdateCanceled());
+
                           // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
                           Navigator.push(
-                                  context,
-                                  Setting18GraphPage.route(
-                                    graphFilePath: graphFilePath,
-                                  ))
-                              .then((value) => context
-                                  .read<Setting18ReverseControlBloc>()
-                                  .add(const Initialized()));
+                              context,
+                              Setting18GraphPage.route(
+                                graphFilePath: graphFilePath,
+                              )).then((value) {
+                            context
+                                .read<Setting18ReverseControlBloc>()
+                                .add(const Initialized());
+
+                            // 重新啟動 CEQ 定時偵測
+                            context.read<Setting18TabBarBloc>().add(
+                                const CurrentForwardCEQPeriodicUpdateRequested());
+                          });
                         },
                   child: Icon(
                     Icons.settings_input_composite,
