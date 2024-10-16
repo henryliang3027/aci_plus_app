@@ -8,10 +8,12 @@ abstract class Setting18ThresholdEvent extends Equatable {
 }
 
 class Initialized extends Setting18ThresholdEvent {
-  const Initialized();
+  const Initialized({this.useCache = true});
+
+  final bool useCache;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [useCache];
 }
 
 class TemperatureAlarmChanged extends Setting18ThresholdEvent {

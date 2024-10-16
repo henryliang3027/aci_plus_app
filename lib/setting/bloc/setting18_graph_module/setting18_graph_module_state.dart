@@ -3,6 +3,7 @@ part of 'setting18_graph_module_bloc.dart';
 class Setting18GraphModuleState extends Equatable {
   const Setting18GraphModuleState({
     this.submissionStatus = SubmissionStatus.none,
+    this.forwardCEQStatus = FormStatus.none,
     this.dsVVA1 = const RangeFloatPointInput.pure(
       minValue: 0,
       maxValue: 30,
@@ -66,14 +67,16 @@ class Setting18GraphModuleState extends Equatable {
     this.alcMode = '',
     this.editMode = true,
     this.enableSubmission = false,
-    this.isInitialize = true,
+    this.isInitialize = false,
     this.isInitialPilotFrequencyLevelValues = false,
     this.initialValues = const {},
     this.tappedSet = const {},
     this.settingResult = const [],
+    this.isForwardCEQIndexChanged = false,
   });
 
   final SubmissionStatus submissionStatus;
+  final FormStatus forwardCEQStatus;
   final RangeFloatPointInput dsVVA1;
   final RangeFloatPointInput dsVVA4;
   final RangeFloatPointInput dsVVA5;
@@ -111,9 +114,11 @@ class Setting18GraphModuleState extends Equatable {
 
   final Set<DataKey> tappedSet;
   final List<String> settingResult;
+  final bool isForwardCEQIndexChanged;
 
   Setting18GraphModuleState copyWith({
     SubmissionStatus? submissionStatus,
+    FormStatus? forwardCEQStatus,
     RangeFloatPointInput? dsVVA1,
     RangeFloatPointInput? dsVVA4,
     RangeFloatPointInput? dsVVA5,
@@ -149,9 +154,11 @@ class Setting18GraphModuleState extends Equatable {
     Map<DataKey, String>? initialValues,
     Set<DataKey>? tappedSet,
     List<String>? settingResult,
+    bool? isForwardCEQIndexChanged,
   }) {
     return Setting18GraphModuleState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
+      forwardCEQStatus: forwardCEQStatus ?? this.forwardCEQStatus,
       dsVVA1: dsVVA1 ?? this.dsVVA1,
       dsVVA4: dsVVA4 ?? this.dsVVA4,
       dsVVA5: dsVVA5 ?? this.dsVVA5,
@@ -197,12 +204,15 @@ class Setting18GraphModuleState extends Equatable {
       initialValues: initialValues ?? this.initialValues,
       tappedSet: tappedSet ?? this.tappedSet,
       settingResult: settingResult ?? this.settingResult,
+      isForwardCEQIndexChanged:
+          isForwardCEQIndexChanged ?? this.isForwardCEQIndexChanged,
     );
   }
 
   @override
   List<Object> get props => [
         submissionStatus,
+        forwardCEQStatus,
         dsVVA1,
         dsVVA4,
         dsVVA5,
@@ -238,5 +248,6 @@ class Setting18GraphModuleState extends Equatable {
         initialValues,
         tappedSet,
         settingResult,
+        isForwardCEQIndexChanged,
       ];
 }

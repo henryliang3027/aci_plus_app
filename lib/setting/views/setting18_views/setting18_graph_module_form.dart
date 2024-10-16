@@ -261,61 +261,108 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       );
     }
 
-    return BlocListener<Setting18GraphModuleBloc, Setting18GraphModuleState>(
-      listener: (context, state) async {
-        if (state.submissionStatus.isSubmissionInProgress) {
-          await showInProgressDialog(context);
-        } else if (state.submissionStatus.isSubmissionSuccess) {
-          if (ModalRoute.of(context)?.isCurrent != true) {
-            Navigator.of(context).pop();
-          }
-          List<Widget> rows = get1P8GSettingMessageRows(
-            context: context,
-            partId: partId,
-            settingResultList: state.settingResult,
-          );
-          showResultDialog(
-            context: context,
-            messageRows: rows,
-          );
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+          listenWhen: (previous, current) =>
+              previous.submissionStatus != current.submissionStatus,
+          listener: (context, state) async {
+            if (state.submissionStatus.isSubmissionInProgress) {
+              await showInProgressDialog(context);
+            } else if (state.submissionStatus.isSubmissionSuccess) {
+              if (ModalRoute.of(context)?.isCurrent != true) {
+                Navigator.of(context).pop();
+              }
+              List<Widget> rows = get1P8GSettingMessageRows(
+                context: context,
+                partId: partId,
+                settingResultList: state.settingResult,
+              );
+              showResultDialog(
+                context: context,
+                messageRows: rows,
+              );
 
-          context.read<Setting18GraphModuleBloc>().add(const Initialized());
-        }
+              context.read<Setting18GraphModuleBloc>().add(const Initialized());
 
-        if (state.isInitialize) {
-          firstChannelLoadingFrequencyTextEditingController.text =
-              state.firstChannelLoadingFrequency.value;
-          firstChannelLoadingLevelTextEditingController.text =
-              state.firstChannelLoadingLevel.value;
-          lastChannelLoadingFrequencyTextEditingController.text =
-              state.lastChannelLoadingFrequency.value;
-          lastChannelLoadingLevelTextEditingController.text =
-              state.lastChannelLoadingLevel.value;
-          pilotFrequency1TextEditingController.text =
-              state.pilotFrequency1.value;
-          pilotFrequency2TextEditingController.text =
-              state.pilotFrequency2.value;
-          manualModePilot1RFOutputPowerTextEditingController.text =
-              state.manualModePilot1RFOutputPower;
-          manualModePilot2RFOutputPowerTextEditingController.text =
-              state.manualModePilot2RFOutputPower;
-        }
+              // 重新啟動 CEQ 定時偵測
+              context
+                  .read<Setting18GraphModuleBloc>()
+                  .add(const CurrentForwardCEQPeriodicUpdateRequested());
+            }
+          },
+        ),
+        BlocListener<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+          listenWhen: (previous, current) =>
+              previous.isInitialize != current.isInitialize,
+          listener: (context, state) {
+            if (state.isInitialize) {
+              firstChannelLoadingFrequencyTextEditingController.text =
+                  state.firstChannelLoadingFrequency.value;
+              firstChannelLoadingLevelTextEditingController.text =
+                  state.firstChannelLoadingLevel.value;
+              lastChannelLoadingFrequencyTextEditingController.text =
+                  state.lastChannelLoadingFrequency.value;
+              lastChannelLoadingLevelTextEditingController.text =
+                  state.lastChannelLoadingLevel.value;
+              pilotFrequency1TextEditingController.text =
+                  state.pilotFrequency1.value;
+              pilotFrequency2TextEditingController.text =
+                  state.pilotFrequency2.value;
+              manualModePilot1RFOutputPowerTextEditingController.text =
+                  state.manualModePilot1RFOutputPower;
+              manualModePilot2RFOutputPowerTextEditingController.text =
+                  state.manualModePilot2RFOutputPower;
+            }
+          },
+        ),
+        BlocListener<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+          listenWhen: (previous, current) =>
+              previous.isInitialPilotFrequencyLevelValues !=
+              current.isInitialPilotFrequencyLevelValues,
+          listener: (context, state) {
+            if (state.isInitialPilotFrequencyLevelValues) {
+              firstChannelLoadingFrequencyTextEditingController.text =
+                  state.firstChannelLoadingFrequency.value;
+              firstChannelLoadingLevelTextEditingController.text =
+                  state.firstChannelLoadingLevel.value;
+              lastChannelLoadingFrequencyTextEditingController.text =
+                  state.lastChannelLoadingFrequency.value;
+              lastChannelLoadingLevelTextEditingController.text =
+                  state.lastChannelLoadingLevel.value;
+              pilotFrequency1TextEditingController.text =
+                  state.pilotFrequency1.value;
+              pilotFrequency2TextEditingController.text =
+                  state.pilotFrequency2.value;
+            }
+          },
+        ),
+        BlocListener<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+          listenWhen: (previous, current) =>
+              previous.forwardCEQStatus != current.forwardCEQStatus,
+          listener: (context, state) {
+            // 向 device 取得 CEQ index 後, forwardCEQStatus 就會變成 isRequestSuccess,
+            // 再判斷 isForwardCEQIndexChanged 是否為 true
+            // 接者跳出 Dialog 前判斷 Dialog 是否還在畫面中, 還在畫面中就不重複跳, 否則會一直疊加到畫面上
+            if (state.forwardCEQStatus.isRequestSuccess) {
+              if (state.isForwardCEQIndexChanged) {
+                if (ModalRoute.of(context)?.isCurrent == true) {
+                  showCurrentForwardCEQChangedDialog(context).then((_) {
+                    context
+                        .read<Setting18GraphModuleBloc>()
+                        .add(const Initialized(useCache: false));
 
-        if (state.isInitialPilotFrequencyLevelValues) {
-          firstChannelLoadingFrequencyTextEditingController.text =
-              state.firstChannelLoadingFrequency.value;
-          firstChannelLoadingLevelTextEditingController.text =
-              state.firstChannelLoadingLevel.value;
-          lastChannelLoadingFrequencyTextEditingController.text =
-              state.lastChannelLoadingFrequency.value;
-          lastChannelLoadingLevelTextEditingController.text =
-              state.lastChannelLoadingLevel.value;
-          pilotFrequency1TextEditingController.text =
-              state.pilotFrequency1.value;
-          pilotFrequency2TextEditingController.text =
-              state.pilotFrequency2.value;
-        }
-      },
+                    // 重新啟動 CEQ 定時偵測
+                    context
+                        .read<Setting18GraphModuleBloc>()
+                        .add(const CurrentForwardCEQPeriodicUpdateRequested());
+                  });
+                }
+              }
+            }
+          },
+        )
+      ],
       child: Container(
         decoration: BoxDecoration(
           color: getBackgroundColor(),
@@ -1769,6 +1816,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
             onPressed: enableSubmission && editable
                 ? () async {
                     if (kDebugMode) {
+                      // 停止 CEQ 定時偵測再進行設定
+                      context
+                          .read<Setting18GraphModuleBloc>()
+                          .add(const CurrentForwardCEQPeriodicUpdateCanceled());
                       context
                           .read<Setting18GraphModuleBloc>()
                           .add(const SettingSubmitted());
@@ -1779,6 +1830,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       if (context.mounted) {
                         if (isMatch != null) {
                           if (isMatch) {
+                            // 停止 CEQ 定時偵測再進行設定
+                            context.read<Setting18GraphModuleBloc>().add(
+                                const CurrentForwardCEQPeriodicUpdateCanceled());
                             context
                                 .read<Setting18GraphModuleBloc>()
                                 .add(const SettingSubmitted());

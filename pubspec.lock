@@ -172,9 +172,11 @@ packages:
   camera_checker:
     dependency: "direct main"
     description:
-      path: "C:\\Users\\henry.liang\\projects\\camera_checker"
-      relative: false
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: "9a9b5aa33889297f01315a921b4f28b06e841112"
+      url: "https://github.com/henryliang3027/camera_checker.git"
+    source: git
     version: "0.0.1"
   characters:
     dependency: transitive

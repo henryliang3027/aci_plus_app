@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:aci_plus_app/core/control_item_value.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -52,17 +54,28 @@ class Setting18GraphModuleBloc
     on<PilotFrequency2Changed>(_onPilotFrequency2Changed);
 
     on<SettingSubmitted>(_onSettingSubmitted);
+    on<CurrentForwardCEQUpdated>(_onCurrentForwardCEQUpdated);
+    on<CurrentForwardCEQPeriodicUpdateRequested>(
+        _onCurrentForwardCEQPeriodicUpdateRequested);
+    on<CurrentForwardCEQPeriodicUpdateCanceled>(
+        _onCurrentForwardCEQPeriodicUpdateCanceled);
 
     add(const Initialized());
+    add(const CurrentForwardCEQPeriodicUpdateRequested());
   }
 
   final Amp18Repository _amp18Repository;
   final bool _editable;
+  Timer? _timer;
 
-  void _onInitialized(
+  Future<void> _onInitialized(
     Initialized event,
     Emitter<Setting18GraphModuleState> emit,
-  ) {
+  ) async {
+    if (!event.useCache) {
+      await _amp18Repository.updateSettingCharacteristics();
+    }
+
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
 
@@ -1558,5 +1571,81 @@ class Setting18GraphModuleBloc
       tappedSet: const {},
       initialValues: _amp18Repository.characteristicDataCache,
     ));
+  }
+
+  void _onCurrentForwardCEQPeriodicUpdateRequested(
+    CurrentForwardCEQPeriodicUpdateRequested event,
+    Emitter<Setting18GraphModuleState> emit,
+  ) {
+    if (_timer != null) {
+      _timer!.cancel();
+    }
+
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      print('CurrentForwardCEQUpdate timer: ${timer.tick}');
+
+      add(const CurrentForwardCEQUpdated());
+    });
+
+    print('CurrentForwardCEQUpdate started');
+  }
+
+  Future<void> _onCurrentForwardCEQUpdated(
+    CurrentForwardCEQUpdated event,
+    Emitter<Setting18GraphModuleState> emit,
+  ) async {
+    // 一開始 255 -> 變成非 255
+    // 非 255 -> 變成 255
+    // 1.2 -> 變成 1.8
+    // 1.8 -> 變成 1.2
+
+    emit(state.copyWith(
+      forwardCEQStatus: FormStatus.requestInProgress,
+    ));
+
+    Map<DataKey, String> characteristicDataCache =
+        _amp18Repository.characteristicDataCache;
+
+    List<dynamic> resultOf1p8G2 = await _amp18Repository.requestCommand1p8G2();
+
+    if (resultOf1p8G2[0]) {
+      Map<DataKey, String> characteristicData = resultOf1p8G2[1];
+
+      String previousCEQType = getCEQTypeFromForwardCEQIndex(
+          characteristicDataCache[DataKey.currentForwardCEQIndex] ?? '255');
+
+      String currentCEQType = getCEQTypeFromForwardCEQIndex(
+          characteristicData[DataKey.currentForwardCEQIndex] ?? '255');
+
+      if (currentCEQType != 'N/A') {
+        bool isForwardCEQIndexChanged = previousCEQType != currentCEQType;
+
+        emit(state.copyWith(
+          forwardCEQStatus: FormStatus.requestSuccess,
+          isForwardCEQIndexChanged: isForwardCEQIndexChanged,
+        ));
+      }
+    }
+  }
+
+  Future<void> _onCurrentForwardCEQPeriodicUpdateCanceled(
+    CurrentForwardCEQPeriodicUpdateCanceled event,
+    Emitter<Setting18GraphModuleState> emit,
+  ) async {
+    if (_timer != null) {
+      _timer!.cancel();
+      print('CurrentForwardCEQUpdate timer is canceled');
+    }
+  }
+
+  @override
+  Future<void> close() {
+    if (_timer != null) {
+      _timer!.cancel();
+
+      print('CurrentForwardCEQUpdate timer is canceled due to bloc closing.');
+    }
+
+    return super.close();
   }
 }

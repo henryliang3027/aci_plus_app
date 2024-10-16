@@ -8,10 +8,12 @@ sealed class Setting18ForwardControlEvent extends Equatable {
 }
 
 class Initialized extends Setting18ForwardControlEvent {
-  const Initialized();
+  const Initialized({this.useCache = true});
+
+  final bool useCache;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [useCache];
 }
 
 class ResetForwardValuesRequested extends Setting18ForwardControlEvent {

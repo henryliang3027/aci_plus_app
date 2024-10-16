@@ -7,6 +7,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
+import 'package:aci_plus_app/setting/bloc/setting18_tabbar/setting18_tabbar_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_threshold/setting18_threshold_bloc.dart';
 import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
@@ -288,6 +289,11 @@ class Setting18ThresholdView extends StatelessWidget {
           );
 
           context.read<Setting18ThresholdBloc>().add(const Initialized());
+
+          // 重新啟動 CEQ 定時偵測
+          context
+              .read<Setting18TabBarBloc>()
+              .add(const CurrentForwardCEQPeriodicUpdateRequested());
         }
 
         if (state.isInitialize) {
@@ -876,6 +882,11 @@ class _SettingFloatingActionButton extends StatelessWidget {
             onPressed: enableSubmission
                 ? () async {
                     if (kDebugMode) {
+                      // 停止 CEQ 定時偵測
+                      context
+                          .read<Setting18TabBarBloc>()
+                          .add(const CurrentForwardCEQPeriodicUpdateCanceled());
+
                       context
                           .read<Setting18ThresholdBloc>()
                           .add(const SettingSubmitted());
@@ -886,6 +897,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       if (context.mounted) {
                         if (isMatch != null) {
                           if (isMatch) {
+                            // 停止 CEQ 定時偵測
+                            context.read<Setting18TabBarBloc>().add(
+                                const CurrentForwardCEQPeriodicUpdateCanceled());
                             context
                                 .read<Setting18ThresholdBloc>()
                                 .add(const SettingSubmitted());
@@ -922,15 +936,23 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   onPressed: Platform.isWindows
                       ? null
                       : () {
+                          // 停止 CEQ 定時偵測
+                          context.read<Setting18TabBarBloc>().add(
+                              const CurrentForwardCEQPeriodicUpdateCanceled());
                           // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
                           Navigator.push(
-                                  context,
-                                  Setting18GraphPage.route(
-                                    graphFilePath: graphFilePath,
-                                  ))
-                              .then((value) => context
-                                  .read<Setting18ThresholdBloc>()
-                                  .add(const Initialized()));
+                              context,
+                              Setting18GraphPage.route(
+                                graphFilePath: graphFilePath,
+                              )).then((value) {
+                            context
+                                .read<Setting18ThresholdBloc>()
+                                .add(const Initialized());
+
+                            // 重新啟動 CEQ 定時偵測
+                            context.read<Setting18TabBarBloc>().add(
+                                const CurrentForwardCEQPeriodicUpdateRequested());
+                          });
                         },
 
                   child: Icon(

@@ -8,10 +8,12 @@ abstract class Setting18GraphModuleEvent extends Equatable {
 }
 
 class Initialized extends Setting18GraphModuleEvent {
-  const Initialized();
+  const Initialized({this.useCache = true});
+
+  final bool useCache;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [useCache];
 }
 
 class DSVVA1Changed extends Setting18GraphModuleEvent {
@@ -259,6 +261,29 @@ class ALCModeChanged extends Setting18GraphModuleEvent {
 
 class SettingSubmitted extends Setting18GraphModuleEvent {
   const SettingSubmitted();
+
+  @override
+  List<Object> get props => [];
+}
+
+class CurrentForwardCEQUpdated extends Setting18GraphModuleEvent {
+  const CurrentForwardCEQUpdated();
+
+  @override
+  List<Object> get props => [];
+}
+
+class CurrentForwardCEQPeriodicUpdateRequested
+    extends Setting18GraphModuleEvent {
+  const CurrentForwardCEQPeriodicUpdateRequested();
+
+  @override
+  List<Object> get props => [];
+}
+
+class CurrentForwardCEQPeriodicUpdateCanceled
+    extends Setting18GraphModuleEvent {
+  const CurrentForwardCEQPeriodicUpdateCanceled();
 
   @override
   List<Object> get props => [];

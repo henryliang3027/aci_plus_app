@@ -345,6 +345,11 @@ class Setting18ConfigureView extends StatelessWidget {
             messageRows: rows,
           );
           context.read<Setting18ConfigureBloc>().add(const Initialized());
+
+          // 重新啟動 CEQ 定時偵測
+          context
+              .read<Setting18TabBarBloc>()
+              .add(const CurrentForwardCEQPeriodicUpdateRequested());
         } else if (state.gpsStatus.isRequestFailure) {
           showFailureDialog(
             getMessageLocalization(
@@ -1275,6 +1280,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
             onPressed: enableSubmission
                 ? () async {
                     if (kDebugMode) {
+                      // 停止 CEQ 定時偵測
+                      context
+                          .read<Setting18TabBarBloc>()
+                          .add(const CurrentForwardCEQPeriodicUpdateCanceled());
                       context
                           .read<Setting18ConfigureBloc>()
                           .add(const SettingSubmitted());
@@ -1285,6 +1294,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       if (context.mounted) {
                         if (isMatch != null) {
                           if (isMatch) {
+                            // 停止 CEQ 定時偵測
+                            context.read<Setting18TabBarBloc>().add(
+                                const CurrentForwardCEQPeriodicUpdateCanceled());
                             context
                                 .read<Setting18ConfigureBloc>()
                                 .add(const SettingSubmitted());
@@ -1321,15 +1333,24 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   onPressed: Platform.isWindows
                       ? null
                       : () {
+                          // 停止 CEQ 定時偵測
+                          context.read<Setting18TabBarBloc>().add(
+                              const CurrentForwardCEQPeriodicUpdateCanceled());
+
                           // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
                           Navigator.push(
-                                  context,
-                                  Setting18GraphPage.route(
-                                    graphFilePath: graphFilePath,
-                                  ))
-                              .then((value) => context
-                                  .read<Setting18ConfigureBloc>()
-                                  .add(const Initialized()));
+                              context,
+                              Setting18GraphPage.route(
+                                graphFilePath: graphFilePath,
+                              )).then((value) {
+                            context
+                                .read<Setting18ConfigureBloc>()
+                                .add(const Initialized());
+
+                            // 重新啟動 CEQ 定時偵測
+                            context.read<Setting18TabBarBloc>().add(
+                                const CurrentForwardCEQPeriodicUpdateRequested());
+                          });
                         },
                   child: Icon(
                     Icons.settings_input_composite,
