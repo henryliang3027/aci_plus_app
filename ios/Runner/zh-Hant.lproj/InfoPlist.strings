@@ -11,3 +11,4 @@ NSLocationAlwaysAndWhenInUseUsageDescription = "ACI+ App 需要您的允許才�
 NSLocationAlwaysUsageDescription = "ACI+ App 需要您的允許才能使用定位";
 NSLocationWhenInUseUsageDescription = "ACI+ App 需要您的允許才能使用定位";
 NSCameraUsageDescription = "ACI+ App 需要您的允許才能使用相機掃描 QR 碼";
+NSPhotoLibraryUsageDescription = "ACI+ App 需要您的允許才能使用相簿";

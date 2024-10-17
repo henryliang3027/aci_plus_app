@@ -11,3 +11,4 @@ NSLocationAlwaysAndWhenInUseUsageDescription = "L'application ACI+ demande votre
 NSLocationAlwaysUsageDescription = "L'application ACI+ demande votre consentement pour utiliser la localisation";
 NSLocationWhenInUseUsageDescription = "L'application ACI+ demande votre consentement pour utiliser la localisation";
 NSCameraUsageDescription = "L'application ACI+ souhaite accéder à la caméra pour scanner les codes QR";
+NSPhotoLibraryUsageDescription = "L'application ACI+ souhaite votre consentement pour utiliser des photos.";
