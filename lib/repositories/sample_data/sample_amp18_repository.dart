@@ -8,6 +8,7 @@ import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
+import 'package:aci_plus_app/repositories/sample_data/amp18_repository_data.dart';
 import 'package:aci_plus_app/repositories/shared/transmit_delay.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:speed_chart/speed_chart.dart';
@@ -259,100 +260,60 @@ class Amp18Repository {
 
     print('get data from request command 1p8GForLogChunk $commandIndex');
 
+    List<Log1p8G> log1p8Gs = [];
+    for (List<String> strLog in sampleLog1p8GData) {
+      DateTime dateTime = DateTime.parse(strLog[0]);
+      double temperature = double.parse(strLog[1]);
+      double voltage = double.parse(strLog[2]);
+      double rfOutputLowPilot = double.parse(strLog[3]);
+      double rfOutputHighPilot = double.parse(strLog[4]);
+      int voltageRipple = int.parse(strLog[5]);
+      Log1p8G log1p8g = Log1p8G(
+        dateTime: dateTime,
+        temperature: temperature,
+        voltage: voltage,
+        rfOutputLowPilot: rfOutputLowPilot,
+        rfOutputHighPilot: rfOutputHighPilot,
+        voltageRipple: voltageRipple,
+      );
+
+      log1p8Gs.add(log1p8g);
+    }
+
     if (commandIndex == 184) {
-      try {
-        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-          commandIndex: commandIndex,
-          value: _amp18Parser.command18Collection[commandIndex - 180],
-        );
-
-        List<Log1p8G> log1p8Gs = _amp18Parser.parse1P8GLog(rawData);
-        A1P8GLogStatistic a1p8gLogStatistic =
-            _amp18Parser.getA1p8GLogStatistics(log1p8Gs);
-        bool hasNextChunk = log1p8Gs.isNotEmpty ? true : false;
-
-        print('---Log1p8G---');
-        for (Log1p8G log1p8G in log1p8Gs) {
-          print(
-              '${log1p8G.dateTime}, ${log1p8G.temperature}, ${log1p8G.voltage}, ${log1p8G.rfOutputLowPilot}, ${log1p8G.rfOutputHighPilot}, ${log1p8G.voltageRipple}');
+      return [
+        true,
+        true,
+        log1p8Gs,
+        <DataKey, String>{
+          DataKey.historicalMinTemperatureC: '27.0',
+          DataKey.historicalMaxTemperatureC: '33.4',
+          DataKey.historicalMinTemperatureF: '80.6',
+          DataKey.historicalMaxTemperatureF: '92.1',
+          DataKey.historicalMinVoltage: '24.3',
+          DataKey.historicalMaxVoltage: '24.3',
+          DataKey.historicalMinVoltageRipple: '32',
+          DataKey.historicalMaxVoltageRipple: '48',
         }
-        print('---Log1p8G---');
-
-        print(
-            'historicalMinTemperatureC: ${a1p8gLogStatistic.historicalMinTemperatureC}');
-
-        print(
-            'historicalMaxTemperatureC: ${a1p8gLogStatistic.historicalMaxTemperatureC}');
-
-        print(
-            'historicalMinTemperatureF: ${a1p8gLogStatistic.historicalMinTemperatureF}');
-        print(
-            'historicalMaxTemperatureF: ${a1p8gLogStatistic.historicalMaxTemperatureF}');
-        print(
-            'historicalMinVoltage: ${a1p8gLogStatistic.historicalMinVoltage}');
-        print(
-            'historicalMaxVoltage: ${a1p8gLogStatistic.historicalMaxVoltage}');
-        print(
-            'historicalMinVoltageRipple: ${a1p8gLogStatistic.historicalMinVoltageRipple}');
-        print(
-            'historicalMaxVoltageRipple: ${a1p8gLogStatistic.historicalMaxVoltageRipple}');
-
-        return [
-          true,
-          hasNextChunk,
-          log1p8Gs,
-          <DataKey, String>{
-            DataKey.historicalMinTemperatureC:
-                a1p8gLogStatistic.historicalMinTemperatureC,
-            DataKey.historicalMaxTemperatureC:
-                a1p8gLogStatistic.historicalMaxTemperatureC,
-            DataKey.historicalMinTemperatureF:
-                a1p8gLogStatistic.historicalMinTemperatureF,
-            DataKey.historicalMaxTemperatureF:
-                a1p8gLogStatistic.historicalMaxTemperatureF,
-            DataKey.historicalMinVoltage:
-                a1p8gLogStatistic.historicalMinVoltage,
-            DataKey.historicalMaxVoltage:
-                a1p8gLogStatistic.historicalMaxVoltage,
-            DataKey.historicalMinVoltageRipple:
-                a1p8gLogStatistic.historicalMinVoltageRipple,
-            DataKey.historicalMaxVoltageRipple:
-                a1p8gLogStatistic.historicalMaxVoltageRipple,
-          }
-        ];
-      } catch (e) {
-        return [
-          false,
-          false, // hasNextChunk
-          e.toString(),
-        ];
-      }
+      ];
     } else {
-      try {
-        List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-          commandIndex: commandIndex,
-          value: _amp18Parser.command18Collection[commandIndex - 180],
-          // timeout: Duration(minutes: 1),
-        );
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _amp18Parser.command18Collection[commandIndex - 180],
+        // timeout: Duration(minutes: 1),
+      );
 
-        List<Log1p8G> log1p8Gs = _amp18Parser.parse1P8GLog(rawData);
+      List<Log1p8G> log1p8Gs = _amp18Parser.parse1P8GLog(rawData);
 
-        // 如果 log1p8Gs 不為空, 而且不是最後一個 command (index = 193), 就視為還有更多的 log
-        bool hasNextChunk =
-            log1p8Gs.isNotEmpty && commandIndex != 193 ? true : false;
+      // 如果 log1p8Gs 不為空, 而且不是最後一個 command (index = 193), 就視為還有更多的 log
+      bool hasNextChunk =
+          log1p8Gs.isNotEmpty && commandIndex != 193 ? true : false;
 
-        return [
-          true,
-          hasNextChunk,
-          log1p8Gs,
-        ];
-      } catch (e) {
-        return [
-          false,
-          false, // no next chunk
-          e.toString(),
-        ];
-      }
+      return [
+        true,
+        hasNextChunk,
+        log1p8Gs,
+      ];
     }
   }
 

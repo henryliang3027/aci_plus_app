@@ -448,7 +448,7 @@ class Amp18Repository {
         print('---Log1p8G---');
         for (Log1p8G log1p8G in log1p8Gs) {
           print(
-              '${log1p8G.dateTime}, ${log1p8G.temperature}, ${log1p8G.voltage}, ${log1p8G.rfOutputLowPilot}, ${log1p8G.rfOutputHighPilot}, ${log1p8G.voltageRipple}');
+              '[\'${log1p8G.dateTime}\', \'${log1p8G.temperature}\', \'${log1p8G.voltage}\', \'${log1p8G.rfOutputLowPilot}\', \'${log1p8G.rfOutputHighPilot}\', \'${log1p8G.voltageRipple}\'],');
         }
         print('---Log1p8G---');
 
@@ -546,7 +546,7 @@ class Amp18Repository {
       print('---Event1p8G---');
       for (Event1p8G event1p8Gs in event1p8Gs) {
         print(
-            '${event1p8Gs.dateTime}, ${event1p8Gs.code}, ${event1p8Gs.parameter}');
+            '[\'${event1p8Gs.dateTime}\', \'${event1p8Gs.code}\', \'${event1p8Gs.parameter}\']');
       }
       print('---Event1p8G---');
 
