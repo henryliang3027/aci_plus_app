@@ -12,9 +12,7 @@ class Setting18DongleBloc
     required Amp18Repository amp18Repository,
   })  : _amp18Repository = amp18Repository,
         super(const Setting18DongleState()) {
-    on<Setting18DongleEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<Setting18DongleEvent>((event, emit) {});
   }
 
   final Amp18Repository _amp18Repository;
