@@ -14,6 +14,11 @@ class CrossPageFlag {
   static bool isDisconnectOnFirmwareUpdate = false;
 }
 
+// 用在 setting 頁面的列表和圖形化介面, 判斷 EQ 模組是否有更換
+class ForwardCEQFlag {
+  static String forwardCEQType = 'N/A';
+}
+
 class RegexUtil {
   // (?:\{[^{}]*\}) matches one instance of the map pattern.
   // \{ matches the opening curly brace {.

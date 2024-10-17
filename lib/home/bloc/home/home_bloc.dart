@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
@@ -659,6 +660,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       resultOf1p8G2 = await _amp18Repository.requestCommand1p8G2();
 
       if (resultOf1p8G2[0]) {
+        ForwardCEQFlag.forwardCEQType = getCEQTypeFromForwardCEQIndex(
+            resultOf1p8G2[1][DataKey.currentForwardCEQIndex] ?? '255');
         newCharacteristicData.addAll(resultOf1p8G2[1]);
         emit(state.copyWith(
           characteristicData: newCharacteristicData,

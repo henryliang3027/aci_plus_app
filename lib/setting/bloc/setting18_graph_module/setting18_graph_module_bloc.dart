@@ -1594,36 +1594,52 @@ class Setting18GraphModuleBloc
     CurrentForwardCEQUpdated event,
     Emitter<Setting18GraphModuleState> emit,
   ) async {
-    // 一開始 255 -> 變成非 255
-    // 非 255 -> 變成 255
-    // 1.2 -> 變成 1.8
-    // 1.8 -> 變成 1.2
+    // 一開始插著 1.8 模組, app 在其他頁面, 換成 1.2, 切到 setting 頁面
+    // forwardCEQType 狀態  1.8 -> 1.2
+
+    // 一開始插著 1.2 模組, app 在其他頁面, 換成 1.8, 切到 setting 頁面
+    // forwardCEQType 狀態  1.2 -> 1.8
+
+    // 一開始插著 1.2 or 1.8 模組, app 在其他頁面, 不插模組, 切到 setting 頁面
+    // forwardCEQType 狀態  1.2 or 1.8 不變
+
+    // 一開始沒有插模組, app 在其他頁面, 換成 1.8, 切到 setting 頁面
+    // forwardCEQType 狀態  N/A -> 1.8
+
+    // 一開始沒有插模組, app 在其他頁面, 換成 1.2, 切到 setting 頁面
+    // forwardCEQType 狀態  N/A -> 1.2
+
+    // app 在 setting 頁面不換頁, 一開始插著 1.8 模組,  換成 1.2,
+    // forwardCEQType 狀態  1.8 -> 1.2 (換的過程中沒有插的狀態是 N/A, 就不改變)
+
+    // app 在 setting 頁面不換頁, 一開始插著 1.2 模組,  換成 1.8,
+    // forwardCEQType 狀態  1.2 -> 1.8 (換的過程中沒有插的狀態是 N/A, 就不改變)
 
     emit(state.copyWith(
       forwardCEQStatus: FormStatus.requestInProgress,
     ));
-
-    Map<DataKey, String> characteristicDataCache =
-        _amp18Repository.characteristicDataCache;
 
     List<dynamic> resultOf1p8G2 = await _amp18Repository.requestCommand1p8G2();
 
     if (resultOf1p8G2[0]) {
       Map<DataKey, String> characteristicData = resultOf1p8G2[1];
 
-      String previousCEQType = getCEQTypeFromForwardCEQIndex(
-          characteristicDataCache[DataKey.currentForwardCEQIndex] ?? '255');
-
       String currentCEQType = getCEQTypeFromForwardCEQIndex(
           characteristicData[DataKey.currentForwardCEQIndex] ?? '255');
 
       if (currentCEQType != 'N/A') {
-        bool isForwardCEQIndexChanged = previousCEQType != currentCEQType;
+        bool isForwardCEQIndexChanged =
+            ForwardCEQFlag.forwardCEQType != currentCEQType;
 
-        emit(state.copyWith(
-          forwardCEQStatus: FormStatus.requestSuccess,
-          isForwardCEQIndexChanged: isForwardCEQIndexChanged,
-        ));
+        if (isForwardCEQIndexChanged) {
+          ForwardCEQFlag.forwardCEQType = currentCEQType;
+
+          emit(state.copyWith(
+            forwardCEQStatus: FormStatus.requestSuccess,
+            isInitialize: false,
+            isForwardCEQIndexChanged: isForwardCEQIndexChanged,
+          ));
+        }
       }
     }
   }
