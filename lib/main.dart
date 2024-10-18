@@ -4,6 +4,8 @@ import 'package:aci_plus_app/app.dart';
 import 'package:aci_plus_app/core/shared_preference_key.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
+import 'package:aci_plus_app/repositories/mock/sample_aci_device_repository.dart';
+import 'package:aci_plus_app/repositories/mock/sample_amp18_repository.dart';
 import 'package:aci_plus_app/repositories/node_config.dart';
 import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:aci_plus_app/repositories/config_repository.dart';
@@ -101,15 +103,31 @@ Future<void> main() async {
 
   await initBox();
 
-  runApp(App(
-    savedAdaptiveThemeMode: savedAdaptiveThemeMode,
-    aciDeviceRepository: ACIDeviceRepository(),
-    dsimRepository: DsimRepository(),
-    amp18Repository: Amp18Repository(),
-    amp18CCorNodeRepository: Amp18CCorNodeRepository(),
-    unitRepository: UnitRepository(),
-    gpsRepository: GPSRepository(),
-    configRepository: ConfigRepository(),
-    firmwareRepository: FirmwareRepository(),
-  ));
+  int mock = 0;
+
+  if (mock == 1) {
+    runApp(App(
+      savedAdaptiveThemeMode: savedAdaptiveThemeMode,
+      aciDeviceRepository: SampleACIDeviceRepository(),
+      dsimRepository: DsimRepository(),
+      amp18Repository: SampleAmp18Repository(),
+      amp18CCorNodeRepository: Amp18CCorNodeRepository(),
+      unitRepository: UnitRepository(),
+      gpsRepository: GPSRepository(),
+      configRepository: ConfigRepository(),
+      firmwareRepository: FirmwareRepository(),
+    ));
+  } else {
+    runApp(App(
+      savedAdaptiveThemeMode: savedAdaptiveThemeMode,
+      aciDeviceRepository: ACIDeviceRepository(),
+      dsimRepository: DsimRepository(),
+      amp18Repository: Amp18Repository(),
+      amp18CCorNodeRepository: Amp18CCorNodeRepository(),
+      unitRepository: UnitRepository(),
+      gpsRepository: GPSRepository(),
+      configRepository: ConfigRepository(),
+      firmwareRepository: FirmwareRepository(),
+    ));
+  }
 }

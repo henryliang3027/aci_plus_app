@@ -96,7 +96,10 @@ class _PeripheralListView extends StatelessWidget {
           if (state.peripherals.length == 1) {
             // 用 ModalRoute 檢查目前頁面是否還開著, 如果開著才 pop
             if (ModalRoute.of(context)?.isCurrent == true) {
-              Navigator.pop(context, state.peripherals.first);
+              context
+                  .read<HomeBloc>()
+                  .add(DeviceSelected(state.peripherals.first));
+              Navigator.pop(context);
             }
           }
         }
@@ -125,7 +128,10 @@ class _PeripheralListView extends StatelessWidget {
                           ),
                         ),
                         onTap: () {
-                          Navigator.pop(context, peripheral);
+                          context
+                              .read<HomeBloc>()
+                              .add(DeviceSelected(peripheral));
+                          Navigator.pop(context);
                         },
                         trailing: Icon(
                           Icons.bluetooth,
@@ -157,6 +163,7 @@ class _DoneButton extends StatelessWidget {
         children: [
           ElevatedButton(
             onPressed: () {
+              context.read<HomeBloc>().add(const DeviceSelectionCanceled());
               Navigator.of(context).pop();
             },
             style: ElevatedButton.styleFrom(

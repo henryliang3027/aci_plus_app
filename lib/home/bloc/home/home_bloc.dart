@@ -73,6 +73,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     _scanStreamSubscription = _aciDeviceRepository.scanReport.listen(
       (scanReport) {
+        print(scanReport);
         add(DiscoveredDeviceChanged(scanReport));
       },
     );

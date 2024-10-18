@@ -226,14 +226,7 @@ class _HomeFormState extends State<HomeForm> {
         if (state.scanStatus.isRequestInProgress) {
           if (state.peripherals.isNotEmpty) {
             if (ModalRoute.of(context)?.isCurrent == true) {
-              showSelectPeripheralDialog().then((Peripheral? peripheral) {
-                if (peripheral != null) {
-                  context.read<HomeBloc>().add(DeviceSelected(peripheral));
-                } else {
-                  // 使用者點擊 "完成" 表示不連線任何裝置
-                  context.read<HomeBloc>().add(const DeviceSelectionCanceled());
-                }
-              });
+              showSelectPeripheralDialog();
             }
           }
         } else if (state.scanStatus.isRequestFailure &&
