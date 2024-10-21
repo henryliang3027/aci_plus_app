@@ -6,6 +6,7 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_configure/setting18_configure_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_tabbar/setting18_tabbar_bloc.dart';
@@ -1328,10 +1329,33 @@ class _SettingFloatingActionButton extends StatelessWidget {
                     side: BorderSide.none,
                   ),
                   backgroundColor: Platform.isWindows
-                      ? Colors.grey.withAlpha(200)
+                      ? winBeta >= 7
+                          ? Theme.of(context).colorScheme.primary.withAlpha(200)
+                          : Colors.grey.withAlpha(200)
                       : Theme.of(context).colorScheme.primary.withAlpha(200),
                   onPressed: Platform.isWindows
-                      ? null
+                      ? winBeta >= 7
+                          ? () {
+                              // 停止 CEQ 定時偵測
+                              context.read<Setting18TabBarBloc>().add(
+                                  const CurrentForwardCEQPeriodicUpdateCanceled());
+
+                              // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
+                              Navigator.push(
+                                  context,
+                                  Setting18GraphPage.route(
+                                    graphFilePath: graphFilePath,
+                                  )).then((value) {
+                                context
+                                    .read<Setting18ConfigureBloc>()
+                                    .add(const Initialized());
+
+                                // 重新啟動 CEQ 定時偵測
+                                context.read<Setting18TabBarBloc>().add(
+                                    const CurrentForwardCEQPeriodicUpdateRequested());
+                              });
+                            }
+                          : null
                       : () {
                           // 停止 CEQ 定時偵測
                           context.read<Setting18TabBarBloc>().add(

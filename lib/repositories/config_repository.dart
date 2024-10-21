@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
 import 'package:aci_plus_app/repositories/distribution_config_api.dart';
@@ -5,6 +8,7 @@ import 'package:aci_plus_app/repositories/node_config.dart';
 import 'package:aci_plus_app/repositories/node_config_api.dart';
 import 'package:aci_plus_app/repositories/trunk_config.dart';
 import 'package:aci_plus_app/repositories/trunk_config_api.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ConfigRepository {
   ConfigRepository()
@@ -343,5 +347,62 @@ class ConfigRepository {
     await _trunkConfigApi.deleteAllConfig();
     await _distributionConfigApi.deleteAllConfig();
     await _nodeConfigApi.deleteAllConfig();
+  }
+
+  Future<dynamic> saveGenretatedQRCode({
+    required String description,
+    required Uint8List imageBytes,
+  }) async {
+    const String extension = '.png';
+    final String imageName = description;
+
+    if (Platform.isIOS) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$description$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(imageBytes);
+      return [
+        true,
+        imageName,
+        fullWrittenPath,
+      ];
+    } else if (Platform.isAndroid) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$imageName$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(imageBytes);
+
+      return [
+        true,
+        imageName,
+        fullWrittenPath,
+      ];
+    } else if (Platform.isWindows) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      Directory appDocDirFolder = Directory('${appDocDir.path}/ACI+/');
+      bool isExist = await appDocDirFolder.exists();
+      if (!isExist) {
+        await appDocDirFolder.create(recursive: true);
+      }
+
+      String appDocPath = appDocDirFolder.path;
+      String fullWrittenPath = '$appDocPath/$imageName$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(imageBytes);
+
+      return [
+        true,
+        imageName,
+        fullWrittenPath,
+      ];
+    } else {
+      return [
+        false,
+        '',
+        'write file failed, export function not implement on ${Platform.operatingSystem} '
+      ];
+    }
   }
 }
