@@ -68,7 +68,7 @@ class SampleAmp18Repository extends Amp18Repository {
     Map<DataKey, String> characteristicDataCache = {
       DataKey.partName: 'SDAT',
       DataKey.partNo: 'P1A14X0-0X0G',
-      DataKey.partId: '8',
+      DataKey.partId: '3',
       DataKey.serialNumber: '01110001',
       DataKey.firmwareVersion: '145',
       DataKey.hardwareVersion: '101',

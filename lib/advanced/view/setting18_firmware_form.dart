@@ -5,9 +5,12 @@ import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../chart/shared/message_dialog.dart';
 // import 'package:file_picker/file_picker.dart';
 
 class Setting18FirmwareForm extends StatelessWidget {
@@ -57,7 +60,7 @@ class Setting18FirmwareForm extends StatelessWidget {
       );
     }
 
-    Future<bool?> showFailureDialog({
+    Future<bool?> showSubmissionFailureDialog({
       required BuildContext buildContext,
       required String errorMessage,
     }) async {
@@ -189,7 +192,7 @@ class Setting18FirmwareForm extends StatelessWidget {
 
           // 如果 failure dialog 沒有開啟才開啟
           if (ModalRoute.of(context)?.isCurrent == true) {
-            showFailureDialog(
+            showSubmissionFailureDialog(
               buildContext: context,
               errorMessage: state.errorMessage,
             ).then((bool? retry) {
@@ -222,6 +225,9 @@ class Setting18FirmwareForm extends StatelessWidget {
             children: [
               const _UserCaution(),
               const _ProgressBar(),
+              _FilePicker(
+                partId: partId,
+              ),
               _StartButton(
                 pageController: pageController,
                 partId: partId,
@@ -249,7 +255,9 @@ class _UserCaution extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+              CrossAxisAlignment.baseline, // Align based on text baseline
+          textBaseline: TextBaseline.alphabetic,
           children: [
             Text(
               number,
@@ -302,53 +310,14 @@ class _UserCaution extends StatelessWidget {
           number: '3. ',
           description: AppLocalizations.of(context)!.firmawreUpdateCaution3,
         ),
+        getInstructionRow(
+          number: '4. ',
+          description: AppLocalizations.of(context)!.firmawreUpdateCaution4,
+        ),
       ],
     );
   }
 }
-
-// class _FilePicker extends StatelessWidget {
-//   const _FilePicker({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<Setting18FirmwareBloc, Setting18FirmwareState>(
-//       builder: (context, state) {
-//         return ElevatedButton(
-//           onPressed: () async {
-//             FilePickerResult? result = await FilePicker.platform.pickFiles(
-//               type: FileType.custom,
-//               allowedExtensions: ['bin'],
-//               allowCompression: false,
-//             );
-
-//             if (result != null) {
-//               context
-//                   .read<Setting18FirmwareBloc>()
-//                   .add(BinarySelected(result.files.single.path!));
-//               // File file = File(result.files.single.path!);
-//               // print(file.path);
-//             } else {
-//               // 使用者取消 file picker, 沒有選擇任何檔案
-//             }
-//           },
-//           child: Row(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               Icon(Icons.file_open_outlined),
-//               SizedBox(
-//                 width: 10,
-//               ),
-//               Text(
-//                 state.selectedBinaryName,
-//               ),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
 
 // class _BinaryDropDownMenu extends StatelessWidget {
 //   const _BinaryDropDownMenu({super.key});
@@ -447,6 +416,115 @@ class __ProgressBarState extends State<_ProgressBar>
   }
 }
 
+class _FilePicker extends StatelessWidget {
+  const _FilePicker({
+    super.key,
+    required this.partId,
+  });
+
+  final String partId;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<Setting18FirmwareBloc, Setting18FirmwareState>(
+      listener: (context, state) {
+        if (state.binaryLoadStatus.isRequestFailure) {
+          showFailureDialog(
+            context: context,
+            msg: state.fileErrorMessage,
+          );
+        }
+      },
+      child: BlocBuilder<Setting18FirmwareBloc, Setting18FirmwareState>(
+        builder: (context, state) {
+          return Column(
+            children: [
+              state.selectedBinaryInfo.isEmpty
+                  ? const SizedBox()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Icon(
+                            Icons.insert_drive_file,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        Flexible(
+                          child: Text(
+                            '${state.selectedBinaryInfo.name}.${state.selectedBinaryInfo.extensionName}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                            overflow: TextOverflow
+                                .ellipsis, // Handles long file names
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: state.binary.isNotEmpty
+                              ? const Icon(
+                                  Icons.check,
+                                  color: CustomStyle.customGreen,
+                                )
+                              : const Icon(
+                                  Icons.close,
+                                  color: CustomStyle.customRed,
+                                ),
+                        ),
+                      ],
+                    ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  fixedSize: const Size(140, 60),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
+                  ),
+                  textStyle: const TextStyle(
+                    fontSize: CustomStyle.sizeXXL,
+                  ),
+                ),
+                onPressed: () async {
+                  FilePicker.platform
+                      .pickFiles(
+                    type: FileType.any,
+                    // allowedExtensions: ['bin'],
+                    allowCompression: false,
+                  )
+                      .then((FilePickerResult? result) {
+                    if (result != null) {
+                      context.read<Setting18FirmwareBloc>().add(BinarySelected(
+                            partId: partId,
+                            selectedBinary: result.files.single.path!,
+                          ));
+                      // File file = File(result.files.single.path!);
+                      // print(file.path);
+                    } else {
+                      // 使用者取消 file picker, 沒有選擇任何檔案
+                    }
+                  });
+                },
+                child: Text(
+                  AppLocalizations.of(context)!.selectFirmwareFile,
+                ),
+              ),
+              const SizedBox(
+                height: CustomStyle.size24,
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
 class _StartButton extends StatelessWidget {
   const _StartButton({
     required this.pageController,
@@ -458,110 +536,110 @@ class _StartButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<bool?> showUpdateVersionDialog({
-      required String currentFirmwareVersion,
-      required String newFirmwareVersion,
-    }) async {
-      String localizedText = AppLocalizations.of(context)!
-          .dialogMessageFirmwareUpdateVersion(
-              currentFirmwareVersion, newFirmwareVersion);
-      int currentFirmwareVersionIndex =
-          localizedText.indexOf(currentFirmwareVersion);
-      int newFirmwareVersionIndex = localizedText.indexOf(
-        newFirmwareVersion,
-        currentFirmwareVersionIndex + currentFirmwareVersion.length,
-      );
+    // Future<bool?> showUpdateVersionDialog({
+    //   required String currentFirmwareVersion,
+    //   required String newFirmwareVersion,
+    // }) async {
+    //   String localizedText = AppLocalizations.of(context)!
+    //       .dialogMessageFirmwareUpdateVersion(
+    //           currentFirmwareVersion, newFirmwareVersion);
+    //   int currentFirmwareVersionIndex =
+    //       localizedText.indexOf(currentFirmwareVersion);
+    //   int newFirmwareVersionIndex = localizedText.indexOf(
+    //     newFirmwareVersion,
+    //     currentFirmwareVersionIndex + currentFirmwareVersion.length,
+    //   );
 
-      return showDialog<bool?>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          var width = MediaQuery.of(context).size.width;
-          // var height = MediaQuery.of(context).size.height;
+    //   return showDialog<bool?>(
+    //     context: context,
+    //     barrierDismissible: false, // user must tap button!
+    //     builder: (BuildContext context) {
+    //       var width = MediaQuery.of(context).size.width;
+    //       // var height = MediaQuery.of(context).size.height;
 
-          return PopScope(
-            canPop: false,
-            child: AlertDialog(
-              insetPadding: EdgeInsets.symmetric(
-                horizontal: width * 0.1,
-              ),
-              title: Text(
-                AppLocalizations.of(context)!.dialogTitleNotice,
-                style: const TextStyle(
-                  color: CustomStyle.customYellow,
-                ),
-              ),
-              content: Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: localizedText.substring(
-                          0, currentFirmwareVersionIndex),
-                      style: const TextStyle(),
-                    ),
-                    TextSpan(
-                      text: localizedText.substring(
-                          currentFirmwareVersionIndex,
-                          currentFirmwareVersionIndex +
-                              currentFirmwareVersion.length),
-                      style: const TextStyle(
-                        color: CustomStyle.customRed,
-                      ),
-                    ),
-                    TextSpan(
-                      text: localizedText.substring(
-                          currentFirmwareVersionIndex +
-                              currentFirmwareVersion.length,
-                          newFirmwareVersionIndex),
-                      style: const TextStyle(),
-                    ),
-                    TextSpan(
-                      text: localizedText.substring(newFirmwareVersionIndex,
-                          newFirmwareVersionIndex + newFirmwareVersion.length),
-                      style: const TextStyle(
-                        color: CustomStyle.customRed,
-                      ),
-                    ),
-                    TextSpan(
-                      text: localizedText.substring(
-                          newFirmwareVersionIndex + newFirmwareVersion.length,
-                          localizedText.length),
-                      style: const TextStyle(),
-                    ),
-                  ],
-                ),
-                style: const TextStyle(
-                  fontSize: CustomStyle.sizeL,
-                ),
-              ),
-              actions: <Widget>[
-                ElevatedButton(
-                  child: Text(
-                    AppLocalizations.of(context)!.dialogMessageCancel,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop(false); // pop dialog
-                  },
-                ),
-                ElevatedButton(
-                  child: Text(
-                    AppLocalizations.of(context)!.dialogMessageOk,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop(true); // pop dialog
-                  },
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    }
+    //       return PopScope(
+    //         canPop: false,
+    //         child: AlertDialog(
+    //           insetPadding: EdgeInsets.symmetric(
+    //             horizontal: width * 0.1,
+    //           ),
+    //           title: Text(
+    //             AppLocalizations.of(context)!.dialogTitleNotice,
+    //             style: const TextStyle(
+    //               color: CustomStyle.customYellow,
+    //             ),
+    //           ),
+    //           content: Text.rich(
+    //             TextSpan(
+    //               children: [
+    //                 TextSpan(
+    //                   text: localizedText.substring(
+    //                       0, currentFirmwareVersionIndex),
+    //                   style: const TextStyle(),
+    //                 ),
+    //                 TextSpan(
+    //                   text: localizedText.substring(
+    //                       currentFirmwareVersionIndex,
+    //                       currentFirmwareVersionIndex +
+    //                           currentFirmwareVersion.length),
+    //                   style: const TextStyle(
+    //                     color: CustomStyle.customRed,
+    //                   ),
+    //                 ),
+    //                 TextSpan(
+    //                   text: localizedText.substring(
+    //                       currentFirmwareVersionIndex +
+    //                           currentFirmwareVersion.length,
+    //                       newFirmwareVersionIndex),
+    //                   style: const TextStyle(),
+    //                 ),
+    //                 TextSpan(
+    //                   text: localizedText.substring(newFirmwareVersionIndex,
+    //                       newFirmwareVersionIndex + newFirmwareVersion.length),
+    //                   style: const TextStyle(
+    //                     color: CustomStyle.customRed,
+    //                   ),
+    //                 ),
+    //                 TextSpan(
+    //                   text: localizedText.substring(
+    //                       newFirmwareVersionIndex + newFirmwareVersion.length,
+    //                       localizedText.length),
+    //                   style: const TextStyle(),
+    //                 ),
+    //               ],
+    //             ),
+    //             style: const TextStyle(
+    //               fontSize: CustomStyle.sizeL,
+    //             ),
+    //           ),
+    //           actions: <Widget>[
+    //             ElevatedButton(
+    //               child: Text(
+    //                 AppLocalizations.of(context)!.dialogMessageCancel,
+    //               ),
+    //               onPressed: () {
+    //                 Navigator.of(context).pop(false); // pop dialog
+    //               },
+    //             ),
+    //             ElevatedButton(
+    //               child: Text(
+    //                 AppLocalizations.of(context)!.dialogMessageOk,
+    //               ),
+    //               onPressed: () {
+    //                 Navigator.of(context).pop(true); // pop dialog
+    //               },
+    //             ),
+    //           ],
+    //         ),
+    //       );
+    //     },
+    //   );
+    // }
 
     Widget buildStartButton({
       required bool isSubmissionInProgress,
       required String currentFirmwareVersion,
-      required String newFirmwareVersion,
+      // required String newFirmwareVersion,
       required bool isEnabled,
     }) {
       return Wrap(
@@ -572,7 +650,7 @@ class _StartButton extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                minimumSize: const Size(80, 60),
+                fixedSize: const Size(140, 60),
                 shape: const RoundedRectangleBorder(
                   borderRadius:
                       BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
@@ -583,6 +661,9 @@ class _StartButton extends StatelessWidget {
               ),
               onPressed: isEnabled && !isSubmissionInProgress
                   ? () async {
+                      context
+                          .read<Setting18FirmwareBloc>()
+                          .add(const BootloaderStarted());
                       // FilePicker.platform
                       //     .pickFiles(
                       //   type: FileType.custom,
@@ -600,23 +681,23 @@ class _StartButton extends StatelessWidget {
                       //   }
                       // });
 
-                      showUpdateVersionDialog(
-                        currentFirmwareVersion: currentFirmwareVersion,
-                        newFirmwareVersion: newFirmwareVersion,
-                      ).then((bool? isConfirm) {
-                        if (isConfirm != null) {
-                          if (isConfirm) {
-                            // disable 所有 button
-                            context
-                                .read<Setting18AdvancedBloc>()
-                                .add(const AllButtonsDisabled());
+                      // showUpdateVersionDialog(
+                      //   currentFirmwareVersion: currentFirmwareVersion,
+                      //   newFirmwareVersion: newFirmwareVersion,
+                      // ).then((bool? isConfirm) {
+                      //   if (isConfirm != null) {
+                      //     if (isConfirm) {
+                      //       // disable 所有 button
+                      //       context
+                      //           .read<Setting18AdvancedBloc>()
+                      //           .add(const AllButtonsDisabled());
 
-                            context
-                                .read<Setting18FirmwareBloc>()
-                                .add(const BootloaderStarted());
-                          }
-                        }
-                      });
+                      //       context
+                      //           .read<Setting18FirmwareBloc>()
+                      //           .add(const BootloaderStarted());
+                      //     }
+                      //   }
+                      // });
                     }
                   : null,
               child: Text(
@@ -663,19 +744,19 @@ class _StartButton extends StatelessWidget {
           final String currentFirmwareVersion =
               homeState.characteristicData[DataKey.firmwareVersion]!;
 
-          if (setting18FirmwareState.binaryLoadStatus.isNone) {
-            context.read<Setting18FirmwareBloc>().add(BinaryLoaded(
-                  partId: partId,
-                  currentFirmwareVersion: currentFirmwareVersion,
-                ));
-          }
+          // if (setting18FirmwareState.binaryLoadStatus.isNone) {
+          //   context.read<Setting18FirmwareBloc>().add(BinaryLoaded(
+          //         partId: partId,
+          //         currentFirmwareVersion: currentFirmwareVersion,
+          //       ));
+          // }
 
           return buildStartButton(
             isSubmissionInProgress:
                 setting18FirmwareState.submissionStatus.isSubmissionInProgress,
             currentFirmwareVersion: currentFirmwareVersion,
-            newFirmwareVersion:
-                setting18FirmwareState.selectedBinaryInfo.version,
+            // newFirmwareVersion:
+            //     setting18FirmwareState.selectedBinaryInfo.version,
             isEnabled: true,
           );
         } else {
@@ -691,7 +772,7 @@ class _StartButton extends StatelessWidget {
             isSubmissionInProgress:
                 setting18FirmwareState.submissionStatus.isSubmissionInProgress,
             currentFirmwareVersion: '',
-            newFirmwareVersion: '',
+            // newFirmwareVersion: '',
             isEnabled: false,
           );
         }

@@ -78,8 +78,12 @@ class CommandWrited extends Setting18FirmwareEvent {
 }
 
 class BinarySelected extends Setting18FirmwareEvent {
-  const BinarySelected(this.selectedBinary);
+  const BinarySelected({
+    required this.partId,
+    required this.selectedBinary,
+  });
 
+  final String partId;
   final String selectedBinary;
 
   @override

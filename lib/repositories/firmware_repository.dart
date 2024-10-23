@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:aci_plus_app/core/crc16_calculate.dart';
+import 'package:aci_plus_app/core/firmware_file_table.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -15,28 +17,49 @@ class FirmwareRepository {
     yield* _bleClient.updateReport;
   }
 
-  Future<List<dynamic>> calculateCheckSum({required String binaryPath}) async {
-    if (binaryPath.isEmpty) {
-      return [false, ''];
+  List<dynamic> checkFileContent(
+      {required String partId, required Uint8List binaryData}) {
+    List<int> fileID = FirmwareFileTable.fileIDMap[partId]!;
+
+    // 檢查 binary file 裡是否有正確的識別碼, 以迴圈方式每次取出長度為 uint8fileID.length 的 binaryData 內容來比對
+    Uint8List uint8fileID = Uint8List.fromList(fileID);
+    for (int i = 0; i <= binaryData.length - uint8fileID.length; i++) {
+      Uint8List sublist =
+          Uint8List.sublistView(binaryData, i, i + uint8fileID.length);
+      if (areEqual(sublist, uint8fileID)) {
+        return [true];
+      }
+    }
+    return [false, 'The file you selected is invalid'];
+  }
+
+  // 比對取出的 binaryData 內容與 uint8fileID 是否相同
+  bool areEqual(Uint8List list1, Uint8List list2) {
+    if (list1.length != list2.length) return false;
+
+    for (int i = 0; i < list1.length; i++) {
+      if (list1[i] != list2[i]) {
+        return false;
+      }
     }
 
-    ByteData byteData = await rootBundle.load(binaryPath);
+    return true;
+  }
 
-    // Uint8List byteData = await File(binaryPath).readAsBytes();
-
+  Future<List<dynamic>> calculateCheckSum(
+      {required Uint8List binaryData}) async {
     int sum = 0;
 
-    for (int number in byteData.buffer.asUint8List()) {
+    for (int number in binaryData.buffer.asUint8List()) {
       sum += number;
     }
 
     print('$sum ${sum.toRadixString(16)}');
-    print(byteData.lengthInBytes);
+    print(binaryData.lengthInBytes);
 
     return [
-      true,
       sum,
-      byteData.buffer.asUint8List().toList(),
+      binaryData.buffer.asUint8List().toList(),
     ];
   }
 

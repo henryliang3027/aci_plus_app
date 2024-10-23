@@ -200,6 +200,7 @@
     "firmawreUpdateCaution1": "Please provide a stable power source for the device. Do not turn off the power during the update process.",
     "firmawreUpdateCaution2": "Do not remove the Bluetooth adapter or close the App during the update process.",
     "firmawreUpdateCaution3": "Maintain a stable Bluetooth connection distance between the device and the mobile device.",
+    "firmawreUpdateCaution4": "Please select the correct firmware file.",
     "readyToSend": "Ready to send firmware",
     "sendingBinary": "Sending",
     "verifying": "Verifying",
@@ -220,6 +221,8 @@
     "websiteDesigner": "Website Designer",
     "frontendBackendEngineer": "Front-end / Back-end Engineer",
     "systemEngineer": "System Engineer",
+
+    "selectFirmwareFile": "Select File",
 
 
     "textFieldErrorMessage": "Invalid value",
@@ -410,6 +413,6 @@
     "dialogMessageWarmReset": "Do you want to perform a warm reset on the device ?",
     "dialogMessageWarmResetingAlmostDone": "Almost done",
     "dialogMessageWarmResetSeccessful": "Warm reset performed successfully.",
-    "dialogMessageForwardCEQChanged": "The equalizer module has been detected as changed."
-    
+    "dialogMessageForwardCEQChanged": "The equalizer module has been detected as changed.",
+    "dialogMessageSelectedFirmwareInvalid": "The file you selected is invalid"
 }

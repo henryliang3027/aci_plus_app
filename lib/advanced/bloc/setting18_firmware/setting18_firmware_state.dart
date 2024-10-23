@@ -12,6 +12,7 @@ class Setting18FirmwareState extends Equatable {
     this.formattedTimeElapsed = '',
     this.updateMessage = '',
     this.errorMessage = '',
+    this.fileErrorMessage = '',
   });
 
   final FormStatus binaryLoadStatus;
@@ -24,6 +25,7 @@ class Setting18FirmwareState extends Equatable {
   final String formattedTimeElapsed;
   final String updateMessage;
   final String errorMessage;
+  final String fileErrorMessage;
 
   Setting18FirmwareState copyWith({
     FormStatus? binaryLoadStatus,
@@ -36,6 +38,7 @@ class Setting18FirmwareState extends Equatable {
     String? formattedTimeElapsed,
     String? updateMessage,
     String? errorMessage,
+    String? fileErrorMessage,
   }) {
     return Setting18FirmwareState(
       binaryLoadStatus: binaryLoadStatus ?? this.binaryLoadStatus,
@@ -48,6 +51,7 @@ class Setting18FirmwareState extends Equatable {
       formattedTimeElapsed: formattedTimeElapsed ?? this.formattedTimeElapsed,
       updateMessage: updateMessage ?? this.updateMessage,
       errorMessage: errorMessage ?? this.errorMessage,
+      fileErrorMessage: fileErrorMessage ?? this.fileErrorMessage,
     );
   }
 
@@ -63,5 +67,6 @@ class Setting18FirmwareState extends Equatable {
         formattedTimeElapsed,
         updateMessage,
         errorMessage,
+        fileErrorMessage,
       ];
 }

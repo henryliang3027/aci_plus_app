@@ -199,6 +199,7 @@
     "firmawreUpdateCaution1": "Por favor, proporcione una fuente de energía estable para el dispositivo. No apague el dispositivo durante el proceso de actualización.",
     "firmawreUpdateCaution2": "No retire el adaptador de Bluetooth ni cierre la aplicación durante el proceso de actualización.",
     "firmawreUpdateCaution3": "Mantenga una distancia de conexión Bluetooth estable entre el dispositivo y el dispositivo móvil.",
+    "firmawreUpdateCaution4": "Por favor seleccione el archivo de firmware correcto.",
     "readyToSend": "Listo para enviar firmware",
     "sendingBinary": "Enviando",
     "verifying": "Verificando",
@@ -220,6 +221,7 @@
     "frontendBackendEngineer": "Ingeniero Front-end/Back-end",
     "systemEngineer": "Ingeniero Sistemas",
 
+    "selectFirmwareFile": "Seleccionar archivo",
 
     "textFieldErrorMessage": "Valor inválido",
 
@@ -409,5 +411,6 @@
     "dialogMessageWarmReset": "¿Desea realizar un reinicio caliente en el dispositivo?",
     "dialogMessageWarmResetingAlmostDone": "Casi terminado",
     "dialogMessageWarmResetSeccessful": "Reinicio caliente realizado con éxito.",
-    "dialogMessageForwardCEQChanged": "Se ha detectado un cambio en el módulo ecualizador."
+    "dialogMessageForwardCEQChanged": "Se ha detectado un cambio en el módulo ecualizador.",
+    "dialogMessageSelectedFirmwareInvalid": "El archivo que seleccionaste no es válido."
 }

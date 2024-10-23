@@ -30,6 +30,8 @@ String getMessageLocalization({
     return AppLocalizations.of(context)!.dialogMessageGPSPermissionDenied;
   } else if (msg == 'Preset data not found, please add new preset profiles.') {
     return AppLocalizations.of(context)!.dialogMessageDefaultConfigNotFound;
+  } else if (msg == 'The file you selected is invalid') {
+    return AppLocalizations.of(context)!.dialogMessageSelectedFirmwareInvalid;
   } else {
     return msg;
   }

@@ -199,6 +199,7 @@
     "firmawreUpdateCaution1": "請提供設備穩定的電源，更新過程中請勿關閉電源。",
     "firmawreUpdateCaution2": "更新過程中請勿拔除藍芽調適器與關閉 App。",
     "firmawreUpdateCaution3": "設備與行動裝置間需維持穩定的藍芽連線距離。",
+    "firmawreUpdateCaution4": "請選擇正確的韌體檔案",
     "readyToSend": "準備傳送韌體",
     "sendingBinary": "傳送中",
     "verifying": "驗證中",
@@ -218,6 +219,8 @@
     "websiteDesigner": "網頁設計師",
     "frontendBackendEngineer": "程式設計師",
     "systemEngineer": "系統工程師",
+
+    "selectFirmwareFile": "選擇檔案",
 
 
     "textFieldErrorMessage": "內容不正確",
@@ -410,5 +413,6 @@
     "dialogMessageWarmReset": "您確定要對裝置執行熱重啟嗎 ?",
     "dialogMessageWarmResetingAlmostDone": "即將完成",
     "dialogMessageWarmResetSeccessful": "熱重啟成功",
-    "dialogMessageForwardCEQChanged": "偵測到等化器模組已被更換"
+    "dialogMessageForwardCEQChanged": "偵測到等化器模組已被更換",
+    "dialogMessageSelectedFirmwareInvalid": "您選擇的檔案無效"
 }

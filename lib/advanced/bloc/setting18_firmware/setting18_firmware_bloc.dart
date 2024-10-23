@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/firmware_file_table.dart';
@@ -29,7 +31,7 @@ class Setting18FirmwareBloc
     on<MessageReceived>(_onMessageReceived);
     on<ErrorReceived>(_onErrorReceived);
     on<BinarySelected>(_onBinarySelected);
-    on<BinaryLoaded>(_onBinaryLoaded);
+    // on<BinaryLoaded>(_onBinaryLoaded);
     on<BinaryCanceled>(_onBinaryCanceled);
   }
 
@@ -304,21 +306,31 @@ class Setting18FirmwareBloc
     BinarySelected event,
     Emitter<Setting18FirmwareState> emit,
   ) async {
+    emit(state.copyWith(
+      binaryLoadStatus: FormStatus.requestInProgress,
+    ));
+
+    String partId = event.partId;
     String binaryPath = event.selectedBinary;
+    Uint8List binaryData = await File(binaryPath).readAsBytes();
 
-    print('binaryPath: $binaryPath');
+    List<dynamic> resultOfcheckFileContent =
+        await _firmwareRepository.checkFileContent(
+      partId: partId,
+      binaryData: binaryData,
+    );
 
-    BinaryInfo selectedBinaryInfo =
-        _getSelectedBinaryInfo(binaryPath: binaryPath);
+    if (resultOfcheckFileContent[0]) {
+      print('binaryPath: $binaryPath');
 
-    print('selectedVersion: ${selectedBinaryInfo.version}');
+      BinaryInfo selectedBinaryInfo =
+          _getSelectedBinaryInfo(binaryPath: binaryPath);
 
-    List<dynamic> result =
-        await _firmwareRepository.calculateCheckSum(binaryPath: binaryPath);
+      List<dynamic> result =
+          await _firmwareRepository.calculateCheckSum(binaryData: binaryData);
 
-    if (result[0]) {
-      int sum = result[1];
-      List<int> binary = result[2];
+      int sum = result[0];
+      List<int> binary = result[1];
 
       emit(state.copyWith(
         binaryLoadStatus: FormStatus.requestSuccess,
@@ -327,56 +339,63 @@ class Setting18FirmwareBloc
         selectedBinaryInfo: selectedBinaryInfo,
       ));
     } else {
-      emit(state.copyWith(
-        binaryLoadStatus: FormStatus.requestFailure,
-      ));
-    }
-  }
-
-  Future<void> _onBinaryLoaded(
-    BinaryLoaded event,
-    Emitter<Setting18FirmwareState> emit,
-  ) async {
-    String binaryPath = '';
-
-    if (event.currentFirmwareVersion.endsWith('q')) {
-      binaryPath = FirmwareFileTable.qFilePathMap[event.partId] ?? '';
-    } else {
-      binaryPath = FirmwareFileTable.filePathMap[event.partId] ?? '';
-    }
-
-    print('binaryPath: $binaryPath');
-
-    if (binaryPath.isNotEmpty) {
       BinaryInfo selectedBinaryInfo =
           _getSelectedBinaryInfo(binaryPath: binaryPath);
 
-      print('selectedVersion: ${selectedBinaryInfo.version}');
-
-      List<dynamic> result =
-          await _firmwareRepository.calculateCheckSum(binaryPath: binaryPath);
-
-      if (result[0]) {
-        int sum = result[1];
-        List<int> binary = result[2];
-
-        emit(state.copyWith(
-          binaryLoadStatus: FormStatus.requestSuccess,
-          sum: sum,
-          binary: binary,
-          selectedBinaryInfo: selectedBinaryInfo,
-        ));
-      } else {
-        emit(state.copyWith(
-          binaryLoadStatus: FormStatus.requestFailure,
-        ));
-      }
-    } else {
       emit(state.copyWith(
         binaryLoadStatus: FormStatus.requestFailure,
+        sum: -1,
+        binary: [],
+        selectedBinaryInfo: selectedBinaryInfo,
+        fileErrorMessage: 'The file you selected is invalid',
       ));
     }
   }
+
+  // Future<void> _onBinaryLoaded(
+  //   BinaryLoaded event,
+  //   Emitter<Setting18FirmwareState> emit,
+  // ) async {
+  //   String binaryPath = '';
+
+  //   if (event.currentFirmwareVersion.endsWith('q')) {
+  //     binaryPath = FirmwareFileTable.qFilePathMap[event.partId] ?? '';
+  //   } else {
+  //     binaryPath = FirmwareFileTable.filePathMap[event.partId] ?? '';
+  //   }
+
+  //   print('binaryPath: $binaryPath');
+
+  //   if (binaryPath.isNotEmpty) {
+  //     BinaryInfo selectedBinaryInfo =
+  //         _getSelectedBinaryInfo(binaryPath: binaryPath);
+
+  //     print('selectedVersion: ${selectedBinaryInfo.version}');
+
+  //     List<dynamic> result =
+  //         await _firmwareRepository.calculateCheckSum(binaryPath: binaryPath);
+
+  //     if (result[0]) {
+  //       int sum = result[1];
+  //       List<int> binary = result[2];
+
+  //       emit(state.copyWith(
+  //         binaryLoadStatus: FormStatus.requestSuccess,
+  //         sum: sum,
+  //         binary: binary,
+  //         selectedBinaryInfo: selectedBinaryInfo,
+  //       ));
+  //     } else {
+  //       emit(state.copyWith(
+  //         binaryLoadStatus: FormStatus.requestFailure,
+  //       ));
+  //     }
+  //   } else {
+  //     emit(state.copyWith(
+  //       binaryLoadStatus: FormStatus.requestFailure,
+  //     ));
+  //   }
+  // }
 
   Future<void> _onBinaryCanceled(
     BinaryCanceled event,
@@ -408,11 +427,9 @@ class Setting18FirmwareBloc
 
     String name = nameAndExtensionName[0];
     String extensionName = nameAndExtensionName[1];
-    String version = name.split('_')[1].substring(1);
 
     return BinaryInfo(
       name: name,
-      version: version,
       extensionName: extensionName,
     );
   }
@@ -451,16 +468,17 @@ class Setting18FirmwareBloc
 class BinaryInfo {
   const BinaryInfo({
     required this.name,
-    required this.version,
     required this.extensionName,
   });
 
   const BinaryInfo.empty()
       : name = '',
-        version = '',
         extensionName = '';
 
   final String name;
-  final String version;
   final String extensionName;
+
+  bool get isEmpty {
+    return name.isEmpty && extensionName.isEmpty;
+  }
 }
