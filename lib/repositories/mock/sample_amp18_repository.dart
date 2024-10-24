@@ -66,11 +66,11 @@ class SampleAmp18Repository extends Amp18Repository {
     print('get data from request command 1p8G0');
 
     Map<DataKey, String> characteristicDataCache = {
-      DataKey.partName: 'SDAT',
+      DataKey.partName: 'MB',
       DataKey.partNo: 'P1A14X0-0X0G',
       DataKey.partId: '3',
       DataKey.serialNumber: '01110001',
-      DataKey.firmwareVersion: '145',
+      DataKey.firmwareVersion: '147',
       DataKey.hardwareVersion: '101',
       DataKey.mfgDate: '2023/09/26',
       DataKey.coordinates: '25.0644003000,121.4467530000',

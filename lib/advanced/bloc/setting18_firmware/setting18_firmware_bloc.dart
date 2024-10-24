@@ -9,6 +9,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -310,44 +311,57 @@ class Setting18FirmwareBloc
       binaryLoadStatus: FormStatus.requestInProgress,
     ));
 
-    String partId = event.partId;
-    String binaryPath = event.selectedBinary;
-    Uint8List binaryData = await File(binaryPath).readAsBytes();
-
-    List<dynamic> resultOfcheckFileContent =
-        await _firmwareRepository.checkFileContent(
-      partId: partId,
-      binaryData: binaryData,
+    FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
+      type: FileType.any,
+      // allowedExtensions: ['bin'],
+      allowCompression: false,
     );
 
-    if (resultOfcheckFileContent[0]) {
-      print('binaryPath: $binaryPath');
+    if (filePickerResult != null) {
+      String partId = event.partId;
+      String binaryPath = filePickerResult.files.single.path!;
+      Uint8List binaryData = await File(binaryPath).readAsBytes();
 
-      BinaryInfo selectedBinaryInfo =
-          _getSelectedBinaryInfo(binaryPath: binaryPath);
+      List<dynamic> resultOfcheckFileContent =
+          _firmwareRepository.checkFileContent(
+        partId: partId,
+        binaryData: binaryData,
+      );
 
-      List<dynamic> result =
-          await _firmwareRepository.calculateCheckSum(binaryData: binaryData);
+      if (resultOfcheckFileContent[0]) {
+        print('binaryPath: $binaryPath');
 
-      int sum = result[0];
-      List<int> binary = result[1];
+        BinaryInfo selectedBinaryInfo =
+            _getSelectedBinaryInfo(binaryPath: binaryPath);
 
-      emit(state.copyWith(
-        binaryLoadStatus: FormStatus.requestSuccess,
-        sum: sum,
-        binary: binary,
-        selectedBinaryInfo: selectedBinaryInfo,
-      ));
+        List<dynamic> result =
+            await _firmwareRepository.calculateCheckSum(binaryData: binaryData);
+
+        int sum = result[0];
+        List<int> binary = result[1];
+
+        emit(state.copyWith(
+          binaryLoadStatus: FormStatus.requestSuccess,
+          sum: sum,
+          binary: binary,
+          selectedBinaryInfo: selectedBinaryInfo,
+        ));
+      } else {
+        BinaryInfo selectedBinaryInfo =
+            _getSelectedBinaryInfo(binaryPath: binaryPath);
+
+        emit(state.copyWith(
+          binaryLoadStatus: FormStatus.requestFailure,
+          sum: -1,
+          binary: [],
+          selectedBinaryInfo: selectedBinaryInfo,
+          fileErrorMessage: 'The file you selected is invalid',
+        ));
+      }
     } else {
-      BinaryInfo selectedBinaryInfo =
-          _getSelectedBinaryInfo(binaryPath: binaryPath);
-
+      // 使用者取消 file picker, 沒有選擇任何檔案
       emit(state.copyWith(
-        binaryLoadStatus: FormStatus.requestFailure,
-        sum: -1,
-        binary: [],
-        selectedBinaryInfo: selectedBinaryInfo,
-        fileErrorMessage: 'The file you selected is invalid',
+        binaryLoadStatus: FormStatus.none,
       ));
     }
   }

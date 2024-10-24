@@ -12,14 +12,13 @@ class SampleACIDeviceRepository extends ACIDeviceRepository {
   SampleACIDeviceRepository() : _bleClient = BLEClientFactory.instance;
 
   final BLEClientBase _bleClient;
-  final StreamController<ScanReport> _scanReportStreamController =
-      StreamController<ScanReport>();
+  StreamController<ScanReport>? _scanReportStreamController;
 
-  final StreamController<ConnectionReport> _connectionReportStreamController =
-      StreamController<ConnectionReport>();
+  StreamController<ConnectionReport>? _connectionReportStreamController;
 
   @override
   Stream<ScanReport> get scanReport async* {
+    _scanReportStreamController = StreamController<ScanReport>();
     for (int i = 0; i < 1; i++) {
       await Future.delayed(Duration(milliseconds: 500));
 
@@ -44,16 +43,18 @@ class SampleACIDeviceRepository extends ACIDeviceRepository {
       );
     }
 
-    yield* _scanReportStreamController.stream;
+    yield* _scanReportStreamController!.stream;
   }
 
   @override
   Stream<ConnectionReport> get connectionStateReport async* {
-    _connectionReportStreamController.add(const ConnectionReport(
-      connectStatus: ConnectStatus.connected,
-    ));
+    _connectionReportStreamController = StreamController<ConnectionReport>();
 
-    yield* _connectionReportStreamController.stream;
+    yield const ConnectionReport(
+      connectStatus: ConnectStatus.connected,
+    );
+
+    yield* _connectionReportStreamController!.stream;
   }
 
   @override
@@ -63,8 +64,11 @@ class SampleACIDeviceRepository extends ACIDeviceRepository {
 
   @override
   Future<void> closeScanStream() async {
-    if (!_scanReportStreamController.isClosed) {
-      await _scanReportStreamController.close();
+    if (_scanReportStreamController != null) {
+      if (!_scanReportStreamController!.isClosed) {
+        await _scanReportStreamController!.close();
+        _scanReportStreamController = null;
+      }
     }
 
     await Future.delayed(Duration.zero);
@@ -72,6 +76,13 @@ class SampleACIDeviceRepository extends ACIDeviceRepository {
 
   @override
   Future<void> closeConnectionStream() async {
+    if (_connectionReportStreamController != null) {
+      if (!_connectionReportStreamController!.isClosed) {
+        await _connectionReportStreamController!.close();
+        _connectionReportStreamController = null;
+      }
+    }
+
     await Future.delayed(Duration.zero);
   }
 

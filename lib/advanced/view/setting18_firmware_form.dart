@@ -1,5 +1,6 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_advanced/setting18_advanced_bloc.dart';
 import 'package:aci_plus_app/advanced/bloc/setting18_firmware/setting18_firmware_bloc.dart';
+import 'package:aci_plus_app/advanced/shared/custom_progressing_dialog.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -426,99 +427,127 @@ class _FilePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget buildSelectButton({
+      required bool isEnabled,
+      required BinaryInfo selectedBinaryInfo,
+      required List<int> binary,
+    }) {
+      return Column(
+        children: [
+          selectedBinaryInfo.isEmpty
+              ? const SizedBox()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Icon(
+                        Icons.insert_drive_file,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    Flexible(
+                      child: Text(
+                        '${selectedBinaryInfo.name}.${selectedBinaryInfo.extensionName}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                        overflow:
+                            TextOverflow.ellipsis, // Handles long file names
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: binary.isNotEmpty
+                          ? const Icon(
+                              Icons.check,
+                              color: CustomStyle.customGreen,
+                            )
+                          : const Icon(
+                              Icons.close,
+                              color: CustomStyle.customRed,
+                            ),
+                    ),
+                  ],
+                ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              minimumSize: const Size(140, 60),
+              shape: const RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
+              ),
+              textStyle: const TextStyle(
+                fontSize: CustomStyle.sizeXXL,
+              ),
+            ),
+            onPressed: isEnabled
+                ? () async {
+                    context.read<Setting18FirmwareBloc>().add(BinarySelected(
+                          partId: partId,
+                        ));
+                  }
+                : null,
+            child: Text(
+              AppLocalizations.of(context)!.selectFirmwareFile,
+            ),
+          ),
+          const SizedBox(
+            height: CustomStyle.size24,
+          ),
+        ],
+      );
+    }
+
     return BlocListener<Setting18FirmwareBloc, Setting18FirmwareState>(
+      listenWhen: (previous, current) =>
+          previous.binaryLoadStatus != current.binaryLoadStatus,
       listener: (context, state) {
-        if (state.binaryLoadStatus.isRequestFailure) {
+        if (state.binaryLoadStatus.isRequestInProgress) {
+          showProgressingDialog(context);
+        } else if (state.binaryLoadStatus.isRequestSuccess) {
+          if (ModalRoute.of(context)?.isCurrent == false) {
+            Navigator.of(context).pop();
+          }
+        } else if (state.binaryLoadStatus.isRequestFailure) {
+          if (ModalRoute.of(context)?.isCurrent == false) {
+            Navigator.of(context).pop();
+          }
+
           showFailureDialog(
             context: context,
             msg: state.fileErrorMessage,
           );
+        } else {
+          // 使用者點開 file picker 後沒有選擇任何檔案, 按下取消動作
+          if (ModalRoute.of(context)?.isCurrent == false) {
+            Navigator.of(context).pop();
+          }
         }
       },
-      child: BlocBuilder<Setting18FirmwareBloc, Setting18FirmwareState>(
-        builder: (context, state) {
-          return Column(
-            children: [
-              state.selectedBinaryInfo.isEmpty
-                  ? const SizedBox()
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Icon(
-                            Icons.insert_drive_file,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                        Flexible(
-                          child: Text(
-                            '${state.selectedBinaryInfo.name}.${state.selectedBinaryInfo.extensionName}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                            ),
-                            overflow: TextOverflow
-                                .ellipsis, // Handles long file names
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          child: state.binary.isNotEmpty
-                              ? const Icon(
-                                  Icons.check,
-                                  color: CustomStyle.customGreen,
-                                )
-                              : const Icon(
-                                  Icons.close,
-                                  color: CustomStyle.customRed,
-                                ),
-                        ),
-                      ],
-                    ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  fixedSize: const Size(140, 60),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
-                  ),
-                  textStyle: const TextStyle(
-                    fontSize: CustomStyle.sizeXXL,
-                  ),
-                ),
-                onPressed: () async {
-                  FilePicker.platform
-                      .pickFiles(
-                    type: FileType.any,
-                    // allowedExtensions: ['bin'],
-                    allowCompression: false,
-                  )
-                      .then((FilePickerResult? result) {
-                    if (result != null) {
-                      context.read<Setting18FirmwareBloc>().add(BinarySelected(
-                            partId: partId,
-                            selectedBinary: result.files.single.path!,
-                          ));
-                      // File file = File(result.files.single.path!);
-                      // print(file.path);
-                    } else {
-                      // 使用者取消 file picker, 沒有選擇任何檔案
-                    }
-                  });
-                },
-                child: Text(
-                  AppLocalizations.of(context)!.selectFirmwareFile,
-                ),
-              ),
-              const SizedBox(
-                height: CustomStyle.size24,
-              ),
-            ],
-          );
+      child: Builder(
+        builder: (context) {
+          final HomeState homeState = context.watch<HomeBloc>().state;
+          final setting18FirmwareState =
+              context.watch<Setting18FirmwareBloc>().state;
+
+          if (homeState.loadingStatus.isRequestSuccess) {
+            return buildSelectButton(
+              isEnabled: true,
+              selectedBinaryInfo: setting18FirmwareState.selectedBinaryInfo,
+              binary: setting18FirmwareState.binary,
+            );
+          } else {
+            return buildSelectButton(
+              isEnabled: false,
+              selectedBinaryInfo: setting18FirmwareState.selectedBinaryInfo,
+              binary: setting18FirmwareState.binary,
+            );
+          }
         },
       ),
     );
@@ -650,7 +679,7 @@ class _StartButton extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                fixedSize: const Size(140, 60),
+                minimumSize: const Size(140, 60),
                 shape: const RoundedRectangleBorder(
                   borderRadius:
                       BorderRadius.all(Radius.circular(CustomStyle.sizeS)),
@@ -757,7 +786,7 @@ class _StartButton extends StatelessWidget {
             currentFirmwareVersion: currentFirmwareVersion,
             // newFirmwareVersion:
             //     setting18FirmwareState.selectedBinaryInfo.version,
-            isEnabled: true,
+            isEnabled: setting18FirmwareState.binaryLoadStatus.isRequestSuccess,
           );
         } else {
           if (homeState.connectionStatus.isRequestFailure) {
