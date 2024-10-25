@@ -414,5 +414,5 @@
     "dialogMessageWarmResetingAlmostDone": "Almost done",
     "dialogMessageWarmResetSeccessful": "Warm reset performed successfully.",
     "dialogMessageForwardCEQChanged": "The equalizer module has been detected as changed.",
-    "dialogMessageSelectedFirmwareInvalid": "The file you selected is invalid"
+    "dialogMessageSelectedFirmwareInvalid": "The file you selected is invalid."
 }

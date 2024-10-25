@@ -429,9 +429,12 @@ class _FilePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget buildSelectButton({
       required bool isEnabled,
-      required BinaryInfo selectedBinaryInfo,
-      required List<int> binary,
+      required Setting18FirmwareState setting18FirmwareState,
     }) {
+      BinaryInfo selectedBinaryInfo = setting18FirmwareState.selectedBinaryInfo;
+      bool isValid = setting18FirmwareState.binary.isNotEmpty &&
+          setting18FirmwareState.sum != -1;
+
       return Column(
         children: [
           selectedBinaryInfo.isEmpty
@@ -460,7 +463,7 @@ class _FilePicker extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: binary.isNotEmpty
+                      child: isValid
                           ? const Icon(
                               Icons.check,
                               color: CustomStyle.customGreen,
@@ -538,14 +541,12 @@ class _FilePicker extends StatelessWidget {
           if (homeState.loadingStatus.isRequestSuccess) {
             return buildSelectButton(
               isEnabled: true,
-              selectedBinaryInfo: setting18FirmwareState.selectedBinaryInfo,
-              binary: setting18FirmwareState.binary,
+              setting18FirmwareState: setting18FirmwareState,
             );
           } else {
             return buildSelectButton(
               isEnabled: false,
-              selectedBinaryInfo: setting18FirmwareState.selectedBinaryInfo,
-              binary: setting18FirmwareState.binary,
+              setting18FirmwareState: setting18FirmwareState,
             );
           }
         },

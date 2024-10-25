@@ -199,7 +199,7 @@
     "firmawreUpdateCaution1": "請提供設備穩定的電源，更新過程中請勿關閉電源。",
     "firmawreUpdateCaution2": "更新過程中請勿拔除藍芽調適器與關閉 App。",
     "firmawreUpdateCaution3": "設備與行動裝置間需維持穩定的藍芽連線距離。",
-    "firmawreUpdateCaution4": "請選擇正確的韌體檔案",
+    "firmawreUpdateCaution4": "請選擇正確的韌體檔案。",
     "readyToSend": "準備傳送韌體",
     "sendingBinary": "傳送中",
     "verifying": "驗證中",
