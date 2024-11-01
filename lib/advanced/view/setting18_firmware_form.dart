@@ -301,19 +301,19 @@ class _UserCaution extends StatelessWidget {
         ),
         getInstructionRow(
           number: '1. ',
-          description: AppLocalizations.of(context)!.firmawreUpdateCaution1,
+          description: AppLocalizations.of(context)!.firmwareUpdateCaution1,
         ),
         getInstructionRow(
           number: '2. ',
-          description: AppLocalizations.of(context)!.firmawreUpdateCaution2,
+          description: AppLocalizations.of(context)!.firmwareUpdateCaution2,
         ),
         getInstructionRow(
           number: '3. ',
-          description: AppLocalizations.of(context)!.firmawreUpdateCaution3,
+          description: AppLocalizations.of(context)!.firmwareUpdateCaution3,
         ),
         getInstructionRow(
           number: '4. ',
-          description: AppLocalizations.of(context)!.firmawreUpdateCaution4,
+          description: AppLocalizations.of(context)!.firmwareUpdateCaution4,
         ),
       ],
     );
@@ -455,7 +455,6 @@ class _FilePicker extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Colors.black,
                         ),
                         overflow:
                             TextOverflow.ellipsis, // Handles long file names
