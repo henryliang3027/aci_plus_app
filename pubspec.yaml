@@ -78,10 +78,13 @@ dependencies:
       url: https://github.com/henryliang3027/flutter_speed_chart.git
       ref: revise1
 
+  # win_outlook:
+  #   git:
+  #     url: https://github.com/henryliang3027/win_outlook.git
+  #     ref: main
+
   win_outlook:
-    git:
-      url: https://github.com/henryliang3027/win_outlook.git
-      ref: main
+    path: /Users/henry.liang/projects/win_outlook
 
   # path_drawing:
   #   git:

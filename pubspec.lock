@@ -1440,11 +1440,9 @@ packages:
   win_outlook:
     dependency: "direct main"
     description:
-      path: "."
-      ref: main
-      resolved-ref: "017c14b38f1d2e23a05017cd61823406a0fb6bb1"
-      url: "https://github.com/henryliang3027/win_outlook.git"
-    source: git
+      path: "C:\\Users\\henry.liang\\projects\\win_outlook"
+      relative: false
+    source: path
     version: "0.0.1"
   xdg_directories:
     dependency: transitive
