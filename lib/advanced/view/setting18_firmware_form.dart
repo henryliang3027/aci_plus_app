@@ -435,6 +435,9 @@ class _FilePicker extends StatelessWidget {
       bool isValid = setting18FirmwareState.binary.isNotEmpty &&
           setting18FirmwareState.sum != -1;
 
+      bool isSubmissionInProgress =
+          setting18FirmwareState.submissionStatus.isSubmissionInProgress;
+
       return Column(
         children: [
           selectedBinaryInfo.isEmpty
@@ -462,7 +465,7 @@ class _FilePicker extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: isValid
+                      child: isValid && !isSubmissionInProgress
                           ? const Icon(
                               Icons.check,
                               color: CustomStyle.customGreen,
@@ -507,7 +510,8 @@ class _FilePicker extends StatelessWidget {
 
     return BlocListener<Setting18FirmwareBloc, Setting18FirmwareState>(
       listenWhen: (previous, current) =>
-          previous.binaryLoadStatus != current.binaryLoadStatus,
+          previous.binaryLoadStatus != current.binaryLoadStatus ||
+          previous.submissionStatus != current.submissionStatus,
       listener: (context, state) {
         if (state.binaryLoadStatus.isRequestInProgress) {
           showProgressingDialog(context);
@@ -534,7 +538,7 @@ class _FilePicker extends StatelessWidget {
       child: Builder(
         builder: (context) {
           final HomeState homeState = context.watch<HomeBloc>().state;
-          final setting18FirmwareState =
+          final Setting18FirmwareState setting18FirmwareState =
               context.watch<Setting18FirmwareBloc>().state;
 
           if (homeState.loadingStatus.isRequestSuccess) {

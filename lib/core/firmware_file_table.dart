@@ -10,7 +10,7 @@ class FirmwareFileTable {
       50,
       82,
       78,
-      48,
+      56,
     ], // SDLE 'L846TC2RN0'
     '2': [
       65,
@@ -27,7 +27,7 @@ class FirmwareFileTable {
       50,
       82,
       78,
-      48,
+      50,
     ], // MOTO BLE 'AMT-BL846TC2RN0'
     '3': [
       65,
