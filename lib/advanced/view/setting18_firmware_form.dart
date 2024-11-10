@@ -510,8 +510,7 @@ class _FilePicker extends StatelessWidget {
 
     return BlocListener<Setting18FirmwareBloc, Setting18FirmwareState>(
       listenWhen: (previous, current) =>
-          previous.binaryLoadStatus != current.binaryLoadStatus ||
-          previous.submissionStatus != current.submissionStatus,
+          previous.binaryLoadStatus != current.binaryLoadStatus,
       listener: (context, state) {
         if (state.binaryLoadStatus.isRequestInProgress) {
           showProgressingDialog(context);
@@ -542,10 +541,18 @@ class _FilePicker extends StatelessWidget {
               context.watch<Setting18FirmwareBloc>().state;
 
           if (homeState.loadingStatus.isRequestSuccess) {
-            return buildSelectButton(
-              isEnabled: true,
-              setting18FirmwareState: setting18FirmwareState,
-            );
+            if (setting18FirmwareState
+                .submissionStatus.isSubmissionInProgress) {
+              return buildSelectButton(
+                isEnabled: false,
+                setting18FirmwareState: setting18FirmwareState,
+              );
+            } else {
+              return buildSelectButton(
+                isEnabled: true,
+                setting18FirmwareState: setting18FirmwareState,
+              );
+            }
           } else {
             return buildSelectButton(
               isEnabled: false,
