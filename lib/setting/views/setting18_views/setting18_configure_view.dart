@@ -1254,6 +1254,30 @@ class _SettingFloatingActionButton extends StatelessWidget {
             backgroundColor:
                 Theme.of(context).colorScheme.primary.withAlpha(200),
             child: Icon(
+              CustomIcons.information,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+            onPressed: () {
+              context
+                  .read<Setting18ConfigureBloc>()
+                  .add(const EditModeDisabled());
+
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.focusedChild?.unfocus();
+              }
+            },
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          FloatingActionButton(
+            shape: const CircleBorder(
+              side: BorderSide.none,
+            ),
+            backgroundColor:
+                Theme.of(context).colorScheme.primary.withAlpha(200),
+            child: Icon(
               CustomIcons.cancel,
               color: Theme.of(context).colorScheme.onPrimary,
             ),

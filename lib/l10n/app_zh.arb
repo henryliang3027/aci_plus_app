@@ -225,6 +225,48 @@
 
 
     "textFieldErrorMessage": "內容不正確",
+
+
+    "informationPageSetupWizard1": "藍芽 / 放大器基本資訊",
+    "informationPageSetupWizard2": "使用預設參數直接設定放大器",
+    "informationPageSetupWizard3": "設備狀態燈號顯示",
+    "informationPageSetupWizard4": "選擇主題 ( 日 / 夜間模式 )",
+    "informationPageSetupWizard5": "放大器重新啟動功能",
+
+    "devicePageSetupWizard1": "位置和經 / 緯度為必填項",
+    "devicePageSetupWizard2": "低頻與高頻設定需介於起始頻率與截止頻率範圍內",
+    "devicePageSetupWizard3": "ALSC 模式關閉後放大器處於 TGC 模式",
+    "devicePageSetupWizard4": "可調整記錄週期",
+
+    "thresholdPageSetupWizard1": "可調整 溫度, 電壓, 電壓漣波與 TCP 輸出功率上 / 下限",
+    "thresholdPageSetupWizard2": "可開啟或關閉低頻輸出與高頻輸出的告警通知",
+
+    "balancePageSetupWizard1": "自動偵測目前等化器 ( EQ ) 類別",
+    "balancePageSetupWizard2": "自動調整連線設備上行與下行的衰減 ( PAD ) 範圍",
+    "balancePageSetupWizard3": "各 Port 訊號通過量設定",
+
+    "statusPageSetupWizard1": "自動更新目前放大器狀態",
+    "statusPageSetupWizard2": "溫度 ( °F / °C ) 轉換顯示",
+    "statusPageSetupWizard3": "低頻與高頻狀態皆為 鎖定 時, ALSC 模式完成",
+
+    "dataLogPageSetupWizard1": "一次點選顯示 1024 筆資料, 最多顯示 10240 筆資料. 舉例 : 每 30 分鐘記錄一筆資料, 一次點選約顯示 3 周 資訊, 最多可顯示 7 個月 內資料",
+    "dataLogPageSetupWizard2": "可放大 / 縮小與點選圖表顯示詳細資訊",
+    "dataLogPageSetupWizard3": "可下載 與 分享資料 ( Excel 格式 )",
+
+    "rfLevelPageSetupWizard1": "顯示目前 RF 頻段強度值 (下行輸入 / 輸出 各 256 頻段 ). 最多儲存 400 筆紀錄. 舉例 : 每 60 分鐘記錄一筆資料, 最多可顯示 16天 內資料",
+    "rfLevelPageSetupWizard2": "可放大 / 縮小與點選圖表顯示詳細資訊",
+    "rfLevelPageSetupWizard3": "可下載 與 分享資料 ( Excel 格式 )",
+
+    "deviceSettingPageSetupWizard1": "可離線進行設備預設設置，每個類別可設定3個設定檔",
+    "deviceSettingPageSetupWizard2": "產生 / 掃描二維碼共享數據, 導出 / 導入與其他設備同步數據",
+
+    "firmwareUpdatePageSetupWizard1": "藍牙連線有效範圍 10 米",
+    "firmwareUpdatePageSetupWizard2": "選擇要更新至裝置的新 / 舊韌體版本",
+    "firmwareUpdatePageSetupWizard3": "更新時間 2 分鐘以內",
+
+    "userActivityLogPageSetupWizard1": "App 對設備的操作紀錄",
+    "userActivityLogPageSetupWizard2": "最大選取 30 天內的紀錄, 一次點選顯示 500 筆紀錄",
+    "userActivityLogPageSetupWizard3": "可下載 與 分享資料 ( Excel 格式 )",
     
     "dialogTitleAskBeforeExitApp": "您確定要退出應用程式嗎？",
     "dialogTitleDownloading": "下載中...",

@@ -228,6 +228,48 @@
 
     "textFieldErrorMessage": "Invalid value",
 
+
+    "informationPageSetupWizard1": "Basic information of Bluetooth / Amplifier",
+    "informationPageSetupWizard2": "Use preset parameters to set the amplifier directly",
+    "informationPageSetupWizard3": "Equipment status display",
+    "informationPageSetupWizard4": "Select theme ( day / night mode )",
+    "informationPageSetupWizard5": "Amplifier warm reset function",
+
+    "devicePageSetupWizard1": "Location and longitude / latitude are required",
+    "devicePageSetupWizard2": "The low frequency and high frequency settings must be within the range of the start frequency and stop frequency",
+    "devicePageSetupWizard3": "The amplifier in TGC mode after ALSC mode turned off",
+    "devicePageSetupWizard4": "Adjustable recording period",
+
+    "thresholdPageSetupWizard1": "Adjustable temperature, voltage, voltage ripple and TCP output power upper / lower limit",
+    "thresholdPageSetupWizard2": "Alarm notifications for low-frequency output and high-frequency output can be turned on or off",
+
+    "balancePageSetupWizard1": "Automatically detect the current equalizer ( EQ ) type",
+    "balancePageSetupWizard2": "Automatically adjust the Reverse and Forward attenuation ( PAD ) ranges of connected device",
+    "balancePageSetupWizard3": "Each Port signal Ingress setting",
+
+    "statusPageSetupWizard1": "Automatically update the current amplifier status",
+    "statusPageSetupWizard2": "Temperature ( °F / °C ) conversion display",
+    "statusPageSetupWizard3": "When the low-frequency and high-frequency status are both locked, the ALSC mode is completed",
+
+    "dataLogPageSetupWizard1": "Display 1024 logs with one click, and display up to 10240 logs. For example : record a log every 30 minutes, display about 3 weeks of data with one click, and display up to 7 months of data",
+    "dataLogPageSetupWizard2": "You can zoom in / out and click on the chart to display detailed information",
+    "dataLogPageSetupWizard3": "Download and share data ( Excel format )",
+
+    "rfLevelPageSetupWizard1": "Display the current RF band strength value ( Forward input / output 256 frequency bands each ). Up to 400 records can be stored. For example : data is recorded every 60 minutes, and up to 16 days of data can be displayed.",
+    "rfLevelPageSetupWizard2": "You can zoom in / out and click on the chart to display detailed information",
+    "rfLevelPageSetupWizard3": "Download and share data ( Excel format )",
+
+    "deviceSettingPageSetupWizard1": "Device default settings can be made offline, and 3 configuration files can be set for each category",
+    "deviceSettingPageSetupWizard2": "Generate / scan QR code to share data, export / import to synchronize data with other devices",
+
+    "firmwareUpdatePageSetupWizard1": "Bluetooth connection has an effective range of 10 meters",
+    "firmwareUpdatePageSetupWizard2": "Select the new / old firmware version to update to the device",
+    "firmwareUpdatePageSetupWizard3": "Update time within 2 minutes",
+
+    "userActivityLogPageSetupWizard1": "App’s operation record of the device",
+    "userActivityLogPageSetupWizard2": "A maximum of 30 days of records can be selected, and 500 records can be displayed in one click.",
+    "userActivityLogPageSetupWizard3": "Download and share data ( Excel format )",
+
     "dialogTitleAskBeforeExitApp": "Do you want to exit the app ?",
     "dialogTitleDownloading": "Downloading...",
     "dialogTitleProcessing": "Setting up...",

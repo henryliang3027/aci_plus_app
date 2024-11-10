@@ -225,6 +225,47 @@
 
 
     "textFieldErrorMessage": "Valeur invalide",
+
+    "informationPageSetupWizard1": "Informations de base sur Bluetooth / Amplificateur",
+    "informationPageSetupWizard2": "Utiliser des paramètres prédéfinis pour configurer directement l'amplificateur",
+    "informationPageSetupWizard3": "Affichage de l'état de l'équipement",
+    "informationPageSetupWizard4": "Sélectionner le thème (mode jour / nuit)",
+    "informationPageSetupWizard5": "Fonction de réinitialisation à chaud de l'amplificateur",
+
+    "devicePageSetupWizard1": "La localisation et la longitude / latitude sont requises",
+    "devicePageSetupWizard2": "Les réglages de basse fréquence et de haute fréquence doivent être dans la plage de fréquence de départ et de fréquence d'arrêt",
+    "devicePageSetupWizard3": "L'amplificateur en mode TGC après que le mode ALSC soit désactivé",
+    "devicePageSetupWizard4": "Période d'enregistrement ajustable",
+
+    "thresholdPageSetupWizard1": "Limite supérieure / inférieure ajustable de température, de tension, de fluctuation de tension et de puissance de sortie TCP",
+    "thresholdPageSetupWizard2": "Les notifications d'alarme pour la sortie basse fréquence et haute fréquence peuvent être activées ou désactivées",
+
+    "balancePageSetupWizard1": "Détecter automatiquement le type d'égaliseur (EQ) actuel",
+    "balancePageSetupWizard2": "Ajuster automatiquement les plages d'atténuation (PAD) inversée et directe du dispositif connecté",
+    "balancePageSetupWizard3": "Réglage de l'entrée de signal de chaque port",
+
+    "statusPageSetupWizard1": "Mettre automatiquement à jour l'état actuel de l'amplificateur",
+    "statusPageSetupWizard2": "Affichage de la conversion de température (°F / °C)",
+    "statusPageSetupWizard3": "Lorsque l'état de basse fréquence et de haute fréquence est verrouillé, le mode ALSC est terminé",
+
+    "dataLogPageSetupWizard1": "Afficher 1024 journaux d’un clic, et afficher jusqu'à 10240 journaux. Par exemple : enregistrer un journal toutes les 30 minutes, afficher environ 3 semaines de données d'un clic et afficher jusqu'à 7 mois de données",
+    "dataLogPageSetupWizard2": "Vous pouvez zoomer et cliquer sur le graphique pour afficher des informations détaillées",
+    "dataLogPageSetupWizard3": "Télécharger et partager des données (format Excel)",
+
+    "rfLevelPageSetupWizard1": "Afficher la valeur actuelle de la force de bande RF (entrée / sortie de 256 bandes de fréquence chacune). Jusqu'à 400 enregistrements peuvent être stockés. Par exemple : les données sont enregistrées toutes les 60 minutes, et jusqu'à 16 jours de données peuvent être affichés.",
+    "rfLevelPageSetupWizard2": "Vous pouvez zoomer et cliquer sur le graphique pour afficher des informations détaillées",
+    "rfLevelPageSetupWizard3": "Télécharger et partager des données (format Excel)",
+
+    "deviceSettingPageSetupWizard1": "Les paramètres par défaut de l'appareil peuvent être définis hors ligne, et 3 fichiers de configuration peuvent être définis pour chaque catégorie",
+    "deviceSettingPageSetupWizard2": "Générer / scanner un code QR pour partager des données, exporter / importer pour synchroniser les données avec d'autres appareils",
+
+    "firmwareUpdatePageSetupWizard1": "La connexion Bluetooth a une portée effective de 10 mètres",
+    "firmwareUpdatePageSetupWizard2": "Sélectionner la version de firmware nouvelle / ancienne pour mettre à jour l'appareil",
+    "firmwareUpdatePageSetupWizard3": "Temps de mise à jour dans les 2 minutes",
+
+    "userActivityLogPageSetupWizard1": "Enregistrement des opérations de l'application pour l'appareil",
+    "userActivityLogPageSetupWizard2": "Un maximum de 30 jours d'enregistrements peut être sélectionné, et 500 enregistrements peuvent être affichés d'un clic",
+    "userActivityLogPageSetupWizard3": "Télécharger et partager des données (format Excel)",
     
     "dialogTitleAskBeforeExitApp": "Voulez-vous quitter l’application ?",
     "dialogTitleDownloading": "Téléchargement...",
