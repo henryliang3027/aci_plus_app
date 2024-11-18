@@ -1,12 +1,13 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_advanced/setting18_advanced_bloc.dart';
 import 'package:aci_plus_app/advanced/bloc/setting18_firmware/setting18_firmware_bloc.dart';
-import 'package:aci_plus_app/advanced/shared/custom_progressing_dialog.dart';
+import 'package:aci_plus_app/advanced/shared/utils.dart';
+import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/setup_wizard_dialog.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -218,24 +219,27 @@ class Setting18FirmwareForm extends StatelessWidget {
           });
         }
       },
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const _UserCaution(),
-              const _ProgressBar(),
-              _FilePicker(
-                partId: partId,
-              ),
-              _StartButton(
-                pageController: pageController,
-                partId: partId,
-              ),
-            ],
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const _UserCaution(),
+                const _ProgressBar(),
+                _FilePicker(
+                  partId: partId,
+                ),
+                _StartButton(
+                  pageController: pageController,
+                  partId: partId,
+                ),
+              ],
+            ),
           ),
         ),
+        floatingActionButton: const _Setting18FirmwareFloatingActionButton(),
       ),
     );
   }
@@ -435,9 +439,6 @@ class _FilePicker extends StatelessWidget {
       bool isValid = setting18FirmwareState.binary.isNotEmpty &&
           setting18FirmwareState.sum != -1;
 
-      bool isSubmissionInProgress =
-          setting18FirmwareState.submissionStatus.isSubmissionInProgress;
-
       return Column(
         children: [
           selectedBinaryInfo.isEmpty
@@ -465,7 +466,7 @@ class _FilePicker extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: isValid && !isSubmissionInProgress
+                      child: isValid
                           ? const Icon(
                               Icons.check,
                               color: CustomStyle.customGreen,
@@ -816,6 +817,48 @@ class _StartButton extends StatelessWidget {
             isEnabled: false,
           );
         }
+      },
+    );
+  }
+}
+
+class _Setting18FirmwareFloatingActionButton extends StatelessWidget {
+  const _Setting18FirmwareFloatingActionButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.loadingStatus != current.loadingStatus,
+      builder: (context, state) {
+        return FloatingActionButton(
+          heroTag: null,
+          shape: const CircleBorder(
+            side: BorderSide.none,
+          ),
+          backgroundColor: state.loadingStatus.isRequestSuccess
+              ? Theme.of(context).colorScheme.primary.withAlpha(200)
+              : Colors.grey.withAlpha(200),
+          onPressed: state.loadingStatus.isRequestSuccess
+              ? () {
+                  showSetupWizardDialog(
+                    context,
+                    [
+                      AppLocalizations.of(context)!
+                          .firmwareUpdatePageSetupWizard1,
+                      AppLocalizations.of(context)!
+                          .firmwareUpdatePageSetupWizard2,
+                      AppLocalizations.of(context)!
+                          .firmwareUpdatePageSetupWizard3,
+                    ],
+                  );
+                }
+              : null,
+          child: Icon(
+            CustomIcons.information,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        );
       },
     );
   }

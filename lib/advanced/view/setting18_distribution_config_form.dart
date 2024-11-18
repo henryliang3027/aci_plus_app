@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_bloc.dart';
+import 'package:aci_plus_app/advanced/shared/utils.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/repositories/config.dart';
@@ -48,29 +49,38 @@ class _ConfigFloatActionButton extends StatelessWidget {
 
     return BlocBuilder<Setting18ConfigBloc, Setting18ConfigState>(
       builder: (context, state) {
-        return FloatingActionButton(
-          shape: const CircleBorder(
-            side: BorderSide.none,
-          ),
-          backgroundColor: state.distributionConfigs.length < 3
-              ? Theme.of(context).colorScheme.primary.withAlpha(200)
-              : Colors.grey.withAlpha(200),
-          onPressed: state.distributionConfigs.length < 3
-              ? () async {
-                  showAddConfigDialog(groupId: '1').then(
-                    (result) async {
-                      // await Future.delayed(Duration(seconds: 1));
-                      context
-                          .read<Setting18ConfigBloc>()
-                          .add(const ConfigsRequested());
-                    },
-                  );
-                }
-              : null,
-          child: Icon(
-            Icons.add,
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            getDeviceSettingSetupWizard(context: context),
+            const SizedBox(
+              height: 10,
+            ),
+            FloatingActionButton(
+              shape: const CircleBorder(
+                side: BorderSide.none,
+              ),
+              backgroundColor: state.distributionConfigs.length < 3
+                  ? Theme.of(context).colorScheme.primary.withAlpha(200)
+                  : Colors.grey.withAlpha(200),
+              onPressed: state.distributionConfigs.length < 3
+                  ? () async {
+                      showAddConfigDialog(groupId: '1').then(
+                        (result) async {
+                          // await Future.delayed(Duration(seconds: 1));
+                          context
+                              .read<Setting18ConfigBloc>()
+                              .add(const ConfigsRequested());
+                        },
+                      );
+                    }
+                  : null,
+              child: Icon(
+                Icons.add,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
+          ],
         );
       },
     );

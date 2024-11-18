@@ -5,6 +5,7 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
+import 'package:aci_plus_app/core/setup_wizard_dialog.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
@@ -843,12 +844,46 @@ class _SettingFloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget getSetupWizardFloatingActionButton({
+      required bool enabled,
+    }) {
+      return FloatingActionButton(
+        // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
+        heroTag: null,
+        shape: const CircleBorder(
+          side: BorderSide.none,
+        ),
+        backgroundColor: enabled
+            ? Theme.of(context).colorScheme.primary.withAlpha(200)
+            : Colors.grey.withAlpha(200),
+        onPressed: enabled
+            ? () {
+                showSetupWizardDialog(
+                  context,
+                  [
+                    AppLocalizations.of(context)!.thresholdPageSetupWizard1,
+                    AppLocalizations.of(context)!.thresholdPageSetupWizard2,
+                  ],
+                );
+              }
+            : null,
+        child: Icon(
+          CustomIcons.information,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+      );
+    }
+
     Widget getEnabledEditModeTools({
       required bool enableSubmission,
     }) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          getSetupWizardFloatingActionButton(enabled: true),
+          const SizedBox(
+            height: 10.0,
+          ),
           FloatingActionButton(
             shape: const CircleBorder(
               side: BorderSide.none,
@@ -924,6 +959,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          getSetupWizardFloatingActionButton(enabled: true),
+          const SizedBox(
+            height: 10.0,
+          ),
           graphFilePath.isNotEmpty
               ? FloatingActionButton(
                   // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
@@ -1015,6 +1054,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          getSetupWizardFloatingActionButton(enabled: false),
+          const SizedBox(
+            height: 10.0,
+          ),
           FloatingActionButton(
             // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
             heroTag: null,

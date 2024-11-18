@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_bloc.dart';
-import 'package:aci_plus_app/advanced/shared/custom_progressing_dialog.dart';
+import 'package:aci_plus_app/advanced/shared/utils.dart';
 import 'package:aci_plus_app/advanced/view/description_input_page.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_image_viewer.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_scanner_win.dart';

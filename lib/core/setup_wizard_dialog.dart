@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> showSetupWizardDialog(
   BuildContext context,
+  List<String> descriptions,
 ) async {
   return showDialog<void>(
     context: context,
@@ -13,24 +14,28 @@ Future<void> showSetupWizardDialog(
       // var height = MediaQuery.of(context).size.height;
 
       return AlertDialog(
-        insetPadding: EdgeInsets.symmetric(
-          horizontal: width * 0.1,
-        ),
+        // insetPadding: EdgeInsets.symmetric(
+        //   horizontal: width * 0.1,
+        // ),
         title: Text(
-          AppLocalizations.of(context)!.dialogTitleSuccess,
+          AppLocalizations.of(context)!.setupWizardFunctionDescription,
         ),
         content: SizedBox(
           width: width,
-          child: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.dialogMessageSaveSuccessful,
-                  style: const TextStyle(
-                    fontSize: CustomStyle.sizeL,
-                  ),
-                ),
-              ],
+          child: Padding(
+            padding: const EdgeInsets.only(top: CustomStyle.sizeL),
+            child: SingleChildScrollView(
+              child: ListBody(
+                children: [
+                  for (int i = 0; i < descriptions.length; i++) ...[
+                    getInstructionRow(
+                      context: context,
+                      number: '${i + 1}.'.toString(),
+                      description: descriptions[i],
+                    ),
+                  ]
+                ],
+              ),
             ),
           ),
         ),
@@ -46,5 +51,39 @@ Future<void> showSetupWizardDialog(
         ],
       );
     },
+  );
+}
+
+Widget getInstructionRow({
+  required BuildContext context,
+  required String number,
+  required String description,
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(
+      bottom: 10.0,
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment:
+          CrossAxisAlignment.baseline, // Align based on text baseline
+      textBaseline: TextBaseline.alphabetic,
+      children: [
+        Text(
+          number,
+          style: const TextStyle(
+            fontSize: CustomStyle.sizeL,
+          ),
+        ),
+        Flexible(
+          child: Text(
+            description,
+            style: const TextStyle(
+              fontSize: CustomStyle.sizeL,
+            ),
+          ),
+        ),
+      ],
+    ),
   );
 }

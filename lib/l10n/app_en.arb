@@ -229,6 +229,7 @@
     "textFieldErrorMessage": "Invalid value",
 
 
+    "setupWizardFunctionDescription": "Function Description",
     "informationPageSetupWizard1": "Basic information of Bluetooth / Amplifier",
     "informationPageSetupWizard2": "Use preset parameters to set the amplifier directly",
     "informationPageSetupWizard3": "Equipment status display",

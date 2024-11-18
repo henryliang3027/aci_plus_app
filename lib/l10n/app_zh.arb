@@ -226,7 +226,7 @@
 
     "textFieldErrorMessage": "內容不正確",
 
-
+    "setupWizardFunctionDescription": "功能說明",
     "informationPageSetupWizard1": "藍芽 / 放大器基本資訊",
     "informationPageSetupWizard2": "使用預設參數直接設定放大器",
     "informationPageSetupWizard3": "設備狀態燈號顯示",
