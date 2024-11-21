@@ -236,7 +236,7 @@
     "informationPageSetupWizard4": "Select theme ( day / night mode )",
     "informationPageSetupWizard5": "Amplifier warm reset function",
 
-    "devicePageSetupWizard1": "Location and longitude / latitude are required",
+    "devicePageSetupWizard1": "Device attribute are required",
     "devicePageSetupWizard2": "The low frequency and high frequency settings must be within the range of the start frequency and stop frequency",
     "devicePageSetupWizard3": "The amplifier in TGC mode after ALSC mode turned off",
     "devicePageSetupWizard4": "Adjustable recording period",
@@ -450,7 +450,7 @@
     "dialogMessageDataExportSuccessful": "Data export successful.",
     "dialogMessageFileOpenFailed": "No app found to open this file.",
     "dialogMessageNoMoreLogs": "No more logs.",
-    "dialogMessageEnterConfirm": "To confirm, type \"confirm\" below.",
+    "dialogMessageConfirmExecution": "Confirm execution ?",
     "dialogMessageCodeHint": "Please enter your code",
     "dialogMessageEnterYourCode": "Only Arabic numerals, maximum 8 characters:",
     "dialogMessageEnterQRCodeDescription": "Maximum 22 characters:",

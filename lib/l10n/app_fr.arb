@@ -234,7 +234,7 @@
     "informationPageSetupWizard4": "Sélectionner le thème (mode jour / nuit)",
     "informationPageSetupWizard5": "Fonction de réinitialisation à chaud de l'amplificateur",
 
-    "devicePageSetupWizard1": "La localisation et la longitude / latitude sont requises",
+    "devicePageSetupWizard1": "Les attributs du dispositif sont requis",
     "devicePageSetupWizard2": "Les réglages de basse fréquence et de haute fréquence doivent être dans la plage de fréquence de départ et de fréquence d'arrêt",
     "devicePageSetupWizard3": "L'amplificateur en mode TGC après que le mode ALSC soit désactivé",
     "devicePageSetupWizard4": "Période d'enregistrement ajustable",
@@ -448,7 +448,7 @@
     "dialogMessageDataExportSuccessful": "Exportation données réussie",
     "dialogMessageFileOpenFailed": "Aucune application n'a été trouvée pour ouvrir ce fichier.",
     "dialogMessageNoMoreLogs": "Plus de journaux.",
-    "dialogMessageEnterConfirm": "Pour confirmer, tapez \"confirm\" ci-dessous.",
+    "dialogMessageConfirmExecution": "Confirmer l'exécution ?",
     "dialogMessageCodeHint": "Veuillez entrer votre code",
     "dialogMessageEnterYourCode": "Seuls les chiffres arabes, maximum 8 caractères:",
     "dialogMessageEnterQRCodeDescription": "Maximum 22 caractères:",

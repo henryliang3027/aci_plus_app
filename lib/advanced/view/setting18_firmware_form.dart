@@ -836,24 +836,13 @@ class _Setting18FirmwareFloatingActionButton extends StatelessWidget {
           shape: const CircleBorder(
             side: BorderSide.none,
           ),
-          backgroundColor: state.loadingStatus.isRequestSuccess
-              ? Theme.of(context).colorScheme.primary.withAlpha(200)
-              : Colors.grey.withAlpha(200),
-          onPressed: state.loadingStatus.isRequestSuccess
-              ? () {
-                  showSetupWizardDialog(
-                    context,
-                    [
-                      AppLocalizations.of(context)!
-                          .firmwareUpdatePageSetupWizard1,
-                      AppLocalizations.of(context)!
-                          .firmwareUpdatePageSetupWizard2,
-                      AppLocalizations.of(context)!
-                          .firmwareUpdatePageSetupWizard3,
-                    ],
-                  );
-                }
-              : null,
+          backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
+          onPressed: () {
+            showSetupWizardDialog(
+              context,
+              FunctionDescriptionType.firmwareUpdate,
+            );
+          },
           child: Icon(
             CustomIcons.information,
             color: Theme.of(context).colorScheme.onPrimary,

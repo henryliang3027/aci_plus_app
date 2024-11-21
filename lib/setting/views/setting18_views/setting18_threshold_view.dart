@@ -14,6 +14,7 @@ import 'package:aci_plus_app/setting/bloc/setting18_threshold/setting18_threshol
 import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
+import 'package:aci_plus_app/setting/shared/utils.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_page.dart';
 import 'package:flutter/foundation.dart';
@@ -844,43 +845,15 @@ class _SettingFloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget getSetupWizardFloatingActionButton({
-      required bool enabled,
-    }) {
-      return FloatingActionButton(
-        // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
-        heroTag: null,
-        shape: const CircleBorder(
-          side: BorderSide.none,
-        ),
-        backgroundColor: enabled
-            ? Theme.of(context).colorScheme.primary.withAlpha(200)
-            : Colors.grey.withAlpha(200),
-        onPressed: enabled
-            ? () {
-                showSetupWizardDialog(
-                  context,
-                  [
-                    AppLocalizations.of(context)!.thresholdPageSetupWizard1,
-                    AppLocalizations.of(context)!.thresholdPageSetupWizard2,
-                  ],
-                );
-              }
-            : null,
-        child: Icon(
-          CustomIcons.information,
-          color: Theme.of(context).colorScheme.onPrimary,
-        ),
-      );
-    }
-
     Widget getEnabledEditModeTools({
       required bool enableSubmission,
     }) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          getSetupWizardFloatingActionButton(enabled: true),
+          getThresholdSetupWizard(
+            context: context,
+          ),
           const SizedBox(
             height: 10.0,
           ),
@@ -959,7 +932,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          getSetupWizardFloatingActionButton(enabled: true),
+          getThresholdSetupWizard(
+            context: context,
+          ),
           const SizedBox(
             height: 10.0,
           ),
@@ -1054,7 +1029,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          getSetupWizardFloatingActionButton(enabled: false),
+          getThresholdSetupWizard(
+            context: context,
+          ),
           const SizedBox(
             height: 10.0,
           ),

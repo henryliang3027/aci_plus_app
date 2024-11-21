@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/setting/bloc/confirm_input/confirm_input_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,29 +39,16 @@ class _CofirmInputDialog extends StatelessWidget {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    AppLocalizations.of(context)!.dialogMessageEnterConfirm,
-                  ),
-                  const SizedBox(
-                    height: 6.0,
-                  ),
-                  TextField(
-                    onChanged: (text) {
-                      context
-                          .read<ConfirmInputBloc>()
-                          .add(TextChanged(text: text));
-                    },
-                    controller: confirmTextEditingController,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                      contentPadding: EdgeInsets.all(8.0),
-                      isDense: true,
-                      filled: true,
-                      fillColor:
-                          Theme.of(context).colorScheme.secondaryContainer,
-                      counterText: '',
-                    ),
+                  ListBody(
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!
+                            .dialogMessageConfirmExecution,
+                        style: const TextStyle(
+                          fontSize: CustomStyle.sizeL,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -74,11 +62,9 @@ class _CofirmInputDialog extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: state.isMatch
-                      ? () {
-                          Navigator.pop(context, true);
-                        }
-                      : null,
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  },
                   child: Text(
                     AppLocalizations.of(context)!.dialogMessageOk,
                   ),

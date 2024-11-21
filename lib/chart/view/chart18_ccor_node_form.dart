@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:aci_plus_app/chart/bloc/chart18_ccor_node/chart18_ccor_node_bloc.dart';
 import 'package:aci_plus_app/chart/shared/message_dialog.dart';
 import 'package:aci_plus_app/chart/shared/share_file_widget.dart';
+import 'package:aci_plus_app/chart/shared/utils.dart';
 import 'package:aci_plus_app/chart/view/code_input_page.dart';
 import 'package:aci_plus_app/chart/view/downloader18_ccor_node_page.dart';
 import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
@@ -434,15 +435,21 @@ class _DataLogFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (state.loadingStatus.isRequestSuccess) {
-          return const _MoreDataFloatingActionButton(
-            enabled: true,
-          );
-        } else {
-          return const _MoreDataFloatingActionButton(
-            enabled: false,
-          );
-        }
+        bool enabled = state.loadingStatus.isRequestSuccess;
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            getDataLogChartSetupWizard(
+              context: context,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            _MoreDataFloatingActionButton(
+              enabled: enabled,
+            ),
+          ],
+        );
       },
     );
   }

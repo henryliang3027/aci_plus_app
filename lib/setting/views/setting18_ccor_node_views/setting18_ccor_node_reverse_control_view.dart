@@ -12,6 +12,7 @@ import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
+import 'package:aci_plus_app/setting/shared/utils.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_graph_page.dart';
 import 'package:flutter/foundation.dart';
@@ -534,6 +535,12 @@ class _SettingFloatingActionButton extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          getControlSetupWizard(
+            context: context,
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
           FloatingActionButton(
             shape: const CircleBorder(
               side: BorderSide.none,
@@ -601,6 +608,12 @@ class _SettingFloatingActionButton extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          getControlSetupWizard(
+            context: context,
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
           graphFilePath.isNotEmpty
               ? FloatingActionButton(
                   // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
@@ -675,6 +688,12 @@ class _SettingFloatingActionButton extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          getControlSetupWizard(
+            context: context,
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
           FloatingActionButton(
             // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
             heroTag: null,

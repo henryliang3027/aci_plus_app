@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:aci_plus_app/chart/bloc/chart18/chart18_bloc.dart';
 import 'package:aci_plus_app/chart/bloc/data_log_chart/data_log_chart_bloc.dart';
 import 'package:aci_plus_app/chart/shared/message_dialog.dart';
+import 'package:aci_plus_app/chart/shared/utils.dart';
 import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/setup_wizard_dialog.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
@@ -124,43 +124,15 @@ class _DataLogFloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget getSetupWizard({
-      required bool enabled,
-    }) {
-      return FloatingActionButton(
-        heroTag: null,
-        shape: const CircleBorder(
-          side: BorderSide.none,
-        ),
-        backgroundColor: enabled
-            ? Theme.of(context).colorScheme.primary.withAlpha(200)
-            : Colors.grey.withAlpha(200),
-        onPressed: enabled
-            ? () {
-                showSetupWizardDialog(
-                  context,
-                  [
-                    AppLocalizations.of(context)!.dataLogPageSetupWizard1,
-                    AppLocalizations.of(context)!.dataLogPageSetupWizard2,
-                    AppLocalizations.of(context)!.dataLogPageSetupWizard3,
-                  ],
-                );
-              }
-            : null,
-        child: Icon(
-          CustomIcons.information,
-          color: Theme.of(context).colorScheme.onPrimary,
-        ),
-      );
-    }
-
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         bool enabled = state.loadingStatus.isRequestSuccess;
         return Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            getSetupWizard(enabled: enabled),
+            getDataLogChartSetupWizard(
+              context: context,
+            ),
             const SizedBox(
               height: 10,
             ),

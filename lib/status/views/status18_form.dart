@@ -1,9 +1,7 @@
 import 'package:aci_plus_app/core/common_enum.dart';
-import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/setup_wizard_dialog.dart';
 import 'package:aci_plus_app/core/status_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/core/working_mode_table.dart';
@@ -11,6 +9,7 @@ import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/status/bloc/status18/status18_bloc.dart';
+import 'package:aci_plus_app/status/shared/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -48,7 +47,7 @@ class Status18Form extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: const _Status18FloatingActionButton(),
+      floatingActionButton: const Status18SetupWizard(),
     );
   }
 }
@@ -2703,44 +2702,5 @@ class _OutputOperatingSlopeCard extends StatelessWidget {
         ),
       );
     });
-  }
-}
-
-class _Status18FloatingActionButton extends StatelessWidget {
-  const _Status18FloatingActionButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      buildWhen: (previous, current) =>
-          previous.loadingStatus != current.loadingStatus,
-      builder: (context, state) {
-        return FloatingActionButton(
-          heroTag: null,
-          shape: const CircleBorder(
-            side: BorderSide.none,
-          ),
-          backgroundColor: state.loadingStatus.isRequestSuccess
-              ? Theme.of(context).colorScheme.primary.withAlpha(200)
-              : Colors.grey.withAlpha(200),
-          onPressed: state.loadingStatus.isRequestSuccess
-              ? () {
-                  showSetupWizardDialog(
-                    context,
-                    [
-                      AppLocalizations.of(context)!.statusPageSetupWizard1,
-                      AppLocalizations.of(context)!.statusPageSetupWizard2,
-                      AppLocalizations.of(context)!.statusPageSetupWizard3,
-                    ],
-                  );
-                }
-              : null,
-          child: Icon(
-            CustomIcons.information,
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
-        );
-      },
-    );
   }
 }

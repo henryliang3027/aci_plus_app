@@ -3,11 +3,10 @@ import 'dart:math';
 import 'package:aci_plus_app/chart/bloc/chart18/chart18_bloc.dart';
 import 'package:aci_plus_app/chart/bloc/rf_level_chart/rf_level_chart_bloc.dart';
 import 'package:aci_plus_app/chart/shared/message_dialog.dart';
+import 'package:aci_plus_app/chart/shared/utils.dart';
 import 'package:aci_plus_app/chart/view/full_screen_chart_form.dart';
-import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/setup_wizard_dialog.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
@@ -300,30 +299,9 @@ class _SetupWizardFloatingActionButton extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.loadingStatus != current.loadingStatus,
       builder: (context, state) {
-        return FloatingActionButton(
-          heroTag: null,
-          shape: const CircleBorder(
-            side: BorderSide.none,
-          ),
-          backgroundColor: state.loadingStatus.isRequestSuccess
-              ? Theme.of(context).colorScheme.primary.withAlpha(200)
-              : Colors.grey.withAlpha(200),
-          onPressed: state.loadingStatus.isRequestSuccess
-              ? () {
-                  showSetupWizardDialog(
-                    context,
-                    [
-                      AppLocalizations.of(context)!.rfLevelPageSetupWizard1,
-                      AppLocalizations.of(context)!.rfLevelPageSetupWizard2,
-                      AppLocalizations.of(context)!.rfLevelPageSetupWizard3,
-                    ],
-                  );
-                }
-              : null,
-          child: Icon(
-            CustomIcons.information,
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
+        bool enabled = state.loadingStatus.isRequestSuccess;
+        return getRFLevelChartSetupWizard(
+          context: context,
         );
       },
     );

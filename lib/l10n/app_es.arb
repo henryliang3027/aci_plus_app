@@ -233,7 +233,7 @@
     "informationPageSetupWizard4": "Seleccionar tema (modo día / noche)",
     "informationPageSetupWizard5": "Función de reinicio en caliente del amplificador",
 
-    "devicePageSetupWizard1": "Se requieren ubicación y longitud / latitud",
+    "devicePageSetupWizard1": "Se requieren atributos del dispositivo",
     "devicePageSetupWizard2": "Las configuraciones de baja frecuencia y alta frecuencia deben estar dentro del rango de frecuencia de inicio y frecuencia de parada",
     "devicePageSetupWizard3": "El amplificador en modo TGC después de que el modo ALSC esté apagado",
     "devicePageSetupWizard4": "Período de grabación ajustable",
@@ -447,7 +447,7 @@
     "dialogMessageDataExportSuccessful": "Exportación exitosa.",
     "dialogMessageFileOpenFailed": "No se encontró ninguna aplicación para abrir este archivo.",
     "dialogMessageNoMoreLogs": "No hay más registros.",
-    "dialogMessageEnterConfirm": "Para confirmar, escriba \"confirm\" abajo.",
+    "dialogMessageConfirmExecution": "¿Confirmar ejecución?",
     "dialogMessageCodeHint": "Por favor ingresa tu código",
     "dialogMessageEnterYourCode": "Solo números arábigos, máximo de 8 caracteres:",
     "dialogMessageEnterQRCodeDescription": "Máximo 22 caracteres:",

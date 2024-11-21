@@ -8,6 +8,7 @@ import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
 import 'package:aci_plus_app/repositories/unit_repository.dart';
 import 'package:aci_plus_app/status/bloc/status18_ccor_node/status18_ccor_node_bloc.dart';
+import 'package:aci_plus_app/status/shared/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -43,6 +44,7 @@ class Status18CCorNodeForm extends StatelessWidget {
           );
         },
       ),
+      floatingActionButton: const Status18SetupWizard(),
     );
   }
 }

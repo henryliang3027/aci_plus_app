@@ -233,7 +233,7 @@
     "informationPageSetupWizard4": "選擇主題 ( 日 / 夜間模式 )",
     "informationPageSetupWizard5": "放大器重新啟動功能",
 
-    "devicePageSetupWizard1": "位置和經 / 緯度為必填項",
+    "devicePageSetupWizard1": "設備屬性為必填項",
     "devicePageSetupWizard2": "低頻與高頻設定需介於起始頻率與截止頻率範圍內",
     "devicePageSetupWizard3": "ALSC 模式關閉後放大器處於 TGC 模式",
     "devicePageSetupWizard4": "可調整記錄週期",
@@ -257,7 +257,7 @@
     "rfLevelPageSetupWizard2": "可放大 / 縮小與點選圖表顯示詳細資訊",
     "rfLevelPageSetupWizard3": "可下載 與 分享資料 ( Excel 格式 )",
 
-    "deviceSettingPageSetupWizard1": "可離線進行設備預設設置，每個類別可設定3個設定檔",
+    "deviceSettingPageSetupWizard1": "可離線進行設備預設設置，每個類別可設定 3 個設定檔",
     "deviceSettingPageSetupWizard2": "產生 / 掃描二維碼共享數據, 導出 / 導入與其他設備同步數據",
 
     "firmwareUpdatePageSetupWizard1": "藍牙連線有效範圍 10 米",
@@ -449,7 +449,7 @@
     "dialogMessageDataExportSuccessful": "資料匯出成功",
     "dialogMessageFileOpenFailed": "找不到可用來開啟此檔案的應用程式",
     "dialogMessageNoMoreLogs": "無法載入更多紀錄。",
-    "dialogMessageEnterConfirm": "請在下面的方塊中輸入 \"confirm\" 來確認您要進行設定",
+    "dialogMessageConfirmExecution": "確認執行",
     "dialogMessageCodeHint": "請輸入您的代碼",
     "dialogMessageEnterYourCode": "代碼僅能為阿拉伯數字，最多八個字元：",
     "dialogMessageEnterQRCodeDescription": "最多 22 個字元:",
