@@ -587,6 +587,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List<dynamic> resultOf1p8G2 = [];
     List<dynamic> resultOf1p8G3 = [];
     List<dynamic> resultOf1p8GForLogChunk = [];
+    List<dynamic> resultOf1p8GUserAttribute = [];
 
     resultOf1p8G0 = await _amp18Repository.requestCommand1p8G0();
 
@@ -716,6 +717,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     if (resultOf1p8G3[0]) {
+      resultOf1p8GUserAttribute =
+          await _amp18Repository.requestCommand1p8GUserAttribute();
+
+      newCharacteristicData.addAll(resultOf1p8GUserAttribute[1]);
+      emit(state.copyWith(
+        characteristicData: newCharacteristicData,
+      ));
+    } else {
+      emit(state.copyWith(
+        loadingStatus: FormStatus.requestFailure,
+        characteristicData: state.characteristicData,
+        errorMassage: 'Failed to load data',
+      ));
+    }
+
+    if (resultOf1p8GUserAttribute[0]) {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       for (int i = 0; i < 3; i++) {
         // 根據RSSI設定每個 chunk 之間的 delay

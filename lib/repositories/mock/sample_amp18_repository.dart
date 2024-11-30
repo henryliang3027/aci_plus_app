@@ -368,6 +368,29 @@ class SampleAmp18Repository extends Amp18Repository {
   }
 
   @override
+  Future<dynamic> requestCommand1p8GUserAttribute({
+    Duration timeout = const Duration(seconds: 10),
+  }) async {
+    int commandIndex = 205;
+
+    print('get data from request command 1p8GUserAttribute');
+
+    Map<DataKey, String> characteristicDataCache = {
+      DataKey.inputSignalLevel: '-123.4',
+      DataKey.cascadePosition: '頭端 幹線放大器 第二級位置',
+      DataKey.deviceName: '達運光電放大器',
+      DataKey.deviceNote: '11/20 告警有問題\n11/22 硬體過熱 連線很慢',
+    };
+
+    _characteristicDataCache.addAll(characteristicDataCache);
+
+    return [
+      true,
+      characteristicDataCache,
+    ];
+  }
+
+  @override
   List<List<ValuePair>> get1p8GDateValueCollectionOfLogs(
       List<Log1p8G> log1p8Gs) {
     return _amp18Parser.get1p8GDateValueCollectionOfLogs(log1p8Gs);

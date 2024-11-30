@@ -10,6 +10,8 @@ import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
 import 'package:aci_plus_app/repositories/shared/transmit_delay.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 import 'package:speed_chart/speed_chart.dart';
 
 class Amp18Repository {
@@ -442,6 +444,43 @@ class Amp18Repository {
         false,
         false, // no next chunk
         e.toString(),
+      ];
+    }
+  }
+
+  Future<dynamic> requestCommand1p8GUserAttribute({
+    Duration timeout = const Duration(seconds: 10),
+  }) async {
+    int commandIndex = 205;
+
+    print('get data from request command 1p8G2');
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _amp18Parser.command18Collection[commandIndex - 80],
+        timeout: timeout,
+      );
+
+      A1P8GUserAttribute a1P8GUserAttribute =
+          _amp18Parser.decodeA1P8GUserAttribute(rawData);
+
+      Map<DataKey, String> characteristicDataCache = {
+        DataKey.inputSignalLevel: a1P8GUserAttribute.inputSignalLevel,
+        DataKey.cascadePosition: a1P8GUserAttribute.cascadePosition,
+        DataKey.deviceName: a1P8GUserAttribute.deviceName,
+        DataKey.deviceNote: a1P8GUserAttribute.deviceNote,
+      };
+
+      _characteristicDataCache.addAll(characteristicDataCache);
+
+      return [
+        true,
+        characteristicDataCache,
+      ];
+    } catch (e) {
+      return [
+        false,
       ];
     }
   }
@@ -2245,4 +2284,21 @@ class Amp18Repository {
     _characteristicDataCache.clear();
     _characteristicDataCache.addAll(characteristicDataCache);
   }
+
+  // Future<List<SimInfo>> getSimInfos() async {
+  //   PermissionStatus permissionStatus = await Permission.phone.request();
+
+  //   if (permissionStatus == PermissionStatus.granted) {
+  //     List<SimInfo> simInfos = await SimCardInfo().getSimInfo() ?? [];
+
+  //     for (SimInfo simInfo in simInfos) {
+  //       print(
+  //           'Carrier Name: ${simInfo.carrierName} \n Display Name: ${simInfo.displayName} \n Slot Index: ${simInfo.slotIndex} \n Number: ${simInfo.number} \n Country ISO: ${simInfo.countryIso} \n Country Phone Prefix: ${simInfo.countryPhonePrefix}');
+  //     }
+
+  //     return simInfos;
+  //   } else {
+  //     return [];
+  //   }
+  // }
 }

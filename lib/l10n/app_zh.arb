@@ -12,6 +12,13 @@
     "balance": "      調整      ",
     "advanced": "進階",
     
+    "attribute": "屬性",
+    "regulation": "規則",
+    "inputSignalLevel": "輸入信號強度",
+    "cascadePosition": "聯級位置",
+    "deviceName": "設備名稱",
+    "deviceNote": "註記",
+
     "forwardConfigMode": "下行組態模式",
     "forwardMode": "下行模式",
     "operatingMode": "操作模式",

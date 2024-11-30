@@ -968,4 +968,25 @@ class Command18 {
     0xF0,
     0xF0,
   ];
+
+  static List<int> reqUserAttributeCmd = [
+    0xB0,
+    0x03,
+    0x31,
+    0x00,
+    0x01,
+    0x00,
+    0,
+    0
+  ];
+  static List<int> setUserAttributeCmd = [
+    0xB0,
+    0x03,
+    0x31,
+    0x00,
+    0x01,
+    0x00,
+    0,
+    0
+  ];
 }

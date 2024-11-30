@@ -6,8 +6,12 @@ enum DataKey {
   firmwareVersion,
   hardwareVersion,
   mfgDate,
-  location,
-  coordinates,
+  location, // attribute location
+  coordinates, // attribute coordinates
+  inputSignalLevel, // attribute inputSignalLevels
+  cascadePosition, // attribute cascadePosition
+  deviceName, // attribute deviceName
+  deviceNote, // attribute deviceNote
   workingMode,
   currentPilot,
   currentPilotMode,

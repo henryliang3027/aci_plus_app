@@ -12,6 +12,13 @@
     "balance": "   Balance   ",    
     "advanced": "Avanzado",
     
+    "attribute": "Atributo",
+    "regulation": "Regulación",
+    "inputSignalLevel": "Niveles de Entrada",
+    "cascadePosition": "Posición de Cascada",
+    "deviceName": "Nombre del Dispositivo",
+    "deviceNote": "Nota",
+
     "forwardConfigMode": "Modo Configuración Adelante",
     "forwardMode": "Modo Adelante",
     "operatingMode": "Modo Operación",

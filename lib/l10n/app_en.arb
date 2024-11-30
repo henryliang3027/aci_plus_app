@@ -11,7 +11,14 @@
     "alarm": "    Alarm    ",
     "balance": "   Balance   ",
     "advanced": "Advanced",
-   
+
+    "attribute": "Attribute",
+    "regulation": "Regulation",
+    "inputSignalLevel": "Input Signal Levels",
+    "cascadePosition": "Cascade Position",
+    "deviceName": "Device Name",
+    "deviceNote": "Note",
+
     "forwardConfigMode": "Forward Config Mode",
     "forwardMode": "Forward Mode",
     "operatingMode": "Operating Mode",

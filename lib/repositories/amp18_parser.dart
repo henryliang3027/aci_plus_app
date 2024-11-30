@@ -782,6 +782,53 @@ class Amp18Parser {
     );
   }
 
+  A1P8GUserAttribute decodeA1P8GUserAttribute(List<int> rawData) {
+    String inputSignalLevel = '';
+    String cascadePosition = '';
+    String deviceName = '';
+    String deviceNote = '';
+
+    List<List<int>> separatedGroups = [];
+    List<int> currentGroup = [];
+
+    for (int code in rawData) {
+      if (code == 44) {
+        // ASCII code for ','
+        // If we hit a comma, save the current group if it's not empty
+        if (currentGroup.isNotEmpty) {
+          separatedGroups.add(currentGroup);
+          currentGroup = []; // Clear the current group for the next set
+        }
+      } else {
+        // Add non-comma ASCII codes to the current group
+        currentGroup.add(code);
+      }
+    }
+
+    // After the loop, add any remaining currentGroup
+    if (currentGroup.isNotEmpty) {
+      separatedGroups.add(currentGroup);
+    }
+
+    // Print the separated groups
+    // for (var group in separatedGroups) {
+    //   print(group);
+    // }
+    if (separatedGroups.length == 4) {
+      inputSignalLevel = _trimString(String.fromCharCodes(separatedGroups[0]));
+      cascadePosition = _trimString(String.fromCharCodes(separatedGroups[1]));
+      deviceName = _trimString(String.fromCharCodes(separatedGroups[2]));
+      deviceNote = _trimString(String.fromCharCodes(separatedGroups[3]));
+    }
+
+    return A1P8GUserAttribute(
+      inputSignalLevel: inputSignalLevel,
+      cascadePosition: cascadePosition,
+      deviceName: deviceName,
+      deviceNote: deviceNote,
+    );
+  }
+
   A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {
     // 給 定期更新 information page 的 alarm 用
     Alarm unitStatusAlarmSeverity = Alarm.medium;
@@ -1863,6 +1910,7 @@ class Amp18Parser {
     _command18Collection.add(Command18.reqRFOutput07Cmd);
     _command18Collection.add(Command18.reqRFOutput08Cmd);
     _command18Collection.add(Command18.reqRFOutput09Cmd);
+    _command18Collection.add(Command18.reqUserAttributeCmd);
   }
 }
 
@@ -2170,4 +2218,18 @@ class A1P8GRFOutputPowerStatistic {
 
   final String historicalMinRFOutputPower;
   final String historicalMaxRFOutputPower;
+}
+
+class A1P8GUserAttribute {
+  const A1P8GUserAttribute({
+    required this.inputSignalLevel,
+    required this.cascadePosition,
+    required this.deviceName,
+    required this.deviceNote,
+  });
+
+  final String inputSignalLevel;
+  final String cascadePosition;
+  final String deviceName;
+  final String deviceNote;
 }

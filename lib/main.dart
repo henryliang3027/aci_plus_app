@@ -103,7 +103,7 @@ Future<void> main() async {
 
   await initBox();
 
-  int mock = 0;
+  int mock = 1;
 
   if (mock == 1) {
     runApp(App(
