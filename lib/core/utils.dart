@@ -19,6 +19,12 @@ class ForwardCEQFlag {
   static String forwardCEQType = 'N/A';
 }
 
+// 用在 setting 頁面的 device 子頁面, 紀錄是否離開了該頁面
+
+class NoticeFlag {
+  static bool leftDevicePage = false;
+}
+
 class RegexUtil {
   // (?:\{[^{}]*\}) matches one instance of the map pattern.
   // \{ matches the opening curly brace {.
@@ -177,6 +183,6 @@ Future<String> getAppVersion() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
   // 給部門內測試的版本會加 -beta版本文字, 例如V 2.1.2-beta2
-  String appVersion = 'V ${packageInfo.version}-beta2';
+  String appVersion = 'V ${packageInfo.version}-beta5';
   return appVersion;
 }

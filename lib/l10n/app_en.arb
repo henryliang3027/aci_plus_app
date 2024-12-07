@@ -441,6 +441,8 @@
     "dialogMessageGPSPermissionDenied": "Location permissions are denied. Please provide permission.",
     "dialogMessageAutoSettingLogIntervalFailed": "Failed to initialize the log interval.",
 
+    "dialogMessageItemAGCDisabled": "Disabled",
+    "dialogMessageItemUnFilled": "Not Filled",
     "dialogMessageResetToDefaultSuccessful" : "Reset to default value successful",
     "dialogMessageResetToDefaultFailed" : "Reset to default value failed",
     "dialogMessageSaveSuccessful" : "Saved Successful",

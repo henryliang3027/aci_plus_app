@@ -5,6 +5,7 @@ import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/notice_dialog.dart';
 import 'package:aci_plus_app/core/setup_wizard_dialog.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
@@ -31,6 +32,28 @@ class Information18Form extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeState homeState = context.read<HomeBloc>().state;
+
+    if (homeState.loadingStatus.isRequestSuccess) {
+      if (NoticeFlag.leftDevicePage) {
+        List<DataKey> unFilledItems = getUnFilledItem(
+          context: context,
+          characteristicData: homeState.characteristicData,
+        );
+
+        if (unFilledItems.isNotEmpty) {
+          Future.delayed(const Duration(milliseconds: 100), () {
+            showUnFilledItemDialog(
+              context: context,
+              unFilledItems: unFilledItems,
+            );
+
+            NoticeFlag.leftDevicePage = false;
+          });
+        }
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.home),

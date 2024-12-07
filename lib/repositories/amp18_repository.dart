@@ -458,7 +458,7 @@ class Amp18Repository {
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: _amp18Parser.command18Collection[commandIndex - 80],
+        value: _amp18Parser.command18Collection[commandIndex - 180],
         timeout: timeout,
       );
 
@@ -482,6 +482,80 @@ class Amp18Repository {
       return [
         false,
       ];
+    }
+  }
+
+  List<int> convertStringToInt16List(String value) {
+    List<int> int16bytes = [];
+
+    for (int code in value.codeUnits) {
+      // Create a ByteData object with a length of 2 bytes
+      ByteData byteData = ByteData(2);
+
+      // Set the Unicode code unit in the byte array
+      byteData.setInt16(0, code, Endian.little);
+
+      // Convert the ByteData to a Uint8List
+      Uint8List bytes = Uint8List.view(byteData.buffer);
+
+      int16bytes.addAll(bytes);
+    }
+
+    return int16bytes;
+  }
+
+  Future<dynamic> set1p8G1p8GUserAttribute({
+    required String inputSignalLevel,
+    required String cascadePosition,
+    required String deviceName,
+    required String deviceNote,
+  }) async {
+    int commandIndex = 357;
+
+    print('get data from request command 1p8G$commandIndex');
+
+    List<int> inputSignalLevelBytes =
+        convertStringToInt16List(inputSignalLevel);
+    List<int> cascadePositionBytes = convertStringToInt16List(cascadePosition);
+    List<int> deviceNameBytes = convertStringToInt16List(deviceName);
+    List<int> deviceNoteBytes = convertStringToInt16List(deviceNote);
+
+    List<int> combinedBytes = [
+      ...inputSignalLevelBytes,
+      0x00,
+      0x00,
+      ...cascadePositionBytes,
+      0x00,
+      0x00,
+      ...deviceNameBytes,
+      0x00,
+      0x00,
+      ...deviceNoteBytes,
+    ];
+
+    for (int i = 0; i < combinedBytes.length; i++) {
+      Command18.setUserAttributeCmd[i + 7] = combinedBytes[i];
+    }
+
+    // 填入空白
+    for (int i = combinedBytes.length; i < 1024; i += 2) {
+      Command18.setUserAttributeCmd[i + 7] = 0x20;
+      Command18.setUserAttributeCmd[i + 8] = 0x00;
+    }
+
+    CRC16.calculateCRC16(
+      command: Command18.setUserAttributeCmd,
+      usDataLength: Command18.setUserAttributeCmd.length - 2,
+    );
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.setUserAttributeCmd,
+      );
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 

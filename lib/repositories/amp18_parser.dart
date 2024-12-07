@@ -791,17 +791,15 @@ class Amp18Parser {
     List<List<int>> separatedGroups = [];
     List<int> currentGroup = [];
 
-    for (int code in rawData) {
-      if (code == 44) {
+    for (int i = 3; i < rawData.length; i++) {
+      if (rawData[i] == 0x00 && i > 4 && rawData[i - 1] == 0x00) {
         // ASCII code for ','
         // If we hit a comma, save the current group if it's not empty
-        if (currentGroup.isNotEmpty) {
-          separatedGroups.add(currentGroup);
-          currentGroup = []; // Clear the current group for the next set
-        }
+        separatedGroups.add(currentGroup);
+        currentGroup = []; // Clear the current group for the next set
       } else {
         // Add non-comma ASCII codes to the current group
-        currentGroup.add(code);
+        currentGroup.add(rawData[i]);
       }
     }
 
@@ -814,11 +812,18 @@ class Amp18Parser {
     // for (var group in separatedGroups) {
     //   print(group);
     // }
-    if (separatedGroups.length == 4) {
-      inputSignalLevel = _trimString(String.fromCharCodes(separatedGroups[0]));
-      cascadePosition = _trimString(String.fromCharCodes(separatedGroups[1]));
-      deviceName = _trimString(String.fromCharCodes(separatedGroups[2]));
-      deviceNote = _trimString(String.fromCharCodes(separatedGroups[3]));
+
+    for (int i = 0; i < separatedGroups.length; i++) {
+      if (i == 0) {
+        inputSignalLevel =
+            _trimString(String.fromCharCodes(separatedGroups[i]));
+      } else if (i == 1) {
+        cascadePosition = _trimString(String.fromCharCodes(separatedGroups[1]));
+      } else if (i == 2) {
+        deviceName = _trimString(String.fromCharCodes(separatedGroups[2]));
+      } else if (i == 3) {
+        deviceNote = _trimString(String.fromCharCodes(separatedGroups[3]));
+      }
     }
 
     return A1P8GUserAttribute(
@@ -1884,6 +1889,8 @@ class Amp18Parser {
     CRC16.calculateCRC16(command: Command18.reqRFOutput07Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqRFOutput08Cmd, usDataLength: 6);
     CRC16.calculateCRC16(command: Command18.reqRFOutput09Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(
+        command: Command18.reqUserAttributeCmd, usDataLength: 6);
 
     _command18Collection.add(Command18.req00Cmd);
     _command18Collection.add(Command18.req90Cmd);

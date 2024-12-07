@@ -440,6 +440,8 @@
     "dialogMessageGPSPermissionDenied": "無法取得定位權限, 請允許定位權限。",
     "dialogMessageAutoSettingLogIntervalFailed": "初始化記錄間隔失敗",
 
+    "dialogMessageItemAGCDisabled": "未開啟",
+    "dialogMessageItemUnFilled": "未填寫",
     "dialogMessageResetToDefaultSuccessful" : "重置參數成功",
     "dialogMessageResetToDefaultFailed" : "重置參數失敗",
     "dialogMessageSaveSuccessful" : "儲存成功",

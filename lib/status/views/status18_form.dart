@@ -2,6 +2,7 @@ import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/notice_dialog.dart';
 import 'package:aci_plus_app/core/status_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/core/working_mode_table.dart';
@@ -147,6 +148,24 @@ class _CardView extends StatelessWidget {
       builder: (context, state) {
         String partId = state.characteristicData[DataKey.partId] ?? '';
         if (state.loadingStatus.isRequestSuccess) {
+          if (NoticeFlag.leftDevicePage) {
+            List<DataKey> unFilledItems = getUnFilledItem(
+              context: context,
+              characteristicData: state.characteristicData,
+            );
+
+            if (unFilledItems.isNotEmpty) {
+              Future.delayed(const Duration(milliseconds: 100), () {
+                showUnFilledItemDialog(
+                  context: context,
+                  unFilledItems: unFilledItems,
+                );
+
+                NoticeFlag.leftDevicePage = false;
+              });
+            }
+          }
+
           context
               .read<Status18Bloc>()
               .add(const StatusPeriodicUpdateRequested());

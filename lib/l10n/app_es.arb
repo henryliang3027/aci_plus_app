@@ -438,6 +438,8 @@
     "dialogMessageGPSPermissionDenied": "Permisos de ubicación denegados. Por favor, otorgue permiso.",
     "dialogMessageAutoSettingLogIntervalFailed": "Error al inicializar el intervalo de registro.",
 
+    "dialogMessageItemAGCDisabled": "Deshabilitado",
+    "dialogMessageItemUnFilled": "No Lleno",
     "dialogMessageResetToDefaultSuccessful" : "Restablecimiento exitoso al valor predeterminado.",
     "dialogMessageResetToDefaultFailed" : "Error al restablecer el valor predeterminado",
     "dialogMessageSaveSuccessful": "Guardado exitoso",

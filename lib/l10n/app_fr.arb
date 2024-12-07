@@ -439,6 +439,8 @@
     "dialogMessageGPSPermissionDenied": "Autorisations de localisation refusées. Veuillez autoriser.",
     "dialogMessageAutoSettingLogIntervalFailed": "Échec d'initialisation de l'intervalle de journalisation",
 
+    "dialogMessageItemAGCDisabled": "Désactivé",
+    "dialogMessageItemUnFilled": "Non Rempli",
     "dialogMessageResetToDefaultSuccessful" : "Réinitialisation par défaut réussie",
     "dialogMessageResetToDefaultFailed" : "Réinitialisation par défaut échouée",
     "dialogMessageSaveSuccessful" : "Enregistrement réussi",

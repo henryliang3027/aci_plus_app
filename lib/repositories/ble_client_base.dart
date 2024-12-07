@@ -1,4 +1,3 @@
-
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:flutter/foundation.dart';
@@ -122,6 +121,10 @@ abstract class BLEClientBase {
     } else if (commandIndex >= 195 && commandIndex <= 204) {
       // _currentCommandIndex 195 ~ 204 用來接收 10 組 RFOut 資料流, 每一組 RFOut 總長 16389
       return _combine1p8GRawData(rawData: rawData, length: 16389);
+    } else if (commandIndex == 205) {
+      // 接收 User Attribute 資料流
+      // User Attribute 資料流總長度 1029
+      return _combine1p8GRawData(rawData: rawData, length: 1029);
     } else if (commandIndex >= 300 && commandIndex <= 999) {
       return [true, rawData];
     } else if (commandIndex >= 1000 && commandIndex <= 1100) {
