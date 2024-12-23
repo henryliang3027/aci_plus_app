@@ -334,7 +334,7 @@ class Setting18AttributeBloc
 
     if (userAttributes.isNotEmpty) {
       bool resultOfSetUserAttribute =
-          await _amp18Repository.set1p8G1p8GUserAttribute(
+          await _amp18Repository.set1p8GUserAttribute(
         inputSignalLevel: state.inputSignalLevel,
         cascadePosition: state.cascadePosition,
         deviceName: state.deviceName,

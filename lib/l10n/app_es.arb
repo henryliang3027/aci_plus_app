@@ -14,7 +14,10 @@
     
     "attribute": "Atributo",
     "regulation": "Regulación",
+    "technicianID": "ID del técnico",
     "inputSignalLevel": "Niveles de Entrada",
+    "inputAttenuation": "Atenuación de entrada",
+    "inputEqualizer": "Ecualizador de entrada",
     "cascadePosition": "Posición de Cascada",
     "deviceName": "Nombre del Dispositivo",
     "deviceNote": "Nota",

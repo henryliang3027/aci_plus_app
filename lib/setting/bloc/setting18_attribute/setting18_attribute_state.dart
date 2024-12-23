@@ -6,7 +6,10 @@ class Setting18AttributeState extends Equatable {
     this.gpsStatus = FormStatus.none,
     this.location = '',
     this.coordinates = '',
+    this.technicianID = '',
     this.inputSignalLevel = '',
+    this.inputAttenuation = '',
+    this.inputEqualizer = '',
     this.cascadePosition = '',
     this.deviceName = '',
     this.deviceNote = '',
@@ -24,7 +27,10 @@ class Setting18AttributeState extends Equatable {
   final FormStatus gpsStatus;
   final String location;
   final String coordinates;
+  final String technicianID;
   final String inputSignalLevel;
+  final String inputAttenuation;
+  final String inputEqualizer;
   final String cascadePosition;
   final String deviceName;
   final String deviceNote;
@@ -41,7 +47,10 @@ class Setting18AttributeState extends Equatable {
     FormStatus? gpsStatus,
     String? location,
     String? coordinates,
+    String? technicianID,
     String? inputSignalLevel,
+    String? inputAttenuation,
+    String? inputEqualizer,
     String? cascadePosition,
     String? deviceName,
     String? deviceNote,
@@ -58,7 +67,10 @@ class Setting18AttributeState extends Equatable {
       gpsStatus: gpsStatus ?? this.gpsStatus,
       location: location ?? this.location,
       coordinates: coordinates ?? this.coordinates,
+      technicianID: technicianID ?? this.technicianID,
       inputSignalLevel: inputSignalLevel ?? this.inputSignalLevel,
+      inputAttenuation: inputAttenuation ?? this.inputAttenuation,
+      inputEqualizer: inputEqualizer ?? this.inputEqualizer,
       cascadePosition: cascadePosition ?? this.cascadePosition,
       deviceName: deviceName ?? this.deviceName,
       deviceNote: deviceNote ?? this.deviceNote,
@@ -79,7 +91,10 @@ class Setting18AttributeState extends Equatable {
         gpsStatus,
         location,
         coordinates,
+        technicianID,
         inputSignalLevel,
+        inputAttenuation,
+        inputEqualizer,
         cascadePosition,
         deviceName,
         deviceNote,

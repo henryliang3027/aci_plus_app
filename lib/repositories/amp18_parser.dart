@@ -783,7 +783,10 @@ class Amp18Parser {
   }
 
   A1P8GUserAttribute decodeA1P8GUserAttribute(List<int> rawData) {
+    String technicianID = '';
     String inputSignalLevel = '';
+    String inputAttenuation = '';
+    String inputEqualizer = '';
     String cascadePosition = '';
     String deviceName = '';
     String deviceNote = '';
@@ -791,47 +794,70 @@ class Amp18Parser {
     List<List<int>> separatedGroups = [];
     List<int> currentGroup = [];
 
-    for (int i = 3; i < rawData.length; i++) {
-      if (rawData[i] == 0x00 && i > 4 && rawData[i - 1] == 0x00) {
-        // ASCII code for ','
-        // If we hit a comma, save the current group if it's not empty
+    List rawDataContent = rawData.sublist(3, 1027);
+
+    if (rawDataContent.every((element) => element == rawDataContent[0])) {
+      return A1P8GUserAttribute(
+        technicianID: technicianID,
+        inputSignalLevel: inputSignalLevel,
+        inputAttenuation: inputAttenuation,
+        inputEqualizer: inputEqualizer,
+        cascadePosition: cascadePosition,
+        deviceName: deviceName,
+        deviceNote: deviceNote,
+      );
+    } else {
+      // 因為前三個 byte 為 header, 後兩個 byte 為 crc, 所以迴圈從有內容的部分迭代
+      for (int i = 3; i < rawData.length - 2; i += 2) {
+        if (rawData[i] == 0x00 && rawData[i + 1] == 0x00) {
+          // ASCII code for ','
+          // If we hit a comma, save the current group if it's not empty
+          separatedGroups.add(currentGroup);
+          currentGroup = []; // Clear the current group for the next set
+        } else {
+          // Add non-comma ASCII codes to the current group
+          currentGroup.add(rawData[i]);
+        }
+      }
+
+      // After the loop, add any remaining currentGroup
+      if (currentGroup.isNotEmpty) {
         separatedGroups.add(currentGroup);
-        currentGroup = []; // Clear the current group for the next set
-      } else {
-        // Add non-comma ASCII codes to the current group
-        currentGroup.add(rawData[i]);
       }
-    }
 
-    // After the loop, add any remaining currentGroup
-    if (currentGroup.isNotEmpty) {
-      separatedGroups.add(currentGroup);
-    }
+      // Print the separated groups
+      // for (var group in separatedGroups) {
+      //   print(group);
+      // }
 
-    // Print the separated groups
-    // for (var group in separatedGroups) {
-    //   print(group);
-    // }
-
-    for (int i = 0; i < separatedGroups.length; i++) {
-      if (i == 0) {
-        inputSignalLevel =
-            _trimString(String.fromCharCodes(separatedGroups[i]));
-      } else if (i == 1) {
-        cascadePosition = _trimString(String.fromCharCodes(separatedGroups[1]));
-      } else if (i == 2) {
-        deviceName = _trimString(String.fromCharCodes(separatedGroups[2]));
-      } else if (i == 3) {
-        deviceNote = _trimString(String.fromCharCodes(separatedGroups[3]));
+      for (int i = 0; i < separatedGroups.length; i++) {
+        if (i == 0) {
+          technicianID = _trimString(String.fromCharCodes(separatedGroups[i]));
+        } else if (i == 1) {
+          inputSignalLevel =
+              _trimString(String.fromCharCodes(separatedGroups[i]));
+        } else if (i == 2) {
+          inputAttenuation =
+              _trimString(String.fromCharCodes(separatedGroups[i]));
+        } else if (i == 3) {
+          inputEqualizer =
+              _trimString(String.fromCharCodes(separatedGroups[i]));
+        } else if (i == 4) {
+          cascadePosition =
+              _trimString(String.fromCharCodes(separatedGroups[i]));
+        }
       }
-    }
 
-    return A1P8GUserAttribute(
-      inputSignalLevel: inputSignalLevel,
-      cascadePosition: cascadePosition,
-      deviceName: deviceName,
-      deviceNote: deviceNote,
-    );
+      return A1P8GUserAttribute(
+        technicianID: technicianID,
+        inputSignalLevel: inputSignalLevel,
+        inputAttenuation: inputAttenuation,
+        inputEqualizer: inputEqualizer,
+        cascadePosition: cascadePosition,
+        deviceName: deviceName,
+        deviceNote: deviceNote,
+      );
+    }
   }
 
   A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {
@@ -2229,13 +2255,19 @@ class A1P8GRFOutputPowerStatistic {
 
 class A1P8GUserAttribute {
   const A1P8GUserAttribute({
+    required this.technicianID,
     required this.inputSignalLevel,
+    required this.inputAttenuation,
+    required this.inputEqualizer,
     required this.cascadePosition,
     required this.deviceName,
     required this.deviceNote,
   });
 
+  final String technicianID;
   final String inputSignalLevel;
+  final String inputAttenuation;
+  final String inputEqualizer;
   final String cascadePosition;
   final String deviceName;
   final String deviceNote;

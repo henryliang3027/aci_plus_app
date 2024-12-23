@@ -32,6 +32,12 @@ abstract class BLEClientBase {
     Duration timeout = const Duration(seconds: 10),
   });
 
+  Future<dynamic> writeLongSetCommandToCharacteristic({
+    required int commandIndex,
+    required List<List<int>> chunks,
+    Duration timeout = const Duration(seconds: 10),
+  });
+
   Future<void> transferBinaryChunk({
     required int commandIndex,
     required List<int> chunk,

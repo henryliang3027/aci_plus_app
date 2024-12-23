@@ -466,7 +466,10 @@ class Amp18Repository {
           _amp18Parser.decodeA1P8GUserAttribute(rawData);
 
       Map<DataKey, String> characteristicDataCache = {
+        DataKey.technicianID: a1P8GUserAttribute.technicianID,
         DataKey.inputSignalLevel: a1P8GUserAttribute.inputSignalLevel,
+        DataKey.inputAttenuation: a1P8GUserAttribute.inputAttenuation,
+        DataKey.inputEqualizer: a1P8GUserAttribute.inputEqualizer,
         DataKey.cascadePosition: a1P8GUserAttribute.cascadePosition,
         DataKey.deviceName: a1P8GUserAttribute.deviceName,
         DataKey.deviceNote: a1P8GUserAttribute.deviceNote,
@@ -504,7 +507,44 @@ class Amp18Repository {
     return int16bytes;
   }
 
-  Future<dynamic> set1p8G1p8GUserAttribute({
+  // 取得藍牙 mtu size
+  Future<int> getChunkSize() async {
+    // ios version < 16 mtu 為 182, 其餘為 244
+    // android 為 247, 3 個 byte 用在 header, 所以實際可容納的量為 244
+
+    if (Platform.isIOS) {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+
+      // ipad version ex: 16.6.1
+      // ios version ex: 16.5
+      double version = double.parse(iosDeviceInfo.systemVersion.split('.')[0]);
+
+      if (version < 16) {
+        return 182;
+      } else {
+        return 244;
+      }
+    } else {
+      // android or windows
+      return 244;
+    }
+  }
+
+  // 將資料切割為每一塊都是 mtu size 的大小的數個區塊
+  List<List<int>> divideToChunkList({
+    required List<int> binary,
+    required int chunkSize,
+  }) {
+    List<List<int>> chunks = [];
+    for (int i = 0; i < binary.length; i += chunkSize) {
+      int end = (i + chunkSize < binary.length) ? i + chunkSize : binary.length;
+      chunks.add(binary.sublist(i, end));
+    }
+    return chunks;
+  }
+
+  Future<dynamic> set1p8GUserAttribute({
     required String inputSignalLevel,
     required String cascadePosition,
     required String deviceName,
@@ -548,15 +588,25 @@ class Amp18Repository {
       usDataLength: Command18.setUserAttributeCmd.length - 2,
     );
 
+    // 將 binary 切分成每個大小為 chunkSize 的封包
+    int chunkSize = await getChunkSize();
+
+    List<List<int>> chunks = divideToChunkList(
+      binary: Command18.setUserAttributeCmd,
+      chunkSize: chunkSize,
+    );
+
     try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+      List<int> rawData = await _bleClient.writeLongSetCommandToCharacteristic(
         commandIndex: commandIndex,
-        value: Command18.setUserAttributeCmd,
+        chunks: chunks,
+        timeout: const Duration(seconds: 10),
       );
-      return true;
     } catch (e) {
       return false;
     }
+
+    return true;
   }
 
   List<List<ValuePair>> get1p8GDateValueCollectionOfLogs(
@@ -2353,6 +2403,16 @@ class Amp18Repository {
           .add(Map<DataKey, String>.from(resultOf1p8G2[1]));
 
       characteristicDataCache.addAll(resultOf1p8G2[1]);
+    }
+
+    List<dynamic> resultOf1p8GUserAttribute =
+        await requestCommand1p8GUserAttribute();
+
+    if (resultOf1p8GUserAttribute[0]) {
+      _characteristicDataStreamController
+          .add(Map<DataKey, String>.from(resultOf1p8GUserAttribute[1]));
+
+      characteristicDataCache.addAll(resultOf1p8GUserAttribute[1]);
     }
 
     _characteristicDataCache.clear();

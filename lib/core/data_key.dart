@@ -8,7 +8,10 @@ enum DataKey {
   mfgDate,
   location, // attribute location
   coordinates, // attribute coordinates
+  technicianID, // attribute inputSignalLevels
   inputSignalLevel, // attribute inputSignalLevels
+  inputAttenuation, // attribute inputAttenuation
+  inputEqualizer, // attribute inputEqualizer
   cascadePosition, // attribute cascadePosition
   deviceName, // attribute deviceName
   deviceNote, // attribute deviceNote

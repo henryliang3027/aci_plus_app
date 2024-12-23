@@ -427,6 +427,49 @@ class BLEClient extends BLEClientBase {
     return _completer!.future;
   }
 
+  // iOS 跟 Android 的 set command 方式不一樣
+  @override
+  Future writeLongSetCommandToCharacteristic({
+    required int commandIndex,
+    required List<List<int>> chunks,
+    Duration timeout = const Duration(seconds: 10),
+  }) async {
+    _currentCommandIndex = commandIndex;
+
+    _completer = Completer<dynamic>();
+
+    // 原本寫法是先寫入 command 再 啟動 timer, 但在讀基本指令 req00Cmd 時有時回傳太快而來不及啟動 timer
+    // 所以先啟動 timer 再 寫入 command
+
+    startCharacteristicDataTimer(
+      timeout: timeout,
+      commandIndex: commandIndex,
+    );
+
+    for (int i = 0; i < chunks.length; i++) {
+      try {
+        if (Platform.isAndroid) {
+          await _ble!.writeCharacteristicWithResponse(
+            _qualifiedCharacteristic,
+            value: chunks[i],
+          );
+        } else {
+          // iOS
+          await _ble!.writeCharacteristicWithoutResponse(
+            _qualifiedCharacteristic,
+            value: chunks[i],
+          );
+        }
+      } catch (e) {
+        if (!_completer!.isCompleted) {
+          print('writeCharacteristic failed: ${e.toString()}');
+          _completer!.completeError(CharacteristicError.writeDataError.name);
+        }
+      }
+    }
+    return _completer!.future;
+  }
+
   @override
   Future<void> transferBinaryChunk({
     required int commandIndex,

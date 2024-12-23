@@ -14,7 +14,10 @@
     
     "attribute": "屬性",
     "regulation": "規則",
+    "technicianID": "技術員 ID",
     "inputSignalLevel": "輸入信號強度",
+    "inputAttenuation": "輸入衰減量",
+    "inputEqualizer": "輸入等化器",
     "cascadePosition": "聯級位置",
     "deviceName": "設備名稱",
     "deviceNote": "註記",

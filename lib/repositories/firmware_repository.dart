@@ -100,6 +100,7 @@ class FirmwareRepository {
     );
   }
 
+  // 取得藍牙 mtu size
   Future<int> getChunkSize() async {
     // ios version < 16 mtu 為 182, 其餘為 244
     // android 為 247, 3 個 byte 用在 header, 所以實際可容納的量為 244
@@ -123,6 +124,7 @@ class FirmwareRepository {
     }
   }
 
+  // 將資料切割為每一塊都是 mtu size 的大小的數個區塊
   List<List<int>> divideToChunkList({
     required List<int> binary,
     required int chunkSize,

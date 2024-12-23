@@ -27,7 +27,13 @@ class Setting18AttributeView extends StatelessWidget {
       TextEditingController();
   final TextEditingController coordinateTextEditingController =
       TextEditingController();
+  final TextEditingController technicianIDTextEditingController =
+      TextEditingController();
   final TextEditingController inputSignalLevelTextEditingController =
+      TextEditingController();
+  final TextEditingController inputAttenuationTextEditingController =
+      TextEditingController();
+  final TextEditingController inputEqualizerTextEditingController =
       TextEditingController();
   final TextEditingController cascadePositionTextEditingController =
       TextEditingController();
@@ -279,9 +285,9 @@ class Setting18AttributeView extends StatelessWidget {
           context.read<Setting18AttributeBloc>().add(const Initialized());
 
           // 重新啟動 CEQ 定時偵測
-          context
-              .read<Setting18TabBarBloc>()
-              .add(const CurrentForwardCEQPeriodicUpdateRequested());
+          // context
+          //     .read<Setting18TabBarBloc>()
+          //     .add(const CurrentForwardCEQPeriodicUpdateRequested());
         } else if (state.gpsStatus.isRequestFailure) {
           showFailureDialog(
             getMessageLocalization(
@@ -538,6 +544,85 @@ class _Coordinates extends StatelessWidget {
                           Radius.circular(4.0),
                         ),
                       ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _TechnicianID extends StatelessWidget {
+  const _TechnicianID({
+    required this.textEditingController,
+  });
+
+  final TextEditingController textEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18AttributeBloc, Setting18AttributeState>(
+      builder: (context, state) {
+        return Card(
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.technicianID),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(CustomStyle.sizeXL),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeL,
+                  ),
+                  child: Text(
+                    '${AppLocalizations.of(context)!.technicianID}:',
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeXS,
+                  ),
+                  child: TextField(
+                    controller: textEditingController,
+                    key: const Key('setting18Form_technicianIDInput_textField'),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                    ),
+                    enabled: state.editMode,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    textInputAction: TextInputAction.done,
+                    onChanged: (inputSignalLevel) {
+                      // context
+                      //     .read<Setting18AttributeBloc>()
+                      //     .add(TechnicianIDChanged(inputSignalLevel));
+                    },
+                    onTapOutside: (event) {
+                      // 點擊其他區域關閉螢幕鍵盤
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
+                    maxLength: 6,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: const EdgeInsets.all(10.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor:
+                          Theme.of(context).colorScheme.secondaryContainer,
+                      counterText: '',
                     ),
                   ),
                 ),
@@ -924,9 +1009,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                 ? () async {
                     if (kDebugMode) {
                       // 停止 CEQ 定時偵測
-                      context
-                          .read<Setting18TabBarBloc>()
-                          .add(const CurrentForwardCEQPeriodicUpdateCanceled());
+                      // context
+                      //     .read<Setting18TabBarBloc>()
+                      //     .add(const CurrentForwardCEQPeriodicUpdateCanceled());
                       context
                           .read<Setting18AttributeBloc>()
                           .add(const SettingSubmitted());
@@ -938,8 +1023,8 @@ class _SettingFloatingActionButton extends StatelessWidget {
                         if (isMatch != null) {
                           if (isMatch) {
                             // 停止 CEQ 定時偵測
-                            context.read<Setting18TabBarBloc>().add(
-                                const CurrentForwardCEQPeriodicUpdateCanceled());
+                            // context.read<Setting18TabBarBloc>().add(
+                            //     const CurrentForwardCEQPeriodicUpdateCanceled());
                             context
                                 .read<Setting18AttributeBloc>()
                                 .add(const SettingSubmitted());
@@ -985,8 +1070,8 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       ? winBeta >= 7
                           ? () {
                               // 停止 CEQ 定時偵測
-                              context.read<Setting18TabBarBloc>().add(
-                                  const CurrentForwardCEQPeriodicUpdateCanceled());
+                              // context.read<Setting18TabBarBloc>().add(
+                              //     const CurrentForwardCEQPeriodicUpdateCanceled());
 
                               // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
                               Navigator.push(
@@ -999,15 +1084,15 @@ class _SettingFloatingActionButton extends StatelessWidget {
                                     .add(const Initialized());
 
                                 // 重新啟動 CEQ 定時偵測
-                                context.read<Setting18TabBarBloc>().add(
-                                    const CurrentForwardCEQPeriodicUpdateRequested());
+                                // context.read<Setting18TabBarBloc>().add(
+                                //     const CurrentForwardCEQPeriodicUpdateRequested());
                               });
                             }
                           : null
                       : () {
                           // 停止 CEQ 定時偵測
-                          context.read<Setting18TabBarBloc>().add(
-                              const CurrentForwardCEQPeriodicUpdateCanceled());
+                          // context.read<Setting18TabBarBloc>().add(
+                          //     const CurrentForwardCEQPeriodicUpdateCanceled());
 
                           // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
                           Navigator.push(
@@ -1020,8 +1105,8 @@ class _SettingFloatingActionButton extends StatelessWidget {
                                 .add(const Initialized());
 
                             // 重新啟動 CEQ 定時偵測
-                            context.read<Setting18TabBarBloc>().add(
-                                const CurrentForwardCEQPeriodicUpdateRequested());
+                            // context.read<Setting18TabBarBloc>().add(
+                            //     const CurrentForwardCEQPeriodicUpdateRequested());
                           });
                         },
                   child: Icon(
