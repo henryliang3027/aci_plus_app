@@ -23,7 +23,10 @@ class Setting18AttributeBloc
     on<LocationChanged>(_onLocationChanged);
     on<CoordinatesChanged>(_onCoordinatesChanged);
     on<GPSCoordinatesRequested>(_onGPSCoordinatesRequested);
+    on<TechnicianIDChanged>(_onTechnicianIDChanged);
     on<InputSignalLevelChanged>(_onInputSignalLevelChanged);
+    on<InputAttenuationChanged>(_onInputAttenuationChanged);
+    on<InputEqualizerChanged>(_onInputEqualizerChanged);
     on<CascadePositionChanged>(_onCascadePositionChanged);
     on<DeviceNameChanged>(_onDeviceNameChanged);
     on<DeviceNoteChanged>(_onDeviceNoteChanged);
@@ -55,8 +58,13 @@ class Setting18AttributeBloc
 
     String location = characteristicDataCache[DataKey.location] ?? '';
     String coordinates = characteristicDataCache[DataKey.coordinates] ?? '';
+    String technicianID = characteristicDataCache[DataKey.technicianID] ?? '';
     String inputSignalLevel =
         characteristicDataCache[DataKey.inputSignalLevel] ?? '';
+    String inputAttenuation =
+        characteristicDataCache[DataKey.inputAttenuation] ?? '';
+    String inputEqualizer =
+        characteristicDataCache[DataKey.inputEqualizer] ?? '';
     String cascadePosition =
         characteristicDataCache[DataKey.cascadePosition] ?? '';
     String deviceName = characteristicDataCache[DataKey.deviceName] ?? '';
@@ -66,7 +74,10 @@ class Setting18AttributeBloc
       submissionStatus: SubmissionStatus.none,
       location: location,
       coordinates: coordinates,
+      technicianID: technicianID,
       inputSignalLevel: inputSignalLevel,
+      inputAttenuation: inputAttenuation,
+      inputEqualizer: inputEqualizer,
       cascadePosition: cascadePosition,
       deviceName: deviceName,
       deviceNote: deviceNote,
@@ -154,6 +165,25 @@ class Setting18AttributeBloc
     }
   }
 
+  void _onTechnicianIDChanged(
+    TechnicianIDChanged event,
+    Emitter<Setting18AttributeState> emit,
+  ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.technicianID);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
+      technicianID: event.technicianID,
+      isInitialize: false,
+      tappedSet: tappedSet,
+      enableSubmission: _isEnabledSubmission(
+        technicianID: event.technicianID,
+      ),
+    ));
+  }
+
   void _onInputSignalLevelChanged(
     InputSignalLevelChanged event,
     Emitter<Setting18AttributeState> emit,
@@ -169,6 +199,44 @@ class Setting18AttributeBloc
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
         inputSignalLevel: event.inputSignalLevel,
+      ),
+    ));
+  }
+
+  void _onInputAttenuationChanged(
+    InputAttenuationChanged event,
+    Emitter<Setting18AttributeState> emit,
+  ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.inputAttenuation);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
+      inputAttenuation: event.inputAttenuation,
+      isInitialize: false,
+      tappedSet: tappedSet,
+      enableSubmission: _isEnabledSubmission(
+        inputAttenuation: event.inputAttenuation,
+      ),
+    ));
+  }
+
+  void _onInputEqualizerChanged(
+    InputEqualizerChanged event,
+    Emitter<Setting18AttributeState> emit,
+  ) {
+    Set<DataKey> tappedSet = Set.from(state.tappedSet);
+    tappedSet.add(DataKey.inputEqualizer);
+
+    emit(state.copyWith(
+      submissionStatus: SubmissionStatus.none,
+      gpsStatus: FormStatus.none,
+      inputEqualizer: event.inputEqualizer,
+      isInitialize: false,
+      tappedSet: tappedSet,
+      enableSubmission: _isEnabledSubmission(
+        inputEqualizer: event.inputEqualizer,
       ),
     ));
   }
@@ -255,7 +323,10 @@ class Setting18AttributeBloc
       tappedSet: {},
       location: state.initialValues[DataKey.location],
       coordinates: state.initialValues[DataKey.coordinates],
+      technicianID: state.initialValues[DataKey.technicianID],
       inputSignalLevel: state.initialValues[DataKey.inputSignalLevel],
+      inputAttenuation: state.initialValues[DataKey.inputAttenuation],
+      inputEqualizer: state.initialValues[DataKey.inputEqualizer],
       cascadePosition: state.initialValues[DataKey.cascadePosition],
       deviceName: state.initialValues[DataKey.deviceName],
       deviceNote: state.initialValues[DataKey.deviceNote],
@@ -265,21 +336,30 @@ class Setting18AttributeBloc
   bool _isEnabledSubmission({
     String? location,
     String? coordinates,
+    String? technicianID,
     String? inputSignalLevel,
+    String? inputAttenuation,
+    String? inputEqualizer,
     String? cascadePosition,
     String? deviceName,
     String? deviceNote,
   }) {
     location ??= state.location;
     coordinates ??= state.coordinates;
+    technicianID ??= state.technicianID;
     inputSignalLevel ??= state.inputSignalLevel;
+    inputAttenuation ??= state.inputAttenuation;
+    inputEqualizer ??= state.inputEqualizer;
     cascadePosition ??= state.cascadePosition;
     deviceName ??= state.deviceName;
     deviceNote ??= state.deviceNote;
 
     if (location != state.initialValues[DataKey.location] ||
         coordinates != state.initialValues[DataKey.coordinates] ||
+        technicianID != state.initialValues[DataKey.technicianID] ||
         inputSignalLevel != state.initialValues[DataKey.inputSignalLevel] ||
+        inputAttenuation != state.initialValues[DataKey.inputAttenuation] ||
+        inputEqualizer != state.initialValues[DataKey.inputEqualizer] ||
         cascadePosition != state.initialValues[DataKey.cascadePosition] ||
         deviceName != state.initialValues[DataKey.deviceName] ||
         deviceNote != state.initialValues[DataKey.deviceNote]) {
@@ -317,9 +397,22 @@ class Setting18AttributeBloc
 
     List<DataKey> userAttributes = [];
 
+    if (state.technicianID != state.initialValues[DataKey.technicianID]) {
+      userAttributes.add(DataKey.technicianID);
+    }
+
     if (state.inputSignalLevel !=
         state.initialValues[DataKey.inputSignalLevel]) {
       userAttributes.add(DataKey.inputSignalLevel);
+    }
+
+    if (state.inputAttenuation !=
+        state.initialValues[DataKey.inputAttenuation]) {
+      userAttributes.add(DataKey.inputAttenuation);
+    }
+
+    if (state.inputEqualizer != state.initialValues[DataKey.inputEqualizer]) {
+      userAttributes.add(DataKey.inputEqualizer);
     }
 
     if (state.cascadePosition != state.initialValues[DataKey.cascadePosition]) {
@@ -335,7 +428,10 @@ class Setting18AttributeBloc
     if (userAttributes.isNotEmpty) {
       bool resultOfSetUserAttribute =
           await _amp18Repository.set1p8GUserAttribute(
+        technicianID: state.technicianID,
         inputSignalLevel: state.inputSignalLevel,
+        inputAttenuation: state.inputAttenuation,
+        inputEqualizer: state.inputEqualizer,
         cascadePosition: state.cascadePosition,
         deviceName: state.deviceName,
         deviceNote: state.deviceNote,

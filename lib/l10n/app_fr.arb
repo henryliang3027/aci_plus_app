@@ -15,7 +15,7 @@
     "attribute": "Attribut",
     "regulation": "Réglement",
     "technicianID": "ID technicien",
-    "inputSignalLevel": "Niveaux d'Entrée",
+    "inputSignalLevel": "Niveaux d'entrée",
     "inputAttenuation": "Atténuation d'entrée",
     "inputEqualizer": "Équaliseur d'entrée",
     "cascadePosition": "Position de Cascade",
@@ -441,6 +441,14 @@
     "dialogMessageGPSServiceDisabled": "Services de localisation désactivés. Veuillez les activer.",
     "dialogMessageGPSPermissionDenied": "Autorisations de localisation refusées. Veuillez autoriser.",
     "dialogMessageAutoSettingLogIntervalFailed": "Échec d'initialisation de l'intervalle de journalisation",
+
+    "dialogMessageTechnicianIDSetting": "Réglage ID technicien",
+    "dialogMessageInputSignalLevelSetting": "Réglage niveaux d'entrée",
+    "dialogMessageInputAttenuationSetting": "Réglage atténuation d'entrée",
+    "dialogMessageInputEqualizerSetting": "Réglage équaliseur d'entrée",
+    "dialogMessageCascadePositionSetting": "Réglage position de cascade",
+    "dialogMessageDeviceNameSetting": "Réglage nom de l'appareil",
+    "dialogMessageDeviceNoteSetting": "Réglage remarque",
 
     "dialogMessageItemAGCDisabled": "Désactivé",
     "dialogMessageItemUnFilled": "Non Rempli",

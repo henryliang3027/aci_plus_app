@@ -845,6 +845,10 @@ class Amp18Parser {
         } else if (i == 4) {
           cascadePosition =
               _trimString(String.fromCharCodes(separatedGroups[i]));
+        } else if (i == 5) {
+          deviceName = _trimString(String.fromCharCodes(separatedGroups[i]));
+        } else if (i == 6) {
+          deviceNote = _trimString(String.fromCharCodes(separatedGroups[i]));
         }
       }
 

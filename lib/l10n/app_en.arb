@@ -439,10 +439,17 @@
     "dialogMessageReturnIngress6Setting": "Port 6 reverse ingress setting",
     "dialogMessageReturnIngress2And3Setting": "Port 2 & Port 3 reverse ingress setting",
     "dialogMessageReturnIngress5And6Setting": "Port 5 & Port 6 reverse ingress setting",
-
     "dialogMessageGPSServiceDisabled": "Location services are disabled. Please enable location services.",
     "dialogMessageGPSPermissionDenied": "Location permissions are denied. Please provide permission.",
     "dialogMessageAutoSettingLogIntervalFailed": "Failed to initialize the log interval.",
+
+    "dialogMessageTechnicianIDSetting": "Tech ID setting",
+    "dialogMessageInputSignalLevelSetting": "Input signal levels setting",
+    "dialogMessageInputAttenuationSetting": "Input attenuation setting",
+    "dialogMessageInputEqualizerSetting": "Input equalizer setting",
+    "dialogMessageCascadePositionSetting": "Cascade position setting",
+    "dialogMessageDeviceNameSetting": "Device name setting",
+    "dialogMessageDeviceNoteSetting": "note setting",
 
     "dialogMessageItemAGCDisabled": "Disabled",
     "dialogMessageItemUnFilled": "Not Filled",

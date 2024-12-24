@@ -443,6 +443,14 @@
     "dialogMessageGPSPermissionDenied": "無法取得定位權限, 請允許定位權限。",
     "dialogMessageAutoSettingLogIntervalFailed": "初始化記錄間隔失敗",
 
+    "dialogMessageTechnicianIDSetting": "技術人員 ID 設定",
+    "dialogMessageInputSignalLevelSetting": "輸入信號強度設定",
+    "dialogMessageInputAttenuationSetting": "輸入衰減量設定",
+    "dialogMessageInputEqualizerSetting": "輸入等化器設定",
+    "dialogMessageCascadePositionSetting": "聯級位置設定",
+    "dialogMessageDeviceNameSetting": "設備名稱設定",
+     "dialogMessageDeviceNoteSetting": "註記設定",
+
     "dialogMessageItemAGCDisabled": "未開啟",
     "dialogMessageItemUnFilled": "未填寫",
     "dialogMessageResetToDefaultSuccessful" : "重置參數成功",

@@ -545,7 +545,10 @@ class Amp18Repository {
   }
 
   Future<dynamic> set1p8GUserAttribute({
+    required String technicianID,
     required String inputSignalLevel,
+    required String inputAttenuation,
+    required String inputEqualizer,
     required String cascadePosition,
     required String deviceName,
     required String deviceNote,
@@ -554,14 +557,27 @@ class Amp18Repository {
 
     print('get data from request command 1p8G$commandIndex');
 
+    List<int> technicianIDBytes = convertStringToInt16List(technicianID);
     List<int> inputSignalLevelBytes =
         convertStringToInt16List(inputSignalLevel);
+    List<int> inputAttenuationBytes =
+        convertStringToInt16List(inputAttenuation);
+    List<int> inputEqualizerBytes = convertStringToInt16List(inputEqualizer);
     List<int> cascadePositionBytes = convertStringToInt16List(cascadePosition);
     List<int> deviceNameBytes = convertStringToInt16List(deviceName);
     List<int> deviceNoteBytes = convertStringToInt16List(deviceNote);
 
     List<int> combinedBytes = [
+      ...technicianIDBytes,
+      0x00,
+      0x00,
       ...inputSignalLevelBytes,
+      0x00,
+      0x00,
+      ...inputAttenuationBytes,
+      0x00,
+      0x00,
+      ...inputEqualizerBytes,
       0x00,
       0x00,
       ...cascadePositionBytes,

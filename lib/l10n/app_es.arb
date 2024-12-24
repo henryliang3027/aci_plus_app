@@ -441,6 +441,14 @@
     "dialogMessageGPSPermissionDenied": "Permisos de ubicación denegados. Por favor, otorgue permiso.",
     "dialogMessageAutoSettingLogIntervalFailed": "Error al inicializar el intervalo de registro.",
 
+    "dialogMessageTechnicianIDSetting": "Ajuste ID del técnico",
+    "dialogMessageInputSignalLevelSetting": "Ajuste niveles de entrada",
+    "dialogMessageInputAttenuationSetting": "Ajuste atenuación de entrada",
+    "dialogMessageInputEqualizerSetting": "Ajuste ecualizador de entrada",
+    "dialogMessageCascadePositionSetting": "Ajuste posición de cascada",
+    "dialogMessageDeviceNameSetting": "Ajuste nombre del dispositivo",
+    "dialogMessageDeviceNoteSetting": "Ajuste nota",
+
     "dialogMessageItemAGCDisabled": "Deshabilitado",
     "dialogMessageItemUnFilled": "No Lleno",
     "dialogMessageResetToDefaultSuccessful" : "Restablecimiento exitoso al valor predeterminado.",

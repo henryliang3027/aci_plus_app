@@ -15,6 +15,7 @@ import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/shared/utils.dart';
 import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_graph_page.dart';
+import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -125,6 +126,20 @@ class Setting18AttributeView extends StatelessWidget {
             .dialogMessageRFOutputLogIntervalSetting;
       } else if (item == DataKey.tgcCableLength.name) {
         return AppLocalizations.of(context)!.dialogMessageTGCCableLengthSetting;
+      } else if (item == DataKey.technicianID.name) {
+        return AppLocalizations.of(context)!.dialogMessageTechnicianIDSetting;
+      } else if (item == DataKey.inputSignalLevel.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageInputSignalLevelSetting;
+      } else if (item == DataKey.inputAttenuation.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageInputAttenuationSetting;
+      } else if (item == DataKey.inputEqualizer.name) {
+        return AppLocalizations.of(context)!.dialogMessageInputEqualizerSetting;
+      } else if (item == DataKey.deviceName.name) {
+        return AppLocalizations.of(context)!.dialogMessageDeviceNameSetting;
+      } else if (item == DataKey.deviceNote.name) {
+        return AppLocalizations.of(context)!.dialogMessageDeviceNoteSetting;
       } else {
         return '';
       }
@@ -252,8 +267,17 @@ class Setting18AttributeView extends StatelessWidget {
           _Coordinates(
             textEditingController: coordinateTextEditingController,
           ),
+          _TechnicianID(
+            textEditingController: technicianIDTextEditingController,
+          ),
           _InputSignalLevel(
             textEditingController: inputSignalLevelTextEditingController,
+          ),
+          _InputAttenuation(
+            textEditingController: inputAttenuationTextEditingController,
+          ),
+          _InputEqualizer(
+            textEditingController: inputEqualizerTextEditingController,
           ),
           _CascadePosition(
             textEditingController: cascadePositionTextEditingController,
@@ -300,7 +324,10 @@ class Setting18AttributeView extends StatelessWidget {
         if (state.isInitialize) {
           locationTextEditingController.text = state.location;
           coordinateTextEditingController.text = state.coordinates;
+          technicianIDTextEditingController.text = state.technicianID;
           inputSignalLevelTextEditingController.text = state.inputSignalLevel;
+          inputAttenuationTextEditingController.text = state.inputAttenuation;
+          inputEqualizerTextEditingController.text = state.inputEqualizer;
           cascadePositionTextEditingController.text = state.cascadePosition;
           deviceNameTextEditingController.text = state.deviceName;
           deviceNoteTextEditingController.text = state.deviceNote;
@@ -604,10 +631,10 @@ class _TechnicianID extends StatelessWidget {
                       decimal: true,
                     ),
                     textInputAction: TextInputAction.done,
-                    onChanged: (inputSignalLevel) {
-                      // context
-                      //     .read<Setting18AttributeBloc>()
-                      //     .add(TechnicianIDChanged(inputSignalLevel));
+                    onChanged: (technicianID) {
+                      context
+                          .read<Setting18AttributeBloc>()
+                          .add(TechnicianIDChanged(technicianID));
                     },
                     onTapOutside: (event) {
                       // 點擊其他區域關閉螢幕鍵盤
@@ -688,6 +715,165 @@ class _InputSignalLevel extends StatelessWidget {
                       context
                           .read<Setting18AttributeBloc>()
                           .add(InputSignalLevelChanged(inputSignalLevel));
+                    },
+                    onTapOutside: (event) {
+                      // 點擊其他區域關閉螢幕鍵盤
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
+                    maxLength: 6,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: const EdgeInsets.all(10.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor:
+                          Theme.of(context).colorScheme.secondaryContainer,
+                      counterText: '',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _InputAttenuation extends StatelessWidget {
+  const _InputAttenuation({
+    required this.textEditingController,
+  });
+
+  final TextEditingController textEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18AttributeBloc, Setting18AttributeState>(
+      builder: (context, state) {
+        return Card(
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.inputAttenuation),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(CustomStyle.sizeXL),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeL,
+                  ),
+                  child: Text(
+                    '${AppLocalizations.of(context)!.inputAttenuation}:',
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeXS,
+                  ),
+                  child: TextField(
+                    controller: textEditingController,
+                    key: const Key('setting18Form_technicianIDInput_textField'),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                    ),
+                    enabled: state.editMode,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    textInputAction: TextInputAction.done,
+                    onChanged: (inputAttenuation) {
+                      context
+                          .read<Setting18AttributeBloc>()
+                          .add(InputAttenuationChanged(inputAttenuation));
+                    },
+                    onTapOutside: (event) {
+                      // 點擊其他區域關閉螢幕鍵盤
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
+                    maxLength: 6,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: const EdgeInsets.all(10.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor:
+                          Theme.of(context).colorScheme.secondaryContainer,
+                      counterText: '',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _InputEqualizer extends StatelessWidget {
+  const _InputEqualizer({
+    required this.textEditingController,
+  });
+
+  final TextEditingController textEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<Setting18AttributeBloc, Setting18AttributeState>(
+      builder: (context, state) {
+        return Card(
+          color: getSettingListCardColor(
+            context: context,
+            isTap: state.tappedSet.contains(DataKey.inputEqualizer),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(CustomStyle.sizeXL),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeL,
+                  ),
+                  child: Text(
+                    '${AppLocalizations.of(context)!.inputEqualizer}:',
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeXS,
+                  ),
+                  child: TextField(
+                    controller: textEditingController,
+                    key: const Key(
+                        'setting18Form_inputEqualizerInput_textField'),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                    ),
+                    enabled: state.editMode,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    textInputAction: TextInputAction.done,
+                    onChanged: (inputEqualizer) {
+                      context
+                          .read<Setting18AttributeBloc>()
+                          .add(InputEqualizerChanged(inputEqualizer));
                     },
                     onTapOutside: (event) {
                       // 點擊其他區域關閉螢幕鍵盤

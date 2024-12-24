@@ -41,6 +41,15 @@ class GPSCoordinatesRequested extends Setting18AttributeEvent {
   List<Object> get props => [];
 }
 
+class TechnicianIDChanged extends Setting18AttributeEvent {
+  const TechnicianIDChanged(this.technicianID);
+
+  final String technicianID;
+
+  @override
+  List<Object> get props => [technicianID];
+}
+
 class InputSignalLevelChanged extends Setting18AttributeEvent {
   const InputSignalLevelChanged(this.inputSignalLevel);
 
@@ -48,6 +57,24 @@ class InputSignalLevelChanged extends Setting18AttributeEvent {
 
   @override
   List<Object> get props => [inputSignalLevel];
+}
+
+class InputAttenuationChanged extends Setting18AttributeEvent {
+  const InputAttenuationChanged(this.inputAttenuation);
+
+  final String inputAttenuation;
+
+  @override
+  List<Object> get props => [inputAttenuation];
+}
+
+class InputEqualizerChanged extends Setting18AttributeEvent {
+  const InputEqualizerChanged(this.inputEqualizer);
+
+  final String inputEqualizer;
+
+  @override
+  List<Object> get props => [inputEqualizer];
 }
 
 class CascadePositionChanged extends Setting18AttributeEvent {
