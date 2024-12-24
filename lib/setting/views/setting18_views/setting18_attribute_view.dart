@@ -73,6 +73,8 @@ class Setting18AttributeView extends StatelessWidget {
 
     HomeState homeState = context.read<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
+    int firmwareVersion = convertFirmwareVersionStringToInt(
+        homeState.characteristicData[DataKey.firmwareVersion] ?? '0');
     // String currentDetectedSplitOption =
     //     homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
 
@@ -136,6 +138,9 @@ class Setting18AttributeView extends StatelessWidget {
             .dialogMessageInputAttenuationSetting;
       } else if (item == DataKey.inputEqualizer.name) {
         return AppLocalizations.of(context)!.dialogMessageInputEqualizerSetting;
+      } else if (item == DataKey.cascadePosition.name) {
+        return AppLocalizations.of(context)!
+            .dialogMessageCascadePositionSetting;
       } else if (item == DataKey.deviceName.name) {
         return AppLocalizations.of(context)!.dialogMessageDeviceNameSetting;
       } else if (item == DataKey.deviceNote.name) {
@@ -255,44 +260,57 @@ class Setting18AttributeView extends StatelessWidget {
             ];
     }
 
-    Widget buildConfigurationWidget(String partId) {
-      // List<Widget> configurationParameters =
-      //     getConfigurationParameterWidgetsByPartId(partId);
-
-      return Column(
-        children: [
-          _Location(
-            textEditingController: locationTextEditingController,
-          ),
-          _Coordinates(
-            textEditingController: coordinateTextEditingController,
-          ),
-          _TechnicianID(
-            textEditingController: technicianIDTextEditingController,
-          ),
-          _InputSignalLevel(
-            textEditingController: inputSignalLevelTextEditingController,
-          ),
-          _InputAttenuation(
-            textEditingController: inputAttenuationTextEditingController,
-          ),
-          _InputEqualizer(
-            textEditingController: inputEqualizerTextEditingController,
-          ),
-          _CascadePosition(
-            textEditingController: cascadePositionTextEditingController,
-          ),
-          _DeviceName(
-            textEditingController: deviceNameTextEditingController,
-          ),
-          _DeviceNote(
-            textEditingController: deviceNoteTextEditingController,
-          ),
-          const SizedBox(
-            height: 120,
-          ),
-        ],
-      );
+    Widget buildConfigurationWidget() {
+      if (firmwareVersion >= 148) {
+        return Column(
+          children: [
+            _Location(
+              textEditingController: locationTextEditingController,
+            ),
+            _Coordinates(
+              textEditingController: coordinateTextEditingController,
+            ),
+            _TechnicianID(
+              textEditingController: technicianIDTextEditingController,
+            ),
+            _InputSignalLevel(
+              textEditingController: inputSignalLevelTextEditingController,
+            ),
+            _InputAttenuation(
+              textEditingController: inputAttenuationTextEditingController,
+            ),
+            _InputEqualizer(
+              textEditingController: inputEqualizerTextEditingController,
+            ),
+            _CascadePosition(
+              textEditingController: cascadePositionTextEditingController,
+            ),
+            _DeviceName(
+              textEditingController: deviceNameTextEditingController,
+            ),
+            _DeviceNote(
+              textEditingController: deviceNoteTextEditingController,
+            ),
+            const SizedBox(
+              height: 120,
+            ),
+          ],
+        );
+      } else {
+        return Column(
+          children: [
+            _Location(
+              textEditingController: locationTextEditingController,
+            ),
+            _Coordinates(
+              textEditingController: coordinateTextEditingController,
+            ),
+            const SizedBox(
+              height: 120,
+            ),
+          ],
+        );
+      }
     }
 
     return BlocListener<Setting18AttributeBloc, Setting18AttributeState>(
@@ -370,7 +388,7 @@ class Setting18AttributeView extends StatelessWidget {
         child: Scaffold(
           body: SafeArea(
             child: SingleChildScrollView(
-              child: buildConfigurationWidget(partId),
+              child: buildConfigurationWidget(),
             ),
           ),
           floatingActionButton: _SettingFloatingActionButton(

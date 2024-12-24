@@ -18,9 +18,18 @@ List<String> getUnFilledItemNameAndDescriptions({
     } else if (dataKey == DataKey.coordinates) {
       unFilledItemNames.add(
           '${AppLocalizations.of(context)!.coordinates},${AppLocalizations.of(context)!.dialogMessageItemUnFilled}');
+    } else if (dataKey == DataKey.technicianID) {
+      unFilledItemNames.add(
+          '${AppLocalizations.of(context)!.technicianID},${AppLocalizations.of(context)!.dialogMessageItemUnFilled}');
     } else if (dataKey == DataKey.inputSignalLevel) {
       unFilledItemNames.add(
           '${AppLocalizations.of(context)!.inputSignalLevel},${AppLocalizations.of(context)!.dialogMessageItemUnFilled}');
+    } else if (dataKey == DataKey.inputAttenuation) {
+      unFilledItemNames.add(
+          '${AppLocalizations.of(context)!.inputAttenuation},${AppLocalizations.of(context)!.dialogMessageItemUnFilled}');
+    } else if (dataKey == DataKey.inputEqualizer) {
+      unFilledItemNames.add(
+          '${AppLocalizations.of(context)!.inputEqualizer},${AppLocalizations.of(context)!.dialogMessageItemUnFilled}');
     } else if (dataKey == DataKey.cascadePosition) {
       unFilledItemNames.add(
           '${AppLocalizations.of(context)!.cascadePosition},${AppLocalizations.of(context)!.dialogMessageItemUnFilled}');
@@ -40,7 +49,10 @@ List<DataKey> getUnFilledItem({
   String agcMode = characteristicData[DataKey.agcMode] ?? '';
   String location = characteristicData[DataKey.location] ?? '';
   String coordinate = characteristicData[DataKey.coordinates] ?? '';
+  String technicianID = characteristicData[DataKey.technicianID] ?? '';
   String inputSignalLevel = characteristicData[DataKey.inputSignalLevel] ?? '';
+  String inputAttenuation = characteristicData[DataKey.inputAttenuation] ?? '';
+  String inputEqualizer = characteristicData[DataKey.inputEqualizer] ?? '';
   String cascadePosition = characteristicData[DataKey.cascadePosition] ?? '';
   String deviceName = characteristicData[DataKey.deviceName] ?? '';
 
@@ -55,8 +67,17 @@ List<DataKey> getUnFilledItem({
   if (coordinate.isEmpty) {
     unFilledItems.add(DataKey.coordinates);
   }
+  if (technicianID.isEmpty) {
+    unFilledItems.add(DataKey.technicianID);
+  }
   if (inputSignalLevel.isEmpty) {
     unFilledItems.add(DataKey.inputSignalLevel);
+  }
+  if (inputAttenuation.isEmpty) {
+    unFilledItems.add(DataKey.inputAttenuation);
+  }
+  if (inputEqualizer.isEmpty) {
+    unFilledItems.add(DataKey.inputEqualizer);
   }
   if (cascadePosition.isEmpty) {
     unFilledItems.add(DataKey.cascadePosition);

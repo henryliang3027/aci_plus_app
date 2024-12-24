@@ -32,8 +32,13 @@ RangeFloatPointInput initialRangeFloatPointInput(
       maxValue: maxValue,
     );
   } else {
+    double? floatValue = double.tryParse(value) ?? 0.0;
+    if (floatValue > maxValue || floatValue < minValue) {
+      floatValue = 0.0;
+    }
+
     return RangeFloatPointInput.dirty(
-      value,
+      floatValue.toString(),
       minValue: minValue,
       maxValue: maxValue,
     );

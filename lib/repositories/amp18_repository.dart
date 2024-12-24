@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:aci_plus_app/core/command18.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/data_key.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
@@ -2421,14 +2422,19 @@ class Amp18Repository {
       characteristicDataCache.addAll(resultOf1p8G2[1]);
     }
 
-    List<dynamic> resultOf1p8GUserAttribute =
-        await requestCommand1p8GUserAttribute();
+    int firmwareVersion = convertFirmwareVersionStringToInt(
+        characteristicDataCache[DataKey.firmwareVersion] ?? '0');
 
-    if (resultOf1p8GUserAttribute[0]) {
-      _characteristicDataStreamController
-          .add(Map<DataKey, String>.from(resultOf1p8GUserAttribute[1]));
+    if (firmwareVersion >= 148) {
+      List<dynamic> resultOf1p8GUserAttribute =
+          await requestCommand1p8GUserAttribute();
 
-      characteristicDataCache.addAll(resultOf1p8GUserAttribute[1]);
+      if (resultOf1p8GUserAttribute[0]) {
+        _characteristicDataStreamController
+            .add(Map<DataKey, String>.from(resultOf1p8GUserAttribute[1]));
+
+        characteristicDataCache.addAll(resultOf1p8GUserAttribute[1]);
+      }
     }
 
     _characteristicDataCache.clear();

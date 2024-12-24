@@ -186,3 +186,7 @@ Future<String> getAppVersion() async {
   String appVersion = 'V ${packageInfo.version}-beta5';
   return appVersion;
 }
+
+int convertFirmwareVersionStringToInt(String strFirmwareVersion) {
+  return int.tryParse(strFirmwareVersion) ?? 0;
+}

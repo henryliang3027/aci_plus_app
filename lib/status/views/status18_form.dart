@@ -147,8 +147,10 @@ class _CardView extends StatelessWidget {
           previous.loadingStatus != current.loadingStatus,
       builder: (context, state) {
         String partId = state.characteristicData[DataKey.partId] ?? '';
+        int firmwareVersion = convertFirmwareVersionStringToInt(
+            state.characteristicData[DataKey.firmwareVersion] ?? '0');
         if (state.loadingStatus.isRequestSuccess) {
-          if (NoticeFlag.leftDevicePage) {
+          if (NoticeFlag.leftDevicePage && firmwareVersion >= 148) {
             List<DataKey> unFilledItems = getUnFilledItem(
               context: context,
               characteristicData: state.characteristicData,

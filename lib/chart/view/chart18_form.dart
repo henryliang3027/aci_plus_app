@@ -48,8 +48,10 @@ class _Chart18FormState extends State<Chart18Form>
   @override
   Widget build(BuildContext context) {
     HomeState homeState = context.read<HomeBloc>().state;
+    int firmwareVersion = convertFirmwareVersionStringToInt(
+        homeState.characteristicData[DataKey.firmwareVersion] ?? '0');
     if (homeState.loadingStatus.isRequestSuccess) {
-      if (NoticeFlag.leftDevicePage) {
+      if (NoticeFlag.leftDevicePage && firmwareVersion >= 148) {
         List<DataKey> unFilledItems = getUnFilledItem(
           context: context,
           characteristicData: homeState.characteristicData,

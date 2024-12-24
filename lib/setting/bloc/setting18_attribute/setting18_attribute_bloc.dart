@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -397,48 +398,54 @@ class Setting18AttributeBloc
 
     List<DataKey> userAttributes = [];
 
-    if (state.technicianID != state.initialValues[DataKey.technicianID]) {
-      userAttributes.add(DataKey.technicianID);
-    }
+    int firmwareVersion = convertFirmwareVersionStringToInt(
+        state.initialValues[DataKey.firmwareVersion] ?? '0');
 
-    if (state.inputSignalLevel !=
-        state.initialValues[DataKey.inputSignalLevel]) {
-      userAttributes.add(DataKey.inputSignalLevel);
-    }
+    if (firmwareVersion >= 148) {
+      if (state.technicianID != state.initialValues[DataKey.technicianID]) {
+        userAttributes.add(DataKey.technicianID);
+      }
 
-    if (state.inputAttenuation !=
-        state.initialValues[DataKey.inputAttenuation]) {
-      userAttributes.add(DataKey.inputAttenuation);
-    }
+      if (state.inputSignalLevel !=
+          state.initialValues[DataKey.inputSignalLevel]) {
+        userAttributes.add(DataKey.inputSignalLevel);
+      }
 
-    if (state.inputEqualizer != state.initialValues[DataKey.inputEqualizer]) {
-      userAttributes.add(DataKey.inputEqualizer);
-    }
+      if (state.inputAttenuation !=
+          state.initialValues[DataKey.inputAttenuation]) {
+        userAttributes.add(DataKey.inputAttenuation);
+      }
 
-    if (state.cascadePosition != state.initialValues[DataKey.cascadePosition]) {
-      userAttributes.add(DataKey.cascadePosition);
-    }
-    if (state.deviceName != state.initialValues[DataKey.deviceName]) {
-      userAttributes.add(DataKey.deviceName);
-    }
-    if (state.deviceNote != state.initialValues[DataKey.deviceNote]) {
-      userAttributes.add(DataKey.deviceNote);
-    }
+      if (state.inputEqualizer != state.initialValues[DataKey.inputEqualizer]) {
+        userAttributes.add(DataKey.inputEqualizer);
+      }
 
-    if (userAttributes.isNotEmpty) {
-      bool resultOfSetUserAttribute =
-          await _amp18Repository.set1p8GUserAttribute(
-        technicianID: state.technicianID,
-        inputSignalLevel: state.inputSignalLevel,
-        inputAttenuation: state.inputAttenuation,
-        inputEqualizer: state.inputEqualizer,
-        cascadePosition: state.cascadePosition,
-        deviceName: state.deviceName,
-        deviceNote: state.deviceNote,
-      );
+      if (state.cascadePosition !=
+          state.initialValues[DataKey.cascadePosition]) {
+        userAttributes.add(DataKey.cascadePosition);
+      }
+      if (state.deviceName != state.initialValues[DataKey.deviceName]) {
+        userAttributes.add(DataKey.deviceName);
+      }
+      if (state.deviceNote != state.initialValues[DataKey.deviceNote]) {
+        userAttributes.add(DataKey.deviceNote);
+      }
 
-      for (DataKey dataKey in userAttributes) {
-        settingResult.add('${dataKey.name},$resultOfSetUserAttribute');
+      if (userAttributes.isNotEmpty) {
+        bool resultOfSetUserAttribute =
+            await _amp18Repository.set1p8GUserAttribute(
+          technicianID: state.technicianID,
+          inputSignalLevel: state.inputSignalLevel,
+          inputAttenuation: state.inputAttenuation,
+          inputEqualizer: state.inputEqualizer,
+          cascadePosition: state.cascadePosition,
+          deviceName: state.deviceName,
+          deviceNote: state.deviceNote,
+        );
+
+        for (DataKey dataKey in userAttributes) {
+          settingResult.add('${dataKey.name},$resultOfSetUserAttribute');
+        }
       }
     }
 
