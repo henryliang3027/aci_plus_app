@@ -365,6 +365,7 @@ class CustomTheme {
       surfaceContainerHighest: Colors.white,
       onSurface: Colors.black,
     ),
+
     appBarTheme: const AppBarTheme(
       iconTheme: IconThemeData(color: Colors.white),
       foregroundColor: Colors.white,
@@ -430,6 +431,7 @@ class CustomTheme {
       surfaceContainerHighest: const Color(0xFF33353A),
       onSurface: Colors.white,
     ),
+
     appBarTheme: const AppBarTheme(
       iconTheme: IconThemeData(color: Colors.white),
       foregroundColor: Colors.white,

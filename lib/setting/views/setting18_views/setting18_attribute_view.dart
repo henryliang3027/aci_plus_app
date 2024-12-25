@@ -1082,6 +1082,30 @@ class _DeviceNote extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18AttributeBloc, Setting18AttributeState>(
       builder: (context, state) {
+        Color getEnableColor() {
+          if (Theme.of(context).brightness == Brightness.light) {
+            if (state.editMode) {
+              return Colors.black;
+            } else {
+              return Colors.grey;
+            }
+          } else {
+            if (state.editMode) {
+              return Colors.white70;
+            } else {
+              return Colors.white38;
+            }
+          }
+        }
+
+        Color getDisableFocusColor() {
+          if (Theme.of(context).brightness == Brightness.light) {
+            return Colors.grey;
+          } else {
+            return Colors.grey.shade600;
+          }
+        }
+
         return Card(
           color: getSettingListCardColor(
             context: context,
@@ -1108,40 +1132,47 @@ class _DeviceNote extends StatelessWidget {
                   padding: const EdgeInsets.only(
                     bottom: CustomStyle.sizeXS,
                   ),
-                  child: SizedBox(
-                    height: 200, // Fixed height
-                    child: TextField(
-                      controller: textEditingController,
-                      key: const Key('setting18Form_deviceNote_textField'),
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      style: const TextStyle(
-                        fontSize: CustomStyle.sizeXL,
-                      ),
-                      enabled: state.editMode,
-                      expands: true,
-                      textAlignVertical: TextAlignVertical.top,
-                      // textInputAction: TextInputAction.done,
-                      onChanged: (deviceNote) {
-                        context
-                            .read<Setting18AttributeBloc>()
-                            .add(DeviceNoteChanged(deviceNote));
-                      },
-                      onTapOutside: (event) {
-                        // 點擊其他區域關閉螢幕鍵盤
-                        FocusManager.instance.primaryFocus?.unfocus();
-                      },
-                      maxLength: 400,
-                      decoration: InputDecoration(
-                        border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0))),
-                        contentPadding: const EdgeInsets.all(10.0),
-                        isDense: true,
-                        filled: true,
-                        fillColor:
-                            Theme.of(context).colorScheme.secondaryContainer,
-                        counterText: '',
+                  child: TextField(
+                    controller: textEditingController,
+                    key: const Key('setting18Form_deviceNote_textField'),
+                    // keyboardType: TextInputType.multiline,
+                    maxLines: 8,
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                    ),
+
+                    readOnly: !state.editMode,
+                    // enabled: state.editMode,
+                    textAlignVertical: TextAlignVertical.top,
+                    // textInputAction: TextInputAction.done,
+                    onChanged: (deviceNote) {
+                      context
+                          .read<Setting18AttributeBloc>()
+                          .add(DeviceNoteChanged(deviceNote));
+                    },
+                    onTapOutside: (event) {
+                      // 點擊其他區域關閉螢幕鍵盤
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
+                    maxLength: 400,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: const EdgeInsets.all(10.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor:
+                          Theme.of(context).colorScheme.secondaryContainer,
+                      counterText: '',
+                      focusedBorder: state.editMode
+                          ? Theme.of(context).inputDecorationTheme.focusedBorder
+                          : OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: getDisableFocusColor(), width: 1.0),
+                            ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: getEnableColor(), width: 1.0),
                       ),
                     ),
                   ),

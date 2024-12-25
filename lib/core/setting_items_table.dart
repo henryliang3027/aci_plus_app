@@ -119,6 +119,7 @@ enum SettingControl {
 // 7: C-Cor LE
 // 8: SDAT
 // 9: SDAM
+// 10: MFT8
 
 const Map<String, String> partIdMap = {
   'd': 'DSIM',
@@ -132,6 +133,7 @@ const Map<String, String> partIdMap = {
   '7': 'AFM LE',
   '8': 'SDAT',
   '9': 'SDAM',
+  '10': 'MFT8',
 };
 
 const Map<String, String> settingGraphFilePath = {

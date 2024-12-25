@@ -1405,6 +1405,16 @@ Widget thresholdAlarmSwitch({
   );
 }
 
+const Map<String, int?> maxStopFrequencyByDFUType = {
+  '0': null,
+  '1': 1794,
+  '2': 1794,
+  '3': 1794,
+  '4': 1794,
+  '5': 1794,
+  '6': 1218,
+};
+
 // List<Record>
 // Record, a new variable type of Dart 3
 const Map<String, (int?, int?)> splitBaseLine = {
@@ -1414,6 +1424,7 @@ const Map<String, (int?, int?)> splitBaseLine = {
   '3': (396, 492),
   // '4': (492, 606),
   // '5': (684, 834),
+  '6': (85, 105),
 };
 
 const List<String> splitOptionValues = [

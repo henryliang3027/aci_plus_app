@@ -130,6 +130,23 @@ class FirmwareFileTable {
       78,
       48,
     ], // SDAM 'M851TC2RN0'
+    '10': [
+      77,
+      70,
+      84,
+      56,
+      52,
+      48,
+      80,
+      67,
+      83,
+      54,
+      55,
+      57,
+      32,
+      45,
+      50,
+    ], // MFT8 'MFT840PCS679 -2'
   };
 
   // static const Map<String, String> filePathMap = {

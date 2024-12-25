@@ -26,6 +26,25 @@ class Amp18Parser {
     return s;
   }
 
+  String _decodeUnicodeToString(Uint8List byteValues) {
+    // 使用 unicode 解析 byte 格式的字串
+    String strValue = '';
+    for (int i = 0; i < byteValues.length; i += 2) {
+      Uint8List bytes = Uint8List.fromList([byteValues[i], byteValues[i + 1]]);
+
+      // Extract the bytes and create the Unicode code point
+      int lowerByte = bytes[0];
+      int upperByte = bytes[1];
+      int unicodeCodePoint = (upperByte << 8) | lowerByte;
+
+      // Convert the Unicode code point to a string
+      String chineseCharacter = String.fromCharCode(unicodeCodePoint);
+      strValue += chineseCharacter;
+    }
+
+    return strValue;
+  }
+
   A1P8G0 decodeA1P8G0(List<int> rawData) {
     String partName = '';
     String partNo = '';
@@ -345,18 +364,22 @@ class Amp18Parser {
     outputPowerAlarmState = rawData[53].toString();
 
     // 使用 unicode 解析 location
-    for (int i = 54; i < 150; i += 2) {
-      Uint8List bytes = Uint8List.fromList([rawData[i], rawData[i + 1]]);
 
-      // Extract the bytes and create the Unicode code point
-      int lowerByte = bytes[0];
-      int upperByte = bytes[1];
-      int unicodeCodePoint = (upperByte << 8) | lowerByte;
+    location =
+        _decodeUnicodeToString(Uint8List.fromList(rawData.sublist(54, 150)));
 
-      // Convert the Unicode code point to a string
-      String chineseCharacter = String.fromCharCode(unicodeCodePoint);
-      location += chineseCharacter;
-    }
+    // for (int i = 54; i < 150; i += 2) {
+    //   Uint8List bytes = Uint8List.fromList([rawData[i], rawData[i + 1]]);
+
+    //   // Extract the bytes and create the Unicode code point
+    //   int lowerByte = bytes[0];
+    //   int upperByte = bytes[1];
+    //   int unicodeCodePoint = (upperByte << 8) | lowerByte;
+
+    //   // Convert the Unicode code point to a string
+    //   String chineseCharacter = String.fromCharCode(unicodeCodePoint);
+    //   location += chineseCharacter;
+    // }
 
     location = _trimString(location);
 
@@ -808,15 +831,15 @@ class Amp18Parser {
       );
     } else {
       // 因為前三個 byte 為 header, 後兩個 byte 為 crc, 所以迴圈從有內容的部分迭代
-      for (int i = 3; i < rawData.length - 2; i += 2) {
-        if (rawData[i] == 0x00 && rawData[i + 1] == 0x00) {
+      for (int i = 0; i < rawDataContent.length; i += 2) {
+        if (rawDataContent[i] == 0x00 && rawDataContent[i + 1] == 0x00) {
           // ASCII code for ','
           // If we hit a comma, save the current group if it's not empty
           separatedGroups.add(currentGroup);
           currentGroup = []; // Clear the current group for the next set
         } else {
           // Add non-comma ASCII codes to the current group
-          currentGroup.add(rawData[i]);
+          currentGroup.addAll([rawDataContent[i], rawDataContent[i + 1]]);
         }
       }
 
@@ -832,23 +855,33 @@ class Amp18Parser {
 
       for (int i = 0; i < separatedGroups.length; i++) {
         if (i == 0) {
-          technicianID = _trimString(String.fromCharCodes(separatedGroups[i]));
+          technicianID =
+              _decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          technicianID = _trimString(technicianID);
         } else if (i == 1) {
           inputSignalLevel =
-              _trimString(String.fromCharCodes(separatedGroups[i]));
+              _decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          inputSignalLevel = _trimString(inputSignalLevel);
         } else if (i == 2) {
           inputAttenuation =
-              _trimString(String.fromCharCodes(separatedGroups[i]));
+              _decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          inputAttenuation = _trimString(inputAttenuation);
         } else if (i == 3) {
           inputEqualizer =
-              _trimString(String.fromCharCodes(separatedGroups[i]));
+              _decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          inputEqualizer = _trimString(inputEqualizer);
         } else if (i == 4) {
           cascadePosition =
-              _trimString(String.fromCharCodes(separatedGroups[i]));
+              _decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          cascadePosition = _trimString(cascadePosition);
         } else if (i == 5) {
-          deviceName = _trimString(String.fromCharCodes(separatedGroups[i]));
+          deviceName =
+              _decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          deviceName = _trimString(deviceName);
         } else if (i == 6) {
-          deviceNote = _trimString(String.fromCharCodes(separatedGroups[i]));
+          deviceNote =
+              _decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          deviceNote = _trimString(deviceNote);
         }
       }
 
