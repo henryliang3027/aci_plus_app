@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_page.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
+import 'package:aci_plus_app/repositories/code_repository.dart';
 import 'package:aci_plus_app/repositories/config_repository.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
@@ -25,6 +26,7 @@ class App extends StatelessWidget {
     required this.gpsRepository,
     required this.configRepository,
     required this.firmwareRepository,
+    required this.codeRepository,
   });
 
   final AdaptiveThemeMode savedAdaptiveThemeMode;
@@ -36,6 +38,7 @@ class App extends StatelessWidget {
   final GPSRepository gpsRepository;
   final ConfigRepository configRepository;
   final FirmwareRepository firmwareRepository;
+  final CodeRepository codeRepository;
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
@@ -63,6 +66,9 @@ class App extends StatelessWidget {
         ),
         RepositoryProvider<FirmwareRepository>(
           create: (context) => firmwareRepository,
+        ),
+        RepositoryProvider<CodeRepository>(
+          create: (context) => codeRepository,
         ),
       ],
       child: BlocProvider(

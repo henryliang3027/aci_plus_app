@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:aci_plus_app/app.dart';
 import 'package:aci_plus_app/core/shared_preference_key.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
+import 'package:aci_plus_app/repositories/code_repository.dart';
 import 'package:aci_plus_app/repositories/distribution_config.dart';
 import 'package:aci_plus_app/repositories/mock/sample_aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/mock/sample_amp18_repository.dart';
@@ -116,6 +117,7 @@ Future<void> main() async {
       gpsRepository: GPSRepository(),
       configRepository: ConfigRepository(),
       firmwareRepository: FirmwareRepository(),
+      codeRepository: CodeRepository(),
     ));
   } else {
     runApp(App(
@@ -128,6 +130,7 @@ Future<void> main() async {
       gpsRepository: GPSRepository(),
       configRepository: ConfigRepository(),
       firmwareRepository: FirmwareRepository(),
+      codeRepository: CodeRepository(),
     ));
   }
 }

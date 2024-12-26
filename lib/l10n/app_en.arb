@@ -201,6 +201,8 @@
     "scanQRCode": "Scan QR Code",
     "deviceSetting": "Device Setting",
     "firmwareUpdate": "Firmware Update",
+    "update": "Update",
+    "firmwareUpdateLog": "Update Log",
     "operationLog": "Operation Log",
     "bluetoothSetting": "Bluetooth Setting",
     "instruction" : "Instruction",

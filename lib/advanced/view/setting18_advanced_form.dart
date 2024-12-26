@@ -108,6 +108,7 @@ class _DynamicBottomNavigationBar extends StatelessWidget {
             },
           );
         } else {
+          // 進行更新時 HomeBottomNavigationBar 不可以切換
           return HomeBottomNavigationBar18(
             pageController: pageController,
             selectedIndex: 4,

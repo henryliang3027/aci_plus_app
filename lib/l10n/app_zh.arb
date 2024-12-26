@@ -11,6 +11,7 @@
     "alarm": "      告警      ",
     "balance": "      調整      ",
     "advanced": "進階",
+
     
     "attribute": "屬性",
     "regulation": "規則",
@@ -200,6 +201,8 @@
     "scanQRCode": "掃描二維碼",
     "deviceSetting": "     設備設定     ",
     "firmwareUpdate": "     韌體更新     ",
+    "update": "     更新     ",
+    "firmwareUpdateLog": "     紀錄     ",
     "operationLog": "     操作紀錄     ",
     "bluetoothSetting": "     藍牙設定     ",
     "instruction" : "說明",

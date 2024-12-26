@@ -26,6 +26,7 @@ class Setting18AdvancedTabBar extends StatelessWidget {
               width: double.maxFinite,
               color: Theme.of(context).appBarTheme.backgroundColor,
               child: IgnorePointer(
+                // 進行更新時 tabbar 不可以切換
                 ignoring: !state.enableButtonsTap,
                 child: TabBar(
                   controller: tabController,

@@ -198,7 +198,9 @@
 
     "scanQRCode": "Scanner code QR",
     "deviceSetting": "Paramètres de l'appareil",
-    "firmwareUpdate": "Mise à jour du firmware",
+    "firmwareUpdate": "Mise à jour firmware",
+    "update": "Mettre à jour",
+    "firmwareUpdateLog": "Journal",
     "operationLog": "Journal d'Opérations",
     "bluetoothSetting": "Paramètres Bluetooth",
     "instruction" : "Instruction",

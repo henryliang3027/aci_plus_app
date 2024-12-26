@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/core/shared_preference_key.dart';
+import 'package:aci_plus_app/repositories/code_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,7 +8,10 @@ part 'code_input_event.dart';
 part 'code_input_state.dart';
 
 class CodeInputBloc extends Bloc<CodeInputEvent, CodeInputState> {
-  CodeInputBloc() : super(const CodeInputState()) {
+  CodeInputBloc({
+    required CodeRepository codeRepository,
+  })  : _codeRepository = codeRepository,
+        super(const CodeInputState()) {
     on<CodeRequested>(_onCodeRequested);
     on<CodeChanged>(_onCodeChanged);
     on<CodeConfirmed>(_onCodeConfirmed);
@@ -15,11 +19,13 @@ class CodeInputBloc extends Bloc<CodeInputEvent, CodeInputState> {
     add(const CodeRequested());
   }
 
+  final CodeRepository _codeRepository;
+
   Future<void> _onCodeRequested(
     CodeRequested event,
     Emitter<CodeInputState> emit,
   ) async {
-    String code = await readUserCode();
+    String code = await _codeRepository.readUserCode();
 
     emit(state.copyWith(
       isInitialize: true,
@@ -44,17 +50,6 @@ class CodeInputBloc extends Bloc<CodeInputEvent, CodeInputState> {
     emit(state.copyWith(
       isInitialize: false,
     ));
-    await writeUserCode(state.code);
-  }
-
-  Future<void> writeUserCode(String userCode) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(SharedPreferenceKey.userCode.name, userCode);
-  }
-
-  Future<String> readUserCode() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userCode = prefs.getString(SharedPreferenceKey.userCode.name) ?? '';
-    return userCode;
+    await _codeRepository.writeUserCode(state.code);
   }
 }

@@ -10,6 +10,7 @@ class Setting18FirmwareState extends Equatable {
     this.binary = const [],
     this.updateCanceled = false,
     this.formattedTimeElapsed = '',
+    this.technicianID = '',
     this.updateMessage = '',
     this.errorMessage = '',
     this.fileErrorMessage = '',
@@ -23,6 +24,7 @@ class Setting18FirmwareState extends Equatable {
   final List<int> binary;
   final bool updateCanceled;
   final String formattedTimeElapsed;
+  final String technicianID;
   final String updateMessage;
   final String errorMessage;
   final String fileErrorMessage;
@@ -36,6 +38,7 @@ class Setting18FirmwareState extends Equatable {
     List<int>? binary,
     bool? updateCanceled,
     String? formattedTimeElapsed,
+    String? technicianID,
     String? updateMessage,
     String? errorMessage,
     String? fileErrorMessage,
@@ -49,6 +52,7 @@ class Setting18FirmwareState extends Equatable {
       binary: binary ?? this.binary,
       updateCanceled: updateCanceled ?? this.updateCanceled,
       formattedTimeElapsed: formattedTimeElapsed ?? this.formattedTimeElapsed,
+      technicianID: technicianID ?? this.technicianID,
       updateMessage: updateMessage ?? this.updateMessage,
       errorMessage: errorMessage ?? this.errorMessage,
       fileErrorMessage: fileErrorMessage ?? this.fileErrorMessage,
@@ -65,6 +69,7 @@ class Setting18FirmwareState extends Equatable {
         binary,
         updateCanceled,
         formattedTimeElapsed,
+        technicianID,
         updateMessage,
         errorMessage,
         fileErrorMessage,

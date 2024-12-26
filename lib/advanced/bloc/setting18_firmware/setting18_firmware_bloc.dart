@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:aci_plus_app/core/custom_style.dart';
-import 'package:aci_plus_app/core/firmware_file_table.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';

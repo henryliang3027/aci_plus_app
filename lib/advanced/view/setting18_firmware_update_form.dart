@@ -14,8 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Setting18FirmwareForm extends StatelessWidget {
-  const Setting18FirmwareForm({
+class Setting18FirmwareUpdateForm extends StatelessWidget {
+  const Setting18FirmwareUpdateForm({
     super.key,
     required this.pageController,
   });
