@@ -271,7 +271,7 @@ class Setting18ThresholdView extends StatelessWidget {
               : Container(),
           ...forwardSettings,
           const SizedBox(
-            height: 160,
+            height: CustomStyle.formBottomSpacingL,
           ),
         ],
       );

@@ -155,7 +155,7 @@ class Setting18ForwardControlView extends StatelessWidget {
             : Container(),
         ...forwardControlParameters,
         const SizedBox(
-          height: 120,
+          height: CustomStyle.formBottomSpacingL,
         ),
       ]);
     }

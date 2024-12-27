@@ -1,10 +1,7 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_advanced/setting18_advanced_bloc.dart';
-import 'package:aci_plus_app/advanced/view/setting18_firmware_page.dart';
 import 'package:aci_plus_app/advanced/view/setting18_firmware_log_page.dart';
 import 'package:aci_plus_app/advanced/view/setting18_firmware_update_page.dart';
 import 'package:aci_plus_app/core/secondary_tab_bar_theme.dart';
-import 'package:aci_plus_app/setting/views/setting18_views/setting18_attribute_page.dart';
-import 'package:aci_plus_app/setting/views/setting18_views/setting18_regulation_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

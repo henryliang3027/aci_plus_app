@@ -473,6 +473,9 @@ class _LogChartListView extends StatelessWidget {
                               dateValueCollectionOfLog:
                                   dataLogChartState.dateValueCollectionOfLog),
                         ),
+                        const SizedBox(
+                          height: CustomStyle.formBottomSpacingS,
+                        ),
                       ],
                     ),
                   ),

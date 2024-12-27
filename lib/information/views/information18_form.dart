@@ -72,6 +72,9 @@ class Information18Form extends StatelessWidget {
             _BasicCard(),
             _AlarmCard(),
             // _DataReloader(),
+            SizedBox(
+              height: CustomStyle.formBottomSpacingS,
+            ),
           ],
         ),
       ),

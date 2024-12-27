@@ -234,6 +234,9 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
                   pageController: pageController,
                   partId: partId,
                 ),
+                const SizedBox(
+                  height: CustomStyle.formBottomSpacingS,
+                ),
               ],
             ),
           ),

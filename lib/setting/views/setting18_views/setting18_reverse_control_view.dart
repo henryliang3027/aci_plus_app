@@ -155,7 +155,7 @@ class Setting18ReverseControlView extends StatelessWidget {
             : Container(),
         ...returnControlParameters,
         const SizedBox(
-          height: 120,
+          height: CustomStyle.formBottomSpacingL,
         ),
       ]);
     }

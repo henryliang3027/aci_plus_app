@@ -292,7 +292,7 @@ class Setting18AttributeView extends StatelessWidget {
               textEditingController: deviceNoteTextEditingController,
             ),
             const SizedBox(
-              height: 120,
+              height: CustomStyle.formBottomSpacingL,
             ),
           ],
         );
@@ -306,7 +306,7 @@ class Setting18AttributeView extends StatelessWidget {
               textEditingController: coordinateTextEditingController,
             ),
             const SizedBox(
-              height: 120,
+              height: CustomStyle.formBottomSpacingL,
             ),
           ],
         );
@@ -336,12 +336,12 @@ class Setting18AttributeView extends StatelessWidget {
                 msg: state.gpsCoordinateErrorMessage, context: context),
           );
         } else if (state.gpsStatus.isRequestSuccess) {
-          coordinateTextEditingController.text = state.coordinates;
+          coordinateTextEditingController.text = state.coordinates.value;
         }
 
         if (state.isInitialize) {
           locationTextEditingController.text = state.location;
-          coordinateTextEditingController.text = state.coordinates;
+          coordinateTextEditingController.text = state.coordinates.value;
           technicianIDTextEditingController.text = state.technicianID;
           inputSignalLevelTextEditingController.text = state.inputSignalLevel;
           inputAttenuationTextEditingController.text = state.inputAttenuation;
@@ -521,6 +521,9 @@ class _Coordinates extends StatelessWidget {
                       fontSize: CustomStyle.sizeXL,
                     ),
                     enabled: state.editMode,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     textInputAction: TextInputAction.done,
                     onChanged: (coordinate) {
                       context
@@ -539,6 +542,9 @@ class _Coordinates extends StatelessWidget {
                       fillColor:
                           Theme.of(context).colorScheme.secondaryContainer,
                       counterText: '',
+                      errorText: state.coordinates.isNotValid
+                          ? AppLocalizations.of(context)!.textFieldErrorMessage
+                          : null,
                       suffixIconConstraints: const BoxConstraints(
                         maxHeight: 48,
                         maxWidth: 56,
@@ -658,7 +664,7 @@ class _TechnicianID extends StatelessWidget {
                       // 點擊其他區域關閉螢幕鍵盤
                       FocusManager.instance.primaryFocus?.unfocus();
                     },
-                    maxLength: 6,
+                    maxLength: 8,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(4.0))),
@@ -817,7 +823,7 @@ class _InputAttenuation extends StatelessWidget {
                       // 點擊其他區域關閉螢幕鍵盤
                       FocusManager.instance.primaryFocus?.unfocus();
                     },
-                    maxLength: 6,
+                    maxLength: 4,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(4.0))),
@@ -897,7 +903,7 @@ class _InputEqualizer extends StatelessWidget {
                       // 點擊其他區域關閉螢幕鍵盤
                       FocusManager.instance.primaryFocus?.unfocus();
                     },
-                    maxLength: 6,
+                    maxLength: 4,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(4.0))),
@@ -1106,6 +1112,14 @@ class _DeviceNote extends StatelessWidget {
           }
         }
 
+        Color getTextColor() {
+          if (Theme.of(context).brightness == Brightness.light) {
+            return Colors.black;
+          } else {
+            return Colors.white;
+          }
+        }
+
         return Card(
           color: getSettingListCardColor(
             context: context,
@@ -1137,8 +1151,9 @@ class _DeviceNote extends StatelessWidget {
                     key: const Key('setting18Form_deviceNote_textField'),
                     // keyboardType: TextInputType.multiline,
                     maxLines: 8,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: CustomStyle.sizeXL,
+                      color: !state.editMode ? Colors.grey : getTextColor(),
                     ),
 
                     readOnly: !state.editMode,

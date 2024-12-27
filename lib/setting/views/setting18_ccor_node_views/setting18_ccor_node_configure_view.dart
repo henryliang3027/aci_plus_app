@@ -225,7 +225,7 @@ class Setting18CCorNodeConfigureView extends StatelessWidget {
         children: [
           ...configurationParameters,
           const SizedBox(
-            height: 120,
+            height: CustomStyle.formBottomSpacingL,
           ),
         ],
       );

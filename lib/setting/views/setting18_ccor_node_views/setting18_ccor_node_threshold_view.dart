@@ -303,7 +303,7 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
               : Container(),
           ...forwardSettings,
           const SizedBox(
-            height: 120,
+            height: CustomStyle.formBottomSpacingL,
           ),
         ],
       );

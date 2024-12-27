@@ -13,6 +13,8 @@ class CustomStyle {
   static const double size36 = 36.0;
   static const double size4XL = 40.0;
   static const double diameter = 23;
+  static const double formBottomSpacingL = 220;
+  static const double formBottomSpacingS = 120;
 
   static const Color customRed = Color(0xFFDC3545);
   static const Color customGreen = Color(0xFF28A745);

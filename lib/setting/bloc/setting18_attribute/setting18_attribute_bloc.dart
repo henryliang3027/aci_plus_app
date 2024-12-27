@@ -5,6 +5,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/repositories/gps_repository.dart';
+import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:equatable/equatable.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,7 +59,8 @@ class Setting18AttributeBloc
         _amp18Repository.characteristicDataCache;
 
     String location = characteristicDataCache[DataKey.location] ?? '';
-    String coordinates = characteristicDataCache[DataKey.coordinates] ?? '';
+    String coordinatesStr = characteristicDataCache[DataKey.coordinates] ?? '';
+    CoordinateInput coordinates = CoordinateInput.dirty(coordinatesStr);
     String technicianID = characteristicDataCache[DataKey.technicianID] ?? '';
     String inputSignalLevel =
         characteristicDataCache[DataKey.inputSignalLevel] ?? '';
@@ -118,14 +120,18 @@ class Setting18AttributeBloc
     Set<DataKey> tappedSet = Set.from(state.tappedSet);
     tappedSet.add(DataKey.coordinates);
 
+    CoordinateInput coordinates = CoordinateInput.dirty(
+      event.coordinates,
+    );
+
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
       gpsStatus: FormStatus.none,
-      coordinates: event.coordinates,
+      coordinates: coordinates,
       isInitialize: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
-        coordinates: event.coordinates,
+        coordinates: coordinates,
       ),
     ));
   }
@@ -143,7 +149,12 @@ class Setting18AttributeBloc
     tappedSet.add(DataKey.coordinates);
 
     try {
-      String coordinates = await _gpsRepository.getGPSCoordinates();
+      String coordinatesStr = await _gpsRepository.getGPSCoordinates();
+
+      CoordinateInput coordinates = CoordinateInput.dirty(
+        coordinatesStr,
+      );
+
       emit(state.copyWith(
         gpsStatus: FormStatus.requestSuccess,
         coordinates: coordinates,
@@ -323,7 +334,8 @@ class Setting18AttributeBloc
       enableSubmission: false,
       tappedSet: {},
       location: state.initialValues[DataKey.location],
-      coordinates: state.initialValues[DataKey.coordinates],
+      coordinates:
+          CoordinateInput.dirty(state.initialValues[DataKey.coordinates] ?? ''),
       technicianID: state.initialValues[DataKey.technicianID],
       inputSignalLevel: state.initialValues[DataKey.inputSignalLevel],
       inputAttenuation: state.initialValues[DataKey.inputAttenuation],
@@ -336,7 +348,7 @@ class Setting18AttributeBloc
 
   bool _isEnabledSubmission({
     String? location,
-    String? coordinates,
+    CoordinateInput? coordinates,
     String? technicianID,
     String? inputSignalLevel,
     String? inputAttenuation,
@@ -355,18 +367,22 @@ class Setting18AttributeBloc
     deviceName ??= state.deviceName;
     deviceNote ??= state.deviceNote;
 
-    if (location != state.initialValues[DataKey.location] ||
-        coordinates != state.initialValues[DataKey.coordinates] ||
-        technicianID != state.initialValues[DataKey.technicianID] ||
-        inputSignalLevel != state.initialValues[DataKey.inputSignalLevel] ||
-        inputAttenuation != state.initialValues[DataKey.inputAttenuation] ||
-        inputEqualizer != state.initialValues[DataKey.inputEqualizer] ||
-        cascadePosition != state.initialValues[DataKey.cascadePosition] ||
-        deviceName != state.initialValues[DataKey.deviceName] ||
-        deviceNote != state.initialValues[DataKey.deviceNote]) {
-      return true;
-    } else {
+    if (coordinates.isNotValid) {
       return false;
+    } else {
+      if (location != state.initialValues[DataKey.location] ||
+          coordinates.value != state.initialValues[DataKey.coordinates] ||
+          technicianID != state.initialValues[DataKey.technicianID] ||
+          inputSignalLevel != state.initialValues[DataKey.inputSignalLevel] ||
+          inputAttenuation != state.initialValues[DataKey.inputAttenuation] ||
+          inputEqualizer != state.initialValues[DataKey.inputEqualizer] ||
+          cascadePosition != state.initialValues[DataKey.cascadePosition] ||
+          deviceName != state.initialValues[DataKey.deviceName] ||
+          deviceNote != state.initialValues[DataKey.deviceNote]) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 
@@ -391,7 +407,7 @@ class Setting18AttributeBloc
 
     if (state.coordinates != state.initialValues[DataKey.coordinates]) {
       bool resultOfSetCoordinates =
-          await _amp18Repository.set1p8GCoordinates(state.coordinates);
+          await _amp18Repository.set1p8GCoordinates(state.coordinates.value);
 
       settingResult.add('${DataKey.coordinates.name},$resultOfSetCoordinates');
     }

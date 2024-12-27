@@ -119,6 +119,9 @@ class _CardView extends StatelessWidget {
               child: Column(
                 children: [
                   ...widgets,
+                  const SizedBox(
+                    height: CustomStyle.formBottomSpacingS,
+                  ),
                 ],
               ),
             )
@@ -137,6 +140,9 @@ class _CardView extends StatelessWidget {
                   _FirstChannelPowerLevelCard(),
                   _LastChannelPowerLevelCard(),
                   // _OutputOperatingSlopeCard(),
+                  SizedBox(
+                    height: CustomStyle.formBottomSpacingS,
+                  ),
                 ],
               ),
             );
@@ -240,6 +246,12 @@ Color? _getCurrentValueColor({
   required String alarmSeverity,
 }) {
   return alarmState == '0' ? CustomStyle.alarmColor[alarmSeverity]! : null;
+}
+
+Color? _getSplitOptionColor(
+  String value,
+) {
+  return value == 'N/A' ? CustomStyle.customRed : null;
 }
 
 class _DeviceRefresh extends StatelessWidget {
@@ -543,9 +555,10 @@ class _SplitOptionCard extends StatelessWidget {
             );
     } else if (loadingStatus == FormStatus.requestSuccess) {
       return Text(
-        currentSplitOption.isEmpty ? 'N/A' : currentSplitOption,
+        currentSplitOption,
         style: TextStyle(
           fontSize: fontSize,
+          color: _getSplitOptionColor(currentSplitOption),
           // 20240821 不顯示顏色
           // _getCurrentValueColor(
           //   alarmState: splitOptionAlarmState,

@@ -5,7 +5,7 @@ class Setting18AttributeState extends Equatable {
     this.submissionStatus = SubmissionStatus.none,
     this.gpsStatus = FormStatus.none,
     this.location = '',
-    this.coordinates = '',
+    this.coordinates = const CoordinateInput.pure(),
     this.technicianID = '',
     this.inputSignalLevel = '',
     this.inputAttenuation = '',
@@ -26,7 +26,7 @@ class Setting18AttributeState extends Equatable {
 
   final FormStatus gpsStatus;
   final String location;
-  final String coordinates;
+  final CoordinateInput coordinates;
   final String technicianID;
   final String inputSignalLevel;
   final String inputAttenuation;
@@ -46,7 +46,7 @@ class Setting18AttributeState extends Equatable {
     SubmissionStatus? submissionStatus,
     FormStatus? gpsStatus,
     String? location,
-    String? coordinates,
+    CoordinateInput? coordinates,
     String? technicianID,
     String? inputSignalLevel,
     String? inputAttenuation,

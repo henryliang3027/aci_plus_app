@@ -20,6 +20,27 @@ class LocationInpput extends FormzInput<String, ValidationError> {
   }
 }
 
+class CoordinateInput extends FormzInput<String, ValidationError> {
+  const CoordinateInput.pure() : super.pure('');
+  const CoordinateInput.dirty([String value = '']) : super.dirty(value);
+
+  @override
+  ValidationError? validator(String? value) {
+    RegExp coordinateRegex = RegExp(r'^-?(\d+(\.\d+)?)\s*,\s*-?(\d+(\.\d+)?)$');
+
+    if (value == null) {
+      return ValidationError.formatError;
+    } else {
+      // 如果 value 尚未被更改過(isPure), 則不會跑下列的格式檢查
+      if (!coordinateRegex.hasMatch(value) && !isPure) {
+        return ValidationError.formatError;
+      } else {
+        return null;
+      }
+    }
+  }
+}
+
 /// 文字輸入框 整數格式
 class IntegerInput extends FormzInput<String, ValidationError> {
   const IntegerInput.pure() : super.pure('');
