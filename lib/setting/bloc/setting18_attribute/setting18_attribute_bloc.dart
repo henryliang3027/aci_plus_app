@@ -405,7 +405,7 @@ class Setting18AttributeBloc
       settingResult.add('${DataKey.location.name},$resultOfSetLocation');
     }
 
-    if (state.coordinates != state.initialValues[DataKey.coordinates]) {
+    if (state.coordinates.value != state.initialValues[DataKey.coordinates]) {
       bool resultOfSetCoordinates =
           await _amp18Repository.set1p8GCoordinates(state.coordinates.value);
 
