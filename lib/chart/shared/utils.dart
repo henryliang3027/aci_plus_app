@@ -1,7 +1,6 @@
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/setup_wizard_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Widget getDataLogChartSetupWizard({
   required BuildContext context,

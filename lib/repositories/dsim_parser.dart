@@ -838,28 +838,28 @@ class DsimParser {
 
   Future<dynamic> exportRecords() async {
     Excel excel = Excel.createExcel();
-    List<String> logHeader = [
-      'Time',
-      'Temperature(C)',
-      'Attenuator',
-      'Pilot (dBuV)',
-      '24V(V)',
-      '24V Ripple(mV)',
+    List<TextCellValue> logHeader = [
+      TextCellValue('Time'),
+      TextCellValue('Temperature(C)'),
+      TextCellValue('Attenuator'),
+      TextCellValue('Pilot (dBuV)'),
+      TextCellValue('24V(V)'),
+      TextCellValue('24V Ripple(mV)'),
     ];
-    List<String> eventHeader = [
-      'Power On',
-      'Power Off',
-      '24V High(V)',
-      '24V Low(V)',
-      'Temperature High(C)',
-      'Temperature Low(C)',
-      'Input RF Power High(dBuV)',
-      'Input RF Power Low(dBuV)',
-      '24V Ripple High(mV)',
-      'Align Loss Pilot',
-      'AGC Loss Pilot',
-      'Controll Plug in',
-      'Controll Plug out',
+    List<TextCellValue> eventHeader = [
+      TextCellValue('Power On'),
+      TextCellValue('Power Off'),
+      TextCellValue('24V High(V)'),
+      TextCellValue('24V Low(V)'),
+      TextCellValue('Temperature High(C)'),
+      TextCellValue('Temperature Low(C)'),
+      TextCellValue('Input RF Power High(dBuV)'),
+      TextCellValue('Input RF Power Low(dBuV)'),
+      TextCellValue('24V Ripple High(mV)'),
+      TextCellValue('Align Loss Pilot'),
+      TextCellValue('AGC Loss Pilot'),
+      TextCellValue('Controll Plug in'),
+      TextCellValue('Controll Plug out'),
     ];
 
     excel.rename('Sheet1', 'Log');
@@ -870,14 +870,18 @@ class DsimParser {
     List<List<String>> eventContent = formatEvent();
     for (int i = 0; i < eventContent.length; i++) {
       List<String> row = eventContent[i];
-      eventSheet.insertRowIterables(row, i + 1);
+      List<TextCellValue> eventRow =
+          row.map((event) => TextCellValue(event)).toList();
+      eventSheet.insertRowIterables(eventRow, i + 1);
     }
 
     logSheet.insertRowIterables(logHeader, 0);
     for (int i = 0; i < _logs.length; i++) {
       Log log = _logs[i];
       List<String> row = formatLog(log);
-      logSheet.insertRowIterables(row, i + 1);
+      List<TextCellValue> logRow =
+          row.map((log) => TextCellValue(log)).toList();
+      logSheet.insertRowIterables(logRow, i + 1);
     }
 
     var fileBytes = excel.save();

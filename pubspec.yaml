@@ -49,10 +49,11 @@ dependencies:
   equatable: ^2.0.5
   dropdown_button2: ^2.3.9 # custom dropdownButton and dropdownMenuItems
   url_launcher: ^6.3.0 # for launch website
-  excel:
-    git:
-      url: https://github.com/henryliang3027/excel.git
-      ref: master
+  # excel:
+  #   git:
+  #     url: https://github.com/henryliang3027/excel.git
+  #     ref: master
+  excel: ^4.0.6
   path_provider: ^2.1.4
   open_filex: ^4.3.1
   share_plus: ^10.0.0

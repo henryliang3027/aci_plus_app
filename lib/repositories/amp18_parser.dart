@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:aci_plus_app/chart/shared/event1p8g_value.dart';
 import 'package:aci_plus_app/core/command18.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
@@ -1263,17 +1264,13 @@ class Amp18Parser {
   }) async {
     Excel excel = Excel.createExcel();
 
-    List<String> rfInOutHeader = [
-      'Frequency (MHz)',
-      'Level (dBmV)',
-    ];
-
     excel.rename('Sheet1', 'User Information');
     Sheet userInformationSheet = excel['User Information'];
     Sheet rfInSheet = excel['Input Levels'];
     Sheet rfOutSheet = excel['Output Levels'];
 
-    userInformationSheet.insertRowIterables(['Code Number', code], 0);
+    userInformationSheet.insertRowIterables(
+        [TextCellValue('Code Number'), TextCellValue(code)], 0);
 
     // 空兩行後再開始寫入 configuration data
     List<String> configurationDataKeys = configurationData.keys.toList();
@@ -1281,7 +1278,8 @@ class Amp18Parser {
       String key = configurationDataKeys[i];
       String value = configurationData[key] ?? '';
 
-      userInformationSheet.insertRowIterables([key, value], i + 3);
+      userInformationSheet.insertRowIterables(
+          [TextCellValue(key), TextCellValue(value)], i + 3);
     }
 
     // 空兩行後再開始寫入 control data
@@ -1291,12 +1289,20 @@ class Amp18Parser {
           [entry.key, entry.value], i + configurationDataKeys.length + 5);
     }
 
+    List<TextCellValue> rfInOutHeader = [
+      TextCellValue('Frequency (MHz)'),
+      TextCellValue('Level (dBmV)'),
+    ];
+
     rfInSheet.insertRowIterables(rfInOutHeader, 0);
     for (int i = 0; i < rfInOuts.length; i++) {
       String frequency = rfInOuts[i].frequency.toString();
       String level = rfInOuts[i].input.toStringAsFixed(1);
 
-      List<String> row = [frequency, level];
+      List<TextCellValue> row = [
+        TextCellValue(frequency),
+        TextCellValue(level),
+      ];
       rfInSheet.insertRowIterables(row, i + 1);
     }
 
@@ -1305,7 +1311,10 @@ class Amp18Parser {
       String frequency = rfInOuts[i].frequency.toString();
       String level = rfInOuts[i].output.toStringAsFixed(1);
 
-      List<String> row = [frequency, level];
+      List<TextCellValue> row = [
+        TextCellValue(frequency),
+        TextCellValue(level),
+      ];
       rfOutSheet.insertRowIterables(row, i + 1);
     }
 
@@ -1375,18 +1384,19 @@ class Amp18Parser {
   }) async {
     Excel excel = Excel.createExcel();
 
-    List<String> rfHeader = [
-      'Frequency (MHz)',
-      'Level (dBmV)',
-    ];
-
     excel.rename('Sheet1', 'User Information');
     Sheet userInformationSheet = excel['User Information'];
     Sheet rfInSheet = excel['Input Levels'];
     Sheet rfOutSheet = excel['Output Levels'];
     Sheet rfOutputLogSheet = excel['Output Level Logs'];
 
-    userInformationSheet.insertRowIterables(['Code Number', code], 0);
+    userInformationSheet.insertRowIterables(
+      [
+        TextCellValue('Code Number'),
+        TextCellValue(code),
+      ],
+      0,
+    );
 
     // 空兩行後再開始寫入 configuration data
     List<String> configurationDataKeys = configurationData.keys.toList();
@@ -1394,22 +1404,39 @@ class Amp18Parser {
       String key = configurationDataKeys[i];
       String value = configurationData[key] ?? '';
 
-      userInformationSheet.insertRowIterables([key, value], i + 3);
+      userInformationSheet.insertRowIterables(
+        [TextCellValue(key), TextCellValue(value)],
+        i + 3,
+      );
     }
 
     // 空兩行後再開始寫入 control data
     for (int i = 0; i < controlData.length; i++) {
       MapEntry entry = controlData[i].entries.first;
       userInformationSheet.insertRowIterables(
-          [entry.key, entry.value], i + configurationDataKeys.length + 5);
+        [
+          TextCellValue(entry.key),
+          TextCellValue(entry.value),
+        ],
+        i + configurationDataKeys.length + 5,
+      );
     }
+
+    List<TextCellValue> rfHeader = [
+      TextCellValue('Frequency (MHz)'),
+      TextCellValue('Level (dBmV)'),
+    ];
 
     rfInSheet.insertRowIterables(rfHeader, 0);
     for (int i = 0; i < rfInOuts.length; i++) {
       String frequency = rfInOuts[i].frequency.toString();
       String level = rfInOuts[i].input.toStringAsFixed(1);
 
-      List<String> row = [frequency, level];
+      List<TextCellValue> row = [
+        TextCellValue(frequency),
+        TextCellValue(level),
+      ];
+
       rfInSheet.insertRowIterables(row, i + 1);
     }
 
@@ -1418,7 +1445,11 @@ class Amp18Parser {
       String frequency = rfInOuts[i].frequency.toString();
       String level = rfInOuts[i].output.toStringAsFixed(1);
 
-      List<String> row = [frequency, level];
+      List<TextCellValue> row = [
+        TextCellValue(frequency),
+        TextCellValue(level),
+      ];
+
       rfOutSheet.insertRowIterables(row, i + 1);
     }
 
@@ -1429,7 +1460,7 @@ class Amp18Parser {
       String timeStamp =
           DateFormat('yyyy_MM_dd_HH_mm_ss').format(dateTime).toString();
 
-      List<String> timeRow = [timeStamp];
+      List<TextCellValue> timeRow = [TextCellValue(timeStamp)];
       rfOutputLogSheet.insertRowIterables(
         timeRow,
         0,
@@ -1448,7 +1479,10 @@ class Amp18Parser {
         String frequency = rfOuts[j].frequency.toString();
         String level = rfOuts[j].output.toStringAsFixed(1);
 
-        List<String> outputRow = [frequency, level];
+        List<TextCellValue> outputRow = [
+          TextCellValue(frequency),
+          TextCellValue(level)
+        ];
 
         rfOutputLogSheet.insertRowIterables(
           outputRow,
@@ -1526,29 +1560,32 @@ class Amp18Parser {
   }) async {
     Excel excel = Excel.createExcel();
 
-    List<String> log1p8GHeader = [
-      'Time',
-      'Temperature(C)',
-      'RF Output Low Pilot(dBmV)',
-      'RF Output High Pilot(dBmV)',
-      '24V(V)',
-      '24V Ripple(mV)',
+    List<TextCellValue> log1p8GHeader = [
+      TextCellValue('Time'),
+      TextCellValue('Temperature(C)'),
+      TextCellValue('RF Output Low Pilot(dBmV)'),
+      TextCellValue('RF Output High Pilot(dBmV)'),
+      TextCellValue('24V(V)'),
+      TextCellValue('24V Ripple(mV)'),
     ];
-    List<String> eventHeader = [
-      '24V High Alarm(V)',
-      '24V Low Alarm(V)',
-      'Temperature High Alarm(C)',
-      'Temperature Low Alarm(C)',
-      'RF Input Pilot Low Frequency Unlock',
-      'RF Input Pilot High Frequency Unlock',
-      'RF Output Pilot Low Frequency Unlock',
-      'RF Output Pilot High Frequency Unlock',
-      'RF Input Total Power High Alarm',
-      'RF Input Total Power Low Alarm',
-      'RF Output Total Power High Alarm',
-      'RF Output Total Power Low Alarm',
-      '24V Ripple High Alarm',
-      'Amplifier Power On',
+    List<TextCellValue> eventHeader = [
+      TextCellValue('24V High Alarm(V)'),
+      TextCellValue('24V Low Alarm(V)'),
+      TextCellValue('Temperature High Alarm(C)'),
+      TextCellValue('Temperature Low Alarm(C)'),
+      TextCellValue('RF Input Pilot Low Frequency Unlock'),
+      TextCellValue('RF Input Pilot High Frequency Unlock'),
+      TextCellValue('RF Output Pilot Low Frequency Unlock'),
+      TextCellValue('RF Output Pilot High Frequency Unlock'),
+      TextCellValue('RF Input Total Power High Alarm'),
+      TextCellValue('RF Input Total Power Low Alarm'),
+      TextCellValue('RF Output Total Power High Alarm'),
+      TextCellValue('RF Output Total Power Low Alarm'),
+      TextCellValue('24V Ripple High Alarm'),
+      TextCellValue('Amplifier Power On'),
+      TextCellValue('Firmware Updated'),
+      TextCellValue('Equalizer Changed'),
+      TextCellValue('DFU Changed'),
     ];
 
     excel.rename('Sheet1', 'User Information');
@@ -1556,7 +1593,10 @@ class Amp18Parser {
     Sheet log1p8GSheet = excel['Log'];
     Sheet eventSheet = excel['Event'];
 
-    userInformationSheet.insertRowIterables(['Code Number', code], 0);
+    userInformationSheet.insertRowIterables([
+      TextCellValue('Code Number'),
+      TextCellValue(code),
+    ], 0);
 
     // 空兩行後再開始寫入 configuration data
     List<String> configurationDataKeys = configurationData.keys.toList();
@@ -1564,28 +1604,43 @@ class Amp18Parser {
       String key = configurationDataKeys[i];
       String value = configurationData[key] ?? '';
 
-      userInformationSheet.insertRowIterables([key, value], i + 3);
+      userInformationSheet.insertRowIterables(
+        [
+          TextCellValue(key),
+          TextCellValue(value),
+        ],
+        i + 3,
+      );
     }
 
     // 空兩行後再開始寫入 control data
     for (int i = 0; i < controlData.length; i++) {
       MapEntry entry = controlData[i].entries.first;
       userInformationSheet.insertRowIterables(
-          [entry.key, entry.value], i + configurationDataKeys.length + 5);
+        [
+          TextCellValue(entry.key),
+          TextCellValue(entry.value),
+        ],
+        i + configurationDataKeys.length + 5,
+      );
     }
 
     eventSheet.insertRowIterables(eventHeader, 0);
     List<List<String>> eventContent = formatEvent1p8G(event1p8Gs);
     for (int i = 0; i < eventContent.length; i++) {
       List<String> row = eventContent[i];
-      eventSheet.insertRowIterables(row, i + 1);
+      List<TextCellValue> eventRow =
+          row.map((event) => TextCellValue(event)).toList();
+      eventSheet.insertRowIterables(eventRow, i + 1);
     }
 
     log1p8GSheet.insertRowIterables(log1p8GHeader, 0);
     for (int i = 0; i < log1p8Gs.length; i++) {
       Log1p8G log1p8G = log1p8Gs[i];
       List<String> row = formatLog1p8G(log1p8G);
-      log1p8GSheet.insertRowIterables(row, i + 1);
+      List<TextCellValue> log1p8GRow =
+          row.map((log) => TextCellValue(log)).toList();
+      log1p8GSheet.insertRowIterables(log1p8GRow, i + 1);
     }
 
     var fileBytes = excel.save();
@@ -1731,11 +1786,14 @@ class Amp18Parser {
   }
 
   List<List<String>> formatEvent1p8G(List<Event1p8G> event1p8Gs) {
-    List<int> counts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<int> counts = List.filled(18, 0);
+
+    // 第一個參數 1024 表示要生成 1024 行
+    // 第二個參數 14 表示每行要生成 14 個字串。
     List<List<String>> csvContent = List<List<String>>.generate(
       1024,
       (index) => List<String>.generate(
-        14,
+        18,
         (index) => '',
         growable: false,
       ),
@@ -1745,11 +1803,10 @@ class Amp18Parser {
     for (Event1p8G event1p8G in event1p8Gs) {
       String formattedDateTime =
           DateFormat('yyyy-MM-dd HH:mm').format(event1p8G.dateTime);
-
+      int index = event1p8G.code - 1;
       switch (event1p8G.code) {
         case 1:
           {
-            int index = 0;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1761,7 +1818,6 @@ class Amp18Parser {
           }
         case 2:
           {
-            int index = 1;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1773,7 +1829,6 @@ class Amp18Parser {
           }
         case 3:
           {
-            int index = 2;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1785,7 +1840,6 @@ class Amp18Parser {
           }
         case 4:
           {
-            int index = 3;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1797,7 +1851,6 @@ class Amp18Parser {
           }
         case 5:
           {
-            int index = 4;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1809,7 +1862,6 @@ class Amp18Parser {
           }
         case 6:
           {
-            int index = 5;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1821,7 +1873,6 @@ class Amp18Parser {
           }
         case 7:
           {
-            int index = 6;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1833,7 +1884,6 @@ class Amp18Parser {
           }
         case 8:
           {
-            int index = 7;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1845,7 +1895,6 @@ class Amp18Parser {
           }
         case 9:
           {
-            int index = 8;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1857,7 +1906,6 @@ class Amp18Parser {
           }
         case 10:
           {
-            int index = 9;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1869,7 +1917,6 @@ class Amp18Parser {
           }
         case 11:
           {
-            int index = 10;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1881,7 +1928,6 @@ class Amp18Parser {
           }
         case 12:
           {
-            int index = 11;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1893,7 +1939,17 @@ class Amp18Parser {
           }
         case 13:
           {
-            int index = 12;
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter / 10}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 14:
+          {
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1905,10 +1961,46 @@ class Amp18Parser {
           }
         case 15:
           {
-            int index = 13;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 16:
+          {
+            if (event1p8G.parameter > 0) {
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@${event1p8G.parameter}';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 17:
+          {
+            if (event1p8G.parameter > 0) {
+              String equalizerDescription =
+                  Event1p8GValue.equalizerValueMap[event1p8G.parameter] ?? '';
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@$equalizerDescription';
+            } else {
+              csvContent[counts[index]][index] = formattedDateTime;
+            }
+            counts[index]++;
+            break;
+          }
+        case 18:
+          {
+            if (event1p8G.parameter > 0) {
+              String splitOptionDescription =
+                  Event1p8GValue.splitOptionValueMap[event1p8G.parameter] ?? '';
+              csvContent[counts[index]][index] =
+                  '$formattedDateTime@$splitOptionDescription';
             } else {
               csvContent[counts[index]][index] = formattedDateTime;
             }

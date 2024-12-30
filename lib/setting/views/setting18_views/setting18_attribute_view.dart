@@ -523,6 +523,7 @@ class _Coordinates extends StatelessWidget {
                     enabled: state.editMode,
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: true,
+                      signed: true,
                     ),
                     textInputAction: TextInputAction.done,
                     onChanged: (coordinate) {

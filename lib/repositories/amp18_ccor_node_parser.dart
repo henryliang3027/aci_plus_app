@@ -1112,30 +1112,30 @@ class Amp18CCorNodeParser {
   }) async {
     Excel excel = Excel.createExcel();
 
-    List<String> log1p8GHeader = [
-      'Time',
-      'Temperature(C)',
-      'Port 1 RF Output Power(dBmV)',
-      'Port 3 RF Output Power(dBmV)',
-      'Port 4 RF Output Power(dBmV)',
-      'Port 6 RF Output Power(dBmV)',
+    List<TextCellValue> log1p8GHeader = [
+      TextCellValue('Time'),
+      TextCellValue('Temperature(C)'),
+      TextCellValue('Port 1 RF Output Power(dBmV)'),
+      TextCellValue('Port 3 RF Output Power(dBmV)'),
+      TextCellValue('Port 4 RF Output Power(dBmV)'),
+      TextCellValue('Port 6 RF Output Power(dBmV)'),
     ];
-    List<String> eventHeader = [
-      '24V High Alarm(V)',
-      '24V Low Alarm(V)',
-      'Temperature High Alarm(C)',
-      'Temperature Low Alarm(C)',
-      'Port 1 RF Output Power High Alarm',
-      'Port 1 RF Output Power Low Alarm',
-      'Port 3 RF Output Power High Alarm',
-      'Port 3 RF Output Power Low Alarm',
-      'Port 4 RF Output Power High Alarm',
-      'Port 4 RF Output Power Low Alarm',
-      'Port 6 RF Output Power High Alarm',
-      'Port 6 RF Output Power Low Alarm',
-      '24V Ripple High Alarm',
-      '24V Ripple Low Alarm',
-      'Amplifier Power On',
+    List<TextCellValue> eventHeader = [
+      TextCellValue('24V High Alarm(V)'),
+      TextCellValue('24V Low Alarm(V)'),
+      TextCellValue('Temperature High Alarm(C)'),
+      TextCellValue('Temperature Low Alarm(C)'),
+      TextCellValue('Port 1 RF Output Power High Alarm'),
+      TextCellValue('Port 1 RF Output Power Low Alarm'),
+      TextCellValue('Port 3 RF Output Power High Alarm'),
+      TextCellValue('Port 3 RF Output Power Low Alarm'),
+      TextCellValue('Port 4 RF Output Power High Alarm'),
+      TextCellValue('Port 4 RF Output Power Low Alarm'),
+      TextCellValue('Port 6 RF Output Power High Alarm'),
+      TextCellValue('Port 6 RF Output Power Low Alarm'),
+      TextCellValue('24V Ripple High Alarm'),
+      TextCellValue('24V Ripple Low Alarm'),
+      TextCellValue('Amplifier Power On'),
     ];
 
     excel.rename('Sheet1', 'User Information');
@@ -1143,7 +1143,10 @@ class Amp18CCorNodeParser {
     Sheet log1p8GSheet = excel['Log'];
     Sheet eventSheet = excel['Event'];
 
-    userInformationSheet.insertRowIterables(['Code Number', code], 0);
+    userInformationSheet.insertRowIterables([
+      TextCellValue('Code Number'),
+      TextCellValue(code),
+    ], 0);
 
     // 空兩行後再開始寫入 configuration data
     List<String> configurationDataKeys = configurationData.keys.toList();
@@ -1151,28 +1154,35 @@ class Amp18CCorNodeParser {
       String key = configurationDataKeys[i];
       String value = configurationData[key] ?? '';
 
-      userInformationSheet.insertRowIterables([key, value], i + 3);
+      userInformationSheet.insertRowIterables(
+          [TextCellValue(key), TextCellValue(value)], i + 3);
     }
 
     // 空兩行後再開始寫入 control data
     for (int i = 0; i < controlData.length; i++) {
       MapEntry entry = controlData[i].entries.first;
-      userInformationSheet.insertRowIterables(
-          [entry.key, entry.value], i + configurationDataKeys.length + 5);
+      userInformationSheet.insertRowIterables([
+        TextCellValue(entry.key),
+        TextCellValue(entry.value),
+      ], i + configurationDataKeys.length + 5);
     }
 
     eventSheet.insertRowIterables(eventHeader, 0);
     List<List<String>> eventContent = formatEvent1p8G(event1p8Gs);
     for (int i = 0; i < eventContent.length; i++) {
       List<String> row = eventContent[i];
-      eventSheet.insertRowIterables(row, i + 1);
+      List<TextCellValue> eventRow =
+          row.map((event) => TextCellValue(event)).toList();
+      eventSheet.insertRowIterables(eventRow, i + 1);
     }
 
     log1p8GSheet.insertRowIterables(log1p8GHeader, 0);
     for (int i = 0; i < log1p8Gs.length; i++) {
       Log1p8GCCorNode log1p8G = log1p8Gs[i];
       List<String> row = formatLog1p8G(log1p8G);
-      log1p8GSheet.insertRowIterables(row, i + 1);
+      List<TextCellValue> log1p8GRow =
+          row.map((log) => TextCellValue(log)).toList();
+      log1p8GSheet.insertRowIterables(log1p8GRow, i + 1);
     }
 
     var fileBytes = excel.save();

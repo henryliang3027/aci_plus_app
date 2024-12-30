@@ -112,8 +112,9 @@ class _ChartView extends StatelessWidget {
                 visualDensity:
                     const VisualDensity(horizontal: -4.0, vertical: -3.0),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.fullscreen_outlined,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
           ),
