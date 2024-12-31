@@ -219,6 +219,9 @@
     "verifying": "Verifying",
     "updatingFirmware": "Updating",
     "updateComplete": "Update complete",
+    "upgrade": "Upgrade",
+    "downgrade": "Downgrade",
+    "noMoreRecordToShow": "There are no logs to show",
     
     
 

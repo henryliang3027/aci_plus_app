@@ -1,11 +1,9 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/firmware_file_table.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/services.dart';
 
 class FirmwareRepository {
@@ -100,48 +98,35 @@ class FirmwareRepository {
     );
   }
 
-  // 取得藍牙 mtu size
-  Future<int> getChunkSize() async {
-    // ios version < 16 mtu 為 182, 其餘為 244
-    // android 為 247, 3 個 byte 用在 header, 所以實際可容納的量為 244
-
-    if (Platform.isIOS) {
-      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
-
-      // ipad version ex: 16.6.1
-      // ios version ex: 16.5
-      double version = double.parse(iosDeviceInfo.systemVersion.split('.')[0]);
-
-      if (version < 16) {
-        return 182;
-      } else {
-        return 244;
-      }
-    } else {
-      // android or windows
-      return 244;
-    }
-  }
-
-  // 將資料切割為每一塊都是 mtu size 的大小的數個區塊
-  List<List<int>> divideToChunkList({
-    required List<int> binary,
-    required int chunkSize,
-  }) {
-    List<List<int>> chunks = [];
-    for (int i = 0; i < binary.length; i += chunkSize) {
-      int end = (i + chunkSize < binary.length) ? i + chunkSize : binary.length;
-      chunks.add(binary.sublist(i, end));
-    }
-    return chunks;
-  }
-
   Future<void> transferBinaryChunk({
     required List<int> chunk,
     required int indexOfChunk,
   }) async {
     await _bleClient.transferBinaryChunk(
         commandIndex: 1000, chunk: chunk, indexOfChunk: indexOfChunk);
+  }
+}
+
+enum UpdateType {
+  downgrade,
+  upgrade,
+}
+
+class UpdateLog {
+  const UpdateLog({
+    required this.type,
+    required this.datetime,
+    required this.version,
+    required this.technicianID,
+  });
+
+  final UpdateType type;
+  final String datetime;
+  final String version;
+  final String technicianID;
+
+  @override
+  String toString() {
+    return '${type.index},$datetime,$version,$technicianID';
   }
 }

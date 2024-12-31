@@ -217,7 +217,9 @@
     "verifying": "Vérification",
     "updatingFirmware": "Mise à jour",
     "updateComplete": "Mise à jour terminée",
-    
+    "upgrade": "Mise à niveau",
+    "downgrade": "Rétrogradation",
+    "noMoreRecordToShow": "Il n'y a pas de journaux à montrer.",
 
 
     "aboutUs": "À propos nous",

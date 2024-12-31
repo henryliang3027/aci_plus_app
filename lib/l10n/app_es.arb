@@ -218,7 +218,9 @@
     "verifying": "Verificando",
     "updatingFirmware": "Actualizando",
     "updateComplete": "Actualización completa",
-    
+    "upgrade": "Actualización",
+    "downgrade": "Degradación",
+    "noMoreRecordToShow": "No hay registros para mostrar",
 
 
     "aboutUs": "Acerca Nosotros",

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -36,6 +39,45 @@ class RegexUtil {
 
   static final RegExp configJsonRegex220 = RegExp(
       r'^((?:\{[^{}]*\})?(?:,\{[^{}]*\}){0,4})\s((?:\{[^{}]*\})?(?:,\{[^{}]*\}){0,4})$');
+}
+
+class BLEUtils {
+  // 取得藍牙 mtu size
+  static Future<int> getChunkSize() async {
+    // ios version < 16 mtu 為 182, 其餘為 244
+    // android 為 247, 3 個 byte 用在 header, 所以實際可容納的量為 244
+
+    if (Platform.isIOS) {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+
+      // ipad version ex: 16.6.1
+      // ios version ex: 16.5
+      double version = double.parse(iosDeviceInfo.systemVersion.split('.')[0]);
+
+      if (version < 16) {
+        return 182;
+      } else {
+        return 244;
+      }
+    } else {
+      // android or windows
+      return 244;
+    }
+  }
+
+  // 將資料切割為每一塊都是 mtu size 的大小的數個區塊
+  static List<List<int>> divideToChunkList({
+    required List<int> binary,
+    required int chunkSize,
+  }) {
+    List<List<int>> chunks = [];
+    for (int i = 0; i < binary.length; i += chunkSize) {
+      int end = (i + chunkSize < binary.length) ? i + chunkSize : binary.length;
+      chunks.add(binary.sublist(i, end));
+    }
+    return chunks;
+  }
 }
 
 void setPreferredOrientation() {

@@ -976,14 +976,36 @@ class Command18 {
     0x00,
     0x04,
     0x00,
-    0,
-    0
+    0x00,
+    0x00,
   ];
 
   static List<int> setUserAttributeCmd = [
     0xB0,
     0x10,
     0x31,
+    0x00,
+    0x04,
+    0x00,
+    0x00,
+    ...List<int>.filled(1026, 0x00),
+  ];
+
+  static List<int> reqFirmwareUpdateLogCmd = [
+    0xB0,
+    0x03,
+    0x35,
+    0x00,
+    0x04,
+    0x00,
+    0x00,
+    0x00,
+  ];
+
+  static List<int> setFirmwareUpdateLogCmd = [
+    0xB0,
+    0x10,
+    0x35,
     0x00,
     0x04,
     0x00,

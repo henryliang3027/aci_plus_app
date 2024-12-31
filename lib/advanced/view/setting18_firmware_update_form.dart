@@ -719,6 +719,10 @@ class _StartButton extends StatelessWidget {
                         if (code != null) {
                           if (code.isNotEmpty) {
                             context
+                                .read<Setting18AdvancedBloc>()
+                                .add(const AllButtonsDisabled());
+
+                            context
                                 .read<Setting18FirmwareBloc>()
                                 .add(const BootloaderStarted());
                           }

@@ -219,6 +219,9 @@
     "verifying": "驗證中",
     "updatingFirmware": "更新中",
     "updateComplete": "更新完成",
+    "upgrade": "版本升級",
+    "downgrade": "版本降級",
+    "noMoreRecordToShow": "沒有資料可以顯示",
 
 
     "aboutUs": "關於我們",

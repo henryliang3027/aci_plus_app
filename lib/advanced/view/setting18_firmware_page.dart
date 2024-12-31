@@ -23,20 +23,16 @@ class Setting18FirmwarePage extends StatelessWidget {
         appLocalizations: appLocalizations,
         firmwareRepository: RepositoryProvider.of<FirmwareRepository>(context),
       ),
-      child:
-          // Container(
-          //   decoration: BoxDecoration(
-          //     color: getSecondaryTabBarBackGroundColor(context),
-          //   ),
-          //   child: Padding(
-          //     padding: const EdgeInsets.only(top: 6),
-          //     child: Setting18FirmwareTabBar(
-          //       pageController: pageController,
-          //     ),
-          //   ),
-          // ),
-          Setting18FirmwareForm(
-        pageController: pageController,
+      child: Container(
+        decoration: BoxDecoration(
+          color: getSecondaryTabBarBackGroundColor(context),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 6),
+          child: Setting18FirmwareTabBar(
+            pageController: pageController,
+          ),
+        ),
       ),
     );
   }

@@ -27,6 +27,10 @@ class CustomStyle {
   static const Color customPink = Color.fromARGB(255, 255, 235, 235);
   static const Color customDeepBlue = Color.fromARGB(255, 4, 18, 53);
   static const Color customDeepPink = Color.fromARGB(255, 72, 0, 25);
+  static const Color customSecondaryTileColor =
+      Color.fromARGB(255, 239, 239, 239);
+  static const Color customDeepSecondaryLileColor =
+      Color.fromARGB(255, 59, 62, 68);
 
   static const double graphSettingCardElevation = 0.0;
   static const Color graphSettingCardColor = Colors.transparent;

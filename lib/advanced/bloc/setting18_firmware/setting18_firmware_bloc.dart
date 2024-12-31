@@ -449,10 +449,10 @@ class Setting18FirmwareBloc
 
   Future<void> _transferBinary() async {
     // 將 binary 切分成每個大小為 chunkSize 的封包
-    int chunkSize = await _firmwareRepository.getChunkSize();
+    int chunkSize = await BLEUtils.getChunkSize();
     _chunkSize = chunkSize;
 
-    List<List<int>> chunks = _firmwareRepository.divideToChunkList(
+    List<List<int>> chunks = BLEUtils.divideToChunkList(
       binary: state.binary,
       chunkSize: _chunkSize,
     );

@@ -205,7 +205,7 @@ class BLEClient extends BLEClientBase {
           }, onError: (error) {
             _connectionReportStreamController.add(const ConnectionReport(
               connectStatus: ConnectStatus.disconnected,
-              errorMessage: 'lisetn to the characteristic failed',
+              errorMessage: 'Device connection failed',
             ));
             print('lisetn to the characteristic failed');
           });
