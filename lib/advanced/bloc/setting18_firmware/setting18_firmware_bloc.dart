@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
+import 'package:aci_plus_app/repositories/code_repository.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
@@ -20,8 +21,10 @@ class Setting18FirmwareBloc
   Setting18FirmwareBloc({
     required AppLocalizations appLocalizations,
     required FirmwareRepository firmwareRepository,
+    required CodeRepository codeRepository,
   })  : _appLocalizations = appLocalizations,
         _firmwareRepository = firmwareRepository,
+        _codeRepository = codeRepository,
         super(const Setting18FirmwareState()) {
     on<BootloaderStarted>(_onBootloaderStarted);
     on<BootloaderExited>(_onBootloaderExited);
@@ -33,10 +36,12 @@ class Setting18FirmwareBloc
     on<BinarySelected>(_onBinarySelected);
     // on<BinaryLoaded>(_onBinaryLoaded);
     on<BinaryCanceled>(_onBinaryCanceled);
+    on<UpdateLogAdded>(_onUpdateLogAdded);
   }
 
   final AppLocalizations _appLocalizations;
   final FirmwareRepository _firmwareRepository;
+  final CodeRepository _codeRepository;
   StreamSubscription<String>? _updateReportStreamSubscription;
   Timer? _enterBootloaderTimer;
   final Stopwatch _stopwatch = Stopwatch();
@@ -340,11 +345,12 @@ class Setting18FirmwareBloc
         List<int> binary = result[1];
 
         emit(state.copyWith(
-          binaryLoadStatus: FormStatus.requestSuccess,
-          sum: sum,
-          binary: binary,
-          selectedBinaryInfo: selectedBinaryInfo,
-        ));
+            binaryLoadStatus: FormStatus.requestSuccess,
+            sum: sum,
+            binary: binary,
+            selectedBinaryInfo: selectedBinaryInfo,
+            currentFirmwareVersion:
+                int.tryParse(event.currentFirmwareVersion) ?? 0));
       } else {
         BinaryInfo selectedBinaryInfo =
             _getSelectedBinaryInfo(binaryPath: binaryPath);
@@ -410,6 +416,29 @@ class Setting18FirmwareBloc
   //   }
   // }
 
+  Future<void> _onUpdateLogAdded(
+    UpdateLogAdded event,
+    Emitter<Setting18FirmwareState> emit,
+  ) async {
+    List<UpdateLog> updateLogs =
+        await _firmwareRepository.requestCommand1p8GUpdateLogs();
+
+    String userCode = await _codeRepository.readUserCode();
+
+    UpdateLog updateLog = UpdateLog(
+      type: state.selectedBinaryInfo.version >= state.currentFirmwareVersion
+          ? UpdateType.upgrade
+          : UpdateType.downgrade,
+      dateTime: DateTime.now(),
+      firmwareVersion: state.selectedBinaryInfo.version.toString(),
+      technicianID: userCode,
+    );
+
+    updateLogs.add(updateLog);
+
+    _firmwareRepository.set1p8GFirmwareUpdateLogs(updateLogs);
+  }
+
   Future<void> _onBinaryCanceled(
     BinaryCanceled event,
     Emitter<Setting18FirmwareState> emit,
@@ -440,10 +469,23 @@ class Setting18FirmwareBloc
 
     String name = nameAndExtensionName[0];
     String extensionName = nameAndExtensionName[1];
+    int version = 0;
+
+    // Regular expression to match the pattern
+    RegExp versionRegex = RegExp(r'R(\d+)_');
+
+    // Find the first match
+    Match? match = versionRegex.firstMatch(name);
+
+    if (match != null) {
+      version =
+          int.tryParse(match.group(0)!) ?? 0; // Extract the matched substring
+    }
 
     return BinaryInfo(
       name: name,
       extensionName: extensionName,
+      version: version,
     );
   }
 
@@ -482,14 +524,17 @@ class BinaryInfo {
   const BinaryInfo({
     required this.name,
     required this.extensionName,
+    required this.version,
   });
 
   const BinaryInfo.empty()
       : name = '',
-        extensionName = '';
+        extensionName = '',
+        version = 0;
 
   final String name;
   final String extensionName;
+  final int version;
 
   bool get isEmpty {
     return name.isEmpty && extensionName.isEmpty;

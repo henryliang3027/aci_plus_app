@@ -2,6 +2,7 @@ import 'package:aci_plus_app/advanced/bloc/setting18_firmware/setting18_firmware
 import 'package:aci_plus_app/advanced/view/setting18_firmware_form.dart';
 import 'package:aci_plus_app/advanced/view/setting18_firmware_tabbar.dart';
 import 'package:aci_plus_app/core/secondary_tab_bar_theme.dart';
+import 'package:aci_plus_app/repositories/code_repository.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,23 +18,35 @@ class Setting18FirmwarePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return BlocProvider(
-      create: (context) => Setting18FirmwareBloc(
-        appLocalizations: appLocalizations,
-        firmwareRepository: RepositoryProvider.of<FirmwareRepository>(context),
+    return Container(
+      decoration: BoxDecoration(
+        color: getSecondaryTabBarBackGroundColor(context),
       ),
-      child: Container(
-        decoration: BoxDecoration(
-          color: getSecondaryTabBarBackGroundColor(context),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 6),
-          child: Setting18FirmwareTabBar(
-            pageController: pageController,
-          ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 6),
+        child: Setting18FirmwareTabBar(
+          pageController: pageController,
         ),
       ),
     );
+    // final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    // return BlocProvider(
+    //   create: (context) => Setting18FirmwareBloc(
+    //     appLocalizations: appLocalizations,
+    //     firmwareRepository: RepositoryProvider.of<FirmwareRepository>(context),
+    //     codeRepository: RepositoryProvider.of<CodeRepository>(context),
+    //   ),
+    //   child: Container(
+    //     decoration: BoxDecoration(
+    //       color: getSecondaryTabBarBackGroundColor(context),
+    //     ),
+    //     child: Padding(
+    //       padding: const EdgeInsets.only(top: 6),
+    //       child: Setting18FirmwareTabBar(
+    //         pageController: pageController,
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }

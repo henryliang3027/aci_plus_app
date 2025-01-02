@@ -1,10 +1,13 @@
 import 'dart:typed_data';
 
+import 'package:aci_plus_app/core/command18.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/firmware_file_table.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 class FirmwareRepository {
   FirmwareRepository() : _bleClient = BLEClientFactory.instance;
@@ -105,6 +108,155 @@ class FirmwareRepository {
     await _bleClient.transferBinaryChunk(
         commandIndex: 1000, chunk: chunk, indexOfChunk: indexOfChunk);
   }
+
+  List<UpdateLog> _decodeUpdateLogs(List<int> rawData) {
+    List<List<int>> separatedGroups = [];
+    List<int> currentGroup = [];
+    List<UpdateLog> updateLogs = [];
+
+    List rawDataContent = rawData.sublist(3, 1027);
+
+    // 判斷是否只有 0 或 255, 如果是代表 log 為空
+    if (rawDataContent.every((element) => element == 0 || element == 255)) {
+      return [];
+    } else {
+      // 因為前三個 byte 為 header, 後兩個 byte 為 crc, 所以迴圈從有內容的部分迭代
+      for (int i = 0; i < rawDataContent.length; i++) {
+        if (rawDataContent[i] == 0x00) {
+          // ASCII code for ','
+          // If we hit a comma, save the current group if it's not empty
+          separatedGroups.add(currentGroup);
+          currentGroup = []; // Clear the current group for the next set
+        } else {
+          // Add non-comma ASCII codes to the current group
+          currentGroup.add(rawDataContent[i]);
+        }
+      }
+
+      // After the loop, add any remaining currentGroup
+      if (currentGroup.isNotEmpty) {
+        separatedGroups.add(currentGroup);
+      }
+
+      for (List<int> group in separatedGroups) {
+        RegExp regex = RegExp(r'^(\d+),(\d+),(\d+),(\d+)$');
+        String strGroup = String.fromCharCodes(group);
+
+        Match? match = regex.firstMatch(strGroup);
+
+        if (match != null) {
+          String strType = match.group(1)!;
+          String strDateTime = match.group(2)!;
+          String strFirmwareVersion = match.group(3)!;
+          String strTechnicianID = match.group(4)!;
+
+          UpdateType updateType = strType == UpdateType.upgrade.index.toString()
+              ? UpdateType.upgrade
+              : UpdateType.downgrade;
+
+          // Parse the components of the DateTime string
+          int year = int.parse(strDateTime.substring(0, 4));
+          int month = int.parse(strDateTime.substring(4, 6));
+          int day = int.parse(strDateTime.substring(6, 8));
+          int hour = int.parse(strDateTime.substring(8, 10));
+          int minute = int.parse(strDateTime.substring(10, 12));
+          int second = int.parse(strDateTime.substring(12, 14));
+
+          DateTime dateTime = DateTime(year, month, day, hour, minute, second);
+
+          updateLogs.add(UpdateLog(
+            type: updateType,
+            dateTime: dateTime,
+            firmwareVersion: strFirmwareVersion,
+            technicianID: strTechnicianID,
+          ));
+        }
+      }
+      return updateLogs;
+    }
+  }
+
+  Future<dynamic> requestCommand1p8GUpdateLogs({
+    Duration timeout = const Duration(seconds: 10),
+  }) async {
+    int commandIndex = 206;
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: Command18.reqFirmwareUpdateLogCmd,
+        timeout: timeout,
+      );
+
+      List<UpdateLog> updateLogs = _decodeUpdateLogs(rawData);
+
+      return [
+        true,
+        updateLogs,
+      ];
+    } catch (e) {
+      return [
+        false,
+      ];
+    }
+  }
+
+  Future<dynamic> set1p8GFirmwareUpdateLogs(
+    List<UpdateLog> updateLogs,
+  ) async {
+    int commandIndex = 358;
+    print('get data from request command 1p8G$commandIndex');
+
+    List<String> strUpdateLogs = [];
+
+    for (UpdateLog updateLog in updateLogs) {
+      String strUpdateLog = updateLog.toString();
+
+      strUpdateLogs.add(strUpdateLog);
+    }
+
+    // ASCII code 0x00 corresponds to the null character '\u0000'
+    String separator = '\u0000';
+
+    // Join the strings with the separator
+    String combinedString = strUpdateLogs.join(separator);
+
+    List<int> combinedBytes = combinedString.codeUnits;
+
+    for (int i = 0; i < combinedBytes.length; i++) {
+      Command18.setFirmwareUpdateLogCmd[i + 7] = combinedBytes[i];
+    }
+
+    // 填入空白
+    for (int i = combinedBytes.length; i < 1024; i++) {
+      Command18.setUserAttributeCmd[i] = 0x20;
+    }
+
+    CRC16.calculateCRC16(
+      command: Command18.setFirmwareUpdateLogCmd,
+      usDataLength: Command18.setFirmwareUpdateLogCmd.length - 2,
+    );
+
+    // 將 binary 切分成每個大小為 chunkSize 的封包
+    int chunkSize = await BLEUtils.getChunkSize();
+
+    List<List<int>> chunks = BLEUtils.divideToChunkList(
+      binary: Command18.setFirmwareUpdateLogCmd,
+      chunkSize: chunkSize,
+    );
+
+    try {
+      List<int> rawData = await _bleClient.writeLongSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        chunks: chunks,
+        timeout: const Duration(seconds: 10),
+      );
+    } catch (e) {
+      return false;
+    }
+
+    return true;
+  }
 }
 
 enum UpdateType {
@@ -115,18 +267,23 @@ enum UpdateType {
 class UpdateLog {
   const UpdateLog({
     required this.type,
-    required this.datetime,
-    required this.version,
+    required this.dateTime,
+    required this.firmwareVersion,
     required this.technicianID,
   });
 
   final UpdateType type;
-  final String datetime;
-  final String version;
+  final DateTime dateTime;
+  final String firmwareVersion;
   final String technicianID;
 
   @override
   String toString() {
-    return '${type.index},$datetime,$version,$technicianID';
+    String strDateTime = DateFormat('yyyyMMddHHmmss').format(dateTime);
+    return '${type.index},$strDateTime,$firmwareVersion,$technicianID';
+  }
+
+  String formatDateTime() {
+    return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
   }
 }

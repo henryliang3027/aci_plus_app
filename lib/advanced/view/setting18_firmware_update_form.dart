@@ -26,6 +26,8 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeState homeState = context.read<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
+    String currentFirmwareVersion =
+        homeState.characteristicData[DataKey.firmwareVersion] ?? '';
 
     Future<void> showRebootingDialog(BuildContext context) async {
       return showDialog<void>(
@@ -210,6 +212,8 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
             });
           }
         } else if (state.submissionStatus.isSubmissionSuccess) {
+          context.read<Setting18FirmwareBloc>().add(const UpdateLogAdded());
+
           showSuccessDialog(
             buildContext: context,
             timeElapsed: state.formattedTimeElapsed,
@@ -228,8 +232,8 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
                 const _UserCaution(),
                 const _ProgressBar(),
                 _FilePicker(
-                  partId: partId,
-                ),
+                    partId: partId,
+                    currentFirmwareVersion: currentFirmwareVersion),
                 _StartButton(
                   pageController: pageController,
                   partId: partId,
@@ -427,9 +431,11 @@ class _FilePicker extends StatelessWidget {
   const _FilePicker({
     super.key,
     required this.partId,
+    required this.currentFirmwareVersion,
   });
 
   final String partId;
+  final String currentFirmwareVersion;
 
   @override
   Widget build(BuildContext context) {
@@ -497,6 +503,7 @@ class _FilePicker extends StatelessWidget {
                 ? () async {
                     context.read<Setting18FirmwareBloc>().add(BinarySelected(
                           partId: partId,
+                          currentFirmwareVersion: currentFirmwareVersion,
                         ));
                   }
                 : null,

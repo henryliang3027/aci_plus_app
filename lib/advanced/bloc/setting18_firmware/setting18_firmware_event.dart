@@ -80,14 +80,17 @@ class CommandWrited extends Setting18FirmwareEvent {
 class BinarySelected extends Setting18FirmwareEvent {
   const BinarySelected({
     required this.partId,
-    // required this.selectedBinary,
+    required this.currentFirmwareVersion,
   });
 
   final String partId;
-  // final String selectedBinary;
+  final String currentFirmwareVersion;
 
   @override
-  List<Object> get props => [partId];
+  List<Object> get props => [
+        partId,
+        currentFirmwareVersion,
+      ];
 }
 
 class BinaryLoaded extends Setting18FirmwareEvent {
@@ -108,6 +111,13 @@ class BinaryLoaded extends Setting18FirmwareEvent {
 
 class BinaryCanceled extends Setting18FirmwareEvent {
   const BinaryCanceled();
+
+  @override
+  List<Object> get props => [];
+}
+
+class UpdateLogAdded extends Setting18FirmwareEvent {
+  const UpdateLogAdded();
 
   @override
   List<Object> get props => [];

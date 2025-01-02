@@ -18,46 +18,56 @@ class Setting18FirmwareLogBloc
 
   final FirmwareRepository _firmwareRepository;
 
-  void _onUpdateLogRequested(
+  Future<void> _onUpdateLogRequested(
     UpdateLogRequested event,
     Emitter<Setting18FirmwareLogState> emit,
-  ) {
+  ) async {
     emit(state.copyWith(
       updateLogStatus: FormStatus.requestInProgress,
     ));
 
-    // List<UpdateLog> updateLogs = _firmwareRepository.getUpdateLogs();
+    List<dynamic> resultOfUpdateLogs =
+        await _firmwareRepository.requestCommand1p8GUpdateLogs();
 
-    List<UpdateLog> updateLogs = [
-      const UpdateLog(
-        type: UpdateType.upgrade,
-        datetime: '20241231140723',
-        version: '148',
-        technicianID: '12345678',
-      ),
-      const UpdateLog(
-        type: UpdateType.downgrade,
-        datetime: '20241231140723',
-        version: '146',
-        technicianID: '12345678',
-      ),
-      const UpdateLog(
-        type: UpdateType.downgrade,
-        datetime: '20241231140723',
-        version: '147',
-        technicianID: '12345678',
-      ),
-      const UpdateLog(
-        type: UpdateType.upgrade,
-        datetime: '20241231140723',
-        version: '148',
-        technicianID: '12345678',
-      )
-    ];
+    if (resultOfUpdateLogs[0]) {
+      List<UpdateLog> updateLogs = resultOfUpdateLogs[1];
 
-    emit(state.copyWith(
-      updateLogStatus: FormStatus.requestSuccess,
-      updateLogs: updateLogs,
-    ));
+      emit(state.copyWith(
+        updateLogStatus: FormStatus.requestSuccess,
+        updateLogs: updateLogs,
+      ));
+    } else {
+      emit(state.copyWith(
+        updateLogStatus: FormStatus.requestSuccess,
+        updateLogs: [],
+      ));
+    }
+
+    // List<UpdateLog> updateLogs = [
+    //   const UpdateLog(
+    //     type: UpdateType.upgrade,
+    //     datetime: '20241231140723',
+    //     version: '148',
+    //     technicianID: '12345678',
+    //   ),
+    //   const UpdateLog(
+    //     type: UpdateType.downgrade,
+    //     datetime: '20241231140723',
+    //     version: '146',
+    //     technicianID: '12345678',
+    //   ),
+    //   const UpdateLog(
+    //     type: UpdateType.downgrade,
+    //     datetime: '20241231140723',
+    //     version: '147',
+    //     technicianID: '12345678',
+    //   ),
+    //   const UpdateLog(
+    //     type: UpdateType.upgrade,
+    //     datetime: '20241231140723',
+    //     version: '148',
+    //     technicianID: '12345678',
+    //   )
+    // ];
   }
 }

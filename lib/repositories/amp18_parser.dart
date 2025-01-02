@@ -2046,6 +2046,8 @@ class Amp18Parser {
     CRC16.calculateCRC16(command: Command18.reqRFOutput09Cmd, usDataLength: 6);
     CRC16.calculateCRC16(
         command: Command18.reqUserAttributeCmd, usDataLength: 6);
+    CRC16.calculateCRC16(
+        command: Command18.reqFirmwareUpdateLogCmd, usDataLength: 6);
 
     _command18Collection.add(Command18.req00Cmd);
     _command18Collection.add(Command18.req90Cmd);
