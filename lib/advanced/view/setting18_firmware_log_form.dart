@@ -1,21 +1,33 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_firmware_log/setting18_firmware_log_bloc.dart';
+import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/message_localization.dart';
+import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:intl/intl.dart';
 
 class Setting18FirmwareLogForm extends StatelessWidget {
   const Setting18FirmwareLogForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: _UpdateLogsSliverList(),
+    HomeState homeState = context.read<HomeBloc>().state;
+    String strFirmwareVersion =
+        homeState.characteristicData[DataKey.firmwareVersion] ?? '';
+    int firmwareVersion = int.tryParse(strFirmwareVersion) ?? 0;
+
+    if (firmwareVersion >= 148) {
+      context.read<Setting18FirmwareLogBloc>().add(const UpdateLogRequested());
+    }
+    return Scaffold(
+      body: const _UpdateLogsSliverList(),
+      floatingActionButton: kDebugMode && firmwareVersion >= 148
+          ? const _TestLogFloatingActionButton()
+          : null,
     );
   }
 }
@@ -145,25 +157,59 @@ class _UpdateLogsSliverList extends StatelessWidget {
                   child: Text(AppLocalizations.of(context)!.noMoreRecordToShow),
                 );
         } else {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.warning_rounded,
-                size: 200,
-                color: Color(0xffffc107),
-              ),
-              Text(
-                getMessageLocalization(
-                  msg: state.message,
-                  context: context,
-                ),
-              ),
-              const SizedBox(height: 40.0),
-            ],
+          return Center(
+            child: Text(AppLocalizations.of(context)!.noMoreRecordToShow),
           );
         }
       },
+    );
+  }
+}
+
+class _TestLogFloatingActionButton extends StatelessWidget {
+  const _TestLogFloatingActionButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        FloatingActionButton(
+          heroTag: null,
+          shape: const CircleBorder(
+            side: BorderSide.none,
+          ),
+          backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
+          child: Icon(
+            Icons.add,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+          onPressed: () {
+            context
+                .read<Setting18FirmwareLogBloc>()
+                .add(const TestUpdateLogRequested());
+          },
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        FloatingActionButton(
+          heroTag: null,
+          shape: const CircleBorder(
+            side: BorderSide.none,
+          ),
+          backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
+          child: Icon(
+            Icons.delete_forever_outlined,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+          onPressed: () {
+            context
+                .read<Setting18FirmwareLogBloc>()
+                .add(const TestAllUpdateLogDeleted());
+          },
+        ),
+      ],
     );
   }
 }

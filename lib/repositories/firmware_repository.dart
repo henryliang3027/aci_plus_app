@@ -219,7 +219,11 @@ class FirmwareRepository {
     String separator = '\u0000';
 
     // Join the strings with the separator
-    String combinedString = strUpdateLogs.join(separator);
+    String combinedString = '';
+
+    for (String strUpdateLog in strUpdateLogs) {
+      combinedString += '$strUpdateLog$separator';
+    }
 
     List<int> combinedBytes = combinedString.codeUnits;
 
@@ -229,7 +233,7 @@ class FirmwareRepository {
 
     // 填入空白
     for (int i = combinedBytes.length; i < 1024; i++) {
-      Command18.setUserAttributeCmd[i] = 0x20;
+      Command18.setFirmwareUpdateLogCmd[i + 7] = 0x20;
     }
 
     CRC16.calculateCRC16(

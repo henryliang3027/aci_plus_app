@@ -12,8 +12,8 @@ class Setting18FirmwareLogBloc
       : _firmwareRepository = firmwareRepository,
         super(const Setting18FirmwareLogState()) {
     on<UpdateLogRequested>(_onUpdateLogRequested);
-
-    add(const UpdateLogRequested());
+    on<TestUpdateLogRequested>(_onTestUpdateLogRequested);
+    on<TestAllUpdateLogDeleted>(_onTestAllUpdateLogDeleted);
   }
 
   final FirmwareRepository _firmwareRepository;
@@ -26,11 +26,11 @@ class Setting18FirmwareLogBloc
       updateLogStatus: FormStatus.requestInProgress,
     ));
 
-    List<dynamic> resultOfUpdateLogs =
+    List<dynamic> resultOfGetUpdateLogs =
         await _firmwareRepository.requestCommand1p8GUpdateLogs();
 
-    if (resultOfUpdateLogs[0]) {
-      List<UpdateLog> updateLogs = resultOfUpdateLogs[1];
+    if (resultOfGetUpdateLogs[0]) {
+      List<UpdateLog> updateLogs = resultOfGetUpdateLogs[1];
 
       emit(state.copyWith(
         updateLogStatus: FormStatus.requestSuccess,
@@ -69,5 +69,66 @@ class Setting18FirmwareLogBloc
     //     technicianID: '12345678',
     //   )
     // ];
+  }
+
+  Future<void> _onTestUpdateLogRequested(
+    TestUpdateLogRequested event,
+    Emitter<Setting18FirmwareLogState> emit,
+  ) async {
+    emit(state.copyWith(
+      updateLogStatus: FormStatus.requestInProgress,
+    ));
+
+    List<UpdateLog> updateLogs = List.from(state.updateLogs);
+    String userCode = '12345678';
+
+    UpdateLog updateLog = UpdateLog(
+      type:
+          updateLogs.length.isEven ? UpdateType.upgrade : UpdateType.downgrade,
+      dateTime: DateTime.now(),
+      firmwareVersion: '148',
+      technicianID: userCode,
+    );
+
+    // 滿 32 筆時清除最舊的一筆
+    if (updateLogs.length == 32) {
+      updateLogs.removeLast();
+    }
+    updateLogs.insert(0, updateLog);
+
+    await _firmwareRepository.set1p8GFirmwareUpdateLogs(updateLogs);
+
+    List<dynamic> resultOgGetUpdateLogs =
+        await _firmwareRepository.requestCommand1p8GUpdateLogs();
+
+    if (resultOgGetUpdateLogs[0]) {
+      List<UpdateLog> updateLogs = resultOgGetUpdateLogs[1];
+
+      emit(state.copyWith(
+        updateLogStatus: FormStatus.requestSuccess,
+        updateLogs: updateLogs,
+      ));
+    }
+  }
+
+  Future<void> _onTestAllUpdateLogDeleted(
+    TestAllUpdateLogDeleted event,
+    Emitter<Setting18FirmwareLogState> emit,
+  ) async {
+    emit(state.copyWith(updateLogStatus: FormStatus.requestInProgress));
+
+    await _firmwareRepository.set1p8GFirmwareUpdateLogs([]);
+
+    List<dynamic> resultOgGetUpdateLogs =
+        await _firmwareRepository.requestCommand1p8GUpdateLogs();
+
+    if (resultOgGetUpdateLogs[0]) {
+      List<UpdateLog> updateLogs = resultOgGetUpdateLogs[1];
+
+      emit(state.copyWith(
+        updateLogStatus: FormStatus.requestSuccess,
+        updateLogs: updateLogs,
+      ));
+    }
   }
 }

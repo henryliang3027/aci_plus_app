@@ -142,5 +142,19 @@ class StatusItemTable {
       StatusItem.startFrequencyOutputLevel,
       StatusItem.stopFrequencyOutputLevel,
     ],
+    '10': [
+      // MFT8
+      StatusItem.operatingMode,
+      StatusItem.workingMode,
+      StatusItem.splitOptions,
+      StatusItem.temperature,
+      StatusItem.inputVoltage24V,
+      StatusItem.inputVoltageRipple24V,
+      StatusItem.outputPower,
+      StatusItem.pilot1Status,
+      StatusItem.pilot2Status,
+      StatusItem.startFrequencyOutputLevel,
+      StatusItem.stopFrequencyOutputLevel,
+    ],
   };
 }

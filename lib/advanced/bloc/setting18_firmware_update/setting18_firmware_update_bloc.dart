@@ -13,19 +13,19 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-part 'setting18_firmware_event.dart';
-part 'setting18_firmware_state.dart';
+part 'setting18_firmware_update_event.dart';
+part 'setting18_firmware_update_state.dart';
 
-class Setting18FirmwareBloc
-    extends Bloc<Setting18FirmwareEvent, Setting18FirmwareState> {
-  Setting18FirmwareBloc({
+class Setting18FirmwareUpdateBloc
+    extends Bloc<Setting18FirmwareUpdateEvent, Setting18FirmwareUpdateState> {
+  Setting18FirmwareUpdateBloc({
     required AppLocalizations appLocalizations,
     required FirmwareRepository firmwareRepository,
     required CodeRepository codeRepository,
   })  : _appLocalizations = appLocalizations,
         _firmwareRepository = firmwareRepository,
         _codeRepository = codeRepository,
-        super(const Setting18FirmwareState()) {
+        super(const Setting18FirmwareUpdateState()) {
     on<BootloaderStarted>(_onBootloaderStarted);
     on<BootloaderExited>(_onBootloaderExited);
     on<BootloaderForceExited>(_onBootloaderForceExited);
@@ -162,7 +162,7 @@ class Setting18FirmwareBloc
 
   Future<void> _onMessageReceived(
     MessageReceived event,
-    Emitter<Setting18FirmwareState> emit,
+    Emitter<Setting18FirmwareUpdateState> emit,
   ) async {
     if (event.message == _appLocalizations.updateComplete) {
       _updateReportStreamSubscription?.cancel();
@@ -194,7 +194,7 @@ class Setting18FirmwareBloc
 
   void _onErrorReceived(
     ErrorReceived event,
-    Emitter<Setting18FirmwareState> emit,
+    Emitter<Setting18FirmwareUpdateState> emit,
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionFailure,
@@ -211,7 +211,7 @@ class Setting18FirmwareBloc
   // 在 Bootloader 模式下重新傳遞 binary
   void _onUpdateStarted(
     UpdateStarted event,
-    Emitter<Setting18FirmwareState> emit,
+    Emitter<Setting18FirmwareUpdateState> emit,
   ) async {
     // 重新傳送時將 checksum flag 設為 false
     _isReceivedChecksumOrDisconnected = false;
@@ -237,7 +237,7 @@ class Setting18FirmwareBloc
   // 使用者觸發 Start 後, 嘗試進入 Bootloader
   Future<void> _onBootloaderStarted(
     BootloaderStarted event,
-    Emitter<Setting18FirmwareState> emit,
+    Emitter<Setting18FirmwareUpdateState> emit,
   ) async {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionInProgress,
@@ -262,7 +262,7 @@ class Setting18FirmwareBloc
   // 更新過程失敗, 取消重試後退出 Bootloader
   Future<void> _onBootloaderExited(
     BootloaderExited event,
-    Emitter<Setting18FirmwareState> emit,
+    Emitter<Setting18FirmwareUpdateState> emit,
   ) async {
     // 重新傳送時將 checksum flag 設為 false
     _isReceivedChecksumOrDisconnected = false;
@@ -281,7 +281,7 @@ class Setting18FirmwareBloc
   // 更新過程出現checksum 錯誤或 timeout , 強制退出 Bootloader
   Future<void> _onBootloaderForceExited(
     BootloaderForceExited event,
-    Emitter<Setting18FirmwareState> emit,
+    Emitter<Setting18FirmwareUpdateState> emit,
   ) async {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
@@ -300,7 +300,7 @@ class Setting18FirmwareBloc
 
   Future<void> _onCommandWrited(
     CommandWrited event,
-    Emitter<Setting18FirmwareState> emit,
+    Emitter<Setting18FirmwareUpdateState> emit,
   ) async {
     List<int> cmd = event.character.codeUnits;
 
@@ -309,7 +309,7 @@ class Setting18FirmwareBloc
 
   Future<void> _onBinarySelected(
     BinarySelected event,
-    Emitter<Setting18FirmwareState> emit,
+    Emitter<Setting18FirmwareUpdateState> emit,
   ) async {
     emit(state.copyWith(
       binaryLoadStatus: FormStatus.requestInProgress,
@@ -345,12 +345,11 @@ class Setting18FirmwareBloc
         List<int> binary = result[1];
 
         emit(state.copyWith(
-            binaryLoadStatus: FormStatus.requestSuccess,
-            sum: sum,
-            binary: binary,
-            selectedBinaryInfo: selectedBinaryInfo,
-            currentFirmwareVersion:
-                int.tryParse(event.currentFirmwareVersion) ?? 0));
+          binaryLoadStatus: FormStatus.requestSuccess,
+          sum: sum,
+          binary: binary,
+          selectedBinaryInfo: selectedBinaryInfo,
+        ));
       } else {
         BinaryInfo selectedBinaryInfo =
             _getSelectedBinaryInfo(binaryPath: binaryPath);
@@ -373,7 +372,7 @@ class Setting18FirmwareBloc
 
   // Future<void> _onBinaryLoaded(
   //   BinaryLoaded event,
-  //   Emitter<Setting18FirmwareState> emit,
+  //   Emitter<Setting18FirmwareUpdateState> emit,
   // ) async {
   //   String binaryPath = '';
 
@@ -418,30 +417,39 @@ class Setting18FirmwareBloc
 
   Future<void> _onUpdateLogAdded(
     UpdateLogAdded event,
-    Emitter<Setting18FirmwareState> emit,
+    Emitter<Setting18FirmwareUpdateState> emit,
   ) async {
-    List<UpdateLog> updateLogs =
+    List<dynamic> resultOgGetUpdateLogs =
         await _firmwareRepository.requestCommand1p8GUpdateLogs();
 
-    String userCode = await _codeRepository.readUserCode();
+    if (resultOgGetUpdateLogs[0]) {
+      List<UpdateLog> updateLogs = resultOgGetUpdateLogs[1];
+      String userCode = await _codeRepository.readUserCode();
 
-    UpdateLog updateLog = UpdateLog(
-      type: state.selectedBinaryInfo.version >= state.currentFirmwareVersion
-          ? UpdateType.upgrade
-          : UpdateType.downgrade,
-      dateTime: DateTime.now(),
-      firmwareVersion: state.selectedBinaryInfo.version.toString(),
-      technicianID: userCode,
-    );
+      UpdateLog updateLog = UpdateLog(
+        type: state.selectedBinaryInfo.version >= event.previousFirmwareVersion
+            ? UpdateType.upgrade
+            : UpdateType.downgrade,
+        dateTime: DateTime.now(),
+        firmwareVersion: state.selectedBinaryInfo.version.toString(),
+        technicianID: userCode,
+      );
 
-    updateLogs.add(updateLog);
+      // 滿 32 筆時清除最舊的一筆
+      if (updateLogs.length == 32) {
+        updateLogs.removeLast();
+      }
+      updateLogs.insert(0, updateLog);
 
-    _firmwareRepository.set1p8GFirmwareUpdateLogs(updateLogs);
+      _firmwareRepository.set1p8GFirmwareUpdateLogs(updateLogs);
+    } else {
+      emit(state.copyWith(errorMessage: 'Failed to write update log'));
+    }
   }
 
   Future<void> _onBinaryCanceled(
     BinaryCanceled event,
-    Emitter<Setting18FirmwareState> emit,
+    Emitter<Setting18FirmwareUpdateState> emit,
   ) async {
     emit(state.copyWith(
       binaryLoadStatus: FormStatus.none,
@@ -478,8 +486,8 @@ class Setting18FirmwareBloc
     Match? match = versionRegex.firstMatch(name);
 
     if (match != null) {
-      version =
-          int.tryParse(match.group(0)!) ?? 0; // Extract the matched substring
+      // Extract the matched substring
+      version = int.parse(match.group(1)!);
     }
 
     return BinaryInfo(

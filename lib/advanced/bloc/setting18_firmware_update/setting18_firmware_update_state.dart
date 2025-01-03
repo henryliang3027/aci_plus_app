@@ -1,10 +1,9 @@
-part of 'setting18_firmware_bloc.dart';
+part of 'setting18_firmware_update_bloc.dart';
 
-class Setting18FirmwareState extends Equatable {
-  const Setting18FirmwareState({
+class Setting18FirmwareUpdateState extends Equatable {
+  const Setting18FirmwareUpdateState({
     this.binaryLoadStatus = FormStatus.none,
     this.submissionStatus = SubmissionStatus.none,
-    this.currentFirmwareVersion = 0,
     this.selectedBinaryInfo = const BinaryInfo.empty(),
     this.sum = 0,
     this.currentProgress = 0,
@@ -19,7 +18,6 @@ class Setting18FirmwareState extends Equatable {
 
   final FormStatus binaryLoadStatus;
   final SubmissionStatus submissionStatus;
-  final int currentFirmwareVersion;
   final BinaryInfo selectedBinaryInfo;
   final int sum;
   final double currentProgress;
@@ -31,10 +29,9 @@ class Setting18FirmwareState extends Equatable {
   final String errorMessage;
   final String fileErrorMessage;
 
-  Setting18FirmwareState copyWith({
+  Setting18FirmwareUpdateState copyWith({
     FormStatus? binaryLoadStatus,
     SubmissionStatus? submissionStatus,
-    int? currentFirmwareVersion,
     BinaryInfo? selectedBinaryInfo,
     int? sum,
     double? currentProgress,
@@ -46,11 +43,9 @@ class Setting18FirmwareState extends Equatable {
     String? errorMessage,
     String? fileErrorMessage,
   }) {
-    return Setting18FirmwareState(
+    return Setting18FirmwareUpdateState(
       binaryLoadStatus: binaryLoadStatus ?? this.binaryLoadStatus,
       submissionStatus: submissionStatus ?? this.submissionStatus,
-      currentFirmwareVersion:
-          currentFirmwareVersion ?? this.currentFirmwareVersion,
       selectedBinaryInfo: selectedBinaryInfo ?? this.selectedBinaryInfo,
       currentProgress: currentProgress ?? this.currentProgress,
       sum: sum ?? this.sum,
@@ -68,7 +63,6 @@ class Setting18FirmwareState extends Equatable {
   List<Object> get props => [
         binaryLoadStatus,
         submissionStatus,
-        currentFirmwareVersion,
         selectedBinaryInfo,
         sum,
         currentProgress,

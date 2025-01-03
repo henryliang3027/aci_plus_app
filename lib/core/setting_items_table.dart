@@ -494,6 +494,38 @@ class SettingItemTable {
       SettingControl.returnIngressSetting3,
       SettingControl.returnIngressSetting4,
     ],
+    '10': [
+      // MFT8
+      SettingConfiruration.location,
+      SettingConfiruration.coordinates,
+      // SettingConfiruration.splitOptions,
+      SettingConfiruration.pilotFrequencySelect,
+      SettingConfiruration.startFrequency,
+      SettingConfiruration.stopFrequency,
+      SettingConfiruration.pilot1,
+      SettingConfiruration.pilot2,
+      SettingConfiruration.agcMode,
+      SettingConfiruration.alcMode,
+      SettingConfiruration.logInterval,
+      SettingConfiruration.rfOutputLogInterval,
+      SettingConfiruration.cableLength,
+      SettingThreshold.workingMode,
+      // SettingThreshold.splitOptions,
+      SettingThreshold.temperature,
+      SettingThreshold.inputVoltage24V,
+      SettingThreshold.inputVoltageRipple24V,
+      SettingThreshold.outputPower,
+      SettingThreshold.pilot1Status,
+      SettingThreshold.pilot2Status,
+      SettingThreshold.startFrequencyOutputLevel,
+      SettingThreshold.stopFrequencyOutputLevel,
+      SettingControl.forwardInputAttenuation1,
+      SettingControl.forwardInputEqualizer1,
+      SettingControl.returnOutputAttenuation1,
+      SettingControl.returnOutputEqualizer1,
+      SettingControl.returnInputAttenuation2,
+      SettingControl.returnIngressSetting2,
+    ],
   };
 
   static Map<String, List<Map<Enum, DataKey>>> controlItemDataMapCollection = {
@@ -657,6 +689,19 @@ class SettingItemTable {
         SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
         SettingControl.returnIngressSetting3: DataKey.ingressSetting3,
         SettingControl.returnIngressSetting4: DataKey.ingressSetting4,
+      }
+    ],
+    '10': [
+      // MFT8
+      {
+        SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
+        SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
+      },
+      {
+        SettingControl.returnOutputAttenuation1: DataKey.usVCA2,
+        SettingControl.returnOutputEqualizer1: DataKey.eREQ,
+        SettingControl.returnInputAttenuation2: DataKey.usVCA1,
+        SettingControl.returnIngressSetting2: DataKey.ingressSetting2,
       }
     ],
   };

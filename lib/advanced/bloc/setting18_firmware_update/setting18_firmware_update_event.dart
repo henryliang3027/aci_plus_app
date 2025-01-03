@@ -1,27 +1,27 @@
-part of 'setting18_firmware_bloc.dart';
+part of 'setting18_firmware_update_bloc.dart';
 
-sealed class Setting18FirmwareEvent extends Equatable {
-  const Setting18FirmwareEvent();
+sealed class Setting18FirmwareUpdateEvent extends Equatable {
+  const Setting18FirmwareUpdateEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class BootloaderStarted extends Setting18FirmwareEvent {
+class BootloaderStarted extends Setting18FirmwareUpdateEvent {
   const BootloaderStarted();
 
   @override
   List<Object> get props => [];
 }
 
-class BootloaderExited extends Setting18FirmwareEvent {
+class BootloaderExited extends Setting18FirmwareUpdateEvent {
   const BootloaderExited();
 
   @override
   List<Object> get props => [];
 }
 
-class BootloaderForceExited extends Setting18FirmwareEvent {
+class BootloaderForceExited extends Setting18FirmwareUpdateEvent {
   const BootloaderForceExited({
     required this.cmd,
   });
@@ -32,14 +32,14 @@ class BootloaderForceExited extends Setting18FirmwareEvent {
   List<Object> get props => [cmd];
 }
 
-class UpdateStarted extends Setting18FirmwareEvent {
+class UpdateStarted extends Setting18FirmwareUpdateEvent {
   const UpdateStarted();
 
   @override
   List<Object> get props => [];
 }
 
-class MessageReceived extends Setting18FirmwareEvent {
+class MessageReceived extends Setting18FirmwareUpdateEvent {
   const MessageReceived({
     required this.message,
     required this.currentProgress,
@@ -55,7 +55,7 @@ class MessageReceived extends Setting18FirmwareEvent {
       ];
 }
 
-class ErrorReceived extends Setting18FirmwareEvent {
+class ErrorReceived extends Setting18FirmwareUpdateEvent {
   const ErrorReceived({
     required this.errorMessage,
   });
@@ -68,7 +68,7 @@ class ErrorReceived extends Setting18FirmwareEvent {
       ];
 }
 
-class CommandWrited extends Setting18FirmwareEvent {
+class CommandWrited extends Setting18FirmwareUpdateEvent {
   const CommandWrited(this.character);
 
   final String character;
@@ -77,23 +77,18 @@ class CommandWrited extends Setting18FirmwareEvent {
   List<Object> get props => [character];
 }
 
-class BinarySelected extends Setting18FirmwareEvent {
+class BinarySelected extends Setting18FirmwareUpdateEvent {
   const BinarySelected({
     required this.partId,
-    required this.currentFirmwareVersion,
   });
 
   final String partId;
-  final String currentFirmwareVersion;
 
   @override
-  List<Object> get props => [
-        partId,
-        currentFirmwareVersion,
-      ];
+  List<Object> get props => [partId];
 }
 
-class BinaryLoaded extends Setting18FirmwareEvent {
+class BinaryLoaded extends Setting18FirmwareUpdateEvent {
   const BinaryLoaded({
     required this.partId,
     required this.currentFirmwareVersion,
@@ -109,16 +104,18 @@ class BinaryLoaded extends Setting18FirmwareEvent {
       ];
 }
 
-class BinaryCanceled extends Setting18FirmwareEvent {
+class BinaryCanceled extends Setting18FirmwareUpdateEvent {
   const BinaryCanceled();
 
   @override
   List<Object> get props => [];
 }
 
-class UpdateLogAdded extends Setting18FirmwareEvent {
-  const UpdateLogAdded();
+class UpdateLogAdded extends Setting18FirmwareUpdateEvent {
+  const UpdateLogAdded({required this.previousFirmwareVersion});
+
+  final int previousFirmwareVersion;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [previousFirmwareVersion];
 }

@@ -13,3 +13,17 @@ class UpdateLogRequested extends Setting18FirmwareLogEvent {
   @override
   List<Object> get props => [];
 }
+
+class TestUpdateLogRequested extends Setting18FirmwareLogEvent {
+  const TestUpdateLogRequested();
+
+  @override
+  List<Object> get props => [];
+}
+
+class TestAllUpdateLogDeleted extends Setting18FirmwareLogEvent {
+  const TestAllUpdateLogDeleted();
+
+  @override
+  List<Object> get props => [];
+}

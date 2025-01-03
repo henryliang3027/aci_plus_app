@@ -1,5 +1,5 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_advanced/setting18_advanced_bloc.dart';
-import 'package:aci_plus_app/advanced/bloc/setting18_firmware/setting18_firmware_bloc.dart';
+import 'package:aci_plus_app/advanced/bloc/setting18_firmware_update/setting18_firmware_update_bloc.dart';
 import 'package:aci_plus_app/advanced/shared/utils.dart';
 import 'package:aci_plus_app/chart/shared/message_dialog.dart';
 import 'package:aci_plus_app/chart/view/code_input_page.dart';
@@ -26,8 +26,9 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeState homeState = context.read<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
-    String currentFirmwareVersion =
+    String strFirmwareVersion =
         homeState.characteristicData[DataKey.firmwareVersion] ?? '';
+    int firmwareVersion = int.tryParse(strFirmwareVersion) ?? 0;
 
     Future<void> showRebootingDialog(BuildContext context) async {
       return showDialog<void>(
@@ -72,7 +73,7 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
         barrierDismissible: false, // 暫時打開
         builder: (_) {
           return BlocProvider.value(
-            value: buildContext.read<Setting18FirmwareBloc>(),
+            value: buildContext.read<Setting18FirmwareUpdateBloc>(),
             child: PopScope(
               canPop: false,
               child: AlertDialog(
@@ -100,7 +101,7 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
                     ),
                     onPressed: () {
                       context
-                          .read<Setting18FirmwareBloc>()
+                          .read<Setting18FirmwareUpdateBloc>()
                           .add(const BootloaderExited());
                       Navigator.of(context).pop(false); // pop dialog
                     },
@@ -111,7 +112,7 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
                     ),
                     onPressed: () {
                       context
-                          .read<Setting18FirmwareBloc>()
+                          .read<Setting18FirmwareUpdateBloc>()
                           .add(const UpdateStarted());
                       Navigator.of(context).pop(true); // pop dialog
                     },
@@ -133,7 +134,7 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
         barrierDismissible: false, // user must tap button!
         builder: (_) {
           return BlocProvider.value(
-            value: buildContext.read<Setting18FirmwareBloc>(),
+            value: buildContext.read<Setting18FirmwareUpdateBloc>(),
             child: AlertDialog(
               title: Text(
                 AppLocalizations.of(context)!.dialogTitleSuccess,
@@ -159,7 +160,7 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
                   ),
                   onPressed: () {
                     context
-                        .read<Setting18FirmwareBloc>()
+                        .read<Setting18FirmwareUpdateBloc>()
                         .add(const BootloaderExited());
                     Navigator.of(context).pop(); // pop dialog
                   },
@@ -185,7 +186,8 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
       pageController.jumpToPage(2);
     }
 
-    return BlocListener<Setting18FirmwareBloc, Setting18FirmwareState>(
+    return BlocListener<Setting18FirmwareUpdateBloc,
+        Setting18FirmwareUpdateState>(
       listenWhen: (previous, current) =>
           previous.submissionStatus != current.submissionStatus,
       listener: (context, state) async {
@@ -212,7 +214,11 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
             });
           }
         } else if (state.submissionStatus.isSubmissionSuccess) {
-          context.read<Setting18FirmwareBloc>().add(const UpdateLogAdded());
+          if (firmwareVersion >= 148) {
+            context.read<Setting18FirmwareUpdateBloc>().add(UpdateLogAdded(
+                  previousFirmwareVersion: firmwareVersion,
+                ));
+          }
 
           showSuccessDialog(
             buildContext: context,
@@ -231,9 +237,7 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
               children: [
                 const _UserCaution(),
                 const _ProgressBar(),
-                _FilePicker(
-                    partId: partId,
-                    currentFirmwareVersion: currentFirmwareVersion),
+                _FilePicker(partId: partId),
                 _StartButton(
                   pageController: pageController,
                   partId: partId,
@@ -335,7 +339,7 @@ class _UserCaution extends StatelessWidget {
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return BlocBuilder<Setting18FirmwareBloc, Setting18FirmwareState>(
+//     return BlocBuilder<Setting18FirmwareUpdateBloc, Setting18FirmwareUpdateState>(
 //       builder: (context, state) {
 //         return DropdownButton<String>(
 //           value: state.selectedBinary,
@@ -348,7 +352,7 @@ class _UserCaution extends StatelessWidget {
 //           ),
 //           onChanged: (String? value) {
 //             if (value != null) {
-//               context.read<Setting18FirmwareBloc>().add(BinarySelected(value));
+//               context.read<Setting18FirmwareUpdateBloc>().add(BinarySelected(value));
 //             }
 //           },
 //           items: FirmwareFileTable.filePathMap.entries
@@ -383,7 +387,8 @@ class __ProgressBarState extends State<_ProgressBar>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<Setting18FirmwareBloc, Setting18FirmwareState>(
+    return BlocListener<Setting18FirmwareUpdateBloc,
+        Setting18FirmwareUpdateState>(
       listenWhen: (previous, current) =>
           previous.updateMessage != current.updateMessage,
       listener: (context, state) async {
@@ -392,7 +397,8 @@ class __ProgressBarState extends State<_ProgressBar>
           duration: const Duration(milliseconds: 200),
         );
       },
-      child: BlocBuilder<Setting18FirmwareBloc, Setting18FirmwareState>(
+      child: BlocBuilder<Setting18FirmwareUpdateBloc,
+          Setting18FirmwareUpdateState>(
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -431,21 +437,20 @@ class _FilePicker extends StatelessWidget {
   const _FilePicker({
     super.key,
     required this.partId,
-    required this.currentFirmwareVersion,
   });
 
   final String partId;
-  final String currentFirmwareVersion;
 
   @override
   Widget build(BuildContext context) {
     Widget buildSelectButton({
       required bool isEnabled,
-      required Setting18FirmwareState setting18FirmwareState,
+      required Setting18FirmwareUpdateState setting18FirmwareUpdateState,
     }) {
-      BinaryInfo selectedBinaryInfo = setting18FirmwareState.selectedBinaryInfo;
-      bool isValid = setting18FirmwareState.binary.isNotEmpty &&
-          setting18FirmwareState.sum != -1;
+      BinaryInfo selectedBinaryInfo =
+          setting18FirmwareUpdateState.selectedBinaryInfo;
+      bool isValid = setting18FirmwareUpdateState.binary.isNotEmpty &&
+          setting18FirmwareUpdateState.sum != -1;
 
       return Column(
         children: [
@@ -501,9 +506,10 @@ class _FilePicker extends StatelessWidget {
             ),
             onPressed: isEnabled
                 ? () async {
-                    context.read<Setting18FirmwareBloc>().add(BinarySelected(
+                    context
+                        .read<Setting18FirmwareUpdateBloc>()
+                        .add(BinarySelected(
                           partId: partId,
-                          currentFirmwareVersion: currentFirmwareVersion,
                         ));
                   }
                 : null,
@@ -518,7 +524,8 @@ class _FilePicker extends StatelessWidget {
       );
     }
 
-    return BlocListener<Setting18FirmwareBloc, Setting18FirmwareState>(
+    return BlocListener<Setting18FirmwareUpdateBloc,
+        Setting18FirmwareUpdateState>(
       listenWhen: (previous, current) =>
           previous.binaryLoadStatus != current.binaryLoadStatus,
       listener: (context, state) {
@@ -547,26 +554,26 @@ class _FilePicker extends StatelessWidget {
       child: Builder(
         builder: (context) {
           final HomeState homeState = context.watch<HomeBloc>().state;
-          final Setting18FirmwareState setting18FirmwareState =
-              context.watch<Setting18FirmwareBloc>().state;
+          final Setting18FirmwareUpdateState setting18FirmwareUpdateState =
+              context.watch<Setting18FirmwareUpdateBloc>().state;
 
           if (homeState.loadingStatus.isRequestSuccess) {
-            if (setting18FirmwareState
+            if (setting18FirmwareUpdateState
                 .submissionStatus.isSubmissionInProgress) {
               return buildSelectButton(
                 isEnabled: false,
-                setting18FirmwareState: setting18FirmwareState,
+                setting18FirmwareUpdateState: setting18FirmwareUpdateState,
               );
             } else {
               return buildSelectButton(
                 isEnabled: true,
-                setting18FirmwareState: setting18FirmwareState,
+                setting18FirmwareUpdateState: setting18FirmwareUpdateState,
               );
             }
           } else {
             return buildSelectButton(
               isEnabled: false,
-              setting18FirmwareState: setting18FirmwareState,
+              setting18FirmwareUpdateState: setting18FirmwareUpdateState,
             );
           }
         },
@@ -730,7 +737,7 @@ class _StartButton extends StatelessWidget {
                                 .add(const AllButtonsDisabled());
 
                             context
-                                .read<Setting18FirmwareBloc>()
+                                .read<Setting18FirmwareUpdateBloc>()
                                 .add(const BootloaderStarted());
                           }
                         }
@@ -744,7 +751,7 @@ class _StartButton extends StatelessWidget {
                       // )
                       //     .then((FilePickerResult? result) {
                       //   if (result != null) {
-                      //     context.read<Setting18FirmwareBloc>().add(
+                      //     context.read<Setting18FirmwareUpdateBloc>().add(
                       //         BinarySelected(result.files.single.path!));
                       //     // File file = File(result.files.single.path!);
                       //     // print(file.path);
@@ -765,7 +772,7 @@ class _StartButton extends StatelessWidget {
                       //           .add(const AllButtonsDisabled());
 
                       //       context
-                      //           .read<Setting18FirmwareBloc>()
+                      //           .read<Setting18FirmwareUpdateBloc>()
                       //           .add(const BootloaderStarted());
                       //     }
                       //   }
@@ -794,7 +801,7 @@ class _StartButton extends StatelessWidget {
           //     ),
           //     onPressed: () {
           //       context
-          //           .read<Setting18FirmwareBloc>()
+          //           .read<Setting18FirmwareUpdateBloc>()
           //           .add(const CommandWrited('N'));
           //     },
           //     child: Text(
@@ -809,27 +816,28 @@ class _StartButton extends StatelessWidget {
     return Builder(
       builder: (context) {
         final HomeState homeState = context.watch<HomeBloc>().state;
-        final setting18FirmwareState =
-            context.watch<Setting18FirmwareBloc>().state;
+        final setting18FirmwareUpdateState =
+            context.watch<Setting18FirmwareUpdateBloc>().state;
 
         if (homeState.loadingStatus.isRequestSuccess) {
           final String currentFirmwareVersion =
               homeState.characteristicData[DataKey.firmwareVersion]!;
 
-          // if (setting18FirmwareState.binaryLoadStatus.isNone) {
-          //   context.read<Setting18FirmwareBloc>().add(BinaryLoaded(
+          // if (setting18FirmwareUpdateState.binaryLoadStatus.isNone) {
+          //   context.read<Setting18FirmwareUpdateBloc>().add(BinaryLoaded(
           //         partId: partId,
           //         currentFirmwareVersion: currentFirmwareVersion,
           //       ));
           // }
 
           return buildStartButton(
-            isSubmissionInProgress:
-                setting18FirmwareState.submissionStatus.isSubmissionInProgress,
+            isSubmissionInProgress: setting18FirmwareUpdateState
+                .submissionStatus.isSubmissionInProgress,
             currentFirmwareVersion: currentFirmwareVersion,
             // newFirmwareVersion:
-            //     setting18FirmwareState.selectedBinaryInfo.version,
-            isEnabled: setting18FirmwareState.binaryLoadStatus.isRequestSuccess,
+            //     setting18FirmwareUpdateState.selectedBinaryInfo.version,
+            isEnabled:
+                setting18FirmwareUpdateState.binaryLoadStatus.isRequestSuccess,
           );
         } else {
           if (homeState.connectionStatus.isRequestFailure) {
@@ -841,8 +849,8 @@ class _StartButton extends StatelessWidget {
           }
 
           return buildStartButton(
-            isSubmissionInProgress:
-                setting18FirmwareState.submissionStatus.isSubmissionInProgress,
+            isSubmissionInProgress: setting18FirmwareUpdateState
+                .submissionStatus.isSubmissionInProgress,
             currentFirmwareVersion: '',
             // newFirmwareVersion: '',
             isEnabled: false,
