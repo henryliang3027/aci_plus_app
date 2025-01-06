@@ -541,7 +541,8 @@ class _Coordinates extends StatelessWidget {
                       fillColor:
                           Theme.of(context).colorScheme.secondaryContainer,
                       counterText: '',
-                      errorText: state.coordinates.isNotValid
+                      errorText: state.coordinates.isNotValid &&
+                              state.editMode // editMode disabled 時不顯示errorText
                           ? AppLocalizations.of(context)!.textFieldErrorMessage
                           : null,
                       suffixIconConstraints: const BoxConstraints(

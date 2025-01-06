@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
-import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
+// import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';

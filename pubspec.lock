@@ -81,14 +81,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.5"
-  bluetooth_enable_fork:
+  bluetooth_enable:
     dependency: "direct main"
     description:
-      name: bluetooth_enable_fork
-      sha256: d53d588600356bcba6168e011a40b26d482f6b00dd08ce986cbaa6bb1e6d5068
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.6"
+      path: "/Users/henry.liang/projects_git/20241223/plugins/bluetooth_enable"
+      relative: false
+    source: path
+    version: "0.0.1"
   bluez:
     dependency: transitive
     description:
@@ -998,14 +997,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
-  qr_code_scanner:
-    dependency: "direct main"
-    description:
-      name: qr_code_scanner
-      sha256: f23b68d893505a424f0bd2e324ebea71ed88465d572d26bb8d2e78a4749591fd
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   qr_flutter:
     dependency: "direct main"
     description:
@@ -1470,5 +1461,5 @@ packages:
     source: hosted
     version: "0.2.3"
 sdks:
-  dart: ">=3.4.1 <4.0.0"
+  dart: ">=3.6.0 <4.0.0"
   flutter: ">=3.22.0"

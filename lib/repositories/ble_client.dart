@@ -3,8 +3,9 @@ import 'dart:io';
 
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
-import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
+// import 'package:bluetooth_enable_fork/bluetooth_enable_fork.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
+import 'package:bluetooth_enable/bluetooth_enable.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:permission_handler/permission_handler.dart';
 

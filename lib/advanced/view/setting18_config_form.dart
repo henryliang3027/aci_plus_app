@@ -6,7 +6,7 @@ import 'package:aci_plus_app/advanced/view/description_input_page.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_image_viewer.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_scanner_win.dart';
 import 'package:aci_plus_app/advanced/view/qr_code_generator_page.dart';
-import 'package:aci_plus_app/advanced/view/qr_code_scanner.dart';
+// import 'package:aci_plus_app/advanced/view/qr_code_scanner.dart';
 import 'package:aci_plus_app/advanced/view/setting18_config_tab_bar.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
@@ -335,18 +335,18 @@ class _QRToolbar extends StatelessWidget {
                                 : null
                             : null
                         : () {
-                            Navigator.push(
-                              context,
-                              QRCodeScanner.route(),
-                            ).then((rawData) {
-                              if (rawData != null) {
-                                if (rawData.isNotEmpty) {
-                                  context
-                                      .read<Setting18ConfigBloc>()
-                                      .add(QRDataScanned(rawData));
-                                }
-                              }
-                            });
+                            // Navigator.push(
+                            //   context,
+                            //   QRCodeScanner.route(),
+                            // ).then((rawData) {
+                            //   if (rawData != null) {
+                            //     if (rawData.isNotEmpty) {
+                            //       context
+                            //           .read<Setting18ConfigBloc>()
+                            //           .add(QRDataScanned(rawData));
+                            //     }
+                            //   }
+                            // });
                           },
                     icon: const Icon(
                       Icons.qr_code_scanner_sharp,

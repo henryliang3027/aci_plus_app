@@ -90,17 +90,17 @@ Future<void> main() async {
   final AdaptiveThemeMode savedAdaptiveThemeMode =
       await AdaptiveTheme.getThemeMode() ?? AdaptiveThemeMode.light;
 
-  if (Platform.isIOS || Platform.isAndroid) {
-    await Firebase.initializeApp();
-    FlutterError.onError = (errorDetails) {
-      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-    };
-    // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
-    PlatformDispatcher.instance.onError = (error, stack) {
-      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-      return true;
-    };
-  }
+  // if (Platform.isIOS || Platform.isAndroid) {
+  //   await Firebase.initializeApp();
+  //   FlutterError.onError = (errorDetails) {
+  //     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  //   };
+  //   // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  //   PlatformDispatcher.instance.onError = (error, stack) {
+  //     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+  //     return true;
+  //   };
+  // }
 
   await initBox();
 
