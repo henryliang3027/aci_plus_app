@@ -84,9 +84,11 @@ packages:
   bluetooth_enable:
     dependency: "direct main"
     description:
-      path: "/Users/henry.liang/projects_git/20241223/plugins/bluetooth_enable"
-      relative: false
-    source: path
+      path: "."
+      ref: master
+      resolved-ref: "0d8a9b0d26bb67533bf930c1b05c840d97fd41d4"
+      url: "https://github.com/henryliang3027/bluetooth_enable.git"
+    source: git
     version: "0.0.1"
   bluez:
     dependency: transitive
@@ -997,6 +999,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+  qr_code_scanner:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "8e9d77ac2bd98516c7dca8b12349ff3d44b83bd6"
+      url: "https://github.com/samnbd/qr_code_scanner"
+    source: git
+    version: "1.0.0"
   qr_flutter:
     dependency: "direct main"
     description:

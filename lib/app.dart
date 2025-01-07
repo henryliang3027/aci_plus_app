@@ -77,6 +77,8 @@ class App extends StatelessWidget {
           dsimRepository: dsimRepository,
           amp18Repository: amp18Repository,
           amp18CCorNodeRepository: amp18CCorNodeRepository,
+          firmwareRepository: firmwareRepository,
+          codeRepository: codeRepository,
         ),
         child: _AppView(
           savedAdaptiveThemeMode: savedAdaptiveThemeMode,

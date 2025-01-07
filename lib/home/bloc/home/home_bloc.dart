@@ -5,9 +5,11 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/aci_device_repository.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
+import 'package:aci_plus_app/repositories/code_repository.dart';
 import 'package:aci_plus_app/repositories/dsim_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
+import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:speed_chart/speed_chart.dart';
@@ -23,10 +25,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required DsimRepository dsimRepository,
     required Amp18Repository amp18Repository,
     required Amp18CCorNodeRepository amp18CCorNodeRepository,
+    required FirmwareRepository firmwareRepository,
+    required CodeRepository codeRepository,
   })  : _aciDeviceRepository = aciDeviceRepository,
         _dsimRepository = dsimRepository,
         _amp18Repository = amp18Repository,
         _amp18CCorNodeRepository = amp18CCorNodeRepository,
+        _firmwareRepository = firmwareRepository,
+        _codeRepository = codeRepository,
         super(const HomeState()) {
     on<SplashStateChanged>(_onSplashStateChanged);
     on<DiscoveredDeviceChanged>(_onDiscoveredDeviceChanged);
@@ -47,6 +53,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final DsimRepository _dsimRepository;
   final Amp18Repository _amp18Repository;
   final Amp18CCorNodeRepository _amp18CCorNodeRepository;
+  final FirmwareRepository _firmwareRepository;
+  final CodeRepository _codeRepository;
   StreamSubscription<ScanReport>? _scanStreamSubscription;
   StreamSubscription<ConnectionReport>? _connectionReportStreamSubscription;
   StreamSubscription<Map<DataKey, String>>?
@@ -572,6 +580,36 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
+  Future<void> _writeFirmwareUpdateLog({
+    required int previousFirmwareVersion,
+    required int currentFirmwareVersion,
+  }) async {
+    List<dynamic> resultOgGetUpdateLogs =
+        await _firmwareRepository.requestCommand1p8GUpdateLogs();
+
+    if (resultOgGetUpdateLogs[0]) {
+      List<UpdateLog> updateLogs = resultOgGetUpdateLogs[1];
+      String userCode = await _codeRepository.readUserCode();
+
+      UpdateLog updateLog = UpdateLog(
+        type: currentFirmwareVersion >= previousFirmwareVersion
+            ? UpdateType.upgrade
+            : UpdateType.downgrade,
+        dateTime: DateTime.now(),
+        firmwareVersion: currentFirmwareVersion.toString(),
+        technicianID: userCode,
+      );
+
+      // 滿 32 筆時清除最舊的一筆
+      if (updateLogs.length == 32) {
+        updateLogs.removeLast();
+      }
+      updateLogs.insert(0, updateLog);
+
+      await _firmwareRepository.set1p8GFirmwareUpdateLogs(updateLogs);
+    } else {}
+  }
+
   Future<void> _onData18Requested(
     Data18Requested event,
     Emitter<HomeState> emit,
@@ -592,6 +630,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     resultOf1p8G0 = await _amp18Repository.requestCommand1p8G0();
 
     if (resultOf1p8G0[0]) {
+      Map<DataKey, String> characteristicDataOf1p8G0 = resultOf1p8G0[1];
+
+      //
+      if (event.isFirmwareUpdated) {
+        int currentFirmwareVersion = int.parse(
+            characteristicDataOf1p8G0[DataKey.firmwareVersion] ?? '0');
+
+        if (currentFirmwareVersion >= 148) {
+          await _writeFirmwareUpdateLog(
+            previousFirmwareVersion: FirmwareUpdateProperty.previousVersion,
+            currentFirmwareVersion: currentFirmwareVersion,
+          );
+        }
+      }
+
+      FirmwareUpdateProperty.previousVersion =
+          int.parse(characteristicDataOf1p8G0[DataKey.firmwareVersion] ?? '0');
+
       newCharacteristicData.addAll(resultOf1p8G0[1]);
       emit(state.copyWith(
         characteristicData: newCharacteristicData,

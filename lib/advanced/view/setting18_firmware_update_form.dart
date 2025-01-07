@@ -179,7 +179,9 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
         context.read<HomeBloc>().add(const Data18CCorNodeRequested());
       } else {
         // 其他機種的放大器
-        context.read<HomeBloc>().add(const Data18Requested());
+        context
+            .read<HomeBloc>()
+            .add(const Data18Requested(isFirmwareUpdated: true));
       }
 
       // 頁面跳轉到 information page
@@ -214,11 +216,11 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
             });
           }
         } else if (state.submissionStatus.isSubmissionSuccess) {
-          if (firmwareVersion >= 148) {
-            context.read<Setting18FirmwareUpdateBloc>().add(UpdateLogAdded(
-                  previousFirmwareVersion: firmwareVersion,
-                ));
-          }
+          // if (firmwareVersion >= 148) {
+          //   context.read<Setting18FirmwareUpdateBloc>().add(UpdateLogAdded(
+          //         previousFirmwareVersion: firmwareVersion,
+          //       ));
+          // }
 
           showSuccessDialog(
             buildContext: context,
