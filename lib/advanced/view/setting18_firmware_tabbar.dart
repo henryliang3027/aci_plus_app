@@ -51,7 +51,8 @@ class Setting18FirmwareTabBar extends StatelessWidget {
                             // width: 110,
                             child: Center(
                               child: Text(
-                                AppLocalizations.of(context)!.firmwareUpdateLog,
+                                AppLocalizations.of(context)!
+                                    .firmwareUpdateRecord,
                               ),
                             ),
                           ),

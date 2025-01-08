@@ -795,6 +795,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
+    // 如果 firmwareVersion < 148, 則 resultOf1p8GUserAttribute.isEmpty = true,
+    // 下一個讀取指令將會判斷 resultOf1p8G3 是否成功
     bool next = resultOf1p8GUserAttribute.isEmpty
         ? resultOf1p8G3[0]
         : resultOf1p8GUserAttribute[0];
@@ -806,7 +808,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         await _amp18Repository.set1p8GTransmitDelayTime();
 
         // 執行完上面的 set delay time 後休息一段時間再讀取 log, 比較不會有 data 收不完整的情況發生
-        await Future.delayed(const Duration(milliseconds: 500));
+        await Future.delayed(const Duration(milliseconds: 1000));
         resultOf1p8GForLogChunk =
             await _amp18Repository.requestCommand1p8GForLogChunk(0);
 
@@ -874,6 +876,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List<dynamic> resultOf1p8GCCorNode91 = [];
     List<dynamic> resultOf1p8GCCorNode92 = [];
     List<dynamic> resultOf1p8GCCorNodeA1 = [];
+    List<dynamic> resultOf1p8GCCorNodeUserAttribute = [];
     List<dynamic> resultOf1p8GCCorNodeLogChunk = [];
 
     resultOf1p8GCCorNode80 =
@@ -981,13 +984,42 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
-    if (resultOf1p8GCCorNodeA1[0]) {
+    int firmwareVersion = convertFirmwareVersionStringToInt(
+        newCharacteristicData[DataKey.firmwareVersion] ?? '0');
+
+    if (firmwareVersion >= 148) {
+      if (resultOf1p8GCCorNodeA1[0]) {
+        resultOf1p8GCCorNodeUserAttribute = await _amp18CCorNodeRepository
+            .requestCommand1p8GCCorNodeUserAttribute();
+
+        if (resultOf1p8GCCorNodeUserAttribute[0]) {
+          newCharacteristicData.addAll(resultOf1p8GCCorNodeUserAttribute[1]);
+          emit(state.copyWith(
+            characteristicData: newCharacteristicData,
+          ));
+        }
+      } else {
+        emit(state.copyWith(
+          loadingStatus: FormStatus.requestFailure,
+          characteristicData: state.characteristicData,
+          errorMassage: 'Failed to load data',
+        ));
+      }
+    }
+
+    // 如果 firmwareVersion < 148, 則 resultOf1p8GCCorNodeUserAttribute.isEmpty = true,
+    // 下一個讀取指令將會判斷 resultOf1p8GCCorNodeA1 是否成功
+    bool next = resultOf1p8GCCorNodeUserAttribute.isEmpty
+        ? resultOf1p8GCCorNodeA1[0]
+        : resultOf1p8GCCorNodeUserAttribute[0];
+
+    if (next) {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       for (int i = 0; i < 3; i++) {
         await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
 
         // 執行完上面的 set delay time 後休息一段時間再讀取 log, 比較不會有 data 收不完整的情況發生
-        await Future.delayed(const Duration(milliseconds: 500));
+        await Future.delayed(const Duration(milliseconds: 1000));
         resultOf1p8GCCorNodeLogChunk = await _amp18CCorNodeRepository
             .requestCommand1p8GCCorNodeLogChunk(0);
 

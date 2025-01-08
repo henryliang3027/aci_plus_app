@@ -4,6 +4,7 @@ import 'package:aci_plus_app/chart/shared/event1p8g_value.dart';
 import 'package:aci_plus_app/core/command18.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/unit_converter.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
@@ -20,32 +21,6 @@ class Amp18Parser {
 
   List<List<int>> get command18Collection => _command18Collection;
 
-  // 刪除所有 Null character (0x00), 頭尾空白 character
-  String _trimString(String s) {
-    s = s.replaceAll('\x00', '');
-    s = s.trim();
-    return s;
-  }
-
-  String _decodeUnicodeToString(Uint8List byteValues) {
-    // 使用 unicode 解析 byte 格式的字串
-    String strValue = '';
-    for (int i = 0; i < byteValues.length; i += 2) {
-      Uint8List bytes = Uint8List.fromList([byteValues[i], byteValues[i + 1]]);
-
-      // Extract the bytes and create the Unicode code point
-      int lowerByte = bytes[0];
-      int upperByte = bytes[1];
-      int unicodeCodePoint = (upperByte << 8) | lowerByte;
-
-      // Convert the Unicode code point to a string
-      String chineseCharacter = String.fromCharCode(unicodeCodePoint);
-      strValue += chineseCharacter;
-    }
-
-    return strValue;
-  }
-
   A1P8G0 decodeA1P8G0(List<int> rawData) {
     String partName = '';
     String partNo = '';
@@ -61,25 +36,25 @@ class Amp18Parser {
     for (int i = 3; i <= 22; i++) {
       partName += String.fromCharCode(rawData[i]);
     }
-    partName = _trimString(partName);
+    partName = trimString(partName);
 
     // 解析 partNo
     for (int i = 23; i <= 42; i++) {
       partNo += String.fromCharCode(rawData[i]);
     }
-    partNo = _trimString(partNo);
+    partNo = trimString(partNo);
 
     // 解析 serialNumber
     for (int i = 43; i <= 58; i++) {
       serialNumber += String.fromCharCode(rawData[i]);
     }
-    serialNumber = _trimString(serialNumber);
+    serialNumber = trimString(serialNumber);
 
     // 解析 hardwareVersion
     for (int i = 59; i <= 62; i++) {
       hardwareVersion += String.fromCharCode(rawData[i]);
     }
-    hardwareVersion = _trimString(hardwareVersion);
+    hardwareVersion = trimString(hardwareVersion);
 
     // 舊版本為空自串, 所以加一個N/A表示無 hardware version
     hardwareVersion = hardwareVersion.isEmpty ? 'N/A' : hardwareVersion;
@@ -88,7 +63,7 @@ class Amp18Parser {
     for (int i = 63; i <= 66; i++) {
       firmwareVersion += String.fromCharCode(rawData[i]);
     }
-    firmwareVersion = _trimString(firmwareVersion);
+    firmwareVersion = trimString(firmwareVersion);
 
     // 解析 mfgDate
     List<int> rawYear = rawData.sublist(67, 69);
@@ -112,7 +87,7 @@ class Amp18Parser {
     for (int i = 72; i <= 110; i++) {
       coordinate += String.fromCharCode(rawData[i]);
     }
-    coordinate = _trimString(coordinate);
+    coordinate = trimString(coordinate);
 
     // 解析 now time
     List<int> rawNowYear = rawData.sublist(171, 173);
@@ -367,7 +342,7 @@ class Amp18Parser {
     // 使用 unicode 解析 location
 
     location =
-        _decodeUnicodeToString(Uint8List.fromList(rawData.sublist(54, 150)));
+        decodeUnicodeToString(Uint8List.fromList(rawData.sublist(54, 150)));
 
     // for (int i = 54; i < 150; i += 2) {
     //   Uint8List bytes = Uint8List.fromList([rawData[i], rawData[i + 1]]);
@@ -382,7 +357,7 @@ class Amp18Parser {
     //   location += chineseCharacter;
     // }
 
-    location = _trimString(location);
+    location = trimString(location);
 
     // 解析 log interval
     logInterval = rawData[150].toString();
@@ -857,32 +832,32 @@ class Amp18Parser {
       for (int i = 0; i < separatedGroups.length; i++) {
         if (i == 0) {
           technicianID =
-              _decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
-          technicianID = _trimString(technicianID);
+              decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          technicianID = trimString(technicianID);
         } else if (i == 1) {
           inputSignalLevel =
-              _decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
-          inputSignalLevel = _trimString(inputSignalLevel);
+              decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          inputSignalLevel = trimString(inputSignalLevel);
         } else if (i == 2) {
           inputAttenuation =
-              _decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
-          inputAttenuation = _trimString(inputAttenuation);
+              decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          inputAttenuation = trimString(inputAttenuation);
         } else if (i == 3) {
           inputEqualizer =
-              _decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
-          inputEqualizer = _trimString(inputEqualizer);
+              decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          inputEqualizer = trimString(inputEqualizer);
         } else if (i == 4) {
           cascadePosition =
-              _decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
-          cascadePosition = _trimString(cascadePosition);
+              decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          cascadePosition = trimString(cascadePosition);
         } else if (i == 5) {
           deviceName =
-              _decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
-          deviceName = _trimString(deviceName);
+              decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          deviceName = trimString(deviceName);
         } else if (i == 6) {
           deviceNote =
-              _decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
-          deviceNote = _trimString(deviceNote);
+              decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          deviceNote = trimString(deviceNote);
         }
       }
 

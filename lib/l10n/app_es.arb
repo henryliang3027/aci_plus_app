@@ -201,7 +201,7 @@
     "deviceSetting": "Configuración Dispositivo",
     "firmwareUpdate": "Actualización firmware",
     "update": "Actualizar",
-    "firmwareUpdateLog": "Registro",
+    "firmwareUpdateRecord": "Registro",
     "operationLog": "Registro de Operaciones",
     "bluetoothSetting": "Configuración Bluetooth",
     "instruction" : "Instrucción",

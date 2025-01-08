@@ -453,7 +453,7 @@ class Amp18Repository {
   }) async {
     int commandIndex = 205;
 
-    print('get data from request command 1p8G2');
+    print('get data from request command 1p8GUserAttribute');
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
@@ -486,25 +486,6 @@ class Amp18Repository {
         false,
       ];
     }
-  }
-
-  List<int> convertStringToInt16List(String value) {
-    List<int> int16bytes = [];
-
-    for (int code in value.codeUnits) {
-      // Create a ByteData object with a length of 2 bytes
-      ByteData byteData = ByteData(2);
-
-      // Set the Unicode code unit in the byte array
-      byteData.setInt16(0, code, Endian.little);
-
-      // Convert the ByteData to a Uint8List
-      Uint8List bytes = Uint8List.view(byteData.buffer);
-
-      int16bytes.addAll(bytes);
-    }
-
-    return int16bytes;
   }
 
   Future<dynamic> set1p8GUserAttribute({

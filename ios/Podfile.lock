@@ -82,8 +82,6 @@ PODS:
     - nanopb (< 2.30911.0, >= 2.30908.0)
     - PromisesSwift (~> 2.1)
   - Flutter (1.0.0)
-  - flutter_barcode_scanner (2.0.0):
-    - Flutter
   - flutter_native_splash (0.0.1):
     - Flutter
   - geolocator_apple (1.2.0):
@@ -106,6 +104,7 @@ PODS:
     - GoogleUtilities/Privacy
   - location (0.0.1):
     - Flutter
+  - MTBBarcodeScanner (5.0.11)
   - nanopb (2.30910.0):
     - nanopb/decode (= 2.30910.0)
     - nanopb/encode (= 2.30910.0)
@@ -124,6 +123,9 @@ PODS:
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
   - Protobuf (3.26.0)
+  - qr_code_scanner (0.2.0):
+    - Flutter
+    - MTBBarcodeScanner
   - reactive_ble_mobile (0.0.1):
     - Flutter
     - Protobuf (~> 3.5)
@@ -136,6 +138,8 @@ PODS:
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - simple_barcode_scanner (0.1.7):
+    - Flutter
   - SwiftProtobuf (1.25.2)
   - SwiftyGif (5.4.5)
   - universal_ble (0.0.1):
@@ -151,7 +155,6 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - Flutter (from `Flutter`)
-  - flutter_barcode_scanner (from `.symlinks/plugins/flutter_barcode_scanner/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - location (from `.symlinks/plugins/location/ios`)
@@ -159,9 +162,11 @@ DEPENDENCIES:
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - qr_code_scanner (from `.symlinks/plugins/qr_code_scanner/ios`)
   - reactive_ble_mobile (from `.symlinks/plugins/reactive_ble_mobile/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
+  - simple_barcode_scanner (from `.symlinks/plugins/simple_barcode_scanner/ios`)
   - universal_ble (from `.symlinks/plugins/universal_ble/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
@@ -179,6 +184,7 @@ SPEC REPOS:
     - FirebaseSessions
     - GoogleDataTransport
     - GoogleUtilities
+    - MTBBarcodeScanner
     - nanopb
     - PromisesObjC
     - PromisesSwift
@@ -200,8 +206,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_crashlytics/ios"
   Flutter:
     :path: Flutter
-  flutter_barcode_scanner:
-    :path: ".symlinks/plugins/flutter_barcode_scanner/ios"
   flutter_native_splash:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   geolocator_apple:
@@ -216,12 +220,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
+  qr_code_scanner:
+    :path: ".symlinks/plugins/qr_code_scanner/ios"
   reactive_ble_mobile:
     :path: ".symlinks/plugins/reactive_ble_mobile/ios"
   share_plus:
     :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
+  simple_barcode_scanner:
+    :path: ".symlinks/plugins/simple_barcode_scanner/ios"
   universal_ble:
     :path: ".symlinks/plugins/universal_ble/darwin"
   url_launcher_ios:
@@ -244,12 +252,12 @@ SPEC CHECKSUMS:
   FirebaseRemoteConfigInterop: 6efda51fb5e2f15b16585197e26eaa09574e8a4d
   FirebaseSessions: dbd14adac65ce996228652c1fc3a3f576bdf3ecc
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_barcode_scanner: 7a1144744c28dc0c57a8de7218ffe5ec59a9e4bf
   flutter_native_splash: edf599c81f74d093a4daf8e17bd7a018854bc778
   geolocator_apple: 9bcea1918ff7f0062d98345d238ae12718acfbc1
   GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   location: d5cf8598915965547c3f36761ae9cc4f4e87d22e
+  MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   open_filex: 6e26e659846ec990262224a12ef1c528bb4edbe4
   package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
@@ -258,10 +266,12 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
   Protobuf: 5685c66a07eaad9d18ce5ab618e9ac01fd04b5aa
+  qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
   reactive_ble_mobile: 9ce6723d37ccf701dbffd202d487f23f5de03b4c
   SDWebImage: 8a6b7b160b4d710e2a22b6900e25301075c34cb3
   share_plus: 8b6f8b3447e494cca5317c8c3073de39b3600d1f
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
+  simple_barcode_scanner: bb2603ae5228a007bd066e9f955911858ae55755
   SwiftProtobuf: 407a385e97fd206c4fbe880cc84123989167e0d1
   SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
   universal_ble: cf52a7b3fd2e7c14d6d7262e9fdadb72ab6b88a6

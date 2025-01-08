@@ -202,7 +202,7 @@
     "deviceSetting": "Device Setting",
     "firmwareUpdate": "Firmware Update",
     "update": "Update",
-    "firmwareUpdateLog": "Update Log",
+    "firmwareUpdateRecord": "Record",
     "operationLog": "Operation Log",
     "bluetoothSetting": "Bluetooth Setting",
     "instruction" : "Instruction",

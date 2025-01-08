@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
@@ -235,4 +236,51 @@ Future<String> getAppVersion() async {
 
 int convertFirmwareVersionStringToInt(String strFirmwareVersion) {
   return int.tryParse(strFirmwareVersion) ?? 0;
+}
+
+// 解碼以 2 個 byte 表示的字元
+String decodeUnicodeToString(Uint8List byteValues) {
+  // 使用 unicode 解析 byte 格式的字串
+  String strValue = '';
+  for (int i = 0; i < byteValues.length; i += 2) {
+    Uint8List bytes = Uint8List.fromList([byteValues[i], byteValues[i + 1]]);
+
+    // Extract the bytes and create the Unicode code point
+    int lowerByte = bytes[0];
+    int upperByte = bytes[1];
+    int unicodeCodePoint = (upperByte << 8) | lowerByte;
+
+    // Convert the Unicode code point to a string
+    String chineseCharacter = String.fromCharCode(unicodeCodePoint);
+    strValue += chineseCharacter;
+  }
+
+  return strValue;
+}
+
+// 刪除所有 Null character (0x00), 頭尾空白 character
+String trimString(String s) {
+  s = s.replaceAll('\x00', '');
+  s = s.trim();
+  return s;
+}
+
+// 編碼以 2 個 byte 表示的字元
+List<int> convertStringToInt16List(String value) {
+  List<int> int16bytes = [];
+
+  for (int code in value.codeUnits) {
+    // Create a ByteData object with a length of 2 bytes
+    ByteData byteData = ByteData(2);
+
+    // Set the Unicode code unit in the byte array
+    byteData.setInt16(0, code, Endian.little);
+
+    // Convert the ByteData to a Uint8List
+    Uint8List bytes = Uint8List.view(byteData.buffer);
+
+    int16bytes.addAll(bytes);
+  }
+
+  return int16bytes;
 }

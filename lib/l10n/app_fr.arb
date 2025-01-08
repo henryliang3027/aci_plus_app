@@ -200,7 +200,7 @@
     "deviceSetting": "Paramètres de l'appareil",
     "firmwareUpdate": "Mise à jour firmware",
     "update": "Mettre à jour",
-    "firmwareUpdateLog": "Journal",
+    "firmwareUpdateRecord": "Enregistrement",
     "operationLog": "Journal d'Opérations",
     "bluetoothSetting": "Paramètres Bluetooth",
     "instruction" : "Instruction",

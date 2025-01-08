@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:aci_plus_app/core/command18_c_core_node.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/data_key.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
@@ -218,7 +219,7 @@ class Amp18CCorNodeRepository {
   }) async {
     int commandIndex = 83;
 
-    print('get data from request command 1p8G0');
+    print('get data from request command 1p8GA1');
 
     try {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
@@ -432,6 +433,127 @@ class Amp18CCorNodeRepository {
         e.toString(),
       ];
     }
+  }
+
+  Future<dynamic> requestCommand1p8GCCorNodeUserAttribute({
+    Duration timeout = const Duration(seconds: 10),
+  }) async {
+    int commandIndex = 205;
+
+    print('get data from request command 1p8GUserAttribute');
+
+    try {
+      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        value: _amp18CCorNodeParser.command18CCorNodeCollection[15],
+        timeout: timeout,
+      );
+
+      A1P8GCCorNodeUserAttribute a1P8GUserAttribute =
+          _amp18CCorNodeParser.decodeA1P8GCCorNodeUserAttribute(rawData);
+
+      Map<DataKey, String> characteristicDataCache = {
+        DataKey.technicianID: a1P8GUserAttribute.technicianID,
+        // DataKey.inputSignalLevel: a1P8GUserAttribute.inputSignalLevel,
+        // DataKey.inputAttenuation: a1P8GUserAttribute.inputAttenuation,
+        // DataKey.inputEqualizer: a1P8GUserAttribute.inputEqualizer,
+        DataKey.cascadePosition: a1P8GUserAttribute.cascadePosition,
+        DataKey.deviceName: a1P8GUserAttribute.deviceName,
+        DataKey.deviceNote: a1P8GUserAttribute.deviceNote,
+      };
+
+      _characteristicDataCache.addAll(characteristicDataCache);
+
+      return [
+        true,
+        characteristicDataCache,
+      ];
+    } catch (e) {
+      return [
+        false,
+      ];
+    }
+  }
+
+  Future<dynamic> set1p8GCCorNodeUserAttribute({
+    required String technicianID,
+    // required String inputSignalLevel,
+    // required String inputAttenuation,
+    // required String inputEqualizer,
+    required String cascadePosition,
+    required String deviceName,
+    required String deviceNote,
+  }) async {
+    int commandIndex = 357;
+
+    print('get data from request command 1p8G$commandIndex');
+
+    List<int> technicianIDBytes = convertStringToInt16List(technicianID);
+    // List<int> inputSignalLevelBytes =
+    //     convertStringToInt16List(inputSignalLevel);
+    // List<int> inputAttenuationBytes =
+    //     convertStringToInt16List(inputAttenuation);
+    // List<int> inputEqualizerBytes = convertStringToInt16List(inputEqualizer);
+    List<int> cascadePositionBytes = convertStringToInt16List(cascadePosition);
+    List<int> deviceNameBytes = convertStringToInt16List(deviceName);
+    List<int> deviceNoteBytes = convertStringToInt16List(deviceNote);
+
+    List<int> combinedBytes = [
+      ...technicianIDBytes,
+      0x00,
+      0x00,
+      // ...inputSignalLevelBytes,
+      // 0x00,
+      // 0x00,
+      // ...inputAttenuationBytes,
+      // 0x00,
+      // 0x00,
+      // ...inputEqualizerBytes,
+      // 0x00,
+      // 0x00,
+      ...cascadePositionBytes,
+      0x00,
+      0x00,
+      ...deviceNameBytes,
+      0x00,
+      0x00,
+      ...deviceNoteBytes,
+    ];
+
+    for (int i = 0; i < combinedBytes.length; i++) {
+      Command18CCorNode.setUserAttributeCmd[i + 7] = combinedBytes[i];
+    }
+
+    // 填入空白
+    for (int i = combinedBytes.length; i < 1024; i += 2) {
+      Command18CCorNode.setUserAttributeCmd[i + 7] = 0x20;
+      Command18CCorNode.setUserAttributeCmd[i + 8] = 0x00;
+    }
+
+    CRC16.calculateCRC16(
+      command: Command18CCorNode.setUserAttributeCmd,
+      usDataLength: Command18CCorNode.setUserAttributeCmd.length - 2,
+    );
+
+    // 將 binary 切分成每個大小為 chunkSize 的封包
+    int chunkSize = await BLEUtils.getChunkSize();
+
+    List<List<int>> chunks = BLEUtils.divideToChunkList(
+      binary: Command18CCorNode.setUserAttributeCmd,
+      chunkSize: chunkSize,
+    );
+
+    try {
+      List<int> rawData = await _bleClient.writeLongSetCommandToCharacteristic(
+        commandIndex: commandIndex,
+        chunks: chunks,
+        timeout: const Duration(seconds: 10),
+      );
+    } catch (e) {
+      return false;
+    }
+
+    return true;
   }
 
   Future<dynamic> export1p8GCCorNodeRecords({
@@ -2171,6 +2293,21 @@ class Amp18CCorNodeRepository {
           .add(Map<DataKey, String>.from(resultOf1p8GCCorNodeA1[1]));
 
       characteristicDataCache.addAll(resultOf1p8GCCorNodeA1[1]);
+    }
+
+    int firmwareVersion = convertFirmwareVersionStringToInt(
+        characteristicDataCache[DataKey.firmwareVersion] ?? '0');
+
+    if (firmwareVersion >= 148) {
+      List<dynamic> resultOf1p8GCCorNodeUserAttribute =
+          await requestCommand1p8GCCorNodeUserAttribute();
+
+      if (resultOf1p8GCCorNodeUserAttribute[0]) {
+        _characteristicDataStreamController.add(
+            Map<DataKey, String>.from(resultOf1p8GCCorNodeUserAttribute[1]));
+
+        characteristicDataCache.addAll(resultOf1p8GCCorNodeUserAttribute[1]);
+      }
     }
 
     _characteristicDataCache.clear();

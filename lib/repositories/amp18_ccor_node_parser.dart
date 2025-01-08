@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:aci_plus_app/core/command18_c_core_node.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/unit_converter.dart';
 import 'package:excel/excel.dart';
@@ -22,7 +23,7 @@ class Amp18CCorNodeParser {
       _command18CCorNodeCollection;
 
   // 刪除所有 Null character (0x00), 頭尾空白 character
-  String _trimString(String s) {
+  String trimString(String s) {
     s = s.replaceAll('\x00', '');
     s = s.trim();
     return s;
@@ -43,31 +44,31 @@ class Amp18CCorNodeParser {
     for (int i = 3; i <= 22; i++) {
       partName += String.fromCharCode(rawData[i]);
     }
-    partName = _trimString(partName);
+    partName = trimString(partName);
 
     // 解析 partNo
     for (int i = 23; i <= 42; i++) {
       partNo += String.fromCharCode(rawData[i]);
     }
-    partNo = _trimString(partNo);
+    partNo = trimString(partNo);
 
     // 解析 serialNumber
     for (int i = 43; i <= 58; i++) {
       serialNumber += String.fromCharCode(rawData[i]);
     }
-    serialNumber = _trimString(serialNumber);
+    serialNumber = trimString(serialNumber);
 
     // 解析 hardwareVersion
     for (int i = 59; i <= 62; i++) {
       hardwareVersion += String.fromCharCode(rawData[i]);
     }
-    hardwareVersion = _trimString(hardwareVersion);
+    hardwareVersion = trimString(hardwareVersion);
 
     // 解析 firmwareVersion
     for (int i = 63; i <= 66; i++) {
       firmwareVersion += String.fromCharCode(rawData[i]);
     }
-    firmwareVersion = _trimString(firmwareVersion);
+    firmwareVersion = trimString(firmwareVersion);
 
     // 舊版本為空自串, 所以加一個N/A表示無 hardware version
     hardwareVersion = hardwareVersion.isEmpty ? 'N/A' : hardwareVersion;
@@ -94,7 +95,7 @@ class Amp18CCorNodeParser {
     for (int i = 72; i <= 110; i++) {
       coordinate += String.fromCharCode(rawData[i]);
     }
-    coordinate = _trimString(coordinate);
+    coordinate = trimString(coordinate);
 
     // 解析 now time
     List<int> rawNowYear = rawData.sublist(171, 173);
@@ -334,7 +335,7 @@ class Amp18CCorNodeParser {
       location += chineseCharacter;
     }
 
-    location = _trimString(location);
+    location = trimString(location);
 
     // 解析 logInterval
     logInterval = rawData[150].toString();
@@ -854,6 +855,119 @@ class Amp18CCorNodeParser {
       rfOutputPower4AlarmSeverity: rfOutputPower4AlarmSeverity.name,
       rfOutputPower6AlarmSeverity: rfOutputPower6AlarmSeverity.name,
     );
+  }
+
+  A1P8GCCorNodeUserAttribute decodeA1P8GCCorNodeUserAttribute(
+      List<int> rawData) {
+    String technicianID = '';
+    // String inputSignalLevel = '';
+    // String inputAttenuation = '';
+    // String inputEqualizer = '';
+    String cascadePosition = '';
+    String deviceName = '';
+    String deviceNote = '';
+
+    List<List<int>> separatedGroups = [];
+    List<int> currentGroup = [];
+
+    List rawDataContent = rawData.sublist(3, 1027);
+
+    if (rawDataContent.every((element) => element == rawDataContent[0])) {
+      return A1P8GCCorNodeUserAttribute(
+        technicianID: technicianID,
+        // inputSignalLevel: inputSignalLevel,
+        // inputAttenuation: inputAttenuation,
+        // inputEqualizer: inputEqualizer,
+        cascadePosition: cascadePosition,
+        deviceName: deviceName,
+        deviceNote: deviceNote,
+      );
+    } else {
+      // 因為前三個 byte 為 header, 後兩個 byte 為 crc, 所以迴圈從有內容的部分迭代
+      for (int i = 0; i < rawDataContent.length; i += 2) {
+        if (rawDataContent[i] == 0x00 && rawDataContent[i + 1] == 0x00) {
+          // ASCII code for ','
+          // If we hit a comma, save the current group if it's not empty
+          separatedGroups.add(currentGroup);
+          currentGroup = []; // Clear the current group for the next set
+        } else {
+          // Add non-comma ASCII codes to the current group
+          currentGroup.addAll([rawDataContent[i], rawDataContent[i + 1]]);
+        }
+      }
+
+      // After the loop, add any remaining currentGroup
+      if (currentGroup.isNotEmpty) {
+        separatedGroups.add(currentGroup);
+      }
+
+      // Print the separated groups
+      // for (var group in separatedGroups) {
+      //   print(group);
+      // }
+
+      // for (int i = 0; i < separatedGroups.length; i++) {
+      //   if (i == 0) {
+      //     technicianID =
+      //         decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+      //     technicianID = trimString(technicianID);
+      //   } else if (i == 1) {
+      //     inputSignalLevel =
+      //         decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+      //     inputSignalLevel = trimString(inputSignalLevel);
+      //   } else if (i == 2) {
+      //     inputAttenuation =
+      //         decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+      //     inputAttenuation = trimString(inputAttenuation);
+      //   } else if (i == 3) {
+      //     inputEqualizer =
+      //         decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+      //     inputEqualizer = trimString(inputEqualizer);
+      //   } else if (i == 4) {
+      //     cascadePosition =
+      //         decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+      //     cascadePosition = trimString(cascadePosition);
+      //   } else if (i == 5) {
+      //     deviceName =
+      //         decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+      //     deviceName = trimString(deviceName);
+      //   } else if (i == 6) {
+      //     deviceNote =
+      //         decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+      //     deviceNote = trimString(deviceNote);
+      //   }
+      // }
+
+      for (int i = 0; i < separatedGroups.length; i++) {
+        if (i == 0) {
+          technicianID =
+              decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          technicianID = trimString(technicianID);
+        } else if (i == 1) {
+          cascadePosition =
+              decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          cascadePosition = trimString(cascadePosition);
+        } else if (i == 2) {
+          deviceName =
+              decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          deviceName = trimString(deviceName);
+        } else if (i == 3) {
+          deviceNote =
+              decodeUnicodeToString(Uint8List.fromList(separatedGroups[i]));
+          deviceNote = trimString(deviceNote);
+        }
+      }
+
+      return A1P8GCCorNodeUserAttribute(
+        technicianID: technicianID,
+        // inputSignalLevel: inputSignalLevel,
+        // inputAttenuation: inputAttenuation,
+        // inputEqualizer: inputEqualizer,
+        cascadePosition: cascadePosition,
+        deviceName: deviceName,
+        deviceNote: deviceNote,
+      );
+    }
   }
 
   A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {
@@ -1563,6 +1677,8 @@ class Amp18CCorNodeParser {
         command: Command18CCorNode.reqLog09Cmd, usDataLength: 6);
     CRC16.calculateCRC16(
         command: Command18CCorNode.reqEvent00Cmd, usDataLength: 6);
+    CRC16.calculateCRC16(
+        command: Command18CCorNode.reqUserAttributeCmd, usDataLength: 6);
 
     _command18CCorNodeCollection.add(Command18CCorNode.req00Cmd);
     _command18CCorNodeCollection.add(Command18CCorNode.req91Cmd);
@@ -1579,6 +1695,7 @@ class Amp18CCorNodeParser {
     _command18CCorNodeCollection.add(Command18CCorNode.reqLog08Cmd);
     _command18CCorNodeCollection.add(Command18CCorNode.reqLog09Cmd);
     _command18CCorNodeCollection.add(Command18CCorNode.reqEvent00Cmd);
+    _command18CCorNodeCollection.add(Command18CCorNode.reqUserAttributeCmd);
   }
 }
 
@@ -1852,4 +1969,24 @@ class A1P8GCCorNodeLogStatistic {
   final String historicalMaxRFOutputPower4;
   final String historicalMinRFOutputPower6;
   final String historicalMaxRFOutputPower6;
+}
+
+class A1P8GCCorNodeUserAttribute {
+  const A1P8GCCorNodeUserAttribute({
+    required this.technicianID,
+    // required this.inputSignalLevel,
+    // required this.inputAttenuation,
+    // required this.inputEqualizer,
+    required this.cascadePosition,
+    required this.deviceName,
+    required this.deviceNote,
+  });
+
+  final String technicianID;
+  // final String inputSignalLevel;
+  // final String inputAttenuation;
+  // final String inputEqualizer;
+  final String cascadePosition;
+  final String deviceName;
+  final String deviceNote;
 }

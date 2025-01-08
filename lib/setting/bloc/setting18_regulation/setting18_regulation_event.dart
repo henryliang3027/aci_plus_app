@@ -16,31 +16,6 @@ class Initialized extends Setting18RegulationEvent {
   List<Object> get props => [];
 }
 
-class LocationChanged extends Setting18RegulationEvent {
-  const LocationChanged(this.location);
-
-  final String location;
-
-  @override
-  List<Object> get props => [location];
-}
-
-class CoordinatesChanged extends Setting18RegulationEvent {
-  const CoordinatesChanged(this.coordinates);
-
-  final String coordinates;
-
-  @override
-  List<Object> get props => [coordinates];
-}
-
-class GPSCoordinatesRequested extends Setting18RegulationEvent {
-  const GPSCoordinatesRequested();
-
-  @override
-  List<Object> get props => [];
-}
-
 class SplitOptionChanged extends Setting18RegulationEvent {
   const SplitOptionChanged(this.splitOption);
 

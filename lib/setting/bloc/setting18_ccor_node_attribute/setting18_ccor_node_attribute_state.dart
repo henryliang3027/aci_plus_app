@@ -1,15 +1,15 @@
-part of 'setting18_attribute_bloc.dart';
+part of 'setting18_ccor_node_attribute_bloc.dart';
 
-class Setting18AttributeState extends Equatable {
-  const Setting18AttributeState({
+class Setting18CCorNodeAttributeState extends Equatable {
+  const Setting18CCorNodeAttributeState({
     this.submissionStatus = SubmissionStatus.none,
     this.gpsStatus = FormStatus.none,
     this.location = '',
     this.coordinates = const CoordinateInput.pure(),
     this.technicianID = '',
-    this.inputSignalLevel = '',
-    this.inputAttenuation = '',
-    this.inputEqualizer = '',
+    // this.inputSignalLevel = '',
+    // this.inputAttenuation = '',
+    // this.inputEqualizer = '',
     this.cascadePosition = '',
     this.deviceName = '',
     this.deviceNote = '',
@@ -27,9 +27,9 @@ class Setting18AttributeState extends Equatable {
   final String location;
   final CoordinateInput coordinates;
   final String technicianID;
-  final String inputSignalLevel;
-  final String inputAttenuation;
-  final String inputEqualizer;
+  // final String inputSignalLevel;
+  // final String inputAttenuation;
+  // final String inputEqualizer;
   final String cascadePosition;
   final String deviceName;
   final String deviceNote;
@@ -41,15 +41,15 @@ class Setting18AttributeState extends Equatable {
   final List<String> settingResult;
   final String gpsCoordinateErrorMessage;
 
-  Setting18AttributeState copyWith({
+  Setting18CCorNodeAttributeState copyWith({
     SubmissionStatus? submissionStatus,
     FormStatus? gpsStatus,
     String? location,
     CoordinateInput? coordinates,
     String? technicianID,
-    String? inputSignalLevel,
-    String? inputAttenuation,
-    String? inputEqualizer,
+    // String? inputSignalLevel,
+    // String? inputAttenuation,
+    // String? inputEqualizer,
     String? cascadePosition,
     String? deviceName,
     String? deviceNote,
@@ -61,15 +61,15 @@ class Setting18AttributeState extends Equatable {
     List<String>? settingResult,
     String? gpsCoordinateErrorMessage,
   }) {
-    return Setting18AttributeState(
+    return Setting18CCorNodeAttributeState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
       gpsStatus: gpsStatus ?? this.gpsStatus,
       location: location ?? this.location,
       coordinates: coordinates ?? this.coordinates,
       technicianID: technicianID ?? this.technicianID,
-      inputSignalLevel: inputSignalLevel ?? this.inputSignalLevel,
-      inputAttenuation: inputAttenuation ?? this.inputAttenuation,
-      inputEqualizer: inputEqualizer ?? this.inputEqualizer,
+      // inputSignalLevel: inputSignalLevel ?? this.inputSignalLevel,
+      // inputAttenuation: inputAttenuation ?? this.inputAttenuation,
+      // inputEqualizer: inputEqualizer ?? this.inputEqualizer,
       cascadePosition: cascadePosition ?? this.cascadePosition,
       deviceName: deviceName ?? this.deviceName,
       deviceNote: deviceNote ?? this.deviceNote,
@@ -91,9 +91,9 @@ class Setting18AttributeState extends Equatable {
         location,
         coordinates,
         technicianID,
-        inputSignalLevel,
-        inputAttenuation,
-        inputEqualizer,
+        // inputSignalLevel,
+        // inputAttenuation,
+        // inputEqualizer,
         cascadePosition,
         deviceName,
         deviceNote,

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
-import 'package:aci_plus_app/repositories/gps_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:equatable/equatable.dart';
@@ -16,14 +15,9 @@ class Setting18RegulationBloc
     extends Bloc<Setting18RegulationEvent, Setting18RegulationState> {
   Setting18RegulationBloc({
     required Amp18Repository amp18Repository,
-    required GPSRepository gpsRepository,
   })  : _amp18Repository = amp18Repository,
-        _gpsRepository = gpsRepository,
         super(const Setting18RegulationState()) {
     on<Initialized>(_onInitialized);
-    on<LocationChanged>(_onLocationChanged);
-    on<CoordinatesChanged>(_onCoordinatesChanged);
-    on<GPSCoordinatesRequested>(_onGPSCoordinatesRequested);
     on<SplitOptionChanged>(_onSplitOptionChanged);
     on<PilotFrequencyModeChanged>(_onPilotFrequencyModeChanged);
     on<FirstChannelLoadingFrequencyChanged>(
@@ -32,7 +26,6 @@ class Setting18RegulationBloc
     on<LastChannelLoadingFrequencyChanged>(
         _onLastChannelLoadingFrequencyChanged);
     on<LastChannelLoadingLevelChanged>(_onLastChannelLoadingLevelChanged);
-
     on<PilotFrequency1Changed>(_onPilotFrequency1Changed);
     on<PilotFrequency2Changed>(_onPilotFrequency2Changed);
     on<AGCModeChanged>(_onAGCModeChanged);
@@ -53,7 +46,6 @@ class Setting18RegulationBloc
   }
 
   final Amp18Repository _amp18Repository;
-  final GPSRepository _gpsRepository;
   late final StreamSubscription _forwardCEQStateSubscription;
 
   Future<void> _onInitialized(
@@ -66,8 +58,6 @@ class Setting18RegulationBloc
     Map<DataKey, String> characteristicDataCache =
         _amp18Repository.characteristicDataCache;
 
-    String location = characteristicDataCache[DataKey.location] ?? '';
-    String coordinates = characteristicDataCache[DataKey.coordinates] ?? '';
     String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
     String firstChannelLoadingFrequency =
         characteristicDataCache[DataKey.firstChannelLoadingFrequency] ?? '';
@@ -101,8 +91,6 @@ class Setting18RegulationBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      location: location,
-      coordinates: coordinates,
       splitOption: splitOption,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency.isNotEmpty
           ? RangeIntegerInput.dirty(firstChannelLoadingFrequency)
@@ -130,142 +118,7 @@ class Setting18RegulationBloc
       enableSubmission: false,
       tappedSet: const {},
       settingResult: const [],
-      gpsCoordinateErrorMessage: '',
     ));
-  }
-
-  void _onLocationChanged(
-    LocationChanged event,
-    Emitter<Setting18RegulationState> emit,
-  ) {
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.location);
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
-      location: event.location,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        location: event.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-        agcMode: state.agcMode,
-        alcMode: state.alcMode,
-        logInterval: state.logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
-      ),
-    ));
-  }
-
-  void _onCoordinatesChanged(
-    CoordinatesChanged event,
-    Emitter<Setting18RegulationState> emit,
-  ) {
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.coordinates);
-
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
-      coordinates: event.coordinates,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: event.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-        agcMode: state.agcMode,
-        alcMode: state.alcMode,
-        logInterval: state.logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
-      ),
-    ));
-  }
-
-  Future<void> _onGPSCoordinatesRequested(
-    GPSCoordinatesRequested event,
-    Emitter<Setting18RegulationState> emit,
-  ) async {
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.requestInProgress,
-    ));
-
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.coordinates);
-
-    try {
-      String coordinates = await _gpsRepository.getGPSCoordinates();
-      emit(state.copyWith(
-        gpsStatus: FormStatus.requestSuccess,
-        coordinates: coordinates,
-        isInitialize: false,
-        isInitialPilotFrequencyLevelValues: false,
-        tappedSet: tappedSet,
-        enableSubmission: _isEnabledSubmission(
-          location: state.location,
-          coordinates: coordinates,
-          splitOption: state.splitOption,
-          firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-          firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-          lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-          lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-          pilotFrequencyMode: state.pilotFrequencyMode,
-          pilotFrequency1: state.pilotFrequency1,
-          pilotFrequency2: state.pilotFrequency2,
-          agcMode: state.agcMode,
-          alcMode: state.alcMode,
-          logInterval: state.logInterval,
-          rfOutputLogInterval: state.rfOutputLogInterval,
-          tgcCableLength: state.tgcCableLength,
-        ),
-      ));
-    } catch (error) {
-      emit(state.copyWith(
-        gpsStatus: FormStatus.requestFailure,
-        gpsCoordinateErrorMessage: error.toString(),
-        isInitialize: false,
-        isInitialPilotFrequencyLevelValues: false,
-        tappedSet: tappedSet,
-        enableSubmission: _isEnabledSubmission(
-          location: state.location,
-          coordinates: state.coordinates,
-          splitOption: state.splitOption,
-          firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-          firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-          lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-          lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-          pilotFrequencyMode: state.pilotFrequencyMode,
-          pilotFrequency1: state.pilotFrequency1,
-          pilotFrequency2: state.pilotFrequency2,
-          agcMode: state.agcMode,
-          alcMode: state.alcMode,
-          logInterval: state.logInterval,
-          rfOutputLogInterval: state.rfOutputLogInterval,
-          tgcCableLength: state.tgcCableLength,
-        ),
-      ));
-    }
   }
 
   void _onSplitOptionChanged(
@@ -277,27 +130,12 @@ class Setting18RegulationBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
       splitOption: event.splitOption,
       isInitialize: false,
       isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
         splitOption: event.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-        agcMode: state.agcMode,
-        alcMode: state.alcMode,
-        logInterval: state.logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -411,7 +249,6 @@ class Setting18RegulationBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
       pilotFrequencyMode: event.pilotFrequencyMode,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
       firstChannelLoadingLevel: firstChannelLoadingLevel,
@@ -423,9 +260,6 @@ class Setting18RegulationBloc
       isInitialPilotFrequencyLevelValues: true,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
         firstChannelLoadingFrequency: firstChannelLoadingFrequency,
         firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
@@ -433,11 +267,6 @@ class Setting18RegulationBloc
         pilotFrequencyMode: event.pilotFrequencyMode,
         pilotFrequency1: pilotFrequency1,
         pilotFrequency2: pilotFrequency2,
-        agcMode: state.agcMode,
-        alcMode: state.alcMode,
-        logInterval: state.logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -510,7 +339,6 @@ class Setting18RegulationBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       pilotFrequency1: pilotFrequency1,
@@ -519,21 +347,10 @@ class Setting18RegulationBloc
       isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
         firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
         lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: pilotFrequency1,
         pilotFrequency2: pilotFrequency2,
-        agcMode: state.agcMode,
-        alcMode: state.alcMode,
-        logInterval: state.logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -564,28 +381,14 @@ class Setting18RegulationBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
       firstChannelLoadingLevel: firstChannelLoadingLevel,
       lastChannelLoadingLevel: lastChannelLoadingLevel,
       isInitialize: false,
       isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
         firstChannelLoadingLevel: firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
         lastChannelLoadingLevel: lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-        agcMode: state.agcMode,
-        alcMode: state.alcMode,
-        logInterval: state.logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -635,7 +438,6 @@ class Setting18RegulationBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency,
       lastChannelLoadingFrequency: lastChannelLoadingFrequency,
       pilotFrequency1: pilotFrequency1,
@@ -644,21 +446,8 @@ class Setting18RegulationBloc
       isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: pilotFrequency1,
         pilotFrequency2: pilotFrequency2,
-        agcMode: state.agcMode,
-        alcMode: state.alcMode,
-        logInterval: state.logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -689,28 +478,13 @@ class Setting18RegulationBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
       firstChannelLoadingLevel: firstChannelLoadingLevel,
       lastChannelLoadingLevel: lastChannelLoadingLevel,
       isInitialize: false,
       isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
         lastChannelLoadingLevel: lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-        agcMode: state.agcMode,
-        alcMode: state.alcMode,
-        logInterval: state.logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -758,28 +532,14 @@ class Setting18RegulationBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
       pilotFrequency1: pilotFrequency1,
       pilotFrequency2: pilotFrequency2,
       isInitialize: false,
       isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: pilotFrequency1,
         pilotFrequency2: pilotFrequency2,
-        agcMode: state.agcMode,
-        alcMode: state.alcMode,
-        logInterval: state.logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -827,28 +587,14 @@ class Setting18RegulationBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
       pilotFrequency1: pilotFrequency1,
       pilotFrequency2: pilotFrequency2,
       isInitialize: false,
       isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
         pilotFrequency1: pilotFrequency1,
         pilotFrequency2: pilotFrequency2,
-        agcMode: state.agcMode,
-        alcMode: state.alcMode,
-        logInterval: state.logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -862,28 +608,14 @@ class Setting18RegulationBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
       agcMode: event.agcMode,
       alcMode: event.agcMode,
       isInitialize: false,
       isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
         agcMode: event.agcMode,
         alcMode: event.agcMode,
-        logInterval: state.logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -894,26 +626,11 @@ class Setting18RegulationBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
       alcMode: event.alcMode,
       isInitialize: false,
       isInitialPilotFrequencyLevelValues: false,
       enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-        agcMode: state.agcMode,
         alcMode: event.alcMode,
-        logInterval: state.logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -927,27 +644,12 @@ class Setting18RegulationBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
       logInterval: event.logInterval,
       isInitialize: false,
       isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-        agcMode: state.agcMode,
-        alcMode: state.alcMode,
         logInterval: event.logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -961,27 +663,12 @@ class Setting18RegulationBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
       rfOutputLogInterval: event.rfOutputLogInterval,
       isInitialize: false,
       isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-        agcMode: state.agcMode,
-        alcMode: state.alcMode,
-        logInterval: state.logInterval,
         rfOutputLogInterval: event.rfOutputLogInterval,
-        tgcCableLength: state.tgcCableLength,
       ),
     ));
   }
@@ -992,25 +679,10 @@ class Setting18RegulationBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
       tgcCableLength: event.tgcCableLength,
       isInitialize: false,
       isInitialPilotFrequencyLevelValues: false,
       enableSubmission: _isEnabledSubmission(
-        location: state.location,
-        coordinates: state.coordinates,
-        splitOption: state.splitOption,
-        firstChannelLoadingFrequency: state.firstChannelLoadingFrequency,
-        firstChannelLoadingLevel: state.firstChannelLoadingLevel,
-        lastChannelLoadingFrequency: state.lastChannelLoadingFrequency,
-        lastChannelLoadingLevel: state.lastChannelLoadingLevel,
-        pilotFrequencyMode: state.pilotFrequencyMode,
-        pilotFrequency1: state.pilotFrequency1,
-        pilotFrequency2: state.pilotFrequency2,
-        agcMode: state.agcMode,
-        alcMode: state.alcMode,
-        logInterval: state.logInterval,
-        rfOutputLogInterval: state.rfOutputLogInterval,
         tgcCableLength: event.tgcCableLength,
       ),
     ));
@@ -1022,7 +694,6 @@ class Setting18RegulationBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
       isInitialize: false,
       isInitialPilotFrequencyLevelValues: false,
       editMode: true,
@@ -1035,14 +706,11 @@ class Setting18RegulationBloc
   ) {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      gpsStatus: FormStatus.none,
       isInitialize: true,
       isInitialPilotFrequencyLevelValues: false,
       editMode: false,
       enableSubmission: false,
       tappedSet: {},
-      location: state.initialValues[DataKey.location],
-      coordinates: state.initialValues[DataKey.coordinates],
       splitOption: state.initialValues[DataKey.splitOption],
       firstChannelLoadingFrequency: RangeIntegerInput.dirty(
           state.initialValues[DataKey.firstChannelLoadingFrequency] ?? ''),
@@ -1066,22 +734,34 @@ class Setting18RegulationBloc
   }
 
   bool _isEnabledSubmission({
-    required String location,
-    required String coordinates,
-    required String splitOption,
-    required RangeIntegerInput firstChannelLoadingFrequency,
-    required RangeFloatPointInput firstChannelLoadingLevel,
-    required RangeIntegerInput lastChannelLoadingFrequency,
-    required RangeFloatPointInput lastChannelLoadingLevel,
-    required String pilotFrequencyMode,
-    required RangeIntegerInput pilotFrequency1,
-    required RangeIntegerInput pilotFrequency2,
-    required String agcMode,
-    required String alcMode,
-    required String logInterval,
-    required String rfOutputLogInterval,
-    required String tgcCableLength,
+    String? splitOption,
+    RangeIntegerInput? firstChannelLoadingFrequency,
+    RangeFloatPointInput? firstChannelLoadingLevel,
+    RangeIntegerInput? lastChannelLoadingFrequency,
+    RangeFloatPointInput? lastChannelLoadingLevel,
+    String? pilotFrequencyMode,
+    RangeIntegerInput? pilotFrequency1,
+    RangeIntegerInput? pilotFrequency2,
+    String? agcMode,
+    String? alcMode,
+    String? logInterval,
+    String? rfOutputLogInterval,
+    String? tgcCableLength,
   }) {
+    splitOption ??= state.splitOption;
+    firstChannelLoadingFrequency ??= state.firstChannelLoadingFrequency;
+    firstChannelLoadingLevel ??= state.firstChannelLoadingLevel;
+    lastChannelLoadingFrequency ??= state.lastChannelLoadingFrequency;
+    lastChannelLoadingLevel ??= state.lastChannelLoadingLevel;
+    pilotFrequencyMode ??= state.pilotFrequencyMode;
+    pilotFrequency1 ??= state.pilotFrequency1;
+    pilotFrequency2 ??= state.pilotFrequency2;
+    agcMode ??= state.agcMode;
+    alcMode ??= state.alcMode;
+    logInterval ??= state.logInterval;
+    rfOutputLogInterval ??= state.rfOutputLogInterval;
+    tgcCableLength ??= state.tgcCableLength;
+
     bool isValid = false;
 
     if (pilotFrequencyMode == '0') {
@@ -1105,9 +785,7 @@ class Setting18RegulationBloc
     }
 
     if (isValid) {
-      if (location != state.initialValues[DataKey.location] ||
-          coordinates != state.initialValues[DataKey.coordinates] ||
-          splitOption != state.initialValues[DataKey.splitOption] ||
+      if (splitOption != state.initialValues[DataKey.splitOption] ||
           firstChannelLoadingFrequency.value !=
               state.initialValues[DataKey.firstChannelLoadingFrequency] ||
           firstChannelLoadingLevel.value !=
@@ -1143,26 +821,11 @@ class Setting18RegulationBloc
   ) async {
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.submissionInProgress,
-      gpsStatus: FormStatus.none,
       isInitialize: false,
       isInitialPilotFrequencyLevelValues: false,
     ));
 
     List<String> settingResult = [];
-
-    if (state.location != state.initialValues[DataKey.location]) {
-      bool resultOfSetLocation =
-          await _amp18Repository.set1p8GLocation(state.location);
-
-      settingResult.add('${DataKey.location.name},$resultOfSetLocation');
-    }
-
-    if (state.coordinates != state.initialValues[DataKey.coordinates]) {
-      bool resultOfSetCoordinates =
-          await _amp18Repository.set1p8GCoordinates(state.coordinates);
-
-      settingResult.add('${DataKey.coordinates.name},$resultOfSetCoordinates');
-    }
 
     if (state.splitOption != state.initialValues[DataKey.splitOption]) {
       bool resultOfSetSplitOption =

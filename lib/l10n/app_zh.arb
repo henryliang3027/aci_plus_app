@@ -202,7 +202,7 @@
     "deviceSetting": "     設備設定     ",
     "firmwareUpdate": "     韌體更新     ",
     "update": "     更新     ",
-    "firmwareUpdateLog": "     紀錄     ",
+    "firmwareUpdateRecord": "     紀錄     ",
     "operationLog": "     操作紀錄     ",
     "bluetoothSetting": "     藍牙設定     ",
     "instruction" : "說明",

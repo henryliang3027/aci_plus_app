@@ -3,9 +3,6 @@ part of 'setting18_regulation_bloc.dart';
 class Setting18RegulationState extends Equatable {
   const Setting18RegulationState({
     this.submissionStatus = SubmissionStatus.none,
-    this.gpsStatus = FormStatus.none,
-    this.location = '',
-    this.coordinates = '',
     this.splitOption = '1',
     this.firstChannelLoadingFrequency = const RangeIntegerInput.pure(),
     this.firstChannelLoadingLevel = const RangeFloatPointInput.pure(),
@@ -28,13 +25,9 @@ class Setting18RegulationState extends Equatable {
     this.initialValues = const {},
     this.tappedSet = const {},
     this.settingResult = const [],
-    this.gpsCoordinateErrorMessage = '',
   });
 
   final SubmissionStatus submissionStatus;
-  final FormStatus gpsStatus;
-  final String location;
-  final String coordinates;
   final String splitOption;
   final RangeIntegerInput firstChannelLoadingFrequency;
   final RangeFloatPointInput firstChannelLoadingLevel;
@@ -57,13 +50,9 @@ class Setting18RegulationState extends Equatable {
   final Map<DataKey, String> initialValues;
   final Set<DataKey> tappedSet;
   final List<String> settingResult;
-  final String gpsCoordinateErrorMessage;
 
   Setting18RegulationState copyWith({
     SubmissionStatus? submissionStatus,
-    FormStatus? gpsStatus,
-    String? location,
-    String? coordinates,
     String? splitOption,
     RangeIntegerInput? firstChannelLoadingFrequency,
     RangeFloatPointInput? firstChannelLoadingLevel,
@@ -87,13 +76,9 @@ class Setting18RegulationState extends Equatable {
     Set<DataKey>? tappedSet,
     List<String>? settingResult,
     bool? isForwardCEQChanged,
-    String? gpsCoordinateErrorMessage,
   }) {
     return Setting18RegulationState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
-      gpsStatus: gpsStatus ?? this.gpsStatus,
-      location: location ?? this.location,
-      coordinates: coordinates ?? this.coordinates,
       splitOption: splitOption ?? this.splitOption,
       firstChannelLoadingFrequency:
           firstChannelLoadingFrequency ?? this.firstChannelLoadingFrequency,
@@ -123,17 +108,12 @@ class Setting18RegulationState extends Equatable {
           this.isInitialPilotFrequencyLevelValues,
       tappedSet: tappedSet ?? this.tappedSet,
       settingResult: settingResult ?? this.settingResult,
-      gpsCoordinateErrorMessage:
-          gpsCoordinateErrorMessage ?? this.gpsCoordinateErrorMessage,
     );
   }
 
   @override
   List<Object> get props => [
         submissionStatus,
-        gpsStatus,
-        location,
-        coordinates,
         splitOption,
         firstChannelLoadingFrequency,
         firstChannelLoadingLevel,
@@ -155,6 +135,5 @@ class Setting18RegulationState extends Equatable {
         isInitialPilotFrequencyLevelValues,
         initialValues,
         settingResult,
-        gpsCoordinateErrorMessage
       ];
 }
