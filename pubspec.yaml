@@ -66,7 +66,7 @@ dependencies:
   geolocator: ^10.1.0
   touchable: ^1.0.2
   xml: ^6.3.0
-  simple_barcode_scanner: ^0.1.1 # for windows
+  simple_barcode_scanner: ^0.2.5 # for windows
   zxing2: ^0.2.3 # fow windows qr code image
   camera_checker:
     git:

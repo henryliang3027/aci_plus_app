@@ -408,14 +408,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_barcode_scanner:
-    dependency: transitive
-    description:
-      name: flutter_barcode_scanner
-      sha256: a4ba37daf9933f451a5e812c753ddd045d6354e4a3280342d895b07fecaab3fa
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.0"
   flutter_bloc:
     dependency: "direct main"
     description:
@@ -449,10 +441,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_plugin_android_lifecycle
-      sha256: "9ee02950848f61c4129af3d6ec84a1cfc0e47931abc746b03e7a3bc3e8ff6eda"
+      sha256: "615a505aef59b151b46bbeef55b36ce2b6ed299d160c51d84281946f0aa0ce0e"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.22"
+    version: "2.0.24"
   flutter_reactive_ble:
     dependency: "direct main"
     description:
@@ -1124,10 +1116,10 @@ packages:
     dependency: "direct main"
     description:
       name: simple_barcode_scanner
-      sha256: e14c0b302ffe76f0b61004aa47c36365b5d884fcd745494309e21042667902d3
+      sha256: "993c4b0e22bbe6cf127f8e0001574fd54015b90e0698a058ec9fdb2fdf84bc55"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.1"
+    version: "0.2.5"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -1410,10 +1402,10 @@ packages:
     dependency: transitive
     description:
       name: webview_windows
-      sha256: "7572089e5d6fe09e790093c499fcb6d76a552250187dbcb89790987b1fb723db"
+      sha256: "47fcad5875a45db29dbb5c9e6709bf5c88dcc429049872701343f91ed7255730"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.0"
+    version: "0.4.0"
   win32:
     dependency: transitive
     description:
@@ -1473,4 +1465,4 @@ packages:
     version: "0.2.3"
 sdks:
   dart: ">=3.6.0 <4.0.0"
-  flutter: ">=3.22.0"
+  flutter: ">=3.24.0"

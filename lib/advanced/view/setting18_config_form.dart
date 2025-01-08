@@ -304,33 +304,33 @@ class _QRToolbar extends StatelessWidget {
                         ? winBeta >= 5
                             ? state.isCameraAvailable
                                 ? () {
-                                    showWindowsQRCodeScannerDialog()
-                                        .then((rawData) {
-                                      if (rawData != null) {
-                                        context
-                                            .read<Setting18ConfigBloc>()
-                                            .add(QRDataScanned(rawData));
-                                      }
-                                    });
+                                    // showWindowsQRCodeScannerDialog()
+                                    //     .then((rawData) {
+                                    //   if (rawData != null) {
+                                    //     context
+                                    //         .read<Setting18ConfigBloc>()
+                                    //         .add(QRDataScanned(rawData));
+                                    //   }
+                                    // });
 
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              WindowsQRCodeScanner(
-                                            onScanned: (res) {
-                                              Navigator.pop(context, res);
-                                            },
-                                          ),
-                                        )).then((rawData) {
-                                      if (rawData != null) {
-                                        if (rawData.isNotEmpty) {
-                                          context
-                                              .read<Setting18ConfigBloc>()
-                                              .add(QRDataScanned(rawData));
-                                        }
-                                      }
-                                    });
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) =>
+                                    //           WindowsQRCodeScanner(
+                                    //         onScanned: (res) {
+                                    //           Navigator.pop(context, res);
+                                    //         },
+                                    //       ),
+                                    //     )).then((rawData) {
+                                    //   if (rawData != null) {
+                                    //     if (rawData.isNotEmpty) {
+                                    //       context
+                                    //           .read<Setting18ConfigBloc>()
+                                    //           .add(QRDataScanned(rawData));
+                                    //     }
+                                    //   }
+                                    // });
                                   }
                                 : null
                             : null
