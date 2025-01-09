@@ -632,7 +632,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (resultOf1p8G0[0]) {
       Map<DataKey, String> characteristicDataOf1p8G0 = resultOf1p8G0[1];
 
-      //
+      // 如果是 firmware update 完成之後, 重新讀取資料時才判斷版本並寫入 firmware update log
       if (event.isFirmwareUpdated) {
         int currentFirmwareVersion = int.parse(
             characteristicDataOf1p8G0[DataKey.firmwareVersion] ?? '0');
@@ -645,10 +645,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
       }
 
+      // 讀取時將 firmware version 存入 FirmwareUpdateProperty.previousVersion (global variable)
       FirmwareUpdateProperty.previousVersion =
           int.parse(characteristicDataOf1p8G0[DataKey.firmwareVersion] ?? '0');
 
-      newCharacteristicData.addAll(resultOf1p8G0[1]);
+      newCharacteristicData.addAll(characteristicDataOf1p8G0);
       emit(state.copyWith(
         characteristicData: newCharacteristicData,
       ));
@@ -883,7 +884,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         await _amp18CCorNodeRepository.requestCommand1p8GCCorNode80();
 
     if (resultOf1p8GCCorNode80[0]) {
-      newCharacteristicData.addAll(resultOf1p8GCCorNode80[1]);
+      Map<DataKey, String> characteristicDataOf1p8GCCorNode80 =
+          resultOf1p8GCCorNode80[1];
+
+      // 如果是 firmware update 完成之後, 重新讀取資料時才判斷版本並寫入 firmware update log
+      if (event.isFirmwareUpdated) {
+        int currentFirmwareVersion = int.parse(
+            characteristicDataOf1p8GCCorNode80[DataKey.firmwareVersion] ?? '0');
+
+        if (currentFirmwareVersion >= 148) {
+          await _writeFirmwareUpdateLog(
+            previousFirmwareVersion: FirmwareUpdateProperty.previousVersion,
+            currentFirmwareVersion: currentFirmwareVersion,
+          );
+        }
+      }
+
+      // 讀取時將 firmware version 存入 FirmwareUpdateProperty.previousVersion (global variable)
+      FirmwareUpdateProperty.previousVersion = int.parse(
+          characteristicDataOf1p8GCCorNode80[DataKey.firmwareVersion] ?? '0');
+
+      newCharacteristicData.addAll(characteristicDataOf1p8GCCorNode80);
       emit(state.copyWith(
         characteristicData: newCharacteristicData,
       ));

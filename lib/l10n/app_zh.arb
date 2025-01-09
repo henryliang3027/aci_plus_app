@@ -174,9 +174,9 @@
     "rfOutputLogInterval": "訊號強度記錄間隔",
     "alarmIndicator": "警示燈",
     "rfPilotLevelAlarm": "RF導頻位準警示",
-    "temperatureAlarm": "溫度警示",
-    "powerSupplyAlarm": "電源警示",
-    "unitStatusAlarm": "設備狀態",
+    "temperatureAlarm": "溫度",
+    "powerSupplyAlarm": "電源",
+    "unitStatusAlarm": "設備",
 
     "minute": "分鐘",
 

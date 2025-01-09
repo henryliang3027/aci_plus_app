@@ -175,8 +175,8 @@
     "alarmIndicator": "Alarm",
     "rfPilotLevelAlarm": "RF Pilot Level",
     "temperatureAlarm": "Temperature",
-    "powerSupplyAlarm": "Power Supply",
-    "unitStatusAlarm": "Device Status",
+    "powerSupplyAlarm": "Power",
+    "unitStatusAlarm": "Device",
 
     "minute": "Minute(s)",
 

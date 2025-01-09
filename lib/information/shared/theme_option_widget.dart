@@ -17,7 +17,6 @@ Future<String?> showThemeOptionDialog({
         insetPadding: EdgeInsets.symmetric(
           horizontal: width * 0.01,
         ),
-        backgroundColor: Theme.of(context).cardTheme.color,
         child: const ThemeOptionPage(),
       );
     },

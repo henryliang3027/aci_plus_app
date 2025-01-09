@@ -81,10 +81,14 @@ class Data18Requested extends HomeEvent {
 }
 
 class Data18CCorNodeRequested extends HomeEvent {
-  const Data18CCorNodeRequested();
+  const Data18CCorNodeRequested({
+    this.isFirmwareUpdated = false,
+  });
+
+  final bool isFirmwareUpdated;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [isFirmwareUpdated];
 }
 
 class EventRequested extends HomeEvent {

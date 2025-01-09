@@ -360,7 +360,7 @@ class SplashScreen extends StatelessWidget {
 
 class CustomTheme {
   ThemeData lightTheme = ThemeData(
-    cardTheme: const CardTheme(
+    bottomAppBarTheme: const BottomAppBarTheme(
       color: Colors.white,
     ),
     colorScheme: ColorScheme.fromSeed(
@@ -429,6 +429,9 @@ class CustomTheme {
   );
 
   ThemeData darkTheme = ThemeData(
+    bottomAppBarTheme: const BottomAppBarTheme(
+      color: Colors.black,
+    ),
     colorScheme: ColorScheme.fromSeed(
       brightness: Brightness.dark,
       seedColor: Colors.indigo,
