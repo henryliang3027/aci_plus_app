@@ -20,12 +20,12 @@ class Status18CCorNodeBloc
           temperatureUnit: unitRepository.temperatureUnit,
         )) {
     on<TemperatureUnitChanged>(_onTemperatureUnitChanged);
-    on<StatusUpdated>(_onStatusUpdated);
-    on<StatusPeriodicUpdateRequested>(_onStatusPeriodicUpdateRequested);
-    on<StatusPeriodicUpdateCanceled>(_onStatusPeriodicUpdateCanceled);
+    // on<StatusUpdated>(_onStatusUpdated);
+    // on<StatusPeriodicUpdateRequested>(_onStatusPeriodicUpdateRequested);
+    // on<StatusPeriodicUpdateCanceled>(_onStatusPeriodicUpdateCanceled);
   }
 
-  Timer? _timer;
+  // Timer? _timer;
   final UnitRepository _unitRepository;
   final Amp18CCorNodeRepository _amp18CCorNodeRepository;
 
@@ -39,60 +39,60 @@ class Status18CCorNodeBloc
     ));
   }
 
-  void _onStatusPeriodicUpdateRequested(
-    StatusPeriodicUpdateRequested event,
-    Emitter<Status18CCorNodeState> emit,
-  ) {
-    if (_timer != null) {
-      _timer!.cancel();
-    }
+  // void _onStatusPeriodicUpdateRequested(
+  //   StatusPeriodicUpdateRequested event,
+  //   Emitter<Status18CCorNodeState> emit,
+  // ) {
+  //   if (_timer != null) {
+  //     _timer!.cancel();
+  //   }
 
-    // timer 啟動後 5 秒才會發 StatusUpdated, 所以第0秒時先 StatusUpdated
-    add(const StatusUpdated());
+  //   // timer 啟動後 5 秒才會發 StatusUpdated, 所以第0秒時先 StatusUpdated
+  //   add(const StatusUpdated());
 
-    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      print('Status timer: ${timer.tick}');
-      add(const StatusUpdated());
-    });
+  //   _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+  //     print('Status timer: ${timer.tick}');
+  //     add(const StatusUpdated());
+  //   });
 
-    print('Status started');
-  }
+  //   print('Status started');
+  // }
 
-  Future<void> _onStatusUpdated(
-    StatusUpdated event,
-    Emitter<Status18CCorNodeState> emit,
-  ) async {
-    List<dynamic> result =
-        await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeA1(
-      timeout: const Duration(seconds: 1),
-    );
+  // Future<void> _onStatusUpdated(
+  //   StatusUpdated event,
+  //   Emitter<Status18CCorNodeState> emit,
+  // ) async {
+  //   List<dynamic> result =
+  //       await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeA1(
+  //     timeout: const Duration(seconds: 1),
+  //   );
 
-    if (result[0]) {
-      Map<DataKey, String> currentValues = result[1];
-      _amp18CCorNodeRepository.updateDataWithGivenValuePairs(currentValues);
-    } else {
-      print('Status updated failed');
-    }
-  }
+  //   if (result[0]) {
+  //     Map<DataKey, String> currentValues = result[1];
+  //     _amp18CCorNodeRepository.updateDataWithGivenValuePairs(currentValues);
+  //   } else {
+  //     print('Status updated failed');
+  //   }
+  // }
 
-  Future<void> _onStatusPeriodicUpdateCanceled(
-    StatusPeriodicUpdateCanceled event,
-    Emitter<Status18CCorNodeState> emit,
-  ) async {
-    if (_timer != null) {
-      _timer!.cancel();
-      print('Status timer is canceled');
-    }
-  }
+  // Future<void> _onStatusPeriodicUpdateCanceled(
+  //   StatusPeriodicUpdateCanceled event,
+  //   Emitter<Status18CCorNodeState> emit,
+  // ) async {
+  //   if (_timer != null) {
+  //     _timer!.cancel();
+  //     print('Status timer is canceled');
+  //   }
+  // }
 
-  @override
-  Future<void> close() {
-    if (_timer != null) {
-      _timer!.cancel();
+  // @override
+  // Future<void> close() {
+  //   if (_timer != null) {
+  //     _timer!.cancel();
 
-      print('Status timer is canceled due to bloc closing.');
-    }
+  //     print('Status timer is canceled due to bloc closing.');
+  //   }
 
-    return super.close();
-  }
+  //   return super.close();
+  // }
 }

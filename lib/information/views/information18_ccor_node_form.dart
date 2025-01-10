@@ -44,7 +44,7 @@ class Information18CCorNodeForm extends StatelessWidget {
             _ShortcutCard(),
             // _BlockDiagramCard(),
             _BasicCard(),
-            _AlarmCard(),
+            // _AlarmCard(),
           ],
         ),
       ),
@@ -52,11 +52,11 @@ class Information18CCorNodeForm extends StatelessWidget {
         pageController: pageController,
         selectedIndex: 2,
         onTap: (int index) {
-          if (index != 2) {
-            context
-                .read<Information18CCorNodeBloc>()
-                .add(const AlarmPeriodicUpdateCanceled());
-          }
+          // if (index != 2) {
+          //   context
+          //       .read<Information18CCorNodeBloc>()
+          //       .add(const AlarmPeriodicUpdateCanceled());
+          // }
 
           pageController.jumpToPage(
             index,
@@ -102,9 +102,10 @@ class __PopupMenuState extends State<_PopupMenu> {
                   iconData: Icons.refresh,
                   title: AppLocalizations.of(context)!.reconnect,
                   onTap: () {
+                    // 暫停定期更新, 避免設定過程中同時要求資訊
                     context
-                        .read<Information18CCorNodeBloc>()
-                        .add(const AlarmPeriodicUpdateCanceled());
+                        .read<HomeBloc>()
+                        .add(const DevicePeriodicUpdateCanceled());
                     context.read<HomeBloc>().add(const DeviceRefreshed());
                   },
                 ),
@@ -136,9 +137,10 @@ class __PopupMenuState extends State<_PopupMenu> {
                       ? false
                       : true,
                   onTap: () {
+                    // 暫停定期更新, 避免設定過程中同時要求資訊
                     context
-                        .read<Information18CCorNodeBloc>()
-                        .add(const AlarmPeriodicUpdateCanceled());
+                        .read<HomeBloc>()
+                        .add(const DevicePeriodicUpdateCanceled());
 
                     showWarmResetNoticeDialog(context: context).then(
                       (isConfirm) {
@@ -451,18 +453,18 @@ class _LoadPresetButton extends StatelessWidget {
           onPressed:
               loadingStatus.isRequestSuccess && state.nodeConfigs.isNotEmpty
                   ? () async {
-                      // 要進行設定前先暫停 alarm 定期更新, 避免設定過程中同時要求 alarm 資訊
+                      // 要進行設定前先暫停定期更新, 避免設定過程中同時要求資訊
                       context
-                          .read<Information18CCorNodeBloc>()
-                          .add(const AlarmPeriodicUpdateCanceled());
+                          .read<HomeBloc>()
+                          .add(const DevicePeriodicUpdateCanceled());
 
                       showSelectConfigDialog(
                         nodeConfigs: state.nodeConfigs,
                       ).then((value) {
-                        // 設定結束後, 恢復 alarm 定期更新
+                        // 設定結束後, 恢復定期更新
                         context
-                            .read<Information18CCorNodeBloc>()
-                            .add(const AlarmPeriodicUpdateRequested());
+                            .read<HomeBloc>()
+                            .add(const DevicePeriodicUpdateCanceled());
                       });
                     }
                   : null,
@@ -665,135 +667,135 @@ class _BasicCard extends StatelessWidget {
   }
 }
 
-class _AlarmIndicator extends StatelessWidget {
-  const _AlarmIndicator();
+// class _AlarmIndicator extends StatelessWidget {
+//   const _AlarmIndicator();
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Information18CCorNodeBloc, Information18CCorNodeState>(
-      builder: (context, state) {
-        return buildAlarmCard(
-          context: context,
-          alarmUSeverity: state.alarmUSeverity,
-          alarmTSeverity: state.alarmTSeverity,
-          alarmPSeverity: state.alarmPSeverity,
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Information18CCorNodeBloc, Information18CCorNodeState>(
+//       builder: (context, state) {
+//         return buildAlarmCard(
+//           context: context,
+//           alarmUSeverity: state.alarmUSeverity,
+//           alarmTSeverity: state.alarmTSeverity,
+//           alarmPSeverity: state.alarmPSeverity,
+//         );
+//       },
+//     );
+//   }
+// }
 
-class _AlarmCard extends StatelessWidget {
-  const _AlarmCard();
+// class _AlarmCard extends StatelessWidget {
+//   const _AlarmCard();
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      // 上一個狀態跟目前狀態的 loadingStatus 不一樣時才要rebuild,
-      // 否則切到 status page 時會更新 HomeState 而重複觸發 AlarmPeriodicUpdateRequested
-      buildWhen: (previous, current) =>
-          previous.loadingStatus != current.loadingStatus,
-      builder: (context, state) {
-        if (state.loadingStatus.isRequestSuccess) {
-          context
-              .read<Information18CCorNodeBloc>()
-              .add(const AlarmPeriodicUpdateRequested());
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<HomeBloc, HomeState>(
+//       // 上一個狀態跟目前狀態的 loadingStatus 不一樣時才要rebuild,
+//       // 否則切到 status page 時會更新 HomeState 而重複觸發 AlarmPeriodicUpdateRequested
+//       buildWhen: (previous, current) =>
+//           previous.loadingStatus != current.loadingStatus,
+//       builder: (context, state) {
+//         if (state.loadingStatus.isRequestSuccess) {
+//           context
+//               .read<Information18CCorNodeBloc>()
+//               .add(const AlarmPeriodicUpdateRequested());
 
-          return const _AlarmIndicator();
-        } else {
-          context
-              .read<Information18CCorNodeBloc>()
-              .add(const AlarmPeriodicUpdateCanceled());
+//           return const _AlarmIndicator();
+//         } else {
+//           context
+//               .read<Information18CCorNodeBloc>()
+//               .add(const AlarmPeriodicUpdateCanceled());
 
-          String alarmUSeverity =
-              state.characteristicData[DataKey.unitStatusAlarmSeverity] ??
-                  'default';
-          String alarmTSeverity =
-              state.characteristicData[DataKey.temperatureAlarmSeverity] ??
-                  'default';
-          String alarmPSeverity =
-              state.characteristicData[DataKey.voltageAlarmSeverity] ??
-                  'default';
+//           String alarmUSeverity =
+//               state.characteristicData[DataKey.unitStatusAlarmSeverity] ??
+//                   'default';
+//           String alarmTSeverity =
+//               state.characteristicData[DataKey.temperatureAlarmSeverity] ??
+//                   'default';
+//           String alarmPSeverity =
+//               state.characteristicData[DataKey.voltageAlarmSeverity] ??
+//                   'default';
 
-          return buildAlarmCard(
-            context: context,
-            alarmUSeverity: alarmUSeverity,
-            alarmTSeverity: alarmTSeverity,
-            alarmPSeverity: alarmPSeverity,
-          );
-        }
-      },
-    );
-  }
-}
+//           return buildAlarmCard(
+//             context: context,
+//             alarmUSeverity: alarmUSeverity,
+//             alarmTSeverity: alarmTSeverity,
+//             alarmPSeverity: alarmPSeverity,
+//           );
+//         }
+//       },
+//     );
+//   }
+// }
 
-Widget alarmItem({
-  required IconData iconData,
-  required String title,
-  Color? iconColor,
-}) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Icon(
-          iconData,
-          color: iconColor,
-        ),
-        const SizedBox(
-          width: 10.0,
-        ),
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: CustomStyle.sizeL,
-          ),
-        ),
-      ],
-    ),
-  );
-}
+// Widget alarmItem({
+//   required IconData iconData,
+//   required String title,
+//   Color? iconColor,
+// }) {
+//   return Padding(
+//     padding: const EdgeInsets.all(8.0),
+//     child: Row(
+//       mainAxisAlignment: MainAxisAlignment.start,
+//       children: [
+//         Icon(
+//           iconData,
+//           color: iconColor,
+//         ),
+//         const SizedBox(
+//           width: 10.0,
+//         ),
+//         Text(
+//           title,
+//           style: const TextStyle(
+//             fontSize: CustomStyle.sizeL,
+//           ),
+//         ),
+//       ],
+//     ),
+//   );
+// }
 
-Widget buildAlarmCard({
-  required BuildContext context,
-  required String alarmUSeverity,
-  required String alarmTSeverity,
-  required String alarmPSeverity,
-}) {
-  return Card(
-    child: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppLocalizations.of(context)!.alarmIndicator,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          alarmItem(
-            iconData: Icons.circle,
-            iconColor: CustomStyle.alarmColor[alarmUSeverity],
-            title: AppLocalizations.of(context)!.unitStatusAlarm,
-          ),
-          alarmItem(
-            iconData: Icons.circle,
-            iconColor: CustomStyle.alarmColor[alarmTSeverity],
-            title: AppLocalizations.of(context)!.temperatureAlarm,
-          ),
-          alarmItem(
-            iconData: Icons.circle,
-            iconColor: CustomStyle.alarmColor[alarmPSeverity],
-            title: AppLocalizations.of(context)!.powerSupplyAlarm,
-          ),
-        ],
-      ),
-    ),
-  );
-}
+// Widget buildAlarmCard({
+//   required BuildContext context,
+//   required String alarmUSeverity,
+//   required String alarmTSeverity,
+//   required String alarmPSeverity,
+// }) {
+//   return Card(
+//     child: Padding(
+//       padding: const EdgeInsets.all(16.0),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Text(
+//             AppLocalizations.of(context)!.alarmIndicator,
+//             style: Theme.of(context).textTheme.titleLarge,
+//           ),
+//           const SizedBox(
+//             height: 10.0,
+//           ),
+//           alarmItem(
+//             iconData: Icons.circle,
+//             iconColor: CustomStyle.alarmColor[alarmUSeverity],
+//             title: AppLocalizations.of(context)!.unitStatusAlarm,
+//           ),
+//           alarmItem(
+//             iconData: Icons.circle,
+//             iconColor: CustomStyle.alarmColor[alarmTSeverity],
+//             title: AppLocalizations.of(context)!.temperatureAlarm,
+//           ),
+//           alarmItem(
+//             iconData: Icons.circle,
+//             iconColor: CustomStyle.alarmColor[alarmPSeverity],
+//             title: AppLocalizations.of(context)!.powerSupplyAlarm,
+//           ),
+//         ],
+//       ),
+//     ),
+//   );
+// }
 
 Widget getContent({
   required FormStatus loadingStatus,

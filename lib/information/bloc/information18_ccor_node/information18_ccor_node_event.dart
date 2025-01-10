@@ -21,23 +21,23 @@ class ConfigLoaded extends Information18CCorNodeEvent {
   List<Object> get props => [];
 }
 
-class AlarmUpdated extends Information18CCorNodeEvent {
-  const AlarmUpdated();
+// class AlarmUpdated extends Information18CCorNodeEvent {
+//   const AlarmUpdated();
 
-  @override
-  List<Object> get props => [];
-}
+//   @override
+//   List<Object> get props => [];
+// }
 
-class AlarmPeriodicUpdateRequested extends Information18CCorNodeEvent {
-  const AlarmPeriodicUpdateRequested();
+// class AlarmPeriodicUpdateRequested extends Information18CCorNodeEvent {
+//   const AlarmPeriodicUpdateRequested();
 
-  @override
-  List<Object> get props => [];
-}
+//   @override
+//   List<Object> get props => [];
+// }
 
-class AlarmPeriodicUpdateCanceled extends Information18CCorNodeEvent {
-  const AlarmPeriodicUpdateCanceled();
+// class AlarmPeriodicUpdateCanceled extends Information18CCorNodeEvent {
+//   const AlarmPeriodicUpdateCanceled();
 
-  @override
-  List<Object> get props => [];
-}
+//   @override
+//   List<Object> get props => [];
+// }

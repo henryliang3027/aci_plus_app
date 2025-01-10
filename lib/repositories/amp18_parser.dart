@@ -873,30 +873,30 @@ class Amp18Parser {
     }
   }
 
-  A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {
-    // 給 定期更新 information page 的 alarm 用
-    Alarm unitStatusAlarmSeverity = Alarm.medium;
-    Alarm temperatureAlarmSeverity = Alarm.medium;
-    Alarm powerAlarmSeverity = Alarm.medium;
+  // A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {
+  //   // 給 定期更新 information page 的 alarm 用
+  //   Alarm unitStatusAlarmSeverity = Alarm.medium;
+  //   Alarm temperatureAlarmSeverity = Alarm.medium;
+  //   Alarm powerAlarmSeverity = Alarm.medium;
 
-    int unitStatus = rawData[3];
-    unitStatusAlarmSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
+  //   int unitStatus = rawData[3];
+  //   unitStatusAlarmSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
 
-    int temperatureStatus = rawData[128];
-    temperatureAlarmSeverity =
-        temperatureStatus == 1 ? Alarm.danger : Alarm.success;
+  //   int temperatureStatus = rawData[128];
+  //   temperatureAlarmSeverity =
+  //       temperatureStatus == 1 ? Alarm.danger : Alarm.success;
 
-    int powerStatus = rawData[129];
-    powerAlarmSeverity = powerStatus == 1 ? Alarm.danger : Alarm.success;
+  //   int powerStatus = rawData[129];
+  //   powerAlarmSeverity = powerStatus == 1 ? Alarm.danger : Alarm.success;
 
-    A1P8GAlarm a1p8gAlarm = A1P8GAlarm(
-      unitStatusAlarmSeverity: unitStatusAlarmSeverity.name,
-      temperatureAlarmSeverity: temperatureAlarmSeverity.name,
-      powerAlarmSeverity: powerAlarmSeverity.name,
-    );
+  //   A1P8GAlarm a1p8gAlarm = A1P8GAlarm(
+  //     unitStatusAlarmSeverity: unitStatusAlarmSeverity.name,
+  //     temperatureAlarmSeverity: temperatureAlarmSeverity.name,
+  //     powerAlarmSeverity: powerAlarmSeverity.name,
+  //   );
 
-    return a1p8gAlarm;
-  }
+  //   return a1p8gAlarm;
+  // }
 
   A1P8GLogStatistic getA1p8GLogStatistics(List<Log1p8G> log1p8Gs) {
     UnitConverter unitConverter = UnitConverter();
@@ -2313,18 +2313,6 @@ class A1P8G2 {
   final String voltageRippleAlarmSeverity;
   final String outputPowerAlarmSeverity;
   final String currentForwardCEQIndex;
-}
-
-class A1P8GAlarm {
-  const A1P8GAlarm({
-    required this.unitStatusAlarmSeverity,
-    required this.temperatureAlarmSeverity,
-    required this.powerAlarmSeverity,
-  });
-
-  final String unitStatusAlarmSeverity;
-  final String temperatureAlarmSeverity;
-  final String powerAlarmSeverity;
 }
 
 class A1P8GLogStatistic {

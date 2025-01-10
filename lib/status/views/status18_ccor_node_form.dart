@@ -35,9 +35,9 @@ class Status18CCorNodeForm extends StatelessWidget {
         pageController: pageController,
         selectedIndex: 1,
         onTap: (int index) {
-          context
-              .read<Status18CCorNodeBloc>()
-              .add(const StatusPeriodicUpdateCanceled());
+          // context
+          //     .read<Status18CCorNodeBloc>()
+          //     .add(const StatusPeriodicUpdateCanceled());
 
           pageController.jumpToPage(
             index,
@@ -133,15 +133,15 @@ class _CardView extends StatelessWidget {
       builder: (context, state) {
         String partId = state.characteristicData[DataKey.partId] ?? '';
         if (state.loadingStatus.isRequestSuccess) {
-          context
-              .read<Status18CCorNodeBloc>()
-              .add(const StatusPeriodicUpdateRequested());
+          // context
+          //     .read<Status18CCorNodeBloc>()
+          //     .add(const StatusPeriodicUpdateRequested());
 
           return getWidgetsByPartId(partId);
         } else {
-          context
-              .read<Status18CCorNodeBloc>()
-              .add(const StatusPeriodicUpdateCanceled());
+          // context
+          //     .read<Status18CCorNodeBloc>()
+          //     .add(const StatusPeriodicUpdateCanceled());
 
           return getWidgetsByPartId(partId);
         }
@@ -216,9 +216,10 @@ class _DeviceRefresh extends StatelessWidget {
             !state.connectionStatus.isRequestInProgress) {
           return IconButton(
               onPressed: () {
+                // 暫停定期更新, 避免設定過程中同時要求資訊
                 context
-                    .read<Status18CCorNodeBloc>()
-                    .add(const StatusPeriodicUpdateCanceled());
+                    .read<HomeBloc>()
+                    .add(const DevicePeriodicUpdateCanceled());
                 context.read<HomeBloc>().add(const DeviceRefreshed());
               },
               icon: Icon(

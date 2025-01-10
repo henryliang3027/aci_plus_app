@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -283,4 +284,41 @@ List<int> convertStringToInt16List(String value) {
   }
 
   return int16bytes;
+}
+
+A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {
+  // 給 定期更新 information page 的 alarm 用
+  Alarm unitStatusAlarmSeverity = Alarm.medium;
+  Alarm temperatureAlarmSeverity = Alarm.medium;
+  Alarm powerAlarmSeverity = Alarm.medium;
+
+  int unitStatus = rawData[3];
+  unitStatusAlarmSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
+
+  int temperatureStatus = rawData[128];
+  temperatureAlarmSeverity =
+      temperatureStatus == 1 ? Alarm.danger : Alarm.success;
+
+  int powerStatus = rawData[129];
+  powerAlarmSeverity = powerStatus == 1 ? Alarm.danger : Alarm.success;
+
+  A1P8GAlarm a1p8gAlarm = A1P8GAlarm(
+    unitStatusAlarmSeverity: unitStatusAlarmSeverity.name,
+    temperatureAlarmSeverity: temperatureAlarmSeverity.name,
+    powerAlarmSeverity: powerAlarmSeverity.name,
+  );
+
+  return a1p8gAlarm;
+}
+
+class A1P8GAlarm {
+  const A1P8GAlarm({
+    required this.unitStatusAlarmSeverity,
+    required this.temperatureAlarmSeverity,
+    required this.powerAlarmSeverity,
+  });
+
+  final String unitStatusAlarmSeverity;
+  final String temperatureAlarmSeverity;
+  final String powerAlarmSeverity;
 }

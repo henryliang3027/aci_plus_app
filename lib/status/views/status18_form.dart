@@ -37,11 +37,11 @@ class Status18Form extends StatelessWidget {
         pageController: pageController,
         selectedIndex: 1,
         onTap: (int index) {
-          if (index != 1) {
-            context
-                .read<Status18Bloc>()
-                .add(const StatusPeriodicUpdateCanceled());
-          }
+          // if (index != 1) {
+          //   context
+          //       .read<Status18Bloc>()
+          //       .add(const StatusPeriodicUpdateCanceled());
+          // }
 
           pageController.jumpToPage(
             index,
@@ -174,15 +174,15 @@ class _CardView extends StatelessWidget {
             }
           }
 
-          context
-              .read<Status18Bloc>()
-              .add(const StatusPeriodicUpdateRequested());
+          // context
+          //     .read<Status18Bloc>()
+          //     .add(const StatusPeriodicUpdateRequested());
 
           return getWidgetsByPartId(partId);
         } else {
-          context
-              .read<Status18Bloc>()
-              .add(const StatusPeriodicUpdateCanceled());
+          // context
+          //     .read<Status18Bloc>()
+          //     .add(const StatusPeriodicUpdateCanceled());
 
           return getWidgetsByPartId(partId);
         }
@@ -265,9 +265,10 @@ class _DeviceRefresh extends StatelessWidget {
             !state.connectionStatus.isRequestInProgress) {
           return IconButton(
               onPressed: () {
+                // 暫停定期更新, 避免設定過程中同時要求資訊
                 context
-                    .read<Status18Bloc>()
-                    .add(const StatusPeriodicUpdateCanceled());
+                    .read<HomeBloc>()
+                    .add(const DevicePeriodicUpdateCanceled());
                 context.read<HomeBloc>().add(const DeviceRefreshed());
               },
               icon: Icon(

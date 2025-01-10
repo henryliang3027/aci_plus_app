@@ -45,6 +45,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DeviceCharacteristicChanged>(_onDeviceCharacteristicChanged);
     on<DeviceRefreshed>(_onDeviceRefreshed);
     on<DeviceConnectionChanged>(_onDeviceConnectionChanged);
+    on<DevicePeriodicUpdateRequested>(_onDevicePeriodicUpdateRequested);
+    on<DevicePeriodicUpdateCanceled>(_onDevicePeriodicUpdateCanceled);
     // on<NeedsDataReloaded>(_onNeedsDataReloaded);
     // on<testTimeout>(_onTestTimeout);
   }
@@ -59,6 +61,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   StreamSubscription<ConnectionReport>? _connectionReportStreamSubscription;
   StreamSubscription<Map<DataKey, String>>?
       _characteristicDataStreamSubscription;
+
+  Timer? _timer;
 
   // final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer();
 
@@ -342,6 +346,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         //   loadingStatus: FormStatus.none,
         //   errorMassage: 'Device connection failed',
         // ));
+
+        // 藍牙斷線時停止定期更新
+        _cancelUpdateTimer();
         _amp18Repository.clearCharacteristics();
         _amp18CCorNodeRepository.clearCharacteristics();
 
@@ -1128,6 +1135,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       characteristicData: const {},
       dateValueCollectionOfLog: const [],
     ));
+
+    // 重新掃描與連線時停止定期更新
+    _cancelUpdateTimer();
     _amp18Repository.clearCharacteristics();
     _amp18CCorNodeRepository.clearCharacteristics();
 
@@ -1156,6 +1166,86 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         add(DiscoveredDeviceChanged(scanReport));
       },
     );
+  }
+
+  void _onDevicePeriodicUpdateRequested(
+    DevicePeriodicUpdateRequested event,
+    Emitter<HomeState> emit,
+  ) {
+    //  啟動 timer 前先確定 timer 是關閉的
+    _cancelUpdateTimer();
+
+    // timer 啟動後 5 秒才會發 AlarmUpdated, 所以第0秒時先 AlarmUpdated
+
+    String partId = state.characteristicData[DataKey.partId] ?? '';
+    _onAlarmUpdated(partId: partId);
+
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      print('alarm trigger timer: ${timer.tick}');
+      _onAlarmUpdated(partId: partId);
+    });
+
+    print('alarm trigger started');
+  }
+
+  Future<void> _onAlarmUpdated({required String partId}) async {
+    if (partId == '4') {
+      // CCor Node
+      Stopwatch stopwatch = Stopwatch()..start();
+      List<dynamic> result =
+          await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeA1(
+        timeout: const Duration(seconds: 1),
+      );
+      print(
+          'requestCommand1p8GCCorNodeA1() alarm executed in ${stopwatch.elapsed.inMilliseconds}');
+
+      if (result[0]) {
+        Map<DataKey, String> currentValues = result[1];
+        _amp18CCorNodeRepository.updateDataWithGivenValuePairs(currentValues);
+      } else {
+        print('requestCommand1p8GCCorNodeA1() alarm updated failed');
+      }
+    } else {
+      // Amp
+      Stopwatch stopwatch = Stopwatch()..start();
+      List<dynamic> result = await _amp18Repository.requestCommand1p8G2(
+        timeout: const Duration(seconds: 1),
+      );
+      print(
+          'requestCommand1p8G2() alarm executed in ${stopwatch.elapsed.inMilliseconds}');
+
+      if (result[0]) {
+        Map<DataKey, String> currentValues = result[1];
+        _amp18Repository.updateDataWithGivenValuePairs(currentValues);
+      } else {
+        print('requestCommand1p8G2() alarm updated failed');
+      }
+    }
+  }
+
+  void _cancelUpdateTimer() {
+    if (_timer != null) {
+      _timer!.cancel();
+      print('alarm trigger timer is canceled');
+    }
+  }
+
+  Future<void> _onDevicePeriodicUpdateCanceled(
+    DevicePeriodicUpdateCanceled event,
+    Emitter<HomeState> emit,
+  ) async {
+    _cancelUpdateTimer();
+  }
+
+  @override
+  Future<void> close() {
+    if (_timer != null) {
+      _timer!.cancel();
+
+      print('alarm trigger timer is canceled due to bloc closing.');
+    }
+
+    return super.close();
   }
 
   // void _onNeedsDataReloaded(

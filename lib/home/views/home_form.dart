@@ -221,105 +221,59 @@ class _HomeFormState extends State<HomeForm> {
       }
     }
 
-    return BlocListener<HomeBloc, HomeState>(
-      listener: (context, state) async {
-        if (state.scanStatus.isRequestInProgress) {
-          if (state.peripherals.isNotEmpty) {
-            if (ModalRoute.of(context)?.isCurrent == true) {
-              showSelectPeripheralDialog();
-            }
-          }
-        } else if (state.scanStatus.isRequestFailure &&
-            state.connectionStatus.isRequestFailure) {
-          // 當斷線時, 關閉目前顯示的 dialog (下載全部 log (download all) 或 load preset)
-          if (ModalRoute.of(context)?.isCurrent == false) {
-            Navigator.of(context).pop();
-            setPreferredOrientation();
-          }
-
-          showFailureDialog(state.errorMassage).then((_) {
-            // 如果是在 firmware update 過程中斷線, 就讀取 isDisconnectOnFirmwareUpdate flag
-            // 如果為 true, 就重新連線, 並將 flag 設定回 false
-            if (CrossPageFlag.isDisconnectOnFirmwareUpdate) {
-              CrossPageFlag.isDisconnectOnFirmwareUpdate = false;
-              _pageController.jumpToPage(2);
-              context.read<HomeBloc>().add(const DeviceRefreshed());
-            }
-          });
-        } else if (state.loadingStatus.isRequestFailure) {
-          showFailureDialog(state.errorMassage);
-        }
-      },
-      child: PopScope(
-        canPop: false,
-        onPopInvoked: (bool didPop) async {
-          if (SystemBackButtonProperty.isEnabled) {
-            bool? isExit = await showExitAppDialog(context: context);
-            if (isExit != null) {
-              if (isExit) {
-                SystemNavigator.pop();
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<HomeBloc, HomeState>(
+          listenWhen: (previous, current) =>
+              previous.peripherals != current.peripherals,
+          listener: (context, state) {
+            if (state.scanStatus.isRequestInProgress) {
+              if (state.peripherals.isNotEmpty) {
+                if (ModalRoute.of(context)?.isCurrent == true) {
+                  showSelectPeripheralDialog();
+                }
               }
             }
-          }
-        },
-        child: Scaffold(
-          body: BlocBuilder<HomeBloc, HomeState>(
-            buildWhen: (previous, current) =>
-                previous.aciDeviceType != current.aciDeviceType,
-            builder: (context, state) => PageView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: _pageController,
-              children:
-                  buildPages(context.read<HomeBloc>().state.aciDeviceType),
-            ),
-          ),
-          // bottomNavigationBar: BottomNavigationBar(
-          //   backgroundColor: Theme.of(context).colorScheme.onPrimary,
-          //   type: BottomNavigationBarType.fixed,
-          //   showSelectedLabels: false,
-          //   showUnselectedLabels: false,
-          //   items: const [
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.settings),
-          //       label: 'Setting',
-          //       tooltip: '',
-          //     ),
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.memory_outlined),
-          //       label: 'Status',
-          //       tooltip: '',
-          //     ),
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.info),
-          //       label: 'Information',
-          //       tooltip: '',
-          //     ),
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.area_chart_sharp),
-          //       label: 'Chart',
-          //       tooltip: '',
-          //     ),
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.contact_support),
-          //       label: 'About',
-          //       tooltip: '',
-          //     ),
-          //   ],
-          //   //if current page is account which is not list in bottom navigation bar, make all items grey color
-          //   //assign a useless 0 as currentIndex for account page
-          //   currentIndex: _sclectedIndex,
-          //   selectedItemColor: Theme.of(context).primaryColor,
-          //   unselectedItemColor: Theme.of(context).hintColor,
-          //   onTap: (int index) {
-          //     setState(() {
-          //       _sclectedIndex = index;
-          //     });
+          },
+        ),
+        BlocListener<HomeBloc, HomeState>(
+          listenWhen: (previous, current) =>
+              previous.connectionStatus != current.connectionStatus ||
+              previous.loadingStatus != current.loadingStatus,
+          listener: (context, state) {
+            if (state.connectionStatus.isRequestFailure ||
+                state.loadingStatus.isRequestFailure) {
+              if (ModalRoute.of(context)?.isCurrent == false) {
+                Navigator.of(context).pop();
+                setPreferredOrientation();
+              }
 
-          //     _pageController.jumpToPage(
-          //       index,
-          //     );
-          //   },
-          // ),
+              showFailureDialog(state.errorMassage).then((_) {
+                // 如果是在 firmware update 過程中斷線, 就讀取 isDisconnectOnFirmwareUpdate flag
+                // 如果為 true, 就重新連線, 並將 flag 設定回 false
+                if (CrossPageFlag.isDisconnectOnFirmwareUpdate) {
+                  CrossPageFlag.isDisconnectOnFirmwareUpdate = false;
+                  _pageController.jumpToPage(2);
+                  context.read<HomeBloc>().add(const DeviceRefreshed());
+                }
+              });
+            } else if (state.loadingStatus.isRequestSuccess) {
+              context
+                  .read<HomeBloc>()
+                  .add(const DevicePeriodicUpdateRequested());
+            }
+          },
+        ),
+      ],
+      child: Scaffold(
+        body: BlocBuilder<HomeBloc, HomeState>(
+          buildWhen: (previous, current) =>
+              previous.aciDeviceType != current.aciDeviceType,
+          builder: (context, state) => PageView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: _pageController,
+            children: buildPages(context.read<HomeBloc>().state.aciDeviceType),
+          ),
         ),
       ),
     );

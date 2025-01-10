@@ -112,6 +112,20 @@ class DeviceRefreshed extends HomeEvent {
   List<Object?> get props => [];
 }
 
+class DevicePeriodicUpdateRequested extends HomeEvent {
+  const DevicePeriodicUpdateRequested();
+
+  @override
+  List<Object> get props => [];
+}
+
+class DevicePeriodicUpdateCanceled extends HomeEvent {
+  const DevicePeriodicUpdateCanceled();
+
+  @override
+  List<Object> get props => [];
+}
+
 // class NeedsDataReloaded extends HomeEvent {
 //   const NeedsDataReloaded(this.isReloadData);
 

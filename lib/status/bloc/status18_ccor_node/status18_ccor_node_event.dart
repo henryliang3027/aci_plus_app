@@ -16,23 +16,23 @@ class TemperatureUnitChanged extends Status18CCorNodeEvent {
   List<Object> get props => [temperatureUnit];
 }
 
-class StatusUpdated extends Status18CCorNodeEvent {
-  const StatusUpdated();
+// class StatusUpdated extends Status18CCorNodeEvent {
+//   const StatusUpdated();
 
-  @override
-  List<Object> get props => [];
-}
+//   @override
+//   List<Object> get props => [];
+// }
 
-class StatusPeriodicUpdateRequested extends Status18CCorNodeEvent {
-  const StatusPeriodicUpdateRequested();
+// class StatusPeriodicUpdateRequested extends Status18CCorNodeEvent {
+//   const StatusPeriodicUpdateRequested();
 
-  @override
-  List<Object> get props => [];
-}
+//   @override
+//   List<Object> get props => [];
+// }
 
-class StatusPeriodicUpdateCanceled extends Status18CCorNodeEvent {
-  const StatusPeriodicUpdateCanceled();
+// class StatusPeriodicUpdateCanceled extends Status18CCorNodeEvent {
+//   const StatusPeriodicUpdateCanceled();
 
-  @override
-  List<Object> get props => [];
-}
+//   @override
+//   List<Object> get props => [];
+// }

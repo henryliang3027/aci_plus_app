@@ -305,7 +305,7 @@ class Amp18CCorNodeRepository {
         timeout: const Duration(seconds: 1),
       );
 
-      A1P8GAlarm a1p8gAlarm = _amp18CCorNodeParser.decodeAlarmSeverity(rawData);
+      A1P8GAlarm a1p8gAlarm = decodeAlarmSeverity(rawData);
 
       return [
         true,

@@ -970,30 +970,30 @@ class Amp18CCorNodeParser {
     }
   }
 
-  A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {
-    // 給 定期更新 information page 的 alarm 用
-    Alarm unitStatusAlarmSeverity = Alarm.medium;
-    Alarm temperatureAlarmSeverity = Alarm.medium;
-    Alarm powerAlarmSeverity = Alarm.medium;
+  // A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {
+  //   // 給 定期更新 information page 的 alarm 用
+  //   Alarm unitStatusAlarmSeverity = Alarm.medium;
+  //   Alarm temperatureAlarmSeverity = Alarm.medium;
+  //   Alarm powerAlarmSeverity = Alarm.medium;
 
-    int unitStatus = rawData[3];
-    unitStatusAlarmSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
+  //   int unitStatus = rawData[3];
+  //   unitStatusAlarmSeverity = unitStatus == 1 ? Alarm.success : Alarm.danger;
 
-    int temperatureStatus = rawData[128];
-    temperatureAlarmSeverity =
-        temperatureStatus == 1 ? Alarm.danger : Alarm.success;
+  //   int temperatureStatus = rawData[128];
+  //   temperatureAlarmSeverity =
+  //       temperatureStatus == 1 ? Alarm.danger : Alarm.success;
 
-    int powerStatus = rawData[129];
-    powerAlarmSeverity = powerStatus == 1 ? Alarm.danger : Alarm.success;
+  //   int powerStatus = rawData[129];
+  //   powerAlarmSeverity = powerStatus == 1 ? Alarm.danger : Alarm.success;
 
-    A1P8GAlarm a1p8gAlarm = A1P8GAlarm(
-      unitStatusAlarmSeverity: unitStatusAlarmSeverity.name,
-      temperatureAlarmSeverity: temperatureAlarmSeverity.name,
-      powerAlarmSeverity: powerAlarmSeverity.name,
-    );
+  //   A1P8GAlarm a1p8gAlarm = A1P8GAlarm(
+  //     unitStatusAlarmSeverity: unitStatusAlarmSeverity.name,
+  //     temperatureAlarmSeverity: temperatureAlarmSeverity.name,
+  //     powerAlarmSeverity: powerAlarmSeverity.name,
+  //   );
 
-    return a1p8gAlarm;
-  }
+  //   return a1p8gAlarm;
+  // }
 
   A1P8GCCorNodeLogStatistic getA1p8GCCorNodeLogStatistics(
       List<Log1p8GCCorNode> log1p8Gs) {
