@@ -290,6 +290,8 @@ class Setting18AttributeView extends StatelessWidget {
           );
           context.read<Setting18AttributeBloc>().add(const Initialized());
 
+          context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
+
           // 重新啟動 CEQ 定時偵測
           // context
           //     .read<Setting18TabBarBloc>()
@@ -1200,6 +1202,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
             ),
             onPressed: () {
               context
+                  .read<HomeBloc>()
+                  .add(const DevicePeriodicUpdateRequested());
+
+              context
                   .read<Setting18AttributeBloc>()
                   .add(const EditModeDisabled());
 
@@ -1283,6 +1289,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   onPressed: Platform.isWindows
                       ? winBeta >= 7
                           ? () {
+                              context
+                                  .read<HomeBloc>()
+                                  .add(const DevicePeriodicUpdateCanceled());
                               // 停止 CEQ 定時偵測
                               // context.read<Setting18TabBarBloc>().add(
                               //     const CurrentForwardCEQPeriodicUpdateCanceled());
@@ -1300,10 +1309,18 @@ class _SettingFloatingActionButton extends StatelessWidget {
                                 // 重新啟動 CEQ 定時偵測
                                 // context.read<Setting18TabBarBloc>().add(
                                 //     const CurrentForwardCEQPeriodicUpdateRequested());
+
+                                context
+                                    .read<HomeBloc>()
+                                    .add(const DevicePeriodicUpdateRequested());
                               });
                             }
                           : null
                       : () {
+                          // ios, android
+                          context
+                              .read<HomeBloc>()
+                              .add(const DevicePeriodicUpdateCanceled());
                           // 停止 CEQ 定時偵測
                           // context.read<Setting18TabBarBloc>().add(
                           //     const CurrentForwardCEQPeriodicUpdateCanceled());
@@ -1321,6 +1338,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
                             // 重新啟動 CEQ 定時偵測
                             // context.read<Setting18TabBarBloc>().add(
                             //     const CurrentForwardCEQPeriodicUpdateRequested());
+
+                            context
+                                .read<HomeBloc>()
+                                .add(const DevicePeriodicUpdateRequested());
                           });
                         },
                   child: Icon(
@@ -1346,6 +1367,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
               color: Theme.of(context).colorScheme.onPrimary,
             ),
             onPressed: () {
+              context
+                  .read<HomeBloc>()
+                  .add(const DevicePeriodicUpdateCanceled());
+
               context
                   .read<Setting18AttributeBloc>()
                   .add(const EditModeEnabled());

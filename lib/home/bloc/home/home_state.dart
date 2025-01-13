@@ -9,6 +9,7 @@ class HomeState extends Equatable {
     this.dataExportStatus = FormStatus.none,
     this.dataShareStatus = FormStatus.none,
     this.showSplash = true,
+    this.periodicUpdateEnabled = false,
     this.aciDeviceType = ACIDeviceType.undefined,
     this.peripherals = const [],
     this.device = const Peripheral.empty(),
@@ -26,6 +27,7 @@ class HomeState extends Equatable {
   final FormStatus dataExportStatus;
   final FormStatus dataShareStatus;
   final bool showSplash;
+  final bool periodicUpdateEnabled;
   final ACIDeviceType aciDeviceType;
   final List<Peripheral> peripherals;
   final Peripheral device;
@@ -43,6 +45,7 @@ class HomeState extends Equatable {
     FormStatus? dataExportStatus,
     FormStatus? dataShareStatus,
     bool? showSplash,
+    bool? periodicUpdateEnabled,
     ACIDeviceType? aciDeviceType,
     List<Peripheral>? peripherals,
     Peripheral? device,
@@ -59,6 +62,8 @@ class HomeState extends Equatable {
       dataExportStatus: dataExportStatus ?? this.dataExportStatus,
       dataShareStatus: dataShareStatus ?? this.dataShareStatus,
       showSplash: showSplash ?? this.showSplash,
+      periodicUpdateEnabled:
+          periodicUpdateEnabled ?? this.periodicUpdateEnabled,
       aciDeviceType: aciDeviceType ?? this.aciDeviceType,
       peripherals: peripherals ?? this.peripherals,
       device: device ?? this.device,
@@ -81,6 +86,7 @@ class HomeState extends Equatable {
         dataExportStatus,
         dataShareStatus,
         showSplash,
+        periodicUpdateEnabled,
         aciDeviceType,
         peripherals,
         device,

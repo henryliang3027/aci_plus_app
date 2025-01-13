@@ -8,6 +8,6 @@ int getDelayByRSSI(int rssi) {
   } else if (rssi < -75 && rssi >= -80) {
     return 29;
   } else {
-    return 30;
+    return 35;
   }
 }

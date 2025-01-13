@@ -23,9 +23,9 @@ class Setting18TabBarForm extends StatelessWidget {
           previous.loadingStatus != current.loadingStatus,
       builder: (context, state) {
         if (state.loadingStatus.isRequestInProgress) {
-          context
-              .read<Setting18TabBarBloc>()
-              .add(const CurrentForwardCEQPeriodicUpdateCanceled());
+          // context
+          //     .read<Setting18TabBarBloc>()
+          //     .add(const CurrentForwardCEQPeriodicUpdateCanceled());
           return Stack(
             alignment: Alignment.center,
             children: [
@@ -50,9 +50,9 @@ class Setting18TabBarForm extends StatelessWidget {
           //     .add(const CurrentForwardCEQPeriodicUpdateRequested());
           return const _TimerTabBarView();
         } else {
-          context
-              .read<Setting18TabBarBloc>()
-              .add(const CurrentForwardCEQPeriodicUpdateCanceled());
+          // context
+          //     .read<Setting18TabBarBloc>()
+          //     .add(const CurrentForwardCEQPeriodicUpdateCanceled());
           return const _TimerTabBarView();
         }
       },

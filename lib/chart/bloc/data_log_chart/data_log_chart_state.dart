@@ -2,8 +2,9 @@ part of 'data_log_chart_bloc.dart';
 
 class DataLogChartState extends Equatable {
   const DataLogChartState({
-    this.logRequestStatus = FormStatus.none,
-    this.eventRequestStatus = FormStatus.none,
+    this.moreLogRequestStatus = FormStatus.none,
+    // this.eventRequestStatus = FormStatus.none,
+    this.formStatus = FormStatus.none,
     this.chunkIndex = 0,
     this.hasNextChunk = false,
     this.event1p8Gs = const [],
@@ -14,8 +15,9 @@ class DataLogChartState extends Equatable {
     this.errorMessage = '',
   });
 
-  final FormStatus logRequestStatus;
-  final FormStatus eventRequestStatus;
+  final FormStatus moreLogRequestStatus;
+  // final FormStatus eventRequestStatus;
+  final FormStatus formStatus;
   final int chunkIndex;
   final bool hasNextChunk;
   final List<Event1p8G> event1p8Gs;
@@ -26,8 +28,9 @@ class DataLogChartState extends Equatable {
   final String errorMessage;
 
   DataLogChartState copyWith({
-    FormStatus? logRequestStatus,
-    FormStatus? eventRequestStatus,
+    FormStatus? moreLogRequestStatus,
+    // FormStatus? eventRequestStatus,
+    FormStatus? formStatus,
     int? chunkIndex,
     bool? hasNextChunk,
     List<Event1p8G>? event1p8Gs,
@@ -38,8 +41,9 @@ class DataLogChartState extends Equatable {
     String? errorMessage,
   }) {
     return DataLogChartState(
-      logRequestStatus: logRequestStatus ?? this.logRequestStatus,
-      eventRequestStatus: eventRequestStatus ?? this.eventRequestStatus,
+      moreLogRequestStatus: moreLogRequestStatus ?? this.moreLogRequestStatus,
+      // eventRequestStatus: eventRequestStatus ?? this.eventRequestStatus,
+      formStatus: formStatus ?? this.formStatus,
       chunkIndex: chunkIndex ?? this.chunkIndex,
       hasNextChunk: hasNextChunk ?? this.hasNextChunk,
       event1p8Gs: event1p8Gs ?? this.event1p8Gs,
@@ -54,8 +58,9 @@ class DataLogChartState extends Equatable {
 
   @override
   List<Object> get props => [
-        logRequestStatus,
-        eventRequestStatus,
+        moreLogRequestStatus,
+        // eventRequestStatus,
+        formStatus,
         chunkIndex,
         hasNextChunk,
         event1p8Gs,

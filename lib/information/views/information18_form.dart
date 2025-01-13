@@ -1,12 +1,8 @@
-import 'dart:math';
-
 import 'package:aci_plus_app/about/about18_page.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
-import 'package:aci_plus_app/core/notice_dialog.dart';
-import 'package:aci_plus_app/core/setup_wizard_dialog.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
@@ -15,7 +11,6 @@ import 'package:aci_plus_app/information/shared/theme_option_widget.dart';
 import 'package:aci_plus_app/information/shared/utils.dart';
 import 'package:aci_plus_app/information/shared/warm_reset_widget.dart';
 import 'package:aci_plus_app/information/views/information18_config_list_view.dart';
-import 'package:aci_plus_app/information/views/name_plate_view.dart';
 import 'package:aci_plus_app/repositories/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,26 +28,12 @@ class Information18Form extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeState homeState = context.read<HomeBloc>().state;
-    int firmwareVersion = convertFirmwareVersionStringToInt(
-        homeState.characteristicData[DataKey.firmwareVersion] ?? '0');
+
     if (homeState.loadingStatus.isRequestSuccess) {
-      if (NoticeFlag.leftDevicePage && firmwareVersion >= 148) {
-        List<DataKey> unFilledItems = getUnFilledItem(
-          context: context,
-          characteristicData: homeState.characteristicData,
-        );
-
-        if (unFilledItems.isNotEmpty) {
-          Future.delayed(const Duration(milliseconds: 100), () {
-            showUnFilledItemDialog(
-              context: context,
-              unFilledItems: unFilledItems,
-            );
-
-            NoticeFlag.leftDevicePage = false;
-          });
-        }
-      }
+      checkUnfilledItem(
+        context: context,
+        characteristicData: homeState.characteristicData,
+      );
     }
 
     return Scaffold(
@@ -184,6 +165,10 @@ class __PopupMenuState extends State<_PopupMenu> {
                                     .add(const Data18Requested());
                               });
                             });
+                          } else {
+                            context
+                                .read<HomeBloc>()
+                                .add(const DevicePeriodicUpdateRequested());
                           }
                         }
                       },

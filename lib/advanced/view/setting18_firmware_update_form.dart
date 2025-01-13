@@ -732,6 +732,10 @@ class _StartButton extends StatelessWidget {
               ),
               onPressed: isEnabled && !isSubmissionInProgress
                   ? () async {
+                      context
+                          .read<HomeBloc>()
+                          .add(const DevicePeriodicUpdateCanceled());
+
                       showEnterCodeDialog(context: context)
                           .then((String? code) {
                         if (code != null) {
@@ -744,6 +748,10 @@ class _StartButton extends StatelessWidget {
                                 .read<Setting18FirmwareUpdateBloc>()
                                 .add(const BootloaderStarted());
                           }
+                        } else {
+                          context
+                              .read<HomeBloc>()
+                              .add(const DevicePeriodicUpdateRequested());
                         }
                       });
 

@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:aci_plus_app/core/common_enum.dart';
+import 'package:aci_plus_app/core/data_key.dart';
+import 'package:aci_plus_app/core/notice_dialog.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -284,6 +286,32 @@ List<int> convertStringToInt16List(String value) {
   }
 
   return int16bytes;
+}
+
+void checkUnfilledItem({
+  required BuildContext context,
+  required Map<DataKey, String> characteristicData,
+}) {
+  int firmwareVersion = convertFirmwareVersionStringToInt(
+      characteristicData[DataKey.firmwareVersion] ?? '0');
+
+  if (NoticeFlag.leftDevicePage && firmwareVersion >= 148) {
+    List<DataKey> unFilledItems = getUnFilledItem(
+      context: context,
+      characteristicData: characteristicData,
+    );
+
+    if (unFilledItems.isNotEmpty) {
+      Future.delayed(const Duration(milliseconds: 100), () {
+        showUnfilledItemDialog(
+          context: context,
+          unFilledItems: unFilledItems,
+        );
+
+        NoticeFlag.leftDevicePage = false;
+      });
+    }
+  }
 }
 
 A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {

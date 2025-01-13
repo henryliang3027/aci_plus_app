@@ -229,6 +229,8 @@ class Setting18CCorNodeAttributeView extends StatelessWidget {
             getMessageLocalization(
                 msg: state.gpsCoordinateErrorMessage, context: context),
           );
+        } else if (state.gpsStatus.isRequestSuccess) {
+          coordinateTextEditingController.text = state.coordinates.value;
         }
 
         if (state.isInitialize) {
@@ -394,6 +396,10 @@ class _Coordinates extends StatelessWidget {
                       fillColor:
                           Theme.of(context).colorScheme.secondaryContainer,
                       counterText: '',
+                      errorText: state.coordinates.isNotValid &&
+                              state.editMode // editMode disabled 時不顯示errorText
+                          ? AppLocalizations.of(context)!.textFieldErrorMessage
+                          : null,
                       suffixIconConstraints: const BoxConstraints(
                         maxHeight: 48,
                         maxWidth: 56,

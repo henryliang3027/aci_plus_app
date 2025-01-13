@@ -338,10 +338,12 @@ class Setting18RegulationView extends StatelessWidget {
           );
           context.read<Setting18RegulationBloc>().add(const Initialized());
 
+          context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
+
           // 重新啟動 CEQ 定時偵測
-          context
-              .read<Setting18TabBarBloc>()
-              .add(const CurrentForwardCEQPeriodicUpdateRequested());
+          // context
+          //     .read<Setting18TabBarBloc>()
+          //     .add(const CurrentForwardCEQPeriodicUpdateRequested());
         }
 
         if (state.isInitialize) {
@@ -1047,6 +1049,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
             ),
             onPressed: () {
               context
+                  .read<HomeBloc>()
+                  .add(const DevicePeriodicUpdateRequested());
+
+              context
                   .read<Setting18RegulationBloc>()
                   .add(const EditModeDisabled());
 
@@ -1070,9 +1076,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
                 ? () async {
                     if (kDebugMode) {
                       // 停止 CEQ 定時偵測
-                      context
-                          .read<Setting18TabBarBloc>()
-                          .add(const CurrentForwardCEQPeriodicUpdateCanceled());
+                      // context
+                      //     .read<Setting18TabBarBloc>()
+                      //     .add(const CurrentForwardCEQPeriodicUpdateCanceled());
+
                       context
                           .read<Setting18RegulationBloc>()
                           .add(const SettingSubmitted());
@@ -1084,8 +1091,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                         if (isMatch != null) {
                           if (isMatch) {
                             // 停止 CEQ 定時偵測
-                            context.read<Setting18TabBarBloc>().add(
-                                const CurrentForwardCEQPeriodicUpdateCanceled());
+                            // context.read<Setting18TabBarBloc>().add(
+                            //     const CurrentForwardCEQPeriodicUpdateCanceled());
+
                             context
                                 .read<Setting18RegulationBloc>()
                                 .add(const SettingSubmitted());
@@ -1130,9 +1138,12 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   onPressed: Platform.isWindows
                       ? winBeta >= 7
                           ? () {
+                              context
+                                  .read<HomeBloc>()
+                                  .add(const DevicePeriodicUpdateCanceled());
                               // 停止 CEQ 定時偵測
-                              context.read<Setting18TabBarBloc>().add(
-                                  const CurrentForwardCEQPeriodicUpdateCanceled());
+                              // context.read<Setting18TabBarBloc>().add(
+                              //     const CurrentForwardCEQPeriodicUpdateCanceled());
 
                               // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
                               Navigator.push(
@@ -1145,15 +1156,23 @@ class _SettingFloatingActionButton extends StatelessWidget {
                                     .add(const Initialized());
 
                                 // 重新啟動 CEQ 定時偵測
-                                context.read<Setting18TabBarBloc>().add(
-                                    const CurrentForwardCEQPeriodicUpdateRequested());
+                                // context.read<Setting18TabBarBloc>().add(
+                                //     const CurrentForwardCEQPeriodicUpdateRequested());
+
+                                context
+                                    .read<HomeBloc>()
+                                    .add(const DevicePeriodicUpdateRequested());
                               });
                             }
                           : null
                       : () {
+                          // ios, android
+                          context
+                              .read<HomeBloc>()
+                              .add(const DevicePeriodicUpdateCanceled());
                           // 停止 CEQ 定時偵測
-                          context.read<Setting18TabBarBloc>().add(
-                              const CurrentForwardCEQPeriodicUpdateCanceled());
+                          // context.read<Setting18TabBarBloc>().add(
+                          //     const CurrentForwardCEQPeriodicUpdateCanceled());
 
                           // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
                           Navigator.push(
@@ -1166,8 +1185,12 @@ class _SettingFloatingActionButton extends StatelessWidget {
                                 .add(const Initialized());
 
                             // 重新啟動 CEQ 定時偵測
-                            context.read<Setting18TabBarBloc>().add(
-                                const CurrentForwardCEQPeriodicUpdateRequested());
+                            // context.read<Setting18TabBarBloc>().add(
+                            //     const CurrentForwardCEQPeriodicUpdateRequested());
+
+                            context
+                                .read<HomeBloc>()
+                                .add(const DevicePeriodicUpdateRequested());
                           });
                         },
                   child: Icon(
@@ -1193,6 +1216,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
               color: Theme.of(context).colorScheme.onPrimary,
             ),
             onPressed: () {
+              context
+                  .read<HomeBloc>()
+                  .add(const DevicePeriodicUpdateCanceled());
+
               context
                   .read<Setting18RegulationBloc>()
                   .add(const EditModeEnabled());

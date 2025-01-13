@@ -286,9 +286,9 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
               context.read<Setting18GraphModuleBloc>().add(const Initialized());
 
               // 重新啟動 CEQ 定時偵測
-              context
-                  .read<Setting18GraphModuleBloc>()
-                  .add(const CurrentForwardCEQPeriodicUpdateRequested());
+              // context
+              //     .read<Setting18GraphModuleBloc>()
+              //     .add(const CurrentForwardCEQPeriodicUpdateRequested());
             }
           },
         ),
@@ -353,9 +353,9 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
                         .add(const Initialized(useCache: false));
 
                     // 重新啟動 CEQ 定時偵測
-                    context
-                        .read<Setting18GraphModuleBloc>()
-                        .add(const CurrentForwardCEQPeriodicUpdateRequested());
+                    // context
+                    //     .read<Setting18GraphModuleBloc>()
+                    //     .add(const CurrentForwardCEQPeriodicUpdateRequested());
                   });
                 }
               }
@@ -1817,9 +1817,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
                 ? () async {
                     if (kDebugMode) {
                       // 停止 CEQ 定時偵測再進行設定
-                      context
-                          .read<Setting18GraphModuleBloc>()
-                          .add(const CurrentForwardCEQPeriodicUpdateCanceled());
+                      // context
+                      //     .read<Setting18GraphModuleBloc>()
+                      //     .add(const CurrentForwardCEQPeriodicUpdateCanceled());
                       context
                           .read<Setting18GraphModuleBloc>()
                           .add(const SettingSubmitted());
@@ -1831,8 +1831,8 @@ class _SettingFloatingActionButton extends StatelessWidget {
                         if (isMatch != null) {
                           if (isMatch) {
                             // 停止 CEQ 定時偵測再進行設定
-                            context.read<Setting18GraphModuleBloc>().add(
-                                const CurrentForwardCEQPeriodicUpdateCanceled());
+                            // context.read<Setting18GraphModuleBloc>().add(
+                            //     const CurrentForwardCEQPeriodicUpdateCanceled());
                             context
                                 .read<Setting18GraphModuleBloc>()
                                 .add(const SettingSubmitted());

@@ -32,6 +32,9 @@ class RFLevelChartView extends StatelessWidget {
             context: context,
             msg: state.errorMessage,
           );
+          context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
+        } else if (state.rfInOutRequestStatus.isRequestSuccess) {
+          context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
         }
       },
       child: Scaffold(
@@ -197,16 +200,31 @@ class _ChartView extends StatelessWidget {
 
         if (homeState.loadingStatus == FormStatus.requestSuccess) {
           if (rfLevelChartState.rfInOutRequestStatus.isNone) {
-            print('get rf');
-            context.read<Chart18Bloc>().add(const TabChangedDisabled());
-            context.read<RFLevelChartBloc>().add(const RFInOutRequested());
-            return Stack(
-              alignment: Alignment.center,
-              children: [
-                buildLoadingFormWithProgressiveChartView(
-                    rfLevelChartState.valueCollectionOfRFInOut),
-              ],
-            );
+            if (homeState.periodicUpdateEnabled) {
+              context
+                  .read<HomeBloc>()
+                  .add(const DevicePeriodicUpdateCanceled());
+
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  buildLoadingFormWithProgressiveChartView(
+                      rfLevelChartState.valueCollectionOfRFInOut),
+                ],
+              );
+            } else {
+              print('===== get log ======');
+
+              context.read<Chart18Bloc>().add(const TabChangedDisabled());
+              context.read<RFLevelChartBloc>().add(const RFInOutRequested());
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  buildLoadingFormWithProgressiveChartView(
+                      rfLevelChartState.valueCollectionOfRFInOut),
+                ],
+              );
+            }
           } else if (rfLevelChartState
               .rfInOutRequestStatus.isRequestInProgress) {
             return Stack(

@@ -359,6 +359,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           errorMassage: event.connectionReport.errorMessage,
           peripherals: [],
           device: const Peripheral.empty(),
+          periodicUpdateEnabled: false,
           characteristicData: const {},
           dateValueCollectionOfLog: const [],
         ));
@@ -1132,6 +1133,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       aciDeviceType: ACIDeviceType.undefined,
       peripherals: [],
       device: const Peripheral.empty(),
+      periodicUpdateEnabled: false,
       characteristicData: const {},
       dateValueCollectionOfLog: const [],
     ));
@@ -1186,6 +1188,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     });
 
     print('alarm trigger started');
+
+    emit(state.copyWith(
+      periodicUpdateEnabled: true,
+    ));
   }
 
   Future<void> _onAlarmUpdated({required String partId}) async {
@@ -1235,6 +1241,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     _cancelUpdateTimer();
+
+    // 增加一些延遲讓藍牙完成正在傳遞的資料
+    // 如果指令發出去後馬上暫停 timer, 沒有增加一些延遲就進行下一個指令, 會引發資料接收錯亂
+    await Future.delayed(const Duration(
+      milliseconds: 500,
+    ));
+
+    emit(state.copyWith(
+      periodicUpdateEnabled: false,
+    ));
   }
 
   @override

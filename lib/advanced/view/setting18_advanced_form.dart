@@ -42,26 +42,12 @@ class _Setting18AdvancedFormState extends State<Setting18AdvancedForm>
   @override
   Widget build(BuildContext context) {
     HomeState homeState = context.read<HomeBloc>().state;
-    int firmwareVersion = convertFirmwareVersionStringToInt(
-        homeState.characteristicData[DataKey.firmwareVersion] ?? '0');
+
     if (homeState.loadingStatus.isRequestSuccess) {
-      if (NoticeFlag.leftDevicePage && firmwareVersion >= 148) {
-        List<DataKey> unFilledItems = getUnFilledItem(
-          context: context,
-          characteristicData: homeState.characteristicData,
-        );
-
-        if (unFilledItems.isNotEmpty) {
-          Future.delayed(const Duration(milliseconds: 100), () {
-            showUnFilledItemDialog(
-              context: context,
-              unFilledItems: unFilledItems,
-            );
-
-            NoticeFlag.leftDevicePage = false;
-          });
-        }
-      }
+      checkUnfilledItem(
+        context: context,
+        characteristicData: homeState.characteristicData,
+      );
     }
 
     return Scaffold(

@@ -48,26 +48,11 @@ class _Chart18FormState extends State<Chart18Form>
   @override
   Widget build(BuildContext context) {
     HomeState homeState = context.read<HomeBloc>().state;
-    int firmwareVersion = convertFirmwareVersionStringToInt(
-        homeState.characteristicData[DataKey.firmwareVersion] ?? '0');
     if (homeState.loadingStatus.isRequestSuccess) {
-      if (NoticeFlag.leftDevicePage && firmwareVersion >= 148) {
-        List<DataKey> unFilledItems = getUnFilledItem(
-          context: context,
-          characteristicData: homeState.characteristicData,
-        );
-
-        if (unFilledItems.isNotEmpty) {
-          Future.delayed(const Duration(milliseconds: 100), () {
-            showUnFilledItemDialog(
-              context: context,
-              unFilledItems: unFilledItems,
-            );
-
-            NoticeFlag.leftDevicePage = false;
-          });
-        }
-      }
+      checkUnfilledItem(
+        context: context,
+        characteristicData: homeState.characteristicData,
+      );
     }
 
     Future<void> showFailureDialog(String msg) async {
@@ -191,6 +176,7 @@ class _Chart18FormState extends State<Chart18Form>
                 ),
               ),
             );
+          context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
         } else if (state.allDataExportStatus.isRequestFailure) {
           showFailureDialog(state.errorMessage);
         } else if (state.rfLevelExportStatus == FormStatus.requestSuccess) {
@@ -484,6 +470,10 @@ class _PopupMenu extends StatelessWidget {
                       iconData: Icons.cloud_download_outlined,
                       title: AppLocalizations.of(context)!.downloadAll,
                       onTap: () {
+                        context
+                            .read<HomeBloc>()
+                            .add(const DevicePeriodicUpdateCanceled());
+
                         showEnterCodeDialog(context: context)
                             .then((String? code) {
                           if (code != null) {
@@ -507,6 +497,10 @@ class _PopupMenu extends StatelessWidget {
                                 }
                               });
                             }
+                          } else {
+                            context
+                                .read<HomeBloc>()
+                                .add(const DevicePeriodicUpdateRequested());
                           }
                         });
                       },
@@ -580,6 +574,9 @@ class _PopupMenu extends StatelessWidget {
                       iconData: Icons.cloud_download_outlined,
                       title: AppLocalizations.of(context)!.downloadAll,
                       onTap: () {
+                        context
+                            .read<HomeBloc>()
+                            .add(const DevicePeriodicUpdateCanceled());
                         showEnterCodeDialog(context: context)
                             .then((String? code) {
                           if (code != null) {
@@ -604,6 +601,10 @@ class _PopupMenu extends StatelessWidget {
                                 }
                               });
                             }
+                          } else {
+                            context
+                                .read<HomeBloc>()
+                                .add(const DevicePeriodicUpdateRequested());
                           }
                         });
                       },

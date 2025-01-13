@@ -63,7 +63,8 @@ class Setting18ReverseControlBloc
     });
 
 // 當斷線的時候重新初始化時讀取 map 元素會有 null 的情況, null 時就 assign 空字串
-    String splitOption = characteristicDataCache[DataKey.splitOption] ?? '';
+    String splitOption =
+        characteristicDataCache[DataKey.currentDetectedSplitOption] ?? '';
     String partId = characteristicDataCache[DataKey.partId] ?? '';
     String operatingMode = getOperatingModeFromForwardCEQIndex(
         characteristicDataCache[DataKey.forwardCEQIndex] ?? '');
