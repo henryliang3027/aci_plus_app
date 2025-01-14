@@ -51,13 +51,13 @@ class _LogChartView extends StatelessWidget {
               showNoMoreDataDialog(context: context);
             }
           }
-          context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
+          // context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
         } else if (state.formStatus.isRequestFailure) {
           showFailureDialog(
             context: context,
             msg: state.errorMessage,
           );
-          context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
+          // context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
         }
 
         // // 如果 state.logRequestStatus 滿足 isRequestSuccess, state.eventRequestStatus 滿足 isRequestFailure
@@ -72,7 +72,7 @@ class _LogChartView extends StatelessWidget {
         // }
       },
       child: Scaffold(
-        body: const _LogChartListView(),
+        body: const _LogChartContent(),
         floatingActionButton: const _DataLogFloatingActionButton(),
         bottomNavigationBar: _DynamicBottomNavigationBar(
           pageController: pageController,
@@ -175,8 +175,23 @@ class _MoreDataFloatingActionButton extends StatelessWidget {
             ? Theme.of(context).colorScheme.primary.withAlpha(200)
             : Colors.grey.withAlpha(200),
         onPressed: enabled && !isRequesting && state.hasNextChunk
-            ? () {
-                context.read<DataLogChartBloc>().add(const MoreLogRequested());
+            ? () async {
+                await handleUpdateAction(
+                  context: context,
+                  targetBloc: context.read<DataLogChartBloc>(),
+                  waitForState: (state) {
+                    DataLogChartState dataLogChartState =
+                        state as DataLogChartState;
+
+                    return dataLogChartState.formStatus.isRequestFailure ||
+                        dataLogChartState.formStatus.isRequestSuccess;
+                  },
+                  action: () {
+                    context
+                        .read<DataLogChartBloc>()
+                        .add(const MoreLogRequested());
+                  },
+                );
               }
             : null,
         child: Icon(
@@ -188,292 +203,14 @@ class _MoreDataFloatingActionButton extends StatelessWidget {
   }
 }
 
-class _LogChartListView extends StatelessWidget {
-  const _LogChartListView();
+class _LogChartContent extends StatelessWidget {
+  const _LogChartContent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<LineSeries> getChartDataOfLog1({
-      required List<List<ValuePair>> dateValueCollectionOfLog,
-    }) {
-      LineSeries temperatureLineSeries = LineSeries(
-        name: 'Temperature (${CustomStyle.celciusUnit})',
-        dataList: dateValueCollectionOfLog[0],
-        color: Theme.of(context).colorScheme.primary,
-        minYAxisValue: -30.0,
-        maxYAxisValue: 100.0,
-      );
-      LineSeries rfOutputLowPilotLineSeries = LineSeries(
-        name: 'RF Output Low Pilot (${CustomStyle.dBmV})',
-        dataList: dateValueCollectionOfLog[1],
-        color: const Color(0xffff5963),
-        minYAxisValue: 0.0,
-        maxYAxisValue: 300.0,
-      );
-      LineSeries rfOutputHighPilotLineSeries = LineSeries(
-        name: 'RF Output High Pilot (${CustomStyle.dBmV})',
-        dataList: dateValueCollectionOfLog[2],
-        color: const Color(0xff249689),
-        minYAxisValue: 0.0,
-        maxYAxisValue: 300.0,
-      );
-
-      return [
-        temperatureLineSeries,
-        rfOutputLowPilotLineSeries,
-        rfOutputHighPilotLineSeries,
-      ];
-    }
-
-    List<LineSeries> getChartDataOfLog2({
-      required List<List<ValuePair>> dateValueCollectionOfLog,
-    }) {
-      LineSeries voltageLineSeries = LineSeries(
-        name: '24 (${CustomStyle.volt})',
-        dataList: dateValueCollectionOfLog[3],
-        color: const Color(0xffff5963),
-        minYAxisValue: 0.0,
-        maxYAxisValue: 40.0,
-      );
-      LineSeries voltageRippleLineSeries = LineSeries(
-        name: '24V Ripple (${CustomStyle.milliVolt})',
-        dataList: dateValueCollectionOfLog[4],
-        color: Theme.of(context).colorScheme.primary,
-        minYAxisValue: 0.0,
-        maxYAxisValue: 500.0,
-      );
-
-      return [
-        voltageLineSeries,
-        voltageRippleLineSeries,
-      ];
-    }
-
-    Widget buildChart({
-      required List<LineSeries> lineSeriesCollection,
-    }) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: CustomStyle.sizeXL, vertical: 10.0),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  FullScreenChartForm.route(
-                    title: AppLocalizations.of(context)!.monitoringChart,
-                    lineSeriesCollection: lineSeriesCollection,
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.all(0.0),
-                visualDensity:
-                    const VisualDensity(horizontal: -4.0, vertical: -3.0),
-              ),
-              child: Icon(
-                Icons.fullscreen_outlined,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-            ),
-          ),
-          SpeedLineChart(
-            lineSeriesCollection: lineSeriesCollection,
-            showLegend: true,
-            showScaleThumbs: winBeta >= 4
-                ? Platform.isWindows
-                    ? true
-                    : false
-                : false,
-          ),
-        ],
-      );
-    }
-
-    Widget buildLoadingFormWithProgressiveChartView({
-      required List<List<ValuePair>> dateValueCollectionOfLog,
-    }) {
-      String intValue = Random().nextInt(100).toString();
-      List<LineSeries> log1Data = [];
-      List<LineSeries> logVoltage = [];
-      if (dateValueCollectionOfLog.isEmpty) {
-        log1Data = getChartDataOfLog1(
-          dateValueCollectionOfLog: dateValueCollectionOfLog,
-        );
-        logVoltage = getChartDataOfLog2(
-          dateValueCollectionOfLog: dateValueCollectionOfLog,
-        );
-      } else {
-        log1Data = getChartDataOfLog1(
-          dateValueCollectionOfLog: dateValueCollectionOfLog,
-        );
-        logVoltage = getChartDataOfLog2(
-          dateValueCollectionOfLog: dateValueCollectionOfLog,
-        );
-      }
-
-      return Stack(
-        alignment: Alignment.center,
-        children: [
-          SingleChildScrollView(
-            // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
-            // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-            key: Key('ChartForm_${intValue}_Chart'),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  buildChart(
-                    lineSeriesCollection: log1Data,
-                  ),
-                  const SizedBox(
-                    height: 50.0,
-                  ),
-                  buildChart(
-                    lineSeriesCollection: logVoltage,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(70, 158, 158, 158),
-            ),
-            child: const Center(
-              child: SizedBox(
-                width: CustomStyle.diameter,
-                height: CustomStyle.diameter,
-                child: CircularProgressIndicator(),
-              ),
-            ),
-          )
-        ],
-      );
-    }
-
-    return Builder(
-      builder: (context) {
-        HomeState homeState = context.watch<HomeBloc>().state;
-        DataLogChartState dataLogChartState =
-            context.watch<DataLogChartBloc>().state;
-
-        if (homeState.loadingStatus == FormStatus.requestSuccess) {
-          if (dataLogChartState.formStatus.isNone) {
-            if (homeState.periodicUpdateEnabled) {
-              context
-                  .read<HomeBloc>()
-                  .add(const DevicePeriodicUpdateCanceled());
-
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  buildLoadingFormWithProgressiveChartView(
-                    dateValueCollectionOfLog:
-                        dataLogChartState.dateValueCollectionOfLog,
-                  ),
-                ],
-              );
-            } else {
-              print('===== get log ======');
-
-              context.read<Chart18Bloc>().add(const TabChangedDisabled());
-
-              // load more 的時候不用 Initialized
-              if (!dataLogChartState.moreLogRequestStatus.isRequestInProgress) {
-                context.read<DataLogChartBloc>().add(const Initialized());
-              }
-
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  buildLoadingFormWithProgressiveChartView(
-                    dateValueCollectionOfLog:
-                        dataLogChartState.dateValueCollectionOfLog,
-                  ),
-                ],
-              );
-            }
-          } else if (dataLogChartState.formStatus.isRequestInProgress) {
-            return Stack(
-              alignment: Alignment.center,
-              children: [
-                buildLoadingFormWithProgressiveChartView(
-                  dateValueCollectionOfLog:
-                      dataLogChartState.dateValueCollectionOfLog,
-                ),
-              ],
-            );
-          } else if (dataLogChartState.formStatus.isRequestFailure) {
-            context.read<Chart18Bloc>().add(const TabChangedEnabled());
-            return SingleChildScrollView(
-              // 設定 key, 讓 chart 可以 rebuild
-              // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-              key: const Key('ChartForm_Chart'),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    buildChart(
-                      lineSeriesCollection: getChartDataOfLog1(
-                          dateValueCollectionOfLog:
-                              dataLogChartState.dateValueCollectionOfLog),
-                    ),
-                    const SizedBox(
-                      height: 50.0,
-                    ),
-                    buildChart(
-                      lineSeriesCollection: getChartDataOfLog2(
-                          dateValueCollectionOfLog:
-                              dataLogChartState.dateValueCollectionOfLog),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          } else {
-            // dataLogChartState.formStatus.isRequestSuccess
-            context.read<Chart18Bloc>().add(const TabChangedEnabled());
-            return Center(
-              child: SingleChildScrollView(
-                // 設定 key, 讓 chart 可以 rebuild
-                // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-                key: const Key('ChartForm_Chart'),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      buildChart(
-                        lineSeriesCollection: getChartDataOfLog1(
-                            dateValueCollectionOfLog:
-                                dataLogChartState.dateValueCollectionOfLog),
-                      ),
-                      const SizedBox(
-                        height: 50.0,
-                      ),
-                      buildChart(
-                        lineSeriesCollection: getChartDataOfLog2(
-                            dateValueCollectionOfLog:
-                                dataLogChartState.dateValueCollectionOfLog),
-                      ),
-                      const SizedBox(
-                        height: CustomStyle.formBottomSpacingS,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }
-        } else {
-          context.read<Chart18Bloc>().add(const TabChangedEnabled());
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.loadingStatus.isRequestInProgress) {
           return Center(
             child: SingleChildScrollView(
               // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
@@ -485,13 +222,15 @@ class _LogChartListView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     buildChart(
+                        context: context,
                         lineSeriesCollection: getChartDataOfLog1(
-                      dateValueCollectionOfLog: [[], [], [], [], []],
-                    )),
+                          dateValueCollectionOfLog: [[], [], [], [], []],
+                        )),
                     const SizedBox(
                       height: 50.0,
                     ),
                     buildChart(
+                      context: context,
                       lineSeriesCollection: getChartDataOfLog2(
                         dateValueCollectionOfLog: [[], [], [], [], []],
                       ),
@@ -501,8 +240,374 @@ class _LogChartListView extends StatelessWidget {
               ),
             ),
           );
+        } else {
+          return const _LogChartListView();
         }
       },
     );
   }
+}
+
+class _LogChartListView extends StatelessWidget {
+  const _LogChartListView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Builder(
+      builder: (context) {
+        // HomeState homeState = context.watch<HomeBloc>().state;
+        DataLogChartState dataLogChartState =
+            context.watch<DataLogChartBloc>().state;
+
+        // if (homeState.loadingStatus.isRequestSuccess ) {
+        if (dataLogChartState.formStatus.isNone) {
+          print('===== get log ======');
+
+          context.read<Chart18Bloc>().add(const TabChangedDisabled());
+
+          // load more 的時候不用 Initialized
+          if (!dataLogChartState.moreLogRequestStatus.isRequestInProgress) {
+            handleUpdateAction(
+              context: context,
+              targetBloc: context.read<DataLogChartBloc>(),
+              waitForState: (state) {
+                DataLogChartState dataLogChartState =
+                    state as DataLogChartState;
+
+                return dataLogChartState.formStatus.isRequestFailure ||
+                    dataLogChartState.formStatus.isRequestSuccess;
+              },
+              action: () {
+                context.read<DataLogChartBloc>().add(const Initialized());
+              },
+            );
+
+            // context.read<DataLogChartBloc>().add(const Initialized());
+          }
+
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              buildLoadingFormWithProgressiveChartView(
+                context: context,
+                dateValueCollectionOfLog:
+                    dataLogChartState.dateValueCollectionOfLog,
+              ),
+            ],
+          );
+          // if (homeState.periodicUpdateEnabled) {
+          //   context
+          //       .read<HomeBloc>()
+          //       .add(const DevicePeriodicUpdateCanceled());
+
+          //   return Stack(
+          //     alignment: Alignment.center,
+          //     children: [
+          //       buildLoadingFormWithProgressiveChartView(
+          //         dateValueCollectionOfLog:
+          //             dataLogChartState.dateValueCollectionOfLog,
+          //       ),
+          //     ],
+          //   );
+          // } else {
+          //   print('===== get log ======');
+
+          //   context.read<Chart18Bloc>().add(const TabChangedDisabled());
+
+          //   // load more 的時候不用 Initialized
+          //   if (!dataLogChartState.moreLogRequestStatus.isRequestInProgress) {
+          //     context.read<DataLogChartBloc>().add(const Initialized());
+          //   }
+
+          //   return Stack(
+          //     alignment: Alignment.center,
+          //     children: [
+          //       buildLoadingFormWithProgressiveChartView(
+          //         dateValueCollectionOfLog:
+          //             dataLogChartState.dateValueCollectionOfLog,
+          //       ),
+          //     ],
+          //   );
+          // }
+        } else if (dataLogChartState.formStatus.isRequestInProgress) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              buildLoadingFormWithProgressiveChartView(
+                context: context,
+                dateValueCollectionOfLog:
+                    dataLogChartState.dateValueCollectionOfLog,
+              ),
+            ],
+          );
+        } else if (dataLogChartState.formStatus.isRequestFailure) {
+          context.read<Chart18Bloc>().add(const TabChangedEnabled());
+          return SingleChildScrollView(
+            // 設定 key, 讓 chart 可以 rebuild
+            // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+            key: const Key('ChartForm_Chart'),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  buildChart(
+                    context: context,
+                    lineSeriesCollection: getChartDataOfLog1(
+                        dateValueCollectionOfLog:
+                            dataLogChartState.dateValueCollectionOfLog),
+                  ),
+                  const SizedBox(
+                    height: 50.0,
+                  ),
+                  buildChart(
+                    context: context,
+                    lineSeriesCollection: getChartDataOfLog2(
+                        dateValueCollectionOfLog:
+                            dataLogChartState.dateValueCollectionOfLog),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          // dataLogChartState.formStatus.isRequestSuccess
+          context.read<Chart18Bloc>().add(const TabChangedEnabled());
+          return Center(
+            child: SingleChildScrollView(
+              // 設定 key, 讓 chart 可以 rebuild
+              // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+              key: const Key('ChartForm_Chart'),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    buildChart(
+                      context: context,
+                      lineSeriesCollection: getChartDataOfLog1(
+                          dateValueCollectionOfLog:
+                              dataLogChartState.dateValueCollectionOfLog),
+                    ),
+                    const SizedBox(
+                      height: 50.0,
+                    ),
+                    buildChart(
+                      context: context,
+                      lineSeriesCollection: getChartDataOfLog2(
+                          dateValueCollectionOfLog:
+                              dataLogChartState.dateValueCollectionOfLog),
+                    ),
+                    const SizedBox(
+                      height: CustomStyle.formBottomSpacingS,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+        // } else {
+        //   context.read<Chart18Bloc>().add(const TabChangedEnabled());
+        //   return Center(
+        //     child: SingleChildScrollView(
+        //       // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+        //       // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+        //       key: const Key('ChartForm_Empty_Chart'),
+        //       child: Padding(
+        //         padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
+        //         child: Column(
+        //           mainAxisAlignment: MainAxisAlignment.center,
+        //           children: <Widget>[
+        //             buildChart(
+        //                 context: context,
+        //                 lineSeriesCollection: getChartDataOfLog1(
+        //                   dateValueCollectionOfLog: [[], [], [], [], []],
+        //                 )),
+        //             const SizedBox(
+        //               height: 50.0,
+        //             ),
+        //             buildChart(
+        //               context: context,
+        //               lineSeriesCollection: getChartDataOfLog2(
+        //                 dateValueCollectionOfLog: [[], [], [], [], []],
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //     ),
+        //   );
+        // }
+      },
+    );
+  }
+}
+
+List<LineSeries> getChartDataOfLog1({
+  required List<List<ValuePair>> dateValueCollectionOfLog,
+}) {
+  LineSeries temperatureLineSeries = LineSeries(
+    name: 'Temperature (${CustomStyle.celciusUnit})',
+    dataList: dateValueCollectionOfLog[0],
+    color: Colors.indigo,
+    minYAxisValue: -30.0,
+    maxYAxisValue: 100.0,
+  );
+  LineSeries rfOutputLowPilotLineSeries = LineSeries(
+    name: 'RF Output Low Pilot (${CustomStyle.dBmV})',
+    dataList: dateValueCollectionOfLog[1],
+    color: const Color(0xffff5963),
+    minYAxisValue: 0.0,
+    maxYAxisValue: 300.0,
+  );
+  LineSeries rfOutputHighPilotLineSeries = LineSeries(
+    name: 'RF Output High Pilot (${CustomStyle.dBmV})',
+    dataList: dateValueCollectionOfLog[2],
+    color: const Color(0xff249689),
+    minYAxisValue: 0.0,
+    maxYAxisValue: 300.0,
+  );
+
+  return [
+    temperatureLineSeries,
+    rfOutputLowPilotLineSeries,
+    rfOutputHighPilotLineSeries,
+  ];
+}
+
+List<LineSeries> getChartDataOfLog2({
+  required List<List<ValuePair>> dateValueCollectionOfLog,
+}) {
+  LineSeries voltageLineSeries = LineSeries(
+    name: '24 (${CustomStyle.volt})',
+    dataList: dateValueCollectionOfLog[3],
+    color: const Color(0xffff5963),
+    minYAxisValue: 0.0,
+    maxYAxisValue: 40.0,
+  );
+  LineSeries voltageRippleLineSeries = LineSeries(
+    name: '24V Ripple (${CustomStyle.milliVolt})',
+    dataList: dateValueCollectionOfLog[4],
+    color: Colors.indigo,
+    minYAxisValue: 0.0,
+    maxYAxisValue: 500.0,
+  );
+
+  return [
+    voltageLineSeries,
+    voltageRippleLineSeries,
+  ];
+}
+
+Widget buildChart({
+  required BuildContext context,
+  required List<LineSeries> lineSeriesCollection,
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: CustomStyle.sizeXL, vertical: 10.0),
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              FullScreenChartForm.route(
+                title: AppLocalizations.of(context)!.monitoringChart,
+                lineSeriesCollection: lineSeriesCollection,
+              ),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.all(0.0),
+            visualDensity:
+                const VisualDensity(horizontal: -4.0, vertical: -3.0),
+          ),
+          child: Icon(
+            Icons.fullscreen_outlined,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        ),
+      ),
+      SpeedLineChart(
+        lineSeriesCollection: lineSeriesCollection,
+        showLegend: true,
+        showScaleThumbs: winBeta >= 4
+            ? Platform.isWindows
+                ? true
+                : false
+            : false,
+      ),
+    ],
+  );
+}
+
+Widget buildLoadingFormWithProgressiveChartView({
+  required BuildContext context,
+  required List<List<ValuePair>> dateValueCollectionOfLog,
+}) {
+  String intValue = Random().nextInt(100).toString();
+  List<LineSeries> log1Data = [];
+  List<LineSeries> logVoltage = [];
+  if (dateValueCollectionOfLog.isEmpty) {
+    log1Data = getChartDataOfLog1(
+      dateValueCollectionOfLog: dateValueCollectionOfLog,
+    );
+    logVoltage = getChartDataOfLog2(
+      dateValueCollectionOfLog: dateValueCollectionOfLog,
+    );
+  } else {
+    log1Data = getChartDataOfLog1(
+      dateValueCollectionOfLog: dateValueCollectionOfLog,
+    );
+    logVoltage = getChartDataOfLog2(
+      dateValueCollectionOfLog: dateValueCollectionOfLog,
+    );
+  }
+
+  return Stack(
+    alignment: Alignment.center,
+    children: [
+      SingleChildScrollView(
+        // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+        // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+        key: Key('ChartForm_${intValue}_Chart'),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              buildChart(
+                context: context,
+                lineSeriesCollection: log1Data,
+              ),
+              const SizedBox(
+                height: 50.0,
+              ),
+              buildChart(
+                context: context,
+                lineSeriesCollection: logVoltage,
+              ),
+            ],
+          ),
+        ),
+      ),
+      Container(
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(70, 158, 158, 158),
+        ),
+        child: const Center(
+          child: SizedBox(
+            width: CustomStyle.diameter,
+            height: CustomStyle.diameter,
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      )
+    ],
+  );
 }

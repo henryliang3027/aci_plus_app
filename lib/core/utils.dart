@@ -4,9 +4,11 @@ import 'dart:typed_data';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/notice_dialog.dart';
+import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 const int winBeta = int.fromEnvironment('WIN_BETA', defaultValue: 7);
@@ -311,6 +313,33 @@ void checkUnfilledItem({
         NoticeFlag.leftDevicePage = false;
       });
     }
+  }
+}
+
+Future<void> handleUpdateAction({
+  required BuildContext context,
+  required Bloc targetBloc,
+  required bool Function(dynamic state) waitForState,
+  required VoidCallback action,
+  bool reRequestAfterSuccess = true,
+}) async {
+  final homeBloc = context.read<HomeBloc>();
+
+  // Dispatch the cancel event
+  homeBloc.add(const DevicePeriodicUpdateCanceled());
+
+  // Wait for the HomeBloc to emit the cancelled state
+  await homeBloc.stream
+      .firstWhere((state) => state.periodicUpdateEnabled == false);
+
+  // Now perform your main action (e.g., dispatching another bloc event)
+
+  action();
+
+  await targetBloc.stream.firstWhere(waitForState);
+
+  if (reRequestAfterSuccess) {
+    homeBloc.add(const DevicePeriodicUpdateRequested());
   }
 }
 

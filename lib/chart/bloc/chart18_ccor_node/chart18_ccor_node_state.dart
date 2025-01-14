@@ -2,8 +2,8 @@ part of 'chart18_ccor_node_bloc.dart';
 
 class Chart18CCorNodeState extends Equatable {
   const Chart18CCorNodeState({
-    this.logRequestStatus = FormStatus.none,
-    this.eventRequestStatus = FormStatus.none,
+    this.formStatus = FormStatus.none,
+    this.moreLogRequestStatus = FormStatus.none,
     this.dataShareStatus = FormStatus.none,
     this.dataExportStatus = FormStatus.none,
     this.allDataExportStatus = FormStatus.none,
@@ -17,8 +17,8 @@ class Chart18CCorNodeState extends Equatable {
     this.errorMessage = '',
   });
 
-  final FormStatus logRequestStatus;
-  final FormStatus eventRequestStatus;
+  final FormStatus formStatus;
+  final FormStatus moreLogRequestStatus;
   final FormStatus dataShareStatus;
   final FormStatus dataExportStatus;
   final FormStatus allDataExportStatus;
@@ -32,8 +32,8 @@ class Chart18CCorNodeState extends Equatable {
   final String errorMessage;
 
   Chart18CCorNodeState copyWith({
-    FormStatus? logRequestStatus,
-    FormStatus? eventRequestStatus,
+    FormStatus? formStatus,
+    FormStatus? moreLogRequestStatus,
     FormStatus? dataShareStatus,
     FormStatus? dataExportStatus,
     FormStatus? allDataExportStatus,
@@ -47,8 +47,8 @@ class Chart18CCorNodeState extends Equatable {
     String? errorMessage,
   }) {
     return Chart18CCorNodeState(
-      logRequestStatus: logRequestStatus ?? this.logRequestStatus,
-      eventRequestStatus: eventRequestStatus ?? this.eventRequestStatus,
+      formStatus: formStatus ?? this.formStatus,
+      moreLogRequestStatus: moreLogRequestStatus ?? this.moreLogRequestStatus,
       dataShareStatus: dataShareStatus ?? this.dataShareStatus,
       dataExportStatus: dataExportStatus ?? this.dataExportStatus,
       allDataExportStatus: allDataExportStatus ?? this.allDataExportStatus,
@@ -66,8 +66,8 @@ class Chart18CCorNodeState extends Equatable {
 
   @override
   List<Object> get props => [
-        logRequestStatus,
-        eventRequestStatus,
+        formStatus,
+        moreLogRequestStatus,
         dataShareStatus,
         dataExportStatus,
         allDataExportStatus,

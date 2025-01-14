@@ -36,26 +36,20 @@ class Chart18CCorNodeForm extends StatelessWidget {
         if (state.dataExportStatus.isNone &&
             state.dataShareStatus.isNone &&
             state.allDataExportStatus.isNone) {
-          if (state.logRequestStatus.isRequestSuccess) {
+          if (state.formStatus.isRequestSuccess) {
             if (!state.hasNextChunk) {
               // 避免 dialog 重複跳出
               if (ModalRoute.of(context)?.isCurrent == true) {
                 showNoMoreDataDialog(context: context);
               }
             }
-          } else if (state.logRequestStatus.isRequestFailure) {
+            context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
+          } else if (state.formStatus.isRequestFailure) {
             showFailureDialog(
               context: context,
               msg: state.errorMessage,
             );
-          }
-
-          // 如果 state.logRequestStatus 滿足 isRequestSuccess, state.eventRequestStatus 滿足 isRequestFailure
-          if (state.eventRequestStatus.isRequestFailure) {
-            showFailureDialog(
-              context: context,
-              msg: state.errorMessage,
-            );
+            context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
           }
         } else {
           if (state.dataExportStatus.isRequestSuccess) {
@@ -146,6 +140,7 @@ class Chart18CCorNodeForm extends StatelessWidget {
                   ),
                 ),
               );
+            context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
           } else if (state.allDataExportStatus.isRequestFailure) {
             showFailureDialog(
               context: context,
@@ -329,6 +324,9 @@ class _PopupMenu extends StatelessWidget {
                 iconData: Icons.cloud_download_outlined,
                 title: AppLocalizations.of(context)!.downloadAll,
                 onTap: () {
+                  context
+                      .read<HomeBloc>()
+                      .add(const DevicePeriodicUpdateCanceled());
                   showEnterCodeDialog(context: context).then((String? code) {
                     if (code != null) {
                       if (code.isNotEmpty) {
@@ -351,6 +349,10 @@ class _PopupMenu extends StatelessWidget {
                           }
                         });
                       }
+                    } else {
+                      context
+                          .read<HomeBloc>()
+                          .add(const DevicePeriodicUpdateRequested());
                     }
                   });
                 },
@@ -400,8 +402,7 @@ class _DynamicBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Chart18CCorNodeBloc, Chart18CCorNodeState>(
       builder: (context, state) {
-        if (state.eventRequestStatus.isRequestInProgress ||
-            state.logRequestStatus.isRequestInProgress) {
+        if (state.formStatus.isRequestInProgress) {
           return HomeBottomNavigationBar18(
             pageController: pageController,
             selectedIndex: selectedIndex,
@@ -466,8 +467,8 @@ class _MoreDataFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Chart18CCorNodeBloc, Chart18CCorNodeState>(
       builder: (context, state) {
-        bool isRequesting = state.logRequestStatus.isNone ||
-            state.logRequestStatus.isRequestInProgress;
+        bool isRequesting =
+            state.formStatus.isNone || state.formStatus.isRequestInProgress;
 
         return FloatingActionButton(
           shape: const CircleBorder(
@@ -660,63 +661,98 @@ class _LogChartListView extends StatelessWidget {
 
         if (homeState.loadingStatus.isRequestInProgress) {
           return buildLoadingFormWithProgressiveChartView([[], [], [], [], []]);
-        } else if (homeState.loadingStatus == FormStatus.requestSuccess) {
-          if (dataLogChartState.logRequestStatus.isNone) {
-            print('===== get log ======');
-            context.read<Chart18CCorNodeBloc>().add(const LogRequested());
-            return buildLoadingFormWithProgressiveChartView(
-                dataLogChartState.dateValueCollectionOfLog);
-          } else if (dataLogChartState.logRequestStatus.isRequestInProgress) {
-            return buildLoadingFormWithProgressiveChartView(
-                dataLogChartState.dateValueCollectionOfLog);
-          } else if (dataLogChartState.logRequestStatus.isRequestFailure) {
-            return buildLoadingFormWithProgressiveChartView(
-                dataLogChartState.dateValueCollectionOfLog);
-          } else {
-            if (dataLogChartState.eventRequestStatus.isNone) {
-              print('===== get event ======');
+        } else if (homeState.loadingStatus.isRequestSuccess) {
+          if (dataLogChartState.formStatus.isNone) {
+            if (homeState.periodicUpdateEnabled) {
               context
-                  .read<Chart18CCorNodeBloc>()
-                  .add(const Event1P8GCCorNodeRequested());
-              return buildLoadingFormWithProgressiveChartView(
-                  dataLogChartState.dateValueCollectionOfLog);
-            } else if (dataLogChartState
-                .eventRequestStatus.isRequestInProgress) {
-              return buildLoadingFormWithProgressiveChartView(
-                  dataLogChartState.dateValueCollectionOfLog);
-            } else if (dataLogChartState.eventRequestStatus.isRequestFailure) {
-              return buildLoadingFormWithProgressiveChartView(
-                  dataLogChartState.dateValueCollectionOfLog);
+                  .read<HomeBloc>()
+                  .add(const DevicePeriodicUpdateCanceled());
+
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  buildLoadingFormWithProgressiveChartView(
+                      dataLogChartState.dateValueCollectionOfLog),
+                ],
+              );
             } else {
-              return Center(
-                child: SingleChildScrollView(
-                  // 設定 key, 讓 chart 可以 rebuild
-                  // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-                  key: const Key('ChartForm_Chart'),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        buildChart(
-                          getChartDataOfLog1(
-                              dateValueCollectionOfLog:
-                                  dataLogChartState.dateValueCollectionOfLog),
-                        ),
-                        const SizedBox(
-                          height: 50.0,
-                        ),
-                        buildChart(
-                          getChartDataOfLog2(
-                              dateValueCollectionOfLog:
-                                  dataLogChartState.dateValueCollectionOfLog),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+              print('===== get log ======');
+
+              // load more 的時候不用 Initialized
+              if (!dataLogChartState.moreLogRequestStatus.isRequestInProgress) {
+                context.read<Chart18CCorNodeBloc>().add(const Initialized());
+              }
+
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  buildLoadingFormWithProgressiveChartView(
+                      dataLogChartState.dateValueCollectionOfLog),
+                ],
               );
             }
+          } else if (dataLogChartState.formStatus.isRequestInProgress) {
+            return buildLoadingFormWithProgressiveChartView(
+                dataLogChartState.dateValueCollectionOfLog);
+          } else if (dataLogChartState.formStatus.isRequestFailure) {
+            return SingleChildScrollView(
+              // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+              // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+              key: const Key('ChartForm_Chart'),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    buildChart(
+                      getChartDataOfLog1(
+                        dateValueCollectionOfLog:
+                            dataLogChartState.dateValueCollectionOfLog,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 50.0,
+                    ),
+                    buildChart(
+                      getChartDataOfLog2(
+                        dateValueCollectionOfLog:
+                            dataLogChartState.dateValueCollectionOfLog,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            // dataLogChartState.formStatus.isRequestSuccess
+            return SingleChildScrollView(
+              // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
+              // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+              key: const Key('ChartForm_Chart'),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    buildChart(
+                      getChartDataOfLog1(
+                        dateValueCollectionOfLog:
+                            dataLogChartState.dateValueCollectionOfLog,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 50.0,
+                    ),
+                    buildChart(
+                      getChartDataOfLog2(
+                        dateValueCollectionOfLog:
+                            dataLogChartState.dateValueCollectionOfLog,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           }
         } else {
           return SingleChildScrollView(

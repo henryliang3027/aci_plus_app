@@ -327,6 +327,8 @@ class Setting18CCorNodeThresholdView extends StatelessWidget {
           context
               .read<Setting18CCorNodeThresholdBloc>()
               .add(const Initialized());
+
+          context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
         }
 
         if (state.isInitialize) {
@@ -830,6 +832,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
             ),
             onPressed: () {
               context
+                  .read<HomeBloc>()
+                  .add(const DevicePeriodicUpdateRequested());
+              context
                   .read<Setting18CCorNodeThresholdBloc>()
                   .add(const EditModeDisabled());
 
@@ -906,6 +911,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   onPressed: Platform.isWindows
                       ? winBeta >= 7
                           ? () {
+                              context
+                                  .read<HomeBloc>()
+                                  .add(const DevicePeriodicUpdateCanceled());
+
                               // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
                               Navigator.push(
                                       context,
@@ -915,9 +924,17 @@ class _SettingFloatingActionButton extends StatelessWidget {
                                   .then((value) => context
                                       .read<Setting18CCorNodeThresholdBloc>()
                                       .add(const Initialized()));
+
+                              context
+                                  .read<HomeBloc>()
+                                  .add(const DevicePeriodicUpdateRequested());
                             }
                           : null
                       : () {
+                          context
+                              .read<HomeBloc>()
+                              .add(const DevicePeriodicUpdateCanceled());
+
                           // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
                           Navigator.push(
                                   context,
@@ -927,6 +944,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
                               .then((value) => context
                                   .read<Setting18CCorNodeThresholdBloc>()
                                   .add(const Initialized()));
+
+                          context
+                              .read<HomeBloc>()
+                              .add(const DevicePeriodicUpdateRequested());
                         },
                   child: Icon(
                     Icons.settings_input_composite,
@@ -951,6 +972,9 @@ class _SettingFloatingActionButton extends StatelessWidget {
               color: Theme.of(context).colorScheme.onPrimary,
             ),
             onPressed: () {
+              context
+                  .read<HomeBloc>()
+                  .add(const DevicePeriodicUpdateCanceled());
               context
                   .read<Setting18CCorNodeThresholdBloc>()
                   .add(const EditModeEnabled());

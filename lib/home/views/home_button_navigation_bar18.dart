@@ -24,56 +24,15 @@ class HomeBottomNavigationBar18 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // BottomNavigationBar(
-        //   backgroundColor: Theme.of(context).bottomAppBarTheme.color,
-
-        //   type: BottomNavigationBarType.fixed,
-
-        //   showSelectedLabels: false,
-        //   showUnselectedLabels: false,
-        //   items: const [
-        //     BottomNavigationBarItem(
-        //       icon: Icon(CustomIcons.setting),
-        //       label: 'Setting',
-        //       tooltip: '',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(CustomIcons.status),
-        //       label: 'Status',
-        //       tooltip: '',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(CustomIcons.home),
-        //       label: 'Information',
-        //       tooltip: '',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(CustomIcons.chart),
-        //       label: 'Chart',
-        //       tooltip: '',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(CustomIcons.advanced),
-        //       label: 'About',
-        //       tooltip: '',
-        //     ),
-        //   ],
-        //   //if current page is account which is not list in bottom navigation bar, make all items grey color
-        //   //assign a useless 0 as currentIndex for account page
-        //   currentIndex: selectedIndex,
-        //   selectedIconTheme: const IconThemeData(size: 36),
-        //   selectedFontSize: 10.0,
-        //   selectedItemColor:
-        //       Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
-        //   unselectedItemColor:
-        //       Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
-        //   onTap: enableTap ? onTap : null,
-        // );
-
-        Card(
+    return Card(
       elevation: 10, // Adds shadow and elevation
+
       margin: const EdgeInsets.all(0), // Optional padding around the card
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.zero,
+        ),
+      ),
       color: Theme.of(context).bottomAppBarTheme.color,
 
       child: Column(

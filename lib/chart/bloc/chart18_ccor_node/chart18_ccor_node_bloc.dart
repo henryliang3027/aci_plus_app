@@ -22,9 +22,8 @@ class Chart18CCorNodeBloc
   })  : _appLocalizations = appLocalizations,
         _amp18CCorNodeRepository = amp18CCorNodeRepository,
         super(const Chart18CCorNodeState()) {
-    on<LogRequested>(_onLogRequested);
+    on<Initialized>(_onInitialized);
     on<MoreLogRequested>(_onMoreLogRequested);
-    on<Event1P8GCCorNodeRequested>(_onEvent1P8GCCorNodeRequested);
     on<DataExported>(_onDataExported);
     on<DataShared>(_onDataShared);
     on<AllDataExported>(_onAllDataExported);
@@ -33,22 +32,24 @@ class Chart18CCorNodeBloc
   final AppLocalizations _appLocalizations;
   final Amp18CCorNodeRepository _amp18CCorNodeRepository;
 
-  Future<void> _onLogRequested(
-    LogRequested event,
+  Future<void> _onInitialized(
+    Initialized event,
     Emitter<Chart18CCorNodeState> emit,
   ) async {
     emit(state.copyWith(
-      logRequestStatus: FormStatus.requestInProgress,
+      formStatus: FormStatus.requestInProgress,
       dataExportStatus: FormStatus.none,
       dataShareStatus: FormStatus.none,
       allDataExportStatus: FormStatus.none,
     ));
 
+    List<dynamic> resultOfLog1p8G = [];
+
     // 最多 retry 3 次, 連續失敗3次就視為失敗
     for (int i = 0; i < 3; i++) {
       await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
 
-      List<dynamic> resultOfLog1p8G =
+      resultOfLog1p8G =
           await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeLogChunk(0);
 
       if (resultOfLog1p8G[0]) {
@@ -70,7 +71,6 @@ class Chart18CCorNodeBloc
 
         emit(
           state.copyWith(
-            logRequestStatus: FormStatus.requestSuccess,
             log1p8Gs: log1p8Gs,
             dateValueCollectionOfLog: dateValueCollectionOfLog,
             chunkIndex: 1,
@@ -82,18 +82,66 @@ class Chart18CCorNodeBloc
       } else {
         if (i == 2) {
           emit(state.copyWith(
-            logRequestStatus: FormStatus.requestFailure,
+            formStatus: FormStatus.requestFailure,
             errorMessage: 'load logs failed',
           ));
         } else {
           if (resultOfLog1p8G[2] == CharacteristicError.writeDataError.name) {
             emit(state.copyWith(
-              logRequestStatus: FormStatus.requestFailure,
+              formStatus: FormStatus.requestFailure,
               errorMessage: 'load logs failed',
             ));
             break;
           } else {
             continue;
+          }
+        }
+      }
+    }
+
+    // 如果 log 讀取成功才 讀取 event
+    if (resultOfLog1p8G[0]) {
+      // 最多 retry 3 次, 連續失敗3次就視為失敗
+      for (int i = 0; i < 3; i++) {
+        await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
+
+        List<dynamic> resultOfEvent1p8G =
+            await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeEvent();
+
+        if (resultOfEvent1p8G[0]) {
+          List<Event1p8GCCorNode> event1p8Gs = resultOfEvent1p8G[1];
+
+          // 清除 cache
+          _amp18CCorNodeRepository.clearEvent1p8GCCorNodes();
+
+          // 將 event 寫入 cache
+          _amp18CCorNodeRepository.writeEvent1p8GCCorNodes(event1p8Gs);
+
+          emit(
+            state.copyWith(
+              formStatus: FormStatus.requestSuccess,
+              event1p8Gs: event1p8Gs,
+            ),
+          );
+
+          break;
+        } else {
+          if (i == 2) {
+            emit(state.copyWith(
+              formStatus: FormStatus.requestFailure,
+              errorMessage: 'load events failed',
+            ));
+          } else {
+            if (resultOfEvent1p8G[1] ==
+                CharacteristicError.writeDataError.name) {
+              emit(state.copyWith(
+                formStatus: FormStatus.requestFailure,
+                errorMessage: 'load events failed',
+              ));
+              break;
+            } else {
+              continue;
+            }
           }
         }
       }
@@ -105,7 +153,8 @@ class Chart18CCorNodeBloc
     Emitter<Chart18CCorNodeState> emit,
   ) async {
     emit(state.copyWith(
-      logRequestStatus: FormStatus.requestInProgress,
+      formStatus: FormStatus.none,
+      moreLogRequestStatus: FormStatus.requestInProgress,
       dataExportStatus: FormStatus.none,
       dataShareStatus: FormStatus.none,
       allDataExportStatus: FormStatus.none,
@@ -134,7 +183,8 @@ class Chart18CCorNodeBloc
 
         emit(
           state.copyWith(
-            logRequestStatus: FormStatus.requestSuccess,
+            formStatus: FormStatus.requestSuccess,
+            moreLogRequestStatus: FormStatus.requestSuccess,
             log1p8Gs: log1p8Gs,
             dateValueCollectionOfLog: dateValueCollectionOfLog,
             chunkIndex: state.chunkIndex + 1,
@@ -146,70 +196,16 @@ class Chart18CCorNodeBloc
       } else {
         if (i == 2) {
           emit(state.copyWith(
-            logRequestStatus: FormStatus.requestFailure,
+            formStatus: FormStatus.requestFailure,
+            moreLogRequestStatus: FormStatus.requestFailure,
             errorMessage: 'load logs failed',
           ));
         } else {
           if (resultOfLog1p8G[2] == CharacteristicError.writeDataError.name) {
             emit(state.copyWith(
-              logRequestStatus: FormStatus.requestFailure,
+              formStatus: FormStatus.requestFailure,
+              moreLogRequestStatus: FormStatus.requestFailure,
               errorMessage: 'load logs failed',
-            ));
-            break;
-          } else {
-            continue;
-          }
-        }
-      }
-    }
-  }
-
-  Future<void> _onEvent1P8GCCorNodeRequested(
-    Event1P8GCCorNodeRequested event,
-    Emitter<Chart18CCorNodeState> emit,
-  ) async {
-    emit(state.copyWith(
-      eventRequestStatus: FormStatus.requestInProgress,
-      dataExportStatus: FormStatus.none,
-      dataShareStatus: FormStatus.none,
-      allDataExportStatus: FormStatus.none,
-    ));
-
-    // 最多 retry 3 次, 連續失敗3次就視為失敗
-    for (int i = 0; i < 3; i++) {
-      await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
-
-      List<dynamic> resultOfEvent1p8G =
-          await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeEvent();
-
-      if (resultOfEvent1p8G[0]) {
-        List<Event1p8GCCorNode> event1p8Gs = resultOfEvent1p8G[1];
-
-        // 清除 cache
-        _amp18CCorNodeRepository.clearEvent1p8GCCorNodes();
-
-        // 將 event 寫入 cache
-        _amp18CCorNodeRepository.writeEvent1p8GCCorNodes(event1p8Gs);
-
-        emit(
-          state.copyWith(
-            eventRequestStatus: FormStatus.requestSuccess,
-            event1p8Gs: event1p8Gs,
-          ),
-        );
-
-        break;
-      } else {
-        if (i == 2) {
-          emit(state.copyWith(
-            eventRequestStatus: FormStatus.requestFailure,
-            errorMessage: 'load events failed',
-          ));
-        } else {
-          if (resultOfEvent1p8G[1] == CharacteristicError.writeDataError.name) {
-            emit(state.copyWith(
-              eventRequestStatus: FormStatus.requestFailure,
-              errorMessage: 'load events failed',
             ));
             break;
           } else {

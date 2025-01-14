@@ -4,8 +4,8 @@ abstract class Chart18CCorNodeEvent extends Equatable {
   const Chart18CCorNodeEvent();
 }
 
-class LogRequested extends Chart18CCorNodeEvent {
-  const LogRequested();
+class Initialized extends Chart18CCorNodeEvent {
+  const Initialized();
 
   @override
   List<Object?> get props => [];
@@ -13,13 +13,6 @@ class LogRequested extends Chart18CCorNodeEvent {
 
 class MoreLogRequested extends Chart18CCorNodeEvent {
   const MoreLogRequested();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class Event1P8GCCorNodeRequested extends Chart18CCorNodeEvent {
-  const Event1P8GCCorNodeRequested();
 
   @override
   List<Object?> get props => [];
