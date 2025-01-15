@@ -289,13 +289,6 @@ class Setting18AttributeView extends StatelessWidget {
             messageRows: rows,
           );
           context.read<Setting18AttributeBloc>().add(const Initialized());
-
-          context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
-
-          // 重新啟動 CEQ 定時偵測
-          // context
-          //     .read<Setting18TabBarBloc>()
-          //     .add(const CurrentForwardCEQPeriodicUpdateRequested());
         } else if (state.gpsStatus.isRequestFailure) {
           showFailureDialog(
             getMessageLocalization(
@@ -1202,10 +1195,6 @@ class _SettingFloatingActionButton extends StatelessWidget {
             ),
             onPressed: () {
               context
-                  .read<HomeBloc>()
-                  .add(const DevicePeriodicUpdateRequested());
-
-              context
                   .read<Setting18AttributeBloc>()
                   .add(const EditModeDisabled());
 
@@ -1227,30 +1216,37 @@ class _SettingFloatingActionButton extends StatelessWidget {
                 : Colors.grey.withAlpha(200),
             onPressed: enableSubmission
                 ? () async {
+                    bool shouldSubmit = false;
+
                     if (kDebugMode) {
-                      // 停止 CEQ 定時偵測
-                      // context
-                      //     .read<Setting18TabBarBloc>()
-                      //     .add(const CurrentForwardCEQPeriodicUpdateCanceled());
-                      context
-                          .read<Setting18AttributeBloc>()
-                          .add(const SettingSubmitted());
+                      // In debug mode, we always submit
+                      shouldSubmit = true;
                     } else {
+                      // In release mode, show the confirmation dialog
                       bool? isMatch =
                           await showConfirmInputDialog(context: context);
-
                       if (context.mounted) {
-                        if (isMatch != null) {
-                          if (isMatch) {
-                            // 停止 CEQ 定時偵測
-                            // context.read<Setting18TabBarBloc>().add(
-                            //     const CurrentForwardCEQPeriodicUpdateCanceled());
-                            context
-                                .read<Setting18AttributeBloc>()
-                                .add(const SettingSubmitted());
-                          }
-                        }
+                        shouldSubmit = isMatch ?? false;
                       }
+                    }
+
+                    if (shouldSubmit) {
+                      handleUpdateAction(
+                        context: context,
+                        targetBloc: context.read<Setting18AttributeBloc>(),
+                        action: () {
+                          context
+                              .read<Setting18AttributeBloc>()
+                              .add(const SettingSubmitted());
+                        },
+                        waitForState: (state) {
+                          Setting18AttributeState setting18AttributeState =
+                              state as Setting18AttributeState;
+
+                          return setting18AttributeState
+                              .submissionStatus.isSubmissionSuccess;
+                        },
+                      );
                     }
                   }
                 : null,
@@ -1281,69 +1277,26 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   shape: const CircleBorder(
                     side: BorderSide.none,
                   ),
-                  backgroundColor: Platform.isWindows
-                      ? winBeta >= 7
-                          ? Theme.of(context).colorScheme.primary.withAlpha(200)
-                          : Colors.grey.withAlpha(200)
-                      : Theme.of(context).colorScheme.primary.withAlpha(200),
-                  onPressed: Platform.isWindows
-                      ? winBeta >= 7
-                          ? () {
-                              context
-                                  .read<HomeBloc>()
-                                  .add(const DevicePeriodicUpdateCanceled());
-                              // 停止 CEQ 定時偵測
-                              // context.read<Setting18TabBarBloc>().add(
-                              //     const CurrentForwardCEQPeriodicUpdateCanceled());
+                  backgroundColor:
+                      Theme.of(context).colorScheme.primary.withAlpha(200),
 
-                              // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
-                              Navigator.push(
-                                  context,
-                                  Setting18GraphPage.route(
-                                    graphFilePath: graphFilePath,
-                                  )).then((value) {
-                                context
-                                    .read<Setting18AttributeBloc>()
-                                    .add(const Initialized());
+                  onPressed: () {
+                    // 停止 CEQ 定時偵測
+                    // context.read<Setting18TabBarBloc>().add(
+                    //     const CurrentForwardCEQPeriodicUpdateCanceled());
 
-                                // 重新啟動 CEQ 定時偵測
-                                // context.read<Setting18TabBarBloc>().add(
-                                //     const CurrentForwardCEQPeriodicUpdateRequested());
+                    // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
+                    Navigator.push(
+                        context,
+                        Setting18GraphPage.route(
+                          graphFilePath: graphFilePath,
+                        )).then((value) {
+                      context
+                          .read<Setting18AttributeBloc>()
+                          .add(const Initialized());
+                    });
+                  },
 
-                                context
-                                    .read<HomeBloc>()
-                                    .add(const DevicePeriodicUpdateRequested());
-                              });
-                            }
-                          : null
-                      : () {
-                          // ios, android
-                          context
-                              .read<HomeBloc>()
-                              .add(const DevicePeriodicUpdateCanceled());
-                          // 停止 CEQ 定時偵測
-                          // context.read<Setting18TabBarBloc>().add(
-                          //     const CurrentForwardCEQPeriodicUpdateCanceled());
-
-                          // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
-                          Navigator.push(
-                              context,
-                              Setting18GraphPage.route(
-                                graphFilePath: graphFilePath,
-                              )).then((value) {
-                            context
-                                .read<Setting18AttributeBloc>()
-                                .add(const Initialized());
-
-                            // 重新啟動 CEQ 定時偵測
-                            // context.read<Setting18TabBarBloc>().add(
-                            //     const CurrentForwardCEQPeriodicUpdateRequested());
-
-                            context
-                                .read<HomeBloc>()
-                                .add(const DevicePeriodicUpdateRequested());
-                          });
-                        },
                   child: Icon(
                     Icons.settings_input_composite,
                     color: Theme.of(context).colorScheme.onPrimary,
@@ -1367,10 +1320,6 @@ class _SettingFloatingActionButton extends StatelessWidget {
               color: Theme.of(context).colorScheme.onPrimary,
             ),
             onPressed: () {
-              context
-                  .read<HomeBloc>()
-                  .add(const DevicePeriodicUpdateCanceled());
-
               context
                   .read<Setting18AttributeBloc>()
                   .add(const EditModeEnabled());

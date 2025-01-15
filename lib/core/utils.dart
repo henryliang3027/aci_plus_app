@@ -319,9 +319,9 @@ void checkUnfilledItem({
 Future<void> handleUpdateAction({
   required BuildContext context,
   required Bloc targetBloc,
-  required bool Function(dynamic state) waitForState,
   required VoidCallback action,
-  bool reRequestAfterSuccess = true,
+  required bool Function(dynamic state)? waitForState,
+  bool isResumeUpdate = true,
 }) async {
   final homeBloc = context.read<HomeBloc>();
 
@@ -336,10 +336,11 @@ Future<void> handleUpdateAction({
 
   action();
 
-  await targetBloc.stream.firstWhere(waitForState);
-
-  if (reRequestAfterSuccess) {
-    homeBloc.add(const DevicePeriodicUpdateRequested());
+  if (isResumeUpdate) {
+    if (waitForState != null) {
+      await targetBloc.stream.firstWhere(waitForState);
+      homeBloc.add(const DevicePeriodicUpdateRequested());
+    }
   }
 }
 

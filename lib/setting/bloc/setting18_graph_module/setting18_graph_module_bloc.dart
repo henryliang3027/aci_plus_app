@@ -1449,13 +1449,13 @@ class Setting18GraphModuleBloc
           .add('${DataKey.ingressSetting4.name},$resultOfSetReturnIngress4');
     }
 
-    if (state.tgcCableLength != state.initialValues[DataKey.tgcCableLength]) {
-      bool resultOfSetTGCCableLength =
-          await _amp18Repository.set1p8GTGCCableLength(state.tgcCableLength);
+    // if (state.tgcCableLength != state.initialValues[DataKey.tgcCableLength]) {
+    //   bool resultOfSetTGCCableLength =
+    //       await _amp18Repository.set1p8GTGCCableLength(state.tgcCableLength);
 
-      settingResult
-          .add('${DataKey.tgcCableLength.name},$resultOfSetTGCCableLength');
-    }
+    //   settingResult
+    //       .add('${DataKey.tgcCableLength.name},$resultOfSetTGCCableLength');
+    // }
 
     // if (state.usTGC != state.initialValues[DataKey.usTGC]) {
     //   bool resultOfSetUSTGC = await _amp18Repository.set1p8USTGC(state.usTGC);
@@ -1463,12 +1463,12 @@ class Setting18GraphModuleBloc
     //   settingResult.add('${DataKey.usTGC.name},$resultOfSetUSTGC');
     // }
 
-    if (state.splitOption != state.initialValues[DataKey.splitOption]) {
-      bool resultOfSetSplitOption =
-          await _amp18Repository.set1p8GSplitOption(state.splitOption);
+    // if (state.splitOption != state.initialValues[DataKey.splitOption]) {
+    //   bool resultOfSetSplitOption =
+    //       await _amp18Repository.set1p8GSplitOption(state.splitOption);
 
-      settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
-    }
+    //   settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
+    // }
 
     if (state.pilotFrequencyMode !=
         state.initialValues[DataKey.pilotFrequencyMode]) {

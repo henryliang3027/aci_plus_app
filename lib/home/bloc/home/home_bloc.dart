@@ -864,6 +864,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         partId: partId,
         deviceNowDateTime: deviceNowDateTime,
       );
+
+      // 執行完上面的 寫入日期 後休息一段時間再進行任何讀取動作 比較不會有 data 收不完整的情況發生
+      await Future.delayed(const Duration(milliseconds: 1000));
     }
 
     emit(state.copyWith(
@@ -1241,12 +1244,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     _cancelUpdateTimer();
-
-    // 增加一些延遲讓藍牙完成正在傳遞的資料
-    // 如果指令發出去後馬上暫停 timer, 沒有增加一些延遲就進行下一個指令, 會引發資料接收錯亂
-    await Future.delayed(const Duration(
-      milliseconds: 500,
-    ));
 
     emit(state.copyWith(
       periodicUpdateEnabled: false,

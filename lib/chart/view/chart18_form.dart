@@ -176,7 +176,6 @@ class _Chart18FormState extends State<Chart18Form>
                 ),
               ),
             );
-          context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
         } else if (state.allDataExportStatus.isRequestFailure) {
           showFailureDialog(state.errorMessage);
         } else if (state.rfLevelExportStatus == FormStatus.requestSuccess) {
@@ -493,6 +492,9 @@ class _PopupMenu extends StatelessWidget {
                                           errorMessage: errorMessage,
                                           code: code,
                                         ));
+
+                                    context.read<HomeBloc>().add(
+                                        const DevicePeriodicUpdateRequested());
                                   }
                                 }
                               });
@@ -597,6 +599,9 @@ class _PopupMenu extends StatelessWidget {
                                           errorMessage: errorMessage,
                                           code: code,
                                         ));
+
+                                    context.read<HomeBloc>().add(
+                                        const DevicePeriodicUpdateRequested());
                                   }
                                 }
                               });

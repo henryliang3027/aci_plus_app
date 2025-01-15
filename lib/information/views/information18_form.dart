@@ -459,19 +459,9 @@ class _LoadPresetButton extends StatelessWidget {
         return ElevatedButton(
           onPressed: loadingStatus.isRequestSuccess && state.configs.isNotEmpty
               ? () async {
-                  // 要進行設定前先暫定期更新, 避免設定過程中同時要求資訊
-                  context
-                      .read<HomeBloc>()
-                      .add(const DevicePeriodicUpdateCanceled());
-
                   showSelectConfigDialog(
                     configs: state.configs,
-                  ).then((value) {
-                    // 設定結束後, 恢復定期更新
-                    context
-                        .read<HomeBloc>()
-                        .add(const DevicePeriodicUpdateRequested());
-                  });
+                  );
                 }
               : null,
           style: ElevatedButton.styleFrom(

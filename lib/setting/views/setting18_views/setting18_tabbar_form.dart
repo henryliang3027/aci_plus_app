@@ -45,14 +45,8 @@ class Setting18TabBarForm extends StatelessWidget {
             ],
           );
         } else if (state.loadingStatus.isRequestSuccess) {
-          // context
-          //     .read<Setting18TabBarBloc>()
-          //     .add(const CurrentForwardCEQPeriodicUpdateRequested());
           return const _TimerTabBarView();
         } else {
-          // context
-          //     .read<Setting18TabBarBloc>()
-          //     .add(const CurrentForwardCEQPeriodicUpdateCanceled());
           return const _TimerTabBarView();
         }
       },

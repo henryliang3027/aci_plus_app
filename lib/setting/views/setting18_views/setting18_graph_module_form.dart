@@ -2,6 +2,7 @@ import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_graph_module/setting18_graph_module_bloc.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
@@ -284,11 +285,6 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
               );
 
               context.read<Setting18GraphModuleBloc>().add(const Initialized());
-
-              // 重新啟動 CEQ 定時偵測
-              // context
-              //     .read<Setting18GraphModuleBloc>()
-              //     .add(const CurrentForwardCEQPeriodicUpdateRequested());
             }
           },
         ),
@@ -351,11 +347,6 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
                     context
                         .read<Setting18GraphModuleBloc>()
                         .add(const Initialized(useCache: false));
-
-                    // 重新啟動 CEQ 定時偵測
-                    // context
-                    //     .read<Setting18GraphModuleBloc>()
-                    //     .add(const CurrentForwardCEQPeriodicUpdateRequested());
                   });
                 }
               }
@@ -1815,30 +1806,37 @@ class _SettingFloatingActionButton extends StatelessWidget {
                 : Colors.grey.withAlpha(200),
             onPressed: enableSubmission && editable
                 ? () async {
+                    bool shouldSubmit = false;
+
                     if (kDebugMode) {
-                      // 停止 CEQ 定時偵測再進行設定
-                      // context
-                      //     .read<Setting18GraphModuleBloc>()
-                      //     .add(const CurrentForwardCEQPeriodicUpdateCanceled());
-                      context
-                          .read<Setting18GraphModuleBloc>()
-                          .add(const SettingSubmitted());
+                      // In debug mode, we always submit
+                      shouldSubmit = true;
                     } else {
+                      // In release mode, show the confirmation dialog
                       bool? isMatch =
                           await showConfirmInputDialog(context: context);
-
                       if (context.mounted) {
-                        if (isMatch != null) {
-                          if (isMatch) {
-                            // 停止 CEQ 定時偵測再進行設定
-                            // context.read<Setting18GraphModuleBloc>().add(
-                            //     const CurrentForwardCEQPeriodicUpdateCanceled());
-                            context
-                                .read<Setting18GraphModuleBloc>()
-                                .add(const SettingSubmitted());
-                          }
-                        }
+                        shouldSubmit = isMatch ?? false;
                       }
+                    }
+
+                    if (shouldSubmit) {
+                      handleUpdateAction(
+                        context: context,
+                        targetBloc: context.read<Setting18GraphModuleBloc>(),
+                        action: () {
+                          context
+                              .read<Setting18GraphModuleBloc>()
+                              .add(const SettingSubmitted());
+                        },
+                        waitForState: (state) {
+                          Setting18GraphModuleState setting18GraphModuleState =
+                              state as Setting18GraphModuleState;
+
+                          return setting18GraphModuleState
+                              .submissionStatus.isSubmissionSuccess;
+                        },
+                      );
                     }
                   }
                 : null,

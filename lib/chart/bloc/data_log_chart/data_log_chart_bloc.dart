@@ -256,8 +256,7 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
     Emitter<DataLogChartState> emit,
   ) async {
     emit(state.copyWith(
-      formStatus: FormStatus.none,
-      moreLogRequestStatus: FormStatus.requestInProgress,
+      formStatus: FormStatus.requestInProgress,
     ));
 
     List<Log1p8G> log1p8Gs = [];
@@ -282,7 +281,6 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
         emit(
           state.copyWith(
             formStatus: FormStatus.requestSuccess,
-            moreLogRequestStatus: FormStatus.requestSuccess,
             log1p8Gs: log1p8Gs,
             dateValueCollectionOfLog: dateValueCollectionOfLog,
             chunkIndex: state.chunkIndex + 1,
@@ -295,14 +293,12 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
         if (i == 2) {
           emit(state.copyWith(
             formStatus: FormStatus.requestFailure,
-            moreLogRequestStatus: FormStatus.requestFailure,
             errorMessage: 'Failed to load logs',
           ));
         } else {
           if (resultOfLog1p8G[2] == CharacteristicError.writeDataError.name) {
             emit(state.copyWith(
               formStatus: FormStatus.requestFailure,
-              moreLogRequestStatus: FormStatus.requestFailure,
               errorMessage: 'Failed to load logs',
             ));
             break;

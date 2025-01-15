@@ -827,12 +827,12 @@ class Setting18RegulationBloc
 
     List<String> settingResult = [];
 
-    if (state.splitOption != state.initialValues[DataKey.splitOption]) {
-      bool resultOfSetSplitOption =
-          await _amp18Repository.set1p8GSplitOption(state.splitOption);
+    // if (state.splitOption != state.initialValues[DataKey.splitOption]) {
+    //   bool resultOfSetSplitOption =
+    //       await _amp18Repository.set1p8GSplitOption(state.splitOption);
 
-      settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
-    }
+    //   settingResult.add('${DataKey.splitOption.name},$resultOfSetSplitOption');
+    // }
 
     if (state.firstChannelLoadingFrequency.value !=
         state.initialValues[DataKey.firstChannelLoadingFrequency]) {

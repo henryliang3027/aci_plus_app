@@ -2,6 +2,7 @@ import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/information/bloc/information18_preset/information18_preset_bloc.dart';
 import 'package:aci_plus_app/repositories/config.dart';
@@ -336,6 +337,39 @@ class _ActionButton extends StatelessWidget {
               backgroundColor:
                   Theme.of(context).colorScheme.primary.withAlpha(200),
               onPressed: () async {
+                bool shouldSubmit = false;
+
+                if (kDebugMode) {
+                  // In debug mode, we always submit
+                  shouldSubmit = true;
+                } else {
+                  // In release mode, show the confirmation dialog
+                  bool? isMatch =
+                      await showConfirmInputDialog(context: context);
+                  if (context.mounted) {
+                    shouldSubmit = isMatch ?? false;
+                  }
+                }
+
+                if (shouldSubmit) {
+                  handleUpdateAction(
+                    context: context,
+                    targetBloc: context.read<Information18PresetBloc>(),
+                    action: () {
+                      context
+                          .read<Information18PresetBloc>()
+                          .add(const ConfigExecuted());
+                    },
+                    waitForState: (state) {
+                      Information18PresetState information18PresetState =
+                          state as Information18PresetState;
+
+                      return information18PresetState
+                          .settingStatus.isSubmissionSuccess;
+                    },
+                  );
+                }
+
                 if (kDebugMode) {
                   context
                       .read<Information18PresetBloc>()
