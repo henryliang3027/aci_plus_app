@@ -55,30 +55,21 @@ class Setting18AttributeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Setting18TabBarState setting18tabBarState =
-    //     context.watch<Setting18TabBarBloc>().state;
-
-    // print(
-    //     'setting18 configure view ${setting18tabBarState.isForwardCEQIndexChanged}');
-    // if (setting18tabBarState.isForwardCEQIndexChanged) {
-    //   showCurrentForwardCEQChangedDialog(context).then((bool? isConfirm) {
-    //     // 重新 Initialized, 讀取並顯示空值
-    //     context
-    //         .read<Setting18AttributeBloc>()
-    //         .add(const Initialized(useCache: false));
-    //   });
-    // }
-
-    HomeState homeState = context.read<HomeBloc>().state;
+    HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
     int firmwareVersion = convertFirmwareVersionStringToInt(
         homeState.characteristicData[DataKey.firmwareVersion] ?? '0');
-    // String currentDetectedSplitOption =
-    //     homeState.characteristicData[DataKey.currentDetectedSplitOption] ?? '0';
 
     if (homeState.connectionStatus.isRequestFailure) {
       // 重新 Initialized, 讀取並顯示空值
       context.read<Setting18AttributeBloc>().add(const Initialized());
+    }
+
+    if (homeState.ceqStatus != CEQStatus.none) {
+      print('Initialized useCache: false');
+      context
+          .read<Setting18AttributeBloc>()
+          .add(const Initialized(useCache: false));
     }
 
     String formatResultValue(String boolValue) {
@@ -1174,158 +1165,164 @@ class _SettingFloatingActionButton extends StatelessWidget {
     Widget getEnabledEditModeTools({
       required bool enableSubmission,
     }) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          getConfigureSetupWizard(
-            context: context,
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          FloatingActionButton(
-            shape: const CircleBorder(
-              side: BorderSide.none,
+      return SingleChildScrollView(
+        clipBehavior: Clip.none,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            getConfigureSetupWizard(
+              context: context,
             ),
-            backgroundColor:
-                Theme.of(context).colorScheme.primary.withAlpha(200),
-            child: Icon(
-              CustomIcons.cancel,
-              color: Theme.of(context).colorScheme.onPrimary,
+            const SizedBox(
+              height: 10.0,
             ),
-            onPressed: () {
-              context
-                  .read<Setting18AttributeBloc>()
-                  .add(const EditModeDisabled());
+            FloatingActionButton(
+              shape: const CircleBorder(
+                side: BorderSide.none,
+              ),
+              backgroundColor:
+                  Theme.of(context).colorScheme.primary.withAlpha(200),
+              child: Icon(
+                CustomIcons.cancel,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              onPressed: () {
+                context
+                    .read<Setting18AttributeBloc>()
+                    .add(const EditModeDisabled());
 
-              FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.focusedChild?.unfocus();
-              }
-            },
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          FloatingActionButton(
-            shape: const CircleBorder(
-              side: BorderSide.none,
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.focusedChild?.unfocus();
+                }
+              },
             ),
-            backgroundColor: enableSubmission
-                ? Theme.of(context).colorScheme.primary.withAlpha(200)
-                : Colors.grey.withAlpha(200),
-            onPressed: enableSubmission
-                ? () async {
-                    bool shouldSubmit = false;
+            const SizedBox(
+              height: 10.0,
+            ),
+            FloatingActionButton(
+              shape: const CircleBorder(
+                side: BorderSide.none,
+              ),
+              backgroundColor: enableSubmission
+                  ? Theme.of(context).colorScheme.primary.withAlpha(200)
+                  : Colors.grey.withAlpha(200),
+              onPressed: enableSubmission
+                  ? () async {
+                      bool shouldSubmit = false;
 
-                    if (kDebugMode) {
-                      // In debug mode, we always submit
-                      shouldSubmit = true;
-                    } else {
-                      // In release mode, show the confirmation dialog
-                      bool? isMatch =
-                          await showConfirmInputDialog(context: context);
-                      if (context.mounted) {
-                        shouldSubmit = isMatch ?? false;
+                      if (kDebugMode) {
+                        // In debug mode, we always submit
+                        shouldSubmit = true;
+                      } else {
+                        // In release mode, show the confirmation dialog
+                        bool? isMatch =
+                            await showConfirmInputDialog(context: context);
+                        if (context.mounted) {
+                          shouldSubmit = isMatch ?? false;
+                        }
+                      }
+
+                      if (shouldSubmit) {
+                        handleUpdateAction(
+                          context: context,
+                          targetBloc: context.read<Setting18AttributeBloc>(),
+                          action: () {
+                            context
+                                .read<Setting18AttributeBloc>()
+                                .add(const SettingSubmitted());
+                          },
+                          waitForState: (state) {
+                            Setting18AttributeState setting18AttributeState =
+                                state as Setting18AttributeState;
+
+                            return setting18AttributeState
+                                .submissionStatus.isSubmissionSuccess;
+                          },
+                        );
                       }
                     }
-
-                    if (shouldSubmit) {
-                      handleUpdateAction(
-                        context: context,
-                        targetBloc: context.read<Setting18AttributeBloc>(),
-                        action: () {
-                          context
-                              .read<Setting18AttributeBloc>()
-                              .add(const SettingSubmitted());
-                        },
-                        waitForState: (state) {
-                          Setting18AttributeState setting18AttributeState =
-                              state as Setting18AttributeState;
-
-                          return setting18AttributeState
-                              .submissionStatus.isSubmissionSuccess;
-                        },
-                      );
-                    }
-                  }
-                : null,
-            child: Icon(
-              Icons.check,
-              color: Theme.of(context).colorScheme.onPrimary,
+                  : null,
+              child: Icon(
+                Icons.check,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
     }
 
     Widget getDisabledEditModeTools() {
       String graphFilePath = settingGraphFilePath[partId] ?? '';
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          getConfigureSetupWizard(
-            context: context,
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          graphFilePath.isNotEmpty
-              ? FloatingActionButton(
-                  // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
-                  heroTag: null,
-                  shape: const CircleBorder(
-                    side: BorderSide.none,
-                  ),
-                  backgroundColor:
-                      Theme.of(context).colorScheme.primary.withAlpha(200),
-
-                  onPressed: () {
-                    // 停止 CEQ 定時偵測
-                    // context.read<Setting18TabBarBloc>().add(
-                    //     const CurrentForwardCEQPeriodicUpdateCanceled());
-
-                    // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
-                    Navigator.push(
-                        context,
-                        Setting18GraphPage.route(
-                          graphFilePath: graphFilePath,
-                        )).then((value) {
-                      context
-                          .read<Setting18AttributeBloc>()
-                          .add(const Initialized());
-                    });
-                  },
-
-                  child: Icon(
-                    Icons.settings_input_composite,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                )
-              : const SizedBox(
-                  width: 0,
-                  height: 0,
-                ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          FloatingActionButton(
-            shape: const CircleBorder(
-              side: BorderSide.none,
+      return SingleChildScrollView(
+        clipBehavior: Clip.none,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            getConfigureSetupWizard(
+              context: context,
             ),
-            backgroundColor:
-                Theme.of(context).colorScheme.primary.withAlpha(200),
-            child: Icon(
-              Icons.edit,
-              color: Theme.of(context).colorScheme.onPrimary,
+            const SizedBox(
+              height: 10.0,
             ),
-            onPressed: () {
-              context
-                  .read<Setting18AttributeBloc>()
-                  .add(const EditModeEnabled());
-            },
-          ),
-        ],
+            graphFilePath.isNotEmpty
+                ? FloatingActionButton(
+                    // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
+                    heroTag: null,
+                    shape: const CircleBorder(
+                      side: BorderSide.none,
+                    ),
+                    backgroundColor:
+                        Theme.of(context).colorScheme.primary.withAlpha(200),
+
+                    onPressed: () {
+                      // 停止 CEQ 定時偵測
+                      // context.read<Setting18TabBarBloc>().add(
+                      //     const CurrentForwardCEQPeriodicUpdateCanceled());
+
+                      // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
+                      Navigator.push(
+                          context,
+                          Setting18GraphPage.route(
+                            graphFilePath: graphFilePath,
+                          )).then((value) {
+                        context
+                            .read<Setting18AttributeBloc>()
+                            .add(const Initialized());
+                      });
+                    },
+
+                    child: Icon(
+                      Icons.settings_input_composite,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  )
+                : const SizedBox(
+                    width: 0,
+                    height: 0,
+                  ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            FloatingActionButton(
+              shape: const CircleBorder(
+                side: BorderSide.none,
+              ),
+              backgroundColor:
+                  Theme.of(context).colorScheme.primary.withAlpha(200),
+              child: Icon(
+                Icons.edit,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              onPressed: () {
+                context
+                    .read<Setting18AttributeBloc>()
+                    .add(const EditModeEnabled());
+              },
+            ),
+          ],
+        ),
       );
     }
 

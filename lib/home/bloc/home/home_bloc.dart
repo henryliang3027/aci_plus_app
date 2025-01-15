@@ -47,6 +47,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DeviceConnectionChanged>(_onDeviceConnectionChanged);
     on<DevicePeriodicUpdateRequested>(_onDevicePeriodicUpdateRequested);
     on<DevicePeriodicUpdateCanceled>(_onDevicePeriodicUpdateCanceled);
+    on<DevicePeriodicUpdate>(_onDevicePeriodicUpdate);
     // on<NeedsDataReloaded>(_onNeedsDataReloaded);
     // on<testTimeout>(_onTestTimeout);
   }
@@ -63,6 +64,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _characteristicDataStreamSubscription;
 
   Timer? _timer;
+  final List<String> fakeData = [
+    '1.8',
+    '1.2',
+    '1.8',
+    '1.2',
+    '1.2',
+    '1.8',
+    '1.8',
+    '1.2'
+  ];
+  String fakePreviousCEQ = '';
 
   // final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer();
 
@@ -1183,11 +1195,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // timer 啟動後 5 秒才會發 AlarmUpdated, 所以第0秒時先 AlarmUpdated
 
     String partId = state.characteristicData[DataKey.partId] ?? '';
-    _onAlarmUpdated(partId: partId);
+    add(DevicePeriodicUpdate(partId: partId));
 
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       print('alarm trigger timer: ${timer.tick}');
-      _onAlarmUpdated(partId: partId);
+      add(DevicePeriodicUpdate(partId: partId));
     });
 
     print('alarm trigger started');
@@ -1197,19 +1209,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
   }
 
-  Future<void> _onAlarmUpdated({required String partId}) async {
+  Future<void> _onDevicePeriodicUpdate(
+    DevicePeriodicUpdate event,
+    Emitter<HomeState> emit,
+  ) async {
+    String partId = state.characteristicData[DataKey.partId] ?? '';
     if (partId == '4') {
       // CCor Node
       Stopwatch stopwatch = Stopwatch()..start();
-      List<dynamic> result =
+      List<dynamic> resultOf1p8GCCorNodeA1 =
           await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeA1(
         timeout: const Duration(seconds: 1),
       );
       print(
           'requestCommand1p8GCCorNodeA1() alarm executed in ${stopwatch.elapsed.inMilliseconds}');
 
-      if (result[0]) {
-        Map<DataKey, String> currentValues = result[1];
+      if (resultOf1p8GCCorNodeA1[0]) {
+        Map<DataKey, String> currentValues = resultOf1p8GCCorNodeA1[1];
         _amp18CCorNodeRepository.updateDataWithGivenValuePairs(currentValues);
       } else {
         print('requestCommand1p8GCCorNodeA1() alarm updated failed');
@@ -1217,15 +1233,59 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } else {
       // Amp
       Stopwatch stopwatch = Stopwatch()..start();
-      List<dynamic> result = await _amp18Repository.requestCommand1p8G2(
+      List<dynamic> resultOf1p8G2 = await _amp18Repository.requestCommand1p8G2(
         timeout: const Duration(seconds: 1),
       );
       print(
           'requestCommand1p8G2() alarm executed in ${stopwatch.elapsed.inMilliseconds}');
 
-      if (result[0]) {
-        Map<DataKey, String> currentValues = result[1];
+      if (resultOf1p8G2[0]) {
+        Map<DataKey, String> currentValues = resultOf1p8G2[1];
         _amp18Repository.updateDataWithGivenValuePairs(currentValues);
+
+        // String currentForwardCEQ = fakeData[_timer!.tick % fakeData.length];
+
+        // CEQStatus ceqStatus;
+        // print('$fakePreviousCEQ, $currentForwardCEQ');
+        // if (fakePreviousCEQ == '1.2' && currentForwardCEQ == '1.8') {
+        //   ceqStatus = CEQStatus.from1P2GTo1P8G;
+        // } else if (fakePreviousCEQ == '1.8' && currentForwardCEQ == '1.2') {
+        //   ceqStatus = CEQStatus.from1P8GTo1P2G;
+        // } else {
+        //   ceqStatus = CEQStatus.none;
+        // }
+
+        // print(ceqStatus);
+
+        // emit(state.copyWith(
+        //   ceqStatus: ceqStatus,
+        // ));
+
+        // fakePreviousCEQ = currentForwardCEQ;
+
+        String currentCEQType = getCEQTypeFromForwardCEQIndex(
+            currentValues[DataKey.currentForwardCEQIndex] ?? '255');
+
+        if (currentCEQType != 'N/A') {
+          CEQStatus ceqStatus;
+          if (ForwardCEQFlag.forwardCEQType == '1.2' &&
+              currentCEQType == '1.8') {
+            ceqStatus = CEQStatus.from1P2GTo1P8G;
+          } else if (ForwardCEQFlag.forwardCEQType == '1.8' &&
+              currentCEQType == '1.2') {
+            ceqStatus = CEQStatus.from1P8GTo1P2G;
+          } else {
+            ceqStatus = CEQStatus.none;
+          }
+
+          if (ForwardCEQFlag.forwardCEQType != currentCEQType) {
+            ForwardCEQFlag.forwardCEQType = currentCEQType;
+
+            emit(state.copyWith(
+              ceqStatus: ceqStatus,
+            ));
+          }
+        }
       } else {
         print('requestCommand1p8G2() alarm updated failed');
       }

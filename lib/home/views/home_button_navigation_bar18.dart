@@ -120,7 +120,7 @@ class Indicator extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Pulsator(
-          size: 24, // Circle size
+          size: 30, // Circle size
           color: CustomStyle.alarmColor[alarm.name] ??
               const Color(0xff6c757d), // Ripple color
           duration: const Duration(

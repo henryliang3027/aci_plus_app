@@ -13,6 +13,12 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 const int winBeta = int.fromEnvironment('WIN_BETA', defaultValue: 7);
 
+enum CEQStatus {
+  none,
+  from1P2GTo1P8G,
+  from1P8GTo1P2G,
+}
+
 class FirmwareUpdateProperty {
   static int previousVersion = 0;
 }

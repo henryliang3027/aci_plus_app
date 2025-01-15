@@ -15,6 +15,7 @@ import 'package:aci_plus_app/information/views/information18_ccor_node_page.dart
 import 'package:aci_plus_app/information/views/information18_page.dart';
 import 'package:aci_plus_app/information/views/information_page.dart';
 import 'package:aci_plus_app/repositories/ble_peripheral.dart';
+import 'package:aci_plus_app/setting/views/custom_setting_dialog.dart';
 import 'package:aci_plus_app/setting/views/setting18_ccor_node_views/setting18_ccor_node_page.dart';
 import 'package:aci_plus_app/setting/views/setting18_views/setting18_page.dart';
 import 'package:aci_plus_app/setting/views/setting_views/setting_page.dart';
@@ -264,6 +265,17 @@ class _HomeFormState extends State<HomeForm> {
             }
           },
         ),
+        BlocListener<HomeBloc, HomeState>(
+          listenWhen: (previous, current) =>
+              previous.ceqStatus != current.ceqStatus,
+          listener: (context, state) {
+            if (state.ceqStatus != CEQStatus.none) {
+              if (ModalRoute.of(context)?.isCurrent == true) {
+                showCurrentForwardCEQChangedDialog(context);
+              }
+            }
+          },
+        )
       ],
       child: Scaffold(
         body: BlocBuilder<HomeBloc, HomeState>(

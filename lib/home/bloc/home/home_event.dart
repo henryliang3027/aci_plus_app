@@ -119,6 +119,17 @@ class DevicePeriodicUpdateRequested extends HomeEvent {
   List<Object> get props => [];
 }
 
+class DevicePeriodicUpdate extends HomeEvent {
+  const DevicePeriodicUpdate({
+    required this.partId,
+  });
+
+  final String partId;
+
+  @override
+  List<Object> get props => [partId];
+}
+
 class DevicePeriodicUpdateCanceled extends HomeEvent {
   const DevicePeriodicUpdateCanceled();
 
