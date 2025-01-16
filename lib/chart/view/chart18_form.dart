@@ -581,31 +581,29 @@ class _PopupMenu extends StatelessWidget {
                             .add(const DevicePeriodicUpdateCanceled());
                         showEnterCodeDialog(context: context)
                             .then((String? code) {
-                          if (code != null) {
-                            if (code.isNotEmpty) {
-                              showRFOutDownloadDialog(context: context)
-                                  .then((List<dynamic>? resultOfDownload) {
-                                if (resultOfDownload != null) {
-                                  bool isSuccessful = resultOfDownload[0];
-                                  List<RFOutputLog> rfOutputLog1p8Gs =
-                                      resultOfDownload[1];
-                                  String errorMessage = resultOfDownload[2];
-                                  if (context.mounted) {
-                                    context
-                                        .read<Chart18Bloc>()
-                                        .add(AllRFOutputLogExported(
-                                          isSuccessful: isSuccessful,
-                                          rfOutputLog1p8Gs: rfOutputLog1p8Gs,
-                                          errorMessage: errorMessage,
-                                          code: code,
-                                        ));
+                          if (code != null && code.isNotEmpty) {
+                            showRFOutDownloadDialog(context: context)
+                                .then((List<dynamic>? resultOfDownload) {
+                              if (resultOfDownload != null) {
+                                bool isSuccessful = resultOfDownload[0];
+                                List<RFOutputLog> rfOutputLog1p8Gs =
+                                    resultOfDownload[1];
+                                String errorMessage = resultOfDownload[2];
+                                if (context.mounted) {
+                                  context
+                                      .read<Chart18Bloc>()
+                                      .add(AllRFOutputLogExported(
+                                        isSuccessful: isSuccessful,
+                                        rfOutputLog1p8Gs: rfOutputLog1p8Gs,
+                                        errorMessage: errorMessage,
+                                        code: code,
+                                      ));
 
-                                    context.read<HomeBloc>().add(
-                                        const DevicePeriodicUpdateRequested());
-                                  }
+                                  context.read<HomeBloc>().add(
+                                      const DevicePeriodicUpdateRequested());
                                 }
-                              });
-                            }
+                              }
+                            });
                           } else {
                             context
                                 .read<HomeBloc>()

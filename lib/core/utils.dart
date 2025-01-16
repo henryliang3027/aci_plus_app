@@ -246,7 +246,14 @@ Future<String> getAppVersion() async {
 }
 
 int convertFirmwareVersionStringToInt(String strFirmwareVersion) {
-  return int.tryParse(strFirmwareVersion) ?? 0;
+  if (strFirmwareVersion.length == 3) {
+    return int.tryParse(strFirmwareVersion) ?? 0;
+  } else if (strFirmwareVersion.length > 3) {
+    String number = strFirmwareVersion.substring(0, 3);
+    return int.tryParse(number) ?? 0;
+  } else {
+    return 0;
+  }
 }
 
 // 解碼以 2 個 byte 表示的字元
@@ -328,6 +335,7 @@ Future<void> handleUpdateAction({
   required VoidCallback action,
   required bool Function(dynamic state)? waitForState,
   bool isResumeUpdate = true,
+  bool waitForPeriodicUpdateEnabledState = true,
 }) async {
   final homeBloc = context.read<HomeBloc>();
 
@@ -335,8 +343,10 @@ Future<void> handleUpdateAction({
   homeBloc.add(const DevicePeriodicUpdateCanceled());
 
   // Wait for the HomeBloc to emit the cancelled state
-  await homeBloc.stream
-      .firstWhere((state) => state.periodicUpdateEnabled == false);
+  if (waitForPeriodicUpdateEnabledState) {
+    await homeBloc.stream
+        .firstWhere((state) => state.periodicUpdateEnabled == false);
+  }
 
   // Now perform your main action (e.g., dispatching another bloc event)
 

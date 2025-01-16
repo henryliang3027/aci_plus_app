@@ -818,6 +818,19 @@ class BLEWindowsClient extends BLEClientBase {
     }
   }
 
+  @override
+  void cancelPeriodicUpdateTimerAndCompleter() {
+    if (_characteristicDataTimer != null) {
+      _characteristicDataTimer!.cancel();
+    }
+
+    if (_completer != null) {
+      if (!_completer!.isCompleted) {
+        _completer!.completeError(false);
+      }
+    }
+  }
+
   Future<bool> _requestPermission() async {
     if (Platform.isAndroid) {
       Map<Permission, PermissionStatus> statuses = await [

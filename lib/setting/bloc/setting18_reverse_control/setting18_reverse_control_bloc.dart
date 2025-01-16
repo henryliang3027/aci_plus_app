@@ -73,6 +73,7 @@ class Setting18ReverseControlBloc
 
     if (operatingMode.isNotEmpty &&
         splitOption.isNotEmpty &&
+        splitOption != '0' && // '0' indicates no DFU
         partId.isNotEmpty) {
       values = ControlItemValue
           .allValueCollections[operatingMode]![splitOption]![int.parse(partId)];

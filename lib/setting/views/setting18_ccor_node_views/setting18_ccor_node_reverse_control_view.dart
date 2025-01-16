@@ -156,8 +156,6 @@ class Seting18CCorNodeReverseControlView extends StatelessWidget {
           context
               .read<Setting18CCorNodeReverseControlBloc>()
               .add(const Initialized());
-
-          context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
         }
       },
       child: Scaffold(
@@ -555,9 +553,6 @@ class _SettingFloatingActionButton extends StatelessWidget {
             ),
             onPressed: () {
               context
-                  .read<HomeBloc>()
-                  .add(const DevicePeriodicUpdateRequested());
-              context
                   .read<Setting18CCorNodeReverseControlBloc>()
                   .add(const EditModeDisabled());
 
@@ -579,23 +574,39 @@ class _SettingFloatingActionButton extends StatelessWidget {
                 : Colors.grey.withAlpha(200),
             onPressed: enableSubmission
                 ? () async {
+                    bool shouldSubmit = false;
+
                     if (kDebugMode) {
-                      context
-                          .read<Setting18CCorNodeReverseControlBloc>()
-                          .add(const SettingSubmitted());
+                      // In debug mode, we always submit
+                      shouldSubmit = true;
                     } else {
+                      // In release mode, show the confirmation dialog
                       bool? isMatch =
                           await showConfirmInputDialog(context: context);
-
                       if (context.mounted) {
-                        if (isMatch != null) {
-                          if (isMatch) {
-                            context
-                                .read<Setting18CCorNodeReverseControlBloc>()
-                                .add(const SettingSubmitted());
-                          }
-                        }
+                        shouldSubmit = isMatch ?? false;
                       }
+                    }
+
+                    if (shouldSubmit) {
+                      handleUpdateAction(
+                        context: context,
+                        targetBloc:
+                            context.read<Setting18CCorNodeReverseControlBloc>(),
+                        action: () {
+                          context
+                              .read<Setting18CCorNodeReverseControlBloc>()
+                              .add(const SettingSubmitted());
+                        },
+                        waitForState: (state) {
+                          Setting18CCorNodeReverseControlState
+                              setting18CCorNodeReverseControlState =
+                              state as Setting18CCorNodeReverseControlState;
+
+                          return setting18CCorNodeReverseControlState
+                              .submissionStatus.isSubmissionSuccess;
+                        },
+                      );
                     }
                   }
                 : null,
@@ -626,53 +637,19 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   shape: const CircleBorder(
                     side: BorderSide.none,
                   ),
-                  backgroundColor: Platform.isWindows
-                      ? winBeta >= 7
-                          ? Theme.of(context).colorScheme.primary.withAlpha(200)
-                          : Colors.grey.withAlpha(200)
-                      : Theme.of(context).colorScheme.primary.withAlpha(200),
-                  onPressed: Platform.isWindows
-                      ? winBeta >= 7
-                          ? () {
-                              context
-                                  .read<HomeBloc>()
-                                  .add(const DevicePeriodicUpdateCanceled());
-
-                              // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
-                              Navigator.push(
-                                      context,
-                                      Setting18CCorNodeGraphPage.route(
-                                        graphFilePath: graphFilePath,
-                                      ))
-                                  .then((value) => context
-                                      .read<
-                                          Setting18CCorNodeReverseControlBloc>()
-                                      .add(const Initialized()));
-
-                              context
-                                  .read<HomeBloc>()
-                                  .add(const DevicePeriodicUpdateRequested());
-                            }
-                          : null
-                      : () {
-                          context
-                              .read<HomeBloc>()
-                              .add(const DevicePeriodicUpdateCanceled());
-
-                          // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
-                          Navigator.push(
-                                  context,
-                                  Setting18CCorNodeGraphPage.route(
-                                    graphFilePath: graphFilePath,
-                                  ))
-                              .then((value) => context
-                                  .read<Setting18CCorNodeReverseControlBloc>()
-                                  .add(const Initialized()));
-
-                          context
-                              .read<HomeBloc>()
-                              .add(const DevicePeriodicUpdateRequested());
-                        },
+                  backgroundColor:
+                      Theme.of(context).colorScheme.primary.withAlpha(200),
+                  onPressed: () {
+                    // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
+                    Navigator.push(
+                            context,
+                            Setting18CCorNodeGraphPage.route(
+                              graphFilePath: graphFilePath,
+                            ))
+                        .then((value) => context
+                            .read<Setting18CCorNodeReverseControlBloc>()
+                            .add(const Initialized()));
+                  },
                   child: Icon(
                     Icons.settings_input_composite,
                     color: Theme.of(context).colorScheme.onPrimary,
@@ -696,9 +673,6 @@ class _SettingFloatingActionButton extends StatelessWidget {
               color: Theme.of(context).colorScheme.onPrimary,
             ),
             onPressed: () {
-              context
-                  .read<HomeBloc>()
-                  .add(const DevicePeriodicUpdateCanceled());
               context
                   .read<Setting18CCorNodeReverseControlBloc>()
                   .add(const EditModeEnabled());

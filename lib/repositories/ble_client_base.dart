@@ -26,6 +26,8 @@ abstract class BLEClientBase {
 
   Future<int> getRSSI();
 
+  void cancelPeriodicUpdateTimerAndCompleter();
+
   Future<dynamic> writeSetCommandToCharacteristic({
     required int commandIndex,
     required List<int> value,
@@ -77,7 +79,7 @@ abstract class BLEClientBase {
     if (listEquals(rawData.sublist(0, 3), header)) {
       _combinedRawData.clear();
       _combinedRawData.addAll(rawData);
-      print(_combinedRawData.length);
+
       return [false];
     } else {
       _combinedRawData.addAll(rawData);

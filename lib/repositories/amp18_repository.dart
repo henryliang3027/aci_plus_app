@@ -2384,20 +2384,8 @@ class Amp18Repository {
     _characteristicDataCache.addAll(characteristicDataCache);
   }
 
-  // Future<List<SimInfo>> getSimInfos() async {
-  //   PermissionStatus permissionStatus = await Permission.phone.request();
-
-  //   if (permissionStatus == PermissionStatus.granted) {
-  //     List<SimInfo> simInfos = await SimCardInfo().getSimInfo() ?? [];
-
-  //     for (SimInfo simInfo in simInfos) {
-  //       print(
-  //           'Carrier Name: ${simInfo.carrierName} \n Display Name: ${simInfo.displayName} \n Slot Index: ${simInfo.slotIndex} \n Number: ${simInfo.number} \n Country ISO: ${simInfo.countryIso} \n Country Phone Prefix: ${simInfo.countryPhonePrefix}');
-  //     }
-
-  //     return simInfos;
-  //   } else {
-  //     return [];
-  //   }
-  // }
+  // 定時更新被取消時, 也同時取消 command 的 timer 和 completer
+  void cancelPeriodicUpdateCommand() {
+    _bleClient.cancelPeriodicUpdateTimerAndCompleter();
+  }
 }

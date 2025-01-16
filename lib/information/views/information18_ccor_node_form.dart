@@ -144,17 +144,19 @@ class __PopupMenuState extends State<_PopupMenu> {
 
                     showWarmResetNoticeDialog(context: context).then(
                       (isConfirm) {
-                        if (isConfirm != null) {
-                          if (isConfirm) {
-                            showWarmResetDialog(context: context).then((_) {
-                              showWarmResetSuccessDialog(context: context)
-                                  .then((_) {
-                                context
-                                    .read<HomeBloc>()
-                                    .add(const Data18CCorNodeRequested());
-                              });
+                        if (isConfirm != null && isConfirm) {
+                          showWarmResetDialog(context: context).then((_) {
+                            showWarmResetSuccessDialog(context: context)
+                                .then((_) {
+                              context
+                                  .read<HomeBloc>()
+                                  .add(const Data18CCorNodeRequested());
                             });
-                          }
+                          });
+                        } else {
+                          context
+                              .read<HomeBloc>()
+                              .add(const DevicePeriodicUpdateRequested());
                         }
                       },
                     );

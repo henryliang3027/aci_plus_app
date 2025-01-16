@@ -53,6 +53,7 @@ class Setting18CCorNodeReverseControlBloc extends Bloc<
 
     if (operatingMode.isNotEmpty &&
         splitOption.isNotEmpty &&
+        splitOption != '0' && // '0' indicates no DFU
         partId.isNotEmpty) {
       values = ControlItemValue
           .allValueCollections[operatingMode]![splitOption]![int.parse(partId)];

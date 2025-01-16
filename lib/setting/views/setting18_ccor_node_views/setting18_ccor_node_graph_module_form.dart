@@ -2,6 +2,7 @@ import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_graph_module/setting18_ccor_node_graph_module_bloc.dart';
 import 'package:aci_plus_app/setting/model/graph_module_form_color.dart';
@@ -1160,24 +1161,39 @@ class _SettingFloatingActionButton extends StatelessWidget {
                 : Colors.grey.withAlpha(200),
             onPressed: enableSubmission && editable
                 ? () async {
-                    print(editable);
+                    bool shouldSubmit = false;
+
                     if (kDebugMode) {
-                      context
-                          .read<Setting18CCorNodeGraphModuleBloc>()
-                          .add(const SettingSubmitted());
+                      // In debug mode, we always submit
+                      shouldSubmit = true;
                     } else {
+                      // In release mode, show the confirmation dialog
                       bool? isMatch =
                           await showConfirmInputDialog(context: context);
-
                       if (context.mounted) {
-                        if (isMatch != null) {
-                          if (isMatch) {
-                            context
-                                .read<Setting18CCorNodeGraphModuleBloc>()
-                                .add(const SettingSubmitted());
-                          }
-                        }
+                        shouldSubmit = isMatch ?? false;
                       }
+                    }
+
+                    if (shouldSubmit) {
+                      handleUpdateAction(
+                        context: context,
+                        targetBloc:
+                            context.read<Setting18CCorNodeGraphModuleBloc>(),
+                        action: () {
+                          context
+                              .read<Setting18CCorNodeGraphModuleBloc>()
+                              .add(const SettingSubmitted());
+                        },
+                        waitForState: (state) {
+                          Setting18CCorNodeGraphModuleState
+                              setting18CCorNodeGraphModuleState =
+                              state as Setting18CCorNodeGraphModuleState;
+
+                          return setting18CCorNodeGraphModuleState
+                              .submissionStatus.isSubmissionSuccess;
+                        },
+                      );
                     }
                   }
                 : null,

@@ -162,8 +162,8 @@ class _MoreDataFloatingActionButton extends StatelessWidget {
             ? Theme.of(context).colorScheme.primary.withAlpha(200)
             : Colors.grey.withAlpha(200),
         onPressed: enabled && !isRequesting && state.hasNextChunk
-            ? () async {
-                await handleUpdateAction(
+            ? () {
+                handleUpdateAction(
                   context: context,
                   targetBloc: context.read<DataLogChartBloc>(),
                   action: () {
@@ -259,26 +259,17 @@ class _LogChartListView extends StatelessWidget {
               return dataLogChartState.formStatus.isRequestFailure ||
                   dataLogChartState.formStatus.isRequestSuccess;
             },
+            waitForPeriodicUpdateEnabledState: false,
           );
 
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              buildLoadingFormWithProgressiveChartView(
-                context: context,
-                dateValueCollectionOfLog: state.dateValueCollectionOfLog,
-              ),
-            ],
+          return buildLoadingFormWithProgressiveChartView(
+            context: context,
+            dateValueCollectionOfLog: state.dateValueCollectionOfLog,
           );
         } else if (state.formStatus.isRequestInProgress) {
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              buildLoadingFormWithProgressiveChartView(
-                context: context,
-                dateValueCollectionOfLog: state.dateValueCollectionOfLog,
-              ),
-            ],
+          return buildLoadingFormWithProgressiveChartView(
+            context: context,
+            dateValueCollectionOfLog: state.dateValueCollectionOfLog,
           );
         } else if (state.formStatus.isRequestFailure) {
           context.read<Chart18Bloc>().add(const TabChangedEnabled());
@@ -311,7 +302,7 @@ class _LogChartListView extends StatelessWidget {
             ),
           );
         } else {
-          // dataLogChartState.formStatus.isRequestSuccess
+          // state.formStatus.isRequestSuccess
           context.read<Chart18Bloc>().add(const TabChangedEnabled());
           return Center(
             child: SingleChildScrollView(

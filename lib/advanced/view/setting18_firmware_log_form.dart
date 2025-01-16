@@ -1,6 +1,7 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_firmware_log/setting18_firmware_log_bloc.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +17,9 @@ class Setting18FirmwareLogForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeState homeState = context.read<HomeBloc>().state;
-    String strFirmwareVersion =
-        homeState.characteristicData[DataKey.firmwareVersion] ?? '';
-    int firmwareVersion = int.tryParse(strFirmwareVersion) ?? 0;
+
+    int firmwareVersion = convertFirmwareVersionStringToInt(
+        homeState.characteristicData[DataKey.firmwareVersion] ?? '0');
 
     if (firmwareVersion >= 148) {
       context.read<Setting18FirmwareLogBloc>().add(const UpdateLogRequested());

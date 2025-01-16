@@ -265,26 +265,3 @@ class SettingSubmitted extends Setting18GraphModuleEvent {
   @override
   List<Object> get props => [];
 }
-
-class CurrentForwardCEQUpdated extends Setting18GraphModuleEvent {
-  const CurrentForwardCEQUpdated();
-
-  @override
-  List<Object> get props => [];
-}
-
-class CurrentForwardCEQPeriodicUpdateRequested
-    extends Setting18GraphModuleEvent {
-  const CurrentForwardCEQPeriodicUpdateRequested();
-
-  @override
-  List<Object> get props => [];
-}
-
-class CurrentForwardCEQPeriodicUpdateCanceled
-    extends Setting18GraphModuleEvent {
-  const CurrentForwardCEQPeriodicUpdateCanceled();
-
-  @override
-  List<Object> get props => [];
-}

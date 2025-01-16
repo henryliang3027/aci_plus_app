@@ -62,38 +62,61 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
         _amp18CCorNodeRepository.characteristicDataCache;
 
     String forwardConfig = characteristicDataCache[DataKey.forwardConfig] ?? '';
-    String splitOption = characteristicDataCache[DataKey.splitOption]!;
+    String splitOption =
+        characteristicDataCache[DataKey.currentDetectedSplitOption]!;
     String partId = characteristicDataCache[DataKey.partId]!;
-    String forwardCEQIndex =
-        characteristicDataCache[DataKey.forwardCEQIndex] ?? '';
 
-    String operatingMode = getOperatingModeFromForwardCEQIndex(forwardCEQIndex);
+    String operatingMode = getOperatingModeFromForwardCEQIndex(
+        characteristicDataCache[DataKey.forwardCEQIndex] ?? '');
 
-    Map<DataKey, MinMax> values = ControlItemValue
-        .allValueCollections[operatingMode]![splitOption]![int.parse(partId)];
+    Map<DataKey, MinMax> values = {};
 
-    MinMax dsVVA1MinMax = values[DataKey.dsVVA1]!;
+    if (operatingMode.isNotEmpty &&
+        splitOption.isNotEmpty &&
+        splitOption != '0' && // '0' indicates no DFU
+        partId.isNotEmpty) {
+      values = ControlItemValue
+          .allValueCollections[operatingMode]![splitOption]![int.parse(partId)];
+    }
+
+    MinMax dsVVA1MinMax = values[DataKey.dsVVA1] ??
+        MinMax(
+          min: state.dsVVA1.minValue,
+          max: state.dsVVA1.maxValue,
+        );
     RangeFloatPointInput dsVVA1 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA1] ?? '',
       minValue: dsVVA1MinMax.min,
       maxValue: dsVVA1MinMax.max,
     );
 
-    MinMax dsVVA3MinMax = values[DataKey.dsVVA3]!;
+    MinMax dsVVA3MinMax = values[DataKey.dsVVA3] ??
+        MinMax(
+          min: state.dsVVA3.minValue,
+          max: state.dsVVA3.maxValue,
+        );
     RangeFloatPointInput dsVVA3 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA3] ?? '',
       minValue: dsVVA3MinMax.min,
       maxValue: dsVVA3MinMax.max,
     );
 
-    MinMax dsVVA4MinMax = values[DataKey.dsVVA4]!;
+    MinMax dsVVA4MinMax = values[DataKey.dsVVA4] ??
+        MinMax(
+          min: state.dsVVA4.minValue,
+          max: state.dsVVA4.maxValue,
+        );
     RangeFloatPointInput dsVVA4 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA4] ?? '',
       minValue: dsVVA4MinMax.min,
       maxValue: dsVVA4MinMax.max,
     );
 
-    MinMax dsVVA6MinMax = values[DataKey.dsVVA6]!;
+    MinMax dsVVA6MinMax = values[DataKey.dsVVA6] ??
+        MinMax(
+          min: state.dsVVA6.minValue,
+          max: state.dsVVA6.maxValue,
+        );
     RangeFloatPointInput dsVVA6 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsVVA6] ?? '',
       minValue: dsVVA6MinMax.min,
@@ -119,84 +142,132 @@ class Setting18CCorNodeGraphModuleBloc extends Bloc<
     //   minValue: state.dsInSlope6.minValue,
     //   maxValue: state.dsInSlope6.maxValue,
     // );
-    MinMax dsOutSlope1MinMax = values[DataKey.dsOutSlope1]!;
+    MinMax dsOutSlope1MinMax = values[DataKey.dsOutSlope1] ??
+        MinMax(
+          min: state.dsOutSlope1.minValue,
+          max: state.dsOutSlope1.maxValue,
+        );
     RangeFloatPointInput dsOutSlope1 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsOutSlope1] ?? '',
       minValue: dsOutSlope1MinMax.min,
       maxValue: dsOutSlope1MinMax.max,
     );
 
-    MinMax dsOutSlope3MinMax = values[DataKey.dsOutSlope3]!;
+    MinMax dsOutSlope3MinMax = values[DataKey.dsOutSlope3] ??
+        MinMax(
+          min: state.dsOutSlope3.minValue,
+          max: state.dsOutSlope3.maxValue,
+        );
     RangeFloatPointInput dsOutSlope3 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsOutSlope3] ?? '',
       minValue: dsOutSlope3MinMax.min,
       maxValue: dsOutSlope3MinMax.max,
     );
 
-    MinMax dsOutSlope4MinMax = values[DataKey.dsOutSlope4]!;
+    MinMax dsOutSlope4MinMax = values[DataKey.dsOutSlope4] ??
+        MinMax(
+          min: state.dsOutSlope4.minValue,
+          max: state.dsOutSlope4.maxValue,
+        );
     RangeFloatPointInput dsOutSlope4 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsOutSlope4] ?? '',
       minValue: dsOutSlope4MinMax.min,
       maxValue: dsOutSlope4MinMax.max,
     );
 
-    MinMax dsOutSlope6MinMax = values[DataKey.dsOutSlope6]!;
+    MinMax dsOutSlope6MinMax = values[DataKey.dsOutSlope6] ??
+        MinMax(
+          min: state.dsOutSlope6.minValue,
+          max: state.dsOutSlope6.maxValue,
+        );
     RangeFloatPointInput dsOutSlope6 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.dsOutSlope6] ?? '',
       minValue: dsOutSlope6MinMax.min,
       maxValue: dsOutSlope6MinMax.max,
     );
 
-    MinMax biasCurrent1MinMax = values[DataKey.biasCurrent1]!;
+    MinMax biasCurrent1MinMax = values[DataKey.biasCurrent1] ??
+        MinMax(
+          min: state.biasCurrent1.minValue.toDouble(),
+          max: state.biasCurrent1.maxValue.toDouble(),
+        );
     RangeIntegerInput biasCurrent1 = initialRangeIntegerInput(
       characteristicDataCache[DataKey.biasCurrent1] ?? '',
       minValue: biasCurrent1MinMax.min.toInt(),
       maxValue: biasCurrent1MinMax.max.toInt(),
     );
 
-    MinMax biasCurrent3MinMax = values[DataKey.biasCurrent3]!;
+    MinMax biasCurrent3MinMax = values[DataKey.biasCurrent3] ??
+        MinMax(
+          min: state.biasCurrent3.minValue.toDouble(),
+          max: state.biasCurrent3.maxValue.toDouble(),
+        );
     RangeIntegerInput biasCurrent3 = initialRangeIntegerInput(
       characteristicDataCache[DataKey.biasCurrent3] ?? '',
       minValue: biasCurrent3MinMax.min.toInt(),
       maxValue: biasCurrent3MinMax.max.toInt(),
     );
 
-    MinMax biasCurrent4MinMax = values[DataKey.biasCurrent4]!;
+    MinMax biasCurrent4MinMax = values[DataKey.biasCurrent4] ??
+        MinMax(
+          min: state.biasCurrent4.minValue.toDouble(),
+          max: state.biasCurrent4.maxValue.toDouble(),
+        );
     RangeIntegerInput biasCurrent4 = initialRangeIntegerInput(
       characteristicDataCache[DataKey.biasCurrent4] ?? '',
       minValue: biasCurrent4MinMax.min.toInt(),
       maxValue: biasCurrent4MinMax.max.toInt(),
     );
 
-    MinMax biasCurrent6MinMax = values[DataKey.biasCurrent6]!;
+    MinMax biasCurrent6MinMax = values[DataKey.biasCurrent6] ??
+        MinMax(
+          min: state.biasCurrent6.minValue.toDouble(),
+          max: state.biasCurrent6.maxValue.toDouble(),
+        );
     RangeIntegerInput biasCurrent6 = initialRangeIntegerInput(
       characteristicDataCache[DataKey.biasCurrent6] ?? '',
       minValue: biasCurrent6MinMax.min.toInt(),
       maxValue: biasCurrent6MinMax.max.toInt(),
     );
 
-    MinMax usVCA1MinMax = values[DataKey.usVCA1]!;
+    MinMax usVCA1MinMax = values[DataKey.usVCA1] ??
+        MinMax(
+          min: state.usVCA1.minValue.toDouble(),
+          max: state.usVCA1.maxValue.toDouble(),
+        );
     RangeFloatPointInput usVCA1 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA1] ?? '',
       minValue: usVCA1MinMax.min,
       maxValue: usVCA1MinMax.max,
     );
 
-    MinMax usVCA3MinMax = values[DataKey.usVCA3]!;
+    MinMax usVCA3MinMax = values[DataKey.usVCA3] ??
+        MinMax(
+          min: state.usVCA3.minValue.toDouble(),
+          max: state.usVCA3.maxValue.toDouble(),
+        );
     RangeFloatPointInput usVCA3 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA3] ?? '',
       minValue: usVCA3MinMax.min,
       maxValue: usVCA3MinMax.max,
     );
 
-    MinMax usVCA4MinMax = values[DataKey.usVCA4]!;
+    MinMax usVCA4MinMax = values[DataKey.usVCA4] ??
+        MinMax(
+          min: state.usVCA4.minValue.toDouble(),
+          max: state.usVCA4.maxValue.toDouble(),
+        );
     RangeFloatPointInput usVCA4 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA4] ?? '',
       minValue: usVCA4MinMax.min,
       maxValue: usVCA4MinMax.max,
     );
 
-    MinMax usVCA6MinMax = values[DataKey.usVCA6]!;
+    MinMax usVCA6MinMax = values[DataKey.usVCA6] ??
+        MinMax(
+          min: state.usVCA6.minValue.toDouble(),
+          max: state.usVCA6.maxValue.toDouble(),
+        );
     RangeFloatPointInput usVCA6 = initialRangeFloatPointInput(
       characteristicDataCache[DataKey.usVCA6] ?? '',
       minValue: usVCA6MinMax.min,

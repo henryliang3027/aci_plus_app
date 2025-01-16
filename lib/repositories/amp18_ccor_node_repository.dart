@@ -2313,4 +2313,9 @@ class Amp18CCorNodeRepository {
     _characteristicDataCache.clear();
     _characteristicDataCache.addAll(characteristicDataCache);
   }
+
+  // 定時更新被取消時, 也同時取消 command 的 timer 和 completer
+  void cancelPeriodicUpdateCommand() {
+    _bleClient.cancelPeriodicUpdateTimerAndCompleter();
+  }
 }

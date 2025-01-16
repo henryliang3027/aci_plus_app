@@ -150,28 +150,32 @@ class Indicator extends StatelessWidget {
 
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              getPulsator(
-                alarm: unitStatusAlarmSeverity,
-                name: AppLocalizations.of(context)!.unitStatusAlarm,
-                animationEnabled:
-                    unitStatusAlarmSeverity == Alarm.danger ? true : false,
-              ),
-              getPulsator(
-                alarm: temperatureAlarmSeverity,
-                name: AppLocalizations.of(context)!.temperatureAlarm,
-                animationEnabled:
-                    temperatureAlarmSeverity == Alarm.danger ? true : false,
-              ),
-              getPulsator(
-                alarm: voltageAlarmSeverity,
-                name: AppLocalizations.of(context)!.powerSupplyAlarm,
-                animationEnabled:
-                    voltageAlarmSeverity == Alarm.danger ? true : false,
-              ),
-            ],
+          child: SingleChildScrollView(
+            clipBehavior: Clip.none,
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                getPulsator(
+                  alarm: unitStatusAlarmSeverity,
+                  name: AppLocalizations.of(context)!.unitStatusAlarm,
+                  animationEnabled:
+                      unitStatusAlarmSeverity == Alarm.danger ? true : false,
+                ),
+                getPulsator(
+                  alarm: temperatureAlarmSeverity,
+                  name: AppLocalizations.of(context)!.temperatureAlarm,
+                  animationEnabled:
+                      temperatureAlarmSeverity == Alarm.danger ? true : false,
+                ),
+                getPulsator(
+                  alarm: voltageAlarmSeverity,
+                  name: AppLocalizations.of(context)!.powerSupplyAlarm,
+                  animationEnabled:
+                      voltageAlarmSeverity == Alarm.danger ? true : false,
+                ),
+              ],
+            ),
           ),
         );
       },

@@ -654,7 +654,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       // 如果是 firmware update 完成之後, 重新讀取資料時才判斷版本並寫入 firmware update log
       if (event.isFirmwareUpdated) {
-        int currentFirmwareVersion = int.parse(
+        int currentFirmwareVersion = convertFirmwareVersionStringToInt(
             characteristicDataOf1p8G0[DataKey.firmwareVersion] ?? '0');
 
         if (currentFirmwareVersion >= 148) {
@@ -667,7 +667,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       // 讀取時將 firmware version 存入 FirmwareUpdateProperty.previousVersion (global variable)
       FirmwareUpdateProperty.previousVersion =
-          int.parse(characteristicDataOf1p8G0[DataKey.firmwareVersion] ?? '0');
+          convertFirmwareVersionStringToInt(
+              characteristicDataOf1p8G0[DataKey.firmwareVersion] ?? '0');
 
       newCharacteristicData.addAll(characteristicDataOf1p8G0);
       emit(state.copyWith(
@@ -867,8 +868,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     if (resultOf1p8GForLogChunk[0]) {
       String deviceNowDateTime =
-          state.characteristicData[DataKey.nowDateTime] ??
-              DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
       // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
       String partId = state.characteristicData[DataKey.partId] ?? '';
@@ -912,7 +912,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       // 如果是 firmware update 完成之後, 重新讀取資料時才判斷版本並寫入 firmware update log
       if (event.isFirmwareUpdated) {
-        int currentFirmwareVersion = int.parse(
+        int currentFirmwareVersion = convertFirmwareVersionStringToInt(
             characteristicDataOf1p8GCCorNode80[DataKey.firmwareVersion] ?? '0');
 
         if (currentFirmwareVersion >= 148) {
@@ -924,8 +924,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
 
       // 讀取時將 firmware version 存入 FirmwareUpdateProperty.previousVersion (global variable)
-      FirmwareUpdateProperty.previousVersion = int.parse(
-          characteristicDataOf1p8GCCorNode80[DataKey.firmwareVersion] ?? '0');
+      FirmwareUpdateProperty.previousVersion =
+          convertFirmwareVersionStringToInt(
+              characteristicDataOf1p8GCCorNode80[DataKey.firmwareVersion] ??
+                  '0');
 
       newCharacteristicData.addAll(characteristicDataOf1p8GCCorNode80);
       emit(state.copyWith(
@@ -1074,19 +1076,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             characteristicData: newCharacteristicData,
           ));
 
-          // 讀取目前device日期時間
-          String deviceNowTime =
-              state.characteristicData[DataKey.nowDateTime] ??
-                  DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-
-          // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
-          await _amp18CCorNodeRepository
-              .set1p8GCCorNodeNowDateTime(deviceNowTime);
-
-          emit(state.copyWith(
-            loadingStatus: FormStatus.requestSuccess,
-          ));
-
           break;
         } else {
           if (i == 2) {
@@ -1110,6 +1099,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           }
         }
       }
+    }
+
+    if (resultOf1p8GCCorNodeLogChunk[0]) {
+      // 讀取目前device日期時間
+      String deviceNowTime =
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+
+      // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
+      await _amp18CCorNodeRepository.set1p8GCCorNodeNowDateTime(deviceNowTime);
+
+      // 執行完上面的 寫入日期 後休息一段時間再進行任何讀取動作 比較不會有 data 收不完整的情況發生
+      await Future.delayed(const Duration(milliseconds: 1000));
+
+      emit(state.copyWith(
+        loadingStatus: FormStatus.requestSuccess,
+      ));
     }
   }
 
@@ -1305,6 +1310,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     _cancelUpdateTimer();
 
+    String partId = state.characteristicData[DataKey.partId] ?? '';
+    if (partId == '4') {
+      _amp18CCorNodeRepository.cancelPeriodicUpdateCommand();
+    } else {
+      _amp18Repository.cancelPeriodicUpdateCommand();
+    }
     emit(state.copyWith(
       periodicUpdateEnabled: false,
     ));

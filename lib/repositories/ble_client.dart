@@ -173,8 +173,7 @@ class BLEClient extends BLEClientBase {
               .subscribeToCharacteristic(_qualifiedCharacteristic)
               .listen((data) async {
             List<int> rawData = data;
-            print(_currentCommandIndex);
-            // print('data length: ${rawData.length}, $rawData');
+            print('index: $_currentCommandIndex, length:${rawData.length}');
 
             List<dynamic> finalResult = combineRawData(
               commandIndex: _currentCommandIndex,
@@ -652,6 +651,20 @@ class BLEClient extends BLEClientBase {
         _completer!.completeError(false);
       }
     }
+  }
+
+  @override
+  void cancelPeriodicUpdateTimerAndCompleter() {
+    if (_characteristicDataTimer != null) {
+      _characteristicDataTimer!.cancel();
+    }
+
+    // if (_completer != null) {
+    //   if (!_completer!.isCompleted) {
+    //     print('cancelPeriodicUpdateTimerAndCompleter');
+    //     _completer!.complete([false]);
+    //   }
+    // }
   }
 
   Future<bool> _requestPermission() async {

@@ -54,19 +54,12 @@ class Setting18GraphModuleBloc
     on<PilotFrequency2Changed>(_onPilotFrequency2Changed);
 
     on<SettingSubmitted>(_onSettingSubmitted);
-    on<CurrentForwardCEQUpdated>(_onCurrentForwardCEQUpdated);
-    on<CurrentForwardCEQPeriodicUpdateRequested>(
-        _onCurrentForwardCEQPeriodicUpdateRequested);
-    on<CurrentForwardCEQPeriodicUpdateCanceled>(
-        _onCurrentForwardCEQPeriodicUpdateCanceled);
 
     add(const Initialized());
-    add(const CurrentForwardCEQPeriodicUpdateRequested());
   }
 
   final Amp18Repository _amp18Repository;
   final bool _editable;
-  Timer? _timer;
 
   Future<void> _onInitialized(
     Initialized event,
@@ -87,8 +80,15 @@ class Setting18GraphModuleBloc
     String partId = characteristicDataCache[DataKey.partId]!;
     String operatingMode = getOperatingModeFromForwardCEQIndex(forwardCEQIndex);
 
-    Map<DataKey, MinMax> values = ControlItemValue
-        .allValueCollections[operatingMode]![splitOption]![int.parse(partId)];
+    Map<DataKey, MinMax> values = {};
+
+    if (operatingMode.isNotEmpty &&
+        splitOption.isNotEmpty &&
+        splitOption != '0' && // '0' indicates no DFU
+        partId.isNotEmpty) {
+      values = ControlItemValue
+          .allValueCollections[operatingMode]![splitOption]![int.parse(partId)];
+    }
 
     MinMax dsVVA1MinMax = values[DataKey.dsVVA1] ??
         MinMax(
@@ -1564,97 +1564,5 @@ class Setting18GraphModuleBloc
       tappedSet: const {},
       initialValues: _amp18Repository.characteristicDataCache,
     ));
-  }
-
-  void _onCurrentForwardCEQPeriodicUpdateRequested(
-    CurrentForwardCEQPeriodicUpdateRequested event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    if (_timer != null) {
-      _timer!.cancel();
-    }
-
-    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      print('CurrentForwardCEQUpdate timer: ${timer.tick}');
-
-      add(const CurrentForwardCEQUpdated());
-    });
-
-    print('CurrentForwardCEQUpdate started');
-  }
-
-  Future<void> _onCurrentForwardCEQUpdated(
-    CurrentForwardCEQUpdated event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) async {
-    // 一開始插著 1.8 模組, app 在其他頁面, 換成 1.2, 切到 setting 頁面
-    // forwardCEQType 狀態  1.8 -> 1.2
-
-    // 一開始插著 1.2 模組, app 在其他頁面, 換成 1.8, 切到 setting 頁面
-    // forwardCEQType 狀態  1.2 -> 1.8
-
-    // 一開始插著 1.2 or 1.8 模組, app 在其他頁面, 不插模組, 切到 setting 頁面
-    // forwardCEQType 狀態  1.2 or 1.8 不變
-
-    // 一開始沒有插模組, app 在其他頁面, 換成 1.8, 切到 setting 頁面
-    // forwardCEQType 狀態  N/A -> 1.8
-
-    // 一開始沒有插模組, app 在其他頁面, 換成 1.2, 切到 setting 頁面
-    // forwardCEQType 狀態  N/A -> 1.2
-
-    // app 在 setting 頁面不換頁, 一開始插著 1.8 模組,  換成 1.2,
-    // forwardCEQType 狀態  1.8 -> 1.2 (換的過程中沒有插的狀態是 N/A, 就不改變)
-
-    // app 在 setting 頁面不換頁, 一開始插著 1.2 模組,  換成 1.8,
-    // forwardCEQType 狀態  1.2 -> 1.8 (換的過程中沒有插的狀態是 N/A, 就不改變)
-
-    emit(state.copyWith(
-      forwardCEQStatus: FormStatus.requestInProgress,
-    ));
-
-    List<dynamic> resultOf1p8G2 = await _amp18Repository.requestCommand1p8G2();
-
-    if (resultOf1p8G2[0]) {
-      Map<DataKey, String> characteristicData = resultOf1p8G2[1];
-
-      String currentCEQType = getCEQTypeFromForwardCEQIndex(
-          characteristicData[DataKey.currentForwardCEQIndex] ?? '255');
-
-      if (currentCEQType != 'N/A') {
-        bool isForwardCEQIndexChanged =
-            ForwardCEQFlag.forwardCEQType != currentCEQType;
-
-        if (isForwardCEQIndexChanged) {
-          ForwardCEQFlag.forwardCEQType = currentCEQType;
-
-          emit(state.copyWith(
-            forwardCEQStatus: FormStatus.requestSuccess,
-            isInitialize: false,
-            isForwardCEQIndexChanged: isForwardCEQIndexChanged,
-          ));
-        }
-      }
-    }
-  }
-
-  Future<void> _onCurrentForwardCEQPeriodicUpdateCanceled(
-    CurrentForwardCEQPeriodicUpdateCanceled event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) async {
-    if (_timer != null) {
-      _timer!.cancel();
-      print('CurrentForwardCEQUpdate timer is canceled');
-    }
-  }
-
-  @override
-  Future<void> close() {
-    if (_timer != null) {
-      _timer!.cancel();
-
-      print('CurrentForwardCEQUpdate timer is canceled due to bloc closing.');
-    }
-
-    return super.close();
   }
 }

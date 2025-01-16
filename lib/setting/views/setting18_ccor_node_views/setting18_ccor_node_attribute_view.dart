@@ -224,7 +224,6 @@ class Setting18CCorNodeAttributeView extends StatelessWidget {
           context
               .read<Setting18CCorNodeAttributeBloc>()
               .add(const Initialized());
-          context.read<HomeBloc>().add(const DevicePeriodicUpdateRequested());
         } else if (state.gpsStatus.isRequestFailure) {
           showFailureDialog(
             getMessageLocalization(
@@ -1097,10 +1096,6 @@ class _SettingFloatingActionButton extends StatelessWidget {
             ),
             onPressed: () {
               context
-                  .read<HomeBloc>()
-                  .add(const DevicePeriodicUpdateRequested());
-
-              context
                   .read<Setting18CCorNodeAttributeBloc>()
                   .add(const EditModeDisabled());
 
@@ -1122,23 +1117,39 @@ class _SettingFloatingActionButton extends StatelessWidget {
                 : Colors.grey.withAlpha(200),
             onPressed: enableSubmission
                 ? () async {
+                    bool shouldSubmit = false;
+
                     if (kDebugMode) {
-                      context
-                          .read<Setting18CCorNodeAttributeBloc>()
-                          .add(const SettingSubmitted());
+                      // In debug mode, we always submit
+                      shouldSubmit = true;
                     } else {
+                      // In release mode, show the confirmation dialog
                       bool? isMatch =
                           await showConfirmInputDialog(context: context);
-
                       if (context.mounted) {
-                        if (isMatch != null) {
-                          if (isMatch) {
-                            context
-                                .read<Setting18CCorNodeAttributeBloc>()
-                                .add(const SettingSubmitted());
-                          }
-                        }
+                        shouldSubmit = isMatch ?? false;
                       }
+                    }
+
+                    if (shouldSubmit) {
+                      handleUpdateAction(
+                        context: context,
+                        targetBloc:
+                            context.read<Setting18CCorNodeAttributeBloc>(),
+                        action: () {
+                          context
+                              .read<Setting18CCorNodeAttributeBloc>()
+                              .add(const SettingSubmitted());
+                        },
+                        waitForState: (state) {
+                          Setting18CCorNodeAttributeState
+                              setting18CCorNodeAttributeState =
+                              state as Setting18CCorNodeAttributeState;
+
+                          return setting18CCorNodeAttributeState
+                              .submissionStatus.isSubmissionSuccess;
+                        },
+                      );
                     }
                   }
                 : null,
@@ -1153,140 +1164,110 @@ class _SettingFloatingActionButton extends StatelessWidget {
 
     Widget getDisabledEditModeTools() {
       String graphFilePath = settingGraphFilePath[partId] ?? '';
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          getConfigureSetupWizard(
-            context: context,
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          graphFilePath.isNotEmpty
-              ? FloatingActionButton(
-                  // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
-                  heroTag: null,
-                  shape: const CircleBorder(
-                    side: BorderSide.none,
-                  ),
-                  backgroundColor: Platform.isWindows
-                      ? winBeta >= 7
-                          ? Theme.of(context).colorScheme.primary.withAlpha(200)
-                          : Colors.grey.withAlpha(200)
-                      : Theme.of(context).colorScheme.primary.withAlpha(200),
-                  onPressed: Platform.isWindows
-                      ? winBeta >= 7
-                          ? () {
-                              context
-                                  .read<HomeBloc>()
-                                  .add(const DevicePeriodicUpdateCanceled());
-                              // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
-                              Navigator.push(
-                                      context,
-                                      Setting18CCorNodeGraphPage.route(
-                                        graphFilePath: graphFilePath,
-                                      ))
-                                  .then((value) => context
-                                      .read<Setting18CCorNodeAttributeBloc>()
-                                      .add(const Initialized()));
-
-                              context
-                                  .read<HomeBloc>()
-                                  .add(const DevicePeriodicUpdateRequested());
-                            }
-                          : null
-                      : () {
-                          context
-                              .read<HomeBloc>()
-                              .add(const DevicePeriodicUpdateCanceled());
-
-                          // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
-                          Navigator.push(
-                                  context,
-                                  Setting18CCorNodeGraphPage.route(
-                                    graphFilePath: graphFilePath,
-                                  ))
-                              .then((value) => context
-                                  .read<Setting18CCorNodeAttributeBloc>()
-                                  .add(const Initialized()));
-
-                          context
-                              .read<HomeBloc>()
-                              .add(const DevicePeriodicUpdateRequested());
-                        },
-                  child: Icon(
-                    Icons.settings_input_composite,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                )
-              : const SizedBox(
-                  width: 0,
-                  height: 0,
-                ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          FloatingActionButton(
-            shape: const CircleBorder(
-              side: BorderSide.none,
+      return SingleChildScrollView(
+        clipBehavior: Clip.none,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            getConfigureSetupWizard(
+              context: context,
             ),
-            backgroundColor:
-                Theme.of(context).colorScheme.primary.withAlpha(200),
-            child: Icon(
-              Icons.edit,
-              color: Theme.of(context).colorScheme.onPrimary,
+            const SizedBox(
+              height: 10.0,
             ),
-            onPressed: () {
-              context
-                  .read<HomeBloc>()
-                  .add(const DevicePeriodicUpdateCanceled());
-
-              context
-                  .read<Setting18CCorNodeAttributeBloc>()
-                  .add(const EditModeEnabled());
-            },
-          ),
-        ],
+            graphFilePath.isNotEmpty
+                ? FloatingActionButton(
+                    // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
+                    heroTag: null,
+                    shape: const CircleBorder(
+                      side: BorderSide.none,
+                    ),
+                    backgroundColor:
+                        Theme.of(context).colorScheme.primary.withAlpha(200),
+                    onPressed: () {
+                      // 當 Setting18GraphPage 被 pop 後, 不管有沒有設定參數都重新初始化
+                      Navigator.push(
+                              context,
+                              Setting18CCorNodeGraphPage.route(
+                                graphFilePath: graphFilePath,
+                              ))
+                          .then((value) => context
+                              .read<Setting18CCorNodeAttributeBloc>()
+                              .add(const Initialized()));
+                    },
+                    child: Icon(
+                      Icons.settings_input_composite,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  )
+                : const SizedBox(
+                    width: 0,
+                    height: 0,
+                  ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            FloatingActionButton(
+              shape: const CircleBorder(
+                side: BorderSide.none,
+              ),
+              backgroundColor:
+                  Theme.of(context).colorScheme.primary.withAlpha(200),
+              child: Icon(
+                Icons.edit,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              onPressed: () {
+                context
+                    .read<Setting18CCorNodeAttributeBloc>()
+                    .add(const EditModeEnabled());
+              },
+            ),
+          ],
+        ),
       );
     }
 
     Widget getDisabledFloatingActionButtons() {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          getConfigureSetupWizard(
-            context: context,
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          FloatingActionButton(
-            // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
-            heroTag: null,
-            shape: const CircleBorder(
-              side: BorderSide.none,
+      return SingleChildScrollView(
+        clipBehavior: Clip.none,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            getConfigureSetupWizard(
+              context: context,
             ),
-            backgroundColor: Colors.grey.withAlpha(200),
-            onPressed: null,
-            child: Icon(
-              Icons.settings_input_composite,
-              color: Theme.of(context).colorScheme.onPrimary,
+            const SizedBox(
+              height: 10.0,
             ),
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          FloatingActionButton(
+            FloatingActionButton(
+              // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
+              heroTag: null,
               shape: const CircleBorder(
                 side: BorderSide.none,
               ),
               backgroundColor: Colors.grey.withAlpha(200),
               onPressed: null,
               child: Icon(
-                Icons.edit,
+                Icons.settings_input_composite,
                 color: Theme.of(context).colorScheme.onPrimary,
-              )),
-        ],
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            FloatingActionButton(
+                shape: const CircleBorder(
+                  side: BorderSide.none,
+                ),
+                backgroundColor: Colors.grey.withAlpha(200),
+                onPressed: null,
+                child: Icon(
+                  Icons.edit,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                )),
+          ],
+        ),
       );
     }
 

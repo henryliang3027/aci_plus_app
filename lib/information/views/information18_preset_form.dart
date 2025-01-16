@@ -286,27 +286,6 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget getCancelButton() {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6.0),
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(
-              vertical: 0.0,
-              horizontal: 20.0,
-            ),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          child: Text(
-            AppLocalizations.of(context)!.dialogMessageCancel,
-          ),
-        ),
-      );
-    }
-
     return BlocBuilder<Information18PresetBloc, Information18PresetState>(
       builder: (context, state) {
         return Column(
@@ -368,25 +347,6 @@ class _ActionButton extends StatelessWidget {
                           .settingStatus.isSubmissionSuccess;
                     },
                   );
-                }
-
-                if (kDebugMode) {
-                  context
-                      .read<Information18PresetBloc>()
-                      .add(const ConfigExecuted());
-                } else {
-                  bool? isMatch =
-                      await showConfirmInputDialog(context: context);
-
-                  if (context.mounted) {
-                    if (isMatch != null) {
-                      if (isMatch) {
-                        context
-                            .read<Information18PresetBloc>()
-                            .add(const ConfigExecuted());
-                      }
-                    }
-                  }
                 }
               },
               child: Icon(
