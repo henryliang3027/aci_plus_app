@@ -51,7 +51,7 @@ class _PulsatorState extends State<Pulsator>
                   animation: _controller,
                   builder: (context, child) {
                     double progress = (_controller.value + delay) % 1.0;
-                    double scale = 1.0 + progress * 10; // Controls expansion
+                    double scale = 1.0 + progress * 1.5; // Controls expansion
                     double opacity = 1.0 - progress; // Fades out
 
                     return Opacity(

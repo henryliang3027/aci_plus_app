@@ -80,11 +80,10 @@ class HomeBottomNavigationBar18 extends StatelessWidget {
                 tooltip: '',
               ),
             ],
-            //if current page is account which is not list in bottom navigation bar, make all items grey color
-            //assign a useless 0 as currentIndex for account page
+            //unselected icon size CustomStyle.size24
             currentIndex: selectedIndex,
-            selectedIconTheme: const IconThemeData(size: 36),
-            selectedFontSize: 10.0,
+            selectedIconTheme: const IconThemeData(size: CustomStyle.size36),
+            selectedFontSize: 0.0,
             selectedItemColor:
                 Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
             unselectedItemColor:
@@ -120,7 +119,7 @@ class Indicator extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Pulsator(
-          size: 30, // Circle size
+          size: CustomStyle.size34, // Circle size
           color: CustomStyle.alarmColor[alarm.name] ??
               const Color(0xff6c757d), // Ripple color
           duration: const Duration(

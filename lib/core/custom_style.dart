@@ -10,6 +10,7 @@ class CustomStyle {
   static const double size24 = 24.0; // dialog title
   static const double size28 = 28.0;
   static const double size32 = 32.0;
+  static const double size34 = 34.0;
   static const double size36 = 36.0;
   static const double size4XL = 40.0;
   static const double diameter = 23;
