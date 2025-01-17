@@ -160,14 +160,14 @@ class RtnIngressSetting4Changed extends Setting18GraphModuleEvent {
 //   List<Object> get props => [usTGC];
 // }
 
-class SplitOptionChanged extends Setting18GraphModuleEvent {
-  const SplitOptionChanged({required this.splitOption});
+// class SplitOptionChanged extends Setting18GraphModuleEvent {
+//   const SplitOptionChanged({required this.splitOption});
 
-  final String splitOption;
+//   final String splitOption;
 
-  @override
-  List<Object> get props => [splitOption];
-}
+//   @override
+//   List<Object> get props => [splitOption];
+// }
 
 class FirstChannelLoadingFrequencyChanged extends Setting18GraphModuleEvent {
   const FirstChannelLoadingFrequencyChanged({

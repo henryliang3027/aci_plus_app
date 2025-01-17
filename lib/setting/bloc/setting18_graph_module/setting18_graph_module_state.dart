@@ -51,9 +51,6 @@ class Setting18GraphModuleState extends Equatable {
     this.returnIngressSetting2 = '',
     this.returnIngressSetting3 = '',
     this.returnIngressSetting4 = '',
-    this.tgcCableLength = '',
-    // this.usTGC = '',
-    this.splitOption = '1',
     this.firstChannelLoadingFrequency = const RangeIntegerInput.pure(),
     this.firstChannelLoadingLevel = const RangeFloatPointInput.pure(),
     this.lastChannelLoadingFrequency = const RangeIntegerInput.pure(),
@@ -91,10 +88,6 @@ class Setting18GraphModuleState extends Equatable {
   final String returnIngressSetting2;
   final String returnIngressSetting3;
   final String returnIngressSetting4;
-  final String tgcCableLength;
-
-  // final String usTGC;
-  final String splitOption;
   final RangeIntegerInput firstChannelLoadingFrequency;
   final RangeFloatPointInput firstChannelLoadingLevel;
   final RangeIntegerInput lastChannelLoadingFrequency;
@@ -133,9 +126,6 @@ class Setting18GraphModuleState extends Equatable {
     String? returnIngressSetting2,
     String? returnIngressSetting3,
     String? returnIngressSetting4,
-    String? tgcCableLength,
-    // String? usTGC,
-    String? splitOption,
     RangeIntegerInput? firstChannelLoadingFrequency,
     RangeFloatPointInput? firstChannelLoadingLevel,
     RangeIntegerInput? lastChannelLoadingFrequency,
@@ -176,9 +166,6 @@ class Setting18GraphModuleState extends Equatable {
           returnIngressSetting3 ?? this.returnIngressSetting3,
       returnIngressSetting4:
           returnIngressSetting4 ?? this.returnIngressSetting4,
-      tgcCableLength: tgcCableLength ?? this.tgcCableLength,
-      // usTGC: usTGC ?? this.usTGC,
-      splitOption: splitOption ?? this.splitOption,
       firstChannelLoadingFrequency:
           firstChannelLoadingFrequency ?? this.firstChannelLoadingFrequency,
       firstChannelLoadingLevel:
@@ -227,9 +214,6 @@ class Setting18GraphModuleState extends Equatable {
         returnIngressSetting2,
         returnIngressSetting3,
         returnIngressSetting4,
-        tgcCableLength,
-        // usTGC,
-        splitOption,
         firstChannelLoadingFrequency,
         firstChannelLoadingLevel,
         lastChannelLoadingFrequency,

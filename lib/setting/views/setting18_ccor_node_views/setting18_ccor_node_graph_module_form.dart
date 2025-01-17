@@ -99,8 +99,8 @@ class _Setting18CCorNodeGraphModuleFormState
     List<Widget> getSettingWidgetByModuleId() {
       List<Widget> settingWidgets = [];
 
-      List<Widget> isolatedSettingWidgets =
-          isolatedSettingWidgetsMap[widget.moduleName] ?? [];
+      // List<Widget> isolatedSettingWidgets =
+      //     isolatedSettingWidgetsMap[widget.moduleName] ?? [];
 
       List<Widget> forwardSettingWidgets =
           forwardSettingWidgetsMap[widget.moduleName] ?? [];
@@ -112,9 +112,9 @@ class _Setting18CCorNodeGraphModuleFormState
       Widget reverseSettingHeader = getSettingWidgetHeader(
           AppLocalizations.of(context)!.returnControlParameters);
 
-      if (isolatedSettingWidgets.isNotEmpty) {
-        settingWidgets.addAll(isolatedSettingWidgets);
-      }
+      // if (isolatedSettingWidgets.isNotEmpty) {
+      //   settingWidgets.addAll(isolatedSettingWidgets);
+      // }
 
       if (forwardSettingWidgets.isNotEmpty) {
         settingWidgets.add(forwardSettingHeader);
@@ -130,8 +130,8 @@ class _Setting18CCorNodeGraphModuleFormState
     }
 
     Color getBackgroundColor() {
-      bool isIsolatedWidget =
-          isolatedSettingWidgetsMap.keys.contains(widget.moduleName);
+      // bool isIsolatedWidget =
+      //     isolatedSettingWidgetsMap.keys.contains(widget.moduleName);
 
       bool isForwardWidget =
           forwardSettingWidgetsMap.keys.contains(widget.moduleName);
@@ -141,7 +141,7 @@ class _Setting18CCorNodeGraphModuleFormState
 
       return getGraphModuleFormBackgroundColor(
         context: context,
-        isIsolatedWidget: isIsolatedWidget,
+        // isIsolatedWidget: isIsolatedWidget,
         isForwardWidget: isForwardWidget,
         isReverseWidget: isReverseWidget,
       );

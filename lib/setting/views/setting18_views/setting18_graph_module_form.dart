@@ -75,9 +75,9 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
     String forwardCEQIndex =
         homeState.characteristicData[DataKey.currentForwardCEQIndex] ?? '';
 
-    Map<String, List<Widget>> isolatedSettingWidgetsMap = {
-      DataKey.splitOption.name: [const _SplitOption()],
-    };
+    // Map<String, List<Widget>> isolatedSettingWidgetsMap = {
+    //   DataKey.splitOption.name: [const _SplitOption()],
+    // };
 
     Map<String, List<Widget>> forwardSettingWidgetsMap = {
       DataKey.agcMode.name: [
@@ -216,8 +216,8 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
     List<Widget> getSettingWidgetByModuleId() {
       List<Widget> settingWidgets = [];
 
-      List<Widget> isolatedSettingWidgets =
-          isolatedSettingWidgetsMap[widget.moduleName] ?? [];
+      // List<Widget> isolatedSettingWidgets =
+      //     isolatedSettingWidgetsMap[widget.moduleName] ?? [];
       List<Widget> forwardSettingWidgets =
           forwardSettingWidgetsMap[widget.moduleName] ?? [];
       List<Widget> reverseSettingWidgets =
@@ -227,9 +227,9 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       Widget reverseSettingHeader = getSettingWidgetHeader(
           AppLocalizations.of(context)!.returnControlParameters);
 
-      if (isolatedSettingWidgets.isNotEmpty) {
-        settingWidgets.addAll(isolatedSettingWidgets);
-      }
+      // if (isolatedSettingWidgets.isNotEmpty) {
+      //   settingWidgets.addAll(isolatedSettingWidgets);
+      // }
 
       if (forwardSettingWidgets.isNotEmpty) {
         settingWidgets.add(forwardSettingHeader);
@@ -245,8 +245,8 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
     }
 
     Color getBackgroundColor() {
-      bool isIsolatedWidget =
-          isolatedSettingWidgetsMap.keys.contains(widget.moduleName);
+      // bool isIsolatedWidget =
+      //     isolatedSettingWidgetsMap.keys.contains(widget.moduleName);
 
       bool isForwardWidget =
           forwardSettingWidgetsMap.keys.contains(widget.moduleName);
@@ -256,7 +256,7 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
 
       return getGraphModuleFormBackgroundColor(
         context: context,
-        isIsolatedWidget: isIsolatedWidget,
+        // isIsolatedWidget: isIsolatedWidget,
         isForwardWidget: isForwardWidget,
         isReverseWidget: isReverseWidget,
       );
@@ -1116,26 +1116,26 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
   }
 }
 
-class _SplitOption extends StatelessWidget {
-  const _SplitOption();
+// class _SplitOption extends StatelessWidget {
+//   const _SplitOption();
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
-        builder: (context, state) {
-      return splitOptionGridViewButton(
-        context: context,
-        editMode: state.editMode,
-        splitOption: state.splitOption,
-        onGridPressed: (index) => context
-            .read<Setting18GraphModuleBloc>()
-            .add(SplitOptionChanged(splitOption: splitOptionValues[index])),
-        elevation: CustomStyle.graphSettingCardElevation,
-        color: CustomStyle.graphSettingCardColor,
-      );
-    });
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
+//         builder: (context, state) {
+//       return splitOptionGridViewButton(
+//         context: context,
+//         editMode: state.editMode,
+//         splitOption: state.splitOption,
+//         onGridPressed: (index) => context
+//             .read<Setting18GraphModuleBloc>()
+//             .add(SplitOptionChanged(splitOption: splitOptionValues[index])),
+//         elevation: CustomStyle.graphSettingCardElevation,
+//         color: CustomStyle.graphSettingCardColor,
+//       );
+//     });
+//   }
+// }
 
 class _PilotFrequencyMode extends StatelessWidget {
   const _PilotFrequencyMode();

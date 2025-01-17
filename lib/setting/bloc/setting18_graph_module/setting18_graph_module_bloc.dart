@@ -40,7 +40,7 @@ class Setting18GraphModuleBloc
     on<RtnIngressSetting4Changed>(_onRtnIngressSetting4Changed);
     // on<TGCCableLengthChanged>(_onTGCCableLengthChanged);
     // on<USTGCChanged>(_onUSTGCChanged);
-    on<SplitOptionChanged>(_onSplitOptionChanged);
+    // on<SplitOptionChanged>(_onSplitOptionChanged);
     on<PilotFrequencyModeChanged>(_onPilotFrequencyModeChanged);
     on<FirstChannelLoadingFrequencyChanged>(
         _onFirstChannelLoadingFrequencyChanged);
@@ -96,7 +96,7 @@ class Setting18GraphModuleBloc
           max: state.dsVVA1.maxValue,
         );
     RangeFloatPointInput dsVVA1 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsVVA1] ?? '',
+      characteristicDataCache[DataKey.dsVVA1] ?? state.dsVVA1.value,
       minValue: dsVVA1MinMax.min,
       maxValue: dsVVA1MinMax.max,
     );
@@ -107,7 +107,7 @@ class Setting18GraphModuleBloc
           max: state.dsVVA4.maxValue,
         );
     RangeFloatPointInput dsVVA4 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsVVA4] ?? '',
+      characteristicDataCache[DataKey.dsVVA4] ?? state.dsVVA4.value,
       minValue: dsVVA4MinMax.min,
       maxValue: dsVVA4MinMax.max,
     );
@@ -118,7 +118,7 @@ class Setting18GraphModuleBloc
           max: state.dsVVA5.maxValue,
         );
     RangeFloatPointInput dsVVA5 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsVVA5] ?? '',
+      characteristicDataCache[DataKey.dsVVA5] ?? state.dsVVA5.value,
       minValue: dsVVA5MinMax.min,
       maxValue: dsVVA5MinMax.max,
     );
@@ -129,7 +129,7 @@ class Setting18GraphModuleBloc
           max: state.dsSlope1.maxValue,
         );
     RangeFloatPointInput dsSlope1 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsSlope1] ?? '',
+      characteristicDataCache[DataKey.dsSlope1] ?? state.dsSlope1.value,
       minValue: dsSlope1MinMax.min,
       maxValue: dsSlope1MinMax.max,
     );
@@ -140,7 +140,7 @@ class Setting18GraphModuleBloc
           max: state.dsSlope3.maxValue,
         );
     RangeFloatPointInput dsSlope3 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsSlope3] ?? '',
+      characteristicDataCache[DataKey.dsSlope3] ?? state.dsSlope3.value,
       minValue: dsSlope3MinMax.min,
       maxValue: dsSlope3MinMax.max,
     );
@@ -151,7 +151,7 @@ class Setting18GraphModuleBloc
           max: state.dsSlope4.maxValue,
         );
     RangeFloatPointInput dsSlope4 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsSlope4] ?? '',
+      characteristicDataCache[DataKey.dsSlope4] ?? state.dsSlope4.value,
       minValue: dsSlope4MinMax.min,
       maxValue: dsSlope4MinMax.max,
     );
@@ -162,7 +162,7 @@ class Setting18GraphModuleBloc
           max: state.usVCA1.maxValue,
         );
     RangeFloatPointInput usVCA1 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.usVCA1] ?? '',
+      characteristicDataCache[DataKey.usVCA1] ?? state.usVCA1.value,
       minValue: usVCA1MinMax.min,
       maxValue: usVCA1MinMax.max,
     );
@@ -173,7 +173,7 @@ class Setting18GraphModuleBloc
           max: state.usVCA2.maxValue,
         );
     RangeFloatPointInput usVCA2 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.usVCA2] ?? '',
+      characteristicDataCache[DataKey.usVCA2] ?? state.usVCA2.value,
       minValue: usVCA2MinMax.min,
       maxValue: usVCA2MinMax.max,
     );
@@ -184,7 +184,7 @@ class Setting18GraphModuleBloc
           max: state.usVCA3.maxValue,
         );
     RangeFloatPointInput usVCA3 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.usVCA3] ?? '',
+      characteristicDataCache[DataKey.usVCA3] ?? state.usVCA3.value,
       minValue: usVCA3MinMax.min,
       maxValue: usVCA3MinMax.max,
     );
@@ -195,7 +195,7 @@ class Setting18GraphModuleBloc
           max: state.usVCA4.maxValue,
         );
     RangeFloatPointInput usVCA4 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.usVCA4] ?? '',
+      characteristicDataCache[DataKey.usVCA4] ?? state.usVCA4.value,
       minValue: usVCA4MinMax.min,
       maxValue: usVCA4MinMax.max,
     );
@@ -206,7 +206,7 @@ class Setting18GraphModuleBloc
           max: state.eREQ.maxValue,
         );
     RangeFloatPointInput eREQ = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.eREQ] ?? '',
+      characteristicDataCache[DataKey.eREQ] ?? state.eREQ.value,
       minValue: eREQMinMax.min,
       maxValue: eREQMinMax.max,
     );
@@ -217,9 +217,6 @@ class Setting18GraphModuleBloc
         characteristicDataCache[DataKey.ingressSetting3] ?? '';
     String ingressSetting4 =
         characteristicDataCache[DataKey.ingressSetting4] ?? '';
-    String tgcCableLength =
-        characteristicDataCache[DataKey.tgcCableLength] ?? '';
-    // String usTGC = characteristicDataCache[DataKey.usTGC] ?? '';
 
     String firstChannelLoadingFrequency =
         characteristicDataCache[DataKey.firstChannelLoadingFrequency] ?? '';
@@ -260,9 +257,6 @@ class Setting18GraphModuleBloc
       returnIngressSetting2: ingressSetting2,
       returnIngressSetting3: ingressSetting3,
       returnIngressSetting4: ingressSetting4,
-      tgcCableLength: tgcCableLength,
-      // usTGC: usTGC,
-      splitOption: splitOption,
       pilotFrequencyMode: pilotFrequencyMode,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency.isNotEmpty
           ? RangeIntegerInput.dirty(firstChannelLoadingFrequency)
@@ -671,24 +665,24 @@ class Setting18GraphModuleBloc
   //   ));
   // }
 
-  void _onSplitOptionChanged(
-    SplitOptionChanged event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.splitOption);
+  // void _onSplitOptionChanged(
+  //   SplitOptionChanged event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.splitOption);
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      splitOption: event.splitOption,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        splitOption: event.splitOption,
-      ),
-    ));
-  }
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     splitOption: event.splitOption,
+  //     isInitialize: false,
+  //     isInitialPilotFrequencyLevelValues: false,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       splitOption: event.splitOption,
+  //     ),
+  //   ));
+  // }
 
   void _onPilotFrequencyModeChanged(
     PilotFrequencyModeChanged event,
@@ -1206,8 +1200,6 @@ class Setting18GraphModuleBloc
     String? returnIngressSetting3,
     String? returnIngressSetting4,
     String? tgcCableLength,
-    //  String usTGC,
-    String? splitOption,
     RangeIntegerInput? firstChannelLoadingFrequency,
     RangeFloatPointInput? firstChannelLoadingLevel,
     RangeIntegerInput? lastChannelLoadingFrequency,
@@ -1233,7 +1225,6 @@ class Setting18GraphModuleBloc
     returnIngressSetting3 ??= state.returnIngressSetting3;
     returnIngressSetting4 ??= state.returnIngressSetting4;
     tgcCableLength ??= tgcCableLength;
-    splitOption ??= state.splitOption;
     firstChannelLoadingFrequency ??= state.firstChannelLoadingFrequency;
     firstChannelLoadingLevel ??= state.firstChannelLoadingLevel;
     lastChannelLoadingFrequency ??= state.lastChannelLoadingFrequency;
@@ -1306,8 +1297,6 @@ class Setting18GraphModuleBloc
               state.initialValues[DataKey.ingressSetting3] ||
           returnIngressSetting4 !=
               state.initialValues[DataKey.ingressSetting4] ||
-          // usTGC != state.initialValues[DataKey.usTGC] ||
-          splitOption != state.initialValues[DataKey.splitOption] ||
           firstChannelLoadingFrequency.value !=
               state.initialValues[DataKey.firstChannelLoadingFrequency] ||
           firstChannelLoadingLevel.value !=
