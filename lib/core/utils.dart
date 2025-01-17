@@ -28,7 +28,7 @@ class SystemBackButtonProperty {
   static bool isEnabled = true;
 }
 
-// 用在 update firmware 時判斷有哪有斷線
+// 用在 update firmware 時判斷有沒有斷線
 class CrossPageFlag {
   static bool isDisconnectOnFirmwareUpdate = false;
 }
@@ -241,7 +241,7 @@ Future<String> getAppVersion() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
   // 給部門內測試的版本會加 -beta版本文字, 例如V 2.1.2-beta2
-  String appVersion = 'V ${packageInfo.version}-beta6';
+  String appVersion = 'V ${packageInfo.version}';
   return appVersion;
 }
 
@@ -335,20 +335,18 @@ Future<void> handleUpdateAction({
   required VoidCallback action,
   required bool Function(dynamic state)? waitForState,
   bool isResumeUpdate = true,
-  bool waitForPeriodicUpdateEnabledState = true,
 }) async {
   final homeBloc = context.read<HomeBloc>();
 
-  // Dispatch the cancel event
-  homeBloc.add(const DevicePeriodicUpdateCanceled());
+  if (homeBloc.state.periodicUpdateEnabled) {
+    // Dispatch the cancel event
+    homeBloc.add(const DevicePeriodicUpdateCanceled());
 
-  // Wait for the HomeBloc to emit the cancelled state
-  if (waitForPeriodicUpdateEnabledState) {
+    // Wait for the HomeBloc to emit the cancelled state
+
     await homeBloc.stream
         .firstWhere((state) => state.periodicUpdateEnabled == false);
   }
-
-  // Now perform your main action (e.g., dispatching another bloc event)
 
   action();
 

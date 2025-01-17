@@ -197,35 +197,15 @@ class _LogChartContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (state.loadingStatus.isRequestInProgress) {
-          return Center(
-            child: SingleChildScrollView(
-              // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
-              // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-              key: const Key('ChartForm_Empty_Chart'),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    buildChart(
-                        context: context,
-                        lineSeriesCollection: getChartDataOfLog1(
-                          dateValueCollectionOfLog: [[], [], [], [], []],
-                        )),
-                    const SizedBox(
-                      height: 50.0,
-                    ),
-                    buildChart(
-                      context: context,
-                      lineSeriesCollection: getChartDataOfLog2(
-                        dateValueCollectionOfLog: [[], [], [], [], []],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+        if (state.loadingStatus.isNone ||
+            state.loadingStatus.isRequestInProgress ||
+            state.loadingStatus.isRequestFailure) {
+          // loadingStatus.isRequestInProgress 時 loading 畫面做在 Chart18Form, 所以這裡不用顯示 loading
+          // state.loadingStatus.isNone 的情形有斷線時和 app 啟動時
+          return buildLoadingFormWithProgressiveChartView(
+            context: context,
+            showLoading: false,
+            dateValueCollectionOfLog: [[], [], [], [], []],
           );
         } else {
           return const _LogChartListView();
@@ -259,16 +239,17 @@ class _LogChartListView extends StatelessWidget {
               return dataLogChartState.formStatus.isRequestFailure ||
                   dataLogChartState.formStatus.isRequestSuccess;
             },
-            waitForPeriodicUpdateEnabledState: false,
           );
 
           return buildLoadingFormWithProgressiveChartView(
             context: context,
+            showLoading: true,
             dateValueCollectionOfLog: state.dateValueCollectionOfLog,
           );
         } else if (state.formStatus.isRequestInProgress) {
           return buildLoadingFormWithProgressiveChartView(
             context: context,
+            showLoading: true,
             dateValueCollectionOfLog: state.dateValueCollectionOfLog,
           );
         } else if (state.formStatus.isRequestFailure) {
@@ -447,26 +428,19 @@ Widget buildChart({
 
 Widget buildLoadingFormWithProgressiveChartView({
   required BuildContext context,
+  required bool showLoading,
   required List<List<ValuePair>> dateValueCollectionOfLog,
 }) {
   String intValue = Random().nextInt(100).toString();
   List<LineSeries> log1Data = [];
   List<LineSeries> logVoltage = [];
-  if (dateValueCollectionOfLog.isEmpty) {
-    log1Data = getChartDataOfLog1(
-      dateValueCollectionOfLog: dateValueCollectionOfLog,
-    );
-    logVoltage = getChartDataOfLog2(
-      dateValueCollectionOfLog: dateValueCollectionOfLog,
-    );
-  } else {
-    log1Data = getChartDataOfLog1(
-      dateValueCollectionOfLog: dateValueCollectionOfLog,
-    );
-    logVoltage = getChartDataOfLog2(
-      dateValueCollectionOfLog: dateValueCollectionOfLog,
-    );
-  }
+
+  log1Data = getChartDataOfLog1(
+    dateValueCollectionOfLog: dateValueCollectionOfLog,
+  );
+  logVoltage = getChartDataOfLog2(
+    dateValueCollectionOfLog: dateValueCollectionOfLog,
+  );
 
   return Stack(
     alignment: Alignment.center,
@@ -495,18 +469,20 @@ Widget buildLoadingFormWithProgressiveChartView({
           ),
         ),
       ),
-      Container(
-        decoration: const BoxDecoration(
-          color: Color.fromARGB(70, 158, 158, 158),
-        ),
-        child: const Center(
-          child: SizedBox(
-            width: CustomStyle.diameter,
-            height: CustomStyle.diameter,
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      )
+      showLoading
+          ? Container(
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(70, 158, 158, 158),
+              ),
+              child: const Center(
+                child: SizedBox(
+                  width: CustomStyle.diameter,
+                  height: CustomStyle.diameter,
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            )
+          : Container()
     ],
   );
 }

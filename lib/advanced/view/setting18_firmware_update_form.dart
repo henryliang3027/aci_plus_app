@@ -854,7 +854,12 @@ class _StartButton extends StatelessWidget {
           );
         } else {
           if (homeState.connectionStatus.isRequestFailure) {
-            CrossPageFlag.isDisconnectOnFirmwareUpdate = true;
+            if (setting18FirmwareUpdateState
+                .submissionStatus.isSubmissionInProgress) {
+              // 如果 firmware update 過程中斷線時, isDisconnectOnFirmwareUpdate 設為 true
+              CrossPageFlag.isDisconnectOnFirmwareUpdate = true;
+            }
+
             // 斷線時 enable advanced page 的所有 button
             context
                 .read<Setting18AdvancedBloc>()

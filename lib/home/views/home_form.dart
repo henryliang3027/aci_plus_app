@@ -261,7 +261,6 @@ class _HomeFormState extends State<HomeForm> {
             } else if (state.loadingStatus.isRequestSuccess) {
               final double? currentPage = _pageController.page;
               final int currentIndex = currentPage?.round() ?? -1;
-              print('Current page index: $currentIndex');
 
               // 如果在loading 的時候就切到 chart page, 則  loadingStatus.isRequestSuccess 就會頻繁啟動和暫停 Periodic Update
               if (currentIndex != 3) {

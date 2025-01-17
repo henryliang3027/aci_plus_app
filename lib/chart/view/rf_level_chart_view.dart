@@ -58,37 +58,19 @@ class _RFevelChartContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (state.loadingStatus.isRequestInProgress) {
-          return Center(
-            child: SingleChildScrollView(
-              // 設定 key, 讓 chart 可以 rebuild 並繪製空的資料
-              // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-              key: const Key('ChartForm_Empty_Chart'),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    buildChart(
-                        context: context,
-                        lineSeriesCollection: getChartDataOfOutputRFLevel(
-                          dateValueCollectionOfLog: [[], []],
-                        )),
-                    const SizedBox(
-                      height: 50.0,
-                    ),
-                    buildChart(
-                      context: context,
-                      lineSeriesCollection: getChartDataOfInputRFLevel(
-                        dateValueCollectionOfLog: [[], []],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+        if (state.loadingStatus.isNone ||
+            state.loadingStatus.isRequestInProgress ||
+            state.loadingStatus.isRequestFailure) {
+          // loadingStatus.isRequestInProgress 時 loading 畫面做在 Chart18Form, 所以這裡不用顯示 loading,
+          // Chart18Form loading 時, 使用者無法切過來
+          // state.loadingStatus.isNone 的情形有斷線時和 app 啟動時
+          return buildLoadingFormWithProgressiveChartView(
+            context: context,
+            showLoading: false,
+            dateValueCollectionOfLog: [[], []],
           );
         } else {
+          // state.loadingStatus.isRequestSuccess
           return const _RFLevelChartView();
         }
       },
@@ -127,6 +109,7 @@ class _RFLevelChartView extends StatelessWidget {
             children: [
               buildLoadingFormWithProgressiveChartView(
                 context: context,
+                showLoading: true,
                 dateValueCollectionOfLog: state.valueCollectionOfRFInOut,
               ),
             ],
@@ -137,6 +120,7 @@ class _RFLevelChartView extends StatelessWidget {
             children: [
               buildLoadingFormWithProgressiveChartView(
                 context: context,
+                showLoading: true,
                 dateValueCollectionOfLog: state.valueCollectionOfRFInOut,
               ),
             ],
@@ -148,6 +132,7 @@ class _RFLevelChartView extends StatelessWidget {
             children: [
               buildLoadingFormWithProgressiveChartView(
                 context: context,
+                showLoading: true,
                 dateValueCollectionOfLog: state.valueCollectionOfRFInOut,
               ),
             ],
@@ -290,26 +275,17 @@ Widget buildChart({
 
 Widget buildLoadingFormWithProgressiveChartView({
   required BuildContext context,
+  required bool showLoading,
   required List<List<ValuePair>> dateValueCollectionOfLog,
 }) {
-  List<List<ValuePair>> emptyDateValueCollection = [
-    [],
-    [],
-  ];
   String intValue = Random().nextInt(100).toString();
   List<LineSeries> rfOutputData = [];
   List<LineSeries> rfInputData = [];
-  if (dateValueCollectionOfLog.isEmpty) {
-    rfOutputData = getChartDataOfOutputRFLevel(
-        dateValueCollectionOfLog: emptyDateValueCollection);
-    rfInputData = getChartDataOfInputRFLevel(
-        dateValueCollectionOfLog: emptyDateValueCollection);
-  } else {
-    rfOutputData = getChartDataOfOutputRFLevel(
-        dateValueCollectionOfLog: dateValueCollectionOfLog);
-    rfInputData = getChartDataOfInputRFLevel(
-        dateValueCollectionOfLog: dateValueCollectionOfLog);
-  }
+
+  rfOutputData = getChartDataOfOutputRFLevel(
+      dateValueCollectionOfLog: dateValueCollectionOfLog);
+  rfInputData = getChartDataOfInputRFLevel(
+      dateValueCollectionOfLog: dateValueCollectionOfLog);
 
   return Stack(
     alignment: Alignment.center,
@@ -338,18 +314,20 @@ Widget buildLoadingFormWithProgressiveChartView({
           ),
         ),
       ),
-      Container(
-        decoration: const BoxDecoration(
-          color: Color.fromARGB(70, 158, 158, 158),
-        ),
-        child: const Center(
-          child: SizedBox(
-            width: CustomStyle.diameter,
-            height: CustomStyle.diameter,
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      )
+      showLoading
+          ? Container(
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(70, 158, 158, 158),
+              ),
+              child: const Center(
+                child: SizedBox(
+                  width: CustomStyle.diameter,
+                  height: CustomStyle.diameter,
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            )
+          : Container()
     ],
   );
 }

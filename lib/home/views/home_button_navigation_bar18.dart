@@ -119,7 +119,7 @@ class Indicator extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Pulsator(
-          size: CustomStyle.size34, // Circle size
+          size: 24, // Circle size
           color: CustomStyle.alarmColor[alarm.name] ??
               const Color(0xff6c757d), // Ripple color
           duration: const Duration(
@@ -150,32 +150,28 @@ class Indicator extends StatelessWidget {
 
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
-          child: SingleChildScrollView(
-            clipBehavior: Clip.none,
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                getPulsator(
-                  alarm: unitStatusAlarmSeverity,
-                  name: AppLocalizations.of(context)!.unitStatusAlarm,
-                  animationEnabled:
-                      unitStatusAlarmSeverity == Alarm.danger ? true : false,
-                ),
-                getPulsator(
-                  alarm: temperatureAlarmSeverity,
-                  name: AppLocalizations.of(context)!.temperatureAlarm,
-                  animationEnabled:
-                      temperatureAlarmSeverity == Alarm.danger ? true : false,
-                ),
-                getPulsator(
-                  alarm: voltageAlarmSeverity,
-                  name: AppLocalizations.of(context)!.powerSupplyAlarm,
-                  animationEnabled:
-                      voltageAlarmSeverity == Alarm.danger ? true : false,
-                ),
-              ],
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              getPulsator(
+                alarm: unitStatusAlarmSeverity,
+                name: AppLocalizations.of(context)!.unitStatusAlarm,
+                animationEnabled:
+                    unitStatusAlarmSeverity == Alarm.danger ? true : false,
+              ),
+              getPulsator(
+                alarm: temperatureAlarmSeverity,
+                name: AppLocalizations.of(context)!.temperatureAlarm,
+                animationEnabled:
+                    temperatureAlarmSeverity == Alarm.danger ? true : false,
+              ),
+              getPulsator(
+                alarm: voltageAlarmSeverity,
+                name: AppLocalizations.of(context)!.powerSupplyAlarm,
+                animationEnabled:
+                    voltageAlarmSeverity == Alarm.danger ? true : false,
+              ),
+            ],
           ),
         );
       },
