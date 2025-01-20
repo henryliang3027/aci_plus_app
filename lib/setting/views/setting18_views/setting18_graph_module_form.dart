@@ -407,11 +407,11 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
         // forwardInputAttenuation1TextEditingController.text = state.dsVVA1;
-        double minValue = state.dsVVA1.minValue;
-        double maxValue = state.dsVVA1.maxValue;
+        double minValue = state.targetValues[DataKey.dsVVA1]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.dsVVA1]?.maxValue ?? 10.0;
         String inputAttenuation = getInputAttenuation(
           alcMode: alcMode,
-          inputAttenuation: state.dsVVA1.value,
+          inputAttenuation: state.targetValues[DataKey.dsVVA1]?.value ?? '0.0',
           currentInputAttenuation: currentInputAttenuation,
         );
         return Column(
@@ -425,11 +425,14 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
               currentValue: inputAttenuation,
               maxValue: maxValue,
               onChanged: (dsVVA1) {
-                context.read<Setting18GraphModuleBloc>().add(DSVVA1Changed(
-                      dsVVA1: dsVVA1,
+                context
+                    .read<Setting18GraphModuleBloc>()
+                    .add(ControllItemChanged(
+                      dataKey: DataKey.dsVVA1,
+                      value: dsVVA1,
                     ));
               },
-              errorText: state.dsVVA1.isNotValid
+              errorText: state.targetValues[DataKey.dsVVA1]?.isNotValid ?? false
                   ? AppLocalizations.of(context)!.textFieldErrorMessage
                   : null,
               elevation: CustomStyle.graphSettingCardElevation,
@@ -475,12 +478,13 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
 
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.dsSlope1.minValue;
-        double maxValue = state.dsSlope1.maxValue;
+        double minValue = state.targetValues[DataKey.dsSlope1]?.minValue ?? 0.0;
+        double maxValue =
+            state.targetValues[DataKey.dsSlope1]?.maxValue ?? 10.0;
         String inputEqualizer = getInputEqualizer(
           alcMode: alcMode,
           agcMode: agcMode,
-          inputEqualizer: state.dsSlope1.value,
+          inputEqualizer: state.targetValues[DataKey.dsSlope1]?.value ?? '0.0',
           currentInputEqualizer: currentInputEqualizer,
         );
         return Column(
@@ -495,13 +499,17 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
               currentValue: inputEqualizer,
               maxValue: maxValue,
               onChanged: (dsSlope1) {
-                context.read<Setting18GraphModuleBloc>().add(DSSlope1Changed(
-                      dsSlope1: dsSlope1,
+                context
+                    .read<Setting18GraphModuleBloc>()
+                    .add(ControllItemChanged(
+                      dataKey: DataKey.dsSlope1,
+                      value: dsSlope1,
                     ));
               },
-              errorText: state.dsSlope1.isNotValid
-                  ? AppLocalizations.of(context)!.textFieldErrorMessage
-                  : null,
+              errorText:
+                  state.targetValues[DataKey.dsSlope1]?.isNotValid ?? false
+                      ? AppLocalizations.of(context)!.textFieldErrorMessage
+                      : null,
               elevation: CustomStyle.graphSettingCardElevation,
               color: CustomStyle.graphSettingCardColor,
             ),
@@ -530,8 +538,9 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.dsSlope3.minValue;
-        double maxValue = state.dsSlope3.maxValue;
+        double minValue = state.targetValues[DataKey.dsSlope3]?.minValue ?? 0.0;
+        double maxValue =
+            state.targetValues[DataKey.dsSlope3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -539,13 +548,14 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputEqualizer3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsSlope3.value,
+          currentValue: state.targetValues[DataKey.dsSlope3]?.value ?? '0.0',
           onChanged: (dsSlope3) {
-            context.read<Setting18GraphModuleBloc>().add(DSSlope3Changed(
-                  dsSlope3: dsSlope3,
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.dsSlope3,
+                  value: dsSlope3,
                 ));
           },
-          errorText: state.dsSlope3.isNotValid
+          errorText: state.targetValues[DataKey.dsSlope3]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -563,8 +573,9 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.dsSlope4.minValue;
-        double maxValue = state.dsSlope4.maxValue;
+        double minValue = state.targetValues[DataKey.dsSlope4]?.minValue ?? 0.0;
+        double maxValue =
+            state.targetValues[DataKey.dsSlope4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -572,13 +583,14 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputEqualizer4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsSlope4.value,
+          currentValue: state.targetValues[DataKey.dsSlope4]?.value ?? '0.0',
           onChanged: (dsSlope4) {
-            context.read<Setting18GraphModuleBloc>().add(DSSlope4Changed(
-                  dsSlope4: dsSlope4,
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.dsSlope4,
+                  value: dsSlope4,
                 ));
           },
-          errorText: state.dsSlope4.isNotValid
+          errorText: state.targetValues[DataKey.dsSlope4]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -596,8 +608,8 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.dsVVA4.minValue;
-        double maxValue = state.dsVVA4.maxValue;
+        double minValue = state.targetValues[DataKey.dsVVA4]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.dsVVA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -605,13 +617,14 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA4.value,
+          currentValue: state.targetValues[DataKey.dsVVA4]?.value ?? '0.0',
           onChanged: (dsVVA4) {
-            context.read<Setting18GraphModuleBloc>().add(DSVVA4Changed(
-                  dsVVA4: dsVVA4,
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.dsVVA4,
+                  value: dsVVA4,
                 ));
           },
-          errorText: state.dsVVA4.isNotValid
+          errorText: state.targetValues[DataKey.dsVVA4]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -629,8 +642,8 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.dsVVA5.minValue;
-        double maxValue = state.dsVVA5.maxValue;
+        double minValue = state.targetValues[DataKey.dsVVA5]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.dsVVA5]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -638,13 +651,14 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputAttenuation4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA5.value,
+          currentValue: state.targetValues[DataKey.dsVVA5]?.value ?? '0.0',
           onChanged: (dsVVA5) {
-            context.read<Setting18GraphModuleBloc>().add(DSVVA5Changed(
-                  dsVVA5: dsVVA5,
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.dsVVA5,
+                  value: dsVVA5,
                 ));
           },
-          errorText: state.dsVVA5.isNotValid
+          errorText: state.targetValues[DataKey.dsVVA5]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -662,8 +676,8 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.dsVVA4.minValue;
-        double maxValue = state.dsVVA4.maxValue;
+        double minValue = state.targetValues[DataKey.dsVVA4]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.dsVVA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -671,13 +685,14 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputAttenuation2And3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA4.value,
+          currentValue: state.targetValues[DataKey.dsVVA4]?.value ?? '0.0',
           onChanged: (dsVVA4) {
-            context.read<Setting18GraphModuleBloc>().add(DSVVA4Changed(
-                  dsVVA4: dsVVA4,
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.dsVVA4,
+                  value: dsVVA4,
                 ));
           },
-          errorText: state.dsVVA4.isNotValid
+          errorText: state.targetValues[DataKey.dsVVA4]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -695,8 +710,8 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.dsVVA4.minValue;
-        double maxValue = state.dsVVA4.maxValue;
+        double minValue = state.targetValues[DataKey.dsVVA4]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.dsVVA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -704,13 +719,14 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputAttenuation3And4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA4.value,
+          currentValue: state.targetValues[DataKey.dsVVA4]?.value ?? '0.0',
           onChanged: (dsVVA4) {
-            context.read<Setting18GraphModuleBloc>().add(DSVVA4Changed(
-                  dsVVA4: dsVVA4,
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.dsVVA4,
+                  value: dsVVA4,
                 ));
           },
-          errorText: state.dsVVA4.isNotValid
+          errorText: state.targetValues[DataKey.dsVVA4]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -728,8 +744,8 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.dsVVA5.minValue;
-        double maxValue = state.dsVVA5.maxValue;
+        double minValue = state.targetValues[DataKey.dsVVA5]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.dsVVA5]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -737,13 +753,14 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA5.value,
+          currentValue: state.targetValues[DataKey.dsVVA5]?.value ?? '1.0',
           onChanged: (dsVVA5) {
-            context.read<Setting18GraphModuleBloc>().add(DSVVA5Changed(
-                  dsVVA5: dsVVA5,
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.dsVVA5,
+                  value: dsVVA5,
                 ));
           },
-          errorText: state.dsVVA5.isNotValid
+          errorText: state.targetValues[DataKey.dsVVA5]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -761,8 +778,9 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.dsSlope3.minValue;
-        double maxValue = state.dsSlope3.maxValue;
+        double minValue = state.targetValues[DataKey.dsSlope3]?.minValue ?? 0.0;
+        double maxValue =
+            state.targetValues[DataKey.dsSlope3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -770,46 +788,14 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputEqualizer2And3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsSlope3.value,
+          currentValue: state.targetValues[DataKey.dsSlope3]?.value ?? '0.0',
           onChanged: (dsSlope3) {
-            context.read<Setting18GraphModuleBloc>().add(DSSlope3Changed(
-                  dsSlope3: dsSlope3,
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.dsSlope3,
+                  value: dsSlope3,
                 ));
           },
-          errorText: state.dsSlope3.isNotValid
-              ? AppLocalizations.of(context)!.textFieldErrorMessage
-              : null,
-          elevation: CustomStyle.graphSettingCardElevation,
-          color: CustomStyle.graphSettingCardColor,
-        );
-      },
-    );
-  }
-}
-
-class _ForwardOutputEqualizer3And4 extends StatelessWidget {
-  const _ForwardOutputEqualizer3And4();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
-      builder: (context, state) {
-        double minValue = state.dsSlope3.minValue;
-        double maxValue = state.dsSlope3.maxValue;
-        return controlTextSlider(
-          context: context,
-          editMode: state.editMode,
-          title:
-              '${AppLocalizations.of(context)!.forwardOutputEqualizer3And4} (${CustomStyle.dB}):',
-          minValue: minValue,
-          maxValue: maxValue,
-          currentValue: state.dsSlope3.value,
-          onChanged: (dsSlope3) {
-            context.read<Setting18GraphModuleBloc>().add(DSSlope3Changed(
-                  dsSlope3: dsSlope3,
-                ));
-          },
-          errorText: state.dsSlope3.isNotValid
+          errorText: state.targetValues[DataKey.dsSlope3]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -827,8 +813,9 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.dsSlope4.minValue;
-        double maxValue = state.dsSlope4.maxValue;
+        double minValue = state.targetValues[DataKey.dsSlope4]?.minValue ?? 0.0;
+        double maxValue =
+            state.targetValues[DataKey.dsSlope4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -836,13 +823,14 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputEqualizer5And6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsSlope4.value,
+          currentValue: state.targetValues[DataKey.dsSlope4]?.value ?? '0.0',
           onChanged: (dsSlope4) {
-            context.read<Setting18GraphModuleBloc>().add(DSSlope4Changed(
-                  dsSlope4: dsSlope4,
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.dsSlope4,
+                  value: dsSlope4,
                 ));
           },
-          errorText: state.dsSlope4.isNotValid
+          errorText: state.targetValues[DataKey.dsSlope4]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -860,8 +848,8 @@ class _ReturnOutputAttenuation1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.usVCA2.minValue;
-        double maxValue = state.usVCA2.maxValue;
+        double minValue = state.targetValues[DataKey.usVCA2]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.usVCA2]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -869,13 +857,14 @@ class _ReturnOutputAttenuation1 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnOutputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA2.value,
+          currentValue: state.targetValues[DataKey.usVCA2]?.value ?? '0.0',
           onChanged: (usVCA2) {
-            context.read<Setting18GraphModuleBloc>().add(USVCA2Changed(
-                  usVCA2: usVCA2,
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.usVCA2,
+                  value: usVCA2,
                 ));
           },
-          errorText: state.usVCA2.isNotValid
+          errorText: state.targetValues[DataKey.usVCA2]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -893,8 +882,8 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.eREQ.minValue;
-        double maxValue = state.eREQ.maxValue;
+        double minValue = state.targetValues[DataKey.eREQ]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.eREQ]?.maxValue ?? 1.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -902,13 +891,14 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnOutputEqualizer1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.eREQ.value,
+          currentValue: state.targetValues[DataKey.eREQ]?.value ?? '0.0',
           onChanged: (eREQ) {
-            context.read<Setting18GraphModuleBloc>().add(EREQChanged(
-                  eREQ: eREQ,
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.eREQ,
+                  value: eREQ,
                 ));
           },
-          errorText: state.eREQ.isNotValid
+          errorText: state.targetValues[DataKey.eREQ]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -926,8 +916,8 @@ class _ReturnInputAttenuation2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.usVCA1.minValue;
-        double maxValue = state.usVCA1.maxValue;
+        double minValue = state.targetValues[DataKey.usVCA1]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.usVCA1]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -935,13 +925,14 @@ class _ReturnInputAttenuation2 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnInputAttenuation2} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA1.value,
+          currentValue: state.targetValues[DataKey.usVCA1]?.value ?? '0.0',
           onChanged: (usVCA1) {
-            context.read<Setting18GraphModuleBloc>().add(USVCA1Changed(
-                  usVCA1: usVCA1,
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.usVCA1,
+                  value: usVCA1,
                 ));
           },
-          errorText: state.usVCA1.isNotValid
+          errorText: state.targetValues[DataKey.usVCA1]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -959,8 +950,8 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.usVCA3.minValue;
-        double maxValue = state.usVCA3.maxValue;
+        double minValue = state.targetValues[DataKey.usVCA3]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.usVCA3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -968,13 +959,14 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnInputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA3.value,
+          currentValue: state.targetValues[DataKey.usVCA3]?.value ?? '0.0',
           onChanged: (usVCA3) {
-            context.read<Setting18GraphModuleBloc>().add(USVCA3Changed(
-                  usVCA3: usVCA3,
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.usVCA3,
+                  value: usVCA3,
                 ));
           },
-          errorText: state.usVCA3.isNotValid
+          errorText: state.targetValues[DataKey.usVCA3]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -992,8 +984,8 @@ class _ReturnInputAttenuation2And3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.usVCA3.minValue;
-        double maxValue = state.usVCA3.maxValue;
+        double minValue = state.targetValues[DataKey.usVCA3]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.usVCA3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -1001,13 +993,14 @@ class _ReturnInputAttenuation2And3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnInputAttenuation2And3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA3.value,
+          currentValue: state.targetValues[DataKey.usVCA3]?.value ?? '0.0',
           onChanged: (usVCA3) {
-            context.read<Setting18GraphModuleBloc>().add(USVCA3Changed(
-                  usVCA3: usVCA3,
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.usVCA3,
+                  value: usVCA3,
                 ));
           },
-          errorText: state.usVCA3.isNotValid
+          errorText: state.targetValues[DataKey.usVCA3]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -1030,8 +1023,9 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
     if (partId == '5') {
       return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
         builder: (context, state) {
-          double minValue = state.usVCA1.minValue;
-          double maxValue = state.usVCA1.maxValue;
+          double minValue = state.targetValues[DataKey.usVCA1]?.minValue ?? 0.0;
+          double maxValue =
+              state.targetValues[DataKey.usVCA1]?.maxValue ?? 10.0;
           return controlTextSlider(
             context: context,
             editMode: state.editMode,
@@ -1039,13 +1033,14 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
                 '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
             minValue: minValue,
             maxValue: maxValue,
-            currentValue: state.usVCA1.value,
+            currentValue: state.targetValues[DataKey.usVCA1]?.value ?? '0.0',
             onChanged: (usVCA1) {
-              context.read<Setting18GraphModuleBloc>().add(USVCA1Changed(
-                    usVCA1: usVCA1,
+              context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                    dataKey: DataKey.usVCA1,
+                    value: usVCA1,
                   ));
             },
-            errorText: state.usVCA1.isNotValid
+            errorText: state.targetValues[DataKey.usVCA1]?.isNotValid ?? false
                 ? AppLocalizations.of(context)!.textFieldErrorMessage
                 : null,
             elevation: CustomStyle.graphSettingCardElevation,
@@ -1056,8 +1051,9 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
     } else {
       return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
         builder: (context, state) {
-          double minValue = state.usVCA4.minValue;
-          double maxValue = state.usVCA4.maxValue;
+          double minValue = state.targetValues[DataKey.usVCA4]?.minValue ?? 0.0;
+          double maxValue =
+              state.targetValues[DataKey.usVCA4]?.maxValue ?? 10.0;
           return controlTextSlider(
             context: context,
             editMode: state.editMode,
@@ -1065,13 +1061,14 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
                 '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
             minValue: minValue,
             maxValue: maxValue,
-            currentValue: state.usVCA4.value,
+            currentValue: state.targetValues[DataKey.usVCA4]?.value ?? '0.0',
             onChanged: (usVCA4) {
-              context.read<Setting18GraphModuleBloc>().add(USVCA4Changed(
-                    usVCA4: usVCA4,
+              context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                    dataKey: DataKey.usVCA4,
+                    value: usVCA4,
                   ));
             },
-            errorText: state.usVCA4.isNotValid
+            errorText: state.targetValues[DataKey.usVCA4]?.isNotValid ?? false
                 ? AppLocalizations.of(context)!.textFieldErrorMessage
                 : null,
             elevation: CustomStyle.graphSettingCardElevation,
@@ -1090,8 +1087,8 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        double minValue = state.usVCA4.minValue;
-        double maxValue = state.usVCA4.maxValue;
+        double minValue = state.targetValues[DataKey.usVCA4]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.usVCA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -1099,13 +1096,14 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnInputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA4.value,
+          currentValue: state.targetValues[DataKey.usVCA4]?.value ?? '0.0',
           onChanged: (usVCA4) {
-            context.read<Setting18GraphModuleBloc>().add(USVCA4Changed(
-                  usVCA4: usVCA4,
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.usVCA4,
+                  value: usVCA4,
                 ));
           },
-          errorText: state.usVCA4.isNotValid
+          errorText: state.targetValues[DataKey.usVCA4]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           elevation: CustomStyle.graphSettingCardElevation,
@@ -1566,18 +1564,21 @@ class _ReturnIngressSetting2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       buildWhen: (previous, current) =>
-          previous.returnIngressSetting2 != current.returnIngressSetting2 ||
+          previous.targetIngressValues[DataKey.ingressSetting2] !=
+              current.targetIngressValues[DataKey.ingressSetting2] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting2}:',
-          currentValue: state.returnIngressSetting2,
+          currentValue:
+              state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
           onChanged: (int index) {
-            context.read<Setting18GraphModuleBloc>().add(
-                RtnIngressSetting2Changed(
-                    returnIngressSetting2: rtnIngressValues[index]));
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.ingressSetting2,
+                  value: rtnIngressValues[index],
+                ));
           },
           values: rtnIngressValues,
           texts: [
@@ -1601,18 +1602,21 @@ class _ReturnIngressSetting3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       buildWhen: (previous, current) =>
-          previous.returnIngressSetting3 != current.returnIngressSetting3 ||
+          previous.targetIngressValues[DataKey.ingressSetting3] !=
+              current.targetIngressValues[DataKey.ingressSetting3] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting3}:',
-          currentValue: state.returnIngressSetting3,
+          currentValue:
+              state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
           onChanged: (int index) {
-            context.read<Setting18GraphModuleBloc>().add(
-                RtnIngressSetting3Changed(
-                    returnIngressSetting3: rtnIngressValues[index]));
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.ingressSetting3,
+                  value: rtnIngressValues[index],
+                ));
           },
           values: rtnIngressValues,
           texts: [
@@ -1641,18 +1645,21 @@ class _ReturnIngressSetting4 extends StatelessWidget {
     if (partId == '5') {
       return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
         buildWhen: (previous, current) =>
-            previous.returnIngressSetting2 != current.returnIngressSetting2 ||
+            previous.targetIngressValues[DataKey.ingressSetting2] !=
+                current.targetIngressValues[DataKey.ingressSetting2] ||
             previous.editMode != current.editMode,
         builder: (context, state) {
           return controlToggleButton(
             context: context,
             editMode: state.editMode,
             title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
-            currentValue: state.returnIngressSetting2,
+            currentValue:
+                state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
             onChanged: (int index) {
-              context.read<Setting18GraphModuleBloc>().add(
-                  RtnIngressSetting2Changed(
-                      returnIngressSetting2: rtnIngressValues[index]));
+              context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                    dataKey: DataKey.ingressSetting2,
+                    value: rtnIngressValues[index],
+                  ));
             },
             values: rtnIngressValues,
             texts: [
@@ -1669,18 +1676,21 @@ class _ReturnIngressSetting4 extends StatelessWidget {
     } else {
       return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
         buildWhen: (previous, current) =>
-            previous.returnIngressSetting4 != current.returnIngressSetting4 ||
+            previous.targetIngressValues[DataKey.ingressSetting4] !=
+                current.targetIngressValues[DataKey.ingressSetting4] ||
             previous.editMode != current.editMode,
         builder: (context, state) {
           return controlToggleButton(
             context: context,
             editMode: state.editMode,
             title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
-            currentValue: state.returnIngressSetting4,
+            currentValue:
+                state.targetIngressValues[DataKey.ingressSetting4] ?? '0',
             onChanged: (int index) {
-              context.read<Setting18GraphModuleBloc>().add(
-                  RtnIngressSetting4Changed(
-                      returnIngressSetting4: rtnIngressValues[index]));
+              context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                    dataKey: DataKey.ingressSetting4,
+                    value: rtnIngressValues[index],
+                  ));
             },
             values: rtnIngressValues,
             texts: [
@@ -1705,18 +1715,21 @@ class _ReturnIngressSetting2And3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       buildWhen: (previous, current) =>
-          previous.returnIngressSetting3 != current.returnIngressSetting3 ||
+          previous.targetIngressValues[DataKey.ingressSetting3] !=
+              current.targetIngressValues[DataKey.ingressSetting3] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting2And3}:',
-          currentValue: state.returnIngressSetting3,
+          currentValue:
+              state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
           onChanged: (int index) {
-            context.read<Setting18GraphModuleBloc>().add(
-                RtnIngressSetting3Changed(
-                    returnIngressSetting3: rtnIngressValues[index]));
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.ingressSetting3,
+                  value: rtnIngressValues[index],
+                ));
           },
           values: rtnIngressValues,
           texts: [
@@ -1740,18 +1753,21 @@ class _ReturnIngressSetting5And6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       buildWhen: (previous, current) =>
-          previous.returnIngressSetting4 != current.returnIngressSetting4 ||
+          previous.targetIngressValues[DataKey.ingressSetting4] !=
+              current.targetIngressValues[DataKey.ingressSetting4] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting5And6}:',
-          currentValue: state.returnIngressSetting4,
+          currentValue:
+              state.targetIngressValues[DataKey.ingressSetting4] ?? '0',
           onChanged: (int index) {
-            context.read<Setting18GraphModuleBloc>().add(
-                RtnIngressSetting4Changed(
-                    returnIngressSetting4: rtnIngressValues[index]));
+            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+                  dataKey: DataKey.ingressSetting4,
+                  value: rtnIngressValues[index],
+                ));
           },
           values: rtnIngressValues,
           texts: [

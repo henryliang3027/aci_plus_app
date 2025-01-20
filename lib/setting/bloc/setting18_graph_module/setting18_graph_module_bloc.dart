@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:aci_plus_app/core/control_item_value.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
+import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
-import 'package:aci_plus_app/setting/model/formz_input_initializer.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,20 +24,21 @@ class Setting18GraphModuleBloc
         _editable = editable,
         super(const Setting18GraphModuleState()) {
     on<Initialized>(_onInitialized);
-    on<DSVVA1Changed>(_onDSVVA1Changed);
-    on<DSVVA4Changed>(_onDSVVA4Changed);
-    on<DSVVA5Changed>(_onDSVVA5Changed);
-    on<DSSlope1Changed>(_onDSSlope1Changed);
-    on<DSSlope3Changed>(_onDSSlope3Changed);
-    on<DSSlope4Changed>(_onDSSlope4Changed);
-    on<USVCA1Changed>(_onUSVCA1Changed);
-    on<USVCA2Changed>(_onUSVCA2Changed);
-    on<USVCA3Changed>(_onUSVCA3Changed);
-    on<USVCA4Changed>(_onUSVCA4Changed);
-    on<EREQChanged>(_onEREQChanged);
-    on<RtnIngressSetting2Changed>(_onRtnIngressSetting2Changed);
-    on<RtnIngressSetting3Changed>(_onRtnIngressSetting3Changed);
-    on<RtnIngressSetting4Changed>(_onRtnIngressSetting4Changed);
+    on<ControllItemChanged>(_onControllItemChanged);
+    // on<DSVVA1Changed>(_onDSVVA1Changed);
+    // on<DSVVA4Changed>(_onDSVVA4Changed);
+    // on<DSVVA5Changed>(_onDSVVA5Changed);
+    // on<DSSlope1Changed>(_onDSSlope1Changed);
+    // on<DSSlope3Changed>(_onDSSlope3Changed);
+    // on<DSSlope4Changed>(_onDSSlope4Changed);
+    // on<USVCA1Changed>(_onUSVCA1Changed);
+    // on<USVCA2Changed>(_onUSVCA2Changed);
+    // on<USVCA3Changed>(_onUSVCA3Changed);
+    // on<USVCA4Changed>(_onUSVCA4Changed);
+    // on<EREQChanged>(_onEREQChanged);
+    // on<RtnIngressSetting2Changed>(_onRtnIngressSetting2Changed);
+    // on<RtnIngressSetting3Changed>(_onRtnIngressSetting3Changed);
+    // on<RtnIngressSetting4Changed>(_onRtnIngressSetting4Changed);
     // on<TGCCableLengthChanged>(_onTGCCableLengthChanged);
     // on<USTGCChanged>(_onUSTGCChanged);
     // on<SplitOptionChanged>(_onSplitOptionChanged);
@@ -90,133 +91,157 @@ class Setting18GraphModuleBloc
           .allValueCollections[operatingMode]![splitOption]![int.parse(partId)];
     }
 
-    MinMax dsVVA1MinMax = values[DataKey.dsVVA1] ??
-        MinMax(
-          min: state.dsVVA1.minValue,
-          max: state.dsVVA1.maxValue,
-        );
-    RangeFloatPointInput dsVVA1 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsVVA1] ?? state.dsVVA1.value,
-      minValue: dsVVA1MinMax.min,
-      maxValue: dsVVA1MinMax.max,
-    );
+    // Combine them into one map:
+    Map<Enum, DataKey> combinedMap = {};
+    for (var map in SettingItemTable.controlItemDataMapCollection[partId]!) {
+      combinedMap.addAll(map);
+    }
 
-    MinMax dsVVA4MinMax = values[DataKey.dsVVA4] ??
-        MinMax(
-          min: state.dsVVA4.minValue,
-          max: state.dsVVA4.maxValue,
-        );
-    RangeFloatPointInput dsVVA4 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsVVA4] ?? state.dsVVA4.value,
-      minValue: dsVVA4MinMax.min,
-      maxValue: dsVVA4MinMax.max,
-    );
+    Map<DataKey, RangeFloatPointInput> targetValues = {};
+    Map<DataKey, String> targetIngressValues = {};
 
-    MinMax dsVVA5MinMax = values[DataKey.dsVVA5] ??
-        MinMax(
-          min: state.dsVVA5.minValue,
-          max: state.dsVVA5.maxValue,
+    combinedMap.forEach((name, dataKey) {
+      if (dataKey.name.startsWith('ingress')) {
+        targetIngressValues[dataKey] = characteristicDataCache[dataKey]!;
+      } else {
+        MinMax minMax = values[dataKey]!;
+        RangeFloatPointInput rangeFloatPointInput = RangeFloatPointInput.dirty(
+          characteristicDataCache[dataKey]!,
+          minValue: minMax.min,
+          maxValue: minMax.max,
         );
-    RangeFloatPointInput dsVVA5 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsVVA5] ?? state.dsVVA5.value,
-      minValue: dsVVA5MinMax.min,
-      maxValue: dsVVA5MinMax.max,
-    );
 
-    MinMax dsSlope1MinMax = values[DataKey.dsSlope1] ??
-        MinMax(
-          min: state.dsSlope1.minValue,
-          max: state.dsSlope1.maxValue,
-        );
-    RangeFloatPointInput dsSlope1 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsSlope1] ?? state.dsSlope1.value,
-      minValue: dsSlope1MinMax.min,
-      maxValue: dsSlope1MinMax.max,
-    );
+        targetValues[dataKey] = rangeFloatPointInput;
+      }
+    });
 
-    MinMax dsSlope3MinMax = values[DataKey.dsSlope3] ??
-        MinMax(
-          min: state.dsSlope3.minValue,
-          max: state.dsSlope3.maxValue,
-        );
-    RangeFloatPointInput dsSlope3 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsSlope3] ?? state.dsSlope3.value,
-      minValue: dsSlope3MinMax.min,
-      maxValue: dsSlope3MinMax.max,
-    );
+    // MinMax dsVVA1MinMax = values[DataKey.dsVVA1] ??
+    //     MinMax(
+    //       min: state.dsVVA1.minValue,
+    //       max: state.dsVVA1.maxValue,
+    //     );
+    // RangeFloatPointInput dsVVA1 = initialRangeFloatPointInput(
+    //   characteristicDataCache[DataKey.dsVVA1] ?? state.dsVVA1.value,
+    //   minValue: dsVVA1MinMax.min,
+    //   maxValue: dsVVA1MinMax.max,
+    // );
 
-    MinMax dsSlope4MinMax = values[DataKey.dsSlope4] ??
-        MinMax(
-          min: state.dsSlope4.minValue,
-          max: state.dsSlope4.maxValue,
-        );
-    RangeFloatPointInput dsSlope4 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.dsSlope4] ?? state.dsSlope4.value,
-      minValue: dsSlope4MinMax.min,
-      maxValue: dsSlope4MinMax.max,
-    );
+    // MinMax dsVVA4MinMax = values[DataKey.dsVVA4] ??
+    //     MinMax(
+    //       min: state.dsVVA4.minValue,
+    //       max: state.dsVVA4.maxValue,
+    //     );
+    // RangeFloatPointInput dsVVA4 = initialRangeFloatPointInput(
+    //   characteristicDataCache[DataKey.dsVVA4] ?? state.dsVVA4.value,
+    //   minValue: dsVVA4MinMax.min,
+    //   maxValue: dsVVA4MinMax.max,
+    // );
 
-    MinMax usVCA1MinMax = values[DataKey.usVCA1] ??
-        MinMax(
-          min: state.usVCA1.minValue,
-          max: state.usVCA1.maxValue,
-        );
-    RangeFloatPointInput usVCA1 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.usVCA1] ?? state.usVCA1.value,
-      minValue: usVCA1MinMax.min,
-      maxValue: usVCA1MinMax.max,
-    );
+    // MinMax dsVVA5MinMax = values[DataKey.dsVVA5] ??
+    //     MinMax(
+    //       min: state.dsVVA5.minValue,
+    //       max: state.dsVVA5.maxValue,
+    //     );
+    // RangeFloatPointInput dsVVA5 = initialRangeFloatPointInput(
+    //   characteristicDataCache[DataKey.dsVVA5] ?? state.dsVVA5.value,
+    //   minValue: dsVVA5MinMax.min,
+    //   maxValue: dsVVA5MinMax.max,
+    // );
 
-    MinMax usVCA2MinMax = values[DataKey.usVCA2] ??
-        MinMax(
-          min: state.usVCA2.minValue,
-          max: state.usVCA2.maxValue,
-        );
-    RangeFloatPointInput usVCA2 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.usVCA2] ?? state.usVCA2.value,
-      minValue: usVCA2MinMax.min,
-      maxValue: usVCA2MinMax.max,
-    );
+    // MinMax dsSlope1MinMax = values[DataKey.dsSlope1] ??
+    //     MinMax(
+    //       min: state.dsSlope1.minValue,
+    //       max: state.dsSlope1.maxValue,
+    //     );
+    // RangeFloatPointInput dsSlope1 = initialRangeFloatPointInput(
+    //   characteristicDataCache[DataKey.dsSlope1] ?? state.dsSlope1.value,
+    //   minValue: dsSlope1MinMax.min,
+    //   maxValue: dsSlope1MinMax.max,
+    // );
 
-    MinMax usVCA3MinMax = values[DataKey.usVCA3] ??
-        MinMax(
-          min: state.usVCA3.minValue,
-          max: state.usVCA3.maxValue,
-        );
-    RangeFloatPointInput usVCA3 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.usVCA3] ?? state.usVCA3.value,
-      minValue: usVCA3MinMax.min,
-      maxValue: usVCA3MinMax.max,
-    );
+    // MinMax dsSlope3MinMax = values[DataKey.dsSlope3] ??
+    //     MinMax(
+    //       min: state.dsSlope3.minValue,
+    //       max: state.dsSlope3.maxValue,
+    //     );
+    // RangeFloatPointInput dsSlope3 = initialRangeFloatPointInput(
+    //   characteristicDataCache[DataKey.dsSlope3] ?? state.dsSlope3.value,
+    //   minValue: dsSlope3MinMax.min,
+    //   maxValue: dsSlope3MinMax.max,
+    // );
 
-    MinMax usVCA4MinMax = values[DataKey.usVCA4] ??
-        MinMax(
-          min: state.usVCA4.minValue,
-          max: state.usVCA4.maxValue,
-        );
-    RangeFloatPointInput usVCA4 = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.usVCA4] ?? state.usVCA4.value,
-      minValue: usVCA4MinMax.min,
-      maxValue: usVCA4MinMax.max,
-    );
+    // MinMax dsSlope4MinMax = values[DataKey.dsSlope4] ??
+    //     MinMax(
+    //       min: state.dsSlope4.minValue,
+    //       max: state.dsSlope4.maxValue,
+    //     );
+    // RangeFloatPointInput dsSlope4 = initialRangeFloatPointInput(
+    //   characteristicDataCache[DataKey.dsSlope4] ?? state.dsSlope4.value,
+    //   minValue: dsSlope4MinMax.min,
+    //   maxValue: dsSlope4MinMax.max,
+    // );
 
-    MinMax eREQMinMax = values[DataKey.eREQ] ??
-        MinMax(
-          min: state.eREQ.minValue,
-          max: state.eREQ.maxValue,
-        );
-    RangeFloatPointInput eREQ = initialRangeFloatPointInput(
-      characteristicDataCache[DataKey.eREQ] ?? state.eREQ.value,
-      minValue: eREQMinMax.min,
-      maxValue: eREQMinMax.max,
-    );
+    // MinMax usVCA1MinMax = values[DataKey.usVCA1] ??
+    //     MinMax(
+    //       min: state.usVCA1.minValue,
+    //       max: state.usVCA1.maxValue,
+    //     );
+    // RangeFloatPointInput usVCA1 = initialRangeFloatPointInput(
+    //   characteristicDataCache[DataKey.usVCA1] ?? state.usVCA1.value,
+    //   minValue: usVCA1MinMax.min,
+    //   maxValue: usVCA1MinMax.max,
+    // );
 
-    String ingressSetting2 =
-        characteristicDataCache[DataKey.ingressSetting2] ?? '';
-    String ingressSetting3 =
-        characteristicDataCache[DataKey.ingressSetting3] ?? '';
-    String ingressSetting4 =
-        characteristicDataCache[DataKey.ingressSetting4] ?? '';
+    // MinMax usVCA2MinMax = values[DataKey.usVCA2] ??
+    //     MinMax(
+    //       min: state.usVCA2.minValue,
+    //       max: state.usVCA2.maxValue,
+    //     );
+    // RangeFloatPointInput usVCA2 = initialRangeFloatPointInput(
+    //   characteristicDataCache[DataKey.usVCA2] ?? state.usVCA2.value,
+    //   minValue: usVCA2MinMax.min,
+    //   maxValue: usVCA2MinMax.max,
+    // );
+
+    // MinMax usVCA3MinMax = values[DataKey.usVCA3] ??
+    //     MinMax(
+    //       min: state.usVCA3.minValue,
+    //       max: state.usVCA3.maxValue,
+    //     );
+    // RangeFloatPointInput usVCA3 = initialRangeFloatPointInput(
+    //   characteristicDataCache[DataKey.usVCA3] ?? state.usVCA3.value,
+    //   minValue: usVCA3MinMax.min,
+    //   maxValue: usVCA3MinMax.max,
+    // );
+
+    // MinMax usVCA4MinMax = values[DataKey.usVCA4] ??
+    //     MinMax(
+    //       min: state.usVCA4.minValue,
+    //       max: state.usVCA4.maxValue,
+    //     );
+    // RangeFloatPointInput usVCA4 = initialRangeFloatPointInput(
+    //   characteristicDataCache[DataKey.usVCA4] ?? state.usVCA4.value,
+    //   minValue: usVCA4MinMax.min,
+    //   maxValue: usVCA4MinMax.max,
+    // );
+
+    // MinMax eREQMinMax = values[DataKey.eREQ] ??
+    //     MinMax(
+    //       min: state.eREQ.minValue,
+    //       max: state.eREQ.maxValue,
+    //     );
+    // RangeFloatPointInput eREQ = initialRangeFloatPointInput(
+    //   characteristicDataCache[DataKey.eREQ] ?? state.eREQ.value,
+    //   minValue: eREQMinMax.min,
+    //   maxValue: eREQMinMax.max,
+    // );
+
+    // String ingressSetting2 =
+    //     characteristicDataCache[DataKey.ingressSetting2] ?? '';
+    // String ingressSetting3 =
+    //     characteristicDataCache[DataKey.ingressSetting3] ?? '';
+    // String ingressSetting4 =
+    //     characteristicDataCache[DataKey.ingressSetting4] ?? '';
 
     String firstChannelLoadingFrequency =
         characteristicDataCache[DataKey.firstChannelLoadingFrequency] ?? '';
@@ -243,20 +268,22 @@ class Setting18GraphModuleBloc
 
     emit(state.copyWith(
       submissionStatus: SubmissionStatus.none,
-      dsVVA1: dsVVA1,
-      dsVVA4: dsVVA4,
-      dsVVA5: dsVVA5,
-      dsSlope1: dsSlope1,
-      dsSlope3: dsSlope3,
-      dsSlope4: dsSlope4,
-      usVCA1: usVCA1,
-      usVCA2: usVCA2,
-      usVCA3: usVCA3,
-      usVCA4: usVCA4,
-      eREQ: eREQ,
-      returnIngressSetting2: ingressSetting2,
-      returnIngressSetting3: ingressSetting3,
-      returnIngressSetting4: ingressSetting4,
+      // dsVVA1: dsVVA1,
+      // dsVVA4: dsVVA4,
+      // dsVVA5: dsVVA5,
+      // dsSlope1: dsSlope1,
+      // dsSlope3: dsSlope3,
+      // dsSlope4: dsSlope4,
+      // usVCA1: usVCA1,
+      // usVCA2: usVCA2,
+      // usVCA3: usVCA3,
+      // usVCA4: usVCA4,
+      // eREQ: eREQ,
+      // returnIngressSetting2: ingressSetting2,
+      // returnIngressSetting3: ingressSetting3,
+      // returnIngressSetting4: ingressSetting4,
+      targetValues: targetValues,
+      targetIngressValues: targetIngressValues,
       pilotFrequencyMode: pilotFrequencyMode,
       firstChannelLoadingFrequency: firstChannelLoadingFrequency.isNotEmpty
           ? RangeIntegerInput.dirty(firstChannelLoadingFrequency)
@@ -283,336 +310,395 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onDSVVA1Changed(
-    DSVVA1Changed event,
+  void _onControllItemChanged(
+    ControllItemChanged event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
-    RangeFloatPointInput dsVVA1 = RangeFloatPointInput.dirty(
-      event.dsVVA1,
-      minValue: state.dsVVA1.minValue,
-      maxValue: state.dsVVA1.maxValue,
-    );
+    if (event.dataKey.name.startsWith('ingress')) {
+      Map<DataKey, String> targetIngressValues =
+          Map<DataKey, String>.from(state.targetIngressValues);
 
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.dsVVA1);
+      targetIngressValues[event.dataKey] = event.value;
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      dsVVA1: dsVVA1,
-      isInitialize: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA1: dsVVA1,
-      ),
-    ));
+      Set<DataKey> tappedSet = Set.from(state.tappedSet);
+      tappedSet.add(event.dataKey);
+
+      emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
+        targetIngressValues: targetIngressValues,
+        isInitialize: false,
+        tappedSet: tappedSet,
+        enableSubmission: _isEnabledSubmission(
+          targetIngressValues: targetIngressValues,
+        ),
+      ));
+    } else {
+      Map<DataKey, RangeFloatPointInput> targetValues =
+          Map<DataKey, RangeFloatPointInput>.from(state.targetValues);
+
+      RangeFloatPointInput rangeFloatPointInput = RangeFloatPointInput.dirty(
+        event.value,
+        minValue: state.targetValues[event.dataKey]!.minValue,
+        maxValue: state.targetValues[event.dataKey]!.maxValue,
+      );
+
+      targetValues[event.dataKey] = rangeFloatPointInput;
+
+      Set<DataKey> tappedSet = Set.from(state.tappedSet);
+      tappedSet.add(event.dataKey);
+
+      emit(state.copyWith(
+        submissionStatus: SubmissionStatus.none,
+        targetValues: targetValues,
+        isInitialize: false,
+        tappedSet: tappedSet,
+        enableSubmission: _isEnabledSubmission(
+          targetValues: targetValues,
+        ),
+      ));
+    }
   }
 
-  void _onDSVVA4Changed(
-    DSVVA4Changed event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    RangeFloatPointInput dsVVA4 = RangeFloatPointInput.dirty(
-      event.dsVVA4,
-      minValue: state.dsVVA4.minValue,
-      maxValue: state.dsVVA4.maxValue,
-    );
+  // void _onDSVVA1Changed(
+  //   DSVVA1Changed event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   Map<DataKey, RangeFloatPointInput> targetValues =
+  //       Map<DataKey, RangeFloatPointInput>.from(state.targetValues);
 
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.dsVVA4);
+  //   RangeFloatPointInput dsVVA1 = RangeFloatPointInput.dirty(
+  //     event.dsVVA1,
+  //     minValue: state.targetValues[DataKey.dsVVA1]!.minValue,
+  //     maxValue: state.targetValues[DataKey.dsVVA1]!.maxValue,
+  //   );
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      dsVVA4: dsVVA4,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA4: dsVVA4,
-      ),
-    ));
-  }
+  //   targetValues[DataKey.dsVVA1] = dsVVA1;
 
-  void _onDSVVA5Changed(
-    DSVVA5Changed event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    RangeFloatPointInput dsVVA5 = RangeFloatPointInput.dirty(
-      event.dsVVA5,
-      minValue: state.dsVVA5.minValue,
-      maxValue: state.dsVVA5.maxValue,
-    );
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.dsVVA1);
 
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.dsVVA5);
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     targetValues: targetValues,
+  //     isInitialize: false,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       targetValues: targetValues,
+  //     ),
+  //   ));
+  // }
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      dsVVA5: dsVVA5,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        dsVVA5: dsVVA5,
-      ),
-    ));
-  }
+  // void _onDSVVA4Changed(
+  //   DSVVA4Changed event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   Map<DataKey, RangeFloatPointInput> targetValues =
+  //       Map<DataKey, RangeFloatPointInput>.from(state.targetValues);
 
-  void _onDSSlope1Changed(
-    DSSlope1Changed event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    RangeFloatPointInput dsSlope1 = RangeFloatPointInput.dirty(
-      event.dsSlope1,
-      minValue: state.dsSlope1.minValue,
-      maxValue: state.dsSlope1.maxValue,
-    );
+  //   RangeFloatPointInput dsVVA4 = RangeFloatPointInput.dirty(
+  //     event.dsVVA4,
+  //     minValue: state.targetValues[DataKey.dsVVA4]!.minValue,
+  //     maxValue: state.targetValues[DataKey.dsVVA4]!.maxValue,
+  //   );
 
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.dsSlope1);
+  //   targetValues[DataKey.dsVVA4] = dsVVA4;
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      dsSlope1: dsSlope1,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        dsSlope1: dsSlope1,
-      ),
-    ));
-  }
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.dsVVA4);
 
-  void _onDSSlope3Changed(
-    DSSlope3Changed event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    RangeFloatPointInput dsSlope3 = RangeFloatPointInput.dirty(
-      event.dsSlope3,
-      minValue: state.dsSlope3.minValue,
-      maxValue: state.dsSlope3.maxValue,
-    );
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     targetValues: targetValues,
+  //     isInitialize: false,
+  //     isInitialPilotFrequencyLevelValues: false,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       targetValues: targetValues,
+  //     ),
+  //   ));
+  // }
 
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.dsSlope3);
+  // void _onDSVVA5Changed(
+  //   DSVVA5Changed event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   RangeFloatPointInput dsVVA5 = RangeFloatPointInput.dirty(
+  //     event.dsVVA5,
+  //     minValue: state.dsVVA5.minValue,
+  //     maxValue: state.dsVVA5.maxValue,
+  //   );
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      dsSlope3: dsSlope3,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        dsSlope3: dsSlope3,
-      ),
-    ));
-  }
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.dsVVA5);
 
-  void _onDSSlope4Changed(
-    DSSlope4Changed event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    RangeFloatPointInput dsSlope4 = RangeFloatPointInput.dirty(
-      event.dsSlope4,
-      minValue: state.dsSlope4.minValue,
-      maxValue: state.dsSlope4.maxValue,
-    );
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     dsVVA5: dsVVA5,
+  //     isInitialize: false,
+  //     isInitialPilotFrequencyLevelValues: false,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       dsVVA5: dsVVA5,
+  //     ),
+  //   ));
+  // }
 
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.dsSlope4);
+  // void _onDSSlope1Changed(
+  //   DSSlope1Changed event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   RangeFloatPointInput dsSlope1 = RangeFloatPointInput.dirty(
+  //     event.dsSlope1,
+  //     minValue: state.dsSlope1.minValue,
+  //     maxValue: state.dsSlope1.maxValue,
+  //   );
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      dsSlope4: dsSlope4,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        dsSlope4: dsSlope4,
-      ),
-    ));
-  }
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.dsSlope1);
 
-  void _onUSVCA1Changed(
-    USVCA1Changed event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    RangeFloatPointInput usVCA1 = RangeFloatPointInput.dirty(
-      event.usVCA1,
-      minValue: state.usVCA1.minValue,
-      maxValue: state.usVCA1.maxValue,
-    );
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     dsSlope1: dsSlope1,
+  //     isInitialize: false,
+  //     isInitialPilotFrequencyLevelValues: false,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       dsSlope1: dsSlope1,
+  //     ),
+  //   ));
+  // }
 
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.usVCA1);
+  // void _onDSSlope3Changed(
+  //   DSSlope3Changed event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   RangeFloatPointInput dsSlope3 = RangeFloatPointInput.dirty(
+  //     event.dsSlope3,
+  //     minValue: state.dsSlope3.minValue,
+  //     maxValue: state.dsSlope3.maxValue,
+  //   );
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      usVCA1: usVCA1,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        usVCA1: usVCA1,
-      ),
-    ));
-  }
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.dsSlope3);
 
-  void _onUSVCA2Changed(
-    USVCA2Changed event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    RangeFloatPointInput usVCA2 = RangeFloatPointInput.dirty(
-      event.usVCA2,
-      minValue: state.usVCA2.minValue,
-      maxValue: state.usVCA2.maxValue,
-    );
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     dsSlope3: dsSlope3,
+  //     isInitialize: false,
+  //     isInitialPilotFrequencyLevelValues: false,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       dsSlope3: dsSlope3,
+  //     ),
+  //   ));
+  // }
 
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.usVCA2);
+  // void _onDSSlope4Changed(
+  //   DSSlope4Changed event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   RangeFloatPointInput dsSlope4 = RangeFloatPointInput.dirty(
+  //     event.dsSlope4,
+  //     minValue: state.dsSlope4.minValue,
+  //     maxValue: state.dsSlope4.maxValue,
+  //   );
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      usVCA2: usVCA2,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        usVCA2: usVCA2,
-      ),
-    ));
-  }
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.dsSlope4);
 
-  void _onUSVCA3Changed(
-    USVCA3Changed event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    RangeFloatPointInput usVCA3 = RangeFloatPointInput.dirty(
-      event.usVCA3,
-      minValue: state.usVCA3.minValue,
-      maxValue: state.usVCA3.maxValue,
-    );
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     dsSlope4: dsSlope4,
+  //     isInitialize: false,
+  //     isInitialPilotFrequencyLevelValues: false,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       dsSlope4: dsSlope4,
+  //     ),
+  //   ));
+  // }
 
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.usVCA3);
+  // void _onUSVCA1Changed(
+  //   USVCA1Changed event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   RangeFloatPointInput usVCA1 = RangeFloatPointInput.dirty(
+  //     event.usVCA1,
+  //     minValue: state.usVCA1.minValue,
+  //     maxValue: state.usVCA1.maxValue,
+  //   );
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      usVCA3: usVCA3,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        usVCA3: usVCA3,
-      ),
-    ));
-  }
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.usVCA1);
 
-  void _onUSVCA4Changed(
-    USVCA4Changed event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    RangeFloatPointInput usVCA4 = RangeFloatPointInput.dirty(
-      event.usVCA4,
-      minValue: state.usVCA4.minValue,
-      maxValue: state.usVCA4.maxValue,
-    );
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     usVCA1: usVCA1,
+  //     isInitialize: false,
+  //     isInitialPilotFrequencyLevelValues: false,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       usVCA1: usVCA1,
+  //     ),
+  //   ));
+  // }
 
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.usVCA4);
+  // void _onUSVCA2Changed(
+  //   USVCA2Changed event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   RangeFloatPointInput usVCA2 = RangeFloatPointInput.dirty(
+  //     event.usVCA2,
+  //     minValue: state.usVCA2.minValue,
+  //     maxValue: state.usVCA2.maxValue,
+  //   );
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      usVCA4: usVCA4,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        usVCA4: usVCA4,
-      ),
-    ));
-  }
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.usVCA2);
 
-  void _onEREQChanged(
-    EREQChanged event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    RangeFloatPointInput eREQ = RangeFloatPointInput.dirty(
-      event.eREQ,
-      minValue: state.eREQ.minValue,
-      maxValue: state.eREQ.maxValue,
-    );
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     usVCA2: usVCA2,
+  //     isInitialize: false,
+  //     isInitialPilotFrequencyLevelValues: false,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       usVCA2: usVCA2,
+  //     ),
+  //   ));
+  // }
 
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.eREQ);
+  // void _onUSVCA3Changed(
+  //   USVCA3Changed event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   RangeFloatPointInput usVCA3 = RangeFloatPointInput.dirty(
+  //     event.usVCA3,
+  //     minValue: state.usVCA3.minValue,
+  //     maxValue: state.usVCA3.maxValue,
+  //   );
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      eREQ: eREQ,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        eREQ: eREQ,
-      ),
-    ));
-  }
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.usVCA3);
 
-  void _onRtnIngressSetting2Changed(
-    RtnIngressSetting2Changed event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.ingressSetting2);
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     usVCA3: usVCA3,
+  //     isInitialize: false,
+  //     isInitialPilotFrequencyLevelValues: false,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       usVCA3: usVCA3,
+  //     ),
+  //   ));
+  // }
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      returnIngressSetting2: event.returnIngressSetting2,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        returnIngressSetting2: event.returnIngressSetting2,
-      ),
-    ));
-  }
+  // void _onUSVCA4Changed(
+  //   USVCA4Changed event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   RangeFloatPointInput usVCA4 = RangeFloatPointInput.dirty(
+  //     event.usVCA4,
+  //     minValue: state.usVCA4.minValue,
+  //     maxValue: state.usVCA4.maxValue,
+  //   );
 
-  void _onRtnIngressSetting3Changed(
-    RtnIngressSetting3Changed event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.ingressSetting3);
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.usVCA4);
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      returnIngressSetting3: event.returnIngressSetting3,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        returnIngressSetting3: event.returnIngressSetting3,
-      ),
-    ));
-  }
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     usVCA4: usVCA4,
+  //     isInitialize: false,
+  //     isInitialPilotFrequencyLevelValues: false,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       usVCA4: usVCA4,
+  //     ),
+  //   ));
+  // }
 
-  void _onRtnIngressSetting4Changed(
-    RtnIngressSetting4Changed event,
-    Emitter<Setting18GraphModuleState> emit,
-  ) {
-    Set<DataKey> tappedSet = Set.from(state.tappedSet);
-    tappedSet.add(DataKey.ingressSetting4);
+  // void _onEREQChanged(
+  //   EREQChanged event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   RangeFloatPointInput eREQ = RangeFloatPointInput.dirty(
+  //     event.eREQ,
+  //     minValue: state.eREQ.minValue,
+  //     maxValue: state.eREQ.maxValue,
+  //   );
 
-    emit(state.copyWith(
-      submissionStatus: SubmissionStatus.none,
-      returnIngressSetting4: event.returnIngressSetting4,
-      isInitialize: false,
-      isInitialPilotFrequencyLevelValues: false,
-      tappedSet: tappedSet,
-      enableSubmission: _isEnabledSubmission(
-        returnIngressSetting4: event.returnIngressSetting4,
-      ),
-    ));
-  }
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.eREQ);
+
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     eREQ: eREQ,
+  //     isInitialize: false,
+  //     isInitialPilotFrequencyLevelValues: false,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       eREQ: eREQ,
+  //     ),
+  //   ));
+  // }
+
+  // void _onRtnIngressSetting2Changed(
+  //   RtnIngressSetting2Changed event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.ingressSetting2);
+
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     returnIngressSetting2: event.returnIngressSetting2,
+  //     isInitialize: false,
+  //     isInitialPilotFrequencyLevelValues: false,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       returnIngressSetting2: event.returnIngressSetting2,
+  //     ),
+  //   ));
+  // }
+
+  // void _onRtnIngressSetting3Changed(
+  //   RtnIngressSetting3Changed event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.ingressSetting3);
+
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     returnIngressSetting3: event.returnIngressSetting3,
+  //     isInitialize: false,
+  //     isInitialPilotFrequencyLevelValues: false,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       returnIngressSetting3: event.returnIngressSetting3,
+  //     ),
+  //   ));
+  // }
+
+  // void _onRtnIngressSetting4Changed(
+  //   RtnIngressSetting4Changed event,
+  //   Emitter<Setting18GraphModuleState> emit,
+  // ) {
+  //   Set<DataKey> tappedSet = Set.from(state.tappedSet);
+  //   tappedSet.add(DataKey.ingressSetting4);
+
+  //   emit(state.copyWith(
+  //     submissionStatus: SubmissionStatus.none,
+  //     returnIngressSetting4: event.returnIngressSetting4,
+  //     isInitialize: false,
+  //     isInitialPilotFrequencyLevelValues: false,
+  //     tappedSet: tappedSet,
+  //     enableSubmission: _isEnabledSubmission(
+  //       returnIngressSetting4: event.returnIngressSetting4,
+  //     ),
+  //   ));
+  // }
 
   // void _onTGCCableLengthChanged(
   //   TGCCableLengthChanged event,
@@ -1185,21 +1271,22 @@ class Setting18GraphModuleBloc
   }
 
   bool _isEnabledSubmission({
-    RangeFloatPointInput? dsVVA1,
-    RangeFloatPointInput? dsVVA4,
-    RangeFloatPointInput? dsVVA5,
-    RangeFloatPointInput? dsSlope1,
-    RangeFloatPointInput? dsSlope3,
-    RangeFloatPointInput? dsSlope4,
-    RangeFloatPointInput? usVCA1,
-    RangeFloatPointInput? usVCA2,
-    RangeFloatPointInput? usVCA3,
-    RangeFloatPointInput? usVCA4,
-    RangeFloatPointInput? eREQ,
-    String? returnIngressSetting2,
-    String? returnIngressSetting3,
-    String? returnIngressSetting4,
-    String? tgcCableLength,
+    // RangeFloatPointInput? dsVVA1,
+    // RangeFloatPointInput? dsVVA4,
+    // RangeFloatPointInput? dsVVA5,
+    // RangeFloatPointInput? dsSlope1,
+    // RangeFloatPointInput? dsSlope3,
+    // RangeFloatPointInput? dsSlope4,
+    // RangeFloatPointInput? usVCA1,
+    // RangeFloatPointInput? usVCA2,
+    // RangeFloatPointInput? usVCA3,
+    // RangeFloatPointInput? usVCA4,
+    // RangeFloatPointInput? eREQ,
+    // String? returnIngressSetting2,
+    // String? returnIngressSetting3,
+    // String? returnIngressSetting4,
+    Map<DataKey, RangeFloatPointInput>? targetValues,
+    Map<DataKey, String>? targetIngressValues,
     RangeIntegerInput? firstChannelLoadingFrequency,
     RangeFloatPointInput? firstChannelLoadingLevel,
     RangeIntegerInput? lastChannelLoadingFrequency,
@@ -1210,21 +1297,23 @@ class Setting18GraphModuleBloc
     String? agcMode,
     String? alcMode,
   }) {
-    dsVVA1 ??= state.dsVVA1;
-    dsVVA4 ??= state.dsVVA4;
-    dsVVA5 ??= state.dsVVA5;
-    dsSlope1 ??= state.dsSlope1;
-    dsSlope3 ??= state.dsSlope3;
-    dsSlope4 ??= state.dsSlope4;
-    usVCA1 ??= state.usVCA1;
-    usVCA2 ??= state.usVCA2;
-    usVCA3 ??= state.usVCA3;
-    usVCA4 ??= state.usVCA4;
-    eREQ ??= state.eREQ;
-    returnIngressSetting2 ??= state.returnIngressSetting2;
-    returnIngressSetting3 ??= state.returnIngressSetting3;
-    returnIngressSetting4 ??= state.returnIngressSetting4;
-    tgcCableLength ??= tgcCableLength;
+    // dsVVA1 ??= state.dsVVA1;
+    // dsVVA4 ??= state.dsVVA4;
+    // dsVVA5 ??= state.dsVVA5;
+    // dsSlope1 ??= state.dsSlope1;
+    // dsSlope3 ??= state.dsSlope3;
+    // dsSlope4 ??= state.dsSlope4;
+    // usVCA1 ??= state.usVCA1;
+    // usVCA2 ??= state.usVCA2;
+    // usVCA3 ??= state.usVCA3;
+    // usVCA4 ??= state.usVCA4;
+    // eREQ ??= state.eREQ;
+    // returnIngressSetting2 ??= state.returnIngressSetting2;
+    // returnIngressSetting3 ??= state.returnIngressSetting3;
+    // returnIngressSetting4 ??= state.returnIngressSetting4;
+    // tgcCableLength ??= tgcCableLength;
+    targetValues ??= state.targetValues;
+    targetIngressValues ??= state.targetIngressValues;
     firstChannelLoadingFrequency ??= state.firstChannelLoadingFrequency;
     firstChannelLoadingLevel ??= state.firstChannelLoadingLevel;
     lastChannelLoadingFrequency ??= state.lastChannelLoadingFrequency;
@@ -1239,17 +1328,7 @@ class Setting18GraphModuleBloc
 
     if (pilotFrequencyMode == '0') {
       isValid = Formz.validate([
-        dsVVA1,
-        dsVVA4,
-        dsVVA5,
-        dsSlope1,
-        dsSlope3,
-        dsSlope4,
-        usVCA1,
-        usVCA2,
-        usVCA3,
-        usVCA4,
-        eREQ,
+        ...targetValues.values.toList(),
         firstChannelLoadingFrequency,
         firstChannelLoadingLevel,
         lastChannelLoadingFrequency,
@@ -1257,17 +1336,7 @@ class Setting18GraphModuleBloc
       ]);
     } else if (pilotFrequencyMode == '1') {
       isValid = Formz.validate([
-        dsVVA1,
-        dsVVA4,
-        dsVVA5,
-        dsSlope1,
-        dsSlope3,
-        dsSlope4,
-        usVCA1,
-        usVCA2,
-        usVCA3,
-        usVCA4,
-        eREQ,
+        ...targetValues.values.toList(),
         firstChannelLoadingFrequency,
         firstChannelLoadingLevel,
         lastChannelLoadingFrequency,
@@ -1279,25 +1348,22 @@ class Setting18GraphModuleBloc
       isValid = true;
     }
 
+    bool isChanged = false;
+
     if (isValid) {
-      if (dsVVA1.value != state.initialValues[DataKey.dsVVA1] ||
-          dsVVA4.value != state.initialValues[DataKey.dsVVA4] ||
-          dsVVA5.value != state.initialValues[DataKey.dsVVA5] ||
-          dsSlope1.value != state.initialValues[DataKey.dsSlope1] ||
-          dsSlope3.value != state.initialValues[DataKey.dsSlope3] ||
-          dsSlope4.value != state.initialValues[DataKey.dsSlope4] ||
-          usVCA1.value != state.initialValues[DataKey.usVCA1] ||
-          usVCA2.value != state.initialValues[DataKey.usVCA2] ||
-          usVCA3.value != state.initialValues[DataKey.usVCA3] ||
-          usVCA4.value != state.initialValues[DataKey.usVCA4] ||
-          eREQ.value != state.initialValues[DataKey.eREQ] ||
-          returnIngressSetting2 !=
-              state.initialValues[DataKey.ingressSetting2] ||
-          returnIngressSetting3 !=
-              state.initialValues[DataKey.ingressSetting3] ||
-          returnIngressSetting4 !=
-              state.initialValues[DataKey.ingressSetting4] ||
-          firstChannelLoadingFrequency.value !=
+      targetIngressValues.forEach((dataKey, value) {
+        if (value != state.initialValues[dataKey]) {
+          isChanged = true;
+        }
+      });
+
+      targetValues.forEach((dataKey, rangeFloatPointInput) {
+        if (rangeFloatPointInput.value != state.initialValues[dataKey]) {
+          isChanged = true;
+        }
+      });
+
+      if (firstChannelLoadingFrequency.value !=
               state.initialValues[DataKey.firstChannelLoadingFrequency] ||
           firstChannelLoadingLevel.value !=
               state.initialValues[DataKey.firstChannelLoadingLevel] ||
@@ -1313,12 +1379,12 @@ class Setting18GraphModuleBloc
               state.initialValues[DataKey.pilotFrequency2] ||
           agcMode != state.initialValues[DataKey.agcMode] ||
           alcMode != state.initialValues[DataKey.alcMode]) {
-        return true;
-      } else {
-        return false;
+        isChanged = true;
       }
+
+      return isChanged;
     } else {
-      return false;
+      return isChanged;
     }
   }
 
@@ -1333,109 +1399,120 @@ class Setting18GraphModuleBloc
     ));
 
     List<String> settingResult = [];
+    List<DataKey> changedSettingItem = [];
 
-    if (state.dsVVA1.value != state.initialValues[DataKey.dsVVA1]) {
-      bool resultOfSetDSVVA1 =
-          await _amp18Repository.set1p8GDSVVA1(state.dsVVA1.value);
+    state.targetIngressValues.forEach((dataKey, value) {
+      if (value != state.initialValues[dataKey]) {
+        changedSettingItem.add(dataKey);
+      }
+    });
 
-      settingResult.add('${DataKey.dsVVA1.name},$resultOfSetDSVVA1');
-    }
+    state.targetValues.forEach((dataKey, rangeFloatPointInput) {
+      if (rangeFloatPointInput.value != state.initialValues[dataKey]) {
+        changedSettingItem.add(dataKey);
+      }
+    });
 
-    if (state.dsVVA4.value != state.initialValues[DataKey.dsVVA4]) {
-      bool resultOfSetDSVVA4 =
-          await _amp18Repository.set1p8GDSVVA4(state.dsVVA4.value);
+    for (var dataKey in changedSettingItem) {
+      if (dataKey == DataKey.dsVVA1) {
+        bool resultOfSetDSVVA1 = await _amp18Repository
+            .set1p8GDSVVA1(state.targetValues[dataKey]!.value);
 
-      settingResult.add('${DataKey.dsVVA4.name},$resultOfSetDSVVA4');
-    }
+        settingResult.add('${DataKey.dsVVA1.name},$resultOfSetDSVVA1');
+      }
+      if (dataKey == DataKey.dsVVA4) {
+        bool resultOfSetDSVVA4 = await _amp18Repository
+            .set1p8GDSVVA4(state.targetValues[dataKey]!.value);
 
-    if (state.dsVVA5.value != state.initialValues[DataKey.dsVVA5]) {
-      bool resultOfSetDSVVA5 =
-          await _amp18Repository.set1p8GDSVVA5(state.dsVVA5.value);
+        settingResult.add('${DataKey.dsVVA4.name},$resultOfSetDSVVA4');
+      }
 
-      settingResult.add('${DataKey.dsVVA5.name},$resultOfSetDSVVA5');
-    }
+      if (dataKey == DataKey.dsVVA5) {
+        bool resultOfSetDSVVA5 = await _amp18Repository
+            .set1p8GDSVVA5(state.targetValues[dataKey]!.value);
 
-    if (state.dsSlope1.value != state.initialValues[DataKey.dsSlope1]) {
-      bool resultOfSetDSSlope1 =
-          await _amp18Repository.set1p8GDSSlope1(state.dsSlope1.value);
+        settingResult.add('${DataKey.dsVVA5.name},$resultOfSetDSVVA5');
+      }
 
-      settingResult.add('${DataKey.dsSlope1.name},$resultOfSetDSSlope1');
-    }
+      if (dataKey == DataKey.dsSlope1) {
+        bool resultOfSetDSSlope1 = await _amp18Repository
+            .set1p8GDSSlope1(state.targetValues[dataKey]!.value);
 
-    if (state.dsSlope3.value != state.initialValues[DataKey.dsSlope3]) {
-      bool resultOfSetDSSlope3 =
-          await _amp18Repository.set1p8GDSSlope3(state.dsSlope3.value);
+        settingResult.add('${DataKey.dsSlope1.name},$resultOfSetDSSlope1');
+      }
 
-      settingResult.add('${DataKey.dsSlope3.name},$resultOfSetDSSlope3');
-    }
+      if (dataKey == DataKey.dsSlope3) {
+        bool resultOfSetDSSlope3 = await _amp18Repository
+            .set1p8GDSSlope3(state.targetValues[dataKey]!.value);
 
-    if (state.dsSlope4.value != state.initialValues[DataKey.dsSlope4]) {
-      bool resultOfSetDSSlope4 =
-          await _amp18Repository.set1p8GDSSlope4(state.dsSlope4.value);
+        settingResult.add('${DataKey.dsSlope3.name},$resultOfSetDSSlope3');
+      }
 
-      settingResult.add('${DataKey.dsSlope4.name},$resultOfSetDSSlope4');
-    }
+      if (dataKey == DataKey.dsSlope4) {
+        bool resultOfSetDSSlope4 = await _amp18Repository
+            .set1p8GDSSlope4(state.targetValues[dataKey]!.value);
 
-    if (state.usVCA1.value != state.initialValues[DataKey.usVCA1]) {
-      bool resultOfSetUSVCA1Cmd =
-          await _amp18Repository.set1p8GUSVCA1(state.usVCA1.value);
+        settingResult.add('${DataKey.dsSlope4.name},$resultOfSetDSSlope4');
+      }
 
-      settingResult.add('${DataKey.usVCA1.name},$resultOfSetUSVCA1Cmd');
-    }
+      if (dataKey == DataKey.usVCA1) {
+        bool resultOfSetUSVCA1Cmd = await _amp18Repository
+            .set1p8GUSVCA1(state.targetValues[dataKey]!.value);
 
-    if (state.usVCA2.value != state.initialValues[DataKey.usVCA2]) {
-      bool resultOfSetUSVCA2 =
-          await _amp18Repository.set1p8GUSVCA2(state.usVCA2.value);
+        settingResult.add('${DataKey.usVCA1.name},$resultOfSetUSVCA1Cmd');
+      }
 
-      settingResult.add('${DataKey.usVCA2.name},$resultOfSetUSVCA2');
-    }
+      if (dataKey == DataKey.usVCA2) {
+        bool resultOfSetUSVCA2 = await _amp18Repository
+            .set1p8GUSVCA2(state.targetValues[dataKey]!.value);
 
-    if (state.usVCA3.value != state.initialValues[DataKey.usVCA3]) {
-      bool resultOfSetUSVCA3 =
-          await _amp18Repository.set1p8GUSVCA3(state.usVCA3.value);
+        settingResult.add('${DataKey.usVCA2.name},$resultOfSetUSVCA2');
+      }
 
-      settingResult.add('${DataKey.usVCA3.name},$resultOfSetUSVCA3');
-    }
+      if (dataKey == DataKey.usVCA3) {
+        bool resultOfSetUSVCA3 = await _amp18Repository
+            .set1p8GUSVCA3(state.targetValues[dataKey]!.value);
 
-    if (state.usVCA4.value != state.initialValues[DataKey.usVCA4]) {
-      bool resultOfSetUSVCA4 =
-          await _amp18Repository.set1p8GUSVCA4(state.usVCA4.value);
+        settingResult.add('${DataKey.usVCA3.name},$resultOfSetUSVCA3');
+      }
 
-      settingResult.add('${DataKey.usVCA4.name},$resultOfSetUSVCA4');
-    }
+      if (dataKey == DataKey.usVCA4) {
+        bool resultOfSetUSVCA4 = await _amp18Repository
+            .set1p8GUSVCA4(state.targetValues[dataKey]!.value);
 
-    if (state.eREQ.value != state.initialValues[DataKey.eREQ]) {
-      bool resultOfSetEREQ =
-          await _amp18Repository.set1p8GEREQ(state.eREQ.value);
+        settingResult.add('${DataKey.usVCA4.name},$resultOfSetUSVCA4');
+      }
 
-      settingResult.add('${DataKey.eREQ.name},$resultOfSetEREQ');
-    }
+      if (dataKey == DataKey.eREQ) {
+        bool resultOfSetEREQ = await _amp18Repository
+            .set1p8GEREQ(state.targetValues[dataKey]!.value);
 
-    if (state.returnIngressSetting2 !=
-        state.initialValues[DataKey.ingressSetting2]) {
-      bool resultOfSetReturnIngress2 = await _amp18Repository
-          .set1p8GReturnIngress2(state.returnIngressSetting2);
+        settingResult.add('${DataKey.eREQ.name},$resultOfSetEREQ');
+      }
 
-      settingResult
-          .add('${DataKey.ingressSetting2.name},$resultOfSetReturnIngress2');
-    }
+      if (dataKey == DataKey.ingressSetting2) {
+        bool resultOfSetReturnIngress2 = await _amp18Repository
+            .set1p8GReturnIngress2(state.targetIngressValues[dataKey]!);
 
-    if (state.returnIngressSetting3 !=
-        state.initialValues[DataKey.ingressSetting3]) {
-      bool resultOfSetReturnIngress3 = await _amp18Repository
-          .set1p8GReturnIngress3(state.returnIngressSetting3);
+        settingResult
+            .add('${DataKey.ingressSetting2.name},$resultOfSetReturnIngress2');
+      }
 
-      settingResult
-          .add('${DataKey.ingressSetting3.name},$resultOfSetReturnIngress3');
-    }
+      if (dataKey == DataKey.ingressSetting3) {
+        bool resultOfSetReturnIngress3 = await _amp18Repository
+            .set1p8GReturnIngress3(state.targetIngressValues[dataKey]!);
 
-    if (state.returnIngressSetting4 !=
-        state.initialValues[DataKey.ingressSetting4]) {
-      bool resultOfSetReturnIngress4 = await _amp18Repository
-          .set1p8GReturnIngress4(state.returnIngressSetting4);
+        settingResult
+            .add('${DataKey.ingressSetting3.name},$resultOfSetReturnIngress3');
+      }
 
-      settingResult
-          .add('${DataKey.ingressSetting4.name},$resultOfSetReturnIngress4');
+      if (dataKey == DataKey.ingressSetting4) {
+        bool resultOfSetReturnIngress4 = await _amp18Repository
+            .set1p8GReturnIngress4(state.targetIngressValues[dataKey]!);
+
+        settingResult
+            .add('${DataKey.ingressSetting4.name},$resultOfSetReturnIngress4');
+      }
     }
 
     // if (state.tgcCableLength != state.initialValues[DataKey.tgcCableLength]) {

@@ -16,131 +16,141 @@ class Initialized extends Setting18GraphModuleEvent {
   List<Object> get props => [useCache];
 }
 
-class DSVVA1Changed extends Setting18GraphModuleEvent {
-  const DSVVA1Changed({required this.dsVVA1});
+class ControllItemChanged extends Setting18GraphModuleEvent {
+  const ControllItemChanged({
+    required this.dataKey,
+    required this.value,
+  });
 
-  final String dsVVA1;
-
-  @override
-  List<Object> get props => [dsVVA1];
+  final DataKey dataKey;
+  final String value;
 }
 
-class DSVVA4Changed extends Setting18GraphModuleEvent {
-  const DSVVA4Changed({required this.dsVVA4});
+// class DSVVA1Changed extends Setting18GraphModuleEvent {
+//   const DSVVA1Changed({required this.dsVVA1});
 
-  final String dsVVA4;
+//   final String dsVVA1;
 
-  @override
-  List<Object> get props => [dsVVA4];
-}
+//   @override
+//   List<Object> get props => [dsVVA1];
+// }
 
-class DSVVA5Changed extends Setting18GraphModuleEvent {
-  const DSVVA5Changed({required this.dsVVA5});
+// class DSVVA4Changed extends Setting18GraphModuleEvent {
+//   const DSVVA4Changed({required this.dsVVA4});
 
-  final String dsVVA5;
+//   final String dsVVA4;
 
-  @override
-  List<Object> get props => [dsVVA5];
-}
+//   @override
+//   List<Object> get props => [dsVVA4];
+// }
 
-class DSSlope1Changed extends Setting18GraphModuleEvent {
-  const DSSlope1Changed({required this.dsSlope1});
+// class DSVVA5Changed extends Setting18GraphModuleEvent {
+//   const DSVVA5Changed({required this.dsVVA5});
 
-  final String dsSlope1;
+//   final String dsVVA5;
 
-  @override
-  List<Object> get props => [dsSlope1];
-}
+//   @override
+//   List<Object> get props => [dsVVA5];
+// }
 
-class DSSlope3Changed extends Setting18GraphModuleEvent {
-  const DSSlope3Changed({required this.dsSlope3});
+// class DSSlope1Changed extends Setting18GraphModuleEvent {
+//   const DSSlope1Changed({required this.dsSlope1});
 
-  final String dsSlope3;
+//   final String dsSlope1;
 
-  @override
-  List<Object> get props => [dsSlope3];
-}
+//   @override
+//   List<Object> get props => [dsSlope1];
+// }
 
-class DSSlope4Changed extends Setting18GraphModuleEvent {
-  const DSSlope4Changed({required this.dsSlope4});
+// class DSSlope3Changed extends Setting18GraphModuleEvent {
+//   const DSSlope3Changed({required this.dsSlope3});
 
-  final String dsSlope4;
+//   final String dsSlope3;
 
-  @override
-  List<Object> get props => [dsSlope4];
-}
+//   @override
+//   List<Object> get props => [dsSlope3];
+// }
 
-class USVCA1Changed extends Setting18GraphModuleEvent {
-  const USVCA1Changed({required this.usVCA1});
+// class DSSlope4Changed extends Setting18GraphModuleEvent {
+//   const DSSlope4Changed({required this.dsSlope4});
 
-  final String usVCA1;
+//   final String dsSlope4;
 
-  @override
-  List<Object> get props => [usVCA1];
-}
+//   @override
+//   List<Object> get props => [dsSlope4];
+// }
 
-class USVCA2Changed extends Setting18GraphModuleEvent {
-  const USVCA2Changed({required this.usVCA2});
+// class USVCA1Changed extends Setting18GraphModuleEvent {
+//   const USVCA1Changed({required this.usVCA1});
 
-  final String usVCA2;
+//   final String usVCA1;
 
-  @override
-  List<Object> get props => [usVCA2];
-}
+//   @override
+//   List<Object> get props => [usVCA1];
+// }
 
-class USVCA3Changed extends Setting18GraphModuleEvent {
-  const USVCA3Changed({required this.usVCA3});
+// class USVCA2Changed extends Setting18GraphModuleEvent {
+//   const USVCA2Changed({required this.usVCA2});
 
-  final String usVCA3;
+//   final String usVCA2;
 
-  @override
-  List<Object> get props => [usVCA3];
-}
+//   @override
+//   List<Object> get props => [usVCA2];
+// }
 
-class USVCA4Changed extends Setting18GraphModuleEvent {
-  const USVCA4Changed({required this.usVCA4});
+// class USVCA3Changed extends Setting18GraphModuleEvent {
+//   const USVCA3Changed({required this.usVCA3});
 
-  final String usVCA4;
+//   final String usVCA3;
 
-  @override
-  List<Object> get props => [usVCA4];
-}
+//   @override
+//   List<Object> get props => [usVCA3];
+// }
 
-class EREQChanged extends Setting18GraphModuleEvent {
-  const EREQChanged({required this.eREQ});
+// class USVCA4Changed extends Setting18GraphModuleEvent {
+//   const USVCA4Changed({required this.usVCA4});
 
-  final String eREQ;
+//   final String usVCA4;
 
-  @override
-  List<Object> get props => [eREQ];
-}
+//   @override
+//   List<Object> get props => [usVCA4];
+// }
 
-class RtnIngressSetting2Changed extends Setting18GraphModuleEvent {
-  const RtnIngressSetting2Changed({required this.returnIngressSetting2});
+// class EREQChanged extends Setting18GraphModuleEvent {
+//   const EREQChanged({required this.eREQ});
 
-  final String returnIngressSetting2;
+//   final String eREQ;
 
-  @override
-  List<Object> get props => [returnIngressSetting2];
-}
+//   @override
+//   List<Object> get props => [eREQ];
+// }
 
-class RtnIngressSetting3Changed extends Setting18GraphModuleEvent {
-  const RtnIngressSetting3Changed({required this.returnIngressSetting3});
+// class RtnIngressSetting2Changed extends Setting18GraphModuleEvent {
+//   const RtnIngressSetting2Changed({required this.returnIngressSetting2});
 
-  final String returnIngressSetting3;
+//   final String returnIngressSetting2;
 
-  @override
-  List<Object> get props => [returnIngressSetting3];
-}
+//   @override
+//   List<Object> get props => [returnIngressSetting2];
+// }
 
-class RtnIngressSetting4Changed extends Setting18GraphModuleEvent {
-  const RtnIngressSetting4Changed({required this.returnIngressSetting4});
+// class RtnIngressSetting3Changed extends Setting18GraphModuleEvent {
+//   const RtnIngressSetting3Changed({required this.returnIngressSetting3});
 
-  final String returnIngressSetting4;
+//   final String returnIngressSetting3;
 
-  @override
-  List<Object> get props => [returnIngressSetting4];
-}
+//   @override
+//   List<Object> get props => [returnIngressSetting3];
+// }
+
+// class RtnIngressSetting4Changed extends Setting18GraphModuleEvent {
+//   const RtnIngressSetting4Changed({required this.returnIngressSetting4});
+
+//   final String returnIngressSetting4;
+
+//   @override
+//   List<Object> get props => [returnIngressSetting4];
+// }
 
 // class TGCCableLengthChanged extends Setting18GraphModuleEvent {
 //   const TGCCableLengthChanged({required this.tgcCableLength});
