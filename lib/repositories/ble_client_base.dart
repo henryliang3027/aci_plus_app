@@ -3,12 +3,19 @@ import 'package:aci_plus_app/repositories/ble_peripheral.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class BLEClientBase {
+  final List<int> _longDataHeader = [
+    0xB0,
+    0x03,
+    0x00
+  ]; // 大於 176 bytes 的回傳資料 header
+  final List<int> _shortDataHeader = [
+    0xB0,
+    0x03,
+    0xB0
+  ]; // 176 bytes 回傳資料 header
   final List<int> _combinedRawData = [];
-
   Stream<ScanReport> get scanReport;
-
   Stream<ConnectionReport> get connectionStateReport;
-
   Stream<String> get updateReport;
 
   Future<void> connectToDevice(Peripheral peripheral);
@@ -75,8 +82,8 @@ abstract class BLEClientBase {
     required int length,
   }) {
     // 如過接收到一半失敗, 則重傳時遇到 header 就清除 _combinedRawData
-    List<int> header = [0xB0, 0x03, 0x00];
-    if (listEquals(rawData.sublist(0, 3), header)) {
+
+    if (listEquals(rawData.sublist(0, 3), _longDataHeader)) {
       _combinedRawData.clear();
       _combinedRawData.addAll(rawData);
 
@@ -116,8 +123,15 @@ abstract class BLEClientBase {
     } else if (commandIndex >= 40 && commandIndex <= 46) {
       return [true, rawData];
     } else if (commandIndex >= 80 && commandIndex <= 83) {
-      // rawData 長度小於 mtu size, 不需要 combine data
-      return [true, rawData];
+      if (rawData.length == 181) {
+        if (listEquals(rawData.sublist(0, 3), _shortDataHeader)) {
+          return [true, rawData];
+        } else {
+          return [false];
+        }
+      } else {
+        return [false];
+      }
     } else if (commandIndex == 183) {
       // 接收 RF input/output power 資料流
       // RF input/output power 資料流總長度 1029

@@ -640,12 +640,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
 
     Map<DataKey, String> newCharacteristicData = {};
-    List<dynamic> resultOf1p8G0 = [];
-    List<dynamic> resultOf1p8G1 = [];
-    List<dynamic> resultOf1p8G2 = [];
-    List<dynamic> resultOf1p8G3 = [];
-    List<dynamic> resultOf1p8GForLogChunk = [];
-    List<dynamic> resultOf1p8GUserAttribute = [];
+    List<dynamic> resultOf1p8G0 = [false];
+    List<dynamic> resultOf1p8G1 = [false];
+    List<dynamic> resultOf1p8G2 = [false];
+    List<dynamic> resultOf1p8G3 = [false];
+    List<dynamic> resultOf1p8GForLogChunk = [false];
+    List<dynamic> resultOf1p8GUserAttribute = [false];
 
     resultOf1p8G0 = await _amp18Repository.requestCommand1p8G0();
 
@@ -678,7 +678,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(state.copyWith(
         loadingStatus: FormStatus.requestFailure,
         characteristicData: state.characteristicData,
-        errorMassage: 'Failed to load data',
+        errorMassage: 'Device connection failed',
       ));
     }
 
@@ -717,7 +717,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             emit(state.copyWith(
               loadingStatus: FormStatus.requestFailure,
               characteristicData: state.characteristicData,
-              errorMassage: 'Failed to load data',
+              errorMassage: 'Device connection failed',
             ));
           }
         } else {
@@ -731,7 +731,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           loadingStatus: FormStatus.requestFailure,
           characteristicData: state.characteristicData,
-          errorMassage: 'Failed to load data',
+          errorMassage: 'Device connection failed',
         ));
       }
     }
@@ -750,7 +750,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           loadingStatus: FormStatus.requestFailure,
           characteristicData: state.characteristicData,
-          errorMassage: 'Failed to load data',
+          errorMassage: 'Device connection failed',
         ));
       }
     }
@@ -776,14 +776,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             emit(state.copyWith(
               loadingStatus: FormStatus.requestFailure,
               characteristicData: state.characteristicData,
-              errorMassage: 'Failed to load data',
+              errorMassage: 'Device connection failed',
             ));
           } else {
             if (resultOf1p8G3[1] == CharacteristicError.writeDataError.name) {
               emit(state.copyWith(
                 loadingStatus: FormStatus.requestFailure,
                 characteristicData: state.characteristicData,
-                errorMassage: 'Failed to load data',
+                errorMassage: 'Device connection failed',
               ));
               break;
             } else {
@@ -812,7 +812,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           loadingStatus: FormStatus.requestFailure,
           characteristicData: state.characteristicData,
-          errorMassage: 'Failed to load data',
+          errorMassage: 'Device connection failed',
         ));
       }
     }
@@ -847,7 +847,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             emit(state.copyWith(
               loadingStatus: FormStatus.requestFailure,
               characteristicData: state.characteristicData,
-              errorMassage: 'Failed to load logs',
+              errorMassage: 'Device connection failed',
             ));
           } else {
             if (resultOf1p8GForLogChunk[2] ==
@@ -855,7 +855,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               emit(state.copyWith(
                 loadingStatus: FormStatus.requestFailure,
                 characteristicData: state.characteristicData,
-                errorMassage: 'Failed to load logs',
+                errorMassage: 'Device connection failed',
               ));
               break;
             } else {
@@ -896,12 +896,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
 
     Map<DataKey, String> newCharacteristicData = {};
-    List<dynamic> resultOf1p8GCCorNode80 = [];
-    List<dynamic> resultOf1p8GCCorNode91 = [];
-    List<dynamic> resultOf1p8GCCorNode92 = [];
-    List<dynamic> resultOf1p8GCCorNodeA1 = [];
-    List<dynamic> resultOf1p8GCCorNodeUserAttribute = [];
-    List<dynamic> resultOf1p8GCCorNodeLogChunk = [];
+    List<dynamic> resultOf1p8GCCorNode80 = [false];
+    List<dynamic> resultOf1p8GCCorNode91 = [false];
+    List<dynamic> resultOf1p8GCCorNode92 = [false];
+    List<dynamic> resultOf1p8GCCorNodeA1 = [false];
+    List<dynamic> resultOf1p8GCCorNodeUserAttribute = [false];
+    List<dynamic> resultOf1p8GCCorNodeLogChunk = [false];
 
     resultOf1p8GCCorNode80 =
         await _amp18CCorNodeRepository.requestCommand1p8GCCorNode80();
@@ -937,7 +937,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(state.copyWith(
         loadingStatus: FormStatus.requestFailure,
         characteristicData: state.characteristicData,
-        errorMassage: 'Failed to load data',
+        errorMassage: 'Device connection failed',
       ));
     }
 
@@ -974,7 +974,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               emit(state.copyWith(
                 loadingStatus: FormStatus.requestFailure,
                 characteristicData: state.characteristicData,
-                errorMassage: 'Failed to load data',
+                errorMassage: 'Device connection failed',
               ));
             }
           }
@@ -989,7 +989,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           loadingStatus: FormStatus.requestFailure,
           characteristicData: state.characteristicData,
-          errorMassage: 'Failed to load data',
+          errorMassage: 'Device connection failed',
         ));
       }
     }
@@ -1007,7 +1007,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           loadingStatus: FormStatus.requestFailure,
           characteristicData: state.characteristicData,
-          errorMassage: 'Failed to load data',
+          errorMassage: 'Device connection failed',
         ));
       }
     }
@@ -1025,7 +1025,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           loadingStatus: FormStatus.requestFailure,
           characteristicData: state.characteristicData,
-          errorMassage: 'Failed to load data',
+          errorMassage: 'Device connection failed',
         ));
       }
     }
@@ -1048,7 +1048,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(
           loadingStatus: FormStatus.requestFailure,
           characteristicData: state.characteristicData,
-          errorMassage: 'Failed to load data',
+          errorMassage: 'Device connection failed',
         ));
       }
     }
@@ -1082,7 +1082,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             emit(state.copyWith(
               loadingStatus: FormStatus.requestFailure,
               characteristicData: state.characteristicData,
-              errorMassage: 'Failed to load logs',
+              errorMassage: 'Device connection failed',
             ));
           } else {
             if (resultOf1p8GCCorNodeLogChunk[2] ==
@@ -1090,7 +1090,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               emit(state.copyWith(
                 loadingStatus: FormStatus.requestFailure,
                 characteristicData: state.characteristicData,
-                errorMassage: 'Failed to load logs',
+                errorMassage: 'Device connection failed',
               ));
               break;
             } else {

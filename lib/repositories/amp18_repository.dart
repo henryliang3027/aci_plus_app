@@ -9,7 +9,6 @@ import 'package:aci_plus_app/repositories/amp18_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
-import 'package:aci_plus_app/repositories/shared/transmit_delay.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
 import 'package:speed_chart/speed_chart.dart';
