@@ -425,9 +425,7 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
               currentValue: inputAttenuation,
               maxValue: maxValue,
               onChanged: (dsVVA1) {
-                context
-                    .read<Setting18GraphModuleBloc>()
-                    .add(ControllItemChanged(
+                context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                       dataKey: DataKey.dsVVA1,
                       value: dsVVA1,
                     ));
@@ -499,9 +497,7 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
               currentValue: inputEqualizer,
               maxValue: maxValue,
               onChanged: (dsSlope1) {
-                context
-                    .read<Setting18GraphModuleBloc>()
-                    .add(ControllItemChanged(
+                context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                       dataKey: DataKey.dsSlope1,
                       value: dsSlope1,
                     ));
@@ -550,7 +546,7 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
           maxValue: maxValue,
           currentValue: state.targetValues[DataKey.dsSlope3]?.value ?? '0.0',
           onChanged: (dsSlope3) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.dsSlope3,
                   value: dsSlope3,
                 ));
@@ -585,7 +581,7 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
           maxValue: maxValue,
           currentValue: state.targetValues[DataKey.dsSlope4]?.value ?? '0.0',
           onChanged: (dsSlope4) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.dsSlope4,
                   value: dsSlope4,
                 ));
@@ -619,7 +615,7 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
           maxValue: maxValue,
           currentValue: state.targetValues[DataKey.dsVVA4]?.value ?? '0.0',
           onChanged: (dsVVA4) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.dsVVA4,
                   value: dsVVA4,
                 ));
@@ -653,7 +649,7 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
           maxValue: maxValue,
           currentValue: state.targetValues[DataKey.dsVVA5]?.value ?? '0.0',
           onChanged: (dsVVA5) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.dsVVA5,
                   value: dsVVA5,
                 ));
@@ -687,7 +683,7 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
           maxValue: maxValue,
           currentValue: state.targetValues[DataKey.dsVVA4]?.value ?? '0.0',
           onChanged: (dsVVA4) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.dsVVA4,
                   value: dsVVA4,
                 ));
@@ -721,7 +717,7 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
           maxValue: maxValue,
           currentValue: state.targetValues[DataKey.dsVVA4]?.value ?? '0.0',
           onChanged: (dsVVA4) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.dsVVA4,
                   value: dsVVA4,
                 ));
@@ -755,7 +751,7 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
           maxValue: maxValue,
           currentValue: state.targetValues[DataKey.dsVVA5]?.value ?? '1.0',
           onChanged: (dsVVA5) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.dsVVA5,
                   value: dsVVA5,
                 ));
@@ -790,7 +786,7 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
           maxValue: maxValue,
           currentValue: state.targetValues[DataKey.dsSlope3]?.value ?? '0.0',
           onChanged: (dsSlope3) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.dsSlope3,
                   value: dsSlope3,
                 ));
@@ -825,7 +821,7 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
           maxValue: maxValue,
           currentValue: state.targetValues[DataKey.dsSlope4]?.value ?? '0.0',
           onChanged: (dsSlope4) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.dsSlope4,
                   value: dsSlope4,
                 ));
@@ -859,7 +855,7 @@ class _ReturnOutputAttenuation1 extends StatelessWidget {
           maxValue: maxValue,
           currentValue: state.targetValues[DataKey.usVCA2]?.value ?? '0.0',
           onChanged: (usVCA2) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.usVCA2,
                   value: usVCA2,
                 ));
@@ -893,7 +889,7 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
           maxValue: maxValue,
           currentValue: state.targetValues[DataKey.eREQ]?.value ?? '0.0',
           onChanged: (eREQ) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.eREQ,
                   value: eREQ,
                 ));
@@ -927,7 +923,7 @@ class _ReturnInputAttenuation2 extends StatelessWidget {
           maxValue: maxValue,
           currentValue: state.targetValues[DataKey.usVCA1]?.value ?? '0.0',
           onChanged: (usVCA1) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.usVCA1,
                   value: usVCA1,
                 ));
@@ -961,7 +957,7 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
           maxValue: maxValue,
           currentValue: state.targetValues[DataKey.usVCA3]?.value ?? '0.0',
           onChanged: (usVCA3) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.usVCA3,
                   value: usVCA3,
                 ));
@@ -995,7 +991,7 @@ class _ReturnInputAttenuation2And3 extends StatelessWidget {
           maxValue: maxValue,
           currentValue: state.targetValues[DataKey.usVCA3]?.value ?? '0.0',
           onChanged: (usVCA3) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.usVCA3,
                   value: usVCA3,
                 ));
@@ -1035,7 +1031,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
             maxValue: maxValue,
             currentValue: state.targetValues[DataKey.usVCA1]?.value ?? '0.0',
             onChanged: (usVCA1) {
-              context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+              context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                     dataKey: DataKey.usVCA1,
                     value: usVCA1,
                   ));
@@ -1063,7 +1059,7 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
             maxValue: maxValue,
             currentValue: state.targetValues[DataKey.usVCA4]?.value ?? '0.0',
             onChanged: (usVCA4) {
-              context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+              context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                     dataKey: DataKey.usVCA4,
                     value: usVCA4,
                   ));
@@ -1098,7 +1094,7 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
           maxValue: maxValue,
           currentValue: state.targetValues[DataKey.usVCA4]?.value ?? '0.0',
           onChanged: (usVCA4) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.usVCA4,
                   value: usVCA4,
                 ));
@@ -1575,7 +1571,7 @@ class _ReturnIngressSetting2 extends StatelessWidget {
           currentValue:
               state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
           onChanged: (int index) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting2,
                   value: rtnIngressValues[index],
                 ));
@@ -1613,7 +1609,7 @@ class _ReturnIngressSetting3 extends StatelessWidget {
           currentValue:
               state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
           onChanged: (int index) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting3,
                   value: rtnIngressValues[index],
                 ));
@@ -1656,7 +1652,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
             currentValue:
                 state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
             onChanged: (int index) {
-              context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+              context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                     dataKey: DataKey.ingressSetting2,
                     value: rtnIngressValues[index],
                   ));
@@ -1687,7 +1683,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
             currentValue:
                 state.targetIngressValues[DataKey.ingressSetting4] ?? '0',
             onChanged: (int index) {
-              context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+              context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                     dataKey: DataKey.ingressSetting4,
                     value: rtnIngressValues[index],
                   ));
@@ -1726,7 +1722,7 @@ class _ReturnIngressSetting2And3 extends StatelessWidget {
           currentValue:
               state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
           onChanged: (int index) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting3,
                   value: rtnIngressValues[index],
                 ));
@@ -1764,7 +1760,7 @@ class _ReturnIngressSetting5And6 extends StatelessWidget {
           currentValue:
               state.targetIngressValues[DataKey.ingressSetting4] ?? '0',
           onChanged: (int index) {
-            context.read<Setting18GraphModuleBloc>().add(ControllItemChanged(
+            context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting4,
                   value: rtnIngressValues[index],
                 ));

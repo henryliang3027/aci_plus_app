@@ -16,8 +16,8 @@ class Initialized extends Setting18GraphModuleEvent {
   List<Object> get props => [useCache];
 }
 
-class ControllItemChanged extends Setting18GraphModuleEvent {
-  const ControllItemChanged({
+class ControlItemChanged extends Setting18GraphModuleEvent {
+  const ControlItemChanged({
     required this.dataKey,
     required this.value,
   });

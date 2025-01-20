@@ -387,11 +387,12 @@ class _ReturnInputAttenuation2 extends StatelessWidget {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
       buildWhen: (previous, current) =>
-          previous.usVCA1 != current.usVCA1 ||
+          previous.targetValues[DataKey.usVCA1] !=
+              current.targetValues[DataKey.usVCA1] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.usVCA1.minValue;
-        double maxValue = state.usVCA1.maxValue;
+        double minValue = state.targetValues[DataKey.usVCA1]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.usVCA1]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -399,13 +400,14 @@ class _ReturnInputAttenuation2 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnInputAttenuation2} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA1.value,
+          currentValue: state.targetValues[DataKey.usVCA1]?.value ?? '0.0',
           onChanged: (usVCA1) {
-            context.read<Setting18ReverseControlBloc>().add(USVCA1Changed(
-                  usVCA1: usVCA1,
+            context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.usVCA1,
+                  value: usVCA1,
                 ));
           },
-          errorText: state.usVCA1.isNotValid
+          errorText: state.targetValues[DataKey.usVCA1]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -426,11 +428,12 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
       buildWhen: (previous, current) =>
-          previous.usVCA3 != current.usVCA3 ||
+          previous.targetValues[DataKey.usVCA3] !=
+              current.targetValues[DataKey.usVCA3] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.usVCA3.minValue;
-        double maxValue = state.usVCA3.maxValue;
+        double minValue = state.targetValues[DataKey.usVCA3]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.usVCA3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -438,13 +441,14 @@ class _ReturnInputAttenuation3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnInputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA3.value,
+          currentValue: state.targetValues[DataKey.usVCA3]?.value ?? '0.0',
           onChanged: (usVCA3) {
-            context.read<Setting18ReverseControlBloc>().add(USVCA3Changed(
-                  usVCA3: usVCA3,
+            context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.usVCA3,
+                  value: usVCA3,
                 ));
           },
-          errorText: state.usVCA3.isNotValid
+          errorText: state.targetValues[DataKey.usVCA3]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -465,11 +469,12 @@ class _ReturnInputAttenuation2And3 extends StatelessWidget {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
       buildWhen: (previous, current) =>
-          previous.usVCA3 != current.usVCA3 ||
+          previous.targetValues[DataKey.usVCA3] !=
+              current.targetValues[DataKey.usVCA3] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.usVCA3.minValue;
-        double maxValue = state.usVCA3.maxValue;
+        double minValue = state.targetValues[DataKey.usVCA3]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.usVCA3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -477,13 +482,14 @@ class _ReturnInputAttenuation2And3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnInputAttenuation2And3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA3.value,
+          currentValue: state.targetValues[DataKey.usVCA3]?.value ?? '0.0',
           onChanged: (usVCA3) {
-            context.read<Setting18ReverseControlBloc>().add(USVCA3Changed(
-                  usVCA3: usVCA3,
+            context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.usVCA3,
+                  value: usVCA3,
                 ));
           },
-          errorText: state.usVCA3.isNotValid
+          errorText: state.targetValues[DataKey.usVCA3]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -509,11 +515,13 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
       return BlocBuilder<Setting18ReverseControlBloc,
           Setting18ReverseControlState>(
         buildWhen: (previous, current) =>
-            previous.usVCA1 != current.usVCA1 ||
+            previous.targetValues[DataKey.usVCA1] !=
+                current.targetValues[DataKey.usVCA1] ||
             previous.editMode != current.editMode,
         builder: (context, state) {
-          double minValue = state.usVCA1.minValue;
-          double maxValue = state.usVCA1.maxValue;
+          double minValue = state.targetValues[DataKey.usVCA1]?.minValue ?? 0.0;
+          double maxValue =
+              state.targetValues[DataKey.usVCA1]?.maxValue ?? 10.0;
           return controlTextSlider(
             context: context,
             editMode: state.editMode,
@@ -521,13 +529,16 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
                 '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
             minValue: minValue,
             maxValue: maxValue,
-            currentValue: state.usVCA1.value,
+            currentValue: state.targetValues[DataKey.usVCA1]?.value ?? '0.0',
             onChanged: (usVCA1) {
-              context.read<Setting18ReverseControlBloc>().add(USVCA1Changed(
-                    usVCA1: usVCA1,
+              context
+                  .read<Setting18ReverseControlBloc>()
+                  .add(ControlItemChanged(
+                    dataKey: DataKey.usVCA1,
+                    value: usVCA1,
                   ));
             },
-            errorText: state.usVCA1.isNotValid
+            errorText: state.targetValues[DataKey.usVCA1]?.isNotValid ?? false
                 ? AppLocalizations.of(context)!.textFieldErrorMessage
                 : null,
             color: getSettingListCardColor(
@@ -541,11 +552,13 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
       return BlocBuilder<Setting18ReverseControlBloc,
           Setting18ReverseControlState>(
         buildWhen: (previous, current) =>
-            previous.usVCA4 != current.usVCA4 ||
+            previous.targetValues[DataKey.usVCA4] !=
+                current.targetValues[DataKey.usVCA4] ||
             previous.editMode != current.editMode,
         builder: (context, state) {
-          double minValue = state.usVCA4.minValue;
-          double maxValue = state.usVCA4.maxValue;
+          double minValue = state.targetValues[DataKey.usVCA4]?.minValue ?? 0.0;
+          double maxValue =
+              state.targetValues[DataKey.usVCA4]?.maxValue ?? 10.0;
           return controlTextSlider(
             context: context,
             editMode: state.editMode,
@@ -553,13 +566,16 @@ class _ReturnInputAttenuation4 extends StatelessWidget {
                 '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
             minValue: minValue,
             maxValue: maxValue,
-            currentValue: state.usVCA4.value,
+            currentValue: state.targetValues[DataKey.usVCA4]?.value ?? '0.0',
             onChanged: (usVCA4) {
-              context.read<Setting18ReverseControlBloc>().add(USVCA4Changed(
-                    usVCA4: usVCA4,
+              context
+                  .read<Setting18ReverseControlBloc>()
+                  .add(ControlItemChanged(
+                    dataKey: DataKey.usVCA4,
+                    value: usVCA4,
                   ));
             },
-            errorText: state.usVCA4.isNotValid
+            errorText: state.targetValues[DataKey.usVCA4]?.isNotValid ?? false
                 ? AppLocalizations.of(context)!.textFieldErrorMessage
                 : null,
             color: getSettingListCardColor(
@@ -581,11 +597,12 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
       buildWhen: (previous, current) =>
-          previous.usVCA4 != current.usVCA4 ||
+          previous.targetValues[DataKey.usVCA4] !=
+              current.targetValues[DataKey.usVCA4] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.usVCA4.minValue;
-        double maxValue = state.usVCA4.maxValue;
+        double minValue = state.targetValues[DataKey.usVCA4]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.usVCA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -593,13 +610,14 @@ class _ReturnInputAttenuation5And6 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnInputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA4.value,
+          currentValue: state.targetValues[DataKey.usVCA4]?.value ?? '0.0',
           onChanged: (usVCA4) {
-            context.read<Setting18ReverseControlBloc>().add(USVCA4Changed(
-                  usVCA4: usVCA4,
+            context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.usVCA4,
+                  value: usVCA4,
                 ));
           },
-          errorText: state.usVCA4.isNotValid
+          errorText: state.targetValues[DataKey.usVCA4]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -620,11 +638,12 @@ class _ReturnOutputAttenuation1 extends StatelessWidget {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
       buildWhen: (previous, current) =>
-          previous.usVCA2 != current.usVCA2 ||
+          previous.targetValues[DataKey.usVCA2] !=
+              current.targetValues[DataKey.usVCA2] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.usVCA2.minValue;
-        double maxValue = state.usVCA2.maxValue;
+        double minValue = state.targetValues[DataKey.usVCA2]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.usVCA2]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -632,13 +651,14 @@ class _ReturnOutputAttenuation1 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnOutputAttenuation1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.usVCA2.value,
+          currentValue: state.targetValues[DataKey.usVCA2]?.value ?? '0.0',
           onChanged: (usVCA2) {
-            context.read<Setting18ReverseControlBloc>().add(USVCA2Changed(
-                  usVCA2: usVCA2,
+            context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.usVCA2,
+                  value: usVCA2,
                 ));
           },
-          errorText: state.usVCA2.isNotValid
+          errorText: state.targetValues[DataKey.usVCA2]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -659,11 +679,12 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
       buildWhen: (previous, current) =>
-          previous.eREQ != current.eREQ ||
+          previous.targetValues[DataKey.eREQ] !=
+              current.targetValues[DataKey.eREQ] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.eREQ.minValue;
-        double maxValue = state.eREQ.maxValue;
+        double minValue = state.targetValues[DataKey.eREQ]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.eREQ]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -671,13 +692,14 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
               '${AppLocalizations.of(context)!.returnOutputEqualizer1} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.eREQ.value,
+          currentValue: state.targetValues[DataKey.eREQ]?.value ?? '0.0',
           onChanged: (eREQ) {
-            context.read<Setting18ReverseControlBloc>().add(EREQChanged(
-                  eREQ: eREQ,
+            context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.eREQ,
+                  value: eREQ,
                 ));
           },
-          errorText: state.eREQ.isNotValid
+          errorText: state.targetValues[DataKey.eREQ]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -705,18 +727,21 @@ class _ReturnIngressSetting2 extends StatelessWidget {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
       buildWhen: (previous, current) =>
-          previous.returnIngressSetting2 != current.returnIngressSetting2 ||
+          previous.targetIngressValues[DataKey.ingressSetting2] !=
+              current.targetIngressValues[DataKey.ingressSetting2] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting2}:',
-          currentValue: state.returnIngressSetting2,
+          currentValue:
+              state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
           onChanged: (int index) {
-            context
-                .read<Setting18ReverseControlBloc>()
-                .add(RtnIngressSetting2Changed(rtnIngressValues[index]));
+            context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.ingressSetting2,
+                  value: rtnIngressValues[index],
+                ));
           },
           values: rtnIngressValues,
           texts: [
@@ -743,18 +768,21 @@ class _ReturnIngressSetting3 extends StatelessWidget {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
       buildWhen: (previous, current) =>
-          previous.returnIngressSetting3 != current.returnIngressSetting3 ||
+          previous.targetIngressValues[DataKey.ingressSetting3] !=
+              current.targetIngressValues[DataKey.ingressSetting3] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting3}:',
-          currentValue: state.returnIngressSetting3,
+          currentValue:
+              state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
           onChanged: (int index) {
-            context
-                .read<Setting18ReverseControlBloc>()
-                .add(RtnIngressSetting3Changed(rtnIngressValues[index]));
+            context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.ingressSetting3,
+                  value: rtnIngressValues[index],
+                ));
           },
           values: rtnIngressValues,
           texts: [
@@ -786,18 +814,23 @@ class _ReturnIngressSetting4 extends StatelessWidget {
       return BlocBuilder<Setting18ReverseControlBloc,
           Setting18ReverseControlState>(
         buildWhen: (previous, current) =>
-            previous.returnIngressSetting2 != current.returnIngressSetting2 ||
+            previous.targetIngressValues[DataKey.ingressSetting2] !=
+                current.targetIngressValues[DataKey.ingressSetting2] ||
             previous.editMode != current.editMode,
         builder: (context, state) {
           return controlToggleButton(
             context: context,
             editMode: state.editMode,
-            title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
-            currentValue: state.returnIngressSetting2,
+            title: '${AppLocalizations.of(context)!.returnIngressSetting2}:',
+            currentValue:
+                state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
             onChanged: (int index) {
               context
                   .read<Setting18ReverseControlBloc>()
-                  .add(RtnIngressSetting2Changed(rtnIngressValues[index]));
+                  .add(ControlItemChanged(
+                    dataKey: DataKey.ingressSetting2,
+                    value: rtnIngressValues[index],
+                  ));
             },
             values: rtnIngressValues,
             texts: [
@@ -817,18 +850,23 @@ class _ReturnIngressSetting4 extends StatelessWidget {
       return BlocBuilder<Setting18ReverseControlBloc,
           Setting18ReverseControlState>(
         buildWhen: (previous, current) =>
-            previous.returnIngressSetting4 != current.returnIngressSetting4 ||
+            previous.targetIngressValues[DataKey.ingressSetting4] !=
+                current.targetIngressValues[DataKey.ingressSetting4] ||
             previous.editMode != current.editMode,
         builder: (context, state) {
           return controlToggleButton(
             context: context,
             editMode: state.editMode,
             title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
-            currentValue: state.returnIngressSetting4,
+            currentValue:
+                state.targetIngressValues[DataKey.ingressSetting4] ?? '0',
             onChanged: (int index) {
               context
                   .read<Setting18ReverseControlBloc>()
-                  .add(RtnIngressSetting4Changed(rtnIngressValues[index]));
+                  .add(ControlItemChanged(
+                    dataKey: DataKey.ingressSetting4,
+                    value: rtnIngressValues[index],
+                  ));
             },
             values: rtnIngressValues,
             texts: [
@@ -856,18 +894,21 @@ class _ReturnIngressSetting2And3 extends StatelessWidget {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
       buildWhen: (previous, current) =>
-          previous.returnIngressSetting3 != current.returnIngressSetting3 ||
+          previous.targetIngressValues[DataKey.ingressSetting3] !=
+              current.targetIngressValues[DataKey.ingressSetting3] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting2And3}:',
-          currentValue: state.returnIngressSetting3,
+          currentValue:
+              state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
           onChanged: (int index) {
-            context
-                .read<Setting18ReverseControlBloc>()
-                .add(RtnIngressSetting3Changed(rtnIngressValues[index]));
+            context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.ingressSetting3,
+                  value: rtnIngressValues[index],
+                ));
           },
           values: rtnIngressValues,
           texts: [
@@ -894,18 +935,21 @@ class _ReturnIngressSetting5And6 extends StatelessWidget {
     return BlocBuilder<Setting18ReverseControlBloc,
         Setting18ReverseControlState>(
       buildWhen: (previous, current) =>
-          previous.returnIngressSetting4 != current.returnIngressSetting4 ||
+          previous.targetIngressValues[DataKey.ingressSetting4] !=
+              current.targetIngressValues[DataKey.ingressSetting4] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
         return controlToggleButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting5And6}:',
-          currentValue: state.returnIngressSetting4,
+          currentValue:
+              state.targetIngressValues[DataKey.ingressSetting4] ?? '0',
           onChanged: (int index) {
-            context
-                .read<Setting18ReverseControlBloc>()
-                .add(RtnIngressSetting4Changed(rtnIngressValues[index]));
+            context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.ingressSetting4,
+                  value: rtnIngressValues[index],
+                ));
           },
           values: rtnIngressValues,
           texts: [

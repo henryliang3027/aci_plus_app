@@ -24,7 +24,7 @@ class Setting18GraphModuleBloc
         _editable = editable,
         super(const Setting18GraphModuleState()) {
     on<Initialized>(_onInitialized);
-    on<ControllItemChanged>(_onControllItemChanged);
+    on<ControlItemChanged>(_onControlItemChanged);
     // on<DSVVA1Changed>(_onDSVVA1Changed);
     // on<DSVVA4Changed>(_onDSVVA4Changed);
     // on<DSVVA5Changed>(_onDSVVA5Changed);
@@ -310,8 +310,8 @@ class Setting18GraphModuleBloc
     ));
   }
 
-  void _onControllItemChanged(
-    ControllItemChanged event,
+  void _onControlItemChanged(
+    ControlItemChanged event,
     Emitter<Setting18GraphModuleState> emit,
   ) {
     if (event.dataKey.name.startsWith('ingress')) {
@@ -1351,14 +1351,14 @@ class Setting18GraphModuleBloc
     bool isChanged = false;
 
     if (isValid) {
-      targetIngressValues.forEach((dataKey, value) {
-        if (value != state.initialValues[dataKey]) {
+      targetValues.forEach((dataKey, rangeFloatPointInput) {
+        if (rangeFloatPointInput.value != state.initialValues[dataKey]) {
           isChanged = true;
         }
       });
 
-      targetValues.forEach((dataKey, rangeFloatPointInput) {
-        if (rangeFloatPointInput.value != state.initialValues[dataKey]) {
+      targetIngressValues.forEach((dataKey, value) {
+        if (value != state.initialValues[dataKey]) {
           isChanged = true;
         }
       });
@@ -1401,19 +1401,19 @@ class Setting18GraphModuleBloc
     List<String> settingResult = [];
     List<DataKey> changedSettingItem = [];
 
-    state.targetIngressValues.forEach((dataKey, value) {
-      if (value != state.initialValues[dataKey]) {
-        changedSettingItem.add(dataKey);
-      }
-    });
-
     state.targetValues.forEach((dataKey, rangeFloatPointInput) {
       if (rangeFloatPointInput.value != state.initialValues[dataKey]) {
         changedSettingItem.add(dataKey);
       }
     });
 
-    for (var dataKey in changedSettingItem) {
+    state.targetIngressValues.forEach((dataKey, value) {
+      if (value != state.initialValues[dataKey]) {
+        changedSettingItem.add(dataKey);
+      }
+    });
+
+    for (DataKey dataKey in changedSettingItem) {
       if (dataKey == DataKey.dsVVA1) {
         bool resultOfSetDSVVA1 = await _amp18Repository
             .set1p8GDSVVA1(state.targetValues[dataKey]!.value);

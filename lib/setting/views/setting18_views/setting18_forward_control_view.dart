@@ -403,15 +403,16 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
       buildWhen: (previous, current) =>
-          previous.dsVVA1 != current.dsVVA1 ||
+          previous.targetValues[DataKey.dsVVA1] !=
+              current.targetValues[DataKey.dsVVA1] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
         // forwardInputAttenuation1TextEditingController.text = state.dsVVA1;
-        double minValue = state.dsVVA1.minValue;
-        double maxValue = state.dsVVA1.maxValue;
+        double minValue = state.targetValues[DataKey.dsVVA1]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.dsVVA1]?.maxValue ?? 10.0;
         String inputAttenuation = getInputAttenuation(
           alcMode: alcMode,
-          inputAttenuation: state.dsVVA1.value,
+          inputAttenuation: state.targetValues[DataKey.dsVVA1]?.value ?? '0.0',
           currentInputAttenuation: currentInputAttenuation,
         );
         return controlTextSlider(
@@ -423,11 +424,12 @@ class _ForwardInputAttenuation1 extends StatelessWidget {
           currentValue: inputAttenuation,
           maxValue: maxValue,
           onChanged: (dsVVA1) {
-            context.read<Setting18ForwardControlBloc>().add(DSVVA1Changed(
-                  dsVVA1: dsVVA1,
+            context.read<Setting18ForwardControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.dsVVA1,
+                  value: dsVVA1,
                 ));
           },
-          errorText: state.dsVVA1.isNotValid
+          errorText: state.targetValues[DataKey.dsVVA1]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -464,15 +466,17 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
       buildWhen: (previous, current) =>
-          previous.dsSlope1 != current.dsSlope1 ||
+          previous.targetValues[DataKey.dsSlope1] !=
+              current.targetValues[DataKey.dsSlope1] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.dsSlope1.minValue;
-        double maxValue = state.dsSlope1.maxValue;
+        double minValue = state.targetValues[DataKey.dsSlope1]?.minValue ?? 0.0;
+        double maxValue =
+            state.targetValues[DataKey.dsSlope1]?.maxValue ?? 10.0;
         String inputEqualizer = getInputEqualizer(
           alcMode: alcMode,
           agcMode: agcMode,
-          inputEqualizer: state.dsSlope1.value,
+          inputEqualizer: state.targetValues[DataKey.dsSlope1]?.value ?? '0.0',
           currentInputEqualizer: currentInputEqualizer,
         );
         return controlTextSlider(
@@ -485,11 +489,12 @@ class _ForwardInputEqualizer1 extends StatelessWidget {
           currentValue: inputEqualizer,
           maxValue: maxValue,
           onChanged: (dsSlope1) {
-            context.read<Setting18ForwardControlBloc>().add(DSSlope1Changed(
-                  dsSlope1: dsSlope1,
+            context.read<Setting18ForwardControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.dsSlope1,
+                  value: dsSlope1,
                 ));
           },
-          errorText: state.dsSlope1.isNotValid
+          errorText: state.targetValues[DataKey.dsSlope1]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -510,11 +515,13 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
       buildWhen: (previous, current) =>
-          previous.dsSlope3 != current.dsSlope3 ||
+          previous.targetValues[DataKey.dsSlope3] !=
+              current.targetValues[DataKey.dsSlope3] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.dsSlope3.minValue;
-        double maxValue = state.dsSlope3.maxValue;
+        double minValue = state.targetValues[DataKey.dsSlope3]?.minValue ?? 0.0;
+        double maxValue =
+            state.targetValues[DataKey.dsSlope3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -522,13 +529,14 @@ class _ForwardOutputEqualizer3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputEqualizer3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsSlope3.value,
+          currentValue: state.targetValues[DataKey.dsSlope3]?.value ?? '0.0',
           onChanged: (dsSlope3) {
-            context.read<Setting18ForwardControlBloc>().add(DSSlope3Changed(
-                  dsSlope3: dsSlope3,
+            context.read<Setting18ForwardControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.dsSlope3,
+                  value: dsSlope3,
                 ));
           },
-          errorText: state.dsSlope3.isNotValid
+          errorText: state.targetValues[DataKey.dsSlope3]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -549,11 +557,13 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
       buildWhen: (previous, current) =>
-          previous.dsSlope4 != current.dsSlope4 ||
+          previous.targetValues[DataKey.dsSlope4] !=
+              current.targetValues[DataKey.dsSlope4] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.dsSlope4.minValue;
-        double maxValue = state.dsSlope4.maxValue;
+        double minValue = state.targetValues[DataKey.dsSlope4]?.minValue ?? 0.0;
+        double maxValue =
+            state.targetValues[DataKey.dsSlope4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -561,13 +571,14 @@ class _ForwardOutputEqualizer4 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputEqualizer4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsSlope4.value,
+          currentValue: state.targetValues[DataKey.dsSlope4]?.value ?? '0.0',
           onChanged: (dsSlope4) {
-            context.read<Setting18ForwardControlBloc>().add(DSSlope4Changed(
-                  dsSlope4: dsSlope4,
+            context.read<Setting18ForwardControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.dsSlope4,
+                  value: dsSlope4,
                 ));
           },
-          errorText: state.dsSlope4.isNotValid
+          errorText: state.targetValues[DataKey.dsSlope4]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -588,11 +599,12 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
       buildWhen: (previous, current) =>
-          previous.dsVVA4 != current.dsVVA4 ||
+          previous.targetValues[DataKey.dsVVA4] !=
+              current.targetValues[DataKey.dsVVA4] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.dsVVA4.minValue;
-        double maxValue = state.dsVVA4.maxValue;
+        double minValue = state.targetValues[DataKey.dsVVA4]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.dsVVA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -600,13 +612,14 @@ class _ForwardOutputAttenuation3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputAttenuation3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA4.value,
+          currentValue: state.targetValues[DataKey.dsVVA4]?.value ?? '0.0',
           onChanged: (dsVVA4) {
-            context.read<Setting18ForwardControlBloc>().add(DSVVA4Changed(
-                  dsVVA4: dsVVA4,
+            context.read<Setting18ForwardControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.dsVVA4,
+                  value: dsVVA4,
                 ));
           },
-          errorText: state.dsVVA4.isNotValid
+          errorText: state.targetValues[DataKey.dsVVA4]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -627,11 +640,12 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
       buildWhen: (previous, current) =>
-          previous.dsVVA5 != current.dsVVA5 ||
+          previous.targetValues[DataKey.dsVVA5] !=
+              current.targetValues[DataKey.dsVVA5] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.dsVVA5.minValue;
-        double maxValue = state.dsVVA5.maxValue;
+        double minValue = state.targetValues[DataKey.dsVVA5]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.dsVVA5]?.maxValue ?? 0.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -639,13 +653,14 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputAttenuation4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA5.value,
+          currentValue: state.targetValues[DataKey.dsVVA5]?.value ?? '0.0',
           onChanged: (dsVVA5) {
-            context.read<Setting18ForwardControlBloc>().add(DSVVA5Changed(
-                  dsVVA5: dsVVA5,
+            context.read<Setting18ForwardControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.dsVVA5,
+                  value: dsVVA5,
                 ));
           },
-          errorText: state.dsVVA5.isNotValid
+          errorText: state.targetValues[DataKey.dsVVA5]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -666,11 +681,12 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
       buildWhen: (previous, current) =>
-          previous.dsVVA4 != current.dsVVA4 ||
+          previous.targetValues[DataKey.dsVVA4] !=
+              current.targetValues[DataKey.dsVVA4] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.dsVVA4.minValue;
-        double maxValue = state.dsVVA4.maxValue;
+        double minValue = state.targetValues[DataKey.dsVVA4]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.dsVVA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -678,13 +694,14 @@ class _ForwardOutputAttenuation2And3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputAttenuation2And3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA4.value,
+          currentValue: state.targetValues[DataKey.dsVVA4]?.value ?? '0.0',
           onChanged: (dsVVA4) {
-            context.read<Setting18ForwardControlBloc>().add(DSVVA4Changed(
-                  dsVVA4: dsVVA4,
+            context.read<Setting18ForwardControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.dsVVA4,
+                  value: dsVVA4,
                 ));
           },
-          errorText: state.dsVVA4.isNotValid
+          errorText: state.targetValues[DataKey.dsVVA5]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -705,11 +722,12 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
       buildWhen: (previous, current) =>
-          previous.dsVVA4 != current.dsVVA4 ||
+          previous.targetValues[DataKey.dsVVA4] !=
+              current.targetValues[DataKey.dsVVA4] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.dsVVA4.minValue;
-        double maxValue = state.dsVVA4.maxValue;
+        double minValue = state.targetValues[DataKey.dsVVA4]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.dsVVA4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -717,13 +735,14 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputAttenuation3And4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA4.value,
+          currentValue: state.targetValues[DataKey.dsVVA4]?.value ?? '0.0',
           onChanged: (dsVVA4) {
-            context.read<Setting18ForwardControlBloc>().add(DSVVA4Changed(
-                  dsVVA4: dsVVA4,
+            context.read<Setting18ForwardControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.dsVVA4,
+                  value: dsVVA4,
                 ));
           },
-          errorText: state.dsVVA4.isNotValid
+          errorText: state.targetValues[DataKey.dsVVA4]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -744,11 +763,12 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
       buildWhen: (previous, current) =>
-          previous.dsVVA5 != current.dsVVA5 ||
+          previous.targetValues[DataKey.dsVVA5] !=
+              current.targetValues[DataKey.dsVVA5] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.dsVVA5.minValue;
-        double maxValue = state.dsVVA5.maxValue;
+        double minValue = state.targetValues[DataKey.dsVVA5]?.minValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.dsVVA5]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -756,13 +776,14 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsVVA5.value,
+          currentValue: state.targetValues[DataKey.dsVVA5]?.value ?? '0.0',
           onChanged: (dsVVA5) {
-            context.read<Setting18ForwardControlBloc>().add(DSVVA5Changed(
-                  dsVVA5: dsVVA5,
+            context.read<Setting18ForwardControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.dsVVA5,
+                  value: dsVVA5,
                 ));
           },
-          errorText: state.dsVVA5.isNotValid
+          errorText: state.targetValues[DataKey.dsVVA5]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -783,11 +804,13 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
       buildWhen: (previous, current) =>
-          previous.dsSlope3 != current.dsSlope3 ||
+          previous.targetValues[DataKey.dsSlope3] !=
+              current.targetValues[DataKey.dsSlope3] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.dsSlope3.minValue;
-        double maxValue = state.dsSlope3.maxValue;
+        double minValue = state.targetValues[DataKey.dsSlope3]?.minValue ?? 0.0;
+        double maxValue =
+            state.targetValues[DataKey.dsSlope3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -795,13 +818,14 @@ class _ForwardOutputEqualizer2And3 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputEqualizer2And3} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsSlope3.value,
+          currentValue: state.targetValues[DataKey.dsSlope3]?.value ?? '0.0',
           onChanged: (dsSlope3) {
-            context.read<Setting18ForwardControlBloc>().add(DSSlope3Changed(
-                  dsSlope3: dsSlope3,
+            context.read<Setting18ForwardControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.dsSlope3,
+                  value: dsSlope3,
                 ));
           },
-          errorText: state.dsSlope3.isNotValid
+          errorText: state.targetValues[DataKey.dsSlope3]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -822,11 +846,13 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
       buildWhen: (previous, current) =>
-          previous.dsSlope3 != current.dsSlope3 ||
+          previous.targetValues[DataKey.dsSlope3] !=
+              current.targetValues[DataKey.dsSlope3] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.dsSlope3.minValue;
-        double maxValue = state.dsSlope3.maxValue;
+        double minValue = state.targetValues[DataKey.dsSlope3]?.minValue ?? 0.0;
+        double maxValue =
+            state.targetValues[DataKey.dsSlope3]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -834,13 +860,14 @@ class _ForwardOutputEqualizer3And4 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputEqualizer3And4} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsSlope3.value,
+          currentValue: state.targetValues[DataKey.dsSlope3]?.value ?? '0.0',
           onChanged: (dsSlope3) {
-            context.read<Setting18ForwardControlBloc>().add(DSSlope3Changed(
-                  dsSlope3: dsSlope3,
+            context.read<Setting18ForwardControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.dsSlope3,
+                  value: dsSlope3,
                 ));
           },
-          errorText: state.dsSlope3.isNotValid
+          errorText: state.targetValues[DataKey.dsSlope3]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(
@@ -861,11 +888,13 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
     return BlocBuilder<Setting18ForwardControlBloc,
         Setting18ForwardControlState>(
       buildWhen: (previous, current) =>
-          previous.dsSlope4 != current.dsSlope4 ||
+          previous.targetValues[DataKey.dsSlope4] !=
+              current.targetValues[DataKey.dsSlope4] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.dsSlope4.minValue;
-        double maxValue = state.dsSlope4.maxValue;
+        double minValue = state.targetValues[DataKey.dsSlope4]?.minValue ?? 0.0;
+        double maxValue =
+            state.targetValues[DataKey.dsSlope4]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
@@ -873,13 +902,14 @@ class _ForwardOutputEqualizer5And6 extends StatelessWidget {
               '${AppLocalizations.of(context)!.forwardOutputEqualizer5And6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.dsSlope4.value,
+          currentValue: state.targetValues[DataKey.dsSlope4]?.value ?? '0.0',
           onChanged: (dsSlope4) {
-            context.read<Setting18ForwardControlBloc>().add(DSSlope4Changed(
-                  dsSlope4: dsSlope4,
+            context.read<Setting18ForwardControlBloc>().add(ControlItemChanged(
+                  dataKey: DataKey.dsSlope4,
+                  value: dsSlope4,
                 ));
           },
-          errorText: state.dsSlope4.isNotValid
+          errorText: state.targetValues[DataKey.dsSlope4]?.isNotValid ?? false
               ? AppLocalizations.of(context)!.textFieldErrorMessage
               : null,
           color: getSettingListCardColor(

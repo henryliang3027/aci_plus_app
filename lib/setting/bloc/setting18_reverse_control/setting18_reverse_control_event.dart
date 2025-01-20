@@ -16,96 +16,14 @@ class Initialized extends Setting18ReverseControlEvent {
   List<Object> get props => [useCache];
 }
 
-class USVCA1Changed extends Setting18ReverseControlEvent {
-  const USVCA1Changed({
-    required this.usVCA1,
+class ControlItemChanged extends Setting18ReverseControlEvent {
+  const ControlItemChanged({
+    required this.dataKey,
+    required this.value,
   });
 
-  final String usVCA1;
-
-  @override
-  List<Object> get props => [
-        usVCA1,
-      ];
-}
-
-class USVCA2Changed extends Setting18ReverseControlEvent {
-  const USVCA2Changed({
-    required this.usVCA2,
-  });
-
-  final String usVCA2;
-
-  @override
-  List<Object> get props => [
-        usVCA2,
-      ];
-}
-
-class USVCA3Changed extends Setting18ReverseControlEvent {
-  const USVCA3Changed({
-    required this.usVCA3,
-  });
-
-  final String usVCA3;
-
-  @override
-  List<Object> get props => [
-        usVCA3,
-      ];
-}
-
-class USVCA4Changed extends Setting18ReverseControlEvent {
-  const USVCA4Changed({
-    required this.usVCA4,
-  });
-
-  final String usVCA4;
-
-  @override
-  List<Object> get props => [
-        usVCA4,
-      ];
-}
-
-class EREQChanged extends Setting18ReverseControlEvent {
-  const EREQChanged({
-    required this.eREQ,
-  });
-
-  final String eREQ;
-
-  @override
-  List<Object> get props => [
-        eREQ,
-      ];
-}
-
-class RtnIngressSetting2Changed extends Setting18ReverseControlEvent {
-  const RtnIngressSetting2Changed(this.returnIngressSetting2);
-
-  final String returnIngressSetting2;
-
-  @override
-  List<Object> get props => [returnIngressSetting2];
-}
-
-class RtnIngressSetting3Changed extends Setting18ReverseControlEvent {
-  const RtnIngressSetting3Changed(this.returnIngressSetting3);
-
-  final String returnIngressSetting3;
-
-  @override
-  List<Object> get props => [returnIngressSetting3];
-}
-
-class RtnIngressSetting4Changed extends Setting18ReverseControlEvent {
-  const RtnIngressSetting4Changed(this.returnIngressSetting4);
-
-  final String returnIngressSetting4;
-
-  @override
-  List<Object> get props => [returnIngressSetting4];
+  final DataKey dataKey;
+  final String value;
 }
 
 class ResetReverseValuesRequested extends Setting18ReverseControlEvent {
