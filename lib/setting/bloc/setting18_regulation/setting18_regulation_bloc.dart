@@ -446,6 +446,8 @@ class Setting18RegulationBloc
       isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
+        firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+        lastChannelLoadingFrequency: lastChannelLoadingFrequency,
         pilotFrequency1: pilotFrequency1,
         pilotFrequency2: pilotFrequency2,
       ),
@@ -484,6 +486,7 @@ class Setting18RegulationBloc
       isInitialPilotFrequencyLevelValues: false,
       tappedSet: tappedSet,
       enableSubmission: _isEnabledSubmission(
+        firstChannelLoadingLevel: firstChannelLoadingLevel,
         lastChannelLoadingLevel: lastChannelLoadingLevel,
       ),
     ));
