@@ -1132,7 +1132,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                     }
 
                     if (shouldSubmit) {
-                      handleUpdateAction(
+                      (
                         context: context,
                         targetBloc:
                             context.read<Setting18CCorNodeAttributeBloc>(),
