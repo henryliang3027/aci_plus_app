@@ -1224,7 +1224,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       Stopwatch stopwatch = Stopwatch()..start();
       List<dynamic> resultOf1p8GCCorNodeA1 =
           await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeA1(
-        timeout: const Duration(seconds: 1),
+        timeout: const Duration(seconds: 2),
       );
       print(
           'requestCommand1p8GCCorNodeA1() alarm executed in ${stopwatch.elapsed.inMilliseconds}');
@@ -1239,7 +1239,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       // Amp
       Stopwatch stopwatch = Stopwatch()..start();
       List<dynamic> resultOf1p8G2 = await _amp18Repository.requestCommand1p8G2(
-        timeout: const Duration(seconds: 1),
+        timeout: const Duration(seconds: 2),
       );
       print(
           'requestCommand1p8G2() alarm executed in ${stopwatch.elapsed.inMilliseconds}');

@@ -419,6 +419,9 @@ class BLEClient extends BLEClientBase {
         );
       }
     } catch (e) {
+      cancelCharacteristicDataTimer(
+          name:
+              'cmd $commandIndex, ${CharacteristicError.writeDataError.name}');
       if (!_completer!.isCompleted) {
         print('writeCharacteristic failed: ${e.toString()}');
         _completer!.completeError(CharacteristicError.writeDataError.name);
@@ -461,6 +464,9 @@ class BLEClient extends BLEClientBase {
           );
         }
       } catch (e) {
+        cancelCharacteristicDataTimer(
+            name:
+                'cmd $commandIndex, ${CharacteristicError.writeDataError.name}');
         if (!_completer!.isCompleted) {
           print('writeCharacteristic failed: ${e.toString()}');
           _completer!.completeError(CharacteristicError.writeDataError.name);
@@ -637,6 +643,7 @@ class BLEClient extends BLEClientBase {
     });
   }
 
+  @override
   void cancelCharacteristicDataTimer({required String name}) {
     if (_characteristicDataTimer != null) {
       _characteristicDataTimer!.cancel();
@@ -651,20 +658,6 @@ class BLEClient extends BLEClientBase {
         _completer!.completeError(false);
       }
     }
-  }
-
-  @override
-  void cancelPeriodicUpdateTimerAndCompleter() {
-    if (_characteristicDataTimer != null) {
-      _characteristicDataTimer!.cancel();
-    }
-
-    // if (_completer != null) {
-    //   if (!_completer!.isCompleted) {
-    //     print('cancelPeriodicUpdateTimerAndCompleter');
-    //     _completer!.complete([false]);
-    //   }
-    // }
   }
 
   Future<bool> _requestPermission() async {

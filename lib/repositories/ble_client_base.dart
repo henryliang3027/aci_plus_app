@@ -33,7 +33,7 @@ abstract class BLEClientBase {
 
   Future<int> getRSSI();
 
-  void cancelPeriodicUpdateTimerAndCompleter();
+  void cancelCharacteristicDataTimer({required String name});
 
   Future<dynamic> writeSetCommandToCharacteristic({
     required int commandIndex,

@@ -587,7 +587,9 @@ class BLEWindowsClient extends BLEClientBase {
         BleOutputProperty.withResponse,
       );
     } catch (e) {
-      cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
+      cancelCharacteristicDataTimer(
+          name:
+              'cmd $commandIndex, ${CharacteristicError.writeDataError.name}');
 
       if (!_completer!.isCompleted) {
         print('writeCharacteristic failed: ${e.toString()}');
@@ -626,7 +628,9 @@ class BLEWindowsClient extends BLEClientBase {
           BleOutputProperty.withResponse,
         );
       } catch (e) {
-        cancelCharacteristicDataTimer(name: 'cmd $_currentCommandIndex');
+        cancelCharacteristicDataTimer(
+            name:
+                'cmd $commandIndex, ${CharacteristicError.writeDataError.name}');
 
         if (!_completer!.isCompleted) {
           print('writeCharacteristic failed: ${e.toString()}');
@@ -803,6 +807,7 @@ class BLEWindowsClient extends BLEClientBase {
     });
   }
 
+  @override
   void cancelCharacteristicDataTimer({required String name}) {
     if (_characteristicDataTimer != null) {
       _characteristicDataTimer!.cancel();
@@ -811,19 +816,6 @@ class BLEWindowsClient extends BLEClientBase {
   }
 
   void cancelCompleterOnDisconnected() {
-    if (_completer != null) {
-      if (!_completer!.isCompleted) {
-        _completer!.completeError(false);
-      }
-    }
-  }
-
-  @override
-  void cancelPeriodicUpdateTimerAndCompleter() {
-    if (_characteristicDataTimer != null) {
-      _characteristicDataTimer!.cancel();
-    }
-
     if (_completer != null) {
       if (!_completer!.isCompleted) {
         _completer!.completeError(false);

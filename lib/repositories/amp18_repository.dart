@@ -2385,6 +2385,6 @@ class Amp18Repository {
 
   // 定時更新被取消時, 也同時取消 command 的 timer 和 completer
   void cancelPeriodicUpdateCommand() {
-    _bleClient.cancelPeriodicUpdateTimerAndCompleter();
+    _bleClient.cancelCharacteristicDataTimer(name: "Periodic Update");
   }
 }
