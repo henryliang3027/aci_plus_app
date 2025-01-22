@@ -1,4 +1,5 @@
 import 'package:aci_plus_app/advanced/bloc/setting18_firmware_log/setting18_firmware_log_bloc.dart';
+import 'package:aci_plus_app/chart/shared/message_dialog.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/utils.dart';
@@ -134,7 +135,15 @@ class _UpdateLogsSliverList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18FirmwareLogBloc, Setting18FirmwareLogState>(
+    return BlocConsumer<Setting18FirmwareLogBloc, Setting18FirmwareLogState>(
+      listener: (context, state) {
+        if (state.updateLogStatus.isRequestFailure) {
+          showFailureDialog(
+            context: context,
+            msg: state.errorMessage,
+          );
+        }
+      },
       builder: (context, state) {
         if (state.updateLogStatus.isRequestInProgress) {
           return const Center(

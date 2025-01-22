@@ -572,30 +572,31 @@ class BLEWindowsClient extends BLEClientBase {
 
     _completer = Completer<dynamic>();
 
-    // 原本寫法是先寫入 command 再 啟動 timer, 但在讀基本指令 req00Cmd 時有時回傳太快而來不及啟動 timer
-    // 所以先啟動 timer 再 寫入 command
     startCharacteristicDataTimer(
       timeout: timeout,
     );
 
-    try {
-      await UniversalBle.writeValue(
-        _peripheral!.id,
-        _serviceId,
-        _characteristicId,
-        Uint8List.fromList(value),
-        BleOutputProperty.withResponse,
-      );
-    } catch (e) {
-      cancelCharacteristicDataTimer(
-          name:
-              'cmd $commandIndex, ${CharacteristicError.writeDataError.name}');
+    Future.microtask(() async {
+      try {
+        await UniversalBle.writeValue(
+          _peripheral!.id,
+          _serviceId,
+          _characteristicId,
+          Uint8List.fromList(value),
+          BleOutputProperty.withResponse,
+        );
+      } catch (e) {
+        cancelCharacteristicDataTimer(
+            name:
+                'cmd $commandIndex, ${CharacteristicError.writeDataError.name}');
 
-      if (!_completer!.isCompleted) {
-        print('writeCharacteristic failed: ${e.toString()}');
-        _completer!.completeError(CharacteristicError.writeDataError.name);
+        if (!_completer!.isCompleted) {
+          print('writeCharacteristic failed: ${e.toString()}');
+          _completer!.completeError(CharacteristicError.writeDataError.name);
+        }
       }
-    }
+    });
+
     return _completer!.future;
   }
 
@@ -611,33 +612,33 @@ class BLEWindowsClient extends BLEClientBase {
 
     _completer = Completer<dynamic>();
 
-    // 原本寫法是先寫入 command 再 啟動 timer, 但在讀基本指令 req00Cmd 時有時回傳太快而來不及啟動 timer
-    // 所以先啟動 timer 再 寫入 command
-
     startCharacteristicDataTimer(
       timeout: timeout,
     );
 
-    for (int i = 0; i < chunks.length; i++) {
-      try {
-        await UniversalBle.writeValue(
-          _peripheral!.id,
-          _serviceId,
-          _characteristicId,
-          Uint8List.fromList(chunks[i]),
-          BleOutputProperty.withResponse,
-        );
-      } catch (e) {
-        cancelCharacteristicDataTimer(
-            name:
-                'cmd $commandIndex, ${CharacteristicError.writeDataError.name}');
+    Future.microtask(() async {
+      for (int i = 0; i < chunks.length; i++) {
+        try {
+          await UniversalBle.writeValue(
+            _peripheral!.id,
+            _serviceId,
+            _characteristicId,
+            Uint8List.fromList(chunks[i]),
+            BleOutputProperty.withResponse,
+          );
+        } catch (e) {
+          cancelCharacteristicDataTimer(
+              name:
+                  'cmd $commandIndex, ${CharacteristicError.writeDataError.name}');
 
-        if (!_completer!.isCompleted) {
-          print('writeCharacteristic failed: ${e.toString()}');
-          _completer!.completeError(CharacteristicError.writeDataError.name);
+          if (!_completer!.isCompleted) {
+            print('writeCharacteristic failed: ${e.toString()}');
+            _completer!.completeError(CharacteristicError.writeDataError.name);
+          }
         }
       }
-    }
+    });
+
     return _completer!.future;
   }
 

@@ -76,16 +76,6 @@ class RFLevelChartBloc extends Bloc<RFLevelChartEvent, RFLevelChartState> {
             rfInOutRequestStatus: FormStatus.requestFailure,
             errorMessage: 'Failed to load data',
           ));
-        } else {
-          if (resultOf1p8G3[1] == CharacteristicError.writeDataError.name) {
-            emit(state.copyWith(
-              rfInOutRequestStatus: FormStatus.requestFailure,
-              errorMessage: 'Failed to load data',
-            ));
-            break;
-          } else {
-            continue;
-          }
         }
       }
     }

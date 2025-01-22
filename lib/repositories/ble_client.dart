@@ -398,35 +398,36 @@ class BLEClient extends BLEClientBase {
 
     _completer = Completer<dynamic>();
 
-    // 原本寫法是先寫入 command 再 啟動 timer, 但在讀基本指令 req00Cmd 時有時回傳太快而來不及啟動 timer
-    // 所以先啟動 timer 再 寫入 command
     startCharacteristicDataTimer(
       timeout: timeout,
       commandIndex: commandIndex,
     );
 
-    try {
-      if (Platform.isAndroid) {
-        await _ble!.writeCharacteristicWithResponse(
-          _qualifiedCharacteristic,
-          value: value,
-        );
-      } else {
-        // iOS
-        await _ble!.writeCharacteristicWithoutResponse(
-          _qualifiedCharacteristic,
-          value: value,
-        );
+    Future.microtask(() async {
+      try {
+        if (Platform.isAndroid) {
+          await _ble!.writeCharacteristicWithResponse(
+            _qualifiedCharacteristic,
+            value: value,
+          );
+        } else {
+          // iOS
+          await _ble!.writeCharacteristicWithoutResponse(
+            _qualifiedCharacteristic,
+            value: value,
+          );
+        }
+      } catch (e) {
+        cancelCharacteristicDataTimer(
+            name:
+                'cmd $commandIndex, ${CharacteristicError.writeDataError.name}');
+        if (!_completer!.isCompleted) {
+          print('writeCharacteristic failed: ${e.toString()}');
+          _completer!.completeError(CharacteristicError.writeDataError.name);
+        }
       }
-    } catch (e) {
-      cancelCharacteristicDataTimer(
-          name:
-              'cmd $commandIndex, ${CharacteristicError.writeDataError.name}');
-      if (!_completer!.isCompleted) {
-        print('writeCharacteristic failed: ${e.toString()}');
-        _completer!.completeError(CharacteristicError.writeDataError.name);
-      }
-    }
+    });
+
     return _completer!.future;
   }
 
@@ -441,38 +442,38 @@ class BLEClient extends BLEClientBase {
 
     _completer = Completer<dynamic>();
 
-    // 原本寫法是先寫入 command 再 啟動 timer, 但在讀基本指令 req00Cmd 時有時回傳太快而來不及啟動 timer
-    // 所以先啟動 timer 再 寫入 command
-
     startCharacteristicDataTimer(
       timeout: timeout,
       commandIndex: commandIndex,
     );
 
-    for (int i = 0; i < chunks.length; i++) {
-      try {
-        if (Platform.isAndroid) {
-          await _ble!.writeCharacteristicWithResponse(
-            _qualifiedCharacteristic,
-            value: chunks[i],
-          );
-        } else {
-          // iOS
-          await _ble!.writeCharacteristicWithoutResponse(
-            _qualifiedCharacteristic,
-            value: chunks[i],
-          );
-        }
-      } catch (e) {
-        cancelCharacteristicDataTimer(
-            name:
-                'cmd $commandIndex, ${CharacteristicError.writeDataError.name}');
-        if (!_completer!.isCompleted) {
-          print('writeCharacteristic failed: ${e.toString()}');
-          _completer!.completeError(CharacteristicError.writeDataError.name);
+    Future.microtask(() async {
+      for (int i = 0; i < chunks.length; i++) {
+        try {
+          if (Platform.isAndroid) {
+            await _ble!.writeCharacteristicWithResponse(
+              _qualifiedCharacteristic,
+              value: chunks[i],
+            );
+          } else {
+            // iOS
+            await _ble!.writeCharacteristicWithoutResponse(
+              _qualifiedCharacteristic,
+              value: chunks[i],
+            );
+          }
+        } catch (e) {
+          cancelCharacteristicDataTimer(
+              name:
+                  'cmd $commandIndex, ${CharacteristicError.writeDataError.name}');
+          if (!_completer!.isCompleted) {
+            print('writeCharacteristic failed: ${e.toString()}');
+            _completer!.completeError(CharacteristicError.writeDataError.name);
+          }
         }
       }
-    }
+    });
+
     return _completer!.future;
   }
 
