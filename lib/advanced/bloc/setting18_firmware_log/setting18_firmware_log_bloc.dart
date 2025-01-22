@@ -26,21 +26,28 @@ class Setting18FirmwareLogBloc
       updateLogStatus: FormStatus.requestInProgress,
     ));
 
-    List<dynamic> resultOfGetUpdateLogs =
-        await _firmwareRepository.requestCommand1p8GUpdateLogs();
+    // 最多 retry 3 次, 連續失敗3次就視為失敗
+    for (int i = 0; i < 3; i++) {
+      List<dynamic> resultOfGetUpdateLogs =
+          await _firmwareRepository.requestCommand1p8GUpdateLogs();
 
-    if (resultOfGetUpdateLogs[0]) {
-      List<UpdateLog> updateLogs = resultOfGetUpdateLogs[1];
+      if (resultOfGetUpdateLogs[0]) {
+        List<UpdateLog> updateLogs = resultOfGetUpdateLogs[1];
 
-      emit(state.copyWith(
-        updateLogStatus: FormStatus.requestSuccess,
-        updateLogs: updateLogs,
-      ));
-    } else {
-      emit(state.copyWith(
-        updateLogStatus: FormStatus.requestSuccess,
-        updateLogs: [],
-      ));
+        emit(state.copyWith(
+          updateLogStatus: FormStatus.requestSuccess,
+          updateLogs: updateLogs,
+        ));
+        break;
+      } else {
+        if (i == 2) {
+          emit(state.copyWith(
+            updateLogStatus: FormStatus.requestFailure,
+            updateLogs: [],
+            errorMessage: 'Failed to load logs',
+          ));
+        }
+      }
     }
 
     // List<UpdateLog> updateLogs = [

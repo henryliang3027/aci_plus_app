@@ -640,15 +640,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
 
     Map<DataKey, String> newCharacteristicData = {};
-    List<dynamic> resultOf1p8G0 = [false];
-    List<dynamic> resultOf1p8G1 = [false];
-    List<dynamic> resultOf1p8G2 = [false];
-    List<dynamic> resultOf1p8G3 = [false];
-    List<dynamic> resultOf1p8GForLogChunk = [false];
-    List<dynamic> resultOf1p8GUserAttribute = [false];
+    List<dynamic> resultOf1p8G0 = [];
+    List<dynamic> resultOf1p8G1 = [];
+    List<dynamic> resultOf1p8G2 = [];
+    List<dynamic> resultOf1p8G3 = [];
+    List<dynamic> resultOf1p8GForLogChunk = [];
+    List<dynamic> resultOf1p8GUserAttribute = [];
 
+    // 處理 resultOf1p8G0 讀取
     resultOf1p8G0 = await _amp18Repository.requestCommand1p8G0();
-
     if (resultOf1p8G0[0]) {
       Map<DataKey, String> characteristicDataOf1p8G0 = resultOf1p8G0[1];
 
@@ -680,69 +680,148 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         characteristicData: state.characteristicData,
         errorMassage: 'Device connection failed',
       ));
+
+      return;
     }
 
-    if (resultOf1p8G0[0]) {
-      resultOf1p8G1 = await _amp18Repository.requestCommand1p8G1();
+    // 處理 resultOf1p8G1 讀取
+    resultOf1p8G1 = await _amp18Repository.requestCommand1p8G1();
+    if (resultOf1p8G1[0]) {
+      int logInterval = int.parse(resultOf1p8G1[1][DataKey.logInterval]);
+      int rfOutputLogInterval =
+          int.parse(resultOf1p8G1[1][DataKey.rfOutputLogInterval]);
 
-      if (resultOf1p8G1[0]) {
-        int logInterval = int.parse(resultOf1p8G1[1][DataKey.logInterval]);
-        int rfOutputLogInterval =
-            int.parse(resultOf1p8G1[1][DataKey.rfOutputLogInterval]);
+      bool needUpdateLogInterval = false;
+      bool needUpdateRFOutputLogInterval = false;
+      bool isUpdateLogInterval = false;
+      bool isUpdateRFOutputLogInterval = false;
 
-        bool isUpdateLogInterval = false;
-        bool isUpdateRFOutputLogInterval = false;
+      // 如果讀取到 logInterval < 5, 則自動設定為 30 分鐘
+      if (logInterval < 5) {
+        needUpdateLogInterval = true;
+        isUpdateLogInterval = await _amp18Repository.set1p8GLogInterval('30');
 
-        // 如果讀取到 logInterval < 5, 則自動設定為 30 分鐘
-        if (logInterval < 5) {
-          isUpdateLogInterval = await _amp18Repository.set1p8GLogInterval('30');
+        if (!isUpdateLogInterval) {
+          emit(state.copyWith(
+            loadingStatus: FormStatus.requestFailure,
+            characteristicData: state.characteristicData,
+            errorMassage: 'Device connection failed',
+          ));
+
+          return;
         }
+      }
 
-        // 如果讀取到 RFOutputLogInterval < 30, 則自動設定為 30 分鐘
-        if (rfOutputLogInterval < 30) {
-          isUpdateRFOutputLogInterval =
-              await _amp18Repository.set1p8GRFOutputLogInterval('30');
+      // 如果讀取到 RFOutputLogInterval < 30, 則自動設定為 30 分鐘
+      if (rfOutputLogInterval < 30) {
+        needUpdateRFOutputLogInterval = true;
+        isUpdateRFOutputLogInterval =
+            await _amp18Repository.set1p8GRFOutputLogInterval('30');
+
+        if (!isUpdateRFOutputLogInterval) {
+          emit(state.copyWith(
+            loadingStatus: FormStatus.requestFailure,
+            characteristicData: state.characteristicData,
+            errorMassage: 'Device connection failed',
+          ));
+
+          return;
         }
+      }
 
-        if (isUpdateLogInterval || isUpdateRFOutputLogInterval) {
-          List<dynamic> newResultOf1p8G1 =
-              await _amp18Repository.requestCommand1p8G1();
+      // 當 LogInterval 或 RFOutputLogInterval 有被設定時, 再讀取一次獲取新的值
+      if (needUpdateLogInterval || needUpdateRFOutputLogInterval) {
+        List<dynamic> newResultOf1p8G1 =
+            await _amp18Repository.requestCommand1p8G1();
 
-          if (newResultOf1p8G1[0]) {
-            newCharacteristicData.addAll(newResultOf1p8G1[1]);
-            emit(state.copyWith(
-              characteristicData: newCharacteristicData,
-            ));
-          } else {
-            emit(state.copyWith(
-              loadingStatus: FormStatus.requestFailure,
-              characteristicData: state.characteristicData,
-              errorMassage: 'Device connection failed',
-            ));
-          }
-        } else {
-          // 如果讀取到 logInterval != '0', 則 emit 讀取到的資料
-          newCharacteristicData.addAll(resultOf1p8G1[1]);
+        if (newResultOf1p8G1[0]) {
+          newCharacteristicData.addAll(newResultOf1p8G1[1]);
           emit(state.copyWith(
             characteristicData: newCharacteristicData,
           ));
+        } else {
+          emit(state.copyWith(
+            loadingStatus: FormStatus.requestFailure,
+            characteristicData: state.characteristicData,
+            errorMassage: 'Device connection failed',
+          ));
+
+          return;
         }
       } else {
+        newCharacteristicData.addAll(resultOf1p8G1[1]);
         emit(state.copyWith(
-          loadingStatus: FormStatus.requestFailure,
-          characteristicData: state.characteristicData,
-          errorMassage: 'Device connection failed',
+          characteristicData: newCharacteristicData,
         ));
+      }
+    } else {
+      emit(state.copyWith(
+        loadingStatus: FormStatus.requestFailure,
+        characteristicData: state.characteristicData,
+        errorMassage: 'Device connection failed',
+      ));
+
+      return;
+    }
+
+    // 處理 resultOf1p8G2 讀取
+    resultOf1p8G2 = await _amp18Repository.requestCommand1p8G2();
+
+    if (resultOf1p8G2[0]) {
+      ForwardCEQFlag.forwardCEQType = getCEQTypeFromForwardCEQIndex(
+          resultOf1p8G2[1][DataKey.currentForwardCEQIndex] ?? '255');
+      newCharacteristicData.addAll(resultOf1p8G2[1]);
+      emit(state.copyWith(
+        characteristicData: newCharacteristicData,
+      ));
+    } else {
+      emit(state.copyWith(
+        loadingStatus: FormStatus.requestFailure,
+        characteristicData: state.characteristicData,
+        errorMassage: 'Device connection failed',
+      ));
+
+      return;
+    }
+
+    // 處理 requestCommand1p8G3 RFInOut 讀取
+    // 最多 retry 3 次, 連續失敗3次就視為失敗
+    for (int i = 0; i < 3; i++) {
+      // 根據RSSI設定每個 chunk 之間的 delay
+      await _amp18Repository.set1p8GTransmitDelayTime();
+
+      resultOf1p8G3 = await _amp18Repository.requestCommand1p8G3();
+
+      if (resultOf1p8G3[0]) {
+        newCharacteristicData.addAll(resultOf1p8G3[2]);
+
+        emit(state.copyWith(
+          characteristicData: newCharacteristicData,
+        ));
+
+        break;
+      } else {
+        if (i == 2) {
+          emit(state.copyWith(
+            loadingStatus: FormStatus.requestFailure,
+            characteristicData: state.characteristicData,
+            errorMassage: 'Device connection failed',
+          ));
+          return;
+        }
       }
     }
 
-    if (resultOf1p8G1[0]) {
-      resultOf1p8G2 = await _amp18Repository.requestCommand1p8G2();
+    int firmwareVersion = convertFirmwareVersionStringToInt(
+        newCharacteristicData[DataKey.firmwareVersion] ?? '0');
 
-      if (resultOf1p8G2[0]) {
-        ForwardCEQFlag.forwardCEQType = getCEQTypeFromForwardCEQIndex(
-            resultOf1p8G2[1][DataKey.currentForwardCEQIndex] ?? '255');
-        newCharacteristicData.addAll(resultOf1p8G2[1]);
+    if (firmwareVersion >= 148) {
+      resultOf1p8GUserAttribute =
+          await _amp18Repository.requestCommand1p8GUserAttribute();
+
+      // 處理 resultOf1p8GUserAttribute 讀取
+      if (resultOf1p8GUserAttribute[0]) {
+        newCharacteristicData.addAll(resultOf1p8GUserAttribute[1]);
         emit(state.copyWith(
           characteristicData: newCharacteristicData,
         ));
@@ -752,134 +831,55 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           characteristicData: state.characteristicData,
           errorMassage: 'Device connection failed',
         ));
+        return;
       }
     }
 
-    if (resultOf1p8G2[0]) {
-      // 最多 retry 3 次, 連續失敗3次就視為失敗
-      for (int i = 0; i < 3; i++) {
-        // 根據RSSI設定每個 chunk 之間的 delay
-        await _amp18Repository.set1p8GTransmitDelayTime();
+    // 處理 requestCommand1p8GForLogChunk 讀取
+    // 最多 retry 3 次, 連續失敗3次就視為失敗
+    for (int i = 0; i < 3; i++) {
+      // 根據RSSI設定每個 chunk 之間的 delay
+      await _amp18Repository.set1p8GTransmitDelayTime();
 
-        resultOf1p8G3 = await _amp18Repository.requestCommand1p8G3();
-
-        if (resultOf1p8G3[0]) {
-          newCharacteristicData.addAll(resultOf1p8G3[2]);
-
-          emit(state.copyWith(
-            characteristicData: newCharacteristicData,
-          ));
-
-          break;
-        } else {
-          if (i == 2) {
-            emit(state.copyWith(
-              loadingStatus: FormStatus.requestFailure,
-              characteristicData: state.characteristicData,
-              errorMassage: 'Device connection failed',
-            ));
-          } else {
-            if (resultOf1p8G3[1] == CharacteristicError.writeDataError.name) {
-              emit(state.copyWith(
-                loadingStatus: FormStatus.requestFailure,
-                characteristicData: state.characteristicData,
-                errorMassage: 'Device connection failed',
-              ));
-              break;
-            } else {
-              continue;
-            }
-          }
-        }
-      }
-    }
-
-    int firmwareVersion = convertFirmwareVersionStringToInt(
-        newCharacteristicData[DataKey.firmwareVersion] ?? '0');
-
-    if (firmwareVersion >= 148) {
-      if (resultOf1p8G3[0]) {
-        resultOf1p8GUserAttribute =
-            await _amp18Repository.requestCommand1p8GUserAttribute();
-
-        if (resultOf1p8GUserAttribute[0]) {
-          newCharacteristicData.addAll(resultOf1p8GUserAttribute[1]);
-          emit(state.copyWith(
-            characteristicData: newCharacteristicData,
-          ));
-        }
-      } else {
-        emit(state.copyWith(
-          loadingStatus: FormStatus.requestFailure,
-          characteristicData: state.characteristicData,
-          errorMassage: 'Device connection failed',
-        ));
-      }
-    }
-
-    // 如果 firmwareVersion < 148, 則 resultOf1p8GUserAttribute.isEmpty = true,
-    // 下一個讀取指令將會判斷 resultOf1p8G3 是否成功
-    bool next = resultOf1p8GUserAttribute.isEmpty
-        ? resultOf1p8G3[0]
-        : resultOf1p8GUserAttribute[0];
-
-    if (next) {
-      // 最多 retry 3 次, 連續失敗3次就視為失敗
-      for (int i = 0; i < 3; i++) {
-        // 根據RSSI設定每個 chunk 之間的 delay
-        await _amp18Repository.set1p8GTransmitDelayTime();
-
-        // 執行完上面的 set delay time 後休息一段時間再讀取 log, 比較不會有 data 收不完整的情況發生
-        await Future.delayed(const Duration(milliseconds: 1000));
-        resultOf1p8GForLogChunk =
-            await _amp18Repository.requestCommand1p8GForLogChunk(0);
-
-        if (resultOf1p8GForLogChunk[0]) {
-          newCharacteristicData.addAll(resultOf1p8GForLogChunk[3]);
-
-          emit(state.copyWith(
-            characteristicData: newCharacteristicData,
-          ));
-
-          break;
-        } else {
-          if (i == 2) {
-            emit(state.copyWith(
-              loadingStatus: FormStatus.requestFailure,
-              characteristicData: state.characteristicData,
-              errorMassage: 'Device connection failed',
-            ));
-          } else {
-            if (resultOf1p8GForLogChunk[2] ==
-                CharacteristicError.writeDataError.name) {
-              emit(state.copyWith(
-                loadingStatus: FormStatus.requestFailure,
-                characteristicData: state.characteristicData,
-                errorMassage: 'Device connection failed',
-              ));
-              break;
-            } else {
-              continue;
-            }
-          }
-        }
-      }
-    }
-
-    if (resultOf1p8GForLogChunk[0]) {
-      String deviceNowDateTime =
-          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-
-      // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
-      String partId = state.characteristicData[DataKey.partId] ?? '';
-      await _amp18Repository.set1p8GNowDateTime(
-        partId: partId,
-        deviceNowDateTime: deviceNowDateTime,
-      );
-
-      // 執行完上面的 寫入日期 後休息一段時間再進行任何讀取動作 比較不會有 data 收不完整的情況發生
+      // 執行完上面的 set delay time 後休息一段時間再讀取 log, 比較不會有 data 收不完整的情況發生
       await Future.delayed(const Duration(milliseconds: 1000));
+      resultOf1p8GForLogChunk =
+          await _amp18Repository.requestCommand1p8GForLogChunk(0);
+
+      if (resultOf1p8GForLogChunk[0]) {
+        newCharacteristicData.addAll(resultOf1p8GForLogChunk[3]);
+
+        emit(state.copyWith(
+          characteristicData: newCharacteristicData,
+        ));
+
+        break;
+      } else {
+        if (i == 2) {
+          emit(state.copyWith(
+            loadingStatus: FormStatus.requestFailure,
+            characteristicData: state.characteristicData,
+            errorMassage: 'Device connection failed',
+          ));
+
+          return;
+        }
+      }
     }
+
+    // 讀取本地時區的日期時間
+    String deviceNowDateTime =
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+
+    // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
+    String partId = state.characteristicData[DataKey.partId] ?? '';
+    await _amp18Repository.set1p8GNowDateTime(
+      partId: partId,
+      deviceNowDateTime: deviceNowDateTime,
+    );
+
+    // 執行完上面的 寫入日期 後休息一段時間再進行任何讀取動作 比較不會有 data 收不完整的情況發生
+    await Future.delayed(const Duration(milliseconds: 1000));
 
     emit(state.copyWith(
       loadingStatus: FormStatus.requestSuccess,
@@ -896,16 +896,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
 
     Map<DataKey, String> newCharacteristicData = {};
-    List<dynamic> resultOf1p8GCCorNode80 = [false];
-    List<dynamic> resultOf1p8GCCorNode91 = [false];
-    List<dynamic> resultOf1p8GCCorNode92 = [false];
-    List<dynamic> resultOf1p8GCCorNodeA1 = [false];
-    List<dynamic> resultOf1p8GCCorNodeUserAttribute = [false];
-    List<dynamic> resultOf1p8GCCorNodeLogChunk = [false];
+    List<dynamic> resultOf1p8GCCorNode80 = [];
+    List<dynamic> resultOf1p8GCCorNode91 = [];
+    List<dynamic> resultOf1p8GCCorNode92 = [];
+    List<dynamic> resultOf1p8GCCorNodeA1 = [];
+    List<dynamic> resultOf1p8GCCorNodeUserAttribute = [];
+    List<dynamic> resultOf1p8GCCorNodeLogChunk = [];
 
+    // 處理 resultOf1p8GCCorNode80 讀取
     resultOf1p8GCCorNode80 =
         await _amp18CCorNodeRepository.requestCommand1p8GCCorNode80();
-
     if (resultOf1p8GCCorNode80[0]) {
       Map<DataKey, String> characteristicDataOf1p8GCCorNode80 =
           resultOf1p8GCCorNode80[1];
@@ -939,183 +939,164 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         characteristicData: state.characteristicData,
         errorMassage: 'Device connection failed',
       ));
+
+      return;
     }
 
-    if (resultOf1p8GCCorNode80[0]) {
-      resultOf1p8GCCorNode91 =
-          await _amp18CCorNodeRepository.requestCommand1p8GCCorNode91();
+    // 處理 resultOf1p8GCCorNode91 讀取
+    resultOf1p8GCCorNode91 =
+        await _amp18CCorNodeRepository.requestCommand1p8GCCorNode91();
 
-      if (resultOf1p8GCCorNode91[0]) {
-        int logInterval =
-            int.parse(resultOf1p8GCCorNode91[1][DataKey.logInterval]);
+    if (resultOf1p8GCCorNode91[0]) {
+      int logInterval =
+          int.parse(resultOf1p8GCCorNode91[1][DataKey.logInterval]);
 
-        // 如果讀取到 logInterval < 5, 則自動設定為 30 分鐘
-        if (logInterval < 5) {
-          bool isSuccess =
-              await _amp18CCorNodeRepository.set1p8GCCorNodeLogInterval('30');
+      // 如果讀取到 logInterval < 5, 則自動設定為 30 分鐘
+      if (logInterval < 5) {
+        bool isSuccess =
+            await _amp18CCorNodeRepository.set1p8GCCorNodeLogInterval('30');
 
-          // 如果設定失敗, 則顯示 dialog
-          if (!isSuccess) {
+        if (isSuccess) {
+          List<dynamic> newResultOf1p8GCCorNode91 =
+              await _amp18CCorNodeRepository.requestCommand1p8GCCorNode91();
+
+          if (newResultOf1p8GCCorNode91[0]) {
+            newCharacteristicData.addAll(newResultOf1p8GCCorNode91[1]);
+            emit(state.copyWith(
+              characteristicData: newCharacteristicData,
+            ));
+          } else {
             emit(state.copyWith(
               loadingStatus: FormStatus.requestFailure,
               characteristicData: state.characteristicData,
-              errorMassage: 'Failed to initialize the log interval.',
+              errorMassage: 'Device connection failed',
             ));
-          } else {
-            List<dynamic> newResultOf1p8GCCorNode91 =
-                await _amp18CCorNodeRepository.requestCommand1p8GCCorNode91();
 
-            if (newResultOf1p8GCCorNode91[0]) {
-              newCharacteristicData.addAll(newResultOf1p8GCCorNode91[1]);
-              emit(state.copyWith(
-                characteristicData: newCharacteristicData,
-              ));
-            } else {
-              emit(state.copyWith(
-                loadingStatus: FormStatus.requestFailure,
-                characteristicData: state.characteristicData,
-                errorMassage: 'Device connection failed',
-              ));
-            }
+            return;
           }
-        } else {
-          // 如果讀取到 logInterval != '0', 則 emit 讀取到的資料
-          newCharacteristicData.addAll(resultOf1p8GCCorNode91[1]);
-          emit(state.copyWith(
-            characteristicData: newCharacteristicData,
-          ));
         }
       } else {
-        emit(state.copyWith(
-          loadingStatus: FormStatus.requestFailure,
-          characteristicData: state.characteristicData,
-          errorMassage: 'Device connection failed',
-        ));
-      }
-    }
-
-    if (resultOf1p8GCCorNode91[0]) {
-      resultOf1p8GCCorNode92 =
-          await _amp18CCorNodeRepository.requestCommand1p8GCCorNode92();
-
-      if (resultOf1p8GCCorNode92[0]) {
-        newCharacteristicData.addAll(resultOf1p8GCCorNode92[1]);
+        newCharacteristicData.addAll(resultOf1p8GCCorNode91[1]);
         emit(state.copyWith(
           characteristicData: newCharacteristicData,
         ));
-      } else {
-        emit(state.copyWith(
-          loadingStatus: FormStatus.requestFailure,
-          characteristicData: state.characteristicData,
-          errorMassage: 'Device connection failed',
-        ));
       }
+    } else {
+      emit(state.copyWith(
+        loadingStatus: FormStatus.requestFailure,
+        characteristicData: state.characteristicData,
+        errorMassage: 'Device connection failed',
+      ));
+
+      return;
     }
+
+// 處理 resultOf1p8GCCorNode92 讀取
+    resultOf1p8GCCorNode92 =
+        await _amp18CCorNodeRepository.requestCommand1p8GCCorNode92();
 
     if (resultOf1p8GCCorNode92[0]) {
-      resultOf1p8GCCorNodeA1 =
-          await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeA1();
+      newCharacteristicData.addAll(resultOf1p8GCCorNode92[1]);
+      emit(state.copyWith(
+        characteristicData: newCharacteristicData,
+      ));
+    } else {
+      emit(state.copyWith(
+        loadingStatus: FormStatus.requestFailure,
+        characteristicData: state.characteristicData,
+        errorMassage: 'Device connection failed',
+      ));
 
-      if (resultOf1p8GCCorNodeA1[0]) {
-        newCharacteristicData.addAll(resultOf1p8GCCorNodeA1[1]);
-        emit(state.copyWith(
-          characteristicData: newCharacteristicData,
-        ));
-      } else {
-        emit(state.copyWith(
-          loadingStatus: FormStatus.requestFailure,
-          characteristicData: state.characteristicData,
-          errorMassage: 'Device connection failed',
-        ));
-      }
+      return;
+    }
+
+    // 處理 resultOf1p8GCCorNodeA1 讀取
+    resultOf1p8GCCorNodeA1 =
+        await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeA1();
+
+    if (resultOf1p8GCCorNodeA1[0]) {
+      newCharacteristicData.addAll(resultOf1p8GCCorNodeA1[1]);
+      emit(state.copyWith(
+        characteristicData: newCharacteristicData,
+      ));
+    } else {
+      emit(state.copyWith(
+        loadingStatus: FormStatus.requestFailure,
+        characteristicData: state.characteristicData,
+        errorMassage: 'Device connection failed',
+      ));
+
+      return;
     }
 
     int firmwareVersion = convertFirmwareVersionStringToInt(
         newCharacteristicData[DataKey.firmwareVersion] ?? '0');
 
     if (firmwareVersion >= 148) {
-      if (resultOf1p8GCCorNodeA1[0]) {
-        resultOf1p8GCCorNodeUserAttribute = await _amp18CCorNodeRepository
-            .requestCommand1p8GCCorNodeUserAttribute();
+      resultOf1p8GCCorNodeUserAttribute = await _amp18CCorNodeRepository
+          .requestCommand1p8GCCorNodeUserAttribute();
 
-        if (resultOf1p8GCCorNodeUserAttribute[0]) {
-          newCharacteristicData.addAll(resultOf1p8GCCorNodeUserAttribute[1]);
-          emit(state.copyWith(
-            characteristicData: newCharacteristicData,
-          ));
-        }
+      // 處理 resultOf1p8GCCorNodeUserAttribute 讀取
+      if (resultOf1p8GCCorNodeUserAttribute[0]) {
+        newCharacteristicData.addAll(resultOf1p8GCCorNodeUserAttribute[1]);
+        emit(state.copyWith(
+          characteristicData: newCharacteristicData,
+        ));
       } else {
         emit(state.copyWith(
           loadingStatus: FormStatus.requestFailure,
           characteristicData: state.characteristicData,
           errorMassage: 'Device connection failed',
         ));
+
+        return;
       }
     }
 
-    // 如果 firmwareVersion < 148, 則 resultOf1p8GCCorNodeUserAttribute.isEmpty = true,
-    // 下一個讀取指令將會判斷 resultOf1p8GCCorNodeA1 是否成功
-    bool next = resultOf1p8GCCorNodeUserAttribute.isEmpty
-        ? resultOf1p8GCCorNodeA1[0]
-        : resultOf1p8GCCorNodeUserAttribute[0];
+    // 處理 requestCommand1p8GCCorNodeLogChunk 讀取
+    // 最多 retry 3 次, 連續失敗3次就視為失敗
+    for (int i = 0; i < 3; i++) {
+      await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
 
-    if (next) {
-      // 最多 retry 3 次, 連續失敗3次就視為失敗
-      for (int i = 0; i < 3; i++) {
-        await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
+      // 執行完上面的 set delay time 後休息一段時間再讀取 log, 比較不會有 data 收不完整的情況發生
+      await Future.delayed(const Duration(milliseconds: 1000));
+      resultOf1p8GCCorNodeLogChunk =
+          await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeLogChunk(0);
 
-        // 執行完上面的 set delay time 後休息一段時間再讀取 log, 比較不會有 data 收不完整的情況發生
-        await Future.delayed(const Duration(milliseconds: 1000));
-        resultOf1p8GCCorNodeLogChunk = await _amp18CCorNodeRepository
-            .requestCommand1p8GCCorNodeLogChunk(0);
+      if (resultOf1p8GCCorNodeLogChunk[0]) {
+        newCharacteristicData.addAll(resultOf1p8GCCorNodeLogChunk[3]);
 
-        if (resultOf1p8GCCorNodeLogChunk[0]) {
-          newCharacteristicData.addAll(resultOf1p8GCCorNodeLogChunk[3]);
+        emit(state.copyWith(
+          characteristicData: newCharacteristicData,
+        ));
 
+        break;
+      } else {
+        if (i == 2) {
           emit(state.copyWith(
-            characteristicData: newCharacteristicData,
+            loadingStatus: FormStatus.requestFailure,
+            characteristicData: state.characteristicData,
+            errorMassage: 'Device connection failed',
           ));
 
-          break;
-        } else {
-          if (i == 2) {
-            emit(state.copyWith(
-              loadingStatus: FormStatus.requestFailure,
-              characteristicData: state.characteristicData,
-              errorMassage: 'Device connection failed',
-            ));
-          } else {
-            if (resultOf1p8GCCorNodeLogChunk[2] ==
-                CharacteristicError.writeDataError.name) {
-              emit(state.copyWith(
-                loadingStatus: FormStatus.requestFailure,
-                characteristicData: state.characteristicData,
-                errorMassage: 'Device connection failed',
-              ));
-              break;
-            } else {
-              continue;
-            }
-          }
+          return;
         }
       }
     }
 
-    if (resultOf1p8GCCorNodeLogChunk[0]) {
-      // 讀取目前device日期時間
-      String deviceNowTime =
-          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+    // 讀取本地時區的日期時間
+    String deviceNowTime =
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
-      // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
-      await _amp18CCorNodeRepository.set1p8GCCorNodeNowDateTime(deviceNowTime);
+    // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
+    await _amp18CCorNodeRepository.set1p8GCCorNodeNowDateTime(deviceNowTime);
 
-      // 執行完上面的 寫入日期 後休息一段時間再進行任何讀取動作 比較不會有 data 收不完整的情況發生
-      await Future.delayed(const Duration(milliseconds: 1000));
+    // 執行完上面的 寫入日期 後休息一段時間再進行任何讀取動作 比較不會有 data 收不完整的情況發生
+    await Future.delayed(const Duration(milliseconds: 1000));
 
-      emit(state.copyWith(
-        loadingStatus: FormStatus.requestSuccess,
-      ));
-    }
+    emit(state.copyWith(
+      loadingStatus: FormStatus.requestSuccess,
+    ));
   }
 
   Future<void> _onEventRequested(

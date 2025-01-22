@@ -1778,10 +1778,11 @@ class Amp18Parser {
     for (Event1p8G event1p8G in event1p8Gs) {
       String formattedDateTime =
           DateFormat('yyyy-MM-dd HH:mm').format(event1p8G.dateTime);
-      int index = event1p8G.code - 1;
+
       switch (event1p8G.code) {
         case 1:
           {
+            int index = 0;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1793,6 +1794,7 @@ class Amp18Parser {
           }
         case 2:
           {
+            int index = 1;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1804,6 +1806,7 @@ class Amp18Parser {
           }
         case 3:
           {
+            int index = 2;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1815,6 +1818,7 @@ class Amp18Parser {
           }
         case 4:
           {
+            int index = 3;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1826,6 +1830,7 @@ class Amp18Parser {
           }
         case 5:
           {
+            int index = 4;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1837,6 +1842,7 @@ class Amp18Parser {
           }
         case 6:
           {
+            int index = 5;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1848,6 +1854,7 @@ class Amp18Parser {
           }
         case 7:
           {
+            int index = 6;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1859,6 +1866,7 @@ class Amp18Parser {
           }
         case 8:
           {
+            int index = 7;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1870,6 +1878,7 @@ class Amp18Parser {
           }
         case 9:
           {
+            int index = 8;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1881,6 +1890,7 @@ class Amp18Parser {
           }
         case 10:
           {
+            int index = 9;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1892,6 +1902,7 @@ class Amp18Parser {
           }
         case 11:
           {
+            int index = 10;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1903,6 +1914,7 @@ class Amp18Parser {
           }
         case 12:
           {
+            int index = 11;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1914,6 +1926,7 @@ class Amp18Parser {
           }
         case 13:
           {
+            int index = 12;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter / 10}';
@@ -1923,19 +1936,20 @@ class Amp18Parser {
             counts[index]++;
             break;
           }
-        case 14:
-          {
-            if (event1p8G.parameter > 0) {
-              csvContent[counts[index]][index] =
-                  '$formattedDateTime@${event1p8G.parameter / 10}';
-            } else {
-              csvContent[counts[index]][index] = formattedDateTime;
-            }
-            counts[index]++;
-            break;
-          }
+        // case 14: // 24V ripple low alarm 不顯示
+        //   {
+        //     if (event1p8G.parameter > 0) {
+        //       csvContent[counts[index]][index] =
+        //           '$formattedDateTime@${event1p8G.parameter / 10}';
+        //     } else {
+        //       csvContent[counts[index]][index] = formattedDateTime;
+        //     }
+        //     counts[index]++;
+        //     break;
+        //   }
         case 15:
           {
+            int index = 13;
             if (event1p8G.parameter > 0) {
               csvContent[counts[index]][index] =
                   '$formattedDateTime@${event1p8G.parameter}';
@@ -1947,17 +1961,14 @@ class Amp18Parser {
           }
         case 16:
           {
-            if (event1p8G.parameter > 0) {
-              csvContent[counts[index]][index] =
-                  '$formattedDateTime@${event1p8G.parameter}';
-            } else {
-              csvContent[counts[index]][index] = formattedDateTime;
-            }
+            int index = 14;
+            csvContent[counts[index]][index] = formattedDateTime;
             counts[index]++;
             break;
           }
         case 17:
           {
+            int index = 15;
             if (event1p8G.parameter > 0) {
               String equalizerDescription =
                   Event1p8GValue.equalizerValueMap[event1p8G.parameter] ?? '';
@@ -1971,6 +1982,7 @@ class Amp18Parser {
           }
         case 18:
           {
+            int index = 16;
             if (event1p8G.parameter > 0) {
               String splitOptionDescription =
                   Event1p8GValue.splitOptionValueMap[event1p8G.parameter] ?? '';

@@ -4,22 +4,22 @@ class Setting18FirmwareLogState extends Equatable {
   const Setting18FirmwareLogState({
     this.updateLogStatus = FormStatus.none,
     this.updateLogs = const [],
-    this.message = '',
+    this.errorMessage = '',
   });
 
   final FormStatus updateLogStatus;
   final List<UpdateLog> updateLogs;
-  final String message;
+  final String errorMessage;
 
   Setting18FirmwareLogState copyWith({
     FormStatus? updateLogStatus,
     List<UpdateLog>? updateLogs,
-    String? message,
+    String? errorMessage,
   }) {
     return Setting18FirmwareLogState(
       updateLogStatus: updateLogStatus ?? this.updateLogStatus,
       updateLogs: updateLogs ?? this.updateLogs,
-      message: message ?? this.message,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
@@ -27,6 +27,6 @@ class Setting18FirmwareLogState extends Equatable {
   List<Object> get props => [
         updateLogStatus,
         updateLogs,
-        message,
+        errorMessage,
       ];
 }

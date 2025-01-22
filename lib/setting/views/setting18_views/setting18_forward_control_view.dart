@@ -645,7 +645,7 @@ class _ForwardOutputAttenuation4 extends StatelessWidget {
           previous.editMode != current.editMode,
       builder: (context, state) {
         double minValue = state.targetValues[DataKey.dsVVA5]?.minValue ?? 0.0;
-        double maxValue = state.targetValues[DataKey.dsVVA5]?.maxValue ?? 0.0;
+        double maxValue = state.targetValues[DataKey.dsVVA5]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
