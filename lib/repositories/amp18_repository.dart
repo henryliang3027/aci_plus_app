@@ -1000,512 +1000,131 @@ class Amp18Repository with BLECommandsMixin {
   }
 
   Future<dynamic> set1p8GLogInterval(String logInterval) async {
-    int commandIndex = 338;
-
-    int interval = int.parse(logInterval);
-
-    print('get data from request command 1p8G$commandIndex');
-
-    Command18.setLogIntervalCmd[7] = interval;
-
-    CRC16.calculateCRC16(
+    return set1p8GOneByteParameter(
+      commandIndex: 300,
+      value: logInterval,
       command: Command18.setLogIntervalCmd,
-      usDataLength: Command18.setLogIntervalCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setLogIntervalCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GRFOutputLogInterval(String rfOutputLogInterval) async {
-    int commandIndex = 339;
-
-    int interval = int.parse(rfOutputLogInterval);
-
-    print('get data from request command 1p8G$commandIndex');
-
-    Command18.setRFOutputLogIntervalCmd[7] = interval;
-
-    CRC16.calculateCRC16(
+    return set1p8GOneByteParameter(
+      commandIndex: 300,
+      value: rfOutputLogInterval,
       command: Command18.setRFOutputLogIntervalCmd,
-      usDataLength: Command18.setRFOutputLogIntervalCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setRFOutputLogIntervalCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GDSVVA1(String strValue) async {
-    int commandIndex = 340;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18.setDSVVA1Cmd[7] = bytes[0];
-    Command18.setDSVVA1Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      commandIndex: 300,
+      value: strValue,
       command: Command18.setDSVVA1Cmd,
-      usDataLength: Command18.setDSVVA1Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setDSVVA1Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GDSSlope1(String strValue) async {
-    int commandIndex = 341;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18.setDSSlope1Cmd[7] = bytes[0];
-    Command18.setDSSlope1Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      commandIndex: 300,
+      value: strValue,
       command: Command18.setDSSlope1Cmd,
-      usDataLength: Command18.setDSSlope1Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setDSSlope1Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GDSVVA2(String strValue) async {
-    int commandIndex = 342;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18.setDSVVA2Cmd[7] = bytes[0];
-    Command18.setDSVVA2Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      commandIndex: 300,
+      value: strValue,
       command: Command18.setDSVVA2Cmd,
-      usDataLength: Command18.setDSVVA2Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setDSVVA2Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GDSSlope2(String strValue) async {
-    int commandIndex = 343;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18.setDSSlope2Cmd[7] = bytes[0];
-    Command18.setDSSlope2Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      commandIndex: 300,
+      value: strValue,
       command: Command18.setDSSlope2Cmd,
-      usDataLength: Command18.setDSSlope2Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setDSSlope2Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GUSVCA1(String strValue) async {
-    int commandIndex = 344;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18.setUSVCA1Cmd[7] = bytes[0];
-    Command18.setUSVCA1Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      commandIndex: 300,
+      value: strValue,
       command: Command18.setUSVCA1Cmd,
-      usDataLength: Command18.setUSVCA1Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setUSVCA1Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GEREQ(String strValue) async {
-    int commandIndex = 345;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18.setEREQCmd[7] = bytes[0];
-    Command18.setEREQCmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      commandIndex: 300,
+      value: strValue,
       command: Command18.setEREQCmd,
-      usDataLength: Command18.setEREQCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setEREQCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8DSVVA3(String strValue) async {
-    int commandIndex = 346;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18.setDSVVA3Cmd[7] = bytes[0];
-    Command18.setDSVVA3Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      commandIndex: 300,
+      value: strValue,
       command: Command18.setDSVVA3Cmd,
-      usDataLength: Command18.setDSVVA3Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setDSVVA3Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GDSVVA4(String strValue) async {
-    int commandIndex = 347;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18.setDSVVA4Cmd[7] = bytes[0];
-    Command18.setDSVVA4Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      commandIndex: 300,
+      value: strValue,
       command: Command18.setDSVVA4Cmd,
-      usDataLength: Command18.setDSVVA4Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setDSVVA4Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GUSVCA2(String strValue) async {
-    int commandIndex = 348;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18.setUSVCA2Cmd[7] = bytes[0];
-    Command18.setUSVCA2Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      commandIndex: 300,
+      value: strValue,
       command: Command18.setUSVCA2Cmd,
-      usDataLength: Command18.setUSVCA2Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setUSVCA2Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GUSVCA3(String strValue) async {
-    int commandIndex = 349;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18.setUSVCA3Cmd[7] = bytes[0];
-    Command18.setUSVCA3Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      commandIndex: 300,
+      value: strValue,
       command: Command18.setUSVCA3Cmd,
-      usDataLength: Command18.setUSVCA3Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setUSVCA3Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GUSVCA4(String strValue) async {
-    int commandIndex = 350;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18.setUSVCA4Cmd[7] = bytes[0];
-    Command18.setUSVCA4Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      commandIndex: 300,
+      value: strValue,
       command: Command18.setUSVCA4Cmd,
-      usDataLength: Command18.setUSVCA4Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setUSVCA4Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GDSVVA5(String strValue) async {
-    int commandIndex = 351;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18.setDSVVA5Cmd[7] = bytes[0];
-    Command18.setDSVVA5Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      commandIndex: 300,
+      value: strValue,
       command: Command18.setDSVVA5Cmd,
-      usDataLength: Command18.setDSVVA5Cmd.length - 2,
     );
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setDSVVA5Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GDSSlope3(String strValue) async {
-    int commandIndex = 352;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18.setDSSlope3Cmd[7] = bytes[0];
-    Command18.setDSSlope3Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      commandIndex: 300,
+      value: strValue,
       command: Command18.setDSSlope3Cmd,
-      usDataLength: Command18.setDSSlope3Cmd.length - 2,
     );
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setDSSlope3Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GDSSlope4(String strValue) async {
-    int commandIndex = 353;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18.setDSSlope4Cmd[7] = bytes[0];
-    Command18.setDSSlope4Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      commandIndex: 300,
+      value: strValue,
       command: Command18.setDSSlope4Cmd,
-      usDataLength: Command18.setDSSlope4Cmd.length - 2,
     );
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setDSSlope4Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCoordinates(String coordinates) async {
@@ -1570,28 +1189,12 @@ class Amp18Repository with BLECommandsMixin {
 
     print('RSSI: $rssi, Delay: $ms');
 
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, ms, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18.setTransmitDelayTimeCmd[7] = bytes[0];
-    Command18.setTransmitDelayTimeCmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      commandIndex: 300,
+      value: ms.toString(),
       command: Command18.setTransmitDelayTimeCmd,
-      usDataLength: Command18.setTransmitDelayTimeCmd.length - 2,
+      factor: 1,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setTransmitDelayTimeCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GNowDateTime({
