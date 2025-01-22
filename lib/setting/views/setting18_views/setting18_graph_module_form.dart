@@ -879,7 +879,7 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
         double minValue = state.targetValues[DataKey.eREQ]?.minValue ?? 0.0;
-        double maxValue = state.targetValues[DataKey.eREQ]?.maxValue ?? 1.0;
+        double maxValue = state.targetValues[DataKey.eREQ]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
           editMode: state.editMode,
