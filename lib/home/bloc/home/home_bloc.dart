@@ -816,22 +816,28 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         newCharacteristicData[DataKey.firmwareVersion] ?? '0');
 
     if (firmwareVersion >= 148) {
-      resultOf1p8GUserAttribute =
-          await _amp18Repository.requestCommand1p8GUserAttribute();
-
+      // 最多 retry 3 次, 連續失敗3次就視為失敗
       // 處理 resultOf1p8GUserAttribute 讀取
-      if (resultOf1p8GUserAttribute[0]) {
-        newCharacteristicData.addAll(resultOf1p8GUserAttribute[1]);
-        emit(state.copyWith(
-          characteristicData: newCharacteristicData,
-        ));
-      } else {
-        emit(state.copyWith(
-          loadingStatus: FormStatus.requestFailure,
-          characteristicData: state.characteristicData,
-          errorMassage: 'Device connection failed',
-        ));
-        return;
+      for (int i = 0; i < 3; i++) {
+        resultOf1p8GUserAttribute =
+            await _amp18Repository.requestCommand1p8GUserAttribute();
+
+        if (resultOf1p8GUserAttribute[0]) {
+          newCharacteristicData.addAll(resultOf1p8GUserAttribute[1]);
+          emit(state.copyWith(
+            characteristicData: newCharacteristicData,
+          ));
+          break;
+        } else {
+          if (i == 2) {
+            emit(state.copyWith(
+              loadingStatus: FormStatus.requestFailure,
+              characteristicData: state.characteristicData,
+              errorMassage: 'Device connection failed',
+            ));
+            return;
+          }
+        }
       }
     }
 
@@ -991,7 +997,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       return;
     }
 
-// 處理 resultOf1p8GCCorNode92 讀取
+    // 處理 resultOf1p8GCCorNode92 讀取
     resultOf1p8GCCorNode92 =
         await _amp18CCorNodeRepository.requestCommand1p8GCCorNode92();
 
@@ -1033,23 +1039,28 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         newCharacteristicData[DataKey.firmwareVersion] ?? '0');
 
     if (firmwareVersion >= 148) {
-      resultOf1p8GCCorNodeUserAttribute = await _amp18CCorNodeRepository
-          .requestCommand1p8GCCorNodeUserAttribute();
-
+      // 最多 retry 3 次, 連續失敗3次就視為失敗
       // 處理 resultOf1p8GCCorNodeUserAttribute 讀取
-      if (resultOf1p8GCCorNodeUserAttribute[0]) {
-        newCharacteristicData.addAll(resultOf1p8GCCorNodeUserAttribute[1]);
-        emit(state.copyWith(
-          characteristicData: newCharacteristicData,
-        ));
-      } else {
-        emit(state.copyWith(
-          loadingStatus: FormStatus.requestFailure,
-          characteristicData: state.characteristicData,
-          errorMassage: 'Device connection failed',
-        ));
+      for (int i = 0; i < 3; i++) {
+        resultOf1p8GCCorNodeUserAttribute = await _amp18CCorNodeRepository
+            .requestCommand1p8GCCorNodeUserAttribute();
 
-        return;
+        if (resultOf1p8GCCorNodeUserAttribute[0]) {
+          newCharacteristicData.addAll(resultOf1p8GCCorNodeUserAttribute[1]);
+          emit(state.copyWith(
+            characteristicData: newCharacteristicData,
+          ));
+          break;
+        } else {
+          if (i == 2) {
+            emit(state.copyWith(
+              loadingStatus: FormStatus.requestFailure,
+              characteristicData: state.characteristicData,
+              errorMassage: 'Device connection failed',
+            ));
+            return;
+          }
+        }
       }
     }
 
