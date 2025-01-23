@@ -1725,15 +1725,14 @@ class SampleAmp18Repository extends Amp18Repository {
 
   @override
   Future<dynamic> set1p8GNowDateTime({
-    required String partId,
-    required String deviceNowDateTime,
+    required String nowDateTime,
   }) async {
     int commandIndex = 356;
 
     print('get data from request command 1p8G$commandIndex');
 
     DateTime dateTime = DateTime.now();
-    DateTime deviceDateTime = DateTime.parse(deviceNowDateTime);
+    DateTime deviceDateTime = DateTime.parse(nowDateTime);
 
     int year = dateTime.year;
 

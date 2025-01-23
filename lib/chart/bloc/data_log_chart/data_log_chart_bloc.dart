@@ -16,8 +16,6 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
   })  : _amp18Repository = amp18Repository,
         super(const DataLogChartState()) {
     on<Initialized>(_onInitialized);
-    // on<LogRequested>(_onLogRequested);
-    // on<Event1P8GRequested>(_onEvent1P8GDataRequested);
     on<MoreLogRequested>(_onMoreLogRequested);
   }
 
@@ -134,122 +132,6 @@ class DataLogChartBloc extends Bloc<DataLogChartEvent, DataLogChartState> {
       }
     }
   }
-
-  // Future<void> _onLogRequested(
-  //   LogRequested event,
-  //   Emitter<DataLogChartState> emit,
-  // ) async {
-  //   emit(state.copyWith(
-  //     moreLogRequestStatus: FormStatus.requestInProgress,
-  //   ));
-
-  //   // 最多 retry 3 次, 連續失敗3次就視為失敗
-  //   for (int i = 0; i < 3; i++) {
-  //     // 根據RSSI設定每個 chunk 之間的 delay
-  //     await _amp18Repository.set1p8GTransmitDelayTime();
-  //     List<dynamic> resultOfLog1p8G =
-  //         await _amp18Repository.requestCommand1p8GForLogChunk(0);
-
-  //     if (resultOfLog1p8G[0]) {
-  //       bool hasNextChunk = resultOfLog1p8G[1];
-  //       List<Log1p8G> log1p8Gs = resultOfLog1p8G[2];
-  //       Map<DataKey, String> logStatistics = resultOfLog1p8G[3];
-
-  //       List<List<ValuePair>> dateValueCollectionOfLog =
-  //           _amp18Repository.get1p8GDateValueCollectionOfLogs(log1p8Gs);
-
-  //       _amp18Repository.updateDataWithGivenValuePairs(logStatistics);
-
-  //       // 清除 cache
-  //       _amp18Repository.clearLoadMoreLog1p8Gs();
-
-  //       // 將 log 寫入 cache
-  //       _amp18Repository.writeLoadMoreLog1p8Gs(log1p8Gs);
-
-  //       emit(
-  //         state.copyWith(
-  //           moreLogRequestStatus: FormStatus.requestSuccess,
-  //           log1p8Gs: log1p8Gs,
-  //           dateValueCollectionOfLog: dateValueCollectionOfLog,
-  //           chunkIndex: 1,
-  //           hasNextChunk: hasNextChunk,
-  //         ),
-  //       );
-
-  //       break;
-  //     } else {
-  //       if (i == 2) {
-  //         emit(state.copyWith(
-  //           moreLogRequestStatus: FormStatus.requestFailure,
-  //           errorMessage: 'Failed to load logs',
-  //         ));
-  //       } else {
-  //         if (resultOfLog1p8G[2] == CharacteristicError.writeDataError.name) {
-  //           emit(state.copyWith(
-  //             moreLogRequestStatus: FormStatus.requestFailure,
-  //             errorMessage: 'Failed to load logs',
-  //           ));
-  //           break;
-  //         } else {
-  //           continue;
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-
-  // Future<void> _onEvent1P8GDataRequested(
-  //   Event1P8GRequested event,
-  //   Emitter<DataLogChartState> emit,
-  // ) async {
-  //   emit(state.copyWith(
-  //     eventRequestStatus: FormStatus.requestInProgress,
-  //   ));
-
-  //   // 最多 retry 3 次, 連續失敗3次就視為失敗
-  //   for (int i = 0; i < 3; i++) {
-  //     // 根據RSSI設定每個 chunk 之間的 delay
-  //     await _amp18Repository.set1p8GTransmitDelayTime();
-  //     List<dynamic> resultOfEvent1p8G =
-  //         await _amp18Repository.requestCommand1p8GEvent();
-
-  //     if (resultOfEvent1p8G[0]) {
-  //       List<Event1p8G> event1p8Gs = resultOfEvent1p8G[1];
-
-  //       // 清除 cache
-  //       _amp18Repository.clearEvent1p8Gs();
-
-  //       // 將 event 寫入 cache
-  //       _amp18Repository.writeEvent1p8Gs(event1p8Gs);
-
-  //       emit(
-  //         state.copyWith(
-  //           eventRequestStatus: FormStatus.requestSuccess,
-  //           event1p8Gs: event1p8Gs,
-  //         ),
-  //       );
-
-  //       break;
-  //     } else {
-  //       if (i == 2) {
-  //         emit(state.copyWith(
-  //           eventRequestStatus: FormStatus.requestFailure,
-  //           errorMessage: 'Failed to load events',
-  //         ));
-  //       } else {
-  //         if (resultOfEvent1p8G[1] == CharacteristicError.writeDataError.name) {
-  //           emit(state.copyWith(
-  //             eventRequestStatus: FormStatus.requestFailure,
-  //             errorMessage: 'Failed to load events',
-  //           ));
-  //           break;
-  //         } else {
-  //           continue;
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
 
   Future<void> _onMoreLogRequested(
     MoreLogRequested event,

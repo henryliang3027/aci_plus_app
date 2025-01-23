@@ -874,14 +874,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     // 讀取本地時區的日期時間
-    String deviceNowDateTime =
+    String nowDateTime =
         DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
     // 寫入目前日期時間 年yyyy 月MM 日dd 時HH 分mm
-    String partId = state.characteristicData[DataKey.partId] ?? '';
     await _amp18Repository.set1p8GNowDateTime(
-      partId: partId,
-      deviceNowDateTime: deviceNowDateTime,
+      nowDateTime: nowDateTime,
     );
 
     // 執行完上面的 寫入日期 後休息一段時間再進行任何讀取動作 比較不會有 data 收不完整的情況發生

@@ -1,4 +1,3 @@
-import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
@@ -25,10 +24,6 @@ class RFLevelChartBloc extends Bloc<RFLevelChartEvent, RFLevelChartState> {
   ) async {
     emit(state.copyWith(
       rfInOutRequestStatus: FormStatus.requestInProgress,
-      // dataRequestStatus: FormStatus.none,
-      // dataExportStatus: FormStatus.none,
-      // dataShareStatus: FormStatus.none,
-      // allDataDownloadStatus: FormStatus.none,
     ));
 
     List<RFInOut> rfInOuts = [];

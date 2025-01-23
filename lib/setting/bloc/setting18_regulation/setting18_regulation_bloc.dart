@@ -38,15 +38,9 @@ class Setting18RegulationBloc
     on<SettingSubmitted>(_onSettingSubmitted);
 
     add(const Initialized());
-
-    _forwardCEQStateSubscription =
-        _amp18Repository.forwardCEQStateStream.listen((bool isChanged) {
-      add(const Initialized(useCache: false));
-    });
   }
 
   final Amp18Repository _amp18Repository;
-  late final StreamSubscription _forwardCEQStateSubscription;
 
   Future<void> _onInitialized(
     Initialized event,
@@ -956,11 +950,5 @@ class Setting18RegulationBloc
       enableSubmission: false,
       editMode: false,
     ));
-  }
-
-  @override
-  Future<void> close() {
-    _forwardCEQStateSubscription.cancel();
-    return super.close();
   }
 }

@@ -45,16 +45,10 @@ class Setting18ThresholdBloc
     on<SettingSubmitted>(_onSettingSubmitted);
 
     add(const Initialized());
-
-    _forwardCEQStateSubscription =
-        _amp18Repository.forwardCEQStateStream.listen((bool isChanged) {
-      add(const Initialized(useCache: false));
-    });
   }
 
   final Amp18Repository _amp18Repository;
   final UnitRepository _unitRepository;
-  late final StreamSubscription _forwardCEQStateSubscription;
 
   String getMinTemperature({
     required String minTemperatureC,
@@ -1284,11 +1278,5 @@ class Setting18ThresholdBloc
       enableSubmission: false,
       editMode: false,
     ));
-  }
-
-  @override
-  Future<void> close() {
-    _forwardCEQStateSubscription.cancel();
-    return super.close();
   }
 }

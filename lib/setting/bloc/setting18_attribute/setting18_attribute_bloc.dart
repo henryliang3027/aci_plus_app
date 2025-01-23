@@ -37,16 +37,10 @@ class Setting18AttributeBloc
     on<SettingSubmitted>(_onSettingSubmitted);
 
     add(const Initialized());
-
-    _forwardCEQStateSubscription =
-        _amp18Repository.forwardCEQStateStream.listen((bool isChanged) {
-      add(const Initialized(useCache: false));
-    });
   }
 
   final Amp18Repository _amp18Repository;
   final GPSRepository _gpsRepository;
-  late final StreamSubscription _forwardCEQStateSubscription;
 
   Future<void> _onInitialized(
     Initialized event,
@@ -477,11 +471,5 @@ class Setting18AttributeBloc
       enableSubmission: false,
       editMode: false,
     ));
-  }
-
-  @override
-  Future<void> close() {
-    _forwardCEQStateSubscription.cancel();
-    return super.close();
   }
 }

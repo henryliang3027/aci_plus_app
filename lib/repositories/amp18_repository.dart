@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:aci_plus_app/core/command18.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
 import 'package:aci_plus_app/core/data_key.dart';
@@ -11,7 +10,6 @@ import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_command_mixin.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-
 import 'package:speed_chart/speed_chart.dart';
 
 class Amp18Repository with BLECommandsMixin {
@@ -30,11 +28,6 @@ class Amp18Repository with BLECommandsMixin {
 
   // 給設定頁面用來初始化預設值用
   final Map<DataKey, String> _characteristicDataCache = {};
-
-  // 設定頁面用來偵測 forwardCEQ 變化用
-  final StreamController<bool> _forwardCEQStateController =
-      StreamController<bool>.broadcast();
-  Stream<bool> get forwardCEQStateStream => _forwardCEQStateController.stream;
 
   late StreamController<Map<DataKey, String>>
       _characteristicDataStreamController;
@@ -695,7 +688,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GMaxTemperature(String temperature) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: temperature,
       command: Command18.setMaxTemperatureCmd,
     );
@@ -703,7 +695,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GMinTemperature(String temperature) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: temperature,
       command: Command18.setMinTemperatureCmd,
     );
@@ -711,7 +702,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GMaxVoltage(String valtage) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: valtage,
       command: Command18.setMaxVoltageCmd,
     );
@@ -719,7 +709,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GMinVoltage(String valtage) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: valtage,
       command: Command18.setMinVoltageCmd,
     );
@@ -727,23 +716,20 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GMaxVoltageRipple(String valtageRipple) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
-      value: valtageRipple,
-      command: Command18.setMaxVoltageRippleCmd,
-    );
+        value: valtageRipple,
+        command: Command18.setMaxVoltageRippleCmd,
+        factor: 1);
   }
 
   Future<dynamic> set1p8GMinVoltageRipple(String valtageRipple) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
-      value: valtageRipple,
-      command: Command18.setMinVoltageRippleCmd,
-    );
+        value: valtageRipple,
+        command: Command18.setMinVoltageRippleCmd,
+        factor: 1);
   }
 
   Future<dynamic> set1p8GMaxRFOutputPower(String outputPower) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: outputPower,
       command: Command18.setMaxOutputPowerCmd,
     );
@@ -751,7 +737,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GMinRFOutputPower(String outputPower) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: outputPower,
       command: Command18.setMinOutputPowerCmd,
     );
@@ -759,7 +744,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GReturnIngress2(String ingress) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: ingress,
       command: Command18.setReturnIngress2Cmd,
     );
@@ -767,7 +751,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GReturnIngress3(String ingress) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: ingress,
       command: Command18.setReturnIngress3Cmd,
     );
@@ -775,7 +758,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GReturnIngress4(String ingress) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: ingress,
       command: Command18.setReturnIngress4Cmd,
     );
@@ -783,7 +765,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GTGCCableLength(String value) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: value,
       command: Command18.setTGCCableLengthCmd,
     );
@@ -791,7 +772,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GSplitOption(String splitOption) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: splitOption,
       command: Command18.setSplitOptionCmd,
     );
@@ -799,7 +779,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GPilotFrequencyMode(String value) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: value,
       command: Command18.setPilotFrequencyModeCmd,
     );
@@ -807,7 +786,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GForwardAGCMode(String value) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: value,
       command: Command18.setFowardAGCModeCmd,
     );
@@ -815,7 +793,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GALCMode(String value) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: value,
       command: Command18.setALCModeCmd,
     );
@@ -823,7 +800,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GFirstChannelLoadingFrequency(String value) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: value,
       command: Command18.setFirstChannelLoadingFrequencyCmd,
       factor: 1,
@@ -832,7 +808,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GLastChannelLoadingFrequency(String value) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: value,
       command: Command18.setLastChannelLoadingFrequencyCmd,
       factor: 1,
@@ -841,7 +816,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GFirstChannelLoadingLevel(String value) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: value,
       command: Command18.setFirstChannelLoadingLevelCmd,
     );
@@ -849,7 +823,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GLastChannelLoadingLevel(String value) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: value,
       command: Command18.setLastChannelLoadingLevelCmd,
     );
@@ -857,7 +830,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GPilotFrequency1(String value) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: value,
       command: Command18.setPilotFrequency1Cmd,
       factor: 1,
@@ -866,7 +838,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GPilotFrequency2(String value) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: value,
       command: Command18.setPilotFrequency2Cmd,
       factor: 1,
@@ -875,7 +846,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> setInputPilotLowFrequencyAlarmState(String enable) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: enable,
       command: Command18.setInputPilotLowFrequencyAlarmStateCmd,
     );
@@ -883,7 +853,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> setInputPilotHighFrequencyAlarmState(String enable) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: enable,
       command: Command18.setInputPilotHighFrequencyAlarmStateCmd,
     );
@@ -891,7 +860,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> setOutputPilotLowFrequencyAlarmState(String enable) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: enable,
       command: Command18.setOutputPilotLowFrequencyAlarmStateCmd,
     );
@@ -899,7 +867,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> setOutputPilotHighFrequencyAlarmState(String enable) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: enable,
       command: Command18.setOutputPilotHighFrequencyAlarmStateCmd,
     );
@@ -907,7 +874,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GTemperatureAlarmState(String enable) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: enable,
       command: Command18.setTemperatureAlarmStateCmd,
     );
@@ -915,7 +881,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GVoltageAlarmState(String enable) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: enable,
       command: Command18.setVoltageAlarmStateCmd,
     );
@@ -923,7 +888,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GFactoryDefault(int number) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: number.toString(),
       command: Command18.setFactoryDefaultCmd,
     );
@@ -931,7 +895,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GSplitOptionAlarmState(String enable) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: enable,
       command: Command18.setSplitOptionAlarmStateCmd,
     );
@@ -939,7 +902,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GVoltageRippleAlarmState(String enable) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: enable,
       command: Command18.setVoltageRippleAlarmStateCmd,
     );
@@ -947,61 +909,20 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GRFOutputPowerAlarmState(String enable) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: enable,
       command: Command18.setRFOutputPowerAlarmStateCmd,
     );
   }
 
   Future<dynamic> set1p8GLocation(String location) async {
-    int commandIndex = 337;
-
-    List<int> locationBytes = [];
-
-    print('get data from request command 1p8G$commandIndex');
-
-    for (int code in location.codeUnits) {
-      // Create a ByteData object with a length of 2 bytes
-      ByteData byteData = ByteData(2);
-
-      // Set the Unicode code unit in the byte array
-      byteData.setInt16(0, code, Endian.little);
-
-      // Convert the ByteData to a Uint8List
-      Uint8List bytes = Uint8List.view(byteData.buffer);
-
-      locationBytes.addAll(bytes);
-    }
-
-    for (int i = 0; i < locationBytes.length; i++) {
-      Command18.setLocationCmd[i + 7] = locationBytes[i];
-    }
-
-    // 填入空白
-    for (int i = locationBytes.length; i < 96; i += 2) {
-      Command18.setLocationCmd[i + 7] = 0x20;
-      Command18.setLocationCmd[i + 8] = 0x00;
-    }
-
-    CRC16.calculateCRC16(
+    return set1p8GLocationParameter(
+      location: location,
       command: Command18.setLocationCmd,
-      usDataLength: Command18.setLocationCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setLocationCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GLogInterval(String logInterval) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: logInterval,
       command: Command18.setLogIntervalCmd,
     );
@@ -1009,7 +930,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GRFOutputLogInterval(String rfOutputLogInterval) async {
     return set1p8GOneByteParameter(
-      commandIndex: 300,
       value: rfOutputLogInterval,
       command: Command18.setRFOutputLogIntervalCmd,
     );
@@ -1017,7 +937,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GDSVVA1(String strValue) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: strValue,
       command: Command18.setDSVVA1Cmd,
     );
@@ -1025,7 +944,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GDSSlope1(String strValue) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: strValue,
       command: Command18.setDSSlope1Cmd,
     );
@@ -1033,7 +951,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GDSVVA2(String strValue) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: strValue,
       command: Command18.setDSVVA2Cmd,
     );
@@ -1041,7 +958,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GDSSlope2(String strValue) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: strValue,
       command: Command18.setDSSlope2Cmd,
     );
@@ -1049,7 +965,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GUSVCA1(String strValue) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: strValue,
       command: Command18.setUSVCA1Cmd,
     );
@@ -1057,7 +972,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GEREQ(String strValue) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: strValue,
       command: Command18.setEREQCmd,
     );
@@ -1065,7 +979,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8DSVVA3(String strValue) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: strValue,
       command: Command18.setDSVVA3Cmd,
     );
@@ -1073,7 +986,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GDSVVA4(String strValue) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: strValue,
       command: Command18.setDSVVA4Cmd,
     );
@@ -1081,7 +993,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GUSVCA2(String strValue) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: strValue,
       command: Command18.setUSVCA2Cmd,
     );
@@ -1089,7 +1000,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GUSVCA3(String strValue) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: strValue,
       command: Command18.setUSVCA3Cmd,
     );
@@ -1097,7 +1007,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GUSVCA4(String strValue) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: strValue,
       command: Command18.setUSVCA4Cmd,
     );
@@ -1105,7 +1014,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GDSVVA5(String strValue) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: strValue,
       command: Command18.setDSVVA5Cmd,
     );
@@ -1113,7 +1021,6 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GDSSlope3(String strValue) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: strValue,
       command: Command18.setDSSlope3Cmd,
     );
@@ -1121,43 +1028,16 @@ class Amp18Repository with BLECommandsMixin {
 
   Future<dynamic> set1p8GDSSlope4(String strValue) async {
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: strValue,
       command: Command18.setDSSlope4Cmd,
     );
   }
 
   Future<dynamic> set1p8GCoordinates(String coordinates) async {
-    int commandIndex = 354;
-
-    List<int> coordinatesBytes = [];
-
-    print('get data from request command 1p8G$commandIndex');
-
-    coordinatesBytes = coordinates.codeUnits;
-
-    for (int i = 0; i < coordinatesBytes.length; i++) {
-      Command18.setCoordinatesCmd[i + 7] = coordinatesBytes[i];
-    }
-
-    for (int i = coordinatesBytes.length; i < 39; i++) {
-      Command18.setCoordinatesCmd[i + 7] = 0x20;
-    }
-
-    CRC16.calculateCRC16(
+    return set1p8GCoordinatesParameter(
+      coordinates: coordinates,
       command: Command18.setCoordinatesCmd,
-      usDataLength: Command18.setCoordinatesCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setCoordinatesCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   // 設定藍牙串口的資料傳輸延遲時間, 單位為 ms
@@ -1190,7 +1070,6 @@ class Amp18Repository with BLECommandsMixin {
     print('RSSI: $rssi, Delay: $ms');
 
     return set1p8GTwoBytesParameter(
-      commandIndex: 300,
       value: ms.toString(),
       command: Command18.setTransmitDelayTimeCmd,
       factor: 1,
@@ -1198,70 +1077,12 @@ class Amp18Repository with BLECommandsMixin {
   }
 
   Future<dynamic> set1p8GNowDateTime({
-    required String partId,
-    required String deviceNowDateTime,
+    required String nowDateTime,
   }) async {
-    int commandIndex = 356;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    DateTime dateTime = DateTime.now();
-    DateTime deviceDateTime = DateTime.parse(deviceNowDateTime);
-
-    int year = dateTime.year;
-
-    // Convert the integer to bytes
-    ByteData yearByteData = ByteData(2);
-    yearByteData.setInt16(0, year, Endian.little); // little endian
-    Uint8List yearBytes = Uint8List.view(yearByteData.buffer);
-
-    int month = dateTime.month;
-    int day = dateTime.day;
-    int hour = dateTime.hour;
-    int minute = dateTime.minute;
-
-    Command18.setNowDateTimeCmd[7] = yearBytes[0];
-    Command18.setNowDateTimeCmd[8] = yearBytes[1];
-    Command18.setNowDateTimeCmd[9] = month;
-    Command18.setNowDateTimeCmd[10] = day;
-    Command18.setNowDateTimeCmd[11] = hour;
-    Command18.setNowDateTimeCmd[12] = minute;
-
-    CRC16.calculateCRC16(
+    return set1p8GNowDateTimeParameter(
+      nowDateTime: nowDateTime,
       command: Command18.setNowDateTimeCmd,
-      usDataLength: Command18.setNowDateTimeCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18.setNowDateTimeCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
-
-    // 之前版本的 log interval 可以為 1 分鐘, 如果一直同步時間就可能發生log紀錄裡有某前後兩筆的log時間一模一樣
-    // 所以才加入判斷
-    // device 的 now time 跟 目前時間相差大於等於 30 分鐘, 則寫入目前時間
-    // int difference = dateTime.difference(deviceDateTime).inMinutes.abs();
-
-    // // 如果 device 的 now time 跟 目前時間相差大於等於 30 分鐘, 則寫入目前時間
-    // if (difference >= 30) {
-    //   print('sync time on device id $partId');
-    //   try {
-    //     List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-    //       commandIndex: commandIndex,
-    //       value: Command18.setNowDateTimeCmd,
-    //     );
-    //     return true;
-    //   } catch (e) {
-    //     return false;
-    //   }
-    // } else {
-    //   return true;
-    // }
   }
 
   void clearCharacteristics() {
@@ -1272,14 +1093,6 @@ class Amp18Repository with BLECommandsMixin {
       Map<DataKey, String> valuePairs) async {
     _characteristicDataStreamController
         .add(Map<DataKey, String>.from(valuePairs));
-  }
-
-  void updateForwardCEQState(bool isChanged) {
-    _forwardCEQStateController.add(isChanged);
-  }
-
-  void dispose() {
-    _forwardCEQStateController.close();
   }
 
   Future<void> updateSettingCharacteristics() async {
