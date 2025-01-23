@@ -26,11 +26,6 @@ class Amp18Repository {
   // 給設定頁面用來初始化預設值用
   final Map<DataKey, String> _characteristicDataCache = {};
 
-  // 設定頁面用來偵測 forwardCEQ 變化用
-  final StreamController<bool> _forwardCEQStateController =
-      StreamController<bool>.broadcast();
-  Stream<bool> get forwardCEQStateStream => _forwardCEQStateController.stream;
-
   late StreamController<Map<DataKey, String>>
       _characteristicDataStreamController;
 
@@ -2313,14 +2308,6 @@ class Amp18Repository {
       Map<DataKey, String> valuePairs) async {
     _characteristicDataStreamController
         .add(Map<DataKey, String>.from(valuePairs));
-  }
-
-  void updateForwardCEQState(bool isChanged) {
-    _forwardCEQStateController.add(isChanged);
-  }
-
-  void dispose() {
-    _forwardCEQStateController.close();
   }
 
   Future<void> updateSettingCharacteristics() async {

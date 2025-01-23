@@ -7,7 +7,7 @@ import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/custom_input.dart';
-import 'package:aci_plus_app/setting/model/formz_input_initializer.dart';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -39,15 +39,9 @@ class Setting18ForwardControlBloc
     on<SettingSubmitted>(_onSettingSubmitted);
 
     add(const Initialized());
-
-    _forwardCEQStateSubscription =
-        _amp18Repository.forwardCEQStateStream.listen((bool isChanged) {
-      add(const Initialized(useCache: false));
-    });
   }
 
   final Amp18Repository _amp18Repository;
-  late final StreamSubscription _forwardCEQStateSubscription;
 
   Future<void> _onInitialized(
     Initialized event,
@@ -322,11 +316,5 @@ class Setting18ForwardControlBloc
       enableSubmission: false,
       editMode: false,
     ));
-  }
-
-  @override
-  Future<void> close() {
-    _forwardCEQStateSubscription.cancel();
-    return super.close();
   }
 }
