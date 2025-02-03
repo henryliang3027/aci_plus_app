@@ -9,11 +9,12 @@ import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_chart_cache.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
+import 'package:aci_plus_app/repositories/ble_command_mixin.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:speed_chart/speed_chart.dart';
 
-class Amp18CCorNodeRepository {
+class Amp18CCorNodeRepository with BLECommandsMixin {
   Amp18CCorNodeRepository()
       : _bleClient = BLEClientFactory.instance,
         _amp18CCorNodeParser = Amp18CCorNodeParser(),
@@ -22,6 +23,10 @@ class Amp18CCorNodeRepository {
   final BLEClientBase _bleClient;
   final Amp18CCorNodeChartCache _amp18CCorNodeChartCache;
   final Amp18CCorNodeParser _amp18CCorNodeParser;
+
+  // Implement the abstract getter required by the mixin.
+  @override
+  BLEClientBase get bleClient => _bleClient;
 
   // 給設定頁面用來初始化預設值用
   final Map<DataKey, String> _characteristicDataCache = {};
@@ -623,886 +628,213 @@ class Amp18CCorNodeRepository {
   }
 
   Future<dynamic> set1p8GCCorNodeMaxTemperature(String temperature) async {
-    int commandIndex = 300;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    double dMaxTemperature = double.parse(temperature);
-
-    int max = (dMaxTemperature * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, max, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18CCorNode.setMaxTemperatureCmd[7] = bytes[0];
-    Command18CCorNode.setMaxTemperatureCmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      value: temperature,
       command: Command18CCorNode.setMaxTemperatureCmd,
-      usDataLength: Command18CCorNode.setMaxTemperatureCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setMaxTemperatureCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeMinTemperature(String temperature) async {
-    int commandIndex = 301;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    double dMinTemperature = double.parse(temperature);
-
-    int min = (dMinTemperature * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, min, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18CCorNode.setMinTemperatureCmd[7] = bytes[0];
-    Command18CCorNode.setMinTemperatureCmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      value: temperature,
       command: Command18CCorNode.setMinTemperatureCmd,
-      usDataLength: Command18CCorNode.setMinTemperatureCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setMinTemperatureCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeMaxVoltage(String valtage) async {
-    int commandIndex = 302;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    double dMaxVoltage = double.parse(valtage);
-
-    int max = (dMaxVoltage * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, max, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18CCorNode.setMaxVoltageCmd[7] = bytes[0];
-    Command18CCorNode.setMaxVoltageCmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      value: valtage,
       command: Command18CCorNode.setMaxVoltageCmd,
-      usDataLength: Command18CCorNode.setMaxVoltageCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setMaxVoltageCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeMinVoltage(String valtage) async {
-    int commandIndex = 303;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    double dMinVoltage = double.parse(valtage);
-
-    int min = (dMinVoltage * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, min, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18CCorNode.setMinVoltageCmd[7] = bytes[0];
-    Command18CCorNode.setMinVoltageCmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      value: valtage,
       command: Command18CCorNode.setMinVoltageCmd,
-      usDataLength: Command18CCorNode.setMinVoltageCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setMinVoltageCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeMaxRFOutputPower1(String outputPower) async {
-    int commandIndex = 306;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    double dMaxOutputPower = double.parse(outputPower);
-
-    int min = (dMaxOutputPower * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, min, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18CCorNode.setMaxOutputPower1Cmd[7] = bytes[0];
-    Command18CCorNode.setMaxOutputPower1Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      value: outputPower,
       command: Command18CCorNode.setMaxOutputPower1Cmd,
-      usDataLength: Command18CCorNode.setMaxOutputPower1Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setMaxOutputPower1Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeMinRFOutputPower1(String outputPower) async {
-    int commandIndex = 307;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    double dMinOutputPower = double.parse(outputPower);
-
-    int min = (dMinOutputPower * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, min, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18CCorNode.setMinOutputPower1Cmd[7] = bytes[0];
-    Command18CCorNode.setMinOutputPower1Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      value: outputPower,
       command: Command18CCorNode.setMinOutputPower1Cmd,
-      usDataLength: Command18CCorNode.setMinOutputPower1Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setMinOutputPower1Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeReturnIngress1(String ingress) async {
-    int commandIndex = 308;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    int ingressNumber = int.parse(ingress);
-
-    Command18CCorNode.setReturnIngress1Cmd[7] = ingressNumber;
-
-    CRC16.calculateCRC16(
+    return set1p8GOneByteParameter(
+      value: ingress,
       command: Command18CCorNode.setReturnIngress1Cmd,
-      usDataLength: Command18CCorNode.setReturnIngress1Cmd.length - 2,
     );
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setReturnIngress1Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeReturnIngress3(String ingress) async {
-    int commandIndex = 309;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    int ingressNumber = int.parse(ingress);
-
-    Command18CCorNode.setReturnIngress3Cmd[7] = ingressNumber;
-
-    CRC16.calculateCRC16(
+    return set1p8GOneByteParameter(
+      value: ingress,
       command: Command18CCorNode.setReturnIngress3Cmd,
-      usDataLength: Command18CCorNode.setReturnIngress3Cmd.length - 2,
     );
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setReturnIngress3Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeReturnIngress4(String ingress) async {
-    int commandIndex = 310;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    int ingressNumber = int.parse(ingress);
-
-    Command18CCorNode.setReturnIngress4Cmd[7] = ingressNumber;
-
-    CRC16.calculateCRC16(
+    return set1p8GOneByteParameter(
+      value: ingress,
       command: Command18CCorNode.setReturnIngress4Cmd,
-      usDataLength: Command18CCorNode.setReturnIngress4Cmd.length - 2,
     );
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setReturnIngress4Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeReturnIngress6(String ingress) async {
-    int commandIndex = 311;
-
-    print('get data from request command 1p8G$commandIndex');
-
-    int ingressNumber = int.parse(ingress);
-
-    Command18CCorNode.setReturnIngress6Cmd[7] = ingressNumber;
-
-    CRC16.calculateCRC16(
+    return set1p8GOneByteParameter(
+      value: ingress,
       command: Command18CCorNode.setReturnIngress6Cmd,
-      usDataLength: Command18CCorNode.setReturnIngress6Cmd.length - 2,
     );
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setReturnIngress6Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeForwardConfig(String forwardConfig) async {
-    int commandIndex = 312;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    int forwardConfigNumber = int.parse(forwardConfig);
-
-    Command18CCorNode.setForwardConfigCmd[7] = forwardConfigNumber;
-
-    CRC16.calculateCRC16(
+    return set1p8GOneByteParameter(
+      value: forwardConfig,
       command: Command18CCorNode.setForwardConfigCmd,
-      usDataLength: Command18CCorNode.setForwardConfigCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setForwardConfigCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeSplitOption(String splitOption) async {
-    int commandIndex = 314;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    int splitOptionNumber = int.parse(splitOption);
-
-    Command18CCorNode.setSplitOptionCmd[7] = splitOptionNumber;
-
-    CRC16.calculateCRC16(
+    return set1p8GOneByteParameter(
+      value: splitOption,
       command: Command18CCorNode.setSplitOptionCmd,
-      usDataLength: Command18CCorNode.setSplitOptionCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setSplitOptionCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeForwardMode(String forwardMode) async {
-    int commandIndex = 316;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    int forwardModeNumber = int.parse(forwardMode);
-
-    Command18CCorNode.setForwardModeCmd[7] = forwardModeNumber;
-
-    CRC16.calculateCRC16(
+    return set1p8GOneByteParameter(
+      value: forwardMode,
       command: Command18CCorNode.setForwardModeCmd,
-      usDataLength: Command18CCorNode.setForwardModeCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setForwardModeCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeMaxRFOutputPower3(String outputPower) async {
-    int commandIndex = 318;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    double dMaxOutputPower = double.parse(outputPower);
-
-    int min = (dMaxOutputPower * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, min, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18CCorNode.setMaxOutputPower3Cmd[7] = bytes[0];
-    Command18CCorNode.setMaxOutputPower3Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      value: outputPower,
       command: Command18CCorNode.setMaxOutputPower3Cmd,
-      usDataLength: Command18CCorNode.setMaxOutputPower3Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setMaxOutputPower3Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeMinRFOutputPower3(String outputPower) async {
-    int commandIndex = 319;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    double dMinOutputPower = double.parse(outputPower);
-
-    int min = (dMinOutputPower * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, min, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18CCorNode.setMinOutputPower3Cmd[7] = bytes[0];
-    Command18CCorNode.setMinOutputPower3Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      value: outputPower,
       command: Command18CCorNode.setMinOutputPower3Cmd,
-      usDataLength: Command18CCorNode.setMinOutputPower3Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setMinOutputPower3Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeDSVVA1(String strValue) async {
-    int commandIndex = 320;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18CCorNode.setDSVVA1Cmd[7] = bytes[0];
-    Command18CCorNode.setDSVVA1Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      value: strValue,
       command: Command18CCorNode.setDSVVA1Cmd,
-      usDataLength: Command18CCorNode.setDSVVA1Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setDSVVA1Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeDSInSlope1(String strValue) async {
-    int commandIndex = 321;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18CCorNode.setDSInSlope1Cmd[7] = bytes[0];
-    Command18CCorNode.setDSInSlope1Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      value: strValue,
       command: Command18CCorNode.setDSInSlope1Cmd,
-      usDataLength: Command18CCorNode.setDSInSlope1Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setDSInSlope1Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeDSOutSlope1(String strValue) async {
-    int commandIndex = 322;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18CCorNode.setDSOutSlope1Cmd[7] = bytes[0];
-    Command18CCorNode.setDSOutSlope1Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      value: strValue,
       command: Command18CCorNode.setDSOutSlope1Cmd,
-      usDataLength: Command18CCorNode.setDSOutSlope1Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setDSOutSlope1Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeUSVCA1(String strValue) async {
-    int commandIndex = 323;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    double doubleValue = double.parse(strValue);
-
-    int intValue = (doubleValue * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, intValue, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18CCorNode.setUSVCA1Cmd[7] = bytes[0];
-    Command18CCorNode.setUSVCA1Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      value: strValue,
       command: Command18CCorNode.setUSVCA1Cmd,
-      usDataLength: Command18CCorNode.setUSVCA1Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setUSVCA1Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
-  Future<dynamic> set1p8GCCorNodeRFOutputPower1AlarmState(
-      String isEnable) async {
-    int commandIndex = 324;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    int isEnableNumber = int.parse(isEnable);
-
-    Command18CCorNode.setRFOutputPower1AlarmStateCmd[7] = isEnableNumber;
-
-    CRC16.calculateCRC16(
+  Future<dynamic> set1p8GCCorNodeRFOutputPower1AlarmState(String enable) async {
+    return set1p8GOneByteParameter(
+      value: enable,
       command: Command18CCorNode.setRFOutputPower1AlarmStateCmd,
-      usDataLength: Command18CCorNode.setRFOutputPower1AlarmStateCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setRFOutputPower1AlarmStateCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
-  Future<dynamic> set1p8GCCorNodeRFOutputPower3AlarmState(
-      String isEnable) async {
-    int commandIndex = 325;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    int isEnableNumber = int.parse(isEnable);
-
-    Command18CCorNode.setRFOutputPower3AlarmStateCmd[7] = isEnableNumber;
-
-    CRC16.calculateCRC16(
+  Future<dynamic> set1p8GCCorNodeRFOutputPower3AlarmState(String enable) async {
+    return set1p8GOneByteParameter(
+      value: enable,
       command: Command18CCorNode.setRFOutputPower3AlarmStateCmd,
-      usDataLength: Command18CCorNode.setRFOutputPower3AlarmStateCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setRFOutputPower3AlarmStateCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
-  Future<dynamic> set1p8GCCorNodeRFOutputPower4AlarmState(
-      String isEnable) async {
-    int commandIndex = 326;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    int isEnableNumber = int.parse(isEnable);
-
-    Command18CCorNode.setRFOutputPower4AlarmStateCmd[7] = isEnableNumber;
-
-    CRC16.calculateCRC16(
+  Future<dynamic> set1p8GCCorNodeRFOutputPower4AlarmState(String enable) async {
+    return set1p8GOneByteParameter(
+      value: enable,
       command: Command18CCorNode.setRFOutputPower4AlarmStateCmd,
-      usDataLength: Command18CCorNode.setRFOutputPower4AlarmStateCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setRFOutputPower4AlarmStateCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
-  Future<dynamic> set1p8GCCorNodeRFOutputPower6AlarmState(
-      String isEnable) async {
-    int commandIndex = 327;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    int isEnableNumber = int.parse(isEnable);
-
-    Command18CCorNode.setRFOutputPower6AlarmStateCmd[7] = isEnableNumber;
-
-    CRC16.calculateCRC16(
+  Future<dynamic> set1p8GCCorNodeRFOutputPower6AlarmState(String enable) async {
+    return set1p8GOneByteParameter(
+      value: enable,
       command: Command18CCorNode.setRFOutputPower6AlarmStateCmd,
-      usDataLength: Command18CCorNode.setRFOutputPower6AlarmStateCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setRFOutputPower6AlarmStateCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
-  Future<dynamic> set1p8GCCorNodeTemperatureAlarmState(String isEnable) async {
-    int commandIndex = 328;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    int isEnableNumber = int.parse(isEnable);
-
-    Command18CCorNode.setTemperatureAlarmStateCmd[7] = isEnableNumber;
-
-    CRC16.calculateCRC16(
+  Future<dynamic> set1p8GCCorNodeTemperatureAlarmState(String enable) async {
+    return set1p8GOneByteParameter(
+      value: enable,
       command: Command18CCorNode.setTemperatureAlarmStateCmd,
-      usDataLength: Command18CCorNode.setTemperatureAlarmStateCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setTemperatureAlarmStateCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
-  Future<dynamic> set1p8GCCorNodeVoltageAlarmState(String isEnable) async {
-    int commandIndex = 329;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    int isEnableNumber = int.parse(isEnable);
-
-    Command18CCorNode.setVoltageAlarmStateCmd[7] = isEnableNumber;
-
-    CRC16.calculateCRC16(
+  Future<dynamic> set1p8GCCorNodeVoltageAlarmState(String enable) async {
+    return set1p8GOneByteParameter(
+      value: enable,
       command: Command18CCorNode.setVoltageAlarmStateCmd,
-      usDataLength: Command18CCorNode.setVoltageAlarmStateCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setVoltageAlarmStateCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeMaxRFOutputPower4(String outputPower) async {
-    int commandIndex = 330;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    double dMaxOutputPower = double.parse(outputPower);
-
-    int min = (dMaxOutputPower * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, min, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18CCorNode.setMaxOutputPower4Cmd[7] = bytes[0];
-    Command18CCorNode.setMaxOutputPower4Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      value: outputPower,
       command: Command18CCorNode.setMaxOutputPower4Cmd,
-      usDataLength: Command18CCorNode.setMaxOutputPower4Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setMaxOutputPower4Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeMinRFOutputPower4(String outputPower) async {
-    int commandIndex = 331;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    double dMinOutputPower = double.parse(outputPower);
-
-    int min = (dMinOutputPower * 10).toInt();
-
-    // Convert the integer to bytes
-    ByteData byteData = ByteData(2);
-    byteData.setInt16(0, min, Endian.little); // little endian
-    Uint8List bytes = Uint8List.view(byteData.buffer);
-
-    Command18CCorNode.setMinOutputPower4Cmd[7] = bytes[0];
-    Command18CCorNode.setMinOutputPower4Cmd[8] = bytes[1];
-
-    CRC16.calculateCRC16(
+    return set1p8GTwoBytesParameter(
+      value: outputPower,
       command: Command18CCorNode.setMinOutputPower4Cmd,
-      usDataLength: Command18CCorNode.setMinOutputPower4Cmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setMinOutputPower4Cmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
-  Future<dynamic> set1p8GCCorNodeSplitOptionAlarmState(String isEnable) async {
-    int commandIndex = 332;
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    int isEnableNumber = int.parse(isEnable);
-
-    Command18CCorNode.setSplitOptionAlarmStateCmd[7] = isEnableNumber;
-
-    CRC16.calculateCRC16(
+  Future<dynamic> set1p8GCCorNodeSplitOptionAlarmState(String enable) async {
+    return set1p8GOneByteParameter(
+      value: enable,
       command: Command18CCorNode.setSplitOptionAlarmStateCmd,
-      usDataLength: Command18CCorNode.setSplitOptionAlarmStateCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setSplitOptionAlarmStateCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeLocation(String location) async {
-    int commandIndex = 335;
-
-    List<int> locationBytes = [];
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    for (int code in location.codeUnits) {
-      // Create a ByteData object with a length of 2 bytes
-      ByteData byteData = ByteData(2);
-
-      // Set the Unicode code unit in the byte array
-      byteData.setInt16(0, code, Endian.little);
-
-      // Convert the ByteData to a Uint8List
-      Uint8List bytes = Uint8List.view(byteData.buffer);
-
-      locationBytes.addAll(bytes);
-    }
-
-    for (int i = 0; i < locationBytes.length; i++) {
-      Command18CCorNode.setLocationCmd[i + 7] = locationBytes[i];
-    }
-
-    // 填入空白
-    for (int i = locationBytes.length; i < 96; i += 2) {
-      Command18CCorNode.setLocationCmd[i + 7] = 0x20;
-      Command18CCorNode.setLocationCmd[i + 8] = 0x00;
-    }
-
-    CRC16.calculateCRC16(
+    return set1p8GLocationParameter(
+      location: location,
       command: Command18CCorNode.setLocationCmd,
-      usDataLength: Command18CCorNode.setLocationCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setLocationCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeLogInterval(String logInterval) async {
-    int commandIndex = 336;
-
-    int interval = int.parse(logInterval);
-
-    print('set data from request command 1p8G CCor Node $commandIndex');
-
-    Command18CCorNode.setLogIntervalCmd[7] = interval;
-
-    CRC16.calculateCRC16(
+    return set1p8GOneByteParameter(
+      value: logInterval,
       command: Command18CCorNode.setLogIntervalCmd,
-      usDataLength: Command18CCorNode.setLogIntervalCmd.length - 2,
     );
-
-    try {
-      List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
-        commandIndex: commandIndex,
-        value: Command18CCorNode.setLogIntervalCmd,
-      );
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<dynamic> set1p8GCCorNodeDSVVA3(String strValue) async {
