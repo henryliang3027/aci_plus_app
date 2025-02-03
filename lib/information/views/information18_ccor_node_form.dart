@@ -483,114 +483,11 @@ class _LoadPresetButton extends StatelessWidget {
   }
 }
 
-class _BlockDiagramCard extends StatelessWidget {
-  const _BlockDiagramCard();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      buildWhen: (previous, current) =>
-          previous.loadingStatus != current.loadingStatus,
-      builder: (context, state) {
-        String partId = state.characteristicData[DataKey.partId] ?? '';
-
-        // if (state.loadingStatus.isRequestSuccess) {
-        //   context.read<Information18Bloc>().add(DiagramLoaded(partId));
-        // }
-
-        return Card(
-          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.blockDiagram,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.showDiagram,
-                        style: const TextStyle(
-                          fontSize: CustomStyle.sizeL,
-                        ),
-                      ),
-                      _ShowDiagramButton(
-                        loadingStatus: state.loadingStatus,
-                        partId: partId,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _ShowDiagramButton extends StatelessWidget {
-  const _ShowDiagramButton({
-    required this.loadingStatus,
-    required this.partId,
-  });
-
-  final FormStatus loadingStatus;
-  final String partId;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Information18CCorNodeBloc, Information18CCorNodeState>(
-      builder: (context, state) {
-        return ElevatedButton(
-          onPressed: loadingStatus.isRequestSuccess
-              ? () async {
-                  Navigator.push(
-                      context,
-                      NamePlateView.route(
-                        partId: partId,
-                      ));
-                }
-              : null,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            foregroundColor: Colors.white,
-          ),
-          child: Text(
-            AppLocalizations.of(context)!.show,
-            style: const TextStyle(
-              fontSize: CustomStyle.sizeL,
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
 class _BasicCard extends StatelessWidget {
   const _BasicCard();
 
   @override
   Widget build(BuildContext context) {
-    String getCurrentLogInterval(String logInterval) {
-      if (logInterval.isEmpty) {
-        return '';
-      } else {
-        return '$logInterval ${AppLocalizations.of(context)!.minute}';
-      }
-    }
-
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
       return Card(
         child: Padding(
@@ -609,57 +506,56 @@ class _BasicCard extends StatelessWidget {
                   ? itemText(
                       loadingStatus: state.loadingStatus,
                       title: 'Now DateTime',
-                      content:
-                          state.characteristicData[DataKey.nowDateTime] ?? '',
+                      content: state.characteristicData[DataKey.nowDateTime],
                     )
                   : Container(),
               itemText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context)!.typeNo,
-                content: state.characteristicData[DataKey.partName] ?? '',
+                content: state.characteristicData[DataKey.partName],
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context)!.partNo,
-                content: state.characteristicData[DataKey.partNo] ?? '',
+                content: state.characteristicData[DataKey.partNo],
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context)!.serialNumber,
-                content: state.characteristicData[DataKey.serialNumber] ?? '',
+                content: state.characteristicData[DataKey.serialNumber],
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context)!.firmwareVersion,
-                content:
-                    state.characteristicData[DataKey.firmwareVersion] ?? '',
+                content: state.characteristicData[DataKey.firmwareVersion],
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context)!.hardwareVersion,
-                content:
-                    state.characteristicData[DataKey.hardwareVersion] ?? '',
+                content: state.characteristicData[DataKey.hardwareVersion],
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context)!.logInterval,
                 content: getCurrentLogInterval(
-                    state.characteristicData[DataKey.logInterval] ?? ''),
+                  context: context,
+                  logInterval: state.characteristicData[DataKey.logInterval],
+                ),
               ),
               itemMultipleLineText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context)!.location,
-                content: state.characteristicData[DataKey.location] ?? '',
+                content: state.characteristicData[DataKey.location],
               ),
               itemMultipleLineText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context)!.coordinates,
-                content: state.characteristicData[DataKey.coordinates] ?? '',
+                content: state.characteristicData[DataKey.coordinates],
               ),
               itemText(
                 loadingStatus: state.loadingStatus,
                 title: AppLocalizations.of(context)!.mfgDate,
-                content: state.characteristicData[DataKey.mfgDate] ?? '',
+                content: state.characteristicData[DataKey.mfgDate],
               ),
             ],
           ),
@@ -667,292 +563,4 @@ class _BasicCard extends StatelessWidget {
       );
     });
   }
-}
-
-// class _AlarmIndicator extends StatelessWidget {
-//   const _AlarmIndicator();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<Information18CCorNodeBloc, Information18CCorNodeState>(
-//       builder: (context, state) {
-//         return buildAlarmCard(
-//           context: context,
-//           alarmUSeverity: state.alarmUSeverity,
-//           alarmTSeverity: state.alarmTSeverity,
-//           alarmPSeverity: state.alarmPSeverity,
-//         );
-//       },
-//     );
-//   }
-// }
-
-// class _AlarmCard extends StatelessWidget {
-//   const _AlarmCard();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<HomeBloc, HomeState>(
-//       // 上一個狀態跟目前狀態的 loadingStatus 不一樣時才要rebuild,
-//       // 否則切到 status page 時會更新 HomeState 而重複觸發 AlarmPeriodicUpdateRequested
-//       buildWhen: (previous, current) =>
-//           previous.loadingStatus != current.loadingStatus,
-//       builder: (context, state) {
-//         if (state.loadingStatus.isRequestSuccess) {
-//           context
-//               .read<Information18CCorNodeBloc>()
-//               .add(const AlarmPeriodicUpdateRequested());
-
-//           return const _AlarmIndicator();
-//         } else {
-//           context
-//               .read<Information18CCorNodeBloc>()
-//               .add(const AlarmPeriodicUpdateCanceled());
-
-//           String alarmUSeverity =
-//               state.characteristicData[DataKey.unitStatusAlarmSeverity] ??
-//                   'default';
-//           String alarmTSeverity =
-//               state.characteristicData[DataKey.temperatureAlarmSeverity] ??
-//                   'default';
-//           String alarmPSeverity =
-//               state.characteristicData[DataKey.voltageAlarmSeverity] ??
-//                   'default';
-
-//           return buildAlarmCard(
-//             context: context,
-//             alarmUSeverity: alarmUSeverity,
-//             alarmTSeverity: alarmTSeverity,
-//             alarmPSeverity: alarmPSeverity,
-//           );
-//         }
-//       },
-//     );
-//   }
-// }
-
-// Widget alarmItem({
-//   required IconData iconData,
-//   required String title,
-//   Color? iconColor,
-// }) {
-//   return Padding(
-//     padding: const EdgeInsets.all(8.0),
-//     child: Row(
-//       mainAxisAlignment: MainAxisAlignment.start,
-//       children: [
-//         Icon(
-//           iconData,
-//           color: iconColor,
-//         ),
-//         const SizedBox(
-//           width: 10.0,
-//         ),
-//         Text(
-//           title,
-//           style: const TextStyle(
-//             fontSize: CustomStyle.sizeL,
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }
-
-// Widget buildAlarmCard({
-//   required BuildContext context,
-//   required String alarmUSeverity,
-//   required String alarmTSeverity,
-//   required String alarmPSeverity,
-// }) {
-//   return Card(
-//     child: Padding(
-//       padding: const EdgeInsets.all(16.0),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(
-//             AppLocalizations.of(context)!.alarmIndicator,
-//             style: Theme.of(context).textTheme.titleLarge,
-//           ),
-//           const SizedBox(
-//             height: 10.0,
-//           ),
-//           alarmItem(
-//             iconData: Icons.circle,
-//             iconColor: CustomStyle.alarmColor[alarmUSeverity],
-//             title: AppLocalizations.of(context)!.unitStatusAlarm,
-//           ),
-//           alarmItem(
-//             iconData: Icons.circle,
-//             iconColor: CustomStyle.alarmColor[alarmTSeverity],
-//             title: AppLocalizations.of(context)!.temperatureAlarm,
-//           ),
-//           alarmItem(
-//             iconData: Icons.circle,
-//             iconColor: CustomStyle.alarmColor[alarmPSeverity],
-//             title: AppLocalizations.of(context)!.powerSupplyAlarm,
-//           ),
-//         ],
-//       ),
-//     ),
-//   );
-// }
-
-Widget getContent({
-  required FormStatus loadingStatus,
-  required String content,
-  double fontSize = 16,
-}) {
-  if (loadingStatus == FormStatus.requestInProgress) {
-    return content.isEmpty
-        ? const SizedBox(
-            width: CustomStyle.diameter,
-            height: CustomStyle.diameter,
-            child: CircularProgressIndicator(),
-          )
-        : Text(
-            content,
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              fontSize: fontSize,
-            ),
-          );
-  } else if (loadingStatus == FormStatus.requestSuccess) {
-    return Text(
-      content,
-      textAlign: TextAlign.right,
-      style: TextStyle(
-        fontSize: fontSize,
-      ),
-    );
-  } else {
-    return Text(
-      content.isEmpty ? 'N/A' : content,
-      textAlign: TextAlign.right,
-      style: TextStyle(
-        fontSize: fontSize,
-      ),
-    );
-  }
-}
-
-Widget itemText({
-  required FormStatus loadingStatus,
-  required String title,
-  required String content,
-}) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: CustomStyle.sizeL,
-          ),
-        ),
-        const SizedBox(
-          width: 30.0,
-        ),
-        Flexible(
-          child: getContent(loadingStatus: loadingStatus, content: content),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget itemMultipleLineText({
-  required FormStatus loadingStatus,
-  required String title,
-  required String content,
-}) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Column(
-      children: [
-        Row(
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: CustomStyle.sizeL,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            // const SizedBox(
-            //   width: 30,
-            // ),
-            Flexible(
-              child: RichText(
-                text: WidgetSpan(
-                  child: getContent(
-                      loadingStatus: loadingStatus, content: content),
-                  // Text(
-                  //   content,
-                  //   textAlign: TextAlign.right,
-                  //   // textDirection: TextDirection.rtl,
-                  //   style: TextStyle(
-                  //     fontSize: CustomStyle.sizeL,
-                  //   ),
-                  // ),
-                ),
-              ),
-            )
-          ],
-        )
-      ],
-    ),
-  );
-}
-
-Widget itemLinkText({
-  required String title,
-  required String content,
-}) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: CustomStyle.sizeL,
-          ),
-        ),
-        TextButton(
-          style: TextButton.styleFrom(
-            visualDensity:
-                const VisualDensity(vertical: -4.0, horizontal: -4.0),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            padding: const EdgeInsets.all(1.0),
-          ),
-          child: Text(
-            content,
-            style: const TextStyle(
-              fontSize: CustomStyle.sizeL,
-            ),
-            textAlign: TextAlign.end,
-          ),
-          onPressed: () async {
-            Uri uri = Uri.parse('http://acicomms.com/products/line-amplifier');
-            launchUrl(
-              uri,
-              mode: LaunchMode.externalApplication,
-            );
-          },
-        ),
-      ],
-    ),
-  );
 }
