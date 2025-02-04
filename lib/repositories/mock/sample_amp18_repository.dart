@@ -455,7 +455,8 @@ class SampleAmp18Repository extends Amp18Repository {
   @override
   Future<dynamic> export1p8GRecords({
     required String code,
-    required Map<String, String> configurationData,
+    required Map<String, String> attributeData,
+    required Map<String, String> regulationData,
     required List<Map<String, String>> controlData,
   }) async {
     List<Log1p8G> log1p8Gs = _amp18ChartCache.readLoadMoreLog1p8Gs();
@@ -463,7 +464,8 @@ class SampleAmp18Repository extends Amp18Repository {
 
     List<dynamic> result = await _amp18Parser.export1p8GRecords(
       code: code,
-      configurationData: configurationData,
+      attributeData: attributeData,
+      regulationData: regulationData,
       controlData: controlData,
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
@@ -474,7 +476,8 @@ class SampleAmp18Repository extends Amp18Repository {
   @override
   Future<dynamic> exportAll1p8GRecords({
     required String code,
-    required Map<String, String> configurationData,
+    required Map<String, String> attributeData,
+    required Map<String, String> regulationData,
     required List<Map<String, String>> controlData,
   }) async {
     List<Log1p8G> log1p8Gs = _amp18ChartCache.readAllLog1p8Gs();
@@ -482,7 +485,8 @@ class SampleAmp18Repository extends Amp18Repository {
 
     List<dynamic> result = await _amp18Parser.export1p8GRecords(
       code: code,
-      configurationData: configurationData,
+      attributeData: attributeData,
+      regulationData: regulationData,
       controlData: controlData,
       log1p8Gs: log1p8Gs,
       event1p8Gs: event1p8Gs,
@@ -493,7 +497,8 @@ class SampleAmp18Repository extends Amp18Repository {
   @override
   Future<dynamic> export1p8GRFInOuts({
     required String code,
-    required Map<String, String> configurationData,
+    required Map<String, String> attributeData,
+    required Map<String, String> regulationData,
     required List<Map<String, String>> controlData,
   }) async {
     List<RFInOut> rfInOuts = _amp18ChartCache.readRFInOuts();
@@ -501,7 +506,8 @@ class SampleAmp18Repository extends Amp18Repository {
     List<dynamic> result = await _amp18Parser.export1p8GRFInOuts(
       rfInOuts: rfInOuts,
       code: code,
-      configurationData: configurationData,
+      attributeData: attributeData,
+      regulationData: regulationData,
       controlData: controlData,
     );
     return result;
@@ -510,7 +516,8 @@ class SampleAmp18Repository extends Amp18Repository {
   @override
   Future<dynamic> export1p8GAllRFOutputLogs({
     required String code,
-    required Map<String, String> configurationData,
+    required Map<String, String> attributeData,
+    required Map<String, String> regulationData,
     required List<Map<String, String>> controlData,
   }) async {
     List<RFInOut> rfInOuts = _amp18ChartCache.readRFInOuts();
@@ -520,7 +527,8 @@ class SampleAmp18Repository extends Amp18Repository {
       rfInOuts: rfInOuts,
       rfOutputLogs: rfOutputLogs,
       code: code,
-      configurationData: configurationData,
+      attributeData: attributeData,
+      regulationData: regulationData,
       controlData: controlData,
     );
     return result;
@@ -1724,9 +1732,9 @@ class SampleAmp18Repository extends Amp18Repository {
   }
 
   @override
-  Future<dynamic> set1p8GNowDateTime({
-    required String nowDateTime,
-  }) async {
+  Future<dynamic> set1p8GNowDateTime(
+    String nowDateTime,
+  ) async {
     int commandIndex = 356;
 
     print('get data from request command 1p8G$commandIndex');

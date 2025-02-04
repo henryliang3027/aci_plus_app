@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:aci_plus_app/core/command18.dart';
@@ -6,8 +7,10 @@ import 'package:aci_plus_app/core/firmware_file_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/ble_client_base.dart';
 import 'package:aci_plus_app/repositories/ble_factory.dart';
+import 'package:excel/excel.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 class FirmwareRepository {
   FirmwareRepository() : _bleClient = BLEClientFactory.instance;
@@ -177,7 +180,7 @@ class FirmwareRepository {
   }
 
   Future<dynamic> requestCommand1p8GUpdateLogs({
-    Duration timeout = const Duration(seconds: 10),
+    Duration timeout = const Duration(seconds: 5),
   }) async {
     int commandIndex = 206;
 
@@ -260,6 +263,103 @@ class FirmwareRepository {
     }
 
     return true;
+  }
+
+  Future<dynamic> exportFirmwareUpdateLogs({
+    required List<UpdateLog> updateLogs,
+  }) async {
+    Excel excel = Excel.createExcel();
+
+    excel.rename('Sheet1', 'Update Logs');
+    Sheet updateLogSheet = excel['Update Logs'];
+
+    updateLogSheet.insertRowIterables(
+      [
+        TextCellValue('Time'),
+        TextCellValue('Firmware Change'),
+        TextCellValue('Firmware Version'),
+        TextCellValue('Tech ID'),
+      ],
+      0,
+    );
+
+    // updateLogSheet.insertRowIterables(
+    //     [TextCellValue('Code Number'), TextCellValue(code)], 0);
+
+    for (int i = 0; i < updateLogs.length; i++) {
+      UpdateLog updateLog = updateLogs[i];
+      String dateTime = updateLog.formatDateTime();
+      String type = updateLog.type.name[0].toUpperCase() +
+          updateLog.type.name.substring(1);
+      String firmwareVersion = updateLog.firmwareVersion;
+      String technicianID = updateLog.technicianID;
+
+      updateLogSheet.insertRowIterables(
+        [
+          TextCellValue(dateTime),
+          TextCellValue(type),
+          TextCellValue(firmwareVersion),
+          TextCellValue(technicianID),
+        ],
+        i + 1,
+      );
+    }
+
+    var fileBytes = excel.save();
+
+    String timeStamp =
+        DateFormat('yyyy_MM_dd_HH_mm_ss').format(DateTime.now()).toString();
+    String filename = 'rf_levels_$timeStamp';
+    String extension = '.xlsx';
+
+    if (Platform.isIOS) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$filename$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
+      return [
+        true,
+        filename,
+        fullWrittenPath,
+      ];
+    } else if (Platform.isAndroid) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      String fullWrittenPath = '$appDocPath/$filename$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
+
+      return [
+        true,
+        filename,
+        fullWrittenPath,
+      ];
+    } else if (Platform.isWindows) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      Directory appDocDirFolder = Directory('${appDocDir.path}/ACI+/');
+      bool isExist = await appDocDirFolder.exists();
+      if (!isExist) {
+        await appDocDirFolder.create(recursive: true);
+      }
+
+      String appDocPath = appDocDirFolder.path;
+      String fullWrittenPath = '$appDocPath/$filename$extension';
+      File f = File(fullWrittenPath);
+      await f.writeAsBytes(fileBytes!);
+
+      return [
+        true,
+        filename,
+        fullWrittenPath,
+      ];
+    } else {
+      return [
+        false,
+        '',
+        'write file failed, export function not implement on ${Platform.operatingSystem} '
+      ];
+    }
   }
 }
 

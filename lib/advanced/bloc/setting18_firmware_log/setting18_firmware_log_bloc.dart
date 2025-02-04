@@ -14,6 +14,7 @@ class Setting18FirmwareLogBloc
     on<UpdateLogRequested>(_onUpdateLogRequested);
     on<TestUpdateLogRequested>(_onTestUpdateLogRequested);
     on<TestAllUpdateLogDeleted>(_onTestAllUpdateLogDeleted);
+    on<UpdateLogExported>(_onUpdateLogExported);
   }
 
   final FirmwareRepository _firmwareRepository;
@@ -122,7 +123,9 @@ class Setting18FirmwareLogBloc
     TestAllUpdateLogDeleted event,
     Emitter<Setting18FirmwareLogState> emit,
   ) async {
-    emit(state.copyWith(updateLogStatus: FormStatus.requestInProgress));
+    emit(state.copyWith(
+      updateLogStatus: FormStatus.requestInProgress,
+    ));
 
     await _firmwareRepository.set1p8GFirmwareUpdateLogs([]);
 
@@ -135,6 +138,30 @@ class Setting18FirmwareLogBloc
       emit(state.copyWith(
         updateLogStatus: FormStatus.requestSuccess,
         updateLogs: updateLogs,
+      ));
+    }
+  }
+
+  Future<void> _onUpdateLogExported(
+    UpdateLogExported event,
+    Emitter<Setting18FirmwareLogState> emit,
+  ) async {
+    emit(state.copyWith(
+      updateLogExportStatus: FormStatus.requestInProgress,
+    ));
+
+    final List<dynamic> result = await _firmwareRepository
+        .exportFirmwareUpdateLogs(updateLogs: state.updateLogs);
+
+    if (result[0]) {
+      emit(state.copyWith(
+        updateLogExportStatus: FormStatus.requestSuccess,
+        updateLogExportPath: result[2],
+      ));
+    } else {
+      emit(state.copyWith(
+        updateLogExportStatus: FormStatus.requestFailure,
+        updateLogExportPath: result[2],
       ));
     }
   }

@@ -1231,7 +1231,8 @@ class Amp18Parser {
 
   Future<dynamic> export1p8GRFInOuts({
     required String code,
-    required Map<String, String> configurationData,
+    required Map<String, String> attributeData,
+    required Map<String, String> regulationData,
     required List<Map<String, String>> controlData,
     // required String coordinate,
     // required String location,
@@ -1247,23 +1248,47 @@ class Amp18Parser {
     userInformationSheet.insertRowIterables(
         [TextCellValue('Code Number'), TextCellValue(code)], 0);
 
-    // 空兩行後再開始寫入 configuration data
-    List<String> configurationDataKeys = configurationData.keys.toList();
-    for (int i = 0; i < configurationDataKeys.length; i++) {
-      String key = configurationDataKeys[i];
-      String value = configurationData[key] ?? '';
+    // 空兩行後再開始寫入 attribute data
+    List<String> attributeDataKeys = attributeData.keys.toList();
+    for (int i = 0; i < attributeDataKeys.length; i++) {
+      String key = attributeDataKeys[i];
+      String value = attributeData[key] ?? '';
 
       userInformationSheet.insertRowIterables(
-          [TextCellValue(key), TextCellValue(value)], i + 3);
+        [
+          TextCellValue(key),
+          TextCellValue(value),
+        ],
+        i + 3,
+      );
+    }
+
+    // 空兩行後再開始寫入 regulation data
+    List<String> regulationDataKeys = regulationData.keys.toList();
+    for (int i = 0; i < regulationDataKeys.length; i++) {
+      String key = regulationDataKeys[i];
+      String value = regulationData[key] ?? '';
+
+      userInformationSheet.insertRowIterables(
+        [
+          TextCellValue(key),
+          TextCellValue(value),
+        ],
+        i + attributeDataKeys.length + 4,
+      );
     }
 
     // 空兩行後再開始寫入 control data
     for (int i = 0; i < controlData.length; i++) {
       MapEntry entry = controlData[i].entries.first;
       userInformationSheet.insertRowIterables(
-          [entry.key, entry.value], i + configurationDataKeys.length + 5);
+        [
+          TextCellValue(entry.key),
+          TextCellValue(entry.value),
+        ],
+        i + attributeDataKeys.length + regulationDataKeys.length + 5,
+      );
     }
-
     List<TextCellValue> rfInOutHeader = [
       TextCellValue('Frequency (MHz)'),
       TextCellValue('Level (dBmV)'),
@@ -1352,7 +1377,8 @@ class Amp18Parser {
 
   Future<dynamic> export1p8GAllRFOutputLogs({
     required String code,
-    required Map<String, String> configurationData,
+    required Map<String, String> attributeData,
+    required Map<String, String> regulationData,
     required List<Map<String, String>> controlData,
     required List<RFInOut> rfInOuts,
     required List<RFOutputLog> rfOutputLogs,
@@ -1373,15 +1399,33 @@ class Amp18Parser {
       0,
     );
 
-    // 空兩行後再開始寫入 configuration data
-    List<String> configurationDataKeys = configurationData.keys.toList();
-    for (int i = 0; i < configurationDataKeys.length; i++) {
-      String key = configurationDataKeys[i];
-      String value = configurationData[key] ?? '';
+    // 空兩行後再開始寫入 attribute data
+    List<String> attributeDataKeys = attributeData.keys.toList();
+    for (int i = 0; i < attributeDataKeys.length; i++) {
+      String key = attributeDataKeys[i];
+      String value = attributeData[key] ?? '';
 
       userInformationSheet.insertRowIterables(
-        [TextCellValue(key), TextCellValue(value)],
+        [
+          TextCellValue(key),
+          TextCellValue(value),
+        ],
         i + 3,
+      );
+    }
+
+    // 空兩行後再開始寫入 regulation data
+    List<String> regulationDataKeys = regulationData.keys.toList();
+    for (int i = 0; i < regulationDataKeys.length; i++) {
+      String key = regulationDataKeys[i];
+      String value = regulationData[key] ?? '';
+
+      userInformationSheet.insertRowIterables(
+        [
+          TextCellValue(key),
+          TextCellValue(value),
+        ],
+        i + attributeDataKeys.length + 4,
       );
     }
 
@@ -1393,7 +1437,7 @@ class Amp18Parser {
           TextCellValue(entry.key),
           TextCellValue(entry.value),
         ],
-        i + configurationDataKeys.length + 5,
+        i + attributeDataKeys.length + regulationDataKeys.length + 5,
       );
     }
 
@@ -1526,7 +1570,8 @@ class Amp18Parser {
 
   Future<dynamic> export1p8GRecords({
     required String code,
-    required Map<String, String> configurationData,
+    required Map<String, String> attributeData,
+    required Map<String, String> regulationData,
     required List<Map<String, String>> controlData,
     // required String coordinate,
     // required String location,
@@ -1573,11 +1618,11 @@ class Amp18Parser {
       TextCellValue(code),
     ], 0);
 
-    // 空兩行後再開始寫入 configuration data
-    List<String> configurationDataKeys = configurationData.keys.toList();
-    for (int i = 0; i < configurationDataKeys.length; i++) {
-      String key = configurationDataKeys[i];
-      String value = configurationData[key] ?? '';
+    // 空兩行後再開始寫入 attribute data
+    List<String> attributeDataKeys = attributeData.keys.toList();
+    for (int i = 0; i < attributeDataKeys.length; i++) {
+      String key = attributeDataKeys[i];
+      String value = attributeData[key] ?? '';
 
       userInformationSheet.insertRowIterables(
         [
@@ -1585,6 +1630,21 @@ class Amp18Parser {
           TextCellValue(value),
         ],
         i + 3,
+      );
+    }
+
+    // 空兩行後再開始寫入 regulation data
+    List<String> regulationDataKeys = regulationData.keys.toList();
+    for (int i = 0; i < regulationDataKeys.length; i++) {
+      String key = regulationDataKeys[i];
+      String value = regulationData[key] ?? '';
+
+      userInformationSheet.insertRowIterables(
+        [
+          TextCellValue(key),
+          TextCellValue(value),
+        ],
+        i + attributeDataKeys.length + 4,
       );
     }
 
@@ -1596,7 +1656,7 @@ class Amp18Parser {
           TextCellValue(entry.key),
           TextCellValue(entry.value),
         ],
-        i + configurationDataKeys.length + 5,
+        i + attributeDataKeys.length + regulationDataKeys.length + 5,
       );
     }
 

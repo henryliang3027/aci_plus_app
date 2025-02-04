@@ -1217,10 +1217,9 @@ class Amp18CCorNodeParser {
 
   Future<dynamic> export1p8GCCorNodeRecords({
     required String code,
-    required Map<String, String> configurationData,
+    required Map<String, String> attributeData,
+    required Map<String, String> regulationData,
     required List<Map<String, String>> controlData,
-    // required String coordinate,
-    // required String location,
     required List<Log1p8GCCorNode> log1p8Gs,
     required List<Event1p8GCCorNode> event1p8Gs,
   }) async {
@@ -1262,23 +1261,46 @@ class Amp18CCorNodeParser {
       TextCellValue(code),
     ], 0);
 
-    // 空兩行後再開始寫入 configuration data
-    List<String> configurationDataKeys = configurationData.keys.toList();
-    for (int i = 0; i < configurationDataKeys.length; i++) {
-      String key = configurationDataKeys[i];
-      String value = configurationData[key] ?? '';
+    // 空兩行後再開始寫入 attribute data
+    List<String> attributeDataKeys = attributeData.keys.toList();
+    for (int i = 0; i < attributeDataKeys.length; i++) {
+      String key = attributeDataKeys[i];
+      String value = attributeData[key] ?? '';
 
       userInformationSheet.insertRowIterables(
-          [TextCellValue(key), TextCellValue(value)], i + 3);
+        [
+          TextCellValue(key),
+          TextCellValue(value),
+        ],
+        i + 3,
+      );
+    }
+
+    // 空兩行後再開始寫入 regulation data
+    List<String> regulationDataKeys = regulationData.keys.toList();
+    for (int i = 0; i < regulationDataKeys.length; i++) {
+      String key = regulationDataKeys[i];
+      String value = regulationData[key] ?? '';
+
+      userInformationSheet.insertRowIterables(
+        [
+          TextCellValue(key),
+          TextCellValue(value),
+        ],
+        i + attributeDataKeys.length + 4,
+      );
     }
 
     // 空兩行後再開始寫入 control data
     for (int i = 0; i < controlData.length; i++) {
       MapEntry entry = controlData[i].entries.first;
-      userInformationSheet.insertRowIterables([
-        TextCellValue(entry.key),
-        TextCellValue(entry.value),
-      ], i + configurationDataKeys.length + 5);
+      userInformationSheet.insertRowIterables(
+        [
+          TextCellValue(entry.key),
+          TextCellValue(entry.value),
+        ],
+        i + attributeDataKeys.length + regulationDataKeys.length + 5,
+      );
     }
 
     eventSheet.insertRowIterables(eventHeader, 0);

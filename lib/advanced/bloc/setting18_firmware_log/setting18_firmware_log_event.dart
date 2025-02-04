@@ -14,6 +14,13 @@ class UpdateLogRequested extends Setting18FirmwareLogEvent {
   List<Object> get props => [];
 }
 
+class UpdateLogExported extends Setting18FirmwareLogEvent {
+  const UpdateLogExported();
+
+  @override
+  List<Object> get props => [];
+}
+
 class TestUpdateLogRequested extends Setting18FirmwareLogEvent {
   const TestUpdateLogRequested();
 

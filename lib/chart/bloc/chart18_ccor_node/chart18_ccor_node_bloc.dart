@@ -3,6 +3,7 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_ccor_node_repository.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
@@ -229,7 +230,8 @@ class Chart18CCorNodeBloc
     final List<dynamic> result =
         await _amp18CCorNodeRepository.export1p8GCCorNodeRecords(
       code: event.code,
-      configurationData: _getConfigurationData(),
+      attributeData: _getAttributeData(),
+      regulationData: _getRegulationData(),
       controlData: _getControlData(),
     );
 
@@ -259,7 +261,8 @@ class Chart18CCorNodeBloc
     final List<dynamic> result =
         await _amp18CCorNodeRepository.export1p8GCCorNodeRecords(
       code: event.code,
-      configurationData: _getConfigurationData(),
+      attributeData: _getAttributeData(),
+      regulationData: _getRegulationData(),
       controlData: _getControlData(),
     );
 
@@ -297,7 +300,8 @@ class Chart18CCorNodeBloc
       final List<dynamic> result =
           await _amp18CCorNodeRepository.exportAll1p8GCCorNodeRecords(
         code: event.code,
-        configurationData: _getConfigurationData(),
+        attributeData: _getAttributeData(),
+        regulationData: _getRegulationData(),
         controlData: _getControlData(),
       );
 
@@ -320,32 +324,50 @@ class Chart18CCorNodeBloc
     }
   }
 
-  Map<String, String> _getConfigurationData() {
+  Map<String, String> _getAttributeData() {
     Map<DataKey, String> characteristicData =
         _amp18CCorNodeRepository.characteristicDataCache;
 
     String location = characteristicData[DataKey.location] ?? '';
     String coordinates = characteristicData[DataKey.coordinates] ?? '';
-    String forwardMode = characteristicData[DataKey.forwardMode] ?? '';
-    String forwardConfig = characteristicData[DataKey.forwardConfig] ?? '';
-    // String splitOption = characteristicData[DataKey.splitOption] ?? '';
+    String technicianID = characteristicData[DataKey.technicianID] ?? '';
+    String cascadePosition = characteristicData[DataKey.cascadePosition] ?? '';
+    String deviceName = characteristicData[DataKey.deviceName] ?? '';
+    String deviceNote = characteristicData[DataKey.deviceNote] ?? '';
 
-    String forwardModeText = forwardModeExportTexts[forwardMode] ?? '';
-    String forwardConfigText = forwardConfigExportTexts[forwardConfig] ?? '';
-    // String splitOptionText = splitOption != ''
-    //     ? '${splitBaseLine[splitOption]!.$1}/${splitBaseLine[splitOption]!.$2} ${CustomStyle.mHz}'
-    //     : '';
+    int firmwareVersion = convertFirmwareVersionStringToInt(
+        characteristicData[DataKey.firmwareVersion] ?? '0');
 
-    String logInterval = characteristicData[DataKey.logInterval] ?? '';
-
-    Map<String, String> configurationValues = {
+    Map<String, String> attributeValues = {
       // 因為 l10n 內有位了tabbar 顯示而多加空白, 所以刪除空白
       _appLocalizations.device.trim(): '',
       _appLocalizations.location: location,
       _appLocalizations.coordinates: coordinates,
+      if (firmwareVersion >= 148) ...{
+        _appLocalizations.technicianID: technicianID,
+        _appLocalizations.cascadePosition: cascadePosition,
+        _appLocalizations.deviceName: deviceName,
+        _appLocalizations.deviceNote: deviceNote,
+      }
+    };
+
+    return attributeValues;
+  }
+
+  Map<String, String> _getRegulationData() {
+    Map<DataKey, String> characteristicData =
+        _amp18CCorNodeRepository.characteristicDataCache;
+
+    String forwardMode = characteristicData[DataKey.forwardMode] ?? '';
+    String forwardConfig = characteristicData[DataKey.forwardConfig] ?? '';
+    String forwardModeText = forwardModeExportTexts[forwardMode] ?? '';
+    String forwardConfigText = forwardConfigExportTexts[forwardConfig] ?? '';
+
+    String logInterval = characteristicData[DataKey.logInterval] ?? '';
+
+    Map<String, String> configurationValues = {
       _appLocalizations.forwardMode: forwardModeText,
       _appLocalizations.forwardConfigMode: forwardConfigText,
-      // _appLocalizations.splitOption: splitOptionText,
       _appLocalizations.logInterval: '$logInterval ${_appLocalizations.minute}',
     };
 

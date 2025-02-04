@@ -2,6 +2,7 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
@@ -74,7 +75,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
 
     final List<dynamic> result = await _amp18Repository.export1p8GRecords(
       code: event.code,
-      configurationData: _getConfigurationData(),
+      attributeData: _getAttributeData(),
+      regulationData: _getRegulationData(),
       controlData: _getControlData(),
     );
 
@@ -105,7 +107,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
 
     final List<dynamic> result = await _amp18Repository.export1p8GRecords(
       code: event.code,
-      configurationData: _getConfigurationData(),
+      attributeData: _getAttributeData(),
+      regulationData: _getRegulationData(),
       controlData: _getControlData(),
     );
 
@@ -144,7 +147,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       _amp18Repository.writeAllLog1p8Gs(event.log1p8Gs);
       final List<dynamic> result = await _amp18Repository.exportAll1p8GRecords(
         code: event.code,
-        configurationData: _getConfigurationData(),
+        attributeData: _getAttributeData(),
+        regulationData: _getRegulationData(),
         controlData: _getControlData(),
       );
 
@@ -188,7 +192,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       final List<dynamic> result =
           await _amp18Repository.export1p8GAllRFOutputLogs(
         code: event.code,
-        configurationData: _getConfigurationData(),
+        attributeData: _getAttributeData(),
+        regulationData: _getRegulationData(),
         controlData: _getControlData(),
       );
 
@@ -225,7 +230,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
 
     final List<dynamic> result = await _amp18Repository.export1p8GRFInOuts(
       code: event.code,
-      configurationData: _getConfigurationData(),
+      attributeData: _getAttributeData(),
+      regulationData: _getRegulationData(),
       controlData: _getControlData(),
     );
 
@@ -256,7 +262,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
 
     final List<dynamic> result = await _amp18Repository.export1p8GRFInOuts(
       code: event.code,
-      configurationData: _getConfigurationData(),
+      attributeData: _getAttributeData(),
+      regulationData: _getRegulationData(),
       controlData: _getControlData(),
     );
 
@@ -275,7 +282,45 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     }
   }
 
-  Map<String, String> _getConfigurationData() {
+  Map<String, String> _getAttributeData() {
+    Map<DataKey, String> characteristicData =
+        _amp18Repository.characteristicDataCache;
+
+    String location = characteristicData[DataKey.location] ?? '';
+    String coordinates = characteristicData[DataKey.coordinates] ?? '';
+    String technicianID = characteristicData[DataKey.technicianID] ?? '';
+    String inputSignalLevel =
+        characteristicData[DataKey.inputSignalLevel] ?? '';
+    String inputAttenuation =
+        characteristicData[DataKey.inputAttenuation] ?? '';
+    String inputEqualizer = characteristicData[DataKey.inputEqualizer] ?? '';
+    String cascadePosition = characteristicData[DataKey.cascadePosition] ?? '';
+    String deviceName = characteristicData[DataKey.deviceName] ?? '';
+    String deviceNote = characteristicData[DataKey.deviceNote] ?? '';
+
+    int firmwareVersion = convertFirmwareVersionStringToInt(
+        characteristicData[DataKey.firmwareVersion] ?? '0');
+
+    Map<String, String> attributeValues = {
+      // 因為 l10n 內有位了tabbar 顯示而多加空白, 所以刪除空白
+      _appLocalizations.device.trim(): '',
+      _appLocalizations.location: location,
+      _appLocalizations.coordinates: coordinates,
+      if (firmwareVersion >= 148) ...{
+        _appLocalizations.technicianID: technicianID,
+        _appLocalizations.inputSignalLevel: inputSignalLevel,
+        _appLocalizations.inputAttenuation: inputAttenuation,
+        _appLocalizations.inputEqualizer: inputEqualizer,
+        _appLocalizations.cascadePosition: cascadePosition,
+        _appLocalizations.deviceName: deviceName,
+        _appLocalizations.deviceNote: deviceNote,
+      }
+    };
+
+    return attributeValues;
+  }
+
+  Map<String, String> _getRegulationData() {
     Map<DataKey, String> characteristicData =
         _amp18Repository.characteristicDataCache;
 
@@ -289,20 +334,6 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       '0': _appLocalizations.off,
       '1': _appLocalizations.on,
     };
-
-    String location = characteristicData[DataKey.location] ?? '';
-    String coordinates = characteristicData[DataKey.coordinates] ?? '';
-    // String splitOption = characteristicData[DataKey.splitOption] ?? '';
-
-    // String splitValue1 = splitBaseLine[splitOption]?.$1 != null
-    //     ? splitBaseLine[splitOption]!.$1.toString()
-    //     : 'N/A';
-    // String splitValue2 = splitBaseLine[splitOption]?.$2 != null
-    //     ? splitBaseLine[splitOption]!.$2.toString()
-    //     : 'N/A';
-
-    // String splitOptionText =
-    //     splitOption != '' ? '$splitValue1/$splitValue2 ${CustomStyle.mHz}' : '';
 
     String pilotFrequencyMode =
         characteristicData[DataKey.pilotFrequencyMode] ?? '';
@@ -337,11 +368,6 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
         characteristicData[DataKey.rfOutputLogInterval] ?? '';
 
     Map<String, String> configurationValues = {
-      // 因為 l10n 內有位了tabbar 顯示而多加空白, 所以刪除空白
-      _appLocalizations.device.trim(): '',
-      _appLocalizations.location: location,
-      _appLocalizations.coordinates: coordinates,
-      // _appLocalizations.splitOption: splitOptionText,
       _appLocalizations.pilotFrequencySelect: pilotFrequencyModeText,
       _appLocalizations.startFrequency:
           '$firstChannelLoadingFrequency ${CustomStyle.mHz}',
