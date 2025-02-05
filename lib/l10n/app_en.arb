@@ -222,7 +222,9 @@
     "upgrade": "Upgrade",
     "downgrade": "Downgrade",
     "noMoreRecordToShow": "There are no logs to show",
-    
+    "time": "Time",
+    "firmwareChange": "Firmware Change",
+        
     
 
     "aboutUs": "About Us",

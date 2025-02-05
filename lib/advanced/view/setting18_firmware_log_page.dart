@@ -13,6 +13,7 @@ class Setting18FirmwareLogPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => Setting18FirmwareLogBloc(
+        context: context,
         firmwareRepository: RepositoryProvider.of<FirmwareRepository>(context),
       ),
       child: const Setting18FirmwareLogForm(),

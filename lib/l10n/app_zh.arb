@@ -222,6 +222,8 @@
     "upgrade": "版本升級",
     "downgrade": "版本降級",
     "noMoreRecordToShow": "沒有資料可以顯示",
+    "time": "時間",
+    "firmwareChange": "版本異動",
 
 
     "aboutUs": "關於我們",

@@ -11,6 +11,7 @@ import 'package:excel/excel.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FirmwareRepository {
   FirmwareRepository() : _bleClient = BLEClientFactory.instance;
@@ -266,6 +267,7 @@ class FirmwareRepository {
   }
 
   Future<dynamic> exportFirmwareUpdateLogs({
+    required AppLocalizations appLocalizations,
     required List<UpdateLog> updateLogs,
   }) async {
     Excel excel = Excel.createExcel();
@@ -273,24 +275,25 @@ class FirmwareRepository {
     excel.rename('Sheet1', 'Update Logs');
     Sheet updateLogSheet = excel['Update Logs'];
 
+    // String dateTimeTitle, typeTitle, firmwareVersionTitle, technicianIDTitle;
+    // [dateTimeTitle, typeTitle, firmwareVersionTitle, technicianIDTitle] =
+    //     formattedUpdateLogs.first;
     updateLogSheet.insertRowIterables(
       [
-        TextCellValue('Time'),
-        TextCellValue('Firmware Change'),
-        TextCellValue('Firmware Version'),
-        TextCellValue('Tech ID'),
+        TextCellValue(appLocalizations.time),
+        TextCellValue(appLocalizations.firmwareChange),
+        TextCellValue(appLocalizations.firmwareVersion),
+        TextCellValue(appLocalizations.technicianID),
       ],
       0,
     );
 
-    // updateLogSheet.insertRowIterables(
-    //     [TextCellValue('Code Number'), TextCellValue(code)], 0);
-
     for (int i = 0; i < updateLogs.length; i++) {
       UpdateLog updateLog = updateLogs[i];
       String dateTime = updateLog.formatDateTime();
-      String type = updateLog.type.name[0].toUpperCase() +
-          updateLog.type.name.substring(1);
+      String type = updateLog.type == UpdateType.upgrade
+          ? appLocalizations.upgrade
+          : appLocalizations.downgrade;
       String firmwareVersion = updateLog.firmwareVersion;
       String technicianID = updateLog.technicianID;
 

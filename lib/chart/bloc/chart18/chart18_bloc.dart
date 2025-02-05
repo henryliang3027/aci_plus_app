@@ -7,6 +7,7 @@ import 'package:aci_plus_app/repositories/amp18_parser.dart';
 import 'package:aci_plus_app/repositories/amp18_repository.dart';
 import 'package:aci_plus_app/setting/model/setting_widgets.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -15,9 +16,9 @@ part 'chart18_state.dart';
 
 class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
   Chart18Bloc({
-    required AppLocalizations appLocalizations,
+    required BuildContext context,
     required Amp18Repository amp18Repository,
-  })  : _appLocalizations = appLocalizations,
+  })  : _context = context,
         _amp18Repository = amp18Repository,
         super(const Chart18State()) {
     on<TabChangedEnabled>(_onTabChangedEnabled);
@@ -30,7 +31,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     on<AllRFOutputLogExported>(_onAllRFOutputLogExported);
   }
 
-  final AppLocalizations _appLocalizations;
+  final BuildContext _context;
   final Amp18Repository _amp18Repository;
 
   void _onTabChangedEnabled(
@@ -283,6 +284,8 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
   }
 
   Map<String, String> _getAttributeData() {
+    final AppLocalizations appLocalizations = AppLocalizations.of(_context)!;
+
     Map<DataKey, String> characteristicData =
         _amp18Repository.characteristicDataCache;
 
@@ -303,17 +306,17 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
 
     Map<String, String> attributeValues = {
       // 因為 l10n 內有位了tabbar 顯示而多加空白, 所以刪除空白
-      _appLocalizations.device.trim(): '',
-      _appLocalizations.location: location,
-      _appLocalizations.coordinates: coordinates,
+      appLocalizations.device.trim(): '',
+      appLocalizations.location: location,
+      appLocalizations.coordinates: coordinates,
       if (firmwareVersion >= 148) ...{
-        _appLocalizations.technicianID: technicianID,
-        _appLocalizations.inputSignalLevel: inputSignalLevel,
-        _appLocalizations.inputAttenuation: inputAttenuation,
-        _appLocalizations.inputEqualizer: inputEqualizer,
-        _appLocalizations.cascadePosition: cascadePosition,
-        _appLocalizations.deviceName: deviceName,
-        _appLocalizations.deviceNote: deviceNote,
+        appLocalizations.technicianID: technicianID,
+        appLocalizations.inputSignalLevel: inputSignalLevel,
+        appLocalizations.inputAttenuation: inputAttenuation,
+        appLocalizations.inputEqualizer: inputEqualizer,
+        appLocalizations.cascadePosition: cascadePosition,
+        appLocalizations.deviceName: deviceName,
+        appLocalizations.deviceNote: deviceNote,
       }
     };
 
@@ -321,18 +324,20 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
   }
 
   Map<String, String> _getRegulationData() {
+    final AppLocalizations appLocalizations = AppLocalizations.of(_context)!;
+
     Map<DataKey, String> characteristicData =
         _amp18Repository.characteristicDataCache;
 
     Map<String, String> pilotFrequencyModeTexts = {
-      '0': _appLocalizations.pilotFrequencyBandwidthSettings,
-      '1': _appLocalizations.pilotFrequencyUserSettings,
-      //  _appLocalizations.pilotFrequencySmartSettings,
+      '0': appLocalizations.pilotFrequencyBandwidthSettings,
+      '1': appLocalizations.pilotFrequencyUserSettings,
+      //  appLocalizations.pilotFrequencySmartSettings,
     };
 
     Map<String, String> onOffTexts = {
-      '0': _appLocalizations.off,
-      '1': _appLocalizations.on,
+      '0': appLocalizations.off,
+      '1': appLocalizations.on,
     };
 
     String pilotFrequencyMode =
@@ -368,32 +373,34 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
         characteristicData[DataKey.rfOutputLogInterval] ?? '';
 
     Map<String, String> configurationValues = {
-      _appLocalizations.pilotFrequencySelect: pilotFrequencyModeText,
-      _appLocalizations.startFrequency:
+      appLocalizations.pilotFrequencySelect: pilotFrequencyModeText,
+      appLocalizations.startFrequency:
           '$firstChannelLoadingFrequency ${CustomStyle.mHz}',
-      _appLocalizations.startLevel:
+      appLocalizations.startLevel:
           '$firstChannelLoadingLevel ${CustomStyle.dBmV}',
-      _appLocalizations.stopFrequency:
+      appLocalizations.stopFrequency:
           '$lastChannelLoadingFrequency ${CustomStyle.mHz}',
-      _appLocalizations.stopLevel:
+      appLocalizations.stopLevel:
           '$lastChannelLoadingLevel ${CustomStyle.dBmV}',
-      _appLocalizations.pilotFrequency1: '$pilotFrequency1 ${CustomStyle.mHz}',
-      _appLocalizations.pilotLevel1:
+      appLocalizations.pilotFrequency1: '$pilotFrequency1 ${CustomStyle.mHz}',
+      appLocalizations.pilotLevel1:
           '$manualModePilot1RFOutputPower ${CustomStyle.dBmV}',
-      _appLocalizations.pilotFrequency2: '$pilotFrequency2 ${CustomStyle.mHz}',
-      _appLocalizations.pilotLevel2:
+      appLocalizations.pilotFrequency2: '$pilotFrequency2 ${CustomStyle.mHz}',
+      appLocalizations.pilotLevel2:
           '$manualModePilot2RFOutputPower ${CustomStyle.dBmV}',
-      _appLocalizations.agcMode: agcModeText,
-      // _appLocalizations.alcMode: alcModeText,
-      _appLocalizations.logInterval: '$logInterval ${_appLocalizations.minute}',
-      _appLocalizations.rfOutputLogInterval:
-          '$rfOutputLogInterval ${_appLocalizations.minute}',
+      appLocalizations.agcMode: agcModeText,
+      // appLocalizations.alcMode: alcModeText,
+      appLocalizations.logInterval: '$logInterval ${appLocalizations.minute}',
+      appLocalizations.rfOutputLogInterval:
+          '$rfOutputLogInterval ${appLocalizations.minute}',
     };
 
     return configurationValues;
   }
 
   List<Map<String, String>> _getControlData() {
+    final AppLocalizations appLocalizations = AppLocalizations.of(_context)!;
+
     Map<DataKey, String> characteristicData =
         _amp18Repository.characteristicDataCache;
 
@@ -401,56 +408,56 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       '0': '0${CustomStyle.dB}',
       '1': '-3${CustomStyle.dB}',
       '2': '-6${CustomStyle.dB}',
-      '4': _appLocalizations.ingressOpen,
+      '4': appLocalizations.ingressOpen,
     };
 
     Map<Enum, String> controlItemTexts = {
       SettingControl.forwardInputAttenuation1:
-          _appLocalizations.forwardInputAttenuation1,
+          appLocalizations.forwardInputAttenuation1,
       SettingControl.forwardInputEqualizer1:
-          _appLocalizations.forwardInputEqualizer1,
+          appLocalizations.forwardInputEqualizer1,
       SettingControl.forwardOutputAttenuation3:
-          _appLocalizations.forwardOutputAttenuation3,
+          appLocalizations.forwardOutputAttenuation3,
       SettingControl.forwardOutputAttenuation4:
-          _appLocalizations.forwardOutputAttenuation4,
+          appLocalizations.forwardOutputAttenuation4,
       SettingControl.forwardOutputAttenuation2And3:
-          _appLocalizations.forwardOutputAttenuation2And3,
+          appLocalizations.forwardOutputAttenuation2And3,
       SettingControl.forwardOutputAttenuation3And4:
-          _appLocalizations.forwardOutputAttenuation3And4,
+          appLocalizations.forwardOutputAttenuation3And4,
       SettingControl.forwardOutputAttenuation5And6:
-          _appLocalizations.forwardOutputAttenuation5And6,
+          appLocalizations.forwardOutputAttenuation5And6,
       SettingControl.forwardOutputEqualizer3:
-          _appLocalizations.forwardOutputEqualizer3,
+          appLocalizations.forwardOutputEqualizer3,
       SettingControl.forwardOutputEqualizer4:
-          _appLocalizations.forwardOutputEqualizer4,
+          appLocalizations.forwardOutputEqualizer4,
       SettingControl.forwardOutputEqualizer2And3:
-          _appLocalizations.forwardOutputEqualizer2And3,
+          appLocalizations.forwardOutputEqualizer2And3,
       SettingControl.forwardOutputEqualizer5And6:
-          _appLocalizations.forwardOutputEqualizer5And6,
+          appLocalizations.forwardOutputEqualizer5And6,
       SettingControl.returnOutputAttenuation1:
-          _appLocalizations.returnOutputAttenuation1,
+          appLocalizations.returnOutputAttenuation1,
       SettingControl.returnOutputEqualizer1:
-          _appLocalizations.returnOutputEqualizer1,
+          appLocalizations.returnOutputEqualizer1,
       SettingControl.returnInputAttenuation2:
-          _appLocalizations.returnInputAttenuation2,
+          appLocalizations.returnInputAttenuation2,
       SettingControl.returnInputAttenuation3:
-          _appLocalizations.returnInputAttenuation3,
+          appLocalizations.returnInputAttenuation3,
       SettingControl.returnInputAttenuation4:
-          _appLocalizations.returnInputAttenuation4,
+          appLocalizations.returnInputAttenuation4,
       SettingControl.returnInputAttenuation2And3:
-          _appLocalizations.returnInputAttenuation2And3,
+          appLocalizations.returnInputAttenuation2And3,
       SettingControl.returnInputAttenuation5And6:
-          _appLocalizations.returnInputAttenuation5And6,
+          appLocalizations.returnInputAttenuation5And6,
       SettingControl.returnIngressSetting2:
-          _appLocalizations.returnIngressSetting2,
+          appLocalizations.returnIngressSetting2,
       SettingControl.returnIngressSetting3:
-          _appLocalizations.returnIngressSetting3,
+          appLocalizations.returnIngressSetting3,
       SettingControl.returnIngressSetting4:
-          _appLocalizations.returnIngressSetting4,
+          appLocalizations.returnIngressSetting4,
       SettingControl.returnIngressSetting2And3:
-          _appLocalizations.returnIngressSetting2And3,
+          appLocalizations.returnIngressSetting2And3,
       SettingControl.returnIngressSetting5And6:
-          _appLocalizations.returnIngressSetting5And6,
+          appLocalizations.returnIngressSetting5And6,
     };
 
     String partId = characteristicData[DataKey.partId]!;
@@ -458,7 +465,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     List<Map<String, String>> controlValues = [
       {
         // 因為 l10n 內有位了tabbar 顯示而多加空白, 所以刪除空白
-        _appLocalizations.balance.trim(): '',
+        appLocalizations.balance.trim(): '',
       }
     ];
 
@@ -468,7 +475,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
     Map<Enum, DataKey> returnControlItemMap =
         SettingItemTable.controlItemDataMapCollection[partId]![1];
 
-    controlValues.add({_appLocalizations.forwardControlParameters: ''});
+    controlValues.add({appLocalizations.forwardControlParameters: ''});
 
     for (MapEntry entry in forwardControlItemMap.entries) {
       Enum key = entry.key;
@@ -504,7 +511,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       controlValues.add({controlName: controlValue});
     }
 
-    controlValues.add({_appLocalizations.returnControlParameters: ''});
+    controlValues.add({appLocalizations.returnControlParameters: ''});
 
     for (MapEntry entry in returnControlItemMap.entries) {
       Enum key = entry.key;

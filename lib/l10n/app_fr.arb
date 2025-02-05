@@ -220,6 +220,8 @@
     "upgrade": "Mise à niveau",
     "downgrade": "Rétrogradation",
     "noMoreRecordToShow": "Il n'y a pas de journaux à montrer.",
+    "time": "Temps",
+    "firmwareChange": "Changement de firmware",
 
 
     "aboutUs": "À propos nous",

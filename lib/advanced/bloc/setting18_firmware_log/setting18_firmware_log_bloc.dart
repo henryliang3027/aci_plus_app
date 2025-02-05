@@ -1,15 +1,20 @@
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/repositories/firmware_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 part 'setting18_firmware_log_event.dart';
 part 'setting18_firmware_log_state.dart';
 
 class Setting18FirmwareLogBloc
     extends Bloc<Setting18FirmwareLogEvent, Setting18FirmwareLogState> {
-  Setting18FirmwareLogBloc({required FirmwareRepository firmwareRepository})
-      : _firmwareRepository = firmwareRepository,
+  Setting18FirmwareLogBloc({
+    required BuildContext context,
+    required FirmwareRepository firmwareRepository,
+  })  : _context = context,
+        _firmwareRepository = firmwareRepository,
         super(const Setting18FirmwareLogState()) {
     on<UpdateLogRequested>(_onUpdateLogRequested);
     on<TestUpdateLogRequested>(_onTestUpdateLogRequested);
@@ -17,6 +22,7 @@ class Setting18FirmwareLogBloc
     on<UpdateLogExported>(_onUpdateLogExported);
   }
 
+  final BuildContext _context;
   final FirmwareRepository _firmwareRepository;
 
   Future<void> _onUpdateLogRequested(
@@ -150,8 +156,12 @@ class Setting18FirmwareLogBloc
       updateLogExportStatus: FormStatus.requestInProgress,
     ));
 
-    final List<dynamic> result = await _firmwareRepository
-        .exportFirmwareUpdateLogs(updateLogs: state.updateLogs);
+    final AppLocalizations appLocalizations = AppLocalizations.of(_context)!;
+    final List<dynamic> result =
+        await _firmwareRepository.exportFirmwareUpdateLogs(
+      appLocalizations: appLocalizations,
+      updateLogs: state.updateLogs,
+    );
 
     if (result[0]) {
       emit(state.copyWith(
