@@ -12,8 +12,8 @@ class ControlItemValue {
       // 204/258
       // MFTJ
       {},
-      // SDLE
       {
+        // SDLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -21,8 +21,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto BLE
       {
+        // Moto BLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -30,8 +30,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto MB
       {
+        // Moto MB
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -44,8 +44,8 @@ class ControlItemValue {
         //  DataKey.ingressSetting3,
         //  DataKey.ingressSetting4,
       },
-      // C-Cor Node
       {
+        // C-Cor Node
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA3: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 25.0),
@@ -138,13 +138,21 @@ class ControlItemValue {
         // DataKey.ingressSetting3,
         // DataKey.ingressSetting4,
       },
+      {
+        // MFT8
+        DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
+        DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
+        DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
+        DataKey.eREQ: const MinMax(min: 0.0, max: 15.0),
+        DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
+      },
     ],
     '2': [
       // 300/372
       // MFTJ
       {},
-      // SDLE
       {
+        // SDLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -152,8 +160,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto BLE
       {
+        // Moto BLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -161,8 +169,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto MB
       {
+        // Moto MB
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -175,8 +183,8 @@ class ControlItemValue {
         //  DataKey.ingressSetting3,
         //  DataKey.ingressSetting4,
       },
-      // C-Cor Node
       {
+        // C-Cor Node
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA3: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 25.0),
@@ -274,8 +282,8 @@ class ControlItemValue {
       // 396/492
       // MFTJ
       {},
-      // SDLE
       {
+        // SDLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -283,8 +291,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto BLE
       {
+        // Moto BLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -292,8 +300,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto MB
       {
+        // Moto MB
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -306,8 +314,8 @@ class ControlItemValue {
         //  DataKey.ingressSetting3,
         //  DataKey.ingressSetting4,
       },
-      // C-Cor Node
       {
+        // C-Cor Node
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA3: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 25.0),
@@ -405,8 +413,8 @@ class ControlItemValue {
       // 492/606
       // MFTJ
       {},
-      // SDLE
       {
+        // SDLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -414,8 +422,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto BLE
       {
+        // Moto BLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -423,8 +431,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto MB
       {
+        // Moto MB
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -437,8 +445,8 @@ class ControlItemValue {
         //  DataKey.ingressSetting3,
         //  DataKey.ingressSetting4,
       },
-      // C-Cor Node
       {
+        // C-Cor Node
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA3: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 25.0),
@@ -536,8 +544,8 @@ class ControlItemValue {
       // 684/834
       // MFTJ
       {},
-      // SDLE
       {
+        // SDLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -545,8 +553,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto BLE
       {
+        // Moto BLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -554,8 +562,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto MB
       {
+        // Moto MB
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -568,8 +576,8 @@ class ControlItemValue {
         //  DataKey.ingressSetting3,
         //  DataKey.ingressSetting4,
       },
-      // C-Cor Node
       {
+        // C-Cor Node
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA3: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 25.0),
@@ -667,8 +675,8 @@ class ControlItemValue {
       // 85/105
       // MFTJ
       {},
-      // SDLE
       {
+        // SDLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -676,8 +684,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto BLE
       {
+        // Moto BLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -685,8 +693,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto MB
       {
+        // Moto MB
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 13.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -699,8 +707,8 @@ class ControlItemValue {
         //  DataKey.ingressSetting3,
         //  DataKey.ingressSetting4,
       },
-      // C-Cor Node
       {
+        // C-Cor Node
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA3: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 25.0),
@@ -801,8 +809,8 @@ class ControlItemValue {
       // 204/258
       // MFTJ
       {},
-      // SDLE
       {
+        // SDLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -810,8 +818,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto BLE
       {
+        // Moto BLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -819,8 +827,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto MB
       {
+        // Moto MB
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -833,8 +841,8 @@ class ControlItemValue {
         //  DataKey.ingressSetting3,
         //  DataKey.ingressSetting4,
       },
-      // C-Cor Node
       {
+        // C-Cor Node
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA3: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 25.0),
@@ -932,8 +940,8 @@ class ControlItemValue {
       // 300/372
       // MFTJ
       {},
-      // SDLE
       {
+        // SDLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -941,8 +949,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto BLE
       {
+        // Moto BLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -950,8 +958,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto MB
       {
+        // Moto MB
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -964,8 +972,8 @@ class ControlItemValue {
         //  DataKey.ingressSetting3,
         //  DataKey.ingressSetting4,
       },
-      // C-Cor Node
       {
+        // C-Cor Node
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA3: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 25.0),
@@ -1063,8 +1071,8 @@ class ControlItemValue {
       // 396/492
       // MFTJ
       {},
-      // SDLE
       {
+        // SDLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1072,8 +1080,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto BLE
       {
+        // Moto BLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1081,8 +1089,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto MB
       {
+        // Moto MB
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1095,8 +1103,8 @@ class ControlItemValue {
         //  DataKey.ingressSetting3,
         //  DataKey.ingressSetting4,
       },
-      // C-Cor Node
       {
+        // C-Cor Node
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA3: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 25.0),
@@ -1194,8 +1202,8 @@ class ControlItemValue {
       // 492/606
       // MFTJ
       {},
-      // SDLE
       {
+        // SDLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1203,8 +1211,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto BLE
       {
+        // Moto BLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1212,8 +1220,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto MB
       {
+        // Moto MB
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1226,8 +1234,8 @@ class ControlItemValue {
         //  DataKey.ingressSetting3,
         //  DataKey.ingressSetting4,
       },
-      // C-Cor Node
       {
+        // C-Cor Node
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA3: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 25.0),
@@ -1325,8 +1333,8 @@ class ControlItemValue {
       // 684/834
       // MFTJ
       {},
-      // SDLE
       {
+        // SDLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1334,8 +1342,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto BLE
       {
+        // Moto BLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1343,8 +1351,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto MB
       {
+        // Moto MB
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1357,8 +1365,8 @@ class ControlItemValue {
         //  DataKey.ingressSetting3,
         //  DataKey.ingressSetting4,
       },
-      // C-Cor Node
       {
+        // C-Cor Node
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA3: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 25.0),
@@ -1456,8 +1464,8 @@ class ControlItemValue {
       // 85/105
       // MFTJ
       {},
-      // SDLE
       {
+        // SDLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1465,8 +1473,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto BLE
       {
+        // Moto BLE
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.usVCA2: const MinMax(min: 0.0, max: 15.0),
@@ -1474,8 +1482,8 @@ class ControlItemValue {
         DataKey.usVCA1: const MinMax(min: 0.0, max: 29.0),
         // DataKey.ingressSetting2,
       },
-      // Moto MB
       {
+        // Moto MB
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 20.0),
         DataKey.dsSlope1: const MinMax(min: 0.0, max: 10.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 10.0),
@@ -1488,8 +1496,8 @@ class ControlItemValue {
         //  DataKey.ingressSetting3,
         //  DataKey.ingressSetting4,
       },
-      // C-Cor Node
       {
+        // C-Cor Node
         DataKey.dsVVA1: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA3: const MinMax(min: 0.0, max: 25.0),
         DataKey.dsVVA4: const MinMax(min: 0.0, max: 25.0),

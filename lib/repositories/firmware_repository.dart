@@ -312,7 +312,7 @@ class FirmwareRepository {
 
     String timeStamp =
         DateFormat('yyyy_MM_dd_HH_mm_ss').format(DateTime.now()).toString();
-    String filename = 'rf_levels_$timeStamp';
+    String filename = 'firmware_update_$timeStamp';
     String extension = '.xlsx';
 
     if (Platform.isIOS) {
