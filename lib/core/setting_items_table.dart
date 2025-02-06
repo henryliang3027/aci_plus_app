@@ -146,7 +146,7 @@ const Map<String, String> settingGraphFilePath = {
   '7': 'assets/circuits/LE_1.8G_20240822.svg', // C-Cor LE
   '8': 'assets/circuits/SDAT_1.8G_20240822.svg', // SDAT
   '9': 'assets/circuits/SDAM_1.8G_20240822.svg', // SDAM
-  '10': 'assets/circuits/MFT8_1.8G_20240822.svg' // MFT8
+  '10': 'assets/circuits/MFT8_1.8G_20250206.svg' // MFT8
 };
 
 const Map<String, String> namePlateFilePath = {
