@@ -42,6 +42,11 @@ class Setting18ReverseControlView extends StatelessWidget {
           .read<Setting18ReverseControlBloc>()
           .add(const Initialized(useCache: false));
     }
+    // if (!context.read<Setting18ReverseControlBloc>().state.editMode) {
+    //   context
+    //       .read<Setting18ReverseControlBloc>()
+    //       .add(const Initialized(useCache: false));
+    // }
 
     List<Widget> getReturnControlParameterWidgetsByPartId(String partId) {
       List<Enum> items = SettingItemTable.itemsMap[partId] ?? [];
@@ -821,7 +826,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
           return controlToggleButton(
             context: context,
             editMode: state.editMode,
-            title: '${AppLocalizations.of(context)!.returnIngressSetting2}:',
+            title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
             currentValue:
                 state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
             onChanged: (int index) {

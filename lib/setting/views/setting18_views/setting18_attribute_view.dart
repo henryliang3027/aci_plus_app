@@ -331,20 +331,15 @@ class Setting18AttributeView extends StatelessWidget {
         //       state.pilotFrequency2.value;
         // }
       },
-      child: PopScope(
-        onPopInvoked: (didPop) {
-          print('12123');
-        },
-        child: Scaffold(
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: buildConfigurationWidget(),
-            ),
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: buildConfigurationWidget(),
           ),
-          floatingActionButton: _SettingFloatingActionButton(
-            partId: partId,
-            // currentDetectedSplitOption: currentDetectedSplitOption,
-          ),
+        ),
+        floatingActionButton: _SettingFloatingActionButton(
+          partId: partId,
+          // currentDetectedSplitOption: currentDetectedSplitOption,
         ),
       ),
     );

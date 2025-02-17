@@ -232,28 +232,41 @@ class Setting18FirmwareUpdateForm extends StatelessWidget {
           });
         }
       },
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const _UserCaution(),
-                const _ProgressBar(),
-                _FilePicker(partId: partId),
-                _StartButton(
-                  pageController: pageController,
-                  partId: partId,
-                ),
-                const SizedBox(
-                  height: CustomStyle.formBottomSpacingS,
-                ),
-              ],
+      child: PopScope(
+        // 當更新正在進行時不允許點擊 android 的 system back button
+        canPop: context
+                .read<Setting18FirmwareUpdateBloc>()
+                .state
+                .submissionStatus
+                .isSubmissionInProgress
+            ? false
+            : true,
+        onPopInvokedWithResult: (didPop, result) {
+          print('$didPop, $result');
+        },
+        child: Scaffold(
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const _UserCaution(),
+                  const _ProgressBar(),
+                  _FilePicker(partId: partId),
+                  _StartButton(
+                    pageController: pageController,
+                    partId: partId,
+                  ),
+                  const SizedBox(
+                    height: CustomStyle.formBottomSpacingS,
+                  ),
+                ],
+              ),
             ),
           ),
+          floatingActionButton: const _Setting18FirmwareFloatingActionButton(),
         ),
-        floatingActionButton: const _Setting18FirmwareFloatingActionButton(),
       ),
     );
   }

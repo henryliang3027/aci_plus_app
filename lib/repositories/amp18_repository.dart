@@ -99,7 +99,9 @@ class Amp18Repository with BLECommandsMixin {
     }
   }
 
-  Future<dynamic> requestCommand1p8G1() async {
+  Future<dynamic> requestCommand1p8G1({
+    Duration timeout = const Duration(seconds: 10),
+  }) async {
     int commandIndex = 81;
 
     print('get data from request command 1p8G1');
@@ -108,6 +110,7 @@ class Amp18Repository with BLECommandsMixin {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _amp18Parser.command18Collection[commandIndex - 80],
+        timeout: timeout,
       );
 
       A1P8G1 a1p8g1 = _amp18Parser.decodeA1P8G1(rawData);
@@ -1108,7 +1111,7 @@ class Amp18Repository with BLECommandsMixin {
 
     if (resultOf1p8G1[0]) {
       // 使用 addAll 直接覆蓋對應的值
-      characteristicDataCache.addAll(resultOf1p8G1[1]);
+      _characteristicDataCache.addAll(resultOf1p8G1[1]);
       print('updateSettingCharacteristics');
     }
   }

@@ -86,7 +86,9 @@ class SampleAmp18Repository extends Amp18Repository {
   }
 
   @override
-  Future<dynamic> requestCommand1p8G1() async {
+  Future<dynamic> requestCommand1p8G1({
+    Duration timeout = const Duration(seconds: 10),
+  }) async {
     int commandIndex = 81;
 
     print('get data from request command 1p8G1');
