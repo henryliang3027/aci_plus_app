@@ -49,10 +49,11 @@ class Setting18ForwardControlView extends StatelessWidget {
     }
 
     if (homeState.ceqStatus != CEQStatus.none) {
-      print('Initialized useCache: false');
-      context
-          .read<Setting18ForwardControlBloc>()
-          .add(const Initialized(useCache: false));
+      context.read<Setting18ForwardControlBloc>().add(const Initialized());
+    } else {
+      if (!context.read<Setting18ForwardControlBloc>().state.editMode) {
+        context.read<Setting18ForwardControlBloc>().add(const Initialized());
+      }
     }
 
     List<Widget> getForwardControlParameterWidgetsByPartId(String partId) {

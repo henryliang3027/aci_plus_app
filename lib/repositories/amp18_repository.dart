@@ -1104,6 +1104,8 @@ class Amp18Repository with BLECommandsMixin {
       Map<DataKey, String> valuePairs) async {
     _characteristicDataStreamController
         .add(Map<DataKey, String>.from(valuePairs));
+
+    _characteristicDataCache.addAll(valuePairs);
   }
 
   Future<void> updateSettingCharacteristics() async {

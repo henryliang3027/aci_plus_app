@@ -1227,13 +1227,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     } else {
       // Amp
-      // Stopwatch stopwatch1 = Stopwatch()..start();
-      // List<dynamic> resultOf1p8G1 = await _amp18Repository.requestCommand1p8G1(
-      //   timeout: const Duration(seconds: 2),
-      // );
-      // stopwatch1.stop();
-      // print(
-      //     'requestCommand1p8G1() alarm executed in ${stopwatch1.elapsed.inMilliseconds}');
+      Stopwatch stopwatch1 = Stopwatch()..start();
+      List<dynamic> resultOf1p8G1 = await _amp18Repository.requestCommand1p8G1(
+        timeout: const Duration(seconds: 2),
+      );
+      stopwatch1.stop();
+      print(
+          'requestCommand1p8G1() alarm executed in ${stopwatch1.elapsed.inMilliseconds}');
 
       Stopwatch stopwatch2 = Stopwatch()..start();
       List<dynamic> resultOf1p8G2 = await _amp18Repository.requestCommand1p8G2(
@@ -1284,22 +1284,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
           if (ForwardCEQFlag.forwardCEQType != currentCEQType) {
             ForwardCEQFlag.forwardCEQType = currentCEQType;
-
-            emit(state.copyWith(
-              ceqStatus: ceqStatus,
-            ));
           }
+
+          emit(state.copyWith(
+            ceqStatus: ceqStatus,
+          ));
         }
       } else {
         print('requestCommand1p8G2() alarm updated failed');
       }
 
-      // if (resultOf1p8G1[0]) {
-      //   Map<DataKey, String> currentValues = resultOf1p8G1[1];
-      //   _amp18Repository.updateDataWithGivenValuePairs(currentValues);
-      // } else {
-      //   print('requestCommand1p8G1() setting values updated failed');
-      // }
+      if (resultOf1p8G1[0]) {
+        Map<DataKey, String> currentValues = resultOf1p8G1[1];
+        _amp18Repository.updateDataWithGivenValuePairs(currentValues);
+      } else {
+        print('requestCommand1p8G1() setting values updated failed');
+      }
     }
   }
 

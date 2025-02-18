@@ -73,10 +73,11 @@ class Setting18RegulationView extends StatelessWidget {
     }
 
     if (homeState.ceqStatus != CEQStatus.none) {
-      print('Initialized useCache: false');
-      context
-          .read<Setting18RegulationBloc>()
-          .add(const Initialized(useCache: false));
+      context.read<Setting18RegulationBloc>().add(const Initialized());
+    } else {
+      if (!context.read<Setting18RegulationBloc>().state.editMode) {
+        context.read<Setting18RegulationBloc>().add(const Initialized());
+      }
     }
 
     String formatResultValue(String boolValue) {

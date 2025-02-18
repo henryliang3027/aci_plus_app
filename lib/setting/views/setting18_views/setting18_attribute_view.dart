@@ -66,10 +66,11 @@ class Setting18AttributeView extends StatelessWidget {
     }
 
     if (homeState.ceqStatus != CEQStatus.none) {
-      print('Initialized useCache: false');
-      context
-          .read<Setting18AttributeBloc>()
-          .add(const Initialized(useCache: false));
+      context.read<Setting18AttributeBloc>().add(const Initialized());
+    } else {
+      if (!context.read<Setting18AttributeBloc>().state.editMode) {
+        context.read<Setting18AttributeBloc>().add(const Initialized());
+      }
     }
 
     String formatResultValue(String boolValue) {

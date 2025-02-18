@@ -51,10 +51,11 @@ class Setting18ThresholdView extends StatelessWidget {
     }
 
     if (homeState.ceqStatus != CEQStatus.none) {
-      print('Initialized useCache: false');
-      context
-          .read<Setting18ThresholdBloc>()
-          .add(const Initialized(useCache: false));
+      context.read<Setting18ThresholdBloc>().add(const Initialized());
+    } else {
+      if (!context.read<Setting18ThresholdBloc>().state.editMode) {
+        context.read<Setting18ThresholdBloc>().add(const Initialized());
+      }
     }
 
     String formatResultValue(String boolValue) {

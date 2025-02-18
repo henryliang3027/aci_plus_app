@@ -37,16 +37,12 @@ class Setting18ReverseControlView extends StatelessWidget {
     }
 
     if (homeState.ceqStatus != CEQStatus.none) {
-      print('Initialized useCache: false');
-      context
-          .read<Setting18ReverseControlBloc>()
-          .add(const Initialized(useCache: false));
+      context.read<Setting18ReverseControlBloc>().add(const Initialized());
+    } else {
+      if (!context.read<Setting18ReverseControlBloc>().state.editMode) {
+        context.read<Setting18ReverseControlBloc>().add(const Initialized());
+      }
     }
-    // if (!context.read<Setting18ReverseControlBloc>().state.editMode) {
-    //   context
-    //       .read<Setting18ReverseControlBloc>()
-    //       .add(const Initialized(useCache: false));
-    // }
 
     List<Widget> getReturnControlParameterWidgetsByPartId(String partId) {
       List<Enum> items = SettingItemTable.itemsMap[partId] ?? [];
