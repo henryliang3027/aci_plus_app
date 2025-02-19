@@ -62,6 +62,7 @@
 
     "forwardControl": "    下行    ",
     "returnControl": "    上行    ",
+    "ingressControl": "訊號通過量",
     "forwardInputAttenuation1": "Port 1 輸入衰減量",
     "forwardInputAttenuation3": "Port 3 輸入衰減量",
     "forwardInputAttenuation4": "Port 4 輸入衰減量",
@@ -107,8 +108,31 @@
     "returnIngressSetting6": "Port 6 訊號通過量",
     "returnIngressSetting2And3": "Port 2 & Port 3 訊號通過量",
     "returnIngressSetting5And6": "Port 5 & Port 6 訊號通過量",
-    "ingressOpen": "斷開",
 
+    "ingressDefault": "{ingress} (預設)",
+    "@ingressDefault": {
+        "placeholders": {
+                "ingress": {
+                "type": "String",
+                "example": "0 dB"
+            }
+        }
+    },
+
+
+    "ingressTemporary": "{ingress} (30 分鐘內)",
+    "@ingressTemporary": {
+        "placeholders": {
+                "ingress": {
+                "type": "String",
+                "example": "-3 dB"
+            }
+        }
+    },
+
+    "ingressOpenTemporary": "斷開 (30 分鐘內)",
+    "ingressOpenPermanent": "斷開 (保持設定)",
+    "ingressOpen": "斷開",
 
     "status": "設備狀態",
     "serialNumber": "序號",

@@ -61,6 +61,7 @@
 
     "forwardControl": " Forward ",
     "returnControl": " Reverse ",
+    "ingressControl": " Ingress ",
     "forwardInputAttenuation1": "Port 1 Input Attenuation",
     "forwardInputAttenuation3": "Port 3 Input Attenuation",
     "forwardInputAttenuation4": "Port 4 Input Attenuation",
@@ -106,9 +107,32 @@
     "returnIngressSetting6": "Port 6 Ingress Setting",
     "returnIngressSetting2And3": "Port 2 & Port 3 Ingress Setting",
     "returnIngressSetting5And6": "Port 5 & Port 6 Ingress Setting",
+
+    "ingressDefault": "{ingress} (Default)",
+    "@ingressDefault": {
+        "placeholders": {
+                "ingress": {
+                "type": "String",
+                "example": "0 dB"
+            }
+        }
+    },
+
+    "ingressTemporary": "{ingress} (Within 30 minutes)",
+    "@ingressTemporary": {
+        "placeholders": {
+                "ingress": {
+                "type": "String",
+                "example": "-3 dB"
+            }
+        }
+    },
+
+    "ingressOpenTemporary": "Open (Within 30 minutes)",
+    "ingressOpenPermanent": "Open (Keep Setting)",
     "ingressOpen": "Open",
 
-    
+
     "status": "Device Status",
     "serialNumber": "Serial Number",
     "firmwareVersion": "Firmware Version",

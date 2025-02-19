@@ -1545,7 +1545,18 @@ const List<String> rtnIngressValues = [
   '1',
   '2',
   '4',
+  '5',
 ];
+
+List<String> _getIngressTexts(BuildContext context) {
+  return [
+    AppLocalizations.of(context)!.ingressDefault('0 ${CustomStyle.dB}'),
+    AppLocalizations.of(context)!.ingressTemporary('-3 ${CustomStyle.dB}'),
+    AppLocalizations.of(context)!.ingressTemporary('-6 ${CustomStyle.dB}'),
+    AppLocalizations.of(context)!.ingressOpenTemporary,
+    AppLocalizations.of(context)!.ingressOpenPermanent,
+  ];
+}
 
 const List<String> tgcCableLengthValues = [
   '9',
@@ -1564,25 +1575,20 @@ class _ReturnIngressSetting2 extends StatelessWidget {
               current.targetIngressValues[DataKey.ingressSetting2] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return controlToggleButton(
+        return ingressGridViewButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting2}:',
           currentValue:
               state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
-          onChanged: (int index) {
+          onChanged: (index) {
             context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting2,
                   value: rtnIngressValues[index],
                 ));
           },
           values: rtnIngressValues,
-          texts: [
-            '0dB',
-            '-3dB',
-            '-6dB',
-            AppLocalizations.of(context)!.ingressOpen,
-          ],
+          texts: _getIngressTexts(context),
           elevation: CustomStyle.graphSettingCardElevation,
           color: CustomStyle.graphSettingCardColor,
         );
@@ -1602,25 +1608,20 @@ class _ReturnIngressSetting3 extends StatelessWidget {
               current.targetIngressValues[DataKey.ingressSetting3] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return controlToggleButton(
+        return ingressGridViewButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting3}:',
           currentValue:
               state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
-          onChanged: (int index) {
+          onChanged: (index) {
             context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting3,
                   value: rtnIngressValues[index],
                 ));
           },
           values: rtnIngressValues,
-          texts: [
-            '0dB',
-            '-3dB',
-            '-6dB',
-            AppLocalizations.of(context)!.ingressOpen,
-          ],
+          texts: _getIngressTexts(context),
           elevation: CustomStyle.graphSettingCardElevation,
           color: CustomStyle.graphSettingCardColor,
         );
@@ -1645,25 +1646,20 @@ class _ReturnIngressSetting4 extends StatelessWidget {
                 current.targetIngressValues[DataKey.ingressSetting2] ||
             previous.editMode != current.editMode,
         builder: (context, state) {
-          return controlToggleButton(
+          return ingressGridViewButton(
             context: context,
             editMode: state.editMode,
             title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
             currentValue:
                 state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
-            onChanged: (int index) {
+            onChanged: (index) {
               context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                     dataKey: DataKey.ingressSetting2,
                     value: rtnIngressValues[index],
                   ));
             },
             values: rtnIngressValues,
-            texts: [
-              '0dB',
-              '-3dB',
-              '-6dB',
-              AppLocalizations.of(context)!.ingressOpen,
-            ],
+            texts: _getIngressTexts(context),
             elevation: CustomStyle.graphSettingCardElevation,
             color: CustomStyle.graphSettingCardColor,
           );
@@ -1676,25 +1672,20 @@ class _ReturnIngressSetting4 extends StatelessWidget {
                 current.targetIngressValues[DataKey.ingressSetting4] ||
             previous.editMode != current.editMode,
         builder: (context, state) {
-          return controlToggleButton(
+          return ingressGridViewButton(
             context: context,
             editMode: state.editMode,
             title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
             currentValue:
                 state.targetIngressValues[DataKey.ingressSetting4] ?? '0',
-            onChanged: (int index) {
+            onChanged: (index) {
               context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                     dataKey: DataKey.ingressSetting4,
                     value: rtnIngressValues[index],
                   ));
             },
             values: rtnIngressValues,
-            texts: [
-              '0dB',
-              '-3dB',
-              '-6dB',
-              AppLocalizations.of(context)!.ingressOpen,
-            ],
+            texts: _getIngressTexts(context),
             elevation: CustomStyle.graphSettingCardElevation,
             color: CustomStyle.graphSettingCardColor,
           );
@@ -1715,25 +1706,20 @@ class _ReturnIngressSetting2And3 extends StatelessWidget {
               current.targetIngressValues[DataKey.ingressSetting3] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return controlToggleButton(
+        return ingressGridViewButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting2And3}:',
           currentValue:
               state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
-          onChanged: (int index) {
+          onChanged: (index) {
             context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting3,
                   value: rtnIngressValues[index],
                 ));
           },
           values: rtnIngressValues,
-          texts: [
-            '0dB',
-            '-3dB',
-            '-6dB',
-            AppLocalizations.of(context)!.ingressOpen,
-          ],
+          texts: _getIngressTexts(context),
           elevation: CustomStyle.graphSettingCardElevation,
           color: CustomStyle.graphSettingCardColor,
         );
@@ -1753,25 +1739,20 @@ class _ReturnIngressSetting5And6 extends StatelessWidget {
               current.targetIngressValues[DataKey.ingressSetting4] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return controlToggleButton(
+        return ingressGridViewButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting5And6}:',
           currentValue:
               state.targetIngressValues[DataKey.ingressSetting4] ?? '0',
-          onChanged: (int index) {
+          onChanged: (index) {
             context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.ingressSetting4,
                   value: rtnIngressValues[index],
                 ));
           },
           values: rtnIngressValues,
-          texts: [
-            '0dB',
-            '-3dB',
-            '-6dB',
-            AppLocalizations.of(context)!.ingressOpen,
-          ],
+          texts: _getIngressTexts(context),
           elevation: CustomStyle.graphSettingCardElevation,
           color: CustomStyle.graphSettingCardColor,
         );

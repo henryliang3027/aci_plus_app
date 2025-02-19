@@ -61,6 +61,7 @@
     
     "forwardControl": "  Avance  ",
     "returnControl": " Inverso ",
+    "ingressControl": " Ingreso ",
     "forwardInputAttenuation1": "Atenuación Entrada Puerto 1",
     "forwardInputAttenuation3": "Atenuación Entrada Puerto 3",
     "forwardInputAttenuation4": "Atenuación Entrada Puerto 4",
@@ -106,8 +107,30 @@
     "returnIngressSetting6": "Ajuste Ingreso Puerto 6",
     "returnIngressSetting2And3": "Ajuste Ingreso Puertos 2 y 3",
     "returnIngressSetting5And6": "Ajuste Ingreso Puertos 5 y 6",
-    "ingressOpen": "Abierto",
 
+    "ingressDefault": "{ingress} (Por defecto)",
+    "@ingressDefault": {
+        "placeholders": {
+                "ingress": {
+                "type": "String",
+                "example": "0 dB"
+            }
+        }
+    },
+
+    "ingressTemporary": "{ingress} (En 30 minutos)",
+    "@ingressTemporary": {
+        "placeholders": {
+                "ingress": {
+                "type": "String",
+                "example": "-3 dB"
+            }
+        }
+    },
+
+    "ingressOpenTemporary": "Abierto (En 30 minutos)",
+    "ingressOpenPermanent": "Abierto (Mantener la configuración)",
+    "ingressOpen": "Abierto",
 
     "status": "Estado",
     "serialNumber": "Número de Serie",

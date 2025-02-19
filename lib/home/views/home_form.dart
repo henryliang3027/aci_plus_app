@@ -283,14 +283,28 @@ class _HomeFormState extends State<HomeForm> {
           },
         )
       ],
-      child: Scaffold(
-        body: BlocBuilder<HomeBloc, HomeState>(
-          buildWhen: (previous, current) =>
-              previous.aciDeviceType != current.aciDeviceType,
-          builder: (context, state) => PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: _pageController,
-            children: buildPages(context.read<HomeBloc>().state.aciDeviceType),
+      child: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) async {
+          if (SystemBackButtonProperty.isEnabled) {
+            bool? isExit = await showExitAppDialog(context: context);
+            if (isExit != null) {
+              if (isExit) {
+                SystemNavigator.pop();
+              }
+            }
+          }
+        },
+        child: Scaffold(
+          body: BlocBuilder<HomeBloc, HomeState>(
+            buildWhen: (previous, current) =>
+                previous.aciDeviceType != current.aciDeviceType,
+            builder: (context, state) => PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: _pageController,
+              children:
+                  buildPages(context.read<HomeBloc>().state.aciDeviceType),
+            ),
           ),
         ),
       ),

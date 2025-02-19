@@ -98,39 +98,39 @@ class Setting18ReverseControlView extends StatelessWidget {
               const _ReturnOutputEqualizer1(),
             );
             break;
-          case SettingControl.returnIngressSetting1:
-            break;
-          case SettingControl.returnIngressSetting2:
-            widgets.add(
-              const _ReturnIngressSetting2(),
-            );
-            break;
-          case SettingControl.returnIngressSetting3:
-            widgets.add(
-              const _ReturnIngressSetting3(),
-            );
-            break;
-          case SettingControl.returnIngressSetting4:
-            widgets.add(
-              _ReturnIngressSetting4(
-                partId: partId,
-              ),
-            );
-            break;
-          case SettingControl.returnIngressSetting5:
-            break;
-          case SettingControl.returnIngressSetting6:
-            break;
-          case SettingControl.returnIngressSetting2And3:
-            widgets.add(
-              const _ReturnIngressSetting2And3(),
-            );
-            break;
-          case SettingControl.returnIngressSetting5And6:
-            widgets.add(
-              const _ReturnIngressSetting5And6(),
-            );
-            break;
+          // case SettingControl.returnIngressSetting1:
+          //   break;
+          // case SettingControl.returnIngressSetting2:
+          //   widgets.add(
+          //     const _ReturnIngressSetting2(),
+          //   );
+          //   break;
+          // case SettingControl.returnIngressSetting3:
+          //   widgets.add(
+          //     const _ReturnIngressSetting3(),
+          //   );
+          //   break;
+          // case SettingControl.returnIngressSetting4:
+          //   widgets.add(
+          //     _ReturnIngressSetting4(
+          //       partId: partId,
+          //     ),
+          //   );
+          //   break;
+          // case SettingControl.returnIngressSetting5:
+          //   break;
+          // case SettingControl.returnIngressSetting6:
+          //   break;
+          // case SettingControl.returnIngressSetting2And3:
+          //   widgets.add(
+          //     const _ReturnIngressSetting2And3(),
+          //   );
+          //   break;
+          // case SettingControl.returnIngressSetting5And6:
+          //   widgets.add(
+          //     const _ReturnIngressSetting5And6(),
+          //   );
+          //   break;
         }
       }
       return widgets.isNotEmpty
@@ -143,11 +143,11 @@ class Setting18ReverseControlView extends StatelessWidget {
               _ReturnInputAttenuation4(
                 partId: partId,
               ),
-              const _ReturnIngressSetting2(),
-              const _ReturnIngressSetting3(),
-              _ReturnIngressSetting4(
-                partId: partId,
-              ),
+              // const _ReturnIngressSetting2(),
+              // const _ReturnIngressSetting3(),
+              // _ReturnIngressSetting4(
+              //   partId: partId,
+              // ),
             ];
     }
 
@@ -715,261 +715,261 @@ class _ReturnOutputEqualizer1 extends StatelessWidget {
   }
 }
 
-const List<String> rtnIngressValues = [
-  '0',
-  '1',
-  '2',
-  '4',
-];
+// const List<String> rtnIngressValues = [
+//   '0',
+//   '1',
+//   '2',
+//   '4',
+// ];
 
-class _ReturnIngressSetting2 extends StatelessWidget {
-  const _ReturnIngressSetting2();
+// class _ReturnIngressSetting2 extends StatelessWidget {
+//   const _ReturnIngressSetting2();
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ReverseControlBloc,
-        Setting18ReverseControlState>(
-      buildWhen: (previous, current) =>
-          previous.targetIngressValues[DataKey.ingressSetting2] !=
-              current.targetIngressValues[DataKey.ingressSetting2] ||
-          previous.editMode != current.editMode,
-      builder: (context, state) {
-        return controlToggleButton(
-          context: context,
-          editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.returnIngressSetting2}:',
-          currentValue:
-              state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
-          onChanged: (int index) {
-            context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
-                  dataKey: DataKey.ingressSetting2,
-                  value: rtnIngressValues[index],
-                ));
-          },
-          values: rtnIngressValues,
-          texts: [
-            '0dB',
-            '-3dB',
-            '-6dB',
-            AppLocalizations.of(context)!.ingressOpen,
-          ],
-          color: getSettingListCardColor(
-            context: context,
-            isTap: state.tappedSet.contains(DataKey.ingressSetting2),
-          ),
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18ReverseControlBloc,
+//         Setting18ReverseControlState>(
+//       buildWhen: (previous, current) =>
+//           previous.targetIngressValues[DataKey.ingressSetting2] !=
+//               current.targetIngressValues[DataKey.ingressSetting2] ||
+//           previous.editMode != current.editMode,
+//       builder: (context, state) {
+//         return controlToggleButton(
+//           context: context,
+//           editMode: state.editMode,
+//           title: '${AppLocalizations.of(context)!.returnIngressSetting2}:',
+//           currentValue:
+//               state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
+//           onChanged: (int index) {
+//             context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
+//                   dataKey: DataKey.ingressSetting2,
+//                   value: rtnIngressValues[index],
+//                 ));
+//           },
+//           values: rtnIngressValues,
+//           texts: [
+//             '0dB',
+//             '-3dB',
+//             '-6dB',
+//             AppLocalizations.of(context)!.ingressOpen,
+//           ],
+//           color: getSettingListCardColor(
+//             context: context,
+//             isTap: state.tappedSet.contains(DataKey.ingressSetting2),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
 
-class _ReturnIngressSetting3 extends StatelessWidget {
-  const _ReturnIngressSetting3();
+// class _ReturnIngressSetting3 extends StatelessWidget {
+//   const _ReturnIngressSetting3();
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ReverseControlBloc,
-        Setting18ReverseControlState>(
-      buildWhen: (previous, current) =>
-          previous.targetIngressValues[DataKey.ingressSetting3] !=
-              current.targetIngressValues[DataKey.ingressSetting3] ||
-          previous.editMode != current.editMode,
-      builder: (context, state) {
-        return controlToggleButton(
-          context: context,
-          editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.returnIngressSetting3}:',
-          currentValue:
-              state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
-          onChanged: (int index) {
-            context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
-                  dataKey: DataKey.ingressSetting3,
-                  value: rtnIngressValues[index],
-                ));
-          },
-          values: rtnIngressValues,
-          texts: [
-            '0dB',
-            '-3dB',
-            '-6dB',
-            AppLocalizations.of(context)!.ingressOpen,
-          ],
-          color: getSettingListCardColor(
-            context: context,
-            isTap: state.tappedSet.contains(DataKey.ingressSetting3),
-          ),
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18ReverseControlBloc,
+//         Setting18ReverseControlState>(
+//       buildWhen: (previous, current) =>
+//           previous.targetIngressValues[DataKey.ingressSetting3] !=
+//               current.targetIngressValues[DataKey.ingressSetting3] ||
+//           previous.editMode != current.editMode,
+//       builder: (context, state) {
+//         return controlToggleButton(
+//           context: context,
+//           editMode: state.editMode,
+//           title: '${AppLocalizations.of(context)!.returnIngressSetting3}:',
+//           currentValue:
+//               state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
+//           onChanged: (int index) {
+//             context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
+//                   dataKey: DataKey.ingressSetting3,
+//                   value: rtnIngressValues[index],
+//                 ));
+//           },
+//           values: rtnIngressValues,
+//           texts: [
+//             '0dB',
+//             '-3dB',
+//             '-6dB',
+//             AppLocalizations.of(context)!.ingressOpen,
+//           ],
+//           color: getSettingListCardColor(
+//             context: context,
+//             isTap: state.tappedSet.contains(DataKey.ingressSetting3),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
 
-class _ReturnIngressSetting4 extends StatelessWidget {
-  const _ReturnIngressSetting4({
-    required this.partId,
-  });
+// class _ReturnIngressSetting4 extends StatelessWidget {
+//   const _ReturnIngressSetting4({
+//     required this.partId,
+//   });
 
-  final String partId;
+//   final String partId;
 
-  @override
-  Widget build(BuildContext context) {
-    if (partId == '5') {
-      return BlocBuilder<Setting18ReverseControlBloc,
-          Setting18ReverseControlState>(
-        buildWhen: (previous, current) =>
-            previous.targetIngressValues[DataKey.ingressSetting2] !=
-                current.targetIngressValues[DataKey.ingressSetting2] ||
-            previous.editMode != current.editMode,
-        builder: (context, state) {
-          return controlToggleButton(
-            context: context,
-            editMode: state.editMode,
-            title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
-            currentValue:
-                state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
-            onChanged: (int index) {
-              context
-                  .read<Setting18ReverseControlBloc>()
-                  .add(ControlItemChanged(
-                    dataKey: DataKey.ingressSetting2,
-                    value: rtnIngressValues[index],
-                  ));
-            },
-            values: rtnIngressValues,
-            texts: [
-              '0dB',
-              '-3dB',
-              '-6dB',
-              AppLocalizations.of(context)!.ingressOpen,
-            ],
-            color: getSettingListCardColor(
-              context: context,
-              isTap: state.tappedSet.contains(DataKey.ingressSetting2),
-            ),
-          );
-        },
-      );
-    } else {
-      return BlocBuilder<Setting18ReverseControlBloc,
-          Setting18ReverseControlState>(
-        buildWhen: (previous, current) =>
-            previous.targetIngressValues[DataKey.ingressSetting4] !=
-                current.targetIngressValues[DataKey.ingressSetting4] ||
-            previous.editMode != current.editMode,
-        builder: (context, state) {
-          return controlToggleButton(
-            context: context,
-            editMode: state.editMode,
-            title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
-            currentValue:
-                state.targetIngressValues[DataKey.ingressSetting4] ?? '0',
-            onChanged: (int index) {
-              context
-                  .read<Setting18ReverseControlBloc>()
-                  .add(ControlItemChanged(
-                    dataKey: DataKey.ingressSetting4,
-                    value: rtnIngressValues[index],
-                  ));
-            },
-            values: rtnIngressValues,
-            texts: [
-              '0dB',
-              '-3dB',
-              '-6dB',
-              AppLocalizations.of(context)!.ingressOpen,
-            ],
-            color: getSettingListCardColor(
-              context: context,
-              isTap: state.tappedSet.contains(DataKey.ingressSetting4),
-            ),
-          );
-        },
-      );
-    }
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     if (partId == '5') {
+//       return BlocBuilder<Setting18ReverseControlBloc,
+//           Setting18ReverseControlState>(
+//         buildWhen: (previous, current) =>
+//             previous.targetIngressValues[DataKey.ingressSetting2] !=
+//                 current.targetIngressValues[DataKey.ingressSetting2] ||
+//             previous.editMode != current.editMode,
+//         builder: (context, state) {
+//           return controlToggleButton(
+//             context: context,
+//             editMode: state.editMode,
+//             title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
+//             currentValue:
+//                 state.targetIngressValues[DataKey.ingressSetting2] ?? '0',
+//             onChanged: (int index) {
+//               context
+//                   .read<Setting18ReverseControlBloc>()
+//                   .add(ControlItemChanged(
+//                     dataKey: DataKey.ingressSetting2,
+//                     value: rtnIngressValues[index],
+//                   ));
+//             },
+//             values: rtnIngressValues,
+//             texts: [
+//               '0dB',
+//               '-3dB',
+//               '-6dB',
+//               AppLocalizations.of(context)!.ingressOpen,
+//             ],
+//             color: getSettingListCardColor(
+//               context: context,
+//               isTap: state.tappedSet.contains(DataKey.ingressSetting2),
+//             ),
+//           );
+//         },
+//       );
+//     } else {
+//       return BlocBuilder<Setting18ReverseControlBloc,
+//           Setting18ReverseControlState>(
+//         buildWhen: (previous, current) =>
+//             previous.targetIngressValues[DataKey.ingressSetting4] !=
+//                 current.targetIngressValues[DataKey.ingressSetting4] ||
+//             previous.editMode != current.editMode,
+//         builder: (context, state) {
+//           return controlToggleButton(
+//             context: context,
+//             editMode: state.editMode,
+//             title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
+//             currentValue:
+//                 state.targetIngressValues[DataKey.ingressSetting4] ?? '0',
+//             onChanged: (int index) {
+//               context
+//                   .read<Setting18ReverseControlBloc>()
+//                   .add(ControlItemChanged(
+//                     dataKey: DataKey.ingressSetting4,
+//                     value: rtnIngressValues[index],
+//                   ));
+//             },
+//             values: rtnIngressValues,
+//             texts: [
+//               '0dB',
+//               '-3dB',
+//               '-6dB',
+//               AppLocalizations.of(context)!.ingressOpen,
+//             ],
+//             color: getSettingListCardColor(
+//               context: context,
+//               isTap: state.tappedSet.contains(DataKey.ingressSetting4),
+//             ),
+//           );
+//         },
+//       );
+//     }
+//   }
+// }
 
-class _ReturnIngressSetting2And3 extends StatelessWidget {
-  const _ReturnIngressSetting2And3();
+// class _ReturnIngressSetting2And3 extends StatelessWidget {
+//   const _ReturnIngressSetting2And3();
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ReverseControlBloc,
-        Setting18ReverseControlState>(
-      buildWhen: (previous, current) =>
-          previous.targetIngressValues[DataKey.ingressSetting3] !=
-              current.targetIngressValues[DataKey.ingressSetting3] ||
-          previous.editMode != current.editMode,
-      builder: (context, state) {
-        return controlToggleButton(
-          context: context,
-          editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.returnIngressSetting2And3}:',
-          currentValue:
-              state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
-          onChanged: (int index) {
-            context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
-                  dataKey: DataKey.ingressSetting3,
-                  value: rtnIngressValues[index],
-                ));
-          },
-          values: rtnIngressValues,
-          texts: [
-            '0dB',
-            '-3dB',
-            '-6dB',
-            AppLocalizations.of(context)!.ingressOpen,
-          ],
-          color: getSettingListCardColor(
-            context: context,
-            isTap: state.tappedSet.contains(DataKey.ingressSetting3),
-          ),
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18ReverseControlBloc,
+//         Setting18ReverseControlState>(
+//       buildWhen: (previous, current) =>
+//           previous.targetIngressValues[DataKey.ingressSetting3] !=
+//               current.targetIngressValues[DataKey.ingressSetting3] ||
+//           previous.editMode != current.editMode,
+//       builder: (context, state) {
+//         return controlToggleButton(
+//           context: context,
+//           editMode: state.editMode,
+//           title: '${AppLocalizations.of(context)!.returnIngressSetting2And3}:',
+//           currentValue:
+//               state.targetIngressValues[DataKey.ingressSetting3] ?? '0',
+//           onChanged: (int index) {
+//             context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
+//                   dataKey: DataKey.ingressSetting3,
+//                   value: rtnIngressValues[index],
+//                 ));
+//           },
+//           values: rtnIngressValues,
+//           texts: [
+//             '0dB',
+//             '-3dB',
+//             '-6dB',
+//             AppLocalizations.of(context)!.ingressOpen,
+//           ],
+//           color: getSettingListCardColor(
+//             context: context,
+//             isTap: state.tappedSet.contains(DataKey.ingressSetting3),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
 
-class _ReturnIngressSetting5And6 extends StatelessWidget {
-  const _ReturnIngressSetting5And6();
+// class _ReturnIngressSetting5And6 extends StatelessWidget {
+//   const _ReturnIngressSetting5And6();
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<Setting18ReverseControlBloc,
-        Setting18ReverseControlState>(
-      buildWhen: (previous, current) =>
-          previous.targetIngressValues[DataKey.ingressSetting4] !=
-              current.targetIngressValues[DataKey.ingressSetting4] ||
-          previous.editMode != current.editMode,
-      builder: (context, state) {
-        return controlToggleButton(
-          context: context,
-          editMode: state.editMode,
-          title: '${AppLocalizations.of(context)!.returnIngressSetting5And6}:',
-          currentValue:
-              state.targetIngressValues[DataKey.ingressSetting4] ?? '0',
-          onChanged: (int index) {
-            context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
-                  dataKey: DataKey.ingressSetting4,
-                  value: rtnIngressValues[index],
-                ));
-          },
-          values: rtnIngressValues,
-          texts: [
-            '0dB',
-            '-3dB',
-            '-6dB',
-            AppLocalizations.of(context)!.ingressOpen,
-          ],
-          color: getSettingListCardColor(
-            context: context,
-            isTap: state.tappedSet.contains(DataKey.ingressSetting4),
-          ),
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<Setting18ReverseControlBloc,
+//         Setting18ReverseControlState>(
+//       buildWhen: (previous, current) =>
+//           previous.targetIngressValues[DataKey.ingressSetting4] !=
+//               current.targetIngressValues[DataKey.ingressSetting4] ||
+//           previous.editMode != current.editMode,
+//       builder: (context, state) {
+//         return controlToggleButton(
+//           context: context,
+//           editMode: state.editMode,
+//           title: '${AppLocalizations.of(context)!.returnIngressSetting5And6}:',
+//           currentValue:
+//               state.targetIngressValues[DataKey.ingressSetting4] ?? '0',
+//           onChanged: (int index) {
+//             context.read<Setting18ReverseControlBloc>().add(ControlItemChanged(
+//                   dataKey: DataKey.ingressSetting4,
+//                   value: rtnIngressValues[index],
+//                 ));
+//           },
+//           values: rtnIngressValues,
+//           texts: [
+//             '0dB',
+//             '-3dB',
+//             '-6dB',
+//             AppLocalizations.of(context)!.ingressOpen,
+//           ],
+//           color: getSettingListCardColor(
+//             context: context,
+//             isTap: state.tappedSet.contains(DataKey.ingressSetting4),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
 
 // class _USTGC extends StatelessWidget {
 //   const _USTGC({super.key});

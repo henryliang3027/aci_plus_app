@@ -61,6 +61,7 @@
     
     "forwardControl": "  Avant  ",
     "returnControl": " Arrière ",
+    "ingressControl": " Entrée ",
     "forwardInputAttenuation1": "Atténuation d'Entrée du Port 1",
     "forwardInputAttenuation3": "Atténuation d'Entrée du Port 3",
     "forwardInputAttenuation4": "Atténuation d'Entrée du Port 4",
@@ -106,8 +107,30 @@
     "returnIngressSetting6": "Réglage d'entrée Port 6",
     "returnIngressSetting2And3": "Réglage d'entrée Port 2 et 3",
     "returnIngressSetting5And6": "Réglage d'entrée Port 5 et 6",
-    "ingressOpen": "Ouvrir",
 
+    "ingressDefault": "{ingress} (Défaut)",
+    "@ingressDefault": {
+        "placeholders": {
+                "ingress": {
+                "type": "String",
+                "example": "0 dB"
+            }
+        }
+    },
+
+    "ingressTemporary": "{ingress} (Dans 30 minutes)",
+    "@ingressTemporary": {
+        "placeholders": {
+                "ingress": {
+                "type": "String",
+                "example": "-3 dB"
+            }
+        }
+    },
+
+    "ingressOpenTemporary": "Ouvrir (Dans 30 minutes)",
+    "ingressOpenPermanent": "Ouvrir (Conserver les paramètres)",
+    "ingressOpen": "Ouvrir",
     
     "status": "Statut",
     "serialNumber": "Numéro de série",

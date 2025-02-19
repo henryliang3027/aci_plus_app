@@ -752,6 +752,134 @@ Widget controlToggleButton({
   );
 }
 
+Widget ingressGridViewButton({
+  required BuildContext context,
+  required String title,
+  required List<String> values,
+  required List<String> texts,
+  required bool editMode,
+  required String currentValue,
+  required ValueChanged onChanged,
+  double spacing = 8.0,
+  double runSpacing = 0.0,
+  double elevation = 1.0,
+  Color? color,
+}) {
+  return SizedBox(
+    width: double.maxFinite,
+    child: Card(
+      elevation: elevation,
+      color: color,
+      child: Padding(
+        padding: const EdgeInsets.all(CustomStyle.sizeXL),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Decide how many items per row; for example, 3
+            const itemsPerRow = 1;
+
+            // Available width for the buttons in one row (excluding spacing).
+            // Because we have (itemsPerRow - 1) gaps between items in the same row,
+            // multiply spacing by (itemsPerRow - 1) to get total horizontal spacing for that row.
+            final totalSpacing = (itemsPerRow - 1) * spacing;
+            final itemWidth =
+                (constraints.maxWidth - totalSpacing) / itemsPerRow;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeL,
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: CustomStyle.sizeXL,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: CustomStyle.sizeXS,
+                  ),
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    runAlignment: WrapAlignment.center,
+                    spacing:
+                        spacing, // horizontal spacing between items in a row
+                    runSpacing: runSpacing, // vertical spacing between rows
+                    children: List.generate(
+                      values.length,
+                      (index) {
+                        return SizedBox(
+                          width:
+                              itemWidth, // fixed width so they distribute evenly
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              // padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                              elevation: 0.0,
+                              foregroundColor: getForegroundColor(
+                                context: context,
+                                targetValue: currentValue,
+                                value: values[index],
+                              ),
+                              backgroundColor: editMode
+                                  ? getBackgroundColor(
+                                      context: context,
+                                      targetValue: currentValue,
+                                      value: values[index],
+                                    )
+                                  : getDisabledBackgroundColor(
+                                      context: context,
+                                      targetValue: currentValue,
+                                      value: values[index],
+                                    ),
+                              side: BorderSide(
+                                color: editMode
+                                    ? getBorderColor(
+                                        context: context,
+                                        targetValue: currentValue,
+                                        value: values[index],
+                                      )
+                                    : getDisabledBorderColor(),
+                                width: 1.0,
+                              ),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0))),
+                            ),
+                            onPressed: editMode
+                                ? () {
+                                    onChanged(index);
+                                  }
+                                : () {},
+                            child: Text(
+                              texts[index],
+                              style: const TextStyle(
+                                fontSize: CustomStyle.sizeXL,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    ),
+  );
+}
+
 Widget twoTextField({
   required BuildContext context,
   required String title,

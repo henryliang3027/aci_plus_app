@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
@@ -7,7 +5,7 @@ import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/setting_items_table.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
-import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_reverse_control_dart/setting18_ccor_node_reverse_control_bloc.dart';
+import 'package:aci_plus_app/setting/bloc/setting18_ccor_node_ingress_control/setting18_ccor_node_ingress_control_bloc.dart';
 import 'package:aci_plus_app/setting/model/card_color.dart';
 import 'package:aci_plus_app/setting/model/confirm_input_dialog.dart';
 import 'package:aci_plus_app/setting/model/setting18_result_text.dart';
@@ -20,8 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Seting18CCorNodeReverseControlView extends StatelessWidget {
-  const Seting18CCorNodeReverseControlView({super.key});
+class Seting18CCorNodeIngressControlView extends StatelessWidget {
+  const Seting18CCorNodeIngressControlView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +29,7 @@ class Seting18CCorNodeReverseControlView extends StatelessWidget {
     if (homeState.connectionStatus.isRequestFailure) {
       // 重新 Initialized, 讀取並顯示空值
       context
-          .read<Setting18CCorNodeReverseControlBloc>()
+          .read<Setting18CCorNodeIngressControlBloc>()
           .add(const Initialized());
     }
 
@@ -44,47 +42,43 @@ class Seting18CCorNodeReverseControlView extends StatelessWidget {
 
       for (Enum name in items) {
         switch (name) {
-          case SettingControl.returnInputAttenuation1:
+          case SettingControl.returnIngressSetting1:
             widgets.add(
-              const _ReturnInputAttenuation1(),
+              const _ReturnIngressSetting1(),
             );
             break;
-          case SettingControl.returnInputAttenuation2:
+          case SettingControl.returnIngressSetting2:
             break;
-          case SettingControl.returnInputAttenuation3:
+          case SettingControl.returnIngressSetting3:
             widgets.add(
-              const _ReturnInputAttenuation3(),
+              const _ReturnIngressSetting3(),
             );
             break;
-          case SettingControl.returnInputAttenuation4:
+          case SettingControl.returnIngressSetting4:
             widgets.add(
-              const _ReturnInputAttenuation4(),
+              const _ReturnIngressSetting4(),
             );
             break;
-          case SettingControl.returnInputAttenuation5:
+          case SettingControl.returnIngressSetting5:
             break;
-          case SettingControl.returnInputAttenuation6:
+          case SettingControl.returnIngressSetting6:
             widgets.add(
-              const _ReturnInputAttenuation6(),
+              const _ReturnIngressSetting6(),
             );
             break;
-          case SettingControl.returnInputAttenuation2And3:
+          case SettingControl.returnIngressSetting2And3:
             break;
-          case SettingControl.returnInputAttenuation5And6:
-            break;
-          case SettingControl.returnOutputAttenuation1:
-            break;
-          case SettingControl.returnOutputEqualizer1:
+          case SettingControl.returnIngressSetting5And6:
             break;
         }
       }
       return widgets.isNotEmpty
           ? widgets
           : [
-              const _ReturnInputAttenuation1(),
-              const _ReturnInputAttenuation3(),
-              const _ReturnInputAttenuation4(),
-              const _ReturnInputAttenuation6(),
+              const _ReturnIngressSetting1(),
+              const _ReturnIngressSetting3(),
+              const _ReturnIngressSetting4(),
+              const _ReturnIngressSetting6(),
             ];
     }
 
@@ -93,11 +87,6 @@ class Seting18CCorNodeReverseControlView extends StatelessWidget {
           getReturnControlParameterWidgetsByPartId(partId);
 
       return Column(children: [
-        returnControlParameters.isNotEmpty
-            ? _ClusterTitle(
-                title: AppLocalizations.of(context)!.returnControlParameters,
-              )
-            : Container(),
         ...returnControlParameters,
         const SizedBox(
           height: CustomStyle.formBottomSpacingL,
@@ -105,8 +94,8 @@ class Seting18CCorNodeReverseControlView extends StatelessWidget {
       ]);
     }
 
-    return BlocListener<Setting18CCorNodeReverseControlBloc,
-        Setting18CCorNodeReverseControlState>(
+    return BlocListener<Setting18CCorNodeIngressControlBloc,
+        Setting18CCorNodeIngressControlState>(
       listener: (context, state) async {
         if (state.submissionStatus.isSubmissionInProgress) {
           await showInProgressDialog(context);
@@ -122,7 +111,7 @@ class Seting18CCorNodeReverseControlView extends StatelessWidget {
           );
 
           context
-              .read<Setting18CCorNodeReverseControlBloc>()
+              .read<Setting18CCorNodeIngressControlBloc>()
               .add(const Initialized());
         }
       },
@@ -147,21 +136,6 @@ List<String> rtnIngressValues = const [
   '2',
   '4',
 ];
-
-List<bool> getSelectionState(String selectedrtnIngress) {
-  Map<String, bool> selectedrtnIngressMap = {
-    '0': false,
-    '1': false,
-    '2': false,
-    '4': false,
-  };
-
-  if (selectedrtnIngressMap.containsKey(selectedrtnIngress)) {
-    selectedrtnIngressMap[selectedrtnIngress] = true;
-  }
-
-  return selectedrtnIngressMap.values.toList();
-}
 
 class _ClusterTitle extends StatelessWidget {
   const _ClusterTitle({required this.title});
@@ -190,148 +164,148 @@ class _ClusterTitle extends StatelessWidget {
   }
 }
 
-class _ReturnInputAttenuation1 extends StatelessWidget {
-  const _ReturnInputAttenuation1();
+class _ReturnIngressSetting1 extends StatelessWidget {
+  const _ReturnIngressSetting1();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18CCorNodeReverseControlBloc,
-        Setting18CCorNodeReverseControlState>(
+    return BlocBuilder<Setting18CCorNodeIngressControlBloc,
+        Setting18CCorNodeIngressControlState>(
+      buildWhen: (previous, current) =>
+          previous.returnIngressSetting1 != current.returnIngressSetting1 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.usVCA1.minValue;
-        double maxValue = state.usVCA1.maxValue;
-        return controlTextSlider(
+        return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation1} (${CustomStyle.dB}):',
-          minValue: minValue,
-          maxValue: maxValue,
-          currentValue: state.usVCA1.value,
-          onChanged: (usVCA1) {
+          title: '${AppLocalizations.of(context)!.returnIngressSetting1}:',
+          currentValue: state.returnIngressSetting1,
+          onChanged: (int index) {
             context
-                .read<Setting18CCorNodeReverseControlBloc>()
-                .add(USVCA1Changed(
-                  usVCA1: usVCA1,
-                ));
+                .read<Setting18CCorNodeIngressControlBloc>()
+                .add(ReturnIngressSetting1Changed(rtnIngressValues[index]));
           },
-          errorText: state.usVCA1.isNotValid
-              ? AppLocalizations.of(context)!.textFieldErrorMessage
-              : null,
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
           color: getSettingListCardColor(
               context: context,
-              isTap: state.tappedSet.contains(DataKey.usVCA1)),
+              isTap: state.tappedSet.contains(DataKey.ingressSetting1)),
         );
       },
     );
   }
 }
 
-class _ReturnInputAttenuation3 extends StatelessWidget {
-  const _ReturnInputAttenuation3();
+class _ReturnIngressSetting3 extends StatelessWidget {
+  const _ReturnIngressSetting3();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18CCorNodeReverseControlBloc,
-        Setting18CCorNodeReverseControlState>(
+    return BlocBuilder<Setting18CCorNodeIngressControlBloc,
+        Setting18CCorNodeIngressControlState>(
+      buildWhen: (previous, current) =>
+          previous.returnIngressSetting3 != current.returnIngressSetting3 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.usVCA3.minValue;
-        double maxValue = state.usVCA3.maxValue;
-        return controlTextSlider(
+        return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation3} (${CustomStyle.dB}):',
-          minValue: minValue,
-          maxValue: maxValue,
-          currentValue: state.usVCA3.value,
-          onChanged: (usVCA3) {
+          title: '${AppLocalizations.of(context)!.returnIngressSetting3}:',
+          currentValue: state.returnIngressSetting3,
+          onChanged: (int index) {
             context
-                .read<Setting18CCorNodeReverseControlBloc>()
-                .add(USVCA3Changed(
-                  usVCA3: usVCA3,
-                ));
+                .read<Setting18CCorNodeIngressControlBloc>()
+                .add(ReturnIngressSetting3Changed(rtnIngressValues[index]));
           },
-          errorText: state.usVCA3.isNotValid
-              ? AppLocalizations.of(context)!.textFieldErrorMessage
-              : null,
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
           color: getSettingListCardColor(
               context: context,
-              isTap: state.tappedSet.contains(DataKey.usVCA3)),
+              isTap: state.tappedSet.contains(DataKey.ingressSetting3)),
         );
       },
     );
   }
 }
 
-class _ReturnInputAttenuation4 extends StatelessWidget {
-  const _ReturnInputAttenuation4();
+class _ReturnIngressSetting4 extends StatelessWidget {
+  const _ReturnIngressSetting4();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18CCorNodeReverseControlBloc,
-        Setting18CCorNodeReverseControlState>(
+    return BlocBuilder<Setting18CCorNodeIngressControlBloc,
+        Setting18CCorNodeIngressControlState>(
+      buildWhen: (previous, current) =>
+          previous.returnIngressSetting4 != current.returnIngressSetting4 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.usVCA4.minValue;
-        double maxValue = state.usVCA4.maxValue;
-        return controlTextSlider(
+        return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation4} (${CustomStyle.dB}):',
-          minValue: minValue,
-          maxValue: maxValue,
-          currentValue: state.usVCA4.value,
-          onChanged: (usVCA4) {
+          title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
+          currentValue: state.returnIngressSetting4,
+          onChanged: (int index) {
             context
-                .read<Setting18CCorNodeReverseControlBloc>()
-                .add(USVCA4Changed(
-                  usVCA4: usVCA4,
-                ));
+                .read<Setting18CCorNodeIngressControlBloc>()
+                .add(ReturnIngressSetting4Changed(rtnIngressValues[index]));
           },
-          errorText: state.usVCA4.isNotValid
-              ? AppLocalizations.of(context)!.textFieldErrorMessage
-              : null,
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
           color: getSettingListCardColor(
               context: context,
-              isTap: state.tappedSet.contains(DataKey.usVCA4)),
+              isTap: state.tappedSet.contains(DataKey.ingressSetting4)),
         );
       },
     );
   }
 }
 
-class _ReturnInputAttenuation6 extends StatelessWidget {
-  const _ReturnInputAttenuation6();
+class _ReturnIngressSetting6 extends StatelessWidget {
+  const _ReturnIngressSetting6();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Setting18CCorNodeReverseControlBloc,
-        Setting18CCorNodeReverseControlState>(
+    return BlocBuilder<Setting18CCorNodeIngressControlBloc,
+        Setting18CCorNodeIngressControlState>(
+      buildWhen: (previous, current) =>
+          previous.returnIngressSetting6 != current.returnIngressSetting6 ||
+          previous.editMode != current.editMode,
       builder: (context, state) {
-        double minValue = state.usVCA6.minValue;
-        double maxValue = state.usVCA6.maxValue;
-        return controlTextSlider(
+        return controlToggleButton(
           context: context,
           editMode: state.editMode,
-          title:
-              '${AppLocalizations.of(context)!.returnInputAttenuation6} (${CustomStyle.dB}):',
-          minValue: minValue,
-          maxValue: maxValue,
-          currentValue: state.usVCA6.value,
-          onChanged: (usVCA6) {
+          title: '${AppLocalizations.of(context)!.returnIngressSetting6}:',
+          currentValue: state.returnIngressSetting6,
+          onChanged: (int index) {
             context
-                .read<Setting18CCorNodeReverseControlBloc>()
-                .add(USVCA6Changed(
-                  usVCA6: usVCA6,
-                ));
+                .read<Setting18CCorNodeIngressControlBloc>()
+                .add(ReturnIngressSetting6Changed(rtnIngressValues[index]));
           },
-          errorText: state.usVCA6.isNotValid
-              ? AppLocalizations.of(context)!.textFieldErrorMessage
-              : null,
+          values: rtnIngressValues,
+          texts: [
+            '0dB',
+            '-3dB',
+            '-6dB',
+            AppLocalizations.of(context)!.ingressOpen,
+          ],
           color: getSettingListCardColor(
               context: context,
-              isTap: state.tappedSet.contains(DataKey.usVCA6)),
+              isTap: state.tappedSet.contains(DataKey.ingressSetting6)),
         );
       },
     );
@@ -373,7 +347,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
             ),
             onPressed: () {
               context
-                  .read<Setting18CCorNodeReverseControlBloc>()
+                  .read<Setting18CCorNodeIngressControlBloc>()
                   .add(const EditModeDisabled());
 
               FocusScopeNode currentFocus = FocusScope.of(context);
@@ -412,18 +386,18 @@ class _SettingFloatingActionButton extends StatelessWidget {
                       handleUpdateAction(
                         context: context,
                         targetBloc:
-                            context.read<Setting18CCorNodeReverseControlBloc>(),
+                            context.read<Setting18CCorNodeIngressControlBloc>(),
                         action: () {
                           context
-                              .read<Setting18CCorNodeReverseControlBloc>()
+                              .read<Setting18CCorNodeIngressControlBloc>()
                               .add(const SettingSubmitted());
                         },
                         waitForState: (state) {
-                          Setting18CCorNodeReverseControlState
-                              setting18CCorNodeReverseControlState =
-                              state as Setting18CCorNodeReverseControlState;
+                          Setting18CCorNodeIngressControlState
+                              setting18CCorNodeIngressControlState =
+                              state as Setting18CCorNodeIngressControlState;
 
-                          return setting18CCorNodeReverseControlState
+                          return setting18CCorNodeIngressControlState
                               .submissionStatus.isSubmissionSuccess;
                         },
                       );
@@ -467,7 +441,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
                               graphFilePath: graphFilePath,
                             ))
                         .then((value) => context
-                            .read<Setting18CCorNodeReverseControlBloc>()
+                            .read<Setting18CCorNodeIngressControlBloc>()
                             .add(const Initialized()));
                   },
                   child: Icon(
@@ -494,7 +468,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
             ),
             onPressed: () {
               context
-                  .read<Setting18CCorNodeReverseControlBloc>()
+                  .read<Setting18CCorNodeIngressControlBloc>()
                   .add(const EditModeEnabled());
             },
           ),
@@ -575,16 +549,16 @@ class _SettingFloatingActionButton extends StatelessWidget {
     // settingListViewState 管理編輯模式或是觀看模式
     return Builder(builder: (context) {
       final HomeState homeState = context.watch<HomeBloc>().state;
-      final Setting18CCorNodeReverseControlState
-          setting18CCorNodeReverseControlState =
-          context.watch<Setting18CCorNodeReverseControlBloc>().state;
+      final Setting18CCorNodeIngressControlState
+          setting18CCorNodeIngressControlState =
+          context.watch<Setting18CCorNodeIngressControlBloc>().state;
 
       bool editable = getEditable(loadingStatus: homeState.loadingStatus);
       return editable
           ? getFloatingActionButtons(
-              editMode: setting18CCorNodeReverseControlState.editMode,
+              editMode: setting18CCorNodeIngressControlState.editMode,
               enableSubmission:
-                  setting18CCorNodeReverseControlState.enableSubmission,
+                  setting18CCorNodeIngressControlState.enableSubmission,
             )
           : getDisabledFloatingActionButtons();
     });
