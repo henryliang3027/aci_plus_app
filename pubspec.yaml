@@ -39,15 +39,17 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   formz: ^0.6.1
-  permission_handler: ^11.3.1
+    
   # win_ble: ^1.1.1 # for windows
   # quick_blue: ^0.4.1+1 # for windows
   universal_ble: ^0.12.0
   flutter_reactive_ble: ^5.2.0
+  # bluetooth_enable:
+  #   git:
+  #     url: https://github.com/henryliang3027/bluetooth_enable.git
+  #     ref: master
   bluetooth_enable:
-    git:
-      url: https://github.com/henryliang3027/bluetooth_enable.git
-      ref: master
+    path: /Users/henry.liang/AndroidStudioProjects/new/bluetooth_enable
   location: ^5.0.3
   equatable: ^2.0.5
   dropdown_button2: ^2.3.9 # custom dropdownButton and dropdownMenuItems
@@ -58,7 +60,10 @@ dependencies:
   #     ref: master
   excel: ^4.0.6
   path_provider: ^2.1.4
-  open_filex: ^4.3.1
+  open_filex:
+    git:
+      url: https://github.com/henryliang3027/open_filex.git
+      ref: master
   share_plus: ^10.0.0
   shared_preferences: ^2.2.0 # for persist two pilotCodes
   package_info_plus: ^8.0.0
@@ -66,7 +71,7 @@ dependencies:
   geolocator: ^10.1.0
   touchable: ^1.0.2
   xml: ^6.3.0
-  simple_barcode_scanner: ^0.2.5 # for windows
+  simple_barcode_scanner: ^0.3.0 # for windows
   zxing2: ^0.2.3 # fow windows qr code image
   camera_checker:
     git:

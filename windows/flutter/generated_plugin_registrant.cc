@@ -6,6 +6,7 @@
 
 #include "generated_plugin_registrant.h"
 
+#include <bluetooth_enable/bluetooth_enable_plugin_c_api.h>
 #include <camera_checker/camera_checker_plugin_c_api.h>
 #include <firebase_core/firebase_core_plugin_c_api.h>
 #include <geolocator_windows/geolocator_windows.h>
@@ -17,6 +18,8 @@
 #include <win_outlook/win_outlook_plugin_c_api.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
+  BluetoothEnablePluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("BluetoothEnablePluginCApi"));
   CameraCheckerPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("CameraCheckerPluginCApi"));
   FirebaseCorePluginCApiRegisterWithRegistrar(

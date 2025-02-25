@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  bluetooth_enable
   camera_checker
   firebase_core
   geolocator_windows
