@@ -56,3 +56,4 @@ ios/Runner.xcodeproj/project.pbxproj
 
 .VSCodeCounter/
 pubspec.lock
+android/app/.cxx/
