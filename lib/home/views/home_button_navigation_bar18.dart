@@ -2,6 +2,7 @@ import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
+import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/pulsator.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +112,9 @@ class Indicator extends StatelessWidget {
       }
     }
 
-    String getUnitStatusAlarmState({
+    // alarmState (alarm mask) == '0' 代表 enable
+    // alarmState (alarm mask) == '1' 代表 disable
+    String getAmpUnitStatusAlarmState({
       required String temperatureAlarmState,
       required String voltageAlarmState,
       required String voltageRippleAlarmState,
@@ -131,9 +134,78 @@ class Indicator extends StatelessWidget {
       }
     }
 
+    // alarmState (alarm mask) == '0' 代表 enable
+    // alarmState (alarm mask) == '1' 代表 disable
+    String getNodeUnitStatusAlarmState({
+      required String temperatureAlarmState,
+      required String voltageAlarmState,
+      required String rfOutputPower1AlarmState,
+      required String rfOutputPower3AlarmState,
+      required String rfOutputPower4AlarmState,
+      required String rfOutputPower6AlarmState,
+    }) {
+      if (temperatureAlarmState == '1' &&
+          voltageAlarmState == '1' &&
+          rfOutputPower1AlarmState == '1' &&
+          rfOutputPower3AlarmState == '1' &&
+          rfOutputPower4AlarmState == '1' &&
+          rfOutputPower6AlarmState == '1') {
+        return '1';
+      } else {
+        return '0';
+      }
+    }
+
+    Alarm getAmpUnitAlarmSeverityWithoutSplitOption({
+      required Alarm unitStatusAlarmSeverity,
+      required Alarm splitOptionAlarmSeverity,
+      required Alarm temperatureAlarmSeverity,
+      required Alarm voltageAlarmSeverity,
+      required Alarm voltageRippleAlarmSeverity,
+      required Alarm outputPowerAlarmSeverity,
+      required Alarm rfOutputPilotLowFrequencyAlarmSeverity,
+      required Alarm rfOutputPilotHighFrequencyAlarmSeverity,
+    }) {
+      if (splitOptionAlarmSeverity == Alarm.danger &&
+          temperatureAlarmSeverity == Alarm.success &&
+          voltageAlarmSeverity == Alarm.success &&
+          voltageRippleAlarmSeverity == Alarm.success &&
+          outputPowerAlarmSeverity == Alarm.success &&
+          rfOutputPilotLowFrequencyAlarmSeverity == Alarm.success &&
+          rfOutputPilotHighFrequencyAlarmSeverity == Alarm.success) {
+        return Alarm.success;
+      } else {
+        return unitStatusAlarmSeverity;
+      }
+    }
+
+    Alarm getNodeUnitAlarmSeverityWithoutSplitOption({
+      required Alarm unitStatusAlarmSeverity,
+      required Alarm splitOptionAlarmSeverity,
+      required Alarm temperatureAlarmSeverity,
+      required Alarm voltageAlarmSeverity,
+      required Alarm voltageRippleAlarmSeverity,
+      required Alarm rfOutputPower1AlarmSeverity,
+      required Alarm rfOutputPower3AlarmSeverity,
+      required Alarm rfOutputPower4AlarmSeverity,
+      required Alarm rfOutputPower6AlarmSeverity,
+    }) {
+      if (splitOptionAlarmSeverity == Alarm.danger &&
+          temperatureAlarmSeverity == Alarm.success &&
+          voltageAlarmSeverity == Alarm.success &&
+          voltageRippleAlarmSeverity == Alarm.success &&
+          rfOutputPower1AlarmSeverity == Alarm.success &&
+          rfOutputPower3AlarmSeverity == Alarm.success &&
+          rfOutputPower4AlarmSeverity == Alarm.success &&
+          rfOutputPower6AlarmSeverity == Alarm.success) {
+        return Alarm.success;
+      } else {
+        return unitStatusAlarmSeverity;
+      }
+    }
+
     Widget getPulsator({
-      required String alarmState,
-      required Alarm alarm,
+      required Color color,
       required String name,
       bool animationEnabled = true,
     }) {
@@ -141,9 +213,7 @@ class Indicator extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Pulsator(
           size: 24, // Circle size
-          color: alarmState == '0'
-              ? CustomStyle.alarmColor[alarm.name] ?? const Color(0xff6c757d)
-              : CustomStyle.alarmColor[Alarm.medium.name]!, // Ripple color
+          color: color,
           duration: const Duration(
             seconds: 2,
           ), //  animationEnabled = false 時 Ripple duration 可以忽略
@@ -154,108 +224,160 @@ class Indicator extends StatelessWidget {
       );
     }
 
+    Color getPulsatorColor({
+      required String alarmState,
+      required Alarm alarm,
+    }) {
+      return alarmState == '0'
+          ? CustomStyle.alarmColor[alarm.name] ?? const Color(0xff6c757d)
+          : CustomStyle.alarmColor[Alarm.success.name]!; // Ripple color
+    }
+
     return BlocBuilder<HomeBloc, HomeState>(
-      buildWhen: (previous, current) =>
-          previous.characteristicData[DataKey.unitStatusAlarmSeverity] != current.characteristicData[DataKey.unitStatusAlarmSeverity] ||
-          previous.characteristicData[DataKey.temperatureAlarmSeverity] !=
-              current.characteristicData[DataKey.temperatureAlarmSeverity] ||
-          previous.characteristicData[DataKey.voltageAlarmSeverity] !=
-              current.characteristicData[DataKey.voltageAlarmSeverity] ||
-          previous.characteristicData[DataKey.rfOutputPilotLowFrequencyAlarmSeverity] !=
-              current.characteristicData[
-                  DataKey.rfOutputPilotLowFrequencyAlarmSeverity] ||
-          previous.characteristicData[DataKey.rfOutputPilotHighFrequencyAlarmSeverity] !=
-              current.characteristicData[
-                  DataKey.rfOutputPilotHighFrequencyAlarmSeverity] ||
-          previous.characteristicData[DataKey.voltageRippleAlarmSeverity] !=
-              current.characteristicData[DataKey.voltageRippleAlarmSeverity] ||
-          previous.characteristicData[DataKey.outputPowerAlarmSeverity] !=
-              current.characteristicData[DataKey.outputPowerAlarmSeverity] ||
-          previous.characteristicData[DataKey.voltageAlarmState] !=
-              current.characteristicData[DataKey.voltageAlarmState] ||
-          previous.characteristicData[DataKey.temperatureAlarmState] !=
-              current.characteristicData[DataKey.temperatureAlarmState] ||
-          previous.characteristicData[DataKey.rfOutputPilotLowFrequencyAlarmState] !=
-              current.characteristicData[
-                  DataKey.rfOutputPilotLowFrequencyAlarmState] ||
-          previous.characteristicData[DataKey.rfOutputPilotHighFrequencyAlarmState] !=
-              current.characteristicData[DataKey.rfOutputPilotHighFrequencyAlarmState] ||
-          previous.characteristicData[DataKey.voltageRippleAlarmState] != current.characteristicData[DataKey.voltageRippleAlarmState] ||
-          previous.characteristicData[DataKey.rfOutputPowerAlarmState] != current.characteristicData[DataKey.rfOutputPowerAlarmState],
       builder: (context, state) {
-        Alarm unitStatusAlarmSeverity = getAlarmEnumFromString(
-            state.characteristicData[DataKey.unitStatusAlarmSeverity] ?? '');
-        Alarm temperatureAlarmSeverity = getAlarmEnumFromString(
-            state.characteristicData[DataKey.temperatureAlarmSeverity] ?? '');
-        Alarm voltageAlarmSeverity = getAlarmEnumFromString(
-            state.characteristicData[DataKey.voltageAlarmSeverity] ?? '');
+        if (state.loadingStatus.isRequestSuccess) {
+          Alarm unitStatusAlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.unitStatusAlarmSeverity] ?? '');
 
-        String temperatureAlarmState =
-            state.characteristicData[DataKey.temperatureAlarmState] ?? '1';
+          Alarm splitOptionAlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.splitOptionAlarmSeverity] ?? '');
 
-        String voltageAlarmState =
-            state.characteristicData[DataKey.voltageAlarmState] ?? '1';
+          Alarm temperatureAlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.temperatureAlarmSeverity] ?? '');
 
-        String voltageRippleAlarmState =
-            state.characteristicData[DataKey.voltageRippleAlarmState] ?? '1';
+          Alarm voltageAlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.voltageAlarmSeverity] ?? '');
 
-        String rfOutputPowerAlarmState =
-            state.characteristicData[DataKey.rfOutputPowerAlarmState] ?? '1';
+          Alarm voltageRippleAlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.voltageRippleAlarmSeverity] ??
+                  '');
 
-        String rfOutputPilotLowFrequencyAlarmState = state.characteristicData[
-                DataKey.rfOutputPilotLowFrequencyAlarmState] ??
-            '1';
+          Alarm outputPowerAlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.outputPowerAlarmSeverity] ?? '');
 
-        String rfOutputPilotHighFrequencyAlarmState = state.characteristicData[
-                DataKey.rfOutputPilotHighFrequencyAlarmState] ??
-            '1';
+          Alarm rfOutputPilotLowFrequencyAlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[
+                      DataKey.rfOutputPilotLowFrequencyAlarmSeverity] ??
+                  '');
 
-        String unitStatusAlarmState = getUnitStatusAlarmState(
-          temperatureAlarmState: temperatureAlarmState,
-          voltageAlarmState: voltageAlarmState,
-          voltageRippleAlarmState: voltageRippleAlarmState,
-          rfOutputPowerAlarmState: rfOutputPowerAlarmState,
-          rfOutputPilotLowFrequencyAlarmState:
-              rfOutputPilotLowFrequencyAlarmState,
-          rfOutputPilotHighFrequencyAlarmState:
-              rfOutputPilotHighFrequencyAlarmState,
-        );
+          Alarm rfOutputPilotHighFrequencyAlarmSeverity =
+              getAlarmEnumFromString(state.characteristicData[
+                      DataKey.rfOutputPilotHighFrequencyAlarmSeverity] ??
+                  '');
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              getPulsator(
-                alarmState: unitStatusAlarmState,
-                alarm: unitStatusAlarmSeverity,
-                name: AppLocalizations.of(context)!.unitStatusAlarm,
-                animationEnabled: unitStatusAlarmState == '0' &&
-                        unitStatusAlarmSeverity == Alarm.danger
-                    ? true
-                    : false,
-              ),
-              getPulsator(
-                alarmState: temperatureAlarmState,
-                alarm: temperatureAlarmSeverity,
-                name: AppLocalizations.of(context)!.temperatureAlarm,
-                animationEnabled: temperatureAlarmState == '0' &&
-                        temperatureAlarmSeverity == Alarm.danger
-                    ? true
-                    : false,
-              ),
-              getPulsator(
-                alarmState: voltageAlarmState,
-                alarm: voltageAlarmSeverity,
-                name: AppLocalizations.of(context)!.powerSupplyAlarm,
-                animationEnabled: voltageAlarmState == '0' &&
-                        voltageAlarmSeverity == Alarm.danger
-                    ? true
-                    : false,
-              ),
-            ],
-          ),
-        );
+          String temperatureAlarmState =
+              state.characteristicData[DataKey.temperatureAlarmState] ?? '1';
+
+          String voltageAlarmState =
+              state.characteristicData[DataKey.voltageAlarmState] ?? '1';
+
+          String voltageRippleAlarmState =
+              state.characteristicData[DataKey.voltageRippleAlarmState] ?? '1';
+
+          String rfOutputPowerAlarmState =
+              state.characteristicData[DataKey.rfOutputPowerAlarmState] ?? '1';
+
+          String rfOutputPilotLowFrequencyAlarmState = state.characteristicData[
+                  DataKey.rfOutputPilotLowFrequencyAlarmState] ??
+              '1';
+
+          String rfOutputPilotHighFrequencyAlarmState =
+              state.characteristicData[
+                      DataKey.rfOutputPilotHighFrequencyAlarmState] ??
+                  '1';
+
+          String unitAmpStatusAlarmState = getAmpUnitStatusAlarmState(
+            temperatureAlarmState: temperatureAlarmState,
+            voltageAlarmState: voltageAlarmState,
+            voltageRippleAlarmState: voltageRippleAlarmState,
+            rfOutputPowerAlarmState: rfOutputPowerAlarmState,
+            rfOutputPilotLowFrequencyAlarmState:
+                rfOutputPilotLowFrequencyAlarmState,
+            rfOutputPilotHighFrequencyAlarmState:
+                rfOutputPilotHighFrequencyAlarmState,
+          );
+
+          // 不使用 splitOptionAlarmSeverity
+          Alarm ampUnitAlarmSeverityWithoutSplitOption =
+              getAmpUnitAlarmSeverityWithoutSplitOption(
+            unitStatusAlarmSeverity: unitStatusAlarmSeverity,
+            splitOptionAlarmSeverity: splitOptionAlarmSeverity,
+            temperatureAlarmSeverity: temperatureAlarmSeverity,
+            voltageAlarmSeverity: voltageAlarmSeverity,
+            voltageRippleAlarmSeverity: voltageRippleAlarmSeverity,
+            outputPowerAlarmSeverity: outputPowerAlarmSeverity,
+            rfOutputPilotLowFrequencyAlarmSeverity:
+                rfOutputPilotLowFrequencyAlarmSeverity,
+            rfOutputPilotHighFrequencyAlarmSeverity:
+                rfOutputPilotHighFrequencyAlarmSeverity,
+          );
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                getPulsator(
+                  color: getPulsatorColor(
+                    alarmState: unitAmpStatusAlarmState,
+                    alarm: ampUnitAlarmSeverityWithoutSplitOption,
+                  ),
+                  name: AppLocalizations.of(context)!.unitStatusAlarm,
+                  animationEnabled: unitAmpStatusAlarmState == '0' &&
+                          ampUnitAlarmSeverityWithoutSplitOption == Alarm.danger
+                      ? true
+                      : false,
+                ),
+                getPulsator(
+                  color: getPulsatorColor(
+                    alarmState: temperatureAlarmState,
+                    alarm: temperatureAlarmSeverity,
+                  ),
+                  name: AppLocalizations.of(context)!.temperatureAlarm,
+                  animationEnabled: temperatureAlarmState == '0' &&
+                          temperatureAlarmSeverity == Alarm.danger
+                      ? true
+                      : false,
+                ),
+                getPulsator(
+                  color: getPulsatorColor(
+                    alarmState: voltageAlarmState,
+                    alarm: voltageAlarmSeverity,
+                  ),
+                  name: AppLocalizations.of(context)!.powerSupplyAlarm,
+                  animationEnabled: voltageAlarmState == '0' &&
+                          voltageAlarmSeverity == Alarm.danger
+                      ? true
+                      : false,
+                ),
+              ],
+            ),
+          );
+        } else {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                getPulsator(
+                  color: const Color(0xff6c757d),
+                  name: AppLocalizations.of(context)!.powerSupplyAlarm,
+                  animationEnabled: false,
+                ),
+                getPulsator(
+                  color: const Color(0xff6c757d),
+                  name: AppLocalizations.of(context)!.powerSupplyAlarm,
+                  animationEnabled: false,
+                ),
+                getPulsator(
+                  color: const Color(0xff6c757d),
+                  name: AppLocalizations.of(context)!.powerSupplyAlarm,
+                  animationEnabled: false,
+                ),
+              ],
+            ),
+          );
+        }
       },
     );
   }

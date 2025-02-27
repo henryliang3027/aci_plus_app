@@ -405,18 +405,10 @@ class BLEClient extends BLEClientBase {
 
     Future.microtask(() async {
       try {
-        if (Platform.isAndroid) {
-          await _ble!.writeCharacteristicWithResponse(
-            _qualifiedCharacteristic,
-            value: value,
-          );
-        } else {
-          // iOS
-          await _ble!.writeCharacteristicWithoutResponse(
-            _qualifiedCharacteristic,
-            value: value,
-          );
-        }
+        await _ble!.writeCharacteristicWithResponse(
+          _qualifiedCharacteristic,
+          value: value,
+        );
       } catch (e) {
         cancelCharacteristicDataTimer(
             name:
@@ -450,18 +442,11 @@ class BLEClient extends BLEClientBase {
     Future.microtask(() async {
       for (int i = 0; i < chunks.length; i++) {
         try {
-          if (Platform.isAndroid) {
-            await _ble!.writeCharacteristicWithResponse(
-              _qualifiedCharacteristic,
-              value: chunks[i],
-            );
-          } else {
-            // iOS
-            await _ble!.writeCharacteristicWithoutResponse(
-              _qualifiedCharacteristic,
-              value: chunks[i],
-            );
-          }
+          await _ble!.writeCharacteristicWithResponse(
+            _qualifiedCharacteristic,
+            value: chunks[i],
+          );
+          print('$i sent');
         } catch (e) {
           cancelCharacteristicDataTimer(
               name:
