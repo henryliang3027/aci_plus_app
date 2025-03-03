@@ -21,26 +21,31 @@ class Setting18FirmwareLogForm extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeState homeState = context.read<HomeBloc>().state;
 
+    String partId = homeState.characteristicData[DataKey.partId] ?? '';
+
     int firmwareVersion = convertFirmwareVersionStringToInt(
         homeState.characteristicData[DataKey.firmwareVersion] ?? '0');
 
-    if (firmwareVersion >= 148) {
-      handleUpdateAction(
-        context: context,
-        targetBloc: context.read<Setting18FirmwareLogBloc>(),
-        action: () {
-          context
-              .read<Setting18FirmwareLogBloc>()
-              .add(const UpdateLogRequested());
-        },
-        waitForState: (state) {
-          Setting18FirmwareLogState setting18firmwareLogState =
-              state as Setting18FirmwareLogState;
+    // CCor Node 的 firmware version 148 開始有屬性設定功能, 但是暫時不 release
+    if (partId != '4') {
+      if (firmwareVersion >= 148) {
+        handleUpdateAction(
+          context: context,
+          targetBloc: context.read<Setting18FirmwareLogBloc>(),
+          action: () {
+            context
+                .read<Setting18FirmwareLogBloc>()
+                .add(const UpdateLogRequested());
+          },
+          waitForState: (state) {
+            Setting18FirmwareLogState setting18firmwareLogState =
+                state as Setting18FirmwareLogState;
 
-          return setting18firmwareLogState.updateLogStatus.isRequestSuccess ||
-              setting18firmwareLogState.updateLogStatus.isRequestFailure;
-        },
-      );
+            return setting18firmwareLogState.updateLogStatus.isRequestSuccess ||
+                setting18firmwareLogState.updateLogStatus.isRequestFailure;
+          },
+        );
+      }
     }
 
     Future<void> showFailureDialog(String msg) async {

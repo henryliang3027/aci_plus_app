@@ -156,7 +156,8 @@ class Setting18CCorNodeAttributeView extends StatelessWidget {
     }
 
     Widget buildConfigurationWidget() {
-      if (firmwareVersion >= 148) {
+      // firmware version 148 開始有屬性設定功能, 但是暫時不 release
+      if (firmwareVersion >= 150) {
         return Column(
           children: [
             _Location(
