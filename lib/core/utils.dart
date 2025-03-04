@@ -381,6 +381,20 @@ int getDelayByRSSI(int rssi) {
   }
 }
 
+void closeKeyboard({required BuildContext context}) {
+  // Removes all focus from the FocusScope, but focus may be restored after closing a dialog,
+  // causing the keyboard to reappear.
+  // FocusScope.of(context).unfocus();
+
+  // focusedChild?.unfocus();
+  // Only removes focus from the currently focused widget,
+  // preventing Flutter from restoring focus when closing the dialog.
+  FocusScopeNode currentFocus = FocusScope.of(context);
+  if (!currentFocus.hasPrimaryFocus) {
+    currentFocus.focusedChild?.unfocus();
+  }
+}
+
 A1P8GAlarm decodeAlarmSeverity(List<int> rawData) {
   // 給 定期更新 information page 的 alarm 用
   Alarm unitStatusAlarmSeverity = Alarm.medium;

@@ -246,15 +246,20 @@ class Setting18CCorNodeAttributeView extends StatelessWidget {
           deviceNoteTextEditingController.text = state.deviceNote;
         }
       },
-      child: Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: buildConfigurationWidget(),
+      child: GestureDetector(
+        onTap: () {
+          closeKeyboard(context: context);
+        },
+        child: Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: buildConfigurationWidget(),
+            ),
           ),
-        ),
-        floatingActionButton: _SettingFloatingActionButton(
-          partId: partId,
-          // currentDetectedSplitOption: currentDetectedSplitOption,
+          floatingActionButton: _SettingFloatingActionButton(
+            partId: partId,
+            // currentDetectedSplitOption: currentDetectedSplitOption,
+          ),
         ),
       ),
     );
@@ -309,10 +314,6 @@ class _Location extends StatelessWidget {
                       context
                           .read<Setting18CCorNodeAttributeBloc>()
                           .add(LocationChanged(location));
-                    },
-                    onTapOutside: (event) {
-                      // 點擊其他區域關閉螢幕鍵盤
-                      FocusManager.instance.primaryFocus?.unfocus();
                     },
                     maxLength: 48,
                     decoration: InputDecoration(
@@ -384,10 +385,6 @@ class _Coordinates extends StatelessWidget {
                       context
                           .read<Setting18CCorNodeAttributeBloc>()
                           .add(CoordinatesChanged(coordinate));
-                    },
-                    onTapOutside: (event) {
-                      // 點擊其他區域關閉螢幕鍵盤
-                      FocusManager.instance.primaryFocus?.unfocus();
                     },
                     maxLength: 39,
                     decoration: InputDecoration(
@@ -517,10 +514,6 @@ class _TechnicianID extends StatelessWidget {
                       context
                           .read<Setting18CCorNodeAttributeBloc>()
                           .add(TechnicianIDChanged(technicianID));
-                    },
-                    onTapOutside: (event) {
-                      // 點擊其他區域關閉螢幕鍵盤
-                      FocusManager.instance.primaryFocus?.unfocus();
                     },
                     maxLength: 8,
                     decoration: InputDecoration(
@@ -834,10 +827,6 @@ class _CascadePosition extends StatelessWidget {
                           .read<Setting18CCorNodeAttributeBloc>()
                           .add(CascadePositionChanged(cascadePosition));
                     },
-                    onTapOutside: (event) {
-                      // 點擊其他區域關閉螢幕鍵盤
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
                     maxLength: 32,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(
@@ -910,10 +899,6 @@ class _DeviceName extends StatelessWidget {
                       context
                           .read<Setting18CCorNodeAttributeBloc>()
                           .add(DeviceNameChanged(deviceName));
-                    },
-                    onTapOutside: (event) {
-                      // 點擊其他區域關閉螢幕鍵盤
-                      FocusManager.instance.primaryFocus?.unfocus();
                     },
                     maxLength: 32,
                     decoration: InputDecoration(
@@ -1026,10 +1011,7 @@ class _DeviceNote extends StatelessWidget {
                           .read<Setting18CCorNodeAttributeBloc>()
                           .add(DeviceNoteChanged(deviceNote));
                     },
-                    onTapOutside: (event) {
-                      // 點擊其他區域關閉螢幕鍵盤
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
+
                     maxLength: 400,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(
@@ -1096,14 +1078,11 @@ class _SettingFloatingActionButton extends StatelessWidget {
               color: Theme.of(context).colorScheme.onPrimary,
             ),
             onPressed: () {
+              closeKeyboard(context: context);
+
               context
                   .read<Setting18CCorNodeAttributeBloc>()
                   .add(const EditModeDisabled());
-
-              FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.focusedChild?.unfocus();
-              }
             },
           ),
           const SizedBox(
@@ -1118,6 +1097,8 @@ class _SettingFloatingActionButton extends StatelessWidget {
                 : Colors.grey.withAlpha(200),
             onPressed: enableSubmission
                 ? () async {
+                    closeKeyboard(context: context);
+
                     bool shouldSubmit = false;
 
                     if (kDebugMode) {
