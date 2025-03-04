@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:aci_plus_app/repositories/amp18_parser.dart';
+
 Map<int, double> rfOutputs = {
   261: 35.0,
   267: 35.1,
@@ -515,3 +519,14 @@ Map<int, double> rfInputs = {
   1785: 1.8,
   1791: 1.8
 };
+
+List<Log1p8G> sampleLog1p8gs = List.generate(1024, (i) {
+  return Log1p8G(
+    dateTime: DateTime.now().add(Duration(minutes: i * 30)),
+    temperature: 36 + Random().nextDouble() * (50 - 36),
+    voltage: 30 + Random().nextDouble() * 10,
+    voltageRipple: 30 + Random().nextInt(10),
+    rfOutputLowPilot: -1000,
+    rfOutputHighPilot: -1000,
+  );
+});
