@@ -359,25 +359,28 @@ Future<void> handleUpdateAction({
 }
 
 int getDelayByRSSI(int rssi) {
-  // baud rate = 11520 bit/s = 14400 byte/s
-  // 16384 bytes / 244 bytes ~= 68
-  // 如果 delay = 35 ms, 則 16384 bytes 收完等於 68 * 35 ~= 2.4 s
+  // baud rate = 115200 bit/s = 14400 byte/s
+
+  // 如果 delay = 35 ms, 每次送完一個封包休息一次,
+  // 16384 bytes / 244 bytes ~= 68,
+  // 則 16384 bytes 收完等於有 67 (68 - 1) 次休息 * 35 ~= 2.4 s
+  // 傳送一包的時間估算約 26ms
   if (rssi > -65) {
     return 26;
   } else if (rssi < -65 && rssi >= -70) {
-    return 27;
-  } else if (rssi < -70 && rssi >= -75) {
-    return 28;
-  } else if (rssi < -75 && rssi >= -80) {
-    return 29;
-  } else if (rssi < -80 && rssi >= -85) {
     return 32;
+  } else if (rssi < -70 && rssi >= -75) {
+    return 38;
+  } else if (rssi < -75 && rssi >= -80) {
+    return 44;
+  } else if (rssi < -80 && rssi >= -85) {
+    return 50;
   } else if (rssi < -85 && rssi >= -90) {
-    return 35;
+    return 56;
   } else if (rssi < 90 && rssi >= -95) {
-    return 55;
+    return 62;
   } else {
-    return 60;
+    return 68;
   }
 }
 

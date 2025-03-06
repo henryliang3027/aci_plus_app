@@ -335,6 +335,7 @@ class Amp18CCorNodeRepository with BLECommandsMixin {
           commandIndex: commandIndex,
           value: _amp18CCorNodeParser
               .command18CCorNodeCollection[commandIndex - 180],
+          timeout: const Duration(seconds: 8),
         );
 
         List<Log1p8GCCorNode> log1p8Gs =
@@ -387,6 +388,7 @@ class Amp18CCorNodeRepository with BLECommandsMixin {
           commandIndex: commandIndex,
           value: _amp18CCorNodeParser
               .command18CCorNodeCollection[commandIndex - 180],
+          timeout: const Duration(seconds: 8),
         );
 
         List<Log1p8GCCorNode> log1p8Gs =
@@ -421,6 +423,7 @@ class Amp18CCorNodeRepository with BLECommandsMixin {
         commandIndex: commandIndex,
         value: _amp18CCorNodeParser
             .command18CCorNodeCollection[commandIndex - 181],
+        timeout: const Duration(seconds: 8),
       );
 
       List<Event1p8GCCorNode> event1p8Gs =

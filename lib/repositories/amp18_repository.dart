@@ -327,6 +327,7 @@ class Amp18Repository with BLECommandsMixin {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
           value: _amp18Parser.command18Collection[commandIndex - 180],
+          timeout: const Duration(seconds: 8),
         );
 
         List<Log1p8G> log1p8Gs = _amp18Parser.parse1P8GLog(rawData);
@@ -369,7 +370,7 @@ class Amp18Repository with BLECommandsMixin {
         List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
           commandIndex: commandIndex,
           value: _amp18Parser.command18Collection[commandIndex - 180],
-          // timeout: Duration(minutes: 1),
+          timeout: const Duration(seconds: 8),
         );
 
         List<Log1p8G> log1p8Gs = _amp18Parser.parse1P8GLog(rawData);
@@ -402,6 +403,7 @@ class Amp18Repository with BLECommandsMixin {
       List<int> rawData = await _bleClient.writeSetCommandToCharacteristic(
         commandIndex: commandIndex,
         value: _amp18Parser.command18Collection[commandIndex - 180],
+        timeout: const Duration(seconds: 8),
       );
 
       List<Event1p8G> event1p8Gs = _amp18Parser.parse1p8GEvent(rawData);

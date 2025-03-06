@@ -336,6 +336,7 @@ class Setting18AttributeView extends StatelessWidget {
       },
       child: GestureDetector(
         onTap: () {
+          // 點擊螢幕空白處時, 關閉已開啟的鍵盤
           closeKeyboard(context: context);
         },
         child: Scaffold(
