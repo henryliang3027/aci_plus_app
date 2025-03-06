@@ -7,6 +7,7 @@ import 'package:aci_plus_app/core/notice_dialog.dart';
 import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:aci_plus_app/home/views/home_button_navigation_bar18.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -30,6 +31,7 @@ class _Setting18AdvancedFormState extends State<Setting18AdvancedForm>
   @override
   void initState() {
     super.initState();
+
     _tabController = TabController(vsync: this, length: 2);
 
     _tabController.addListener(() {
