@@ -279,6 +279,7 @@
     "devicePageSetupWizard4": "Période d'enregistrement ajustable",
 
     "thresholdPageSetupWizard1": "Limite supérieure / inférieure ajustable de température, de tension, de fluctuation de tension et de puissance de sortie TCP",
+    "nodeThresholdPageSetupWizard1": "Limite supérieure/inférieure réglable de température, tension et puissance de sortie TCP",
     "thresholdPageSetupWizard2": "Les notifications d'alarme pour la sortie basse fréquence et haute fréquence peuvent être activées ou désactivées",
 
     "balancePageSetupWizard1": "Détecter automatiquement le type d'égaliseur (EQ) actuel",

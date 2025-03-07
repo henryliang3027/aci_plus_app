@@ -3,6 +3,7 @@ import 'package:aci_plus_app/advanced/bloc/setting18_firmware_update/setting18_f
 import 'package:aci_plus_app/advanced/shared/utils.dart';
 import 'package:aci_plus_app/chart/shared/message_dialog.dart';
 import 'package:aci_plus_app/chart/view/code_input_page.dart';
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
@@ -909,8 +910,9 @@ class _Setting18FirmwareFloatingActionButton extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
           onPressed: () {
             showSetupWizardDialog(
-              context,
-              FunctionDescriptionType.firmwareUpdate,
+              context: context,
+              functionDescriptionType: FunctionDescriptionType.firmwareUpdate,
+              aciDeviceType: ACIDeviceType.amp1P8G,
             );
           },
           child: Icon(

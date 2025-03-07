@@ -277,6 +277,7 @@
     "devicePageSetupWizard4": "Período de grabación ajustable",
 
     "thresholdPageSetupWizard1": "Límite superior / inferior ajustable de temperatura, voltaje, rizado de voltaje y potencia de salida TCP",
+    "nodeThresholdPageSetupWizard1": "Límite superior/inferior ajustable de temperatura, voltaje y potencia de salida TCP",
     "thresholdPageSetupWizard2": "Las notificaciones de alarma para la salida de baja y alta frecuencia se pueden activar o desactivar",
 
     "balancePageSetupWizard1": "Detectar automáticamente el tipo de ecualizador (EQ) actual",

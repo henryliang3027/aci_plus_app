@@ -283,6 +283,7 @@
     "devicePageSetupWizard4": "Adjustable recording period",
 
     "thresholdPageSetupWizard1": "Adjustable temperature, voltage, voltage ripple and TCP output power upper / lower limit",
+    "nodeThresholdPageSetupWizard1": "Adjustable temperature, voltage and TCP output power upper / lower limit",
     "thresholdPageSetupWizard2": "Alarm notifications for low-frequency output and high-frequency output can be turned on or off",
 
     "balancePageSetupWizard1": "Automatically detect the current equalizer ( EQ ) type",

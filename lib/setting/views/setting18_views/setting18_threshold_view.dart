@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
@@ -856,6 +857,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
           children: [
             getThresholdSetupWizard(
               context: context,
+              aciDeviceType: ACIDeviceType.amp1P8G,
             ),
             const SizedBox(
               height: 10.0,
@@ -946,6 +948,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
           children: [
             getThresholdSetupWizard(
               context: context,
+              aciDeviceType: ACIDeviceType.amp1P8G,
             ),
             const SizedBox(
               height: 10.0,
@@ -1012,6 +1015,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
         children: [
           getThresholdSetupWizard(
             context: context,
+            aciDeviceType: ACIDeviceType.amp1P8G,
           ),
           const SizedBox(
             height: 10.0,

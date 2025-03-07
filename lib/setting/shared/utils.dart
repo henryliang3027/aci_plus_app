@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/setup_wizard_dialog.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Widget getConfigureSetupWizard({
   required BuildContext context,
+  required ACIDeviceType aciDeviceType,
 }) {
   return FloatingActionButton(
     // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
@@ -15,8 +17,9 @@ Widget getConfigureSetupWizard({
     backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
     onPressed: () {
       showSetupWizardDialog(
-        context,
-        FunctionDescriptionType.device,
+        context: context,
+        functionDescriptionType: FunctionDescriptionType.device,
+        aciDeviceType: aciDeviceType,
       );
     },
     child: Icon(
@@ -28,6 +31,7 @@ Widget getConfigureSetupWizard({
 
 Widget getThresholdSetupWizard({
   required BuildContext context,
+  required ACIDeviceType aciDeviceType,
 }) {
   return FloatingActionButton(
     // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
@@ -38,8 +42,9 @@ Widget getThresholdSetupWizard({
     backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
     onPressed: () {
       showSetupWizardDialog(
-        context,
-        FunctionDescriptionType.threshold,
+        context: context,
+        functionDescriptionType: FunctionDescriptionType.threshold,
+        aciDeviceType: aciDeviceType,
       );
     },
     child: Icon(
@@ -51,6 +56,7 @@ Widget getThresholdSetupWizard({
 
 Widget getControlSetupWizard({
   required BuildContext context,
+  required ACIDeviceType aciDeviceType,
 }) {
   return FloatingActionButton(
     // heroTag is used to solve exception: There are multiple heroes that share the same tag within a subtree.
@@ -61,8 +67,9 @@ Widget getControlSetupWizard({
     backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
     onPressed: () {
       showSetupWizardDialog(
-        context,
-        FunctionDescriptionType.balance,
+        context: context,
+        functionDescriptionType: FunctionDescriptionType.balance,
+        aciDeviceType: aciDeviceType,
       );
     },
     child: Icon(

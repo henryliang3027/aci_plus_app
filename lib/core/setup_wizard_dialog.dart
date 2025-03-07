@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,10 +16,11 @@ enum FunctionDescriptionType {
   userActivityLog,
 }
 
-Future<void> showSetupWizardDialog(
-  BuildContext context,
-  FunctionDescriptionType functionDescriptionType,
-) async {
+Future<void> showSetupWizardDialog({
+  required BuildContext context,
+  required FunctionDescriptionType functionDescriptionType,
+  required ACIDeviceType aciDeviceType,
+}) async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
@@ -57,6 +59,7 @@ Future<void> showSetupWizardDialog(
                       getInstructionRow(
                         context: context,
                         functionDescriptionType: functionDescriptionType,
+                        aciDeviceType: aciDeviceType,
                       ),
                       const SizedBox(
                         height: 10,
@@ -174,14 +177,99 @@ List<String> getDescriptions({
   }
 }
 
-Widget getInstructionRow({
+List<String> getNodeDescriptions({
   required BuildContext context,
   required FunctionDescriptionType functionDescriptionType,
 }) {
-  List<String> descriptions = getDescriptions(
-    context: context,
-    functionDescriptionType: functionDescriptionType,
-  );
+  switch (functionDescriptionType) {
+    case FunctionDescriptionType.device:
+      return [
+        AppLocalizations.of(context)!.devicePageSetupWizard1,
+        AppLocalizations.of(context)!.devicePageSetupWizard4,
+      ];
+    case FunctionDescriptionType.threshold:
+      return [
+        AppLocalizations.of(context)!.nodeThresholdPageSetupWizard1,
+      ];
+    case FunctionDescriptionType.balance:
+      return [
+        AppLocalizations.of(context)!.balancePageSetupWizard1,
+        AppLocalizations.of(context)!.balancePageSetupWizard2,
+        AppLocalizations.of(context)!.balancePageSetupWizard3,
+      ];
+    case FunctionDescriptionType.status:
+      return [
+        AppLocalizations.of(context)!.statusPageSetupWizard1,
+        AppLocalizations.of(context)!.statusPageSetupWizard2,
+      ];
+    case FunctionDescriptionType.information:
+      return [
+        AppLocalizations.of(context)!.informationPageSetupWizard1,
+        AppLocalizations.of(context)!.informationPageSetupWizard2,
+        AppLocalizations.of(context)!.informationPageSetupWizard3,
+        AppLocalizations.of(context)!.informationPageSetupWizard4,
+        AppLocalizations.of(context)!.informationPageSetupWizard5,
+      ];
+
+    case FunctionDescriptionType.dataLog:
+      return [
+        AppLocalizations.of(context)!.dataLogPageSetupWizard1,
+        AppLocalizations.of(context)!.dataLogPageSetupWizard2,
+        AppLocalizations.of(context)!.dataLogPageSetupWizard3,
+      ];
+    case FunctionDescriptionType.rfLevel:
+      return [
+        AppLocalizations.of(context)!.rfLevelPageSetupWizard1,
+        AppLocalizations.of(context)!.rfLevelPageSetupWizard2,
+        AppLocalizations.of(context)!.rfLevelPageSetupWizard3,
+      ];
+
+    case FunctionDescriptionType.deviceSetting:
+      return [
+        AppLocalizations.of(context)!.deviceSettingPageSetupWizard1,
+        AppLocalizations.of(context)!.deviceSettingPageSetupWizard2,
+      ];
+
+    case FunctionDescriptionType.firmwareUpdate:
+      return [
+        AppLocalizations.of(context)!.firmwareUpdatePageSetupWizard1,
+        AppLocalizations.of(context)!.firmwareUpdatePageSetupWizard2,
+        AppLocalizations.of(context)!.firmwareUpdatePageSetupWizard3,
+        AppLocalizations.of(context)!.firmwareUpdatePageSetupWizard4,
+      ];
+
+    case FunctionDescriptionType.userActivityLog:
+      return [
+        AppLocalizations.of(context)!.userActivityLogPageSetupWizard1,
+        AppLocalizations.of(context)!.userActivityLogPageSetupWizard2,
+        AppLocalizations.of(context)!.userActivityLogPageSetupWizard3,
+      ];
+
+    default:
+      return [];
+  }
+}
+
+Widget getInstructionRow({
+  required BuildContext context,
+  required FunctionDescriptionType functionDescriptionType,
+  required ACIDeviceType aciDeviceType,
+}) {
+  List<String> descriptions = [];
+
+  if (aciDeviceType == ACIDeviceType.ampCCorNode1P8G) {
+    // Node
+
+    descriptions = getNodeDescriptions(
+      context: context,
+      functionDescriptionType: functionDescriptionType,
+    );
+  } else {
+    descriptions = getDescriptions(
+      context: context,
+      functionDescriptionType: functionDescriptionType,
+    );
+  }
 
   return ListBody(
     children: [
