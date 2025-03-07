@@ -15,6 +15,7 @@ enum DataKey {
   cascadePosition, // attribute cascadePosition
   deviceName, // attribute deviceName
   deviceNote, // attribute deviceNote
+  bluetoothDelayTime, // for debug
   workingMode,
   currentPilot,
   currentPilotMode,

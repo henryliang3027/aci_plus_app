@@ -31,6 +31,7 @@ class Amp18Parser {
     String mfgDate = '';
     String coordinate = '';
     String nowDateTime = '';
+    String bluetoothDelayTime = '';
 
     // 解析 partName
     for (int i = 3; i <= 22; i++) {
@@ -89,6 +90,13 @@ class Amp18Parser {
     }
     coordinate = trimString(coordinate);
 
+    // 解析 bluetoothDelayTime
+    List<int> rawBluetoothDelayTime = rawData.sublist(145, 147);
+    ByteData rawBluetoothDelayTimeByteData =
+        ByteData.sublistView(Uint8List.fromList(rawBluetoothDelayTime));
+    bluetoothDelayTime =
+        rawBluetoothDelayTimeByteData.getInt16(0, Endian.little).toString();
+
     // 解析 now time
     List<int> rawNowYear = rawData.sublist(171, 173);
     ByteData rawNowYearByteData =
@@ -110,6 +118,7 @@ class Amp18Parser {
       mfgDate: mfgDate,
       coordinate: coordinate,
       nowDateTime: nowDateTime,
+      bluetoothDelayTime: bluetoothDelayTime,
     );
   }
 
@@ -2198,6 +2207,7 @@ class A1P8G0 {
     required this.mfgDate,
     required this.coordinate,
     required this.nowDateTime,
+    required this.bluetoothDelayTime,
   });
 
   final String partName;
@@ -2209,6 +2219,7 @@ class A1P8G0 {
   final String mfgDate;
   final String coordinate;
   final String nowDateTime;
+  final String bluetoothDelayTime;
 }
 
 class A1P8G1 {

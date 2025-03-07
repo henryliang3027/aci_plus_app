@@ -361,12 +361,12 @@ class Indicator extends StatelessWidget {
               children: [
                 getPulsator(
                   color: const Color(0xff6c757d),
-                  name: AppLocalizations.of(context)!.powerSupplyAlarm,
+                  name: AppLocalizations.of(context)!.unitStatusAlarm,
                   animationEnabled: false,
                 ),
                 getPulsator(
                   color: const Color(0xff6c757d),
-                  name: AppLocalizations.of(context)!.powerSupplyAlarm,
+                  name: AppLocalizations.of(context)!.temperatureAlarm,
                   animationEnabled: false,
                 ),
                 getPulsator(
