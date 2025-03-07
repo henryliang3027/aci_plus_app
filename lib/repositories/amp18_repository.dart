@@ -452,7 +452,7 @@ class Amp18Repository with BLECommandsMixin {
   }
 
   Future<dynamic> requestCommand1p8GUserAttribute({
-    Duration timeout = const Duration(seconds: 10),
+    Duration timeout = const Duration(seconds: 3),
   }) async {
     int commandIndex = 205;
 

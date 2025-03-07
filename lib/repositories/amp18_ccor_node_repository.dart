@@ -441,7 +441,7 @@ class Amp18CCorNodeRepository with BLECommandsMixin {
   }
 
   Future<dynamic> requestCommand1p8GCCorNodeUserAttribute({
-    Duration timeout = const Duration(seconds: 10),
+    Duration timeout = const Duration(seconds: 3),
   }) async {
     int commandIndex = 205;
 

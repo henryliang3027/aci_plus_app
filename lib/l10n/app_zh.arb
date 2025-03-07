@@ -305,6 +305,7 @@
     "firmwareUpdatePageSetupWizard1": "藍牙連線有效範圍 10 米",
     "firmwareUpdatePageSetupWizard2": "選擇要更新至裝置的新 / 舊韌體版本",
     "firmwareUpdatePageSetupWizard3": "更新時間 2 分鐘以內",
+    "firmwareUpdatePageSetupWizard4": "最多顯示 32 筆記錄",
 
     "userActivityLogPageSetupWizard1": "App 對設備的操作紀錄",
     "userActivityLogPageSetupWizard2": "最大選取 30 天內的紀錄, 一次點選顯示 500 筆紀錄",

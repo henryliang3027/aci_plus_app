@@ -301,6 +301,7 @@
     "firmwareUpdatePageSetupWizard1": "La conexión Bluetooth tiene un alcance efectivo de 10 metros",
     "firmwareUpdatePageSetupWizard2": "Seleccionar la versión de firmware nueva / antigua para actualizar el dispositivo",
     "firmwareUpdatePageSetupWizard3": "Tiempo de actualización dentro de 2 minutos",
+    "firmwareUpdatePageSetupWizard4": "Mostrar hasta 32 registros",
 
     "userActivityLogPageSetupWizard1": "Registro de operación de la aplicación del dispositivo",
     "userActivityLogPageSetupWizard2": "Se pueden seleccionar un máximo de 30 días de registros, y se pueden mostrar 500 registros con un clic",

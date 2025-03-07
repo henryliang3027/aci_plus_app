@@ -307,6 +307,7 @@
     "firmwareUpdatePageSetupWizard1": "Bluetooth connection has an effective range of 10 meters",
     "firmwareUpdatePageSetupWizard2": "Select the new / old firmware version to update to the device",
     "firmwareUpdatePageSetupWizard3": "Update time within 2 minutes",
+    "firmwareUpdatePageSetupWizard4": "Display up to 32 records",
 
     "userActivityLogPageSetupWizard1": "App’s operation record of the device",
     "userActivityLogPageSetupWizard2": "A maximum of 30 days of records can be selected, and 500 records can be displayed in one click.",

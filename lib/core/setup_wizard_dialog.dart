@@ -159,6 +159,7 @@ List<String> getDescriptions({
         AppLocalizations.of(context)!.firmwareUpdatePageSetupWizard1,
         AppLocalizations.of(context)!.firmwareUpdatePageSetupWizard2,
         AppLocalizations.of(context)!.firmwareUpdatePageSetupWizard3,
+        AppLocalizations.of(context)!.firmwareUpdatePageSetupWizard4,
       ];
 
     case FunctionDescriptionType.userActivityLog:
