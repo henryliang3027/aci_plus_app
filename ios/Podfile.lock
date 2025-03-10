@@ -124,12 +124,13 @@ PODS:
   - PromisesObjC (2.4.0)
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
-  - Protobuf (3.26.0)
+  - Protobuf (3.29.3)
   - qr_code_scanner (0.2.0):
     - Flutter
     - MTBBarcodeScanner
   - reactive_ble_mobile (0.0.1):
     - Flutter
+    - FlutterMacOS
     - Protobuf (~> 3.5)
     - SwiftProtobuf (~> 1.0)
   - SDWebImage (5.19.7):
@@ -142,7 +143,7 @@ PODS:
     - FlutterMacOS
   - simple_barcode_scanner (0.1.7):
     - Flutter
-  - SwiftProtobuf (1.25.2)
+  - SwiftProtobuf (1.28.2)
   - SwiftyGif (5.4.5)
   - universal_ble (0.0.1):
     - Flutter
@@ -166,7 +167,7 @@ DEPENDENCIES:
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - qr_code_scanner (from `.symlinks/plugins/qr_code_scanner/ios`)
-  - reactive_ble_mobile (from `.symlinks/plugins/reactive_ble_mobile/ios`)
+  - reactive_ble_mobile (from `.symlinks/plugins/reactive_ble_mobile/darwin`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - simple_barcode_scanner (from `.symlinks/plugins/simple_barcode_scanner/ios`)
@@ -228,7 +229,7 @@ EXTERNAL SOURCES:
   qr_code_scanner:
     :path: ".symlinks/plugins/qr_code_scanner/ios"
   reactive_ble_mobile:
-    :path: ".symlinks/plugins/reactive_ble_mobile/ios"
+    :path: ".symlinks/plugins/reactive_ble_mobile/darwin"
   share_plus:
     :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences_foundation:
@@ -241,7 +242,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  bluetooth_enable: ffe80dde013bc4a9deb722d1335f103ea0123669
+  bluetooth_enable: 38ef4d34c70c3066efedd7dece41658e0425dfaa
   device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
   DKImagePickerController: 946cec48c7873164274ecc4624d19e3da4c1ef3c
   DKPhotoGallery: b3834fecb755ee09a593d7c9e389d8b5d6deed60
@@ -271,14 +272,14 @@ SPEC CHECKSUMS:
   permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
-  Protobuf: 5685c66a07eaad9d18ce5ab618e9ac01fd04b5aa
+  Protobuf: e2de96d939c642ce8da186343ff8929b35223212
   qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
-  reactive_ble_mobile: 9ce6723d37ccf701dbffd202d487f23f5de03b4c
+  reactive_ble_mobile: 856183aeda09f2a676bbaecbea8915c3cb1d33df
   SDWebImage: 8a6b7b160b4d710e2a22b6900e25301075c34cb3
   share_plus: 8b6f8b3447e494cca5317c8c3073de39b3600d1f
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   simple_barcode_scanner: bb2603ae5228a007bd066e9f955911858ae55755
-  SwiftProtobuf: 407a385e97fd206c4fbe880cc84123989167e0d1
+  SwiftProtobuf: 4dbaffec76a39a8dc5da23b40af1a5dc01a4c02d
   SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
   universal_ble: cf52a7b3fd2e7c14d6d7262e9fdadb72ab6b88a6
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
