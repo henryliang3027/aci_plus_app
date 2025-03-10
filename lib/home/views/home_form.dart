@@ -6,6 +6,7 @@ import 'package:aci_plus_app/chart/view/chart18_page.dart';
 import 'package:aci_plus_app/chart/view/chart_page.dart';
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
+import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/message_localization.dart';
 import 'package:aci_plus_app/core/utils.dart';
@@ -262,11 +263,15 @@ class _HomeFormState extends State<HomeForm> {
               final double? currentPage = _pageController.page;
               final int currentIndex = currentPage?.round() ?? -1;
 
-              // 如果在loading 的時候就切到 chart page, 則  loadingStatus.isRequestSuccess 就會頻繁啟動和暫停 Periodic Update
-              if (currentIndex != 3) {
-                context
-                    .read<HomeBloc>()
-                    .add(const DevicePeriodicUpdateRequested());
+              String partId = state.characteristicData[DataKey.partId] ?? '';
+              // 如果讀到 dsim 則不具備這個功能
+              if (partId != '') {
+                // 如果在loading 的時候就切到 chart page, 則  loadingStatus.isRequestSuccess 就會頻繁啟動和暫停 Periodic Update
+                if (currentIndex != 3) {
+                  context
+                      .read<HomeBloc>()
+                      .add(const DevicePeriodicUpdateRequested());
+                }
               }
             }
           },

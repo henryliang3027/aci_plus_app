@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:aci_plus_app/core/command18_c_core_node.dart';
 import 'package:aci_plus_app/core/crc16_calculate.dart';
@@ -336,6 +335,7 @@ class Amp18CCorNodeRepository with BLECommandsMixin {
           commandIndex: commandIndex,
           value: _amp18CCorNodeParser
               .command18CCorNodeCollection[commandIndex - 180],
+          timeout: const Duration(seconds: 8),
         );
 
         List<Log1p8GCCorNode> log1p8Gs =
@@ -388,6 +388,7 @@ class Amp18CCorNodeRepository with BLECommandsMixin {
           commandIndex: commandIndex,
           value: _amp18CCorNodeParser
               .command18CCorNodeCollection[commandIndex - 180],
+          timeout: const Duration(seconds: 8),
         );
 
         List<Log1p8GCCorNode> log1p8Gs =
@@ -422,6 +423,7 @@ class Amp18CCorNodeRepository with BLECommandsMixin {
         commandIndex: commandIndex,
         value: _amp18CCorNodeParser
             .command18CCorNodeCollection[commandIndex - 181],
+        timeout: const Duration(seconds: 8),
       );
 
       List<Event1p8GCCorNode> event1p8Gs =
@@ -439,7 +441,7 @@ class Amp18CCorNodeRepository with BLECommandsMixin {
   }
 
   Future<dynamic> requestCommand1p8GCCorNodeUserAttribute({
-    Duration timeout = const Duration(seconds: 10),
+    Duration timeout = const Duration(seconds: 3),
   }) async {
     int commandIndex = 205;
 

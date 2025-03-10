@@ -1176,7 +1176,7 @@ packages:
     description:
       path: "."
       ref: revise1
-      resolved-ref: "28b48b343812176ffa5d900ab5612fe22b3841df"
+      resolved-ref: "86ec820964d68c77c25a9986e97d47b6c78597b3"
       url: "https://github.com/henryliang3027/flutter_speed_chart.git"
     source: git
     version: "1.0.4"

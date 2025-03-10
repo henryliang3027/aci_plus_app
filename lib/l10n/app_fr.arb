@@ -279,6 +279,7 @@
     "devicePageSetupWizard4": "Période d'enregistrement ajustable",
 
     "thresholdPageSetupWizard1": "Limite supérieure / inférieure ajustable de température, de tension, de fluctuation de tension et de puissance de sortie TCP",
+    "nodeThresholdPageSetupWizard1": "Limite supérieure/inférieure réglable de température, tension et puissance de sortie TCP",
     "thresholdPageSetupWizard2": "Les notifications d'alarme pour la sortie basse fréquence et haute fréquence peuvent être activées ou désactivées",
 
     "balancePageSetupWizard1": "Détecter automatiquement le type d'égaliseur (EQ) actuel",
@@ -303,6 +304,7 @@
     "firmwareUpdatePageSetupWizard1": "La connexion Bluetooth a une portée effective de 10 mètres",
     "firmwareUpdatePageSetupWizard2": "Sélectionner la version de firmware nouvelle / ancienne pour mettre à jour l'appareil",
     "firmwareUpdatePageSetupWizard3": "Temps de mise à jour dans les 2 minutes",
+    "firmwareUpdatePageSetupWizard4": "Afficher jusqu'à 32 enregistrements",
 
     "userActivityLogPageSetupWizard1": "Enregistrement des opérations de l'application pour l'appareil",
     "userActivityLogPageSetupWizard2": "Un maximum de 30 jours d'enregistrements peut être sélectionné, et 500 enregistrements peuvent être affichés d'un clic",

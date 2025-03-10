@@ -145,7 +145,7 @@ class _RFLevelChartView extends StatelessWidget {
               // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
               key: const Key('ChartForm_Chart'),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
+                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 80.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -268,6 +268,7 @@ Widget buildChart({
                 ? true
                 : false
             : false,
+        xAxisUnit: CustomStyle.mHz,
       ),
     ],
   );

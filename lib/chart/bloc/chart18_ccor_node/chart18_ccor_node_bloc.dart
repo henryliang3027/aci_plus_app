@@ -154,8 +154,7 @@ class Chart18CCorNodeBloc
     Emitter<Chart18CCorNodeState> emit,
   ) async {
     emit(state.copyWith(
-      formStatus: FormStatus.none,
-      moreLogRequestStatus: FormStatus.requestInProgress,
+      formStatus: FormStatus.requestInProgress,
       dataExportStatus: FormStatus.none,
       dataShareStatus: FormStatus.none,
       allDataExportStatus: FormStatus.none,
@@ -185,7 +184,6 @@ class Chart18CCorNodeBloc
         emit(
           state.copyWith(
             formStatus: FormStatus.requestSuccess,
-            moreLogRequestStatus: FormStatus.requestSuccess,
             log1p8Gs: log1p8Gs,
             dateValueCollectionOfLog: dateValueCollectionOfLog,
             chunkIndex: state.chunkIndex + 1,
@@ -198,14 +196,12 @@ class Chart18CCorNodeBloc
         if (i == 2) {
           emit(state.copyWith(
             formStatus: FormStatus.requestFailure,
-            moreLogRequestStatus: FormStatus.requestFailure,
             errorMessage: 'load logs failed',
           ));
         } else {
           if (resultOfLog1p8G[2] == CharacteristicError.writeDataError.name) {
             emit(state.copyWith(
               formStatus: FormStatus.requestFailure,
-              moreLogRequestStatus: FormStatus.requestFailure,
               errorMessage: 'load logs failed',
             ));
             break;

@@ -2,6 +2,7 @@ import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
+import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/pulsator.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:flutter/material.dart';
@@ -111,8 +112,100 @@ class Indicator extends StatelessWidget {
       }
     }
 
+    // alarmState (alarm mask) == '0' 代表 enable
+    // alarmState (alarm mask) == '1' 代表 disable
+    String getAmpUnitStatusAlarmState({
+      required String temperatureAlarmState,
+      required String voltageAlarmState,
+      required String voltageRippleAlarmState,
+      required String rfOutputPowerAlarmState,
+      required String rfOutputPilotLowFrequencyAlarmState,
+      required String rfOutputPilotHighFrequencyAlarmState,
+    }) {
+      if (temperatureAlarmState == '1' &&
+          voltageAlarmState == '1' &&
+          voltageRippleAlarmState == '1' &&
+          rfOutputPowerAlarmState == '1' &&
+          rfOutputPilotLowFrequencyAlarmState == '1' &&
+          rfOutputPilotHighFrequencyAlarmState == '1') {
+        return '1';
+      } else {
+        return '0';
+      }
+    }
+
+    // alarmState (alarm mask) == '0' 代表 enable
+    // alarmState (alarm mask) == '1' 代表 disable
+    String getNodeUnitStatusAlarmState({
+      required String temperatureAlarmState,
+      required String voltageAlarmState,
+      required String rfOutputPower1AlarmState,
+      required String rfOutputPower3AlarmState,
+      required String rfOutputPower4AlarmState,
+      required String rfOutputPower6AlarmState,
+    }) {
+      if (temperatureAlarmState == '1' &&
+          voltageAlarmState == '1' &&
+          rfOutputPower1AlarmState == '1' &&
+          rfOutputPower3AlarmState == '1' &&
+          rfOutputPower4AlarmState == '1' &&
+          rfOutputPower6AlarmState == '1') {
+        return '1';
+      } else {
+        return '0';
+      }
+    }
+
+    Alarm getAmpUnitAlarmSeverityWithoutSplitOption({
+      required Alarm unitStatusAlarmSeverity,
+      required Alarm splitOptionAlarmSeverity,
+      required Alarm temperatureAlarmSeverity,
+      required Alarm voltageAlarmSeverity,
+      required Alarm voltageRippleAlarmSeverity,
+      required Alarm outputPowerAlarmSeverity,
+      required Alarm rfOutputPilotLowFrequencyAlarmSeverity,
+      required Alarm rfOutputPilotHighFrequencyAlarmSeverity,
+    }) {
+      if (splitOptionAlarmSeverity == Alarm.danger &&
+          temperatureAlarmSeverity == Alarm.success &&
+          voltageAlarmSeverity == Alarm.success &&
+          voltageRippleAlarmSeverity == Alarm.success &&
+          outputPowerAlarmSeverity == Alarm.success &&
+          rfOutputPilotLowFrequencyAlarmSeverity == Alarm.success &&
+          rfOutputPilotHighFrequencyAlarmSeverity == Alarm.success) {
+        return Alarm.success;
+      } else {
+        return unitStatusAlarmSeverity;
+      }
+    }
+
+    Alarm getNodeUnitAlarmSeverityWithoutSplitOption({
+      required Alarm unitStatusAlarmSeverity,
+      required Alarm splitOptionAlarmSeverity,
+      required Alarm temperatureAlarmSeverity,
+      required Alarm voltageAlarmSeverity,
+      required Alarm voltageRippleAlarmSeverity,
+      required Alarm rfOutputPower1AlarmSeverity,
+      required Alarm rfOutputPower3AlarmSeverity,
+      required Alarm rfOutputPower4AlarmSeverity,
+      required Alarm rfOutputPower6AlarmSeverity,
+    }) {
+      if (splitOptionAlarmSeverity == Alarm.danger &&
+          temperatureAlarmSeverity == Alarm.success &&
+          voltageAlarmSeverity == Alarm.success &&
+          voltageRippleAlarmSeverity == Alarm.success &&
+          rfOutputPower1AlarmSeverity == Alarm.success &&
+          rfOutputPower3AlarmSeverity == Alarm.success &&
+          rfOutputPower4AlarmSeverity == Alarm.success &&
+          rfOutputPower6AlarmSeverity == Alarm.success) {
+        return Alarm.success;
+      } else {
+        return unitStatusAlarmSeverity;
+      }
+    }
+
     Widget getPulsator({
-      required Alarm alarm,
+      required Color color,
       required String name,
       bool animationEnabled = true,
     }) {
@@ -120,8 +213,7 @@ class Indicator extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Pulsator(
           size: 24, // Circle size
-          color: CustomStyle.alarmColor[alarm.name] ??
-              const Color(0xff6c757d), // Ripple color
+          color: color,
           duration: const Duration(
             seconds: 2,
           ), //  animationEnabled = false 時 Ripple duration 可以忽略
@@ -132,48 +224,160 @@ class Indicator extends StatelessWidget {
       );
     }
 
-    return BlocBuilder<HomeBloc, HomeState>(
-      buildWhen: (previous, current) =>
-          previous.characteristicData[DataKey.unitStatusAlarmSeverity] !=
-              current.characteristicData[DataKey.unitStatusAlarmSeverity] ||
-          previous.characteristicData[DataKey.temperatureAlarmSeverity] !=
-              current.characteristicData[DataKey.temperatureAlarmSeverity] ||
-          previous.characteristicData[DataKey.voltageAlarmSeverity] !=
-              current.characteristicData[DataKey.voltageAlarmSeverity],
-      builder: (context, state) {
-        Alarm unitStatusAlarmSeverity = getAlarmEnumFromString(
-            state.characteristicData[DataKey.unitStatusAlarmSeverity] ?? '');
-        Alarm temperatureAlarmSeverity = getAlarmEnumFromString(
-            state.characteristicData[DataKey.temperatureAlarmSeverity] ?? '');
-        Alarm voltageAlarmSeverity = getAlarmEnumFromString(
-            state.characteristicData[DataKey.voltageAlarmSeverity] ?? '');
+    Color getPulsatorColor({
+      required String alarmState,
+      required Alarm alarm,
+    }) {
+      return alarmState == '0'
+          ? CustomStyle.alarmColor[alarm.name] ?? const Color(0xff6c757d)
+          : CustomStyle.alarmColor[Alarm.success.name]!; // Ripple color
+    }
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              getPulsator(
-                alarm: unitStatusAlarmSeverity,
-                name: AppLocalizations.of(context)!.unitStatusAlarm,
-                animationEnabled:
-                    unitStatusAlarmSeverity == Alarm.danger ? true : false,
-              ),
-              getPulsator(
-                alarm: temperatureAlarmSeverity,
-                name: AppLocalizations.of(context)!.temperatureAlarm,
-                animationEnabled:
-                    temperatureAlarmSeverity == Alarm.danger ? true : false,
-              ),
-              getPulsator(
-                alarm: voltageAlarmSeverity,
-                name: AppLocalizations.of(context)!.powerSupplyAlarm,
-                animationEnabled:
-                    voltageAlarmSeverity == Alarm.danger ? true : false,
-              ),
-            ],
-          ),
-        );
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.loadingStatus.isRequestSuccess) {
+          Alarm unitStatusAlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.unitStatusAlarmSeverity] ?? '');
+
+          Alarm splitOptionAlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.splitOptionAlarmSeverity] ?? '');
+
+          Alarm temperatureAlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.temperatureAlarmSeverity] ?? '');
+
+          Alarm voltageAlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.voltageAlarmSeverity] ?? '');
+
+          Alarm voltageRippleAlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.voltageRippleAlarmSeverity] ??
+                  '');
+
+          Alarm outputPowerAlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.outputPowerAlarmSeverity] ?? '');
+
+          Alarm rfOutputPilotLowFrequencyAlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[
+                      DataKey.rfOutputPilotLowFrequencyAlarmSeverity] ??
+                  '');
+
+          Alarm rfOutputPilotHighFrequencyAlarmSeverity =
+              getAlarmEnumFromString(state.characteristicData[
+                      DataKey.rfOutputPilotHighFrequencyAlarmSeverity] ??
+                  '');
+
+          String temperatureAlarmState =
+              state.characteristicData[DataKey.temperatureAlarmState] ?? '1';
+
+          String voltageAlarmState =
+              state.characteristicData[DataKey.voltageAlarmState] ?? '1';
+
+          String voltageRippleAlarmState =
+              state.characteristicData[DataKey.voltageRippleAlarmState] ?? '1';
+
+          String rfOutputPowerAlarmState =
+              state.characteristicData[DataKey.rfOutputPowerAlarmState] ?? '1';
+
+          String rfOutputPilotLowFrequencyAlarmState = state.characteristicData[
+                  DataKey.rfOutputPilotLowFrequencyAlarmState] ??
+              '1';
+
+          String rfOutputPilotHighFrequencyAlarmState =
+              state.characteristicData[
+                      DataKey.rfOutputPilotHighFrequencyAlarmState] ??
+                  '1';
+
+          String unitAmpStatusAlarmState = getAmpUnitStatusAlarmState(
+            temperatureAlarmState: temperatureAlarmState,
+            voltageAlarmState: voltageAlarmState,
+            voltageRippleAlarmState: voltageRippleAlarmState,
+            rfOutputPowerAlarmState: rfOutputPowerAlarmState,
+            rfOutputPilotLowFrequencyAlarmState:
+                rfOutputPilotLowFrequencyAlarmState,
+            rfOutputPilotHighFrequencyAlarmState:
+                rfOutputPilotHighFrequencyAlarmState,
+          );
+
+          // 不使用 splitOptionAlarmSeverity
+          Alarm ampUnitAlarmSeverityWithoutSplitOption =
+              getAmpUnitAlarmSeverityWithoutSplitOption(
+            unitStatusAlarmSeverity: unitStatusAlarmSeverity,
+            splitOptionAlarmSeverity: splitOptionAlarmSeverity,
+            temperatureAlarmSeverity: temperatureAlarmSeverity,
+            voltageAlarmSeverity: voltageAlarmSeverity,
+            voltageRippleAlarmSeverity: voltageRippleAlarmSeverity,
+            outputPowerAlarmSeverity: outputPowerAlarmSeverity,
+            rfOutputPilotLowFrequencyAlarmSeverity:
+                rfOutputPilotLowFrequencyAlarmSeverity,
+            rfOutputPilotHighFrequencyAlarmSeverity:
+                rfOutputPilotHighFrequencyAlarmSeverity,
+          );
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                getPulsator(
+                  color: getPulsatorColor(
+                    alarmState: unitAmpStatusAlarmState,
+                    alarm: ampUnitAlarmSeverityWithoutSplitOption,
+                  ),
+                  name: AppLocalizations.of(context)!.unitStatusAlarm,
+                  animationEnabled: unitAmpStatusAlarmState == '0' &&
+                          ampUnitAlarmSeverityWithoutSplitOption == Alarm.danger
+                      ? true
+                      : false,
+                ),
+                getPulsator(
+                  color: getPulsatorColor(
+                    alarmState: temperatureAlarmState,
+                    alarm: temperatureAlarmSeverity,
+                  ),
+                  name: AppLocalizations.of(context)!.temperatureAlarm,
+                  animationEnabled: temperatureAlarmState == '0' &&
+                          temperatureAlarmSeverity == Alarm.danger
+                      ? true
+                      : false,
+                ),
+                getPulsator(
+                  color: getPulsatorColor(
+                    alarmState: voltageAlarmState,
+                    alarm: voltageAlarmSeverity,
+                  ),
+                  name: AppLocalizations.of(context)!.powerSupplyAlarm,
+                  animationEnabled: voltageAlarmState == '0' &&
+                          voltageAlarmSeverity == Alarm.danger
+                      ? true
+                      : false,
+                ),
+              ],
+            ),
+          );
+        } else {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                getPulsator(
+                  color: const Color(0xff6c757d),
+                  name: AppLocalizations.of(context)!.unitStatusAlarm,
+                  animationEnabled: false,
+                ),
+                getPulsator(
+                  color: const Color(0xff6c757d),
+                  name: AppLocalizations.of(context)!.temperatureAlarm,
+                  animationEnabled: false,
+                ),
+                getPulsator(
+                  color: const Color(0xff6c757d),
+                  name: AppLocalizations.of(context)!.powerSupplyAlarm,
+                  animationEnabled: false,
+                ),
+              ],
+            ),
+          );
+        }
       },
     );
   }

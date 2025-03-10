@@ -254,44 +254,14 @@ class _LogChartListView extends StatelessWidget {
           );
         } else if (state.formStatus.isRequestFailure) {
           context.read<Chart18Bloc>().add(const TabChangedEnabled());
-          return SingleChildScrollView(
-            // 設定 key, 讓 chart 可以 rebuild
-            // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
-            key: const Key('ChartForm_Chart'),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  buildChart(
-                    context: context,
-                    lineSeriesCollection: getChartDataOfLog1(
-                        dateValueCollectionOfLog:
-                            state.dateValueCollectionOfLog),
-                  ),
-                  const SizedBox(
-                    height: 50.0,
-                  ),
-                  buildChart(
-                    context: context,
-                    lineSeriesCollection: getChartDataOfLog2(
-                        dateValueCollectionOfLog:
-                            state.dateValueCollectionOfLog),
-                  ),
-                ],
-              ),
-            ),
-          );
-        } else {
-          // state.formStatus.isRequestSuccess
-          context.read<Chart18Bloc>().add(const TabChangedEnabled());
-          return Center(
+          return Align(
+            alignment: Alignment.center,
             child: SingleChildScrollView(
               // 設定 key, 讓 chart 可以 rebuild
               // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
               key: const Key('ChartForm_Chart'),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 60.0),
+                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 80.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -310,8 +280,39 @@ class _LogChartListView extends StatelessWidget {
                           dateValueCollectionOfLog:
                               state.dateValueCollectionOfLog),
                     ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        } else {
+          // state.formStatus.isRequestSuccess
+          context.read<Chart18Bloc>().add(const TabChangedEnabled());
+          return Align(
+            alignment: Alignment.center,
+            child: SingleChildScrollView(
+              // 設定 key, 讓 chart 可以 rebuild
+              // 如果沒有設定 key, flutter widget tree 會認為不需要rebuild chart
+              key: const Key('ChartForm_Chart'),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 80.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    buildChart(
+                      context: context,
+                      lineSeriesCollection: getChartDataOfLog1(
+                          dateValueCollectionOfLog:
+                              state.dateValueCollectionOfLog),
+                    ),
                     const SizedBox(
-                      height: CustomStyle.formBottomSpacingS,
+                      height: 50.0,
+                    ),
+                    buildChart(
+                      context: context,
+                      lineSeriesCollection: getChartDataOfLog2(
+                          dateValueCollectionOfLog:
+                              state.dateValueCollectionOfLog),
                     ),
                   ],
                 ),

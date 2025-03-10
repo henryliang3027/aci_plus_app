@@ -283,6 +283,7 @@
     "devicePageSetupWizard4": "Adjustable recording period",
 
     "thresholdPageSetupWizard1": "Adjustable temperature, voltage, voltage ripple and TCP output power upper / lower limit",
+    "nodeThresholdPageSetupWizard1": "Adjustable temperature, voltage and TCP output power upper / lower limit",
     "thresholdPageSetupWizard2": "Alarm notifications for low-frequency output and high-frequency output can be turned on or off",
 
     "balancePageSetupWizard1": "Automatically detect the current equalizer ( EQ ) type",
@@ -307,6 +308,7 @@
     "firmwareUpdatePageSetupWizard1": "Bluetooth connection has an effective range of 10 meters",
     "firmwareUpdatePageSetupWizard2": "Select the new / old firmware version to update to the device",
     "firmwareUpdatePageSetupWizard3": "Update time within 2 minutes",
+    "firmwareUpdatePageSetupWizard4": "Display up to 32 records",
 
     "userActivityLogPageSetupWizard1": "App’s operation record of the device",
     "userActivityLogPageSetupWizard2": "A maximum of 30 days of records can be selected, and 500 records can be displayed in one click.",
@@ -480,7 +482,7 @@
     "dialogMessageInputEqualizerSetting": "Input equalizer setting",
     "dialogMessageCascadePositionSetting": "Cascade position setting",
     "dialogMessageDeviceNameSetting": "Device name setting",
-    "dialogMessageDeviceNoteSetting": "note setting",
+    "dialogMessageDeviceNoteSetting": "Note setting",
 
     "dialogMessageItemAGCDisabled": "Disabled",
     "dialogMessageItemUnFilled": "Not Filled",

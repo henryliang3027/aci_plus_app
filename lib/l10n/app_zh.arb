@@ -281,7 +281,9 @@
     "devicePageSetupWizard4": "可調整記錄週期",
 
     "thresholdPageSetupWizard1": "可調整 溫度, 電壓, 電壓漣波與 TCP 輸出功率上 / 下限",
+    "nodeThresholdPageSetupWizard1": "可調整 溫度, 電壓與 TCP 輸出功率上 / 下限",
     "thresholdPageSetupWizard2": "可開啟或關閉低頻輸出與高頻輸出的告警通知",
+
 
     "balancePageSetupWizard1": "自動偵測目前等化器 ( EQ ) 類別",
     "balancePageSetupWizard2": "自動調整連線設備上行與下行的衰減 ( PAD ) 範圍",
@@ -305,6 +307,7 @@
     "firmwareUpdatePageSetupWizard1": "藍牙連線有效範圍 10 米",
     "firmwareUpdatePageSetupWizard2": "選擇要更新至裝置的新 / 舊韌體版本",
     "firmwareUpdatePageSetupWizard3": "更新時間 2 分鐘以內",
+    "firmwareUpdatePageSetupWizard4": "最多顯示 32 筆記錄",
 
     "userActivityLogPageSetupWizard1": "App 對設備的操作紀錄",
     "userActivityLogPageSetupWizard2": "最大選取 30 天內的紀錄, 一次點選顯示 500 筆紀錄",

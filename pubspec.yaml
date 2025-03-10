@@ -102,7 +102,7 @@ dependencies:
   #     ref: master
   # assets_audio_player: ^3.1.0
 
-  # flutter_speed_chart:
+  # speed_chart:
   #   path: /Users/henry.liang/projects/flutter_speed_chart
 
   # The following adds the Cupertino Icons font to your application.

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
@@ -334,15 +335,21 @@ class Setting18AttributeView extends StatelessWidget {
         //       state.pilotFrequency2.value;
         // }
       },
-      child: Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: buildConfigurationWidget(),
+      child: GestureDetector(
+        onTap: () {
+          // 點擊螢幕空白處時, 關閉已開啟的鍵盤
+          closeKeyboard(context: context);
+        },
+        child: Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: buildConfigurationWidget(),
+            ),
           ),
-        ),
-        floatingActionButton: _SettingFloatingActionButton(
-          partId: partId,
-          // currentDetectedSplitOption: currentDetectedSplitOption,
+          floatingActionButton: _SettingFloatingActionButton(
+            partId: partId,
+            // currentDetectedSplitOption: currentDetectedSplitOption,
+          ),
         ),
       ),
     );
@@ -398,10 +405,6 @@ class _Location extends StatelessWidget {
                       context
                           .read<Setting18AttributeBloc>()
                           .add(LocationChanged(location));
-                    },
-                    onTapOutside: (event) {
-                      // 點擊其他區域關閉螢幕鍵盤
-                      FocusManager.instance.primaryFocus?.unfocus();
                     },
                     maxLength: 48,
                     decoration: InputDecoration(
@@ -477,10 +480,7 @@ class _Coordinates extends StatelessWidget {
                           .read<Setting18AttributeBloc>()
                           .add(CoordinatesChanged(coordinate));
                     },
-                    onTapOutside: (event) {
-                      // 點擊其他區域關閉螢幕鍵盤
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
+
                     maxLength: 39,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(10.0),
@@ -608,10 +608,6 @@ class _TechnicianID extends StatelessWidget {
                           .read<Setting18AttributeBloc>()
                           .add(TechnicianIDChanged(technicianID));
                     },
-                    onTapOutside: (event) {
-                      // 點擊其他區域關閉螢幕鍵盤
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
                     maxLength: 8,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(
@@ -688,10 +684,6 @@ class _InputSignalLevel extends StatelessWidget {
                           .read<Setting18AttributeBloc>()
                           .add(InputSignalLevelChanged(inputSignalLevel));
                     },
-                    onTapOutside: (event) {
-                      // 點擊其他區域關閉螢幕鍵盤
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
                     maxLength: 6,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(
@@ -766,10 +758,6 @@ class _InputAttenuation extends StatelessWidget {
                       context
                           .read<Setting18AttributeBloc>()
                           .add(InputAttenuationChanged(inputAttenuation));
-                    },
-                    onTapOutside: (event) {
-                      // 點擊其他區域關閉螢幕鍵盤
-                      FocusManager.instance.primaryFocus?.unfocus();
                     },
                     maxLength: 4,
                     decoration: InputDecoration(
@@ -847,10 +835,6 @@ class _InputEqualizer extends StatelessWidget {
                           .read<Setting18AttributeBloc>()
                           .add(InputEqualizerChanged(inputEqualizer));
                     },
-                    onTapOutside: (event) {
-                      // 點擊其他區域關閉螢幕鍵盤
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
                     maxLength: 4,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(
@@ -923,10 +907,6 @@ class _CascadePosition extends StatelessWidget {
                           .read<Setting18AttributeBloc>()
                           .add(CascadePositionChanged(cascadePosition));
                     },
-                    onTapOutside: (event) {
-                      // 點擊其他區域關閉螢幕鍵盤
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
                     maxLength: 32,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(
@@ -998,10 +978,6 @@ class _DeviceName extends StatelessWidget {
                       context
                           .read<Setting18AttributeBloc>()
                           .add(DeviceNameChanged(deviceName));
-                    },
-                    onTapOutside: (event) {
-                      // 點擊其他區域關閉螢幕鍵盤
-                      FocusManager.instance.primaryFocus?.unfocus();
                     },
                     maxLength: 32,
                     decoration: InputDecoration(
@@ -1113,10 +1089,7 @@ class _DeviceNote extends StatelessWidget {
                           .read<Setting18AttributeBloc>()
                           .add(DeviceNoteChanged(deviceNote));
                     },
-                    onTapOutside: (event) {
-                      // 點擊其他區域關閉螢幕鍵盤
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
+
                     maxLength: 400,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(
@@ -1170,6 +1143,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
           children: [
             getConfigureSetupWizard(
               context: context,
+              aciDeviceType: ACIDeviceType.amp1P8G,
             ),
             const SizedBox(
               height: 10.0,
@@ -1185,14 +1159,11 @@ class _SettingFloatingActionButton extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
               onPressed: () {
+                closeKeyboard(context: context);
+
                 context
                     .read<Setting18AttributeBloc>()
                     .add(const EditModeDisabled());
-
-                FocusScopeNode currentFocus = FocusScope.of(context);
-                if (!currentFocus.hasPrimaryFocus) {
-                  currentFocus.focusedChild?.unfocus();
-                }
               },
             ),
             const SizedBox(
@@ -1207,6 +1178,8 @@ class _SettingFloatingActionButton extends StatelessWidget {
                   : Colors.grey.withAlpha(200),
               onPressed: enableSubmission
                   ? () async {
+                      closeKeyboard(context: context);
+
                       bool shouldSubmit = false;
 
                       if (kDebugMode) {
@@ -1260,6 +1233,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
           children: [
             getConfigureSetupWizard(
               context: context,
+              aciDeviceType: ACIDeviceType.amp1P8G,
             ),
             const SizedBox(
               height: 10.0,
@@ -1330,6 +1304,7 @@ class _SettingFloatingActionButton extends StatelessWidget {
         children: [
           getConfigureSetupWizard(
             context: context,
+            aciDeviceType: ACIDeviceType.amp1P8G,
           ),
           const SizedBox(
             height: 10.0,

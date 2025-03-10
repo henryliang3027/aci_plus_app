@@ -1,3 +1,4 @@
+import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_icons/custom_icons.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/form_status.dart';
@@ -23,8 +24,9 @@ class Information18SetupWizard extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
           onPressed: () {
             showSetupWizardDialog(
-              context,
-              FunctionDescriptionType.information,
+              context: context,
+              functionDescriptionType: FunctionDescriptionType.information,
+              aciDeviceType: ACIDeviceType.amp1P8G,
             );
           },
           child: Icon(

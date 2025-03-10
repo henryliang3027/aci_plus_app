@@ -58,17 +58,6 @@ class Setting18AdvancedTabBar extends StatelessWidget {
                         ),
                       ),
                     ),
-
-                    // Tab(
-                    //   child: SizedBox(
-                    //     width: 160,
-                    //     child: Center(
-                    //       child: Text(
-                    //         AppLocalizations.of(context)!.bluetoothSetting,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -82,7 +71,6 @@ class Setting18AdvancedTabBar extends StatelessWidget {
                   Setting18FirmwarePage(
                     pageController: pageController,
                   ),
-                  // Setting18InstructionPage(),
                 ],
               ),
             ),
