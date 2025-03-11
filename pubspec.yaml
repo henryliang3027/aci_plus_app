@@ -39,17 +39,14 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   formz: ^0.6.1
-    
-  # win_ble: ^1.1.1 # for windows
-  # quick_blue: ^0.4.1+1 # for windows
-  universal_ble: ^0.12.0
+
+  universal_ble: ^0.12.0 # for windows
   flutter_reactive_ble: ^5.4.0
-  # bluetooth_enable:
-  #   git:
-  #     url: https://github.com/henryliang3027/bluetooth_enable.git
-  #     ref: master
   bluetooth_enable:
-    path: /Users/henry.liang/AndroidStudioProjects/new/bluetooth_enable
+    git:
+      url: https://github.com/henryliang3027/bluetooth_enable_kt.git
+      ref: main
+
   location: ^5.0.3
   equatable: ^2.0.5
   dropdown_button2: ^2.3.9 # custom dropdownButton and dropdownMenuItems

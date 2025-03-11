@@ -84,9 +84,11 @@ packages:
   bluetooth_enable:
     dependency: "direct main"
     description:
-      path: "/Users/henry.liang/AndroidStudioProjects/new/bluetooth_enable"
-      relative: false
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: "1685675dd08e38677f15e6b76be565eaa1df1e62"
+      url: "https://github.com/henryliang3027/bluetooth_enable_kt.git"
+    source: git
     version: "0.0.1"
   bluez:
     dependency: transitive
