@@ -47,7 +47,7 @@ class BLEWindowsClient extends BLEClientBase {
   Timer? _scanTimer;
   bool _connectionState = false;
   int _numberOfReconnect = 1;
-  int _maxReconnectTimes = 3;
+  final int _maxReconnectTimes = 3;
 
   // final List<int> _combinedRawData = [];
   // final int _totalBytesPerCommand = 261;
