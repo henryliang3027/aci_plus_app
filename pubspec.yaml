@@ -93,6 +93,8 @@ dependencies:
       url: https://github.com/henryliang3027/win_outlook.git
       ref: main
 
+  # window_manager: ^0.4.3 # for windows
+
   # path_drawing:
   #   git:
   #     url: https://github.com/henryliang3027/flutter_path_drawing.git
@@ -132,8 +134,6 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.3
   json_serializable: ^6.7.1
-
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

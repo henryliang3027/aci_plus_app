@@ -46,6 +46,8 @@ class BLEWindowsClient extends BLEClientBase {
   Timer? _connectionTimer;
   Timer? _scanTimer;
   bool _connectionState = false;
+  int _numberOfReconnect = 1;
+  int _maxReconnectTimes = 3;
 
   // final List<int> _combinedRawData = [];
   // final int _totalBytesPerCommand = 261;
@@ -111,7 +113,7 @@ class BLEWindowsClient extends BLEClientBase {
       if (!_scanReportStreamController.isClosed) {
         // scanTimer.cancel();
         // WinBle.stopScanning();
-        print('Device: ${device.name}');
+        print('Device: ${device.name} ${device.rssi}');
 
         // _peripheral = Peripheral(
         //   id: device.address,
@@ -292,6 +294,20 @@ class BLEWindowsClient extends BLEClientBase {
           ));
 
           await closeConnectionStream();
+        } else {
+          if (_peripheral != null) {
+            if (_numberOfReconnect <= _maxReconnectTimes) {
+              UniversalBle.connect(_peripheral!.id);
+              _numberOfReconnect += 1;
+            } else {
+              _connectionReportStreamController.add(const ConnectionReport(
+                connectStatus: ConnectStatus.disconnected,
+                errorMessage: 'Device connection failed',
+              ));
+
+              await closeConnectionStream();
+            }
+          }
         }
 
         break;
@@ -444,6 +460,7 @@ class BLEWindowsClient extends BLEClientBase {
   Future<void> closeConnectionStream() async {
     print('close _characteristicStreamSubscription');
     _connectionState = false;
+    _numberOfReconnect = 1;
 
     if (_peripheral != null) {
       UniversalBle.disconnect(_peripheral!.id);

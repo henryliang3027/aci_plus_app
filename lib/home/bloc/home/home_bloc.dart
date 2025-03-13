@@ -819,6 +819,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       // 處理 resultOf1p8GUserAttribute 讀取
       for (int i = 0; i < 3; i++) {
+        //休息一段時間再讀取, 比較不會有 data 收不完整的情況發生
+        await Future.delayed(const Duration(milliseconds: 1000));
+
         resultOf1p8GUserAttribute =
             await _amp18Repository.requestCommand1p8GUserAttribute();
 
@@ -847,8 +850,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       // 根據RSSI設定每個 chunk 之間的 delay
       await _amp18Repository.set1p8GTransmitDelayTime();
 
-      // 執行完上面的 set delay time 後休息一段時間再讀取 log, 比較不會有 data 收不完整的情況發生
-      await Future.delayed(const Duration(milliseconds: 2000));
+      //休息一段時間再讀取, 比較不會有 data 收不完整的情況發生
+      await Future.delayed(const Duration(milliseconds: 1000));
       resultOf1p8GForLogChunk =
           await _amp18Repository.requestCommand1p8GForLogChunk(0);
 
@@ -1040,6 +1043,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       // 最多 retry 3 次, 連續失敗3次就視為失敗
       // 處理 resultOf1p8GCCorNodeUserAttribute 讀取
       for (int i = 0; i < 3; i++) {
+        //休息一段時間再讀取, 比較不會有 data 收不完整的情況發生
+        await Future.delayed(const Duration(milliseconds: 1000));
+
         resultOf1p8GCCorNodeUserAttribute = await _amp18CCorNodeRepository
             .requestCommand1p8GCCorNodeUserAttribute();
 
@@ -1067,8 +1073,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     for (int i = 0; i < 3; i++) {
       await _amp18CCorNodeRepository.set1p8GCCorNodeTransmitDelayTime();
 
-      // 執行完上面的 set delay time 後休息一段時間再讀取 log, 比較不會有 data 收不完整的情況發生
-      await Future.delayed(const Duration(milliseconds: 2000));
+      //休息一段時間再讀取, 比較不會有 data 收不完整的情況發生
+      await Future.delayed(const Duration(milliseconds: 1000));
       resultOf1p8GCCorNodeLogChunk =
           await _amp18CCorNodeRepository.requestCommand1p8GCCorNodeLogChunk(0);
 
@@ -1190,7 +1196,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // timer 啟動後 5 秒才會發 AlarmUpdated, 所以第0秒時先 AlarmUpdated
 
     String partId = state.characteristicData[DataKey.partId] ?? '';
-    add(DevicePeriodicUpdate(partId: partId));
+    // add(DevicePeriodicUpdate(partId: partId));
 
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       print('alarm trigger timer: ${timer.tick}');
