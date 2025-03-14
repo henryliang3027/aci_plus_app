@@ -134,6 +134,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.3
   json_serializable: ^6.7.1
+  flutter_flavorizr: ^2.2.3
+  flutter_launcher_icons: ^0.14.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -185,3 +187,23 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+flavorizr:
+  flavors:
+    aci_plus:
+      app:
+        name: "ACI+"
+      android:
+        applicationId: "com.aci.aciPlusApp"
+        icon: ""
+      ios:
+        bundleId: "com.aci.aciPlusApp1"
+    aci_plus_plus:
+      app:
+        name: "ACI++"
+      android:
+        applicationId: "com.aci.aciPlusApp"
+      ios:
+        bundleId: "com.aci.aciPlusApp2"
+        icon: "/Users/henry.liang/Documents/ACI+_app_release_material/Apple.png"

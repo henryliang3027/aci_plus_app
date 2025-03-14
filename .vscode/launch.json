@@ -7,19 +7,56 @@
         {
             "name": "aci_plus_app",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": [
+                "--flavor=aci_plus"
+            ]
         },
         {
             "name": "aci_plus_app (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "args": [
+                "--flavor=aci_plus"
+            ]
         },
         {
             "name": "aci_plus_app (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "args": [
+                "--flavor=aci_plus"
+            ]
+        },
+        {
+            "name": "aci_plus_plus_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": [
+                "--flavor=aci_plus_plus"
+            ]
+        },
+        {
+            "name": "aci_plus_plus_app (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "args": [
+                "--flavor=aci_plus_plus"
+            ]
+        },
+        {
+            "name": "aci_plus_plus_app (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "--flavor=aci_plus_plus"
+            ]
         }
     ]
 }
