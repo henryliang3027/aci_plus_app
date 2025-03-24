@@ -45,6 +45,7 @@ class BLEWindowsClient extends BLEClientBase {
   Timer? _characteristicDataTimer;
   Timer? _connectionTimer;
   Timer? _scanTimer;
+  ACIDeviceType _aciDeviceType = ACIDeviceType.undefined;
   bool _connectionState = false;
   int _numberOfReconnect = 1;
   final int _maxReconnectTimes = 3;
@@ -490,7 +491,7 @@ class BLEWindowsClient extends BLEClientBase {
     await _connectionStreamSubscription?.cancel();
     await Future.delayed(const Duration(milliseconds: 2000));
     _connectionStreamSubscription = null;
-
+    _aciDeviceType = ACIDeviceType.undefined;
     clearCombinedRawData();
   }
 
@@ -549,8 +550,9 @@ class BLEWindowsClient extends BLEClientBase {
     if (result[0]) {
       List<int> rawData = result[1];
       int length = rawData.length;
-      // 1G/1.2G data length = 17
       if (length == 17) {
+        // 1G/1.2G data length = 17
+        _aciDeviceType = ACIDeviceType.dsim1G1P2G;
         return [
           true,
           ACIDeviceType.dsim1G1P2G,
@@ -559,11 +561,13 @@ class BLEWindowsClient extends BLEClientBase {
         // 1.8G data length = 181
         int partId = rawData[71];
         if (partId == 4) {
+          _aciDeviceType = ACIDeviceType.ampCCorNode1P8G;
           return [
             true,
             ACIDeviceType.ampCCorNode1P8G,
           ];
         } else {
+          _aciDeviceType = ACIDeviceType.amp1P8G;
           return [
             true,
             ACIDeviceType.amp1P8G,
@@ -595,13 +599,23 @@ class BLEWindowsClient extends BLEClientBase {
 
     Future.microtask(() async {
       try {
-        await UniversalBle.writeValue(
-          _peripheral!.id,
-          _serviceId,
-          _characteristicId,
-          Uint8List.fromList(value),
-          BleOutputProperty.withResponse,
-        );
+        if (_aciDeviceType == ACIDeviceType.dsim1G1P2G) {
+          await UniversalBle.writeValue(
+            _peripheral!.id,
+            _serviceId,
+            _characteristicId,
+            Uint8List.fromList(value),
+            BleOutputProperty.withoutResponse,
+          );
+        } else {
+          await UniversalBle.writeValue(
+            _peripheral!.id,
+            _serviceId,
+            _characteristicId,
+            Uint8List.fromList(value),
+            BleOutputProperty.withResponse,
+          );
+        }
       } catch (e) {
         cancelCharacteristicDataTimer(
             name:

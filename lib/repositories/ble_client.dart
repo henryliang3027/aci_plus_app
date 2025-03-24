@@ -45,6 +45,7 @@ class BLEClient extends BLEClientBase {
   Timer? _characteristicDataTimer;
   Timer? _connectionTimer;
   Timer? _scanTimer;
+  ACIDeviceType _aciDeviceType = ACIDeviceType.undefined;
 
   @override
   Stream<String> get updateReport async* {
@@ -300,6 +301,7 @@ class BLEClient extends BLEClientBase {
     await Future.delayed(const Duration(milliseconds: 2000));
     _connectionStreamSubscription = null;
     _ble = null;
+    _aciDeviceType = ACIDeviceType.undefined;
     clearCombinedRawData();
     // _combinedRawData.clear();
   }
@@ -359,8 +361,10 @@ class BLEClient extends BLEClientBase {
     if (result[0]) {
       List<int> rawData = result[1];
       int length = rawData.length;
-      // 1G/1.2G data length = 17
+
       if (length == 17) {
+        // 1G/1.2G data length = 17
+        _aciDeviceType = ACIDeviceType.dsim1G1P2G;
         return [
           true,
           ACIDeviceType.dsim1G1P2G,
@@ -368,12 +372,15 @@ class BLEClient extends BLEClientBase {
       } else {
         // 1.8G data length = 181
         int partId = rawData[71];
+
         if (partId == 4) {
+          _aciDeviceType = ACIDeviceType.ampCCorNode1P8G;
           return [
             true,
             ACIDeviceType.ampCCorNode1P8G,
           ];
         } else {
+          _aciDeviceType = ACIDeviceType.amp1P8G;
           return [
             true,
             ACIDeviceType.amp1P8G,
@@ -405,10 +412,18 @@ class BLEClient extends BLEClientBase {
 
     Future.microtask(() async {
       try {
-        await _ble!.writeCharacteristicWithResponse(
-          _qualifiedCharacteristic,
-          value: value,
-        );
+        if (_aciDeviceType == ACIDeviceType.dsim1G1P2G) {
+          // DSIM 的 藍牙 dongle 是 ＨＭ-10 藍牙模組, 沒有 ACK 機制
+          await _ble!.writeCharacteristicWithoutResponse(
+            _qualifiedCharacteristic,
+            value: value,
+          );
+        } else {
+          await _ble!.writeCharacteristicWithResponse(
+            _qualifiedCharacteristic,
+            value: value,
+          );
+        }
       } catch (e) {
         cancelCharacteristicDataTimer(
             name:
