@@ -412,7 +412,8 @@ class BLEClient extends BLEClientBase {
 
     Future.microtask(() async {
       try {
-        if (_aciDeviceType == ACIDeviceType.dsim1G1P2G) {
+        if (_aciDeviceType == ACIDeviceType.undefined ||
+            _aciDeviceType == ACIDeviceType.dsim1G1P2G) {
           // DSIM 的 藍牙 dongle 是 ＨＭ-10 藍牙模組, 沒有 ACK 機制
           await _ble!.writeCharacteristicWithoutResponse(
             _qualifiedCharacteristic,

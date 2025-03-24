@@ -599,7 +599,8 @@ class BLEWindowsClient extends BLEClientBase {
 
     Future.microtask(() async {
       try {
-        if (_aciDeviceType == ACIDeviceType.dsim1G1P2G) {
+        if (_aciDeviceType == ACIDeviceType.undefined ||
+            _aciDeviceType == ACIDeviceType.dsim1G1P2G) {
           await UniversalBle.writeValue(
             _peripheral!.id,
             _serviceId,
