@@ -310,7 +310,7 @@ class Chart18Bloc extends Bloc<Chart18Event, Chart18State> {
       appLocalizations.location: location,
       appLocalizations.coordinates: coordinates,
       // firmware version 148 開始有屬性設定功能, 但是暫時不 release
-      if (firmwareVersion >= 150) ...{
+      if (firmwareVersion >= 148) ...{
         appLocalizations.technicianID: technicianID,
         appLocalizations.inputSignalLevel: inputSignalLevel,
         appLocalizations.inputAttenuation: inputAttenuation,

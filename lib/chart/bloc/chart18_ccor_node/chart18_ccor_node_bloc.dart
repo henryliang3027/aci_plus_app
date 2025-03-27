@@ -339,7 +339,8 @@ class Chart18CCorNodeBloc
       _appLocalizations.device.trim(): '',
       _appLocalizations.location: location,
       _appLocalizations.coordinates: coordinates,
-      if (firmwareVersion >= 148) ...{
+      // firmware version 150 開始有屬性設定功能, 但是暫時不 release
+      if (firmwareVersion >= 150) ...{
         _appLocalizations.technicianID: technicianID,
         _appLocalizations.cascadePosition: cascadePosition,
         _appLocalizations.deviceName: deviceName,
