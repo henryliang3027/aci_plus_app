@@ -495,18 +495,26 @@ class _FirstChannelLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18RegulationBloc, Setting18RegulationState>(
       builder: (context, state) {
-        return twoTextField(
+        double step1 = 6.0;
+        double step2 = 5.0;
+        return frequencyRFTextField(
           context: context,
-          title: '${AppLocalizations.of(context)!.startFrequency}:',
+          title1: '${AppLocalizations.of(context)!.startFrequency}:',
+          title2: '${AppLocalizations.of(context)!.rfLevel}:',
           editMode1: state.editMode && state.pilotFrequencyMode != '2',
           editMode2: state.editMode && state.pilotFrequencyMode != '2',
           textEditingControllerName1:
               'setting18Form_firstChannelLoadingFrequencyInput_textField',
           textEditingControllerName2:
               'setting18Form_firstChannelLoadingLevelInput_textField',
-          textEditingController1:
-              firstChannelLoadingFrequencyTextEditingController,
-          textEditingController2: firstChannelLoadingLevelTextEditingController,
+          // textEditingController1:
+          //     firstChannelLoadingFrequencyTextEditingController,
+
+          // textEditingController2: firstChannelLoadingLevelTextEditingController,
+          currentValue1: state.firstChannelLoadingFrequency.value,
+          currentValue2: state.firstChannelLoadingLevel.value,
+          step1: step1,
+          step2: step2,
           onChanged1: (firstChannelLoadingFrequency) {
             context
                 .read<Setting18RegulationBloc>()
@@ -515,10 +523,51 @@ class _FirstChannelLoading extends StatelessWidget {
                   currentDetectedSplitOption: currentDetectedSplitOption,
                 ));
           },
+          onIncreased1: (firstChannelLoadingFrequency) {
+            context
+                .read<Setting18RegulationBloc>()
+                .add(FirstChannelLoadingFrequencyChanged(
+                  firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+                  currentDetectedSplitOption: currentDetectedSplitOption,
+                ));
+          },
+          onDecreased1: (firstChannelLoadingFrequency) {
+            context
+                .read<Setting18RegulationBloc>()
+                .add(FirstChannelLoadingFrequencyChanged(
+                  firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+                  currentDetectedSplitOption: currentDetectedSplitOption,
+                ));
+          },
+
           onChanged2: (firstChannelLoadingLevel) {
             context
                 .read<Setting18RegulationBloc>()
                 .add(FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
+          },
+          onIncreased2: (firstChannelLoadingLevel) {
+            context
+                .read<Setting18RegulationBloc>()
+                .add(FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
+
+            // convert to double
+            double lastChannelLoadingLevel =
+                double.parse(state.lastChannelLoadingLevel.value) - step2;
+            context.read<Setting18RegulationBloc>().add(
+                LastChannelLoadingLevelChanged(
+                    lastChannelLoadingLevel.toStringAsFixed(1)));
+          },
+          onDecreased2: (firstChannelLoadingLevel) {
+            context
+                .read<Setting18RegulationBloc>()
+                .add(FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
+
+            // convert to double
+            double lastChannelLoadingLevel =
+                double.parse(state.lastChannelLoadingLevel.value) + step2;
+            context.read<Setting18RegulationBloc>().add(
+                LastChannelLoadingLevelChanged(
+                    lastChannelLoadingLevel.toStringAsFixed(1)));
           },
           errorText1: _isNotValidFrequency(
             pilotFrequencyMode: state.pilotFrequencyMode,
@@ -557,24 +606,51 @@ class _LastChannelLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18RegulationBloc, Setting18RegulationState>(
       builder: (context, state) {
-        return twoTextField(
+        double step1 = 6.0;
+        double step2 = 5.0;
+        return frequencyRFTextField(
           context: context,
-          title: '${AppLocalizations.of(context)!.stopFrequency}:',
+          title1: '${AppLocalizations.of(context)!.stopFrequency}:',
+          title2: '${AppLocalizations.of(context)!.slope}:',
           editMode1: state.editMode && state.pilotFrequencyMode != '2',
           editMode2: state.editMode && state.pilotFrequencyMode != '2',
           textEditingControllerName1:
               'setting18Form_lastChannelLoadingFrequencyInput_textField',
           textEditingControllerName2:
               'setting18Form_lastChannelLoadingLevelInput_textField',
-          textEditingController1:
-              lastChannelLoadingFrequencyTextEditingController,
-          textEditingController2: lastChannelLoadingLevelTextEditingController,
+          // textEditingController1:
+          //     lastChannelLoadingFrequencyTextEditingController,
+          // textEditingController2: lastChannelLoadingLevelTextEditingController,
+          currentValue1: state.lastChannelLoadingFrequency.value,
+          currentValue2: state.lastChannelLoadingLevel.value,
+          step1: step1,
+          step2: step2,
           onChanged1: (lastChannelLoadingFrequency) {
             context.read<Setting18RegulationBloc>().add(
                 LastChannelLoadingFrequencyChanged(
                     lastChannelLoadingFrequency));
           },
+          onIncreased1: (lastChannelLoadingFrequency) {
+            context.read<Setting18RegulationBloc>().add(
+                LastChannelLoadingFrequencyChanged(
+                    lastChannelLoadingFrequency));
+          },
+          onDecreased1: (lastChannelLoadingFrequency) {
+            context.read<Setting18RegulationBloc>().add(
+                LastChannelLoadingFrequencyChanged(
+                    lastChannelLoadingFrequency));
+          },
           onChanged2: (lastChannelLoadingLevel) {
+            context
+                .read<Setting18RegulationBloc>()
+                .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
+          },
+          onIncreased2: (lastChannelLoadingLevel) {
+            context
+                .read<Setting18RegulationBloc>()
+                .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
+          },
+          onDecreased2: (lastChannelLoadingLevel) {
             context
                 .read<Setting18RegulationBloc>()
                 .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));

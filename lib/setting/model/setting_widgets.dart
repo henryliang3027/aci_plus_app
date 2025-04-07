@@ -23,6 +23,16 @@ double _getBondaryValue({
   }
 }
 
+double _stringToDecimal({
+  required String value,
+}) {
+  if (value.isNotEmpty) {
+    return double.tryParse(value) ?? 0.0;
+  } else {
+    return 0.0;
+  }
+}
+
 String getForwardCEQText(String index) {
   if (index.isNotEmpty) {
     int intIndex = int.parse(index);
@@ -523,6 +533,195 @@ class _FineTuneTextSliderState extends State<FineTuneTextSlider> {
   }
 }
 
+class FineTuneInput extends StatefulWidget {
+  const FineTuneInput({
+    super.key,
+    required this.labelText,
+    required this.initialValue,
+    required this.step,
+    required this.enabled,
+    required this.onChanged,
+    required this.onIncreased,
+    required this.onDecreased,
+    required this.errorText,
+    this.textPrecision = 1,
+  });
+
+  final String labelText;
+  final String initialValue;
+  final double step;
+  final bool enabled;
+  final ValueChanged<String> onChanged;
+  final ValueChanged<String> onIncreased;
+  final ValueChanged<String> onDecreased;
+  final String? errorText;
+  final int textPrecision;
+
+  @override
+  State<FineTuneInput> createState() => _FineTuneInputState();
+}
+
+class _FineTuneInputState extends State<FineTuneInput> {
+  late double _value;
+  late TextEditingController _textEditingController;
+
+  @override
+  void initState() {
+    _value = _stringToDecimal(value: widget.initialValue);
+
+    _textEditingController = TextEditingController()
+      ..text = widget.initialValue;
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant FineTuneInput oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget != widget) {
+      setState(() {
+        _value = _stringToDecimal(value: widget.initialValue);
+
+        _textEditingController.value = TextEditingValue(
+          text: widget.initialValue,
+          selection: _textEditingController.selection,
+        );
+      });
+    }
+  }
+
+  void _increaseValue() {
+    setState(() {
+      _value = _value + widget.step;
+
+      _textEditingController.text =
+          _value.toStringAsFixed(widget.textPrecision);
+    });
+  }
+
+  void _decreasedValue() {
+    setState(() {
+      _value = _value - widget.step;
+
+      _textEditingController.text =
+          _value.toStringAsFixed(widget.textPrecision);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: CustomStyle.sizeXS,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                flex: 1,
+                child: IconButton.filled(
+                  visualDensity: const VisualDensity(horizontal: -4.0),
+                  icon: const Icon(
+                    Icons.remove,
+                  ),
+                  onPressed: widget.enabled
+                      ? () {
+                          _decreasedValue();
+
+                          widget.onDecreased(
+                              _value.toStringAsFixed(widget.textPrecision));
+                        }
+                      : null,
+                ),
+              ),
+              Flexible(
+                flex: 4,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 0.0,
+                  ),
+                  child: TextField(
+                    controller: _textEditingController,
+                    // key: Key(textEditingControllerName1),
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXXL,
+                    ),
+
+                    textAlign: TextAlign.center,
+
+                    enabled: widget.enabled,
+                    textInputAction: TextInputAction.done,
+                    onChanged: (value) {
+                      // _adjustTextFieldValue(value: value);
+                      widget.onChanged(value);
+                    },
+                    onTapOutside: (event) {
+                      // 點擊其他區域關閉螢幕鍵盤
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
+                    maxLength: 40,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    inputFormatters: [
+                      if (widget.textPrecision == 1)
+                        // ^：表示從起始開始匹配第一個符合的數字
+                        // \d{1,3}：\d 表示匹配任何一個數字。{1,3} 表示前面的數字字符必須出現 1~3 次
+                        // (\.\d?)?：匹配一個小數點後跟著 0 到 1 位數字
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d{1,3}(\.\d?)?'))
+                      else
+                        FilteringTextInputFormatter.allow(RegExp(r'^\d{1,3}'))
+                    ],
+                    decoration: InputDecoration(
+                      floatingLabelAlignment: FloatingLabelAlignment.center,
+                      label: Text(widget.labelText),
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      contentPadding: const EdgeInsets.all(8.0),
+                      isDense: true,
+                      filled: true,
+                      fillColor:
+                          Theme.of(context).colorScheme.secondaryContainer,
+                      counterText: '',
+                      errorMaxLines: 2,
+                      error: widget.enabled
+                          ? _validateText(
+                              context: context,
+                              errorText: widget.errorText,
+                            )
+                          : null,
+                    ),
+                  ),
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: IconButton.filled(
+                  visualDensity: const VisualDensity(horizontal: -4.0),
+                  icon: const Icon(
+                    Icons.add,
+                  ),
+                  onPressed: widget.enabled
+                      ? () {
+                          _increaseValue();
+                          widget.onIncreased(
+                              _value.toStringAsFixed(widget.textPrecision));
+                        }
+                      : null,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 Widget? _validateText({
   required BuildContext context,
   String? errorText,
@@ -875,6 +1074,177 @@ Widget ingressGridViewButton({
             );
           },
         ),
+      ),
+    ),
+  );
+}
+
+Widget frequencyRFTextField({
+  required BuildContext context,
+  required String title1,
+  required String title2,
+  required bool editMode1,
+  required bool editMode2,
+  required String textEditingControllerName1,
+  required String textEditingControllerName2,
+  required String currentValue1,
+  required String currentValue2,
+  required ValueChanged onChanged1,
+  required ValueChanged onIncreased1,
+  required ValueChanged onDecreased1,
+  required double step1,
+  required ValueChanged onChanged2,
+  required ValueChanged onIncreased2,
+  required ValueChanged onDecreased2,
+  required double step2,
+  bool reaOnly1 = false,
+  bool reaOnly2 = false,
+  String? errorText1,
+  String? errorText2,
+  double padding = CustomStyle.sizeXL,
+  double elevation = 1.0,
+  Color? color,
+}) {
+  return Card(
+    elevation: elevation,
+    color: color,
+    child: Padding(
+      padding: EdgeInsets.all(padding),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: CustomStyle.sizeL,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    title1,
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          FineTuneInput(
+            labelText:
+                '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})',
+            initialValue: currentValue1,
+            step: step1,
+            enabled: editMode1,
+            onChanged: onChanged1,
+            onIncreased: onIncreased1,
+            onDecreased: onDecreased1,
+            errorText: errorText1,
+            textPrecision: 0,
+          ),
+
+          // TextField(
+          //   controller: textEditingController1,
+          //   key: Key(textEditingControllerName1),
+          //   style: const TextStyle(
+          //     fontSize: CustomStyle.sizeXL,
+          //   ),
+          //   keyboardType: const TextInputType.numberWithOptions(
+          //     decimal: true,
+          //   ),
+          //   enabled: editMode1,
+          //   readOnly: reaOnly1,
+          //   textInputAction: TextInputAction.done,
+          //   onChanged: onChanged1,
+          //   onTapOutside: (event) {
+          //     // 點擊其他區域關閉螢幕鍵盤
+          //     FocusManager.instance.primaryFocus?.unfocus();
+          //   },
+          //   maxLength: 40,
+          //   decoration: InputDecoration(
+          //     label: Text(
+          //         '${AppLocalizations.of(context)!.frequency} (${CustomStyle.mHz})'),
+          //     border: const OutlineInputBorder(
+          //         borderRadius: BorderRadius.all(Radius.circular(4.0))),
+          //     contentPadding: const EdgeInsets.all(8.0),
+          //     isDense: true,
+          //     filled: true,
+          //     fillColor: Theme.of(context).colorScheme.secondaryContainer,
+          //     counterText: '',
+          //     errorMaxLines: 2,
+          //     errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
+          //     errorText: editMode1 ? errorText1 : null,
+          //   ),
+          // ),
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: CustomStyle.sizeL,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    title2,
+                    style: const TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          FineTuneInput(
+            labelText:
+                '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})',
+            initialValue: currentValue2,
+            step: step2,
+            enabled: editMode2,
+            onChanged: onChanged2,
+            onIncreased: onIncreased2,
+            onDecreased: onDecreased2,
+            errorText: errorText2,
+          ),
+
+          // TextField(
+          //   controller: textEditingController2,
+          //   key: Key(textEditingControllerName2),
+          //   style: const TextStyle(
+          //     fontSize: CustomStyle.sizeXL,
+          //   ),
+          //   keyboardType: const TextInputType.numberWithOptions(
+          //     decimal: true,
+          //   ),
+          //   enabled: editMode2,
+          //   readOnly: reaOnly2,
+          //   textInputAction: TextInputAction.done,
+          //   onChanged: onChanged2,
+          //   onTapOutside: (event) {
+          //     // 點擊其他區域關閉螢幕鍵盤
+          //     FocusManager.instance.primaryFocus?.unfocus();
+          //   },
+          //   maxLength: 40,
+          //   decoration: InputDecoration(
+          //     label: Text(
+          //         '${AppLocalizations.of(context)!.level} (${CustomStyle.dBmV})'),
+          //     border: const OutlineInputBorder(
+          //         borderRadius: BorderRadius.all(Radius.circular(4.0))),
+          //     contentPadding: const EdgeInsets.all(8.0),
+          //     isDense: true,
+          //     filled: true,
+          //     fillColor: Theme.of(context).colorScheme.secondaryContainer,
+          //     counterText: '',
+          //     errorMaxLines: 2,
+          //     errorStyle: const TextStyle(fontSize: CustomStyle.sizeS),
+          //     errorText: editMode2 ? errorText2 : null,
+          //   ),
+          // ),
+        ],
       ),
     ),
   );

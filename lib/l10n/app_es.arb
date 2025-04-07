@@ -31,6 +31,7 @@
     "stopFrequency": "Frecuencia de Parada",
     "frequency": "Frecuencia",
     "level": "Nivel",
+    "slope": "Pendiente",
     "startLevel": "Nivel de Inicio",
     "stopLevel": "Nivel de Parada",
     "pilotFrequencySelect": "Selección Frecuencia Piloto",
@@ -213,7 +214,7 @@
     "open": "Abrir",
 
     "dataLog": "   Registro   ",
-    "rfLevel": "   Nivel RF   ",
+    "rfLevel": "Nivel RF",
 
     "trunkAmplifier": "Amplificador de maletero",
     "distributionAmplifier": "Amplificador de distribución",

@@ -31,6 +31,7 @@
     "stopFrequency": "Fréquence d'Arrêt",
     "frequency": "Fréquence",
     "level": "Niveau",
+    "slope": "Pente",
     "startLevel": "Niveau de Démarrage",
     "stopLevel": "Niveau d'Arrêt",
     "pilotFrequencySelect": "Sélection de la Fréquence Pilote",
@@ -212,7 +213,7 @@
     "downloadAll": "Tout Télécharger",
 
     "dataLog": "    Journal    ",
-    "rfLevel": "   Niveau RF   ",
+    "rfLevel": "Niveau RF",
 
     "trunkAmplifier": "Amplificateur de coffre",
     "distributionAmplifier": "Amplificateur de distribution",

@@ -31,6 +31,7 @@
     "stopFrequency": "Stop Frequency",
     "frequency": "Frequency",
     "level": "Level",
+    "slope": "Slope",
     "startLevel": "Start Level",
     "stopLevel": "Stop Level",
     "pilotFrequencySelect": "Pilot Frequency Select",
@@ -215,7 +216,7 @@
     "open": "Open",
 
     "dataLog": "  Device Log  ",
-    "rfLevel": "   RF Level   ",
+    "rfLevel": "RF Level",
     
     "trunkAmplifier": "Trunk Amplifier",
     "distributionAmplifier": "Distribution Amplifier",
