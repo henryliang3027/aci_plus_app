@@ -153,19 +153,19 @@ class Setting18IngressControlView extends StatelessWidget {
 
 const List<String> rtnIngressValues = [
   '0',
-  '1',
+  // '1',
   '2',
-  '4',
-  '5',
+  // '4',
+  // '5',
 ];
 
 List<String> _getIngressTexts(BuildContext context) {
   return [
-    AppLocalizations.of(context)!.ingressDefault('0 ${CustomStyle.dB}'),
-    AppLocalizations.of(context)!.ingressTemporary('-3 ${CustomStyle.dB}'),
-    AppLocalizations.of(context)!.ingressTemporary('-6 ${CustomStyle.dB}'),
-    AppLocalizations.of(context)!.ingressOpenTemporary,
-    AppLocalizations.of(context)!.ingressOpenPermanent,
+    '0 ${CustomStyle.dB}',
+    // AppLocalizations.of(context)!.ingressTemporary('-3 ${CustomStyle.dB}'),
+    '-6 ${CustomStyle.dB}',
+    // AppLocalizations.of(context)!.ingressOpenTemporary,
+    // AppLocalizations.of(context)!.ingressOpenPermanent,
   ];
 }
 
@@ -181,7 +181,7 @@ class _ReturnIngressSetting2 extends StatelessWidget {
               current.targetValues[DataKey.ingressSetting2] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return ingressGridViewButton(
+        return controlToggleButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting2}:',
@@ -216,7 +216,7 @@ class _ReturnIngressSetting3 extends StatelessWidget {
               current.targetValues[DataKey.ingressSetting3] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return ingressGridViewButton(
+        return controlToggleButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting3}:',
@@ -256,7 +256,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
                 current.targetValues[DataKey.ingressSetting2] ||
             previous.editMode != current.editMode,
         builder: (context, state) {
-          return ingressGridViewButton(
+          return controlToggleButton(
             context: context,
             editMode: state.editMode,
             title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
@@ -286,7 +286,7 @@ class _ReturnIngressSetting4 extends StatelessWidget {
                 current.targetValues[DataKey.ingressSetting4] ||
             previous.editMode != current.editMode,
         builder: (context, state) {
-          return ingressGridViewButton(
+          return controlToggleButton(
             context: context,
             editMode: state.editMode,
             title: '${AppLocalizations.of(context)!.returnIngressSetting4}:',
@@ -324,7 +324,7 @@ class _ReturnIngressSetting2And3 extends StatelessWidget {
               current.targetValues[DataKey.ingressSetting3] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return ingressGridViewButton(
+        return controlToggleButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting2And3}:',
@@ -359,7 +359,7 @@ class _ReturnIngressSetting5And6 extends StatelessWidget {
               current.targetValues[DataKey.ingressSetting4] ||
           previous.editMode != current.editMode,
       builder: (context, state) {
-        return ingressGridViewButton(
+        return controlToggleButton(
           context: context,
           editMode: state.editMode,
           title: '${AppLocalizations.of(context)!.returnIngressSetting5And6}:',

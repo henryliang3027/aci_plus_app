@@ -382,6 +382,7 @@ class _Coordinates extends StatelessWidget {
                       fontSize: CustomStyle.sizeXL,
                     ),
                     enabled: state.editMode,
+                    readOnly: true,
                     textInputAction: TextInputAction.done,
                     onChanged: (coordinate) {
                       context
