@@ -206,20 +206,26 @@ class Indicator extends StatelessWidget {
 
     Widget getPulsator({
       required Color color,
-      required String name,
+      // required String name,
+      required IconData iconData,
       bool animationEnabled = true,
     }) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Pulsator(
-          size: 24, // Circle size
-          color: color,
-          duration: const Duration(
-            seconds: 2,
-          ), //  animationEnabled = false 時 Ripple duration 可以忽略
-          rippleCount:
-              animationEnabled ? 1 : 0, // animationEnabled = false 時關閉動畫
-          title: name,
+      return SizedBox(
+        width: 44,
+        height: 22,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Pulsator(
+            iconData: iconData,
+            size: 24, // Circle size
+            color: color,
+            duration: const Duration(
+              seconds: 2,
+            ), //  animationEnabled = false 時 Ripple duration 可以忽略
+            rippleCount: animationEnabled ? 1 : 0,
+            // animationEnabled = false 時關閉動畫
+            // title: name,
+          ),
         ),
       );
     }
@@ -313,7 +319,9 @@ class Indicator extends StatelessWidget {
           );
 
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(
+              vertical: 8,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -322,7 +330,8 @@ class Indicator extends StatelessWidget {
                     alarmState: unitAmpStatusAlarmState,
                     alarm: ampUnitAlarmSeverityWithoutSplitOption,
                   ),
-                  name: AppLocalizations.of(context)!.unitStatusAlarm,
+                  iconData: CustomIcons.device,
+                  // name: AppLocalizations.of(context)!.unitStatusAlarm,
                   animationEnabled: unitAmpStatusAlarmState == '0' &&
                           ampUnitAlarmSeverityWithoutSplitOption == Alarm.danger
                       ? true
@@ -333,7 +342,8 @@ class Indicator extends StatelessWidget {
                     alarmState: temperatureAlarmState,
                     alarm: temperatureAlarmSeverity,
                   ),
-                  name: AppLocalizations.of(context)!.temperatureAlarm,
+                  iconData: CustomIcons.temperature,
+                  // name: AppLocalizations.of(context)!.temperatureAlarm,
                   animationEnabled: temperatureAlarmState == '0' &&
                           temperatureAlarmSeverity == Alarm.danger
                       ? true
@@ -344,11 +354,22 @@ class Indicator extends StatelessWidget {
                     alarmState: voltageAlarmState,
                     alarm: voltageAlarmSeverity,
                   ),
-                  name: AppLocalizations.of(context)!.powerSupplyAlarm,
+                  iconData: CustomIcons.power,
                   animationEnabled: voltageAlarmState == '0' &&
                           voltageAlarmSeverity == Alarm.danger
                       ? true
                       : false,
+                ),
+                Container(
+                  width: 44,
+                  height: 22,
+                  decoration: BoxDecoration(color: Colors.transparent),
+                ),
+                Container(
+                  width: 44,
+                  height: 22,
+                  decoration: BoxDecoration(color: Colors.transparent),
+                  child: Icon(CustomIcons.information),
                 ),
               ],
             ),
@@ -361,17 +382,20 @@ class Indicator extends StatelessWidget {
               children: [
                 getPulsator(
                   color: const Color(0xff6c757d),
-                  name: AppLocalizations.of(context)!.unitStatusAlarm,
+                  iconData: CustomIcons.device,
+                  // name: AppLocalizations.of(context)!.unitStatusAlarm,
                   animationEnabled: false,
                 ),
                 getPulsator(
                   color: const Color(0xff6c757d),
-                  name: AppLocalizations.of(context)!.temperatureAlarm,
+                  iconData: CustomIcons.temperature,
+                  // name: AppLocalizations.of(context)!.temperatureAlarm,
                   animationEnabled: false,
                 ),
                 getPulsator(
                   color: const Color(0xff6c757d),
-                  name: AppLocalizations.of(context)!.powerSupplyAlarm,
+                  iconData: CustomIcons.power,
+                  // name: AppLocalizations.of(context)!.powerSupplyAlarm,
                   animationEnabled: false,
                 ),
               ],
