@@ -30,6 +30,7 @@
     "startFrequency": "Frecuencia Inicio",
     "stopFrequency": "Frecuencia de Parada",
     "frequency": "Frecuencia",
+    "startFrequencyRFLevel": "Nivel RF",
     "level": "Nivel",
     "slope": "Pendiente",
     "startLevel": "Nivel de Inicio",
@@ -214,7 +215,7 @@
     "open": "Abrir",
 
     "dataLog": "   Registro   ",
-    "rfLevel": "Nivel RF",
+    "rfLevel": "   Nivel RF   ",
 
     "trunkAmplifier": "Amplificador de maletero",
     "distributionAmplifier": "Amplificador de distribución",

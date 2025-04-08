@@ -385,22 +385,6 @@ int getDelayByRSSI(int rssi) {
   }
 }
 
-double getTextWidth(BuildContext context, String text) {
-  final textStyle =
-      Theme.of(context).textTheme.bodyMedium; // Use the desired text style
-  final textSpan = TextSpan(text: text, style: textStyle);
-
-  final textPainter = TextPainter(
-    text: textSpan,
-    textDirection: TextDirection.ltr, // Specify the text direction
-  );
-  textPainter.layout(); // Layout the text to calculate its dimensions
-
-  return textPainter.width < 85
-      ? 85
-      : textPainter.width; // Return the width of the text
-}
-
 void closeKeyboard({required BuildContext context}) {
   // Removes all focus from the FocusScope, but focus may be restored after closing a dialog,
   // causing the keyboard to reappear.

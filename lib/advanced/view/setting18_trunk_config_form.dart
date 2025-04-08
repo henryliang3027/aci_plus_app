@@ -35,11 +35,12 @@ class _ConfigFloatActionButton extends StatelessWidget {
 
         builder: (BuildContext context) {
           var width = MediaQuery.of(context).size.width;
-          // var height = MediaQuery.of(context).size.height;
+          var height = MediaQuery.of(context).size.height;
 
           return Dialog(
             insetPadding: EdgeInsets.symmetric(
               horizontal: width * 0.01,
+              vertical: height * 0.01,
             ),
             child: Setting18ConfigEditPage(
               groupId: groupId,
@@ -104,11 +105,12 @@ class _DeviceListView extends StatelessWidget {
 
         builder: (BuildContext context) {
           var width = MediaQuery.of(context).size.width;
-          // var height = MediaQuery.of(context).size.height;
+          var height = MediaQuery.of(context).size.height;
 
           return Dialog(
             insetPadding: EdgeInsets.symmetric(
               horizontal: width * 0.01,
+              vertical: height * 0.01,
             ),
             child: Setting18ConfigEditPage(
               config: config,

@@ -30,13 +30,6 @@ class Setting18GraphModuleForm extends StatefulWidget {
 }
 
 class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
-  late final TextEditingController
-      firstChannelLoadingFrequencyTextEditingController;
-  late final TextEditingController
-      firstChannelLoadingLevelTextEditingController;
-  late final TextEditingController
-      lastChannelLoadingFrequencyTextEditingController;
-  late final TextEditingController lastChannelLoadingLevelTextEditingController;
   late final TextEditingController pilotFrequency1TextEditingController;
   late final TextEditingController pilotFrequency2TextEditingController;
   late final TextEditingController
@@ -46,10 +39,6 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
 
   @override
   void initState() {
-    firstChannelLoadingFrequencyTextEditingController = TextEditingController();
-    firstChannelLoadingLevelTextEditingController = TextEditingController();
-    lastChannelLoadingFrequencyTextEditingController = TextEditingController();
-    lastChannelLoadingLevelTextEditingController = TextEditingController();
     pilotFrequency1TextEditingController = TextEditingController();
     pilotFrequency2TextEditingController = TextEditingController();
     manualModePilot1RFOutputPowerTextEditingController =
@@ -83,18 +72,9 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
       DataKey.agcMode.name: [
         const _PilotFrequencyMode(),
         _FirstChannelLoading(
-          firstChannelLoadingFrequencyTextEditingController:
-              firstChannelLoadingFrequencyTextEditingController,
-          firstChannelLoadingLevelTextEditingController:
-              firstChannelLoadingLevelTextEditingController,
           currentDetectedSplitOption: currentDetectedSplitOption,
         ),
-        _LastChannelLoading(
-          lastChannelLoadingFrequencyTextEditingController:
-              lastChannelLoadingFrequencyTextEditingController,
-          lastChannelLoadingLevelTextEditingController:
-              lastChannelLoadingLevelTextEditingController,
-        ),
+        _LastChannelLoading(),
         _PilotFrequency1(
           pilotFrequency1TextEditingController:
               pilotFrequency1TextEditingController,
@@ -293,14 +273,6 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
               previous.isInitialize != current.isInitialize,
           listener: (context, state) {
             if (state.isInitialize) {
-              firstChannelLoadingFrequencyTextEditingController.text =
-                  state.firstChannelLoadingFrequency.value;
-              firstChannelLoadingLevelTextEditingController.text =
-                  state.firstChannelLoadingLevel.value;
-              lastChannelLoadingFrequencyTextEditingController.text =
-                  state.lastChannelLoadingFrequency.value;
-              lastChannelLoadingLevelTextEditingController.text =
-                  state.lastChannelLoadingLevel.value;
               pilotFrequency1TextEditingController.text =
                   state.pilotFrequency1.value;
               pilotFrequency2TextEditingController.text =
@@ -318,14 +290,6 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
               current.isInitialPilotFrequencyLevelValues,
           listener: (context, state) {
             if (state.isInitialPilotFrequencyLevelValues) {
-              firstChannelLoadingFrequencyTextEditingController.text =
-                  state.firstChannelLoadingFrequency.value;
-              firstChannelLoadingLevelTextEditingController.text =
-                  state.firstChannelLoadingLevel.value;
-              lastChannelLoadingFrequencyTextEditingController.text =
-                  state.lastChannelLoadingFrequency.value;
-              lastChannelLoadingLevelTextEditingController.text =
-                  state.lastChannelLoadingLevel.value;
               pilotFrequency1TextEditingController.text =
                   state.pilotFrequency1.value;
               pilotFrequency2TextEditingController.text =
@@ -1196,32 +1160,48 @@ bool _isNotValidFrequency({
 
 class _FirstChannelLoading extends StatelessWidget {
   const _FirstChannelLoading({
-    required this.firstChannelLoadingFrequencyTextEditingController,
-    required this.firstChannelLoadingLevelTextEditingController,
     required this.currentDetectedSplitOption,
   });
 
-  final TextEditingController firstChannelLoadingFrequencyTextEditingController;
-  final TextEditingController firstChannelLoadingLevelTextEditingController;
   final String currentDetectedSplitOption;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        return twoTextField(
+        double step1 = 6.0;
+        double step2 = 5.0;
+        return frequencyRFTextField(
           context: context,
-          title: '${AppLocalizations.of(context)!.startFrequency}:',
+          title1: '${AppLocalizations.of(context)!.startFrequency}:',
+          title2: '${AppLocalizations.of(context)!.startFrequencyRFLevel}:',
           editMode1: state.editMode && state.pilotFrequencyMode != '2',
           editMode2: state.editMode && state.pilotFrequencyMode != '2',
           textEditingControllerName1:
               'setting18Form_firstChannelLoadingFrequencyInput_textField',
           textEditingControllerName2:
               'setting18Form_firstChannelLoadingLevelInput_textField',
-          textEditingController1:
-              firstChannelLoadingFrequencyTextEditingController,
-          textEditingController2: firstChannelLoadingLevelTextEditingController,
+          currentValue1: state.firstChannelLoadingFrequency.value,
+          currentValue2: state.firstChannelLoadingLevel.value,
+          step1: step1,
+          step2: step2,
           onChanged1: (firstChannelLoadingFrequency) {
+            context
+                .read<Setting18GraphModuleBloc>()
+                .add(FirstChannelLoadingFrequencyChanged(
+                  firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+                  currentDetectedSplitOption: currentDetectedSplitOption,
+                ));
+          },
+          onIncreased1: (firstChannelLoadingFrequency) {
+            context
+                .read<Setting18GraphModuleBloc>()
+                .add(FirstChannelLoadingFrequencyChanged(
+                  firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+                  currentDetectedSplitOption: currentDetectedSplitOption,
+                ));
+          },
+          onDecreased1: (firstChannelLoadingFrequency) {
             context
                 .read<Setting18GraphModuleBloc>()
                 .add(FirstChannelLoadingFrequencyChanged(
@@ -1233,6 +1213,32 @@ class _FirstChannelLoading extends StatelessWidget {
             context.read<Setting18GraphModuleBloc>().add(
                 FirstChannelLoadingLevelChanged(
                     firstChannelLoadingLevel: firstChannelLoadingLevel));
+          },
+          onIncreased2: (firstChannelLoadingLevel) {
+            context.read<Setting18GraphModuleBloc>().add(
+                FirstChannelLoadingLevelChanged(
+                    firstChannelLoadingLevel: firstChannelLoadingLevel));
+
+            // convert to double
+            double lastChannelLoadingLevel =
+                double.parse(state.lastChannelLoadingLevel.value) - step2;
+            context.read<Setting18GraphModuleBloc>().add(
+                LastChannelLoadingLevelChanged(
+                    lastChannelLoadingLevel:
+                        lastChannelLoadingLevel.toStringAsFixed(1)));
+          },
+          onDecreased2: (firstChannelLoadingLevel) {
+            context.read<Setting18GraphModuleBloc>().add(
+                FirstChannelLoadingLevelChanged(
+                    firstChannelLoadingLevel: firstChannelLoadingLevel));
+
+            // convert to double
+            double lastChannelLoadingLevel =
+                double.parse(state.lastChannelLoadingLevel.value) + step2;
+            context.read<Setting18GraphModuleBloc>().add(
+                LastChannelLoadingLevelChanged(
+                    lastChannelLoadingLevel:
+                        lastChannelLoadingLevel.toStringAsFixed(1)));
           },
           errorText1: _isNotValidFrequency(
             pilotFrequencyMode: state.pilotFrequencyMode,
@@ -1255,36 +1261,54 @@ class _FirstChannelLoading extends StatelessWidget {
 }
 
 class _LastChannelLoading extends StatelessWidget {
-  const _LastChannelLoading({
-    required this.lastChannelLoadingFrequencyTextEditingController,
-    required this.lastChannelLoadingLevelTextEditingController,
-  });
-
-  final TextEditingController lastChannelLoadingFrequencyTextEditingController;
-  final TextEditingController lastChannelLoadingLevelTextEditingController;
+  const _LastChannelLoading({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18GraphModuleBloc, Setting18GraphModuleState>(
       builder: (context, state) {
-        return twoTextField(
+        double step1 = 6.0;
+        double step2 = 5.0;
+        return frequencyRFTextField(
           context: context,
-          title: '${AppLocalizations.of(context)!.stopFrequency}:',
+          title1: '${AppLocalizations.of(context)!.stopFrequency}:',
+          title2: '${AppLocalizations.of(context)!.slope}:',
           editMode1: state.editMode && state.pilotFrequencyMode != '2',
           editMode2: state.editMode && state.pilotFrequencyMode != '2',
           textEditingControllerName1:
               'setting18Form_lastChannelLoadingFrequencyInput_textField',
           textEditingControllerName2:
               'setting18Form_lastChannelLoadingLevelInput_textField',
-          textEditingController1:
-              lastChannelLoadingFrequencyTextEditingController,
-          textEditingController2: lastChannelLoadingLevelTextEditingController,
+          currentValue1: state.lastChannelLoadingFrequency.value,
+          currentValue2: state.lastChannelLoadingLevel.value,
+          step1: step1,
+          step2: step2,
           onChanged1: (lastChannelLoadingFrequency) {
             context.read<Setting18GraphModuleBloc>().add(
                 LastChannelLoadingFrequencyChanged(
                     lastChannelLoadingFrequency: lastChannelLoadingFrequency));
           },
+          onIncreased1: (lastChannelLoadingFrequency) {
+            context.read<Setting18GraphModuleBloc>().add(
+                LastChannelLoadingFrequencyChanged(
+                    lastChannelLoadingFrequency: lastChannelLoadingFrequency));
+          },
+          onDecreased1: (lastChannelLoadingFrequency) {
+            context.read<Setting18GraphModuleBloc>().add(
+                LastChannelLoadingFrequencyChanged(
+                    lastChannelLoadingFrequency: lastChannelLoadingFrequency));
+          },
           onChanged2: (lastChannelLoadingLevel) {
+            context.read<Setting18GraphModuleBloc>().add(
+                LastChannelLoadingLevelChanged(
+                    lastChannelLoadingLevel: lastChannelLoadingLevel));
+          },
+          onIncreased2: (lastChannelLoadingLevel) {
+            context.read<Setting18GraphModuleBloc>().add(
+                LastChannelLoadingLevelChanged(
+                    lastChannelLoadingLevel: lastChannelLoadingLevel));
+          },
+          onDecreased2: (lastChannelLoadingLevel) {
             context.read<Setting18GraphModuleBloc>().add(
                 LastChannelLoadingLevelChanged(
                     lastChannelLoadingLevel: lastChannelLoadingLevel));

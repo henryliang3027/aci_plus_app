@@ -1,7 +1,6 @@
 import 'package:aci_plus_app/chart/bloc/chart18/chart18_bloc.dart';
 import 'package:aci_plus_app/chart/view/data_log_chart_page.dart';
 import 'package:aci_plus_app/chart/view/rf_level_chart_page.dart';
-import 'package:aci_plus_app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -40,10 +39,6 @@ class Chart18TabBar extends StatelessWidget {
                   tabs: [
                     Tab(
                       child: SizedBox(
-                        width: getTextWidth(
-                          context,
-                          AppLocalizations.of(context)!.dataLog,
-                        ),
                         child: Center(
                           child: Text(
                             AppLocalizations.of(context)!.dataLog,
@@ -53,10 +48,6 @@ class Chart18TabBar extends StatelessWidget {
                     ),
                     Tab(
                       child: SizedBox(
-                        width: getTextWidth(
-                          context,
-                          AppLocalizations.of(context)!.rfLevel,
-                        ),
                         child: Center(
                           child: Text(
                             AppLocalizations.of(context)!.rfLevel,

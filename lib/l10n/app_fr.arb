@@ -30,6 +30,7 @@
     "startFrequency": "Fréquence de Départ",
     "stopFrequency": "Fréquence d'Arrêt",
     "frequency": "Fréquence",
+    "startFrequencyRFLevel": "Niveau RF",
     "level": "Niveau",
     "slope": "Pente",
     "startLevel": "Niveau de Démarrage",
@@ -213,7 +214,7 @@
     "downloadAll": "Tout Télécharger",
 
     "dataLog": "    Journal    ",
-    "rfLevel": "Niveau RF",
+    "rfLevel": "   Niveau RF   ",
 
     "trunkAmplifier": "Amplificateur de coffre",
     "distributionAmplifier": "Amplificateur de distribution",

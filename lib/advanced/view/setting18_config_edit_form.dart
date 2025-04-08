@@ -24,21 +24,10 @@ class Setting18ConfigEditForm extends StatefulWidget {
 
 class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
   late final TextEditingController nameTextEditingController;
-  late final TextEditingController
-      firstChannelLoadingFrequencyTextEditingController;
-  late final TextEditingController
-      firstChannelLoadingLevelTextEditingController;
-  late final TextEditingController
-      lastChannelLoadingFrequencyTextEditingController;
-  late final TextEditingController lastChannelLoadingLevelTextEditingController;
 
   @override
   void initState() {
     nameTextEditingController = TextEditingController();
-    firstChannelLoadingFrequencyTextEditingController = TextEditingController();
-    firstChannelLoadingLevelTextEditingController = TextEditingController();
-    lastChannelLoadingFrequencyTextEditingController = TextEditingController();
-    lastChannelLoadingLevelTextEditingController = TextEditingController();
     super.initState();
   }
 
@@ -162,14 +151,6 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
 
         if (state.isInitialize) {
           nameTextEditingController.text = state.name.value;
-          firstChannelLoadingFrequencyTextEditingController.text =
-              state.firstChannelLoadingFrequency.value;
-          firstChannelLoadingLevelTextEditingController.text =
-              state.firstChannelLoadingLevel.value;
-          lastChannelLoadingFrequencyTextEditingController.text =
-              state.lastChannelLoadingFrequency.value;
-          lastChannelLoadingLevelTextEditingController.text =
-              state.lastChannelLoadingLevel.value;
         }
       },
       child: Column(
@@ -200,18 +181,10 @@ class _Setting18ConfigEditFormState extends State<Setting18ConfigEditForm> {
                   children: [
                     // const _SplitOption(),
                     _FirstChannelLoading(
-                      firstChannelLoadingFrequencyTextEditingController:
-                          firstChannelLoadingFrequencyTextEditingController,
-                      firstChannelLoadingLevelTextEditingController:
-                          firstChannelLoadingLevelTextEditingController,
                       currentDetectedSplitOption: currentDetectedSplitOption,
                     ),
-                    _LastChannelLoading(
-                      lastChannelLoadingFrequencyTextEditingController:
-                          lastChannelLoadingFrequencyTextEditingController,
-                      lastChannelLoadingLevelTextEditingController:
-                          lastChannelLoadingLevelTextEditingController,
-                    ),
+                    const _LastChannelLoading(),
+
                     const SizedBox(
                       height: 20,
                     ),
@@ -519,35 +492,50 @@ class _ActionButton extends StatelessWidget {
 
 class _FirstChannelLoading extends StatelessWidget {
   const _FirstChannelLoading({
-    required this.firstChannelLoadingFrequencyTextEditingController,
-    required this.firstChannelLoadingLevelTextEditingController,
     required this.currentDetectedSplitOption,
   });
 
-  final TextEditingController firstChannelLoadingFrequencyTextEditingController;
-  final TextEditingController firstChannelLoadingLevelTextEditingController;
   final String currentDetectedSplitOption;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigEditBloc, Setting18ConfigEditState>(
       builder: (context, state) {
+        double step1 = 6.0;
+        double step2 = 5.0;
         return Padding(
           padding: const EdgeInsets.only(bottom: CustomStyle.sizeXXL),
-          child: twoTextField(
+          child: frequencyRFTextField(
             context: context,
-            title: '${AppLocalizations.of(context)!.startFrequency}:',
+            title1: '${AppLocalizations.of(context)!.startFrequency}:',
+            title2: '${AppLocalizations.of(context)!.startFrequencyRFLevel}:',
             editMode1: true,
             editMode2: true,
             textEditingControllerName1:
                 'setting18Form_firstChannelLoadingFrequencyInput_textField',
             textEditingControllerName2:
                 'setting18Form_firstChannelLoadingLevelInput_textField',
-            textEditingController1:
-                firstChannelLoadingFrequencyTextEditingController,
-            textEditingController2:
-                firstChannelLoadingLevelTextEditingController,
+            currentValue1: state.firstChannelLoadingFrequency.value,
+            currentValue2: state.firstChannelLoadingLevel.value,
+            step1: step1,
+            step2: step2,
             onChanged1: (firstChannelLoadingFrequency) {
+              context
+                  .read<Setting18ConfigEditBloc>()
+                  .add(FirstChannelLoadingFrequencyChanged(
+                    firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+                    currentDetectedSplitOption: currentDetectedSplitOption,
+                  ));
+            },
+            onIncreased1: (firstChannelLoadingFrequency) {
+              context
+                  .read<Setting18ConfigEditBloc>()
+                  .add(FirstChannelLoadingFrequencyChanged(
+                    firstChannelLoadingFrequency: firstChannelLoadingFrequency,
+                    currentDetectedSplitOption: currentDetectedSplitOption,
+                  ));
+            },
+            onDecreased1: (firstChannelLoadingFrequency) {
               context
                   .read<Setting18ConfigEditBloc>()
                   .add(FirstChannelLoadingFrequencyChanged(
@@ -558,6 +546,28 @@ class _FirstChannelLoading extends StatelessWidget {
             onChanged2: (firstChannelLoadingLevel) {
               context.read<Setting18ConfigEditBloc>().add(
                   FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
+            },
+            onIncreased2: (firstChannelLoadingLevel) {
+              context.read<Setting18ConfigEditBloc>().add(
+                  FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
+
+              // convert to double
+              double lastChannelLoadingLevel =
+                  double.parse(state.lastChannelLoadingLevel.value) - step2;
+              context.read<Setting18ConfigEditBloc>().add(
+                  LastChannelLoadingLevelChanged(
+                      lastChannelLoadingLevel.toStringAsFixed(1)));
+            },
+            onDecreased2: (firstChannelLoadingLevel) {
+              context.read<Setting18ConfigEditBloc>().add(
+                  FirstChannelLoadingLevelChanged(firstChannelLoadingLevel));
+
+              // convert to double
+              double lastChannelLoadingLevel =
+                  double.parse(state.lastChannelLoadingLevel.value) + step2;
+              context.read<Setting18ConfigEditBloc>().add(
+                  LastChannelLoadingLevelChanged(
+                      lastChannelLoadingLevel.toStringAsFixed(1)));
             },
             errorText1: state.firstChannelLoadingFrequency.isNotValid
                 ? AppLocalizations.of(context)!.textFieldErrorMessage
@@ -576,39 +586,56 @@ class _FirstChannelLoading extends StatelessWidget {
 }
 
 class _LastChannelLoading extends StatelessWidget {
-  const _LastChannelLoading({
-    required this.lastChannelLoadingFrequencyTextEditingController,
-    required this.lastChannelLoadingLevelTextEditingController,
-  });
-
-  final TextEditingController lastChannelLoadingFrequencyTextEditingController;
-  final TextEditingController lastChannelLoadingLevelTextEditingController;
+  const _LastChannelLoading({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Setting18ConfigEditBloc, Setting18ConfigEditState>(
       builder: (context, state) {
+        double step1 = 6.0;
+        double step2 = 5.0;
         return Padding(
           padding: const EdgeInsets.only(bottom: CustomStyle.sizeXXL),
-          child: twoTextField(
+          child: frequencyRFTextField(
             context: context,
-            title: '${AppLocalizations.of(context)!.stopFrequency}:',
+            title1: '${AppLocalizations.of(context)!.stopFrequency}:',
+            title2: '${AppLocalizations.of(context)!.slope}:',
             editMode1: true,
             editMode2: true,
             textEditingControllerName1:
                 'setting18Form_lastChannelLoadingFrequencyInput_textField',
             textEditingControllerName2:
                 'setting18Form_lastChannelLoadingLevelInput_textField',
-            textEditingController1:
-                lastChannelLoadingFrequencyTextEditingController,
-            textEditingController2:
-                lastChannelLoadingLevelTextEditingController,
+            currentValue1: state.lastChannelLoadingFrequency.value,
+            currentValue2: state.lastChannelLoadingLevel.value,
+            step1: step1,
+            step2: step2,
             onChanged1: (lastChannelLoadingFrequency) {
               context.read<Setting18ConfigEditBloc>().add(
                   LastChannelLoadingFrequencyChanged(
                       lastChannelLoadingFrequency));
             },
+            onIncreased1: (lastChannelLoadingFrequency) {
+              context.read<Setting18ConfigEditBloc>().add(
+                  LastChannelLoadingFrequencyChanged(
+                      lastChannelLoadingFrequency));
+            },
+            onDecreased1: (lastChannelLoadingFrequency) {
+              context.read<Setting18ConfigEditBloc>().add(
+                  LastChannelLoadingFrequencyChanged(
+                      lastChannelLoadingFrequency));
+            },
             onChanged2: (lastChannelLoadingLevel) {
+              context
+                  .read<Setting18ConfigEditBloc>()
+                  .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
+            },
+            onIncreased2: (lastChannelLoadingLevel) {
+              context
+                  .read<Setting18ConfigEditBloc>()
+                  .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));
+            },
+            onDecreased2: (lastChannelLoadingLevel) {
               context
                   .read<Setting18ConfigEditBloc>()
                   .add(LastChannelLoadingLevelChanged(lastChannelLoadingLevel));

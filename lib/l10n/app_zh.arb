@@ -31,6 +31,7 @@
     "startFrequency": "起始頻率",
     "stopFrequency": "截止頻率",
     "frequency": "頻率",
+    "startFrequencyRFLevel": "訊號強度",
     "level": "強度",
     "slope": "斜率",
     "startLevel": "起始強度",
@@ -216,7 +217,7 @@
     "open": "開啟",
 
     "dataLog": "     設備紀錄     ",
-    "rfLevel": "訊號強度",
+    "rfLevel": "     訊號強度     ",
 
     "trunkAmplifier": "幹線放大器",
     "distributionAmplifier": "支線放大器",

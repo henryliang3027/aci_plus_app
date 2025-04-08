@@ -27,15 +27,7 @@ class Setting18RegulationView extends StatelessWidget {
       TextEditingController();
   final TextEditingController coordinateTextEditingController =
       TextEditingController();
-  final TextEditingController
-      firstChannelLoadingFrequencyTextEditingController =
-      TextEditingController();
-  final TextEditingController firstChannelLoadingLevelTextEditingController =
-      TextEditingController();
-  final TextEditingController lastChannelLoadingFrequencyTextEditingController =
-      TextEditingController();
-  final TextEditingController lastChannelLoadingLevelTextEditingController =
-      TextEditingController();
+
   final TextEditingController pilotFrequency1TextEditingController =
       TextEditingController();
   final TextEditingController pilotFrequency2TextEditingController =
@@ -227,20 +219,11 @@ class Setting18RegulationView extends StatelessWidget {
             break;
           case SettingConfiruration.startFrequency:
             widgets.add(_FirstChannelLoading(
-              firstChannelLoadingFrequencyTextEditingController:
-                  firstChannelLoadingFrequencyTextEditingController,
-              firstChannelLoadingLevelTextEditingController:
-                  firstChannelLoadingLevelTextEditingController,
               currentDetectedSplitOption: currentDetectedSplitOption,
             ));
             break;
           case SettingConfiruration.stopFrequency:
-            widgets.add(_LastChannelLoading(
-              lastChannelLoadingFrequencyTextEditingController:
-                  lastChannelLoadingFrequencyTextEditingController,
-              lastChannelLoadingLevelTextEditingController:
-                  lastChannelLoadingLevelTextEditingController,
-            ));
+            widgets.add(const _LastChannelLoading());
             break;
           case SettingConfiruration.pilot1:
             widgets.add(_PilotFrequency1(
@@ -286,19 +269,10 @@ class Setting18RegulationView extends StatelessWidget {
               // ),
               // const _SplitOption(),
               const _PilotFrequencyMode(),
-              _FirstChannelLoading(
-                firstChannelLoadingFrequencyTextEditingController:
-                    firstChannelLoadingFrequencyTextEditingController,
-                firstChannelLoadingLevelTextEditingController:
-                    firstChannelLoadingLevelTextEditingController,
+              const _FirstChannelLoading(
                 currentDetectedSplitOption: '0', // null
               ),
-              _LastChannelLoading(
-                lastChannelLoadingFrequencyTextEditingController:
-                    lastChannelLoadingFrequencyTextEditingController,
-                lastChannelLoadingLevelTextEditingController:
-                    lastChannelLoadingLevelTextEditingController,
-              ),
+              const _LastChannelLoading(),
               _PilotFrequency1(
                 pilotFrequency1TextEditingController:
                     pilotFrequency1TextEditingController,
@@ -348,14 +322,6 @@ class Setting18RegulationView extends StatelessWidget {
         }
 
         if (state.isInitialize) {
-          firstChannelLoadingFrequencyTextEditingController.text =
-              state.firstChannelLoadingFrequency.value;
-          firstChannelLoadingLevelTextEditingController.text =
-              state.firstChannelLoadingLevel.value;
-          lastChannelLoadingFrequencyTextEditingController.text =
-              state.lastChannelLoadingFrequency.value;
-          lastChannelLoadingLevelTextEditingController.text =
-              state.lastChannelLoadingLevel.value;
           pilotFrequency1TextEditingController.text =
               state.pilotFrequency1.value;
           pilotFrequency2TextEditingController.text =
@@ -366,14 +332,6 @@ class Setting18RegulationView extends StatelessWidget {
               state.manualModePilot2RFOutputPower;
         }
         if (state.isInitialPilotFrequencyLevelValues) {
-          firstChannelLoadingFrequencyTextEditingController.text =
-              state.firstChannelLoadingFrequency.value;
-          firstChannelLoadingLevelTextEditingController.text =
-              state.firstChannelLoadingLevel.value;
-          lastChannelLoadingFrequencyTextEditingController.text =
-              state.lastChannelLoadingFrequency.value;
-          lastChannelLoadingLevelTextEditingController.text =
-              state.lastChannelLoadingLevel.value;
           pilotFrequency1TextEditingController.text =
               state.pilotFrequency1.value;
           pilotFrequency2TextEditingController.text =
@@ -482,13 +440,9 @@ bool _isNotValidFrequency({
 
 class _FirstChannelLoading extends StatelessWidget {
   const _FirstChannelLoading({
-    required this.firstChannelLoadingFrequencyTextEditingController,
-    required this.firstChannelLoadingLevelTextEditingController,
     required this.currentDetectedSplitOption,
   });
 
-  final TextEditingController firstChannelLoadingFrequencyTextEditingController;
-  final TextEditingController firstChannelLoadingLevelTextEditingController;
   final String currentDetectedSplitOption;
 
   @override
@@ -500,7 +454,7 @@ class _FirstChannelLoading extends StatelessWidget {
         return frequencyRFTextField(
           context: context,
           title1: '${AppLocalizations.of(context)!.startFrequency}:',
-          title2: '${AppLocalizations.of(context)!.rfLevel}:',
+          title2: '${AppLocalizations.of(context)!.startFrequencyRFLevel}:',
           editMode1: state.editMode && state.pilotFrequencyMode != '2',
           editMode2: state.editMode && state.pilotFrequencyMode != '2',
           textEditingControllerName1:
@@ -594,13 +548,7 @@ class _FirstChannelLoading extends StatelessWidget {
 }
 
 class _LastChannelLoading extends StatelessWidget {
-  const _LastChannelLoading({
-    required this.lastChannelLoadingFrequencyTextEditingController,
-    required this.lastChannelLoadingLevelTextEditingController,
-  });
-
-  final TextEditingController lastChannelLoadingFrequencyTextEditingController;
-  final TextEditingController lastChannelLoadingLevelTextEditingController;
+  const _LastChannelLoading({super.key});
 
   @override
   Widget build(BuildContext context) {
