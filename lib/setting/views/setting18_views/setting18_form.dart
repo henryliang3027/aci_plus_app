@@ -72,13 +72,52 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 //   }
 // }
 
-class Setting18Form extends StatelessWidget {
+class Setting18Form extends StatefulWidget {
   const Setting18Form({
     super.key,
     required this.pageController,
   });
 
   final PageController pageController;
+
+  @override
+  State<Setting18Form> createState() => _Setting18FormState();
+}
+
+class _Setting18FormState extends State<Setting18Form>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 此參數用來設定 SetupWizard 該顯示的說明
+    SetupWizardProperty.functionDescriptionType =
+        FunctionDescriptionType.device;
+
+    _tabController = TabController(vsync: this, length: 3);
+
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        if (_tabController.index == 0) {
+          // 此參數用來設定 SetupWizard 該顯示的說明
+          SetupWizardProperty.functionDescriptionType =
+              FunctionDescriptionType.device;
+        } else if (_tabController.index == 1) {
+          // 此參數用來設定 SetupWizard 該顯示的說明
+          SetupWizardProperty.functionDescriptionType =
+              FunctionDescriptionType.threshold;
+        } else if (_tabController.index == 2) {
+          // 此參數用來設定 SetupWizard 該顯示的說明
+          SetupWizardProperty.functionDescriptionType =
+              FunctionDescriptionType.balance;
+        }
+
+        setState(() {});
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,13 +130,15 @@ class Setting18Form extends StatelessWidget {
           _DeviceRefresh(),
         ],
       ),
-      body: const Setting18TabBar(),
+      body: Setting18TabBar(
+        tabController: _tabController,
+      ),
       bottomNavigationBar: HomeBottomNavigationBar18(
-        pageController: pageController,
+        pageController: widget.pageController,
         selectedIndex: 0,
         onTap: (int index) {
           NoticeFlag.leftDevicePage = true;
-          pageController.jumpToPage(
+          widget.pageController.jumpToPage(
             index,
           );
         },
@@ -106,6 +147,41 @@ class Setting18Form extends StatelessWidget {
     );
   }
 }
+
+// class Setting18Form extends StatelessWidget {
+//   const Setting18Form({
+//     super.key,
+//     required this.pageController,
+//   });
+
+//   final PageController pageController;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(AppLocalizations.of(context)!.setting),
+//         centerTitle: true,
+//         leading: const _DeviceStatus(),
+//         actions: const [
+//           _DeviceRefresh(),
+//         ],
+//       ),
+//       body: const Setting18TabBar(),
+//       bottomNavigationBar: HomeBottomNavigationBar18(
+//         pageController: pageController,
+//         selectedIndex: 0,
+//         onTap: (int index) {
+//           NoticeFlag.leftDevicePage = true;
+//           pageController.jumpToPage(
+//             index,
+//           );
+//         },
+//       ),
+//       // floatingActionButton: const _Setting18FloatingActionButton(),
+//     );
+//   }
+// }
 
 class _DeviceStatus extends StatelessWidget {
   const _DeviceStatus();

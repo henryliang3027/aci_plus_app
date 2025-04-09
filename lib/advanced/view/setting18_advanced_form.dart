@@ -32,10 +32,24 @@ class _Setting18AdvancedFormState extends State<Setting18AdvancedForm>
   void initState() {
     super.initState();
 
+    // 此參數用來設定 SetupWizard 該顯示的說明
+    SetupWizardProperty.functionDescriptionType =
+        FunctionDescriptionType.config;
+
     _tabController = TabController(vsync: this, length: 2);
 
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
+        if (_tabController.index == 0) {
+          // 此參數用來設定 SetupWizard 該顯示的說明
+          SetupWizardProperty.functionDescriptionType =
+              FunctionDescriptionType.config;
+        } else if (_tabController.index == 1) {
+          // 此參數用來設定 SetupWizard 該顯示的說明
+          SetupWizardProperty.functionDescriptionType =
+              FunctionDescriptionType.firmwareUpdate;
+        }
+
         setState(() {});
       }
     });

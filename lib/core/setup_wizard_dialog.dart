@@ -1,20 +1,8 @@
 import 'package:aci_plus_app/core/common_enum.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-enum FunctionDescriptionType {
-  device,
-  threshold,
-  balance,
-  status,
-  information,
-  dataLog,
-  rfLevel,
-  deviceSetting,
-  firmwareUpdate,
-  userActivityLog,
-}
 
 Future<void> showSetupWizardDialog({
   required BuildContext context,
@@ -28,72 +16,81 @@ Future<void> showSetupWizardDialog({
       var width = MediaQuery.of(context).size.width;
       // var height = MediaQuery.of(context).size.height;
 
-      return Dialog(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              alignment: Alignment.center,
-              width: double.maxFinite,
-              height: 58,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    topRight: Radius.circular(20.0)),
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              child: Text(
-                AppLocalizations.of(context)!.setupWizardFunctionDescription,
-                style: TextStyle(
-                  fontSize: CustomStyle.sizeXL,
-                  color: Theme.of(context).colorScheme.onPrimary,
+      return Center(
+        child: Container(
+          width: 380,
+          child: Dialog(
+            insetPadding: EdgeInsets.all(0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  width: double.maxFinite,
+                  height: 58,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0)),
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!
+                        .setupWizardFunctionDescription,
+                    style: TextStyle(
+                      fontSize: CustomStyle.sizeXL,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Flexible(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 30, 24, 30),
-                  child: Column(
-                    children: [
-                      getInstructionRow(
-                        context: context,
-                        functionDescriptionType: functionDescriptionType,
-                        aciDeviceType: aciDeviceType,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 30, 24, 30),
+                      child: Column(
                         children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 6.0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 0.0,
-                                  horizontal: 20.0,
+                          getInstructionRow(
+                            context: context,
+                            functionDescriptionType: functionDescriptionType,
+                            aciDeviceType: aciDeviceType,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 6.0),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 0.0,
+                                      horizontal: 20.0,
+                                    ),
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                  ),
+                                  child: Text(
+                                    AppLocalizations.of(context)!
+                                        .dialogMessageOk,
+                                  ),
                                 ),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
-                              child: Text(
-                                AppLocalizations.of(context)!.dialogMessageOk,
-                              ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       );
     },
@@ -151,7 +148,7 @@ List<String> getDescriptions({
         AppLocalizations.of(context)!.rfLevelPageSetupWizard3,
       ];
 
-    case FunctionDescriptionType.deviceSetting:
+    case FunctionDescriptionType.config:
       return [
         AppLocalizations.of(context)!.deviceSettingPageSetupWizard1,
         AppLocalizations.of(context)!.deviceSettingPageSetupWizard2,
@@ -165,12 +162,12 @@ List<String> getDescriptions({
         AppLocalizations.of(context)!.firmwareUpdatePageSetupWizard4,
       ];
 
-    case FunctionDescriptionType.userActivityLog:
-      return [
-        AppLocalizations.of(context)!.userActivityLogPageSetupWizard1,
-        AppLocalizations.of(context)!.userActivityLogPageSetupWizard2,
-        AppLocalizations.of(context)!.userActivityLogPageSetupWizard3,
-      ];
+    // case FunctionDescriptionType.userActivityLog:
+    //   return [
+    //     AppLocalizations.of(context)!.userActivityLogPageSetupWizard1,
+    //     AppLocalizations.of(context)!.userActivityLogPageSetupWizard2,
+    //     AppLocalizations.of(context)!.userActivityLogPageSetupWizard3,
+    //   ];
 
     default:
       return [];
@@ -224,7 +221,7 @@ List<String> getNodeDescriptions({
         AppLocalizations.of(context)!.rfLevelPageSetupWizard3,
       ];
 
-    case FunctionDescriptionType.deviceSetting:
+    case FunctionDescriptionType.config:
       return [
         AppLocalizations.of(context)!.deviceSettingPageSetupWizard1,
         AppLocalizations.of(context)!.deviceSettingPageSetupWizard2,
@@ -238,12 +235,12 @@ List<String> getNodeDescriptions({
         AppLocalizations.of(context)!.firmwareUpdatePageSetupWizard4,
       ];
 
-    case FunctionDescriptionType.userActivityLog:
-      return [
-        AppLocalizations.of(context)!.userActivityLogPageSetupWizard1,
-        AppLocalizations.of(context)!.userActivityLogPageSetupWizard2,
-        AppLocalizations.of(context)!.userActivityLogPageSetupWizard3,
-      ];
+    // case FunctionDescriptionType.userActivityLog:
+    //   return [
+    //     AppLocalizations.of(context)!.userActivityLogPageSetupWizard1,
+    //     AppLocalizations.of(context)!.userActivityLogPageSetupWizard2,
+    //     AppLocalizations.of(context)!.userActivityLogPageSetupWizard3,
+    //   ];
 
     default:
       return [];

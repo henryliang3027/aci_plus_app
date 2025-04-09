@@ -813,10 +813,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          getThresholdSetupWizard(
-            context: context,
-            aciDeviceType: ACIDeviceType.ampCCorNode1P8G,
-          ),
+          // getThresholdSetupWizard(
+          //   context: context,
+          //   aciDeviceType: ACIDeviceType.ampCCorNode1P8G,
+          // ),
           const SizedBox(
             height: 10.0,
           ),
@@ -903,10 +903,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          getThresholdSetupWizard(
-            context: context,
-            aciDeviceType: ACIDeviceType.ampCCorNode1P8G,
-          ),
+          // getThresholdSetupWizard(
+          //   context: context,
+          //   aciDeviceType: ACIDeviceType.ampCCorNode1P8G,
+          // ),
           const SizedBox(
             height: 10.0,
           ),
@@ -977,10 +977,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          getThresholdSetupWizard(
-            context: context,
-            aciDeviceType: ACIDeviceType.ampCCorNode1P8G,
-          ),
+          // getThresholdSetupWizard(
+          //   context: context,
+          //   aciDeviceType: ACIDeviceType.ampCCorNode1P8G,
+          // ),
           const SizedBox(
             height: 10.0,
           ),

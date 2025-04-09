@@ -2,6 +2,7 @@ import 'package:aci_plus_app/advanced/bloc/setting18_config/setting18_config_blo
 import 'package:aci_plus_app/advanced/shared/utils.dart';
 import 'package:aci_plus_app/advanced/view/setting18_node_config_edit_page.dart';
 import 'package:aci_plus_app/core/custom_style.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/repositories/node_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,7 +51,7 @@ class _ConfigFloatActionButton extends StatelessWidget {
         return Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            getDeviceSettingSetupWizard(context: context),
+            // getDeviceSettingSetupWizard(context: context),
             const SizedBox(
               height: 10,
             ),

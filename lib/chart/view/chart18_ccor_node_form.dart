@@ -31,6 +31,10 @@ class Chart18CCorNodeForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 此參數用來設定 SetupWizard 該顯示的說明
+    SetupWizardProperty.functionDescriptionType =
+        FunctionDescriptionType.dataLog;
+
     return BlocListener<Chart18CCorNodeBloc, Chart18CCorNodeState>(
       listener: (context, state) async {
         if (state.dataExportStatus.isNone &&
@@ -441,12 +445,12 @@ class _DataLogFloatingActionButton extends StatelessWidget {
         return Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            getDataLogChartSetupWizard(
-              context: context,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
+            // getDataLogChartSetupWizard(
+            //   context: context,
+            // ),
+            // const SizedBox(
+            //   height: 10,
+            // ),
             _MoreDataFloatingActionButton(
               enabled: enabled,
             ),

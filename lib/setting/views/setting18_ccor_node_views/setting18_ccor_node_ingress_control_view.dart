@@ -24,6 +24,10 @@ class Seting18CCorNodeIngressControlView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 此參數用來設定 SetupWizard 該顯示的說明
+    SetupWizardProperty.functionDescriptionType =
+        FunctionDescriptionType.balance;
+
     HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
 
@@ -330,10 +334,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          getControlSetupWizard(
-            context: context,
-            aciDeviceType: ACIDeviceType.ampCCorNode1P8G,
-          ),
+          // getControlSetupWizard(
+          //   context: context,
+          //   aciDeviceType: ACIDeviceType.ampCCorNode1P8G,
+          // ),
           const SizedBox(
             height: 10.0,
           ),
@@ -420,10 +424,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          getControlSetupWizard(
-            context: context,
-            aciDeviceType: ACIDeviceType.ampCCorNode1P8G,
-          ),
+          // getControlSetupWizard(
+          //   context: context,
+          //   aciDeviceType: ACIDeviceType.ampCCorNode1P8G,
+          // ),
           const SizedBox(
             height: 10.0,
           ),
@@ -483,10 +487,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          getControlSetupWizard(
-            context: context,
-            aciDeviceType: ACIDeviceType.ampCCorNode1P8G,
-          ),
+          // getControlSetupWizard(
+          //   context: context,
+          //   aciDeviceType: ACIDeviceType.ampCCorNode1P8G,
+          // ),
           const SizedBox(
             height: 10.0,
           ),

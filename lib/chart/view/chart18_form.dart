@@ -36,10 +36,24 @@ class _Chart18FormState extends State<Chart18Form>
   @override
   void initState() {
     super.initState();
+
+    // 此參數用來設定 SetupWizard 該顯示的說明
+    SetupWizardProperty.functionDescriptionType =
+        FunctionDescriptionType.dataLog;
+
     _tabController = TabController(vsync: this, length: 2);
 
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
+        if (_tabController.index == 0) {
+          // 此參數用來設定 SetupWizard 該顯示的說明
+          SetupWizardProperty.functionDescriptionType =
+              FunctionDescriptionType.dataLog;
+        } else if (_tabController.index == 1) {
+          // 此參數用來設定 SetupWizard 該顯示的說明
+          SetupWizardProperty.functionDescriptionType =
+              FunctionDescriptionType.rfLevel;
+        }
         setState(() {});
       }
     });

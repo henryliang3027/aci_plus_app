@@ -4,6 +4,8 @@ import 'package:aci_plus_app/core/custom_style.dart';
 import 'package:aci_plus_app/core/data_key.dart';
 import 'package:aci_plus_app/core/form_status.dart';
 import 'package:aci_plus_app/core/pulsator.dart';
+import 'package:aci_plus_app/core/setup_wizard_dialog.dart';
+import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -157,7 +159,6 @@ class Indicator extends StatelessWidget {
     }
 
     Alarm getAmpUnitAlarmSeverityWithoutSplitOption({
-      required Alarm unitStatusAlarmSeverity,
       required Alarm splitOptionAlarmSeverity,
       required Alarm temperatureAlarmSeverity,
       required Alarm voltageAlarmSeverity,
@@ -166,8 +167,7 @@ class Indicator extends StatelessWidget {
       required Alarm rfOutputPilotLowFrequencyAlarmSeverity,
       required Alarm rfOutputPilotHighFrequencyAlarmSeverity,
     }) {
-      if (splitOptionAlarmSeverity == Alarm.danger &&
-          temperatureAlarmSeverity == Alarm.success &&
+      if (temperatureAlarmSeverity == Alarm.success &&
           voltageAlarmSeverity == Alarm.success &&
           voltageRippleAlarmSeverity == Alarm.success &&
           outputPowerAlarmSeverity == Alarm.success &&
@@ -175,32 +175,27 @@ class Indicator extends StatelessWidget {
           rfOutputPilotHighFrequencyAlarmSeverity == Alarm.success) {
         return Alarm.success;
       } else {
-        return unitStatusAlarmSeverity;
+        return Alarm.danger;
       }
     }
 
     Alarm getNodeUnitAlarmSeverityWithoutSplitOption({
-      required Alarm unitStatusAlarmSeverity,
-      required Alarm splitOptionAlarmSeverity,
       required Alarm temperatureAlarmSeverity,
       required Alarm voltageAlarmSeverity,
-      required Alarm voltageRippleAlarmSeverity,
       required Alarm rfOutputPower1AlarmSeverity,
       required Alarm rfOutputPower3AlarmSeverity,
       required Alarm rfOutputPower4AlarmSeverity,
       required Alarm rfOutputPower6AlarmSeverity,
     }) {
-      if (splitOptionAlarmSeverity == Alarm.danger &&
-          temperatureAlarmSeverity == Alarm.success &&
+      if (temperatureAlarmSeverity == Alarm.success &&
           voltageAlarmSeverity == Alarm.success &&
-          voltageRippleAlarmSeverity == Alarm.success &&
           rfOutputPower1AlarmSeverity == Alarm.success &&
           rfOutputPower3AlarmSeverity == Alarm.success &&
           rfOutputPower4AlarmSeverity == Alarm.success &&
           rfOutputPower6AlarmSeverity == Alarm.success) {
         return Alarm.success;
       } else {
-        return unitStatusAlarmSeverity;
+        return Alarm.danger;
       }
     }
 
@@ -271,6 +266,22 @@ class Indicator extends StatelessWidget {
                       DataKey.rfOutputPilotHighFrequencyAlarmSeverity] ??
                   '');
 
+          // Node
+          Alarm rfOutputPower1AlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.rfOutputPower1AlarmSeverity] ??
+                  '');
+          Alarm rfOutputPower3AlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.rfOutputPower3AlarmSeverity] ??
+                  '');
+
+          Alarm rfOutputPower4AlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.rfOutputPower4AlarmSeverity] ??
+                  '');
+
+          Alarm rfOutputPower6AlarmSeverity = getAlarmEnumFromString(
+              state.characteristicData[DataKey.rfOutputPower6AlarmSeverity] ??
+                  '');
+
           String temperatureAlarmState =
               state.characteristicData[DataKey.temperatureAlarmState] ?? '1';
 
@@ -292,6 +303,16 @@ class Indicator extends StatelessWidget {
                       DataKey.rfOutputPilotHighFrequencyAlarmState] ??
                   '1';
 
+          // Node
+          String rfOutputPower1AlarmState =
+              state.characteristicData[DataKey.rfOutputPower1AlarmState] ?? '1';
+          String rfOutputPower3AlarmState =
+              state.characteristicData[DataKey.rfOutputPower3AlarmState] ?? '1';
+          String rfOutputPower4AlarmState =
+              state.characteristicData[DataKey.rfOutputPower4AlarmState] ?? '1';
+          String rfOutputPower6AlarmState =
+              state.characteristicData[DataKey.rfOutputPower6AlarmState] ?? '1';
+
           String unitAmpStatusAlarmState = getAmpUnitStatusAlarmState(
             temperatureAlarmState: temperatureAlarmState,
             voltageAlarmState: voltageAlarmState,
@@ -306,7 +327,6 @@ class Indicator extends StatelessWidget {
           // 不使用 splitOptionAlarmSeverity
           Alarm ampUnitAlarmSeverityWithoutSplitOption =
               getAmpUnitAlarmSeverityWithoutSplitOption(
-            unitStatusAlarmSeverity: unitStatusAlarmSeverity,
             splitOptionAlarmSeverity: splitOptionAlarmSeverity,
             temperatureAlarmSeverity: temperatureAlarmSeverity,
             voltageAlarmSeverity: voltageAlarmSeverity,
@@ -316,6 +336,26 @@ class Indicator extends StatelessWidget {
                 rfOutputPilotLowFrequencyAlarmSeverity,
             rfOutputPilotHighFrequencyAlarmSeverity:
                 rfOutputPilotHighFrequencyAlarmSeverity,
+          );
+
+          String nodeUnitStatusAlarmState = getNodeUnitStatusAlarmState(
+            temperatureAlarmState: temperatureAlarmState,
+            voltageAlarmState: voltageAlarmState,
+            rfOutputPower1AlarmState: rfOutputPower1AlarmState,
+            rfOutputPower3AlarmState: rfOutputPower3AlarmState,
+            rfOutputPower4AlarmState: rfOutputPower4AlarmState,
+            rfOutputPower6AlarmState: rfOutputPower6AlarmState,
+          );
+
+          // 不使用 splitOptionAlarmSeverity
+          Alarm nodeUnitAlarmSeverityWithoutSplitOption =
+              getNodeUnitAlarmSeverityWithoutSplitOption(
+            temperatureAlarmSeverity: temperatureAlarmSeverity,
+            voltageAlarmSeverity: voltageAlarmSeverity,
+            rfOutputPower1AlarmSeverity: rfOutputPower1AlarmSeverity,
+            rfOutputPower3AlarmSeverity: rfOutputPower3AlarmSeverity,
+            rfOutputPower4AlarmSeverity: rfOutputPower4AlarmSeverity,
+            rfOutputPower6AlarmSeverity: rfOutputPower6AlarmSeverity,
           );
 
           return Padding(
@@ -328,7 +368,9 @@ class Indicator extends StatelessWidget {
                 getPulsator(
                   color: getPulsatorColor(
                     alarmState: unitAmpStatusAlarmState,
-                    alarm: ampUnitAlarmSeverityWithoutSplitOption,
+                    alarm: state.aciDeviceType == ACIDeviceType.amp1P8G
+                        ? ampUnitAlarmSeverityWithoutSplitOption
+                        : nodeUnitAlarmSeverityWithoutSplitOption,
                   ),
                   iconData: CustomIcons.device,
                   // name: AppLocalizations.of(context)!.unitStatusAlarm,
@@ -369,7 +411,22 @@ class Indicator extends StatelessWidget {
                   width: 44,
                   height: 22,
                   decoration: BoxDecoration(color: Colors.transparent),
-                  child: Icon(CustomIcons.information),
+                  child: IconButton(
+                    visualDensity:
+                        const VisualDensity(horizontal: -4.0, vertical: -4.0),
+                    onPressed: () {
+                      showSetupWizardDialog(
+                        context: context,
+                        functionDescriptionType:
+                            SetupWizardProperty.functionDescriptionType,
+                        aciDeviceType: state.aciDeviceType,
+                      );
+                    },
+                    icon: Icon(
+                      CustomIcons.information,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -397,6 +454,32 @@ class Indicator extends StatelessWidget {
                   iconData: CustomIcons.power,
                   // name: AppLocalizations.of(context)!.powerSupplyAlarm,
                   animationEnabled: false,
+                ),
+                Container(
+                  width: 44,
+                  height: 22,
+                  decoration: BoxDecoration(color: Colors.transparent),
+                ),
+                Container(
+                  width: 44,
+                  height: 22,
+                  decoration: BoxDecoration(color: Colors.transparent),
+                  child: IconButton(
+                    visualDensity:
+                        const VisualDensity(horizontal: -4.0, vertical: -4.0),
+                    onPressed: () {
+                      showSetupWizardDialog(
+                        context: context,
+                        functionDescriptionType:
+                            SetupWizardProperty.functionDescriptionType,
+                        aciDeviceType: ACIDeviceType.amp1P8G,
+                      );
+                    },
+                    icon: Icon(
+                      CustomIcons.information,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
               ],
             ),

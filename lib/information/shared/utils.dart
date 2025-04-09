@@ -9,35 +9,35 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Information18SetupWizard extends StatelessWidget {
-  const Information18SetupWizard({super.key});
+// class Information18SetupWizard extends StatelessWidget {
+//   const Information18SetupWizard({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        return FloatingActionButton(
-          heroTag: null,
-          shape: const CircleBorder(
-            side: BorderSide.none,
-          ),
-          backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
-          onPressed: () {
-            showSetupWizardDialog(
-              context: context,
-              functionDescriptionType: FunctionDescriptionType.information,
-              aciDeviceType: ACIDeviceType.amp1P8G,
-            );
-          },
-          child: Icon(
-            CustomIcons.information,
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<HomeBloc, HomeState>(
+//       builder: (context, state) {
+//         return FloatingActionButton(
+//           heroTag: null,
+//           shape: const CircleBorder(
+//             side: BorderSide.none,
+//           ),
+//           backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(200),
+//           onPressed: () {
+//             showSetupWizardDialog(
+//               context: context,
+//               functionDescriptionType: FunctionDescriptionType.information,
+//               aciDeviceType: ACIDeviceType.amp1P8G,
+//             );
+//           },
+//           child: Icon(
+//             CustomIcons.information,
+//             color: Theme.of(context).colorScheme.onPrimary,
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
 
 Widget getContent({
   required FormStatus loadingStatus,

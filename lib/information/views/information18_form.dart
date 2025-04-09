@@ -28,8 +28,11 @@ class Information18Form extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomeState homeState = context.read<HomeBloc>().state;
+    // 此參數用來設定 SetupWizard 該顯示的說明
+    SetupWizardProperty.functionDescriptionType =
+        FunctionDescriptionType.information;
 
+    HomeState homeState = context.read<HomeBloc>().state;
     if (homeState.loadingStatus.isRequestSuccess) {
       checkUnfilledItem(
         context: context,
@@ -75,7 +78,7 @@ class Information18Form extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: const Information18SetupWizard(),
+      // floatingActionButton: const Information18SetupWizard(),
     );
   }
 }

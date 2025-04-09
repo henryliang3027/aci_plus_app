@@ -19,6 +19,23 @@ enum CEQStatus {
   from1P8GTo1P2G,
 }
 
+enum FunctionDescriptionType {
+  device,
+  threshold,
+  balance,
+  status,
+  information,
+  dataLog,
+  rfLevel,
+  config,
+  firmwareUpdate,
+}
+
+class SetupWizardProperty {
+  static FunctionDescriptionType functionDescriptionType =
+      FunctionDescriptionType.information;
+}
+
 class FirmwareUpdateProperty {
   static int previousVersion = 0;
 }

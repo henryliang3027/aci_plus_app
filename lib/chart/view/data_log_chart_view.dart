@@ -121,12 +121,12 @@ class _DataLogFloatingActionButton extends StatelessWidget {
         return Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            getDataLogChartSetupWizard(
-              context: context,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
+            // getDataLogChartSetupWizard(
+            //   context: context,
+            // ),
+            // const SizedBox(
+            //   height: 10,
+            // ),
             _MoreDataFloatingActionButton(
               enabled: enabled,
             ),

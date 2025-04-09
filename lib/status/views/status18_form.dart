@@ -25,6 +25,10 @@ class Status18Form extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 此參數用來設定 SetupWizard 該顯示的說明
+    SetupWizardProperty.functionDescriptionType =
+        FunctionDescriptionType.status;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.status),
@@ -48,7 +52,7 @@ class Status18Form extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: const Status18SetupWizard(),
+      // floatingActionButton: const Status18SetupWizard(),
     );
   }
 }

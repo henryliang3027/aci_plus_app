@@ -41,20 +41,6 @@ class Setting18RegulationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Setting18TabBarState setting18tabBarState =
-    //     context.watch<Setting18TabBarBloc>().state;
-
-    // print(
-    //     'setting18 configure view ${setting18tabBarState.isForwardCEQIndexChanged}');
-    // if (setting18tabBarState.isForwardCEQIndexChanged) {
-    //   showCurrentForwardCEQChangedDialog(context).then((bool? isConfirm) {
-    //     // 重新 Initialized, 讀取並顯示空值
-    //     context
-    //         .read<Setting18RegulationBloc>()
-    //         .add(const Initialized(useCache: false));
-    //   });
-    // }
-
     HomeState homeState = context.watch<HomeBloc>().state;
     String partId = homeState.characteristicData[DataKey.partId] ?? '';
     String currentDetectedSplitOption =
@@ -1058,10 +1044,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            getConfigureSetupWizard(
-              context: context,
-              aciDeviceType: ACIDeviceType.amp1P8G,
-            ),
+            // getConfigureSetupWizard(
+            //   context: context,
+            //   aciDeviceType: ACIDeviceType.amp1P8G,
+            // ),
             const SizedBox(
               height: 10.0,
             ),
@@ -1149,10 +1135,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            getConfigureSetupWizard(
-              context: context,
-              aciDeviceType: ACIDeviceType.amp1P8G,
-            ),
+            // getConfigureSetupWizard(
+            //   context: context,
+            //   aciDeviceType: ACIDeviceType.amp1P8G,
+            // ),
             const SizedBox(
               height: 10.0,
             ),
@@ -1215,10 +1201,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          getConfigureSetupWizard(
-            context: context,
-            aciDeviceType: ACIDeviceType.amp1P8G,
-          ),
+          // getConfigureSetupWizard(
+          //   context: context,
+          //   aciDeviceType: ACIDeviceType.amp1P8G,
+          // ),
           const SizedBox(
             height: 10.0,
           ),

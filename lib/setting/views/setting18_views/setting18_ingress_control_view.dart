@@ -399,10 +399,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            getControlSetupWizard(
-              context: context,
-              aciDeviceType: ACIDeviceType.amp1P8G,
-            ),
+            // getControlSetupWizard(
+            //   context: context,
+            //   aciDeviceType: ACIDeviceType.amp1P8G,
+            // ),
             const SizedBox(
               height: 10.0,
             ),
@@ -492,10 +492,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            getControlSetupWizard(
-              context: context,
-              aciDeviceType: ACIDeviceType.amp1P8G,
-            ),
+            // getControlSetupWizard(
+            //   context: context,
+            //   aciDeviceType: ACIDeviceType.amp1P8G,
+            // ),
             const SizedBox(
               height: 10.0,
             ),
@@ -557,10 +557,10 @@ class _SettingFloatingActionButton extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          getControlSetupWizard(
-            context: context,
-            aciDeviceType: ACIDeviceType.amp1P8G,
-          ),
+          // getControlSetupWizard(
+          //   context: context,
+          //   aciDeviceType: ACIDeviceType.amp1P8G,
+          // ),
           const SizedBox(
             height: 10.0,
           ),
