@@ -106,97 +106,80 @@ class Indicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Alarm getAlarmEnumFromString(String alarmString) {
-      try {
-        return Alarm.values.byName(alarmString);
-      } catch (e) {
-        return Alarm.medium;
+    // alarmState (alarm mask) == '0' 代表 enable
+    // alarmState (alarm mask) == '1' 代表 disable
+    Alarm getSeverity(String alarmState, String alarmSeverity) {
+      if (alarmState == '0') {
+        if (alarmSeverity == Alarm.success.name) {
+          return Alarm.success;
+        } else if (alarmSeverity == Alarm.danger.name) {
+          return Alarm.danger;
+        } else {
+          //  Alarm.medium
+          return Alarm.success;
+        }
+      } else {
+        // alarmState == '1'
+        return Alarm.success;
       }
     }
 
     // alarmState (alarm mask) == '0' 代表 enable
     // alarmState (alarm mask) == '1' 代表 disable
-    String getAmpUnitStatusAlarmState({
+    Alarm getAmpUnitStatusAlarmSeverity({
       required String temperatureAlarmState,
       required String voltageAlarmState,
       required String voltageRippleAlarmState,
       required String rfOutputPowerAlarmState,
       required String rfOutputPilotLowFrequencyAlarmState,
       required String rfOutputPilotHighFrequencyAlarmState,
+      required String temperatureAlarmSeverity,
+      required String voltageAlarmSeverity,
+      required String voltageRippleAlarmSeverity,
+      required String rfOutputPowerAlarmSeverity,
+      required String rfOutputPilotLowFrequencyAlarmSeverity,
+      required String rfOutputPilotHighFrequencyAlarmSeverity,
     }) {
-      if (temperatureAlarmState == '1' &&
-          voltageAlarmState == '1' &&
-          voltageRippleAlarmState == '1' &&
-          rfOutputPowerAlarmState == '1' &&
-          rfOutputPilotLowFrequencyAlarmState == '1' &&
-          rfOutputPilotHighFrequencyAlarmState == '1') {
-        return '1';
-      } else {
-        return '0';
-      }
+      List<Alarm> severityList = [
+        getSeverity(temperatureAlarmState, temperatureAlarmSeverity),
+        getSeverity(voltageAlarmState, voltageAlarmSeverity),
+        getSeverity(voltageRippleAlarmState, voltageRippleAlarmSeverity),
+        getSeverity(rfOutputPowerAlarmState, rfOutputPowerAlarmSeverity),
+        getSeverity(rfOutputPilotLowFrequencyAlarmState,
+            rfOutputPilotLowFrequencyAlarmSeverity),
+        getSeverity(rfOutputPilotHighFrequencyAlarmState,
+            rfOutputPilotHighFrequencyAlarmSeverity),
+      ];
+
+      return severityList.contains(Alarm.danger) ? Alarm.danger : Alarm.success;
     }
 
     // alarmState (alarm mask) == '0' 代表 enable
     // alarmState (alarm mask) == '1' 代表 disable
-    String getNodeUnitStatusAlarmState({
+    Alarm getNodeUnitStatusAlarmSeverity({
       required String temperatureAlarmState,
       required String voltageAlarmState,
       required String rfOutputPower1AlarmState,
       required String rfOutputPower3AlarmState,
       required String rfOutputPower4AlarmState,
       required String rfOutputPower6AlarmState,
+      required String temperatureAlarmSeverity,
+      required String voltageAlarmSeverity,
+      required String rfOutputPower1AlarmSeverity,
+      required String rfOutputPower3AlarmSeverity,
+      required String rfOutputPower4AlarmSeverity,
+      required String rfOutputPower6AlarmSeverity,
     }) {
-      if (temperatureAlarmState == '1' &&
-          voltageAlarmState == '1' &&
-          rfOutputPower1AlarmState == '1' &&
-          rfOutputPower3AlarmState == '1' &&
-          rfOutputPower4AlarmState == '1' &&
-          rfOutputPower6AlarmState == '1') {
-        return '1';
-      } else {
-        return '0';
-      }
-    }
+      List<Alarm> severityList = [
+        getSeverity(temperatureAlarmState, temperatureAlarmSeverity),
+        getSeverity(voltageAlarmState, voltageAlarmSeverity),
+        getSeverity(rfOutputPower1AlarmState, rfOutputPower1AlarmSeverity),
+        getSeverity(rfOutputPower3AlarmState, rfOutputPower3AlarmSeverity),
+        getSeverity(rfOutputPower4AlarmState, rfOutputPower4AlarmSeverity),
+        getSeverity(rfOutputPower6AlarmState, rfOutputPower6AlarmSeverity),
+      ];
 
-    Alarm getAmpUnitAlarmSeverityWithoutSplitOption({
-      required Alarm splitOptionAlarmSeverity,
-      required Alarm temperatureAlarmSeverity,
-      required Alarm voltageAlarmSeverity,
-      required Alarm voltageRippleAlarmSeverity,
-      required Alarm outputPowerAlarmSeverity,
-      required Alarm rfOutputPilotLowFrequencyAlarmSeverity,
-      required Alarm rfOutputPilotHighFrequencyAlarmSeverity,
-    }) {
-      if (temperatureAlarmSeverity == Alarm.success &&
-          voltageAlarmSeverity == Alarm.success &&
-          voltageRippleAlarmSeverity == Alarm.success &&
-          outputPowerAlarmSeverity == Alarm.success &&
-          rfOutputPilotLowFrequencyAlarmSeverity == Alarm.success &&
-          rfOutputPilotHighFrequencyAlarmSeverity == Alarm.success) {
-        return Alarm.success;
-      } else {
-        return Alarm.danger;
-      }
-    }
-
-    Alarm getNodeUnitAlarmSeverityWithoutSplitOption({
-      required Alarm temperatureAlarmSeverity,
-      required Alarm voltageAlarmSeverity,
-      required Alarm rfOutputPower1AlarmSeverity,
-      required Alarm rfOutputPower3AlarmSeverity,
-      required Alarm rfOutputPower4AlarmSeverity,
-      required Alarm rfOutputPower6AlarmSeverity,
-    }) {
-      if (temperatureAlarmSeverity == Alarm.success &&
-          voltageAlarmSeverity == Alarm.success &&
-          rfOutputPower1AlarmSeverity == Alarm.success &&
-          rfOutputPower3AlarmSeverity == Alarm.success &&
-          rfOutputPower4AlarmSeverity == Alarm.success &&
-          rfOutputPower6AlarmSeverity == Alarm.success) {
-        return Alarm.success;
-      } else {
-        return Alarm.danger;
-      }
+      return severityList.contains(Alarm.danger) ? Alarm.danger : Alarm.success;
     }
 
     Widget getPulsator({
@@ -226,61 +209,69 @@ class Indicator extends StatelessWidget {
     }
 
     Color getPulsatorColor({
-      required String alarmState,
       required Alarm alarm,
     }) {
-      return alarmState == '0'
-          ? CustomStyle.alarmColor[alarm.name] ?? const Color(0xff6c757d)
-          : CustomStyle.alarmColor[Alarm.success.name]!; // Ripple color
+      return CustomStyle.alarmColor[alarm.name]!; // Ripple color
+    }
+
+    bool getPulsatorAnimationEnabled({
+      required Alarm alarm,
+    }) {
+      return alarm == Alarm.success ? false : true;
     }
 
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.loadingStatus.isRequestSuccess) {
-          Alarm unitStatusAlarmSeverity = getAlarmEnumFromString(
-              state.characteristicData[DataKey.unitStatusAlarmSeverity] ?? '');
+          // 由於不考慮 device 的 splitOptionAlarmSeverity
+          // 因此 unitStatusAlarmSeverity 不直接讀取 device 的 unitStatusAlarmSeverity
+          // 依照 device 是 amp 或 node 來決定, amp 則使用 getAmpUnitStatusAlarmSeverity
+          // node 則使用 getNodeUnitStatusAlarmSeverity
 
-          Alarm splitOptionAlarmSeverity = getAlarmEnumFromString(
-              state.characteristicData[DataKey.splitOptionAlarmSeverity] ?? '');
+          // String unitStatusAlarmSeverity =
+          //     state.characteristicData[DataKey.unitStatusAlarmSeverity] ?? '';
 
-          Alarm temperatureAlarmSeverity = getAlarmEnumFromString(
-              state.characteristicData[DataKey.temperatureAlarmSeverity] ?? '');
+          // String splitOptionAlarmSeverity =
+          //     state.characteristicData[DataKey.splitOptionAlarmSeverity] ?? '';
 
-          Alarm voltageAlarmSeverity = getAlarmEnumFromString(
-              state.characteristicData[DataKey.voltageAlarmSeverity] ?? '');
+          String temperatureAlarmSeverity =
+              state.characteristicData[DataKey.temperatureAlarmSeverity] ?? '';
 
-          Alarm voltageRippleAlarmSeverity = getAlarmEnumFromString(
+          String voltageAlarmSeverity =
+              state.characteristicData[DataKey.voltageAlarmSeverity] ?? '';
+
+          String voltageRippleAlarmSeverity =
               state.characteristicData[DataKey.voltageRippleAlarmSeverity] ??
-                  '');
+                  '';
 
-          Alarm outputPowerAlarmSeverity = getAlarmEnumFromString(
-              state.characteristicData[DataKey.outputPowerAlarmSeverity] ?? '');
+          String outputPowerAlarmSeverity =
+              state.characteristicData[DataKey.outputPowerAlarmSeverity] ?? '';
 
-          Alarm rfOutputPilotLowFrequencyAlarmSeverity = getAlarmEnumFromString(
+          String rfOutputPilotLowFrequencyAlarmSeverity =
               state.characteristicData[
                       DataKey.rfOutputPilotLowFrequencyAlarmSeverity] ??
-                  '');
+                  '';
 
-          Alarm rfOutputPilotHighFrequencyAlarmSeverity =
-              getAlarmEnumFromString(state.characteristicData[
+          String rfOutputPilotHighFrequencyAlarmSeverity =
+              state.characteristicData[
                       DataKey.rfOutputPilotHighFrequencyAlarmSeverity] ??
-                  '');
+                  '';
 
           // Node
-          Alarm rfOutputPower1AlarmSeverity = getAlarmEnumFromString(
+          String rfOutputPower1AlarmSeverity =
               state.characteristicData[DataKey.rfOutputPower1AlarmSeverity] ??
-                  '');
-          Alarm rfOutputPower3AlarmSeverity = getAlarmEnumFromString(
+                  '';
+          String rfOutputPower3AlarmSeverity =
               state.characteristicData[DataKey.rfOutputPower3AlarmSeverity] ??
-                  '');
+                  '';
 
-          Alarm rfOutputPower4AlarmSeverity = getAlarmEnumFromString(
+          String rfOutputPower4AlarmSeverity =
               state.characteristicData[DataKey.rfOutputPower4AlarmSeverity] ??
-                  '');
+                  '';
 
-          Alarm rfOutputPower6AlarmSeverity = getAlarmEnumFromString(
+          String rfOutputPower6AlarmSeverity =
               state.characteristicData[DataKey.rfOutputPower6AlarmSeverity] ??
-                  '');
+                  '';
 
           String temperatureAlarmState =
               state.characteristicData[DataKey.temperatureAlarmState] ?? '1';
@@ -313,7 +304,7 @@ class Indicator extends StatelessWidget {
           String rfOutputPower6AlarmState =
               state.characteristicData[DataKey.rfOutputPower6AlarmState] ?? '1';
 
-          String unitAmpStatusAlarmState = getAmpUnitStatusAlarmState(
+          Alarm ampUnitStatusAlarmSeverity = getAmpUnitStatusAlarmSeverity(
             temperatureAlarmState: temperatureAlarmState,
             voltageAlarmState: voltageAlarmState,
             voltageRippleAlarmState: voltageRippleAlarmState,
@@ -322,34 +313,23 @@ class Indicator extends StatelessWidget {
                 rfOutputPilotLowFrequencyAlarmState,
             rfOutputPilotHighFrequencyAlarmState:
                 rfOutputPilotHighFrequencyAlarmState,
-          );
-
-          // 不使用 splitOptionAlarmSeverity
-          Alarm ampUnitAlarmSeverityWithoutSplitOption =
-              getAmpUnitAlarmSeverityWithoutSplitOption(
-            splitOptionAlarmSeverity: splitOptionAlarmSeverity,
             temperatureAlarmSeverity: temperatureAlarmSeverity,
             voltageAlarmSeverity: voltageAlarmSeverity,
             voltageRippleAlarmSeverity: voltageRippleAlarmSeverity,
-            outputPowerAlarmSeverity: outputPowerAlarmSeverity,
+            rfOutputPowerAlarmSeverity: outputPowerAlarmSeverity,
             rfOutputPilotLowFrequencyAlarmSeverity:
                 rfOutputPilotLowFrequencyAlarmSeverity,
             rfOutputPilotHighFrequencyAlarmSeverity:
                 rfOutputPilotHighFrequencyAlarmSeverity,
           );
 
-          String nodeUnitStatusAlarmState = getNodeUnitStatusAlarmState(
+          Alarm nodeUnitStatusAlarmSeverity = getNodeUnitStatusAlarmSeverity(
             temperatureAlarmState: temperatureAlarmState,
             voltageAlarmState: voltageAlarmState,
             rfOutputPower1AlarmState: rfOutputPower1AlarmState,
             rfOutputPower3AlarmState: rfOutputPower3AlarmState,
             rfOutputPower4AlarmState: rfOutputPower4AlarmState,
             rfOutputPower6AlarmState: rfOutputPower6AlarmState,
-          );
-
-          // 不使用 splitOptionAlarmSeverity
-          Alarm nodeUnitAlarmSeverityWithoutSplitOption =
-              getNodeUnitAlarmSeverityWithoutSplitOption(
             temperatureAlarmSeverity: temperatureAlarmSeverity,
             voltageAlarmSeverity: voltageAlarmSeverity,
             rfOutputPower1AlarmSeverity: rfOutputPower1AlarmSeverity,
@@ -357,6 +337,12 @@ class Indicator extends StatelessWidget {
             rfOutputPower4AlarmSeverity: rfOutputPower4AlarmSeverity,
             rfOutputPower6AlarmSeverity: rfOutputPower6AlarmSeverity,
           );
+
+          Alarm finalTemperatureAlarmSeverity =
+              getSeverity(temperatureAlarmState, temperatureAlarmSeverity);
+
+          Alarm finalVoltageAlarmSeverity =
+              getSeverity(voltageAlarmState, voltageAlarmSeverity);
 
           return Padding(
             padding: const EdgeInsets.symmetric(
@@ -367,40 +353,34 @@ class Indicator extends StatelessWidget {
               children: [
                 getPulsator(
                   color: getPulsatorColor(
-                    alarmState: unitAmpStatusAlarmState,
                     alarm: state.aciDeviceType == ACIDeviceType.amp1P8G
-                        ? ampUnitAlarmSeverityWithoutSplitOption
-                        : nodeUnitAlarmSeverityWithoutSplitOption,
+                        ? ampUnitStatusAlarmSeverity
+                        : nodeUnitStatusAlarmSeverity,
                   ),
                   iconData: CustomIcons.device,
                   // name: AppLocalizations.of(context)!.unitStatusAlarm,
-                  animationEnabled: unitAmpStatusAlarmState == '0' &&
-                          ampUnitAlarmSeverityWithoutSplitOption == Alarm.danger
-                      ? true
-                      : false,
+                  animationEnabled: state.aciDeviceType == ACIDeviceType.amp1P8G
+                      ? getPulsatorAnimationEnabled(
+                          alarm: ampUnitStatusAlarmSeverity)
+                      : getPulsatorAnimationEnabled(
+                          alarm: nodeUnitStatusAlarmSeverity),
                 ),
                 getPulsator(
                   color: getPulsatorColor(
-                    alarmState: temperatureAlarmState,
-                    alarm: temperatureAlarmSeverity,
+                    alarm: finalTemperatureAlarmSeverity,
                   ),
                   iconData: CustomIcons.temperature,
                   // name: AppLocalizations.of(context)!.temperatureAlarm,
-                  animationEnabled: temperatureAlarmState == '0' &&
-                          temperatureAlarmSeverity == Alarm.danger
-                      ? true
-                      : false,
+                  animationEnabled: getPulsatorAnimationEnabled(
+                      alarm: finalTemperatureAlarmSeverity),
                 ),
                 getPulsator(
                   color: getPulsatorColor(
-                    alarmState: voltageAlarmState,
-                    alarm: voltageAlarmSeverity,
+                    alarm: finalVoltageAlarmSeverity,
                   ),
                   iconData: CustomIcons.power,
-                  animationEnabled: voltageAlarmState == '0' &&
-                          voltageAlarmSeverity == Alarm.danger
-                      ? true
-                      : false,
+                  animationEnabled: getPulsatorAnimationEnabled(
+                      alarm: finalVoltageAlarmSeverity),
                 ),
                 Container(
                   width: 44,
