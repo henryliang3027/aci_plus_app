@@ -64,6 +64,9 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
     String forwardCEQIndex =
         homeState.characteristicData[DataKey.currentForwardCEQIndex] ?? '';
 
+    String pilotFrequencyMode =
+        homeState.characteristicData[DataKey.pilotFrequencyMode] ?? '0';
+
     // Map<String, List<Widget>> isolatedSettingWidgetsMap = {
     //   DataKey.splitOption.name: [const _SplitOption()],
     // };
@@ -107,9 +110,12 @@ class _Setting18GraphModuleFormState extends State<Setting18GraphModuleForm> {
         ]
       ],
       DataKey.dsVVA5.name: [
-        if (partId == '5') ...[
-          const _ForwardOutputAttenuation5And6(),
+        if (partId == '5' || partId == '6') ...[
+          _ForwardOutputAttenuation5And6(
+            pilotFrequencyMode: pilotFrequencyMode,
+          ),
         ] else ...[
+          // SDAT
           const _ForwardOutputAttenuation4()
         ]
       ],
@@ -698,7 +704,9 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation5And6 extends StatelessWidget {
-  const _ForwardOutputAttenuation5And6();
+  const _ForwardOutputAttenuation5And6({required this.pilotFrequencyMode});
+
+  final String pilotFrequencyMode;
 
   @override
   Widget build(BuildContext context) {
@@ -708,12 +716,12 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA5]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: pilotFrequencyMode == '3' ? state.editMode : false,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,
           maxValue: maxValue,
-          currentValue: state.targetValues[DataKey.dsVVA5]?.value ?? '1.0',
+          currentValue: state.targetValues[DataKey.dsVVA5]?.value ?? '0.0',
           onChanged: (dsVVA5) {
             context.read<Setting18GraphModuleBloc>().add(ControlItemChanged(
                   dataKey: DataKey.dsVVA5,

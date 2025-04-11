@@ -38,6 +38,7 @@
     "pilotFrequencySelect": "Selección Frecuencia Piloto",
     "pilotFrequencyBandwidthSettings": "Configuración Intervalo",
     "pilotFrequencyUserSettings": "Configuración Usuario",
+    "pilotFrequencyBenchMode": "Modo de prueba",
     "pilotFrequencySmartSettings": "Configuraciones inteligentes",
     "pilotFrequency1": "Baja Frecuencia",
     "pilotFrequency2": "Alta Frecuencia",

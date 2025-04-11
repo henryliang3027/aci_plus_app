@@ -374,6 +374,7 @@ class _PilotFrequencyMode extends StatelessWidget {
     List<String> pilotFrequencyModeTexts = [
       AppLocalizations.of(context)!.pilotFrequencyBandwidthSettings,
       AppLocalizations.of(context)!.pilotFrequencyUserSettings,
+      AppLocalizations.of(context)!.pilotFrequencyBenchMode,
       //  AppLocalizations.of(context)!.pilotFrequencySmartSettings,
     ];
 

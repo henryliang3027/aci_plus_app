@@ -38,6 +38,7 @@
     "pilotFrequencySelect": "Pilot Frequency Select",
     "pilotFrequencyBandwidthSettings": "Bandwidth Settings",
     "pilotFrequencyUserSettings": "User Settings",
+    "pilotFrequencyBenchMode": "Bench Mode",
     "pilotFrequencySmartSettings": "Smart Settings",
     "pilotFrequency1": "Low Pilot",
     "pilotFrequency2": "High Pilot",

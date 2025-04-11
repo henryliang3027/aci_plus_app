@@ -470,6 +470,7 @@ class _Coordinates extends StatelessWidget {
                     key: const Key('setting18Form_coordinatesInput_textField'),
                     style: const TextStyle(
                       fontSize: CustomStyle.sizeXL,
+                      color: Colors.grey,
                     ),
                     enabled: state.editMode,
                     readOnly: true,

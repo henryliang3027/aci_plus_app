@@ -39,6 +39,7 @@
     "pilotFrequencySelect": "導航頻道選取方式",
     "pilotFrequencyBandwidthSettings": "頻寬設定",
     "pilotFrequencyUserSettings": "使用者設定",
+    "pilotFrequencyBenchMode": "工作台模式",
     "pilotFrequencySmartSettings": "智慧設定",
     "pilotFrequency1": "低頻",
     "pilotFrequency2": "高頻",

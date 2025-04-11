@@ -57,7 +57,7 @@ String format1P8GSettingResultItem({
           .dialogMessageForwardOutputAttenuation3And4Setting;
     }
   } else if (item == DataKey.dsVVA5.name) {
-    if (partId == '5') {
+    if (partId == '5' || partId == '6') {
       return AppLocalizations.of(context)!
           .dialogMessageForwardOutputAttenuation5And6Setting;
     } else {

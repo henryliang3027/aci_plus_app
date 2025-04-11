@@ -44,6 +44,9 @@ class Setting18ForwardControlView extends StatelessWidget {
     String forwardCEQIndex =
         homeState.characteristicData[DataKey.currentForwardCEQIndex] ?? '';
 
+    String pilotFrequencyMode =
+        homeState.characteristicData[DataKey.pilotFrequencyMode] ?? '0';
+
     if (homeState.connectionStatus.isRequestFailure) {
       // 重新 Initialized, 讀取並顯示空值
       context.read<Setting18ForwardControlBloc>().add(const Initialized());
@@ -119,7 +122,9 @@ class Setting18ForwardControlView extends StatelessWidget {
             break;
           case SettingControl.forwardOutputAttenuation5And6:
             widgets.add(
-              const _ForwardOutputAttenuation5And6(),
+              _ForwardOutputAttenuation5And6(
+                pilotFrequencyMode: pilotFrequencyMode,
+              ),
             );
             break;
           case SettingControl.forwardOutputEqualizer2And3:
@@ -760,7 +765,9 @@ class _ForwardOutputAttenuation3And4 extends StatelessWidget {
 }
 
 class _ForwardOutputAttenuation5And6 extends StatelessWidget {
-  const _ForwardOutputAttenuation5And6();
+  const _ForwardOutputAttenuation5And6({required this.pilotFrequencyMode});
+
+  final String pilotFrequencyMode;
 
   @override
   Widget build(BuildContext context) {
@@ -775,7 +782,7 @@ class _ForwardOutputAttenuation5And6 extends StatelessWidget {
         double maxValue = state.targetValues[DataKey.dsVVA5]?.maxValue ?? 10.0;
         return controlTextSlider(
           context: context,
-          editMode: state.editMode,
+          editMode: pilotFrequencyMode == '3' ? state.editMode : false,
           title:
               '${AppLocalizations.of(context)!.forwardOutputAttenuation5And6} (${CustomStyle.dB}):',
           minValue: minValue,

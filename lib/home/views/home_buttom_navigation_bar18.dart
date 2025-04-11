@@ -9,7 +9,6 @@ import 'package:aci_plus_app/core/utils.dart';
 import 'package:aci_plus_app/home/bloc/home/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeBottomNavigationBar18 extends StatelessWidget {
   const HomeBottomNavigationBar18({
@@ -220,6 +219,25 @@ class Indicator extends StatelessWidget {
       return alarm == Alarm.success ? false : true;
     }
 
+    Widget getSetupWizardButton() {
+      return IconButton(
+        visualDensity: const VisualDensity(horizontal: -4.0, vertical: -4.0),
+        onPressed: () {
+          showSetupWizardDialog(
+            context: context,
+            functionDescriptionType:
+                SetupWizardProperty.functionDescriptionType,
+            aciDeviceType: ACIDeviceType.amp1P8G,
+          );
+        },
+        icon: Icon(
+          CustomIcons.information,
+          color: Theme.of(context).colorScheme.primary,
+          size: 30,
+        ),
+      );
+    }
+
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state.loadingStatus.isRequestSuccess) {
@@ -387,27 +405,7 @@ class Indicator extends StatelessWidget {
                   height: 22,
                   decoration: BoxDecoration(color: Colors.transparent),
                 ),
-                Container(
-                  width: 44,
-                  height: 22,
-                  decoration: BoxDecoration(color: Colors.transparent),
-                  child: IconButton(
-                    visualDensity:
-                        const VisualDensity(horizontal: -4.0, vertical: -4.0),
-                    onPressed: () {
-                      showSetupWizardDialog(
-                        context: context,
-                        functionDescriptionType:
-                            SetupWizardProperty.functionDescriptionType,
-                        aciDeviceType: state.aciDeviceType,
-                      );
-                    },
-                    icon: Icon(
-                      CustomIcons.information,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ),
+                getSetupWizardButton(),
               ],
             ),
           );
@@ -440,27 +438,7 @@ class Indicator extends StatelessWidget {
                   height: 22,
                   decoration: BoxDecoration(color: Colors.transparent),
                 ),
-                Container(
-                  width: 44,
-                  height: 22,
-                  decoration: BoxDecoration(color: Colors.transparent),
-                  child: IconButton(
-                    visualDensity:
-                        const VisualDensity(horizontal: -4.0, vertical: -4.0),
-                    onPressed: () {
-                      showSetupWizardDialog(
-                        context: context,
-                        functionDescriptionType:
-                            SetupWizardProperty.functionDescriptionType,
-                        aciDeviceType: ACIDeviceType.amp1P8G,
-                      );
-                    },
-                    icon: Icon(
-                      CustomIcons.information,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ),
+                getSetupWizardButton(),
               ],
             ),
           );

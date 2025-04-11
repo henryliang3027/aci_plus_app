@@ -1938,6 +1938,7 @@ List<String> pilotFrequencyModeValues = const [
   '0',
   '1',
   // '2',
+  '3',
 ];
 
 // 給 widget 用, 由 grid item index 找 text

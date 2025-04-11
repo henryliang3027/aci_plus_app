@@ -142,7 +142,7 @@ const Map<String, String> settingGraphFilePath = {
   '3': 'assets/circuits/MB_1.8G_20240822.svg', // MB
   '4': 'assets/circuits/NODE_1.8G_20240822.svg', // C-Cor Node
   '5': 'assets/circuits/TR_1.8G_20240822.svg', // C-Cor TR
-  '6': 'assets/circuits/BR_1.8G_20250225.svg', // C-Cor BR
+  '6': 'assets/circuits/BR_1.8G_20250411.svg', // C-Cor BR
   '7': 'assets/circuits/LE_1.8G_20240822.svg', // C-Cor LE
   '8': 'assets/circuits/SDAT_1.8G_20240822.svg', // SDAT
   '9': 'assets/circuits/SDAM_1.8G_20240822.svg', // SDAM
@@ -378,7 +378,8 @@ class SettingItemTable {
       SettingControl.forwardInputEqualizer1,
       SettingControl.forwardOutputAttenuation2And3,
       SettingControl.forwardOutputEqualizer2And3,
-      // SettingControl.forwardOutputEqualizer5And6,
+      SettingControl.forwardOutputAttenuation5And6,
+      SettingControl.forwardOutputEqualizer5And6,
       SettingControl.returnOutputAttenuation1,
       SettingControl.returnOutputEqualizer1,
       SettingControl.returnInputAttenuation2And3,
@@ -628,6 +629,7 @@ class SettingItemTable {
         SettingControl.forwardInputAttenuation1: DataKey.dsVVA1,
         SettingControl.forwardInputEqualizer1: DataKey.dsSlope1,
         SettingControl.forwardOutputAttenuation2And3: DataKey.dsVVA4,
+        SettingControl.forwardOutputAttenuation5And6: DataKey.dsVVA5,
         SettingControl.forwardOutputEqualizer2And3: DataKey.dsSlope3,
         SettingControl.forwardOutputEqualizer5And6: DataKey.dsSlope4,
       },
